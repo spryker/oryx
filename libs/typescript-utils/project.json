@@ -1,0 +1,15 @@
+{
+  "root": "libs/typescript-utils",
+  "sourceRoot": "libs/typescript-utils/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/typescript-utils/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
