@@ -1,0 +1,25 @@
+{
+  "root": "libs/components",
+  "sourceRoot": "libs/components/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components",
+        "main": "libs/components/src/index.ts",
+        "tsConfig": "libs/components/tsconfig.lib.json",
+        "assets": ["libs/components/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/components/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
