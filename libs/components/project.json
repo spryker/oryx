@@ -19,6 +19,16 @@
       "options": {
         "lintFilePatterns": ["libs/components/**/*.ts"]
       }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/**/*.css",
+          "libs/components/**/*.styles.ts"
+        ]
+      }
     }
   },
   "tags": []
