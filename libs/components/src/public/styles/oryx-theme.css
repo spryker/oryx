@@ -1,0 +1,57 @@
+/* semantic design tokens */
+:root {
+  font-family: var(--oryx-font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--oryx-color-ink);
+  /* base font */
+  --oryx-font: Montserrat, sans-serif;
+  /* base color */
+  --oryx-color-canvas: #ffffff;
+  --oryx-color-ink: #121212;
+  /* neutral color */
+  --oryx-color-neutral: #d4d5d7;
+  --oryx-color-neutral-light: #efeeee;
+  --oryx-color-neutral-lighter: #f8f8f8;
+  --oryx-color-neutral-dark: #9ea1a7;
+  --oryx-color-neutral-darker: #71747c;
+  /* brand color */
+  --oryx-color-brand: #17b497;
+  --oryx-color-brand-light: #a0e1d5;
+  --oryx-color-brand-lighter: #f1f8f7;
+  --oryx-color-brand-dark: #138671;
+  /* theme color */
+  --oryx-color-accent: #2480f2;
+  --oryx-color-accent-light: #eaf1fa;
+  --oryx-color-accent-dark: #2261af;
+  /* elevation */
+  --oryx-elevation-color: rgba(23 11 11 15%);
+  --oryx-elevation-0: 0px 1px 3px;
+  --oryx-elevation-1: 0px 4px 12px;
+  --oryx-elevation-2: 1px 3px 18px;
+  --oryx-elevation-3: -2px 2px 20px;
+  /* effects */
+  --oryx-transition-time: 0.3s;
+  /* border */
+  --oryx-border-thin: 1px;
+  --oryx-border-thick: 2px;
+  --oryx-border-radius: 10px;
+  --oryx-border-radius-small: 4px;
+  --oryx-border-radius-medium: 5px;
+  --oryx-border-radius-large: 24px;
+  /* space */
+  --oryx-space: 5px;
+  --oryx-space-2: calc(var(--oryx-space) * 2);
+  --oryx-space-4: calc(var(--oryx-space) * 4);
+}
+
+/* just to proof that we can do dark mode with this setup */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --oryx-color-canvas: #333;
+    --oryx-color-ink: #fff;
+    --oryx-color-neutral-light: #aaa;
+    --oryx-color-neutral-lighter: #666;
+    --oryx-elevation-color: rgba(237 237 237 15%);
+  }
+}

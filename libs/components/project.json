@@ -10,7 +10,15 @@
         "outputPath": "dist/libs/components",
         "main": "libs/components/src/index.ts",
         "tsConfig": "libs/components/tsconfig.lib.json",
-        "assets": ["libs/components/*.md"]
+        "assets": [
+          "libs/components/*.md",
+          {
+            "input": "libs/components/src/public",
+            "glob": "**/*",
+            "output": "public"
+          }
+        ],
+        "styles": ["libs/components/src/public/styles/oryx-theme.css"]
       }
     },
     "lint": {
@@ -55,7 +63,8 @@
         "config": {
           "configFolder": "libs/components/.storybook"
         },
-        "staticDirs": ["assets"]
+        "staticDirs": ["assets"],
+        "styles": ["libs/components/src/public/styles/oryx-theme.css"]
       },
       "configurations": {
         "ci": {
