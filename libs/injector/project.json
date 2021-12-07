@@ -1,0 +1,33 @@
+{
+  "root": "libs/injector",
+  "sourceRoot": "libs/injector/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/injector",
+        "main": "libs/injector/src/index.ts",
+        "tsConfig": "libs/injector/tsconfig.lib.json",
+        "assets": ["libs/injector/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/injector/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/injector"],
+      "options": {
+        "jestConfig": "libs/injector/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
