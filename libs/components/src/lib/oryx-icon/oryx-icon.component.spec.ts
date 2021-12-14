@@ -33,7 +33,7 @@ describe('Icon', () => {
 
     it('should reference an external SVG and include search ID', () => {
       const svg = element?.shadowRoot?.querySelector('svg use');
-      expect(svg.getAttribute('href')).to.equal('assets/icons.svg#search');
+      expect(svg?.getAttribute('href')).to.equal('assets/icons.svg#search');
     });
   });
 });

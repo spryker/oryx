@@ -71,6 +71,12 @@
           "quiet": true
         }
       }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test"
+      }
     }
   },
   "tags": []

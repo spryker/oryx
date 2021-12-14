@@ -11,6 +11,8 @@
     }
   ],
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
     "useDefineForClassFields": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

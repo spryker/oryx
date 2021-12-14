@@ -1,4 +1,7 @@
 {
   "name": "@fes/components",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "scripts": {
+    "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --coverage"
+  }
 }
