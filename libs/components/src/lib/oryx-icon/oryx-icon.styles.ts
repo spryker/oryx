@@ -2,8 +2,8 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    width: 24px;
-    height: 24px;
+    width: var(--icon-size, 24px);
+    height: var(--icon-size, 24px);
   }
 
   svg {
