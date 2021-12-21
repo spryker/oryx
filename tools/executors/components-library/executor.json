@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "build": {
+      "implementation": "./impl",
+      "schema": "./schema.json",
+      "description": "Uses tsc executor then creates package.json in every folder (exclude public 'folder')"
+    }
+  }
+}

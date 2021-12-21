@@ -11,8 +11,11 @@
     }
   ],
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
+    "target": "es2017",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": ["es2017", "dom"],
+    "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

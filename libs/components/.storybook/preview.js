@@ -1,1 +1,1 @@
-import '!style-loader!css-loader!../src/public/styles/oryx-theme.css';
+import '!style-loader!css-loader!../public/styles/oryx-theme.css';

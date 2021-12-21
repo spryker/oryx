@@ -1,8 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { styles } from './oryx-icon.styles';
 
-@customElement('oryx-icon')
 export class IconComponent extends LitElement {
   static styles = styles;
 

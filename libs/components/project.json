@@ -4,7 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:tsc",
+      "executor": "./tools/executors/components-library:build",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/components",
@@ -13,12 +13,11 @@
         "assets": [
           "libs/components/*.md",
           {
-            "input": "libs/components/src/public",
+            "input": "libs/components/public",
             "glob": "**/*",
-            "output": "public"
+            "output": "/public/"
           }
-        ],
-        "styles": ["libs/components/src/public/styles/oryx-theme.css"]
+        ]
       }
     },
     "lint": {
@@ -46,7 +45,7 @@
         "config": {
           "configFolder": "libs/components/.storybook"
         },
-        "staticDir": ["libs/components/src/public"]
+        "staticDir": ["libs/components/public"]
       },
       "configurations": {
         "ci": {
@@ -63,8 +62,8 @@
         "config": {
           "configFolder": "libs/components/.storybook"
         },
-        "staticDirs": ["assets"],
-        "styles": ["libs/components/src/public/styles/oryx-theme.css"]
+        "staticDir": ["libs/components/public"],
+        "styles": ["libs/components/public/styles/oryx-theme.css"]
       },
       "configurations": {
         "ci": {
