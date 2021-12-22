@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import './oryx-icon.component';
+import './index';
 
 export default {
   title: 'Icon',
