@@ -1,11 +1,19 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { styles } from './oryx-icon.styles';
+import { IconSize, IconType } from './icon.model';
+import { styles } from './icon.styles';
 
 export class IconComponent extends LitElement {
   static styles = styles;
 
-  @property() type: string | undefined;
+  /**
+   * Defaults to 'large'.
+   *
+   * The default can be controlled by a CSS property (`--oryx-icon-size-default`)
+   */
+  @property({ reflect: true }) size?: IconSize;
+
+  @property() type?: IconType | string;
 
   render(): TemplateResult {
     if (!this.type) {

@@ -43,6 +43,11 @@
   --oryx-space: 5px;
   --oryx-space-2: calc(var(--oryx-space) * 2);
   --oryx-space-4: calc(var(--oryx-space) * 4);
+  /* icon */
+  --oryx-icon-size-default: var(--oryx-icon-size-large);
+  --oryx-icon-size-large: 24px;
+  --oryx-icon-size-medium: 18px;
+  --oryx-icon-size-small: 12px;
 }
 
 /* just to proof that we can do dark mode with this setup */

@@ -1,7 +1,8 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
+import { IconComponent } from './icon.component';
+import { IconSize } from './icon.model';
 import './index';
-import { IconComponent } from './oryx-icon.component';
 
 describe('Icon', () => {
   let element: IconComponent;
@@ -35,6 +36,23 @@ describe('Icon', () => {
     it('should reference an external SVG and include search ID', () => {
       const svg = element?.shadowRoot?.querySelector('svg use');
       expect(svg?.getAttribute('href')).to.equal('assets/icons.svg#search');
+    });
+  });
+
+  describe('icon size', () => {
+    const sizes: IconSize[] = ['small'];
+    sizes.forEach((size) => {
+      describe(`when size is "${size}"`, () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-icon type="search" size="${size}"></oryx-icon>`
+          );
+        });
+
+        it('should reflect the attribute on the node', () => {
+          expect(element?.getAttribute('size')).to.equal(size);
+        });
+      });
     });
   });
 });
