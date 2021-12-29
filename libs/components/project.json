@@ -76,6 +76,12 @@
       "options": {
         "script": "test"
       }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test:watch"
+      }
     }
   },
   "tags": []
