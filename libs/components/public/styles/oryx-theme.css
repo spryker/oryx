@@ -20,6 +20,8 @@
   --oryx-color-brand-light: #a0e1d5;
   --oryx-color-brand-lighter: #f1f8f7;
   --oryx-color-brand-dark: #138671;
+  /* error color */
+  --oryx-color-error: #f2392e;
   /* theme color */
   --oryx-color-accent: #2480f2;
   --oryx-color-accent-light: #eaf1fa;
