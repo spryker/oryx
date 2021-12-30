@@ -10,7 +10,7 @@ module.exports = {
     '../**/*.stories.mdx',
     '../*/src/**/*.stories.@(ts|tsx)',
   ],
-  addons: [...rootMain.addons],
+  addons: [...rootMain.addons, 'storybook-addon-rtl'],
   webpackFinal: async (config, { configType }) => {
     // apply any global webpack configs that might have been specified in .storybook/main.js
     if (rootMain.webpackFinal) {
