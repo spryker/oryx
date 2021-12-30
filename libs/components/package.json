@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --covarage",
+    "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --coverage",
     "test:watch": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && concurrently -k -r \"tsc -p tsconfig.spec.json --watch --preserveWatchOutput\" \"wtr --watch\""
   }
 }

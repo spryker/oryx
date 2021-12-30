@@ -16,13 +16,14 @@ export class IconComponent extends LitElement {
   @property() type?: IconType | string;
 
   render(): TemplateResult {
-    if (!this.type) {
-      return html``;
-    }
     return html`
-      <svg viewBox="0 0 24 24">
-        <use href="assets/icons.svg#${this.type}" />
-      </svg>
+      <slot>
+        ${this.type
+          ? html`<svg viewBox="0 0 24 24">
+              <use href="assets/icons.svg#${this.type}" />
+            </svg> `
+          : html``}
+      </slot>
     `;
   }
 }

@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    display: flex;
     height: var(
       --icon-size,
       var(--oryx-icon-size-default, var(--oryx-icon-size-large), 24px)
@@ -9,7 +10,8 @@ export const styles = css`
     aspect-ratio: 1 / 1;
   }
 
-  svg {
+  svg,
+  ::slotted(svg) {
     fill: currentColor;
     width: var(--icon-size, 24px);
     aspect-ratio: 1 / 1;

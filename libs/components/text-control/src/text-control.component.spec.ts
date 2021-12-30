@@ -194,7 +194,6 @@ describe('TextControl', () => {
         });
 
         it('should not set the showError attribute', () => {
-          console.log(element.showError);
           expect(element.showError).to.be.false;
         });
       });
