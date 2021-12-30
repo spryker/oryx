@@ -4,7 +4,7 @@ import '../../index';
 import { Props } from '../model';
 
 export default {
-  title: 'TextControl/error',
+  title: 'form/TextControl/Error',
 } as Meta;
 
 const Template: Story<Props> = ({

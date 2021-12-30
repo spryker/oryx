@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import '../index';
 
 export default {
-  title: 'ErrorMessage',
+  title: 'form/utilities/ErrorMessage',
 } as Meta;
 
 interface Props {

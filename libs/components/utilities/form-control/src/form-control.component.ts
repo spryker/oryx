@@ -1,6 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import '../../error-message/src/index';
 
 export abstract class FormControlComponent extends LitElement {
   private _error?: string;

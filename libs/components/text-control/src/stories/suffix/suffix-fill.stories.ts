@@ -4,7 +4,7 @@ import '../../index';
 import { Props } from '../model';
 
 export default {
-  title: 'TextControl/suffix',
+  title: 'form/TextControl/Suffixed',
 } as Meta;
 
 const Template: Story<Props> = ({

@@ -4,7 +4,7 @@ import '../index';
 import { Props } from './model';
 
 export default {
-  title: 'TextControl',
+  title: 'form/TextControl',
 } as Meta;
 
 const Template: Story<Props> = ({
@@ -17,8 +17,8 @@ const Template: Story<Props> = ({
   <input placeholder="Placeholder.." ?readonly=${readonly} ?disabled=${disabled}></input>
 </oryx-text-control>
 `;
-export const ReadonlyControl = Template.bind({});
-ReadonlyControl.args = {
+export const Readonly = Template.bind({});
+Readonly.args = {
   readonly: true,
   disabled: false,
 };

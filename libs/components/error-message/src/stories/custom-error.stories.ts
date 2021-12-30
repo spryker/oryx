@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
 export default {
-  title: 'ErrorMessage',
+  title: 'form/utilities/ErrorMessage',
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

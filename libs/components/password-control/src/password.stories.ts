@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default {
-  title: 'PasswordControl',
+  title: 'form/PasswordControl',
 } as Meta;
 
 const Template: Story<Props> = ({

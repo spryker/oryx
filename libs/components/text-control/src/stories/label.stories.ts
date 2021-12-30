@@ -4,7 +4,7 @@ import '../index';
 import { Props } from './model';
 
 export default {
-  title: 'TextControl',
+  title: 'form/TextControl',
 } as Meta;
 
 const Template: Story<Props> = ({ label }: Props): TemplateResult => {
@@ -13,8 +13,8 @@ const Template: Story<Props> = ({ label }: Props): TemplateResult => {
       <input placeholder="placeholder..."></input>
   </oryx-text-control>`;
 };
-export const WithLabel = Template.bind({});
+export const Labeled = Template.bind({});
 
-WithLabel.args = {
+Labeled.args = {
   label: 'label',
 };

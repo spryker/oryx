@@ -4,7 +4,7 @@ import '../index';
 import { Props } from './model';
 
 export default {
-  title: 'TextControl',
+  title: 'form/TextControl',
 } as Meta;
 
 const Template: Story<Props> = ({ disabled }: Props): TemplateResult => {
@@ -16,7 +16,7 @@ const Template: Story<Props> = ({ disabled }: Props): TemplateResult => {
       `;
 };
 
-export const DisabledControl = Template.bind({});
-DisabledControl.args = {
+export const Disabled = Template.bind({});
+Disabled.args = {
   disabled: true,
 };

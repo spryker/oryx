@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../error-message/src/index';
-import { FormControlComponent } from '../../form-control';
+import { FormControlComponent } from '../../utilities/form-control';
 import { ICON_INVISIBLE, ICON_VISIBLE } from './icons';
 import { PasswordVisibilityStrategy } from './model';
 import { passwordStyles } from './password.styles';

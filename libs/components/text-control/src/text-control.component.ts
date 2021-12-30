@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../error-message/src/index';
-import { FormControlComponent } from '../../form-control/src/form-control.component';
+import { FormControlComponent } from '../../utilities/form-control/index';
 import { affixStyles } from './styles/affix.styles';
 import { disableStyles } from './styles/disabled.styles';
 import { errorStyles } from './styles/error.styles';

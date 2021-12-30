@@ -4,7 +4,7 @@ import '../../index';
 import { Props } from '../model';
 
 export default {
-  title: 'TextControl/error',
+  title: 'form/TextControl/Error',
 } as Meta;
 
 const Template: Story<Props> = ({
@@ -38,8 +38,8 @@ const Template: Story<Props> = ({
 </oryx-text-control>
     `;
 };
-export const CustomErrorContent = Template.bind({});
-CustomErrorContent.args = {
+export const CustomContent = Template.bind({});
+CustomContent.args = {
   value: '',
   placeholder: 'fill in...',
   disabled: false,
