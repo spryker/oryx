@@ -4,13 +4,21 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:tsc",
+      "executor": "@nrwl/web:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/injector",
-        "main": "libs/injector/src/index.ts",
+        "entryFile": "libs/injector/src/index.ts",
         "tsConfig": "libs/injector/tsconfig.lib.json",
-        "assets": ["libs/injector/*.md"]
+        "project": "libs/injector/package.json",
+        "assets": [
+          {
+            "glob": "*",
+            "input": "fes/libs/injector/*.md",
+            "output": "fes/dist/libs/injector"
+          }
+        ],
+        "format": ["esm", "umd", "cjs"]
       }
     },
     "lint": {
