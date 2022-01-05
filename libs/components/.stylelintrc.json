@@ -3,7 +3,7 @@
   "ignoreFiles": ["!**/*"],
   "overrides": [
     {
-      "files": ["**/*.css", "**/*.styles.ts"],
+      "files": ["**/*.styles.ts"],
       "extends": [
         "../../.stylelintrc.json",
         "stylelint-config-standard",
