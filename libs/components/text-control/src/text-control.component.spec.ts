@@ -15,9 +15,7 @@ describe('TextControl', () => {
     describe('when an input is not disabled', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-text-control>
-            <input></input>
-          </oryx-text-control>`
+          html`<oryx-text-control><input /></oryx-text-control>`
         );
       });
       it('should not set the disabled property', () => {
@@ -33,16 +31,33 @@ describe('TextControl', () => {
         });
       });
     });
+
     describe('when an input is disabled', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-text-control>
-            <input disabled></input>
+            <input disabled />
           </oryx-text-control>`
         );
       });
       it('should reflect the disabled attribute on the host element', () => {
         expect(element?.getAttribute('disabled')).to.exist;
+      });
+    });
+
+    describe('when slot content is changed', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-text-control><input /></oryx-text-control>`
+        );
+        (
+          element.shadowRoot?.querySelector(
+            'slot:not([name])'
+          ) as HTMLSlotElement
+        ).dispatchEvent(new Event('slotchange'));
+      });
+      it('should not set the disabled property', () => {
+        expect(element?.disabled).to.be.undefined;
       });
     });
   });

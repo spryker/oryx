@@ -97,12 +97,12 @@ export abstract class FormControlComponent extends LitElement {
     handle();
     if (this.control) {
       this.controlAttrObserver?.disconnect();
-      this.controlAttrObserver = new MutationObserver((mutations) => {
-        if (mutations.find((m) => m.attributeName === 'disabled')) {
-          handle();
-        }
+      this.controlAttrObserver = new MutationObserver(() => {
+        handle();
       });
-      this.controlAttrObserver.observe(this.control, { attributes: true });
+      this.controlAttrObserver.observe(this.control, {
+        attributeFilter: ['disabled'],
+      });
     }
   }
 
