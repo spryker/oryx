@@ -1,9 +1,32 @@
 import { setCurrentInjector } from './inject';
 
-export interface Provider {
+export type Provider = ClassProvider | ValueProvider | FactoryProvider;
+
+export interface ClassProvider {
   provide: any;
-  useClass?: any;
-  resolveClass?: () => Promise<any>;
+  useClass: any;
+}
+
+export interface ValueProvider {
+  provide: any;
+  useValue: any;
+}
+
+export interface FactoryProvider {
+  provide: any;
+  useFactory: () => any;
+}
+
+function isValueProvider(provider: Provider): provider is ValueProvider {
+  return (provider as ValueProvider).useValue !== undefined;
+}
+
+function isClassProvider(provider: Provider): provider is ClassProvider {
+  return (provider as ClassProvider).useClass !== undefined;
+}
+
+function isFactoryProvider(provider: Provider): provider is FactoryProvider {
+  return (provider as FactoryProvider).useFactory !== undefined;
 }
 
 declare global {
@@ -15,12 +38,12 @@ declare global {
  * Injector container
  */
 export class Injector {
-  private providers: Map<any, Provider & { instance?: any }>;
+  private providers: Map<any, { provider: Provider; instance?: any }>;
   private _locked = false;
 
   constructor(providers?: Provider[], protected parent?: Injector) {
     this.providers = new Map(
-      providers?.map((provider) => [provider.provide, provider])
+      providers?.map((provider) => [provider.provide, { provider }])
     );
   }
 
@@ -37,7 +60,7 @@ export class Injector {
     if (this._locked) {
       throw new Error(`Providing is only possible before the first injection!`);
     }
-    this.providers.set(provider.provide, provider);
+    this.providers.set(provider.provide, { provider });
   }
 
   /**
@@ -73,11 +96,22 @@ export class Injector {
   private getInstance(token: any): any {
     const providerInstance = this.providers.get(token)!;
 
+    if (isValueProvider(providerInstance.provider)) {
+      return providerInstance.provider.useValue;
+    }
+
     if (providerInstance.instance === undefined) {
       const restoreInjector = setCurrentInjector(this);
 
-      // eslint-disable-next-line new-cap
-      providerInstance.instance = new providerInstance.useClass();
+      if (isClassProvider(providerInstance.provider)) {
+        // eslint-disable-next-line new-cap
+        providerInstance.instance = new providerInstance.provider.useClass();
+      } else if (isFactoryProvider(providerInstance.provider)) {
+        providerInstance.instance = providerInstance.provider.useFactory();
+      } else {
+        throw new Error(`Invalid provider for ${token}`);
+      }
+
       restoreInjector();
     }
 
