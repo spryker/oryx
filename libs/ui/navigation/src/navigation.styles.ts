@@ -48,7 +48,7 @@ export const navigationStyles = css`
     align-items: center;
     justify-content: center;
     width: 30px;
-    aspect-ratio: 1/1;
+    height: 30px;
     padding: 0;
     position: absolute;
     inset-inline-end: -15px;
