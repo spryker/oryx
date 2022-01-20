@@ -1,19 +1,19 @@
 {
-  "root": "libs/components",
-  "sourceRoot": "libs/components/src",
+  "root": "libs/ui",
+  "sourceRoot": "libs/ui/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "./tools/executors/components-library:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/components",
-        "main": "libs/components/src/index.ts",
-        "tsConfig": "libs/components/tsconfig.lib.json",
+        "outputPath": "dist/libs/ui",
+        "main": "libs/ui/src/index.ts",
+        "tsConfig": "libs/ui/tsconfig.lib.json",
         "assets": [
-          "libs/components/*.md",
+          "libs/ui/*.md",
           {
-            "input": "libs/components/public",
+            "input": "libs/ui/public",
             "glob": "**/*",
             "output": "/public/"
           }
@@ -24,17 +24,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/components/**/*.ts"]
+        "lintFilePatterns": ["libs/ui/**/*.ts"]
       }
     },
     "stylelint": {
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/components/**/*.css",
-          "libs/components/**/*.styles.ts"
-        ]
+        "lintFilePatterns": ["libs/ui/**/*.css", "libs/ui/**/*.styles.ts"]
       }
     },
     "storybook": {
@@ -43,9 +40,9 @@
         "uiFramework": "@storybook/web-components",
         "port": 4400,
         "config": {
-          "configFolder": "libs/components/.storybook"
+          "configFolder": "libs/ui/.storybook"
         },
-        "staticDir": ["libs/components/public"]
+        "staticDir": ["libs/ui/public"]
       },
       "configurations": {
         "ci": {
@@ -58,12 +55,12 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "uiFramework": "@storybook/angular",
-        "outputPath": "dist/storybook/components",
+        "outputPath": "dist/storybook/ui",
         "config": {
-          "configFolder": "libs/components/.storybook"
+          "configFolder": "libs/ui/.storybook"
         },
-        "staticDir": ["libs/components/public"],
-        "styles": ["libs/components/public/styles/oryx-theme.css"]
+        "staticDir": ["libs/ui/public"],
+        "styles": ["libs/ui/public/styles/oryx-theme.css"]
       },
       "configurations": {
         "ci": {

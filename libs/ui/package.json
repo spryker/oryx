@@ -1,5 +1,5 @@
 {
-  "name": "@fes/components",
+  "name": "@spryker-fes/ui",
   "version": "0.0.1",
   "watch": {
     "test": {

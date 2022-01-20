@@ -1,4 +1,4 @@
-# @fes/injector
+# @spryker-fes/injector
 
 This library was generated with [Nx](https://nx.dev).
 

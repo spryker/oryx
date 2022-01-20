@@ -1,0 +1,41 @@
+{
+  "root": "libs/experience",
+  "sourceRoot": "libs/experience/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/experience",
+        "entryFile": "libs/experience/src/index.ts",
+        "tsConfig": "libs/experience/tsconfig.lib.json",
+        "project": "libs/experience/package.json",
+        "assets": [
+          {
+            "glob": "*",
+            "input": "fes/libs/experience/*.md",
+            "output": "fes/dist/libs/experience"
+          }
+        ],
+        "format": ["esm", "umd", "cjs"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/experience/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/experience"],
+      "options": {
+        "jestConfig": "libs/experience/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
