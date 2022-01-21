@@ -1,0 +1,17 @@
+{
+  "name": "@spryker-fes/content",
+  "version": "0.0.1",
+  "watch": {
+    "test": {
+      "extensions": "spec.ts",
+      "quiet": false,
+      "patterns": [
+        "./"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --coverage",
+    "test:watch": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && concurrently -k -r \"tsc -p tsconfig.spec.json --watch --preserveWatchOutput\" \"wtr --watch\""
+  }
+}

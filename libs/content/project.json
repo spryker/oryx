@@ -1,0 +1,65 @@
+{
+  "projectType": "library",
+  "root": "libs/content",
+  "sourceRoot": "libs/content/src",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "tsConfig": "libs/content/tsconfig.json",
+        "entryFile": "libs/content/banner/index.ts",
+        "outputPath": "dist/libs/content",
+        "rollupConfig": "libs/content/rollup.config.js",
+        "project": "libs/content/package.json"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test"
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test:watch"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/content/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/web-components",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/content/.storybook"
+        },
+        "staticDir": ["libs/content/public"]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/content/**/*.css",
+          "libs/content/**/*.styles.ts"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

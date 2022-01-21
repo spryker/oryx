@@ -2,10 +2,10 @@ import { importMapsPlugin } from '@web/dev-server-import-maps';
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: 'dist/out-tsc/libs/ui/**/*.spec.js',
+  files: 'dist/out-tsc/libs/content/**/*.spec.js',
 
   coverageConfig: {
-    reportDir: '../../coverage/libs/ui',
+    reportDir: '../../coverage/libs/content',
   },
   /** Resolve bare module imports */
   nodeResolve: {
@@ -17,7 +17,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       inject: {
         importMap: {
           imports: {
-            '@fes/injector': '/dist/out-tsc/libs/injector/src/index.js',
+            '@spryker-fes/injector': '/dist/out-tsc/libs/injector/src/index.js',
           },
         },
       },
