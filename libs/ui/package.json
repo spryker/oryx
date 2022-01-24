@@ -1,5 +1,5 @@
 {
-  "name": "@spryker-fes/ui",
+  "name": "@spryker-oryx/ui",
   "version": "0.0.1",
   "watch": {
     "test": {

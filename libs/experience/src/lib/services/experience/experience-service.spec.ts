@@ -45,7 +45,7 @@ const mockContent = {
   ],
 };
 
-jest.mock('@spryker-fes/injector', () => ({
+jest.mock('@spryker-oryx/injector', () => ({
   inject: (a: any) => a,
 }));
 

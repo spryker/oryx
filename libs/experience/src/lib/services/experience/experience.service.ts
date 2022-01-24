@@ -1,4 +1,4 @@
-import { inject } from '@spryker-fes/injector';
+import { inject } from '@spryker-oryx/injector';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';

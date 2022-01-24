@@ -1,4 +1,4 @@
-import { getInjector } from '@spryker-fes/injector';
+import { getInjector } from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

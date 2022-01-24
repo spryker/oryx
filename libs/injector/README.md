@@ -1,4 +1,4 @@
-# @spryker-fes/injector
+# @spryker-oryx/injector
 
 This library was generated with [Nx](https://nx.dev).
 

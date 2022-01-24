@@ -1,5 +1,5 @@
 {
-  "name": "@spryker-fes/content",
+  "name": "@spryker-oryx/content",
   "version": "0.0.1",
   "watch": {
     "test": {

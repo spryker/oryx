@@ -1,4 +1,4 @@
-import { Provider } from '@spryker-fes/injector';
+import { Provider } from '@spryker-oryx/injector';
 import { ExperienceService } from './experience';
 import { Services } from './services';
 

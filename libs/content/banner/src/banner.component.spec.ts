@@ -1,5 +1,5 @@
 import { expect, fixture } from '@open-wc/testing';
-import { createInjector } from '@spryker-fes/injector';
+import { createInjector } from '@spryker-oryx/injector';
 import { html } from 'lit';
 import '../index';
 import { BannerComponent } from './banner.component';

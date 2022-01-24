@@ -17,7 +17,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       inject: {
         importMap: {
           imports: {
-            '@spryker-fes/injector': '/dist/out-tsc/libs/injector/src/index.js',
+            '@spryker-oryx/injector':
+              '/dist/out-tsc/libs/injector/src/index.js',
           },
         },
       },

@@ -1,4 +1,4 @@
-import { inject } from '@spryker-fes/injector';
+import { inject } from '@spryker-oryx/injector';
 import {
   EMPTY,
   filter,
