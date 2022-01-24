@@ -10,27 +10,15 @@ describe('InputComponent', () => {
     expect(el).to.be.instanceof(InputComponent);
   });
 
-  describe('label', () => {
-    describe('when a label is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-input label="label content"></oryx-input>`
-        );
-      });
-      it('should render a label element', () => {
-        const label = element.shadowRoot?.querySelector('label');
-        expect(label?.innerText).to.equal('LABEL CONTENT');
-      });
+  describe('render', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-input><input type="password" /></oryx-input>`
+      );
     });
 
-    describe('when a label is not provided', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-input></oryx-input>`);
-      });
-      it('should not render a label element', () => {
-        const label = element.shadowRoot?.querySelector('label');
-        expect(label).not.to.exist;
-      });
+    it('should render a wrapper element', () => {
+      expect(element.renderRoot.querySelector('div.control')).to.exist;
     });
   });
 });

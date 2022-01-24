@@ -7,21 +7,18 @@ export class CollapseToggleController implements ReactiveController {
     this.host.addController(this);
   }
 
+  toggle(): void {
+    this.host.toggleAttribute('collapsed');
+  }
+
   hostConnected(): void {
-    this.toggle(this.isCollapsed);
+    this.host.toggleAttribute('collapsed', this.isCollapsed);
+
     window.addEventListener('keydown', (ev: KeyboardEvent) => {
       if (!this.isTyping(ev) && ev.key === '[') {
         this.toggle();
       }
     });
-  }
-
-  toggle(force?: boolean): void {
-    this.host.toggleAttribute('collapsed', force);
-    this.host.style.setProperty(
-      '--navigation-collapsed',
-      this.host.hasAttribute('collapsed') ? '1' : '0'
-    );
   }
 
   protected isTyping(ev: KeyboardEvent): boolean {

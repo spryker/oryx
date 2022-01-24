@@ -1,8 +1,8 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { TemplateResult } from 'lit';
 import './index';
-import { PasswordVisibilityStrategy } from './model';
 import { PasswordInputComponent } from './password-input.component';
+import { PasswordVisibilityStrategy } from './password-input.model';
 
 describe('PasswordComponent', () => {
   let element: PasswordInputComponent;

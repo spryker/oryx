@@ -9,11 +9,12 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
     label="Customised password"
-    suffixFill
-    prefixIcon="add"
+    class="suffix-fill"
   >
+    <div slot="prefix" style="white-space: nowrap;">
+      password control suffix:
+    </div>
     <input type="password" value="Change123$" placeholder="Placeholder..." />
-    <span slot="suffix">suffix</span>
     <div slot="error">
       You're password needs to:
       <div style="color:green">

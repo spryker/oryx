@@ -1,0 +1,58 @@
+import { Story, Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { html, TemplateResult } from 'lit';
+import '../index';
+
+<Meta title="Search" />
+
+export const Template = ({ searchIconPosition }) => {
+  return html`<oryx-search
+    searchIconPosition=${searchIconPosition}
+  ></oryx-search>`;
+};
+
+<Canvas>
+  <Story
+    name="Search"
+    argTypes={{
+      searchIconPosition: {
+        options: ['START', 'END', 'NONE'],
+        control: { type: 'select' },
+        defaultValue: 'START',
+      },
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Search" />
+
+### Search events
+
+There are two approaches to handle search events.
+
+1. You can listen to the custom `oryx.search` event. This event is dispatched when the user hits the enter key or clicks the search button.
+
+```html
+<oryx-search @oryx.search="${search}"></oryx-search>
+```
+
+```ts
+const search = (ev: CustomEvent<SearchEvent>): void => {
+  // use ev.detail.query to get the search value
+};
+```
+
+2. You can listen to standard input or change events on an custom input element that you provide.
+
+```html
+<oryx-search>
+  <input @input="${search}" />
+</oryx-search>
+```
+
+```ts
+const search = (ev: KeyboardEvent): void => {
+  // use standard event to get the input value (ev.target.value)
+};
+```

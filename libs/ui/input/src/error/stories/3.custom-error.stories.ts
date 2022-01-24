@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import '../../index';
-import { Props } from '../../stories/model';
+import { Props } from './model';
 
 export default {
-  title: 'form/input/error',
+  title: 'form/form-control/error',
 } as Meta;
 
 const Template: Story<Props> = ({

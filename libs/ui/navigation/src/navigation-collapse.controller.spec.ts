@@ -10,13 +10,6 @@ describe('CollapseToggleController', () => {
   let element: FakeComponent;
   let controller: CollapseToggleController;
 
-  const expectsCollapsed = (collapsed: boolean) => {
-    expect(element.hasAttribute('collapsed')).to.be.eq(collapsed);
-    expect(element.style.getPropertyValue('--navigation-collapsed')).to.be.eq(
-      collapsed ? '1' : '0'
-    );
-  };
-
   beforeEach(async () => {
     element = await fixture(html`<fake-element> </fake-element>`);
     controller = new CollapseToggleController(element);
@@ -24,13 +17,13 @@ describe('CollapseToggleController', () => {
 
   describe('toggle', () => {
     it('should collapse by default', () => {
-      expectsCollapsed(true);
+      expect(element.hasAttribute('collapsed')).to.be.true;
     });
 
     describe('when toggled', () => {
       it('should not have a collapse attribute', () => {
         controller.toggle();
-        expectsCollapsed(false);
+        expect(element.hasAttribute('collapsed')).to.be.false;
       });
     });
 
@@ -38,7 +31,7 @@ describe('CollapseToggleController', () => {
       it('should have a collapse attribute', () => {
         controller.toggle();
         controller.toggle();
-        expectsCollapsed(true);
+        expect(element.hasAttribute('collapsed')).to.be.true;
       });
     });
   });
@@ -47,7 +40,7 @@ describe('CollapseToggleController', () => {
     describe('when the "[" key is used', () => {
       it('should toggle the navigation', () => {
         window.dispatchEvent(new KeyboardEvent('keydown', { key: '[' }));
-        expectsCollapsed(false);
+        expect(element.hasAttribute('collapsed')).to.be.false;
       });
     });
 
@@ -55,9 +48,9 @@ describe('CollapseToggleController', () => {
       it('should toggle the navigation', () => {
         expect(element.hasAttribute('collapsed')).to.be.true;
         'abcdefghijklmnopqrstuvwxyz ?]!~#$%'.split('').forEach((key) => {
-          element.dispatchEvent(new KeyboardEvent('keydown', { key }));
+          element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
         });
-        expectsCollapsed(true);
+        expect(element.hasAttribute('collapsed')).to.be.true;
       });
     });
   });

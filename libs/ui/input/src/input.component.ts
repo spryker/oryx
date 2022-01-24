@@ -1,49 +1,30 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
-import '../../error-message/src/index';
-import { AffixController } from './affix/affix.controller';
-import { affixStyles } from './affix/affix.styles';
-import { ErrorController } from './error/error.controller';
-import { errorStyles } from './error/error.styles';
-import { InputController } from './input.controller';
-import { inputStyles } from './input.styles';
+import { AffixMixin, affixStyles } from './affix';
+import { ErrorMixin, errorStyles } from './error';
+import { FormControlMixin } from './form-control/form-control.mixin';
+import { formControlStyles } from './form-control/form-control.styles';
+import { LabelMixin, labelStyles } from './label';
 
-export class InputComponent extends LitElement {
-  static styles = [inputStyles, errorStyles, affixStyles];
+export const inputMixin = AffixMixin(
+  ErrorMixin(LabelMixin(FormControlMixin(LitElement)))
+);
+export const inputStyles = [
+  formControlStyles,
+  labelStyles,
+  errorStyles,
+  affixStyles,
+];
+export class InputComponent extends inputMixin {
+  static styles = inputStyles;
 
-  protected inputController = new InputController(this);
-
-  @property() label?: string;
-
-  protected affixController = new AffixController(this);
-  @property() prefixIcon?: string;
-  @property() suffixIcon?: string;
-
-  protected errorController = new ErrorController(this);
-  @property() errorMessage?: string;
-
-  render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       ${this.renderLabel()}
-
-      <div class="control">
-        ${this.renderPrefix()} ${this.inputController.render()}
-        ${this.renderSuffix()}
-      </div>
-
-      ${this.errorController.render(this.errorMessage)}
+      ${this.formControlController.render(
+        this.affixController.renderPrefix(),
+        this.affixController.renderSuffix()
+      )}
+      ${this.renderError()}
     `;
-  }
-
-  protected renderLabel(): TemplateResult {
-    return this.label ? html`<label>${this.label}</label>` : html``;
-  }
-
-  protected renderPrefix(): TemplateResult {
-    return this.affixController.render('prefix', this.prefixIcon);
-  }
-
-  protected renderSuffix(): TemplateResult {
-    return this.affixController.render('suffix', this.suffixIcon);
   }
 }

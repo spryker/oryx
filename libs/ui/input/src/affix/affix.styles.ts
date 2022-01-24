@@ -14,13 +14,21 @@ export const affixStyles = css`
   slot[name='prefix'] {
     border-start-start-radius: calc(var(--oryx-border-radius) - 2px);
     border-end-start-radius: calc(var(--oryx-border-radius) - 2px);
-    padding-inline-start: 10px;
+  }
+
+  slot[name='prefix'] oryx-icon,
+  slot[name='prefix']::slotted(*) {
+    margin-inline-start: 10px;
   }
 
   slot[name='suffix'] {
     border-start-end-radius: calc(var(--oryx-border-radius) - 2px);
     border-end-end-radius: calc(var(--oryx-border-radius) - 2px);
-    padding-inline-end: 10px;
+  }
+
+  slot[name='suffix'] oryx-icon,
+  slot[name='suffix']::slotted(*) {
+    margin-inline-end: 10px;
   }
 
   :host(.prefix-fill) slot[name='prefix'],

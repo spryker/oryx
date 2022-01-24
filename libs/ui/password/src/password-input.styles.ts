@@ -7,6 +7,7 @@ export const passwordInputStyles = css`
     background-color: transparent;
     color: inherit;
     cursor: pointer;
-    padding-inline-end: 10px;
+    width: 24px;
+    height: 24px;
   }
 `;

@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import '../index';
-import { PasswordVisibilityStrategy } from '../model';
+import { PasswordVisibilityStrategy } from '../password-input.model';
 
 interface Props {
   strategy: PasswordVisibilityStrategy;
