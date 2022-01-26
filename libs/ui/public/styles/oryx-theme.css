@@ -68,7 +68,7 @@
 
 /* just to proof that we can do dark mode with this setup */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([no-dark-mode]) {
     --oryx-color-canvas: #333;
     --oryx-color-ink: #fff;
     --oryx-color-neutral-light: #aaa;
