@@ -7,7 +7,6 @@ export const navigationItemStyles = css`
     box-sizing: border-box;
     padding: 16px 17px;
     gap: 13px;
-    position: relative;
     outline: none;
     align-items: center;
     text-overflow: ellipsis;
@@ -15,6 +14,7 @@ export const navigationItemStyles = css`
     white-space: nowrap;
     width: 250px;
     transition: all var(--oryx-transition-time);
+    padding-inline-start: calc((var(--navigation-collapsed) * 19px) + 17px);
   }
 
   :host(:hover) {
@@ -22,16 +22,11 @@ export const navigationItemStyles = css`
     color: var(--oryx-color-neutral-darker);
   }
 
-  :host-context([collapsed]) {
-    padding-inline-start: 35px;
-  }
-
   .text {
     display: flex;
     transition: all var(--oryx-transition-time);
-  }
-  :host-context([collapsed]) .text {
-    opacity: 0%;
+    /* stylelint-disable */
+    opacity: calc((var(--navigation-collapsed) - 1) * -1);
   }
 
   :host([active]:not([active='false'])) {
