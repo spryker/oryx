@@ -7,6 +7,7 @@ export const navigationItemStyles = css`
     box-sizing: border-box;
     padding: 16px 17px;
     gap: 13px;
+    position: relative;
     outline: none;
     align-items: center;
     text-overflow: ellipsis;
@@ -22,11 +23,16 @@ export const navigationItemStyles = css`
     color: var(--oryx-color-neutral-darker);
   }
 
+  :host-context([collapsed]) {
+    padding-inline-start: 35px;
+  }
+
   .text {
     display: flex;
     transition: all var(--oryx-transition-time);
-    /* stylelint-disable */
-    opacity: calc((var(--navigation-collapsed) - 1) * -1);
+  }
+  :host-context([collapsed]) .text {
+    opacity: 0%;
   }
 
   :host([active]:not([active='false'])) {
