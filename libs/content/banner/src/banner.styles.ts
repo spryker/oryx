@@ -20,10 +20,6 @@ export const styles = css`
     transition: transform 0.3s;
   }
 
-  :host(:hover) img {
-    transform: scale(1.1);
-  }
-
   .overlay {
     position: absolute;
     top: 0;
