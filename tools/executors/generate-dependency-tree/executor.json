@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "generate-dep-tree": {
+      "implementation": "./impl",
+      "schema": "./schema.json",
+      "description": "Runs `generate` (to test executors out)."
+    }
+  }
+}
