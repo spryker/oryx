@@ -1,8 +1,9 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../constant';
 
 export default {
-  title: 'form/utilities/ErrorMessage',
+  title: `${storybookPrefix}/form/utilities/ErrorMessage`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

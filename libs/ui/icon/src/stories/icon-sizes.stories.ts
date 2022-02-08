@@ -1,12 +1,13 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
+import { storybookPrefix } from '../../../constant';
 import { IconType } from '../icon.model';
 import '../index';
 import { iconTypes } from './model';
 
 export default {
-  title: 'Icon',
+  title: `${storybookPrefix}/Icon`,
   argTypes: {},
 } as Meta;
 

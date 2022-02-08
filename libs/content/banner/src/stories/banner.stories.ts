@@ -1,11 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
+import { storybookPrefix } from '../../../constant';
 import { BannerContent } from '../banner.model';
 import '../index';
 
 export default {
-  title: 'Banner',
+  title: `${storybookPrefix}/Banner`,
 } as Meta;
 
 const Template: Story<BannerContent> = (

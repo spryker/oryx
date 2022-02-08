@@ -1,9 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../constant';
 import '../index';
 
 export default {
-  title: 'form/textarea',
+  title: `${storybookPrefix}/form/textarea`,
 } as Meta;
 interface Props {
   disabled: boolean;

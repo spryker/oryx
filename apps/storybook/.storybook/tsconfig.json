@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false
+  },
+
+  "exclude": ["../**/*.spec.ts"],
+  "include": ["../src/**/*", "*.js"]
+}

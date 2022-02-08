@@ -1,9 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../constant';
 import '../index';
 
 export default {
-  title: 'form/utilities/ErrorMessage',
+  title: `${storybookPrefix}/form/utilities/ErrorMessage`,
 } as Meta;
 
 interface Props {

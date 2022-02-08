@@ -2,10 +2,11 @@ import { Story, Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 import { html } from 'lit';
 import { iconTypes } from './model';
 import '../index';
+import { storybookPrefix } from '../../../constant';
 
 # Icon web-component
 
-<Meta title="Icon" />
+<Meta title={`${storybookPrefix}/Icon`} />
 
 export const Template = ({ type, size, color }) => {
   return html`

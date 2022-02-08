@@ -1,5 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../constant';
 import '../index';
 import { PasswordVisibilityStrategy } from '../password-input.model';
 
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export default {
-  title: 'form/Password',
+  title: `${storybookPrefix}/form/Password`,
   argTypes: {
     strategy: {
       options: ['CLICK', 'MOUSEDOWN', 'HOVER', 'NONE'],
