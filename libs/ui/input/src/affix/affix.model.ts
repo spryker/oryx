@@ -1,7 +1,4 @@
-import { AffixController } from './affix.controller';
-
-export declare class AffixInterface {
+export interface AffixOptions {
   prefixIcon?: string;
   suffixIcon?: string;
-  affixController: AffixController;
 }

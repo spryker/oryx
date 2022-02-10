@@ -1,14 +1,21 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ErrorMessageComponent } from '../../../error-message/index';
-import { ErrorMixin } from './error.mixin';
+import { OryxElement } from '../../../utilities';
+import { ErrorController } from './error.controller';
+import { ErrorOptions } from './error.model';
 
-export class ErrorMixinComponent extends ErrorMixin(LitElement) {
+export class ErrorMixinComponent
+  extends LitElement
+  implements OryxElement<ErrorOptions>
+{
+  @property({ type: Object }) options: ErrorOptions = {};
+  protected errorController = new ErrorController(this);
   render(): TemplateResult {
-    return this.renderError();
+    return this.errorController.render();
   }
 }
-
 customElements.define('fake-el', ErrorMixinComponent);
 
 describe('ErrorMixin', () => {
@@ -17,7 +24,9 @@ describe('ErrorMixin', () => {
     describe('when an error message is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-el errorMessage="error message"></fake-el>`
+          html`<fake-el
+            .options=${{ errorMessage: 'error message' }}
+          ></fake-el>`
         );
       });
 

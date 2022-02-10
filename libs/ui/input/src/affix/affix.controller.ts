@@ -1,12 +1,13 @@
-import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { AffixInterface } from './affix.model';
+import { html, ReactiveController, TemplateResult } from 'lit';
+import { OryxElement } from '../../../utilities/';
+import { AffixOptions } from './affix.model';
 
 export class AffixController implements ReactiveController {
   hostConnected?(): void;
 
   renderPrefix(content?: TemplateResult): TemplateResult {
     if (!content) {
-      const icon = (this.host as LitElement & AffixInterface).prefixIcon;
+      const icon = this.host.options.prefixIcon;
       if (this.hasContent('prefix', icon)) {
         content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
       }
@@ -16,7 +17,7 @@ export class AffixController implements ReactiveController {
 
   renderSuffix(content?: TemplateResult): TemplateResult {
     if (!content) {
-      const icon = (this.host as LitElement & AffixInterface).suffixIcon;
+      const icon = this.host.options.suffixIcon;
       if (this.hasContent('suffix', icon)) {
         content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
       }
@@ -34,7 +35,7 @@ export class AffixController implements ReactiveController {
     );
   }
 
-  constructor(protected host: LitElement) {
+  constructor(protected host: OryxElement<AffixOptions>) {
     this.host.addController(this);
   }
 }

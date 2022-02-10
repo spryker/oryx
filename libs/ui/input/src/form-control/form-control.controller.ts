@@ -1,6 +1,9 @@
-import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
-import { queryFirstAssigned } from '../../../utilities/query.util';
+import { html, ReactiveController, TemplateResult } from 'lit';
+import { OryxElement } from '../../../utilities';
+import { getControl } from '../../util';
+import { ErrorController } from '../error/error.controller';
+import { LabelController } from '../label/label.controller';
+import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
 
 const focusableSelectors = [
@@ -13,11 +16,15 @@ const focusableSelectors = [
 ];
 
 export class FormControlController implements ReactiveController {
-  protected visibleFocusController?: VisibleFocusController;
+  protected visibleFocusController: VisibleFocusController;
+  protected labelController: LabelController;
+  protected errorController: ErrorController;
 
-  constructor(protected host: LitElement) {
+  constructor(protected host: OryxElement<FormControlOptions>) {
     this.host.addController(this);
     this.visibleFocusController = new VisibleFocusController(this.host);
+    this.labelController = new LabelController(this.host);
+    this.errorController = new ErrorController(this.host);
   }
 
   hostConnected(): void {
@@ -30,15 +37,22 @@ export class FormControlController implements ReactiveController {
     });
   }
 
-  render(before?: TemplateResult, after?: TemplateResult): TemplateResult {
+  render(
+    content: {
+      before?: TemplateResult;
+      after?: TemplateResult;
+    } = {}
+  ): TemplateResult {
     return html`
+      ${this.labelController.render()}
       <div class="control">
-        ${when(before, () => before)}
+        ${content.before}
         <slot @slotchange=${(): void => this.handleDisabled()}>
           <input />
         </slot>
-        ${when(after, () => after)}
+        ${content.after}
       </div>
+      ${this.errorController.render()}
     `;
   }
 
@@ -47,10 +61,7 @@ export class FormControlController implements ReactiveController {
    * Other controls that might be added to the prefix or suffix will be ignored.
    */
   get control(): HTMLInputElement | undefined {
-    return queryFirstAssigned<HTMLInputElement>(this.host, {
-      selector: 'input, textarea',
-      flatten: true,
-    });
+    return getControl(this.host);
   }
 
   /**

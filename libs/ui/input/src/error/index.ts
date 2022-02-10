@@ -1,3 +1,3 @@
-export * from './error.mixin';
+export * from './error.controller';
 export * from './error.model';
 export * from './error.styles';

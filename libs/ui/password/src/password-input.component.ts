@@ -1,13 +1,30 @@
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../error-message/src/index';
-import { inputMixin, inputStyles } from '../../input';
+import {
+  AffixController,
+  AffixOptions,
+  FormControlController,
+  FormControlOptions,
+  inputStyles,
+} from '../../input';
+import { OryxElement } from '../../utilities';
 import { ICON_INVISIBLE, ICON_VISIBLE } from './icons';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { passwordInputStyles } from './password-input.styles';
 
-export class PasswordInputComponent extends inputMixin {
+export interface PasswordOptions extends FormControlOptions, AffixOptions {}
+
+export class PasswordInputComponent
+  extends LitElement
+  implements OryxElement<PasswordOptions>
+{
   static styles = [...inputStyles, passwordInputStyles];
+
+  @property({ type: Object }) options: PasswordOptions = {};
+
+  protected formControlController = new FormControlController(this);
+  protected affixController = new AffixController(this);
 
   /**
    * The visibility strategy determines the UI event that is used to make the password visible.
@@ -24,12 +41,9 @@ export class PasswordInputComponent extends inputMixin {
 
   protected override render(): TemplateResult {
     return html`
-      ${this.renderLabel()}
-      ${this.formControlController.render(
-        this.affixController.renderPrefix(),
-        html`${this.affixController.renderSuffix(this.renderButton())}`
-      )}
-      ${this.renderError()}
+      ${this.formControlController.render({
+        after: this.affixController.renderSuffix(this.renderButton()),
+      })}
     `;
   }
 

@@ -1,13 +1,9 @@
-import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { html, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { AffixInterface } from '../../input';
+import { OryxElement } from '../../utilities';
 import { queryFirstAssigned } from '../../utilities/query.util';
 import { clearIcon } from './icons';
-import {
-  SearchEvent,
-  SearchIconPosition,
-  SearchInterface,
-} from './search.model';
+import { SearchEvent, SearchIconPosition, SearchOptions } from './search.model';
 export class SearchController implements ReactiveController {
   protected control?: HTMLInputElement;
 
@@ -26,16 +22,13 @@ export class SearchController implements ReactiveController {
    *
    * The icon defaults to `search` type but can be customized by using the `prefixIcon`.
    */
-  renderPrefix(): TemplateResult {
-    const affixController = (this.host as LitElement & AffixInterface)
-      .affixController;
+  get prefixContent(): TemplateResult {
     let content: TemplateResult | undefined;
-    if (this.renderSearchButtonInPrefix()) {
-      content = this.renderSearchButton();
+    const { searchIconPosition: pos } = this.host.options;
+    if (!pos || pos === SearchIconPosition.START) {
+      content = this.searchButton;
     }
-    return affixController
-      ? affixController.renderPrefix(content)
-      : html`${content}`;
+    return content ?? html``;
   }
 
   /**
@@ -43,33 +36,17 @@ export class SearchController implements ReactiveController {
    *
    * Adds a button to clear the input content.
    */
-  renderSuffix(): TemplateResult {
-    const affixController = (this.host as LitElement & AffixInterface)
-      .affixController;
+  get suffixContent(): TemplateResult {
     let content: TemplateResult | undefined;
-    if (this.renderSearchButtonInSuffix()) {
-      content = html`${this.renderSearchButton()}`;
+    const { searchIconPosition: pos } = this.host.options;
+    if (pos === SearchIconPosition.END) {
+      content = this.searchButton;
     }
-    return html`${this.renderClearButton()}${affixController
-      ? affixController.renderSuffix(content)
-      : html`${content}`}`;
+    return content ?? html``;
   }
 
-  renderSearchButtonInSuffix(): boolean {
-    const position = (this.host as LitElement & SearchInterface)
-      .searchIconPosition;
-    return position === SearchIconPosition.END;
-  }
-
-  protected renderSearchButtonInPrefix(): boolean {
-    const position = (this.host as LitElement & SearchInterface)
-      .searchIconPosition;
-    return !position || position === SearchIconPosition.START;
-  }
-
-  protected renderSearchButton(): TemplateResult {
-    const icon =
-      (this.host as LitElement & SearchInterface).searchIcon ?? 'search';
+  protected get searchButton(): TemplateResult {
+    const { searchIcon: icon = 'search' } = this.host.options;
     return html`<button
       class="search"
       @click=${(): void => this.search()}
@@ -79,8 +56,8 @@ export class SearchController implements ReactiveController {
     </button>`;
   }
 
-  protected renderClearButton(): TemplateResult {
-    const icon = (this.host as LitElement & SearchInterface).clearIcon;
+  get clearButton(): TemplateResult {
+    const { clearIcon: icon } = this.host.options;
     return html`<button
       class="clear"
       @click=${(ev: Event): void => this.clear(ev)}
@@ -88,7 +65,7 @@ export class SearchController implements ReactiveController {
     >
       ${when(
         icon,
-        () => html`<oryx-icon .type=${icon}></oryx-icon>`,
+        () => html`<oryx-icon .type=${icon} size="medium"></oryx-icon>`,
         () => html`<oryx-icon>${clearIcon}</oryx-icon>`
       )}
     </button>`;
@@ -102,7 +79,7 @@ export class SearchController implements ReactiveController {
     this.handleInputValue();
   }
 
-  search(): void {
+  protected search(): void {
     if (this.control) {
       const event = new CustomEvent<SearchEvent>('oryx.search', {
         detail: {
@@ -115,7 +92,7 @@ export class SearchController implements ReactiveController {
     }
   }
 
-  clear(ev: Event): void {
+  protected clear(ev: Event): void {
     ev.stopPropagation();
     if (this.control) {
       this.control.value = '';
@@ -137,7 +114,7 @@ export class SearchController implements ReactiveController {
     );
   }
 
-  constructor(protected host: LitElement) {
+  constructor(protected host: OryxElement<SearchOptions>) {
     this.host.addController(this);
   }
 }

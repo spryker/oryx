@@ -13,9 +13,10 @@ const Template: Story<Props> = ({
   placeholder,
   disabled,
   readonly,
+  label,
 }: Props): TemplateResult => {
   return html`
-<oryx-input label="Custom error content">
+<oryx-input .options=${{ label }}>
   <input .placeholder=${placeholder} .value=${value} ?disabled=${disabled} ?readonly=${readonly}></input>
   <style>
     @keyframes spin {
@@ -45,4 +46,5 @@ CustomContent.args = {
   placeholder: 'fill in...',
   disabled: false,
   readonly: false,
+  label: 'Custom error content',
 };

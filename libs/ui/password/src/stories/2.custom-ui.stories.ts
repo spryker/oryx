@@ -9,7 +9,7 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
-    label="Customised password"
+    .options=${{ label: 'Customised password' }}
     class="suffix-fill"
   >
     <div slot="prefix" style="white-space: nowrap;">

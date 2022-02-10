@@ -21,12 +21,10 @@ const Template: Story<Props> = ({
   clearIcon,
 }: Props): TemplateResult => {
   return html`
-    <div style="width:300px">
+    <div style="width:500px">
       <oryx-search
-        label="search"
-        suffixIcon="desktop"
+        .options=${{ label: 'search', suffixIcon: 'desktop', clearIcon }}
         class="prefix-fill suffix-fill"
-        .clearIcon=${clearIcon}
       >
         <select slot="prefix">
           <option>products</option>

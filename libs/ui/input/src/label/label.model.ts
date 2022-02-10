@@ -1,7 +1,3 @@
-import { TemplateResult } from 'lit';
-
-export declare class LabelInterface {
+export interface LabelOptions {
   label?: string;
-  protected renderLabel(): TemplateResult;
-  protected isRequired: boolean;
 }

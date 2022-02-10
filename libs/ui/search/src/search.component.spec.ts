@@ -77,7 +77,7 @@ describe('SearchComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-search
-            .searchIconPosition=${SearchIconPosition.END}
+            .options=${{ searchIconPosition: SearchIconPosition.END }}
           ></oryx-search>`
         );
       });
@@ -103,7 +103,7 @@ describe('SearchComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-search
-            .searchIconPosition=${SearchIconPosition.NONE}
+            .options=${{ searchIconPosition: SearchIconPosition.NONE }}
           ></oryx-search>`
         );
       });

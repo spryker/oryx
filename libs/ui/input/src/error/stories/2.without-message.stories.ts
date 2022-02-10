@@ -16,7 +16,7 @@ const Template: Story<Props> = ({
   readonly,
 }: Props): TemplateResult => {
   return html`
-<oryx-input label=${label} class="has-error">
+<oryx-input .options=${{ label }} class="has-error">
     <input placeholder=${placeholder} value=${value} ?disabled=${disabled} ?readonly=${readonly}></input>
 </oryx-input>
 `;
@@ -26,6 +26,6 @@ WithoutMessage.args = {
   disabled: false,
   readonly: false,
   placeholder: 'Fill in some data...',
-  label: 'label',
+  label: 'Without error message',
   value: '',
 };

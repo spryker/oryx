@@ -48,8 +48,8 @@ export const formControlStyles = css`
 
   input,
   ::slotted(input) {
-    height: 42px;
-    padding: 4px 13px;
+    height: 38px;
+    box-sizing: border-box;
     text-overflow: ellipsis;
   }
 
@@ -58,7 +58,7 @@ export const formControlStyles = css`
   textarea,
   ::slotted(textarea) {
     flex: 100%;
-    padding: 9px 13px;
+    padding: 7px 11px;
     background-color: transparent;
     border: none;
     outline: none;

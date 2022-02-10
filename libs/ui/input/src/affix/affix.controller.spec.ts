@@ -1,23 +1,31 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { AffixMixin } from './affix.mixin';
+import { property } from 'lit/decorators.js';
+import { OryxElement } from '../../../utilities';
+import { AffixController } from './affix.controller';
+import { AffixOptions } from './affix.model';
 
-export class AffixMixinComponent extends AffixMixin(LitElement) {
+export class AffixComponent
+  extends LitElement
+  implements OryxElement<AffixOptions>
+{
+  @property({ type: Object }) options: AffixOptions = {};
+  protected affixController = new AffixController(this);
+
   render(): TemplateResult {
     return html`${this.affixController.renderPrefix()}${this.affixController.renderSuffix()}`;
   }
 }
+customElements.define('fake-affix', AffixComponent);
 
-customElements.define('fake-affix', AffixMixinComponent);
-
-describe('AffixMixin', () => {
-  let element: AffixMixinComponent;
+describe('AffixController', () => {
+  let element: AffixComponent;
 
   describe('prefix', () => {
     describe('when a prefixIcon is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-affix prefixIcon="search"></fake-affix>`
+          html`<fake-affix .options=${{ prefixIcon: 'search' }}></fake-affix>`
         );
       });
       it('should render the icon in the prefix slot', () => {
@@ -41,7 +49,7 @@ describe('AffixMixin', () => {
     describe('when a suffixIcon is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-affix suffixIcon="search"></fake-affix>`
+          html`<fake-affix .options=${{ suffixIcon: 'search' }}></fake-affix>`
         );
       });
       it('should render the icon in the suffix slot', () => {

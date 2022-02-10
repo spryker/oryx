@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../constant';
 import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/form/form-control/prefixed`,
+  title: `${storybookPrefix}/form/form-control/prefix`,
 } as Meta;
 interface Props {
   disabled: boolean;
@@ -18,7 +18,7 @@ const Template: Story<Props> = ({
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input .prefixIcon=${prefixIcon} class=${styleClass}>
+    <oryx-input .options=${{ prefixIcon }} class=${styleClass}>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
     </oryx-input>
   `;
@@ -26,6 +26,6 @@ const Template: Story<Props> = ({
 export const PrefixIcon = Template.bind({});
 PrefixIcon.args = {
   prefixIcon: 'search',
-  styleClass: 'prefix-fill',
+  styleClass: '',
   disabled: false,
 };

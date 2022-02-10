@@ -18,7 +18,7 @@ const Template: Story<Props> = ({
   required,
   disabled,
 }: Props): TemplateResult => {
-  return html` <oryx-input label="${label}">
+  return html` <oryx-input .options="${{ label }}">
     <input
       placeholder="placeholder..."
       ?required=${required}

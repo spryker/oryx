@@ -1,8 +1,17 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html, LitElement, TemplateResult } from 'lit';
-import { FormControlMixin } from './form-control.mixin';
+import { property } from 'lit/decorators.js';
+import { OryxElement } from '../../../utilities';
+import { FormControlController } from './form-control.controller';
+import { FormControlOptions } from './form-control.model';
 
-export class ControlMixinComponent extends FormControlMixin(LitElement) {
+export class ControlComponent
+  extends LitElement
+  implements OryxElement<FormControlOptions>
+{
+  @property({ type: Object }) options: FormControlOptions = {};
+  protected formControlController = new FormControlController(this);
+
   render(): TemplateResult {
     return this.formControlController.render();
   }
@@ -12,10 +21,10 @@ export class ControlMixinComponent extends FormControlMixin(LitElement) {
   }
 }
 
-customElements.define('fake-input', ControlMixinComponent);
+customElements.define('fake-input', ControlComponent);
 
-describe('ControlMixin', () => {
-  let element: ControlMixinComponent;
+describe('FormControlController', () => {
+  let element: ControlComponent;
 
   describe('control', () => {
     describe('when no light dom is slotted in', () => {

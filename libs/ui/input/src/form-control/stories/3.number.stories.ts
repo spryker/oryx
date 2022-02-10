@@ -9,7 +9,7 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult =>
   html`
-    <oryx-input label="Label">
+    <oryx-input .options=${{ label: 'label' }}>
       <input placeholder="Give me a number" type="number" />
     </oryx-input>
   `;

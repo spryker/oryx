@@ -1,30 +1,36 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { AffixMixin, affixStyles } from './affix';
-import { ErrorMixin, errorStyles } from './error';
-import { FormControlMixin } from './form-control/form-control.mixin';
+import { property } from 'lit/decorators.js';
+import { OryxElement } from '../../utilities';
+import { AffixController, AffixOptions, affixStyles } from './affix';
+import { errorStyles } from './error';
+import { FormControlController, FormControlOptions } from './form-control';
 import { formControlStyles } from './form-control/form-control.styles';
-import { LabelMixin, labelStyles } from './label';
+import { labelStyles } from './label';
 
-export const inputMixin = AffixMixin(
-  ErrorMixin(LabelMixin(FormControlMixin(LitElement)))
-);
 export const inputStyles = [
   formControlStyles,
   labelStyles,
   errorStyles,
   affixStyles,
 ];
-export class InputComponent extends inputMixin {
+
+export interface InputOptions extends FormControlOptions, AffixOptions {}
+
+export class InputComponent
+  extends LitElement
+  implements OryxElement<InputOptions>
+{
   static styles = inputStyles;
 
+  @property({ type: Object }) options: InputOptions = {};
+
+  protected formControlController = new FormControlController(this);
+  protected affixController = new AffixController(this);
+
   protected render(): TemplateResult {
-    return html`
-      ${this.renderLabel()}
-      ${this.formControlController.render(
-        this.affixController.renderPrefix(),
-        this.affixController.renderSuffix()
-      )}
-      ${this.renderError()}
-    `;
+    return html`${this.formControlController.render({
+      before: this.affixController.renderPrefix(),
+      after: this.affixController.renderSuffix(),
+    })}`;
   }
 }

@@ -9,7 +9,7 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult =>
   html`
-    <oryx-input label="Label" style="width: 200px;">
+    <oryx-input .options=${{ label: 'label' }} style="width: 200px;">
       <input
         placeholder="Placeholder"
         value="this text is too long and won't be completely visible"

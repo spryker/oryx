@@ -16,7 +16,7 @@ export const affixStyles = css`
     border-end-start-radius: calc(var(--oryx-border-radius) - 2px);
   }
 
-  slot[name='prefix'] oryx-icon,
+  slot[name='prefix'] > *,
   slot[name='prefix']::slotted(*) {
     margin-inline-start: 10px;
   }
@@ -26,7 +26,7 @@ export const affixStyles = css`
     border-end-end-radius: calc(var(--oryx-border-radius) - 2px);
   }
 
-  slot[name='suffix'] oryx-icon,
+  slot[name='suffix'] > *,
   slot[name='suffix']::slotted(*) {
     margin-inline-end: 10px;
   }

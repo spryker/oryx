@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../constant';
 import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/form/form-control/suffixed`,
+  title: `${storybookPrefix}/form/form-control/suffix`,
 } as Meta;
 
 interface Props {
@@ -17,8 +17,8 @@ const Template: Story<Props> = ({
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input class=${styleClass} ?disabled=${disabled}>
-      <input placeholder="placeholder text" />
+    <oryx-input class=${styleClass}>
+      <input placeholder="placeholder text" ?disabled=${disabled} />
       <span slot="suffix">suffix</span>
     </oryx-input>
   `;

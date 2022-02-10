@@ -8,6 +8,7 @@ interface Props {
   strategy: PasswordVisibilityStrategy;
   disabled: boolean;
   timeout: number;
+  label: string;
 }
 
 export default {
@@ -33,14 +34,19 @@ const Template: Story<Props> = ({
   strategy,
   disabled,
   timeout,
+  label,
 }: Props): TemplateResult => {
   return html`<oryx-password-input
-    label="With label"
-    ?disabled=${disabled}
+    .options=${{ label }}
     strategy=${strategy}
     timeout=${timeout}
   >
-    <input type="password" value="Change123$" placeholder="Placeholder..." />
+    <input
+      type="password"
+      value="Change123$"
+      placeholder="Placeholder..."
+      ?disabled=${disabled}
+    />
   </oryx-password-input>`;
 };
 
@@ -50,4 +56,5 @@ Password.args = {
   timeout: 2000,
   strategy: PasswordVisibilityStrategy.CLICK,
   disabled: false,
+  label: 'With label',
 };

@@ -12,8 +12,8 @@ interface Props {
 
 const Template: Story<Props> = ({ disabled }: Props): TemplateResult =>
   html`
-    <oryx-input label="Label">
-      <textarea placeholder="Give me a number" ?disabled=${disabled}></textarea>
+    <oryx-input .options=${{ label: 'label' }}>
+      <textarea placeholder="Placeholder" ?disabled=${disabled}></textarea>
     </oryx-input>
   `;
 export const Textarea = Template.bind({});

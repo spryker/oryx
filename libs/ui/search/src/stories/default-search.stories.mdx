@@ -5,9 +5,7 @@ import '../index';
 <Meta title="UI/Search" />
 
 export const Template = ({ searchIconPosition }) => {
-  return html`<oryx-search
-    searchIconPosition=${searchIconPosition}
-  ></oryx-search>`;
+  return html`<oryx-search .options=${{ searchIconPosition }}></oryx-search>`;
 };
 
 <Canvas>
