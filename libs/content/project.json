@@ -1,18 +1,24 @@
 {
   "projectType": "library",
   "root": "libs/content",
-  "sourceRoot": "libs/content/src",
+  "sourceRoot": "libs/content",
   "prefix": "fes",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "./tools/executors/components-library:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "tsConfig": "libs/content/tsconfig.json",
-        "entryFile": "libs/content/banner/index.ts",
         "outputPath": "dist/libs/content",
-        "rollupConfig": "libs/content/rollup.config.js",
-        "project": "libs/content/package.json"
+        "main": "libs/content/src/index.ts",
+        "tsConfig": "libs/content/tsconfig.lib.json",
+        "assets": [
+          "libs/content/*.md",
+          {
+            "input": "libs/content/public",
+            "glob": "**/*",
+            "output": "/public/"
+          }
+        ]
       }
     },
     "test": {
