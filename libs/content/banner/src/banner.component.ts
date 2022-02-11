@@ -21,21 +21,19 @@ export class BannerComponent extends LitElement {
   protected experienceContent: InjectionTokensContractMap[] | any;
 
   override connectedCallback(): void {
-    if (!this.content) {
-      try {
-        this.experienceContent = getInjector().inject('FES.Experience');
-        if (this.uid) {
-          this.contentSubscription = this.experienceContent
-            .getContent({ key: this.uid })
-            .subscribe((res: any) => {
-              if (res.data) {
-                this.content = { ...res.data };
-              }
-            });
-        }
-      } catch (e) {
-        console.error(e);
+    try {
+      this.experienceContent = getInjector().inject('FES.Experience');
+      if (this.uid) {
+        this.contentSubscription = this.experienceContent
+          .getContent({ key: this.uid })
+          .subscribe((res: any) => {
+            if (res.data) {
+              this.content = { ...res.data };
+            }
+          });
       }
+    } catch (e) {
+      console.error(e);
     }
 
     super.connectedCallback();
