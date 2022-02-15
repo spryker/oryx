@@ -13,11 +13,11 @@ const Template: Story<unknown> = (): TemplateResult => {
     class="suffix-fill"
   >
     <div slot="prefix" style="white-space: nowrap;">
-      password control suffix:
+      Password control prefix:
     </div>
     <input type="password" value="Change123$" placeholder="Placeholder..." />
     <div slot="error">
-      You're password needs to:
+      Your password needs to:
       <div style="color:green">
         ✅ Include both lower and upper case characters
       </div>
@@ -33,7 +33,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       </div>
       <div>
         <oryx-icon type="error"></oryx-icon>
-        be at least 8 characters long
+        Be at least 8 characters long
       </div>
     </div>
   </oryx-password-input>`;

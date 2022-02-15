@@ -54,8 +54,8 @@
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "uiFramework": "@storybook/angular",
         "outputPath": "dist/storybook/ui",
+        "uiFramework": "@storybook/web-components",
         "config": {
           "configFolder": "libs/ui/.storybook"
         },
