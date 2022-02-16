@@ -7,6 +7,7 @@ export const searchStyles = css`
     cursor: pointer;
     color: inherit;
     transition: opacity var(--oryx-transition-time, 0.3s);
+    padding: 0;
   }
 
   button[disabled] {
@@ -19,14 +20,20 @@ export const searchStyles = css`
 
   button.clear {
     opacity: 0%;
-    padding-inline-end: 14px;
+    z-index: 1;
   }
 
-  :host(:not(.suffix-fill)) button.clear + slot[name='suffix'] {
-    margin-inline-start: -4px;
-  }
-
-  :host(.has-value) button.clear {
+  :host(.has-value) button.clear:not([appearance='HOVER']),
+  :host(.has-value) button.clear[appearance='HOVER']:hover {
     opacity: 100%;
+  }
+
+  button.clear:not([appearance='SHOW']) + button.search {
+    position: absolute;
+  }
+
+  :host(.has-value) button.clear[appearance='TOGGLE'] + button.search,
+  :host(.has-value) button.clear[appearance='HOVER']:hover + button.search {
+    opacity: 0%;
   }
 `;

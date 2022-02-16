@@ -1,7 +1,7 @@
 import { html, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { OryxElement } from '../../../utilities';
-import { getControl } from '../../util';
+import { getControl } from '../util';
 import { LabelOptions } from './label.model';
 
 export class LabelController implements ReactiveController {

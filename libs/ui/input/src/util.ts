@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { queryFirstAssigned } from '../utilities';
+import { queryFirstAssigned } from '../../utilities';
 
 export function getControl(element: LitElement): HTMLInputElement | undefined {
   return queryFirstAssigned<HTMLInputElement>(element, {

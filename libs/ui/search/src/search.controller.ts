@@ -1,11 +1,15 @@
 import { html, ReactiveController, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
+import { AffixController, getControl } from '../../input';
 import { OryxElement } from '../../utilities';
-import { queryFirstAssigned } from '../../utilities/query.util';
-import { clearIcon } from './icons';
-import { SearchEvent, SearchIconPosition, SearchOptions } from './search.model';
+import {
+  ClearIconAppearance,
+  ClearIconPosition,
+  SearchEvent,
+  SearchIconPosition,
+  SearchOptions,
+} from './search.model';
 export class SearchController implements ReactiveController {
-  protected control?: HTMLInputElement;
+  protected affixController: AffixController;
 
   hostConnected(): void {
     this.host.addEventListener('input', () => {
@@ -17,65 +21,90 @@ export class SearchController implements ReactiveController {
     );
   }
 
+  renderPrefix(): TemplateResult {
+    return this.affixController.renderPrefix(this.prefixContent);
+  }
+
+  renderSuffix(): TemplateResult {
+    let clearContent: TemplateResult = html``;
+    const { clearIconPosition } = this.host.options;
+    if (!clearIconPosition || clearIconPosition === ClearIconPosition.AFTER) {
+      clearContent = this.clearButton;
+    }
+    return html`${clearContent}${this.affixController.renderSuffix(
+      this.suffixContent
+    )}`;
+  }
+
   /**
-   * Renders a search button at the start of the search control.
+   * Renders the prefix content for the search control.
    *
-   * The icon defaults to `search` type but can be customized by using the `prefixIcon`.
+   * Adds the search button at the start of the search control when the
+   * `options.searchIconPosition` is set to 'PREFIX'.
    */
-  get prefixContent(): TemplateResult {
+  get prefixContent(): TemplateResult | undefined {
     let content: TemplateResult | undefined;
     const { searchIconPosition: pos } = this.host.options;
-    if (!pos || pos === SearchIconPosition.START) {
+    if (!pos || pos === SearchIconPosition.PREFIX) {
       content = this.searchButton;
     }
     return content ?? html``;
   }
 
   /**
-   * Renders the suffix content for the text control.
+   * Renders the suffix content for the search control.
    *
-   * Adds a button to clear the input content.
+   * Adds the clear button after the search control or inside the suffix.
+   * Adds the search button at the end of the search control when the
+   * `options.searchIconPosition` is set to 'SUFFIX'.
    */
-  get suffixContent(): TemplateResult {
-    let content: TemplateResult | undefined;
-    const { searchIconPosition: pos } = this.host.options;
-    if (pos === SearchIconPosition.END) {
-      content = this.searchButton;
+  get suffixContent(): TemplateResult | undefined {
+    const { searchIconPosition: searchPos, clearIconPosition: clearPos } =
+      this.host.options;
+
+    const clearContent =
+      clearPos === ClearIconPosition.SUFFIX ? this.clearButton : undefined;
+
+    const searchContent =
+      searchPos === SearchIconPosition.SUFFIX ? this.searchButton : undefined;
+
+    if (!clearContent && !searchContent) {
+      return;
     }
-    return content ?? html``;
+
+    return html`${clearContent}${searchContent}`;
   }
 
   protected get searchButton(): TemplateResult {
     const { searchIcon: icon = 'search' } = this.host.options;
-    return html`<button
+    const search = html`<button
       class="search"
       @click=${(): void => this.search()}
       tabindex="-1"
     >
-      <oryx-icon .type=${icon}></oryx-icon>
+      <oryx-icon type=${icon}></oryx-icon>
     </button>`;
+    return html`${search}`;
   }
 
   get clearButton(): TemplateResult {
-    const { clearIcon: icon } = this.host.options;
+    const { clearIcon: icon = 'remove', clearIconAppearance } =
+      this.host.options;
     return html`<button
+      appearance=${clearIconAppearance ?? ClearIconAppearance.TOGGLE}
       class="clear"
       @click=${(ev: Event): void => this.clear(ev)}
       tabindex="-1"
     >
-      ${when(
-        icon,
-        () => html`<oryx-icon .type=${icon} size="medium"></oryx-icon>`,
-        () => html`<oryx-icon>${clearIcon}</oryx-icon>`
-      )}
+      <oryx-icon type=${icon} size="medium"></oryx-icon>
     </button>`;
   }
 
+  get control(): HTMLInputElement | undefined {
+    return getControl(this.host);
+  }
+
   hostUpdated(): void {
-    this.control = queryFirstAssigned<HTMLInputElement>(this.host, {
-      selector: 'input',
-      flatten: true,
-    });
     this.handleInputValue();
   }
 
@@ -116,5 +145,7 @@ export class SearchController implements ReactiveController {
 
   constructor(protected host: OryxElement<SearchOptions>) {
     this.host.addController(this);
+
+    this.affixController = new AffixController(host);
   }
 }

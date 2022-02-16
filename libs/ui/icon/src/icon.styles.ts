@@ -20,10 +20,16 @@ export const styles = css`
   :host([size='large']) {
     --icon-size: var(--oryx-icon-size-large, 24px);
   }
+
   :host([size='medium']) {
     --icon-size: var(--oryx-icon-size-medium, 18px);
+
+    padding: 3px;
   }
+
   :host([size='small']) {
     --icon-size: var(--oryx-icon-size-small, 12px);
+
+    padding: 6px;
   }
 `;

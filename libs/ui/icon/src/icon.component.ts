@@ -13,7 +13,7 @@ export class IconComponent extends LitElement {
    */
   @property({ reflect: true }) size?: IconSize;
 
-  @property() type?: IconType | string;
+  @property({ reflect: true }) type?: IconType | string;
 
   render(): TemplateResult {
     return html`

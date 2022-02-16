@@ -26,6 +26,11 @@ export const affixStyles = css`
     border-end-end-radius: calc(var(--oryx-border-radius) - 2px);
   }
 
+  /* force some margin whenever there's additional content before the suffix */
+  *:not(slot) + slot[name='suffix'] {
+    margin-inline-start: 10px;
+  }
+
   slot[name='suffix'] > *,
   slot[name='suffix']::slotted(*) {
     margin-inline-end: 10px;

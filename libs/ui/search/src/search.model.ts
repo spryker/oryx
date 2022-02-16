@@ -1,9 +1,11 @@
 import { AffixOptions, FormControlOptions } from '../../input';
 
 export interface SearchOptions extends FormControlOptions, AffixOptions {
-  searchIconPosition?: SearchIconPosition;
   searchIcon?: string;
+  searchIconPosition?: SearchIconPosition;
   clearIcon?: string;
+  clearIconPosition?: ClearIconPosition;
+  clearIconAppearance?: ClearIconAppearance;
 }
 
 export interface SearchEvent {
@@ -15,7 +17,19 @@ export interface Suggestion {
 }
 
 export const enum SearchIconPosition {
-  START = 'START',
-  END = 'END',
+  PREFIX = 'PREFIX',
+  SUFFIX = 'SUFFIX',
   NONE = 'NONE',
+}
+
+export const enum ClearIconPosition {
+  AFTER = 'AFTER',
+  SUFFIX = 'SUFFIX',
+  NONE = 'NONE',
+}
+
+export const enum ClearIconAppearance {
+  HOVER = 'HOVER',
+  TOGGLE = 'TOGGLE',
+  SHOW = 'SHOW',
 }

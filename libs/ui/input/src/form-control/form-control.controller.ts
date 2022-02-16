@@ -1,8 +1,8 @@
 import { html, ReactiveController, TemplateResult } from 'lit';
 import { OryxElement } from '../../../utilities';
-import { getControl } from '../../util';
 import { ErrorController } from '../error/error.controller';
 import { LabelController } from '../label/label.controller';
+import { getControl } from '../util';
 import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
 

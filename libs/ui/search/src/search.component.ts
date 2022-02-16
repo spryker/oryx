@@ -1,10 +1,6 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import {
-  AffixController,
-  FormControlController,
-  inputStyles,
-} from '../../input';
+import { FormControlController, inputStyles } from '../../input';
 import { OryxElement } from '../../utilities';
 import { SearchController } from './search.controller';
 import { SearchOptions } from './search.model';
@@ -19,19 +15,13 @@ export class SearchComponent
   @property({ type: Object }) options: SearchOptions = {};
 
   protected formControlController = new FormControlController(this);
-  protected affixController = new AffixController(this);
   protected searchController = new SearchController(this);
 
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
-        before: this.affixController.renderPrefix(
-          this.searchController.prefixContent
-        ),
-        after: html` ${this.searchController.clearButton}
-        ${this.affixController.renderSuffix(
-          this.searchController.suffixContent
-        )}`,
+        before: this.searchController.renderPrefix(),
+        after: this.searchController.renderSuffix(),
       })}
     `;
   }

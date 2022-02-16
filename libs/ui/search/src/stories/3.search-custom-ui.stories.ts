@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../constant';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/Search`,
+  title: `${storybookPrefix}/Search/SearchBox`,
 } as Meta;
 
 type Props = {
