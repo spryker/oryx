@@ -31,6 +31,12 @@
         "outputPath": "dist/storybook/all",
         "staticDir": ["libs/ui/public"]
       }
+    },
+    "visual-regression": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "chromatic --exit-zero-on-changes"
+      }
     }
   },
   "tags": []
