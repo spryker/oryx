@@ -23,8 +23,8 @@ export const searchStyles = css`
     z-index: 1;
   }
 
-  :host(.has-value) button.clear:not([appearance='HOVER']),
-  :host(.has-value) button.clear[appearance='HOVER']:hover {
+  :host([has-value]) button.clear:not([appearance='HOVER']),
+  :host([has-value]) button.clear[appearance='HOVER']:hover {
     opacity: 100%;
   }
 
@@ -32,8 +32,8 @@ export const searchStyles = css`
     position: absolute;
   }
 
-  :host(.has-value) button.clear[appearance='TOGGLE'] + button.search,
-  :host(.has-value) button.clear[appearance='HOVER']:hover + button.search {
+  :host([has-value]) button.clear[appearance='TOGGLE'] + button.search,
+  :host([has-value]) button.clear[appearance='HOVER']:hover + button.search {
     opacity: 0%;
   }
 `;

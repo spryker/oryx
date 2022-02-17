@@ -6,4 +6,7 @@ export const iconTypes = [
   'delete',
   'drag',
   'loader',
+  'dropdown-arrow',
+  'remove',
+  'mark',
 ];

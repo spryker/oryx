@@ -100,7 +100,7 @@ export class SearchController implements ReactiveController {
     </button>`;
   }
 
-  get control(): HTMLInputElement | undefined {
+  get control(): HTMLInputElement | HTMLSelectElement | undefined {
     return getControl(this.host);
   }
 
@@ -137,7 +137,7 @@ export class SearchController implements ReactiveController {
   }
 
   protected handleInputValue(): void {
-    this.host.classList.toggle(
+    this.host.toggleAttribute(
       'has-value',
       !!this.control && this.control.value !== ''
     );

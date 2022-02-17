@@ -21,16 +21,17 @@ const Template: Story<Props> = ({
   customSize,
 }: Props): TemplateResult => {
   return html`
-    <div style="display:flex;gap:5px">
+    <style>
+      oryx-icon {
+        border: solid 1px var(--oryx-color-ink);
+      }
+    </style>
+    <div style="display:flex;gap:10px">
       <oryx-icon type=${type} size="large"></oryx-icon>
       <oryx-icon type=${type} size="medium"></oryx-icon>
       <oryx-icon type=${type} size="small"></oryx-icon>
+      <oryx-icon type=${type} style="--icon-size:${customSize}"></oryx-icon>
     </div>
-    <oryx-icon
-      type=${type}
-      size="small"
-      style="--icon-size:${customSize}"
-    ></oryx-icon>
   `;
 };
 

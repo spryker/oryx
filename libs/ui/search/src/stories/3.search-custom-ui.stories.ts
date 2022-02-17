@@ -24,7 +24,7 @@ const Template: Story<Props> = ({
     <div style="width:500px">
       <oryx-search
         .options=${{ label: 'search', suffixIcon: 'desktop', clearIcon }}
-        class="prefix-fill suffix-fill"
+        class="prefix-fill"
       >
         <select slot="prefix">
           <option>products</option>

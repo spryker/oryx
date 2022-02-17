@@ -27,3 +27,5 @@ export class IconComponent extends LitElement {
     `;
   }
 }
+
+// -12 -12 48 48

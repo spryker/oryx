@@ -12,13 +12,6 @@ import { SearchComponent } from './search.component';
 describe('SearchComponent', () => {
   let element: SearchComponent;
 
-  describe('when the <oryx-search> is created', () => {
-    it('is should be an instance of SearchComponent', () => {
-      const el = document.createElement('oryx-search');
-      expect(el).to.be.instanceof(SearchComponent);
-    });
-  });
-
   describe('search', () => {
     describe('searchIcon', () => {
       describe('when no searchIcon is provided', () => {
@@ -431,7 +424,7 @@ describe('SearchComponent', () => {
       });
 
       it('should hide the clear button', () => {
-        expect(element.classList.contains('has-value')).to.be.false;
+        expect(element.hasAttribute('has-value')).to.be.false;
       });
     });
 
@@ -449,7 +442,33 @@ describe('SearchComponent', () => {
       describe('but when clear button is clicked', () => {
         it('should not have have a value', () => {
           clearButton()?.click();
-          expect(element.classList.contains('has-value')).to.be.false;
+          expect(element.hasAttribute('has-value')).to.be.false;
+        });
+      });
+
+      describe('and the input value is changed to empty', () => {
+        beforeEach(() => {
+          const input = element.querySelector('input');
+          if (input) {
+            input.value = '';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+        it('should hide the clear button', () => {
+          expect(element.hasAttribute('has-value')).to.be.false;
+        });
+      });
+
+      describe('and the input value is changed to foo', () => {
+        beforeEach(() => {
+          const input = element.querySelector('input');
+          if (input) {
+            input.value = 'foo';
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+        it('should hide the clear button', () => {
+          expect(element.hasAttribute('has-value')).to.be.true;
         });
       });
     });

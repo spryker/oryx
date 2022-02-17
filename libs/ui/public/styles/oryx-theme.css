@@ -24,6 +24,7 @@
   --oryx-color-brand-light: #a0e1d5;
   --oryx-color-brand-lighter: #f1f8f7;
   --oryx-color-brand-dark: #138671;
+  --oryx-color-brand-darker: #225e52;
 
   /* error color */
   --oryx-color-error: #f2392e;
@@ -45,6 +46,8 @@
 
   /* effects */
   --oryx-transition-time: 0.3s;
+  --oryx-transition-time-medium: 0.6s;
+  --oryx-transition-time-long: 0.9s;
 
   /* border */
   --oryx-border-thin: 1px;
@@ -76,5 +79,10 @@
     --oryx-color-neutral-dark: #efeeee;
     --oryx-color-neutral-darker: #f8f8f8;
     --oryx-elevation-color: rgb(237 237 237 / 15%);
+    --oryx-color-brand-lighter: #225e52;
+    --oryx-color-brand-light: #138671;
+    --oryx-color-brand: #17b497;
+    --oryx-color-brand-dark: #a0e1d5;
+    --oryx-color-brand-darker: #f1f8f7;
   }
 }

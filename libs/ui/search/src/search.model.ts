@@ -12,10 +12,6 @@ export interface SearchEvent {
   query?: string;
 }
 
-export interface Suggestion {
-  title: string;
-}
-
 export const enum SearchIconPosition {
   PREFIX = 'PREFIX',
   SUFFIX = 'SUFFIX',

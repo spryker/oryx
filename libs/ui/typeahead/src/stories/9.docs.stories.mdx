@@ -1,0 +1,26 @@
+import { Story, Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../constant';
+
+<Meta title={`${storybookPrefix}/Search/Typeahead/Docs`} />
+
+## Events
+
+There are a couple of events useful in the context of the typeahead component.
+
+1. The `oryx.typeahead` is dispatched on every _input_
+2. The `oryx.search` is dispatched when the user hits the enter key or clicks the search button, see the [search component](?path=/docs/search--search).
+3. The `oryx.select` is dispatched when an item is selected from the list of items, see the [popover component](?path=/docs/utilities--popover).
+
+### `oryx.typeahead` event
+
+The `oryx.typeahead` is dispatched on every _input_. You can use the native input event, the `oryx.typeahead` event will however give you direct access to the input value (using `detail.query`).
+
+```html
+<oryx-search @oryx.typeahead="${typeahead}"></oryx-search>
+<script>
+  const typeahead = (e: CustomEvent<SearchEvent>): void => {
+    // use e.detail.query to get the typeahead value
+  };
+</script>
+```

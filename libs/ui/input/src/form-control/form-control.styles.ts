@@ -4,7 +4,6 @@ export const formControlStyles = css`
   :host {
     display: flex;
     flex-direction: column;
-    cursor: pointer;
     border-color: var(--oryx-color-neutral-light);
   }
 
@@ -17,7 +16,6 @@ export const formControlStyles = css`
     border-color: inherit;
     border-radius: var(--oryx-border-radius);
     transition: all var(--oryx-transition-time);
-    cursor: pointer;
     color: var(--oryx-color-neutral-dark);
     background-color: var(--oryx-color-canvas);
   }
@@ -57,7 +55,8 @@ export const formControlStyles = css`
   ::slotted(input),
   textarea,
   ::slotted(textarea) {
-    flex: 100%;
+    width: 100%;
+    box-sizing: border-box;
     padding: 7px 11px;
     background-color: transparent;
     border: none;
