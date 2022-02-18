@@ -32,6 +32,18 @@
         "staticDir": ["libs/ui/public"]
       }
     },
+    "generate-dep-tree": {
+      "executor": "./tools/executors/generate-dependency-tree:generate-dep-tree",
+      "options": {
+        "project": "storybook"
+      }
+    },
+    "check-dep-tree": {
+      "executor": "./tools/executors/check-dependency-tree:check-dep-tree",
+      "options": {
+        "project": "storybook"
+      }
+    },
     "visual-regression": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
@@ -39,5 +51,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["ui", "content"]
 }
