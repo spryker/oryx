@@ -60,7 +60,7 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to NONE', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.NONE));
-        toggle = element.shadowRoot?.querySelector('button');
+        toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
       it('should not have a button to make the password visible', () => {
         expect(toggle).to.not.exist;
@@ -76,7 +76,7 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to CLICK', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.CLICK));
-        toggle = element.shadowRoot?.querySelector('button');
+        toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
       describe('and when the element is clicked', () => {
@@ -105,7 +105,7 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to MOUSEDOWN', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.MOUSEDOWN));
-        toggle = element.shadowRoot?.querySelector('button');
+        toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
       it('should have a button', () => {
         expect(toggle).to.exist;
@@ -127,7 +127,7 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to MOUSEOVER', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.HOVER));
-        toggle = element.shadowRoot?.querySelector('button');
+        toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
       describe('and when the element is clicked', () => {
@@ -154,7 +154,7 @@ describe('PasswordComponent', () => {
               <input type="password" />
             </oryx-password-input>`
           );
-          toggle = element.shadowRoot?.querySelector('button');
+          toggle = element.shadowRoot?.querySelector('oryx-icon');
         });
 
         it('should still show the password after 9ms', (done) => {

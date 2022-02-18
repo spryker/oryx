@@ -20,9 +20,7 @@ describe('SearchComponent', () => {
         });
         it('should render the default search icon', () => {
           expect(
-            element.shadowRoot?.querySelector(
-              'button.search oryx-icon[type=search]'
-            )
+            element.shadowRoot?.querySelector('oryx-icon.search[type=search')
           ).to.exist;
         });
       });
@@ -38,7 +36,7 @@ describe('SearchComponent', () => {
         it('should render the custom search icon', () => {
           expect(
             element.shadowRoot?.querySelector(
-              'button.search oryx-icon[type=custom-search-icon]'
+              'oryx-icon.search[type=custom-search-icon]'
             )
           ).to.exist;
         });
@@ -46,10 +44,10 @@ describe('SearchComponent', () => {
     });
 
     describe('searchIconPosition', () => {
-      const searchButton = (slot: string): Element | undefined => {
+      const searchIcon = (slot: string): Element | undefined => {
         return queryFirstAssigned(element, {
           slot,
-          selector: 'button.search',
+          selector: '.search',
           flatten: true,
         });
       };
@@ -58,12 +56,12 @@ describe('SearchComponent', () => {
           element = await fixture(html`<oryx-search></oryx-search>`);
         });
 
-        it('should render the search button in the prefix slot', () => {
-          expect(searchButton('prefix')).to.exist;
+        it('should render the search icon in the prefix slot', () => {
+          expect(searchIcon('prefix')).to.exist;
         });
 
-        it('should not render the search button in the suffix slot', () => {
-          expect(searchButton('suffix')).to.not.exist;
+        it('should not render the search icon in the suffix slot', () => {
+          expect(searchIcon('suffix')).to.not.exist;
         });
       });
 
@@ -76,12 +74,12 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should render the search button in the prefix slot', () => {
-          expect(searchButton('prefix')).to.exist;
+        it('should render the search icon in the prefix slot', () => {
+          expect(searchIcon('prefix')).to.exist;
         });
 
-        it('should not render the search button in the suffix slot', () => {
-          expect(searchButton('suffix')).to.not.exist;
+        it('should not render the search icon in the suffix slot', () => {
+          expect(searchIcon('suffix')).to.not.exist;
         });
 
         describe('and custom prefix content is slotted in', () => {
@@ -93,8 +91,8 @@ describe('SearchComponent', () => {
             );
           });
 
-          it('should not render the search button in the prefix slot', () => {
-            expect(searchButton('prefix')).to.not.exist;
+          it('should not render the search icon in the prefix slot', () => {
+            expect(searchIcon('prefix')).to.not.exist;
           });
         });
       });
@@ -108,12 +106,12 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should not render the search button in the prefix slot', () => {
-          expect(searchButton('prefix')).to.not.exist;
+        it('should not render the search icon in the prefix slot', () => {
+          expect(searchIcon('prefix')).to.not.exist;
         });
 
-        it('should render the search button in the suffix slot', () => {
-          expect(searchButton('suffix')).to.exist;
+        it('should render the search icon in the suffix slot', () => {
+          expect(searchIcon('suffix')).to.exist;
         });
 
         describe('and custom suffix content is slotted in', () => {
@@ -124,8 +122,8 @@ describe('SearchComponent', () => {
               >`
             );
           });
-          it('should not render the search button in the suffix slot', () => {
-            expect(searchButton('suffix')).to.not.exist;
+          it('should not render the search icon in the suffix slot', () => {
+            expect(searchIcon('suffix')).to.not.exist;
           });
         });
       });
@@ -139,26 +137,26 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should not render the search button in the prefix slot', () => {
+        it('should not render the search icon in the prefix slot', () => {
           expect(
             element.shadowRoot?.querySelector(
-              'slot[name=prefix] button oryx-icon'
+              'slot[name=prefix] .search oryx-icon'
             )
           ).to.not.exist;
         });
 
-        it('should not render the search button in the suffix slot', () => {
+        it('should not render the search icon in the suffix slot', () => {
           expect(
             element.shadowRoot?.querySelector(
-              'slot[name=suffix] button oryx-icon'
+              'slot[name=suffix] .search oryx-icon'
             )
           ).to.not.exist;
         });
       });
     });
 
-    const searchButton = (): HTMLButtonElement | null | undefined =>
-      element.shadowRoot?.querySelector('button.search');
+    const searchIcon = (): HTMLElement | null | undefined =>
+      element.shadowRoot?.querySelector('.search');
 
     const itShouldDispatchSearchEvent = (value: string): void => {
       it(`should dispatch search event (${value})`, (done) => {
@@ -168,7 +166,7 @@ describe('SearchComponent', () => {
           expect(ev.detail?.query).to.eq(value);
           done();
         }) as EventListener);
-        searchButton()?.click();
+        searchIcon()?.click();
       });
     };
 
@@ -177,7 +175,7 @@ describe('SearchComponent', () => {
         element = await fixture(html`<oryx-search></oryx-search>`);
       });
 
-      describe('and the search button is clicked', () => {
+      describe('and the search icon is clicked', () => {
         itShouldDispatchSearchEvent('');
       });
 
@@ -215,7 +213,7 @@ describe('SearchComponent', () => {
         </oryx-search>`);
       });
 
-      describe('and the search button is clicked', () => {
+      describe('and the search icon is clicked', () => {
         itShouldDispatchSearchEvent('value123');
       });
 
@@ -253,11 +251,10 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-search></oryx-search>`);
         });
+
         it('should render the default clear icon', () => {
           expect(
-            element.shadowRoot?.querySelector(
-              'button.clear oryx-icon[type=remove]'
-            )
+            element.shadowRoot?.querySelector('oryx-icon.clear[type=remove]')
           ).to.exist;
         });
       });
@@ -270,10 +267,11 @@ describe('SearchComponent', () => {
             ></oryx-search>`
           );
         });
+
         it('should render the custom clear icon', () => {
           expect(
             element.shadowRoot?.querySelector(
-              'button.clear oryx-icon[type=custom-clear-icon]'
+              'oryx-icon.clear[type=custom-clear-icon]'
             )
           ).to.exist;
         });
@@ -281,10 +279,10 @@ describe('SearchComponent', () => {
     });
 
     describe('clearIconPosition', () => {
-      const clearButton = (slot: string): Element | undefined => {
+      const clearIcon = (slot: string): Element | undefined => {
         return queryFirstAssigned(element, {
           slot,
-          selector: 'button.clear',
+          selector: '.clear',
           flatten: true,
         });
       };
@@ -293,18 +291,17 @@ describe('SearchComponent', () => {
           element = await fixture(html`<oryx-search></oryx-search>`);
         });
 
-        it('should render the clear button after the input control', () => {
-          expect(
-            element.shadowRoot?.querySelector('slot:not([name]) + button.clear')
-          ).to.exist;
+        it('should render the clear icon after the input control', () => {
+          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
+            .to.exist;
         });
 
-        it('should not render the search button in the prefix slot', () => {
-          expect(clearButton('prefix')).to.not.exist;
+        it('should not render the search icon in the prefix slot', () => {
+          expect(clearIcon('prefix')).to.not.exist;
         });
 
-        it('should not render the search button in the suffix slot', () => {
-          expect(clearButton('suffix')).to.not.exist;
+        it('should not render the search icon in the suffix slot', () => {
+          expect(clearIcon('suffix')).to.not.exist;
         });
       });
 
@@ -317,18 +314,17 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should render the clear button after the input control', () => {
-          expect(
-            element.shadowRoot?.querySelector('slot:not([name]) + button.clear')
-          ).to.exist;
+        it('should render the clear icon after the input control', () => {
+          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
+            .to.exist;
         });
 
-        it('should not render the clear button in the prefix slot', () => {
-          expect(clearButton('prefix')).to.not.exist;
+        it('should not render the clear icon in the prefix slot', () => {
+          expect(clearIcon('prefix')).to.not.exist;
         });
 
-        it('should not render the clear button in the suffix slot', () => {
-          expect(clearButton('suffix')).to.not.exist;
+        it('should not render the clear icon in the suffix slot', () => {
+          expect(clearIcon('suffix')).to.not.exist;
         });
       });
 
@@ -341,18 +337,17 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should not render the clear button after the input control', () => {
-          expect(
-            element.shadowRoot?.querySelector('slot:not([name]) + button.clear')
-          ).to.not.exist;
+        it('should not render the clear icon after the input control', () => {
+          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
+            .to.not.exist;
         });
 
-        it('should not render the search button in the prefix slot', () => {
-          expect(clearButton('prefix')).to.not.exist;
+        it('should not render the search icon in the prefix slot', () => {
+          expect(clearIcon('prefix')).to.not.exist;
         });
 
-        it('should render the search button in the suffix slot', () => {
-          expect(clearButton('suffix')).to.exist;
+        it('should render the search icon in the suffix slot', () => {
+          expect(clearIcon('suffix')).to.exist;
         });
       });
 
@@ -365,18 +360,17 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should not render the clear button after the input control', () => {
-          expect(
-            element.shadowRoot?.querySelector('slot:not([name]) + button.clear')
-          ).to.not.exist;
+        it('should not render the clear icon after the input control', () => {
+          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
+            .to.not.exist;
         });
 
-        it('should not render the clear button in the prefix slot', () => {
-          expect(clearButton('prefix')).to.not.exist;
+        it('should not render the clear icon in the prefix slot', () => {
+          expect(clearIcon('prefix')).to.not.exist;
         });
 
-        it('should not render the clear button in the suffix slot', () => {
-          expect(clearButton('suffix')).to.not.exist;
+        it('should not render the clear icon in the suffix slot', () => {
+          expect(clearIcon('suffix')).to.not.exist;
         });
       });
     });
@@ -390,7 +384,7 @@ describe('SearchComponent', () => {
         it('should use toggle', () => {
           expect(
             element.shadowRoot
-              ?.querySelector('button.clear')
+              ?.querySelector('.clear')
               ?.getAttribute('appearance')
           ).to.eq('TOGGLE');
         });
@@ -405,25 +399,25 @@ describe('SearchComponent', () => {
           );
         });
 
-        it('should add the appearance on the clear button', () => {
+        it('should add the appearance on the clear icon', () => {
           expect(
             element.shadowRoot
-              ?.querySelector('button.clear')
+              ?.querySelector('.clear')
               ?.getAttribute('appearance')
           ).to.eq('HOVER');
         });
       });
     });
 
-    const clearButton = (): HTMLButtonElement | null | undefined =>
-      element.shadowRoot?.querySelector('button.clear');
+    const clearIcon = (): HTMLElement | null | undefined =>
+      element.shadowRoot?.querySelector('.clear');
 
     describe('when the input is empty', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-search></oryx-search>`);
       });
 
-      it('should hide the clear button', () => {
+      it('should hide the clear icon', () => {
         expect(element.hasAttribute('has-value')).to.be.false;
       });
     });
@@ -435,13 +429,13 @@ describe('SearchComponent', () => {
         </oryx-search>`);
       });
 
-      it('should have the clear button', () => {
-        expect(clearButton()).to.exist;
+      it('should have the clear icon', () => {
+        expect(clearIcon()).to.exist;
       });
 
-      describe('but when clear button is clicked', () => {
-        it('should not have have a value', () => {
-          clearButton()?.click();
+      describe('but when clear icon is clicked', () => {
+        it('should not have the `has-value` attribute', () => {
+          clearIcon()?.click();
           expect(element.hasAttribute('has-value')).to.be.false;
         });
       });
@@ -454,7 +448,7 @@ describe('SearchComponent', () => {
             input.dispatchEvent(new Event('input', { bubbles: true }));
           }
         });
-        it('should hide the clear button', () => {
+        it('should not have the `has-value` attribute', () => {
           expect(element.hasAttribute('has-value')).to.be.false;
         });
       });
@@ -467,7 +461,20 @@ describe('SearchComponent', () => {
             input.dispatchEvent(new Event('change', { bubbles: true }));
           }
         });
-        it('should hide the clear button', () => {
+        it('should have the `has-value` attribute', () => {
+          expect(element.hasAttribute('has-value')).to.be.true;
+        });
+      });
+
+      describe('and an change event is dispatched', () => {
+        beforeEach(() => {
+          const input = element.querySelector('input');
+          if (input) {
+            input.value = 'foo';
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+        it('should have the `has-value` attribute', () => {
           expect(element.hasAttribute('has-value')).to.be.true;
         });
       });

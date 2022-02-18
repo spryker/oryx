@@ -18,16 +18,14 @@ type Props = {
   searchIconPosition: SearchIconPosition;
   clearIconPosition: ClearIconPosition;
   clearIconAppearance: ClearIconAppearance;
-  styleClasses: string;
+  prefixFill: boolean;
+  suffixFill: boolean;
 };
 
-const Template: Story<Props> = ({
-  styleClasses,
-  ...options
-}: Props): TemplateResult => {
+const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
   return html`
     <div style="width:300px">
-      <oryx-search label="search" .options=${options} class=${styleClasses}>
+      <oryx-search label="search" .options=${options}>
         <input placeholder="Search..." />
       </oryx-search>
     </div>
@@ -58,8 +56,12 @@ CustomIcon.argTypes = {
     control: { type: 'select' },
     defaultValue: 'SHOW',
   },
-  styleClasses: {
-    control: { type: 'text' },
-    defaultValue: 'suffix-fill',
+  prefixFill: {
+    control: { type: 'boolean' },
+    defaultValue: false,
+  },
+  suffixFill: {
+    control: { type: 'boolean' },
+    defaultValue: false,
   },
 };

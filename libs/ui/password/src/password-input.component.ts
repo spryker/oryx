@@ -42,47 +42,51 @@ export class PasswordInputComponent
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
-        after: this.affixController.renderSuffix(this.renderButton()),
+        after: this.affixController.renderSuffix(this.renderActionIcon()),
       })}
     `;
   }
 
   /**
-   * Renders the suffix content for the text control.
+   * Adds an icon to show the password.
    *
-   * Adds a button to show the password.
+   * This is not a button, since it's supposed to be not available to
+   * non-sighted users; there's no point in offering a user with low vision
+   * the possibility to show the password.
    */
-  protected renderButton(): TemplateResult {
-    const icon = html` <oryx-icon size="medium">
-      ${this.isVisible ? ICON_INVISIBLE : ICON_VISIBLE}
-    </oryx-icon>`;
+  protected renderActionIcon(): TemplateResult {
+    const icon = this.isVisible ? ICON_INVISIBLE : ICON_VISIBLE;
 
     switch (this.strategy) {
       case PasswordVisibilityStrategy.NONE:
         return html``;
       case PasswordVisibilityStrategy.HOVER:
-        return html`<button
-          @mouseover=${this.showVisibility}
-          @mouseout=${this.hideVisibility}
-          tabindex="-1"
-        >
-          ${icon}
-        </button>`;
+        return html`
+          <oryx-icon
+            @mouseover=${this.showVisibility}
+            @mouseout=${this.hideVisibility}
+          >
+            ${icon}
+          </oryx-icon>
+        `;
 
       case PasswordVisibilityStrategy.MOUSEDOWN:
-        return html`<button
-          @mousedown=${this.toggleVisibility}
-          @mouseup=${this.hideVisibility}
-          @mouseout=${this.hideVisibility}
-          tabindex="-1"
-        >
-          ${icon}
-        </button>`;
+        return html`
+          <oryx-icon
+            @mousedown=${this.toggleVisibility}
+            @mouseup=${this.hideVisibility}
+            @mouseout=${this.hideVisibility}
+          >
+            ${icon}
+          </oryx-icon>
+        `;
 
       default:
-        return html`<button @click=${this.toggleVisibility} tabindex="-1">
-          ${icon}
-        </button>`;
+        return html`
+          <oryx-icon size="medium" @click=${this.toggleVisibility}>
+            ${icon}
+          </oryx-icon>
+        `;
     }
   }
 

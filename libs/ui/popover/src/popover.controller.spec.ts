@@ -202,6 +202,27 @@ describe('PopoverController', () => {
           expectOpen();
         });
 
+        describe('when the element is focussed', () => {
+          beforeEach(() => {
+            element.dispatchEvent(new Event('focusin', { bubbles: true }));
+          });
+          expectOpen();
+
+          describe('and the page and component are blurred', () => {
+            beforeEach(() => {
+              window.dispatchEvent(new Event('blur', { bubbles: true }));
+              element.dispatchEvent(new Event('focusout', { bubbles: true }));
+            });
+
+            describe('and the page is focused again', () => {
+              beforeEach(() => {
+                element.dispatchEvent(new Event('focusin', { bubbles: true }));
+              });
+              expectClose();
+            });
+          });
+        });
+
         describe('and the showOnFocus is set to false', () => {
           beforeEach(() => {
             element.popoverController.options.showOnFocus = true;
@@ -342,17 +363,34 @@ describe('PopoverController', () => {
           });
           expectClose();
         });
+
+        '12345abcdef'.split('').forEach((key) => {
+          describe(`and the key is "${key}"`, () => {
+            it('should stop immediate propagation of the event', () => {
+              const event = new KeyboardEvent('keydown', {
+                key,
+                bubbles: true,
+              });
+              const expectation = sinon
+                .mock(event)
+                .expects('stopImmediatePropagation')
+                .once();
+              element?.dispatchEvent(event);
+              expectation.verify();
+            });
+          });
+        });
       });
     });
+  });
 
-    describe('when PopoverController is extended', () => {
-      describe('and methods are called without guarding', () => {
-        beforeEach(() => element.testCustomController());
-        it('should not throw an error', () => {
-          expect(() => {
-            (): void => undefined;
-          }).not.to.throw;
-        });
+  describe('when PopoverController is extended', () => {
+    describe('and methods are called without guarding', () => {
+      beforeEach(() => element.testCustomController());
+      it('should not throw an error', () => {
+        expect(() => {
+          (): void => undefined;
+        }).not.to.throw;
       });
     });
   });

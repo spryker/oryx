@@ -23,10 +23,14 @@ const Template: Story<Props> = ({
   return html`
     <div style="width:500px">
       <oryx-search
-        .options=${{ label: 'search', suffixIcon: 'desktop', clearIcon }}
-        class="prefix-fill"
+        .options=${{
+          label: 'search',
+          suffixIcon: 'desktop',
+          clearIcon,
+          prefixFill: true,
+        }}
       >
-        <select slot="prefix">
+        <select slot="prefix" aria-label="select type">
           <option>products</option>
           <option>content</option>
           <option>category</option>

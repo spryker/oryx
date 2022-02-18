@@ -36,16 +36,17 @@ export const affixStyles = css`
     margin-inline-end: 10px;
   }
 
-  :host(.prefix-fill) slot[name='prefix'],
-  :host(.suffix-fill) slot[name='suffix'] {
+  :host([prefix-fill]) slot[name='prefix'],
+  :host([suffix-fill]) slot[name='suffix'] {
     background-color: var(--oryx-color-neutral-lighter);
     white-space: nowrap;
   }
 
-  :host(.prefix-fill) slot[name='prefix'] {
+  :host([prefix-fill]) slot[name='prefix'] {
     padding-inline-end: 10px;
   }
-  :host(.suffix-fill) slot[name='suffix'] {
+
+  :host([suffix-fill]) slot[name='suffix'] {
     padding-inline-start: 10px;
   }
 `;

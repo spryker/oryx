@@ -7,16 +7,16 @@ export default {
   title: `${storybookPrefix}/form/form-control/suffix`,
 } as Meta;
 interface Props {
+  suffixFill: boolean;
   disabled: boolean;
-  styleClass: string;
 }
 
 const Template: Story<Props> = ({
-  styleClass,
+  suffixFill,
   disabled,
 }: Props): TemplateResult => {
   return html`
-<oryx-input class=${styleClass}>
+<oryx-input .options=${{ suffixFill }}>
   <input placeholder="Placeholder..." ?disabled=${disabled}></input>
   <oryx-icon slot="suffix" type="search"></oryx-icon>
   <span slot="suffix">more...</span>
@@ -25,6 +25,6 @@ const Template: Story<Props> = ({
 };
 export const SuffixContent = Template.bind({});
 SuffixContent.args = {
-  styleClass: 'suffix-fill',
+  suffixFill: true,
   disabled: false,
-};
+} as Props;

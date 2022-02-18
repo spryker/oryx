@@ -16,6 +16,10 @@ export class SearchController implements ReactiveController {
       this.handleInputValue();
     });
 
+    this.host.addEventListener('change', () => {
+      this.handleInputValue();
+    });
+
     this.host.addEventListener('keydown', (ev: KeyboardEvent) =>
       this.handleKeyEvent(ev)
     );
@@ -77,27 +81,27 @@ export class SearchController implements ReactiveController {
 
   protected get searchButton(): TemplateResult {
     const { searchIcon: icon = 'search' } = this.host.options;
-    const search = html`<button
-      class="search"
-      @click=${(): void => this.search()}
-      tabindex="-1"
-    >
-      <oryx-icon type=${icon}></oryx-icon>
-    </button>`;
+    const search = html`
+      <oryx-icon
+        type=${icon}
+        class="search"
+        @click=${(): void => this.search()}
+      ></oryx-icon>
+    `;
     return html`${search}`;
   }
 
   get clearButton(): TemplateResult {
     const { clearIcon: icon = 'remove', clearIconAppearance } =
       this.host.options;
-    return html`<button
-      appearance=${clearIconAppearance ?? ClearIconAppearance.TOGGLE}
-      class="clear"
-      @click=${(ev: Event): void => this.clear(ev)}
-      tabindex="-1"
-    >
-      <oryx-icon type=${icon} size="medium"></oryx-icon>
-    </button>`;
+    return html`
+      <oryx-icon
+        type=${icon}
+        class="clear"
+        appearance=${clearIconAppearance ?? ClearIconAppearance.TOGGLE}
+        @click=${(ev: Event): void => this.clear(ev)}
+      ></oryx-icon>
+    `;
   }
 
   get control(): HTMLInputElement | HTMLSelectElement | undefined {

@@ -7,16 +7,16 @@ export default {
   title: `${storybookPrefix}/form/form-control/prefix`,
 } as Meta;
 interface Props {
+  prefixFill: boolean;
   disabled: boolean;
-  styleClass: string;
 }
 
 const Template: Story<Props> = ({
+  prefixFill,
   disabled,
-  styleClass,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input class=${styleClass}>
+    <oryx-input .options=${{ prefixFill }}>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
       <oryx-icon slot="prefix" type="search"></oryx-icon>
       <span slot="prefix">more...</span>
@@ -25,6 +25,6 @@ const Template: Story<Props> = ({
 };
 export const PrefixContent = Template.bind({});
 PrefixContent.args = {
+  prefixFill: true,
   disabled: false,
-  styleClass: 'prefix-fill',
-};
+} as Props;

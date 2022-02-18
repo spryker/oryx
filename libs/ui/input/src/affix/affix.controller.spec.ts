@@ -43,6 +43,97 @@ describe('AffixController', () => {
         expect(element.classList.contains('has-prefix-content')).to.be.false;
       });
     });
+
+    describe('when prefix fill is set to true', () => {
+      describe('and a prefix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ prefixFill: true, prefixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.true;
+        });
+      });
+
+      describe('and a prefix icon is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix .options=${{ prefixFill: true }}></fake-affix>`
+          );
+        });
+        it('should not have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.false;
+        });
+
+        describe('but light dom is provided for the prefix slot ', () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<fake-affix .options=${{ prefixFill: true }}>
+                <div slot="prefix">test</div></fake-affix
+              >`
+            );
+          });
+          it('should have prefix-fill attribute', () => {
+            expect(element.hasAttribute('prefix-fill')).to.be.true;
+          });
+        });
+      });
+    });
+
+    describe('when prefix fill is set to false', () => {
+      describe('and a prefix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ prefixFill: false, prefixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should not have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.false;
+        });
+      });
+
+      describe('and light dom is provided for the prefix slot ', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix><div slot="prefix">test</div></fake-affix>`
+          );
+        });
+        it('should not have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.false;
+        });
+      });
+    });
+
+    describe('when prefix fill is not provided', () => {
+      describe('and a prefix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ prefixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should not have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.false;
+        });
+      });
+
+      describe('and light dom is provided for the prefix slot ', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix><div slot="prefix">test</div></fake-affix>`
+          );
+        });
+        it('should not have prefix-fill attribute', () => {
+          expect(element.hasAttribute('prefix-fill')).to.be.false;
+        });
+      });
+    });
   });
 
   describe('suffix', () => {
@@ -65,6 +156,97 @@ describe('AffixController', () => {
       });
       it('should not have .has-suffix-content class', () => {
         expect(element.classList.contains('has-suffix-content')).to.be.false;
+      });
+    });
+
+    describe('when suffix fill is set to true', () => {
+      describe('and a suffix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ suffixFill: true, suffixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.true;
+        });
+      });
+
+      describe('and a suffix icon is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix .options=${{ suffixFill: true }}></fake-affix>`
+          );
+        });
+        it('should not have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.false;
+        });
+
+        describe('but light dom is provided for the suffix slot ', () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<fake-affix .options=${{ suffixFill: true }}>
+                <div slot="suffix">test</div></fake-affix
+              >`
+            );
+          });
+          it('should have suffix-fill attribute', () => {
+            expect(element.hasAttribute('suffix-fill')).to.be.true;
+          });
+        });
+      });
+    });
+
+    describe('when suffix fill is set to false', () => {
+      describe('and a suffix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ suffixFill: false, suffixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should not have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.false;
+        });
+      });
+
+      describe('and light dom is provided for the suffix slot ', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix><div slot="suffix">test</div></fake-affix>`
+          );
+        });
+        it('should not have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.false;
+        });
+      });
+    });
+
+    describe('when suffix fill is not provided', () => {
+      describe('and a suffix icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix
+              .options=${{ suffixIcon: 'foo-bar' }}
+            ></fake-affix>`
+          );
+        });
+        it('should not have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.false;
+        });
+      });
+
+      describe('and light dom is provided for the suffix slot ', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-affix><div slot="suffix">test</div></fake-affix>`
+          );
+        });
+        it('should not have suffix-fill attribute', () => {
+          expect(element.hasAttribute('suffix-fill')).to.be.false;
+        });
       });
     });
   });

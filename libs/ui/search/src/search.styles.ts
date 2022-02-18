@@ -1,39 +1,33 @@
 import { css } from 'lit';
 
 export const searchStyles = css`
-  button {
-    background-color: transparent;
-    border: none;
+  .search,
+  .clear {
     cursor: pointer;
-    color: inherit;
-    transition: opacity var(--oryx-transition-time, 0.3s);
-    padding: 0;
   }
 
-  button[disabled] {
-    cursor: default;
+  .clear[type='remove'] {
+    --icon-size: var(--oryx-icon-size-medium);
   }
 
-  button:not([disabled]):hover {
-    color: var(--oryx-color-neutral-darker);
-  }
-
-  button.clear {
+  .clear {
     opacity: 0%;
     z-index: 1;
+    transition: opacity var(--oryx-transition-time, 0.3s);
+    align-self: center;
   }
 
-  :host([has-value]) button.clear:not([appearance='HOVER']),
-  :host([has-value]) button.clear[appearance='HOVER']:hover {
+  :host([has-value]) .clear:not([appearance='HOVER']),
+  :host([has-value]) .clear[appearance='HOVER']:hover {
     opacity: 100%;
   }
 
-  button.clear:not([appearance='SHOW']) + button.search {
+  .clear:not([appearance='SHOW']) + .search {
     position: absolute;
   }
 
-  :host([has-value]) button.clear[appearance='TOGGLE'] + button.search,
-  :host([has-value]) button.clear[appearance='HOVER']:hover + button.search {
+  :host([has-value]) .clear[appearance='TOGGLE'] + .search,
+  :host([has-value]) .clear[appearance='HOVER']:hover + .search {
     opacity: 0%;
   }
 `;

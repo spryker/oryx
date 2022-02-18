@@ -8,17 +8,17 @@ export default {
 } as Meta;
 interface Props {
   disabled: boolean;
-  styleClass: string;
+  prefixFill: boolean;
   prefixIcon: string;
 }
 
 const Template: Story<Props> = ({
   prefixIcon,
-  styleClass,
+  prefixFill,
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input .options=${{ prefixIcon }} class=${styleClass}>
+    <oryx-input .options=${{ prefixIcon, prefixFill }}>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
     </oryx-input>
   `;
@@ -26,6 +26,6 @@ const Template: Story<Props> = ({
 export const PrefixIcon = Template.bind({});
 PrefixIcon.args = {
   prefixIcon: 'search',
-  styleClass: '',
+  prefixFill: false,
   disabled: false,
-};
+} as Props;

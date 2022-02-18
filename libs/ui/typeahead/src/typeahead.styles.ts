@@ -17,7 +17,7 @@ export const typeaheadStyles = css`
     width: 100%;
   }
 
-  :host(:not([__up]):not([popoverDirection])) oryx-popover,
+  :host(:not([up]):not([popoverDirection])) oryx-popover,
   :host([popoverDirection='DOWN']) oryx-popover {
     top: calc(
       var(--oryx-popover-distance, 42px) + var(--oryx-label-height, 0px)
@@ -25,7 +25,7 @@ export const typeaheadStyles = css`
     transform-origin: left top;
   }
 
-  :host([__up]:not([popoverDirection])) oryx-popover,
+  :host([up]:not([popoverDirection])) oryx-popover,
   :host([popoverDirection='UP']) oryx-popover {
     bottom: var(--oryx-popover-distance, 42px);
     transform-origin: left bottom;

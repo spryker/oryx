@@ -8,16 +8,16 @@ export default {
 } as Meta;
 
 interface Props {
+  prefixFill: boolean;
   disabled: boolean;
-  styleClass: string;
 }
 
 const Template: Story<Props> = ({
-  styleClass,
+  prefixFill,
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input class=${styleClass}>
+    <oryx-input .options=${{ prefixFill }}>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
       <span slot="prefix">prefix</span>
     </oryx-input>
@@ -25,6 +25,6 @@ const Template: Story<Props> = ({
 };
 export const PrefixFill = Template.bind({});
 PrefixFill.args = {
-  styleClass: 'prefix-fill',
+  prefixFill: true,
   disabled: false,
-};
+} as Props;

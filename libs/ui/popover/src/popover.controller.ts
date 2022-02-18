@@ -20,12 +20,23 @@ export class PopoverController implements ReactiveController {
    */
   protected timeStarted = 0;
 
+  /**
+   * indicates that when the element is focussed again, it won't open instantly.
+   * This is set when the page is blurred, so that on refocus to the page, a popover
+   * won't animate spontaneously on the screen.
+   */
+  protected skipOpeningOnNextFocus?: boolean;
+
   constructor(protected host: LitElement, options?: PopoverOptions) {
     this.host.addController(this);
     this.options = { ...defaultPopoverOptions, ...options };
   }
 
   hostConnected(): void {
+    window.addEventListener('blur', () => {
+      this.skipOpeningOnNextFocus = true;
+    });
+
     this.host.addEventListener('focusin', (e: Event) => {
       this.handleFocusin(e);
     });
@@ -52,10 +63,11 @@ export class PopoverController implements ReactiveController {
   }
 
   protected handleFocusin(e: Event): void {
-    if (this.options.showOnFocus) {
+    if (!this.skipOpeningOnNextFocus && this.options.showOnFocus) {
       this.timeStarted = new Date().getTime();
       this.show();
     }
+    this.skipOpeningOnNextFocus = false;
   }
 
   protected handleMousedown(e: MouseEvent): void {
@@ -117,6 +129,10 @@ export class PopoverController implements ReactiveController {
       case 'Escape':
         this.hide();
         break;
+      default:
+        // avoid other potential interactions from the key bindings
+        // from the host application
+        e.stopImmediatePropagation();
     }
   }
 
@@ -184,7 +200,7 @@ export class PopoverController implements ReactiveController {
         : maxHeightFallback;
 
     this.host.toggleAttribute(
-      '__up',
+      'up',
       window.innerHeight - this.host.getBoundingClientRect().bottom <
         maxHeight + margin
     );

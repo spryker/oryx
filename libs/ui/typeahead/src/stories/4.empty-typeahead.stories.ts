@@ -14,9 +14,28 @@ interface Props {
 
 const Template: Story<Props> = ({ emptyMessage }: Props): TemplateResult => {
   return html`
-    <oryx-typeahead .options=${{ isEmpty: true, emptyMessage }}>
-      <input value="value is required to show empty message" />
-    </oryx-typeahead>
+    <div class="stories">
+      <oryx-typeahead .options=${{ isEmpty: true, emptyMessage }}>
+        <input value="value" aria-label="label" />
+      </oryx-typeahead>
+
+      <oryx-typeahead
+        .options=${{ isEmpty: true, emptyMessage }}
+        style="--oryx-popover-visible: 1;"
+      >
+        <input value="value" aria-label="label" />
+      </oryx-typeahead>
+    </div>
+
+    <style>
+      .stories {
+        display: flex;
+        gap: 10px;
+      }
+      oryx-typeahead {
+        flex: 0 0 350px;
+      }
+    </style>
   `;
 };
 

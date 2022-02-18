@@ -1,9 +1,13 @@
 import { html, ReactiveController, TemplateResult } from 'lit';
-import { OryxElement } from '../../../utilities/';
+import { OryxElement, queryAssignedElements } from '../../../utilities/';
 import { AffixOptions } from './affix.model';
 
 export class AffixController implements ReactiveController {
   hostConnected?(): void;
+
+  hostUpdated(): void {
+    this.updateFill();
+  }
 
   renderPrefix(content?: TemplateResult): TemplateResult {
     if (!content) {
@@ -27,6 +31,29 @@ export class AffixController implements ReactiveController {
 
   renderContent(slotName: string, content?: TemplateResult): TemplateResult {
     return html`<slot name=${slotName}>${content}</slot>`;
+  }
+
+  /**
+   * Updates the affix fill (prefix and suffix) whenever the affix content is provided.
+   * If there's no affix content available, the fill will not be added, regardless
+   * of the configured options.
+   */
+  protected updateFill(): void {
+    this.host.toggleAttribute(
+      'prefix-fill',
+      !!this.host.options.prefixFill &&
+        (!!this.host.options.prefixIcon ||
+          queryAssignedElements(this.host, { slot: 'prefix', flatten: true })
+            ?.length > 0)
+    );
+
+    this.host.toggleAttribute(
+      'suffix-fill',
+      !!this.host.options.suffixFill &&
+        (!!this.host.options.suffixIcon ||
+          queryAssignedElements(this.host, { slot: 'suffix', flatten: true })
+            ?.length > 0)
+    );
   }
 
   protected hasContent(slotName: string, icon?: string): boolean {

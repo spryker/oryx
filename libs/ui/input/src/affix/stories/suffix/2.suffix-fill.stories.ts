@@ -8,16 +8,16 @@ export default {
 } as Meta;
 
 interface Props {
+  suffixFill: boolean;
   disabled: boolean;
-  styleClass: string;
 }
 
 const Template: Story<Props> = ({
-  styleClass,
+  suffixFill,
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input class=${styleClass}>
+    <oryx-input .options=${{ suffixFill }}>
       <input placeholder="placeholder text" ?disabled=${disabled} />
       <span slot="suffix">suffix</span>
     </oryx-input>
@@ -25,6 +25,6 @@ const Template: Story<Props> = ({
 };
 export const SuffixFill = Template.bind({});
 SuffixFill.args = {
-  styleClass: 'suffix-fill',
+  suffixFill: false,
   disabled: false,
-};
+} as Props;
