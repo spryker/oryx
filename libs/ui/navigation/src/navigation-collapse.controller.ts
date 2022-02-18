@@ -19,7 +19,7 @@ export class CollapseToggleController implements ReactiveController {
 
   toggle(force?: boolean): void {
     this.host.toggleAttribute('collapsed', force);
-    this.host.style.setProperty(
+    document.body.style.setProperty(
       '--navigation-collapsed',
       this.host.hasAttribute('collapsed') ? '1' : '0'
     );
