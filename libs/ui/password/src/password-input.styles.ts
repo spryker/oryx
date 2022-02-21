@@ -8,5 +8,6 @@ export const passwordInputStyles = css`
     width: 38px;
     height: 100%;
     justify-content: center;
+    box-sizing: border-box;
   }
 `;
