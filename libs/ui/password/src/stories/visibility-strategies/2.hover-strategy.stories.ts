@@ -2,10 +2,14 @@ import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constant';
-import '../index';
-import { PasswordInputComponent } from '../index';
-import { PasswordVisibilityStrategy } from '../password-input.model';
+import { storybookPrefix } from '../../../../constant';
+import '../../index';
+import { PasswordInputComponent } from '../../index';
+import { PasswordVisibilityStrategy } from '../../password-input.model';
+
+export default {
+  title: `${storybookPrefix}/form/Password/visibility-strategies`,
+} as Meta;
 
 interface Props {
   strategy: PasswordVisibilityStrategy;
@@ -13,25 +17,6 @@ interface Props {
   timeout: number;
   label: string;
 }
-
-export default {
-  title: `${storybookPrefix}/form/Password`,
-  argTypes: {
-    strategy: {
-      options: ['CLICK', 'MOUSEDOWN', 'HOVER', 'NONE'],
-      control: { type: 'radio' },
-      description:
-        'The visibility strategy determines the UI event that is used to make the password visible',
-    },
-    timeout: {
-      type: 'number',
-      description: `Sets the timeout in milliseconds that is used to revoke the visibility of the password. Defaults to 5000.`,
-    },
-    disabled: {
-      type: 'boolean',
-    },
-  },
-} as Meta;
 
 const Template: Story<Props> = ({
   strategy,
@@ -53,16 +38,14 @@ const Template: Story<Props> = ({
   </oryx-password-input>`;
 };
 
-export const Password = Template.bind({});
+export const PasswordHoverStrategy = Template.bind({});
 
-Password.args = {
-  timeout: 2000,
-  strategy: PasswordVisibilityStrategy.CLICK,
-  disabled: false,
-  label: 'Password with label',
-};
+PasswordHoverStrategy.args = {
+  strategy: PasswordVisibilityStrategy.HOVER,
+  label: '"Hover" strategy',
+} as Props;
 
-Password.play = async (obj: {
+PasswordHoverStrategy.play = async (obj: {
   args: Props;
   canvasElement: HTMLElement;
 }): Promise<void> => {
@@ -70,9 +53,14 @@ Password.play = async (obj: {
     'oryx-password-input'
   ) as PasswordInputComponent;
   const input = component.querySelector('input') as HTMLInputElement;
+  const icon = component.shadowRoot?.querySelector('oryx-icon') as HTMLElement;
 
   userEvent.clear(input);
   await userEvent.type(input, 'Change123$', { delay: 100 });
   expect(input.type).toBe('password');
-  expect(input.value).toBe('Change123$');
+  userEvent.hover(icon);
+  await new Promise((r) => setTimeout(r, 500));
+  expect(input.type).toBe('text');
+  userEvent.unhover(icon);
+  expect(input.type).toBe('password');
 };

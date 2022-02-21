@@ -38,4 +38,5 @@ const Template: Story<unknown> = (): TemplateResult => {
     </div>
   </oryx-password-input>`;
 };
-export const CustomUI = Template.bind({});
+
+export const PasswordWithCustomUI = Template.bind({});
