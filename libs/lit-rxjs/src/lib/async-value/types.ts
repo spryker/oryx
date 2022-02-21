@@ -1,19 +1,11 @@
 import { Observable, Subscription } from 'rxjs';
 
-export interface Type<T> extends AbstractType<T> {
-  new (...args: any[]): T;
-}
-
-export interface AbstractType<T> {
-  prototype: T;
+export function isObservable<T = any>(object: any): object is Observable<T> {
+  return typeof object?.subscribe === 'function';
 }
 
 export function isPromise<T = any>(object: any): object is Promise<T> {
   return typeof object?.then === 'function';
-}
-
-export function isObservable<T = any>(object: any): object is Observable<T> {
-  return typeof object?.subscribe === 'function';
 }
 
 export interface AsyncValueStrategy {

@@ -17,13 +17,11 @@ export class AsyncValueDirective extends AsyncDirective {
   render(
     object: Promise<unknown> | Observable<unknown> | null | undefined
   ): unknown {
-    if (!this.object) {
-      if (this.isConnected && object) {
-        this.subscribe(object);
-      }
+    if (object && !this.object && this.isConnected) {
+      this.subscribe(object);
     }
 
-    if (object !== this.object && this.isConnected) {
+    if (object !== undefined && object !== this.object && this.isConnected) {
       this.dispose();
       this.render(object);
     }

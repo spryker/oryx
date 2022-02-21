@@ -1,160 +1,210 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import { LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { PartInfo } from 'lit/directive';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { SinonStub, spy, stub } from 'sinon';
+import { asyncValue } from '.';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
 import { AsyncValueDirective } from './async-value.directive';
+import { AsyncValueStrategy } from './types';
 
-// TODO: get rid of it when fix ECMAScript Modules issue
-jest.mock('lit', () => ({
-  noChange: null,
-}));
+const mockObservableSubsription = 'mockObservableSubsription';
 
-jest.mock('./async-value-promise-strategy.ts');
+const observableStrategyProto =
+  AsyncValueObservableStrategy.prototype as unknown as Record<
+    keyof AsyncValueStrategy,
+    SinonStub
+  >;
+const promiseStrategyProto =
+  AsyncValuePromiseStrategy.prototype as unknown as Record<
+    keyof AsyncValueStrategy,
+    SinonStub
+  >;
 
-jest.mock('lit/async-directive.js', () => ({
-  AsyncDirective: class {},
-}));
-
-jest.mock('lit/directive.js', () => ({
-  directive: (): jest.Mock => jest.fn(),
-}));
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const MockObservableStrategy: Record<string, jest.SpyInstance | null> = {
+const MockObservableStrategy: Record<string, SinonStub | null> = {
   createSubscription: null,
   dispose: null,
 };
 
-const MockPromiseStrategy: Record<string, jest.SpyInstance | null> = {
+const MockPromiseStrategy: Record<string, SinonStub | null> = {
   createSubscription: null,
   dispose: null,
 };
 
-describe('Async', () => {
-  let asyncValue: AsyncValueDirective;
+const mockInitialValue = 'mockInitialValue';
 
-  beforeEach(async () => {
-    asyncValue = new AsyncValueDirective({} as PartInfo);
+@customElement('mock-component')
+export class MockComponent extends LitElement {
+  mock$?: Promise<string> | BehaviorSubject<string>;
 
-    MockObservableStrategy.createSubscription = jest.spyOn(
-      AsyncValueObservableStrategy.prototype,
-      'createSubscription'
-    );
-    MockObservableStrategy.dispose = jest.spyOn(
-      AsyncValueObservableStrategy.prototype,
-      'dispose'
-    );
-    MockPromiseStrategy.createSubscription = jest.spyOn(
-      AsyncValuePromiseStrategy.prototype,
-      'createSubscription'
-    );
-    MockPromiseStrategy.dispose = jest.spyOn(
-      AsyncValuePromiseStrategy.prototype,
-      'dispose'
-    );
+  render(): TemplateResult {
+    return html`${asyncValue(this.mock$)}`;
+  }
+}
 
-    asyncValue.setValue = jest.fn();
-    asyncValue.isConnected = true;
-  });
+describe('asyncValue', () => {
+  describe('class functionality', () => {
+    let asyncValue: AsyncValueDirective;
 
-  describe('render method', () => {
-    it('should assign `AsyncValueObservableStrategy` instance to the `strategy` value if object is observable', () => {
-      const mockObservable = of('mockObservable');
+    beforeEach(() => {
+      asyncValue = new AsyncValueDirective({} as PartInfo);
 
-      asyncValue.render(mockObservable);
-
-      expect(MockObservableStrategy.createSubscription).toHaveBeenCalledWith(
-        mockObservable,
-        expect.anything()
+      MockObservableStrategy.createSubscription = stub(
+        observableStrategyProto,
+        'createSubscription'
+      ).returns(mockObservableSubsription);
+      MockObservableStrategy.dispose = stub(observableStrategyProto, 'dispose');
+      MockPromiseStrategy.createSubscription = stub(
+        promiseStrategyProto,
+        'createSubscription'
       );
+      MockPromiseStrategy.dispose = stub(promiseStrategyProto, 'dispose');
 
-      expect(asyncValue.strategy).toBeInstanceOf(AsyncValueObservableStrategy);
-      expect(asyncValue.object).toEqual(mockObservable);
+      asyncValue.setValue = spy();
+      asyncValue.isConnected = true;
     });
 
-    it('should assign `AsyncValueObservableStrategy` instance to the `strategy` value if object is promise', () => {
-      const mockPromise = new Promise((resolve) => {
-        resolve('mockPromise');
+    afterEach(async () => {
+      observableStrategyProto.createSubscription.restore();
+      observableStrategyProto.dispose.restore();
+      promiseStrategyProto.createSubscription.restore();
+      promiseStrategyProto.dispose.restore();
+    });
+
+    describe('render method', () => {
+      it('should assign `AsyncValueObservableStrategy` instance to the `strategy` value if object is observable', () => {
+        const mockObservable = of('mockObservable');
+
+        asyncValue.render(mockObservable);
+
+        expect(MockObservableStrategy.createSubscription).calledWith(
+          mockObservable
+        );
+
+        expect(asyncValue.strategy).instanceof(AsyncValueObservableStrategy);
+        expect(asyncValue.object).equal(mockObservable);
       });
 
-      asyncValue.render(mockPromise);
+      it('should assign `AsyncValuePromiseStrategy` instance to the `strategy` value if object is promise', () => {
+        const mockPromise = new Promise((resolve) => {
+          resolve('mockPromise');
+        });
 
-      expect(MockPromiseStrategy.createSubscription).toHaveBeenCalledWith(
-        mockPromise,
-        expect.anything()
-      );
+        asyncValue.render(mockPromise);
 
-      expect(asyncValue.strategy).toBeInstanceOf(AsyncValuePromiseStrategy);
-      expect(asyncValue.object).toEqual(mockPromise);
-    });
+        expect(MockPromiseStrategy.createSubscription).calledWith(mockPromise);
 
-    it('should dispose and create new subscription if internal object have already assigned and new object reference has been passed', () => {
-      const mockObservable = of('mockObservable');
-      const mockPromise = new Promise((resolve) => {
-        resolve('mockPromise');
+        expect(asyncValue.strategy).instanceof(AsyncValuePromiseStrategy);
+        expect(asyncValue.object).equal(mockPromise);
       });
 
-      asyncValue.render(mockObservable);
+      it('should dispose and create new subscription if internal object have already assigned and new object reference has been passed', () => {
+        const mockObservable = of('mockObservable');
+        const mockPromise = new Promise((resolve) => {
+          resolve('mockPromise');
+        });
 
-      expect(MockObservableStrategy.createSubscription).toHaveBeenCalledWith(
-        mockObservable,
-        expect.anything()
-      );
+        asyncValue.render(mockObservable);
 
-      asyncValue.render(mockPromise);
+        expect(MockObservableStrategy.createSubscription).calledWith(
+          mockObservable
+        );
 
-      expect(MockObservableStrategy.dispose).toHaveBeenCalled();
-      expect(MockPromiseStrategy.createSubscription).toHaveBeenCalledWith(
-        mockPromise,
-        expect.anything()
-      );
-      expect(asyncValue.object).toEqual(mockPromise);
+        asyncValue.render(mockPromise);
+
+        expect(MockObservableStrategy.dispose).calledWithExactly(
+          mockObservableSubsription
+        );
+        expect(MockPromiseStrategy.createSubscription).calledWith(mockPromise);
+        expect(asyncValue.object).equal(mockPromise);
+      });
+
+      it('should throw error if value is not observable or promise', async () => {
+        expect(() => asyncValue.render('notObservable' as any)).throw();
+      });
+    });
+
+    describe('disconnected method', () => {
+      it('should dispose from the current subscription and reset internal variables', () => {
+        const mockObservable = of('mockObservable');
+
+        asyncValue.render(mockObservable);
+
+        expect(MockObservableStrategy.createSubscription).calledWith(
+          mockObservable
+        );
+        expect(asyncValue.strategy).instanceof(AsyncValueObservableStrategy);
+        expect(asyncValue.object).equal(mockObservable);
+
+        asyncValue.disconnected();
+
+        expect(MockObservableStrategy.dispose).calledWith();
+        expect(asyncValue.setValue).calledWithExactly(null);
+        expect(asyncValue.strategy).be.a('null');
+        expect(asyncValue.object).be.a('null');
+      });
+    });
+
+    describe('reconnected method', () => {
+      it('should create subscription for already assigned object', () => {
+        const mockObservable = of('mockObservable');
+
+        asyncValue.render(mockObservable);
+
+        expect(MockObservableStrategy.createSubscription).calledWith(
+          mockObservable
+        );
+        expect(asyncValue.strategy).instanceof(AsyncValueObservableStrategy);
+        expect(asyncValue.object).equal(mockObservable);
+
+        asyncValue.reconnected();
+
+        expect(MockObservableStrategy.createSubscription).calledWith(
+          mockObservable
+        );
+        expect(asyncValue.strategy).instanceof(AsyncValueObservableStrategy);
+        expect(asyncValue.object).equal(mockObservable);
+      });
     });
   });
 
-  describe('disconnected method', () => {
-    it('should dispose from the current subscription and reset internal variables', () => {
-      const mockObservable = of('mockObservable');
+  describe('directive', () => {
+    let element: MockComponent;
 
-      asyncValue.render(mockObservable);
-
-      expect(MockObservableStrategy.createSubscription).toHaveBeenCalledWith(
-        mockObservable,
-        expect.anything()
-      );
-      expect(asyncValue.strategy).toBeInstanceOf(AsyncValueObservableStrategy);
-      expect(asyncValue.object).toEqual(mockObservable);
-
-      asyncValue.disconnected();
-
-      expect(MockObservableStrategy.dispose).toHaveBeenCalled();
-      expect(asyncValue.setValue).toHaveBeenCalledWith(null);
-      expect(asyncValue.strategy).toBe(null);
-      expect(asyncValue.object).toBe(null);
+    beforeEach(async () => {
+      element = await fixture(html`<mock-component></mock-component>`);
     });
-  });
 
-  describe('reconnected method', () => {
-    it('should create subscription for already assigned object', () => {
-      const mockObservable = of('mockObservable');
+    it('should render emmited value of observable', async () => {
+      element.mock$ = new BehaviorSubject(mockInitialValue);
+      element.requestUpdate();
+      await element.updateComplete;
 
-      asyncValue.render(mockObservable);
+      const mockUpdateValue = 'mockUpdateValue';
+      expect(element.shadowRoot?.textContent).equal(mockInitialValue);
+      element.mock$.next(mockUpdateValue);
+      expect(element.shadowRoot?.textContent).equal(mockUpdateValue);
+    });
 
-      expect(MockObservableStrategy.createSubscription).toHaveBeenCalledWith(
-        mockObservable,
-        expect.anything()
-      );
-      expect(asyncValue.strategy).toBeInstanceOf(AsyncValueObservableStrategy);
-      expect(asyncValue.object).toEqual(mockObservable);
+    it('should render resolved value of promise', async () => {
+      element.mock$ = Promise.resolve(mockInitialValue);
+      element.requestUpdate();
+      await element.updateComplete;
 
-      asyncValue.reconnected();
+      expect(element.shadowRoot?.textContent).equal(mockInitialValue);
+    });
 
-      expect(MockObservableStrategy.createSubscription).toHaveBeenCalledWith(
-        mockObservable,
-        expect.anything()
-      );
-      expect(asyncValue.strategy).toBeInstanceOf(AsyncValueObservableStrategy);
-      expect(asyncValue.object).toEqual(mockObservable);
+    it('should throw error if value is not observable or promise', async () => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        element.mock$ = 'notObservable' as any;
+        element.requestUpdate();
+        await element.updateComplete;
+      } catch (error) {
+        expect(error).be.an('string');
+      }
     });
   });
 });

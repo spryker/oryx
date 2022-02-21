@@ -1,7 +1,9 @@
+import { expect } from '@open-wc/testing';
 import { of } from 'rxjs';
+import { spy } from 'sinon';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 
-const mockCallback = jest.fn();
+const mockCallback = spy();
 
 describe('AsyncValueObservableStrategy', () => {
   let asyncValueObservableStrategy: AsyncValueObservableStrategy;
@@ -9,7 +11,7 @@ describe('AsyncValueObservableStrategy', () => {
   beforeEach(() => {
     asyncValueObservableStrategy = new AsyncValueObservableStrategy();
 
-    jest.resetAllMocks();
+    mockCallback.resetHistory();
   });
 
   describe('createSubscription method', () => {
@@ -24,7 +26,7 @@ describe('AsyncValueObservableStrategy', () => {
 
       asyncValueObservableStrategy.dispose(strategy);
 
-      expect(mockCallback).toHaveBeenCalledWith(mockResult);
+      expect(mockCallback).calledWithExactly(mockResult);
     });
   });
 });

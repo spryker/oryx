@@ -29,11 +29,15 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/lit-rxjs"],
+      "executor": "@nrwl/workspace:run-script",
       "options": {
-        "jestConfig": "libs/lit-rxjs/jest.config.js",
-        "passWithNoTests": true
+        "script": "test"
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test:watch"
       }
     }
   },
