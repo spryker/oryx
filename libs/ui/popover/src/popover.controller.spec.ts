@@ -2,6 +2,8 @@ import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import * as sinon from 'sinon';
 import { defaultPopoverOptions, PopoverComponent, PopoverController } from '.';
+import '../../option';
+import { OptionComponent } from '../../option';
 
 class CustomPopoverController extends PopoverController {
   test(): void {
@@ -14,11 +16,7 @@ export class FakeComponent extends LitElement {
   render(): TemplateResult {
     return html`
       <oryx-popover>
-        <oryx-option>first</oryx-option>
-        <oryx-option>second</oryx-option>
-        <oryx-option>third</oryx-option>
-        <oryx-option>four</oryx-option>
-        <oryx-option>fifth</oryx-option>
+        <slot></slot>
       </oryx-popover>
     `;
   }
@@ -35,6 +33,10 @@ export class NoPopoverComponent extends FakeComponent {
   }
 }
 customElements.define('no-popover', NoPopoverComponent);
+
+const items = (host: HTMLElement): OptionComponent[] => {
+  return Array.from(host.querySelectorAll('oryx-option'));
+};
 
 describe('PopoverController', () => {
   let element: FakeComponent;
@@ -66,7 +68,13 @@ describe('PopoverController', () => {
 
   describe('with popover', () => {
     beforeEach(async () => {
-      element = await fixture(html`<fake-popover></fake-popover>`);
+      element = await fixture(html`<fake-popover>
+        <oryx-option>first</oryx-option>
+        <oryx-option>second</oryx-option>
+        <oryx-option>third</oryx-option>
+        <oryx-option>four</oryx-option>
+        <oryx-option>fifth</oryx-option>
+      </fake-popover>`);
       element.popoverController.options = defaultPopoverOptions;
     });
 
@@ -78,7 +86,7 @@ describe('PopoverController', () => {
 
         describe('and the first option is highlighted', () => {
           beforeEach(() => {
-            popover()?.items[0].toggleAttribute('highlight', true);
+            items(element)[0].toggleAttribute('highlight', true);
           });
 
           describe('and the keydown with ArrowDown key is dispatch', () => {
@@ -87,19 +95,18 @@ describe('PopoverController', () => {
             });
 
             it('should no longer highlight the 1st option', () => {
-              expect(popover()?.items[0]?.hasAttribute('highlight')).to.be
-                .false;
+              expect(items(element)[0]?.hasAttribute('highlight')).to.be.false;
             });
 
             it('should highlight the 2nd option', () => {
-              expect(popover()?.items[1]?.hasAttribute('highlight')).to.be.true;
+              expect(items(element)[1]?.hasAttribute('highlight')).to.be.true;
             });
           });
         });
 
         describe('and the last option is highlighted', () => {
           beforeEach(() => {
-            popover()?.items[4].toggleAttribute('highlight', true);
+            items(element)[4].toggleAttribute('highlight', true);
           });
 
           describe('and the keydown with ArrowUp key is dispatch', () => {
@@ -108,20 +115,19 @@ describe('PopoverController', () => {
             });
 
             it('should no longer highlight the last option', () => {
-              expect(popover()?.items[4]?.hasAttribute('highlight')).to.be
-                .false;
+              expect(items(element)[4]?.hasAttribute('highlight')).to.be.false;
             });
 
             it('should highlight the for last option', () => {
-              expect(popover()?.items[3]?.hasAttribute('highlight')).to.be.true;
+              expect(items(element)[3]?.hasAttribute('highlight')).to.be.true;
             });
           });
         });
 
         describe('and the 2nd option is selected', () => {
           beforeEach(() => {
-            popover()?.items[1].toggleAttribute('selected', true);
-            popover()?.items[1].toggleAttribute('highlight', true);
+            items(element)[1].toggleAttribute('selected', true);
+            items(element)[1].toggleAttribute('highlight', true);
           });
 
           describe('and the keydown with ArrowDown key is dispatch', () => {
@@ -130,15 +136,14 @@ describe('PopoverController', () => {
             });
 
             it('should highlight the next option', () => {
-              expect(popover()?.items[2]?.hasAttribute('highlight')).to.be.true;
+              expect(items(element)[2]?.hasAttribute('highlight')).to.be.true;
             });
 
             describe('and when keydown with Enter key is dispatch', () => {
               beforeEach(() => dispatchKeydown('Enter'));
 
               it('should select the highlighted option', () => {
-                expect(popover()?.items[2]?.hasAttribute('selected')).to.be
-                  .true;
+                expect(items(element)[2]?.hasAttribute('selected')).to.be.true;
               });
             });
           });
@@ -149,15 +154,14 @@ describe('PopoverController', () => {
             });
 
             it('should highlight the next option', () => {
-              expect(popover()?.items[0]?.hasAttribute('highlight')).to.be.true;
+              expect(items(element)[0]?.hasAttribute('highlight')).to.be.true;
             });
 
             describe('and when keydown with Enter key is dispatch', () => {
               beforeEach(() => dispatchKeydown('Enter'));
 
               it('should select the first option', () => {
-                expect(popover()?.items[0]?.hasAttribute('selected')).to.be
-                  .true;
+                expect(items(element)[0]?.hasAttribute('selected')).to.be.true;
               });
             });
           });
@@ -167,7 +171,7 @@ describe('PopoverController', () => {
       describe('when the popover is closed', () => {
         describe('and an option is selected', () => {
           beforeEach(() => {
-            popover()?.items?.[3].toggleAttribute('selected', true);
+            items(element)[3].toggleAttribute('selected', true);
           });
 
           describe('and the keydown with ArrowDown key is dispatch', () => {
@@ -175,8 +179,7 @@ describe('PopoverController', () => {
               dispatchKeydown('ArrowDown');
             });
             it('should highlight the selected one', () => {
-              expect(popover()?.items?.[3].hasAttribute('highlight')).to.be
-                .true;
+              expect(items(element)[3].hasAttribute('highlight')).to.be.true;
             });
           });
 
@@ -185,8 +188,7 @@ describe('PopoverController', () => {
               dispatchKeydown('ArrowUp');
             });
             it('should highlight the selected one', () => {
-              expect(popover()?.items?.[3].hasAttribute('highlight')).to.be
-                .true;
+              expect(items(element)[3].hasAttribute('highlight')).to.be.true;
             });
           });
         });
@@ -301,8 +303,7 @@ describe('PopoverController', () => {
             expectOpen();
 
             it('should highlight the first option', () => {
-              expect(popover()?.items?.[0]?.hasAttribute('highlight')).to.be
-                .true;
+              expect(items(element)[0]?.hasAttribute('highlight')).to.be.true;
             });
           });
         });
@@ -318,7 +319,7 @@ describe('PopoverController', () => {
 
           describe('and the last item is highlighted', () => {
             beforeEach(() => {
-              popover()?.items?.[4];
+              items(element)[4];
               dispatchKeydown('ArrowUp');
             });
           });
@@ -379,6 +380,48 @@ describe('PopoverController', () => {
               expectation.verify();
             });
           });
+        });
+      });
+    });
+  });
+
+  describe('scrollIntoView', () => {
+    let clock = sinon.useFakeTimers();
+    let selected: OptionComponent | null;
+
+    describe('when an item is selected', () => {
+      afterEach(() => {
+        clock.restore();
+      });
+
+      beforeEach(async () => {
+        clock = sinon.useFakeTimers();
+
+        element = await fixture(html`<fake-popover>
+          <oryx-option>first</oryx-option>
+          <oryx-option selected highlight>second</oryx-option>
+        </fake-popover>`);
+
+        selected = element.querySelector('oryx-option[selected]');
+        if (selected) {
+          sinon.spy(selected, 'scrollIntoView');
+        }
+        element.dispatchEvent(
+          new Event('input', { bubbles: true, composed: true })
+        );
+      });
+
+      it('should not trigger scrollIntoView when the popup is shown', () => {
+        expect(selected?.scrollIntoView).to.have.not.been.called;
+      });
+
+      describe('but when 300ms have passed', () => {
+        beforeEach(() => {
+          clock.tick(300);
+        });
+
+        it('should trigger scrollIntoView when the popup is shown', () => {
+          expect(selected?.scrollIntoView).to.have.been.called;
         });
       });
     });
@@ -461,5 +504,58 @@ describe('PopoverController', () => {
     expectNoErrorOnDispatch('keydown', ' ');
     expectNoErrorOnDispatch('keydown', 'Escape');
     expectNoErrorOnDispatch('focusout');
+  });
+
+  describe('handleChange', () => {
+    const expectChangeEvent = (): void => {
+      it('should not throw an error', () => {
+        popover()?.dispatchEvent(
+          new Event('change', { bubbles: true, composed: true })
+        );
+        expect(() => {
+          (): void => undefined;
+        }).not.to.throw;
+      });
+    };
+
+    describe('when a change event is dispatched', () => {
+      describe('with items', () => {
+        beforeEach(async () => {
+          element = await fixture(html`<fake-popover>
+            <input value="first" />
+            <oryx-option value="first">first</oryx-option>
+            <oryx-option>second</oryx-option>
+          </fake-popover>`);
+          element.popoverController.options = defaultPopoverOptions;
+        });
+        expectChangeEvent();
+      });
+
+      describe('without items', () => {
+        beforeEach(async () => {
+          element = await fixture(html`<fake-popover>
+            <input value="value" />
+          </fake-popover>`);
+          element.popoverController.options = defaultPopoverOptions;
+        });
+
+        expectChangeEvent();
+      });
+
+      describe('when not selectable', () => {
+        beforeEach(async () => {
+          element = await fixture(html`<fake-popover>
+            <input value="first" />
+            <oryx-option value="first">first</oryx-option>
+            <oryx-option>second</oryx-option>
+          </fake-popover>`);
+          element.popoverController.options = {
+            selectable: false,
+          };
+        });
+
+        expectChangeEvent();
+      });
+    });
   });
 });

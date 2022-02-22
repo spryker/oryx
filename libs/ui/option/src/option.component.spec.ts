@@ -49,4 +49,34 @@ describe('OptionComponent', () => {
     //   });
     // });
   });
+
+  describe('values', () => {
+    describe('when the item has no value', () => {
+      beforeEach(async () => {
+        const parent = await fixture(
+          html`<div><oryx-option>mock inner text</oryx-option></div>`
+        );
+        element = parent.querySelector('oryx-option') as OptionComponent;
+      });
+
+      it('should return the innerText', () => {
+        expect(element.value).to.eq('mock inner text');
+      });
+    });
+
+    describe('when the item has a value', () => {
+      beforeEach(async () => {
+        const parent = await fixture(
+          html`<div>
+            <oryx-option value="mock value">mock inner text</oryx-option>
+          </div>`
+        );
+        element = parent.querySelector('oryx-option') as OptionComponent;
+      });
+
+      it('should return the innerText', () => {
+        expect(element.value).to.eq('mock value');
+      });
+    });
+  });
 });

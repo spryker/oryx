@@ -1,6 +1,7 @@
 import { html, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { getControl } from '../../input/src/util';
+import { OptionComponent } from '../../option';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
 import { OryxElement } from '../../utilities';
@@ -60,13 +61,16 @@ export class TypeaheadController implements ReactiveController {
   protected handleSelect(ev: CustomEvent<PopoverSelectEvent>): void {
     const control = getControl(this.host);
     if (control) {
-      control.value = this.getValue(ev.detail.selected);
-      control.dispatchEvent(new Event('change', { bubbles: true }));
+      const value = this.getValue(ev.detail.selected);
+      if (value) {
+        control.value = value;
+        control.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
   }
 
-  protected getValue(option: HTMLElement): string {
-    return option.getAttribute('value') ?? option.innerText;
+  protected getValue(option: HTMLElement): string | undefined {
+    return (option as OptionComponent).value;
   }
 
   constructor(protected host: OryxElement<TypeaheadOptions>) {

@@ -12,14 +12,14 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <div class="stories">
       <oryx-typeahead>
-        <input value="value" aria-label="label" />
+        <input value="3" aria-label="label" />
         ${'123456789'
           .split('')
           .map((i) => html`<oryx-option slot="option">${i}</oryx-option>`)}
       </oryx-typeahead>
 
       <oryx-typeahead style="--oryx-popover-visible: 1;" up>
-        <input value="value" aria-label="label" />
+        <input value="3" aria-label="label" />
         ${'123456789'
           .split('')
           .map((i) => html`<oryx-option slot="option">${i}</oryx-option>`)}

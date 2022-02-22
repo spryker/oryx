@@ -16,9 +16,9 @@ const Template: Story<Props> = ({ maxHeight }: Props): TemplateResult => {
   return html`
     <div class="stories">
       <oryx-typeahead>
-        <input value="value" aria-label="label" />
+        <input value="second" aria-label="label" />
         <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option" selected>second</oryx-option>
+        <oryx-option slot="option">second</oryx-option>
         <oryx-option slot="option">3rd</oryx-option>
         <oryx-option slot="option">4</oryx-option>
         <oryx-option slot="option">5</oryx-option>
@@ -26,9 +26,9 @@ const Template: Story<Props> = ({ maxHeight }: Props): TemplateResult => {
       </oryx-typeahead>
 
       <oryx-typeahead style="--oryx-popover-visible: 1;">
-        <input value="value" aria-label="label" />
+        <input value="second" aria-label="label" />
         <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option" selected>second</oryx-option>
+        <oryx-option slot="option">second</oryx-option>
         <oryx-option slot="option">3rd</oryx-option>
         <oryx-option slot="option">4</oryx-option>
         <oryx-option slot="option">5</oryx-option>

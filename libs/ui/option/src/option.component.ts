@@ -8,7 +8,7 @@ export class OptionComponent extends LitElement {
   static styles = [optionStyles];
 
   @property() icon?: IconType | string;
-  @property({ reflect: true }) value?: string;
+
   @property({ type: Boolean, reflect: true }) selected?: boolean;
 
   // TODO: this will come back when we introduce the SELECT component
@@ -27,5 +27,16 @@ export class OptionComponent extends LitElement {
       )}
       <slot></slot>
       <oryx-icon class="mark" type="mark"></oryx-icon>`;
+  }
+
+  protected _value?: string;
+
+  get value(): string | undefined {
+    return this._value ?? this.innerText;
+  }
+
+  @property()
+  set value(value: string | undefined) {
+    this._value = value;
   }
 }

@@ -25,14 +25,10 @@ interface Props {
 
 const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
   const content = html`
-    <input value="second" aria-label="label" />
-    <oryx-option slot="option">first</oryx-option>
-    <oryx-option slot="option">second</oryx-option>
-    <oryx-option
-      slot="option"
-      style="margin:10px;border: solid 1px rebeccapurple"
-      >you can apply custom styles</oryx-option
-    >
+    <input value="20" aria-label="label" />
+    ${Array.from({ length: 250 }, (_, x) => x + 1).map(
+      (item) => html`<oryx-option slot="option">${item}</oryx-option>`
+    )}
   `;
   return html`
     <div class="stories">
@@ -54,8 +50,8 @@ const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
   `;
 };
 
-export const Options = Template.bind({});
-Options.argTypes = {
+export const ManyOptions = Template.bind({});
+ManyOptions.argTypes = {
   searchIcon: {
     control: { type: 'text' },
     defaultValue: 'search',

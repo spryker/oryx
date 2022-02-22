@@ -9,20 +9,26 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
+  const content = html`
+    <input value="two" aria-label="label" />
+    <div slot="option">
+      <div>
+        ${['one', 'two', 'tree'].map(
+          (i) => html`<oryx-option>${i}</oryx-option>`
+        )}
+      </div>
+      <div>
+        ${['four', 'five', 'six'].map(
+          (i) => html`<oryx-option>${i}</oryx-option>`
+        )}
+      </div>
+    </div>
+  `;
   return html`
     <div class="stories">
-      <oryx-typeahead>
-        <input value="value" aria-label="label" />
-        <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option">second</oryx-option>
-        <oryx-option slot="option">3rd</oryx-option>
-      </oryx-typeahead>
-
+      <oryx-typeahead>${content}</oryx-typeahead>
       <oryx-typeahead style="--oryx-popover-visible: 1;">
-        <input value="value" aria-label="label" />
-        <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option">second</oryx-option>
-        <oryx-option slot="option">3rd</oryx-option>
+        ${content}
       </oryx-typeahead>
     </div>
 
@@ -37,17 +43,24 @@ const Template: Story<unknown> = (): TemplateResult => {
     </style>
 
     <style>
-      div[slot='option'] {
+      [slot='option'] {
+        display: flex;
+      }
+
+      [slot='option'] > div {
+        flex: 0 0 50%;
+      }
+      oryx-option {
         padding: 10px;
         margin: 10px;
         cursor: pointer;
         border-radius: 15px;
       }
-      div[slot='option']:hover,
+      oryx-option:hover,
       [highlight] {
         background-color: red;
       }
-      [selected]:after {
+      oryx-option[selected]:after {
         content: ' (selected)';
         color: var(--oryx-color-brand);
       }
@@ -55,4 +68,4 @@ const Template: Story<unknown> = (): TemplateResult => {
   `;
 };
 
-export const CustomOptions = Template.bind({});
+export const MultiColumns = Template.bind({});

@@ -125,11 +125,16 @@ export class SearchController implements ReactiveController {
     }
   }
 
-  protected clear(ev: Event): void {
-    ev.stopPropagation();
+  protected clear(e: Event): void {
+    e.stopPropagation();
     if (this.control) {
       this.control.value = '';
-      this.host.dispatchEvent(new Event('input'));
+      this.host.dispatchEvent(
+        new Event('input', { bubbles: true, composed: true })
+      );
+      this.host.dispatchEvent(
+        new Event('change', { bubbles: true, composed: true })
+      );
       this.control.focus();
     }
   }
