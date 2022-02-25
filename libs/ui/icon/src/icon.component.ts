@@ -1,31 +1,45 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { IconSize, IconType } from './icon.model';
+import { when } from 'lit/directives/when.js';
+import { IconProperties, Icons, IconSize } from './icon.model';
 import { styles } from './icon.styles';
 
-export class IconComponent extends LitElement {
+const DEFAULT_SPRITE = 'assets/icons.svg';
+
+export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 
-  /**
-   * Defaults to 'large'.
-   *
-   * The default can be controlled by a CSS property (`--oryx-icon-size-default`)
-   */
+  @property({ reflect: true }) type?: Icons | string;
   @property({ reflect: true }) size?: IconSize;
-
-  @property({ reflect: true }) type?: IconType | string;
+  @property() sprite?: string;
 
   render(): TemplateResult {
     return html`
       <slot>
-        ${this.type
-          ? html`<svg viewBox="0 0 24 24">
-              <use href="assets/icons.svg#${this.type}" />
-            </svg> `
-          : html``}
+        ${when(
+          this.type,
+          () => html`<svg viewBox="0 0 24 24">
+            <use href="${this.spriteUrl}" />
+          </svg>`
+        )}
       </slot>
     `;
   }
-}
 
-// -12 -12 48 48
+  /**
+   * Creates the SVG (sprite) url based on the given sprite and icon.
+   * The resulting SVG url uses the following format:
+   *
+   * ```html
+   * <use href="assets/icons.svg#iconType" />
+   * ```
+   *
+   * Defaults to use 'assets/icons.svg'.
+   */
+  protected get spriteUrl(): string {
+    let url = '';
+    url += this.sprite ?? DEFAULT_SPRITE;
+    url += `#${this.type}`;
+    return url;
+  }
+}

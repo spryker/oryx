@@ -40,7 +40,7 @@ describe('Icon', () => {
   });
 
   describe('icon size', () => {
-    const sizes: IconSize[] = ['small'];
+    const sizes: IconSize[] = [IconSize.SMALL];
     sizes.forEach((size) => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {

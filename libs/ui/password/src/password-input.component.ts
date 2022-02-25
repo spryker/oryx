@@ -1,6 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../error-message/src/index';
+import { invisible, visible } from '../../icon';
 import {
   AffixController,
   AffixOptions,
@@ -9,7 +10,6 @@ import {
   inputStyles,
 } from '../../input';
 import { OryxElement } from '../../utilities';
-import { ICON_INVISIBLE, ICON_VISIBLE } from './icons';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { passwordInputStyles } from './password-input.styles';
 
@@ -39,6 +39,16 @@ export class PasswordInputComponent
    */
   @property({ type: Number }) timeout?: number = 5000;
 
+  /**
+   * @returns the visible or invisible icon that is rendered to indicate whether the
+   * password is hidden or not.
+   */
+  protected getIcon(): TemplateResult {
+    return this.isVisible
+      ? html`<svg viewBox="0 0 24 24">${invisible.source}</svg>`
+      : html`<svg viewBox="0 0 24 24">${visible.source}</svg>`;
+  }
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
@@ -55,8 +65,6 @@ export class PasswordInputComponent
    * the possibility to show the password.
    */
   protected renderActionIcon(): TemplateResult {
-    const icon = this.isVisible ? ICON_INVISIBLE : ICON_VISIBLE;
-
     switch (this.strategy) {
       case PasswordVisibilityStrategy.NONE:
         return html``;
@@ -66,7 +74,7 @@ export class PasswordInputComponent
             @mouseover=${this.showVisibility}
             @mouseout=${this.hideVisibility}
           >
-            ${icon}
+            ${this.getIcon()}
           </oryx-icon>
         `;
 
@@ -77,14 +85,14 @@ export class PasswordInputComponent
             @mouseup=${this.hideVisibility}
             @mouseout=${this.hideVisibility}
           >
-            ${icon}
+            ${this.getIcon()}
           </oryx-icon>
         `;
 
       default:
         return html`
           <oryx-icon size="medium" @click=${this.toggleVisibility}>
-            ${icon}
+            ${this.getIcon()}
           </oryx-icon>
         `;
     }

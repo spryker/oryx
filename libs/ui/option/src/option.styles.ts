@@ -17,7 +17,7 @@ export const optionStyles = css`
   }
 
   oryx-icon.mark {
-    --icon-size: var(--oryx-icon-size-small);
+    --oryx-icon-size: var(--oryx-icon-size-small);
 
     display: none;
     color: var(--oryx-color-brand);

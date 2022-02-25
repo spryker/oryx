@@ -7,7 +7,7 @@ export const searchStyles = css`
   }
 
   .clear[type='remove'] {
-    --icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-medium);
   }
 
   .clear {

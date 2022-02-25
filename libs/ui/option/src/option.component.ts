@@ -1,13 +1,13 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { IconType } from '../../icon/';
+import { Icons } from '../../icon';
 import { optionStyles } from './option.styles';
 
 export class OptionComponent extends LitElement {
   static styles = [optionStyles];
 
-  @property() icon?: IconType | string;
+  @property() icon?: Icons | string;
 
   @property({ type: Boolean, reflect: true }) selected?: boolean;
 

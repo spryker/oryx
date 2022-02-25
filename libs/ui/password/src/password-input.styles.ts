@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const passwordInputStyles = css`
   oryx-icon {
-    --icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-medium);
 
     cursor: pointer;
     width: 38px;

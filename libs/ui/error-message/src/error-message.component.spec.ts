@@ -19,7 +19,7 @@ describe('ErrorMessageComponent', () => {
     });
 
     it('should render an error icon', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-icon[type=error]')).to
+      expect(element?.shadowRoot?.querySelector('oryx-icon[type=warning]')).to
         .exist;
     });
 

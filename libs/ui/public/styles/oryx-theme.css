@@ -26,7 +26,10 @@
   --oryx-color-brand-dark: #138671;
   --oryx-color-brand-darker: #225e52;
 
-  /* error color */
+  /* accent color */
+  --oryx-color-info: #2480f2;
+  --oryx-color-success: #17b497;
+  --oryx-color-warning: #f2392e;
   --oryx-color-error: #f2392e;
 
   /* theme color */

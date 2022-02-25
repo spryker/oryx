@@ -10,7 +10,7 @@ export class ErrorMessageComponent extends LitElement {
   render(): TemplateResult {
     return html`
       ${this.message
-        ? html` <oryx-icon type="error" size="small"></oryx-icon>
+        ? html` <oryx-icon type="warning" size="small"></oryx-icon>
             ${this.message}`
         : html`<slot></slot>`}
     `;
