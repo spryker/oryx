@@ -1,0 +1,13 @@
+{
+  "name": "fes-storefront",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "tsc && vite build",
+    "dev:ssr": "node server",
+    "build:server": "tsc && vite build --outDir ../../dist/apps/storefront/server --ssr src/entry-server.js -c vite.config.server.ts",
+    "build:ssr": "npm run build && npm run build:server"
+  },
+  "type": "module"
+}

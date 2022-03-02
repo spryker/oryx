@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "compilerOptions": {
+    "noEmit": true,
+    "target": "ESNext",
+    "emitDecoratorMetadata": false,
+    "useDefineForClassFields": false,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "experimentalDecorators": true,
+    "moduleResolution": "Node",
+    "isolatedModules": true
+  },
+  "include": ["./src"]
+}

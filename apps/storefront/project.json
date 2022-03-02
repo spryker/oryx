@@ -1,0 +1,29 @@
+{
+  "root": "apps/storefront",
+  "projectType": "application",
+  "sourceRoot": "apps/storefront/src",
+  "tags": [],
+  "targets": {
+    "ssr": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev:ssr",
+        "cwd": "apps/storefront"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev",
+        "cwd": "apps/storefront"
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "apps/storefront"
+      }
+    }
+  }
+}
