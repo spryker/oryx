@@ -1,4 +1,3 @@
-import { expect, fixture, html } from '@open-wc/testing';
 import { queryFirstAssigned } from '../../utilities';
 import {
   ClearIconAppearance,
@@ -8,6 +7,8 @@ import {
 } from './';
 import './index';
 import { SearchComponent } from './search.component';
+import { expect, fixture, html } from '@open-wc/testing';
+import * as sinon from 'sinon';
 
 describe('SearchComponent', () => {
   let element: SearchComponent;
@@ -420,6 +421,22 @@ describe('SearchComponent', () => {
       it('should hide the clear icon', () => {
         expect(element.hasAttribute('has-value')).to.be.false;
       });
+
+      it('should not prevent event bubbling', () => {
+        const event = new KeyboardEvent('mousedown', {
+          bubbles: true,
+        });
+        const exp1 = sinon
+          .mock(event)
+          .expects('stopImmediatePropagation')
+          .never();
+        const exp2 = sinon.mock(event).expects('stopPropagation').never();
+        const exp3 = sinon.mock(event).expects('preventDefault').never();
+        clearIcon()?.dispatchEvent(event);
+        exp1.verify();
+        exp2.verify();
+        exp3.verify();
+      });
     });
 
     describe('when the input has an initial value', () => {
@@ -431,6 +448,22 @@ describe('SearchComponent', () => {
 
       it('should have the clear icon', () => {
         expect(clearIcon()).to.exist;
+      });
+
+      it('should prevent event bubbling', () => {
+        const event = new KeyboardEvent('mousedown', {
+          bubbles: true,
+        });
+        const exp1 = sinon
+          .mock(event)
+          .expects('stopImmediatePropagation')
+          .once();
+        const exp2 = sinon.mock(event).expects('stopPropagation').once();
+        const exp3 = sinon.mock(event).expects('preventDefault').once();
+        clearIcon()?.dispatchEvent(event);
+        exp1.verify();
+        exp2.verify();
+        exp3.verify();
       });
 
       describe('but when clear icon is clicked', () => {
@@ -477,6 +510,28 @@ describe('SearchComponent', () => {
         it('should have the `has-value` attribute', () => {
           expect(element.hasAttribute('has-value')).to.be.true;
         });
+      });
+    });
+
+    describe('when there is no control', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-search>no control</oryx-search>`);
+      });
+
+      it('should not prevent event bubbling', () => {
+        const event = new KeyboardEvent('mousedown', {
+          bubbles: true,
+        });
+        const exp1 = sinon
+          .mock(event)
+          .expects('stopImmediatePropagation')
+          .never();
+        const exp2 = sinon.mock(event).expects('stopPropagation').never();
+        const exp3 = sinon.mock(event).expects('preventDefault').never();
+        clearIcon()?.dispatchEvent(event);
+        exp1.verify();
+        exp2.verify();
+        exp3.verify();
       });
     });
   });

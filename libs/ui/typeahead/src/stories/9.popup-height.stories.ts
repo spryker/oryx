@@ -1,8 +1,8 @@
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../../../popover/index';
 import '../index';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
@@ -17,22 +17,22 @@ const Template: Story<Props> = ({ maxHeight }: Props): TemplateResult => {
     <div class="stories">
       <oryx-typeahead>
         <input value="second" aria-label="label" />
-        <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option">second</oryx-option>
-        <oryx-option slot="option">3rd</oryx-option>
-        <oryx-option slot="option">4</oryx-option>
-        <oryx-option slot="option">5</oryx-option>
-        <oryx-option slot="option">6</oryx-option>
+        <oryx-option>first</oryx-option>
+        <oryx-option>second</oryx-option>
+        <oryx-option>3rd</oryx-option>
+        <oryx-option>4</oryx-option>
+        <oryx-option>5</oryx-option>
+        <oryx-option>6</oryx-option>
       </oryx-typeahead>
 
       <oryx-typeahead style="--oryx-popover-visible: 1;">
         <input value="second" aria-label="label" />
-        <oryx-option slot="option">first</oryx-option>
-        <oryx-option slot="option">second</oryx-option>
-        <oryx-option slot="option">3rd</oryx-option>
-        <oryx-option slot="option">4</oryx-option>
-        <oryx-option slot="option">5</oryx-option>
-        <oryx-option slot="option">6</oryx-option>
+        <oryx-option>first</oryx-option>
+        <oryx-option>second</oryx-option>
+        <oryx-option>3rd</oryx-option>
+        <oryx-option>4</oryx-option>
+        <oryx-option>5</oryx-option>
+        <oryx-option>6</oryx-option>
       </oryx-typeahead>
     </div>
 

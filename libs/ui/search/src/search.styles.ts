@@ -22,7 +22,7 @@ export const searchStyles = css`
     opacity: 100%;
   }
 
-  .clear:not([appearance='SHOW']) + .search {
+  .clear:not([appearance='SHOW']) + oryx-icon {
     position: absolute;
   }
 

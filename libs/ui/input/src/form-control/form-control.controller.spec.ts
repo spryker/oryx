@@ -1,10 +1,11 @@
-import { expect, fixture, html } from '@open-wc/testing';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import { OryxElement } from '../../../utilities';
 import { getControl } from '../util';
 import { FormControlController } from './form-control.controller';
 import { FormControlOptions } from './form-control.model';
+import { expect, fixture, html } from '@open-wc/testing';
+import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import * as sinon from 'sinon';
 
 export class InputComponent
   extends LitElement
@@ -27,6 +28,7 @@ customElements.define('fake-without-slot', NoSlotComponent);
 
 describe('FormControlController', () => {
   let element: InputComponent;
+
   describe('when no slot is available', () => {
     beforeEach(async () => {
       element = await fixture(html`<fake-without-slot></fake-without-slot>`);
@@ -102,6 +104,20 @@ describe('FormControlController', () => {
         <button id="focusable">focusable</button>
         <span id="notFocusable">not focusable</span>
       </fake-input>`);
+    });
+
+    describe('when the mousedown event is dispatched on the host element', () => {
+      let expectation: sinon.SinonExpectation;
+
+      beforeEach(async () => {
+        const event = new Event('mousedown', { bubbles: true });
+        expectation = sinon.mock(event).expects('preventDefault').once();
+        element.dispatchEvent(event);
+      });
+
+      it('should stop immediate propagation of the event', () => {
+        expectation.verify();
+      });
     });
 
     describe('when a non-focusable element is clicked', () => {

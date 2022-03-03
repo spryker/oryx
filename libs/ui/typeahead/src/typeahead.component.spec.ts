@@ -1,21 +1,22 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { queryAssignedElements } from '../../utilities';
 import './index';
 import { TypeaheadComponent } from './typeahead.component';
+import { expect, fixture, html } from '@open-wc/testing';
 
 describe('TypeaheadComponent', () => {
   let element: TypeaheadComponent;
 
   describe('empty', () => {
-    describe('when the showEmpty is not set', () => {
+    describe('when the isEmpty is not set', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-typeahead></oryx-typeahead>`);
       });
 
       it('should not have an empty message', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
-            ?.textContent
-        ).to.not.contain('No results found');
+          queryAssignedElements(element, { slot: 'empty', flatten: true })
+            .length
+        ).to.eq(0);
       });
     });
 
@@ -60,9 +61,9 @@ describe('TypeaheadComponent', () => {
 
       it('should not have an empty message', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
-            ?.textContent
-        ).to.not.contain('No results found');
+          queryAssignedElements(element, { slot: 'empty', flatten: true })
+            .length
+        ).to.eq(0);
       });
     });
   });

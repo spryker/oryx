@@ -35,16 +35,11 @@ export const typeaheadStyles = css`
     --oryx-label-height: 23px;
   }
 
-  :host([has-value]) slot[name='option'] .placeholder {
+  slot .placeholder {
     height: 120px;
   }
 
-  :host(:not([has-value])) slot[name='loading'],
-  :host(:not([has-value])) slot[name='empty'] {
-    display: none;
-  }
-
-  slot[name='option'] .placeholder {
+  slot[name='empty'] .placeholder {
     display: flex;
     justify-content: center;
     align-items: center;

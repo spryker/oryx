@@ -1,8 +1,8 @@
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../../../popover/index';
 import '../index';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
@@ -15,14 +15,14 @@ const Template: Story<unknown> = (): TemplateResult => {
         <input value="3" aria-label="label" />
         ${'123456789'
           .split('')
-          .map((i) => html`<oryx-option slot="option">${i}</oryx-option>`)}
+          .map((i) => html`<oryx-option>${i}</oryx-option>`)}
       </oryx-typeahead>
 
       <oryx-typeahead style="--oryx-popover-visible: 1;" up>
         <input value="3" aria-label="label" />
         ${'123456789'
           .split('')
-          .map((i) => html`<oryx-option slot="option">${i}</oryx-option>`)}
+          .map((i) => html`<oryx-option>${i}</oryx-option>`)}
       </oryx-typeahead>
     </div>
 

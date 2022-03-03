@@ -1,10 +1,10 @@
-import { html, ReactiveController, TemplateResult } from 'lit';
 import { isFocusable, OryxElement } from '../../../utilities';
 import { ErrorController } from '../error/error.controller';
 import { LabelController } from '../label/label.controller';
 import { getControl } from '../util';
 import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
+import { html, ReactiveController, TemplateResult } from 'lit';
 
 export class FormControlController implements ReactiveController {
   protected visibleFocusController: VisibleFocusController;
@@ -19,10 +19,13 @@ export class FormControlController implements ReactiveController {
   }
 
   hostConnected(): void {
-    this.host.addEventListener('mousedown', (ev: Event) => {
+    this.host.addEventListener('mousedown', (e: Event) => {
       // we do not focus the control in case another (custom) focusable
       // element is used inside the form control (ie inside prefix)
-      if (!isFocusable(ev.target as HTMLElement)) {
+      if (!isFocusable(e.target as HTMLElement)) {
+        if (e.target === this.host) {
+          e.preventDefault();
+        }
         this.control?.focus();
       }
     });

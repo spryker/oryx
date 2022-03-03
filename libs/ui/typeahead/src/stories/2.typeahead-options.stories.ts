@@ -1,5 +1,3 @@
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../../../popover/index';
 import {
@@ -8,6 +6,8 @@ import {
   SearchIconPosition,
 } from '../../../search';
 import '../index';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
@@ -26,11 +26,9 @@ interface Props {
 const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
   const content = html`
     <input value="second" aria-label="label" />
-    <oryx-option slot="option">first</oryx-option>
-    <oryx-option slot="option">second</oryx-option>
-    <oryx-option
-      slot="option"
-      style="margin:10px;border: solid 1px rebeccapurple"
+    <oryx-option>first</oryx-option>
+    <oryx-option>second</oryx-option>
+    <oryx-option style="margin:10px;border: solid 1px rebeccapurple"
       >you can apply custom styles</oryx-option
     >
   `;

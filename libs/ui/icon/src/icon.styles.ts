@@ -5,6 +5,7 @@ export const styles = css`
     display: flex;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
+    justify-content: center;
   }
 
   svg,

@@ -1,4 +1,3 @@
-import { html, ReactiveController, TemplateResult } from 'lit';
 import { AffixController, getControl } from '../../input';
 import { OryxElement } from '../../utilities';
 import {
@@ -8,6 +7,8 @@ import {
   SearchIconPosition,
   SearchOptions,
 } from './search.model';
+import { html, ReactiveController, TemplateResult } from 'lit';
+
 export class SearchController implements ReactiveController {
   protected affixController: AffixController;
 
@@ -30,14 +31,14 @@ export class SearchController implements ReactiveController {
   }
 
   renderSuffix(): TemplateResult {
-    let clearContent: TemplateResult = html``;
     const { clearIconPosition } = this.host.options;
     if (!clearIconPosition || clearIconPosition === ClearIconPosition.AFTER) {
-      clearContent = this.clearButton;
+      return html`${this.clearButton}${this.affixController.renderSuffix(
+        this.suffixContent
+      )}`;
+    } else {
+      return html`${this.affixController.renderSuffix(this.suffixContent)}`;
     }
-    return html`${clearContent}${this.affixController.renderSuffix(
-      this.suffixContent
-    )}`;
   }
 
   /**
@@ -99,9 +100,18 @@ export class SearchController implements ReactiveController {
         type=${icon}
         class="clear"
         appearance=${clearIconAppearance ?? ClearIconAppearance.TOGGLE}
+        @mousedown=${(e: Event): void => this.muteEvents(e)}
         @click=${(ev: Event): void => this.clear(ev)}
       ></oryx-icon>
     `;
+  }
+
+  protected muteEvents(e: Event): void {
+    if (this.control && this.control.value !== '') {
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
+    }
   }
 
   get control(): HTMLInputElement | HTMLSelectElement | undefined {
@@ -126,8 +136,8 @@ export class SearchController implements ReactiveController {
   }
 
   protected clear(e: Event): void {
-    e.stopPropagation();
-    if (this.control) {
+    if (this.control && this.control.value !== '') {
+      e.stopPropagation();
       this.control.value = '';
       this.host.dispatchEvent(
         new Event('input', { bubbles: true, composed: true })

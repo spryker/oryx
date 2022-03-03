@@ -1,12 +1,13 @@
-import { expect, fixture, html } from '@open-wc/testing';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import '../../option/';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
 import { OryxElement, queryFirstAssigned } from '../../utilities';
 import { TypeaheadController } from './typeahead.controller';
 import { TypeaheadOptions } from './typeahead.model';
+import { expect, fixture, html } from '@open-wc/testing';
+import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+
 export class FakeComponent
   extends LitElement
   implements OryxElement<TypeaheadOptions>
@@ -58,6 +59,42 @@ describe('TypeaheadController', () => {
     element = await fixture(html`<fake-typeahead></fake-typeahead>`);
   });
 
+  describe('slot', () => {
+    describe('when oryx-option elements without a slot are provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<fake-typeahead>
+            <oryx-option>first</oryx-option>
+            <oryx-option>second</oryx-option>
+            <oryx-option>third</oryx-option>
+          </fake-typeahead>`
+        );
+      });
+      it('should add the option slot to it', () => {
+        expect(
+          element.querySelectorAll('oryx-option[slot=option').length
+        ).to.eq(3);
+      });
+    });
+
+    describe('when oryx-option elements with a slot are provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<fake-typeahead>
+            <oryx-option slot="other">first</oryx-option>
+            <oryx-option slot="other">second</oryx-option>
+            <oryx-option slot="other">third</oryx-option>
+          </fake-typeahead>`
+        );
+      });
+      it('should add the option slot to it', () => {
+        expect(
+          element.querySelectorAll('oryx-option[slot=option').length
+        ).to.eq(0);
+      });
+    });
+  });
+
   describe('when an input is dispatched', () => {
     let result: SearchEvent;
 
@@ -95,8 +132,6 @@ describe('TypeaheadController', () => {
         const input: HTMLInputElement = queryFirstAssigned(element, {
           flatten: true,
         }) as HTMLInputElement;
-        console.log(selected);
-        console.log(input);
         expect(input?.value).to.eq('option-value');
       });
     });

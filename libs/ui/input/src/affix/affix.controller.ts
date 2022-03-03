@@ -1,6 +1,6 @@
-import { html, ReactiveController, TemplateResult } from 'lit';
 import { OryxElement, queryAssignedElements } from '../../../utilities/';
 import { AffixOptions } from './affix.model';
+import { html, ReactiveController, TemplateResult } from 'lit';
 
 export class AffixController implements ReactiveController {
   hostConnected?(): void;
@@ -20,13 +20,12 @@ export class AffixController implements ReactiveController {
   }
 
   renderSuffix(content?: TemplateResult): TemplateResult {
-    if (!content) {
-      const icon = this.host.options.suffixIcon;
-      if (this.hasContent('suffix', icon)) {
-        content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
-      }
+    let iconContent;
+    const icon = this.host.options.suffixIcon;
+    if (this.hasContent('suffix', icon)) {
+      iconContent = html`<oryx-icon .type="${icon}"></oryx-icon>`;
     }
-    return this.renderContent('suffix', content);
+    return this.renderContent('suffix', html`${content}${iconContent}`);
   }
 
   renderContent(slotName: string, content?: TemplateResult): TemplateResult {

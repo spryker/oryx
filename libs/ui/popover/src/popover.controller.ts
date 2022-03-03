@@ -1,8 +1,8 @@
-import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../input';
 import { OptionComponent } from '../../option';
 import { PopoverComponent } from './popover.component';
 import { PopoverOptions, PopoverSelectEvent } from './popover.model';
+import { LitElement, ReactiveController } from 'lit';
 
 export const defaultPopoverOptions: PopoverOptions = {
   showOnFocus: true,
@@ -13,6 +13,8 @@ const timePassed = (start: number, timeGap = 300): boolean => {
   const mouseUpStarted = new Date().getTime();
   return mouseUpStarted - start > timeGap;
 };
+
+const OUT_OF_INDEX = -1;
 
 export class PopoverController implements ReactiveController {
   /**
@@ -42,33 +44,27 @@ export class PopoverController implements ReactiveController {
       this.skipOpeningOnNextFocus = true;
     });
 
-    this.host.addEventListener('focusin', (e: Event) => {
-      this.handleFocusin(e);
-    });
+    this.host.addEventListener('focusin', () => this.handleFocusin());
 
-    this.host.addEventListener('mousedown', (e: MouseEvent) => {
-      this.handleMousedown(e);
-    });
+    this.host.addEventListener('mousedown', () => this.handleMousedown());
 
-    this.host.addEventListener('mouseup', (e: MouseEvent) => {
-      this.handleMouseup(e);
-    });
+    this.host.addEventListener('mouseup', (e: Event) => this.handleMouseup(e));
 
-    this.host.addEventListener('keydown', (e: KeyboardEvent) => {
-      this.handleKeydown(e);
-    });
+    this.host.addEventListener('keydown', (e: KeyboardEvent) =>
+      this.handleKeydown(e)
+    );
 
-    this.host.addEventListener('focusout', (e: Event) => {
-      this.handleFocusout(e);
-    });
+    this.host.addEventListener('focusout', () => this.handleFocusout());
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    this.host.addEventListener('input', ((e: InputEvent) => {
-      this.show();
+    this.host.addEventListener('input', (() => {
+      if (getControl(this.host)?.value === '') {
+        this.deselect();
+      } else {
+        this.show();
+      }
     }) as EventListener);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    this.host.addEventListener('change', ((e: Event) => {
+    this.host.addEventListener('change', (() => {
       const value = getControl(this.host)?.value;
       this.handleChange(value ?? '');
     }) as EventListener);
@@ -81,24 +77,24 @@ export class PopoverController implements ReactiveController {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected handleFocusin(e: Event): void {
+  protected handleFocusin(): void {
     if (!this.skipOpeningOnNextFocus && this.options.showOnFocus) {
       this.timeStarted = new Date().getTime();
-      this.show();
+      if (getControl(this.host)?.value !== '') {
+        this.show();
+      }
     }
     this.skipOpeningOnNextFocus = false;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected handleMousedown(e: MouseEvent): void {
+  protected handleMousedown(): void {
     if (!this.isOpen) {
       this.timeStarted = new Date().getTime();
       this.show();
     }
   }
 
-  protected handleMouseup(e: MouseEvent): void {
+  protected handleMouseup(e: Event): void {
     if (timePassed(this.timeStarted)) {
       this.hide();
       const index = this.items.indexOf(e.target as OptionComponent);
@@ -106,47 +102,81 @@ export class PopoverController implements ReactiveController {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected handleFocusout(e: Event): void {
+  protected handleFocusout(): void {
     this.hide();
+  }
+
+  moveHighlight(e: KeyboardEvent, moveBy?: number, fallback = 0): void {
+    let highlight = this.highlight;
+    if (highlight === OUT_OF_INDEX) {
+      highlight = 0;
+    }
+
+    if (!this.isOpen && this.selected > OUT_OF_INDEX) {
+      highlight = this.selected;
+    } else if (this.isOpen) {
+      if (moveBy) {
+        highlight = this.highlight + moveBy;
+      } else {
+        highlight = fallback;
+      }
+    }
+    if (highlight < 0 || highlight >= this.items.length) {
+      highlight = fallback;
+    }
+    this.highlight = highlight;
+    this.show();
+    e.preventDefault();
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
     switch (e.key) {
       case 'ArrowDown':
-        if (!this.isOpen && this.selected > -1) {
-          this.highlight = this.selected;
-        } else if (this.isOpen) {
-          this.highlight++;
+        if (e.metaKey) {
+          this.moveHighlight(e, 10, this.items.length - 1);
+        } else {
+          this.moveHighlight(e, 1, 0);
         }
-        this.show();
-        if (this.highlight === -1 || this.highlight > this.items.length - 1) {
-          this.highlight = 0;
-        }
-        e.preventDefault();
+        break;
+      case 'PageDown':
+        this.moveHighlight(e, 10, this.items.length - 1);
+        break;
+      case 'End':
+        this.moveHighlight(e, undefined, this.items.length - 1);
         break;
       case 'ArrowUp':
-        if (!this.isOpen && this.selected > -1) {
-          this.highlight = this.selected;
-        } else if (this.isOpen) {
-          this.highlight--;
+        if (e.metaKey) {
+          this.moveHighlight(e, -10, 0);
+        } else {
+          this.moveHighlight(e, -1, this.items.length - 1);
         }
-        this.show();
-        if (this.highlight < 0) {
-          this.highlight = this.items.length - 1;
-        }
-        e.preventDefault();
+        break;
+      case 'PageUp':
+        this.moveHighlight(e, -10, 0);
+        break;
+      case 'Home':
+        this.moveHighlight(e);
         break;
       case 'Enter':
-      case ' ':
         if (this.isOpen) {
           e.stopImmediatePropagation();
           this.select(this.highlight);
         }
         this.toggle();
         break;
+      case ' ':
+        if (this.isOpen) {
+          e.stopImmediatePropagation();
+          this.select(this.highlight);
+        }
+        e.preventDefault();
+        this.toggle();
+        break;
       case 'Escape':
+        this.highlight = OUT_OF_INDEX;
+        // this.keys = '';
         this.hide();
+        this.items[0]?.scrollIntoView({ block: 'start' });
         break;
       default:
         // avoid other potential interactions from the key bindings
@@ -180,6 +210,12 @@ export class PopoverController implements ReactiveController {
       // unfortunately no native smooth scrolling
       // (in combination with block scrolling)
       option.scrollIntoView({ block: 'nearest' });
+
+      // in case the popover just opened, we ensure that we do
+      // have the option in view
+      setTimeout(() => {
+        option.scrollIntoView({ block: 'nearest' });
+      }, 300);
     }
   }
 
@@ -189,6 +225,10 @@ export class PopoverController implements ReactiveController {
 
   protected set selected(index: number) {
     this.items[index]?.toggleAttribute('selected', true);
+  }
+
+  protected deselect(): void {
+    this.select(OUT_OF_INDEX);
   }
 
   protected select(index: number | undefined): void {
@@ -220,6 +260,9 @@ export class PopoverController implements ReactiveController {
   }
 
   protected show(): void {
+    if (this.element?.hasAttribute('show')) {
+      return;
+    }
     const maxHeightFallback = 320;
     const margin = 20;
     const maxHeight =
@@ -234,10 +277,10 @@ export class PopoverController implements ReactiveController {
     );
     this.element?.toggleAttribute('show', true);
 
-    if (this.selected > -1 && this.highlight === this.selected) {
+    if (this.selected > OUT_OF_INDEX && this.highlight === this.selected) {
       // we need to ensure that the selected element is in the view
       setTimeout(() => {
-        this.items[this.selected].scrollIntoView({ block: 'center' });
+        this.items[this.selected]?.scrollIntoView({ block: 'center' });
       }, 300);
     }
   }
@@ -258,6 +301,6 @@ export class PopoverController implements ReactiveController {
    * Return an array of available oryx-option elements.
    */
   protected get items(): OptionComponent[] {
-    return Array.from(this.host.querySelectorAll('oryx-option'));
+    return Array.from(this.host.querySelectorAll('oryx-option:not([hide])'));
   }
 }

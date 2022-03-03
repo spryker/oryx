@@ -25,7 +25,7 @@ export const optionStyles = css`
   }
 
   :host([selected]) oryx-icon {
-    display: initial;
+    display: flex;
   }
 
   :host(:hover),

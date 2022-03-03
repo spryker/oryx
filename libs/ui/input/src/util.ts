@@ -1,10 +1,10 @@
-import { LitElement } from 'lit';
 import { queryFirstAssigned } from '../../utilities';
+import { LitElement } from 'lit';
 
 export function getControl(
   element: LitElement
 ): HTMLInputElement | HTMLSelectElement | undefined {
-  return queryFirstAssigned<HTMLInputElement>(element, {
+  return queryFirstAssigned<HTMLInputElement | HTMLSelectElement>(element, {
     selector: 'input, select, textarea',
     flatten: true,
   });

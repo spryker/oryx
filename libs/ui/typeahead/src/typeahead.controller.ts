@@ -1,11 +1,11 @@
-import { html, ReactiveController, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
 import { getControl } from '../../input/src/util';
 import { OptionComponent } from '../../option';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
 import { OryxElement } from '../../utilities';
 import { TypeaheadOptions } from './typeahead.model';
+import { html, ReactiveController, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 
 const emptyFallback = 'No results found';
 export class TypeaheadController implements ReactiveController {
@@ -21,23 +21,36 @@ export class TypeaheadController implements ReactiveController {
     }) as EventListener);
   }
 
+  hostUpdated(): void {
+    this.host
+      .querySelectorAll<OptionComponent>('oryx-option')
+      .forEach((option) => {
+        if (!option.slot) {
+          option.slot = 'option';
+        }
+      });
+  }
+
   renderPopover(): TemplateResult {
     return html`
       <oryx-popover>
-        <slot name="option">
-          <slot name="empty">
-            <div class="placeholder">
-              ${when(
-                this.host.options.isEmpty,
-                () => html` ${this.host.options.emptyMessage ?? emptyFallback} `
-              )}
-            </div>
-          </slot>
+        <slot name="option"></slot>
+        <slot name="empty">
+          ${when(
+            this.host.options.isEmpty,
+            () =>
+              html`<div class="placeholder">
+                ${this.host.options.emptyMessage ?? emptyFallback}
+              </div>`
+          )}
         </slot>
         <slot name="loading">
           ${when(
             this.host.options.isLoading,
-            () => html`<div><oryx-icon type="loader"></oryx-icon></div>`
+            () =>
+              html`<div class="placeholder">
+                <oryx-icon type="loader"></oryx-icon>
+              </div>`
           )}
         </slot>
       </oryx-popover>
