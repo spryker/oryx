@@ -12,7 +12,7 @@ export const typeaheadStyles = css`
 
   oryx-popover {
     margin: var(--oryx-popover-margin, 9px) 0;
-    overflow: scroll;
+    overflow: auto;
     max-height: var(--oryx-popover-maxheight, 320px);
     width: 100%;
   }
