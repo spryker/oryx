@@ -44,10 +44,16 @@
         "project": "storybook"
       }
     },
-    "visual-regression": {
+    "visual-regression-pr": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "chromatic --ci --exit-zero-on-changes --auto-accept-changes development"
+        "command": "chromatic --ci --exit-zero-on-changes"
+      }
+    },
+    "visual-regression-branch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "chromatic --ci --exit-zero-on-changes --auto-accept-changes"
       }
     }
   },

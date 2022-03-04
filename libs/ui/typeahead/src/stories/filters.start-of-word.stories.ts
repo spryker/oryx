@@ -6,7 +6,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
 export default {
-  title: `${storybookPrefix}/search/typeahead/filter`,
+  title: `${storybookPrefix}/Search/Typeahead/Filters`,
 } as Meta;
 
 interface FilterProps {
