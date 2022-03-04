@@ -47,4 +47,22 @@ export const optionStyles = css`
     transition: box-shadow, border;
     transition-duration: var(--oryx-transition-time);
   }
+
+  :host([hide]) {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    border: 0;
+  }
+
+  slot:not([name]) {
+    display: inline;
+  }
+
+  ::slotted(mark),
+  mark {
+    background-color: transparent;
+    color: var(--oryx-color-brand);
+    display: inline;
+  }
 `;

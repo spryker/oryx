@@ -25,10 +25,17 @@ export class SelectController implements ReactiveController {
     if (control instanceof HTMLSelectElement) {
       this.reflectSelect(control);
     } else {
-      if (!control?.readOnly) {
+      if (!this.host.options.filter && !control?.readOnly) {
         control?.toggleAttribute('readonly', true);
       }
     }
+    this.host
+      .querySelectorAll<OptionComponent>('oryx-option')
+      .forEach((option) => {
+        if (!option.slot) {
+          option.slot = 'option';
+        }
+      });
   }
 
   protected reflectSelect(element: HTMLSelectElement): void {

@@ -3,12 +3,15 @@ import { OptionComponent } from '../../option';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
 import { OryxElement } from '../../utilities';
+import { FilterController } from './filter.controller';
 import { TypeaheadOptions } from './typeahead.model';
 import { html, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 
 const emptyFallback = 'No results found';
 export class TypeaheadController implements ReactiveController {
+  protected filterController: FilterController;
+
   hostConnected(): void {
     this.host.addEventListener('input', (() => {
       this.triggerTypeAhead();
@@ -88,5 +91,6 @@ export class TypeaheadController implements ReactiveController {
 
   constructor(protected host: OryxElement<TypeaheadOptions>) {
     this.host.addController(this);
+    this.filterController = new FilterController(host);
   }
 }

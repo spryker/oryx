@@ -174,7 +174,6 @@ export class PopoverController implements ReactiveController {
         break;
       case 'Escape':
         this.highlight = OUT_OF_INDEX;
-        // this.keys = '';
         this.hide();
         this.items[0]?.scrollIntoView({ block: 'start' });
         break;

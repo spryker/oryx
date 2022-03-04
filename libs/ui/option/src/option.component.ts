@@ -11,6 +11,8 @@ export class OptionComponent extends LitElement {
 
   @property({ type: Boolean, reflect: true }) selected?: boolean;
 
+  @property({ type: Boolean, reflect: true }) hide?: boolean;
+
   render(): TemplateResult {
     return html` ${when(
         !!this.icon,

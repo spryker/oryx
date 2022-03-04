@@ -83,7 +83,7 @@ describe('PopoverController', () => {
     });
 
     describe('highlight', () => {
-      const isElementHighLight = (highlight: number): void => {
+      const expectElementHighLight = (highlight: number): void => {
         items(element).forEach((item, index) => {
           if (index === highlight) {
             expect(item.hasAttribute('highlight')).to.be.true;
@@ -110,95 +110,95 @@ describe('PopoverController', () => {
               });
 
               it('should highlight the 2nd option', () => {
-                isElementHighLight(1);
-              });
-            });
-
-            describe('and the keydown+meta key is dispatch', () => {
-              beforeEach(() => {
-                dispatchKeydown('ArrowDown', true);
-              });
-              it('should move highlight the highlight to the 10th position', () => {
-                isElementHighLight(10);
-              });
-            });
-
-            describe('and the keydown+meta key is dispatch twice', () => {
-              beforeEach(() => {
-                dispatchKeydown('ArrowDown', true);
-                dispatchKeydown('ArrowDown', true);
-              });
-              it('should move highlight the highlight to the 20th position', () => {
-                isElementHighLight(20);
-              });
-            });
-
-            describe('and the keydown+meta key is dispatch more then 2 times', () => {
-              beforeEach(() => {
-                dispatchKeydown('ArrowDown', true);
-                dispatchKeydown('ArrowDown', true);
-                dispatchKeydown('ArrowDown', true);
-                dispatchKeydown('ArrowDown', true);
-              });
-              it('should move highlight the highlight to the last position', () => {
-                isElementHighLight(24);
+                expectElementHighLight(1);
               });
             });
           });
 
-          describe('"PageDown" key', () => {
-            describe('and the keydown is dispatch', () => {
-              beforeEach(() => {
-                dispatchKeydown('PageDown');
-              });
-              it('should move the highlight the 10th position', () => {
-                isElementHighLight(10);
-              });
+          describe('and the keydown+meta key is dispatch', () => {
+            beforeEach(() => {
+              dispatchKeydown('ArrowDown', true);
             });
-
-            describe('and the keydown is dispatch twice', () => {
-              beforeEach(() => {
-                dispatchKeydown('PageDown');
-                dispatchKeydown('PageDown');
-              });
-              it('should move the highlight the 20th position', () => {
-                isElementHighLight(20);
-              });
-            });
-
-            describe('and the keydown is dispatch more then 2 times', () => {
-              beforeEach(() => {
-                dispatchKeydown('PageDown');
-                dispatchKeydown('PageDown');
-                dispatchKeydown('PageDown');
-                dispatchKeydown('PageDown');
-                dispatchKeydown('PageDown');
-              });
-              it('should move the highlight the last position', () => {
-                isElementHighLight(24);
-              });
+            it('should move highlight the highlight to the 10th position', () => {
+              expectElementHighLight(10);
             });
           });
 
-          describe('"End" key', () => {
-            describe('and the keydown is dispatch', () => {
-              beforeEach(() => {
-                dispatchKeydown('End');
-              });
-              it('should move the highlight to the last position', () => {
-                isElementHighLight(items(element).length - 1);
-              });
+          describe('and the keydown+meta key is dispatch twice', () => {
+            beforeEach(() => {
+              dispatchKeydown('ArrowDown', true);
+              dispatchKeydown('ArrowDown', true);
             });
+            it('should move highlight the highlight to the 20th position', () => {
+              expectElementHighLight(20);
+            });
+          });
 
-            describe('and the keydown is dispatch multiple times', () => {
-              beforeEach(() => {
-                dispatchKeydown('End');
-                dispatchKeydown('End');
-                dispatchKeydown('End');
-              });
-              it('should keep the highlight at the last position', () => {
-                isElementHighLight(items(element).length - 1);
-              });
+          describe('and the keydown+meta key is dispatch more then 2 times', () => {
+            beforeEach(() => {
+              dispatchKeydown('ArrowDown', true);
+              dispatchKeydown('ArrowDown', true);
+              dispatchKeydown('ArrowDown', true);
+              dispatchKeydown('ArrowDown', true);
+            });
+            it('should move highlight the highlight to the last position', () => {
+              expectElementHighLight(24);
+            });
+          });
+        });
+
+        describe('"PageDown" key', () => {
+          describe('and the keydown is dispatch', () => {
+            beforeEach(() => {
+              dispatchKeydown('PageDown');
+            });
+            it('should move the highlight the 10th option', () => {
+              expectElementHighLight(9);
+            });
+          });
+
+          describe('and the keydown is dispatch twice', () => {
+            beforeEach(() => {
+              dispatchKeydown('PageDown');
+              dispatchKeydown('PageDown');
+            });
+            it('should move the highlight the 20th option', () => {
+              expectElementHighLight(19);
+            });
+          });
+
+          describe('and the keydown is dispatch more then 2 times', () => {
+            beforeEach(() => {
+              dispatchKeydown('PageDown');
+              dispatchKeydown('PageDown');
+              dispatchKeydown('PageDown');
+              dispatchKeydown('PageDown');
+              dispatchKeydown('PageDown');
+            });
+            it('should move the highlight the last option', () => {
+              expectElementHighLight(24);
+            });
+          });
+        });
+
+        describe('"End" key', () => {
+          describe('and the keydown is dispatch', () => {
+            beforeEach(() => {
+              dispatchKeydown('End');
+            });
+            it('should move the highlight to the last position', () => {
+              expectElementHighLight(items(element).length - 1);
+            });
+          });
+
+          describe('and the keydown is dispatch multiple times', () => {
+            beforeEach(() => {
+              dispatchKeydown('End');
+              dispatchKeydown('End');
+              dispatchKeydown('End');
+            });
+            it('should keep the highlight at the last position', () => {
+              expectElementHighLight(items(element).length - 1);
             });
           });
         });
@@ -215,7 +215,7 @@ describe('PopoverController', () => {
               });
 
               it('should move the highlight to the last option', () => {
-                isElementHighLight(23);
+                expectElementHighLight(23);
               });
             });
 
@@ -225,7 +225,7 @@ describe('PopoverController', () => {
               });
 
               it('should move the highlight 10 positions up', () => {
-                isElementHighLight(14);
+                expectElementHighLight(14);
               });
             });
 
@@ -236,22 +236,22 @@ describe('PopoverController', () => {
               });
 
               it('should move the highlight 10 positions up', () => {
-                isElementHighLight(4);
+                expectElementHighLight(4);
               });
             });
+          });
 
-            describe('and the keydown+metaKey is dispatch more than 2 times', () => {
-              beforeEach(() => {
-                dispatchKeydown('ArrowUp', true);
-                dispatchKeydown('ArrowUp', true);
-                dispatchKeydown('ArrowUp', true);
-                dispatchKeydown('ArrowUp', true);
-                dispatchKeydown('ArrowUp', true);
-              });
+          describe('and the keydown+metaKey is dispatch more than 2 times', () => {
+            beforeEach(() => {
+              dispatchKeydown('ArrowUp', true);
+              dispatchKeydown('ArrowUp', true);
+              dispatchKeydown('ArrowUp', true);
+              dispatchKeydown('ArrowUp', true);
+              dispatchKeydown('ArrowUp', true);
+            });
 
-              it('should keep the highlight at the 1st position', () => {
-                isElementHighLight(0);
-              });
+            it('should keep the highlight at the 1st position', () => {
+              expectElementHighLight(0);
             });
           });
 
@@ -262,7 +262,7 @@ describe('PopoverController', () => {
               });
 
               it('should move the highlight 10 positions up', () => {
-                isElementHighLight(14);
+                expectElementHighLight(14);
               });
             });
 
@@ -272,7 +272,7 @@ describe('PopoverController', () => {
                 dispatchKeydown('PageUp');
               });
               it('should move the highlight 20 positions up', () => {
-                isElementHighLight(4);
+                expectElementHighLight(4);
               });
             });
 
@@ -285,7 +285,7 @@ describe('PopoverController', () => {
                 dispatchKeydown('PageUp');
               });
               it('should keep the highlight at the 1st position', () => {
-                isElementHighLight(0);
+                expectElementHighLight(0);
               });
             });
           });
@@ -297,7 +297,7 @@ describe('PopoverController', () => {
               });
 
               it('should move the highlight to the first option', () => {
-                isElementHighLight(0);
+                expectElementHighLight(0);
               });
             });
 
@@ -309,7 +309,7 @@ describe('PopoverController', () => {
               });
 
               it('should keep the highlight at the first option', () => {
-                isElementHighLight(0);
+                expectElementHighLight(0);
               });
             });
           });
@@ -615,120 +615,67 @@ describe('PopoverController', () => {
         });
       });
     });
-  });
 
-  describe('scrollIntoView', () => {
-    let clock = sinon.useFakeTimers();
-    let option: OptionComponent | null;
+    describe('scrollIntoView', () => {
+      let clock: sinon.SinonFakeTimers;
+      let option: OptionComponent | null;
 
-    beforeEach(() => {
-      clock = sinon.useFakeTimers();
-    });
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
 
-    afterEach(() => {
-      clock.restore();
-    });
-    beforeEach(async () => {
-      element = await fixture(html`<fake-popover>
-        <oryx-option>first</oryx-option>
-        <oryx-option selected highlight>second</oryx-option>
-      </fake-popover>`);
-      option = element.querySelector('oryx-option[selected]');
-    });
-    describe('when an item is selected', () => {
+      afterEach(() => {
+        clock.restore();
+      });
       beforeEach(async () => {
-        if (option) {
-          sinon.spy(option, 'scrollIntoView');
-        }
-        element.dispatchEvent(
-          new Event('input', { bubbles: true, composed: true })
-        );
+        element = await fixture(html`<fake-popover>
+          <oryx-option>first</oryx-option>
+          <oryx-option selected highlight>second</oryx-option>
+        </fake-popover>`);
+        option = element.querySelector('oryx-option[selected]');
       });
-
-      it('should not trigger scrollIntoView when the popup is shown', () => {
-        expect(option?.scrollIntoView).to.have.not.been.called;
-      });
-
-      describe('and when 300ms have passed', () => {
-        beforeEach(() => {
-          clock.tick(300);
+      describe('when an item is selected', () => {
+        beforeEach(async () => {
+          if (option) {
+            sinon.spy(option, 'scrollIntoView');
+          }
+          element.dispatchEvent(
+            new Event('input', { bubbles: true, composed: true })
+          );
         });
 
-        it('should trigger scrollIntoView when the popup is shown', () => {
-          expect(option?.scrollIntoView).to.have.been.called;
+        it('should not trigger scrollIntoView when the popup is shown', () => {
+          expect(option?.scrollIntoView).to.have.not.been.called;
         });
-      });
 
-      describe('and when 300ms have passed', () => {
-        describe('and the selection is no longer available', () => {
+        describe('and when 300ms have passed', () => {
           beforeEach(() => {
-            element.popoverController.deselect();
             clock.tick(300);
           });
 
-          it('should not trigger scrollIntoView when the popup is shown', () => {
-            expect(option?.scrollIntoView).to.have.not.been.called;
+          it('should trigger scrollIntoView when the popup is shown', () => {
+            expect(option?.scrollIntoView).to.have.been.called;
+          });
+        });
+
+        describe('and when 300ms have passed', () => {
+          describe('and the selection is no longer available', () => {
+            beforeEach(() => {
+              element.popoverController.deselect();
+              clock.tick(300);
+            });
+
+            it('should not trigger scrollIntoView when the popup is shown', () => {
+              expect(option?.scrollIntoView).to.have.not.been.called;
+            });
           });
         });
       });
     });
-  });
-
-  describe('when PopoverController is extended', () => {
-    describe('and methods are called without guarding', () => {
-      beforeEach(() => element.testCustomController());
-      it('should not throw an error', () => {
-        expect(() => {
-          (): void => undefined;
-        }).not.to.throw;
-      });
-    });
-  });
-
-  const expectNoErrorOnDispatch = (event: string, key?: string): void => {
-    describe(`and the ${event} is dispatched`, () => {
-      beforeEach(() => {
-        key
-          ? element?.dispatchEvent(
-              new KeyboardEvent(event, {
-                key,
-                bubbles: true,
-                composed: true,
-              })
-            )
-          : element?.dispatchEvent(
-              new Event(event, { bubbles: true, composed: true })
-            );
-      });
-      it('should not throw an error', () => {
-        if (element) {
-          expect(() => {
-            (): void => undefined;
-          }).not.to.throw;
-        }
-      });
-    });
-  };
-
-  describe('when there is no popover', () => {
-    beforeEach(
-      async () => (element = await fixture(html`<no-popover></no-popover>`))
-    );
-    expectNoErrorOnDispatch('focusin');
-    expectNoErrorOnDispatch('mousedown');
-    expectNoErrorOnDispatch('mouseup');
-    expectNoErrorOnDispatch('keydown', 'ArrowDown');
-    expectNoErrorOnDispatch('keydown', 'ArrowUp');
-    expectNoErrorOnDispatch('keydown', 'Enter');
-    expectNoErrorOnDispatch('keydown', ' ');
-    expectNoErrorOnDispatch('keydown', 'Escape');
-    expectNoErrorOnDispatch('focusout');
 
     describe('when PopoverController is extended', () => {
       describe('and methods are called without guarding', () => {
-        beforeEach(() =>
-          (element as NoPopoverComponent).testCustomController()
-        );
+        beforeEach(() => element.testCustomController());
         it('should not throw an error', () => {
           expect(() => {
             (): void => undefined;
@@ -736,72 +683,125 @@ describe('PopoverController', () => {
         });
       });
     });
-  });
 
-  describe('when there are no items', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<no-items></no-items>`);
-    });
-    expectNoErrorOnDispatch('focusin');
-    expectNoErrorOnDispatch('mousedown');
-    expectNoErrorOnDispatch('mouseup');
-    expectNoErrorOnDispatch('keydown', 'ArrowDown');
-    expectNoErrorOnDispatch('keydown', 'ArrowUp');
-    expectNoErrorOnDispatch('keydown', 'Enter');
-    expectNoErrorOnDispatch('keydown', ' ');
-    expectNoErrorOnDispatch('keydown', 'Escape');
-    expectNoErrorOnDispatch('focusout');
-  });
-
-  describe('handleChange', () => {
-    const expectChangeEvent = (): void => {
-      it('should not throw an error', () => {
-        popover()?.dispatchEvent(
-          new Event('change', { bubbles: true, composed: true })
-        );
-        expect(() => {
-          (): void => undefined;
-        }).not.to.throw;
+    const testNoErrorOnDispatch = (event: string, key?: string): void => {
+      describe(`and the ${event} is dispatched`, () => {
+        beforeEach(() => {
+          key
+            ? element?.dispatchEvent(
+                new KeyboardEvent(event, {
+                  key,
+                  bubbles: true,
+                  composed: true,
+                })
+              )
+            : element?.dispatchEvent(
+                new Event(event, { bubbles: true, composed: true })
+              );
+        });
+        it('should not throw an error', () => {
+          if (element) {
+            expect(() => {
+              (): void => undefined;
+            }).not.to.throw;
+          }
+        });
       });
     };
 
-    describe('when a change event is dispatched', () => {
-      describe('with items', () => {
-        beforeEach(async () => {
-          element = await fixture(html`<fake-popover>
-            <input value="first" />
-            <oryx-option value="first">first</oryx-option>
-            <oryx-option>second</oryx-option>
-          </fake-popover>`);
-          element.popoverController.options = defaultPopoverOptions;
+    describe('when there is no popover', () => {
+      beforeEach(
+        async () => (element = await fixture(html`<no-popover></no-popover>`))
+      );
+      testNoErrorOnDispatch('focusin');
+      testNoErrorOnDispatch('mousedown');
+      testNoErrorOnDispatch('mouseup');
+      testNoErrorOnDispatch('keydown', 'ArrowDown');
+      testNoErrorOnDispatch('keydown', 'ArrowUp');
+      testNoErrorOnDispatch('keydown', 'Enter');
+      testNoErrorOnDispatch('keydown', ' ');
+      testNoErrorOnDispatch('keydown', 'Escape');
+      testNoErrorOnDispatch('focusout');
+
+      describe('when PopoverController is extended', () => {
+        describe('and methods are called without guarding', () => {
+          beforeEach(() =>
+            (element as NoPopoverComponent).testCustomController()
+          );
+          it('should not throw an error', () => {
+            expect(() => {
+              (): void => undefined;
+            }).not.to.throw;
+          });
         });
-        expectChangeEvent();
       });
+    });
 
-      describe('without items', () => {
-        beforeEach(async () => {
-          element = await fixture(html`<fake-popover>
-            <input value="value" />
-          </fake-popover>`);
-          element.popoverController.options = defaultPopoverOptions;
-        });
-
-        expectChangeEvent();
+    describe('when there are no items', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<no-items></no-items>`);
       });
+      testNoErrorOnDispatch('focusin');
+      testNoErrorOnDispatch('mousedown');
+      testNoErrorOnDispatch('mouseup');
+      testNoErrorOnDispatch('keydown', 'ArrowDown');
+      testNoErrorOnDispatch('keydown', 'ArrowUp');
+      testNoErrorOnDispatch('keydown', 'Enter');
+      testNoErrorOnDispatch('keydown', ' ');
+      testNoErrorOnDispatch('keydown', 'Escape');
+      testNoErrorOnDispatch('focusout');
+    });
 
-      describe('when not selectable', () => {
-        beforeEach(async () => {
-          element = await fixture(html`<fake-popover>
-            <input value="first" />
-            <oryx-option value="first">first</oryx-option>
-            <oryx-option>second</oryx-option>
-          </fake-popover>`);
-          element.popoverController.options = {
-            selectable: false,
-          };
+    describe('handleChange', () => {
+      const expectChangeEvent = (): void => {
+        it('should not throw an error', () => {
+          popover()?.dispatchEvent(
+            new Event('change', { bubbles: true, composed: true })
+          );
+          expect(() => {
+            (): void => undefined;
+          }).not.to.throw;
+        });
+      };
+
+      describe('when a change event is dispatched', () => {
+        describe('with items', () => {
+          beforeEach(async () => {
+            element = await fixture(html`<fake-popover>
+              <input value="first" />
+              <oryx-option value="first">first</oryx-option>
+              <oryx-option>second</oryx-option>
+            </fake-popover>`);
+            element.popoverController.options = defaultPopoverOptions;
+          });
+          expectChangeEvent();
         });
 
-        expectChangeEvent();
+        describe('without items', () => {
+          beforeEach(async () => {
+            element = await fixture(html`<fake-popover>
+              <input value="value" />
+            </fake-popover>`);
+            element.popoverController.options = defaultPopoverOptions;
+          });
+
+          expectChangeEvent();
+        });
+
+        describe('when not selectable', () => {
+          beforeEach(async () => {
+            element = await fixture(html`<fake-popover>
+              <input value="first" />
+              <oryx-option value="first">first</oryx-option>
+              <oryx-option>second</oryx-option>
+            </fake-popover>`);
+            element.popoverController.options = {
+              selectable: false,
+            };
+          });
+
+          expectChangeEvent();
+        });
       });
     });
   });
