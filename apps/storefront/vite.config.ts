@@ -10,7 +10,7 @@ export default defineConfig({
   },
   //@ts-ignore
   ssr: {
-    external: ['@lit-labs'],
+    external: ['@lit-labs', 'rxjs'],
   },
   plugins: [tsconfigPaths({ root: '../../' })],
 });

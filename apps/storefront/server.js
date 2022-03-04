@@ -30,24 +30,8 @@ async function createServer() {
         tag: 'storefront-component',
         props: {
           content: {
-            banner: {
-              title: 'SSR banner',
-              subtitle: 'This banner is rendered with lit SSR',
-              content: 'banner contents',
-              image:
-                'https://res.cloudinary.com/drrusglvs/image/upload/v1641985933/b7bhmsvqduyczsbhiiwx.gif',
-              urlTarget: '_blank',
-            },
-            banner2: {
-              title: 'Another SSR banner',
-              subtitle: 'This banner is rendered with lit SSR',
-              content: 'banner contents',
-              link: 'https://spryker.com',
-              image:
-                'https://res.cloudinary.com/drrusglvs/image/upload/v1641985933/b7bhmsvqduyczsbhiiwx.gif',
-              urlTarget: '_blank',
-              alt: 'banner alt',
-            },
+            banner: 'other-banner',
+            banner2: 'generic-banner',
           },
         },
       });
