@@ -95,6 +95,7 @@ export enum MiscIcons {
   Trash = 'trash',
   Visible = 'visible',
   Invisible = 'invisible',
+  Link = 'link',
 }
 
 export enum FilterIcons {
