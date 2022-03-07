@@ -1,3 +1,4 @@
+// organize-imports-ignore
 import '@lit-labs/ssr/lib/render-with-global-dom-shim.js';
 import { LitElementRenderer } from '@lit-labs/ssr/lib/lit-element-renderer.js';
 import { RenderInfo } from '@lit-labs/ssr/lib/render-lit-html.js';
