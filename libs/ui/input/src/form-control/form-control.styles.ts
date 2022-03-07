@@ -7,6 +7,10 @@ export const formControlStyles = css`
     border-color: var(--oryx-color-neutral-light);
   }
 
+  label {
+    border-color: inherit;
+  }
+
   .control {
     display: flex;
     align-items: stretch;

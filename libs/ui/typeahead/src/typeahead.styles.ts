@@ -31,7 +31,7 @@ export const typeaheadStyles = css`
     transform-origin: left bottom;
   }
 
-  label ~ oryx-popover {
+  :host([has-label]) oryx-popover {
     --oryx-label-height: 23px;
   }
 

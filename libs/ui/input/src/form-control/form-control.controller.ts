@@ -38,14 +38,16 @@ export class FormControlController implements ReactiveController {
     } = {}
   ): TemplateResult {
     return html`
-      ${this.labelController.render()}
-      <div class="control">
-        ${content.before}
-        <slot @slotchange=${(): void => this.handleDisabled()}>
-          <input />
-        </slot>
-        ${content.after}
-      </div>
+      <label>
+        ${this.labelController.render()}
+        <div class="control">
+          ${content.before}
+          <slot @slotchange=${(): void => this.handleDisabled()}>
+            <input />
+          </slot>
+          ${content.after}
+        </div>
+      </label>
       ${this.errorController.render()}
     `;
   }
