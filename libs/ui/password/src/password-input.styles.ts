@@ -10,4 +10,8 @@ export const passwordInputStyles = css`
     justify-content: center;
     box-sizing: border-box;
   }
+
+  svg {
+    pointer-events: none;
+  }
 `;
