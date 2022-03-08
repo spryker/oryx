@@ -165,12 +165,14 @@ export class PopoverController implements ReactiveController {
         this.toggle();
         break;
       case ' ':
-        if (this.isOpen) {
-          e.stopImmediatePropagation();
-          this.select(this.highlight);
+        if (this.isReadonly()) {
+          if (this.isOpen) {
+            e.stopImmediatePropagation();
+            this.select(this.highlight);
+          }
+          e.preventDefault();
+          this.toggle();
         }
-        e.preventDefault();
-        this.toggle();
         break;
       case 'Escape':
         this.highlight = OUT_OF_INDEX;
@@ -182,6 +184,13 @@ export class PopoverController implements ReactiveController {
         // from the host application
         e.stopImmediatePropagation();
     }
+  }
+
+  protected isReadonly(): boolean {
+    const control = getControl(this.host);
+    return (
+      !!control && (control instanceof HTMLSelectElement || control.readOnly)
+    );
   }
 
   /**

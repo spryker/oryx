@@ -557,29 +557,122 @@ describe('PopoverController', () => {
           });
         });
 
-        ['Enter', ' '].forEach((key) => {
-          describe(`and the key is "${key}"`, () => {
-            describe('when the popover is shown', () => {
+        describe('Enter key', () => {
+          describe('when the popover is shown', () => {
+            beforeEach(() => {
+              popover()?.toggleAttribute('show', true);
+            });
+            describe(`and the key is "Enter"`, () => {
               beforeEach(() => {
-                popover()?.toggleAttribute('show', true);
+                dispatchKeydown('Enter');
               });
-              describe(`and the key is "${key}"`, () => {
+              expectPopOverToBeClosed();
+            });
+          });
+
+          describe('when the popover is hidden', () => {
+            beforeEach(() => {
+              popover()?.removeAttribute('show');
+            });
+            describe(`and the key is "Enter"`, () => {
+              beforeEach(() => {
+                dispatchKeydown('Enter');
+              });
+              expectPopOverToBeOpen();
+            });
+          });
+        });
+
+        describe('Space key', () => {
+          describe('when the control is writable', () => {
+            describe('and the popover is hidden', () => {
+              beforeEach(() => {
+                popover()?.removeAttribute('show');
+              });
+              describe(`and the key is " "`, () => {
                 beforeEach(() => {
-                  dispatchKeydown(key);
+                  dispatchKeydown(' ');
                 });
                 expectPopOverToBeClosed();
               });
             });
+            describe('and the popover is shown', () => {
+              beforeEach(() => {
+                popover()?.toggleAttribute('show', true);
+              });
+              describe(`and the key is " "`, () => {
+                beforeEach(() => {
+                  dispatchKeydown(' ');
+                });
+                expectPopOverToBeOpen();
+              });
+            });
+          });
 
-            describe('when the popover is hidden', () => {
+          describe('when the control is a readonly input', () => {
+            beforeEach(async () => {
+              element = await fixture(html`<fake-popover>
+                <input readonly />
+                <oryx-option value="first">first</oryx-option>
+              </fake-popover>`);
+            });
+
+            describe('and the popover is hidden', () => {
               beforeEach(() => {
                 popover()?.removeAttribute('show');
               });
-              describe(`and the key is "${key}"`, () => {
+              describe(`and the key is " "`, () => {
                 beforeEach(() => {
-                  dispatchKeydown(key);
+                  dispatchKeydown(' ');
                 });
                 expectPopOverToBeOpen();
+              });
+            });
+
+            describe('and the popover is shown', () => {
+              beforeEach(() => {
+                popover()?.toggleAttribute('show', true);
+              });
+              describe(`and the key is " "`, () => {
+                beforeEach(() => {
+                  dispatchKeydown(' ');
+                });
+                expectPopOverToBeClosed();
+              });
+            });
+          });
+
+          describe('when the control is a select', () => {
+            beforeEach(async () => {
+              element = await fixture(html`<fake-popover>
+                <select>
+                  <option></option>
+                </select>
+                <oryx-option value="first">first</oryx-option>
+              </fake-popover>`);
+            });
+
+            describe('and the popover is hidden', () => {
+              beforeEach(() => {
+                popover()?.removeAttribute('show');
+              });
+              describe(`and the key is " "`, () => {
+                beforeEach(() => {
+                  dispatchKeydown(' ');
+                });
+                expectPopOverToBeOpen();
+              });
+            });
+
+            describe('and the popover is shown', () => {
+              beforeEach(() => {
+                popover()?.toggleAttribute('show', true);
+              });
+              describe(`and the key is " "`, () => {
+                beforeEach(() => {
+                  dispatchKeydown(' ');
+                });
+                expectPopOverToBeClosed();
               });
             });
           });
