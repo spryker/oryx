@@ -1,4 +1,4 @@
-export const components = {
+export const componentsMapping = {
   'storefront-component': {
     name: 'storefront-component',
     component: () => import('./storefront.component'),
@@ -22,14 +22,4 @@ export const components = {
   'wc-banner': {
     name: 'wc-banner',
   },
-};
-
-export const loadComponent = async (tag) => {
-  if (components.hasOwnProperty(tag)) {
-    if (components[tag].hasOwnProperty('component')) {
-      await components[tag].component();
-    }
-  } else {
-    console.error(`component ${tag} is not registered.`);
-  }
 };
