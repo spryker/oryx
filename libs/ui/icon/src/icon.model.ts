@@ -86,7 +86,7 @@ export enum MiscIcons {
   Close = 'close',
   CloseAll = 'close_all',
   Drag = 'drag',
-  Dropdown = 'dropdown-arrow',
+  Dropdown = 'dropdown',
   Loader = 'loader',
   Mark = 'mark',
   Remove = 'remove',
