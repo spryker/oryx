@@ -8,7 +8,6 @@ export interface RegistryComponents {
 
 export class ComponentsRegistryService implements ComponentsRegistryContract {
   protected resolvedComponents: RegistryComponents = {};
-
   protected registeredComponents = inject('FES.ComponentMapping');
 
   resolveTag(type: string): string {
