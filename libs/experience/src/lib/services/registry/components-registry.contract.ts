@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { Services } from '../services';
 
 export interface ComponentsRegistryContract {
   resolveComponent(tag: string): Observable<string>;
@@ -6,6 +7,6 @@ export interface ComponentsRegistryContract {
 
 declare global {
   interface InjectionTokensContractMap {
-    ['FES.ComponentsRegistry']: ComponentsRegistryContract;
+    [Services.ComponentsRegistry]: ComponentsRegistryContract;
   }
 }

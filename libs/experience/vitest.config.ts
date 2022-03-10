@@ -6,5 +6,6 @@ export default defineConfig({
     globals: true,
     include: ['libs/experience/**/*.spec.ts'],
   },
-  plugins: [tsconfigPaths()],
+  //@ts-expect-error: vite-tsconfig-paths does not load correctly in type:module projects
+  plugins: [tsconfigPaths.default()],
 });

@@ -1,9 +1,11 @@
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
 
-vi.mock('./composition.component', () => {
-  return;
-});
+vi.mock('@spryker-oryx/experience', () => ({
+  ExperienceComposition: () => {
+    return;
+  },
+}));
 
 describe('InputComponent', () => {
   beforeEach(async () => {
@@ -15,32 +17,30 @@ describe('InputComponent', () => {
     return document.body.querySelector('storefront-component');
   };
 
-  it('should render `composition-component` tag', () => {
+  it('should render `experience-composition` tag', () => {
     const element = getElement();
-    const compositionComponent = element.shadowRoot?.querySelector(
-      'composition-component'
+    const experienceComposition = element.shadowRoot?.querySelector(
+      'experience-composition'
     );
 
     expect(element).toBeInstanceOf(StorefrontComponent);
-    expect(compositionComponent).toBeTruthy();
+    expect(experienceComposition).toBeTruthy();
   });
 
-  it('should render `composition-component` with `key` attributes passed from the `route` property', async () => {
+  it('should render `experience-composition` with `key` attributes passed from the `route` property', async () => {
     const mockRout = 'mockRout';
     const element = getElement();
-    const compositionComponent = element.shadowRoot?.querySelector(
-      'composition-component'
+    const experienceComposition = element.shadowRoot?.querySelector(
+      'experience-composition'
     );
 
-    expect(compositionComponent.getAttribute('key')).toBe('/');
+    expect(experienceComposition.getAttribute('key')).toBe('/');
 
     element.setAttribute('route', mockRout);
 
     element.requestUpdate();
     await element.updateComplete;
 
-    console.log(compositionComponent.getAttribute('key'));
-
-    expect(compositionComponent.getAttribute('key')).toBe(mockRout);
+    expect(experienceComposition.getAttribute('key')).toBe(mockRout);
   });
 });

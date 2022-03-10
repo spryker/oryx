@@ -1,4 +1,3 @@
-import { Component, Services } from '@spryker-oryx/experience';
 import { getInjector } from '@spryker-oryx/injector';
 import { observe } from '@spryker-oryx/lit-rxjs';
 import { LitElement, TemplateResult } from 'lit';
@@ -6,8 +5,9 @@ import { property, state } from 'lit/decorators.js';
 import { until } from 'lit/directives/until.js';
 import { html, unsafeStatic } from 'lit/static-html.js';
 import { lastValueFrom, ReplaySubject, switchMap, tap } from 'rxjs';
+import { Component, Services } from '../index';
 
-export class CompositionComponent extends LitElement {
+export class ExperienceComposition extends LitElement {
   @state()
   protected components?: Array<Component>;
 
@@ -18,7 +18,7 @@ export class CompositionComponent extends LitElement {
   protected key$ = new ReplaySubject<string>(1);
 
   protected experienceService = getInjector().inject(Services.Experience);
-  protected registryService = getInjector().inject('FES.ComponentsRegistry');
+  protected registryService = getInjector().inject(Services.ComponentsRegistry);
 
   protected components$ = this.key$.pipe(
     switchMap((key) => this.experienceService.getStructure({ key })),
@@ -40,8 +40,10 @@ export class CompositionComponent extends LitElement {
     return html`<div>
       ${this.components.map((component) => {
         return html`${until(
-          lastValueFrom(
-            this.registryService.resolveComponent(component.type)
+          (
+            lastValueFrom(
+              this.registryService.resolveComponent(component.type)
+            ) as Promise<string>
           ).then(
             (componentName) =>
               html`<${unsafeStatic(componentName)} componentid="${
@@ -54,6 +56,3 @@ export class CompositionComponent extends LitElement {
     </div> `;
   }
 }
-
-customElements.get('composition-component') ||
-  customElements.define('composition-component', CompositionComponent);

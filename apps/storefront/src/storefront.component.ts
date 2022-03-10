@@ -1,7 +1,6 @@
-import './composition.component';
-import { LitElement, TemplateResult } from 'lit';
-import { html } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
+export { ExperienceComposition } from '@spryker-oryx/experience';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('storefront-component')
 export class StorefrontComponent extends LitElement {
@@ -10,7 +9,7 @@ export class StorefrontComponent extends LitElement {
 
   override render(): TemplateResult {
     return html`<div>
-      <composition-component key="${this.route}"></composition-component>
+      <experience-composition key="${this.route}"></experience-composition>
     </div> `;
   }
 }
