@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UpdatingElement } from 'lit';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { DecoratorContext, ObserveData } from './types';
+import { DecoratorContext } from '../internal/types';
 
 const subjectAssigner = (subject$?: Subject<any>): Subject<any> => {
   if (subject$ && !subject$?.next) {
-    throw `Invalid observe value: incorrect ${subject$} for observe decorators, please use rxjs subjects`;
+    throw `Invalid observe value: incorrect ${subject$} for observe decorator, please use rxjs subjects`;
   }
 
   if (!subject$) {
@@ -17,47 +17,48 @@ const subjectAssigner = (subject$?: Subject<any>): Subject<any> => {
 
 const implementObserve = (
   proto: Record<string, any> | typeof UpdatingElement,
-  data: ObserveData
+  propName: string,
+  observedName: string
 ): void => {
-  const { name, observedName } = data as Required<ObserveData>;
   const ownDescriptor = Object.getOwnPropertyDescriptor(proto, observedName);
-  let { subject$ } = data as Required<ObserveData>;
+  const internalSubjectName = `__${propName}-subject$`;
   let innerValue: unknown;
 
   if (!ownDescriptor) {
-    throw `Invalid observed property name: incorrect ${observedName} for observe decorators, please use already created reactive property name as an element to observe`;
+    throw `Invalid observed property name: incorrect ${observedName} for observe decorator, please use already created reactive property name as an element to observe`;
   }
 
   const observedDescriptor = {
     ...ownDescriptor,
-    set(newValue: any): void {
+    set(this: Record<string, any>, newValue: any): void {
       ownDescriptor.set?.call(this, newValue);
 
-      if (subject$) {
-        subject$.next(newValue);
+      if (this[internalSubjectName]) {
+        this[internalSubjectName].next(newValue);
       }
 
       innerValue = newValue;
     },
   };
   const observableDescriptor = {
-    get(): Subject<any> {
-      if (!subject$) {
-        subject$ = new BehaviorSubject(innerValue);
+    get(this: Record<string, any>): Subject<any> {
+      if (!this[internalSubjectName]) {
+        this[internalSubjectName] = new BehaviorSubject(innerValue);
       }
 
-      return subject$;
+      return this[internalSubjectName];
     },
-    set(value$: Subject<any>): void {
+    set(this: Record<string, any>, value$: Subject<any>): void {
       const isUpdateSubjectInstance =
-        subject$?.constructor?.name !== value$?.constructor?.name;
+        this[internalSubjectName]?.constructor?.name !==
+        value$?.constructor?.name;
 
-      if (!subject$ || isUpdateSubjectInstance) {
-        subject$ = subjectAssigner(value$);
+      if (!this[internalSubjectName] || isUpdateSubjectInstance) {
+        this[internalSubjectName] = subjectAssigner(value$);
       }
 
       if (isUpdateSubjectInstance) {
-        subject$.next(innerValue);
+        this[internalSubjectName].next(innerValue);
       }
     },
     enumerable: false,
@@ -65,18 +66,19 @@ const implementObserve = (
   };
 
   Object.defineProperty(proto, observedName, observedDescriptor);
-  Object.defineProperty(proto, name, observableDescriptor);
+  Object.defineProperty(proto, propName, observableDescriptor);
 };
 
 const standardObserve = (
   context: DecoratorContext,
-  data: ObserveData
+  propName: string,
+  observedName: string
 ): DecoratorContext => {
   return {
     ...context,
     key: Symbol(),
     finisher(clazz: typeof UpdatingElement): void {
-      implementObserve(clazz.prototype, data);
+      implementObserve(clazz.prototype, propName, observedName);
     },
   };
 };
@@ -118,23 +120,11 @@ export function observe(property?: string): any {
     name?: PropertyKey
   ): DecoratorContext | void => {
     const isLegacy = name !== undefined;
-    const observeData: ObserveData = isLegacy
-      ? {
-          name: name as string,
-        }
-      : {
-          name: context.key,
-          subject$: context.initializer && context.initializer(),
-        };
-
-    if (!isLegacy) {
-      observeData.subject$ = subjectAssigner(observeData.subject$);
-    }
-
-    observeData.observedName = property ?? observeData.name.slice(0, -1);
+    const propName = (isLegacy ? name : context.key) as string;
+    const observedName = property ?? propName.slice(0, -1);
 
     return isLegacy
-      ? implementObserve(context as Record<string, any>, observeData)
-      : standardObserve(context as DecoratorContext, observeData);
+      ? implementObserve(context as Record<string, any>, propName, observedName)
+      : standardObserve(context as DecoratorContext, propName, observedName);
   };
 }

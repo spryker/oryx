@@ -1,10 +1,11 @@
 import { noChange } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive } from 'lit/directive.js';
-import { isObservable, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { isObservable, isPromise } from '../internal';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
-import { AsyncValueStrategy, isPromise } from './types';
+import { AsyncValueStrategy } from './types';
 
 const asyncValueObservableInstance = new AsyncValueObservableStrategy();
 const asyncValuePromiseInstance = new AsyncValuePromiseStrategy();
