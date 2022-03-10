@@ -7,7 +7,9 @@
     "build": "tsc && vite build",
     "dev:ssr": "node server",
     "build:server": "tsc && vite build --outDir ../../dist/apps/storefront/server --ssr src/entry-server.js -c vite.config.server.ts",
-    "build:ssr": "npm run build && npm run build:server"
+    "build:ssr": "npm run build && npm run build:server",
+    "test": "vitest",
+    "test:watch": "vitest watch"
   },
   "type": "module"
 }

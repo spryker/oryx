@@ -24,6 +24,20 @@
         "command": "npm run build",
         "cwd": "apps/storefront"
       }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "vitest",
+        "config": "apps/storefront/vitest.config.ts"
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "vitest watch",
+        "config": "apps/storefront/vitest.config.ts"
+      }
     }
   }
 }

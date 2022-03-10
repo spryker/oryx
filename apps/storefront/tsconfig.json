@@ -1,6 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
   "compilerOptions": {
     "noEmit": true,
     "target": "ESNext",
@@ -13,6 +18,5 @@
     "experimentalDecorators": true,
     "moduleResolution": "Node",
     "isolatedModules": true
-  },
-  "include": ["./src"]
+  }
 }
