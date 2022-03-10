@@ -2,6 +2,7 @@ import type { IWindow } from 'happy-dom';
 import { defineConfig } from 'vitest/config';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface Window extends IWindow {}
 }
 

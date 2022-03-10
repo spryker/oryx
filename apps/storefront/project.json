@@ -38,6 +38,13 @@
         "command": "vitest watch",
         "config": "apps/storefront/vitest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/storefront/**/*.ts"]
+      }
     }
   }
 }

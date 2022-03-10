@@ -5,11 +5,14 @@ import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 import { Readable } from 'stream';
 
-export const renderComponent = async (element) => {
+export const renderComponent = async (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  element
+): Promise<IterableIterator<string>> => {
   return await litRender(html`<storefront-component></storefront-component>`);
 };
 
-export const render = async (element) => {
+export const render = async (element): Promise<string> => {
   const ssrResult = await renderComponent(element);
   let stream = '';
   const readable = Readable.from(ssrResult);

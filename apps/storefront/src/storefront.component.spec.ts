@@ -1,7 +1,9 @@
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
 
-vi.mock('./composition.component', () => {});
+vi.mock('./composition.component', () => {
+  return;
+});
 
 describe('InputComponent', () => {
   beforeEach(async () => {
