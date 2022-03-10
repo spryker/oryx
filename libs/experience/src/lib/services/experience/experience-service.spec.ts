@@ -45,11 +45,11 @@ const mockContent = {
   ],
 };
 
-jest.mock('@spryker-oryx/injector', () => ({
+vi.mock('@spryker-oryx/injector', () => ({
   inject: (a: any) => a,
 }));
 
-jest.mock('rxjs/ajax', () => ({
+vi.mock('rxjs/ajax', () => ({
   ajax: (params: any) => {
     isAjax++;
     if (params.url.includes('bannerSlider')) {
