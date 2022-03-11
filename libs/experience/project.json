@@ -31,14 +31,14 @@
     "test": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "vitest run",
+        "command": "tsc --project libs/experience/tsconfig.spec.json && vitest run",
         "config": "libs/experience/vitest.config.ts"
       }
     },
     "test-watch": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "vitest",
+        "command": "tsc --project libs/experience/tsconfig.spec.json && vitest",
         "config": "libs/experience/vitest.config.ts"
       }
     }

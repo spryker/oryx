@@ -5,7 +5,7 @@ import { property, state } from 'lit/decorators.js';
 import { until } from 'lit/directives/until.js';
 import { html, unsafeStatic } from 'lit/static-html.js';
 import { lastValueFrom, ReplaySubject, switchMap, tap } from 'rxjs';
-import { Component, Services } from '../index';
+import { Component, Services } from '../services';
 
 export class ExperienceComposition extends LitElement {
   @state()
