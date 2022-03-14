@@ -1,11 +1,11 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import '../../option/';
 import { OptionComponent } from '../../option/';
 import { OryxElement } from '../../utilities';
 import { FilterController } from './filter.controller';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
-import { expect, fixture, html } from '@open-wc/testing';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 
 export class FakeComponent
   extends LitElement
@@ -49,6 +49,7 @@ describe('FilterController', () => {
         element.dispatchEvent(new Event('input', { bubbles: true }));
       }
     });
+
     it(`should not filter the options`, () => {
       expect(element.querySelectorAll('oryx-option:not([hide])').length).to.eq(
         optionsValues.length

@@ -1,7 +1,8 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import { a11yConfig } from '../a11y';
 import './index';
 import { LinkComponent } from './link.component';
 import { LinkTypes } from './link.model';
-import { expect, fixture, html } from '@open-wc/testing';
 
 describe('LinkComponent', () => {
   let element: LinkComponent;
@@ -21,6 +22,10 @@ describe('LinkComponent', () => {
           );
         });
 
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should reflect the type attribute on the node', () => {
           expect(element?.getAttribute('type')).to.equal(type);
         });
@@ -33,6 +38,10 @@ describe('LinkComponent', () => {
       element = await fixture(html` <oryx-link disabled></oryx-link>`);
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
     it('should reflect the disabled attribute on the host element', () => {
       expect(element?.getAttribute('disabled')).to.exist;
     });
@@ -41,6 +50,11 @@ describe('LinkComponent', () => {
       beforeEach(async () => {
         element?.removeAttribute('disabled');
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('the host should not have disabled attribute', () => {
         expect(element.hasAttribute('disabled')).to.be.false;
       });
@@ -50,6 +64,10 @@ describe('LinkComponent', () => {
   describe('link with icon property', () => {
     beforeEach(async () => {
       element = await fixture(html`<oryx-link icon="link"></oryx-link>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should render icon', () => {

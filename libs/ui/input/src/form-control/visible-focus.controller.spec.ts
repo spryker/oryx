@@ -1,12 +1,13 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
+import { a11yConfig } from '../../../a11y';
 import { VisibleFocusController } from './visible-focus.controller';
 
 export class TestComponent extends LitElement {
   protected visibleFocusController = new VisibleFocusController(this);
 
   render(): TemplateResult {
-    return html`<slot><input /></slot>`;
+    return html`<slot><input aria-label="some label" /></slot>`;
   }
 }
 customElements.define('test-control', TestComponent);
@@ -16,6 +17,10 @@ describe('VisibleFocusController', () => {
 
   beforeEach(async () => {
     element = await fixture(html`<test-control />`);
+  });
+
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible(a11yConfig);
   });
 
   describe('when the user uses the mouse', () => {

@@ -1,7 +1,8 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import { a11yConfig } from '../../a11y';
 import { queryAssignedElements } from '../../utilities';
 import './index';
 import { TypeaheadComponent } from './typeahead.component';
-import { expect, fixture, html } from '@open-wc/testing';
 
 describe('TypeaheadComponent', () => {
   let element: TypeaheadComponent;
@@ -9,7 +10,15 @@ describe('TypeaheadComponent', () => {
   describe('empty', () => {
     describe('when the isEmpty is not set', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-typeahead></oryx-typeahead>`);
+        element = await fixture(
+          html`<oryx-typeahead
+            .options=${{ label: 'some label' }}
+          ></oryx-typeahead>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should not have an empty message', () => {
@@ -23,8 +32,14 @@ describe('TypeaheadComponent', () => {
     describe('when the isEmpty flag is set to true', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-typeahead .options=${{ isEmpty: true }}></oryx-typeahead>`
+          html`<oryx-typeahead
+            .options=${{ isEmpty: true, label: 'some label' }}
+          ></oryx-typeahead>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should have an empty message', () => {
@@ -39,9 +54,17 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isEmpty: true, emptyMessage: 'EMPTY' }}
+            .options=${{
+              isEmpty: true,
+              emptyMessage: 'EMPTY',
+              label: 'some label',
+            }}
           ></oryx-typeahead>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should have an empty message', () => {
@@ -55,8 +78,14 @@ describe('TypeaheadComponent', () => {
     describe('when the isEmpty is set to false', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-typeahead .options=${{ isEmpty: false }}></oryx-typeahead>`
+          html`<oryx-typeahead
+            .options=${{ isEmpty: false, label: 'some label' }}
+          ></oryx-typeahead>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should not have an empty message', () => {
@@ -71,7 +100,15 @@ describe('TypeaheadComponent', () => {
   describe('loading', () => {
     describe('when the isLoading flag is not set', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-typeahead></oryx-typeahead>`);
+        element = await fixture(
+          html`<oryx-typeahead
+            .options=${{ label: 'some label' }}
+          ></oryx-typeahead>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should not have a loading spinner', () => {
@@ -87,9 +124,13 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isLoading: true }}
+            .options=${{ isLoading: true, label: 'some label' }}
           ></oryx-typeahead>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should have a loading spinner', () => {
@@ -105,9 +146,13 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isLoading: false }}
+            .options=${{ isLoading: false, label: 'some label' }}
           ></oryx-typeahead>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should not have a loading spinner', () => {

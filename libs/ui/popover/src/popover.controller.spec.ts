@@ -1,9 +1,10 @@
-import { defaultPopoverOptions, PopoverComponent, PopoverController } from '.';
-import '../../option';
-import { OptionComponent } from '../../option';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import * as sinon from 'sinon';
+import { defaultPopoverOptions, PopoverComponent, PopoverController } from '.';
+import { a11yConfig } from '../../a11y';
+import '../../option';
+import { OptionComponent } from '../../option';
 
 class CustomPopoverController extends PopoverController {
   test(): void {
@@ -82,6 +83,10 @@ describe('PopoverController', () => {
       element.popoverController.options = defaultPopoverOptions;
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
     describe('highlight', () => {
       const expectElementHighLight = (highlight: number): void => {
         items(element).forEach((item, index) => {
@@ -93,14 +98,26 @@ describe('PopoverController', () => {
         });
       };
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       describe('when the popover is shown', () => {
         beforeEach(() => {
           popover()?.toggleAttribute('show', true);
         });
 
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         describe('and the first option is highlighted', () => {
           beforeEach(() => {
             items(element)[0].toggleAttribute('highlight', true);
+          });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
           describe('"ArrowDown" key', () => {
@@ -206,6 +223,10 @@ describe('PopoverController', () => {
         describe('and the last option is highlighted', () => {
           beforeEach(() => {
             items(element)[24].toggleAttribute('highlight', true);
+          });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
           describe('"ArrowUp" key', () => {
@@ -363,6 +384,10 @@ describe('PopoverController', () => {
         describe('and an option is selected', () => {
           beforeEach(() => {
             items(element)[3].toggleAttribute('selected', true);
+          });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
           describe('and the keydown with ArrowDown key is dispatch', () => {
@@ -769,6 +794,11 @@ describe('PopoverController', () => {
     describe('when PopoverController is extended', () => {
       describe('and methods are called without guarding', () => {
         beforeEach(() => element.testCustomController());
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not throw an error', () => {
           expect(() => {
             (): void => undefined;
@@ -806,6 +836,11 @@ describe('PopoverController', () => {
       beforeEach(
         async () => (element = await fixture(html`<no-popover></no-popover>`))
       );
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       testNoErrorOnDispatch('focusin');
       testNoErrorOnDispatch('mousedown');
       testNoErrorOnDispatch('mouseup');
@@ -821,6 +856,11 @@ describe('PopoverController', () => {
           beforeEach(() =>
             (element as NoPopoverComponent).testCustomController()
           );
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
+          });
+
           it('should not throw an error', () => {
             expect(() => {
               (): void => undefined;
@@ -834,6 +874,11 @@ describe('PopoverController', () => {
       beforeEach(async () => {
         element = await fixture(html`<no-items></no-items>`);
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       testNoErrorOnDispatch('focusin');
       testNoErrorOnDispatch('mousedown');
       testNoErrorOnDispatch('mouseup');

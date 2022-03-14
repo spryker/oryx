@@ -1,5 +1,6 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { TemplateResult } from 'lit';
+import { a11yConfig } from '../../a11y';
 import './index';
 import { PasswordInputComponent } from './password-input.component';
 import { PasswordVisibilityStrategy } from './password-input.model';
@@ -17,10 +18,14 @@ describe('PasswordComponent', () => {
   describe('when the password control is rendered', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-password-input
-          ><input type="password"
-        /></oryx-password-input>`
+        html`<oryx-password-input>
+          <input type="password" aria-label="password" />
+        </oryx-password-input>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should have an input with password type', () => {
@@ -36,7 +41,7 @@ describe('PasswordComponent', () => {
     const render = (
       strategy: PasswordVisibilityStrategy
     ): TemplateResult => html`<oryx-password-input .strategy=${strategy}>
-      <input type="password" />
+      <input type="password" aria-label="password" />
     </oryx-password-input>`;
 
     const expectAfterEvent = (event: string): void => {
@@ -62,6 +67,11 @@ describe('PasswordComponent', () => {
         element = await fixture(render(PasswordVisibilityStrategy.NONE));
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should not have a button to make the password visible', () => {
         expect(toggle).to.not.exist;
       });
@@ -77,6 +87,10 @@ describe('PasswordComponent', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.CLICK));
         toggle = element.shadowRoot?.querySelector('oryx-icon');
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       describe('and when the element is clicked', () => {
@@ -130,6 +144,10 @@ describe('PasswordComponent', () => {
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       describe('and when the element is clicked', () => {
         expectNotAfterEvent('click');
       });
@@ -151,10 +169,14 @@ describe('PasswordComponent', () => {
               .strategy=${PasswordVisibilityStrategy.CLICK}
               .timeout=${10}
             >
-              <input type="password" />
+              <input type="password" aria-label="password" />
             </oryx-password-input>`
           );
           toggle = element.shadowRoot?.querySelector('oryx-icon');
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should still show the password after 9ms', (done) => {

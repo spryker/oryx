@@ -1,6 +1,7 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { a11yConfig } from '../../../a11y';
 import { OryxElement } from '../../../utilities';
 import { AffixController } from './affix.controller';
 import { AffixOptions } from './affix.model';
@@ -28,6 +29,11 @@ describe('AffixController', () => {
           html`<fake-affix .options=${{ prefixIcon: 'search' }}></fake-affix>`
         );
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should render the icon in the prefix slot', () => {
         expect(
           element.shadowRoot?.querySelector('slot[name=prefix] > oryx-icon')
@@ -39,6 +45,11 @@ describe('AffixController', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-affix></fake-affix>`);
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should not have .has-prefix-content class', () => {
         expect(element.classList.contains('has-prefix-content')).to.be.false;
       });
@@ -53,6 +64,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.true;
         });
@@ -64,6 +80,11 @@ describe('AffixController', () => {
             html`<fake-affix .options=${{ prefixFill: true }}></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.false;
         });
@@ -76,6 +97,11 @@ describe('AffixController', () => {
               >`
             );
           });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
+          });
+
           it('should have prefix-fill attribute', () => {
             expect(element.hasAttribute('prefix-fill')).to.be.true;
           });
@@ -92,6 +118,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.false;
         });
@@ -103,6 +134,11 @@ describe('AffixController', () => {
             html`<fake-affix><div slot="prefix">test</div></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.false;
         });
@@ -118,6 +154,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.false;
         });
@@ -129,6 +170,11 @@ describe('AffixController', () => {
             html`<fake-affix><div slot="prefix">test</div></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have prefix-fill attribute', () => {
           expect(element.hasAttribute('prefix-fill')).to.be.false;
         });
@@ -143,6 +189,11 @@ describe('AffixController', () => {
           html`<fake-affix .options=${{ suffixIcon: 'search' }}></fake-affix>`
         );
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should render the icon in the suffix slot', () => {
         expect(
           element.shadowRoot?.querySelector('slot[name=suffix] > oryx-icon')
@@ -154,6 +205,11 @@ describe('AffixController', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-affix></fake-affix>`);
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should not have .has-suffix-content class', () => {
         expect(element.classList.contains('has-suffix-content')).to.be.false;
       });
@@ -168,6 +224,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.true;
         });
@@ -179,6 +240,11 @@ describe('AffixController', () => {
             html`<fake-affix .options=${{ suffixFill: true }}></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.false;
         });
@@ -191,6 +257,11 @@ describe('AffixController', () => {
               >`
             );
           });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
+          });
+
           it('should have suffix-fill attribute', () => {
             expect(element.hasAttribute('suffix-fill')).to.be.true;
           });
@@ -207,6 +278,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.false;
         });
@@ -218,6 +294,11 @@ describe('AffixController', () => {
             html`<fake-affix><div slot="suffix">test</div></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.false;
         });
@@ -233,6 +314,11 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.false;
         });
@@ -244,6 +330,11 @@ describe('AffixController', () => {
             html`<fake-affix><div slot="suffix">test</div></fake-affix>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should not have suffix-fill attribute', () => {
           expect(element.hasAttribute('suffix-fill')).to.be.false;
         });

@@ -6,6 +6,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
 
   coverageConfig: {
     reportDir: '../../coverage/libs/content',
+    report: true,
+    reporters: ['html', 'text', 'text-summary'],
   },
   /** Resolve bare module imports */
   nodeResolve: {

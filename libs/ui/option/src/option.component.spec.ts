@@ -1,7 +1,8 @@
-import { OptionComponent } from './';
-import './index';
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
+import { a11yConfig } from '../../a11y';
+import { OptionComponent } from './';
+import './index';
 
 describe('OptionComponent', () => {
   let element: OptionComponent;
@@ -11,6 +12,10 @@ describe('OptionComponent', () => {
       element = await fixture(
         html`<oryx-option .icon=${'mock'}></oryx-option>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should render the icon inside the option', () => {
@@ -28,6 +33,10 @@ describe('OptionComponent', () => {
         element = parent.querySelector('oryx-option') as OptionComponent;
       });
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should return the innerText', () => {
         expect(element.value).to.eq('mock inner text');
       });
@@ -41,6 +50,10 @@ describe('OptionComponent', () => {
           </div>`
         );
         element = parent.querySelector('oryx-option') as OptionComponent;
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should return the innerText', () => {

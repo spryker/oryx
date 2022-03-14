@@ -1,4 +1,5 @@
 import { expect, fixture, html } from '@open-wc/testing';
+import { a11yConfig } from '../../a11y';
 import { ErrorMessageComponent } from './error-message.component';
 import './index';
 
@@ -16,6 +17,10 @@ describe('ErrorMessageComponent', () => {
         html`<oryx-error-message message="error validation message">
         </oryx-error-message>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should render an error icon', () => {
@@ -37,6 +42,10 @@ describe('ErrorMessageComponent', () => {
           <p>custom error content</p>
         </oryx-error-message>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should not render an error icon', () => {

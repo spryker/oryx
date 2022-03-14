@@ -1,3 +1,6 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import * as sinon from 'sinon';
+import { a11yConfig } from '../../a11y';
 import { queryFirstAssigned } from '../../utilities';
 import {
   ClearIconAppearance,
@@ -7,8 +10,6 @@ import {
 } from './';
 import './index';
 import { SearchComponent } from './search.component';
-import { expect, fixture, html } from '@open-wc/testing';
-import * as sinon from 'sinon';
 
 describe('SearchComponent', () => {
   let element: SearchComponent;
@@ -17,11 +18,20 @@ describe('SearchComponent', () => {
     describe('searchIcon', () => {
       describe('when no searchIcon is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-search></oryx-search>`);
+          element = await fixture(
+            html`<oryx-search
+              .options=${{ label: 'some label' }}
+            ></oryx-search>`
+          );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should render the default search icon', () => {
           expect(
-            element.shadowRoot?.querySelector('oryx-icon.search[type=search')
+            element.shadowRoot?.querySelector('oryx-icon.search[type=search]')
           ).to.exist;
         });
       });
@@ -30,10 +40,18 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ searchIcon: 'custom-search-icon' }}
+              .options=${{
+                searchIcon: 'custom-search-icon',
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
         });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should render the custom search icon', () => {
           expect(
             element.shadowRoot?.querySelector(
@@ -54,7 +72,15 @@ describe('SearchComponent', () => {
       };
       describe('when the position is undefined', () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-search></oryx-search>`);
+          element = await fixture(
+            html`<oryx-search
+              .options=${{ label: 'some label' }}
+            ></oryx-search>`
+          );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the search icon in the prefix slot', () => {
@@ -70,9 +96,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ searchIconPosition: SearchIconPosition.PREFIX }}
+              .options=${{
+                searchIconPosition: SearchIconPosition.PREFIX,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the search icon in the prefix slot', () => {
@@ -86,10 +119,14 @@ describe('SearchComponent', () => {
         describe('and custom prefix content is slotted in', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<oryx-search
+              html`<oryx-search .options=${{ label: 'some label' }}
                 ><div slot="prefix">custom prefix content</div></oryx-search
               >`
             );
+          });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
           it('should not render the search icon in the prefix slot', () => {
@@ -102,9 +139,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ searchIconPosition: SearchIconPosition.SUFFIX }}
+              .options=${{
+                searchIconPosition: SearchIconPosition.SUFFIX,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should not render the search icon in the prefix slot', () => {
@@ -118,11 +162,16 @@ describe('SearchComponent', () => {
         describe('and custom suffix content is slotted in', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<oryx-search
+              html`<oryx-search .options=${{ label: 'some label' }}
                 ><div slot="suffix">custom prefix content</div></oryx-search
               >`
             );
           });
+
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
+          });
+
           it('should not render the search icon in the suffix slot', () => {
             expect(searchIcon('suffix')).to.not.exist;
           });
@@ -133,9 +182,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ searchIconPosition: SearchIconPosition.NONE }}
+              .options=${{
+                searchIconPosition: SearchIconPosition.NONE,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should not render the search icon in the prefix slot', () => {
@@ -214,6 +270,10 @@ describe('SearchComponent', () => {
         </oryx-search>`);
       });
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       describe('and the search icon is clicked', () => {
         itShouldDispatchSearchEvent('value123');
       });
@@ -250,7 +310,15 @@ describe('SearchComponent', () => {
     describe('clearIcon', () => {
       describe('when no clearIcon is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-search></oryx-search>`);
+          element = await fixture(
+            html`<oryx-search
+              .options=${{ label: 'some label' }}
+            ></oryx-search>`
+          );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the default clear icon', () => {
@@ -264,9 +332,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ clearIcon: 'custom-clear-icon' }}
+              .options=${{
+                clearIcon: 'custom-clear-icon',
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the custom clear icon', () => {
@@ -289,7 +364,15 @@ describe('SearchComponent', () => {
       };
       describe('when the position is undefined', () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-search></oryx-search>`);
+          element = await fixture(
+            html`<oryx-search
+              .options=${{ label: 'some label' }}
+            ></oryx-search>`
+          );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the clear icon after the input control', () => {
@@ -310,9 +393,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ clearIconPosition: ClearIconPosition.AFTER }}
+              .options=${{
+                clearIconPosition: ClearIconPosition.AFTER,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should render the clear icon after the input control', () => {
@@ -333,9 +423,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ clearIconPosition: ClearIconPosition.SUFFIX }}
+              .options=${{
+                clearIconPosition: ClearIconPosition.SUFFIX,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should not render the clear icon after the input control', () => {
@@ -356,9 +453,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ clearIconPosition: ClearIconPosition.NONE }}
+              .options=${{
+                clearIconPosition: ClearIconPosition.NONE,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should not render the clear icon after the input control', () => {
@@ -379,7 +483,15 @@ describe('SearchComponent', () => {
     describe('clearIconAppearance', () => {
       describe('when the appearance is undefined', () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-search></oryx-search>`);
+          element = await fixture(
+            html`<oryx-search
+              .options=${{ label: 'some label' }}
+            ></oryx-search>`
+          );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should use toggle', () => {
@@ -395,9 +507,16 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{ clearIconAppearance: ClearIconAppearance.HOVER }}
+              .options=${{
+                clearIconAppearance: ClearIconAppearance.HOVER,
+                label: 'some label',
+              }}
             ></oryx-search>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should add the appearance on the clear icon', () => {
@@ -415,7 +534,13 @@ describe('SearchComponent', () => {
 
     describe('when the input is empty', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-search></oryx-search>`);
+        element = await fixture(
+          html`<oryx-search .options=${{ label: 'some label' }}></oryx-search>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should hide the clear icon', () => {
@@ -444,6 +569,10 @@ describe('SearchComponent', () => {
         element = await fixture(html`<oryx-search>
           <input value="value123" />
         </oryx-search>`);
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should have the clear icon', () => {
@@ -516,6 +645,10 @@ describe('SearchComponent', () => {
     describe('when there is no control', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-search>no control</oryx-search>`);
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should not prevent event bubbling', () => {

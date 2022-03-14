@@ -1,12 +1,13 @@
+import { expect, fixture, html } from '@open-wc/testing';
+import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { a11yConfig } from '../../a11y';
 import '../../option/';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
 import { OryxElement, queryFirstAssigned } from '../../utilities';
 import { TypeaheadController } from './typeahead.controller';
 import { TypeaheadOptions } from './typeahead.model';
-import { expect, fixture, html } from '@open-wc/testing';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 
 export class FakeComponent
   extends LitElement
@@ -70,9 +71,14 @@ describe('TypeaheadController', () => {
           </fake-typeahead>`
         );
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should add the option slot to it', () => {
         expect(
-          element.querySelectorAll('oryx-option[slot=option').length
+          element.querySelectorAll('oryx-option[slot=option]').length
         ).to.eq(3);
       });
     });
@@ -87,6 +93,11 @@ describe('TypeaheadController', () => {
           </fake-typeahead>`
         );
       });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should add the option slot to it', () => {
         expect(
           element.querySelectorAll('oryx-option[slot=option').length
@@ -142,6 +153,10 @@ describe('TypeaheadController', () => {
       element = await fixture(
         html`<without-control-typeahead></without-control-typeahead>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     describe('when an input is dispatched', () => {

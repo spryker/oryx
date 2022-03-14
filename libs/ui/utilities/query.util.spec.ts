@@ -1,12 +1,13 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html, LitElement, TemplateResult } from 'lit';
+import { a11yConfig } from '../a11y';
 import { queryAssignedElements, queryFirstAssigned } from './query.util';
 
 export class FakeComponent extends LitElement {
   render(): TemplateResult {
     return html`
       <slot>
-        <input id="shadow" />
+        <input id="shadow" aria-label="shadow" />
       </slot>
 
       <slot name="first"></slot>
@@ -35,6 +36,10 @@ describe('QueryUtil', () => {
         element = await fixture(html`<fake-element></fake-element>`);
       });
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       describe('when non wc element is queried', () => {
         it('should not return any assigned elements', () => {
           const invalidElement = element.renderRoot?.querySelector('#foo');
@@ -51,6 +56,10 @@ describe('QueryUtil', () => {
       describe('default slot', () => {
         beforeEach(async () => {
           element = await fixture(html`<fake-element></fake-element>`);
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should find all shadow DOM', () => {
@@ -102,8 +111,14 @@ describe('QueryUtil', () => {
       describe('no slot', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<no-slot-element><input /></no-slot-element>`
+            html`<no-slot-element
+              ><input aria-label="some label"
+            /></no-slot-element>`
           );
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
         it('should not find any assigned nodes', () => {

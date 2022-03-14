@@ -1,4 +1,6 @@
+import { expect, fixture, html } from '@open-wc/testing';
 import { SelectComponent } from '.';
+import { a11yConfig } from '../../a11y';
 import { getControl } from '../../input';
 import {
   ClearIconAppearance,
@@ -6,7 +8,6 @@ import {
   SearchIconPosition,
 } from '../../search';
 import './index';
-import { expect, fixture, html } from '@open-wc/testing';
 
 describe('SelectComponent', () => {
   let element: SelectComponent;
@@ -37,7 +38,13 @@ describe('SelectComponent', () => {
 
     describe('when created without control', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-select></oryx-select>`);
+        element = await fixture(
+          html`<oryx-select .options=${{ label: 'some label' }}></oryx-select>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       expectOptions(
@@ -50,7 +57,15 @@ describe('SelectComponent', () => {
 
     describe('when created with an <input /> control', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-select><input /></oryx-select>`);
+        element = await fixture(
+          html`<oryx-select .options=${{ label: 'some-label' }}
+            ><input
+          /></oryx-select>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       expectOptions(
@@ -64,10 +79,16 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control with empty values allowed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select .options=${{ allowEmptyValue: true }}>
+          html`<oryx-select
+            .options=${{ allowEmptyValue: true, label: 'some label' }}
+          >
             <input />
           </oryx-select>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       expectOptions(
@@ -81,10 +102,16 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control with empty values not allowed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select .options=${{ allowEmptyValue: false }}>
+          html`<oryx-select
+            .options=${{ allowEmptyValue: false, label: 'some label' }}
+          >
             <input />
           </oryx-select>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       expectOptions(
@@ -98,8 +125,14 @@ describe('SelectComponent', () => {
     describe('when created with a <select> control', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select><select></select></oryx-select>`
+          html`<oryx-select .options=${{ label: 'some label' }}
+            ><select></select
+          ></oryx-select>`
         );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       expectOptions(

@@ -1,6 +1,7 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import * as sinon from 'sinon';
 import { PopoverComponent } from '.';
+import { a11yConfig } from '../../a11y';
 import './index';
 
 describe('PopoverComponent', () => {
@@ -11,6 +12,10 @@ describe('PopoverComponent', () => {
       element = await fixture(html`<oryx-popover>
         <div id="light-dom">popover content</div>
       </oryx-popover>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should render the light dom content', () => {

@@ -1,9 +1,19 @@
 import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { CollapseToggleController } from './navigation-collapse.controller';
 import { navigationStyles } from './navigation.styles';
 
 export class NavigationComponent extends LitElement {
   static styles = [navigationStyles];
+
+  /**
+   * Label that is used for assistive technology to vocalise the usage
+   * of the collapse button.
+   *
+   * Defaults to "collapse navigation".
+   */
+  @property()
+  toggleButtonAriaLabel?: string = 'collapse navigation';
 
   protected collapse = new CollapseToggleController(this);
 
@@ -14,7 +24,7 @@ export class NavigationComponent extends LitElement {
         <use href="assets/full-logo.svg#text" class="letter-logo" />
       </svg>
       <slot></slot>
-      <button @click=${this.toggle} tabindex="-1">
+      <button @click=${this.toggle} .ariaLabel=${this.toggleButtonAriaLabel}>
         <oryx-icon type="back" size="medium"></oryx-icon>
       </button>
     `;

@@ -1,5 +1,6 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
+import { a11yConfig } from '../../a11y';
 import { IconComponent } from './icon.component';
 import { IconSize } from './icon.model';
 import './index';
@@ -17,6 +18,10 @@ describe('Icon', () => {
       element = await fixture(html`<oryx-icon></oryx-icon>`);
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
     it('should not render an SVG element', () => {
       const svg = element?.shadowRoot?.querySelector('svg');
       expect(svg).not.to.exist;
@@ -26,6 +31,10 @@ describe('Icon', () => {
   describe('when type is "search"', () => {
     beforeEach(async () => {
       element = await fixture(html`<oryx-icon type="search"></oryx-icon>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should render an SVG element', () => {
@@ -49,6 +58,10 @@ describe('Icon', () => {
           );
         });
 
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
         it('should reflect the attribute on the node', () => {
           expect(element?.getAttribute('size')).to.equal(size);
         });
@@ -68,6 +81,10 @@ describe('Icon', () => {
           />
         </svg>
       </oryx-icon>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should not reference an external SVG', () => {

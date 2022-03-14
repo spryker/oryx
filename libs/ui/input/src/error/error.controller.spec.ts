@@ -1,6 +1,7 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { a11yConfig } from '../../../a11y';
 import { ErrorMessageComponent } from '../../../error-message/index';
 import { OryxElement } from '../../../utilities';
 import { ErrorController } from './error.controller';
@@ -30,6 +31,10 @@ describe('ErrorMixin', () => {
         );
       });
 
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should pass the message to the errorMessage component', () => {
         const errorMessage = element?.renderRoot.querySelector(
           'oryx-error-message'
@@ -46,6 +51,10 @@ describe('ErrorMixin', () => {
   describe('when no error message is provided', () => {
     beforeEach(async () => {
       element = await fixture(html`<fake-el></fake-el>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should not have an errorMessage element', () => {
@@ -65,6 +74,10 @@ describe('ErrorMixin', () => {
       element = await fixture(html`<fake-el .showError=${true}></fake-el>`);
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
     it('should not have an errorMessage element', () => {
       const errorMessage = element?.shadowRoot?.querySelector(
         'oryx-error-message'
@@ -82,6 +95,10 @@ describe('ErrorMixin', () => {
       element = await fixture(html`<fake-el>
         <div slot="error">error</div>
       </fake-el>`);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should have an has-error class', () => {

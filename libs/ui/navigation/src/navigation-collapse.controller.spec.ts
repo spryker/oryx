@@ -1,5 +1,6 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html, LitElement } from 'lit';
+import { a11yConfig } from '../../a11y';
 import './index';
 import { CollapseToggleController } from './navigation-collapse.controller';
 
@@ -27,17 +28,35 @@ describe('CollapseToggleController', () => {
       expect(element.hasAttribute('collapsed')).to.be.true;
     });
 
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
     describe('when toggled', () => {
-      it('should not have a collapse attribute', () => {
+      beforeEach(() => {
         controller.toggle();
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
+      it('should not have a collapse attribute', () => {
         expect(element.hasAttribute('collapsed')).to.be.false;
       });
     });
 
     describe('when toggled twice', () => {
+      beforeEach(() => {
+        controller.toggle();
+        controller.toggle();
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
       it('should have a collapse attribute', () => {
-        controller.toggle();
-        controller.toggle();
         expect(element.hasAttribute('collapsed')).to.be.true;
       });
     });
