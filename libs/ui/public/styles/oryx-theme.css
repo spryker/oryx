@@ -3,6 +3,7 @@
   font-family: var(--oryx-font);
   font-size: 14px;
   font-weight: 500;
+  letter-spacing: 0.005em;
   color: var(--oryx-color-ink);
 
   /* base font */
@@ -31,6 +32,7 @@
   --oryx-color-success: #17b497;
   --oryx-color-warning: #f2392e;
   --oryx-color-error: #f2392e;
+  --oryx-color-error-dark: #c72712;
 
   /* theme color */
   --oryx-color-accent: #2480f2;
