@@ -52,17 +52,8 @@ const Template: Story<unknown> = (): TemplateResult => {
       }
       oryx-option {
         padding: 10px;
-        margin: 10px;
+        margin: 5px;
         cursor: pointer;
-        border-radius: 15px;
-      }
-      oryx-option:hover,
-      [highlight] {
-        background-color: red;
-      }
-      oryx-option[selected]:after {
-        content: ' (selected)';
-        color: var(--oryx-color-brand);
       }
     </style>
   `;

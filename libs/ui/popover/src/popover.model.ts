@@ -6,17 +6,6 @@ export interface PopoverOptions {
    * Defaults to true.
    */
   showOnFocus?: boolean;
-
-  /**
-   * Indicates that a popover item can be selected.
-   *
-   * The selected item state remains after the popover is closed. The next time
-   * the popover is opened, the selected item is the starting point for (keyboard)
-   * navigation.
-   *
-   * Defaults to true.
-   */
-  selectable?: boolean;
 }
 
 export interface PopoverSelectEvent<T = HTMLElement> {
