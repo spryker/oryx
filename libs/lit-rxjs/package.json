@@ -1,17 +1,19 @@
 {
   "name": "@spryker-oryx/lit-rxjs",
   "version": "0.0.1",
-  "watch": {
-    "test": {
-      "extensions": "spec.ts",
-      "quiet": false,
-      "patterns": [
-        "./"
-      ]
-    }
+  "description": "Rxjs utilities for lit-element library",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "index.es.js",
+  "types": "src/index.d.ts",
+  "peerDependencies": {
+    "lit": "^2.1.0",
+    "rxjs": "~7.4.0"
   },
-  "scripts": {
-    "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --coverage",
-    "test:watch": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && concurrently -k -r \"tsc -p tsconfig.spec.json --watch --preserveWatchOutput\" \"wtr --watch\""
+  "publishConfig": {
+    "access": "public"
   }
 }

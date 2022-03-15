@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable } from 'rxjs';
 
 export function isObservable<T = any>(object: any): object is Observable<T> {

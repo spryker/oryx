@@ -1,9 +1,7 @@
-import { expect } from '@open-wc/testing';
 import { of } from 'rxjs';
-import { spy } from 'sinon';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 
-const mockCallback = spy();
+const mockCallback = vi.fn();
 
 describe('AsyncValueObservableStrategy', () => {
   let asyncValueObservableStrategy: AsyncValueObservableStrategy;
@@ -11,7 +9,7 @@ describe('AsyncValueObservableStrategy', () => {
   beforeEach(() => {
     asyncValueObservableStrategy = new AsyncValueObservableStrategy();
 
-    mockCallback.resetHistory();
+    mockCallback.mockReset();
   });
 
   describe('createSubscription method', () => {
@@ -26,7 +24,7 @@ describe('AsyncValueObservableStrategy', () => {
 
       asyncValueObservableStrategy.dispose(strategy);
 
-      expect(mockCallback).calledWithExactly(mockResult);
+      expect(mockCallback).toBeCalledWith(mockResult);
     });
   });
 });

@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { spy } from 'sinon';
 import { observe } from './observe.decorator';
 
 const mockProperty = 'mockProperty';
@@ -40,10 +38,14 @@ export class MockComponentWithProperty extends MockClass {
 describe('observe decorator', () => {
   let element: MockClass;
 
+  const getElement = (selector = 'mock-component'): MockClass => {
+    return document.body.querySelector(selector)!;
+  };
+
   beforeEach(async () => {
-    element = await fixture(
-      html`<mock-component mock="${mockProperty}"></mock-component>`
-    );
+    document.body.innerHTML = `<mock-component mock="${mockProperty}"></mock-component>`;
+    await window.happyDOM.whenAsyncComplete();
+    element = getElement();
   });
 
   afterEach(() => {
@@ -52,12 +54,12 @@ describe('observe decorator', () => {
 
   describe('observable is not defined', () => {
     it('should create `BehaviorSubject` under the hood and emit updated value if passed observed property has been changed', () => {
-      const callback = spy();
+      const callback = vi.fn();
       element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
-      expect(callback).calledWithExactly(mockProperty);
-      expect(element.mock$).instanceof(BehaviorSubject);
+      expect(callback).toHaveBeenCalledWith(mockProperty);
+      expect(element.mock$).toBeInstanceOf(BehaviorSubject);
       element.mock = mockAnotherProperty;
-      expect(callback.secondCall).calledWithExactly(mockAnotherProperty);
+      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
     });
   });
 
@@ -67,12 +69,12 @@ describe('observe decorator', () => {
     });
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = spy();
+      const callback = vi.fn();
       element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
-      expect(callback).calledWithExactly(mockProperty);
-      expect(element.mock$).instanceof(BehaviorSubject);
+      expect(callback).toHaveBeenCalledWith(mockProperty);
+      expect(element.mock$).toBeInstanceOf(BehaviorSubject);
       element.mock = mockAnotherProperty;
-      expect(callback.secondCall).calledWithExactly(mockAnotherProperty);
+      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
     });
   });
 
@@ -82,12 +84,12 @@ describe('observe decorator', () => {
     });
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = spy();
+      const callback = vi.fn();
       element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
-      expect(callback).calledWithExactly(mockProperty);
-      expect(element.mock$).instanceof(ReplaySubject);
+      expect(callback).toHaveBeenCalledWith(mockProperty);
+      expect(element.mock$).toBeInstanceOf(ReplaySubject);
       element.mock = mockAnotherProperty;
-      expect(callback.secondCall).calledWithExactly(mockAnotherProperty);
+      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
     });
   });
 
@@ -97,31 +99,29 @@ describe('observe decorator', () => {
     });
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = spy();
+      const callback = vi.fn();
       element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
 
-      expect(callback).not.calledWith();
-      expect(element.mock$).instanceof(Subject);
+      expect(callback).not.toHaveBeenCalled();
+      expect(element.mock$).toBeInstanceOf(Subject);
       element.mock = mockAnotherProperty;
-      expect(callback.firstCall).calledWithExactly(mockAnotherProperty);
+      expect(callback).toHaveBeenNthCalledWith(1, mockAnotherProperty);
     });
   });
 
   describe('with property', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<mock-component-with-property
-          anotherMock="${mockProperty}"
-        ></mock-component-with-property>`
-      );
+      document.body.innerHTML = `<mock-component-with-property anotherMock="${mockProperty}"></mock-component-with-property>`;
+      await window.happyDOM.whenAsyncComplete();
+      element = getElement('mock-component-with-property');
     });
 
     it('should observe for the required property', () => {
-      const callback = spy();
+      const callback = vi.fn();
       element.mock$?.pipe(takeUntil(destroy$)).subscribe(callback);
-      expect(callback).calledWithExactly(mockProperty);
+      expect(callback).toHaveBeenCalledWith(mockProperty);
       element.anotherMock = mockAnotherProperty;
-      expect(callback.secondCall).calledWithExactly(mockAnotherProperty);
+      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
     });
   });
 
@@ -133,7 +133,7 @@ describe('observe decorator', () => {
         element.requestUpdate();
         await element.updateComplete;
       } catch (error) {
-        expect(error).be.an('string');
+        expect(error).toBeTypeOf('string');
       }
     });
 

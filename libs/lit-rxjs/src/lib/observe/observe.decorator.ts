@@ -21,7 +21,7 @@ const implementObserve = (
   observedName: string
 ): void => {
   const ownDescriptor = Object.getOwnPropertyDescriptor(proto, observedName);
-  const internalSubjectName = `__${propName}-subject$`;
+  const internalSubjectName = Symbol(`__${propName}-subject$`);
   let innerValue: unknown;
 
   if (!ownDescriptor) {
@@ -30,7 +30,7 @@ const implementObserve = (
 
   const observedDescriptor = {
     ...ownDescriptor,
-    set(this: Record<string, any>, newValue: any): void {
+    set(this: any, newValue: any): void {
       ownDescriptor.set?.call(this, newValue);
 
       if (this[internalSubjectName]) {
@@ -41,20 +41,32 @@ const implementObserve = (
     },
   };
   const observableDescriptor = {
-    get(this: Record<string, any>): Subject<any> {
+    get(this: any): Subject<any> {
       if (!this[internalSubjectName]) {
-        this[internalSubjectName] = new BehaviorSubject(innerValue);
+        const descriptor = {
+          value: new BehaviorSubject(innerValue),
+          enumerable: false,
+          configurable: true,
+        };
+
+        Object.defineProperty(this, internalSubjectName, descriptor);
       }
 
       return this[internalSubjectName];
     },
-    set(this: Record<string, any>, value$: Subject<any>): void {
+    set(this: any, value$: Subject<any>): void {
       const isUpdateSubjectInstance =
         this[internalSubjectName]?.constructor?.name !==
         value$?.constructor?.name;
 
       if (!this[internalSubjectName] || isUpdateSubjectInstance) {
-        this[internalSubjectName] = subjectAssigner(value$);
+        const descriptor = {
+          value: subjectAssigner(value$),
+          enumerable: false,
+          configurable: true,
+        };
+
+        Object.defineProperty(this, internalSubjectName, descriptor);
       }
 
       if (isUpdateSubjectInstance) {

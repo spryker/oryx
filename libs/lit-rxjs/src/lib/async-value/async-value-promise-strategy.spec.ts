@@ -1,8 +1,6 @@
-import { expect } from '@open-wc/testing';
-import { spy } from 'sinon';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
 
-const mockCallback = spy();
+const mockCallback = vi.fn();
 
 describe('AsyncValuePromiseStrategy', () => {
   let asyncValuePromiseStrategy: AsyncValuePromiseStrategy;
@@ -10,7 +8,7 @@ describe('AsyncValuePromiseStrategy', () => {
   beforeEach(() => {
     asyncValuePromiseStrategy = new AsyncValuePromiseStrategy();
 
-    mockCallback.resetHistory();
+    mockCallback.mockReset();
   });
 
   describe('createSubscription method', () => {
@@ -25,7 +23,7 @@ describe('AsyncValuePromiseStrategy', () => {
 
       await mockPromise;
 
-      expect(mockCallback).calledWith(mockResult);
+      expect(mockCallback).toHaveBeenCalledWith(mockResult);
     });
   });
 });

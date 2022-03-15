@@ -4,21 +4,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "outputPath": "dist/libs/lit-rxjs",
-        "main": "libs/lit-rxjs/src/index.ts",
-        "entryFile": "libs/lit-rxjs/src/index.ts",
-        "tsConfig": "libs/lit-rxjs/tsconfig.lib.json",
-        "project": "libs/lit-rxjs/package.json",
-        "assets": [
-          {
-            "glob": "*",
-            "input": "fes/libs/lit-rxjs/*.md",
-            "output": "fes/dist/libs/lit-rxjs"
-          }
-        ]
+        "commands": [
+          "rm -rf ../../dist/libs/lit-rxjs/*",
+          "tsc --project tsconfig.lib.json",
+          "vite build"
+        ],
+        "parallel": false,
+        "cwd": "libs/lit-rxjs"
       }
     },
     "lint": {
@@ -29,15 +23,19 @@
       }
     },
     "test": {
-      "executor": "@nrwl/workspace:run-script",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "script": "test"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
+        "parallel": false,
+        "cwd": "libs/lit-rxjs"
       }
     },
     "test-watch": {
-      "executor": "@nrwl/workspace:run-script",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "script": "test:watch"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
+        "parallel": false,
+        "cwd": "libs/lit-rxjs"
       }
     }
   },

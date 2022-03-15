@@ -22,22 +22,12 @@ function controllerCreation(target: any, name: string): void {
 }
 
 const legacySubscribe = (context: Record<string, any>, name: string): void => {
-  let innerValue: unknown;
+  const nativeConnected = context.connectedCallback;
 
-  Object.defineProperty(context, name, {
-    get() {
-      return innerValue;
-    },
-    set(
-      this: Record<string, any> & LitElement,
-      value: Record<string, string> | string
-    ) {
-      innerValue = value;
-      controllerCreation(this, name);
-    },
-    enumerable: true,
-    configurable: true,
-  });
+  context.connectedCallback = function (): void {
+    controllerCreation(this, name);
+    nativeConnected.call(this);
+  };
 };
 
 const standardSubscribe = (
