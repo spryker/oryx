@@ -29,7 +29,7 @@ createInjector({
     ...previewModeProviders(),
     {
       provide: 'CONTENT_BACKEND_URL',
-      useValue: 'http://localhost:3013',
+      useValue: __CONTENT_BACKEND_URL__ || 'http://localhost:3013',
     },
     {
       provide: Services.ComponentMapping,

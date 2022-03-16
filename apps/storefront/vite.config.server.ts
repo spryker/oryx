@@ -13,5 +13,8 @@ export default defineConfig({
     },
     emptyOutDir: true,
   },
+  define: {
+    __CONTENT_BACKEND_URL__: JSON.stringify(process.env.CONTENT_BACKEND_URL),
+  },
   plugins: [tsconfigPaths({ root: '../../' })],
 });
