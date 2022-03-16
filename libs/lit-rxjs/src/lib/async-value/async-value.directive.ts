@@ -1,4 +1,4 @@
-import { noChange } from 'lit';
+import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive } from 'lit/directive.js';
 import { Observable, Subscription } from 'rxjs';
@@ -16,15 +16,17 @@ export class AsyncValueDirective extends AsyncDirective {
   subscription: Subscription | Promise<unknown> | null = null;
 
   render(
-    object: Promise<unknown> | Observable<unknown> | null | undefined
+    object: Promise<unknown> | Observable<unknown> | null | undefined,
+    template?: (value: unknown) => TemplateResult,
+    fallback?: () => TemplateResult
   ): unknown {
     if (object && !this.object && this.isConnected) {
-      this.subscribe(object);
+      this.subscribe(object, template, fallback);
     }
 
     if (object !== undefined && object !== this.object && this.isConnected) {
       this.dispose();
-      this.render(object);
+      this.render(object, template, fallback);
     }
 
     return noChange;
@@ -40,11 +42,33 @@ export class AsyncValueDirective extends AsyncDirective {
     }
   }
 
-  private subscribe(object: Promise<unknown> | Observable<unknown>): void {
+  private subscribe(
+    object: Promise<unknown> | Observable<unknown>,
+    template?: (value: unknown) => TemplateResult,
+    fallback?: () => TemplateResult
+  ): void {
+    if (fallback) {
+      this.setValue(fallback());
+    }
+
     this.object = object;
     this.strategy = this.select(object);
 
     this.subscription = this.strategy.createSubscription(object, (value) => {
+      const isUndefined = value === null || value === undefined;
+
+      if (fallback && isUndefined) {
+        this.setValue(fallback());
+
+        return;
+      }
+
+      if (template && !isUndefined) {
+        this.setValue(template(value));
+
+        return;
+      }
+
       this.setValue(value);
     });
   }
@@ -77,5 +101,22 @@ export class AsyncValueDirective extends AsyncDirective {
  * The asyncValue directive subscribes to an Observable or Promise and returns the latest value it has emitted.
  * When the component gets destroyed, the asyncValue directive unsubscribes automatically to avoid potential memory leaks.
  * When the reference of the expression changes, the asyncValue directive automatically unsubscribes from the old Observable or Promise and subscribes to the new one.
+ * When second and third params defined asyncValue directive renders them as templates.
+ *
+ * Example
+ * export class Component extends LitElement {
+ *  prop$ = new BehaviorSubject(this.prop);
+ *
+ *  render(): TemplateResult {
+ *    return html`
+ *      asyncValue(this.prop$)
+ *      asyncValue(
+ *        this.prop$,
+ *        (value) => html`<div class="callback">${value}</div>`,
+ *         () => html`<div class="fallback"></div>`
+ *      )
+ *    `;
+ *  }
+ * }
  */
 export const asyncValue = directive(AsyncValueDirective);

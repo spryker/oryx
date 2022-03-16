@@ -49,6 +49,21 @@ export class MockComponent extends LitElement {
   }
 }
 
+@customElement('mock-component-with-callback')
+export class MockComponentCallback extends LitElement {
+  mock$?: BehaviorSubject<any>;
+
+  render(): TemplateResult {
+    return html`<div>
+      ${asyncValue(
+        this.mock$,
+        (value) => html`<div class="callback">${value}</div>`,
+        () => html`<div class="fallback"></div>`
+      )}
+    </div>`;
+  }
+}
+
 describe('asyncValue', () => {
   describe('class functionality', () => {
     let asyncValue: AsyncValueDirective;
@@ -202,48 +217,106 @@ describe('asyncValue', () => {
   });
 
   describe('directive', () => {
-    let element: MockComponent;
+    describe('without callback', () => {
+      let element: MockComponent;
 
-    const getElement = (): MockComponent => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return document.body.querySelector('mock-component')!;
-    };
+      const getElement = (): MockComponent => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return document.body.querySelector('mock-component')!;
+      };
 
-    beforeEach(async () => {
-      document.body.innerHTML = `<mock-component></mock-component>`;
-      await window.happyDOM.whenAsyncComplete();
-      element = getElement();
-    });
+      beforeEach(async () => {
+        document.body.innerHTML = `<mock-component></mock-component>`;
+        await window.happyDOM.whenAsyncComplete();
+        element = getElement();
+      });
 
-    it('should render emmited value of observable', async () => {
-      element.mock$ = new BehaviorSubject(mockInitialValue);
-      element.requestUpdate();
-      await element.updateComplete;
-
-      const mockUpdateValue = 'mockUpdateValue';
-      expect(element.shadowRoot?.textContent).toEqual(mockInitialValue);
-
-      element.mock$.next(mockUpdateValue);
-      expect(element.shadowRoot?.textContent).toEqual(mockUpdateValue);
-    });
-
-    it('should render resolved value of promise', async () => {
-      element.mock$ = Promise.resolve(mockInitialValue);
-      element.requestUpdate();
-      await element.updateComplete;
-
-      expect(element.shadowRoot?.textContent).toEqual(mockInitialValue);
-    });
-
-    it('should throw error if value is not observable or promise', async () => {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        element.mock$ = 'notObservable' as any;
+      it('should render emmited value of observable', async () => {
+        element.mock$ = new BehaviorSubject(mockInitialValue);
         element.requestUpdate();
         await element.updateComplete;
-      } catch (error) {
-        expect(error).toBeTypeOf('string');
-      }
+
+        const mockUpdateValue = 'mockUpdateValue';
+        expect(element.shadowRoot?.textContent).toEqual(mockInitialValue);
+
+        element.mock$.next(mockUpdateValue);
+        expect(element.shadowRoot?.textContent).toEqual(mockUpdateValue);
+      });
+
+      it('should render resolved value of promise', async () => {
+        element.mock$ = Promise.resolve(mockInitialValue);
+        element.requestUpdate();
+        await element.updateComplete;
+
+        expect(element.shadowRoot?.textContent).toEqual(mockInitialValue);
+      });
+
+      it('should throw error if value is not observable or promise', async () => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          element.mock$ = 'notObservable' as any;
+          element.requestUpdate();
+          await element.updateComplete;
+        } catch (error) {
+          expect(error).toBeTypeOf('string');
+        }
+      });
+    });
+
+    describe('with callback', () => {
+      let element: MockComponentCallback;
+
+      const getElement = (): MockComponentCallback => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return document.body.querySelector('mock-component-with-callback')!;
+      };
+
+      beforeEach(async () => {
+        document.body.innerHTML = `<mock-component-with-callback></mock-component-with-callback>`;
+        await window.happyDOM.whenAsyncComplete();
+        element = getElement();
+      });
+
+      it('should render defined template if callback is defined', async () => {
+        element.mock$ = new BehaviorSubject(mockInitialValue);
+        element.requestUpdate();
+        await element.updateComplete;
+
+        const callbackBlock = element.shadowRoot?.querySelector('.callback');
+        const fallbackBlock = element.shadowRoot?.querySelector('.fallback');
+
+        expect(callbackBlock).toBeTruthy();
+        expect(fallbackBlock).toBeFalsy();
+        expect(callbackBlock?.textContent).toEqual(mockInitialValue);
+      });
+
+      it('should render defined fallback if emmited value is null or undefined', async () => {
+        element.mock$ = new BehaviorSubject(null);
+        element.requestUpdate();
+        await element.updateComplete;
+
+        let callbackBlock = element.shadowRoot?.querySelector('.callback');
+        let fallbackBlock = element.shadowRoot?.querySelector('.fallback');
+
+        expect(fallbackBlock).toBeTruthy();
+        expect(callbackBlock).toBeFalsy();
+
+        element.mock$.next('mockUpdateValue');
+
+        callbackBlock = element.shadowRoot?.querySelector('.callback');
+        fallbackBlock = element.shadowRoot?.querySelector('.fallback');
+
+        expect(fallbackBlock).toBeFalsy();
+        expect(callbackBlock).toBeTruthy();
+
+        element.mock$.next(undefined);
+
+        callbackBlock = element.shadowRoot?.querySelector('.callback');
+        fallbackBlock = element.shadowRoot?.querySelector('.fallback');
+
+        expect(fallbackBlock).toBeTruthy();
+        expect(callbackBlock).toBeFalsy();
+      });
     });
   });
 });
