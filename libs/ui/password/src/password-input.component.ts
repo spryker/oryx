@@ -9,19 +9,21 @@ import {
   FormControlOptions,
   inputStyles,
 } from '../../input';
-import { OryxElement } from '../../utilities';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { passwordInputStyles } from './password-input.styles';
 
-export interface PasswordOptions extends FormControlOptions, AffixOptions {}
-
 export class PasswordInputComponent
   extends LitElement
-  implements OryxElement<PasswordOptions>
+  implements FormControlOptions, AffixOptions
 {
   static styles = [...inputStyles, passwordInputStyles];
 
-  @property({ type: Object }) options: PasswordOptions = {};
+  @property() label?: string;
+  @property() errorMessage?: string;
+  @property() prefixIcon?: string;
+  @property({ type: Boolean }) prefixFill?: boolean;
+  @property() suffixIcon?: string;
+  @property({ type: Boolean }) suffixFill?: boolean;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);

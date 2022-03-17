@@ -1,12 +1,11 @@
+import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { getControl } from '../../input/src/util';
 import { OptionComponent } from '../../option';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
-import { OryxElement } from '../../utilities';
 import { FilterController } from './filter.controller';
 import { TypeaheadOptions } from './typeahead.model';
-import { html, ReactiveController, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
 
 const emptyFallback = 'No results found';
 export class TypeaheadController implements ReactiveController {
@@ -40,16 +39,16 @@ export class TypeaheadController implements ReactiveController {
         <slot name="option"></slot>
         <slot name="empty">
           ${when(
-            this.host.options.isEmpty,
+            this.host.isEmpty,
             () =>
               html`<div class="placeholder">
-                ${this.host.options.emptyMessage ?? emptyFallback}
+                ${this.host.emptyMessage ?? emptyFallback}
               </div>`
           )}
         </slot>
         <slot name="loading">
           ${when(
-            this.host.options.isLoading,
+            this.host.isLoading,
             () =>
               html`<div class="placeholder">
                 <oryx-icon type="loader"></oryx-icon>
@@ -89,7 +88,7 @@ export class TypeaheadController implements ReactiveController {
     return (option as OptionComponent).value;
   }
 
-  constructor(protected host: OryxElement<TypeaheadOptions>) {
+  constructor(protected host: TypeaheadOptions & LitElement) {
     this.host.addController(this);
     this.filterController = new FilterController(host);
   }

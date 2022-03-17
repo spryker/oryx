@@ -1,9 +1,8 @@
+import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../input/src/util';
 import { OptionComponent } from '../../option';
-import { OryxElement } from '../../utilities';
 import { generateMarkedHtml, getFilterRegExp } from './filter.utils';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
-import { ReactiveController } from 'lit';
 
 /**
  * Provides filtering of options client side, so that the user is able to quickly
@@ -30,7 +29,7 @@ export class FilterController implements ReactiveController {
   };
 
   hostConnected(): void {
-    if (this.host.options.filter) {
+    if (this.host.filter) {
       this.host.addEventListener('input', () => {
         this.filterOptionsByValue(getControl(this.host)?.value);
       });
@@ -38,7 +37,7 @@ export class FilterController implements ReactiveController {
   }
 
   hostUpdated(): void {
-    if (this.host.options.filter) {
+    if (this.host.filter) {
       this.filterOptionsByValue(getControl(this.host)?.value);
     }
   }
@@ -51,7 +50,7 @@ export class FilterController implements ReactiveController {
 
     const strategy =
       this.strategies[
-        this.host.options.filterStrategy ?? FilterStrategyType.START_OF_WORD
+        this.host.filterStrategy ?? FilterStrategyType.START_OF_WORD
       ];
 
     let visibleOptionCount = 0;
@@ -75,23 +74,20 @@ export class FilterController implements ReactiveController {
       }
     });
 
-    const isEmpty = this.host.options.isEmpty;
+    const isEmpty = this.host.isEmpty;
     // set isEmpty to true when there are no visible items
     // and - when changed - ensure that the state is taken into account in the host
-    this.host.options = {
-      ...this.host.options,
-      isEmpty: visibleOptionCount === 0,
-    };
-    if (isEmpty !== this.host.options.isEmpty) {
-      this.host.requestUpdate('options');
+    this.host.isEmpty = visibleOptionCount === 0;
+    if (isEmpty !== this.host.isEmpty) {
+      this.host.requestUpdate('isEmpty');
     }
-  }
-
-  constructor(protected host: OryxElement<TypeaheadOptions>) {
-    this.host.addController(this);
   }
 
   protected get items(): OptionComponent[] {
     return Array.from(this.host.querySelectorAll('oryx-option'));
+  }
+
+  constructor(protected host: TypeaheadOptions & LitElement) {
+    this.host.addController(this);
   }
 }

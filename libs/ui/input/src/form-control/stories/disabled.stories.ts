@@ -13,7 +13,7 @@ interface Props {
 
 const Template: Story<Props> = ({ disabled }: Props): TemplateResult => {
   return html`
-    <oryx-input .options=${{ label: 'label' }}>
+    <oryx-input label="label">
       <oryx-icon slot="prefix" type="search"></oryx-icon>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
     </oryx-input>

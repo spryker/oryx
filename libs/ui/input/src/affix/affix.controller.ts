@@ -1,6 +1,6 @@
-import { OryxElement, queryAssignedElements } from '../../../utilities/';
+import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { queryAssignedElements } from '../../../utilities/';
 import { AffixOptions } from './affix.model';
-import { html, ReactiveController, TemplateResult } from 'lit';
 
 export class AffixController implements ReactiveController {
   hostConnected?(): void;
@@ -11,7 +11,7 @@ export class AffixController implements ReactiveController {
 
   renderPrefix(content?: TemplateResult): TemplateResult {
     if (!content) {
-      const icon = this.host.options.prefixIcon;
+      const icon = this.host.prefixIcon;
       if (this.hasContent('prefix', icon)) {
         content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
       }
@@ -21,7 +21,7 @@ export class AffixController implements ReactiveController {
 
   renderSuffix(content?: TemplateResult): TemplateResult {
     let iconContent;
-    const icon = this.host.options.suffixIcon;
+    const icon = this.host.suffixIcon;
     if (this.hasContent('suffix', icon)) {
       iconContent = html`<oryx-icon .type="${icon}"></oryx-icon>`;
     }
@@ -40,16 +40,16 @@ export class AffixController implements ReactiveController {
   protected updateFill(): void {
     this.host.toggleAttribute(
       'prefix-fill',
-      !!this.host.options.prefixFill &&
-        (!!this.host.options.prefixIcon ||
+      !!this.host.prefixFill &&
+        (!!this.host.prefixIcon ||
           queryAssignedElements(this.host, { slot: 'prefix', flatten: true })
             ?.length > 0)
     );
 
     this.host.toggleAttribute(
       'suffix-fill',
-      !!this.host.options.suffixFill &&
-        (!!this.host.options.suffixIcon ||
+      !!this.host.suffixFill &&
+        (!!this.host.suffixIcon ||
           queryAssignedElements(this.host, { slot: 'suffix', flatten: true })
             ?.length > 0)
     );
@@ -61,7 +61,7 @@ export class AffixController implements ReactiveController {
     );
   }
 
-  constructor(protected host: OryxElement<AffixOptions>) {
+  constructor(protected host: AffixOptions & LitElement) {
     this.host.addController(this);
   }
 }

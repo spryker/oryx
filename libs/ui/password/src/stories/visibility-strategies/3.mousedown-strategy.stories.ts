@@ -25,7 +25,7 @@ const Template: Story<Props> = ({
   label,
 }: Props): TemplateResult => {
   return html`<oryx-password-input
-    .options=${{ label }}
+    label=${label}
     strategy=${strategy}
     timeout=${timeout}
   >

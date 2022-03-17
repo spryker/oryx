@@ -17,7 +17,7 @@ const Template: Story<Props> = ({
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input .options=${{ suffixFill }}>
+    <oryx-input ?suffixFill=${suffixFill}>
       <input placeholder="placeholder text" ?disabled=${disabled} />
       <span slot="suffix">suffix</span>
     </oryx-input>

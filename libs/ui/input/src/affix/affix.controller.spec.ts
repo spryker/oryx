@@ -1,23 +1,23 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
-import { OryxElement } from '../../../utilities';
 import { AffixController } from './affix.controller';
 import { AffixOptions } from './affix.model';
 
-export class AffixComponent
-  extends LitElement
-  implements OryxElement<AffixOptions>
-{
-  @property({ type: Object }) options: AffixOptions = {};
+@customElement('fake-affix')
+class AffixComponent extends LitElement implements AffixOptions {
   protected affixController = new AffixController(this);
+
+  @property() prefixIcon?: string;
+  @property({ type: Boolean }) prefixFill?: boolean;
+  @property() suffixIcon?: string;
+  @property({ type: Boolean }) suffixFill?: boolean;
 
   render(): TemplateResult {
     return html`${this.affixController.renderPrefix()}${this.affixController.renderSuffix()}`;
   }
 }
-customElements.define('fake-affix', AffixComponent);
 
 describe('AffixController', () => {
   let element: AffixComponent;
@@ -26,7 +26,7 @@ describe('AffixController', () => {
     describe('when a prefixIcon is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-affix .options=${{ prefixIcon: 'search' }}></fake-affix>`
+          html`<fake-affix prefixIcon="search"></fake-affix>`
         );
       });
 
@@ -60,7 +60,8 @@ describe('AffixController', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<fake-affix
-              .options=${{ prefixFill: true, prefixIcon: 'foo-bar' }}
+              ?prefixFill=${true}
+              prefixIcon="foo-bar"
             ></fake-affix>`
           );
         });
@@ -77,7 +78,7 @@ describe('AffixController', () => {
       describe('and a prefix icon is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<fake-affix .options=${{ prefixFill: true }}></fake-affix>`
+            html`<fake-affix ?prefixFill=${true}></fake-affix>`
           );
         });
 
@@ -92,7 +93,7 @@ describe('AffixController', () => {
         describe('but light dom is provided for the prefix slot ', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<fake-affix .options=${{ prefixFill: true }}>
+              html`<fake-affix ?prefixFill=${true}>
                 <div slot="prefix">test</div></fake-affix
               >`
             );
@@ -113,9 +114,7 @@ describe('AffixController', () => {
       describe('and a prefix icon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<fake-affix
-              .options=${{ prefixFill: false, prefixIcon: 'foo-bar' }}
-            ></fake-affix>`
+            html`<fake-affix prefixIcon="foo-bar"></fake-affix>`
           );
         });
 
@@ -149,9 +148,7 @@ describe('AffixController', () => {
       describe('and a prefix icon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<fake-affix
-              .options=${{ prefixIcon: 'foo-bar' }}
-            ></fake-affix>`
+            html`<fake-affix prefixIcon="foo-bar"></fake-affix>`
           );
         });
 
@@ -186,7 +183,7 @@ describe('AffixController', () => {
     describe('when a suffixIcon is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-affix .options=${{ suffixIcon: 'search' }}></fake-affix>`
+          html`<fake-affix suffixIcon="search"></fake-affix>`
         );
       });
 
@@ -220,7 +217,8 @@ describe('AffixController', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<fake-affix
-              .options=${{ suffixFill: true, suffixIcon: 'foo-bar' }}
+              ?suffixFill=${true}
+              suffixIcon="foo-bar"
             ></fake-affix>`
           );
         });
@@ -237,7 +235,7 @@ describe('AffixController', () => {
       describe('and a suffix icon is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<fake-affix .options=${{ suffixFill: true }}></fake-affix>`
+            html`<fake-affix ?suffixFill=${true}></fake-affix>`
           );
         });
 
@@ -252,7 +250,7 @@ describe('AffixController', () => {
         describe('but light dom is provided for the suffix slot ', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<fake-affix .options=${{ suffixFill: true }}>
+              html`<fake-affix ?suffixFill=${true}>
                 <div slot="suffix">test</div></fake-affix
               >`
             );
@@ -274,7 +272,8 @@ describe('AffixController', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<fake-affix
-              .options=${{ suffixFill: false, suffixIcon: 'foo-bar' }}
+              ?suffixFill=${false}
+              suffixIcon="foo-bar"
             ></fake-affix>`
           );
         });
@@ -309,9 +308,7 @@ describe('AffixController', () => {
       describe('and a suffix icon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<fake-affix
-              .options=${{ suffixIcon: 'foo-bar' }}
-            ></fake-affix>`
+            html`<fake-affix suffixIcon="foo-bar"></fake-affix>`
           );
         });
 

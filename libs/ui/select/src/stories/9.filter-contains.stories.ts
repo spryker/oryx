@@ -1,10 +1,10 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../../../option/src/index';
 import { FilterStrategyType } from '../../../typeahead';
 import { branches, sideBySide, states } from '../../../utilities/storybook/';
 import '../index';
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
 
 export default {
   title: `${storybookPrefix}/form/Select/filter`,
@@ -19,16 +19,12 @@ const Template: Story<Props> = ({
   dataSet,
   filterStrategy,
 }: Props): TemplateResult => {
-  const compOptions = { filter: true, filterStrategy };
-
   const data: string[] = dataSet === 'branches' ? branches : states;
 
   return sideBySide(html`
-    <oryx-select .options=${compOptions}>
+    <oryx-select ?filter=${true} filterStrategy=${filterStrategy}>
       <input value="m" placeholder="filter the list by typing" />
-      ${data.map(
-        (option) => html`<oryx-option .value=${option}></oryx-option>`
-      )}
+      ${data.map((option) => html`<oryx-option value=${option}></oryx-option>`)}
     </oryx-select>
   `);
 };

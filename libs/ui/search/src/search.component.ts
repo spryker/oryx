@@ -1,18 +1,37 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { FormControlController, inputStyles } from '../../input';
-import { OryxElement } from '../../utilities';
+import {
+  AffixOptions,
+  FormControlController,
+  FormControlOptions,
+  inputStyles,
+} from '../../input';
 import { SearchController } from './search.controller';
-import { SearchOptions } from './search.model';
+import {
+  ClearIconAppearance,
+  ClearIconPosition,
+  SearchIconPosition,
+  SearchOptions,
+} from './search.model';
 import { searchStyles } from './search.styles';
 
 export class SearchComponent
   extends LitElement
-  implements OryxElement<SearchOptions>
+  implements SearchOptions, FormControlOptions, AffixOptions
 {
   static override styles = [...inputStyles, searchStyles];
 
-  @property({ type: Object }) options: SearchOptions = {};
+  @property() label?: string;
+  @property() errorMessage?: string;
+  @property() prefixIcon?: string;
+  @property({ type: Boolean }) prefixFill?: boolean;
+  @property() suffixIcon?: string;
+  @property({ type: Boolean }) suffixFill?: boolean;
+  @property() searchIcon?: string;
+  @property() searchIconPosition?: SearchIconPosition;
+  @property() clearIcon?: string;
+  @property() clearIconPosition?: ClearIconPosition;
+  @property() clearIconAppearance?: ClearIconAppearance;
 
   protected formControlController = new FormControlController(this);
   protected searchController = new SearchController(this);

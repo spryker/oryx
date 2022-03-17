@@ -11,9 +11,7 @@ describe('TypeaheadComponent', () => {
     describe('when the isEmpty is not set', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-typeahead
-            .options=${{ label: 'some label' }}
-          ></oryx-typeahead>`
+          html`<oryx-typeahead label="some label"></oryx-typeahead>`
         );
       });
 
@@ -33,7 +31,8 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isEmpty: true, label: 'some label' }}
+            .isEmpty=${true}
+            label="some label"
           ></oryx-typeahead>`
         );
       });
@@ -54,11 +53,9 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{
-              isEmpty: true,
-              emptyMessage: 'EMPTY',
-              label: 'some label',
-            }}
+            ?isEmpty=${true}
+            .emptyMessage=${'EMPTY'}
+            label="some label"
           ></oryx-typeahead>`
         );
       });
@@ -79,7 +76,8 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isEmpty: false, label: 'some label' }}
+            ?isEmpty=${false}
+            label="some label"
           ></oryx-typeahead>`
         );
       });
@@ -101,9 +99,7 @@ describe('TypeaheadComponent', () => {
     describe('when the isLoading flag is not set', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-typeahead
-            .options=${{ label: 'some label' }}
-          ></oryx-typeahead>`
+          html`<oryx-typeahead label="some label"></oryx-typeahead>`
         );
       });
 
@@ -124,7 +120,8 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isLoading: true, label: 'some label' }}
+            ?isLoading=${true}
+            label="some label"
           ></oryx-typeahead>`
         );
       });
@@ -146,7 +143,8 @@ describe('TypeaheadComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-typeahead
-            .options=${{ isLoading: false, label: 'some label' }}
+            ?isLoading=${false}
+            label="some label"
           ></oryx-typeahead>`
         );
       });

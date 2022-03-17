@@ -1,22 +1,15 @@
-import { isFocusable, OryxElement } from '../../../utilities';
+import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { isFocusable } from '../../../utilities';
 import { ErrorController } from '../error/error.controller';
 import { LabelController } from '../label/label.controller';
 import { getControl } from '../util';
 import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
-import { html, ReactiveController, TemplateResult } from 'lit';
 
 export class FormControlController implements ReactiveController {
   protected visibleFocusController: VisibleFocusController;
   protected labelController: LabelController;
   protected errorController: ErrorController;
-
-  constructor(protected host: OryxElement<FormControlOptions>) {
-    this.host.addController(this);
-    this.visibleFocusController = new VisibleFocusController(this.host);
-    this.labelController = new LabelController(this.host);
-    this.errorController = new ErrorController(this.host);
-  }
 
   hostConnected(): void {
     this.host.addEventListener('mousedown', (e: Event) => {
@@ -94,5 +87,12 @@ export class FormControlController implements ReactiveController {
 
   hostDisconnected(): void {
     this.controlAttrObserver?.disconnect();
+  }
+
+  constructor(protected host: FormControlOptions & LitElement) {
+    this.host.addController(this);
+    this.visibleFocusController = new VisibleFocusController(this.host);
+    this.labelController = new LabelController(this.host);
+    this.errorController = new ErrorController(this.host);
   }
 }

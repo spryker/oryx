@@ -31,15 +31,15 @@ class FakeWithoutFocusComponent extends LitElement {
   }
 }
 
-export class NoPopoverComponent extends FakeComponent {
+@customElement('no-popover')
+class NoPopoverComponent extends FakeComponent {
   render(): TemplateResult {
     return html`no popover`;
   }
 }
-customElements.define('no-popover', NoPopoverComponent);
 
 describe('PopoverController', () => {
-  let element: FakeComponent | FakeWithoutFocusComponent;
+  let element: FakeComponent | FakeWithoutFocusComponent | NoPopoverComponent;
 
   const popover = (): PopoverComponent | null => {
     return element.renderRoot.querySelector('oryx-popover');

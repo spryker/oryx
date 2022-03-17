@@ -1,3 +1,5 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../../../popover/index';
 import {
@@ -5,9 +7,8 @@ import {
   ClearIconPosition,
   SearchIconPosition,
 } from '../../../search';
+import { sideBySide } from '../../../utilities/storybook';
 import '../index';
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
@@ -32,24 +33,16 @@ const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
       >you can apply custom styles</oryx-option
     >
   `;
-  return html`
-    <div class="stories">
-      <oryx-typeahead .options=${options}>${content}</oryx-typeahead>
-      <oryx-typeahead .options=${options} style="--oryx-popover-visible: 1;"
-        >${content}</oryx-typeahead
-      >
-    </div>
-
-    <style>
-      .stories {
-        display: flex;
-        gap: 10px;
-      }
-      oryx-typeahead {
-        flex: 0 0 350px;
-      }
-    </style>
-  `;
+  return sideBySide(html`<oryx-typeahead
+    searchIcon=${options.searchIcon}
+    clearIcon=${options.clearIcon}
+    searchIconPosition=${options.searchIconPosition}
+    clearIconPosition=${options.clearIconPosition}
+    clearIconAppearance=${options.clearIconAppearance}
+    ?prefixFill=${options.prefixFill}
+    ?suffixFill=${options.suffixFill}
+    >${content}</oryx-typeahead
+  > `);
 };
 
 export const Options = Template.bind({});

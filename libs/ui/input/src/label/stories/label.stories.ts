@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ label }: Props): TemplateResult => {
-  return html` <oryx-input .options=${{ label }}>
+  return html` <oryx-input label=${label}>
     <input placeholder="placeholder..." />
   </oryx-input>`;
 };

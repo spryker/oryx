@@ -20,26 +20,26 @@ describe('SelectComponent', () => {
       clearIconAppearance: ClearIconAppearance
     ): void => {
       it('should have default suffixIcon', () => {
-        expect(element.options.suffixIcon).to.eq(suffixIcon);
+        expect(element.suffixIcon).to.eq(suffixIcon);
       });
 
       it('should have default searchIconPosition', () => {
-        expect(element.options.searchIconPosition).to.eq(searchIconPosition);
+        expect(element.searchIconPosition).to.eq(searchIconPosition);
       });
 
       it('should have default clearIconPosition', () => {
-        expect(element.options.clearIconPosition).to.eq(clearIconPosition);
+        expect(element.clearIconPosition).to.eq(clearIconPosition);
       });
 
       it('should have default clearIconAppearance', () => {
-        expect(element.options.clearIconAppearance).to.eq(clearIconAppearance);
+        expect(element.clearIconAppearance).to.eq(clearIconAppearance);
       });
     };
 
     describe('when created without control', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select .options=${{ label: 'some label' }}></oryx-select>`
+          html`<oryx-select label="some label"></oryx-select>`
         );
       });
 
@@ -58,9 +58,7 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select .options=${{ label: 'some-label' }}
-            ><input
-          /></oryx-select>`
+          html`<oryx-select label="some label"><input /></oryx-select>`
         );
       });
 
@@ -79,9 +77,7 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control with empty values allowed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select
-            .options=${{ allowEmptyValue: true, label: 'some label' }}
-          >
+          html`<oryx-select ?allowEmptyValue=${true} label="some label">
             <input />
           </oryx-select>`
         );
@@ -102,9 +98,7 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control with empty values not allowed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select
-            .options=${{ allowEmptyValue: false, label: 'some label' }}
-          >
+          html`<oryx-select label="some label">
             <input />
           </oryx-select>`
         );
@@ -117,7 +111,7 @@ describe('SelectComponent', () => {
       expectOptions(
         'dropdown',
         SearchIconPosition.NONE,
-        ClearIconPosition.NONE,
+        ClearIconPosition.SUFFIX,
         ClearIconAppearance.HOVER
       );
     });
@@ -125,9 +119,7 @@ describe('SelectComponent', () => {
     describe('when created with a <select> control', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select .options=${{ label: 'some label' }}
-            ><select></select
-          ></oryx-select>`
+          html`<oryx-select label="some label"><select></select></oryx-select>`
         );
       });
 

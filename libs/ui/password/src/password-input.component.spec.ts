@@ -40,7 +40,10 @@ describe('PasswordComponent', () => {
 
     const render = (
       strategy: PasswordVisibilityStrategy
-    ): TemplateResult => html`<oryx-password-input .strategy=${strategy}>
+    ): TemplateResult => html`<oryx-password-input
+      ?filter=${true}
+      .strategy=${strategy}
+    >
       <input type="password" aria-label="password" />
     </oryx-password-input>`;
 

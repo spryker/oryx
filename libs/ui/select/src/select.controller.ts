@@ -1,8 +1,8 @@
+import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../input';
 import { OptionComponent } from '../../option';
-import { OryxElement } from '../../utilities';
+import { TypeaheadOptions } from '../../typeahead';
 import { SelectOptions } from './select.model';
-import { ReactiveController } from 'lit';
 
 /**
  * Whenever a select element is projected in the default slot, this controller
@@ -25,7 +25,7 @@ export class SelectController implements ReactiveController {
     if (control instanceof HTMLSelectElement) {
       this.reflectSelect(control);
     } else {
-      if (!this.host.options.filter && !control?.readOnly) {
+      if (!this.host.filter && !control?.readOnly) {
         control?.toggleAttribute('readonly', true);
       }
     }
@@ -39,7 +39,7 @@ export class SelectController implements ReactiveController {
   }
 
   protected reflectSelect(element: HTMLSelectElement): void {
-    if (this.host.options.allowEmptyValue) {
+    if (this.host.allowEmptyValue) {
       const firstOption = Array.from(element.options)?.[0];
       if (firstOption && firstOption.value !== '') {
         const emptyOption = document.createElement('option');
@@ -72,12 +72,7 @@ export class SelectController implements ReactiveController {
     if (JSON.stringify(options) !== JSON.stringify(this.options)) {
       this.options = options;
       this.reflectOptions();
-    }
-
-    if (!this.host.options.isEmpty && this.options.length === 0) {
-      this.host.options = { ...this.host.options, isEmpty: true };
-    } else if (this.host.options.isEmpty && this.options.length > 0) {
-      this.host.options = { ...this.host.options, isEmpty: false };
+      this.host.isEmpty = this.host.isEmpty && this.options.length > 0;
     }
   }
 
@@ -96,7 +91,7 @@ export class SelectController implements ReactiveController {
     });
   }
 
-  constructor(protected host: OryxElement<SelectOptions>) {
+  constructor(protected host: SelectOptions & LitElement & TypeaheadOptions) {
     this.host.addController(this);
   }
 }

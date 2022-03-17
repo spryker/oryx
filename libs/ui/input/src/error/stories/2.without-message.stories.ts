@@ -16,10 +16,15 @@ const Template: Story<Props> = ({
   readonly,
 }: Props): TemplateResult => {
   return html`
-<oryx-input .options=${{ label }} class="has-error">
-    <input placeholder=${placeholder} value=${value} ?disabled=${disabled} ?readonly=${readonly}></input>
-</oryx-input>
-`;
+    <oryx-input label=${label} class="has-error">
+      <input
+        placeholder=${placeholder}
+        value=${value}
+        ?disabled=${disabled}
+        ?readonly=${readonly}
+      />
+    </oryx-input>
+  `;
 };
 export const WithoutMessage = Template.bind({});
 WithoutMessage.args = {

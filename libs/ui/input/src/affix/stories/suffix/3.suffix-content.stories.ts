@@ -16,12 +16,12 @@ const Template: Story<Props> = ({
   disabled,
 }: Props): TemplateResult => {
   return html`
-<oryx-input .options=${{ suffixFill }}>
-  <input placeholder="Placeholder..." ?disabled=${disabled}></input>
-  <oryx-icon slot="suffix" type="search"></oryx-icon>
-  <span slot="suffix">more...</span>
-</oryx-input>
-      `;
+    <oryx-input ?suffixFill=${suffixFill}>
+      <input placeholder="Placeholder..." ?disabled=${disabled} />
+      <oryx-icon slot="suffix" type="search"></oryx-icon>
+      <span slot="suffix">more...</span>
+    </oryx-input>
+  `;
 };
 export const SuffixContent = Template.bind({});
 SuffixContent.args = {

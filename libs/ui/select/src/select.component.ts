@@ -1,41 +1,59 @@
-import { FormControlController, getControl } from '../../input';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import {
+  ErrorOptions,
+  FormControlController,
+  getControl,
+  LabelOptions,
+} from '../../input';
 import { PopoverController } from '../../popover';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchController,
   SearchIconPosition,
+  SearchOptions,
 } from '../../search';
 import { SearchComponent } from '../../search/src/search.component';
-import { TypeaheadController, typeaheadStyles } from '../../typeahead';
-import { OryxElement } from '../../utilities';
+import {
+  FilterStrategyType,
+  TypeaheadController,
+  TypeaheadOptions,
+  typeaheadStyles,
+} from '../../typeahead';
 import { SelectController } from './select.controller';
 import { SelectOptions } from './select.model';
 import { selectStyles } from './select.styles';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 
 export class SelectComponent
   extends LitElement
-  implements OryxElement<SelectOptions>
+  implements
+    LabelOptions,
+    ErrorOptions,
+    SearchOptions,
+    TypeaheadOptions,
+    SelectOptions
 {
   static styles = [selectStyles, typeaheadStyles, ...SearchComponent.styles];
 
-  private _options: SelectOptions = {};
-
-  @property({ type: Object })
-  get options(): SelectOptions {
-    return {
-      ...this.getDefaultOptions(),
-      ...this._options,
-    };
-  }
-
-  set options(val: SelectOptions) {
-    const current = this._options;
-    this._options = val;
-    this.requestUpdate('options', current);
-  }
+  @property({ type: Boolean }) filter?: boolean;
+  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+  @property({ type: Boolean }) isLoading?: boolean;
+  @property({ type: Boolean }) isEmpty?: boolean;
+  @property() emptyMessage?: string;
+  @property({ type: Boolean }) allowEmptyValue?: boolean;
+  @property() label?: string;
+  @property() errorMessage?: string;
+  @property() prefixIcon?: string;
+  @property({ type: Boolean }) prefixFill?: boolean;
+  @property() suffixIcon?: string = 'dropdown';
+  @property({ type: Boolean }) suffixFill?: boolean;
+  @property() searchIcon?: string;
+  @property() searchIconPosition?: SearchIconPosition = SearchIconPosition.NONE;
+  @property() clearIcon?: string;
+  @property() clearIconPosition?: ClearIconPosition;
+  @property() clearIconAppearance?: ClearIconAppearance =
+    ClearIconAppearance.HOVER;
 
   protected selectController = new SelectController(this);
   protected typeaheadController = new TypeaheadController(this);
@@ -55,27 +73,10 @@ export class SelectComponent
     `;
   }
 
-  protected getDefaultOptions(): SelectOptions {
-    return {
-      suffixIcon: 'dropdown',
-      searchIconPosition: SearchIconPosition.NONE,
-      clearIconPosition: this.clearIconPosition(),
-      clearIconAppearance: ClearIconAppearance.HOVER,
-    };
-  }
-
-  protected clearIconPosition(): ClearIconPosition {
-    return this.isClearSelectValueAllowed()
-      ? ClearIconPosition.SUFFIX
-      : ClearIconPosition.NONE;
-  }
-
-  protected isClearSelectValueAllowed(): boolean {
-    return (
-      (getControl(this) instanceof HTMLInputElement &&
-        (!!this._options.allowEmptyValue ||
-          this._options.allowEmptyValue === undefined)) ||
-      !!this._options.allowEmptyValue
-    );
+  protected updated(): void {
+    this.clearIconPosition =
+      getControl(this) instanceof HTMLInputElement || this.allowEmptyValue
+        ? ClearIconPosition.SUFFIX
+        : ClearIconPosition.NONE;
   }
 }

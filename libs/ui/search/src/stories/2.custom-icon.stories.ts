@@ -25,7 +25,16 @@ type Props = {
 const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
   return html`
     <div style="width:300px">
-      <oryx-search label="search" .options=${options}>
+      <oryx-search
+        label="search"
+        .searchIcon=${options.searchIcon}
+        .clearIcon=${options.clearIcon}
+        .searchIconPosition=${options.searchIconPosition}
+        .clearIconPosition=${options.clearIconPosition}
+        .clearIconAppearance=${options.clearIconAppearance}
+        ?prefixFill=${options.prefixFill}
+        ?suffixFill=${options.suffixFill}
+      >
         <input placeholder="Search..." />
       </oryx-search>
     </div>

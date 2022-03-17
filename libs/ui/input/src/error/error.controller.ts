@@ -1,6 +1,5 @@
-import { html, ReactiveController, TemplateResult } from 'lit';
+import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { OryxElement } from '../../../utilities';
 import { ErrorOptions } from './error.model';
 
 export class ErrorController implements ReactiveController {
@@ -27,10 +26,10 @@ export class ErrorController implements ReactiveController {
   }
 
   protected get message(): string | undefined {
-    return this.host.options.errorMessage;
+    return this.host.errorMessage;
   }
 
-  constructor(protected host: OryxElement<ErrorOptions>) {
+  constructor(protected host: ErrorOptions & LitElement) {
     this.host.addController(this);
   }
 }

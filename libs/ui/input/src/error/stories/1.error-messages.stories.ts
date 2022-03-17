@@ -17,9 +17,14 @@ const Template: Story<Props> = ({
   label,
 }: Props): TemplateResult => {
   return html`
-<oryx-input .options=${{ label, errorMessage }} >
-    <input placeholder=${placeholder} .value=${value} ?disabled=${disabled} ?readonly=${readonly}></input>
-</oryx-input>
+    <oryx-input label=${label} errorMessage=${errorMessage}>
+      <input
+        placeholder=${placeholder}
+        value=${value}
+        ?disabled=${disabled}
+        ?readonly=${readonly}
+      />
+    </oryx-input>
   `;
 };
 export const ErrorMessages = Template.bind({});

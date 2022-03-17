@@ -1,6 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { OryxElement } from '../../utilities';
 import { AffixController, AffixOptions, affixStyles } from './affix';
 import { errorStyles } from './error';
 import { FormControlController, FormControlOptions } from './form-control';
@@ -14,15 +13,18 @@ export const inputStyles = [
   affixStyles,
 ];
 
-export interface InputOptions extends FormControlOptions, AffixOptions {}
-
 export class InputComponent
   extends LitElement
-  implements OryxElement<InputOptions>
+  implements FormControlOptions, AffixOptions
 {
   static styles = inputStyles;
 
-  @property({ type: Object }) options: InputOptions = {};
+  @property() label?: string;
+  @property() errorMessage?: string;
+  @property() prefixIcon?: string;
+  @property({ type: Boolean }) prefixFill?: boolean;
+  @property() suffixIcon?: string;
+  @property({ type: Boolean }) suffixFill?: boolean;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);

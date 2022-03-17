@@ -37,11 +37,9 @@ class SearchComponent extends LitElement {
     return html`
       <oryx-typeahead
         style="width:500px"
-        .options=${{
-          label: 'label',
-          isLoading: this.isLoading,
-          isEmpty: this.options?.length === 0,
-        }}
+        label="label"
+        ?isLoading=${this.isLoading}
+        ?emptyOption=${this.options?.length === 0}
         @oryx.typeahead=${this.typeahead}
       >
         <input placeholder="Start typing..." />

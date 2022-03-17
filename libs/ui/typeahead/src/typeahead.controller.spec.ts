@@ -1,19 +1,22 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../a11y';
 import '../../option/';
 import { PopoverSelectEvent } from '../../popover';
 import { SearchEvent } from '../../search';
-import { OryxElement, queryFirstAssigned } from '../../utilities';
+import { queryFirstAssigned } from '../../utilities';
 import { TypeaheadController } from './typeahead.controller';
-import { TypeaheadOptions } from './typeahead.model';
+import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 
-export class FakeComponent
-  extends LitElement
-  implements OryxElement<TypeaheadOptions>
-{
-  @property({ type: Object }) options: TypeaheadOptions = {};
+@customElement('fake-typeahead')
+class FakeComponent extends LitElement implements TypeaheadOptions {
+  @property({ type: Boolean }) filter?: boolean;
+  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+  @property({ type: Boolean }) isLoading?: boolean;
+  @property({ type: Boolean }) isEmpty?: boolean;
+  @property() emptyMessage?: string;
+
   protected popoverController = new TypeaheadController(this);
 
   render(): TemplateResult {
@@ -24,20 +27,16 @@ export class FakeComponent
     `;
   }
 }
-customElements.define('fake-typeahead', FakeComponent);
 
-export class WithoutControlComponent extends FakeComponent {
+@customElement('without-control-typeahead')
+class WithoutControlComponent extends FakeComponent {
   render(): TemplateResult {
     return html` <slot>no control</slot> `;
   }
 }
-customElements.define('without-control-typeahead', WithoutControlComponent);
 
-export class WithoutOptionValueComponent
-  extends LitElement
-  implements OryxElement<TypeaheadOptions>
-{
-  @property({ type: Object }) options: TypeaheadOptions = {};
+@customElement('without-option-value-typeahead')
+class WithoutOptionValueComponent extends LitElement {
   protected popoverController = new TypeaheadController(this);
 
   render(): TemplateResult {
@@ -48,13 +47,12 @@ export class WithoutOptionValueComponent
     `;
   }
 }
-customElements.define(
-  'without-option-value-typeahead',
-  WithoutOptionValueComponent
-);
 
 describe('TypeaheadController', () => {
-  let element: FakeComponent;
+  let element:
+    | FakeComponent
+    | WithoutOptionValueComponent
+    | WithoutControlComponent;
 
   beforeEach(async () => {
     element = await fixture(html`<fake-typeahead></fake-typeahead>`);

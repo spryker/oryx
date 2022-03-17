@@ -1,29 +1,26 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import '../../option/';
 import { OptionComponent } from '../../option/';
-import { OryxElement } from '../../utilities';
 import { FilterController } from './filter.controller';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 
-export class FakeComponent
-  extends LitElement
-  implements OryxElement<TypeaheadOptions>
-{
-  @property({ type: Object }) options: TypeaheadOptions = {};
+@customElement('fake-filter')
+class FakeComponent extends LitElement implements TypeaheadOptions {
+  @property({ type: Boolean }) filter?: boolean;
+  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+
   protected filterController = new FilterController(this);
 
   render(): TemplateResult {
     return html` <slot><input value="foo" /></slot> `;
   }
 }
-customElements.define('fake-filter', FakeComponent);
 
 describe('FilterController', () => {
   let element: FakeComponent;
 
-  let filter: boolean;
   const optionsValues = [
     '/feature/fes-123',
     'fix/fes-456',
@@ -31,14 +28,10 @@ describe('FilterController', () => {
     'release/1.0.1-next.1',
   ];
 
-  const itShouldNotFilter = (
-    options: TypeaheadOptions,
-    value: string,
-    event = false
-  ): void => {
+  const itShouldNotFilter = (value: string, event = false): void => {
     beforeEach(async () => {
       element = await fixture(
-        html`<fake-filter .options=${options}>
+        html`<fake-filter>
           <input .value=${value} />
           ${optionsValues.map(
             (option) => html`<oryx-option .value=${option}></oryx-option>`
@@ -58,15 +51,15 @@ describe('FilterController', () => {
   };
 
   const itShouldFilter = (
-    options: TypeaheadOptions,
     count: number,
     value: string,
-    event = false
+    event = false,
+    strategy?: FilterStrategyType
   ): void => {
     describe(`and the control value = "${value}"`, () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-filter .options=${options}>
+          html`<fake-filter ?filter=${true} .filterStrategy=${strategy}>
             <input .value=${value} />
             ${optionsValues.map(
               (option) => html`<oryx-option .value=${option}></oryx-option>`
@@ -88,78 +81,58 @@ describe('FilterController', () => {
   };
 
   describe('when filter is not set', () => {
-    const options: TypeaheadOptions = {};
-
     describe('and the control has an initial value', () => {
-      itShouldNotFilter(options, 'foo', true);
+      itShouldNotFilter('foo', true);
     });
 
     describe('and the input event is dispatched', () => {
-      itShouldNotFilter(options, '', true);
+      itShouldNotFilter('', true);
     });
   });
 
   describe('when filter is set to true', () => {
     describe('and the strategy is not set', () => {
-      const options: TypeaheadOptions = { filter: true };
-
       describe('and the control has an initial value', () => {
-        itShouldFilter(options, 2, 'rel');
+        itShouldFilter(2, 'rel');
       });
 
       describe('and the control is empty', () => {
-        itShouldFilter(options, 4, '');
+        itShouldFilter(4, '');
       });
 
       describe('and the input event is dispatched', () => {
-        filter = true;
         describe('and the control value is "rel"', () => {
-          itShouldFilter(options, 2, 'rel', filter);
+          itShouldFilter(2, 'rel', true);
         });
       });
     });
 
     describe('and the strategy is set to START_WITH', () => {
-      const options: TypeaheadOptions = {
-        filter: true,
-        filterStrategy: FilterStrategyType.START_WITH,
-      };
-
       describe('and the input event is dispatched', () => {
-        itShouldFilter(options, 1, '/', true);
-        itShouldFilter(options, 2, 'f', true);
-        itShouldFilter(options, 2, 're', true);
+        itShouldFilter(1, '/', true, FilterStrategyType.START_WITH);
+        itShouldFilter(2, 'f', true, FilterStrategyType.START_WITH);
+        itShouldFilter(2, 're', true, FilterStrategyType.START_WITH);
       });
     });
 
     describe('and the strategy is set to START_OF_WORD', () => {
-      const options: TypeaheadOptions = {
-        filter: true,
-        filterStrategy: FilterStrategyType.START_OF_WORD,
-      };
-
       describe('and the input event is dispatched', () => {
-        itShouldFilter(options, 4, '/', true);
-        itShouldFilter(options, 2, 'fes', true);
-        itShouldFilter(options, 2, 'next', true);
-        itShouldFilter(options, 2, '-next', true);
-        itShouldFilter(options, 0, 'lease', true);
-        itShouldFilter(options, 2, '1.0.1-', true);
-        itShouldFilter(options, 2, 'f', true);
+        itShouldFilter(4, '/', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(2, 'fes', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(2, 'next', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(2, '-next', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(0, 'lease', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(2, '1.0.1-', true, FilterStrategyType.START_OF_WORD);
+        itShouldFilter(2, 'f', true, FilterStrategyType.START_OF_WORD);
       });
     });
 
     describe('and the strategy is set to CONTAINS', () => {
-      const options: TypeaheadOptions = {
-        filter: true,
-        filterStrategy: FilterStrategyType.CONTAINS,
-      };
-
       describe('and the input event is dispatched', () => {
-        itShouldFilter(options, 2, 'lease', true);
-        itShouldFilter(options, 4, 's', true);
-        itShouldFilter(options, 4, '/', true);
-        itShouldFilter(options, 2, '/fes', true);
+        itShouldFilter(2, 'lease', true, FilterStrategyType.CONTAINS);
+        itShouldFilter(4, 's', true, FilterStrategyType.CONTAINS);
+        itShouldFilter(4, '/', true, FilterStrategyType.CONTAINS);
+        itShouldFilter(2, '/fes', true, FilterStrategyType.CONTAINS);
       });
     });
   });

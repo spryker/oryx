@@ -19,9 +19,7 @@ describe('SearchComponent', () => {
       describe('when no searchIcon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search
-              .options=${{ label: 'some label' }}
-            ></oryx-search>`
+            html`<oryx-search label="some label"></oryx-search>`
           );
         });
 
@@ -40,9 +38,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                searchIcon: 'custom-search-icon',
-                label: 'some label',
+              label="some label"
+              searchIcon="custom-search-icon"
               }}
             ></oryx-search>`
           );
@@ -73,9 +70,7 @@ describe('SearchComponent', () => {
       describe('when the position is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search
-              .options=${{ label: 'some label' }}
-            ></oryx-search>`
+            html`<oryx-search label="some label"></oryx-search>`
           );
         });
 
@@ -96,10 +91,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                searchIconPosition: SearchIconPosition.PREFIX,
-                label: 'some label',
-              }}
+              .searchIconPosition=${SearchIconPosition.PREFIX}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -119,7 +112,7 @@ describe('SearchComponent', () => {
         describe('and custom prefix content is slotted in', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<oryx-search .options=${{ label: 'some label' }}
+              html`<oryx-search label="some label"
                 ><div slot="prefix">custom prefix content</div></oryx-search
               >`
             );
@@ -139,10 +132,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                searchIconPosition: SearchIconPosition.SUFFIX,
-                label: 'some label',
-              }}
+              .searchIconPosition=${SearchIconPosition.SUFFIX}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -162,7 +153,7 @@ describe('SearchComponent', () => {
         describe('and custom suffix content is slotted in', () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<oryx-search .options=${{ label: 'some label' }}
+              html`<oryx-search label="some label"
                 ><div slot="suffix">custom prefix content</div></oryx-search
               >`
             );
@@ -182,10 +173,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                searchIconPosition: SearchIconPosition.NONE,
-                label: 'some label',
-              }}
+              .searchIconPosition=${SearchIconPosition.NONE}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -311,9 +300,7 @@ describe('SearchComponent', () => {
       describe('when no clearIcon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search
-              .options=${{ label: 'some label' }}
-            ></oryx-search>`
+            html`<oryx-search label="some label"></oryx-search>`
           );
         });
 
@@ -332,9 +319,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                clearIcon: 'custom-clear-icon',
-                label: 'some label',
+              clearIcon="custom-clear-icon"
+              label="some label"
               }}
             ></oryx-search>`
           );
@@ -365,9 +351,7 @@ describe('SearchComponent', () => {
       describe('when the position is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search
-              .options=${{ label: 'some label' }}
-            ></oryx-search>`
+            html`<oryx-search label="some label"></oryx-search>`
           );
         });
 
@@ -393,10 +377,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                clearIconPosition: ClearIconPosition.AFTER,
-                label: 'some label',
-              }}
+              .clearIconPosition=${ClearIconPosition.AFTER}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -423,10 +405,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                clearIconPosition: ClearIconPosition.SUFFIX,
-                label: 'some label',
-              }}
+              .clearIconPosition=${ClearIconPosition.SUFFIX}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -453,10 +433,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                clearIconPosition: ClearIconPosition.NONE,
-                label: 'some label',
-              }}
+              .clearIconPosition=${ClearIconPosition.NONE}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -484,9 +462,7 @@ describe('SearchComponent', () => {
       describe('when the appearance is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search
-              .options=${{ label: 'some label' }}
-            ></oryx-search>`
+            html`<oryx-search label="some label"></oryx-search>`
           );
         });
 
@@ -507,10 +483,8 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .options=${{
-                clearIconAppearance: ClearIconAppearance.HOVER,
-                label: 'some label',
-              }}
+              .clearIconAppearance=${ClearIconAppearance.HOVER}
+              label="some label"
             ></oryx-search>`
           );
         });
@@ -535,7 +509,7 @@ describe('SearchComponent', () => {
     describe('when the input is empty', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-search .options=${{ label: 'some label' }}></oryx-search>`
+          html`<oryx-search label="some label"></oryx-search>`
         );
       });
 

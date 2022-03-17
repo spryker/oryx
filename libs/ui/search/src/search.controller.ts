@@ -1,5 +1,5 @@
+import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { AffixController, getControl } from '../../input';
-import { OryxElement } from '../../utilities';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -7,7 +7,6 @@ import {
   SearchIconPosition,
   SearchOptions,
 } from './search.model';
-import { html, ReactiveController, TemplateResult } from 'lit';
 
 export class SearchController implements ReactiveController {
   protected affixController: AffixController;
@@ -31,7 +30,7 @@ export class SearchController implements ReactiveController {
   }
 
   renderSuffix(): TemplateResult {
-    const { clearIconPosition } = this.host.options;
+    const { clearIconPosition } = this.host;
     if (!clearIconPosition || clearIconPosition === ClearIconPosition.AFTER) {
       return html`${this.clearButton}${this.affixController.renderSuffix(
         this.suffixContent
@@ -49,7 +48,7 @@ export class SearchController implements ReactiveController {
    */
   get prefixContent(): TemplateResult | undefined {
     let content: TemplateResult | undefined;
-    const { searchIconPosition: pos } = this.host.options;
+    const { searchIconPosition: pos } = this.host;
     if (!pos || pos === SearchIconPosition.PREFIX) {
       content = this.searchButton;
     }
@@ -65,7 +64,7 @@ export class SearchController implements ReactiveController {
    */
   get suffixContent(): TemplateResult | undefined {
     const { searchIconPosition: searchPos, clearIconPosition: clearPos } =
-      this.host.options;
+      this.host;
 
     const clearContent =
       clearPos === ClearIconPosition.SUFFIX ? this.clearButton : undefined;
@@ -81,7 +80,7 @@ export class SearchController implements ReactiveController {
   }
 
   protected get searchButton(): TemplateResult {
-    const { searchIcon: icon = 'search' } = this.host.options;
+    const { searchIcon: icon = 'search' } = this.host;
     const search = html`
       <oryx-icon
         type=${icon}
@@ -93,8 +92,7 @@ export class SearchController implements ReactiveController {
   }
 
   get clearButton(): TemplateResult {
-    const { clearIcon: icon = 'remove', clearIconAppearance } =
-      this.host.options;
+    const { clearIcon: icon = 'remove', clearIconAppearance } = this.host;
     return html`
       <oryx-icon
         type=${icon}
@@ -162,9 +160,8 @@ export class SearchController implements ReactiveController {
     );
   }
 
-  constructor(protected host: OryxElement<SearchOptions>) {
+  constructor(protected host: SearchOptions & LitElement) {
     this.host.addController(this);
-
     this.affixController = new AffixController(host);
   }
 }

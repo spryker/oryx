@@ -1,6 +1,4 @@
-import { SearchOptions } from '../../search';
-
-export interface TypeaheadOptions extends SearchOptions {
+export interface TypeaheadOptions {
   /**
    * When enabled, the options can be filtered client side. This means that the
    * available options in the UI are filtered by the input control.

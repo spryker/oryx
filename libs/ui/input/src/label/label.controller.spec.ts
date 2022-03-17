@@ -1,17 +1,16 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
-import { OryxElement, queryFirstAssigned } from '../../../utilities';
+import { queryFirstAssigned } from '../../../utilities';
 import { LabelController } from './label.controller';
 import { LabelOptions } from './label.model';
 
-export class LabelComponent
-  extends LitElement
-  implements OryxElement<LabelOptions>
-{
-  @property({ type: Object }) options: LabelOptions = {};
+@customElement('fake-label')
+class LabelComponent extends LitElement implements LabelOptions {
   protected labelController = new LabelController(this);
+
+  @property() label?: string;
 
   render(): TemplateResult {
     return html`
@@ -22,7 +21,6 @@ export class LabelComponent
     `;
   }
 }
-customElements.define('fake-label', LabelComponent);
 
 describe('LabelController', () => {
   let element: LabelComponent;
@@ -31,9 +29,7 @@ describe('LabelController', () => {
     describe('when a label is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html` <fake-label
-            .options=${{ label: 'label content' }}
-          ></fake-label>`
+          html` <fake-label label="label content"></fake-label>`
         );
       });
 
@@ -56,9 +52,7 @@ describe('LabelController', () => {
 
       describe('when custom label is provided in the label slot', () => {
         beforeEach(async () => {
-          element = await fixture(html` <fake-label
-            .options=${{ label: 'label content' }}
-          >
+          element = await fixture(html` <fake-label label="label content">
             <h3>custom text</h3>
           </fake-label>`);
         });
@@ -105,9 +99,7 @@ describe('LabelController', () => {
       describe('when the input is required', () => {
         describe('and the label does not have an asterisk', () => {
           beforeEach(async () => {
-            element = await fixture(html` <fake-label
-              .options=${{ label: 'test' }}
-            >
+            element = await fixture(html`<fake-label label="test">
               <input required />
             </fake-label>`);
           });
@@ -128,9 +120,7 @@ describe('LabelController', () => {
 
         describe('and the label has an asterisk', () => {
           beforeEach(async () => {
-            element = await fixture(html` <fake-label
-              .options=${{ label: 'test*' }}
-            >
+            element = await fixture(html` <fake-label label="test*">
               <input required />
             </fake-label>`);
           });
@@ -152,9 +142,7 @@ describe('LabelController', () => {
 
       describe('when the input is not required', () => {
         beforeEach(async () => {
-          element = await fixture(html` <fake-label
-            .options=${{ label: 'test' }}
-          >
+          element = await fixture(html` <fake-label label="test">
             <input />
           </fake-label>`);
         });

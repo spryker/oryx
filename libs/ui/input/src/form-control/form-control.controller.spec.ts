@@ -1,34 +1,33 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import * as sinon from 'sinon';
 import { a11yConfig } from '../../../a11y';
-import { OryxElement } from '../../../utilities';
 import { getControl } from '../util';
 import { FormControlController } from './form-control.controller';
 import { FormControlOptions } from './form-control.model';
 
-export class InputComponent
-  extends LitElement
-  implements OryxElement<FormControlOptions>
-{
-  @property({ type: Object }) options: FormControlOptions = {};
+@customElement('fake-input')
+class InputComponent extends LitElement implements FormControlOptions {
   protected formControlController = new FormControlController(this);
+
+  @property() label?: string;
+  @property() errorMessage?: string;
+
   protected override render(): TemplateResult {
     return html`${this.formControlController.render()}`;
   }
 }
-customElements.define('fake-input', InputComponent);
 
-export class NoSlotComponent extends InputComponent {
+@customElement('fake-without-slot')
+class NoSlotComponent extends InputComponent {
   protected override render(): TemplateResult {
     return html``;
   }
 }
-customElements.define('fake-without-slot', NoSlotComponent);
 
 describe('FormControlController', () => {
-  let element: InputComponent;
+  let element: InputComponent | NoSlotComponent;
 
   describe('when no slot is available', () => {
     beforeEach(async () => {
@@ -47,9 +46,7 @@ describe('FormControlController', () => {
   describe('control', () => {
     describe('when no light dom is slotted in', () => {
       beforeEach(async () => {
-        element = await fixture(
-          html`<fake-input .options=${{ label: 'some label' }} />`
-        );
+        element = await fixture(html`<fake-input label="some label" />`);
       });
 
       it('passes the a11y audit', async () => {
@@ -66,7 +63,7 @@ describe('FormControlController', () => {
     describe('when a text node is slotted in', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-input .options=${{ label: 'some label' }}> </fake-input>`
+          html`<fake-input label="some label"> </fake-input>`
         );
       });
 
@@ -81,9 +78,7 @@ describe('FormControlController', () => {
 
     describe('when light dom is slotted in', () => {
       beforeEach(async () => {
-        element = await fixture(html`<fake-input
-          .options=${{ label: 'some label' }}
-        >
+        element = await fixture(html`<fake-input label="some label">
           <input id="light" />
         </fake-input>`);
       });
@@ -116,9 +111,7 @@ describe('FormControlController', () => {
     describe('when slot content is changed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-input .options=${{ label: 'some label' }}
-            ><input
-          /></fake-input>`
+          html`<fake-input label="some label"><input /></fake-input>`
         );
         (
           element.renderRoot.querySelector(
@@ -187,9 +180,7 @@ describe('FormControlController', () => {
     describe('when an input is not disabled', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-input .options=${{ label: 'some label' }}
-            ><input
-          /></fake-input>`
+          html`<fake-input label="some label"><input /></fake-input>`
         );
       });
 
@@ -214,7 +205,7 @@ describe('FormControlController', () => {
     describe('when an input is disabled', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<fake-input .options=${{ label: 'some label' }}>
+          html`<fake-input label="some label">
             <input disabled />
           </fake-input>`
         );

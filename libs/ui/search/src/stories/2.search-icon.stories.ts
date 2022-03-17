@@ -10,7 +10,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <div style="width:300px">
-      <oryx-search label="search" .options=${{ searchIcon: 'close' }}>
+      <oryx-search label="search" searchIcon="close">
         <input placeholder="Search..." />
       </oryx-search>
     </div>

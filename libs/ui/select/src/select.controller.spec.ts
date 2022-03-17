@@ -1,24 +1,21 @@
-import { getControl } from '../../input';
-import '../../option/';
-import { OryxElement } from '../../utilities';
-import { SelectController } from './select.controller';
-import { SelectOptions } from './select.model';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
+import { getControl } from '../../input';
+import '../../option/';
+import { SelectController } from './select.controller';
+import { SelectOptions } from './select.model';
 
-export class FakeComponent
-  extends LitElement
-  implements OryxElement<SelectOptions>
-{
-  @property({ type: Object }) options: SelectOptions = {};
+@customElement('fake-typeahead')
+class FakeComponent extends LitElement implements SelectOptions {
+  @property({ type: Boolean }) allowEmptyValue?: boolean;
+  @property({ type: Boolean }) isEmpty?: boolean;
   protected selectController = new SelectController(this);
 
   render(): TemplateResult {
     return html` <slot></slot> `;
   }
 }
-customElements.define('fake-typeahead', FakeComponent);
 
 describe('SelectController', () => {
   let element: FakeComponent;
@@ -97,9 +94,7 @@ describe('SelectController', () => {
     describe('when allowEmptyValue is true', () => {
       describe('and no selected option is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`<fake-typeahead
-            .options=${{ allowEmptyValue: true }}
-          >
+          element = await fixture(html`<fake-typeahead ?allowEmptyValue=${true}>
             <select>
               <option>first</option>
               <option>second</option>
@@ -119,9 +114,7 @@ describe('SelectController', () => {
 
       describe('and a selected option is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`<fake-typeahead
-            .options=${{ allowEmptyValue: true }}
-          >
+          element = await fixture(html`<fake-typeahead ?allowEmptyValue=${true}>
             <select>
               <option>first</option>
               <option selected>second</option>
@@ -157,25 +150,6 @@ describe('SelectController', () => {
         expect(
           element.querySelectorAll('*:not(select):not(option)').length
         ).to.eq(3);
-      });
-    });
-  });
-
-  describe('when the isEmpty flag is true ', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<fake-typeahead
-        .options=${{ isEmpty: true }}
-      >
-        <select>
-          <option>first</option>
-          <option>second</option>
-          <option>third</option>
-        </select>
-      </fake-typeahead>`);
-    });
-    describe('but there are options', () => {
-      it('should set the isEmpty to false', () => {
-        expect(element.options.isEmpty).to.be.false;
       });
     });
   });

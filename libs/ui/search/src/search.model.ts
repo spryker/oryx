@@ -1,6 +1,4 @@
-import { AffixOptions, FormControlOptions } from '../../input';
-
-export interface SearchOptions extends FormControlOptions, AffixOptions {
+export interface SearchOptions {
   searchIcon?: string;
   searchIconPosition?: SearchIconPosition;
   clearIcon?: string;

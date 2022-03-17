@@ -14,8 +14,8 @@ describe('InputComponent', () => {
   describe('render', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-input .options=${{ label: 'test' }}>
-          <input type="password" aria-label="password" placeholder="Password" />
+        html`<oryx-input label="test">
+          <input type="password" aria-label="password" />
         </oryx-input>`
       );
     });

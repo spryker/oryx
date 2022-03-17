@@ -1,9 +1,11 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../a11y';
 import { queryAssignedElements, queryFirstAssigned } from './query.util';
 
-export class FakeComponent extends LitElement {
+@customElement('fake-element')
+class FakeComponent extends LitElement {
   render(): TemplateResult {
     return html`
       <slot>
@@ -18,18 +20,17 @@ export class FakeComponent extends LitElement {
     `;
   }
 }
-customElements.define('fake-element', FakeComponent);
 
-export class NoSlotComponent extends LitElement {
+@customElement('no-slot-element')
+class NoSlotComponent extends LitElement {
   render(): TemplateResult {
     return html``;
   }
 }
-customElements.define('no-slot-element', NoSlotComponent);
 
 describe('QueryUtil', () => {
   describe('wc', () => {
-    let element: FakeComponent;
+    let element: FakeComponent | NoSlotComponent;
 
     describe('no shadow root element', () => {
       beforeEach(async () => {
