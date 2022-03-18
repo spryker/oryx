@@ -30,7 +30,7 @@
   /* accent color */
   --oryx-color-info: #2480f2;
   --oryx-color-success: #17b497;
-  --oryx-color-warning: #f2392e;
+  --oryx-color-warning: #ff6800;
   --oryx-color-error: #f2392e;
   --oryx-color-error-dark: #c72712;
 
@@ -38,6 +38,8 @@
   --oryx-color-accent: #2480f2;
   --oryx-color-accent-light: #eaf1fa;
   --oryx-color-accent-dark: #2261af;
+  --oryx-color-orange-light: #fef0e6;
+  --oryx-color-pink-light: #f9f2f1;
 
   /* focused */
   --oryx-color-focus: var(--oryx-color-brand);
