@@ -13,6 +13,7 @@ export const popoverStyles = css`
     transform-origin: left top;
     transition: transform var(--oryx-transition-time) ease-in-out;
     transform: scaleY(var(--oryx-popover-visible, 0));
+    z-index: var(--oryx-popover-z-index, 1);
   }
 
   :host([show]) {

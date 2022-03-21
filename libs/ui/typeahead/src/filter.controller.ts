@@ -29,11 +29,11 @@ export class FilterController implements ReactiveController {
   };
 
   hostConnected(): void {
-    if (this.host.filter) {
-      this.host.addEventListener('input', () => {
+    this.host.addEventListener('input', ((e: InputEvent) => {
+      if (this.host.filter && e.inputType) {
         this.filterOptionsByValue(getControl(this.host)?.value);
-      });
-    }
+      }
+    }) as EventListener);
   }
 
   hostUpdated(): void {
@@ -43,7 +43,7 @@ export class FilterController implements ReactiveController {
   }
 
   protected filterOptionsByValue(value = ''): void {
-    if (this.filterValue === value) {
+    if (this.filterValue === value || (!this.filterValue && value === '')) {
       return;
     }
     this.filterValue = value;
@@ -58,7 +58,7 @@ export class FilterController implements ReactiveController {
     this.items.forEach((item) => {
       if (item.value) {
         const indexes = [
-          ...item.value.matchAll(getFilterRegExp(value, value, strategy)),
+          ...item.value.matchAll(getFilterRegExp(value, strategy)),
         ].map((a) => a.index);
 
         item.hide = indexes.length === 0;

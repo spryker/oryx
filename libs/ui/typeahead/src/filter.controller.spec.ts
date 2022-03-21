@@ -70,7 +70,9 @@ describe('FilterController', () => {
 
       it(`should filter options`, () => {
         if (event) {
-          element.dispatchEvent(new Event('input', { bubbles: true }));
+          element.dispatchEvent(
+            new InputEvent('input', { bubbles: true, inputType: 'insertText' })
+          );
         }
         const filteredOptions = element.querySelectorAll<OptionComponent>(
           'oryx-option:not([hide])'

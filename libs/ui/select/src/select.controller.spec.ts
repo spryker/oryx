@@ -151,6 +151,19 @@ describe('SelectController', () => {
           element.querySelectorAll('*:not(select):not(option)').length
         ).to.eq(3);
       });
+
+      describe('and options are asynchronous added later', () => {
+        beforeEach(async () => {
+          const option = document.createElement('option');
+          option.value = 'fourth';
+          option.innerText = 'fourth option';
+          element.querySelector('select')?.appendChild(option);
+        });
+
+        it('should generate 4 elements', () => {
+          expect(element.querySelectorAll('oryx-option').length).to.eq(4);
+        });
+      });
     });
   });
 });

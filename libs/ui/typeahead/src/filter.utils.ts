@@ -18,9 +18,6 @@ export function generateMarkedHtml(
   filter: string,
   strategy: FilterStrategy
 ): string {
-  if (!filter || filter.length === 0) {
-    return content;
-  }
   let value = '';
 
   // parts before the first mark
@@ -71,11 +68,10 @@ export function generateMarkedHtml(
 
 export function getFilterRegExp(
   value: string,
-  filter: string,
   strategy: FilterStrategy
 ): RegExp {
   const delimiters = (
-    strategy.delimiters.indexOf(filter.charAt(0)) > -1
+    strategy.delimiters.indexOf(value.charAt(0)) > -1
       ? []
       : [...strategy.delimiters]
   ).join('|');

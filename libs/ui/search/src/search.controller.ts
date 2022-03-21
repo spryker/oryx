@@ -137,10 +137,14 @@ export class SearchController implements ReactiveController {
     if (this.control && this.control.value !== '') {
       e.stopPropagation();
       this.control.value = '';
-      this.host.dispatchEvent(
-        new Event('input', { bubbles: true, composed: true })
+      this.control.dispatchEvent(
+        new InputEvent('input', {
+          bubbles: true,
+          composed: true,
+          inputType: 'deleteContentBackward',
+        })
       );
-      this.host.dispatchEvent(
+      this.control.dispatchEvent(
         new Event('change', { bubbles: true, composed: true })
       );
       this.control.focus();

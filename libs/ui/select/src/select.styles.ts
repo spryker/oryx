@@ -6,7 +6,7 @@ export const selectStyles = css`
   }
 
   ::slotted(select),
-  select {
+  ::slotted(input[readonly]) {
     cursor: pointer;
   }
 

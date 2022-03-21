@@ -154,13 +154,35 @@ describe('PopoverController', () => {
 
       beforeEach(() => {
         input = element.querySelector('input');
-        input?.dispatchEvent(new InputEvent('input', { bubbles: true }));
+        input?.dispatchEvent(
+          new InputEvent('input', { bubbles: true, inputType: 'insertText' })
+        );
       });
 
       it('should show the popover', () => {
         expect(
           element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
         ).to.be.true;
+      });
+    });
+
+    describe('when an artificial input event is dispatched', () => {
+      let input: HTMLInputElement | null;
+      beforeEach(async () => {
+        element = await fixture(html`<fake-popover>
+          <input value="value" />
+        </fake-popover>`);
+      });
+
+      beforeEach(() => {
+        input = element.querySelector('input');
+        input?.dispatchEvent(new InputEvent('input', { bubbles: true }));
+      });
+
+      it('should not show the popover', () => {
+        expect(
+          element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
+        ).to.be.false;
       });
     });
   });
@@ -240,7 +262,11 @@ describe('PopoverController', () => {
             sinon.spy(option, 'scrollIntoView');
           }
           element.dispatchEvent(
-            new Event('input', { bubbles: true, composed: true })
+            new InputEvent('input', {
+              bubbles: true,
+              composed: true,
+              inputType: 'insertText',
+            })
           );
         });
 

@@ -14,15 +14,16 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ emptyMessage }: Props): TemplateResult => {
-  return sideBySide(html`<oryx-typeahead
-    ?isEmpty=${true}
-    emptyMessage=${emptyMessage}
-  >
+  return sideBySide(html`<oryx-typeahead isEmpty emptyMessage=${emptyMessage}>
     <input value="value" aria-label="label" />
   </oryx-typeahead>`);
 };
 
 export const Empty = Template.bind({});
+Empty.args = {
+  emptyMessage: 'No results found',
+};
+
 Empty.argTypes = {
   emptyMessage: {
     control: { type: 'text' },

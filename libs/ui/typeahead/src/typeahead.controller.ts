@@ -12,13 +12,19 @@ export class TypeaheadController implements ReactiveController {
   protected filterController: FilterController;
 
   hostConnected(): void {
-    this.host.addEventListener('input', (() => {
+    this.host.addEventListener('input', () => {
       this.triggerTypeAhead();
-    }) as EventListener);
+    });
 
     this.host.addEventListener('oryx.select', ((
       ev: CustomEvent<PopoverSelectEvent>
     ) => {
+      this.control?.dispatchEvent(
+        new Event('input', { bubbles: true, composed: true })
+      );
+      this.control?.dispatchEvent(
+        new Event('change', { bubbles: true, composed: true })
+      );
       this.handleSelect(ev);
     }) as EventListener);
   }
@@ -60,7 +66,7 @@ export class TypeaheadController implements ReactiveController {
   }
 
   protected triggerTypeAhead(): void {
-    const control = getControl(this.host);
+    const control = this.control;
     if (control) {
       const event = new CustomEvent<SearchEvent>('oryx.typeahead', {
         detail: {
@@ -74,7 +80,7 @@ export class TypeaheadController implements ReactiveController {
   }
 
   protected handleSelect(ev: CustomEvent<PopoverSelectEvent>): void {
-    const control = getControl(this.host);
+    const control = this.control;
     if (control) {
       const value = this.getValue(ev.detail.selected);
       if (value) {
@@ -82,6 +88,10 @@ export class TypeaheadController implements ReactiveController {
         control.dispatchEvent(new Event('change', { bubbles: true }));
       }
     }
+  }
+
+  protected get control(): HTMLInputElement | HTMLSelectElement | undefined {
+    return getControl(this.host);
   }
 
   protected getValue(option: HTMLElement): string | undefined {

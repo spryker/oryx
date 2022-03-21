@@ -29,7 +29,8 @@ export class PopoverController implements ReactiveController {
       this.handleKeydown(e)
     );
 
-    this.host.addEventListener('input', (e) => this.handleInput(e));
+    this.host.addEventListener('input', ((e: InputEvent) =>
+      this.handleInput(e)) as EventListener);
     this.host.addEventListener('change', (() => {
       const value = getControl(this.host)?.value;
       this.handleChange(value ?? '');
@@ -61,7 +62,10 @@ export class PopoverController implements ReactiveController {
     }
   }
 
-  protected handleInput(e: Event): void {
+  protected handleInput(e: InputEvent): void {
+    if (!e.inputType) {
+      return;
+    }
     if ((e.target as HTMLInputElement | HTMLSelectElement).value) {
       this.toggleController.toggle(true);
     } else {

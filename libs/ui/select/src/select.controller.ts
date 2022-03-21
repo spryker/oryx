@@ -1,6 +1,5 @@
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../input';
-import { OptionComponent } from '../../option';
 import { TypeaheadOptions } from '../../typeahead';
 import { SelectOptions } from './select.model';
 
@@ -18,6 +17,7 @@ export class SelectController implements ReactiveController {
 
   hostUpdated(): void {
     this.initSelect();
+    this.observeSelect();
   }
 
   protected initSelect(): void {
@@ -29,13 +29,6 @@ export class SelectController implements ReactiveController {
         control?.toggleAttribute('readonly', true);
       }
     }
-    this.host
-      .querySelectorAll<OptionComponent>('oryx-option')
-      .forEach((option) => {
-        if (!option.slot) {
-          option.slot = 'option';
-        }
-      });
   }
 
   protected reflectSelect(element: HTMLSelectElement): void {
@@ -43,7 +36,7 @@ export class SelectController implements ReactiveController {
       const firstOption = Array.from(element.options)?.[0];
       if (firstOption && firstOption.value !== '') {
         const emptyOption = document.createElement('option');
-        emptyOption.style.setProperty('display', 'none');
+        emptyOption.hidden = true;
         // when an other option is selected, we do not force the selection of the
         // newly created empty option
         if (firstOption.selected) {
@@ -56,14 +49,11 @@ export class SelectController implements ReactiveController {
     const options = Array.from(element.options)
       .filter((option) => option.value !== '')
       .map((nativeOption: HTMLOptionElement) => {
-        nativeOption.style.setProperty('display', 'none');
+        nativeOption.hidden = true;
         const reflectedOption: { value: string; text?: string } = {
           value: nativeOption.value,
         };
-        if (
-          nativeOption.innerText.trim() !== nativeOption.value &&
-          nativeOption.innerText.trim() !== ''
-        ) {
+        if (nativeOption.innerText.trim() !== '') {
           reflectedOption.text = nativeOption.innerText.trim();
         }
         return reflectedOption;
@@ -77,18 +67,34 @@ export class SelectController implements ReactiveController {
   }
 
   protected reflectOptions(): void {
-    // cleanup manual created items from last time
-    this.host.querySelectorAll('oryx-option').forEach((el) => el.remove());
+    this.clearOptions();
     this.options.forEach((option) => {
-      const newOption = document.createElement(
-        'oryx-option'
-      ) as OptionComponent;
-      newOption.value = option.value;
-      if (option.text) {
-        newOption.innerText = option.text;
-      }
-      this.host.appendChild(newOption);
+      const newOption = `<oryx-option value="${option.value}" slot="option">${option.text}</oryx-option>`;
+      this.host.insertAdjacentHTML('beforeend', newOption);
     });
+  }
+
+  protected clearOptions(): void {
+    this.host.querySelectorAll('oryx-option').forEach((el) => el.remove());
+  }
+
+  protected mutationObserver?: MutationObserver;
+
+  protected observeSelect(): void {
+    const control = getControl(this.host);
+    if (control) {
+      this.mutationObserver?.disconnect();
+      this.mutationObserver = new MutationObserver(() => {
+        this.initSelect();
+      });
+      this.mutationObserver.observe(control, {
+        childList: true,
+      });
+    }
+  }
+
+  hostDisconnected(): void {
+    this.mutationObserver?.disconnect();
   }
 
   constructor(protected host: SelectOptions & LitElement & TypeaheadOptions) {
