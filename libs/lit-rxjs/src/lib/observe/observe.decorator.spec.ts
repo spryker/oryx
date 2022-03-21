@@ -11,7 +11,7 @@ const destroy$ = new Subject<void>();
 abstract class MockClass extends LitElement {
   abstract mock: string;
   anotherMock?: string;
-  mock$?: Subject<string> | null;
+  mock$?: Subject<string>;
 }
 
 @customElement('mock-component')
@@ -20,7 +20,7 @@ export class MockComponent extends MockClass {
   mock = 'mock';
 
   @observe()
-  mock$?: Subject<string>;
+  mock$ = new ReplaySubject<string>(1);
 }
 
 @customElement('mock-component-with-property')
@@ -32,7 +32,7 @@ export class MockComponentWithProperty extends MockClass {
   mock = 'mock';
 
   @observe('anotherMock')
-  mock$?: Subject<string>;
+  mock$ = new BehaviorSubject(this.anotherMock);
 }
 
 describe('observe decorator', () => {
@@ -52,20 +52,9 @@ describe('observe decorator', () => {
     destroy$.next();
   });
 
-  describe('observable is not defined', () => {
-    it('should create `BehaviorSubject` under the hood and emit updated value if passed observed property has been changed', () => {
-      const callback = vi.fn();
-      element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockProperty);
-      expect(element.mock$).toBeInstanceOf(BehaviorSubject);
-      element.mock = mockAnotherProperty;
-      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
-    });
-  });
-
   describe('observable is BehaviorSubject', () => {
     beforeEach(() => {
-      element.mock$ = new BehaviorSubject('');
+      element.mock$ = new BehaviorSubject(mockProperty);
     });
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
@@ -79,10 +68,6 @@ describe('observe decorator', () => {
   });
 
   describe('observable is ReplaySubject', () => {
-    beforeEach(() => {
-      element.mock$ = new ReplaySubject(1);
-    });
-
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
       const callback = vi.fn();
       element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);

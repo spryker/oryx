@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UpdatingElement } from 'lit';
+import { LitElement, UpdatingElement } from 'lit';
 
 export interface DecoratorContext {
   kind: 'field' | 'method';
@@ -10,3 +10,5 @@ export interface DecoratorContext {
   finisher?: (clazz: typeof UpdatingElement) => typeof UpdatingElement | void;
   descriptor?: PropertyDescriptor;
 }
+
+export type TargetDecorator = Record<string, any> & LitElement;

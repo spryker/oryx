@@ -50,7 +50,7 @@ describe('Experience Composition', () => {
     });
 
     document.body.innerHTML =
-      '<experience-composition></experience-composition>';
+      '<experience-composition key="1"></experience-composition>';
     await window.happyDOM.whenAsyncComplete();
   });
 

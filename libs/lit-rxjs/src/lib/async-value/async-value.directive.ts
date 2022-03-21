@@ -1,8 +1,8 @@
 import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive } from 'lit/directive.js';
-import { Observable, Subscription } from 'rxjs';
-import { isObservable, isPromise } from '../internal';
+import { isObservable, Observable, Subscription } from 'rxjs';
+import { isPromise } from '../internal';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
 import { AsyncValueStrategy } from './types';
