@@ -1,4 +1,3 @@
-export { ExperienceComposition } from '@spryker-oryx/experience';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 

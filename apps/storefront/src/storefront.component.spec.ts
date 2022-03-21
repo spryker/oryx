@@ -1,12 +1,6 @@
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
 
-vi.mock('@spryker-oryx/experience', () => ({
-  ExperienceComposition: () => {
-    return;
-  },
-}));
-
 describe('InputComponent', () => {
   beforeEach(async () => {
     document.body.innerHTML = '<storefront-component></storefront-component>';
