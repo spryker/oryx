@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement } from 'lit';
-import { DecoratorContext } from '../internal/types';
+import { LitElement, ReactiveElement } from 'lit';
+import { DecoratorContext, TargetDecorator } from '../internal/types';
 import { SubscribeController } from './subscribe.controller';
 
 const SUBSCRIBE_CONTROLLER = Symbol('subscribeController');
@@ -21,13 +21,12 @@ function controllerCreation(target: any, name: string): void {
   target[SUBSCRIBE_CONTROLLER].add(name);
 }
 
-const legacySubscribe = (context: Record<string, any>, name: string): void => {
-  const nativeConnected = context.connectedCallback;
+const legacySubscribe = (context: TargetDecorator, name: string): void => {
+  const constructor = context.constructor as typeof LitElement;
 
-  context.connectedCallback = function (): void {
-    controllerCreation(this, name);
-    nativeConnected.call(this);
-  };
+  constructor.addInitializer((instance: ReactiveElement) => {
+    controllerCreation(instance, name);
+  });
 };
 
 const standardSubscribe = (
@@ -36,9 +35,9 @@ const standardSubscribe = (
 ): DecoratorContext => {
   return {
     ...context,
-    initializer(this: Record<string, any> & LitElement): any {
+    initializer(this: TargetDecorator): void {
       controllerCreation(this, name);
-      return context.initializer?.();
+      return context.initializer?.call(this);
     },
   };
 };
@@ -56,14 +55,14 @@ const standardSubscribe = (
 
 export function subscribe(): any {
   return (
-    context: DecoratorContext | Record<string, any>,
+    context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
   ): DecoratorContext | void => {
     const isLegacy = name !== undefined;
     const propName = (isLegacy ? name : context.key) as string;
 
     return isLegacy
-      ? legacySubscribe(context as Record<string, any>, propName)
+      ? legacySubscribe(context as TargetDecorator, propName)
       : standardSubscribe(context as DecoratorContext, propName);
   };
 }

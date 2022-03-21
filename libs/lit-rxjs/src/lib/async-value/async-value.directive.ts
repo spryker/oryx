@@ -105,7 +105,7 @@ export class AsyncValueDirective extends AsyncDirective {
  *
  * Example
  * export class Component extends LitElement {
- *  prop$ = new BehaviorSubject(this.prop);
+ *  prop$ = new BehaviorSubject('value');
  *
  *  render(): TemplateResult {
  *    return html`
@@ -113,7 +113,7 @@ export class AsyncValueDirective extends AsyncDirective {
  *      asyncValue(
  *        this.prop$,
  *        (value) => html`<div class="callback">${value}</div>`,
- *         () => html`<div class="fallback"></div>`
+ *        () => html`<div class="fallback"></div>`
  *      )
  *    `;
  *  }
