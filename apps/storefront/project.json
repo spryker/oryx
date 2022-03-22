@@ -18,10 +18,24 @@
         "cwd": "apps/storefront"
       }
     },
+    "serve-testing": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev -- --mode testing",
+        "cwd": "apps/storefront"
+      }
+    },
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "npm run build",
+        "cwd": "apps/storefront"
+      }
+    },
+    "build-testing": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build -- --mode testing",
         "cwd": "apps/storefront"
       }
     },

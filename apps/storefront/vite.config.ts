@@ -15,11 +15,9 @@ export default defineConfig({
     outDir: '../../dist/apps/storefront/client',
     emptyOutDir: true,
   },
-  define: {
-    __CONTENT_BACKEND_URL__: JSON.stringify(process.env.CONTENT_BACKEND_URL),
-  },
   ssr: {
     external: ['@lit-labs', 'rxjs'],
   },
+  envPrefix: ['CONTENT_BACKEND_URL'],
   plugins: [tsconfigPaths({ root: '../../' })],
 });
