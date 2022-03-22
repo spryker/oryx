@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { AffixController, AffixOptions, affixStyles } from './affix';
-import { errorStyles } from './error';
+import { ErrorOptions, errorStyles } from './error';
 import { FormControlController, FormControlOptions } from './form-control';
 import { formControlStyles } from './form-control/form-control.styles';
 import { labelStyles } from './label';
@@ -15,12 +15,13 @@ export const inputStyles = [
 
 export class InputComponent
   extends LitElement
-  implements FormControlOptions, AffixOptions
+  implements FormControlOptions, AffixOptions, ErrorOptions
 {
   static styles = inputStyles;
 
   @property() label?: string;
   @property() errorMessage?: string;
+  @property({ type: Boolean }) hasError?: boolean;
   @property() prefixIcon?: string;
   @property({ type: Boolean }) prefixFill?: boolean;
   @property() suffixIcon?: string;

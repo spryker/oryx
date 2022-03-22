@@ -11,24 +11,18 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: currentColor;
-    width: var(--oryx-icon-size, 24px);
+    max-width: var(--oryx-icon-size, 24px);
     aspect-ratio: 1 / 1;
   }
 
-  :host([size='large']) {
-    --oryx-icon-size: var(--oryx-icon-size-large, 24px);
+  :host([size='medium']) svg,
+  :host([size='medium']) ::slotted(svg) {
+    margin: 3px;
   }
 
-  :host([size='medium']) {
-    --oryx-icon-size: var(--oryx-icon-size-medium, 18px);
-
-    padding: 3px;
-  }
-
-  :host([size='small']) {
-    --oryx-icon-size: var(--oryx-icon-size-small, 12px);
-
-    padding: 6px;
+  :host([size='small']) svg,
+  :host([size='small']) ::slotted(svg) {
+    margin: 6px;
   }
 
   /* standard colors */

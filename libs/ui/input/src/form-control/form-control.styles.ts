@@ -32,18 +32,18 @@ export const formControlStyles = css`
     background-color: var(--oryx-color-neutral-lighter);
   }
 
-  :host(:not(.has-error)) .control:hover,
-  :host(:not(.has-error)) .control:focus-within {
+  :host(:not([hasError])) .control:hover,
+  :host(:not([hasError])) .control:focus-within {
     border-color: var(--oryx-color-neutral);
   }
 
-  :host(:not(.has-error)) .control:focus-within {
+  :host(:not([hasError])) .control:focus-within {
     border-color: var(--oryx-color-focus);
     transition-property: border;
   }
 
   /* visible focus effect */
-  :host([visible-focus]:not(.has-error)) .control:focus-within {
+  :host([visible-focus]:not([hasError])) .control:focus-within {
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-brand);
     transition-property: box-shadow, border;
   }

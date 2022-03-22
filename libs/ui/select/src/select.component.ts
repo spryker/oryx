@@ -41,6 +41,7 @@ export class SelectComponent
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
+  @property({ type: Boolean }) hasError?: boolean;
   @property({ type: Boolean }) allowEmptyValue?: boolean;
   @property() label?: string;
   @property() errorMessage?: string;

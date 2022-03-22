@@ -23,6 +23,7 @@ export class SearchComponent
 
   @property() label?: string;
   @property() errorMessage?: string;
+  @property({ type: Boolean }) hasError?: boolean;
   @property() prefixIcon?: string;
   @property({ type: Boolean }) prefixFill?: boolean;
   @property() suffixIcon?: string;

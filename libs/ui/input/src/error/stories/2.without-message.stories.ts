@@ -16,7 +16,7 @@ const Template: Story<Props> = ({
   readonly,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input label=${label} class="has-error">
+    <oryx-input label=${label} hasError>
       <input
         placeholder=${placeholder}
         value=${value}

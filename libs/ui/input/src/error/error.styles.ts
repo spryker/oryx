@@ -4,8 +4,12 @@ import { css } from 'lit';
  * Provides error styling for the control.
  */
 export const errorStyles = css`
-  :host(.has-error) {
+  :host([hasError]) {
     border-color: var(--oryx-color-error);
+  }
+
+  [hasErrorContent] {
+    margin-top: 7px;
   }
 
   :host([disabled]) slot[name='error'] ::slotted(oryx-icon) {

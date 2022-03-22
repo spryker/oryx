@@ -7,18 +7,19 @@ import { ErrorController } from './error.controller';
 import { ErrorOptions } from './error.model';
 
 @customElement('fake-el')
-class ErrorMixinComponent extends LitElement implements ErrorOptions {
+class ErrorComponent extends LitElement implements ErrorOptions {
   protected errorController = new ErrorController(this);
 
   @property() errorMessage?: string;
+  @property({ type: Boolean }) hasError?: boolean;
 
   render(): TemplateResult {
     return this.errorController.render();
   }
 }
 
-describe('ErrorMixin', () => {
-  let element: ErrorMixinComponent;
+describe('ErrorController', () => {
+  let element: ErrorComponent;
   describe('error', () => {
     describe('when an error message is provided', () => {
       beforeEach(async () => {
@@ -38,8 +39,8 @@ describe('ErrorMixin', () => {
         expect(errorMessage?.message).to.equal('error message');
       });
 
-      it('should have a has-error class', () => {
-        expect(element.classList.contains('has-error')).to.true;
+      it('should have an hasError attribute', () => {
+        expect(element.hasAttribute('hasError')).to.true;
       });
     });
   });
@@ -53,15 +54,8 @@ describe('ErrorMixin', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should not have an errorMessage element', () => {
-      const errorMessage = element.shadowRoot?.querySelector(
-        'oryx-error-message'
-      ) as ErrorMessageComponent;
-      expect(errorMessage).not.to.exist;
-    });
-
-    it('should not have a has-error class', () => {
-      expect(element.classList.contains('has-error')).to.be.false;
+    it('should not have an hasError attribute', () => {
+      expect(element.hasAttribute('hasError')).to.false;
     });
   });
 
@@ -74,15 +68,8 @@ describe('ErrorMixin', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should not have an errorMessage element', () => {
-      const errorMessage = element?.shadowRoot?.querySelector(
-        'oryx-error-message'
-      ) as ErrorMessageComponent;
-      expect(errorMessage).to.not.exist;
-    });
-
-    it('should not have a has-error class', () => {
-      expect(element.classList.contains('has-error')).to.be.false;
+    it('should not have an hasError attribute', () => {
+      expect(element.hasAttribute('hasError')).to.false;
     });
   });
 
@@ -97,8 +84,8 @@ describe('ErrorMixin', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should have an has-error class', () => {
-      expect(element.classList.contains('has-error')).to.be.true;
+    it('should have an hasError attribute', () => {
+      expect(element.hasAttribute('hasError')).to.true;
     });
   });
 });
