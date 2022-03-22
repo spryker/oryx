@@ -1,0 +1,9 @@
+# Core
+
+This library provides core functionality for FES.
+
+This library was generated with [Nx](https://nx.dev).
+
+## Running unit tests
+
+Run `nx test core` to execute the unit tests via [Vitest](https://vitest.dev/).

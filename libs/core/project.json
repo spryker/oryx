@@ -1,0 +1,49 @@
+{
+  "root": "libs/core",
+  "sourceRoot": "libs/core/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf ../../dist/libs/core/*",
+          "tsc --project tsconfig.lib.json",
+          "vite build"
+        ],
+        "parallel": false,
+        "cwd": "libs/core"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/core/src/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc --project tsconfig.spec.json",
+          "vitest run --passWithNoTests"
+        ],
+        "parallel": false,
+        "cwd": "libs/core"
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc --project tsconfig.spec.json",
+          "vitest --passWithNoTests"
+        ],
+        "parallel": false,
+        "cwd": "libs/core"
+      }
+    }
+  },
+  "tags": []
+}
