@@ -1,3 +1,4 @@
+import { Services } from '@spryker-oryx/experience';
 import { inject } from '@spryker-oryx/injector';
 import { from, mapTo, Observable, of, tap } from 'rxjs';
 import { ComponentsRegistryContract } from './components-registry.contract';
@@ -8,7 +9,10 @@ export interface RegistryComponents {
 
 export class ComponentsRegistryService implements ComponentsRegistryContract {
   protected resolvedComponents: RegistryComponents = {};
-  protected registeredComponents = inject('FES.ComponentMapping');
+
+  constructor(
+    protected registeredComponents = inject(Services.ComponentMapping)
+  ) {}
 
   resolveTag(type: string): string {
     return this.registeredComponents[type]?.name ?? type;

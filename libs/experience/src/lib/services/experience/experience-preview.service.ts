@@ -18,9 +18,7 @@ const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
 /* TODO: move it from current */
 export class ExperiencePreviewService extends ExperienceService {
-  protected routerService = inject(Services.Router);
-
-  constructor() {
+  constructor(protected routerService = inject(Services.Router)) {
     super();
 
     this.structureDataEvent$.subscribe(

@@ -1,4 +1,4 @@
-import { getInjector } from '@spryker-oryx/injector';
+import { resolve } from '@spryker-oryx/injector';
 import { observe } from '@spryker-oryx/lit-rxjs';
 import { LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -17,8 +17,8 @@ export class ExperienceComposition extends LitElement {
   @observe()
   protected key$ = new ReplaySubject<string>(1);
 
-  protected experienceService = getInjector().inject(Services.Experience);
-  protected registryService = getInjector().inject(Services.ComponentsRegistry);
+  protected experienceService = resolve(Services.Experience);
+  protected registryService = resolve(Services.ComponentsRegistry);
 
   protected components$ = this.key$.pipe(
     switchMap((key) => this.experienceService.getStructure({ key })),

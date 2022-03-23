@@ -1,4 +1,5 @@
-import { Injector, Provider } from './injector';
+import { Injector } from './injector';
+import { Provider } from './provider';
 
 /**
  * By default, injectors can be assigned to DOM Elements. Each DOM element can

@@ -1,14 +1,15 @@
-import { ExperienceContract } from './experience.contract';
-import { Component } from './models';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
+import { ExperienceContract } from './experience.contract';
+import { Component } from './models';
 
 export class ExperienceService implements ExperienceContract {
-  protected contentBackendUrl = inject('CONTENT_BACKEND_URL');
   protected dataStructure: { [key: string]: ReplaySubject<Component> } = {};
   protected dataContent: { [key: string]: ReplaySubject<any> } = {};
+
+  constructor(protected contentBackendUrl = inject('CONTENT_BACKEND_URL')) {}
 
   protected processStructure(components: Component[]): void {
     const targetComponent: any = components.find((component: any) =>

@@ -1,20 +1,14 @@
 import { setCurrentInjector } from './inject';
+import {
+  ClassProvider,
+  FactoryProvider,
+  Provider,
+  ValueProvider,
+} from './provider';
 
-export type Provider = ClassProvider | ValueProvider | FactoryProvider;
-
-export interface ClassProvider {
-  provide: any;
-  useClass: any;
-}
-
-export interface ValueProvider {
-  provide: any;
-  useValue: any;
-}
-
-export interface FactoryProvider {
-  provide: any;
-  useFactory: () => any;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface InjectionTokensContractMap {}
 }
 
 function isValueProvider(provider: Provider): provider is ValueProvider {
@@ -27,11 +21,6 @@ function isClassProvider(provider: Provider): provider is ClassProvider {
 
 function isFactoryProvider(provider: Provider): provider is FactoryProvider {
   return (provider as FactoryProvider).useFactory !== undefined;
-}
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface InjectionTokensContractMap {}
 }
 
 /**
@@ -71,11 +60,14 @@ export class Injector {
     token: K,
     defaultInstance?: InjectionTokensContractMap[K]
   ): InjectionTokensContractMap[K];
-
+  inject<K extends keyof InjectionTokensContractMap, L>(
+    token: K,
+    defaultInstance?: L
+  ): InjectionTokensContractMap[K] | L;
   inject(token: any, defaultInstance?: any): any;
   inject<K extends keyof InjectionTokensContractMap>(
     token: K | any,
-    defaultInstance: K | any
+    defaultInstance?: K | any
   ): InjectionTokensContractMap[K] | any {
     this._locked = true;
     if (!this.providers.has(token)) {

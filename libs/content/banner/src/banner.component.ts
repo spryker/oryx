@@ -1,9 +1,11 @@
-import { getInjector } from '@spryker-oryx/injector';
+import { Services } from '@spryker-oryx/experience';
+import { resolve } from '@spryker-oryx/injector';
+import { subscribe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { Subscription } from 'rxjs';
+import { defer, EMPTY, tap } from 'rxjs';
 import { BannerContent } from './banner.model';
 import { styles } from './banner.styles';
 
@@ -16,33 +18,20 @@ export class BannerComponent extends LitElement {
   @property({ type: Object })
   protected content?: BannerContent;
 
-  protected contentSubscription?: Subscription;
+  protected experienceContent = resolve(Services.Experience, null);
 
-  protected experienceContent: InjectionTokensContractMap[] | any;
-
-  override connectedCallback(): void {
-    try {
-      this.experienceContent = getInjector().inject('FES.Experience');
-      if (this.uid) {
-        this.contentSubscription = this.experienceContent
-          .getContent({ key: this.uid })
-          .subscribe((res: any) => {
+  @subscribe()
+  contentResolver$ = defer(() =>
+    this.uid && this.experienceContent
+      ? this.experienceContent.getContent({ key: this.uid }).pipe(
+          tap((res: any) => {
             if (res.data) {
               this.content = { ...res.data };
             }
-          });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    super.connectedCallback();
-  }
-
-  override disconnectedCallback(): void {
-    this.contentSubscription?.unsubscribe();
-    super.disconnectedCallback();
-  }
+          })
+        )
+      : EMPTY
+  );
 
   override render(): TemplateResult {
     if (!this.content) {

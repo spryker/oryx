@@ -21,6 +21,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
           imports: {
             '@spryker-oryx/injector':
               '/dist/out-tsc/libs/injector/src/index.js',
+            '@spryker-oryx/lit-rxjs':
+              '/dist/out-tsc/libs/lit-rxjs/src/index.js',
           },
         },
       },

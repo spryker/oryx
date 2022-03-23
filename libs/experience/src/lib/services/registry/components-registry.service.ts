@@ -9,7 +9,10 @@ export interface RegistryComponents {
 
 export class ComponentsRegistryService implements ComponentsRegistryContract {
   protected resolvedComponents: RegistryComponents = {};
-  protected registeredComponents = inject(Services.ComponentMapping);
+
+  constructor(
+    protected registeredComponents = inject(Services.ComponentMapping)
+  ) {}
 
   resolveTag(type: string): string {
     return this.registeredComponents[type]?.name ?? type;
