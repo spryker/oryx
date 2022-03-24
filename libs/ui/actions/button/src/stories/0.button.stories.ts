@@ -55,31 +55,45 @@ const Template: Story<Props> = ({
   outline,
 }: Props): TemplateResult => {
   return html`
-    <oryx-button
-      .type=${type}
-      .size=${size}
-      .icon=${icon}
-      ?loading=${loading}
-      ?outline=${outline}
-    >
-      <button ?disabled=${disabled}>${message}</button>
-    </oryx-button>
+    <div class="button-component">
+      <oryx-button
+        type=${type}
+        size=${size}
+        ?loading=${loading}
+        ?outline=${outline}
+        ?icon=${icon}
+      >
+        <button ?disabled=${disabled}>
+          ${icon ? html` <oryx-icon type=${icon}></oryx-icon>` : ''} ${message}
+        </button>
+      </oryx-button>
 
-    <oryx-button
-      .type=${type}
-      .size=${size}
-      .icon=${icon}
-      ?loading=${loading}
-      ?outline=${outline}
-    >
-      <a href="/" ?disabled=${disabled}>link</a>
-    </oryx-button>
+      <oryx-button
+        type=${type}
+        size=${size}
+        ?loading=${loading}
+        ?outline=${outline}
+        ?icon=${icon}
+      >
+        <a href="/" ?disabled=${disabled}>
+          ${icon ? html` <oryx-icon type=${icon}></oryx-icon>` : ''} Link
+        </a>
+      </oryx-button>
+    </div>
+    <style>
+      .button-component {
+        width: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+    </style>
   `;
 };
 
-export const ButtonComponent = Template.bind({});
+export const ButtonDemo = Template.bind({});
 
-ButtonComponent.args = {
+ButtonDemo.args = {
   message: 'Button',
   disabled: false,
   icon: undefined,
@@ -87,7 +101,7 @@ ButtonComponent.args = {
   outline: false,
 };
 
-ButtonComponent.argTypes = {
+ButtonDemo.argTypes = {
   icon: {
     control: { type: 'text' },
   },

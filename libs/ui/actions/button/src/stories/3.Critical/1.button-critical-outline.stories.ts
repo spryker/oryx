@@ -6,7 +6,7 @@ import { ButtonSize } from '../../button.model';
 import '../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button/button-variations`,
+  title: `${storybookPrefix}/actions/Button/Critical`,
 } as Meta;
 
 interface Props {
@@ -16,30 +16,45 @@ interface Props {
 const Template: Story<Props> = (): TemplateResult => {
   const renderButton = (message: string, set: any): TemplateResult => {
     return html` <h1>Critical outline</h1>
-      <div class="button-default">
+      <div class="button-component">
         <p>Default</p>
         ${Object.values(set).map(
-          (type) =>
+          (size) =>
             html`
-              <div class="button-component">
-                <oryx-button type="critical" ?outline=${true} size=${type}>
+                <oryx-button type="critical" size=${size} outline>
                   <button>${message}</button>
+                </oryx-button>
+                <oryx-button type="critical" size=${size} outline>
+                  <a href="/">Link</a>
                 </oryx-button>
               </div>
             `
         )}
-      </div>
-      <div class="button-disabled">
         <p>Disabled</p>
         ${Object.values(set).map(
-          (type) =>
+          (size) =>
             html`
-              <div class="button-component">
-                <oryx-button size=${type}>
-                  <button ?disabled=${true}>${message}</button>
+                <oryx-button size=${size}>
+                  <button disabled>${message}</button>
+                </oryx-button>
+                <oryx-button size=${size}>
+                  <a href="/" disabled>Link</a>
                 </oryx-button>
               </div>
             `
+        )}
+        <p>Loading</p>
+        ${Object.values(set).map(
+          (size) =>
+            html`
+            <oryx-button loading type="critical" size=${size} outline>
+              <button>${message}</button>
+            </oryx-button>
+            <oryx-button loading type="critical" size=${size} outline>
+              <a href="/">Link</a>
+            </oryx-button>
+            </div>
+          `
         )}
       </div>`;
   };
@@ -52,13 +67,10 @@ const Template: Story<Props> = (): TemplateResult => {
       }
 
       .button-component {
-        padding: 0 10px 10px 10px;
-      }
-
-      .button-default,
-      .button-disabled,
-      .button-loading {
+        width: 650px;
         display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
       }
     </style>
   `;

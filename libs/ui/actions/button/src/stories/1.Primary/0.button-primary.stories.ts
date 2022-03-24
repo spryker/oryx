@@ -6,7 +6,7 @@ import { ButtonSize } from '../../button.model';
 import '../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button/button-variations`,
+  title: `${storybookPrefix}/actions/Button/Primary`,
 } as Meta;
 
 interface Props {
@@ -15,46 +15,44 @@ interface Props {
 }
 
 const Template: Story<Props> = (): TemplateResult => {
-  const renderButton = (
-    message: string,
-    set: any,
-    icon: string
-  ): TemplateResult => {
-    return html` <h1>Primary with icon</h1>
-      <div class="button-default">
+  const renderButton = (message: string, set: any): TemplateResult => {
+    return html` <h1>Primary</h1>
+      <div class="button-component">
         <p>Default</p>
         ${Object.values(set).map(
-          (type) =>
+          (size) =>
             html`
-              <div class="button-component">
-                <oryx-button .icon=${icon} .type="primary" size=${type}>
+                <oryx-button type="primary" size=${size}>
                   <button>${message}</button>
+                </oryx-button>
+                <oryx-button type="primary" size=${size}>
+                  <a href="/">Link</a>
                 </oryx-button>
               </div>
             `
         )}
-      </div>
-      <div class="button-disabled">
         <p>Disabled</p>
         ${Object.values(set).map(
-          (type) =>
+          (size) =>
             html`
-              <div class="button-component">
-                <oryx-button .icon=${icon} type="primary" size=${type}>
-                  <button ?disabled=${true}>${message}</button>
+                <oryx-button type="primary" size=${size}>
+                  <button disabled>${message}</button>
+                </oryx-button>
+                <oryx-button type="primary" size=${size}>
+                  <a href="/" disabled>Link</a>
                 </oryx-button>
               </div>
             `
         )}
-      </div>
-      <div class="button-loading">
         <p>Loading</p>
         ${Object.values(set).map(
-          (type) =>
+          (size) =>
             html`
-              <div class="button-component">
-                <oryx-button .icon=${icon} .loading=${true} size=${type}>
+                <oryx-button loading size=${size}>
                   <button>${message}</button>
+                </oryx-button>
+                <oryx-button loading size=${size}>
+                  <a href="/">Link</a>
                 </oryx-button>
               </div>
             `
@@ -63,21 +61,20 @@ const Template: Story<Props> = (): TemplateResult => {
   };
 
   return html`
-    ${renderButton('Button', ButtonSize, 'add')}
+    ${renderButton('Button', ButtonSize)}
     <style>
       p {
         width: 54px;
       }
+
       .button-component {
-        padding: 0 10px 10px 10px;
-      }
-      .button-default,
-      .button-disabled,
-      .button-loading {
+        width: 650px;
         display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
       }
     </style>
   `;
 };
 
-export const ButtonPrimaryWithIcon = Template.bind({});
+export const ButtonPrimary = Template.bind({});

@@ -7,7 +7,7 @@
   color: var(--oryx-color-ink);
 
   /* base font */
-  --oryx-font: montserrat, sans-serif;
+  --oryx-font: 'Montserrat', sans-serif;
 
   /* base color */
   --oryx-color-canvas: #fff;

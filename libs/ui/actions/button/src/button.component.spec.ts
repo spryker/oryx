@@ -77,19 +77,6 @@ describe('ButtonComponent', () => {
         expect(element.querySelector('oryx-icon[type=loader]')).to.not.exist;
       });
     });
-
-    describe('when the isLoading flag is set to true', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-button .loading=${true}><button></button></oryx-button>`
-        );
-      });
-
-      it('should have a loading spinner', () => {
-        expect(element.shadowRoot?.querySelector('oryx-icon[type=loader]')).to
-          .exist;
-      });
-    });
   });
 
   describe('button with custom icon set through the slot', () => {

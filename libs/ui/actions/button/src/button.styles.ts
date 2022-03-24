@@ -7,13 +7,14 @@ export const buttonStyles = css`
     --_color-accent: var(--oryx-color-brand);
     --_color-active: var(--oryx-color-brand-dark);
 
-    display: inline-flex;
-    position: relative;
     transition: var(--oryx-transition-time);
   }
 
-  ::slotted(*) {
+  ::slotted(:is(button, a)) {
     all: unset;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     padding: var(--_margin, 11px 26px);
     line-height: 24px;
     color: var(--_color-text);
@@ -29,7 +30,20 @@ export const buttonStyles = css`
   :host([size='medium']) {
     --_margin: 8px 19px;
   }
+
   :host([size='small']) {
+    --_margin: 6px 15px;
+  }
+
+  :host([size='large'][icon]) {
+    --_margin: 11px 15px;
+  }
+
+  :host([size='medium'][icon]) {
+    --_margin: 8px 15px;
+  }
+
+  :host([size='small'][icon]) {
     --_margin: 6px 15px;
   }
 
@@ -37,12 +51,12 @@ export const buttonStyles = css`
     box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color);
   }
 
-  ::slotted(*:active) {
+  ::slotted(:is(button, a):active) {
     background-color: var(--_color-active);
     border-color: var(--_color-active);
   }
 
-  ::slotted(*:focus-within:focus-visible:not(:active)) {
+  ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
     border-color: var(--oryx-color-canvas);
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
@@ -53,11 +67,11 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
-  :host([outline]) ::slotted(*:not(:active)) {
+  :host([outline]) ::slotted(:is(button, a):not(:active)) {
     background-color: var(--oryx-color-canvas);
   }
 
-  :host([outline]) ::slotted(*:active) {
+  :host([outline]) ::slotted(:is(button, a):active) {
     border-color: var(--_color-accent);
   }
 
@@ -73,17 +87,18 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
-  :host([type='secondary']) ::slotted(*),
-  :host([type='secondary']) ::slotted(*:active) {
+  :host([type='secondary']) ::slotted(:is(button, a)),
+  :host([type='secondary']) ::slotted(:is(button, a):active) {
     border-color: var(--oryx-color-neutral);
   }
 
-  :host([outline]) ::slotted(*:focus-within:focus-visible:not(:active)) {
+  :host([outline])
+    ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
     outline-color: var(--_color-accent);
   }
 
   :host([type='secondary'])
-    ::slotted(*:focus-within:focus-visible:not(:active)) {
+    ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
     outline-color: var(--oryx-color-neutral);
   }
 
@@ -92,47 +107,50 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-error-dark);
   }
 
-  :host([disabled]) {
+  ::slotted([disabled]) {
+    position: relative;
+    pointer-events: none;
     --_color-text: var(--oryx-color-neutral-dark);
     --_color-accent: var(--oryx-color-neutral-light);
   }
 
-  oryx-icon + slot::slotted(button) {
-    text-indent: 22px;
-    padding-inline-start: 16px;
-    padding-inline-end: 16px;
-  }
-
-  oryx-icon {
-    position: absolute;
-    height: 100%;
-  }
-
-  oryx-icon:not(.loader) {
-    width: 13.3px;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-inline-start: 16.3px;
-    color: var(--_color-text, var(--oryx-color-canvas));
-  }
-
-  oryx-icon.loader {
-    width: 100%;
-    margin: auto;
-  }
-
-  :host([loading]) ::slotted(*),
-  ::slotted([disabled]) {
+  :host([loading]) ::slotted(:is(button, a)) {
+    position: relative;
     pointer-events: none;
-  }
-
-  :host([loading]) ::slotted(*) {
-    background-color: var(--_bg-loading, var(--oryx-color-brand-lighter));
-    border-color: var(--_border-loading, var(--oryx-color-brand-light));
+    background-color: var(--oryx-color-brand-lighter);
+    border-color: var(--oryx-color-brand-light);
     color: transparent;
   }
 
-  :host([loading]) oryx-icon:not(.loader) {
-    color: transparent;
+  :host([loading]) ::slotted(:is(button, a)):before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2317b497"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
+  }
+
+  :host([type='secondary'][loading]) ::slotted(:is(button, a)) {
+    background-color: var(--oryx-color-canvas);
+    border-color: var(--oryx-color-neutral);
+  }
+
+  :host([type='critical'][loading]) ::slotted(:is(button, a)):before {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
+  }
+
+  :host([type='critical'][loading]) ::slotted(:is(button, a)) {
+    background-color: var(--oryx-color-pink-light);
+    border-color: #f9d3ce;
+  }
+
+  :host([outline][type='critical'][loading]) ::slotted(:is(button, a)) {
+    background-color: var(--oryx-color-canvas);
+    border-color: #f9d3ce;
   }
 `;
