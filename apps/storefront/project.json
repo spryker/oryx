@@ -59,6 +59,18 @@
       "options": {
         "lintFilePatterns": ["apps/storefront/**/*.ts"]
       }
+    },
+    "generate-dep-tree": {
+      "executor": "./tools/executors/generate-dependency-tree:generate-dep-tree",
+      "options": {
+        "project": "storefront"
+      }
+    },
+    "check-dep-tree": {
+      "executor": "./tools/executors/check-dependency-tree:check-dep-tree",
+      "options": {
+        "project": "storefront"
+      }
     }
   }
 }
