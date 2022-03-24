@@ -1,11 +1,12 @@
-import { storybookPrefix } from '../../constant';
-import '../index';
-import { LinkTypes } from '../link.model';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../constant';
+import { IconTypes } from '../../icon';
+import '../index';
+import { LinkTypes } from '../link.model';
 
 export default {
-  title: `${storybookPrefix}/Link`,
+  title: `${storybookPrefix}/actions/Link`,
 } as Meta;
 
 interface Props {
@@ -30,9 +31,9 @@ const Template: Story<Props> = ({
   `;
 };
 
-export const Basic = Template.bind({});
+export const LinkDemo = Template.bind({});
 
-Basic.args = {
+LinkDemo.args = {
   linkType: LinkTypes.Link,
   disabled: false,
   link: '/?path=/story/ui-link--basic',
@@ -40,12 +41,13 @@ Basic.args = {
   icon: undefined,
 };
 
-Basic.argTypes = {
+LinkDemo.argTypes = {
   linkType: {
     options: [LinkTypes.Link, LinkTypes.ExternalLink],
     control: { type: 'select' },
   },
   icon: {
-    control: { type: 'text' },
+    options: Object.values(IconTypes),
+    control: { type: 'select' },
   },
 };
