@@ -1,6 +1,6 @@
+import { CoreServices } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { ExperienceContract } from './experience.contract';
 import { Component } from './models';
@@ -9,7 +9,10 @@ export class ExperienceService implements ExperienceContract {
   protected dataStructure: { [key: string]: ReplaySubject<Component> } = {};
   protected dataContent: { [key: string]: ReplaySubject<any> } = {};
 
-  constructor(protected contentBackendUrl = inject('CONTENT_BACKEND_URL')) {}
+  constructor(
+    protected contentBackendUrl = inject('CONTENT_BACKEND_URL'),
+    protected http = inject(CoreServices.Http)
+  ) {}
 
   protected processStructure(components: Component[]): void {
     const targetComponent: any = components.find((component: any) =>
@@ -37,22 +40,13 @@ export class ExperienceService implements ExperienceContract {
       this.contentBackendUrl
     }/structure/${encodeURIComponent(key)}`;
 
-    const params: any = {
-      method: 'GET',
-      url: componentsUrl,
-      responseType: 'json',
-    };
-
-    if ((ExperienceService as any).createXHR) {
-      params.createXHR = (ExperienceService as any).createXHR;
-    }
-
-    ajax(params)
+    this.http
+      .get(componentsUrl)
       .pipe(
         map((res: any) => {
-          this.dataStructure[key].next(res.response);
-          this.processStructure([res.response]);
-          return res.response;
+          this.dataStructure[key].next(res);
+          this.processStructure([res]);
+          return res;
         }),
         catchError(() => {
           this.dataStructure[key].next({ type: '', components: [] });
@@ -65,21 +59,12 @@ export class ExperienceService implements ExperienceContract {
   reloadContent(key: string): void {
     const componentsUrl = `${this.contentBackendUrl}/content/${key}`;
 
-    const params: any = {
-      method: 'GET',
-      url: componentsUrl,
-      responseType: 'json',
-    };
-
-    if ((ExperienceService as any).createXHR) {
-      params.createXHR = (ExperienceService as any).createXHR;
-    }
-
-    ajax(params)
+    this.http
+      .get(componentsUrl)
       .pipe(
         map((res: any) => {
-          this.dataContent[key].next(res.response);
-          return res.response;
+          this.dataContent[key].next(res);
+          return res;
         }),
         catchError(() => {
           return of('');

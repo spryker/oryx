@@ -1,5 +1,5 @@
 import { ObservableInput } from 'rxjs';
 
-export interface HttpClientOptions<T> extends RequestInit {
+export interface RequestOptions<T> extends RequestInit {
   parser?: (response: Response) => ObservableInput<T>;
 }

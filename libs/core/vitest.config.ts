@@ -9,6 +9,6 @@ declare global {
 export default defineConfig({
   test: {
     globals: true,
-    include: ['src/lib/**/*.spec.ts'],
+    include: ['**/*.spec.ts'],
   },
 });

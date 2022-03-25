@@ -1,10 +1,11 @@
-import { of, take } from 'rxjs';
+import { CoreServices } from '@spryker-oryx/core';
+import { HttpTestService } from '@spryker-oryx/core/testing';
+import { Injector } from '@spryker-oryx/injector';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { ExperienceService } from './experience.service';
 
-let service: ExperienceService;
 const mockStructureKey = 'bannerSlider';
 const mockDataKey = 'homepage-banner';
-let isAjax = 0;
 
 const mockStructure = {
   id: mockStructureKey,
@@ -45,32 +46,33 @@ const mockContent = {
   ],
 };
 
-vi.mock('@spryker-oryx/injector', () => ({
-  inject: (a: any) => a,
-}));
-
-vi.mock('rxjs/ajax', () => ({
-  ajax: (params: any) => {
-    isAjax++;
-    if (params.url.includes('bannerSlider')) {
-      return of({
-        response: mockStructure,
-      });
-    }
-    if (params.url.includes('homepage-banner')) {
-      return of({
-        response: mockContent,
-      });
-    }
-
-    return of({ response: {} });
-  },
-}));
-
 describe('ExperienceService', () => {
+  let service: ExperienceService;
+  let http: HttpTestService;
+  let testInjector;
+
   beforeEach(() => {
-    service = new ExperienceService();
-    isAjax = 0;
+    testInjector = new Injector([
+      {
+        provide: 'CONTENT_BACKEND_URL',
+        useValue: 'CONTENT_BACKEND_URL',
+      },
+      {
+        provide: CoreServices.Http,
+        useClass: HttpTestService,
+      },
+      {
+        provide: 'ExperienceService',
+        useClass: ExperienceService,
+      },
+    ]);
+
+    service = testInjector.inject('ExperienceService');
+    http = testInjector.inject(CoreServices.Http) as any;
+  });
+
+  afterEach(() => {
+    http.clear();
   });
 
   it('should be provided', () => {
@@ -78,56 +80,62 @@ describe('ExperienceService', () => {
   });
 
   describe('getStructure', () => {
-    it('should return mock data', (done) => {
-      service.getStructure({ key: mockStructureKey }).subscribe((data: any) => {
-        expect(data).toBeTruthy();
-        expect(data.id).toEqual(mockStructureKey);
-        expect(data.type).toEqual('LayoutSlot');
-        done();
-      });
-    });
-    it('should not request second time', async () => {
-      await service
-        .getStructure({ key: mockStructureKey })
-        .pipe(take(1))
-        .toPromise();
-      expect(isAjax).toEqual(1);
-      await service
-        .getStructure({ key: mockStructureKey })
-        .pipe(take(1))
-        .toPromise();
-      expect(isAjax).toEqual(1);
-    });
+    it('should return mock data', () => {
+      const callback = vi.fn();
 
-    it('should not request second time for cached substructures', async () => {
-      await service
-        .getStructure({ key: mockStructureKey })
-        .pipe(take(1))
-        .toPromise();
-      const subStructure = (await service
-        .getStructure({ key: 'bannerSlider2' })
-        .pipe(take(1))
-        .toPromise()) || { id: '', type: '' };
-      expect(isAjax).toEqual(1);
-      expect(subStructure.id).toEqual('bannerSlider2');
-      expect(subStructure.type).toEqual('LayoutSlot');
+      http.flush(mockStructure);
+
+      service.getStructure({ key: mockStructureKey }).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockStructure);
+    });
+    it('should not request second time if key the same', () => {
+      const callback = vi.fn();
+      const keyTrigger$ = new BehaviorSubject(mockStructureKey);
+      const structure$ = keyTrigger$.pipe(
+        switchMap((key) => service.getStructure({ key }))
+      );
+
+      http.flush(mockStructure);
+      structure$.subscribe(callback);
+
+      expect(callback).toHaveBeenNthCalledWith(1, mockStructure);
+
+      http.flush('mockNewResponse');
+
+      keyTrigger$.next(mockStructureKey);
+
+      expect(callback).toHaveBeenNthCalledWith(2, mockStructure);
     });
   });
 
   describe('getContent', () => {
-    it('should return mock data', (done) => {
-      service.getContent({ key: mockDataKey }).subscribe((data: any) => {
-        expect(data).toBeTruthy();
-        expect(data.items.length).toBeTruthy();
-        done();
-      });
+    it('should return mock data', () => {
+      const callback = vi.fn();
+
+      http.flush(mockContent);
+
+      service.getContent({ key: mockDataKey }).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockContent);
     });
-    it('should  not request second time', (done) => {
-      service.getContent({ key: mockDataKey }).subscribe((data: any) => {
-        expect(data).toBeTruthy();
-        expect(data.items.length).toBeTruthy();
-        done();
-      });
+    it('should  not request second time if key the same', () => {
+      const callback = vi.fn();
+      const keyTrigger$ = new BehaviorSubject(mockDataKey);
+      const structure$ = keyTrigger$.pipe(
+        switchMap((key) => service.getContent({ key }))
+      );
+
+      http.flush(mockContent);
+      structure$.subscribe(callback);
+
+      expect(callback).toHaveBeenNthCalledWith(1, mockContent);
+
+      http.flush('mockNewResponse');
+
+      keyTrigger$.next(mockDataKey);
+
+      expect(callback).toHaveBeenNthCalledWith(2, mockContent);
     });
   });
 });

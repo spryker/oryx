@@ -1,3 +1,4 @@
+import { HTTP_PROVIDERS } from '@spryker-oryx/core';
 import {
   ExperiencePreviewService,
   Services,
@@ -27,6 +28,7 @@ createInjector({
   providers: [
     ...STATIC_PROVIDERS,
     ...previewModeProviders(),
+    ...HTTP_PROVIDERS,
     {
       provide: 'CONTENT_BACKEND_URL',
       useValue: import.meta.env.CONTENT_BACKEND_URL || '',

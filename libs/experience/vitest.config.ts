@@ -10,9 +10,8 @@ declare global {
 export default defineConfig({
   test: {
     globals: true,
-    include: ['libs/experience/**/*.spec.ts'],
+    include: ['src/lib/**/*.spec.ts'],
     environment: 'happy-dom',
   },
-  //@ts-expect-error: vite-tsconfig-paths does not load correctly in type:module projects
-  plugins: [tsconfigPaths.default()],
+  plugins: [tsconfigPaths({ root: '../../' })],
 });

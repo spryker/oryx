@@ -31,15 +31,17 @@
     "test": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "tsc --project libs/experience/tsconfig.spec.json && vitest run",
-        "config": "libs/experience/vitest.config.ts"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
+        "parallel": false,
+        "cwd": "libs/experience"
       }
     },
     "test-watch": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "tsc --project libs/experience/tsconfig.spec.json && vitest",
-        "config": "libs/experience/vitest.config.ts"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
+        "parallel": false,
+        "cwd": "libs/experience"
       }
     }
   },

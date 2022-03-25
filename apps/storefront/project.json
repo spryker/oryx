@@ -42,14 +42,14 @@
     "test": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "vitest",
+        "command": "vitest run",
         "config": "apps/storefront/vitest.config.ts"
       }
     },
     "test-watch": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "vitest watch",
+        "command": "vitest",
         "config": "apps/storefront/vitest.config.ts"
       }
     },

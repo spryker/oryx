@@ -1,3 +1,3 @@
-export const enum CoreServices {
-  Http = 'FES.HttpClientService',
+export enum CoreServices {
+  Http = 'FES.HttpService',
 }
