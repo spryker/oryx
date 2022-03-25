@@ -4,21 +4,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "outputPath": "dist/libs/injector",
-        "entryFile": "libs/injector/src/index.ts",
-        "tsConfig": "libs/injector/tsconfig.lib.json",
-        "project": "libs/injector/package.json",
-        "assets": [
-          {
-            "glob": "*",
-            "input": "fes/libs/injector/*.md",
-            "output": "fes/dist/libs/injector"
-          }
+        "commands": [
+          "rm -rf ../../dist/libs/injector/*",
+          "tsc --project tsconfig.lib.json",
+          "vite build"
         ],
-        "format": ["esm", "umd", "cjs"]
+        "parallel": false,
+        "cwd": "libs/injector"
       }
     },
     "lint": {
@@ -29,11 +23,19 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/injector"],
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "jestConfig": "libs/injector/jest.config.js",
-        "passWithNoTests": true
+        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
+        "cwd": "libs/injector",
+        "parallel": false
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
+        "cwd": "libs/injector",
+        "parallel": false
       }
     }
   },

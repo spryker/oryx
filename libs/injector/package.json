@@ -1,4 +1,14 @@
 {
   "name": "@spryker-oryx/injector",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "index.es.js",
+  "types": "src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
 }
