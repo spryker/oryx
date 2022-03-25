@@ -1,19 +1,21 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constant';
-import '../../index';
-import { Schemes, Types } from '../notification.model';
-import { bodyBackgroundColor } from './utils';
+import { storybookPrefix } from '../../../../../constant';
+import '../../../../index';
+import { Schemes, Types } from '../../../notification.model';
+import { bodyBackgroundColor } from '../../util';
 
 export default {
-  title: `${storybookPrefix}/Notification/Dark`,
+  title: `${storybookPrefix}/Notification/Static/Dark`,
 } as Meta;
 
-const Template: Story = ({ bodyBackgroundColor }): TemplateResult => {
+const Template: Story = ({
+  backgroundColor = bodyBackgroundColor.options[0],
+}): TemplateResult => {
   return html`
     <style>
       body {
-        background: ${bodyBackgroundColor};
+        background: ${backgroundColor};
       }
       oryx-notification {
         margin-bottom: 18px;
@@ -43,5 +45,5 @@ const Template: Story = ({ bodyBackgroundColor }): TemplateResult => {
 };
 export const Closable = Template.bind({});
 Closable.argTypes = {
-  bodyBackgroundColor,
+  backgroundColor: bodyBackgroundColor,
 };

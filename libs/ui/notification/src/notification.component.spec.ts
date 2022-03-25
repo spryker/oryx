@@ -1,28 +1,10 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { stub } from 'sinon';
 import './index';
-import { NotificationComponent, TAG_NAME } from './notification.component';
-import { Schemes, Types } from './notification.model';
+import { NotificationComponent } from './notification.component';
 
 describe('NotificationComponent', () => {
   let element: NotificationComponent;
-
-  it('is defined', () => {
-    const el = document.createElement(TAG_NAME);
-    expect(el).to.be.instanceof(NotificationComponent);
-  });
-
-  describe('mount', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-notification></oryx-notification>`);
-    });
-    it('should have default type attribute', () => {
-      expect(element.getAttribute('type')).to.be.eq(Types.INFO);
-    });
-    it('should have default scheme attribute ', () => {
-      expect(element.getAttribute('scheme')).to.be.eq(Schemes.LIGHT);
-    });
-  });
 
   const getButton = (selector: string): HTMLElement | null | undefined =>
     element.shadowRoot?.querySelector(selector);

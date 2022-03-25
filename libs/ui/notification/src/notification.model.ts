@@ -10,5 +10,4 @@ export const enum Schemes {
   DARK = 'dark',
 }
 
-export const OPEN_EVENT = 'oryx.open';
 export const CLOSE_EVENT = 'oryx.close';

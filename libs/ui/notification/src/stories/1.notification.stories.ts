@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constant';
 import '../index';
 import { Schemes, Types } from '../notification.model';
-import { bodyBackgroundColor } from './utils';
+import { bodyBackgroundColor } from './util';
 
 export default {
   title: `${storybookPrefix}/Notification`,
@@ -12,26 +12,26 @@ export default {
 interface Props {
   type: string;
   title: string;
-  subText: string;
+  subtext: string;
   scheme: string;
   floating: boolean;
   closable: boolean;
-  bodyBackgroundColor: string;
+  backgroundColor: string;
 }
 
 const Template: Story<Props> = ({
   type = Types.INFO,
-  subText,
-  title,
+  subtext = '',
+  title = '',
   scheme = Schemes.LIGHT,
-  floating,
-  closable,
-  bodyBackgroundColor,
+  floating = false,
+  closable = false,
+  backgroundColor = bodyBackgroundColor.options[0],
 }: Props): TemplateResult => {
   return html`
     <style>
       body {
-        background: ${bodyBackgroundColor};
+        background: ${backgroundColor};
       }
     </style>
     <oryx-notification
@@ -41,24 +41,23 @@ const Template: Story<Props> = ({
       ?closable="${closable}"
       @oryx.open=${(): void => console.log('open')}
       @oryx.close=${(): void => console.log('close')}
+      subtext=${subtext}
     >
-      <span>${title}</span>
-      <span>${subText}</span>
+      ${title}
+      <span slot="subtext">${subtext}</span>
     </oryx-notification>
   `;
 };
 export const NotificationDemo = Template.bind({});
 NotificationDemo.argTypes = {
-  bodyBackgroundColor,
+  backgroundColor: bodyBackgroundColor,
   type: {
     options: [Types.INFO, Types.ERROR, Types.WARNING, Types.SUCCESS],
     control: { type: 'radio' },
-    defaultValue: Types.INFO,
   },
   scheme: {
     options: [Schemes.LIGHT, Schemes.DARK],
     control: { type: 'radio' },
-    defaultValue: Schemes.LIGHT,
   },
   floating: {
     control: { type: 'boolean' },
@@ -66,14 +65,14 @@ NotificationDemo.argTypes = {
   },
   closable: {
     control: { type: 'boolean' },
-    defaultValue: true,
+    defaultValue: false,
   },
   title: {
     control: { type: 'text' },
     defaultValue: 'Title',
   },
-  subText: {
+  subtext: {
     control: { type: 'text' },
-    defaultValue: 'Sub text',
+    defaultValue: 'Content text',
   },
 };

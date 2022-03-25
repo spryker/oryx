@@ -1,12 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constant';
-import '../index';
-import { Schemes, Types } from '../notification.model';
-import { bodyBackgroundColor } from './utils';
+import { storybookPrefix } from '../../../../../constant';
+import '../../../index';
+import { Schemes, Types } from '../../../notification.model';
+import { bodyBackgroundColor } from '../../util';
 
 export default {
-  title: `${storybookPrefix}/Notification/Dark`,
+  title: `${storybookPrefix}/Notification/Static/Dark`,
 } as Meta;
 
 const Template: Story = ({ bodyBackgroundColor }): TemplateResult => {

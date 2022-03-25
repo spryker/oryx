@@ -1,7 +1,7 @@
-export * from './events.controller';
+export * from './notification.base.styles';
 export * from './notification.component';
 export * from './notification.model';
-export * from './notification.styles';
+export * from './notification.oryx.styles';
 
 import { NotificationComponent, TAG_NAME } from './notification.component';
 
