@@ -1,6 +1,16 @@
 {
   "name": "@spryker-oryx/content",
   "version": "0.0.1",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "index.es.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "watch": {
     "test": {
       "extensions": "spec.ts",

@@ -5,32 +5,31 @@
   "prefix": "fes",
   "targets": {
     "build": {
-      "executor": "./tools/executors/components-library:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "outputPath": "dist/libs/content",
-        "main": "libs/content/src/index.ts",
-        "tsConfig": "libs/content/tsconfig.lib.json",
-        "assets": [
-          "libs/content/*.md",
-          {
-            "input": "libs/content/public",
-            "glob": "**/*",
-            "output": "/public/"
-          }
-        ]
+        "commands": [
+          "rm -rf ../../dist/libs/content/*",
+          "tsc --project tsconfig.lib.json",
+          "vite build"
+        ],
+        "parallel": false,
+        "cwd": "libs/content"
       }
     },
     "test": {
-      "executor": "@nrwl/workspace:run-script",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "script": "test"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
+        "cwd": "libs/content",
+        "parallel": false
       }
     },
     "test-watch": {
-      "executor": "@nrwl/workspace:run-script",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "script": "test:watch"
+        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
+        "cwd": "libs/content",
+        "parallel": false
       }
     },
     "lint": {
