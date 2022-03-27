@@ -49,10 +49,10 @@ const Template: Story<Props> = (): TemplateResult => {
           (size) =>
             html`
               <oryx-button loading size=${size} outline>
-                <button>${message}</button>
+                <button class="chromatic-ignore">${message}</button>
               </oryx-button>
               <oryx-button loading size=${size} outline>
-                <a href="/">Link</a>
+                <a class="chromatic-ignore" href="/">Link</a>
               </oryx-button>
             </div>
           `
