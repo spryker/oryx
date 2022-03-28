@@ -28,7 +28,9 @@ export const formControlStyles = css`
     pointer-events: none;
   }
 
-  :host([disabled]) .control {
+  :host([disabled]) .control,
+  input:read-only,
+  ::slotted(input:read-only) {
     background-color: var(--oryx-color-neutral-lighter);
   }
 

@@ -2,7 +2,7 @@ import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { ErrorOptions } from './error.model';
 
 export class ErrorController implements ReactiveController {
-  hostUpdate?(): void {
+  hostUpdated?(): void {
     this.handleError();
   }
 
@@ -14,10 +14,13 @@ export class ErrorController implements ReactiveController {
 
   protected handleError(): void {
     const hasErrorContent = !!this.message || this.errorSlot.length > 0;
-    this.host.shadowRoot
-      ?.querySelector('oryx-error-message')
-      ?.toggleAttribute('hasErrorContent', hasErrorContent);
-    if (!this.host.hasAttribute('hasError')) {
+    const errorMessage = (this.host.shadowRoot as ShadowRoot).querySelector(
+      'oryx-error-message'
+    );
+    const hasErrorContentAttr = errorMessage?.hasAttribute('hasErrorContent');
+
+    errorMessage?.toggleAttribute('hasErrorContent', hasErrorContent);
+    if (!this.host.hasAttribute('hasError') || hasErrorContentAttr) {
       this.host.toggleAttribute('hasError', hasErrorContent);
     }
   }

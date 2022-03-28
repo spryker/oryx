@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -20,12 +20,16 @@ class ErrorComponent extends LitElement implements ErrorOptions {
 
 describe('ErrorController', () => {
   let element: ErrorComponent;
+  let errorMessage: ErrorMessageComponent;
   describe('error', () => {
     describe('when an error message is provided', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<fake-el errorMessage="error message"></fake-el>`
         );
+        errorMessage = element?.renderRoot.querySelector(
+          'oryx-error-message'
+        ) as ErrorMessageComponent;
       });
 
       it('passes the a11y audit', async () => {
@@ -33,14 +37,26 @@ describe('ErrorController', () => {
       });
 
       it('should pass the message to the errorMessage component', () => {
-        const errorMessage = element?.renderRoot.querySelector(
-          'oryx-error-message'
-        ) as ErrorMessageComponent;
         expect(errorMessage?.message).to.equal('error message');
       });
 
-      it('should have an hasError attribute', () => {
+      it('should have an hasError host attribute', () => {
         expect(element.hasAttribute('hasError')).to.true;
+      });
+
+      describe('and error message then removed', () => {
+        beforeEach(async () => {
+          element.removeAttribute('errorMessage');
+          await elementUpdated(element);
+        });
+
+        it('should not pass the message to the errorMessage component', () => {
+          expect(errorMessage?.message).to.null;
+        });
+
+        it('should remove an hasError host attribute', () => {
+          expect(element.hasAttribute('hasError')).to.false;
+        });
       });
     });
   });
@@ -84,8 +100,40 @@ describe('ErrorController', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should have an hasError attribute', () => {
+    it('should have an hasError host attribute', () => {
       expect(element.hasAttribute('hasError')).to.true;
+    });
+
+    describe('and error content then removed', () => {
+      beforeEach(async () => {
+        element.querySelector('[slot=error')?.remove();
+        await elementUpdated(element);
+      });
+
+      it('should remove an hasError host attribute', () => {
+        expect(element.hasAttribute('hasError')).to.false;
+      });
+    });
+  });
+
+  describe('when there is no error message/content and error state is preset', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<fake-el hasError></fake-el>`);
+      errorMessage = element?.renderRoot.querySelector(
+        'oryx-error-message'
+      ) as ErrorMessageComponent;
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible(a11yConfig);
+    });
+
+    it('should keep an hasError host attribute', () => {
+      expect(element.hasAttribute('hasError')).to.true;
+    });
+
+    it('should not render errorMessage component content', () => {
+      expect(errorMessage?.hasAttribute('hasErrorContent')).to.false;
     });
   });
 });
