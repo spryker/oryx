@@ -1,13 +1,13 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constant';
-import '../../../option/src/index';
-import { sideBySide, states } from '../../../utilities/storybook';
-import '../index';
-import { FilterStrategyType } from '../index';
+import { storybookPrefix } from '../../../../constant';
+import '../../../../option/src/index';
+import { sideBySide, states } from '../../../../utilities/storybook';
+import '../../index';
+import { FilterStrategyType } from '../../index';
 
 export default {
-  title: `${storybookPrefix}/Search/Typeahead/Filters`,
+  title: `${storybookPrefix}/Search/Typeahead/Static/Filter`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

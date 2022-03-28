@@ -1,6 +1,9 @@
 import { html, TemplateResult } from 'lit';
 
-export const sideBySide = (story: TemplateResult): TemplateResult => {
+export const sideBySide = (
+  story: TemplateResult,
+  style?: TemplateResult
+): TemplateResult => {
   return html`
     <div class="stories">${story}${story}</div>
 
@@ -16,5 +19,7 @@ export const sideBySide = (story: TemplateResult): TemplateResult => {
         flex: 0 0 350px;
       }
     </style>
+
+    ${style}
   `;
 };

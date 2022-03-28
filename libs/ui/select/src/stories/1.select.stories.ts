@@ -15,10 +15,15 @@ const Template: Story<unknown> = (): TemplateResult => {
   return sideBySide(html`
     <oryx-select label="select">
       <select>
-        ${selectOptions.map((state) => html`<option>${state}</option>`)}
+        ${selectOptions.map(
+          (state) =>
+            html`<option .value=${state.toLowerCase() + 'test'}>
+              ${state}
+            </option>`
+        )}
       </select>
     </oryx-select>
   `);
 };
 
-export const StandardSelect = Template.bind({});
+export const StandardSelect2 = Template.bind({});

@@ -1,12 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constant';
-import '../../../popover/index';
-import { sideBySide } from '../../../utilities/storybook';
-import '../index';
+import { storybookPrefix } from '../../../../constant';
+import '../../../../popover/index';
+import { sideBySide } from '../../../../utilities/storybook';
+import '../../index';
 
 export default {
-  title: `${storybookPrefix}/Search/Typeahead`,
+  title: `${storybookPrefix}/Search/Typeahead/Static/Empty`,
 } as Meta;
 
 interface Props {
@@ -22,10 +22,4 @@ const Template: Story<Props> = ({ emptyMessage }: Props): TemplateResult => {
 export const Empty = Template.bind({});
 Empty.args = {
   emptyMessage: 'No results found',
-};
-
-Empty.argTypes = {
-  emptyMessage: {
-    control: { type: 'text' },
-  },
 };
