@@ -1,0 +1,27 @@
+{
+  "root": "libs/launchpad-ui",
+  "sourceRoot": "libs/launchpad-ui/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/launchpad-ui/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "tsc -p libs/launchpad-ui/tsconfig.spec.json && vitest run --config libs/launchpad-ui/vitest.config.ts"
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "tsc -p libs/launchpad-ui/tsconfig.spec.json && vitest watch --config libs/launchpad-ui/vitest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
