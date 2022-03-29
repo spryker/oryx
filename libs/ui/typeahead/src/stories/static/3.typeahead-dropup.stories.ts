@@ -10,7 +10,7 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return sideBySide(html` <oryx-typeahead style="margin-top: 400px;">
+  return sideBySide(html` <oryx-typeahead up style="margin-top: 400px;">
     <input value="3" aria-label="label" />
     ${'123456789'.split('').map((i) => html`<oryx-option>${i}</oryx-option>`)}
   </oryx-typeahead>`);

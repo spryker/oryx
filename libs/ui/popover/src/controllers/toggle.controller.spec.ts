@@ -40,6 +40,7 @@ describe('ToggleController', () => {
     describe('with small list of items', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-popover>
+          <input placeholder="make a11y happy" />
           <ol>
             <li>1</li>
             <li>1</li>

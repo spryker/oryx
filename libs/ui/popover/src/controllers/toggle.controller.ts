@@ -1,5 +1,7 @@
 import { LitElement, ReactiveController } from 'lit';
+import { getControl } from '../../../input';
 import { PopoverComponent } from '../popover.component';
+import { MaxHeightController } from './max-height.controller';
 
 function timePassed(start: number, timeGap = 300): boolean {
   const mouseUpStarted = new Date().getTime();
@@ -24,6 +26,8 @@ export class ToggleController implements ReactiveController {
    * a popover won't animate spontaneously on the screen.
    */
   protected skipOpeningOnNextFocus?: boolean;
+
+  protected maxHeightController: MaxHeightController;
 
   /**
    * Indicates the time that the mouse is pressed
@@ -103,19 +107,12 @@ export class ToggleController implements ReactiveController {
     if (this.isOpen) {
       return;
     }
-    const maxHeightFallback = 320;
-    const margin = 20;
 
-    const maxHeight =
-      this.items.length > 0 && this.items.length < 9
-        ? this.items.length * 42
-        : maxHeightFallback;
+    const el = getControl(this.host);
+    if (el) {
+      this.maxHeightController.setBoundingBox(el);
+    }
 
-    this.host.toggleAttribute(
-      'up',
-      window.innerHeight - this.host.getBoundingClientRect().bottom <
-        maxHeight + margin
-    );
     this.element?.toggleAttribute('show', true);
 
     // we need to ensure that the selected element is in the view
@@ -156,5 +153,6 @@ export class ToggleController implements ReactiveController {
     protected showOnFocus = true
   ) {
     this.host.addController(this);
+    this.maxHeightController = new MaxHeightController(host);
   }
 }
