@@ -10,9 +10,10 @@ export const styles = css`
 
   svg,
   ::slotted(svg) {
-    fill: currentColor;
+    fill: var(--oryx-icon-color, currentColor);
     max-width: var(--oryx-icon-size, 24px);
     aspect-ratio: 1 / 1;
+    transition: var(--oryx-transition-time);
   }
 
   :host([size='medium']) svg,

@@ -35,15 +35,15 @@ export const buttonStyles = css`
     --_margin: 6px 15px;
   }
 
-  :host([size='large'][icon]) {
+  :host([size='large'][icon]:not([type='text'])) {
     --_margin: 11px 15px;
   }
 
-  :host([size='medium'][icon]) {
+  :host([size='medium'][icon]:not([type='text'])) {
     --_margin: 8px 15px;
   }
 
-  :host([size='small'][icon]) {
+  :host([size='small'][icon]:not([type='text'])) {
     --_margin: 6px 15px;
   }
 
@@ -62,6 +62,7 @@ export const buttonStyles = css`
   }
 
   :host([outline]) {
+    --oryx-icon-color: var(--oryx-color-brand);
     --_color-text: var(--oryx-color-brand);
     --_color-accent: var(--oryx-color-brand);
     --_color-active: var(--oryx-color-neutral-lighter);
@@ -76,12 +77,14 @@ export const buttonStyles = css`
   }
 
   :host([outline][type='critical']) {
+    --oryx-icon-color: var(--oryx-color-error);
     --_color-text: var(--oryx-color-error);
     --_color-accent: var(--oryx-color-error);
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
   :host([type='secondary']) {
+    --oryx-icon-color: var(--oryx-color-neutral-darker);
     --_color-text: var(--oryx-color-neutral-darker);
     --_color-accent: var(--oryx-color-canvas);
     --_color-active: var(--oryx-color-neutral-lighter);
@@ -107,11 +110,41 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-error-dark);
   }
 
+  :host([type='text']) {
+    --_margin: 4px 2px;
+    --oryx-icon-color: var(--oryx-color-neutral-dark);
+    --_color-text: var(--oryx-color-ink);
+    --_color-accent: var(--oryx-color-canvas);
+    --_color-active: var(--oryx-color-canvas);
+  }
+
+  :host([type='text']) :hover {
+    --oryx-icon-color: var(--oryx-color-brand);
+    --_color-text: var(--oryx-color-brand);
+  }
+
+  :host([type='text']) :active {
+    --oryx-icon-color: var(--oryx-color-brand-dark);
+    --_color-text: var(--oryx-color-brand-dark);
+  }
+
+  :host([type='text']) ::slotted([disabled]) {
+    --oryx-icon-color: var(--oryx-color-neutral);
+    --_color-text: var(--oryx-color-neutral-dark);
+    --_color-accent: var(--oryx-color-canvas);
+  }
+
   ::slotted([disabled]) {
+    --oryx-icon-color: var(--oryx-color-neutral-dark);
     position: relative;
     pointer-events: none;
     --_color-text: var(--oryx-color-neutral-dark);
     --_color-accent: var(--oryx-color-neutral-light);
+  }
+
+  :host([loading]),
+  :host([loading][outline]) {
+    --oryx-icon-color: transparent;
   }
 
   :host([loading]) ::slotted(:is(button, a)) {
@@ -133,6 +166,17 @@ export const buttonStyles = css`
     background-repeat: no-repeat;
     background-size: 16px;
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2317b497"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
+  }
+
+  :host([loading][type='text']) ::slotted(:is(button, a)) {
+    --oryx-icon-color: transparent;
+    color: var(--oryx-color-neutral-dark);
+    background-color: white;
+    border-color: var(--oryx-color-canvas);
+  }
+
+  :host([loading][type='text']) ::slotted(:is(button, a)):before {
+    background-position: center left;
   }
 
   :host([type='secondary'][loading]) ::slotted(:is(button, a)) {
