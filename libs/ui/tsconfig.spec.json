@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist/out-tsc",
-    "types": ["node", "mocha"],
-    "lib": ["es2020", "dom"]
+    "types": ["node", "mocha"]
   },
   "include": ["**/*.ts", "**/*.ts"]
 }
