@@ -7,13 +7,17 @@ export const buttonStyles = css`
     --_color-accent: var(--oryx-color-brand);
     --_color-active: var(--oryx-color-brand-dark);
 
+    display: flex;
+    align-items: baseline;
     transition: var(--oryx-transition-time);
   }
 
   ::slotted(:is(button, a)) {
     all: unset;
-    display: inline-flex;
+    display: flex;
+    flex: 100%;
     align-items: center;
+    justify-content: center;
     gap: 9px;
     padding: var(--_margin, 11px 26px);
     line-height: 24px;
