@@ -43,12 +43,12 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       style="width:500px;--oryx-popover-maxheight:${props.maxHeight}"
       label="label"
       ?isLoading=${props.isLoading}
-      ?filter=${props.filter}
       .clearIcon=${props.clearIcon}
       .clearIconPosition=${props.clearIconPosition}
       .clearIconAppearance=${props.clearIconAppearance}
       .prefixFill=${props.prefixFill}
       .suffixFill=${props.suffixFill}
+      .filterStrategy=${props.filterStrategy}
       @oryx.typeahead=${logTypeahead}
       @oryx.select=${logSelect}
       @oryx.search=${logSearch}
@@ -77,7 +77,6 @@ SelectDemo.args = {
   maxHeight: '300px',
   allowEmptyValue: false,
   useSelect: true,
-  filter: false,
 };
 SelectDemo.argTypes = {
   allowEmptyValue: {
@@ -86,7 +85,6 @@ SelectDemo.argTypes = {
   useSelect: {
     control: { type: 'boolean' },
   },
-
   dataSet: {
     options: ['states', 'branches'],
     control: { type: 'select' },
@@ -95,10 +93,6 @@ SelectDemo.argTypes = {
   maxHeight: {
     control: { type: 'text' },
     table: { category: 'Layout' },
-  },
-  filter: {
-    control: { type: 'boolean' },
-    table: { category: 'Filter' },
   },
   filterStrategy: {
     options: [

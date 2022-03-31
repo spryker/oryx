@@ -4,7 +4,7 @@ import { OptionComponent } from '../../option';
 import { HighlightController } from './controllers/highlight.controller';
 import { SelectedController } from './controllers/selected.controller';
 import { ToggleController } from './controllers/toggle.controller';
-import { PopoverOptions } from './popover.model';
+import { PopoverOptions, PopoverSelectEvent } from './popover.model';
 
 /**
  * Controls the popover behaviour by mouse and keyboard:
@@ -31,10 +31,15 @@ export class PopoverController implements ReactiveController {
 
     this.host.addEventListener('input', ((e: InputEvent) =>
       this.handleInput(e)) as EventListener);
+
     this.host.addEventListener('change', (() => {
       const value = getControl(this.host)?.value;
       this.handleChange(value ?? '');
     }) as EventListener);
+
+    this.host.addEventListener('oryx.popover', ((
+      e: CustomEvent<PopoverSelectEvent>
+    ) => this.handleSelectEvent(e)) as EventListener);
   }
 
   hostUpdated(): void {
@@ -77,6 +82,17 @@ export class PopoverController implements ReactiveController {
     const index = this.items.findIndex((item) => item.value === value);
     this.selectedController.select(index);
     this.items[index]?.scrollIntoView({ block: 'nearest' });
+  }
+
+  protected handleSelectEvent(e: CustomEvent<PopoverSelectEvent>): void {
+    if (e.detail.selected) {
+      const itemIndex = this.items.findIndex(
+        (item) => item === e.detail.selected
+      );
+      this.selectedController.select(itemIndex);
+    } else {
+      this.selectedController.deselect();
+    }
   }
 
   protected isReadonly(): boolean {

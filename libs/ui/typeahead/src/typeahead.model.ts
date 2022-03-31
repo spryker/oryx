@@ -1,21 +1,5 @@
 export interface TypeaheadOptions {
   /**
-   * When enabled, the options can be filtered client side. This means that the
-   * available options in the UI are filtered by the input control.
-   *
-   * A typeahead component with filter enabled acts similar to a html5 input control
-   * with datalist.
-   *
-   * Defaults to `false`.
-   */
-  filter?: boolean;
-
-  /**
-   * A filter strategy can be selected to choose between
-   */
-  filterStrategy?: FilterStrategyType;
-
-  /**
    * Indicates that the typeahead content is loading. This will show
    * a loader icon in the slot, unless a custom loader is projected
    * in the `loading` slot.
@@ -39,6 +23,15 @@ export interface TypeaheadOptions {
    * Alternatively, the `empty` slot can be used.
    */
   emptyMessage?: string;
+
+  /**
+   * When a filter strategy is used, options can be filtered client side. This means that the
+   * available options in the UI are filtered by the input control.
+   *
+   * A typeahead component with filter enabled acts similar to a html5 input control
+   * with datalist.
+   */
+  filterStrategy?: FilterStrategyType;
 }
 
 export interface OptionSelectEvent {
@@ -46,9 +39,9 @@ export interface OptionSelectEvent {
 }
 
 export const enum FilterStrategyType {
-  START_WITH,
-  START_OF_WORD,
-  CONTAINS,
+  START_WITH = 'start_with',
+  START_OF_WORD = 'start_of_word',
+  CONTAINS = 'contains',
 }
 export interface FilterStrategy {
   type: FilterStrategyType;

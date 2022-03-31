@@ -1,4 +1,4 @@
-import { FilterStrategy, FilterStrategyType } from './typeahead.model';
+import { FilterStrategy, FilterStrategyType } from '../typeahead.model';
 
 function isNextDelimiter(
   content: string,

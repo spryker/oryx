@@ -1,5 +1,5 @@
+export * from './controllers';
 export * from './typeahead.component';
-export * from './typeahead.controller';
 export * from './typeahead.model';
 export * from './typeahead.styles';
 

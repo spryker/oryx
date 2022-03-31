@@ -1,11 +1,11 @@
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { getControl } from '../../input/src/util';
-import { OptionComponent } from '../../option';
-import { PopoverSelectEvent } from '../../popover';
-import { SearchEvent } from '../../search';
+import { getControl } from '../../../input/src/util';
+import { OptionComponent } from '../../../option';
+import { PopoverSelectEvent } from '../../../popover';
+import { SearchEvent } from '../../../search';
+import { TypeaheadOptions } from '../typeahead.model';
 import { FilterController } from './filter.controller';
-import { TypeaheadOptions } from './typeahead.model';
 
 const emptyFallback = 'No results found';
 export class TypeaheadController implements ReactiveController {
@@ -81,7 +81,7 @@ export class TypeaheadController implements ReactiveController {
 
   protected handleSelect(ev: CustomEvent<PopoverSelectEvent>): void {
     const control = this.control;
-    if (control) {
+    if (control && ev.detail.selected) {
       const value = this.getValue(ev.detail.selected);
       if (value) {
         control.value = value;

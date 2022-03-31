@@ -1,8 +1,9 @@
 import { LitElement, ReactiveController } from 'lit';
-import { getControl } from '../../input/src/util';
-import { OptionComponent } from '../../option';
+import { getControl } from '../../../input/src/util';
+import { OptionComponent } from '../../../option';
+import { PopoverSelectEvent } from '../../../popover';
+import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { generateMarkedHtml, getFilterRegExp } from './filter.utils';
-import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 
 /**
  * Provides filtering of options client side, so that the user is able to quickly
@@ -30,28 +31,49 @@ export class FilterController implements ReactiveController {
 
   hostConnected(): void {
     this.host.addEventListener('input', ((e: InputEvent) => {
-      if (this.host.filter && e.inputType) {
-        this.filterOptionsByValue(getControl(this.host)?.value);
+      if (this.host.filterStrategy && e.inputType) {
+        this.filterOptionsByValue(
+          this.control?.value,
+          this.host.filterStrategy
+        );
       }
     }) as EventListener);
+
+    this.host.addEventListener('focusout', () => {
+      if (this.host.filterStrategy) {
+        const hasSelectedItem = this.items.find((item) => item.selected);
+        if (!hasSelectedItem) {
+          this.clearInput();
+        }
+      }
+    });
   }
 
-  hostUpdated(): void {
-    if (this.host.filter) {
-      this.filterOptionsByValue(getControl(this.host)?.value);
+  protected clearInput(): void {
+    if (this.control) {
+      this.control.value = '';
+      this.control.dispatchEvent(
+        new InputEvent('input', { bubbles: true, composed: true })
+      );
     }
   }
 
-  protected filterOptionsByValue(value = ''): void {
+  hostUpdated(): void {
+    if (this.host.filterStrategy) {
+      this.filterOptionsByValue(this.control?.value, this.host.filterStrategy);
+    }
+  }
+
+  protected filterOptionsByValue(
+    value = '',
+    strategyType: FilterStrategyType
+  ): void {
     if (this.filterValue === value || (!this.filterValue && value === '')) {
       return;
     }
     this.filterValue = value;
 
-    const strategy =
-      this.strategies[
-        this.host.filterStrategy ?? FilterStrategyType.START_OF_WORD
-      ];
+    const strategy = this.strategies[strategyType];
 
     let visibleOptionCount = 0;
 
@@ -74,6 +96,8 @@ export class FilterController implements ReactiveController {
       }
     });
 
+    this.dispatchMatchEvent(visibleOptionCount, value);
+
     const isEmpty = this.host.isEmpty;
     // set isEmpty to true when there are no visible items
     // and - when changed - ensure that the state is taken into account in the host
@@ -81,6 +105,36 @@ export class FilterController implements ReactiveController {
     if (isEmpty !== this.host.isEmpty) {
       this.host.requestUpdate('isEmpty');
     }
+  }
+
+  protected dispatchMatchEvent(
+    visibleOptionCount: number,
+    value: string
+  ): void {
+    let selected: HTMLElement | undefined;
+
+    if (visibleOptionCount === 1) {
+      const option = this.items.find((el) => !el.hide);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (option!.value!.toLowerCase() === value.toLowerCase()) {
+        selected = option;
+      }
+    }
+
+    const event = new CustomEvent<PopoverSelectEvent>('oryx.popover', {
+      detail: {
+        selected,
+      },
+      bubbles: true,
+      composed: true,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.control!.dispatchEvent(event);
+  }
+
+  protected get control(): HTMLInputElement | HTMLSelectElement | undefined {
+    return getControl(this.host);
   }
 
   protected get items(): OptionComponent[] {

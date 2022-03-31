@@ -25,7 +25,7 @@ export class SelectController implements ReactiveController {
     if (control instanceof HTMLSelectElement) {
       this.reflectSelect(control);
     } else {
-      if (!this.host.filter && !control?.readOnly) {
+      if (!this.host.filterStrategy && !control?.readOnly) {
         control?.toggleAttribute('readonly', true);
       }
     }

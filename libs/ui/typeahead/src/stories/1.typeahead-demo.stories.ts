@@ -1,5 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../constant';
 import { IconTypes } from '../../../icon';
 import { AffixOptions } from '../../../input';
@@ -37,14 +38,14 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       style="width:500px;--oryx-popover-maxheight:${props.maxHeight}"
       label="label"
       ?isLoading=${props.isLoading}
-      ?filter=${props.filter}
-      .searchIcon=${props.searchIcon}
-      .clearIcon=${props.clearIcon}
-      .searchIconPosition=${props.searchIconPosition}
-      .clearIconPosition=${props.clearIconPosition}
-      .clearIconAppearance=${props.clearIconAppearance}
-      .prefixFill=${props.prefixFill}
-      .suffixFill=${props.suffixFill}
+      searchIcon=${ifDefined(props.searchIcon)}
+      clearIcon=${ifDefined(props.clearIcon)}
+      searchIconPosition=${props.searchIconPosition}
+      clearIconPosition=${props.clearIconPosition}
+      clearIconAppearance=${props.clearIconAppearance}
+      ?prefixFill=${props.prefixFill}
+      ?suffixFill=${props.suffixFill}
+      filterStrategy=${props.filterStrategy}
       @oryx.typeahead=${logTypeahead}
       @oryx.select=${logSelect}
       @oryx.search=${logSearch}
@@ -106,10 +107,6 @@ TypeaheadDemo.argTypes = {
   suffixFill: {
     control: { type: 'boolean' },
     table: { category: 'Layout' },
-  },
-  filter: {
-    control: { type: 'boolean' },
-    table: { category: 'Filter' },
   },
   filterStrategy: {
     options: [

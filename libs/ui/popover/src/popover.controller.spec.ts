@@ -2,15 +2,24 @@ import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import * as sinon from 'sinon';
-import { PopoverComponent, PopoverController } from '.';
+import {
+  PopoverComponent,
+  PopoverController,
+  PopoverSelectEvent,
+  SelectedController,
+} from '.';
 import { a11yConfig } from '../../a11y';
 import { getControl } from '../../input';
 import '../../option';
 import { OptionComponent } from '../../option';
 
+class CustomPopoverController extends PopoverController {
+  selectedController = new SelectedController(this.host, 'oryx-option');
+}
 @customElement('fake-popover')
 class FakeComponent extends LitElement {
-  controller = new PopoverController(this);
+  controller = new CustomPopoverController(this);
+
   render(): TemplateResult {
     return html`
       <oryx-popover>
@@ -21,7 +30,7 @@ class FakeComponent extends LitElement {
 }
 @customElement('fake-without-focus')
 class FakeWithoutFocusComponent extends LitElement {
-  controller = new PopoverController(this, { showOnFocus: false });
+  controller = new CustomPopoverController(this, { showOnFocus: false });
   render(): TemplateResult {
     return html`
       <oryx-popover>
@@ -183,6 +192,64 @@ describe('PopoverController', () => {
         expect(
           element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
         ).to.be.false;
+      });
+    });
+  });
+
+  describe('when oryx.popover event is dispatched', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<fake-popover>
+        <input placeholder="a11y" />
+        ${[...Array(5)].map(
+          (_, index) => html`<oryx-option>${index + 1}</oryx-option>`
+        )}
+      </fake-popover>`);
+    });
+
+    beforeEach(() => {
+      sinon.spy(element.controller.selectedController, 'select');
+      sinon.spy(element.controller.selectedController, 'deselect');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    describe('and there is no selected element', () => {
+      beforeEach(async () => {
+        popover()?.dispatchEvent(
+          new CustomEvent<PopoverSelectEvent>('oryx.popover', {
+            bubbles: true,
+            composed: true,
+            detail: { selected: undefined },
+          })
+        );
+      });
+
+      it('should deselect the selected element', () => {
+        expect(element.controller.selectedController.deselect).to.have.been
+          .called;
+      });
+    });
+
+    describe('and there is a selected element', () => {
+      beforeEach(async () => {
+        popover()?.dispatchEvent(
+          new CustomEvent<PopoverSelectEvent>('oryx.popover', {
+            bubbles: true,
+            composed: true,
+            detail: { selected: {} as HTMLElement },
+          })
+        );
+      });
+
+      afterEach(() => {
+        sinon.restore();
+      });
+
+      it('should select the selected element', () => {
+        expect(element.controller.selectedController.select).to.have.been
+          .called;
       });
     });
   });

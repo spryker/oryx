@@ -12,5 +12,5 @@ export interface PopoverOptions {
 }
 
 export interface PopoverSelectEvent<T = HTMLElement> {
-  selected: T;
+  selected?: T;
 }

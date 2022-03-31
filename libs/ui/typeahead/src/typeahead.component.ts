@@ -16,7 +16,7 @@ import {
   SearchOptions,
 } from '../../search';
 import { SearchComponent } from '../../search/src/search.component';
-import { TypeaheadController } from './typeahead.controller';
+import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 import { typeaheadStyles } from './typeahead.styles';
 
@@ -32,8 +32,7 @@ export class TypeaheadComponent
 {
   static styles = [typeaheadStyles, ...SearchComponent.styles];
 
-  @property({ type: Boolean }) filter?: boolean;
-  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+  @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;

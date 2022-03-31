@@ -1,18 +1,18 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { a11yConfig } from '../../a11y';
-import '../../option/';
-import { PopoverSelectEvent } from '../../popover';
-import { SearchEvent } from '../../search';
-import { queryFirstAssigned } from '../../utilities';
+import { a11yConfig } from '../../../a11y';
+import '../../../option/';
+import { PopoverSelectEvent } from '../../../popover';
+import { SearchEvent } from '../../../search';
+import { queryFirstAssigned } from '../../../utilities';
+import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { TypeaheadController } from './typeahead.controller';
-import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements TypeaheadOptions {
   @property({ type: Boolean }) filter?: boolean;
-  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+  @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
