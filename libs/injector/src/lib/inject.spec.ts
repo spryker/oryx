@@ -36,4 +36,17 @@ describe('inject', () => {
     reset();
     expect(() => inject('')).toThrow();
   });
+
+  it('should use default value if dependency is not injected', () => {
+    setCurrentInjector(
+      new Injector([
+        {
+          provide: '',
+          useClass: MockService,
+        },
+      ])
+    );
+    const defaultValue = 'defaultValue';
+    expect(inject('notInjected', defaultValue)).toEqual(defaultValue);
+  });
 });
