@@ -41,7 +41,7 @@ const Template: Story<Props> = (): TemplateResult => {
           </button>
         </oryx-button>
         <oryx-button type="critical" size="small" loading style="flex: auto">
-          <button>small loading button, auto</button>
+          <button class="chromatic-ignore">small loading button, auto</button>
         </oryx-button>
       </div>`;
   };

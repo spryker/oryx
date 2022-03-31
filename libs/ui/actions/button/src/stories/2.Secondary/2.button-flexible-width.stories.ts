@@ -26,14 +26,6 @@ const Template: Story<Props> = (): TemplateResult => {
             medium anchor link with icon (50%)
           </a>
         </oryx-button>
-        <oryx-button
-          type="secondary"
-          outline
-          size="medium"
-          style="width: 400px;margin-inline-start: auto"
-        >
-          <button>medium outline button (400px)</button>
-        </oryx-button>
         <oryx-button type="secondary" size="small" style="flex:0 0 33%">
           <button disabled>
             <oryx-icon type="rocket"></oryx-icon>
@@ -41,7 +33,7 @@ const Template: Story<Props> = (): TemplateResult => {
           </button>
         </oryx-button>
         <oryx-button type="secondary" size="small" loading style="flex: auto">
-          <button>small loading button, auto</button>
+          <button class="chromatic-ignore">small loading button, auto</button>
         </oryx-button>
       </div>`;
   };
