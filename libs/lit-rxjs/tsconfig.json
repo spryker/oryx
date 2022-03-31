@@ -11,11 +11,9 @@
     }
   ],
   "compilerOptions": {
-    "target": "es2017",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "lib": ["es2017", "dom"],
-    "experimentalDecorators": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": ["es2020", "dom"],
     "useDefineForClassFields": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

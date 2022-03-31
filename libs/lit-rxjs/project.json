@@ -9,7 +9,7 @@
         "commands": [
           "rm -rf ../../dist/libs/lit-rxjs/*",
           "tsc --project tsconfig.lib.json",
-          "vite build"
+          "node ./copy.js"
         ],
         "parallel": false,
         "cwd": "libs/lit-rxjs"

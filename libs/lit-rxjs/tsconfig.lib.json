@@ -3,9 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "types": []
+    "preserveConstEnums": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["vite.config.ts", "vitest.config.ts", "**/*.spec.ts"]
+  "exclude": ["copy.js", "vitest.config.ts", "**/*.spec.ts"]
 }

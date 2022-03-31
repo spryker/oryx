@@ -1,5 +1,6 @@
 {
   "name": "@spryker-oryx/lit-rxjs",
+  "type": "module",
   "version": "0.0.1",
   "description": "Rxjs utilities for lit-element library",
   "author": "Spryker",
@@ -7,7 +8,7 @@
   "files": [
     "**/*"
   ],
-  "main": "index.es.js",
+  "main": "src/index.js",
   "types": "src/index.d.ts",
   "peerDependencies": {
     "lit": "^2.1.0",
@@ -15,5 +16,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
   }
 }
