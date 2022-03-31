@@ -46,9 +46,12 @@ export function getInjector(
   const registry = getRegistry();
   while (context) {
     if (registry.has(context)) {
-      return _injectorsRegistry.get(context)!;
+      return registry.get(context)!;
     }
-    context = context.parentNode;
+    context = context.parentNode ?? context.host;
+  }
+  if (registry.has(defaultContext())) {
+    return registry.get(defaultContext())!;
   }
   throw new Error('No injector found!');
 }

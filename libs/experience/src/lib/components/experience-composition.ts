@@ -17,8 +17,8 @@ export class ExperienceComposition extends LitElement {
   @observe()
   protected key$ = new ReplaySubject<string>(1);
 
-  protected experienceService = resolve(Services.Experience);
-  protected registryService = resolve(Services.ComponentsRegistry);
+  protected experienceService = resolve(this, Services.Experience);
+  protected registryService = resolve(this, Services.ComponentsRegistry);
 
   protected components$ = this.key$.pipe(
     switchMap((key) => this.experienceService.getStructure({ key })),

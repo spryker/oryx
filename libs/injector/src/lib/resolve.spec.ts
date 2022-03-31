@@ -17,33 +17,37 @@ describe('resolve', () => {
   });
 
   it('should resolve token', () => {
-    expect(resolve('a')).toBe('b');
+    expect(resolve(undefined, 'a')).toBe('b');
   });
 
   it('should trow error for not provided token', () => {
-    expect(() => resolve('c')).toThrow();
+    expect(() => resolve(undefined, 'c')).toThrow();
   });
 
   describe('with default value', () => {
     it('should resolve token', () => {
-      expect(resolve('a', 'fallback')).toBe('b');
+      expect(resolve(undefined, 'a', 'fallback')).toBe('b');
     });
     it('should fallback to default value', () => {
-      expect(resolve('c', 'fallback')).toBe('fallback');
+      expect(resolve(undefined, 'c', 'fallback')).toBe('fallback');
     });
   });
 
   describe('with context', () => {
     it('should resolve token for a context', () => {
-      expect(resolve('a', undefined, context)).toBe('z');
+      expect(resolve(context, 'a', undefined)).toBe('z');
     });
 
-    it('should throw error for missing injector', () => {
-      expect(() => resolve('a', undefined, 'nonexisting context')).toThrow();
+    it('should fallback to global context', () => {
+      expect(resolve('nonexisting context', 'a')).toBe('b');
     });
 
-    it('should resolve default value for missing injector', () => {
-      expect(resolve('a', 'v', 'nonexisting context')).toBe('v');
+    it('should throw error for missing provider', () => {
+      expect(() => resolve('nonexisting context', 'z', undefined)).toThrow();
+    });
+
+    it('should resolve default value for missing provider', () => {
+      expect(resolve('nonexisting context', 'z', 'v')).toBe('v');
     });
   });
 });

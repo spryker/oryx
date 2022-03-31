@@ -18,7 +18,7 @@ export class BannerComponent extends LitElement {
   @property({ type: Object })
   protected content?: BannerContent;
 
-  protected experienceContent = resolve(Services.Experience, null);
+  protected experienceContent = resolve(this, Services.Experience, null);
 
   @subscribe()
   contentResolver$ = defer(() =>
