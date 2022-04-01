@@ -62,8 +62,9 @@ export class SelectController implements ReactiveController {
     if (JSON.stringify(options) !== JSON.stringify(this.options)) {
       this.options = options;
       this.reflectOptions();
-      this.host.isEmpty = this.host.isEmpty && this.options.length > 0;
     }
+
+    this.host.isEmpty = !this.host.isLoading && this.options.length === 0;
   }
 
   protected reflectOptions(): void {

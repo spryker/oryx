@@ -5,9 +5,10 @@ export const selectStyles = css`
     cursor: pointer;
   }
 
-  ::slotted(select),
-  ::slotted(input[readonly]) {
+  slot::slotted(select),
+  slot::slotted(input[readonly]) {
     cursor: pointer;
+    background-color: transparent;
   }
 
   ::slotted(input),

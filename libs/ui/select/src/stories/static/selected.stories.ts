@@ -13,12 +13,15 @@ const Template: Story<unknown> = (): TemplateResult => {
   const selectOptions = ['Red', 'Green', 'Blue'];
 
   return sideBySide(html`
-    <oryx-select label="select" ?allowEmptyValue=${true}>
+    <oryx-select label="select" ?emptyOption=${true}>
       <select>
-        ${selectOptions.map((state) => html`<option>${state}</option>`)}
+        ${selectOptions.map(
+          (value) =>
+            html`<option ?selected=${value === 'Green'}>${value}</option>`
+        )}
       </select>
     </oryx-select>
   `);
 };
 
-export const AllowEmpty = Template.bind({});
+export const Selected = Template.bind({});

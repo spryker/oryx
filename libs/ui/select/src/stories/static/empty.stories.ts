@@ -10,11 +10,15 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
+  const selectOptions = ['Red', 'Green', 'Blue'];
+
   return sideBySide(html`
-    <oryx-select>
-      <select aria-label="label"></select>
+    <oryx-select label="select" ?allowEmptyValue=${true}>
+      <select>
+        ${selectOptions.map((state) => html`<option>${state}</option>`)}
+      </select>
     </oryx-select>
   `);
 };
 
-export const NoOptions = Template.bind({});
+export const Empty = Template.bind({});

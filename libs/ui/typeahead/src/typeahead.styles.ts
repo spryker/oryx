@@ -46,22 +46,13 @@ export const typeaheadStyles = css`
     height: 120px;
   }
 
-  slot[name='empty'] .placeholder {
+  .placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  slot[name='loading'] div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  slot[name='loading'] div oryx-icon {
+  slot[name='loading'] oryx-icon {
     color: var(--oryx-color-brand);
     animation: rotate 3s linear infinite;
   }
