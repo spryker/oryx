@@ -1,10 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { Services } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
 import { html } from 'lit';
 import '../index';
 import { BannerComponent } from './banner.component';
 
-class MockService {}
+class MockService {
+  getContent(): Promise<any> {
+    return new Promise<any>((resolve) => resolve({}));
+  }
+}
 
 describe('Banner', () => {
   let element: BannerComponent;
@@ -12,7 +17,7 @@ describe('Banner', () => {
   createInjector({
     providers: [
       {
-        provide: 'FES.Experience',
+        provide: Services.Experience,
         useClass: MockService,
       },
     ],

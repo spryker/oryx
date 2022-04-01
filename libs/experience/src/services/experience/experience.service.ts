@@ -66,7 +66,8 @@ export class ExperienceService implements ExperienceContract {
           this.dataContent[key].next(res);
           return res;
         }),
-        catchError(() => {
+        catchError((e) => {
+          this.dataContent[key].next({ error: e });
           return of('');
         })
       )

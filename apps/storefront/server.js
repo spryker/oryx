@@ -1,8 +1,13 @@
+import { getWindow } from '@lit-labs/ssr/lib/dom-shim.js';
+import { ModuleLoader } from '@lit-labs/ssr/lib/module-loader.js';
 import express from 'express';
 import * as fs from 'fs';
+import { createRequire } from 'module';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
+
+const isProd = process.env.NODE_ENV === 'production';
 
 async function createServer() {
   const app = express();
@@ -23,9 +28,28 @@ async function createServer() {
         ),
         'utf-8'
       );
-
       template = await vite.transformIndexHtml(url, template);
-      const { render } = await vite.ssrLoadModule('/src/entry-server.ts');
+      let render;
+      if (isProd) {
+        const window = getWindow({
+          includeJSBuiltIns: true,
+          props: {
+            require: createRequire(import.meta.url),
+          },
+        });
+        window.URLSearchParams = URLSearchParams;
+        window.URL = URL;
+        const loader = new ModuleLoader({ global: window });
+        const importResult = await loader.importModule(
+          //TODO decide how we want to resolve this properly
+          '../../dist/apps/storefront/server/entry-server.js',
+          import.meta.url
+        );
+        const { module } = importResult;
+        render = module.namespace['render'];
+      } else {
+        ({ render } = await vite.ssrLoadModule('/src/entry-server.dev.ts'));
+      }
       const appHtml = await render({
         tag: 'storefront-component',
         props: {

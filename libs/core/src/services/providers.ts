@@ -8,3 +8,5 @@ export const HTTP_PROVIDERS: Provider[] = [
     useClass: HttpService,
   },
 ];
+
+export const CORE_PROVIDERS: Provider[] = [...HTTP_PROVIDERS];

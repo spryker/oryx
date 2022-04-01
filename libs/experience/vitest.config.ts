@@ -10,7 +10,7 @@ declare global {
 export default defineConfig({
   test: {
     globals: true,
-    include: ['src/lib/**/*.spec.ts'],
+    include: ['src/**/*.spec.ts'],
     environment: 'happy-dom',
   },
   plugins: [tsconfigPaths({ root: '../../' })],

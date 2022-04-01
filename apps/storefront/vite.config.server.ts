@@ -1,20 +1,26 @@
-import { defineConfig } from 'vite';
+import { defineConfig, SSROptions } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
+declare module 'vite' {
+  interface UserConfig {
+    ssr?: SSROptions;
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  publicDir: 'server',
   build: {
+    target: 'esnext',
     lib: {
-      entry: 'src/app.ts',
+      entry: 'src/entry-server.ts',
       formats: ['es'],
-    },
-    rollupOptions: {
-      external: /^lit/,
     },
     emptyOutDir: true,
   },
-  define: {
-    __CONTENT_BACKEND_URL__: JSON.stringify(process.env.CONTENT_BACKEND_URL),
+  ssr: {
+    noExternal: ['rxjs', 'lit'],
   },
+  envPrefix: ['CONTENT_BACKEND_URL'],
   plugins: [tsconfigPaths({ root: '../../' })],
 });

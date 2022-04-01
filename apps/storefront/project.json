@@ -11,6 +11,14 @@
         "cwd": "apps/storefront"
       }
     },
+    "start-ssr-prod": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev:ssr",
+        "envFile": "apps/storefront/prod.env",
+        "cwd": "apps/storefront"
+      }
+    },
     "serve": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
@@ -29,6 +37,13 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "npm run build",
+        "cwd": "apps/storefront"
+      }
+    },
+    "build-ssr": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build:ssr",
         "cwd": "apps/storefront"
       }
     },

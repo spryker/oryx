@@ -14,6 +14,19 @@ export class AsyncValueDirective extends AsyncDirective {
   object: Promise<unknown> | Observable<unknown> | null = null;
   strategy: AsyncValueStrategy | null = null;
   subscription: Subscription | Promise<unknown> | null = null;
+  template?: (value: unknown) => TemplateResult;
+  fallback?: () => TemplateResult;
+
+  content: Array<unknown> = [noChange];
+
+  setValue(value: unknown): void {
+    try {
+      super.setValue(value);
+      this.content = [];
+    } catch (e) {
+      this.content[0] = value;
+    }
+  }
 
   render(
     object: Promise<unknown> | Observable<unknown> | null | undefined,
@@ -29,7 +42,7 @@ export class AsyncValueDirective extends AsyncDirective {
       this.render(object, template, fallback);
     }
 
-    return noChange;
+    return this.content.length ? this.content : noChange;
   }
 
   disconnected(): void {
@@ -38,7 +51,7 @@ export class AsyncValueDirective extends AsyncDirective {
 
   reconnected(): void {
     if (this.object) {
-      this.subscribe(this.object);
+      this.subscribe(this.object, this.template, this.fallback);
     }
   }
 
@@ -52,6 +65,8 @@ export class AsyncValueDirective extends AsyncDirective {
     }
 
     this.object = object;
+    this.template = template;
+    this.fallback = fallback;
     this.strategy = this.select(object);
 
     this.subscription = this.strategy.createSubscription(object, (value) => {
@@ -79,6 +94,8 @@ export class AsyncValueDirective extends AsyncDirective {
     this.object = null;
     this.strategy = null;
     this.subscription = null;
+    this.template = undefined;
+    this.fallback = undefined;
     this.setValue(null);
   }
 

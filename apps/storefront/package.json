@@ -5,8 +5,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "dev:ssr": "node server",
-    "build:server": "tsc && vite build --outDir ../../dist/apps/storefront/server --ssr src/entry-server.js -c vite.config.server.ts",
+    "dev:ssr": "node --experimental-vm-modules server",
+    "build:server": "tsc && vite build --outDir ../../dist/apps/storefront/server --ssr src/entry-server.ts -c vite.config.server.ts",
     "build:ssr": "npm run build && npm run build:server",
     "test": "vitest",
     "test:watch": "vitest watch"

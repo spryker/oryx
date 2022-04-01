@@ -1,3 +1,4 @@
+import { CoreServices } from '@spryker-oryx/core';
 import { createInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
 import {
@@ -25,6 +26,14 @@ class MockExperience implements Partial<ExperienceService> {
     });
 }
 
+class MockSSRAwaiter {
+  getAwaiter(key: string): any {
+    return () => {
+      //do nothing
+    };
+  }
+}
+
 class MockComponentsRegistryService
   implements Partial<ComponentsRegistryContract>
 {
@@ -45,6 +54,10 @@ describe('Experience Composition', () => {
         {
           provide: Services.ComponentsRegistry,
           useClass: MockComponentsRegistryService,
+        },
+        {
+          provide: CoreServices.SSRAwaiter,
+          useClass: MockSSRAwaiter,
         },
       ],
     });

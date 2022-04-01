@@ -7,8 +7,11 @@
   "files": [
     "**/*"
   ],
-  "main": "index.es.js",
+  "main": "index.js",
   "types": "src/index.d.ts",
+  "dependencies": {
+    "rxjs": "~7.4.0"
+  },
   "peerDependencies": {
     "@spryker-oryx/injector": "~0.0.1"
   },

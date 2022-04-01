@@ -1,11 +1,9 @@
-import { defineConfig } from 'vite';
+import { defineConfig, SSROptions } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 declare module 'vite' {
   interface UserConfig {
-    ssr: {
-      external: string[];
-    };
+    ssr?: SSROptions;
   }
 }
 
