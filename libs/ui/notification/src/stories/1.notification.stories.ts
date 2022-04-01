@@ -20,13 +20,13 @@ interface Props {
 }
 
 const Template: Story<Props> = ({
-  type = Types.INFO,
-  subtext = '',
-  title = '',
-  scheme = Schemes.LIGHT,
-  floating = false,
-  closable = false,
-  backgroundColor = bodyBackgroundColor.options[0],
+  type,
+  subtext,
+  title,
+  scheme,
+  floating,
+  closable,
+  backgroundColor,
 }: Props): TemplateResult => {
   return html`
     <style>
@@ -39,7 +39,6 @@ const Template: Story<Props> = ({
       scheme="${scheme}"
       ?floating="${floating}"
       ?closable="${closable}"
-      @oryx.open=${(): void => console.log('open')}
       @oryx.close=${(): void => console.log('close')}
       subtext=${subtext}
     >
@@ -49,6 +48,15 @@ const Template: Story<Props> = ({
   `;
 };
 export const NotificationDemo = Template.bind({});
+NotificationDemo.args = {
+  backgroundColor: bodyBackgroundColor.options[0],
+  type: Types.INFO,
+  subtext: 'Content text',
+  title: 'Title',
+  scheme: Schemes.LIGHT,
+  floating: false,
+  closable: false,
+};
 NotificationDemo.argTypes = {
   backgroundColor: bodyBackgroundColor,
   type: {

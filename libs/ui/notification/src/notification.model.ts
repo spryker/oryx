@@ -1,11 +1,11 @@
-export const enum Types {
+export enum Types {
   INFO = 'info',
   ERROR = 'error',
   WARNING = 'warning',
   SUCCESS = 'success',
 }
 
-export const enum Schemes {
+export enum Schemes {
   LIGHT = 'light',
   DARK = 'dark',
 }
