@@ -1,4 +1,5 @@
 /* semantic design tokens */
+
 :root {
   font-family: var(--oryx-font);
   font-size: 14px;
@@ -74,6 +75,10 @@
   --oryx-icon-size-large: 24px;
   --oryx-icon-size-medium: 18px;
   --oryx-icon-size-small: 12px;
+
+  /* modal */
+  --oryx-modal-min-width: 400px;
+  --oryx-modal-background-color: rgb(0 0 0 / 50%);
 }
 
 /* just to proof that we can do dark mode with this setup */

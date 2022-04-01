@@ -11,6 +11,10 @@ export const styles = css`
     display: flex;
   }
 
+  slot:not([name]) {
+    overflow: auto;
+  }
+
   :host {
     background-color: var(--background-color);
   }
