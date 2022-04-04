@@ -1,12 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../../constant';
-import { ButtonSize } from '../../button.model';
-import '../../index';
+import { storybookPrefix } from '../../../../../../constant';
+import { ButtonSize } from '../../../button.model';
+import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button/Secondary`,
+  title: `${storybookPrefix}/actions/Button/Static/Critical`,
 } as Meta;
 
 interface Props {
@@ -15,46 +15,46 @@ interface Props {
 
 const Template: Story<Props> = (): TemplateResult => {
   const renderButton = (message: string, set: any): TemplateResult => {
-    return html` <h1>Secondary</h1>
+    return html` <h1>Critical outline</h1>
       <div class="button-component">
         <p>Default</p>
         ${Object.values(set).map(
           (size) =>
             html`
-              <oryx-button type="secondary" size=${size} outline>
+              <oryx-button type="critical" size=${size} outline>
                 <button>${message}</button>
               </oryx-button>
-              <oryx-button type="secondary" size=${size} outline>
+              <oryx-button type="critical" size=${size} outline>
                 <a href="/">Link</a>
               </oryx-button>
-            </div>
-          `
+              </div>
+            `
         )}
         <p>Disabled</p>
         ${Object.values(set).map(
           (size) =>
             html`
-              <oryx-button size=${size}>
+              <oryx-button size=${size} outline>
                 <button disabled>${message}</button>
               </oryx-button>
-              <oryx-button size=${size}>
+              <oryx-button size=${size} outline>
                 <a href="/" disabled>Link</a>
               </oryx-button>
-            </div>
-          `
+              </div>
+            `
         )}
         <p>Loading</p>
         ${Object.values(set).map(
           (size) =>
             html`
-              <oryx-button loading type="secondary" size=${size} outline>
+              <oryx-button loading type="critical" size=${size} outline>
                 <button class="chromatic-ignore">${message}</button>
               </oryx-button>
-              <oryx-button loading type="secondary" size=${size} outline>
+              <oryx-button loading type="critical" size=${size} outline>
                 <a class="chromatic-ignore" href="/">Link</a>
               </oryx-button>
-            </div>
-          `
+              </div>
+            `
         )}
       </div>`;
   };
@@ -76,4 +76,4 @@ const Template: Story<Props> = (): TemplateResult => {
   `;
 };
 
-export const ButtonSecondary = Template.bind({});
+export const ButtonCriticalOutline = Template.bind({});

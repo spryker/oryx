@@ -1,12 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../../constant';
-import { ButtonSize } from '../../button.model';
-import '../../index';
+import { storybookPrefix } from '../../../../../../constant';
+import { ButtonSize } from '../../../button.model';
+import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button/Primary`,
+  title: `${storybookPrefix}/actions/Button/Static/Primary`,
 } as Meta;
 
 interface Props {
@@ -22,12 +22,12 @@ const Template: Story<Props> = (): TemplateResult => {
         ${Object.values(set).map(
           (size) =>
             html`
-                <oryx-button type="primary" size=${size}>
-                  <button>${message}</button>
-                </oryx-button>
-                <oryx-button type="primary" size=${size}>
-                  <a href="/">Link</a>
-                </oryx-button>
+              <oryx-button type="primary" size=${size}>
+                <button>${message}</button>
+              </oryx-button>
+              <oryx-button type="primary" size=${size}>
+                <a href="/">Link</a>
+              </oryx-button>
               </div>
             `
         )}
@@ -35,12 +35,12 @@ const Template: Story<Props> = (): TemplateResult => {
         ${Object.values(set).map(
           (size) =>
             html`
-                <oryx-button type="primary" size=${size}>
-                  <button disabled>${message}</button>
-                </oryx-button>
-                <oryx-button type="primary" size=${size}>
-                  <a href="/" disabled>Link</a>
-                </oryx-button>
+              <oryx-button type="primary" size=${size}>
+                <button disabled>${message}</button>
+              </oryx-button>
+              <oryx-button type="primary" size=${size}>
+                <a href="/" disabled>Link</a>
+              </oryx-button>
               </div>
             `
         )}
@@ -48,12 +48,12 @@ const Template: Story<Props> = (): TemplateResult => {
         ${Object.values(set).map(
           (size) =>
             html`
-                <oryx-button loading size=${size}>
-                  <button class="chromatic-ignore">${message}</button>
-                </oryx-button>
-                <oryx-button loading size=${size}>
-                  <a class="chromatic-ignore" href="/">Link</a>
-                </oryx-button>
+              <oryx-button loading size=${size}>
+                <button class="chromatic-ignore">${message}</button>
+              </oryx-button>
+              <oryx-button loading size=${size}>
+                <a class="chromatic-ignore" href="/">Link</a>
+              </oryx-button>
               </div>
             `
         )}

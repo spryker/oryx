@@ -60,7 +60,7 @@ export const buttonStyles = css`
     border-color: var(--_color-active);
   }
 
-  ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
+  ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
     border-color: var(--oryx-color-canvas);
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
@@ -72,7 +72,7 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
-  :host([outline]) ::slotted(:is(button, a):not(:active)) {
+  :host([outline]) ::slotted(:is(button, a):not(:active):not([disabled])) {
     background-color: var(--oryx-color-canvas);
   }
 
@@ -100,18 +100,25 @@ export const buttonStyles = css`
   }
 
   :host([outline])
-    ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
-    outline-color: var(--_color-accent);
+    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
+    border-color: var(--_color-accent);
   }
 
   :host([type='secondary'])
-    ::slotted(:is(button, a):focus-within:focus-visible:not(:active)) {
-    outline-color: var(--oryx-color-neutral);
+    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
+    border-color: var(--oryx-color-neutral);
   }
 
   :host([type='critical']) {
     --_color-accent: var(--oryx-color-error);
     --_color-active: var(--oryx-color-error-dark);
+  }
+
+  :host([type='text']) ::slotted(:is(button, a)) {
+    border-radius: var(--oryx-border-radius-small);
+    box-shadow: none;
+    line-height: 22px;
+    padding: 0 2px;
   }
 
   :host([type='text']) {
@@ -136,6 +143,12 @@ export const buttonStyles = css`
     --oryx-icon-color: var(--oryx-color-neutral);
     --_color-text: var(--oryx-color-neutral-dark);
     --_color-accent: var(--oryx-color-canvas);
+  }
+
+  :host([type='text']:not([loading]))
+    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
+    --oryx-icon-color: var(--oryx-color-brand);
+    --_color-text: var(--oryx-color-brand);
   }
 
   ::slotted([disabled]) {
@@ -175,12 +188,21 @@ export const buttonStyles = css`
   :host([loading][type='text']) ::slotted(:is(button, a)) {
     --oryx-icon-color: transparent;
     color: var(--oryx-color-neutral-dark);
-    background-color: white;
+    background-color: transparent;
     border-color: var(--oryx-color-canvas);
   }
 
   :host([loading][type='text']) ::slotted(:is(button, a)):before {
-    background-position: center left;
+    position: relative;
+    width: 16px;
+    height: 16px;
+  }
+
+  :host([loading][type='text'][icon]) ::slotted(:is(button, a)):before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-position: left center;
   }
 
   :host([type='secondary'][loading]) ::slotted(:is(button, a)) {
