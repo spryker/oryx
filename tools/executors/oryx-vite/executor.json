@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "cypress": {
+      "implementation": "./impl",
+      "schema": "./schema.json",
+      "description": "Runs `cypress`."
+    }
+  }
+}

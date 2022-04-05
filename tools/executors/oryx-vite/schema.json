@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "cli": "nx",
+  "properties": {
+    "cypress": {
+      "type": "object",
+      "properties": {
+        "browser": {
+          "type": "string",
+          "description": "Browser"
+        },
+        "configFile": {
+          "type": "string",
+          "description": "Cypress config file"
+        },
+        "key": {
+          "type": "string",
+          "description": "Key"
+        },
+        "record": {
+          "type": "boolean",
+          "description": "Record"
+        },
+        "watch": {
+          "type": "boolean",
+          "description": "Watch"
+        }
+      }
+    },
+    "vite": {
+      "type": "object",
+      "properties": {
+        "configFile": {
+          "type": "string",
+          "description": "Vite config file"
+        },
+        "devServer": {
+          "type": "boolean",
+          "description": "Using Vite dev server"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Vite server mode"
+        },
+        "root": {
+          "type": "string",
+          "description": "Target project relative path"
+        }
+      },
+      "required": ["configFile", "root"]
+    }
+  }
+}
