@@ -2,7 +2,9 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../constant';
 
-export default { title: `${storybookPrefix}/Card/Static/Primary` } as Meta;
+export default {
+  title: `${storybookPrefix}/Structure/Card/Static/Primary`,
+} as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`

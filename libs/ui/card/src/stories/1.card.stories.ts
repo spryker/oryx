@@ -5,7 +5,7 @@ import { CardType } from '../..';
 import { storybookPrefix } from '../../../constant';
 import { IconTypes } from '../../../icon';
 
-export default { title: `${storybookPrefix}/Card` } as Meta;
+export default { title: `${storybookPrefix}/Structure/Card` } as Meta;
 
 export interface CardProperties {
   type?: CardType;
