@@ -9,12 +9,12 @@ declare module 'vite' {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  publicDir: 'server',
   build: {
     target: 'esnext',
     lib: {
       entry: 'src/entry-server.ts',
-      formats: ['es'],
+      formats: ['iife'],
+      name: 'storefront',
     },
     emptyOutDir: true,
   },

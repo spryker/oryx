@@ -33,7 +33,7 @@
         "cwd": "apps/storefront"
       }
     },
-    "build": {
+    "build-client": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "npm run build",
@@ -45,6 +45,12 @@
       "options": {
         "command": "npm run build:ssr",
         "cwd": "apps/storefront"
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["./patch.sh", "nx run storefront:build-ssr"]
       }
     },
     "build-testing": {
