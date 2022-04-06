@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { Services } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
+import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
 import '../index';
 import { BannerComponent } from './banner.component';
@@ -34,7 +35,7 @@ describe('Banner', () => {
     expect(el).toBeInstanceOf(BannerComponent);
   });
 
-  // it('passes the a11y audit', async () => {
-  //   await expect(element).shadowDom.to.be.accessible();
-  // });
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible();
+  });
 });
