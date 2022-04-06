@@ -60,7 +60,7 @@ export const buttonStyles = css`
     border-color: var(--_color-active);
   }
 
-  ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
+  ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
     border-color: var(--oryx-color-canvas);
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
@@ -72,12 +72,13 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
-  :host([outline]) ::slotted(:is(button, a):not(:active):not([disabled])) {
+  :host([outline]) ::slotted(:is(button, a):not([disabled])) {
     background-color: var(--oryx-color-canvas);
   }
 
   :host([outline]) ::slotted(:is(button, a):active) {
     border-color: var(--_color-accent);
+    background-color: var(--_color-active);
   }
 
   :host([outline][type='critical']) {
@@ -100,13 +101,15 @@ export const buttonStyles = css`
   }
 
   :host([outline])
-    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
-    border-color: var(--_color-accent);
+    ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
+    outline-color: var(--_color-accent);
+    border-color: var(--oryx-color-canvas);
   }
 
   :host([type='secondary'])
-    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
-    border-color: var(--oryx-color-neutral);
+    ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
+    outline-color: var(--oryx-color-neutral);
+    border-color: var(--oryx-color-canvas);
   }
 
   :host([type='critical']) {
@@ -129,12 +132,12 @@ export const buttonStyles = css`
     --_color-active: var(--oryx-color-canvas);
   }
 
-  :host([type='text']) :hover {
+  :host([type='text']) ::slotted(:is(button, a):hover) {
     --oryx-icon-color: var(--oryx-color-brand);
     --_color-text: var(--oryx-color-brand);
   }
 
-  :host([type='text']) :active {
+  :host([type='text']) ::slotted(:is(button, a):active) {
     --oryx-icon-color: var(--oryx-color-brand-dark);
     --_color-text: var(--oryx-color-brand-dark);
   }
@@ -146,7 +149,7 @@ export const buttonStyles = css`
   }
 
   :host([type='text']:not([loading]))
-    ::slotted(:is(button, a):focus-within:focus-visible:not(:active):not([disabled])) {
+    ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
     --oryx-icon-color: var(--oryx-color-brand);
     --_color-text: var(--oryx-color-brand);
   }

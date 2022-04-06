@@ -21,7 +21,7 @@ const Template: Story<Props> = (): TemplateResult => {
           <button>large button (100%)</button>
         </oryx-button>
         <oryx-button type="critical" size="medium" icon style="flex:0 0 50%">
-          <a>
+          <a href="/">
             <oryx-icon type="rocket"></oryx-icon>
             medium anchor link with icon (50%)
           </a>

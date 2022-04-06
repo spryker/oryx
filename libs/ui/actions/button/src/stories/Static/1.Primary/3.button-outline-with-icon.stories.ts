@@ -13,89 +13,109 @@ interface Props {
   disabled: boolean;
 }
 
+const variations = [
+  {
+    name: 'Default',
+    state: '',
+    lightDomState: '',
+  },
+  {
+    name: 'Hovered',
+    state: 'pseudo-hover',
+    lightDomState: 'pseudo-hover',
+  },
+  {
+    name: 'Active',
+    state: 'pseudo-active',
+    lightDomState: 'pseudo-active',
+  },
+  {
+    name: 'Focused',
+    state: 'pseudo-focus',
+    lightDomState: 'pseudo-focus pseudo-focus-visible',
+  },
+  {
+    name: 'Disabled',
+    state: 'pseudo-disabled',
+    lightDomState: 'pseudo-disabled',
+  },
+  {
+    name: 'Loading',
+    state: '',
+    lightDomState: '',
+  },
+];
+
 const Template: Story<Props> = (): TemplateResult => {
-  const renderButton = (
-    message: string,
-    set: any,
-    icon: string
-  ): TemplateResult => {
+  const renderButton = (set: any, icon: string): TemplateResult => {
     return html` <h1>Outline with icon</h1>
       <div class="button-component">
-        <p>Default</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button type="primary" size=${size} outline icon>
-                <button>
-                  <oryx-icon type=${icon}></oryx-icon>
-                  ${message}
-                </button>
-              </oryx-button>
-              <oryx-button type="primary" size=${size} outline icon>
-                <a href="/">
-                  <oryx-icon type=${icon}></oryx-icon>
-                  Link
-                </a>
-              </oryx-button>
-              </div>
-            `
-        )}
-        <p>Disabled</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button size=${size} outline icon>
-                <button disabled>
-                  <oryx-icon type=${icon}></oryx-icon>
-                  ${message}
-                </button>
-              </oryx-button>
-              <oryx-button size=${size} outline icon>
-                <a href="/" disabled>
-                  <oryx-icon type=${icon}></oryx-icon>
-                  Link
-                </a>
-              </oryx-button>
-              </div>
-            `
-        )}
-        <p>Loading</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button loading size=${size} outline icon>
-                <button class="chromatic-ignore">
-                  <oryx-icon type=${icon}></oryx-icon>
-                  ${message}
-                </button>
-              </oryx-button>
-              <oryx-button loading size=${size} outline icon>
-                <a class="chromatic-ignore" href="/">
-                  <oryx-icon type=${icon}></oryx-icon>
-                  Link
-                </a>
-              </oryx-button>
-              </div>
-            `
-        )}
+        ${variations.map((variant) => {
+          const isDisabled = variant.name === 'Disabled';
+          const isLoading = variant.name === 'Loading';
+          return html`
+            <div class="variation-button">
+              <p>${variant.name}</p>
+              ${Object.values(set).map(
+                (size) =>
+                  html`
+                    <oryx-button
+                      ?loading=${isLoading}
+                      type="primary"
+                      size=${size}
+                      icon
+                      outline
+                    >
+                      <button
+                        ?disabled=${isDisabled}
+                        class="${!isLoading
+                          ? variant.lightDomState
+                          : 'chromatic-ignore'}"
+                      >
+                        <oryx-icon type=${icon}></oryx-icon>
+                        Button
+                      </button>
+                    </oryx-button>
+                    <oryx-button
+                      ?loading=${isLoading}
+                      type="primary"
+                      size=${size}
+                      icon
+                      outline
+                    >
+                      <a
+                        href="/"
+                        ?disabled=${isDisabled}
+                        class="${!isLoading
+                          ? variant.lightDomState
+                          : 'chromatic-ignore'}"
+                      >
+                        <oryx-icon type=${icon}></oryx-icon>
+                        Link
+                      </a>
+                    </oryx-button>
+                  `
+              )}
+            </div>
+          `;
+        })}
+
+        <style>
+          .variation-button {
+            display: flex;
+            margin-bottom: 24px;
+            gap: 15px;
+            align-items: center;
+          }
+
+          .variation-button p {
+            width: 80px;
+          }
+        </style>
       </div>`;
   };
 
-  return html`
-    ${renderButton('Button', ButtonSize, 'add')}
-    <style>
-      p {
-        width: 54px;
-      }
-
-      .button-component {
-        width: 750px;
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-      }
-    </style>
-  `;
+  return html` ${renderButton(ButtonSize, 'add')} `;
 };
 
 export const ButtonOutlineWithIcon = Template.bind({});

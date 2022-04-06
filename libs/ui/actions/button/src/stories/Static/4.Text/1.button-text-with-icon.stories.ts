@@ -10,86 +10,90 @@ export default {
 
 interface Props {
   disabled: boolean;
-  loading: boolean;
 }
 
+const variations = [
+  {
+    name: 'Default',
+    state: '',
+    lightDomState: '',
+  },
+  {
+    name: 'Hovered',
+    state: 'pseudo-hover',
+    lightDomState: 'pseudo-hover',
+  },
+  {
+    name: 'Active',
+    state: 'pseudo-active',
+    lightDomState: 'pseudo-active',
+  },
+  {
+    name: 'Focused',
+    state: 'pseudo-focus',
+    lightDomState: 'pseudo-focus pseudo-focus-visible',
+  },
+  {
+    name: 'Disabled',
+    state: 'pseudo-disabled',
+    lightDomState: 'pseudo-disabled',
+  },
+  {
+    name: 'Loading',
+    state: '',
+    lightDomState: '',
+  },
+];
+
 const Template: Story<Props> = (): TemplateResult => {
-  const renderButton = (message: string): TemplateResult => {
-    return html` <h1>Text with icon</h1>
+  return html` <h1>Text</h1>
     <div class="button-component">
-      <div class="buttons-row">
-        <p>Default</p>
-        <oryx-button type="text">
-          <button>
-            <oryx-icon type="add"></oryx-icon>
-            ${message}
-          </button>
-        </oryx-button>
-        <oryx-button type="text">
-          <a href="/">
-            <oryx-icon type="add"></oryx-icon>
-            Link
-          </a>
-        </oryx-button>
-      </div>
-    </div>
-    <div class="buttons-row">
-      <p>Disabled</p>
-      <oryx-button type="text">
-        <button disabled>
-          <oryx-icon type="add"></oryx-icon>
-          ${message}
-        </button>
-      </oryx-button>
-      <oryx-button type="text">
-        <a href="/" disabled>
-          <oryx-icon type="add"></oryx-icon>
-          Link
-        </a>
-      </oryx-button>
-    </div>
-    </div>
-    <div class="buttons-row">
+      ${variations.map((variant) => {
+        const isDisabled = variant.name === 'Disabled';
+        const isLoading = variant.name === 'Loading';
+        return html`
+          <div class="variation-button">
+            <p>${variant.name}</p>
+            <oryx-button ?loading=${isLoading} type="text" icon>
+              <button
+                ?disabled=${isDisabled}
+                class="${!isLoading
+                  ? variant.lightDomState
+                  : 'chromatic-ignore'}"
+              >
+                <oryx-icon type="add"></oryx-icon>
+                Button
+              </button>
+            </oryx-button>
+            <oryx-button ?loading=${isLoading} type="text" icon>
+              <a
+                href="/"
+                ?disabled=${isDisabled}
+                class="${!isLoading
+                  ? variant.lightDomState
+                  : 'chromatic-ignore'}"
+              >
+                <oryx-icon type="add"></oryx-icon>
+                Link</a
+              >
+            </oryx-button>
+          </div>
+        `;
+      })}
 
-      <p>Loading</p>
-      <oryx-button type="text" loading icon>
-        <button class="chromatic-ignore">
-          <oryx-icon type="add"></oryx-icon>
-          ${message}
-        </button>
-      </oryx-button>
-      <oryx-button type="text" loading icon>
-        <a class="chromatic-ignore" href="/">
-          <oryx-icon type="add"></oryx-icon>
-          Link
-        </a>
-      </oryx-button>
-    </div>
-    </div>
+      <style>
+        .variation-button {
+          display: flex;
+          margin-bottom: 24px;
+          gap: 15px;
+          align-items: center;
+        }
 
+        .variation-button p {
+          width: 80px;
+        }
+      </style>
     </div>`;
-  };
-
-  return html`
-    ${renderButton('Text')}
-    <style>
-      p {
-        width: 54px;
-      }
-
-      .buttons-row {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-
-      .button-component {
-        gap: 15px;
-        display: flex;
-        flex-direction: column;
-      }
-    </style>
-  `;
 };
 
 export const ButtonTextWithIcon = Template.bind({});

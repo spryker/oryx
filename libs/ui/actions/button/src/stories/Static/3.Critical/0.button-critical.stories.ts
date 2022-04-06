@@ -13,67 +13,102 @@ interface Props {
   disabled: boolean;
 }
 
+const variations = [
+  {
+    name: 'Default',
+    state: '',
+    lightDomState: '',
+  },
+  {
+    name: 'Hovered',
+    state: 'pseudo-hover',
+    lightDomState: 'pseudo-hover',
+  },
+  {
+    name: 'Active',
+    state: 'pseudo-active',
+    lightDomState: 'pseudo-active',
+  },
+  {
+    name: 'Focused',
+    state: 'pseudo-focus',
+    lightDomState: 'pseudo-focus pseudo-focus-visible',
+  },
+  {
+    name: 'Disabled',
+    state: 'pseudo-disabled',
+    lightDomState: 'pseudo-disabled',
+  },
+  {
+    name: 'Loading',
+    state: '',
+    lightDomState: '',
+  },
+];
+
 const Template: Story<Props> = (): TemplateResult => {
-  const renderButton = (message: string, set: any): TemplateResult => {
+  const renderButton = (set: any): TemplateResult => {
     return html` <h1>Critical</h1>
       <div class="button-component">
-        <p>Default</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button type="critical" size=${size}>
-                <button>${message}</button>
-              </oryx-button>
-              <oryx-button type="critical" size=${size}>
-                <a href="/">Link</a>
-              </oryx-button>
-              </div>
-            `
-        )}
-        <p>Disabled</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button size=${size}>
-                <button disabled>${message}</button>
-              </oryx-button>
-              <oryx-button size=${size}>
-                <a href="/" disabled>Link</a>
-              </oryx-button>
-              </div>
-            `
-        )}
-        <p>Loading</p>
-        ${Object.values(set).map(
-          (size) =>
-            html`
-              <oryx-button loading type="critical" size=${size}>
-                <button class="chromatic-ignore">${message}</button>
-              </oryx-button>
-              <oryx-button loading type="critical" size=${size}>
-                <a class="chromatic-ignore" href="/">Link</a>
-              </oryx-button>
-              </div>
-            `
-        )}
+        ${variations.map((variant) => {
+          const isDisabled = variant.name === 'Disabled';
+          const isLoading = variant.name === 'Loading';
+          return html`
+            <div class="variation-button">
+              <p>${variant.name}</p>
+              ${Object.values(set).map(
+                (size) =>
+                  html`
+                    <oryx-button
+                      ?loading=${isLoading}
+                      type="critical"
+                      size=${size}
+                    >
+                      <button
+                        ?disabled=${isDisabled}
+                        class="${!isLoading
+                          ? variant.lightDomState
+                          : 'chromatic-ignore'}"
+                      >
+                        Button
+                      </button>
+                    </oryx-button>
+                    <oryx-button
+                      ?loading=${isLoading}
+                      type="critical"
+                      size=${size}
+                    >
+                      <a
+                        href="/"
+                        ?disabled=${isDisabled}
+                        class="${!isLoading
+                          ? variant.lightDomState
+                          : 'chromatic-ignore'}"
+                        >Link</a
+                      >
+                    </oryx-button>
+                  `
+              )}
+            </div>
+          `;
+        })}
+
+        <style>
+          .variation-button {
+            display: flex;
+            margin-bottom: 24px;
+            gap: 15px;
+            align-items: center;
+          }
+
+          .variation-button p {
+            width: 80px;
+          }
+        </style>
       </div>`;
   };
 
-  return html`
-    ${renderButton('Button', ButtonSize)}
-    <style>
-      p {
-        width: 54px;
-      }
-
-      .button-component {
-        width: 650px;
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-      }
-    </style>
-  `;
+  return html` ${renderButton(ButtonSize)} `;
 };
 
 export const ButtonCritical = Template.bind({});
