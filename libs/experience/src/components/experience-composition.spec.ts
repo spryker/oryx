@@ -1,5 +1,6 @@
 import { CoreServices } from '@spryker-oryx/core';
 import { createInjector } from '@spryker-oryx/injector';
+import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
 import {
   Component,
@@ -39,6 +40,10 @@ class MockComponentsRegistryService
 {
   resolveComponent(type: string): Observable<string> {
     return of(type);
+  }
+
+  resolveTemplate(type: string, uid: string): TemplateResult {
+    return html`<oryx-banner componentid="${uid}" uid="${uid}"></oryx-banner>`;
   }
 }
 

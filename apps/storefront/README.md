@@ -21,9 +21,3 @@ Server side rendering support is currently a work in progress.
 - `nx serve storefront` runs storefront in dev mode (client side only)
 - `nx build storefront` builds storefront client side mode only
 - `nx ssr storefront` runs storefront in dev mode with SSR support (WIP)
-
-## unsafeStatic Patch (SSR)
-
-For running SSR mode with unsafeStatic support (may not work with hydration)
-
-- `patch node_modules/@lit-labs/ssr/lib/render-lit-html.js render-lit-html.patch`

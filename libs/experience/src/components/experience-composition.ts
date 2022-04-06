@@ -1,9 +1,8 @@
 import { CoreServices } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
-import { LitElement, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { html, unsafeStatic } from 'lit/static-html.js';
 import { filter, lastValueFrom, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import { Component, Services } from '../services';
 
@@ -45,11 +44,8 @@ export class ExperienceComposition extends LitElement {
       ${asyncValue(
         this.components$,
         (components: any) =>
-          html`${components.map(
-            (component: any) => html`<${unsafeStatic(
-              component.type
-            )} componentid="${component.id}" uid="${component.id}">
-        </${unsafeStatic(component.type)}>`
+          html`${components.map((component: any) =>
+            this.registryService.resolveTemplate(component.type, component.id)
           )}`,
         () => html`Loading...`
       )}
