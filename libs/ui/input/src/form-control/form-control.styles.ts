@@ -73,7 +73,8 @@ export const formControlStyles = css`
 
   textarea,
   ::slotted(textarea) {
-    height: 80px;
+    min-height: 80px;
+    min-width: 100%;
   }
 
   ::placeholder,
