@@ -23,7 +23,7 @@ class FakePopoverComponent extends LitElement {
 class FakeWithoutPopoverComponent extends LitElement {
   controller = new ToggleController(this, 'oryx-popover', 'li');
   render(): TemplateResult {
-    return html` <slot></slot> `;
+    return html` <slot><input /></slot> `;
   }
 }
 
@@ -49,7 +49,7 @@ describe('ToggleController', () => {
         </fake-popover>`);
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -58,7 +58,6 @@ describe('ToggleController', () => {
           beforeEach(() => {
             dispatchKeydown(element, key);
           });
-
           it('should show the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).to.be.true;
           });
@@ -67,7 +66,6 @@ describe('ToggleController', () => {
             beforeEach(() => {
               dispatchKeydown(element, key);
             });
-
             it('should hide the popover', () => {
               expect(utils.popover()?.hasAttribute('show')).to.be.false;
             });
@@ -77,7 +75,6 @@ describe('ToggleController', () => {
             beforeEach(() => {
               dispatchKeydown(element, 'Escape');
             });
-
             it('should hide the popover', () => {
               expect(utils.popover()?.hasAttribute('show')).to.be.false;
             });
@@ -149,6 +146,7 @@ describe('ToggleController', () => {
 
         beforeEach(async () => {
           element = await fixture(html`<fake-popover>
+            <input />
             <li>first</li>
             <li selected highlight>second</li>
             <li>third</li>

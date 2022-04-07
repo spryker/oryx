@@ -30,23 +30,28 @@ export class FilterController implements ReactiveController {
   };
 
   hostConnected(): void {
-    this.host.addEventListener('input', ((e: InputEvent) => {
-      if (this.host.filterStrategy && e.inputType) {
-        this.filterOptionsByValue(
-          this.control?.value,
-          this.host.filterStrategy
-        );
-      }
-    }) as EventListener);
+    this.host.addEventListener('input', this.inputHandler as EventListener);
+    this.host.addEventListener('focusout', this.focusOutHandler);
+  }
 
-    this.host.addEventListener('focusout', () => {
-      if (this.host.filterStrategy) {
-        const hasSelectedItem = this.items.find((item) => item.selected);
-        if (!hasSelectedItem) {
-          this.clearInput();
-        }
+  hostDisconnected(): void {
+    this.host.removeEventListener('input', this.inputHandler as EventListener);
+    this.host.removeEventListener('focusout', this.focusOutHandler);
+  }
+
+  protected focusOutHandler(): void {
+    if (this.host.filterStrategy) {
+      const hasSelectedItem = this.items.find((item) => item.selected);
+      if (!hasSelectedItem) {
+        this.clearInput();
       }
-    });
+    }
+  }
+
+  protected inputHandler(e: InputEvent): void {
+    if (this.host.filterStrategy && e.inputType) {
+      this.filterOptionsByValue(this.control?.value, this.host.filterStrategy);
+    }
   }
 
   protected clearInput(): void {
@@ -129,12 +134,11 @@ export class FilterController implements ReactiveController {
       composed: true,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.control!.dispatchEvent(event);
+    this.control.dispatchEvent(event);
   }
 
-  protected get control(): HTMLInputElement | HTMLSelectElement | undefined {
-    return getControl(this.host);
+  protected get control(): HTMLInputElement {
+    return getControl(this.host, 'input');
   }
 
   protected get items(): OptionComponent[] {
@@ -143,5 +147,8 @@ export class FilterController implements ReactiveController {
 
   constructor(protected host: TypeaheadOptions & LitElement) {
     this.host.addController(this);
+
+    this.inputHandler = this.inputHandler.bind(this);
+    this.focusOutHandler = this.focusOutHandler.bind(this);
   }
 }

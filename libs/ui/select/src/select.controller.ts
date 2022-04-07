@@ -25,8 +25,8 @@ export class SelectController implements ReactiveController {
     if (control instanceof HTMLSelectElement) {
       this.reflectSelect(control);
     } else {
-      if (!this.host.filterStrategy && !control?.readOnly) {
-        control?.toggleAttribute('readonly', true);
+      if (!this.host.filterStrategy && !control.readOnly) {
+        control.toggleAttribute('readonly', true);
       }
     }
   }
@@ -82,16 +82,13 @@ export class SelectController implements ReactiveController {
   protected mutationObserver?: MutationObserver;
 
   protected observeSelect(): void {
-    const control = getControl(this.host);
-    if (control) {
-      this.mutationObserver?.disconnect();
-      this.mutationObserver = new MutationObserver(() => {
-        this.initSelect();
-      });
-      this.mutationObserver.observe(control, {
-        childList: true,
-      });
-    }
+    this.mutationObserver?.disconnect();
+    this.mutationObserver = new MutationObserver(() => {
+      this.initSelect();
+    });
+    this.mutationObserver.observe(getControl(this.host), {
+      childList: true,
+    });
   }
 
   hostDisconnected(): void {

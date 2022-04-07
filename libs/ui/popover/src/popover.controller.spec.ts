@@ -103,16 +103,16 @@ describe('PopoverController', () => {
 
           describe('and the control is readonly', () => {
             beforeEach(() => {
-              getControl(element)?.toggleAttribute('readonly', true);
+              getControl(element).toggleAttribute('readonly', true);
             });
 
             beforeEach(() => {
               const event = new KeyboardEvent('keydown', {
                 key: ' ',
                 bubbles: true,
-              });
+              } as KeyboardEventInit);
               expectation = sinon.mock(event).expects('preventDefault').once();
-              element.dispatchEvent(event);
+              getControl(element).dispatchEvent(event);
             });
 
             it('should select the highlighted element', () => {
@@ -123,7 +123,7 @@ describe('PopoverController', () => {
 
           describe('and the control is not readonly', () => {
             beforeEach(() => {
-              getControl(element)?.toggleAttribute('readonly', false);
+              getControl(element).toggleAttribute('readonly', false);
             });
 
             describe('and the " " key is dispatched', () => {
@@ -346,7 +346,9 @@ describe('PopoverController', () => {
 
   describe('when the focus is not required', () => {
     beforeEach(async () => {
-      element = await fixture(html`<fake-without-focus></fake-without-focus>`);
+      element = await fixture(
+        html`<fake-without-focus><input /></fake-without-focus>`
+      );
     });
     it('should not throw an error', () => {
       popover()?.dispatchEvent(
@@ -355,6 +357,39 @@ describe('PopoverController', () => {
       expect(() => {
         (): void => undefined;
       }).not.to.throw;
+    });
+  });
+
+  describe('selectByValue()', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<fake-popover show>
+        <input placeholder="a11y" />
+        ${['foo', 'bar'].map(
+          (value) => html`<oryx-option>${value}</oryx-option>`
+        )}
+      </fake-popover>`);
+    });
+
+    describe('when there is an option with the given value', () => {
+      beforeEach(() => {
+        element.controller.selectByValue('bar');
+      });
+      it('should select the option', () => {
+        expect(
+          element.querySelector<OptionComponent>('oryx-option[selected]')?.value
+        ).to.eq('bar');
+      });
+    });
+
+    describe('when there is no option with the given value', () => {
+      beforeEach(() => {
+        element.controller.selectByValue('foo nor bar');
+      });
+      it('should not throw an error', () => {
+        expect(() => {
+          (): void => undefined;
+        }).not.to.throw;
+      });
     });
   });
 });

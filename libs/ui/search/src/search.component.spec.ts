@@ -615,31 +615,5 @@ describe('SearchComponent', () => {
         });
       });
     });
-
-    describe('when there is no control', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-search>no control</oryx-search>`);
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should not prevent event bubbling', () => {
-        const event = new KeyboardEvent('mousedown', {
-          bubbles: true,
-        });
-        const exp1 = sinon
-          .mock(event)
-          .expects('stopImmediatePropagation')
-          .never();
-        const exp2 = sinon.mock(event).expects('stopPropagation').never();
-        const exp3 = sinon.mock(event).expects('preventDefault').never();
-        clearIcon()?.dispatchEvent(event);
-        exp1.verify();
-        exp2.verify();
-        exp3.verify();
-      });
-    });
   });
 });

@@ -98,7 +98,7 @@ describe('FilterController', () => {
             element.dispatchEvent(new Event('focusout', { bubbles: true }));
           });
           it('should clear the value', () => {
-            expect(getControl(element)?.value).to.empty;
+            expect(getControl(element).value).to.empty;
           });
         });
       });
@@ -120,7 +120,7 @@ describe('FilterController', () => {
             element.dispatchEvent(new Event('focusout', { bubbles: true }));
           });
           it('should not clear the value', () => {
-            expect(getControl(element)?.value).to.not.empty;
+            expect(getControl(element).value).to.not.empty;
           });
         });
       });

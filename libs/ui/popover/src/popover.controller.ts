@@ -1,5 +1,4 @@
 import { LitElement, ReactiveController } from 'lit';
-import { getControl } from '../../input';
 import { OptionComponent } from '../../option';
 import { HighlightController } from './controllers/highlight.controller';
 import { SelectedController } from './controllers/selected.controller';
@@ -13,8 +12,9 @@ import { PopoverOptions, PopoverSelectEvent } from './popover.model';
  * - select the highlighted iem by keyboard (delegated to `SelectedController`)
  *
  * The PopoverController is not added to the popover component (as you might assume),
- * but must be added to the component that hosts a popover. The reason for this is that
- * the host element is key to the functionality.
+ * but can be used by a component that hosts a popover. The reason for this is that
+ * the host element is key to the functionality, as this element is responsible for
+ * toggling the popover.
  */
 export class PopoverController implements ReactiveController {
   protected toggleController: ToggleController;
@@ -32,21 +32,15 @@ export class PopoverController implements ReactiveController {
     this.host.addEventListener('input', ((e: InputEvent) =>
       this.handleInput(e)) as EventListener);
 
-    this.host.addEventListener('change', (() => {
-      const value = getControl(this.host)?.value;
-      this.handleChange(value ?? '');
-    }) as EventListener);
-
     this.host.addEventListener('oryx.popover', ((
       e: CustomEvent<PopoverSelectEvent>
     ) => this.handleSelectEvent(e)) as EventListener);
   }
 
-  hostUpdated(): void {
-    const control = getControl(this.host);
-    if (control && control.value !== '') {
-      this.handleChange(control.value);
-    }
+  selectByValue(value: string): void {
+    const index = this.items.findIndex((item) => item.value === value);
+    this.selectedController.select(index);
+    this.items[index]?.scrollIntoView({ block: 'nearest' });
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
@@ -57,7 +51,7 @@ export class PopoverController implements ReactiveController {
         }
         break;
       case ' ':
-        if (this.isReadonly()) {
+        if (e.target instanceof HTMLElement && this.isReadonly(e.target)) {
           if (this.toggleController.isOpen) {
             this.selectedController.select(this.highlightController.highlight);
           }
@@ -78,12 +72,6 @@ export class PopoverController implements ReactiveController {
     }
   }
 
-  protected handleChange(value: string): void {
-    const index = this.items.findIndex((item) => item.value === value);
-    this.selectedController.select(index);
-    this.items[index]?.scrollIntoView({ block: 'nearest' });
-  }
-
   protected handleSelectEvent(e: CustomEvent<PopoverSelectEvent>): void {
     if (e.detail.selected) {
       const itemIndex = this.items.findIndex(
@@ -95,10 +83,10 @@ export class PopoverController implements ReactiveController {
     }
   }
 
-  protected isReadonly(): boolean {
-    const control = getControl(this.host);
+  protected isReadonly(target: HTMLElement): boolean {
     return (
-      !!control && (control instanceof HTMLSelectElement || control.readOnly)
+      target instanceof HTMLSelectElement ||
+      (target instanceof HTMLInputElement && target.readOnly)
     );
   }
 

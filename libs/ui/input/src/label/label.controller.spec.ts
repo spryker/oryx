@@ -46,38 +46,39 @@ describe('LabelController', () => {
         expect(element.hasAttribute('has-label')).to.be.true;
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      describe('when custom label is provided in the label slot', () => {
-        beforeEach(async () => {
-          element = await fixture(html` <fake-label label="label content">
-            <h3>custom text</h3>
-          </fake-label>`);
-        });
-
-        it('passes the a11y audit', async () => {
-          await expect(element).shadowDom.to.be.accessible(a11yConfig);
-        });
-
-        it('should not render a label element', () => {
-          const customLabel = queryFirstAssigned(element, {
-            flatten: true,
-            slot: 'label',
-            selector: 'h3',
-          });
-          expect(customLabel).not.to.exist;
-        });
       });
     });
 
-    describe('when no label is provided', () => {
+    describe('when a custom label is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html` <fake-label label="label content">
+          <input />
+          <h3>custom text</h3>
+        </fake-label>`);
+      });
+
+      it('should pass the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
+      it('should not render a label element', () => {
+        const customLabel = queryFirstAssigned(element, {
+          flatten: true,
+          slot: 'label',
+          selector: 'h3',
+        });
+        expect(customLabel).not.to.exist;
+      });
+    });
+
+    describe('when a label is not provided', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-label></fake-label>`);
       });
 
-      it('not passes the a11y audit', async () => {
+      it('should not pass the a11y audit', async () => {
         await expect(element).shadowDom.not.be.accessible(a11yConfig);
       });
 
@@ -94,66 +95,66 @@ describe('LabelController', () => {
         expect(element.hasAttribute('has-label')).to.be.false;
       });
     });
+  });
 
-    describe('required notation', () => {
-      describe('when the input is required', () => {
-        describe('and the label does not have an asterisk', () => {
-          beforeEach(async () => {
-            element = await fixture(html`<fake-label label="test">
-              <input required />
-            </fake-label>`);
-          });
-
-          it('passes the a11y audit', async () => {
-            await expect(element).shadowDom.to.be.accessible(a11yConfig);
-          });
-
-          it('should have an asterisk', () => {
-            const label = queryFirstAssigned<HTMLDivElement>(element, {
-              slot: 'label',
-              selector: 'div',
-              flatten: true,
-            });
-            expect(label?.innerText.trim()).to.eq('test*');
-          });
-        });
-
-        describe('and the label has an asterisk', () => {
-          beforeEach(async () => {
-            element = await fixture(html` <fake-label label="test*">
-              <input required />
-            </fake-label>`);
-          });
-
-          it('passes the a11y audit', async () => {
-            await expect(element).shadowDom.to.be.accessible(a11yConfig);
-          });
-
-          it('should not add an additional asterisk', () => {
-            const label = queryFirstAssigned<HTMLDivElement>(element, {
-              slot: 'label',
-              selector: 'div',
-              flatten: true,
-            });
-            expect(label?.innerText.trim()).to.not.eq('text*');
-          });
-        });
-      });
-
-      describe('when the input is not required', () => {
+  describe('required label', () => {
+    describe('when the input is required', () => {
+      describe('and the label does not have an asterisk', () => {
         beforeEach(async () => {
-          element = await fixture(html` <fake-label label="test">
-            <input />
+          element = await fixture(html`<fake-label label="test">
+            <input required />
           </fake-label>`);
         });
 
-        it('passes the a11y audit', async () => {
+        it('should pass the a11y audit', async () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should show a <sup>*</sup>', () => {
-          expect(element.renderRoot.querySelector('sup')).to.not.exist;
+        it('should have an asterisk', () => {
+          const label = queryFirstAssigned<HTMLDivElement>(element, {
+            slot: 'label',
+            selector: 'div',
+            flatten: true,
+          });
+          expect(label?.innerText.trim()).to.eq('test*');
         });
+      });
+
+      describe('and the label has an asterisk', () => {
+        beforeEach(async () => {
+          element = await fixture(html` <fake-label label="test*">
+            <input required />
+          </fake-label>`);
+        });
+
+        it('should pass the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
+        it('should not add an additional asterisk', () => {
+          const label = queryFirstAssigned<HTMLDivElement>(element, {
+            slot: 'label',
+            selector: 'div',
+            flatten: true,
+          });
+          expect(label?.innerText.trim()).to.not.eq('text*');
+        });
+      });
+    });
+
+    describe('when the input is not required', () => {
+      beforeEach(async () => {
+        element = await fixture(html` <fake-label label="test">
+          <input />
+        </fake-label>`);
+      });
+
+      it('should pass the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
+      it('should show a <sup>*</sup>', () => {
+        expect(element.renderRoot.querySelector('sup')).to.not.exist;
       });
     });
   });

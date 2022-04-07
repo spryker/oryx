@@ -63,6 +63,7 @@ describe('TypeaheadController', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<fake-typeahead>
+            <input value="foo" aria-label="make a11y happy" />
             <oryx-option>first</oryx-option>
             <oryx-option>second</oryx-option>
             <oryx-option>third</oryx-option>
@@ -85,6 +86,7 @@ describe('TypeaheadController', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<fake-typeahead>
+            <input value="foo" aria-label="make a11y happy" />
             <oryx-option slot="other">first</oryx-option>
             <oryx-option slot="other">second</oryx-option>
             <oryx-option slot="other">third</oryx-option>
@@ -143,30 +145,6 @@ describe('TypeaheadController', () => {
         }) as HTMLInputElement;
         expect(input?.value).to.eq('option-value');
       });
-    });
-  });
-
-  describe('when there is not input available', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<without-control-typeahead></without-control-typeahead>`
-      );
-    });
-
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible(a11yConfig);
-    });
-
-    describe('when an input is dispatched', () => {
-      beforeEach(() => {
-        element.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-    });
-
-    it('should not throw an error', () => {
-      expect(() => {
-        (): void => undefined;
-      }).not.to.throw;
     });
   });
 });

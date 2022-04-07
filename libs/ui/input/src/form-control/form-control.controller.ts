@@ -12,16 +12,23 @@ export class FormControlController implements ReactiveController {
   protected errorController: ErrorController;
 
   hostConnected(): void {
-    this.host.addEventListener('mousedown', (e: Event) => {
-      // we do not focus the control in case another (custom) focusable
-      // element is used inside the form control (ie inside prefix)
-      if (!isFocusable(e.target as HTMLElement)) {
-        if (e.target === this.host) {
-          e.preventDefault();
-        }
-        this.control?.focus();
+    this.host.addEventListener('mousedown', this.mouseDownHandler);
+  }
+
+  hostDisconnected(): void {
+    this.host.addEventListener('mousedown', this.mouseDownHandler);
+    this.controlAttrObserver?.disconnect();
+  }
+
+  protected mouseDownHandler(e: MouseEvent): void {
+    // we do not focus the control in case another (custom) focusable
+    // element is used inside the form control (ie inside prefix)
+    if (!isFocusable(e.target as HTMLElement)) {
+      if (e.target === this.host) {
+        e.preventDefault();
       }
-    });
+      this.control.focus();
+    }
   }
 
   render(
@@ -45,23 +52,13 @@ export class FormControlController implements ReactiveController {
     `;
   }
 
-  /**
-   * Returns the main control (input, select, etc.) that is available.
-   * Other controls that might be added to the prefix or suffix will be ignored.
-   */
-  get control(): HTMLInputElement | HTMLSelectElement | undefined {
-    return getControl(this.host);
-  }
-
   protected controlAttrObserver?: MutationObserver;
 
   protected handleDisabled(): void {
-    if (this.control) {
+    this.host.toggleAttribute('disabled', this.control.disabled);
+    this.registerListener({ attributes: ['disabled', 'readonly'] }, () => {
       this.host.toggleAttribute('disabled', this.control.disabled);
-      this.registerListener({ attributes: ['disabled', 'readonly'] }, () => {
-        this.host.toggleAttribute('disabled', this.control?.disabled);
-      });
-    }
+    });
   }
 
   protected _attributes = ['disabled', 'readonly'];
@@ -73,20 +70,20 @@ export class FormControlController implements ReactiveController {
   ): void {
     this._attributes = [...this._attributes, ...mutation.attributes];
     this._listeners.push(callback);
-
-    if (this.control) {
-      this.controlAttrObserver?.disconnect();
-      this.controlAttrObserver = new MutationObserver((mutations, observer) => {
-        this._listeners.forEach((listener) => listener(mutations, observer));
-      });
-      this.controlAttrObserver.observe(this.control, {
-        attributeFilter: this._attributes,
-      });
-    }
+    this.controlAttrObserver?.disconnect();
+    this.controlAttrObserver = new MutationObserver((mutations, observer) => {
+      this._listeners.forEach((listener) => listener(mutations, observer));
+    });
+    this.controlAttrObserver.observe(this.control, {
+      attributeFilter: this._attributes,
+    });
   }
 
-  hostDisconnected(): void {
-    this.controlAttrObserver?.disconnect();
+  protected get control():
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement {
+    return getControl(this.host);
   }
 
   constructor(protected host: FormControlOptions & LitElement) {
@@ -94,5 +91,7 @@ export class FormControlController implements ReactiveController {
     this.visibleFocusController = new VisibleFocusController(this.host);
     this.labelController = new LabelController(this.host);
     this.errorController = new ErrorController(this.host);
+
+    this.mouseDownHandler = this.mouseDownHandler.bind(this);
   }
 }

@@ -51,9 +51,7 @@ export class ToggleController implements ReactiveController {
   protected handleFocusin(): void {
     if (!this.skipOpeningOnNextFocus && this.showOnFocus) {
       this.timeStarted = new Date().getTime();
-      // if (getControl(this.host)?.value !== '') {
       this.toggle(true);
-      // }
     }
     this.skipOpeningOnNextFocus = false;
   }
@@ -108,10 +106,7 @@ export class ToggleController implements ReactiveController {
       return;
     }
 
-    const el = getControl(this.host);
-    if (el) {
-      this.maxHeightController.setBoundingBox(el);
-    }
+    this.maxHeightController.setBoundingBox(getControl(this.host));
 
     this.element?.toggleAttribute('show', true);
 

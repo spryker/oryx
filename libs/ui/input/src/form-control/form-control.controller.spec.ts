@@ -19,92 +19,41 @@ class InputComponent extends LitElement implements FormControlOptions {
   }
 }
 
-@customElement('fake-without-slot')
-class NoSlotComponent extends InputComponent {
-  protected override render(): TemplateResult {
-    return html``;
-  }
-}
-
 describe('FormControlController', () => {
-  let element: InputComponent | NoSlotComponent;
-
-  describe('when no slot is available', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<fake-without-slot></fake-without-slot>`);
-    });
-
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible(a11yConfig);
-    });
-
-    it('should not render a control', () => {
-      expect(getControl(element)).to.be.undefined;
-    });
-  });
+  let element: InputComponent;
 
   describe('control', () => {
-    describe('when no light dom is slotted in', () => {
+    describe('when no input is slotted in', () => {
       beforeEach(async () => {
-        element = await fixture(html`<fake-input label="some label" />`);
+        element = await fixture(
+          html`<fake-input label="some label"></fake-input>`
+        );
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
-      it('should render shadow dom', () => {
+      it('should render the fallback input from shadow dom', () => {
         expect(getControl(element)).to.eq(
           element.renderRoot.querySelector('input')
         );
       });
     });
 
-    describe('when a text node is slotted in', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<fake-input label="some label"> </fake-input>`
-        );
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should not render shadow dom', () => {
-        expect(getControl(element)).to.be.undefined;
-      });
-    });
-
-    describe('when light dom is slotted in', () => {
+    describe('when an input is slotted in', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-input label="some label">
           <input id="light" />
         </fake-input>`);
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('is should render light dom', () => {
         expect(getControl(element)).to.eq(element.querySelector('input#light'));
-      });
-    });
-
-    describe('when invalid control is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<fake-input>
-          <span slot="control">this won't work</span>
-        </fake-input>`);
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should not have a control', () => {
-        expect(getControl(element)).to.be.undefined;
       });
     });
 
@@ -120,7 +69,7 @@ describe('FormControlController', () => {
         ).dispatchEvent(new Event('slotchange'));
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -184,7 +133,7 @@ describe('FormControlController', () => {
         );
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -211,7 +160,7 @@ describe('FormControlController', () => {
         );
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 

@@ -7,6 +7,7 @@ import {
   AffixOptions,
   FormControlController,
   FormControlOptions,
+  getControl,
   inputStyles,
 } from '../../input';
 import { PasswordVisibilityStrategy } from './password-input.model';
@@ -126,16 +127,19 @@ export class PasswordInputComponent
   protected get isVisible(): boolean {
     return this._isVisible;
   }
+
   protected set isVisible(value: boolean) {
-    if (this.formControlController.control) {
-      const lastVal = this._isVisible;
-      this._isVisible = value;
-      if (this._isVisible) {
-        this.formControlController.control.setAttribute('type', 'text');
-      } else {
-        this.formControlController.control.setAttribute('type', 'password');
-      }
-      this.requestUpdate('isVisible', lastVal);
+    const lastVal = this._isVisible;
+    this._isVisible = value;
+    if (this._isVisible) {
+      this.control.setAttribute('type', 'text');
+    } else {
+      this.control.setAttribute('type', 'password');
     }
+    this.requestUpdate('isVisible', lastVal);
+  }
+
+  protected get control(): HTMLInputElement {
+    return getControl<HTMLInputElement>(this, 'input');
   }
 }

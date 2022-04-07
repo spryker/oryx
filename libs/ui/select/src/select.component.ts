@@ -6,7 +6,6 @@ import {
   getControl,
   LabelOptions,
 } from '../../input';
-import { PopoverController } from '../../popover';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -37,7 +36,7 @@ export class SelectComponent
   static styles = [selectStyles, typeaheadStyles, ...SearchComponent.styles];
 
   @property({ type: Boolean }) filter?: boolean;
-  @property({ type: Number }) filterStrategy?: FilterStrategyType;
+  @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
@@ -57,12 +56,11 @@ export class SelectComponent
     ClearIconAppearance.HOVER;
 
   protected selectController = new SelectController(this);
-  protected typeaheadController = new TypeaheadController(this);
-  protected formControlController = new FormControlController(this);
-  protected searchController = new SearchController(this);
-  protected popoverController = new PopoverController(this, {
+  protected typeaheadController = new TypeaheadController(this, {
     showOnFocus: false,
   });
+  protected searchController = new SearchController(this);
+  protected formControlController = new FormControlController(this);
 
   protected override render(): TemplateResult {
     return html`

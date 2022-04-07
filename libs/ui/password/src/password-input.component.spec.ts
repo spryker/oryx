@@ -1,19 +1,14 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { TemplateResult } from 'lit';
+import * as sinon from 'sinon';
 import { a11yConfig } from '../../a11y';
+import { getControl } from '../../input';
 import './index';
 import { PasswordInputComponent } from './password-input.component';
 import { PasswordVisibilityStrategy } from './password-input.model';
 
 describe('PasswordComponent', () => {
   let element: PasswordInputComponent;
-
-  describe('when the <oryx-password-input> is created', () => {
-    it('is should be an instance of PasswordComponent', () => {
-      const el = document.createElement('oryx-password-input');
-      expect(el).to.be.instanceof(PasswordInputComponent);
-    });
-  });
 
   describe('when the password control is rendered', () => {
     beforeEach(async () => {
@@ -24,14 +19,12 @@ describe('PasswordComponent', () => {
       );
     });
 
-    it('passes the a11y audit', async () => {
+    it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
     it('should have an input with password type', () => {
-      expect(element.querySelector('input')?.getAttribute('type')).to.eq(
-        'password'
-      );
+      expect(getControl(element).getAttribute('type')).to.eq('password');
     });
   });
 
@@ -71,7 +64,7 @@ describe('PasswordComponent', () => {
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -92,7 +85,7 @@ describe('PasswordComponent', () => {
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -147,7 +140,7 @@ describe('PasswordComponent', () => {
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
 
-      it('passes the a11y audit', async () => {
+      it('should pass the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
@@ -165,8 +158,11 @@ describe('PasswordComponent', () => {
     });
 
     describe('when the strategy is set to CLICK', () => {
-      describe('and a timeout is set to 10', () => {
+      let clock: sinon.SinonFakeTimers;
+
+      describe('and a timeout is set to 10ms', () => {
         beforeEach(async () => {
+          clock = sinon.useFakeTimers();
           element = await fixture(
             html`<oryx-password-input
               .strategy=${PasswordVisibilityStrategy.CLICK}
@@ -176,36 +172,35 @@ describe('PasswordComponent', () => {
             </oryx-password-input>`
           );
           toggle = element.shadowRoot?.querySelector('oryx-icon');
-        });
-
-        it('passes the a11y audit', async () => {
-          await expect(element).shadowDom.to.be.accessible(a11yConfig);
-        });
-
-        it('should still show the password after 9ms', (done) => {
           toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          expect(element.querySelector('input')?.getAttribute('type')).to.eq(
-            'text'
-          );
-          setTimeout(() => {
+        });
+
+        afterEach(() => {
+          sinon.restore();
+        });
+
+        describe('when 9ms has passed', () => {
+          beforeEach(() => {
+            clock.tick(9);
+          });
+
+          it('should still show the password', () => {
             expect(element.querySelector('input')?.getAttribute('type')).to.eq(
               'text'
             );
-            done();
-          }, 9);
+          });
         });
 
-        it('but should hide the password at 10ms', (done) => {
-          toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          expect(element.querySelector('input')?.getAttribute('type')).to.eq(
-            'text'
-          );
-          setTimeout(() => {
-            expect(
-              element.querySelector('input')?.getAttribute('type')
-            ).to.not.eq('text');
-            done();
-          }, 10);
+        describe('when 10ms has passed', () => {
+          beforeEach(() => {
+            clock.tick(10);
+          });
+
+          it('should no longer show the password', () => {
+            expect(element.querySelector('input')?.getAttribute('type')).to.eq(
+              'password'
+            );
+          });
         });
       });
     });

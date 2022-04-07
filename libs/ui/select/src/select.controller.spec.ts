@@ -29,7 +29,7 @@ describe('SelectController', () => {
       });
 
       it('should make the control readonly', () => {
-        expect(getControl(element)?.hasAttribute('readonly')).to.be.true;
+        expect(getControl(element).hasAttribute('readonly')).to.be.true;
       });
     });
 
@@ -41,19 +41,7 @@ describe('SelectController', () => {
       });
 
       it('should make the control readonly', () => {
-        expect(getControl(element)?.hasAttribute('readonly')).to.be.not.true;
-      });
-    });
-
-    describe('when no control is available', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<fake-typeahead></fake-typeahead>`);
-      });
-
-      it('should not throw an error', () => {
-        expect(() => {
-          (): void => undefined;
-        }).not.to.throw;
+        expect(getControl(element).hasAttribute('readonly')).to.be.not.true;
       });
     });
   });
@@ -71,7 +59,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the first value', () => {
-          expect(getControl(element)?.value).to.eq('first');
+          expect(getControl(element).value).to.eq('first');
         });
       });
 
@@ -86,7 +74,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the selected value', () => {
-          expect(getControl(element)?.value).to.eq('second');
+          expect(getControl(element).value).to.eq('second');
         });
       });
     });
@@ -108,7 +96,7 @@ describe('SelectController', () => {
           ).to.eq('');
         });
         it('should have a select with no value', () => {
-          expect(getControl(element)?.value).to.eq('');
+          expect(getControl(element).value).to.eq('');
         });
       });
 
@@ -128,7 +116,7 @@ describe('SelectController', () => {
           expect(firstOption.value).to.eq('');
         });
         it('should have a select with the selected value', () => {
-          expect(getControl(element)?.value).to.eq('second');
+          expect(getControl(element).value).to.eq('second');
         });
       });
     });

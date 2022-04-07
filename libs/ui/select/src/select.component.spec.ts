@@ -144,7 +144,7 @@ describe('SelectComponent', () => {
     });
     describe('when the focusin event is dispatched', () => {
       beforeEach(() => {
-        getControl(element)?.dispatchEvent(
+        getControl(element).dispatchEvent(
           new Event('focusin', { bubbles: true })
         );
       });

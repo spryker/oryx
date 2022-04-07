@@ -7,7 +7,6 @@ import {
   FormControlOptions,
   LabelOptions,
 } from '../../input';
-import { PopoverController } from '../../popover';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -52,7 +51,6 @@ export class TypeaheadComponent
   protected typeaheadController = new TypeaheadController(this);
   protected formControlController = new FormControlController(this);
   protected searchController = new SearchController(this);
-  protected popoverController = new PopoverController(this);
 
   protected override render(): TemplateResult {
     return html`

@@ -13,7 +13,7 @@ export class LabelController implements ReactiveController {
 
   hostUpdated(): void {
     this.host.toggleAttribute('has-label', !!this.host.label);
-    const isRequired = getControl(this.host)?.required;
+    const isRequired = this.control.required;
     if (isRequired !== this.isRequired) {
       this.isRequired = isRequired;
       this.host.requestUpdate('label');
@@ -30,6 +30,13 @@ export class LabelController implements ReactiveController {
     return this.host.label
       ? html`<div>${this.host.label}${asterisk}</div>`
       : html``;
+  }
+
+  protected get control():
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement {
+    return getControl(this.host);
   }
 
   constructor(protected host: LabelOptions & LitElement) {

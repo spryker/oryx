@@ -12,17 +12,15 @@ export class SearchController implements ReactiveController {
   protected affixController: AffixController;
 
   hostConnected(): void {
-    this.host.addEventListener('input', () => {
-      this.handleInputValue();
-    });
+    this.host.addEventListener('input', this.handleInputValue);
+    this.host.addEventListener('change', this.handleInputValue);
+    this.host.addEventListener('keydown', this.handleKeyEvent);
+  }
 
-    this.host.addEventListener('change', () => {
-      this.handleInputValue();
-    });
-
-    this.host.addEventListener('keydown', (ev: KeyboardEvent) =>
-      this.handleKeyEvent(ev)
-    );
+  hostDisconnected(): void {
+    this.host.removeEventListener('input', this.handleInputValue);
+    this.host.removeEventListener('change', this.handleInputValue);
+    this.host.removeEventListener('keydown', this.handleKeyEvent);
   }
 
   renderPrefix(): TemplateResult {
@@ -105,14 +103,14 @@ export class SearchController implements ReactiveController {
   }
 
   protected muteEvents(e: Event): void {
-    if (this.control && this.control.value !== '') {
+    if (this.control.value !== '') {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
     }
   }
 
-  get control(): HTMLInputElement | HTMLSelectElement | undefined {
+  protected get control(): HTMLInputElement | HTMLSelectElement {
     return getControl(this.host);
   }
 
@@ -121,20 +119,18 @@ export class SearchController implements ReactiveController {
   }
 
   protected search(): void {
-    if (this.control) {
-      const event = new CustomEvent<SearchEvent>('oryx.search', {
-        detail: {
-          query: this.control.value,
-        },
-        bubbles: true,
-        composed: true,
-      });
-      this.host.dispatchEvent(event);
-    }
+    const event = new CustomEvent<SearchEvent>('oryx.search', {
+      detail: {
+        query: this.control.value,
+      },
+      bubbles: true,
+      composed: true,
+    });
+    this.host.dispatchEvent(event);
   }
 
   protected clear(e: Event): void {
-    if (this.control && this.control.value !== '') {
+    if (this.control.value !== '') {
       e.stopPropagation();
       this.control.value = '';
       this.control.dispatchEvent(
@@ -158,14 +154,14 @@ export class SearchController implements ReactiveController {
   }
 
   protected handleInputValue(): void {
-    this.host.toggleAttribute(
-      'has-value',
-      !!this.control && this.control.value !== ''
-    );
+    this.host.toggleAttribute('has-value', this.control.value !== '');
   }
 
   constructor(protected host: SearchOptions & LitElement) {
     this.host.addController(this);
     this.affixController = new AffixController(host);
+
+    this.handleInputValue = this.handleInputValue.bind(this);
+    this.handleKeyEvent = this.handleKeyEvent.bind(this);
   }
 }
