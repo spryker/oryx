@@ -81,15 +81,14 @@ export default async function cypressViteExecutor(
 
   server.getServer().printUrls();
 
-  if (options.cypress?.watch) {
-    await cypress.open(cypressConfig);
-  } else {
-    await cypress.run(cypressConfig);
-  }
+  const result = await (options.cypress?.watch
+    ? cypress.open(cypressConfig)
+    : cypress.run(cypressConfig));
 
   await server.close();
 
-  return { success: true };
+  // @ts-ignore
+  return { success: !result.totalFailed && !result.failures };
 }
 
 class ViteServer {

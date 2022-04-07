@@ -71,7 +71,7 @@ var BUILD_MODE_MAP;
 function cypressViteExecutor(options) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     return __awaiter(this, void 0, void 0, function () {
-        var cypressConfig, isViteDevServer, viteConfigFile, viteMode, vitePort, viteRoot, serverConfig, server;
+        var cypressConfig, isViteDevServer, viteConfigFile, viteMode, vitePort, viteRoot, serverConfig, server, result;
         return __generator(this, function (_k) {
             switch (_k.label) {
                 case 0:
@@ -109,19 +109,16 @@ function cypressViteExecutor(options) {
                 case 1:
                     _k.sent();
                     server.getServer().printUrls();
-                    if (!((_j = options.cypress) === null || _j === void 0 ? void 0 : _j.watch)) return [3 /*break*/, 3];
-                    return [4 /*yield*/, cypress.open(cypressConfig)];
+                    return [4 /*yield*/, (((_j = options.cypress) === null || _j === void 0 ? void 0 : _j.watch)
+                            ? cypress.open(cypressConfig)
+                            : cypress.run(cypressConfig))];
                 case 2:
+                    result = _k.sent();
+                    return [4 /*yield*/, server.close()];
+                case 3:
                     _k.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, cypress.run(cypressConfig)];
-                case 4:
-                    _k.sent();
-                    _k.label = 5;
-                case 5: return [4 /*yield*/, server.close()];
-                case 6:
-                    _k.sent();
-                    return [2 /*return*/, { success: true }];
+                    // @ts-ignore
+                    return [2 /*return*/, { success: !result.totalFailed && !result.failures }];
             }
         });
     });
