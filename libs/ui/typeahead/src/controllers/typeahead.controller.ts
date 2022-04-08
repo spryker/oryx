@@ -17,6 +17,8 @@ export class TypeaheadController implements ReactiveController {
   protected filterController: FilterController;
   protected popoverController: PopoverController;
 
+  protected lastValue?: string;
+
   hostConnected(): void {
     this.host.addEventListener('input', this.inputEventHandler);
     this.host.addEventListener('change', this.changeEventHandler);
@@ -36,7 +38,6 @@ export class TypeaheadController implements ReactiveController {
   }
 
   hostUpdated(): void {
-    this.changeEventHandler();
     this.host
       .querySelectorAll<OptionComponent>('oryx-option')
       .forEach((option) => {
@@ -45,9 +46,11 @@ export class TypeaheadController implements ReactiveController {
         }
       });
 
-    if (this.control.value) {
-      this.popoverController.selectByValue(this.control.value);
+    if (!this.lastValue && this.control.value) {
+      this.lastValue = this.control.value;
     }
+
+    this.changeEventHandler();
   }
 
   renderPopover(): TemplateResult {
@@ -88,30 +91,25 @@ export class TypeaheadController implements ReactiveController {
   }
 
   protected changeEventHandler(): void {
-    const control = this.control;
-    if (control.value === '') {
-      return;
-    }
-    this.popoverController.selectByValue(control.value);
+    const value = this.control.value;
+    this.popoverController.selectByValue(value, this.lastValue === value);
   }
 
   protected selectEventHandler(e: CustomEvent<PopoverSelectEvent>): void {
-    this.control.dispatchEvent(
-      new Event('input', { bubbles: true, composed: true })
-    );
-    this.control.dispatchEvent(
-      new Event('change', { bubbles: true, composed: true })
-    );
-    this.handleSelect(e);
-  }
-
-  protected handleSelect(e: CustomEvent<PopoverSelectEvent>): void {
-    const control = this.control;
     if (e.detail.selected) {
       const value = this.getValue(e.detail.selected);
       if (value) {
-        control.value = value;
-        control.dispatchEvent(new Event('change', { bubbles: true }));
+        if (this.lastValue === value) {
+          return;
+        }
+        this.lastValue = value;
+        this.control.value = value;
+        this.control.dispatchEvent(
+          new Event(
+            this.control instanceof HTMLSelectElement ? 'change' : 'input',
+            { bubbles: true, composed: true }
+          )
+        );
       }
     }
   }

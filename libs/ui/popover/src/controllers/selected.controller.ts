@@ -22,7 +22,7 @@ export class SelectedController implements ReactiveController {
     this.select(-1);
   }
 
-  select(index: number): void {
+  select(index: number, omitDispatchEvent?: boolean): void {
     if (this.selected === index) {
       return;
     }
@@ -33,12 +33,14 @@ export class SelectedController implements ReactiveController {
 
     if (selected) {
       this.selected = index;
-      const event = new CustomEvent<PopoverSelectEvent>('oryx.select', {
-        detail: { selected },
-        bubbles: true,
-        composed: true,
-      });
-      this.host.dispatchEvent(event);
+      if (!omitDispatchEvent) {
+        const event = new CustomEvent<PopoverSelectEvent>('oryx.select', {
+          detail: { selected },
+          bubbles: true,
+          composed: true,
+        });
+        this.host.dispatchEvent(event);
+      }
     }
   }
 

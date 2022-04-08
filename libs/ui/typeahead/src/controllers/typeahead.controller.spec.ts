@@ -1,11 +1,11 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import * as sinon from 'sinon';
 import { a11yConfig } from '../../../a11y';
 import '../../../option/';
 import { PopoverSelectEvent } from '../../../popover';
 import { SearchEvent } from '../../../search';
-import { queryFirstAssigned } from '../../../utilities';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { TypeaheadController } from './typeahead.controller';
 
@@ -28,31 +28,8 @@ class FakeComponent extends LitElement implements TypeaheadOptions {
   }
 }
 
-@customElement('without-control-typeahead')
-class WithoutControlComponent extends FakeComponent {
-  render(): TemplateResult {
-    return html` <slot>no control</slot> `;
-  }
-}
-
-@customElement('without-option-value-typeahead')
-class WithoutOptionValueComponent extends LitElement {
-  protected popoverController = new TypeaheadController(this);
-
-  render(): TemplateResult {
-    return html`
-      <slot><input value="foo" /></slot>
-      <div>inner-value</div>
-      <oryx-option></oryx-option>
-    `;
-  }
-}
-
 describe('TypeaheadController', () => {
-  let element:
-    | FakeComponent
-    | WithoutOptionValueComponent
-    | WithoutControlComponent;
+  let element: FakeComponent;
 
   beforeEach(async () => {
     element = await fixture(html`<fake-typeahead></fake-typeahead>`);
@@ -125,25 +102,129 @@ describe('TypeaheadController', () => {
 
   describe('"oryx.select" event', () => {
     let selected: HTMLElement;
+    let onChange: any;
+    let onInput: any;
 
-    describe('when the event is dispatched', () => {
-      beforeEach(() => {
-        selected = element.shadowRoot?.querySelector(
-          'oryx-option'
-        ) as HTMLElement;
-        const event = new CustomEvent<PopoverSelectEvent>('oryx.select', {
-          detail: { selected },
-          bubbles: true,
-          composed: true,
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    const dispatchSelectEvent = (): void => {
+      selected = element.shadowRoot?.querySelector(
+        'oryx-option'
+      ) as HTMLElement;
+      const event = new CustomEvent<PopoverSelectEvent>('oryx.select', {
+        detail: { selected },
+        bubbles: true,
+        composed: true,
+      });
+      element.dispatchEvent(event);
+    };
+
+    const prepareComponent = async (control: TemplateResult): Promise<void> => {
+      onChange = sinon.stub();
+      onInput = sinon.stub();
+      element = await fixture(
+        html`<fake-typeahead @change="${onChange}" @input="${onInput}">
+          ${control}
+        </fake-typeahead>`
+      );
+    };
+
+    describe('when a select is used', () => {
+      describe('and the selected option is reselected', () => {
+        beforeEach(async () => {
+          prepareComponent(
+            html`<select>
+              <option value="option-value"></option>
+            </select>`
+          );
         });
-        element.dispatchEvent(event);
+        describe('and the "oryx.select" event is dispatched', () => {
+          beforeEach(() => {
+            dispatchSelectEvent();
+          });
+          it('should not dispatch the change event', () => {
+            expect(onChange.called).to.be.false;
+          });
+          it('should not dispatch the input event for select element', () => {
+            expect(onInput.called).to.be.false;
+          });
+        });
       });
 
-      it('should update the input value with the value', () => {
-        const input: HTMLInputElement = queryFirstAssigned(element, {
-          flatten: true,
-        }) as HTMLInputElement;
-        expect(input?.value).to.eq('option-value');
+      describe('and a new option is selected', () => {
+        beforeEach(async () => {
+          prepareComponent(
+            html`<select>
+              <option value="new-value"></option>
+            </select>`
+          );
+        });
+        describe('and the "oryx.select" event is dispatched', () => {
+          beforeEach(() => {
+            dispatchSelectEvent();
+          });
+          it('should dispatch the change event', () => {
+            expect(onChange.called).to.be.true;
+          });
+          it('should not dispatch the input event for select element', () => {
+            expect(onInput.called).to.be.false;
+          });
+        });
+      });
+    });
+
+    describe('when an input is used', () => {
+      describe('and there is no initial value for the input', () => {
+        beforeEach(async () => {
+          prepareComponent(html`<input />`);
+        });
+        describe('and the "oryx.select" event is dispatched', () => {
+          beforeEach(() => {
+            dispatchSelectEvent();
+          });
+          it('should dispatch the input event', () => {
+            expect(onInput.called).to.be.true;
+          });
+          it('should not dispatch the change event for input element', () => {
+            expect(onChange.called).to.be.false;
+          });
+        });
+      });
+
+      describe('and the input value is not equal to the selected value', () => {
+        beforeEach(async () => {
+          prepareComponent(html`<input value="different" />`);
+        });
+        describe('and the "oryx.select" event is dispatched', () => {
+          beforeEach(() => {
+            dispatchSelectEvent();
+          });
+          it('should dispatch the input event', () => {
+            expect(onInput.called).to.be.true;
+          });
+          it('should not dispatch the change event for input element', () => {
+            expect(onChange.called).to.be.false;
+          });
+        });
+      });
+
+      describe('and the input value is already the selected value', () => {
+        beforeEach(async () => {
+          prepareComponent(html`<input value="option-value" />`);
+        });
+        describe('and the "oryx.select" event is dispatched', () => {
+          beforeEach(() => {
+            dispatchSelectEvent();
+          });
+          it('should not dispatch the input event', () => {
+            expect(onInput.called).to.be.false;
+          });
+          it('should not dispatch the change event for input element', () => {
+            expect(onChange.called).to.be.false;
+          });
+        });
       });
     });
   });
