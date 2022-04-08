@@ -93,6 +93,9 @@ export class TypeaheadController implements ReactiveController {
   protected changeEventHandler(): void {
     const value = this.control.value;
     this.popoverController.selectByValue(value, this.lastValue === value);
+    if (value === '') {
+      this.lastValue = undefined;
+    }
   }
 
   protected selectEventHandler(e: CustomEvent<PopoverSelectEvent>): void {
