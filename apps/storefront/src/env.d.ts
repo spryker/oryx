@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly CONTENT_BACKEND_URL: string;
+  readonly FES_CONTENT_BACKEND_URL: string;
 }
 
 interface ImportMeta {

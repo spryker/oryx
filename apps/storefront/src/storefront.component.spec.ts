@@ -4,7 +4,6 @@ import { StorefrontComponent } from './storefront.component';
 describe('InputComponent', () => {
   beforeEach(async () => {
     document.body.innerHTML = '<storefront-component></storefront-component>';
-    await window.happyDOM.whenAsyncComplete();
   });
 
   const getElement = (): StorefrontComponent => {

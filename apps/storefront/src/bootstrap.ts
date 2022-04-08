@@ -37,7 +37,7 @@ export const createInjector = (providers: Provider[] = []): Injector =>
       ...CORE_PROVIDERS,
       {
         provide: 'CONTENT_BACKEND_URL',
-        useValue: import.meta.env.CONTENT_BACKEND_URL || '',
+        useValue: import.meta.env.FES_CONTENT_BACKEND_URL || '',
       },
       {
         provide: Services.ComponentMapping,
