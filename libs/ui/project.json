@@ -5,19 +5,21 @@
   "targets": {
     "build": {
       "executor": "./tools/executors/components-library:build",
-      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/ui",
-        "main": "libs/ui/src/index.ts",
-        "tsConfig": "libs/ui/tsconfig.lib.json",
         "assets": [
-          "libs/ui/*.md",
           {
-            "input": "libs/ui/public",
+            "input": "public",
             "glob": "**/*",
             "output": "/public/"
           }
-        ]
+        ],
+        "exclude": ["public", "actions"]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "options": {
+        "exclude": ["public", "actions"]
       }
     },
     "lint": {

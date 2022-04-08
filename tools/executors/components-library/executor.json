@@ -1,9 +1,14 @@
 {
   "executors": {
     "build": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
-      "description": "Uses tsc executor then creates package.json in every folder (exclude public 'folder')"
+      "implementation": "./build",
+      "schema": "./build-schema.json",
+      "description": "Uses tsc executor then updates package.json exports field. Check list of first level directories in libraries and add them to the generated package.json inside exports field e.g. ([dirName]: {default: [dirName].index.js, types: [dirName].index.d.ts}, except excluded folders. Also merge original package.json exports fields into generated"
+    },
+    "paths": {
+      "implementation": "./paths",
+      "schema": "./paths-schema.json",
+      "description": "Generates paths based on library scaffolding and package.json. Check list of first level directories and exports field in the package.json. Fill tsConfig file (based on the `name` property) e.g. ([packageName]: [`[libraryPath][dirName].index.ts`])"
     }
   }
 }

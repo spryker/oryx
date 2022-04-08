@@ -1,6 +1,8 @@
 {
   "name": "@spryker-oryx/ui",
   "version": "0.0.1",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
   "watch": {
     "test": {
       "extensions": "spec.ts",
@@ -13,5 +15,11 @@
   "scripts": {
     "test": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && wtr --coverage",
     "test:watch": "rimraf dist/out-tsc && tsc -p tsconfig.spec.json && concurrently -k -r \"tsc -p tsconfig.spec.json --watch --preserveWatchOutput\" \"wtr --watch\""
+  },
+  "exports": {
+    "button": {
+      "default": "./actions/button/index.js",
+      "types": "./actions/button/index.d.ts"
+    }
   }
 }
