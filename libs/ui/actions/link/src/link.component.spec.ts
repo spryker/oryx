@@ -1,5 +1,5 @@
 import { expect, fixture, html } from '@open-wc/testing';
-import { a11yConfig } from '../a11y';
+import { a11yConfig } from '../../../a11y';
 import './index';
 import { LinkComponent } from './link.component';
 import { LinkTypes } from './link.model';
