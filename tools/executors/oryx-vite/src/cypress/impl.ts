@@ -1,3 +1,4 @@
+import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
 import * as cypress from 'cypress';
 import * as path from 'path';
 import { basename, dirname } from 'path';
@@ -10,6 +11,8 @@ import {
   ViteDevServer,
 } from 'vite';
 import * as istanbul from 'vite-plugin-istanbul';
+import CypressRunResult = CypressCommandLine.CypressRunResult;
+import CypressFailedRunResult = CypressCommandLine.CypressFailedRunResult;
 
 export interface CypressViteExecutorOptions {
   cypress: {
@@ -36,8 +39,12 @@ enum BUILD_MODE_MAP {
 }
 
 export default async function cypressViteExecutor(
-  options: CypressViteExecutorOptions
+  options: CypressViteExecutorOptions,
+  context: ExecutorContext
 ) {
+  const projectDir = context.workspace.projects[context.projectName].root;
+  const projectRoot = joinPathFragments(`${context.root}/${projectDir}`);
+
   const cypressConfig = {
     ...options.cypress,
     project: dirname(options.cypress?.configFile),
@@ -65,7 +72,7 @@ export default async function cypressViteExecutor(
     },
     plugins: [
       istanbul({
-        cwd: path.resolve(__dirname, '..', '..', '..', ...viteRoot.split('/')),
+        cwd: path.resolve(context.root, ...viteRoot.split('/')),
         include: ['**/*.js', '**/*.ts'],
         extension: ['.js', '.ts'],
         exclude: ['**/*.spec.js', '**/*.spec.ts'],
@@ -87,8 +94,11 @@ export default async function cypressViteExecutor(
 
   await server.close();
 
-  // @ts-ignore
-  return { success: !result.totalFailed && !result.failures };
+  return {
+    success:
+      !(result as CypressRunResult)?.totalFailed &&
+      !(result as CypressFailedRunResult)?.failures,
+  };
 }
 
 class ViteServer {

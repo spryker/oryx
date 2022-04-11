@@ -46,16 +46,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 exports.__esModule = true;
+var devkit_1 = require("@nrwl/devkit");
 var cypress = require("cypress");
 var path = require("path");
 var path_1 = require("path");
@@ -68,19 +67,20 @@ var BUILD_MODE_MAP;
     BUILD_MODE_MAP["ci"] = "ci";
     BUILD_MODE_MAP["test"] = "test";
 })(BUILD_MODE_MAP || (BUILD_MODE_MAP = {}));
-function cypressViteExecutor(options) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+function cypressViteExecutor(options, context) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     return __awaiter(this, void 0, void 0, function () {
-        var cypressConfig, isViteDevServer, viteConfigFile, viteMode, vitePort, viteRoot, serverConfig, server, result;
-        return __generator(this, function (_k) {
-            switch (_k.label) {
+        var projectDir, projectRoot, cypressConfig, isViteDevServer, viteConfigFile, viteMode, vitePort, viteRoot, serverConfig, server, result;
+        return __generator(this, function (_m) {
+            switch (_m.label) {
                 case 0:
-                    cypressConfig = __assign(__assign({}, options.cypress), { project: (0, path_1.dirname)((_a = options.cypress) === null || _a === void 0 ? void 0 : _a.configFile), configFile: (0, path_1.basename)(options.cypress.configFile) });
+                    projectDir = context.workspace.projects[context.projectName].root;
+                    projectRoot = devkit_1.joinPathFragments(context.root + "/" + projectDir);
+                    cypressConfig = __assign(__assign({}, options.cypress), { project: path_1.dirname((_a = options.cypress) === null || _a === void 0 ? void 0 : _a.configFile), configFile: path_1.basename(options.cypress.configFile) });
                     isViteDevServer = (_b = options.vite) === null || _b === void 0 ? void 0 : _b.devServer;
                     viteConfigFile = (_c = options.vite) === null || _c === void 0 ? void 0 : _c.configFile;
                     viteMode = ((_d = options.vite) === null || _d === void 0 ? void 0 : _d.mode) && BUILD_MODE_MAP[(_e = options.vite) === null || _e === void 0 ? void 0 : _e.mode]
-                        ? (_f = options.vite) === null || _f === void 0 ? void 0 : _f.mode
-                        : 'development';
+                        ? (_f = options.vite) === null || _f === void 0 ? void 0 : _f.mode : 'development';
                     vitePort = ((_g = options.vite) === null || _g === void 0 ? void 0 : _g.port) || 4200;
                     viteRoot = ((_h = options.vite) === null || _h === void 0 ? void 0 : _h.root) || './';
                     serverConfig = {
@@ -95,7 +95,7 @@ function cypressViteExecutor(options) {
                         },
                         plugins: [
                             istanbul({
-                                cwd: path.resolve.apply(path, __spreadArray([__dirname, '..', '..', '..'], viteRoot.split('/'), false)),
+                                cwd: path.resolve.apply(path, __spreadArrays([context.root], viteRoot.split('/'))),
                                 include: ['**/*.js', '**/*.ts'],
                                 extension: ['.js', '.ts'],
                                 exclude: ['**/*.spec.js', '**/*.spec.ts'],
@@ -107,18 +107,19 @@ function cypressViteExecutor(options) {
                     server = new ViteServer(serverConfig, isViteDevServer);
                     return [4 /*yield*/, server.createServer()];
                 case 1:
-                    _k.sent();
+                    _m.sent();
                     server.getServer().printUrls();
-                    return [4 /*yield*/, (((_j = options.cypress) === null || _j === void 0 ? void 0 : _j.watch)
-                            ? cypress.open(cypressConfig)
+                    return [4 /*yield*/, (((_j = options.cypress) === null || _j === void 0 ? void 0 : _j.watch) ? cypress.open(cypressConfig)
                             : cypress.run(cypressConfig))];
                 case 2:
-                    result = _k.sent();
+                    result = _m.sent();
                     return [4 /*yield*/, server.close()];
                 case 3:
-                    _k.sent();
-                    // @ts-ignore
-                    return [2 /*return*/, { success: !result.totalFailed && !result.failures }];
+                    _m.sent();
+                    return [2 /*return*/, {
+                            success: !((_k = result) === null || _k === void 0 ? void 0 : _k.totalFailed) &&
+                                !((_l = result) === null || _l === void 0 ? void 0 : _l.failures)
+                        }];
             }
         });
     });
@@ -141,14 +142,14 @@ var ViteServer = /** @class */ (function () {
                     case 0:
                         if (!this.isDevServer) return [3 /*break*/, 3];
                         _a = this;
-                        return [4 /*yield*/, (0, vite_1.createServer)(this.config)];
+                        return [4 /*yield*/, vite_1.createServer(this.config)];
                     case 1:
                         _a.server = _c.sent();
                         return [4 /*yield*/, this.server.listen()];
                     case 2:
                         _c.sent();
                         return [3 /*break*/, 6];
-                    case 3: return [4 /*yield*/, (0, vite_1.build)({
+                    case 3: return [4 /*yield*/, vite_1.build({
                             configFile: this.config.configFile,
                             mode: this.config.mode,
                             root: this.config.root
@@ -156,7 +157,7 @@ var ViteServer = /** @class */ (function () {
                     case 4:
                         _c.sent();
                         _b = this;
-                        return [4 /*yield*/, (0, vite_1.preview)(this.config)];
+                        return [4 /*yield*/, vite_1.preview(this.config)];
                     case 5:
                         _b.server = _c.sent();
                         _c.label = 6;

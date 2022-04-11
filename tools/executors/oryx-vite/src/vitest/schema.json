@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "cli": "nx",
+  "properties": {
+    "run": {
+      "type": "boolean",
+      "description": "Dismiss watch mode",
+      "default": false
+    }
+  },
+  "description": "Extends default vitest UserConfig interface"
+}

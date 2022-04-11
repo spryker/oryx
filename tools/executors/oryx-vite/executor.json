@@ -1,9 +1,14 @@
 {
   "executors": {
     "cypress": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
+      "implementation": "./src/cypress/impl",
+      "schema": "./src/cypress/schema.json",
       "description": "Runs `cypress`."
+    },
+    "vitest": {
+      "implementation": "./src/vitest/impl",
+      "schema": "./src/vitest/schema.json",
+      "description": "Runs `vitest`."
     }
   }
 }
