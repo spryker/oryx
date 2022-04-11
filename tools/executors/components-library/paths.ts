@@ -1,6 +1,8 @@
-import { ExecutorContext, readJsonFile, writeJsonFile } from '@nrwl/devkit';
-import { Dirent } from 'fs';
+import { ExecutorContext, readJsonFile } from '@nrwl/devkit';
+import { sortObjectByKeys } from '@nrwl/tao/src/utils/object-sort';
+import { Dirent, writeFileSync } from 'fs';
 import { join } from 'path';
+import { format, resolveConfig } from 'prettier';
 import { libDirsNormalizer, LibOptions } from './utils';
 
 export interface ComponentsLibraryPathsExecutorOptions extends LibOptions {
@@ -18,27 +20,9 @@ export default async function componentsLibraryPathsExecutor(
   const tsConfigPath = join(context.root, options.name);
   const tsConfig = readJsonFile(tsConfigPath);
   const realConfig = JSON.stringify(tsConfig);
-  const prePaths = {};
-  const postPaths = {};
-  const libPaths = {};
-  let isPost = false;
 
   for (const key in tsConfig.compilerOptions.paths) {
-    const isCurrentLib = key.includes(packageJson.name);
-
-    if (!isPost && !isCurrentLib) {
-      prePaths[key] = tsConfig.compilerOptions.paths[key];
-    }
-
-    if (isPost && !isCurrentLib) {
-      postPaths[key] = tsConfig.compilerOptions.paths[key];
-    }
-
-    if (isCurrentLib) {
-      if (!isPost) {
-        isPost = true;
-      }
-
+    if (key.includes(packageJson.name)) {
       delete tsConfig.compilerOptions.paths[key];
     }
   }
@@ -47,14 +31,14 @@ export default async function componentsLibraryPathsExecutor(
     const { name: dirName } = dir;
     const pathKey = dirName === 'src' ? '' : `/${dirName}`;
 
-    libPaths[`${packageJson.name}${pathKey}`] = [
+    tsConfig.compilerOptions.paths[`${packageJson.name}${pathKey}`] = [
       `${options.cwd}/${dirName}/index.ts`,
     ];
   });
 
   if (packageJson.exports) {
     for (const key in packageJson.exports) {
-      libPaths[`${packageJson.name}/${key}`] = [
+      tsConfig.compilerOptions.paths[`${packageJson.name}/${key}`] = [
         join(
           options.cwd,
           packageJson.exports[key].default.replace(/.js$/, '.ts')
@@ -63,11 +47,9 @@ export default async function componentsLibraryPathsExecutor(
     }
   }
 
-  tsConfig.compilerOptions.paths = {
-    ...prePaths,
-    ...libPaths,
-    ...postPaths,
-  };
+  tsConfig.compilerOptions.paths = sortObjectByKeys(
+    tsConfig.compilerOptions.paths
+  );
 
   const generatedConfig = JSON.stringify(tsConfig);
 
@@ -78,7 +60,13 @@ export default async function componentsLibraryPathsExecutor(
   }
 
   if (options.update) {
-    writeJsonFile(tsConfigPath, tsConfig);
+    const prettierConfig = await resolveConfig(tsConfigPath);
+    const formattedConfig = format(generatedConfig, {
+      ...prettierConfig,
+      filepath: tsConfigPath,
+    });
+
+    writeFileSync(tsConfigPath, formattedConfig);
   }
 
   return { success: true };

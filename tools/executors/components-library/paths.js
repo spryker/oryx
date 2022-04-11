@@ -48,60 +48,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var devkit_1 = require("@nrwl/devkit");
+var object_sort_1 = require("@nrwl/tao/src/utils/object-sort");
+var fs_1 = require("fs");
 var path_1 = require("path");
+var prettier_1 = require("prettier");
 var utils_1 = require("./utils");
 function componentsLibraryPathsExecutor(options, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var packageJson, tsConfigPath, tsConfig, realConfig, prePaths, postPaths, libPaths, isPost, key, isCurrentLib, key, generatedConfig;
+        var packageJson, tsConfigPath, tsConfig, realConfig, key, key, generatedConfig, prettierConfig, formattedConfig;
         return __generator(this, function (_a) {
-            options.cwd = context.workspace.projects[context.projectName].root;
-            packageJson = (0, devkit_1.readJsonFile)((0, path_1.join)(options.cwd, 'package.json'));
-            tsConfigPath = (0, path_1.join)(context.root, options.name);
-            tsConfig = (0, devkit_1.readJsonFile)(tsConfigPath);
-            realConfig = JSON.stringify(tsConfig);
-            prePaths = {};
-            postPaths = {};
-            libPaths = {};
-            isPost = false;
-            for (key in tsConfig.compilerOptions.paths) {
-                isCurrentLib = key.includes(packageJson.name);
-                if (!isPost && !isCurrentLib) {
-                    prePaths[key] = tsConfig.compilerOptions.paths[key];
-                }
-                if (isPost && !isCurrentLib) {
-                    postPaths[key] = tsConfig.compilerOptions.paths[key];
-                }
-                if (isCurrentLib) {
-                    if (!isPost) {
-                        isPost = true;
+            switch (_a.label) {
+                case 0:
+                    options.cwd = context.workspace.projects[context.projectName].root;
+                    packageJson = (0, devkit_1.readJsonFile)((0, path_1.join)(options.cwd, 'package.json'));
+                    tsConfigPath = (0, path_1.join)(context.root, options.name);
+                    tsConfig = (0, devkit_1.readJsonFile)(tsConfigPath);
+                    realConfig = JSON.stringify(tsConfig);
+                    for (key in tsConfig.compilerOptions.paths) {
+                        if (key.includes(packageJson.name)) {
+                            delete tsConfig.compilerOptions.paths[key];
+                        }
                     }
-                    delete tsConfig.compilerOptions.paths[key];
-                }
+                    (0, utils_1.libDirsNormalizer)(options, function (dir) {
+                        var dirName = dir.name;
+                        var pathKey = dirName === 'src' ? '' : "/".concat(dirName);
+                        tsConfig.compilerOptions.paths["".concat(packageJson.name).concat(pathKey)] = [
+                            "".concat(options.cwd, "/").concat(dirName, "/index.ts"),
+                        ];
+                    });
+                    if (packageJson.exports) {
+                        for (key in packageJson.exports) {
+                            tsConfig.compilerOptions.paths["".concat(packageJson.name, "/").concat(key)] = [
+                                (0, path_1.join)(options.cwd, packageJson.exports[key]["default"].replace(/.js$/, '.ts')),
+                            ];
+                        }
+                    }
+                    tsConfig.compilerOptions.paths = (0, object_sort_1.sortObjectByKeys)(tsConfig.compilerOptions.paths);
+                    generatedConfig = JSON.stringify(tsConfig);
+                    if (!options.update && generatedConfig !== realConfig) {
+                        console.error("Please, update ".concat(options.name));
+                        return [2 /*return*/, { success: false }];
+                    }
+                    if (!options.update) return [3 /*break*/, 2];
+                    return [4 /*yield*/, (0, prettier_1.resolveConfig)(tsConfigPath)];
+                case 1:
+                    prettierConfig = _a.sent();
+                    formattedConfig = (0, prettier_1.format)(generatedConfig, __assign(__assign({}, prettierConfig), { filepath: tsConfigPath }));
+                    (0, fs_1.writeFileSync)(tsConfigPath, formattedConfig);
+                    _a.label = 2;
+                case 2: return [2 /*return*/, { success: true }];
             }
-            (0, utils_1.libDirsNormalizer)(options, function (dir) {
-                var dirName = dir.name;
-                var pathKey = dirName === 'src' ? '' : "/" + dirName;
-                libPaths["" + packageJson.name + pathKey] = [
-                    options.cwd + "/" + dirName + "/index.ts",
-                ];
-            });
-            if (packageJson.exports) {
-                for (key in packageJson.exports) {
-                    libPaths[packageJson.name + "/" + key] = [
-                        (0, path_1.join)(options.cwd, packageJson.exports[key]["default"].replace(/.js$/, '.ts')),
-                    ];
-                }
-            }
-            tsConfig.compilerOptions.paths = __assign(__assign(__assign({}, prePaths), libPaths), postPaths);
-            generatedConfig = JSON.stringify(tsConfig);
-            if (!options.update && generatedConfig !== realConfig) {
-                console.error("Please, update " + options.name);
-                return [2 /*return*/, { success: false }];
-            }
-            if (options.update) {
-                (0, devkit_1.writeJsonFile)(tsConfigPath, tsConfig);
-            }
-            return [2 /*return*/, { success: true }];
         });
     });
 }
