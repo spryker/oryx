@@ -63,7 +63,7 @@
     "test": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "vitest run",
+        "command": "vitest run --coverage",
         "config": "apps/storefront/vitest.config.ts"
       }
     },
