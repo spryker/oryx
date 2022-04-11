@@ -77,7 +77,7 @@
   --oryx-icon-size-small: 12px;
 
   /* modal */
-  --oryx-modal-min-width: 400px;
+  --oryx-modal-min-width: min(100vw, 400px);
   --oryx-modal-background-color: rgb(0 0 0 / 50%);
 }
 
