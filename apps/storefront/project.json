@@ -50,7 +50,12 @@
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "commands": ["./patch.sh", "nx run storefront:build-ssr"]
+        "commands": [
+          "./patch.sh",
+          "nx run storefront:build-ssr",
+          "npm run storefront-lambda"
+        ],
+        "parallel": false
       }
     },
     "build-testing": {

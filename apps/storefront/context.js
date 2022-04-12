@@ -1,12 +1,14 @@
 import { getWindow } from '@lit-labs/ssr/lib/dom-shim.js';
 import * as fs from 'fs';
 import { createRequire } from 'module';
-import * as path from 'path';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import * as vm from 'vm';
 
 export const serverContext = (options = {}) => {
-  const base = options.base ? options.base : './';
+  const server = options.base ? options.base : '../../server/entry-server.js';
   const url = options.url ? options.url : import.meta.url;
+  const base = dirname(fileURLToPath(url));
   const window = getWindow({
     includeJSBuiltIns: true,
     props: {
@@ -16,9 +18,8 @@ export const serverContext = (options = {}) => {
   window.URLSearchParams = URLSearchParams;
   window.URL = URL;
   window.exports = {};
-  //TODO decide how we want to resolve entry-server properly
   const script = new vm.Script(`${fs.readFileSync(
-    path.resolve(base, 'dist/apps/storefront/server/entry-server.js'),
+    resolve(base, server),
     'utf8'
   )};
         (() =>
