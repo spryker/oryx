@@ -27,9 +27,9 @@ export class ComponentsRegistryService implements ComponentsRegistryContract {
     }
     return component.template
       ? component.template(uid)
-      : html`<${unsafeStatic(component.tag)} componentid="${
+      : html`<${unsafeStatic(component.tag)} uid="${
           component.id
-        }" uid="${component.id}"></${unsafeStatic(component.tag)}>`;
+        }"></${unsafeStatic(component.tag)}>`;
   }
 
   resolveComponent(type: string): Observable<string> {

@@ -43,7 +43,7 @@ class MockComponentsRegistryService
   }
 
   resolveTemplate(type: string, uid: string): TemplateResult {
-    return html`<oryx-banner componentid="${uid}" uid="${uid}"></oryx-banner>`;
+    return html`<oryx-banner uid="${uid}"></oryx-banner>`;
   }
 }
 
@@ -85,7 +85,7 @@ describe('Experience Composition', () => {
     expect(banner).toBeTruthy();
   });
 
-  it('should render components with uid and componentid attributes', () => {
+  it('should render components with uid attributes', () => {
     const banner = getElement()?.shadowRoot?.querySelector('oryx-banner');
 
     expect(banner?.getAttribute('uid')).toBe('1');
