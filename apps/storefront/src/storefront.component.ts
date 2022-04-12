@@ -14,6 +14,7 @@ export class StorefrontComponent extends LitElement {
   override render(): TemplateResult {
     return html`<div>
       <experience-composition key="${this.route}"></experience-composition>
+      <product-title code="1"></product-title>
     </div> `;
   }
 }

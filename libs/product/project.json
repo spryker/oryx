@@ -1,0 +1,72 @@
+{
+  "projectType": "library",
+  "root": "libs/product",
+  "sourceRoot": "libs/product",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf ../../dist/libs/product/*",
+          "tsc --project tsconfig.lib.json",
+          "vite build"
+        ],
+        "parallel": false,
+        "cwd": "libs/product"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc --project tsconfig.spec.json",
+          "vitest run --coverage"
+        ],
+        "cwd": "libs/product",
+        "parallel": false
+      }
+    },
+    "test-watch": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
+        "cwd": "libs/product",
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/product/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/web-components",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/product/.storybook"
+        },
+        "staticDir": ["libs/product/public"]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/product/**/*.css",
+          "libs/product/**/*.styles.ts"
+        ]
+      }
+    }
+  }
+}
