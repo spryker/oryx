@@ -59,8 +59,30 @@ export const enum IconSize {
   LARGE = 'large',
 }
 
-export enum NavigationIcons {
+export enum NavigationIconsV2 {
+  Sales = 'sales',
+  Dashboard = 'dashboard',
+  Catalog = 'catalog',
+  Customer = 'customer',
+  Maintenance = 'maintenance',
+  MerchantProfile = 'merchantProfile',
+  Administration = 'administration',
+  Users = 'users',
+  Marketplace = 'marketplace',
+  Merchandising = 'merchandising',
+  Content = 'content',
+  Ratings = 'ratings',
   Rocket = 'rocket',
+}
+
+export enum NavigationIcons {
+  Dashboards = 'dashboards',
+  Orders = 'orders',
+  Merchant = 'merchant',
+  Products = 'products',
+  DarkMode = 'darkMode',
+  LightMode = 'lightMode',
+  Profile = 'profile',
 }
 
 export enum ViewIcons {
@@ -77,32 +99,67 @@ export enum NotificationIcons {
 }
 
 export enum LanguageIcons {
+  Planet = 'planet',
   Germany = 'germany',
+  America = 'america',
+  Spain = 'spain',
+  France = 'france',
 }
 
 export enum MiscIcons {
-  Add = 'add',
-  Back = 'back',
   Close = 'close',
-  CloseAll = 'close_all',
-  Drag = 'drag',
-  Dropdown = 'dropdown',
-  Loader = 'loader',
-  Mark = 'mark',
-  Remove = 'remove',
-  Reset = 'reset',
+  Filters = 'filters',
   Search = 'search',
+  Settings = 'settings',
+  Sort = 'sort',
+  Calendar = 'calendar',
+  Imports = 'imports',
+  Reset = 'reset',
+  Copy = 'copy',
+  Maximize = 'maximize',
+  Minimize = 'minimize',
+  Actions = 'actions',
+  Drag = 'drag',
+  InputStepper = 'inputStepper',
+  NavigationArrow = 'navigationArrow',
+  InputError = 'inputError',
+  Mark = 'mark',
+  Comment = 'comment',
+  Remove = 'remove',
+  Minus = 'minus',
+  Add = 'add',
+  FastForward = 'fastForward',
+  Create = 'create',
+  Edit = 'edit',
   Trash = 'trash',
+  File = 'file',
   Visible = 'visible',
   Invisible = 'invisible',
+  Star = 'star',
+  Integration = 'integration',
+  Placeholder = 'placeholder',
+  Dropdown = 'dropdown',
+  DropUp = 'dropUp',
+  Back = 'back',
+  Front = 'front',
+  Loader = 'loader',
+  Disconnect = 'disconnect',
+  Locker = 'locker',
+  TextAreaResizable = 'textAreaResizable',
   Link = 'link',
+  Help = 'help',
+  Menu = 'menu',
 }
 
 export enum FilterIcons {
   Filter = 'filter',
+  Popular = 'popular',
+  GoldPartner = 'goldPartner',
+  SilverPartner = 'silverPartner',
 }
 
 export const IconTypes = {
+  ...NavigationIconsV2,
   ...NavigationIcons,
   ...ViewIcons,
   ...NotificationIcons,

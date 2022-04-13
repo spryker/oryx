@@ -1,8 +1,8 @@
-import { Icons } from '../../icon';
-import { optionStyles } from './option.styles';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { Icons } from '../../Graphical/icon';
+import { optionStyles } from './option.styles';
 
 export class OptionComponent extends LitElement {
   static styles = [optionStyles];

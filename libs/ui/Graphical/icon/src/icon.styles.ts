@@ -41,6 +41,28 @@ export const styles = css`
     color: var(--oryx-color-info);
   }
 
+  :host([type='popular']) {
+    color: #ff6800;
+  }
+
+  :host([type='goldPartner']) {
+    color: #fdaf1c;
+  }
+
+  :host([type='silverPartner']) {
+    color: #9ea1a6;
+  }
+
+  :host([type='front']) {
+    transform: rotate(180deg);
+  }
+  :host([type='dropUp']) {
+    transform: rotate(90deg);
+  }
+  :host([type='dropdown']) {
+    transform: rotate(-90deg);
+  }
+
   :host([type='loader']) {
     color: var(--oryx-color-brand);
     animation-name: spin;

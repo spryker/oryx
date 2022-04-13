@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { CardType } from '../..';
 import { storybookPrefix } from '../../../constant';
-import { IconTypes } from '../../../icon';
+import { IconTypes } from '../../../Graphical/icon';
 
 export default { title: `${storybookPrefix}/Structure/Card` } as Meta;
 

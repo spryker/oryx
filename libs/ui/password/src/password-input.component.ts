@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../error-message/src/index';
-import { invisible, visible } from '../../icon';
+import { invisible, visible } from '../../Graphical/icon';
 import {
   AffixController,
   AffixOptions,

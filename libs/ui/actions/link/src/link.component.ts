@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Icons } from '../../../icon';
+import { Icons } from '../../../Graphical/icon';
 import { LinkTypes } from './link.model';
 import { linkStyles } from './link.styles';
 

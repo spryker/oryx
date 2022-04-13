@@ -1,6 +1,6 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
-import { a11yConfig } from '../../a11y';
+import { a11yConfig } from '../../../a11y';
 import { IconComponent } from './icon.component';
 import { IconSize } from './icon.model';
 import './index';

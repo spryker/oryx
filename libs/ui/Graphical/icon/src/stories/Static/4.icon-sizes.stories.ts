@@ -1,17 +1,12 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../constant';
-import { IconProperties, IconTypes } from '../icon.model';
-import '../index';
+import { storybookPrefix } from '../../../../../constant';
+import '../../index';
 
-export default { title: `${storybookPrefix}/Icon` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
-interface Props extends IconProperties {
-  customSize: string;
-}
-
-const Template: Story<Props> = (props: Props): TemplateResult => {
+const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <style>
       oryx-icon {
@@ -20,21 +15,21 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     </style>
     <h1>Icon size by attribute</h1>
     <div class="icon-set">
-      <oryx-icon .type=${props.type} size="large"></oryx-icon>
-      <oryx-icon type=${props.type} size="medium"></oryx-icon>
-      <oryx-icon type=${props.type} size="small"></oryx-icon>
+      <oryx-icon type="desktop" size="large"></oryx-icon>
+      <oryx-icon type="desktop" size="medium"></oryx-icon>
+      <oryx-icon type="desktop" size="small"></oryx-icon>
     </div>
 
     <h1>Icon size by global custom properties</h1>
     <div class="icon-set" style="--oryx-icon-size: 156px">
-      <oryx-icon type=${props.type}></oryx-icon>
-      <oryx-icon type=${props.type}></oryx-icon>
-      <oryx-icon type=${props.type}></oryx-icon>
+      <oryx-icon type="desktop"></oryx-icon>
+      <oryx-icon type="desktop"></oryx-icon>
+      <oryx-icon type="desktop"></oryx-icon>
     </div>
 
     <div class="icon-set" style="--oryx-icon-size:30px">
       ${Array.from(Array(24)).map(
-        () => html`<oryx-icon type=${props.type}></oryx-icon>`
+        () => html`<oryx-icon type="desktop"></oryx-icon>`
       )}
     </div>
 
@@ -44,7 +39,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       ${Array.from(Array(5)).map(
         (i, n) =>
           html`<oryx-icon
-            type=${props.type}
+            type="desktop"
             style=${`--oryx-icon-size:${(n + 1) * 10}px`}
           ></oryx-icon>`
       )}
@@ -52,8 +47,8 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 
     <h1>Custom size</h1>
 
-    <div class="icon-set" style="--oryx-icon-size:${props.customSize}">
-      <oryx-icon type=${props.type}></oryx-icon>
+    <div class="icon-set" style="--oryx-icon-size:50px">
+      <oryx-icon type="desktop"></oryx-icon>
     </div>
 
     <style>
@@ -69,15 +64,3 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 };
 
 export const IconSizes = Template.bind({});
-
-IconSizes.argTypes = {
-  type: {
-    options: Object.values(IconTypes),
-    control: { type: 'select' },
-    defaultValue: 'desktop',
-  },
-  customSize: {
-    control: { type: 'text' },
-    defaultValue: '50px',
-  },
-};
