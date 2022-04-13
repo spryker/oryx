@@ -54,7 +54,9 @@ export default async function componentsLibraryPathsExecutor(
   const generatedConfig = JSON.stringify(tsConfig);
 
   if (!options.update && generatedConfig !== realConfig) {
-    console.error(`Please, update ${options.name}`);
+    console.error(
+      `Please, update ${options.name} in the ${packageJson.name} library`
+    );
 
     return { success: false };
   }

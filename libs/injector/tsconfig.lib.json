@@ -1,11 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "types": []
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["vite.config.ts", "vitest.config.ts", "**/*.spec.ts"]
+  "extends": "../tsconfig.lib.json",
+  "include": ["**/*.ts"]
 }

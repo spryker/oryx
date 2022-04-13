@@ -5,16 +5,10 @@
   "prefix": "fes",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "rm -rf ../../dist/libs/content/*",
-          "tsc --project tsconfig.lib.json",
-          "vite build"
-        ],
-        "parallel": false,
-        "cwd": "libs/content"
-      }
+      "executor": "./tools/executors/components-library:build"
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
     },
     "test": {
       "executor": "@nrwl/workspace:run-commands",

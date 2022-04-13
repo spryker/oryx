@@ -1,9 +1,5 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "types": ["vitest/globals"],
-    "noEmit": true
-  },
+  "extends": "../tsconfig.spec.json",
   "files": ["vitest.config.ts"],
   "include": ["**/*.spec.ts"]
 }

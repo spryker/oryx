@@ -2,12 +2,11 @@
   "name": "@spryker-oryx/content",
   "version": "0.0.1",
   "author": "Spryker",
+  "type": "module",
   "license": "MIT",
   "files": [
     "**/*"
   ],
-  "main": "index.es.js",
-  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },

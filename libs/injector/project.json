@@ -4,16 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "rm -rf ../../dist/libs/injector/*",
-          "tsc --project tsconfig.lib.json",
-          "vite build"
-        ],
-        "parallel": false,
-        "cwd": "libs/injector"
-      }
+      "executor": "./tools/executors/components-library:build"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

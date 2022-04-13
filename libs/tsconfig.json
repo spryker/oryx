@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "files": [],
   "include": [],
   "references": [
@@ -7,7 +7,7 @@
       "path": "./tsconfig.lib.json"
     },
     {
-      "path": "./.storybook/tsconfig.json"
+      "path": "./tsconfig.spec.json"
     }
   ],
   "compilerOptions": {

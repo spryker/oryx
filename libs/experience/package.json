@@ -1,5 +1,15 @@
 {
   "name": "@spryker-oryx/experience",
   "version": "0.0.1",
-  "type": "module"
+  "type": "module",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
 }

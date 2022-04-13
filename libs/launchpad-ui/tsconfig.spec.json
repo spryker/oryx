@@ -1,9 +1,5 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["node"]
-  },
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "extends": "../tsconfig.spec.json",
+  "files": ["vitest.config.ts"],
+  "include": ["**/*.spec.ts"]
 }

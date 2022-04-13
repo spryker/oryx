@@ -1,10 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist",
-    "declaration": true,
-    "preserveConstEnums": true
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["copy.js", "vitest.config.ts", "**/*.spec.ts"]
+  "extends": "../tsconfig.lib.json",
+  "include": ["**/*.ts"]
 }

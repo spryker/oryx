@@ -4,16 +4,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "rm -rf ../../dist/libs/lit-rxjs/*",
-          "tsc --project tsconfig.lib.json",
-          "node ./copy.js"
-        ],
-        "parallel": false,
-        "cwd": "libs/lit-rxjs"
-      }
+      "executor": "./tools/executors/components-library:build"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

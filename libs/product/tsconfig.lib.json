@@ -1,11 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "types": []
-  },
-  "exclude": ["vitest.config.ts", "**/*.spec.ts", "vite.config.ts"],
+  "extends": "../tsconfig.lib.json",
   "include": ["**/*.ts"]
 }

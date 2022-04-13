@@ -8,19 +8,13 @@
   "files": [
     "**/*"
   ],
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
   "peerDependencies": {
     "lit": "^2.1.0",
     "rxjs": "~7.4.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "exports": {
-    ".": {
-      "types": "./src/index.d.ts",
-      "default": "./src/index.js"
-    }
   }
 }
