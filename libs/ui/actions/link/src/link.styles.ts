@@ -42,8 +42,12 @@ export const linkStyles = css`
     color: var(--oryx-color-brand-dark);
   }
 
-  :host(:not([disabled])) ::slotted(a:focus) {
+  :host(:not([disabled])) ::slotted(a:active),
+  :host(:not([disabled])) ::slotted(a:focus-visible) {
     background-color: var(--oryx-color-neutral-lighter);
+  }
+
+  :host(:not([disabled])) ::slotted(a:active) {
     border: solid 1px var(--oryx-color-canvas);
   }
 

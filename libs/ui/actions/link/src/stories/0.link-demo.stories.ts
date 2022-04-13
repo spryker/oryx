@@ -36,7 +36,7 @@ export const LinkDemo = Template.bind({});
 LinkDemo.args = {
   linkType: LinkTypes.Link,
   disabled: false,
-  link: '/?path=/story/ui-link--basic',
+  link: '/?path=/story/ui-actions-link--link-demo',
   text: 'Link',
   icon: undefined,
 };

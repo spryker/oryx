@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../constant';
 import '../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Link/link-variations`,
+  title: `${storybookPrefix}/actions/Link/Static`,
 } as Meta;
 
 const variations = [
@@ -21,7 +21,7 @@ const variations = [
   {
     name: 'active',
     state: 'pseudo-hover',
-    lightDomState: 'pseudo-focus',
+    lightDomState: 'pseudo-active',
   },
   {
     name: 'focused',
