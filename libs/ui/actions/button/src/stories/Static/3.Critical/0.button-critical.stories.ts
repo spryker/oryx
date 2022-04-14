@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../../../.storybook/constant';
-import { ButtonSize } from '../../../button.model';
+import { Size } from '../../../../../../utilities';
 import '../../../index';
 
 export default {
@@ -108,7 +108,7 @@ const Template: Story<Props> = (): TemplateResult => {
       </div>`;
   };
 
-  return html` ${renderButton(ButtonSize)} `;
+  return html` ${renderButton(Size)} `;
 };
 
 export const ButtonCritical = Template.bind({});

@@ -1,8 +1,9 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { svg } from 'lit';
+import { Size } from '../../../utilities';
 import { IconComponent } from './icon.component';
 import './index';
-import { icon, IconSize } from './index';
+import { icon } from './index';
 
 describe('factory', () => {
   let element: IconComponent;
@@ -32,7 +33,7 @@ describe('factory', () => {
 
   describe('when an icon size is given', () => {
     beforeEach(async () => {
-      element = await fixture(html`${icon({ size: IconSize.MEDIUM })}`);
+      element = await fixture(html`${icon({ size: Size.medium })}`);
     });
 
     it('should have a medium size', () => {

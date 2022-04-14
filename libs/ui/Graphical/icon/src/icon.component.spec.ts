@@ -1,8 +1,8 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
+import { Size } from '../../../utilities';
 import { IconComponent } from './icon.component';
-import { IconSize } from './icon.model';
 import './index';
 
 describe('Icon', () => {
@@ -49,7 +49,7 @@ describe('Icon', () => {
   });
 
   describe('icon size', () => {
-    const sizes: IconSize[] = [IconSize.SMALL];
+    const sizes: Size[] = [Size.small];
     sizes.forEach((size) => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {

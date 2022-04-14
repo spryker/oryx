@@ -1,6 +1,7 @@
 import { expect, fixture, html } from '@open-wc/testing';
+import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
-import { ButtonSize, ButtonType } from './button.model';
+import { ButtonType } from './button.model';
 import './index';
 
 describe('ButtonComponent', () => {
@@ -28,7 +29,7 @@ describe('ButtonComponent', () => {
   });
 
   describe('button size', () => {
-    Object.values(ButtonSize).forEach((size) => {
+    Object.values(Size).forEach((size) => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-button

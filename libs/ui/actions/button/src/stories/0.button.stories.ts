@@ -2,7 +2,8 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.storybook/constant';
-import { ButtonSize, ButtonType } from '../button.model';
+import { Size } from '../../../../utilities';
+import { ButtonType } from '../button.model';
 import '../index';
 
 export default {
@@ -16,8 +17,8 @@ export default {
     },
     size: {
       description: 'Button size',
-      options: Object.values(ButtonSize),
-      defaultValue: ButtonSize.large,
+      options: Object.values(Size),
+      defaultValue: Size.large,
       control: { type: 'select' },
     },
     message: {
@@ -37,7 +38,7 @@ export default {
 
 interface Props {
   type: ButtonType;
-  size: ButtonSize;
+  size: Size;
   disabled: boolean;
   message: string;
   icon: string;

@@ -1,4 +1,5 @@
 import { TemplateResult } from 'lit';
+import { Size } from '../../../utilities';
 
 export interface IconProperties {
   /**
@@ -18,7 +19,7 @@ export interface IconProperties {
   /**
    * The oryx icon system is based on 24px by 24px. The icons are centered inside this space
    * and are optimised to use the full size. In case you need a smaller icon, you can set the
-   * icon size to `IconSize.medium` or `IconSize.small`.
+   * icon size to `Size.medium` or `Size.small`.
    *
    * The icon size is controlled in CSS, using custom properties. You can alter all icons with
    * a global property, or use a local pro
@@ -34,7 +35,7 @@ export interface IconProperties {
    *
    * The default can be controlled by a CSS property (`--oryx-icon-size-default`)
    */
-  size?: IconSize;
+  size?: Size;
 
   /**
    * An SVG icon sprite combines multiple icons in a single resource. The resources
@@ -51,12 +52,6 @@ export interface Icon extends IconProperties {
    * in the icon slot.
    */
   source?: TemplateResult;
-}
-
-export const enum IconSize {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large',
 }
 
 export enum NavigationIconsV2 {

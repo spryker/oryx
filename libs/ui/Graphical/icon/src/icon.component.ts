@@ -1,7 +1,8 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { IconProperties, Icons, IconSize } from './icon.model';
+import { Size } from '../../../utilities';
+import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 
 const DEFAULT_SPRITE = 'assets/icons.svg';
@@ -10,7 +11,7 @@ export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 
   @property({ reflect: true }) type?: Icons | string;
-  @property({ reflect: true }) size?: IconSize;
+  @property({ reflect: true }) size?: Size;
   @property() sprite?: string;
 
   render(): TemplateResult {
