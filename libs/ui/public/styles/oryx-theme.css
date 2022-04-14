@@ -44,6 +44,7 @@
 
   /* focused */
   --oryx-color-focus: var(--oryx-color-brand);
+  --oryx-focus-elevation: 0 0 3px;
 
   /* elevation */
   --oryx-elevation-color: rgb(23 11 11 / 15%);
