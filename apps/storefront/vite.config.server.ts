@@ -19,8 +19,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
   ssr: {
-    noExternal: ['rxjs', 'lit'],
+    noExternal: ['rxjs', 'lit', 'lit-element', '@lit-labs/ssr'],
   },
-  envPrefix: ['CONTENT_BACKEND_URL'],
+  envPrefix: ['FES_CONTENT_BACKEND_URL'],
   plugins: [tsconfigPaths({ root: '../../' })],
 });

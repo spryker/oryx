@@ -1,9 +1,10 @@
+import { builder } from '@netlify/functions';
 import * as fs from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
 
-export async function handler(event, context) {
+const storefrontHandler = async (event, context) => {
   try {
     // esbuild on netlify does not properly transform import.meta because it is not using esnext settings
     const url = 'file:///var/task/dist/apps/storefront/functions/ssr/index.js';
@@ -24,6 +25,7 @@ export async function handler(event, context) {
       statusCode: 200,
       headers: {
         'Content-Type': 'text/html',
+        ...event.headers,
       },
       body: html,
     };
@@ -34,4 +36,8 @@ export async function handler(event, context) {
       body: JSON.stringify({ error: e }),
     };
   }
-}
+};
+
+const handler = builder(storefrontHandler);
+
+export { handler };
