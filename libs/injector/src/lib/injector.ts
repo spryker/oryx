@@ -86,6 +86,7 @@ export class Injector {
   }
 
   private getInstance(token: any): any {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const providerInstance = this.providers.get(token)!;
 
     if (isValueProvider(providerInstance.provider)) {

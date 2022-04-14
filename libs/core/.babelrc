@@ -1,6 +1,0 @@
-// TODO: Fix the `flow` issue and delete this file
-{
-  "plugins": [
-    ["@babel/plugin-transform-typescript", { "allowDeclareFields": true }]
-  ]
-}

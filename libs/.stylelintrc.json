@@ -1,0 +1,44 @@
+{
+  "_TODO:": "Fix styles and delete rules",
+  "extends": ["../.stylelintrc.json"],
+  "ignoreFiles": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["**/*.styles.ts"],
+      "extends": ["../.stylelintrc.json", "stylelint-config-styled-components"],
+      "customSyntax": "@stylelint/postcss-css-in-js"
+    }
+  ],
+  "rules": {
+    "no-descending-specificity": null,
+    "liberty/use-logical-spec": [
+      "always",
+      {
+        "except": [
+          "top",
+          "bottom",
+          "margin-bottom",
+          "margin-top",
+          "padding-bottom",
+          "padding-top",
+          "height",
+          "min-height",
+          "max-height",
+          "width",
+          "min-width",
+          "max-width",
+          "border-bottom",
+          "border-top",
+          "left"
+        ]
+      }
+    ],
+    "custom-property-pattern": "^_?([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreKeywords": ["currentColor"]
+      }
+    ]
+  }
+}

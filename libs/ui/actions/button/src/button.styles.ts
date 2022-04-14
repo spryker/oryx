@@ -156,8 +156,10 @@ export const buttonStyles = css`
 
   ::slotted([disabled]) {
     --oryx-icon-color: var(--oryx-color-neutral-dark);
+
     position: relative;
     pointer-events: none;
+
     --_color-text: var(--oryx-color-neutral-dark);
     --_color-accent: var(--oryx-color-neutral-light);
   }
@@ -175,7 +177,7 @@ export const buttonStyles = css`
     color: transparent;
   }
 
-  :host([loading]) ::slotted(:is(button, a)):before {
+  :host([loading]) ::slotted(:is(button, a))::before {
     content: '';
     position: absolute;
     width: 100%;
@@ -190,18 +192,19 @@ export const buttonStyles = css`
 
   :host([loading][type='text']) ::slotted(:is(button, a)) {
     --oryx-icon-color: transparent;
+
     color: var(--oryx-color-neutral-dark);
     background-color: transparent;
     border-color: var(--oryx-color-canvas);
   }
 
-  :host([loading][type='text']) ::slotted(:is(button, a)):before {
+  :host([loading][type='text']) ::slotted(:is(button, a))::before {
     position: relative;
     width: 16px;
     height: 16px;
   }
 
-  :host([loading][type='text'][icon]) ::slotted(:is(button, a)):before {
+  :host([loading][type='text'][icon]) ::slotted(:is(button, a))::before {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -213,7 +216,7 @@ export const buttonStyles = css`
     border-color: var(--oryx-color-neutral);
   }
 
-  :host([type='critical'][loading]) ::slotted(:is(button, a)):before {
+  :host([type='critical'][loading]) ::slotted(:is(button, a))::before {
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
   }
 

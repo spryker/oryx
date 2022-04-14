@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { storybookPrefix } from '../../../constant';
+import { storybookPrefix } from '../../../.storybook/constant';
 import { IconTypes } from '../../../Graphical/icon';
 import { AffixOptions } from '../../../input';
 import '../../../popover/index';

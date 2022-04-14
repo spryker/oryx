@@ -20,7 +20,6 @@ export const NDSStyles = css`
 
   dialog {
     overscroll-behavior: none;
-    margin-bottom: 0;
     padding: 0;
     border: none;
     margin: 0 auto;

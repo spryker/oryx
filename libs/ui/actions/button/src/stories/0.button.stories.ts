@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../constant';
+import { storybookPrefix } from '../../../../.storybook/constant';
 import { ButtonSize, ButtonType } from '../button.model';
 import '../index';
 

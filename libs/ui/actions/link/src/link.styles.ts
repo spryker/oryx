@@ -26,15 +26,12 @@ export const linkStyles = css`
     text-decoration: none;
     outline: 0;
     border: solid 1px transparent;
+    color: currentColor;
   }
 
   :host([disabled]) {
     pointer-events: none;
     color: var(--oryx-color-neutral-dark);
-  }
-
-  ::slotted(a) {
-    color: currentColor;
   }
 
   :host(:hover:not([disabled])),

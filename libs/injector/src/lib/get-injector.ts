@@ -24,7 +24,7 @@ function getRegistry(
   return _injectorsRegistry;
 }
 
-function defaultContext() {
+function defaultContext(): Document | typeof globalThis {
   return globalThis.document ?? globalThis;
 }
 
@@ -46,11 +46,13 @@ export function getInjector(
   const registry = getRegistry();
   while (context) {
     if (registry.has(context)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return registry.get(context)!;
     }
     context = context.parentNode ?? context.host;
   }
   if (registry.has(defaultContext())) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return registry.get(defaultContext())!;
   }
   throw new Error('No injector found!');
@@ -80,6 +82,7 @@ export function createInjector(options: {
     throw new Error('Injector already created for context');
   }
   registry.set(context, new Injector(providers, parent));
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return registry.get(context)!;
 }
 
@@ -93,7 +96,7 @@ export function createInjector(options: {
  */
 export function enableSharedInjectorRegistry(
   globalVariable = '_injectorsRegistry'
-) {
+): void {
   if (!(globalThis as any)[globalVariable]) {
     _injectorsRegistry = new WeakMap<InjectorContext, Injector>();
     (globalThis as any)[globalVariable] = _injectorsRegistry;

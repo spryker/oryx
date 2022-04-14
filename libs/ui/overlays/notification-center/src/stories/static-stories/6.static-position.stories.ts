@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../constant';
+import { storybookPrefix } from '../../../../../.storybook/constant';
 import { Types } from '../../../../../notification';
 import '../../index';
 import { NotificationService } from '../../index';

@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ChipType } from '../..';
-import { storybookPrefix } from '../../../constant';
+import { storybookPrefix } from '../../../.storybook/constant';
 import '../index';
 
 export default { title: `${storybookPrefix}/Chip` } as Meta;

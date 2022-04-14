@@ -1,4 +1,4 @@
-import { css, unsafeCSS } from 'lit';
+import { css, unsafeCSS as unsafecss } from 'lit';
 import { POPOVER_MAX_HEIGHT_FALLBACK } from '../../popover';
 
 export const typeaheadStyles = css`
@@ -17,9 +17,9 @@ export const typeaheadStyles = css`
     max-height: min(
       var(
         --_available-popover-height,
-        ${unsafeCSS(POPOVER_MAX_HEIGHT_FALLBACK)}px
+        ${unsafecss(POPOVER_MAX_HEIGHT_FALLBACK)}px
       ),
-      var(--oryx-popover-maxheight, ${unsafeCSS(POPOVER_MAX_HEIGHT_FALLBACK)}px)
+      var(--oryx-popover-maxheight, ${unsafecss(POPOVER_MAX_HEIGHT_FALLBACK)}px)
     );
     width: 100%;
   }

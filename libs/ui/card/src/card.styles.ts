@@ -5,6 +5,7 @@ export const styles = css`
     display: block;
     border-radius: var(--oryx-border-radius);
     color: var(--oryx-color-ink);
+    background-color: var(--background-color);
   }
 
   slot {
@@ -15,13 +16,10 @@ export const styles = css`
     overflow: auto;
   }
 
-  :host {
-    background-color: var(--background-color);
-  }
-
   :host(:not([type='secondary'])) {
     --background-color: var(--oryx-color-canvas);
-    box-shadow: 0px 1px 3px var(--oryx-elevation-color);
+
+    box-shadow: 0 1px 3px var(--oryx-elevation-color);
   }
 
   :host([type='secondary']) {

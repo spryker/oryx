@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../.storybook/constant';
 import { CardType } from '../../../../card';
-import { storybookPrefix } from '../../../../constant';
 import '../index';
 
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;

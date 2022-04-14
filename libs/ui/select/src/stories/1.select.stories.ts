@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { storybookPrefix } from '../../../constant';
+import { storybookPrefix } from '../../../.storybook/constant';
 import { AffixOptions } from '../../../input';
 import '../../../popover/index';
 import { SearchEvent, SearchOptions } from '../../../search';

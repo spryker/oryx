@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { CardType } from '../..';
-import { storybookPrefix } from '../../../constant';
+import { storybookPrefix } from '../../../.storybook/constant';
 import { IconTypes } from '../../../Graphical/icon';
 
 export default { title: `${storybookPrefix}/Structure/Card` } as Meta;

@@ -2,7 +2,7 @@ import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../constant';
+import { storybookPrefix } from '../../../../.storybook/constant';
 import '../../index';
 import { PasswordInputComponent } from '../../index';
 import { PasswordVisibilityStrategy } from '../../password-input.model';

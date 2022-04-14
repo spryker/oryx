@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../../.storybook/constant';
 import '../../../../../actions/button/index';
-import { storybookPrefix } from '../../../../../constant';
 import '../../../../index';
 import { Schemes } from '../../../notification.model';
 import { bodyBackgroundColor } from '../../util';
