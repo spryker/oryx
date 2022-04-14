@@ -13,7 +13,8 @@ import { SelectOptions } from './select.model';
  *
  */
 export class SelectController implements ReactiveController {
-  protected options: { value: string; text?: string }[] = [];
+  protected options: { value: string; text?: string; selected?: boolean }[] =
+    [];
 
   hostUpdated(): void {
     this.initSelect();
@@ -50,11 +51,18 @@ export class SelectController implements ReactiveController {
       .filter((option) => option.value !== '')
       .map((nativeOption: HTMLOptionElement) => {
         nativeOption.hidden = true;
-        const reflectedOption: { value: string; text?: string } = {
+        const reflectedOption: {
+          value: string;
+          text?: string;
+          selected?: boolean;
+        } = {
           value: nativeOption.value,
         };
         if (nativeOption.innerText.trim() !== '') {
           reflectedOption.text = nativeOption.innerText.trim();
+        }
+        if (nativeOption.selected) {
+          reflectedOption.selected = true;
         }
         return reflectedOption;
       });
@@ -70,7 +78,9 @@ export class SelectController implements ReactiveController {
   protected reflectOptions(): void {
     this.clearOptions();
     this.options.forEach((option) => {
-      const newOption = `<oryx-option value="${option.value}" slot="option">${option.text}</oryx-option>`;
+      const newOption = `<oryx-option value="${option.value}" ${
+        option.selected && 'selected'
+      } slot="option">${option.text}</oryx-option>`;
       this.host.insertAdjacentHTML('beforeend', newOption);
     });
   }
