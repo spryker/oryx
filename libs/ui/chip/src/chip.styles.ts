@@ -6,6 +6,9 @@ export const styles = css`
     display: inline-block;
     padding-inline: 12px;
     line-height: 24px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 24px;
     border-radius: var(--oryx-border-radius);
     text-overflow: ellipsis;
     white-space: nowrap;
