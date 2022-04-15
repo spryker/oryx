@@ -11,15 +11,9 @@
       }
     },
     "test": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
-        "command": "tsc -p libs/launchpad-ui/tsconfig.spec.json && vitest run --config libs/launchpad-ui/vitest.config.ts"
-      }
-    },
-    "test-watch": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "tsc -p libs/launchpad-ui/tsconfig.spec.json && vitest watch --config libs/launchpad-ui/vitest.config.ts"
+        "coverage": true
       }
     }
   },

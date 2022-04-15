@@ -11,19 +11,9 @@
       "executor": "./tools/executors/components-library:paths"
     },
     "test": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
-        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
-        "cwd": "libs/content",
-        "parallel": false
-      }
-    },
-    "test-watch": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
-        "cwd": "libs/content",
-        "parallel": false
+        "coverage": true
       }
     },
     "lint": {

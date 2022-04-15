@@ -1,7 +1,3 @@
-import { defineConfig } from 'vitest/config';
+import config from '../vitest.config';
 
-export default defineConfig({
-  test: {
-    include: ['libs/launchpad-ui/**/*.spec.ts'],
-  },
-});
+export default config;

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { LitElement } from 'lit';
+import { fixture } from '@open-wc/testing-helpers';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { observe } from './observe.decorator';
@@ -38,14 +39,10 @@ export class MockComponentWithProperty extends MockClass {
 describe('observe decorator', () => {
   let element: MockClass;
 
-  const getElement = (selector = 'mock-component'): MockClass => {
-    return document.body.querySelector(selector)!;
-  };
-
   beforeEach(async () => {
-    document.body.innerHTML = `<mock-component mock="${mockProperty}"></mock-component>`;
-    await window.happyDOM.whenAsyncComplete();
-    element = getElement();
+    element = await fixture(
+      html`<mock-component mock="${mockProperty}"></mock-component>`
+    );
   });
 
   afterEach(() => {
@@ -96,9 +93,11 @@ describe('observe decorator', () => {
 
   describe('with property', () => {
     beforeEach(async () => {
-      document.body.innerHTML = `<mock-component-with-property anotherMock="${mockProperty}"></mock-component-with-property>`;
-      await window.happyDOM.whenAsyncComplete();
-      element = getElement('mock-component-with-property');
+      element = await fixture(
+        html`<mock-component-with-property
+          anotherMock="${mockProperty}"
+        ></mock-component-with-property>`
+      );
     });
 
     it('should observe for the required property', () => {

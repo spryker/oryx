@@ -1,4 +1,5 @@
-import { LitElement } from 'lit';
+import { fixture } from '@open-wc/testing-helpers';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { finalize, interval, tap } from 'rxjs';
 import { subscribe } from './subscribe.decorator';
@@ -37,15 +38,8 @@ class MockComponent extends LitElement {
 describe('subscribe decorator', () => {
   let element: MockComponent;
 
-  const getElement = (): MockComponent => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return document.body.querySelector('mock-component')!;
-  };
-
   beforeEach(async () => {
-    document.body.innerHTML = `<mock-component></mock-component>`;
-    await window.happyDOM.whenAsyncComplete();
-    element = getElement();
+    element = await fixture(html`<mock-component></mock-component>`);
   });
 
   it('should unsubscribe from observable on disconnectedCallback hook', () => {
@@ -71,7 +65,7 @@ describe('subscribe decorator', () => {
     }
 
     try {
-      document.body.innerHTML = `<mock-error-component></mock-error-component>`;
+      document.createElement('mock-error-component');
     } catch (error) {
       expect(error).toBeTypeOf('string');
     }

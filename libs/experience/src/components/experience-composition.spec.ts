@@ -1,3 +1,4 @@
+import { fixture } from '@open-wc/testing-helpers';
 import { CoreServices } from '@spryker-oryx/core';
 import { createInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
@@ -48,6 +49,8 @@ class MockComponentsRegistryService
 }
 
 describe('Experience Composition', () => {
+  let element: ExperienceComposition;
+
   beforeEach(async () => {
     createInjector({
       override: true,
@@ -67,26 +70,23 @@ describe('Experience Composition', () => {
       ],
     });
 
-    document.body.innerHTML =
-      '<experience-composition key="1"></experience-composition>';
-    await window.happyDOM.whenAsyncComplete();
+    element = await fixture(
+      html`<experience-composition key="1"></experience-composition>`
+    );
   });
 
-  const getElement = (): ExperienceComposition | null => {
-    return document.body.querySelector('experience-composition');
-  };
-
   it('is defined', () => {
-    expect(getElement()).toBeInstanceOf(ExperienceComposition);
+    const el = document.createElement('experience-composition');
+    expect(el).toBeInstanceOf(ExperienceComposition);
   });
 
   it('should render oryx-banner', () => {
-    const banner = getElement()?.shadowRoot?.querySelector('oryx-banner');
+    const banner = element?.shadowRoot?.querySelector('oryx-banner');
     expect(banner).toBeTruthy();
   });
 
   it('should render components with uid attributes', () => {
-    const banner = getElement()?.shadowRoot?.querySelector('oryx-banner');
+    const banner = element?.shadowRoot?.querySelector('oryx-banner');
 
     expect(banner?.getAttribute('uid')).toBe('1');
   });

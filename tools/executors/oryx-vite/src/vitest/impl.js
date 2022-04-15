@@ -55,18 +55,20 @@ function vitestExecutor(options, context) {
             switch (_a.label) {
                 case 0:
                     projectDir = context.workspace.projects[context.projectName].root;
-                    projectRoot = devkit_1.joinPathFragments(context.root + "/" + projectDir);
-                    return [4 /*yield*/, Function('return import (\'vitest/node\')')()];
+                    projectRoot = devkit_1.joinPathFragments(context.root, projectDir);
+                    return [4 /*yield*/, Function("return import ('vitest/node')")()];
                 case 1:
                     startVitest = (_a.sent()).startVitest;
-                    return [4 /*yield*/, startVitest([], __assign(__assign({}, options), { root: projectRoot }))];
+                    return [4 /*yield*/, startVitest([], __assign(__assign({}, options), { root: projectRoot, coverage: {
+                                enabled: options.coverage,
+                                reportsDirectory: options.coverageReportDist
+                            } }))];
                 case 2:
                     result = _a.sent();
-                    if (options === null || options === void 0 ? void 0 : options.run) {
+                    if (!options.watch) {
                         return [2 /*return*/, { success: result }];
                     }
-                    return [2 /*return*/, new Promise((function (resolve) {
-                        }))];
+                    return [2 /*return*/, new Promise(function () { })];
             }
         });
     });

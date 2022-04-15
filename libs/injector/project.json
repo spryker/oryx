@@ -14,19 +14,9 @@
       }
     },
     "test": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
-        "commands": ["tsc --project tsconfig.spec.json", "vitest run"],
-        "cwd": "libs/injector",
-        "parallel": false
-      }
-    },
-    "test-watch": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["tsc --project tsconfig.spec.json", "vitest"],
-        "cwd": "libs/injector",
-        "parallel": false
+        "coverage": true
       }
     }
   },

@@ -2,10 +2,15 @@
   "type": "object",
   "cli": "nx",
   "properties": {
-    "run": {
+    "watch": {
       "type": "boolean",
-      "description": "Dismiss watch mode",
+      "description": "Set watch mode",
       "default": false
+    },
+    "coverageReportDist": {
+      "type": "string",
+      "description": "Set coverage report dist",
+      "default": "../../coverage"
     }
   },
   "description": "Extends default vitest UserConfig interface"

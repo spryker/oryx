@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { PartInfo } from 'lit/directive';
@@ -220,15 +221,8 @@ describe('asyncValue', () => {
     describe('without callback', () => {
       let element: MockComponent;
 
-      const getElement = (): MockComponent => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return document.body.querySelector('mock-component')!;
-      };
-
       beforeEach(async () => {
-        document.body.innerHTML = `<mock-component></mock-component>`;
-        await window.happyDOM.whenAsyncComplete();
-        element = getElement();
+        element = await fixture(html`<mock-component></mock-component>`);
       });
 
       it('should render emmited value of observable', async () => {
@@ -266,15 +260,10 @@ describe('asyncValue', () => {
     describe('with callback', () => {
       let element: MockComponentCallback;
 
-      const getElement = (): MockComponentCallback => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return document.body.querySelector('mock-component-with-callback')!;
-      };
-
       beforeEach(async () => {
-        document.body.innerHTML = `<mock-component-with-callback></mock-component-with-callback>`;
-        await window.happyDOM.whenAsyncComplete();
-        element = getElement();
+        element = await fixture(
+          html`<mock-component-with-callback></mock-component-with-callback>`
+        );
       });
 
       it('should render defined template if callback is defined', async () => {
