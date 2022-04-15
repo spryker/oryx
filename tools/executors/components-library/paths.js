@@ -86,7 +86,7 @@ function componentsLibraryPathsExecutor(options, context) {
                     tsConfig.compilerOptions.paths = (0, object_sort_1.sortObjectByKeys)(tsConfig.compilerOptions.paths);
                     generatedConfig = JSON.stringify(tsConfig);
                     if (!options.update && generatedConfig !== realConfig) {
-                        console.error("Please, update ".concat(options.name));
+                        console.error("Please, update ".concat(options.name, " in the ").concat(packageJson.name, " library.\nPlease, run command 'nx paths ").concat(context.projectName, " --update'\n      "));
                         return [2 /*return*/, { success: false }];
                     }
                     if (!options.update) return [3 /*break*/, 2];

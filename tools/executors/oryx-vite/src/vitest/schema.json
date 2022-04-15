@@ -7,11 +7,17 @@
       "description": "Set watch mode",
       "default": false
     },
-    "coverageReportDist": {
-      "type": "string",
-      "description": "Set coverage report dist",
-      "default": "../../coverage"
+    "coverage": {
+      "type": "object",
+      "description": "Set coverage options. Uses C8Options interface",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable coverage",
+          "default": true
+        }
+      }
     }
   },
-  "description": "Extends default vitest UserConfig interface"
+  "description": "Uses default vitest UserConfig interface"
 }

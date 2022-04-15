@@ -1,12 +1,8 @@
 import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
 import { UserConfig } from 'vitest';
 
-export interface VitestExecutorOptions extends UserConfig {
-  coverageReportDist?: string;
-}
-
 export default async function vitestExecutor(
-  options: VitestExecutorOptions,
+  options: UserConfig,
   context: ExecutorContext
 ) {
   const projectDir = context.workspace.projects[context.projectName].root;
@@ -18,10 +14,6 @@ export default async function vitestExecutor(
   const result = await startVitest([], {
     ...options,
     root: projectRoot,
-    coverage: {
-      enabled: options.coverage,
-      reportsDirectory: options.coverageReportDist,
-    },
   });
 
   if (!options.watch) {

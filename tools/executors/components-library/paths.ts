@@ -55,7 +55,8 @@ export default async function componentsLibraryPathsExecutor(
 
   if (!options.update && generatedConfig !== realConfig) {
     console.error(
-      `Please, update ${options.name} in the ${packageJson.name} library`
+      `Please, update ${options.name} in the ${packageJson.name} library.\nPlease, run command 'nx paths ${context.projectName} --update'
+      `
     );
 
     return { success: false };

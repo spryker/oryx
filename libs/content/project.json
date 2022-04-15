@@ -11,10 +11,7 @@
       "executor": "./tools/executors/components-library:paths"
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest",
-      "options": {
-        "coverage": true
-      }
+      "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
