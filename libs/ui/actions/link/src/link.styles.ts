@@ -34,8 +34,7 @@ export const linkStyles = css`
     color: var(--oryx-color-neutral-dark);
   }
 
-  :host(:hover:not([disabled])),
-  :host(:focus-within:not([disabled])) {
+  :host(:hover:not([disabled])) {
     color: var(--oryx-color-brand-dark);
   }
 
@@ -62,8 +61,7 @@ export const linkStyles = css`
     color: var(--oryx-color-neutral-darker);
   }
 
-  :host([linktype='external']:hover),
-  :host([linktype='external']:focus-within) {
+  :host([linktype='external']:hover) {
     color: var(--oryx-color-ink);
   }
 `;
