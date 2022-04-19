@@ -97,5 +97,21 @@
     --oryx-color-brand: #17b497;
     --oryx-color-brand-dark: #a0e1d5;
     --oryx-color-brand-darker: #f1f8f7;
+    --oryx-chip-color: #efeeee;
+    --oryx-chip-background-color: #71747c;
+    --oryx-chip-success-color: #f1f8f7;
+    --oryx-chip-success-background-color: #138671;
+    --oryx-chip-inactive-color: #f8f8f8;
+    --oryx-chip-inactive-background-color: #71747c;
+    --oryx-chip-offline-color: #efeeee;
+    --oryx-chip-offline-background-color: #71747c;
+    --oryx-chip-low-color: #fffbe6;
+    --oryx-chip-low-background-color: #cd8814;
+    --oryx-chip-warning-color: #fef0e6;
+    --oryx-chip-warning-background-color: #b7540f;
+    --oryx-chip-info-color: #eaf1fa;
+    --oryx-chip-info-background-color: #2261af;
+    --oryx-chip-error-color: #f9f2f1;
+    --oryx-chip-error-background-color: #c72712;
   }
 }
