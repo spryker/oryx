@@ -68,7 +68,7 @@ describe('ExperienceService', () => {
     ]);
 
     service = testInjector.inject('ExperienceService');
-    http = testInjector.inject(CoreServices.Http) as any;
+    http = testInjector.inject(CoreServices.Http) as HttpTestService;
   });
 
   afterEach(() => {

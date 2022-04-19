@@ -1,5 +1,5 @@
-export * from './experience/index';
+export * from './experience';
 export * from './registry';
-export * from './router/index';
+export * from './router';
 export * from './services';
 export * from './static-providers';
