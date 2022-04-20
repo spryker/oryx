@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import { ChipComponent } from './chip.component';
 import { ChipType } from './chip.model';
@@ -9,7 +10,7 @@ describe('ChipComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-chip');
-    expect(el).to.be.instanceof(ChipComponent);
+    expect(el).toBeInstanceOf(ChipComponent);
   });
 
   describe('chip type', () => {
@@ -38,7 +39,7 @@ describe('ChipComponent', () => {
         });
 
         it('should reflect the type attribute on the node', () => {
-          expect(element?.getAttribute('type')).to.equal(type);
+          expect(element?.getAttribute('type')).toBe(type);
         });
       });
     });

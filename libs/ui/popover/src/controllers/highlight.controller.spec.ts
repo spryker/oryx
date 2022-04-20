@@ -1,10 +1,13 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import * as sinon from 'sinon';
 import { a11yConfig } from '../../../a11y';
 import { dispatchKeydown } from '../../../utilities';
 import { HighlightController } from './highlight.controller';
+
+/** scrollIntoView is not implemented in jsdom */
+Element.prototype.scrollIntoView = vi.fn();
 
 @customElement('fake-popover')
 class FakePopoverComponent extends LitElement {
@@ -28,9 +31,9 @@ describe('HighlightController', () => {
     const expectElementHighLight = (highlight: number): void => {
       items.forEach((item, index) => {
         if (index === highlight) {
-          expect(item.hasAttribute('highlight')).to.be.true;
+          expect(item.hasAttribute('highlight')).toBeTruthy();
         } else {
-          expect(item.hasAttribute('highlight')).to.be.false;
+          expect(item.hasAttribute('highlight')).toBeFalsy();
         }
       });
     };
@@ -56,10 +59,10 @@ describe('HighlightController', () => {
           element.controller.highlight = 10;
         });
         it('should no longer "highlight" the original highlighted item', () => {
-          expect(items[5].hasAttribute('highlight')).to.be.false;
+          expect(items[5].hasAttribute('highlight')).toBeFalsy();
         });
         it('should add the "highlight" attribute to the item', () => {
-          expect(items[10].hasAttribute('highlight')).to.be.true;
+          expect(items[10].hasAttribute('highlight')).toBeTruthy();
         });
       });
       describe('and the clear method is called', () => {
@@ -67,7 +70,7 @@ describe('HighlightController', () => {
           element.controller.clear();
         });
         it('should clear the selected item', () => {
-          expect(element.controller.highlight).to.eq(-1);
+          expect(element.controller.highlight).toEqual(-1);
         });
       });
     });
@@ -81,7 +84,7 @@ describe('HighlightController', () => {
           element.controller.highlight = 5;
         });
         it('should add the "highlight" attribute to the item', () => {
-          expect(items[5].hasAttribute('highlight')).to.be.true;
+          expect(items[5].hasAttribute('highlight')).toBeTruthy();
         });
       });
 
@@ -92,7 +95,7 @@ describe('HighlightController', () => {
           );
         });
         it('should move the "highlight" to the next item', () => {
-          expect(items[0].hasAttribute('highlight')).to.be.true;
+          expect(items[0].hasAttribute('highlight')).toBeTruthy();
         });
       });
     });
@@ -104,16 +107,15 @@ describe('HighlightController', () => {
       });
 
       describe('and the "ArrowUp" key is dispatched', () => {
-        let clock: sinon.SinonFakeTimers;
         beforeEach(() => {
-          clock = sinon.useFakeTimers();
+          vi.useFakeTimers();
           highlightedItem = items[24];
-          sinon.spy(highlightedItem, 'scrollIntoView');
+          vi.spyOn(highlightedItem, 'scrollIntoView');
           dispatchKeydown(element, 'ArrowUp');
         });
 
         afterEach(() => {
-          sinon.restore();
+          vi.clearAllTimers();
         });
 
         it('should highlight the last item', () => {
@@ -122,24 +124,23 @@ describe('HighlightController', () => {
 
         describe('and 300ms has not passed', () => {
           beforeEach(() => {
-            clock.tick(300 - 1);
+            vi.advanceTimersByTime(300 - 1);
           });
 
           it('should not trigger scrollIntoView when the popup is shown', () => {
-            expect(highlightedItem?.scrollIntoView).to.have.been.called;
-            expect(highlightedItem?.scrollIntoView).to.not.have.been
-              .calledTwice;
+            expect(highlightedItem?.scrollIntoView).toHaveBeenCalled();
+            expect(highlightedItem?.scrollIntoView).toHaveBeenCalledOnce();
           });
         });
 
         describe('and 300ms has passed', () => {
           beforeEach(() => {
-            clock.tick(300);
+            vi.advanceTimersByTime(300);
           });
 
           it('should trigger scrollIntoView when the popup is shown', () => {
-            expect(highlightedItem?.scrollIntoView).to.have.been.called;
-            expect(highlightedItem?.scrollIntoView).to.have.been.calledTwice;
+            expect(highlightedItem?.scrollIntoView).toHaveBeenCalled();
+            expect(highlightedItem?.scrollIntoView).toHaveBeenCalledTimes(2);
           });
         });
 
@@ -517,10 +518,6 @@ describe('HighlightController', () => {
       element = await fixture(html`<fake-popover></fake-popover>`);
     });
 
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible(a11yConfig);
-    });
-
     describe('when the highlight is set for an unknown item', () => {
       beforeEach(() => {
         element.controller.highlight = 5;
@@ -529,7 +526,7 @@ describe('HighlightController', () => {
         if (element) {
           expect(() => {
             (): void => undefined;
-          }).not.to.throw;
+          }).not.toThrow();
         }
       });
     });

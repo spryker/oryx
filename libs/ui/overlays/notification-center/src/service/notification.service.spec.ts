@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { NotificationService, Positions, TAG_NAME } from '..';
 import '../index';
 
@@ -17,21 +17,21 @@ describe('NotificationService', () => {
 
     it('should find the center', async () => {
       const center = service.getCenter('#parent');
-      expect(center).to.be.eq(document.querySelector(TAG_NAME));
+      expect(center).toEqual(document.querySelector(TAG_NAME));
     });
 
     it('should create if not found', async () => {
       const center = service.getCenter('#parent1');
-      expect(center).to.be.exist;
+      expect(center).toBeDefined();
     });
 
     it('should create with position', async () => {
       const center = service.getCenter('#parent2', Positions.BOTTOM_END);
-      expect(center?.getAttribute('position')).to.be.eq(Positions.BOTTOM_END);
+      expect(center?.getAttribute('position')).toEqual(Positions.BOTTOM_END);
     });
 
     it('should throw error if parent not found', () => {
-      expect(() => service.getCenter('#parent3')).to.throw();
+      expect(() => service.getCenter('#parent3')).toThrow();
     });
   });
 });

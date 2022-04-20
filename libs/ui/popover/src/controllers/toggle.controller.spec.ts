@@ -1,11 +1,14 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import * as sinon from 'sinon';
 import { a11yConfig } from '../../../a11y';
 import { dispatchKeydown } from '../../../utilities';
 import { PopoverComponent } from '../popover.component';
 import { ToggleController } from './toggle.controller';
+
+/** scrollIntoView is not implemented in jsdom */
+Element.prototype.scrollIntoView = vi.fn();
 
 @customElement('fake-popover')
 class FakePopoverComponent extends LitElement {
@@ -59,7 +62,7 @@ describe('ToggleController', () => {
             dispatchKeydown(element, key);
           });
           it('should show the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.true;
+            expect(utils.popover()?.hasAttribute('show')).toBe(true);
           });
 
           describe(`when the "${key}" key is dispatched again`, () => {
@@ -67,7 +70,7 @@ describe('ToggleController', () => {
               dispatchKeydown(element, key);
             });
             it('should hide the popover', () => {
-              expect(utils.popover()?.hasAttribute('show')).to.be.false;
+              expect(utils.popover()?.hasAttribute('show')).toBe(false);
             });
           });
 
@@ -76,7 +79,7 @@ describe('ToggleController', () => {
               dispatchKeydown(element, 'Escape');
             });
             it('should hide the popover', () => {
-              expect(utils.popover()?.hasAttribute('show')).to.be.false;
+              expect(utils.popover()?.hasAttribute('show')).toBe(false);
             });
           });
         });
@@ -88,7 +91,7 @@ describe('ToggleController', () => {
             dispatchKeydown(element, key);
           });
           it('should show the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.true;
+            expect(utils.popover()?.hasAttribute('show')).toBe(true);
           });
 
           describe(`when a random key (${key}) is dispatched again`, () => {
@@ -96,7 +99,7 @@ describe('ToggleController', () => {
               dispatchKeydown(element, key);
             });
             it('should keep the popover open', () => {
-              expect(utils.popover()?.hasAttribute('show')).to.be.true;
+              expect(utils.popover()?.hasAttribute('show')).toBe(true);
             });
           });
         });
@@ -107,7 +110,7 @@ describe('ToggleController', () => {
           dispatchKeydown(element, 'Meta', true);
         });
         it('should not show the popover', () => {
-          expect(utils.popover()?.hasAttribute('show')).to.be.false;
+          expect(utils.popover()?.hasAttribute('show')).toBe(false);
         });
       });
 
@@ -120,14 +123,9 @@ describe('ToggleController', () => {
           beforeEach(() => {
             window.dispatchEvent(new Event('blur', { bubbles: true }));
           });
-          describe('and the focusEvent is dispatched on the element', () => {
-            beforeEach(() => {
-              element.dispatchEvent(new Event('focusin', { bubbles: true }));
-            });
-          });
 
           it('should hide the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.false;
+            expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
         });
 
@@ -136,14 +134,12 @@ describe('ToggleController', () => {
             element.dispatchEvent(new Event('focusout', { bubbles: true }));
           });
           it('should hide the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.false;
+            expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
         });
       });
 
       describe('when the element is hidden', () => {
-        let clock: sinon.SinonFakeTimers;
-
         beforeEach(async () => {
           element = await fixture(html`<fake-popover>
             <input />
@@ -151,11 +147,11 @@ describe('ToggleController', () => {
             <li selected highlight>second</li>
             <li>third</li>
           </fake-popover>`);
-          clock = sinon.useFakeTimers();
+          vi.useFakeTimers();
         });
 
         afterEach(() => {
-          sinon.restore();
+          vi.clearAllTimers();
         });
 
         describe('and the focusin event is dispatched', () => {
@@ -163,7 +159,7 @@ describe('ToggleController', () => {
             element.dispatchEvent(new Event('focusin', { bubbles: true }));
           });
           it('should show the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.true;
+            expect(utils.popover()?.hasAttribute('show')).toBe(true);
           });
         });
 
@@ -172,17 +168,17 @@ describe('ToggleController', () => {
             element.dispatchEvent(new Event('mousedown', { bubbles: true }));
           });
           it('should show the popover', () => {
-            expect(utils.popover()?.hasAttribute('show')).to.be.true;
+            expect(utils.popover()?.hasAttribute('show')).toBe(true);
           });
 
           describe('and 300ms has not yet passed', () => {
             describe('and the mouseup event is dispatched', () => {
               beforeEach(() => {
-                clock.tick(300 - 1);
+                vi.advanceTimersByTime(300 - 1);
                 element.dispatchEvent(new Event('mouseup', { bubbles: true }));
               });
               it('should show the popover', () => {
-                expect(utils.popover()?.hasAttribute('show')).to.be.true;
+                expect(utils.popover()?.hasAttribute('show')).toBe(true);
               });
             });
           });
@@ -190,11 +186,11 @@ describe('ToggleController', () => {
           describe('and 300ms has passed', () => {
             describe('and the mouseup event is dispatched', () => {
               beforeEach(() => {
-                clock.tick(300 + 1);
+                vi.advanceTimersByTime(300 + 1);
                 element.dispatchEvent(new Event('mouseup', { bubbles: true }));
               });
               it('should not show the popover', () => {
-                expect(utils.popover()?.hasAttribute('show')).to.be.false;
+                expect(utils.popover()?.hasAttribute('show')).toBe(false);
               });
             });
           });
@@ -215,7 +211,7 @@ describe('ToggleController', () => {
         });
 
         it('should show the popover', () => {
-          expect(utils.popover()?.hasAttribute('show')).to.be.true;
+          expect(utils.popover()?.hasAttribute('show')).toBe(true);
         });
       });
     });
@@ -233,7 +229,7 @@ describe('ToggleController', () => {
         element.controller.toggle(true);
       });
       it('should not throw an error', () => {
-        expect(element.controller.isOpen).to.be.false;
+        expect(element.controller.isOpen).toBeFalsy();
       });
     });
 
@@ -242,7 +238,7 @@ describe('ToggleController', () => {
         element.controller.toggle();
       });
       it('should not throw an error', () => {
-        expect(element.controller.isOpen).to.be.false;
+        expect(element.controller.isOpen).toBeFalsy();
       });
     });
   });

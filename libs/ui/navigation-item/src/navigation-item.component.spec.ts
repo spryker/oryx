@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import './index';
 import { NavigationItemComponent } from './navigation-item.component';
@@ -8,7 +9,7 @@ describe('NavigationItemComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-navigation-item');
-    expect(el).to.be.instanceof(NavigationItemComponent);
+    expect(el).toBeInstanceOf(NavigationItemComponent);
   });
 
   describe('icon', () => {
@@ -24,8 +25,9 @@ describe('NavigationItemComponent', () => {
       });
 
       it('should not render an oryx-icon element', () => {
-        expect(element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon'))
-          .to.not.exist;
+        expect(
+          element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon')
+        ).toBeDefined();
       });
     });
 
@@ -41,8 +43,9 @@ describe('NavigationItemComponent', () => {
       });
 
       it('should render an oryx-icon element', () => {
-        expect(element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon'))
-          .to.exist;
+        expect(
+          element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon')
+        ).toBeDefined();
       });
     });
   });

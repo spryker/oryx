@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import './index';
 import { NavigationComponent } from './navigation.component';
@@ -8,7 +9,7 @@ describe('NavigationComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-navigation');
-    expect(el).to.be.instanceof(NavigationComponent);
+    expect(el).toBeInstanceOf(NavigationComponent);
   });
 
   describe('collapse', () => {
@@ -28,7 +29,9 @@ describe('NavigationComponent', () => {
 
       it('should apply custom aria label', () => {
         const button = element.shadowRoot?.querySelector('button');
-        expect(button).attribute('aria-label').to.equal(toggleButtonAriaLabel);
+        expect(button?.getAttribute('aria-label')).toEqual(
+          toggleButtonAriaLabel
+        );
       });
     });
 
@@ -43,11 +46,13 @@ describe('NavigationComponent', () => {
 
       it('should apply default aria label', () => {
         const button = element.shadowRoot?.querySelector('button');
-        expect(button).attribute('aria-label').to.equal('collapse navigation');
+        expect(button?.getAttribute('aria-label')).toEqual(
+          'collapse navigation'
+        );
       });
 
       it('should have a collapsed attribute', () => {
-        expect(element.hasAttribute('collapsed')).to.be.true;
+        expect(element.hasAttribute('collapsed')).toBe(true);
       });
     });
 
@@ -62,7 +67,7 @@ describe('NavigationComponent', () => {
       });
 
       it('should not have a collapsed attribute', () => {
-        expect(element.hasAttribute('collapsed')).to.be.false;
+        expect(element.hasAttribute('collapsed')).toBe(false);
       });
     });
 
@@ -78,7 +83,7 @@ describe('NavigationComponent', () => {
       });
 
       it('should have a collapsed attribute', () => {
-        expect(element.hasAttribute('collapsed')).to.be.true;
+        expect(element.hasAttribute('collapsed')).toBe(true);
       });
     });
   });

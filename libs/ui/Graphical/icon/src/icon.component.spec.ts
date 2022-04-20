@@ -1,4 +1,5 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { Size } from '../../../utilities';
@@ -10,7 +11,7 @@ describe('Icon', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-icon');
-    expect(el).to.be.instanceof(IconComponent);
+    expect(el).toBeInstanceOf(IconComponent);
   });
 
   describe('when no type is given', () => {
@@ -24,7 +25,7 @@ describe('Icon', () => {
 
     it('should not render an SVG element', () => {
       const svg = element?.shadowRoot?.querySelector('svg');
-      expect(svg).not.to.exist;
+      expect(svg).toBeNull();
     });
   });
 
@@ -39,12 +40,12 @@ describe('Icon', () => {
 
     it('should render an SVG element', () => {
       const svg = element?.shadowRoot?.querySelector('svg');
-      expect(svg).to.exist;
+      expect(svg).toBeDefined();
     });
 
     it('should reference an external SVG and include search ID', () => {
       const svg = element?.shadowRoot?.querySelector('svg use');
-      expect(svg?.getAttribute('href')).to.equal('assets/icons.svg#search');
+      expect(svg?.getAttribute('href')).toBe('assets/icons.svg#search');
     });
   });
 
@@ -63,7 +64,7 @@ describe('Icon', () => {
         });
 
         it('should reflect the attribute on the node', () => {
-          expect(element?.getAttribute('size')).to.equal(size);
+          expect(element?.getAttribute('size')).toBe(size);
         });
       });
     });
@@ -88,7 +89,7 @@ describe('Icon', () => {
     });
 
     it('should not reference an external SVG', () => {
-      expect(element?.shadowRoot?.querySelector('svg use')).not.to.exist;
+      expect(element?.shadowRoot?.querySelector('svg use')).toBeNull();
     });
   });
 });

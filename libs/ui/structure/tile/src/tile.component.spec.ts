@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { queryFirstAssigned } from '../../../utilities';
 import './index';
 import { TileComponent } from './tile.component';
@@ -8,7 +8,7 @@ describe('TileComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-tile');
-    expect(el).to.be.instanceof(TileComponent);
+    expect(el).toBeInstanceOf(TileComponent);
   });
 
   describe('tile component test', () => {
@@ -19,7 +19,7 @@ describe('TileComponent', () => {
     });
 
     it('should be correct initialisation', () => {
-      expect(queryFirstAssigned<HTMLHeadingElement>(element)?.id).to.eq(
+      expect(queryFirstAssigned<HTMLHeadingElement>(element)?.id).toEqual(
         'header'
       );
     });

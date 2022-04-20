@@ -1,8 +1,5 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist/out-tsc",
-    "types": ["node", "mocha"]
-  },
-  "include": ["**/*.ts", "**/*.ts"]
+  "extends": "../tsconfig.spec.json",
+  "files": ["vitest.config.ts"],
+  "include": ["**/*.spec.ts"]
 }

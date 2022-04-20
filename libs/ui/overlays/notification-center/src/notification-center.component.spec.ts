@@ -1,4 +1,4 @@
-import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import './index';
 import { NotificationCenterComponent } from './notification-center.component';
 
@@ -16,8 +16,9 @@ describe('NotificationCenterComponent', () => {
       element.open({});
       await element.updateComplete;
       await elementUpdated(element);
-      expect(element.registry.length).to.be.equal(1);
-      expect(element.renderRoot.children.length).to.be.equal(1);
+      expect(element.registry.length).toBe(1);
+      // Has <style>...</style> as a children
+      expect(element.renderRoot.children.length).toBe(2);
     });
 
     it('should close notification by clicking on close button', async () => {
@@ -31,8 +32,9 @@ describe('NotificationCenterComponent', () => {
       await element.updateComplete;
       await elementUpdated(element);
 
-      expect(element.registry.length).to.be.equal(0);
-      expect(element.renderRoot.children.length).to.be.equal(0);
+      expect(element.registry.length).toBe(0);
+      // Has <style>...</style> as a children
+      expect(element.renderRoot.children.length).toBe(1);
     });
   });
 });

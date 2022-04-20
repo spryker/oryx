@@ -1,7 +1,8 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import * as sinon from 'sinon';
+import { SpyInstance } from 'vitest';
 import {
   PopoverComponent,
   PopoverController,
@@ -12,6 +13,19 @@ import { a11yConfig } from '../../a11y';
 import { getControl } from '../../input';
 import '../../option';
 import { OptionComponent } from '../../option';
+
+/** innnerText is not implemented in jsdom */
+Object.defineProperty(Element.prototype, 'innerText', {
+  set: function (value: unknown) {
+    this.textContent = value;
+  },
+  get: function () {
+    return this?.textContent;
+  },
+});
+
+/** scrollIntoView is not implemented in jsdom */
+Element.prototype.scrollIntoView = vi.fn();
 
 class CustomPopoverController extends PopoverController {
   selectedController = new SelectedController(this.host, 'oryx-option');
@@ -51,7 +65,7 @@ describe('PopoverController', () => {
   let element: FakeComponent | FakeWithoutFocusComponent | NoPopoverComponent;
 
   const popover = (): PopoverComponent | null => {
-    return element.renderRoot.querySelector('oryx-popover');
+    return element.renderRoot?.querySelector('oryx-popover');
   };
 
   describe('handleKeydown', () => {
@@ -63,9 +77,7 @@ describe('PopoverController', () => {
             (_, index) => html`<oryx-option>${index + 1}</oryx-option>`
           )}
         </fake-popover>`);
-      });
-
-      beforeEach(() => {
+        element.querySelector('input')?.focus();
         popover()?.toggleAttribute('show', true);
       });
 
@@ -94,30 +106,27 @@ describe('PopoverController', () => {
           });
 
           it('should select the highlighted element', () => {
-            expect(highlightedItem.hasAttribute('selected')).to.be.true;
+            expect(highlightedItem.hasAttribute('selected')).toBe(true);
           });
         });
 
         describe('and the " " key is dispatched', () => {
-          let expectation: sinon.SinonExpectation;
+          let expectation: SpyInstance;
 
           describe('and the control is readonly', () => {
             beforeEach(() => {
               getControl(element).toggleAttribute('readonly', true);
-            });
-
-            beforeEach(() => {
               const event = new KeyboardEvent('keydown', {
                 key: ' ',
                 bubbles: true,
               } as KeyboardEventInit);
-              expectation = sinon.mock(event).expects('preventDefault').once();
+              expectation = vi.spyOn(event, 'preventDefault');
               getControl(element).dispatchEvent(event);
             });
 
             it('should select the highlighted element', () => {
-              expect(highlightedItem.hasAttribute('selected')).to.be.true;
-              expectation.verify();
+              expect(highlightedItem.hasAttribute('selected')).toBe(true);
+              expect(expectation).toHaveBeenCalledOnce();
             });
           });
 
@@ -127,23 +136,20 @@ describe('PopoverController', () => {
             });
 
             describe('and the " " key is dispatched', () => {
-              let expectation: sinon.SinonExpectation;
+              let expectation: SpyInstance;
 
               beforeEach(() => {
                 const event = new KeyboardEvent('keydown', {
                   key: ' ',
                   bubbles: true,
                 });
-                expectation = sinon
-                  .mock(event)
-                  .expects('preventDefault')
-                  .never();
+                expectation = vi.spyOn(event, 'preventDefault');
                 element.dispatchEvent(event);
               });
 
               it('should not select the highlighted element', () => {
-                expect(highlightedItem.hasAttribute('selected')).to.be.false;
-                expectation.verify();
+                expect(highlightedItem.hasAttribute('selected')).toBe(false);
+                expect(expectation).not.toHaveBeenCalled();
               });
             });
           });
@@ -159,9 +165,7 @@ describe('PopoverController', () => {
         element = await fixture(html`<fake-popover>
           <input value="value" />
         </fake-popover>`);
-      });
 
-      beforeEach(() => {
         input = element.querySelector('input');
         input?.dispatchEvent(
           new InputEvent('input', { bubbles: true, inputType: 'insertText' })
@@ -171,7 +175,7 @@ describe('PopoverController', () => {
       it('should show the popover', () => {
         expect(
           element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
-        ).to.be.true;
+        ).toBe(true);
       });
     });
 
@@ -181,9 +185,7 @@ describe('PopoverController', () => {
         element = await fixture(html`<fake-popover>
           <input value="value" />
         </fake-popover>`);
-      });
 
-      beforeEach(() => {
         input = element.querySelector('input');
         input?.dispatchEvent(new InputEvent('input', { bubbles: true }));
       });
@@ -191,12 +193,15 @@ describe('PopoverController', () => {
       it('should not show the popover', () => {
         expect(
           element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
-        ).to.be.false;
+        ).toBe(false);
       });
     });
   });
 
   describe('when oryx.popover event is dispatched', () => {
+    let selectSpy: SpyInstance;
+    let deselectSpy: SpyInstance;
+
     beforeEach(async () => {
       element = await fixture(html`<fake-popover>
         <input placeholder="a11y" />
@@ -204,20 +209,18 @@ describe('PopoverController', () => {
           (_, index) => html`<oryx-option>${index + 1}</oryx-option>`
         )}
       </fake-popover>`);
-    });
 
-    beforeEach(() => {
-      sinon.spy(element.controller.selectedController, 'select');
-      sinon.spy(element.controller.selectedController, 'deselect');
+      selectSpy = vi.spyOn(element.controller.selectedController, 'select');
+      deselectSpy = vi.spyOn(element.controller.selectedController, 'deselect');
     });
 
     afterEach(() => {
-      sinon.restore();
+      vi.restoreAllMocks();
     });
 
     describe('and there is no selected element', () => {
       beforeEach(async () => {
-        popover()?.dispatchEvent(
+        element?.dispatchEvent(
           new CustomEvent<PopoverSelectEvent>('oryx.popover', {
             bubbles: true,
             composed: true,
@@ -227,14 +230,13 @@ describe('PopoverController', () => {
       });
 
       it('should deselect the selected element', () => {
-        expect(element.controller.selectedController.deselect).to.have.been
-          .called;
+        expect(deselectSpy).toHaveBeenCalled();
       });
     });
 
     describe('and there is a selected element', () => {
       beforeEach(async () => {
-        popover()?.dispatchEvent(
+        element?.dispatchEvent(
           new CustomEvent<PopoverSelectEvent>('oryx.popover', {
             bubbles: true,
             composed: true,
@@ -244,12 +246,11 @@ describe('PopoverController', () => {
       });
 
       afterEach(() => {
-        sinon.restore();
+        vi.clearAllMocks();
       });
 
       it('should select the selected element', () => {
-        expect(element.controller.selectedController.select).to.have.been
-          .called;
+        expect(selectSpy).toHaveBeenCalled();
       });
     });
   });
@@ -262,7 +263,7 @@ describe('PopoverController', () => {
         );
         expect(() => {
           (): void => undefined;
-        }).not.to.throw;
+        }).not.toThrow();
       });
     };
 
@@ -304,16 +305,7 @@ describe('PopoverController', () => {
     });
 
     describe('scrollIntoView', () => {
-      let clock: sinon.SinonFakeTimers;
       let option: OptionComponent | null;
-
-      beforeEach(() => {
-        clock = sinon.useFakeTimers();
-      });
-
-      afterEach(() => {
-        clock.restore();
-      });
 
       beforeEach(async () => {
         element = await fixture(html`<fake-popover>
@@ -325,9 +317,6 @@ describe('PopoverController', () => {
 
       describe('when an item is selected', () => {
         beforeEach(async () => {
-          if (option) {
-            sinon.spy(option, 'scrollIntoView');
-          }
           element.dispatchEvent(
             new InputEvent('input', {
               bubbles: true,
@@ -338,7 +327,7 @@ describe('PopoverController', () => {
         });
 
         it('should not trigger scrollIntoView when the popup is shown', () => {
-          expect(option?.scrollIntoView).to.have.not.been.called;
+          expect(option?.scrollIntoView).not.toHaveBeenCalled();
         });
       });
     });
@@ -356,7 +345,7 @@ describe('PopoverController', () => {
       );
       expect(() => {
         (): void => undefined;
-      }).not.to.throw;
+      }).not.toThrow();
     });
   });
 
@@ -377,7 +366,7 @@ describe('PopoverController', () => {
       it('should select the option', () => {
         expect(
           element.querySelector<OptionComponent>('oryx-option[selected]')?.value
-        ).to.eq('bar');
+        ).toEqual('bar');
       });
     });
 
@@ -388,7 +377,7 @@ describe('PopoverController', () => {
       it('should not throw an error', () => {
         expect(() => {
           (): void => undefined;
-        }).not.to.throw;
+        }).not.toThrow();
       });
     });
   });

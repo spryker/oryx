@@ -1,10 +1,21 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { getControl } from '../../input';
 import '../../option/';
 import { SelectController } from './select.controller';
 import { SelectOptions } from './select.model';
+
+/** innnerText is not implemented in jsdom */
+Object.defineProperty(Element.prototype, 'innerText', {
+  set: function (value: unknown) {
+    this.textContent = value;
+  },
+  get: function () {
+    return this?.textContent;
+  },
+});
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements SelectOptions {
@@ -29,7 +40,7 @@ describe('SelectController', () => {
       });
 
       it('should make the control readonly', () => {
-        expect(getControl(element).hasAttribute('readonly')).to.be.true;
+        expect(getControl(element).hasAttribute('readonly')).toBe(true);
       });
     });
 
@@ -41,7 +52,7 @@ describe('SelectController', () => {
       });
 
       it('should make the control readonly', () => {
-        expect(getControl(element).hasAttribute('readonly')).to.be.not.true;
+        expect(getControl(element).hasAttribute('readonly')).toBe(false);
       });
     });
   });
@@ -59,7 +70,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the first value', () => {
-          expect(getControl(element).value).to.eq('first');
+          expect(getControl(element).value).toEqual('first');
         });
       });
 
@@ -74,7 +85,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the selected value', () => {
-          expect(getControl(element).value).to.eq('second');
+          expect(getControl(element).value).toEqual('second');
         });
       });
     });
@@ -93,10 +104,10 @@ describe('SelectController', () => {
         it('should have an empty (first) option', () => {
           expect(
             (getControl(element) as HTMLSelectElement)?.options?.[0].value
-          ).to.eq('');
+          ).toEqual('');
         });
         it('should have a select with no value', () => {
-          expect(getControl(element).value).to.eq('');
+          expect(getControl(element).value).toEqual('');
         });
       });
 
@@ -113,10 +124,10 @@ describe('SelectController', () => {
         it('should have an empty (first) option', () => {
           const firstOption = (getControl(element) as HTMLSelectElement)
             ?.options?.[0];
-          expect(firstOption.value).to.eq('');
+          expect(firstOption.value).toEqual('');
         });
         it('should have a select with the selected value', () => {
-          expect(getControl(element).value).to.eq('second');
+          expect(getControl(element).value).toEqual('second');
         });
       });
     });
@@ -137,7 +148,7 @@ describe('SelectController', () => {
       it('should generate 3 elements', () => {
         expect(
           element.querySelectorAll('*:not(select):not(option)').length
-        ).to.eq(3);
+        ).toBe(3);
       });
 
       describe('and options are asynchronous added later', () => {
@@ -149,7 +160,7 @@ describe('SelectController', () => {
         });
 
         it('should generate 4 elements', () => {
-          expect(element.querySelectorAll('oryx-option').length).to.eq(4);
+          expect(element.querySelectorAll('oryx-option').length).toBe(4);
         });
       });
     });

@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -39,11 +40,11 @@ describe('LabelController', () => {
           slot: 'label',
           flatten: true,
         });
-        expect(label?.innerText).to.equal('label content');
+        expect(label?.textContent).toContain('label content');
       });
 
       it('should have an "has-label" attribute', () => {
-        expect(element.hasAttribute('has-label')).to.be.true;
+        expect(element.hasAttribute('has-label')).toBe(true);
       });
 
       it('should pass the a11y audit', async () => {
@@ -69,7 +70,7 @@ describe('LabelController', () => {
           slot: 'label',
           selector: 'h3',
         });
-        expect(customLabel).not.to.exist;
+        expect(customLabel).toBeUndefined();
       });
     });
 
@@ -88,11 +89,11 @@ describe('LabelController', () => {
           slot: 'label',
           flatten: true,
         });
-        expect(label).not.to.exist;
+        expect(label).toBeUndefined();
       });
 
       it('should not have an "has-label" attribute', () => {
-        expect(element.hasAttribute('has-label')).to.be.false;
+        expect(element.hasAttribute('has-label')).toBe(false);
       });
     });
   });
@@ -116,7 +117,7 @@ describe('LabelController', () => {
             selector: 'div',
             flatten: true,
           });
-          expect(label?.innerText.trim()).to.eq('test*');
+          expect(label?.textContent).toContain('test*');
         });
       });
 
@@ -137,7 +138,7 @@ describe('LabelController', () => {
             selector: 'div',
             flatten: true,
           });
-          expect(label?.innerText.trim()).to.not.eq('text*');
+          expect(label?.textContent).not.toContain('text*');
         });
       });
     });
@@ -154,7 +155,7 @@ describe('LabelController', () => {
       });
 
       it('should show a <sup>*</sup>', () => {
-        expect(element.renderRoot.querySelector('sup')).to.not.exist;
+        expect(element.renderRoot.querySelector('sup')).toBeNull();
       });
     });
   });

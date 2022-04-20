@@ -42,6 +42,7 @@ export class SelectController implements ReactiveController {
         // newly created empty option
         if (firstOption.selected) {
           emptyOption.selected = true;
+          element.value = '';
         }
         element.insertBefore(emptyOption, firstOption);
       }

@@ -1,5 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
-import { stub } from 'sinon';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import './index';
 import { NotificationComponent } from './notification.component';
 
@@ -11,7 +11,7 @@ describe('NotificationComponent', () => {
 
   describe('closable', () => {
     let button: HTMLElement | null | undefined;
-    const callback = stub();
+    const callback = vi.fn();
 
     beforeEach(async () => {
       element = await fixture(html`
@@ -21,12 +21,12 @@ describe('NotificationComponent', () => {
     });
 
     it('should render the close button', async () => {
-      expect(button).to.be.exist;
+      expect(button).toBeDefined();
     });
 
     it('should dispatch the event when click the close button', async () => {
       button?.click();
-      expect(callback).to.be.calledOnce;
+      expect(callback).toHaveBeenCalled();
     });
   });
 
@@ -45,7 +45,9 @@ describe('NotificationComponent', () => {
     it('should have correct translated aria-labels', async () => {
       const closeBtn = getButton('button');
 
-      expect(closeBtn?.getAttribute('aria-label')).to.eq(closeButtonAriaLabel);
+      expect(closeBtn?.getAttribute('aria-label')).toEqual(
+        closeButtonAriaLabel
+      );
     });
   });
 });

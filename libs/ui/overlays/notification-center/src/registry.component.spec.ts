@@ -1,8 +1,7 @@
-import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import * as sinon from 'sinon';
 import {
   NotificationRegistry,
   NotificationStrategy,
@@ -71,46 +70,42 @@ describe('RegistryController', () => {
     it('should have unique keys', async () => {
       await addNotification();
       await addNotification();
-      expect(element.registry[0]?.key).to.be.exist;
-      expect(element.registry[1]?.key).to.be.exist;
-      expect(element.registry[0]?.key).to.be.not.equal(
-        element.registry[1]?.key
-      );
+      expect(element.registry[0]?.key).toBeDefined();
+      expect(element.registry[1]?.key).toBeDefined();
+      expect(element.registry[0]?.key).not.toEqual(element.registry[1]?.key);
     });
   });
 
   describe('notification`s visibility state', () => {
-    let clock: sinon.SinonFakeTimers;
-
     beforeEach(async () => {
-      clock = sinon.useFakeTimers();
+      vi.useFakeTimers();
       element = await fixture(html`<fake-component></fake-component>`);
     });
 
     afterEach(() => {
-      sinon.restore();
+      vi.clearAllTimers();
     });
 
     it('should be mounted and visible after opening', async () => {
       await addNotification();
-      await clock.tick(0);
-      expect(element.registry[0]?._mounted).to.be.true;
-      expect(element.registry[0]?.visible).to.be.true;
+      vi.advanceTimersByTime(0);
+      expect(element.registry[0]?._mounted).toBeTruthy();
+      expect(element.registry[0]?.visible).toBeTruthy();
     });
 
     it('should auto-close after delay', async () => {
       await addNotification({ autoCloseTime });
 
-      await clock.tick(0);
-      expect(element.registry[0]?.visible).to.be.true;
+      vi.advanceTimersByTime(0);
+      expect(element.registry[0]?.visible).toBeTruthy();
 
-      await clock.tick(autoCloseTime);
-      expect(element.registry[0]?.visible).to.be.false;
+      vi.advanceTimersByTime(autoCloseTime);
+      expect(element.registry[0]?.visible).toBeFalsy();
 
       element.renderRoot.children[0]?.dispatchEvent(new Event('transitionend'));
 
       await updated();
-      expect(element.registry[0]).to.be.not.exist;
+      expect(element.registry[0]).toBeUndefined();
     });
 
     it('should not be auto-closed if autoClose param equal false', async () => {
@@ -118,37 +113,35 @@ describe('RegistryController', () => {
       element.open({ autoClose: false });
 
       await updated();
-      await clock.tick(0);
+      vi.advanceTimersByTime(0);
 
-      expect(element.registry[0]?.visible).to.be.true;
-      expect(element.registry[1]?.visible).to.be.true;
+      expect(element.registry[0]?.visible).toBeTruthy();
+      expect(element.registry[1]?.visible).toBeTruthy();
 
-      await clock.tick(autoCloseTime + 1);
-      expect(element.registry[0]?.visible).to.be.false;
-      expect(element.registry[1]?.visible).to.be.true;
+      vi.advanceTimersByTime(autoCloseTime + 1);
+      expect(element.registry[0]?.visible).toBeFalsy();
+      expect(element.registry[1]?.visible).toBeTruthy();
     });
   });
 
   describe('auto-close', () => {
-    let clock: sinon.SinonFakeTimers;
-
     beforeEach(async () => {
-      clock = sinon.useFakeTimers();
+      vi.useFakeTimers();
       element = await fixture(html`<fake-component></fake-component>`);
     });
 
     afterEach(() => {
-      sinon.restore();
+      vi.clearAllTimers();
     });
 
     it('should be prevented', async () => {
       await addNotification({ autoCloseTime });
-      await clock.tick(0);
+      vi.advanceTimersByTime(0);
 
       element.renderRoot.children[0]?.dispatchEvent(new Event('mouseenter'));
 
-      await clock.tick(autoCloseTime + 1);
-      expect(element.registry[0]?.visible).to.be.true;
+      vi.advanceTimersByTime(autoCloseTime + 1);
+      expect(element.registry[0]?.visible).toBeTruthy();
     });
   });
 });

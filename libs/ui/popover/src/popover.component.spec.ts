@@ -1,5 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
-import * as sinon from 'sinon';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { PopoverComponent } from '.';
 import { a11yConfig } from '../../a11y';
 import './index';
@@ -19,7 +19,7 @@ describe('PopoverComponent', () => {
     });
 
     it('should render the light dom content', () => {
-      expect(element.querySelector('#light-dom')).to.exist;
+      expect(element.querySelector('#light-dom')).toBeDefined();
     });
   });
 
@@ -28,17 +28,18 @@ describe('PopoverComponent', () => {
       const event = new Event('mousedown', {
         bubbles: true,
       });
-      const expectation = sinon.mock(event).expects('preventDefault').once();
+
+      const expectation = vi.spyOn(event, 'preventDefault');
       element?.dispatchEvent(event);
-      expectation.verify();
+      expect(expectation).toHaveBeenCalled();
     });
     it('should stop the propagation for the event', () => {
       const event = new Event('mousedown', {
         bubbles: true,
       });
-      const expectation = sinon.mock(event).expects('stopPropagation').once();
+      const expectation = vi.spyOn(event, 'stopPropagation');
       element?.dispatchEvent(event);
-      expectation.verify();
+      expect(expectation).toHaveBeenCalledOnce();
     });
   });
 
@@ -47,17 +48,17 @@ describe('PopoverComponent', () => {
       const event = new Event('mouseup', {
         bubbles: true,
       });
-      const expectation = sinon.mock(event).expects('preventDefault').once();
+      const expectation = vi.spyOn(event, 'preventDefault');
       element?.dispatchEvent(event);
-      expectation.verify();
+      expect(expectation).toHaveBeenCalledOnce();
     });
     it('should stop the propagation for the event', () => {
       const event = new Event('mouseup', {
         bubbles: true,
       });
-      const expectation = sinon.mock(event).expects('stopPropagation').once();
+      const expectation = vi.spyOn(event, 'stopPropagation');
       element?.dispatchEvent(event);
-      expectation.verify();
+      expect(expectation).toHaveBeenCalledOnce();
     });
   });
 });

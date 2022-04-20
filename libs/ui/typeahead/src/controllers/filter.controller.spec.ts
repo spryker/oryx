@@ -1,8 +1,8 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import * as sinon from 'sinon';
+import { SpyInstanceFn, vi } from 'vitest';
 import { getControl } from '../../../input';
 import '../../../option';
 import { OptionComponent } from '../../../option';
@@ -50,7 +50,7 @@ describe('FilterController', () => {
         const filteredOptions = element.querySelectorAll<OptionComponent>(
           'oryx-option:not([hide])'
         );
-        expect(filteredOptions.length).to.eq(count);
+        expect(filteredOptions.length).toEqual(count);
       });
     });
   };
@@ -98,7 +98,7 @@ describe('FilterController', () => {
             element.dispatchEvent(new Event('focusout', { bubbles: true }));
           });
           it('should clear the value', () => {
-            expect(getControl(element).value).to.empty;
+            expect(getControl(element).value).toBe('');
           });
         });
       });
@@ -120,16 +120,16 @@ describe('FilterController', () => {
             element.dispatchEvent(new Event('focusout', { bubbles: true }));
           });
           it('should not clear the value', () => {
-            expect(getControl(element).value).to.not.empty;
+            expect(getControl(element).value).not.toBe('');
           });
         });
       });
     });
     describe('exact match', () => {
-      let callback: unknown;
+      let callback: SpyInstanceFn;
       const prepareMatchByValue = (value?: string): void => {
         beforeEach(async () => {
-          callback = sinon.stub();
+          callback = vi.fn();
           element = await fixture(
             html`<fake-filter
               @oryx.popover=${callback}
@@ -141,6 +141,7 @@ describe('FilterController', () => {
               )}
             </fake-filter>`
           );
+          element.querySelector('input')?.focus();
           element.dispatchEvent(
             new InputEvent('input', {
               bubbles: true,
@@ -151,21 +152,19 @@ describe('FilterController', () => {
       };
       describe('when an input event value is dispatched', () => {
         prepareMatchByValue('fix/fes-456');
+
         it('should dispatch a oryx.popover event with a selected option', async () => {
           const selected =
             element.querySelectorAll<HTMLElement>('oryx-option')[1];
-          expect(callback).to.be.calledWithMatch(
-            sinon.match({ detail: { selected } })
-          );
+          expect(callback.mock.calls[0][0].detail.selected).toBe(selected);
         });
       });
       describe('when an input event value is dispatched', () => {
         prepareMatchByValue('fix/');
+
         it('should dispatch a oryx.popover event without a selected option', async () => {
           const selected = undefined;
-          expect(callback).to.be.calledWithMatch(
-            sinon.match({ detail: { selected } })
-          );
+          expect(callback.mock.calls[0][0].detail.selected).toBe(selected);
         });
       });
     });

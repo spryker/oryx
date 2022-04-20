@@ -1,4 +1,4 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
 import { html } from 'lit';
 import { queryFirstAssigned } from '../../utilities';
 import { CardComponent } from './card.component';
@@ -9,7 +9,7 @@ describe('Card', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-card');
-    expect(el).to.be.instanceof(CardComponent);
+    expect(el).toBeInstanceOf(CardComponent);
   });
 
   describe('when header is provided by prop', () => {
@@ -23,8 +23,8 @@ describe('Card', () => {
     it('should render title in default place', () => {
       const cardDefaultTitle = element?.shadowRoot?.querySelector('h5');
 
-      expect(cardDefaultTitle).to.exist;
-      expect(cardDefaultTitle?.textContent).to.be.equal(headerProp);
+      expect(cardDefaultTitle).toBeDefined();
+      expect(cardDefaultTitle?.textContent).toEqual(headerProp);
     });
   });
 
@@ -45,7 +45,7 @@ describe('Card', () => {
         slot: 'header',
       }) as HTMLElement;
 
-      expect(el.textContent).to.be.equal(titleText);
+      expect(el.textContent).toEqual(titleText);
     });
   });
 
@@ -64,7 +64,7 @@ describe('Card', () => {
         selector: 'p',
       }) as HTMLElement;
 
-      expect(el.textContent).to.be.equal(contentText);
+      expect(el.textContent).toEqual(contentText);
     });
   });
 
@@ -84,7 +84,7 @@ describe('Card', () => {
         slot: 'footer',
       }) as HTMLElement;
 
-      expect(el.textContent).to.be.equal(footerText);
+      expect(el.textContent).toEqual(footerText);
     });
   });
 });

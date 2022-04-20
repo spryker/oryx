@@ -1,6 +1,7 @@
-import { expect, fixture, unsafeStatic } from '@open-wc/testing';
+import { fixture, unsafeStatic } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { html as staticHtml } from 'lit/static-html.js';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { queryFirstAssigned } from './query.util';
 
 interface CheckSlotsTemplate {
@@ -43,7 +44,6 @@ export const checkSlots = (slots: string[], template: CheckSlotsTemplate) => {
       });
 
       it(`should pass ${slotName} slot to oryx-card by slot`, () => {
-        console.log('element', element);
         const options = {
           selector: `[data-testid="${slotName}Slot"]`,
           slot: slotName !== 'default' ? slotName : undefined,
@@ -51,7 +51,7 @@ export const checkSlots = (slots: string[], template: CheckSlotsTemplate) => {
 
         const el = queryFirstAssigned(element, options) as HTMLElement;
 
-        expect(el?.textContent?.trim()).to.equal(slotText);
+        expect(el?.textContent?.trim()).toEqual(slotText);
       });
     });
   });

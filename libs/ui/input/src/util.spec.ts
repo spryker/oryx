@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { getControl } from './util';
@@ -19,7 +19,7 @@ describe('Util', () => {
     });
 
     it('should throw an error', () => {
-      expect(() => getControl(element, 'textarea')).to.throw();
+      expect(() => getControl(element, 'textarea')).toThrow();
     });
   });
 
@@ -32,19 +32,19 @@ describe('Util', () => {
 
     describe('and no selector is used', () => {
       it('should return the input', () => {
-        expect(getControl(element).id).to.eq('first');
+        expect(getControl(element).id).toEqual('first');
       });
     });
 
     describe('and the "input" selector is used', () => {
       it('should return the input', () => {
-        expect(getControl(element, 'input').id).to.eq('first');
+        expect(getControl(element, 'input').id).toEqual('first');
       });
     });
 
     describe('and the "textarea" selector is used', () => {
       it('should throw an error', () => {
-        expect(() => getControl(element, 'textarea')).to.throw();
+        expect(() => getControl(element, 'textarea')).toThrow();
       });
     });
   });
@@ -61,13 +61,13 @@ describe('Util', () => {
 
     describe('and no selector is used', () => {
       it('should return the first input', () => {
-        expect(getControl(element).id).to.eq('first');
+        expect(getControl(element).id).toEqual('first');
       });
     });
 
     describe('and the "input" selector is used', () => {
       it('should return the first input', () => {
-        expect(getControl(element, 'input').id).to.eq('first');
+        expect(getControl(element, 'input').id).toEqual('first');
       });
     });
   });
@@ -85,19 +85,19 @@ describe('Util', () => {
 
     describe('and no selector is used', () => {
       it('should return the select', () => {
-        expect(getControl(element).id).to.eq('select');
+        expect(getControl(element).id).toEqual('select');
       });
     });
 
     describe('and the "select" selector is used', () => {
       it('should return the select', () => {
-        expect(getControl(element, 'select').id).to.eq('select');
+        expect(getControl(element, 'select').id).toEqual('select');
       });
     });
 
     describe('and the "input" selector is used', () => {
       it('should throw an error', () => {
-        expect(() => getControl(element, 'input')).to.throw();
+        expect(() => getControl(element, 'input')).toThrow();
       });
     });
   });

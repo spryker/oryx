@@ -1,8 +1,19 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
 import { a11yConfig } from '../../a11y';
 import { OptionComponent } from './';
 import './index';
+
+/** innnerText is not implemented in jsdom */
+Object.defineProperty(Element.prototype, 'innerText', {
+  set: function (value: unknown) {
+    this.textContent = value;
+  },
+  get: function () {
+    return this?.textContent;
+  },
+});
 
 describe('OptionComponent', () => {
   let element: OptionComponent;
@@ -19,8 +30,9 @@ describe('OptionComponent', () => {
     });
 
     it('should render the icon inside the option', () => {
-      expect(element.shadowRoot?.querySelector(`oryx-icon:not(.mark)`)).to
-        .exist;
+      expect(
+        element.shadowRoot?.querySelector(`oryx-icon:not(.mark)`)
+      ).toBeDefined();
     });
   });
 
@@ -38,7 +50,7 @@ describe('OptionComponent', () => {
       });
 
       it('should return the innerText', () => {
-        expect(element.value).to.eq('mock inner text');
+        expect(element.value).toEqual('mock inner text');
       });
     });
 
@@ -57,7 +69,7 @@ describe('OptionComponent', () => {
       });
 
       it('should return the innerText', () => {
-        expect(element.value).to.eq('mock value');
+        expect(element.value).toEqual('mock value');
       });
     });
   });

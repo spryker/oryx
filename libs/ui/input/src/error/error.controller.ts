@@ -7,7 +7,7 @@ export class ErrorController implements ReactiveController {
   }
 
   render(): TemplateResult {
-    return html` <oryx-error-message .message=${this.message}>
+    return html`<oryx-error-message .message=${this.message}>
       <slot name="error" @slotchange=${this.handleError.bind(this)}></slot>
     </oryx-error-message>`;
   }

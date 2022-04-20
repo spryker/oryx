@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { CollapsibleComponent } from './collapsible.component';
 import './index';
 
@@ -13,7 +13,7 @@ describe('CollapsibleComponent', () => {
     it('should have open attribute', async () => {
       const details = element.renderRoot?.querySelector('details');
 
-      expect(details?.hasAttribute('open')).to.be.true;
+      expect(details?.hasAttribute('open')).toBe(true);
     });
   });
 });

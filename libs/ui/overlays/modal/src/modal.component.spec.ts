@@ -1,24 +1,46 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
-import { checkSlots } from '../../../utilities/slot.util.spec';
-import './index';
+import { checkSlots } from '../../../utilities/slot.spec.util';
 import { ModalComponent } from './modal.component';
+import { NDSModalComponent } from './no-dialog-support/modal.component';
+
+/* eslint-disable */
+// @ts-ignore
+if (window.HTMLDialogElement) {
+  // JsDom doesn't have implementation for open/close dialog
+  // @ts-ignore
+  window.HTMLDialogElement.prototype.showModal = function (): void {
+    this.setAttribute('open', '');
+  };
+  // @ts-ignore
+  window.HTMLDialogElement.prototype.close = function (): void {
+    this.removeAttribute('open');
+  };
+
+  customElements.get('oryx-modal') ||
+    customElements.define('oryx-modal', ModalComponent);
+} else {
+  customElements.get('oryx-modal') ||
+    customElements.define('oryx-modal', NDSModalComponent);
+}
+/* eslint-enable */
 
 describe('Modal', () => {
   let element: ModalComponent;
 
-  const expectDialogOpen = (shouldBeOpen: boolean) => {
-    const dialog = element?.shadowRoot?.querySelector('dialog');
+  const expectDialogOpen = (shouldBeOpen: boolean): void => {
+    const dialog = element?.renderRoot?.querySelector('dialog');
 
     if (shouldBeOpen) {
-      expect(dialog?.hasAttribute('open')).to.be.true;
+      expect(dialog?.hasAttribute('open')).toBe(true);
     } else {
-      expect(dialog?.hasAttribute('open')).to.be.false;
+      expect(dialog?.hasAttribute('open')).toBe(false);
     }
   };
 
-  const testCloseStrategies = () => {
+  const testCloseStrategies = (): void => {
     describe('and than "close" method was called', () => {
       beforeEach(() => {
         element.close();
@@ -71,7 +93,7 @@ describe('Modal', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-modal');
-    expect(el).to.be.instanceof(ModalComponent);
+    expect(el).toBeInstanceOf(ModalComponent);
   });
 
   describe('when is open by "open" method', () => {
@@ -85,7 +107,7 @@ describe('Modal', () => {
     });
 
     it('should have an "open" attribute', () => {
-      expect(element.hasAttribute('open')).to.be.true;
+      expect(element.hasAttribute('open')).toBe(true);
     });
 
     it('should open dialog', () => {
@@ -159,6 +181,7 @@ describe('Modal', () => {
           bubbles: true,
           cancelable: true,
         });
+
         element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
       });
 
@@ -198,7 +221,7 @@ describe('Modal', () => {
       const headerSlot = element?.shadowRoot?.querySelector(
         'oryx-card slot[name=header]'
       );
-      expect(headerSlot?.textContent?.trim()).to.equal(headerText);
+      expect(headerSlot?.textContent?.trim()).toEqual(headerText);
     });
   });
 

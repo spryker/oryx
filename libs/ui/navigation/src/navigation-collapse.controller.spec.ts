@@ -1,4 +1,5 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html, LitElement } from 'lit';
 import { a11yConfig } from '../../a11y';
 import './index';
@@ -12,8 +13,8 @@ describe('CollapseToggleController', () => {
   let controller: CollapseToggleController;
 
   const expectsCollapsed = (collapsed: boolean): void => {
-    expect(element.hasAttribute('collapsed')).to.be.eq(collapsed);
-    expect(element.style.getPropertyValue('--navigation-collapsed')).to.be.eq(
+    expect(element.hasAttribute('collapsed')).toBe(collapsed);
+    expect(element.style.getPropertyValue('--navigation-collapsed')).toEqual(
       collapsed ? '1' : '0'
     );
   };
@@ -25,7 +26,7 @@ describe('CollapseToggleController', () => {
 
   describe('toggle', () => {
     it('should collapse by default', () => {
-      expect(element.hasAttribute('collapsed')).to.be.true;
+      expect(element.hasAttribute('collapsed')).toBe(true);
     });
 
     it('passes the a11y audit', async () => {
@@ -42,7 +43,7 @@ describe('CollapseToggleController', () => {
       });
 
       it('should not have a collapse attribute', () => {
-        expect(element.hasAttribute('collapsed')).to.be.false;
+        expect(element.hasAttribute('collapsed')).toBe(false);
       });
     });
 
@@ -57,7 +58,7 @@ describe('CollapseToggleController', () => {
       });
 
       it('should have a collapse attribute', () => {
-        expect(element.hasAttribute('collapsed')).to.be.true;
+        expect(element.hasAttribute('collapsed')).toBe(true);
       });
     });
   });
@@ -66,17 +67,17 @@ describe('CollapseToggleController', () => {
     describe('when the "[" key is used', () => {
       it('should toggle the navigation', () => {
         window.dispatchEvent(new KeyboardEvent('keydown', { key: '[' }));
-        expect(element.hasAttribute('collapsed')).to.be.false;
+        expect(element.hasAttribute('collapsed')).toBe(false);
       });
     });
 
     describe('when other keys are used', () => {
       it('should toggle the navigation', () => {
-        expect(element.hasAttribute('collapsed')).to.be.true;
+        expect(element.hasAttribute('collapsed')).toBe(true);
         'abcdefghijklmnopqrstuvwxyz ?]!~#$%'.split('').forEach((key) => {
           element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
         });
-        expect(element.hasAttribute('collapsed')).to.be.true;
+        expect(element.hasAttribute('collapsed')).toBe(true);
       });
     });
   });

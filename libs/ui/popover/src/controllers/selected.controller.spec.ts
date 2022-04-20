@@ -1,4 +1,5 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -35,9 +36,9 @@ describe('SelectedController', () => {
     });
 
     it('should have selected attribute', () => {
-      expect(element.querySelector<HTMLElement>('[selected]')?.innerText).to.eq(
-        'first'
-      );
+      expect(
+        element.querySelector<HTMLElement>('[selected]')?.textContent?.trim()
+      ).toBe('first');
     });
   });
 
@@ -47,9 +48,9 @@ describe('SelectedController', () => {
     });
 
     it('should have selected attribute', () => {
-      expect(element.querySelector<HTMLElement>('[selected]')?.innerText).to.eq(
-        'second'
-      );
+      expect(
+        element.querySelector<HTMLElement>('[selected]')?.textContent?.trim()
+      ).toBe('second');
     });
   });
 
@@ -62,7 +63,7 @@ describe('SelectedController', () => {
       if (element) {
         expect(() => {
           (): void => undefined;
-        }).not.to.throw;
+        }).not.toThrow();
       }
     });
   });
@@ -73,7 +74,7 @@ describe('SelectedController', () => {
     });
 
     it('should not have selected attribute', () => {
-      expect(element.querySelectorAll<HTMLElement>('[selected]').length).to.eq(
+      expect(element.querySelectorAll<HTMLElement>('[selected]').length).toBe(
         0
       );
     });
@@ -87,7 +88,7 @@ describe('SelectedController', () => {
     });
 
     it('should select the item', () => {
-      expect(item.hasAttribute('selected')).to.be.true;
+      expect(item.hasAttribute('selected')).toBeTruthy();
     });
   });
 
@@ -97,7 +98,7 @@ describe('SelectedController', () => {
     });
 
     it('should not have a select the item', () => {
-      expect(element.querySelectorAll<HTMLElement>('[selected]').length).to.eq(
+      expect(element.querySelectorAll<HTMLElement>('[selected]').length).toBe(
         0
       );
     });

@@ -1,4 +1,5 @@
-import { expect, fixture } from '@open-wc/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -43,7 +44,7 @@ describe('MaxHeightController', () => {
 
       it('should not add the "up" attribute', () => {
         element.controller.setBoundingBox(element);
-        expect(element.hasAttribute('up')).is.false;
+        expect(element.hasAttribute('up')).toBe(false);
       });
     });
   });
@@ -53,13 +54,13 @@ describe('MaxHeightController', () => {
       beforeEach(() => {
         element.style.setProperty('--oryx-popover-maxheight', '101px');
         element.getBoundingClientRect = (): any => {
-          return { top: 400, bottom: 500 };
+          return { top: 600, bottom: 700 };
         };
       });
 
       it('should add up attribute', () => {
         element.controller.setBoundingBox(element);
-        expect(element.hasAttribute('up')).is.true;
+        expect(element.hasAttribute('up')).toBe(true);
       });
     });
 
@@ -73,7 +74,7 @@ describe('MaxHeightController', () => {
 
       it('should add up attribute', () => {
         element.controller.setBoundingBox(element);
-        expect(element.hasAttribute('up')).is.false;
+        expect(element.hasAttribute('up')).toBe(false);
       });
     });
 
@@ -82,20 +83,20 @@ describe('MaxHeightController', () => {
         describe('but there is less space at the top', () => {
           beforeEach(() => {
             element.getBoundingClientRect = (): any => {
-              return { top: 50, bottom: 500 };
+              return { top: 50, bottom: 700 };
             };
           });
 
           it('should not add the "up" attribute', () => {
             element.controller.setBoundingBox(element);
-            expect(element.hasAttribute('up')).is.false;
+            expect(element.hasAttribute('up')).toBe(false);
           });
 
-          it('should set the --_available-popover-height to 80px ', () => {
+          it('should set the --_available-popover-height to 48px ', async () => {
             element.controller.setBoundingBox(element);
             expect(
               element.style.getPropertyValue('--_available-popover-height')
-            ).to.eq('80px');
+            ).toEqual('48px');
           });
         });
       });

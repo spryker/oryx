@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
 import { ButtonType } from './button.model';
@@ -9,7 +10,7 @@ describe('ButtonComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-button');
-    expect(el).to.be.instanceof(ButtonComponent);
+    expect(el).toBeInstanceOf(ButtonComponent);
   });
 
   describe('button type', () => {
@@ -22,7 +23,7 @@ describe('ButtonComponent', () => {
           ></oryx-button>`);
         });
         it('should reflect the type attribute on the node', () => {
-          expect(element?.getAttribute('type')).to.equal(type);
+          expect(element?.getAttribute('type')).toBe(type);
         });
       });
     });
@@ -39,7 +40,7 @@ describe('ButtonComponent', () => {
         });
 
         it('should reflect the size attribute on the node', () => {
-          expect(element?.getAttribute('size')).to.equal(size);
+          expect(element?.getAttribute('size')).toBe(size);
         });
       });
     });
@@ -50,8 +51,9 @@ describe('ButtonComponent', () => {
       element = await fixture(
         html`<oryx-button><button disabled></button></oryx-button>`
       );
-      expect(element.querySelector('button')?.hasAttribute('disabled')).to.be
-        .true;
+      expect(
+        element.querySelector('button')?.hasAttribute('disabled')
+      ).toBeTruthy();
       expect(
         element.querySelector('button')?.setAttribute('disabled', 'disabled')
       );
@@ -61,8 +63,9 @@ describe('ButtonComponent', () => {
       element = await fixture(
         html`<oryx-button><button></button></oryx-button>`
       );
-      expect(element.querySelector('button')?.hasAttribute('disabled')).to.be
-        .false;
+      expect(element.querySelector('button')?.hasAttribute('disabled')).toBe(
+        false
+      );
     });
   });
 
@@ -75,7 +78,7 @@ describe('ButtonComponent', () => {
       });
 
       it('should not have a loading spinner', () => {
-        expect(element.querySelector('oryx-icon[type=loader]')).to.not.exist;
+        expect(element.querySelector('oryx-icon[type=loader]')).toBeNull();
       });
     });
   });
@@ -91,7 +94,7 @@ describe('ButtonComponent', () => {
     });
 
     it('should render icon', () => {
-      expect(element?.querySelector('oryx-icon[type=close]')).to.exist;
+      expect(element?.querySelector('oryx-icon[type=close]')).toBeDefined();
     });
   });
 });

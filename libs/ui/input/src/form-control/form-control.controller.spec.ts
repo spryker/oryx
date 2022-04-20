@@ -1,7 +1,8 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, fixtureCleanup, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import * as sinon from 'sinon';
+import { SpyInstance } from 'vitest';
 import { a11yConfig } from '../../../a11y';
 import { getControl } from '../util';
 import { FormControlController } from './form-control.controller';
@@ -22,6 +23,8 @@ class InputComponent extends LitElement implements FormControlOptions {
 describe('FormControlController', () => {
   let element: InputComponent;
 
+  afterEach(() => fixtureCleanup());
+
   describe('control', () => {
     describe('when no input is slotted in', () => {
       beforeEach(async () => {
@@ -35,7 +38,7 @@ describe('FormControlController', () => {
       });
 
       it('should render the fallback input from shadow dom', () => {
-        expect(getControl(element)).to.eq(
+        expect(getControl(element)).toEqual(
           element.renderRoot.querySelector('input')
         );
       });
@@ -53,7 +56,9 @@ describe('FormControlController', () => {
       });
 
       it('is should render light dom', () => {
-        expect(getControl(element)).to.eq(element.querySelector('input#light'));
+        expect(getControl(element)).toEqual(
+          element.querySelector('input#light')
+        );
       });
     });
 
@@ -74,7 +79,7 @@ describe('FormControlController', () => {
       });
 
       it('should not set the disabled property', () => {
-        expect(element?.hasAttribute('disabled')).to.be.false;
+        expect(element?.hasAttribute('disabled')).toBe(false);
       });
     });
   });
@@ -89,16 +94,16 @@ describe('FormControlController', () => {
     });
 
     describe('when the mousedown event is dispatched on the host element', () => {
-      let expectation: sinon.SinonExpectation;
+      let spy: SpyInstance<Event[]>;
+      const event = new Event('mousedown', { bubbles: true });
 
       beforeEach(async () => {
-        const event = new Event('mousedown', { bubbles: true });
-        expectation = sinon.mock(event).expects('preventDefault').once();
+        spy = vi.spyOn(event, 'preventDefault');
         element.dispatchEvent(event);
       });
 
       it('should stop immediate propagation of the event', () => {
-        expectation.verify();
+        expect(spy).toHaveBeenCalled();
       });
     });
 
@@ -108,19 +113,21 @@ describe('FormControlController', () => {
           .querySelector('#notFocusable')
           ?.dispatchEvent(new Event('mousedown', { bubbles: true }));
       });
+
       it('should focus the control', () => {
-        expect(document.activeElement).to.eq(getControl(element));
+        expect(document.activeElement).toEqual(getControl(element));
       });
     });
 
     describe('when a focusable element is clicked', () => {
       beforeEach(async () => {
         element
-          .querySelector('#focusable')
+          .querySelector<HTMLButtonElement>('#focusable')
           ?.dispatchEvent(new Event('mousedown', { bubbles: true }));
       });
+
       it('should not focus the control', () => {
-        expect(document.activeElement).to.not.eq(getControl(element));
+        expect(document.activeElement).not.toEqual(getControl(element));
       });
     });
   });
@@ -138,7 +145,7 @@ describe('FormControlController', () => {
       });
 
       it('should not set the disabled property', () => {
-        expect(element.hasAttribute('disabled')).to.be.false;
+        expect(element.hasAttribute('disabled')).toBe(false);
       });
 
       describe('but when it is disabled afterwards', () => {
@@ -146,7 +153,7 @@ describe('FormControlController', () => {
           element.querySelector('input')?.setAttribute('disabled', 'true');
         });
         it('should set the disabled property to true', () => {
-          expect(element.hasAttribute('disabled')).to.be.true;
+          expect(element.hasAttribute('disabled')).toBe(true);
         });
       });
     });
@@ -165,7 +172,7 @@ describe('FormControlController', () => {
       });
 
       it('should reflect the disabled attribute on the host element', () => {
-        expect(element?.getAttribute('disabled')).to.exist;
+        expect(element?.getAttribute('disabled')).toBeDefined();
       });
     });
   });

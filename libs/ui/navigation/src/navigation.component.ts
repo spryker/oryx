@@ -24,7 +24,7 @@ export class NavigationComponent extends LitElement {
         <use href="assets/full-logo.svg#text" class="letter-logo" />
       </svg>
       <slot></slot>
-      <button @click=${this.toggle} .ariaLabel=${this.toggleButtonAriaLabel}>
+      <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
         <oryx-icon type="back" size="medium"></oryx-icon>
       </button>
     `;

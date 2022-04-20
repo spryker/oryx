@@ -28,9 +28,9 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   protected setDialogState(): void {
     if (this.isOpen) {
-      this.dialog?.showModal();
+      this.dialog?.showModal?.();
     } else {
-      this.dialog?.close();
+      this.dialog?.close?.();
     }
   }
 

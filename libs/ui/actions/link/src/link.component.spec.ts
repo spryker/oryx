@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../../a11y';
 import './index';
 import { LinkComponent } from './link.component';
@@ -27,7 +28,7 @@ describe('LinkComponent', () => {
         });
 
         it('should reflect the type attribute on the node', () => {
-          expect(element?.getAttribute('type')).to.equal(type);
+          expect(element?.getAttribute('type')).toBe(type);
         });
       });
     });
@@ -43,7 +44,7 @@ describe('LinkComponent', () => {
     });
 
     it('should reflect the disabled attribute on the host element', () => {
-      expect(element?.getAttribute('disabled')).to.exist;
+      expect(element?.getAttribute('disabled')).toBeDefined();
     });
 
     describe('but when it becomes not disabled', () => {
@@ -56,7 +57,7 @@ describe('LinkComponent', () => {
       });
 
       it('the host should not have disabled attribute', () => {
-        expect(element.hasAttribute('disabled')).to.be.false;
+        expect(element.hasAttribute('disabled')).toBe(false);
       });
     });
   });
@@ -71,7 +72,7 @@ describe('LinkComponent', () => {
     });
 
     it('should render icon', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-icon')).to.exist;
+      expect(element?.shadowRoot?.querySelector('oryx-icon')).toBeDefined();
     });
   });
 });

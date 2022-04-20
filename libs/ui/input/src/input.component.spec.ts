@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import './index';
 import { InputComponent } from './input.component';
@@ -8,7 +9,7 @@ describe('InputComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-input');
-    expect(el).to.be.instanceof(InputComponent);
+    expect(el).toBeInstanceOf(InputComponent);
   });
 
   describe('render', () => {
@@ -21,7 +22,7 @@ describe('InputComponent', () => {
     });
 
     it('should render a wrapper element', () => {
-      expect(element.renderRoot.querySelector('div.control')).to.exist;
+      expect(element.renderRoot.querySelector('div.control')).toBeDefined();
     });
 
     it('passes the a11y audit', async () => {

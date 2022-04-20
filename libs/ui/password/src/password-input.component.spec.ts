@@ -1,6 +1,6 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { TemplateResult } from 'lit';
-import * as sinon from 'sinon';
 import { a11yConfig } from '../../a11y';
 import { getControl } from '../../input';
 import './index';
@@ -24,7 +24,7 @@ describe('PasswordComponent', () => {
     });
 
     it('should have an input with password type', () => {
-      expect(getControl(element).getAttribute('type')).to.eq('password');
+      expect(getControl(element).getAttribute('type')).toEqual('password');
     });
   });
 
@@ -43,7 +43,7 @@ describe('PasswordComponent', () => {
     const expectAfterEvent = (event: string): void => {
       it('should make the password visible', () => {
         toggle?.dispatchEvent(new MouseEvent(event, { bubbles: true }));
-        expect(element.querySelector('input')?.getAttribute('type')).to.eq(
+        expect(element.querySelector('input')?.getAttribute('type')).toEqual(
           'text'
         );
       });
@@ -52,9 +52,9 @@ describe('PasswordComponent', () => {
     const expectNotAfterEvent = (event: string): void => {
       it('should not make the password visible', () => {
         toggle?.dispatchEvent(new MouseEvent(event, { bubbles: true }));
-        expect(element.querySelector('input')?.getAttribute('type')).to.not.eq(
-          'text'
-        );
+        expect(
+          element.querySelector('input')?.getAttribute('type')
+        ).not.toEqual('text');
       });
     };
 
@@ -69,11 +69,11 @@ describe('PasswordComponent', () => {
       });
 
       it('should not have a button to make the password visible', () => {
-        expect(toggle).to.not.exist;
+        expect(toggle).toBeDefined();
       });
 
       it('should have an input with password type', () => {
-        expect(element.querySelector('input')?.getAttribute('type')).to.eq(
+        expect(element.querySelector('input')?.getAttribute('type')).toEqual(
           'password'
         );
       });
@@ -107,7 +107,7 @@ describe('PasswordComponent', () => {
           toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
           expect(
             element.querySelector('input')?.getAttribute('type')
-          ).not.to.eq('text');
+          ).not.toEqual('text');
         });
       });
     });
@@ -118,7 +118,7 @@ describe('PasswordComponent', () => {
         toggle = element.shadowRoot?.querySelector('oryx-icon');
       });
       it('should have a button', () => {
-        expect(toggle).to.exist;
+        expect(toggle).toBeDefined();
       });
 
       describe('and when the element is clicked', () => {
@@ -158,11 +158,9 @@ describe('PasswordComponent', () => {
     });
 
     describe('when the strategy is set to CLICK', () => {
-      let clock: sinon.SinonFakeTimers;
-
       describe('and a timeout is set to 10ms', () => {
         beforeEach(async () => {
-          clock = sinon.useFakeTimers();
+          vi.useFakeTimers();
           element = await fixture(
             html`<oryx-password-input
               .strategy=${PasswordVisibilityStrategy.CLICK}
@@ -176,30 +174,30 @@ describe('PasswordComponent', () => {
         });
 
         afterEach(() => {
-          sinon.restore();
+          vi.clearAllTimers();
         });
 
         describe('when 9ms has passed', () => {
           beforeEach(() => {
-            clock.tick(9);
+            vi.advanceTimersByTime(9);
           });
 
           it('should still show the password', () => {
-            expect(element.querySelector('input')?.getAttribute('type')).to.eq(
-              'text'
-            );
+            expect(
+              element.querySelector('input')?.getAttribute('type')
+            ).toEqual('text');
           });
         });
 
         describe('when 10ms has passed', () => {
           beforeEach(() => {
-            clock.tick(10);
+            vi.advanceTimersByTime(10);
           });
 
           it('should no longer show the password', () => {
-            expect(element.querySelector('input')?.getAttribute('type')).to.eq(
-              'password'
-            );
+            expect(
+              element.querySelector('input')?.getAttribute('type')
+            ).toEqual('password');
           });
         });
       });

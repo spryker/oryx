@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import { ErrorMessageComponent } from './error-message.component';
 import './index';
@@ -24,14 +25,17 @@ describe('ErrorMessageComponent', () => {
     });
 
     it('should render an error icon', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-icon[type=warning]')).to
-        .exist;
+      expect(
+        element?.shadowRoot?.querySelector('oryx-icon[type=warning]')
+      ).toBeDefined();
     });
 
     it('should render the message', () => {
-      expect(element?.shadowRoot?.innerHTML).to.contain(
-        'error validation message'
+      const match = Array.from(element?.shadowRoot?.childNodes || []).find(
+        (item) => item.textContent === 'error validation message'
       );
+
+      expect(match).toBeTruthy();
     });
   });
 
@@ -49,8 +53,9 @@ describe('ErrorMessageComponent', () => {
     });
 
     it('should not render an error icon', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-icon[type=error]')).not.to
-        .exist;
+      expect(
+        element?.shadowRoot?.querySelector('oryx-icon[type=error]')
+      ).toBeNull();
     });
   });
 });

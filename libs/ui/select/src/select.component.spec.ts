@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { SelectComponent } from '.';
 import { a11yConfig } from '../../a11y';
 import { getControl } from '../../input';
@@ -20,19 +21,19 @@ describe('SelectComponent', () => {
       clearIconAppearance: ClearIconAppearance
     ): void => {
       it('should have default suffixIcon', () => {
-        expect(element.suffixIcon).to.eq(suffixIcon);
+        expect(element.suffixIcon).toEqual(suffixIcon);
       });
 
       it('should have default searchIconPosition', () => {
-        expect(element.searchIconPosition).to.eq(searchIconPosition);
+        expect(element.searchIconPosition).toEqual(searchIconPosition);
       });
 
       it('should have default clearIconPosition', () => {
-        expect(element.clearIconPosition).to.eq(clearIconPosition);
+        expect(element.clearIconPosition).toEqual(clearIconPosition);
       });
 
       it('should have default clearIconAppearance', () => {
-        expect(element.clearIconAppearance).to.eq(clearIconAppearance);
+        expect(element.clearIconAppearance).toEqual(clearIconAppearance);
       });
     };
 
@@ -151,7 +152,7 @@ describe('SelectComponent', () => {
       it('should not show the options', () => {
         expect(
           element.renderRoot.querySelector('oryx-popover')?.hasAttribute('show')
-        ).to.be.false;
+        ).toBe(false);
       });
     });
   });

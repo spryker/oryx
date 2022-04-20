@@ -1,5 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
-import * as sinon from 'sinon';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import { queryFirstAssigned } from '../../utilities';
 import {
@@ -30,7 +30,7 @@ describe('SearchComponent', () => {
         it('should render the default search icon', () => {
           expect(
             element.shadowRoot?.querySelector('oryx-icon.search[type=search]')
-          ).to.exist;
+          ).toBeDefined();
         });
       });
 
@@ -54,7 +54,7 @@ describe('SearchComponent', () => {
             element.shadowRoot?.querySelector(
               'oryx-icon.search[type=custom-search-icon]'
             )
-          ).to.exist;
+          ).toBeDefined();
         });
       });
     });
@@ -79,11 +79,11 @@ describe('SearchComponent', () => {
         });
 
         it('should render the search icon in the prefix slot', () => {
-          expect(searchIcon('prefix')).to.exist;
+          expect(searchIcon('prefix')).toBeDefined();
         });
 
         it('should not render the search icon in the suffix slot', () => {
-          expect(searchIcon('suffix')).to.not.exist;
+          expect(searchIcon('suffix')).toBeUndefined();
         });
       });
 
@@ -102,11 +102,11 @@ describe('SearchComponent', () => {
         });
 
         it('should render the search icon in the prefix slot', () => {
-          expect(searchIcon('prefix')).to.exist;
+          expect(searchIcon('prefix')).toBeDefined();
         });
 
         it('should not render the search icon in the suffix slot', () => {
-          expect(searchIcon('suffix')).to.not.exist;
+          expect(searchIcon('suffix')).toBeUndefined();
         });
 
         describe('and custom prefix content is slotted in', () => {
@@ -123,7 +123,7 @@ describe('SearchComponent', () => {
           });
 
           it('should not render the search icon in the prefix slot', () => {
-            expect(searchIcon('prefix')).to.not.exist;
+            expect(searchIcon('prefix')).toBeUndefined();
           });
         });
       });
@@ -143,11 +143,11 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the search icon in the prefix slot', () => {
-          expect(searchIcon('prefix')).to.not.exist;
+          expect(searchIcon('prefix')).toBeUndefined();
         });
 
         it('should render the search icon in the suffix slot', () => {
-          expect(searchIcon('suffix')).to.exist;
+          expect(searchIcon('suffix')).toBeDefined();
         });
 
         describe('and custom suffix content is slotted in', () => {
@@ -164,7 +164,7 @@ describe('SearchComponent', () => {
           });
 
           it('should not render the search icon in the suffix slot', () => {
-            expect(searchIcon('suffix')).to.not.exist;
+            expect(searchIcon('suffix')).toBeUndefined();
           });
         });
       });
@@ -188,7 +188,7 @@ describe('SearchComponent', () => {
             element.shadowRoot?.querySelector(
               'slot[name=prefix] .search oryx-icon'
             )
-          ).to.not.exist;
+          ).toBeNull();
         });
 
         it('should not render the search icon in the suffix slot', () => {
@@ -196,7 +196,7 @@ describe('SearchComponent', () => {
             element.shadowRoot?.querySelector(
               'slot[name=suffix] .search oryx-icon'
             )
-          ).to.not.exist;
+          ).toBeNull();
         });
       });
     });
@@ -209,7 +209,7 @@ describe('SearchComponent', () => {
         element.addEventListener('oryx.search', ((
           ev: CustomEvent<SearchEvent>
         ) => {
-          expect(ev.detail?.query).to.eq(value);
+          expect(ev.detail?.query).toEqual(value);
           done();
         }) as EventListener);
         searchIcon()?.click();
@@ -230,7 +230,7 @@ describe('SearchComponent', () => {
           element.addEventListener('oryx.search', ((
             ev: CustomEvent<SearchEvent>
           ) => {
-            expect(ev.detail?.query).to.eq('');
+            expect(ev.detail?.query).toEqual('');
             done();
           }) as EventListener);
           element.dispatchEvent(
@@ -272,7 +272,7 @@ describe('SearchComponent', () => {
           element.addEventListener('oryx.search', ((
             ev: CustomEvent<SearchEvent>
           ) => {
-            expect(ev.detail?.query).to.eq('value123');
+            expect(ev.detail?.query).toEqual('value123');
             done();
           }) as EventListener);
           element.dispatchEvent(
@@ -311,7 +311,7 @@ describe('SearchComponent', () => {
         it('should render the default clear icon', () => {
           expect(
             element.shadowRoot?.querySelector('oryx-icon.clear[type=remove]')
-          ).to.exist;
+          ).toBeDefined();
         });
       });
 
@@ -335,7 +335,7 @@ describe('SearchComponent', () => {
             element.shadowRoot?.querySelector(
               'oryx-icon.clear[type=custom-clear-icon]'
             )
-          ).to.exist;
+          ).toBeDefined();
         });
       });
     });
@@ -360,16 +360,17 @@ describe('SearchComponent', () => {
         });
 
         it('should render the clear icon after the input control', () => {
-          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
-            .to.exist;
+          expect(
+            element.shadowRoot?.querySelector('slot:not([name]) + .clear')
+          ).toBeDefined();
         });
 
         it('should not render the search icon in the prefix slot', () => {
-          expect(clearIcon('prefix')).to.not.exist;
+          expect(clearIcon('prefix')).toBeUndefined();
         });
 
         it('should not render the search icon in the suffix slot', () => {
-          expect(clearIcon('suffix')).to.not.exist;
+          expect(clearIcon('suffix')).toBeUndefined();
         });
       });
 
@@ -388,16 +389,17 @@ describe('SearchComponent', () => {
         });
 
         it('should render the clear icon after the input control', () => {
-          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
-            .to.exist;
+          expect(
+            element.shadowRoot?.querySelector('slot:not([name]) + .clear')
+          ).toBeDefined();
         });
 
         it('should not render the clear icon in the prefix slot', () => {
-          expect(clearIcon('prefix')).to.not.exist;
+          expect(clearIcon('prefix')).toBeUndefined();
         });
 
         it('should not render the clear icon in the suffix slot', () => {
-          expect(clearIcon('suffix')).to.not.exist;
+          expect(clearIcon('suffix')).toBeUndefined();
         });
       });
 
@@ -416,16 +418,17 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the clear icon after the input control', () => {
-          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
-            .to.not.exist;
+          expect(
+            element.shadowRoot?.querySelector('slot:not([name]) + .clear')
+          ).toBeNull();
         });
 
         it('should not render the search icon in the prefix slot', () => {
-          expect(clearIcon('prefix')).to.not.exist;
+          expect(clearIcon('prefix')).toBeUndefined();
         });
 
         it('should render the search icon in the suffix slot', () => {
-          expect(clearIcon('suffix')).to.exist;
+          expect(clearIcon('suffix')).toBeDefined();
         });
       });
 
@@ -444,16 +447,17 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the clear icon after the input control', () => {
-          expect(element.shadowRoot?.querySelector('slot:not([name]) + .clear'))
-            .to.not.exist;
+          expect(
+            element.shadowRoot?.querySelector('slot:not([name]) + .clear')
+          ).toBeNull();
         });
 
         it('should not render the clear icon in the prefix slot', () => {
-          expect(clearIcon('prefix')).to.not.exist;
+          expect(clearIcon('prefix')).toBeUndefined();
         });
 
         it('should not render the clear icon in the suffix slot', () => {
-          expect(clearIcon('suffix')).to.not.exist;
+          expect(clearIcon('suffix')).toBeUndefined();
         });
       });
     });
@@ -475,7 +479,7 @@ describe('SearchComponent', () => {
             element.shadowRoot
               ?.querySelector('.clear')
               ?.getAttribute('appearance')
-          ).to.eq('TOGGLE');
+          ).toEqual('TOGGLE');
         });
       });
 
@@ -498,7 +502,7 @@ describe('SearchComponent', () => {
             element.shadowRoot
               ?.querySelector('.clear')
               ?.getAttribute('appearance')
-          ).to.eq('HOVER');
+          ).toEqual('HOVER');
         });
       });
     });
@@ -518,23 +522,20 @@ describe('SearchComponent', () => {
       });
 
       it('should hide the clear icon', () => {
-        expect(element.hasAttribute('has-value')).to.be.false;
+        expect(element.hasAttribute('has-value')).toBe(false);
       });
 
       it('should not prevent event bubbling', () => {
         const event = new KeyboardEvent('mousedown', {
           bubbles: true,
         });
-        const exp1 = sinon
-          .mock(event)
-          .expects('stopImmediatePropagation')
-          .never();
-        const exp2 = sinon.mock(event).expects('stopPropagation').never();
-        const exp3 = sinon.mock(event).expects('preventDefault').never();
+        const exp1 = vi.spyOn(event, 'stopImmediatePropagation');
+        const exp2 = vi.spyOn(event, 'stopPropagation');
+        const exp3 = vi.spyOn(event, 'preventDefault');
         clearIcon()?.dispatchEvent(event);
-        exp1.verify();
-        exp2.verify();
-        exp3.verify();
+        expect(exp1).not.toHaveBeenCalled();
+        expect(exp2).not.toHaveBeenCalled();
+        expect(exp3).not.toHaveBeenCalled();
       });
     });
 
@@ -550,29 +551,26 @@ describe('SearchComponent', () => {
       });
 
       it('should have the clear icon', () => {
-        expect(clearIcon()).to.exist;
+        expect(clearIcon()).toBeDefined();
       });
 
       it('should prevent event bubbling', () => {
         const event = new KeyboardEvent('mousedown', {
           bubbles: true,
         });
-        const exp1 = sinon
-          .mock(event)
-          .expects('stopImmediatePropagation')
-          .once();
-        const exp2 = sinon.mock(event).expects('stopPropagation').once();
-        const exp3 = sinon.mock(event).expects('preventDefault').once();
+        const exp1 = vi.spyOn(event, 'stopImmediatePropagation');
+        const exp2 = vi.spyOn(event, 'stopPropagation');
+        const exp3 = vi.spyOn(event, 'preventDefault');
         clearIcon()?.dispatchEvent(event);
-        exp1.verify();
-        exp2.verify();
-        exp3.verify();
+        expect(exp1).toHaveBeenCalledOnce();
+        expect(exp2).toHaveBeenCalledOnce();
+        expect(exp3).toHaveBeenCalledOnce();
       });
 
       describe('but when clear icon is clicked', () => {
         it('should not have the `has-value` attribute', () => {
           clearIcon()?.click();
-          expect(element.hasAttribute('has-value')).to.be.false;
+          expect(element.hasAttribute('has-value')).toBe(false);
         });
       });
 
@@ -585,7 +583,7 @@ describe('SearchComponent', () => {
           }
         });
         it('should not have the `has-value` attribute', () => {
-          expect(element.hasAttribute('has-value')).to.be.false;
+          expect(element.hasAttribute('has-value')).toBe(false);
         });
       });
 
@@ -598,7 +596,7 @@ describe('SearchComponent', () => {
           }
         });
         it('should have the `has-value` attribute', () => {
-          expect(element.hasAttribute('has-value')).to.be.true;
+          expect(element.hasAttribute('has-value')).toBe(true);
         });
       });
 
@@ -611,7 +609,7 @@ describe('SearchComponent', () => {
           }
         });
         it('should have the `has-value` attribute', () => {
-          expect(element.hasAttribute('has-value')).to.be.true;
+          expect(element.hasAttribute('has-value')).toBe(true);
         });
       });
     });

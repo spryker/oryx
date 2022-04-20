@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { VisibleFocusController } from './visible-focus.controller';
@@ -29,7 +30,7 @@ describe('VisibleFocusController', () => {
     });
 
     it('should not have a visible-focus attribute ', () => {
-      expect(element.hasAttribute('visible-focus')).to.be.false;
+      expect(element.hasAttribute('visible-focus')).toBe(false);
     });
   });
 
@@ -39,7 +40,7 @@ describe('VisibleFocusController', () => {
     });
 
     it('should have a visible-focus attribute ', () => {
-      expect(element.hasAttribute('visible-focus')).to.be.true;
+      expect(element.hasAttribute('visible-focus')).toBe(true);
     });
 
     describe('and the control is blurred', () => {
@@ -50,7 +51,7 @@ describe('VisibleFocusController', () => {
       });
 
       it('should not have a visible-focus attribute ', () => {
-        expect(element.hasAttribute('visible-focus')).to.be.false;
+        expect(element.hasAttribute('visible-focus')).toBe(false);
       });
     });
   });

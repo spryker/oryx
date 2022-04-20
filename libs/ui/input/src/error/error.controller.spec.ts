@@ -1,4 +1,5 @@
-import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -27,6 +28,7 @@ describe('ErrorController', () => {
         element = await fixture(
           html`<fake-el errorMessage="error message"></fake-el>`
         );
+
         errorMessage = element?.renderRoot.querySelector(
           'oryx-error-message'
         ) as ErrorMessageComponent;
@@ -37,11 +39,11 @@ describe('ErrorController', () => {
       });
 
       it('should pass the message to the errorMessage component', () => {
-        expect(errorMessage?.message).to.equal('error message');
+        expect(errorMessage?.message).toEqual('error message');
       });
 
       it('should have an hasError host attribute', () => {
-        expect(element.hasAttribute('hasError')).to.true;
+        expect(element.hasAttribute('hasError')).toBe(true);
       });
 
       describe('and error message then removed', () => {
@@ -51,11 +53,11 @@ describe('ErrorController', () => {
         });
 
         it('should not pass the message to the errorMessage component', () => {
-          expect(errorMessage?.message).to.null;
+          expect(errorMessage?.message).toBeNull();
         });
 
         it('should remove an hasError host attribute', () => {
-          expect(element.hasAttribute('hasError')).to.false;
+          expect(element.hasAttribute('hasError')).toBe(false);
         });
       });
     });
@@ -71,7 +73,7 @@ describe('ErrorController', () => {
     });
 
     it('should not have an hasError attribute', () => {
-      expect(element.hasAttribute('hasError')).to.false;
+      expect(element.hasAttribute('hasError')).toBe(false);
     });
   });
 
@@ -85,7 +87,7 @@ describe('ErrorController', () => {
     });
 
     it('should not have an hasError attribute', () => {
-      expect(element.hasAttribute('hasError')).to.false;
+      expect(element.hasAttribute('hasError')).toBe(false);
     });
   });
 
@@ -101,17 +103,17 @@ describe('ErrorController', () => {
     });
 
     it('should have an hasError host attribute', () => {
-      expect(element.hasAttribute('hasError')).to.true;
+      expect(element.hasAttribute('hasError')).toBe(true);
     });
 
     describe('and error content then removed', () => {
       beforeEach(async () => {
-        element.querySelector('[slot=error')?.remove();
+        element.querySelector('[slot=error]')?.remove();
         await elementUpdated(element);
       });
 
       it('should remove an hasError host attribute', () => {
-        expect(element.hasAttribute('hasError')).to.false;
+        expect(element.hasAttribute('hasError')).toBe(false);
       });
     });
   });
@@ -129,11 +131,11 @@ describe('ErrorController', () => {
     });
 
     it('should keep an hasError host attribute', () => {
-      expect(element.hasAttribute('hasError')).to.true;
+      expect(element.hasAttribute('hasError')).toBe(true);
     });
 
     it('should not render errorMessage component content', () => {
-      expect(errorMessage?.hasAttribute('hasErrorContent')).to.false;
+      expect(errorMessage?.hasAttribute('hasErrorContent')).toBe(false);
     });
   });
 });

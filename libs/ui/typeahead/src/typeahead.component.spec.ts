@@ -1,4 +1,5 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing/a11y';
 import { a11yConfig } from '../../a11y';
 import { queryAssignedElements } from '../../utilities';
 import './index';
@@ -23,7 +24,7 @@ describe('TypeaheadComponent', () => {
         expect(
           queryAssignedElements(element, { slot: 'empty', flatten: true })
             .length
-        ).to.eq(0);
+        ).toEqual(0);
       });
     });
 
@@ -45,7 +46,7 @@ describe('TypeaheadComponent', () => {
         expect(
           element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
             ?.textContent
-        ).to.contain('No results found');
+        ).toContain('No results found');
       });
     });
 
@@ -68,7 +69,7 @@ describe('TypeaheadComponent', () => {
         expect(
           element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
             ?.textContent
-        ).to.contain('EMPTY');
+        ).toContain('EMPTY');
       });
     });
 
@@ -90,7 +91,7 @@ describe('TypeaheadComponent', () => {
         expect(
           queryAssignedElements(element, { slot: 'empty', flatten: true })
             .length
-        ).to.eq(0);
+        ).toEqual(0);
       });
     });
   });
@@ -112,7 +113,7 @@ describe('TypeaheadComponent', () => {
           element.shadowRoot?.querySelector(
             'slot[name=loading] div oryx-icon[type=loader]'
           )
-        ).to.not.exist;
+        ).toBeNull();
       });
     });
 
@@ -135,7 +136,7 @@ describe('TypeaheadComponent', () => {
           element.shadowRoot?.querySelector(
             'slot[name=loading] div oryx-icon[type=loader]'
           )
-        ).to.exist;
+        ).toBeDefined();
       });
     });
 
@@ -158,7 +159,7 @@ describe('TypeaheadComponent', () => {
           element.shadowRoot?.querySelector(
             'slot[name=loading] div oryx-icon[type=loader]'
           )
-        ).to.not.exist;
+        ).toBeNull();
       });
     });
   });
