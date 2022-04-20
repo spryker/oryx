@@ -1,1 +1,1 @@
-export * from './src/navigation-item.component';
+export * from './src';
