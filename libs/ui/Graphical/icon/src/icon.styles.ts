@@ -6,11 +6,12 @@ export const styles = css`
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
     justify-content: center;
+    color: var(--oryx-icon-color, inherit);
   }
 
   svg,
   ::slotted(svg) {
-    fill: var(--oryx-icon-color, currentColor);
+    fill: currentColor;
     max-width: var(--oryx-icon-size, 24px);
     aspect-ratio: 1 / 1;
     transition: var(--oryx-transition-time);

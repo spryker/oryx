@@ -11,6 +11,10 @@
       "default": "./actions/link/index.js",
       "types": "./actions/link/index.d.ts"
     },
+    "icon-button": {
+      "default": "./actions/icon-button/index.js",
+      "types": "./actions/icon-button/index.d.ts"
+    },
     "icon": {
       "default": "./Graphical/icon/index.js",
       "types": "./Graphical/icon/index.d.ts"
