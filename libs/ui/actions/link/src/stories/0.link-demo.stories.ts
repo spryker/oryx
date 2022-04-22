@@ -6,7 +6,7 @@ import '../index';
 import { LinkTypes } from '../link.model';
 
 export default {
-  title: `${storybookPrefix}/actions/Link`,
+  title: `${storybookPrefix}/Actions/Link`,
 } as Meta;
 
 interface Props {

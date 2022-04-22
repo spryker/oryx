@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../.storybook/constant';
 import '../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Link/Static`,
+  title: `${storybookPrefix}/Actions/Link/Static`,
 } as Meta;
 
 const variations = [

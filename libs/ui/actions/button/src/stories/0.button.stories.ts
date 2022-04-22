@@ -7,7 +7,7 @@ import { ButtonType } from '../button.model';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button`,
+  title: `${storybookPrefix}/Actions/Button`,
   argTypes: {
     type: {
       description: 'Visibility button UI',

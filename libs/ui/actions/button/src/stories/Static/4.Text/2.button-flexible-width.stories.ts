@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../../../../../.storybook/constant';
 import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/actions/Button/Static/Text`,
+  title: `${storybookPrefix}/Actions/Button/Static/Text`,
 } as Meta;
 
 interface Props {
