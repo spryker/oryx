@@ -1,25 +1,34 @@
+import { resolve } from '@spryker-oryx/injector';
+import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
+import { BehaviorSubject, pluck, switchMap } from 'rxjs';
+import { ProductDomain } from '../../src';
 import { styles } from './title.styles';
+
 export class TitleComponent extends LitElement {
-  static override styles = styles;
+  static styles = styles;
 
   @property()
   protected uid?: string;
 
+  // TODO: Remove default code fallback once product service will be created
   @property()
-  protected code?: string;
+  protected code = '119';
 
-  get title(): string {
-    return `Title ${this.code}`;
-  }
+  @observe()
+  protected code$ = new BehaviorSubject(this.code);
+
+  protected productService = resolve(this, ProductDomain.ProductService);
+
+  protected productTitle$ = this.code$.pipe(
+    switchMap((code) => this.productService.get({ sku: code })),
+    pluck('name')
+  );
 
   override render(): TemplateResult {
-    return html`${when(
-      this.code,
-      () => html`<h1 aria-label="title">${this.title}</h1>`,
-      () => html``
-    )}`;
+    return html`${asyncValue(this.productTitle$, (title) => {
+      return html`<h1>${title}</h1>`;
+    })}`;
   }
 }

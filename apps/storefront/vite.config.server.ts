@@ -21,6 +21,6 @@ export default defineConfig({
   ssr: {
     noExternal: ['rxjs', 'lit', 'lit-element', '@lit-labs/ssr'],
   },
-  envPrefix: ['FES_CONTENT_BACKEND_URL'],
+  envPrefix: ['FES', 'SCOS'],
   plugins: [tsconfigPaths({ root: '../../' })],
 });

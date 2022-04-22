@@ -8,6 +8,7 @@ export default defineConfig({
     include: ['**/*.spec.ts'],
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
+      exclude: ['**/*.mocks.ts', '**/*.spec.ts'],
     },
   },
   plugins: [tsconfigPaths({ root: '../../' })],

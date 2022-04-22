@@ -10,6 +10,7 @@ import {
   Injector,
   Provider,
 } from '@spryker-oryx/injector';
+import { PRODUCT_PROVIDERS } from '@spryker-oryx/product';
 import { componentsMapping } from './components';
 import { RouterService } from './router.service';
 
@@ -40,6 +41,10 @@ export const createInjector = (providers: Provider[] = []): Injector =>
         useValue: import.meta.env.FES_CONTENT_BACKEND_URL || '',
       },
       {
+        provide: 'SCOS_BASE_URL',
+        useValue: import.meta.env.SCOS_BASE_URL || '',
+      },
+      {
         provide: Services.ComponentMapping,
         useValue: componentsMapping,
       },
@@ -47,6 +52,7 @@ export const createInjector = (providers: Provider[] = []): Injector =>
         provide: Services.Router,
         useClass: RouterService,
       },
+      ...PRODUCT_PROVIDERS,
       ...providers,
     ],
   });
