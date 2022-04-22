@@ -4,49 +4,27 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.storybook/constant';
 import '../../index';
-import { PasswordInputComponent } from '../../index';
+import { PasswordInputComponent } from '../../password-input.component';
 import { PasswordVisibilityStrategy } from '../../password-input.model';
 
 export default {
-  title: `${storybookPrefix}/form/Password/visibility-strategies`,
+  title: `${storybookPrefix}/Form/Password/Interactive`,
 } as Meta;
 
-interface Props {
-  strategy: PasswordVisibilityStrategy;
-  disabled: boolean;
-  timeout: number;
-  label: string;
-}
-
-const Template: Story<Props> = ({
-  strategy,
-  disabled,
-  timeout,
-  label,
-}: Props): TemplateResult => {
+const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
-    label=${label}
-    strategy=${strategy}
-    timeout=${timeout}
+    label="Click strategy"
+    strategy=${PasswordVisibilityStrategy.CLICK}
+    timeout=${1000}
   >
-    <input
-      type="password"
-      value="Change123$"
-      placeholder="Placeholder..."
-      ?disabled=${disabled}
-    />
+    <input type="password" placeholder="Password" />
   </oryx-password-input>`;
 };
 
-export const PasswordMousedownStrategy = Template.bind({});
+export const ClickStrategy = Template.bind({});
 
-PasswordMousedownStrategy.args = {
-  strategy: PasswordVisibilityStrategy.MOUSEDOWN,
-  label: '"Mousedown" strategy',
-};
-
-PasswordMousedownStrategy.play = async (obj: {
-  args: Props;
+ClickStrategy.play = async (obj: {
+  args: unknown;
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const component = obj.canvasElement.querySelector(
@@ -58,11 +36,8 @@ PasswordMousedownStrategy.play = async (obj: {
   userEvent.clear(input);
   await userEvent.type(input, 'Change123$', { delay: 100 });
   expect(input.type).toBe('password');
-  // We are not able to simulate MOUSEDOWN event with the `userEvent` API
-  // because testing-library-v13 does not provide this API
-  icon.dispatchEvent(new Event('mousedown'));
+  userEvent.click(icon);
   expect(input.type).toBe('text');
   await new Promise((r) => setTimeout(r, 1000));
-  icon.dispatchEvent(new Event('mouseout'));
   expect(input.type).toBe('password');
 };

@@ -8,45 +8,23 @@ import { PasswordInputComponent } from '../../index';
 import { PasswordVisibilityStrategy } from '../../password-input.model';
 
 export default {
-  title: `${storybookPrefix}/form/Password/visibility-strategies`,
+  title: `${storybookPrefix}/Form/Password/Interactive`,
 } as Meta;
 
-interface Props {
-  strategy: PasswordVisibilityStrategy;
-  disabled: boolean;
-  timeout: number;
-  label: string;
-}
-
-const Template: Story<Props> = ({
-  strategy,
-  disabled,
-  timeout,
-  label,
-}: Props): TemplateResult => {
+const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
-    label=${label}
-    strategy=${strategy}
-    timeout=${timeout}
+    label="Hover strategy"
+    strategy=${PasswordVisibilityStrategy.HOVER}
+    timeout="1000"
   >
-    <input
-      type="password"
-      value="Change123$"
-      placeholder="Placeholder..."
-      ?disabled=${disabled}
-    />
+    <input type="password" value="Change123$" placeholder="Placeholder..." />
   </oryx-password-input>`;
 };
 
-export const PasswordHoverStrategy = Template.bind({});
+export const HoverStrategy = Template.bind({});
 
-PasswordHoverStrategy.args = {
-  strategy: PasswordVisibilityStrategy.HOVER,
-  label: '"Hover" strategy',
-} as Props;
-
-PasswordHoverStrategy.play = async (obj: {
-  args: Props;
+HoverStrategy.play = async (obj: {
+  args: unknown;
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const component = obj.canvasElement.querySelector(

@@ -65,7 +65,7 @@ export class FilterController implements ReactiveController {
 
   hostUpdated(): void {
     if (this.host.filterStrategy) {
-      this.filterOptionsByValue(this.control?.value, this.host.filterStrategy);
+      this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
     }
   }
 
@@ -103,12 +103,12 @@ export class FilterController implements ReactiveController {
 
     this.dispatchMatchEvent(visibleOptionCount, value);
 
-    const isEmpty = this.host.isEmpty;
+    const isEmpty = !!this.host.isEmpty;
     // set isEmpty to true when there are no visible items
     // and - when changed - ensure that the state is taken into account in the host
-    this.host.isEmpty = visibleOptionCount === 0;
-    if (isEmpty !== this.host.isEmpty) {
-      this.host.requestUpdate('isEmpty');
+    if (isEmpty !== (visibleOptionCount === 0)) {
+      this.host.isEmpty = visibleOptionCount === 0;
+      this.host.requestUpdate('isEmpty', isEmpty);
     }
   }
 

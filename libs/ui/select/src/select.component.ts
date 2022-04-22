@@ -1,11 +1,6 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import {
-  ErrorOptions,
-  FormControlController,
-  getControl,
-  LabelOptions,
-} from '../../input';
+import { ErrorOptions, FormControlController, getControl } from '../../input';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -26,12 +21,7 @@ import { selectStyles } from './select.styles';
 
 export class SelectComponent
   extends LitElement
-  implements
-    LabelOptions,
-    ErrorOptions,
-    SearchOptions,
-    TypeaheadOptions,
-    SelectOptions
+  implements ErrorOptions, SearchOptions, TypeaheadOptions, SelectOptions
 {
   static styles = [selectStyles, typeaheadStyles, ...SearchComponent.styles];
 

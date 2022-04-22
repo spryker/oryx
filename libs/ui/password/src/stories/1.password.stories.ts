@@ -1,10 +1,7 @@
-import { expect } from '@storybook/jest';
-import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.storybook/constant';
 import '../index';
-import { PasswordInputComponent } from '../index';
 import { PasswordVisibilityStrategy } from '../password-input.model';
 
 interface Props {
@@ -15,7 +12,7 @@ interface Props {
 }
 
 export default {
-  title: `${storybookPrefix}/form/Password`,
+  title: `${storybookPrefix}/Form/Password`,
   argTypes: {
     strategy: {
       options: ['CLICK', 'MOUSEDOWN', 'HOVER', 'NONE'],
@@ -53,26 +50,11 @@ const Template: Story<Props> = ({
   </oryx-password-input>`;
 };
 
-export const Password = Template.bind({});
+export const PasswordDemo = Template.bind({});
 
-Password.args = {
+PasswordDemo.args = {
   timeout: 2000,
   strategy: PasswordVisibilityStrategy.CLICK,
   disabled: false,
   label: 'Password with label',
-};
-
-Password.play = async (obj: {
-  args: Props;
-  canvasElement: HTMLElement;
-}): Promise<void> => {
-  const component = obj.canvasElement.querySelector(
-    'oryx-password-input'
-  ) as PasswordInputComponent;
-  const input = component.querySelector('input') as HTMLInputElement;
-
-  userEvent.clear(input);
-  await userEvent.type(input, 'Change123$', { delay: 100 });
-  expect(input.type).toBe('password');
-  expect(input.value).toBe('Change123$');
 };

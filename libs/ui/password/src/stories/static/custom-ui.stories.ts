@@ -1,17 +1,14 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.storybook/constant';
-import '../index';
+import { storybookPrefix } from '../../../../.storybook/constant';
+import '../../index';
 
 export default {
-  title: `${storybookPrefix}/form/Password`,
+  title: `${storybookPrefix}/Form/Password/Static`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`<oryx-password-input
-    label="Customised password"
-    class="suffix-fill"
-  >
+  return html`<oryx-password-input label="Customised password" suffixFill>
     <div slot="prefix" style="white-space: nowrap;">
       Password control prefix:
     </div>
@@ -39,4 +36,4 @@ const Template: Story<unknown> = (): TemplateResult => {
   </oryx-password-input>`;
 };
 
-export const PasswordWithCustomUI = Template.bind({});
+export const CustomUI = Template.bind({});

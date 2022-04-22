@@ -2,7 +2,6 @@ export * from './affix';
 export * from './error';
 export * from './form-control';
 export * from './input.component';
-export * from './label';
 export * from './util';
 
 import { InputComponent } from './input.component';

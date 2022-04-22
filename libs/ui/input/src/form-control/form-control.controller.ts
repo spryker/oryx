@@ -1,14 +1,12 @@
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { isFocusable } from '../../../utilities';
 import { ErrorController } from '../error/error.controller';
-import { LabelController } from '../label/label.controller';
 import { getControl } from '../util';
 import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
 
 export class FormControlController implements ReactiveController {
   protected visibleFocusController: VisibleFocusController;
-  protected labelController: LabelController;
   protected errorController: ErrorController;
 
   hostConnected(): void {
@@ -39,7 +37,7 @@ export class FormControlController implements ReactiveController {
   ): TemplateResult {
     return html`
       <label>
-        ${this.labelController.render()}
+        <slot name="label">${this.host.label}</slot>
         <div class="control">
           ${content.before}
           <slot @slotchange=${(): void => this.handleDisabled()}>
@@ -89,9 +87,7 @@ export class FormControlController implements ReactiveController {
   constructor(protected host: FormControlOptions & LitElement) {
     this.host.addController(this);
     this.visibleFocusController = new VisibleFocusController(this.host);
-    this.labelController = new LabelController(this.host);
     this.errorController = new ErrorController(this.host);
-
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
   }
 }

@@ -9,6 +9,21 @@ export const formControlStyles = css`
 
   label {
     border-color: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  slot[name='label'] {
+    display: inline;
+    cursor: inherit;
+    color: var(--oryx-color-ink);
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    position: relative;
+    top: -4px;
+    line-height: 20px;
   }
 
   .control {

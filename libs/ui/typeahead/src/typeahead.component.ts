@@ -5,7 +5,6 @@ import {
   ErrorOptions,
   FormControlController,
   FormControlOptions,
-  LabelOptions,
 } from '../../input';
 import {
   ClearIconAppearance,
@@ -23,7 +22,6 @@ export class TypeaheadComponent
   extends LitElement
   implements
     TypeaheadOptions,
-    LabelOptions,
     AffixOptions,
     ErrorOptions,
     FormControlOptions,

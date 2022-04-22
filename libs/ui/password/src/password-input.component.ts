@@ -32,6 +32,8 @@ export class PasswordInputComponent
 
   /**
    * The visibility strategy determines the UI event that is used to make the password visible.
+   *
+   * While the UI event will make the password visible, it will become invisible after the timeout is passed.
    */
   @property()
   strategy: PasswordVisibilityStrategy = PasswordVisibilityStrategy.CLICK;
@@ -41,21 +43,12 @@ export class PasswordInputComponent
    *
    * Defaults to `5000`.
    */
-  @property({ type: Number }) timeout?: number = 5000;
-
-  /**
-   * @returns the visible or invisible icon that is rendered to indicate whether the
-   * password is hidden or not.
-   */
-  protected getIcon(): TemplateResult {
-    return this.isVisible
-      ? html`<svg viewBox="0 0 24 24">${invisible.source}</svg>`
-      : html`<svg viewBox="0 0 24 24">${visible.source}</svg>`;
-  }
+  @property({ type: Number }) timeout = 5000;
 
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
+        before: this.affixController.renderPrefix(),
         after: this.affixController.renderSuffix(this.renderActionIcon()),
       })}
     `;
@@ -85,7 +78,7 @@ export class PasswordInputComponent
       case PasswordVisibilityStrategy.MOUSEDOWN:
         return html`
           <oryx-icon
-            @mousedown=${this.toggleVisibility}
+            @mousedown=${this.showVisibility}
             @mouseup=${this.hideVisibility}
             @mouseout=${this.hideVisibility}
           >
@@ -95,48 +88,46 @@ export class PasswordInputComponent
 
       default:
         return html`
-          <oryx-icon size="medium" @click=${this.toggleVisibility}>
+          <oryx-icon @click=${this.toggleVisibility}>
             ${this.getIcon()}
           </oryx-icon>
         `;
     }
   }
 
+  /**
+   * @returns a single SVG with both visible and invisible icons, which will be shown/hidden by CSS.
+   */
+  protected getIcon(): TemplateResult {
+    return html`<svg viewBox="0 0 24 24">
+      <g class="invisible">${invisible.source}</g>
+      <g class="visible">${visible.source}</g>
+    </svg>`;
+  }
+
   protected toggleVisibility(): void {
-    this.isVisible = !this.isVisible;
-    if (this.isVisible && this.timeout) {
+    if (this.hasAttribute('visible')) {
+      this.hideVisibility();
+    } else {
+      this.showVisibility();
+    }
+  }
+
+  protected showVisibility(): void {
+    this.toggleAttribute('visible', true);
+    this.control.setAttribute('type', 'text');
+    if (this.timeout > 0) {
       setTimeout(() => {
-        if (this.isVisible) {
+        if (this.hasAttribute('visible')) {
           this.hideVisibility();
         }
       }, this.timeout);
     }
   }
 
-  protected showVisibility(): void {
-    if (this.strategy !== PasswordVisibilityStrategy.NONE) {
-      this.isVisible = true;
-    }
-  }
-
   protected hideVisibility(): void {
-    this.isVisible = false;
-  }
-
-  protected _isVisible = false;
-  protected get isVisible(): boolean {
-    return this._isVisible;
-  }
-
-  protected set isVisible(value: boolean) {
-    const lastVal = this._isVisible;
-    this._isVisible = value;
-    if (this._isVisible) {
-      this.control.setAttribute('type', 'text');
-    } else {
-      this.control.setAttribute('type', 'password');
-    }
-    this.requestUpdate('isVisible', lastVal);
+    this.toggleAttribute('visible', false);
+    this.control.setAttribute('type', 'password');
   }
 
   protected get control(): HTMLInputElement {

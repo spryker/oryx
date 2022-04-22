@@ -13,7 +13,10 @@ const Template: Story<unknown> = (): TemplateResult => {
   const selectOptions = ['Red', 'Green', 'Blue'];
 
   return sideBySide(html`
-    <oryx-select ?allowEmptyValue=${true} label="label">
+    <oryx-select
+      ?allowEmptyValue=${true}
+      label="very lengthy labels must be truncated very lengthy labels must be truncated"
+    >
       <select>
         ${selectOptions.map((state) => html`<option>${state}</option>`)}
       </select>
@@ -21,4 +24,4 @@ const Template: Story<unknown> = (): TemplateResult => {
   `);
 };
 
-export const Empty = Template.bind({});
+export const TruncateLabel = Template.bind({});

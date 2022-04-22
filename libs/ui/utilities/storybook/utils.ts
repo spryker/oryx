@@ -17,6 +17,7 @@ export const sideBySide = (
       }
       oryx-select {
         flex: 0 0 350px;
+        width: 350px;
       }
     </style>
 

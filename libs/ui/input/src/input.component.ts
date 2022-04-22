@@ -4,14 +4,8 @@ import { AffixController, AffixOptions, affixStyles } from './affix';
 import { ErrorOptions, errorStyles } from './error';
 import { FormControlController, FormControlOptions } from './form-control';
 import { formControlStyles } from './form-control/form-control.styles';
-import { labelStyles } from './label';
 
-export const inputStyles = [
-  formControlStyles,
-  labelStyles,
-  errorStyles,
-  affixStyles,
-];
+export const inputStyles = [formControlStyles, errorStyles, affixStyles];
 
 export class InputComponent
   extends LitElement

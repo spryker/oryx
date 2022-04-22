@@ -13,7 +13,8 @@ const Template: Story<unknown> = (): TemplateResult => {
   const selectOptions = ['Red', 'Green', 'Blue'];
 
   return sideBySide(html`
-    <oryx-select ?allowEmptyValue=${true} label="label">
+    <oryx-select ?allowEmptyValue=${true} has-label>
+      <span slot="label">custom label requires has-label on the host</span>
       <select>
         ${selectOptions.map((state) => html`<option>${state}</option>`)}
       </select>
@@ -21,4 +22,4 @@ const Template: Story<unknown> = (): TemplateResult => {
   `);
 };
 
-export const Empty = Template.bind({});
+export const CustomLabel = Template.bind({});
