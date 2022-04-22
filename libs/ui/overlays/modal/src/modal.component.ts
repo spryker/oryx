@@ -43,10 +43,10 @@ export class ModalComponent extends LitElement implements ModalProperties {
   }
 
   protected backdropClickHandler(e: MouseEvent): void {
+    e.stopPropagation();
     if (this.disableCloseOnBackdrop) {
       return;
     }
-    e.stopPropagation();
 
     const target = e.composedPath()[0] as HTMLElement;
     if (target.tagName.toLowerCase() === this.backdropTargetTag) {

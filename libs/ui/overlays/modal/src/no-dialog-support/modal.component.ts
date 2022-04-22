@@ -3,29 +3,28 @@ import { ModalComponent } from '../../../modal';
 import { NDSStyles } from './modal.styles';
 
 export class NDSModalComponent extends ModalComponent {
-  override backdropTargetTag = 'oryx-modal';
+  override backdropTargetTag = this.tagName.toLowerCase();
   static styles = NDSStyles;
 
   protected override setDialogState(): void {
     if (this.isOpen) {
-      window.addEventListener('keydown', this.keyDownHandler.bind(this));
+      window.addEventListener('keydown', this.keyDownHandler);
       this.addEventListener('click', this.backdropClickHandler);
     } else {
       this.onDestroy();
     }
   }
 
-  protected keyDownHandler(e: KeyboardEvent): void {
+  protected keyDownHandler = (e: KeyboardEvent): void => {
     e.preventDefault();
-    e.stopImmediatePropagation();
 
     if (e.key === 'Escape' && !this.disableCloseOnEscape) {
       this.close();
     }
-  }
+  };
 
   protected onDestroy(): void {
-    window.removeEventListener('keydown', this.keyDownHandler.bind(this));
+    window.removeEventListener('keydown', this.keyDownHandler);
     this.removeEventListener('click', this.backdropClickHandler);
   }
 

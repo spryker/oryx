@@ -1,38 +1,22 @@
 import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
-import { a11yConfig } from '../../../a11y';
-import { checkSlots } from '../../../utilities/slot.spec.util';
-import { ModalComponent } from './modal.component';
+import { a11yConfig } from '../../../../a11y';
+import { dispatchKeydown } from '../../../../utilities';
+import { checkSlots } from '../../../../utilities/slot.spec.util';
+import { NDSModalComponent } from './modal.component';
 
-/* eslint-disable */
-// @ts-ignore
-if (window.HTMLDialogElement) {
-  // JsDom doesn't have implementation for open/close dialog
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.showModal = function (): void {
-    this.setAttribute('open', '');
-  };
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.close = function (): void {
-    this.removeAttribute('open');
-  };
-}
-/* eslint-enable */
+customElements.get('oryx-modal-nds') ||
+  customElements.define('oryx-modal-nds', NDSModalComponent);
 
-customElements.get('oryx-modal') ||
-  customElements.define('oryx-modal', ModalComponent);
-
-describe('Modal', () => {
-  let element: ModalComponent;
+describe('NDS Modal', () => {
+  let element: NDSModalComponent;
 
   const expectDialogOpen = (shouldBeOpen: boolean): void => {
-    const dialog = element?.renderRoot?.querySelector('dialog');
-
     if (shouldBeOpen) {
-      expect(dialog?.hasAttribute('open')).toBe(true);
+      expect(element.hasAttribute('open')).toBe(true);
     } else {
-      expect(dialog?.hasAttribute('open')).toBe(false);
+      expect(element.hasAttribute('open')).toBe(false);
     }
   };
 
@@ -57,15 +41,9 @@ describe('Modal', () => {
       });
     });
 
-    describe('and the "cancel" event is triggered', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-modal></oryx-modal>`);
-        element.open();
-        const event = new Event('cancel', {
-          bubbles: true,
-          cancelable: true,
-        });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+    describe('and the `Escape` keydown event was dispatched', () => {
+      beforeEach(() => {
+        dispatchKeydown(element, 'Escape');
       });
 
       it('should close dialog', () => {
@@ -78,10 +56,11 @@ describe('Modal', () => {
         const event = new Event('click', {
           bubbles: true,
         });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+
+        element.shadowRoot?.host.dispatchEvent(event);
       });
 
-      it('should not close', () => {
+      it('should close dialog', () => {
         expectDialogOpen(false);
       });
     });
@@ -89,7 +68,7 @@ describe('Modal', () => {
 
   describe('when the "open()" method is called', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal></oryx-modal>`);
+      element = await fixture(html`<oryx-modal-nds></oryx-modal-nds>`);
       element.open();
     });
 
@@ -98,7 +77,7 @@ describe('Modal', () => {
     });
 
     it('should have an "open" attribute', () => {
-      expect(element.hasAttribute('open')).toBe(true);
+      expect(element.hasAttribute('open')).to.be.true;
     });
 
     it('should open dialog', () => {
@@ -110,7 +89,7 @@ describe('Modal', () => {
 
   describe('when the "open" attribute is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal open></oryx-modal>`);
+      element = await fixture(html`<oryx-modal-nds open></oryx-modal-nds>`);
     });
 
     it('should pass the a11y audit', async () => {
@@ -127,7 +106,7 @@ describe('Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnBackdrop></oryx-modal>`
+        html`<oryx-modal-nds disableCloseOnBackdrop></oryx-modal-nds>`
       );
       element.open();
     });
@@ -141,7 +120,7 @@ describe('Modal', () => {
         const event = new Event('click', {
           bubbles: true,
         });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        element.shadowRoot?.host.dispatchEvent(event);
       });
 
       it('should pass the a11y audit', async () => {
@@ -157,7 +136,7 @@ describe('Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnEscape></oryx-modal>`
+        html`<oryx-modal-nds disableCloseOnEscape></oryx-modal-nds>`
       );
       element.open();
     });
@@ -166,14 +145,9 @@ describe('Modal', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    describe('and the "cancel" event is triggered', () => {
+    describe('and the Esc button is pressed', () => {
       beforeEach(() => {
-        const event = new Event('cancel', {
-          bubbles: true,
-          cancelable: true,
-        });
-
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        dispatchKeydown(element, 'Escape');
       });
 
       it('should pass the a11y audit', async () => {
@@ -188,36 +162,15 @@ describe('Modal', () => {
 
   describe('when is close', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal></oryx-modal>`);
+      element = await fixture(html`<oryx-modal-nds></oryx-modal-nds>`);
     });
 
     it('should not open dialog', () => {
       expectDialogOpen(false);
     });
   });
-
-  describe('when the header is provided by prop', () => {
-    const headerText = 'Header text';
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-modal .header=${headerText}></oryx-modal>`
-      );
-    });
-
-    it('should pass the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible(a11yConfig);
-    });
-
-    it('should pass header prop to oryx-card as prop', () => {
-      const headerSlot = element?.shadowRoot?.querySelector(
-        'oryx-card slot[name=header]'
-      );
-      expect(headerSlot?.textContent?.trim()).toEqual(headerText);
-    });
-  });
-
   checkSlots(['header', 'default', 'footer'], {
-    tag: 'oryx-modal',
+    tag: 'oryx-modal-nds',
     attributes: ['open'],
   });
 });

@@ -26,19 +26,23 @@ interface Props {
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <script>
-      const openFirstModalBtn = document.querySelector('#openFirstModalBtn');
-      const openSecondModalBtn = document.querySelector('#openSecondModalBtn');
+      (() => {
+        const openFirstModalBtn = document.querySelector('#openFirstModalBtn');
+        const openSecondModalBtn = document.querySelector(
+          '#openSecondModalBtn'
+        );
 
-      const firstModal = document.querySelector('oryx-modal');
-      const secondModal = document.querySelectorAll('oryx-modal')[1];
+        const firstModal = document.querySelector('oryx-modal');
+        const secondModal = document.querySelectorAll('oryx-modal')[1];
 
-      openFirstModalBtn?.addEventListener('click', () => {
-        firstModal?.open();
-      });
+        openFirstModalBtn?.addEventListener('click', () => {
+          firstModal?.open();
+        });
 
-      openSecondModalBtn?.addEventListener('click', () => {
-        secondModal?.open();
-      });
+        openSecondModalBtn?.addEventListener('click', () => {
+          secondModal?.open();
+        });
+      })();
     </script>
 
     <button id="openFirstModalBtn">Open first modal</button>
@@ -54,8 +58,8 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <button id="openSecondModalBtn">Open second modal</button>
 
         <oryx-modal
-          ?closeOnEscape=${props.secondModalDisableCloseOnEscape}
-          ?closeOnBackdrop=${props.secondModalDisableCloseOnBackdrop}
+          ?disableCloseOnEscape=${props.secondModalDisableCloseOnEscape}
+          ?disableCloseOnBackdrop=${props.secondModalDisableCloseOnBackdrop}
           header=${props.secondModalHeader}
           type=${props.secondModalType}
         >
