@@ -45,9 +45,6 @@ export const styles = css`
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
-  }
-
-  ::slotted(input:not(:disabled))::after {
     cursor: pointer;
   }
 
@@ -67,8 +64,10 @@ export const styles = css`
 
   ::slotted(input:disabled),
   ::slotted(input:checked:disabled) {
-    background: var(--oryx-color-neutral-lighter);
-    color: var(--oryx-color-neutral-light);
+    background-color: var(--oryx-color-neutral-lighter);
+    color: var(--oryx-color-neutral-dark);
+    border-color: var(--oryx-color-neutral-light);
+    pointer-events: none;
   }
 
   ::slotted(input:checked:hover) {
