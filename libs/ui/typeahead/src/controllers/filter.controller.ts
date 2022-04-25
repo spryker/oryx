@@ -50,7 +50,7 @@ export class FilterController implements ReactiveController {
 
   protected inputHandler(e: InputEvent): void {
     if (this.host.filterStrategy && e.inputType) {
-      this.filterOptionsByValue(this.control?.value, this.host.filterStrategy);
+      this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
     }
   }
 

@@ -26,9 +26,10 @@ export class SelectController implements ReactiveController {
     if (control instanceof HTMLSelectElement) {
       this.reflectSelect(control);
     } else {
-      if (!this.host.filterStrategy && !control.readOnly) {
-        control.toggleAttribute('readonly', true);
-      }
+      control.toggleAttribute(
+        'readonly',
+        this.host.filterStrategy === undefined
+      );
     }
   }
 
@@ -59,8 +60,9 @@ export class SelectController implements ReactiveController {
         } = {
           value: nativeOption.value,
         };
-        if (nativeOption.innerText.trim() !== '') {
-          reflectedOption.text = nativeOption.innerText.trim();
+        const text = nativeOption.innerText.trim();
+        if (text !== '' && text !== nativeOption.value) {
+          reflectedOption.text = text;
         }
         if (nativeOption.selected) {
           reflectedOption.selected = true;
@@ -79,9 +81,9 @@ export class SelectController implements ReactiveController {
   protected reflectOptions(): void {
     this.clearOptions();
     this.options.forEach((option) => {
-      const newOption = `<oryx-option value="${option.value}" ${
+      const newOption = `<oryx-option value=${option.value} ${
         option.selected && 'selected'
-      } slot="option">${option.text}</oryx-option>`;
+      } slot="option">${option.text ?? option.value}</oryx-option>`;
       this.host.insertAdjacentHTML('beforeend', newOption);
     });
   }

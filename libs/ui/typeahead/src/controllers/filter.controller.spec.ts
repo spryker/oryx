@@ -54,6 +54,7 @@ describe('FilterController', () => {
       });
     });
   };
+
   describe('when a filter strategy is used', () => {
     describe('and the strategy is set to START_WITH', () => {
       describe('and the input event is dispatched', () => {

@@ -42,6 +42,9 @@
   --oryx-color-orange-light: #fef0e6;
   --oryx-color-pink-light: #f9f2f1;
 
+  /* placeholder */
+  --oryx-color-placeholder: var(--oryx-color-neutral-dark);
+
   /* focused */
   --oryx-color-focus: var(--oryx-color-brand);
   --oryx-focus-elevation: 0 0 3px;
@@ -80,6 +83,10 @@
   /* modal */
   --oryx-modal-min-width: min(100vw, 400px);
   --oryx-modal-background-color: rgb(0 0 0 / 50%);
+}
+
+::placeholder {
+  color: var(--oryx-color-placeholder);
 }
 
 /* just to proof that we can do dark mode with this setup */

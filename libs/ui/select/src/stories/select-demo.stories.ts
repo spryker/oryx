@@ -1,0 +1,156 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../.storybook/constant';
+import { IconTypes } from '../../../Graphical/icon';
+import { AffixOptions } from '../../../input';
+import '../../../popover/index';
+import {
+  ClearIconAppearance,
+  SearchEvent,
+  SearchOptions,
+} from '../../../search';
+import { FilterStrategyType, TypeaheadOptions } from '../../../typeahead';
+import { branches, states } from '../../../utilities/storybook/';
+import '../index';
+import { SelectOptions } from '../index';
+
+export default {
+  title: `${storybookPrefix}/Form/Select`,
+} as Meta;
+
+interface Props
+  extends SelectOptions,
+    TypeaheadOptions,
+    SearchOptions,
+    AffixOptions {
+  searchIcon?: string;
+  maxHeight?: string;
+  dataSet?: 'branches' | 'states';
+  useSelect?: boolean;
+}
+
+const Template: Story<Props> = (props: Props): TemplateResult => {
+  const data: string[] = props.dataSet === 'branches' ? branches : states;
+
+  const logTypeahead = (ev: CustomEvent<SearchEvent>): void => {
+    console.log('oryx.typeahead event', ev.detail.query);
+  };
+  const logSelect = (ev: CustomEvent<SearchEvent>): void => {
+    console.log('oryx.select event', ev.detail.query);
+  };
+  const logSearch = (ev: CustomEvent<SearchEvent>): void => {
+    console.log('oryx.search event', ev.detail.query);
+  };
+
+  return html`
+    <style>
+      :root {
+        --oryx-popover-maxheight: ${props.maxHeight};
+      }
+      oryx-select {
+        width: 50%;
+        margin: 24px 0;
+      }
+    </style>
+
+    <div
+      @oryx.typeahead=${logTypeahead}
+      @oryx.select=${logSelect}
+      @oryx.search=${logSearch}
+    >
+      <oryx-select
+        label="Select with options"
+        ?allowEmptyValue=${props.allowEmptyValue}
+        clearIconAppearance=${props.clearIconAppearance}
+        ?prefixFill=${props.prefixFill}
+        ?suffixFill=${props.suffixFill}
+        clearIcon=${props.clearIcon}
+        clearIconPosition=${props.clearIconPosition}
+      >
+        <select required>
+          <option value="" hidden>Select an option</option>
+          ${data.map((option) => html`<option>${option}</option>`)}
+        </select>
+      </oryx-select>
+
+      <oryx-select
+        label="input with options"
+        clearIconAppearance=${props.clearIconAppearance}
+        filterStrategy=${props.filterStrategy}
+        ?prefixFill=${props.prefixFill}
+        ?suffixFill=${props.suffixFill}
+        clearIcon=${props.clearIcon}
+        clearIconPosition=${props.clearIconPosition}
+      >
+        <input
+          required
+          placeholder=${props.filterStrategy
+            ? 'filter the list by typing'
+            : 'Select an option'}
+        />
+        ${data.map(
+          (option) =>
+            html`<oryx-option slot="option" value=${option}></oryx-option>`
+        )}
+      </oryx-select>
+    </div>
+  `;
+};
+
+export const SelectDemo = Template.bind({});
+
+SelectDemo.args = {
+  maxHeight: '300px',
+  allowEmptyValue: true,
+  clearIcon: IconTypes.Remove,
+  clearIconAppearance: ClearIconAppearance.HOVER,
+  prefixFill: false,
+  suffixFill: false,
+};
+
+SelectDemo.argTypes = {
+  allowEmptyValue: {
+    control: { type: 'boolean' },
+    table: { category: 'Select only' },
+  },
+  maxHeight: {
+    control: { type: 'text' },
+    table: { category: 'Layout' },
+  },
+  filterStrategy: {
+    options: [
+      FilterStrategyType.START_WITH,
+      FilterStrategyType.START_OF_WORD,
+      FilterStrategyType.CONTAINS,
+    ],
+    control: { type: 'select' },
+    table: { category: 'Input only' },
+  },
+  clearIcon: {
+    options: Object.values(IconTypes),
+    control: { type: 'select' },
+    table: { category: 'Layout' },
+  },
+  searchIconPosition: {
+    options: ['PREFIX', 'SUFFIX', 'NONE'],
+    control: { type: 'select' },
+    table: { category: 'Layout' },
+  },
+  clearIconAppearance: {
+    options: [
+      ClearIconAppearance.HOVER,
+      ClearIconAppearance.TOGGLE,
+      ClearIconAppearance.SHOW,
+    ],
+    control: { type: 'select' },
+    table: { category: 'Layout' },
+  },
+  prefixFill: {
+    control: { type: 'boolean' },
+    table: { category: 'Layout' },
+  },
+  suffixFill: {
+    control: { type: 'boolean' },
+    table: { category: 'Layout' },
+  },
+};
