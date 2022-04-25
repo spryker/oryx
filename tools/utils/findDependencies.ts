@@ -1,22 +1,25 @@
 import { ProjectGraphDependency } from '@nrwl/devkit';
 
+const filterOutExternalDependencies = (
+  dependencies: ProjectGraphDependency[]
+) =>
+  dependencies
+    .filter((dep) => dep.target.match('^((?!npm:).)*$'))
+    .map((dep) => dep.target);
+
 export const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,
   project: string
 ): string[] => {
-  const deps = dependencies[project]
-    .filter((dep) => dep.target.match('^((?!npm:).)*$'))
-    .map((dep) => dep.target);
+  const deps = filterOutExternalDependencies(dependencies[project]);
 
-  if (deps.length > 0) {
-    return [
+  return [
+    ...new Set<string>([
       project,
       ...deps.reduce(
         (acc, dep) => [...acc, ...findDependencies(dependencies, dep)],
         []
       ),
-    ];
-  }
-
-  return [project];
+    ]),
+  ];
 };

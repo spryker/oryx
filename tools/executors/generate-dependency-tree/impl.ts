@@ -11,7 +11,6 @@ export default async function echoExecutor(options: EchoExecutorOptions) {
 
   console.info(`Generating dependency graph`);
   const graph = await createProjectGraphAsync();
-  graph.nodes;
 
   const dependencies = stringifyDependencies(
     findDependencies(graph.dependencies, options.project),

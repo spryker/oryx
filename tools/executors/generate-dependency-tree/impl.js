@@ -7,7 +7,6 @@ async function echoExecutor(options) {
     console.info(`Generating dependencies for ${options.project}`);
     console.info(`Generating dependency graph`);
     const graph = await (0, project_graph_1.createProjectGraphAsync)();
-    graph.nodes;
     const dependencies = (0, utils_1.stringifyDependencies)((0, utils_1.findDependencies)(graph.dependencies, options.project), graph.nodes);
     console.log(dependencies);
     console.info(`Updating file...`);
