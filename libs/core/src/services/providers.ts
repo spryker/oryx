@@ -1,5 +1,6 @@
 import { Provider } from '@spryker-oryx/injector';
-import { HttpService } from './http/http.service';
+import { DefaultContextService } from './context';
+import { HttpService } from './http';
 import { CoreServices } from './services';
 
 export const HTTP_PROVIDERS: Provider[] = [
@@ -9,4 +10,10 @@ export const HTTP_PROVIDERS: Provider[] = [
   },
 ];
 
-export const CORE_PROVIDERS: Provider[] = [...HTTP_PROVIDERS];
+export const CORE_PROVIDERS: Provider[] = [
+  ...HTTP_PROVIDERS,
+  {
+    provide: CoreServices.Context,
+    useClass: DefaultContextService,
+  },
+];
