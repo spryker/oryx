@@ -1,9 +1,17 @@
+import { CoreServices } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { BehaviorSubject, pluck, switchMap } from 'rxjs';
-import { ProductDomain } from '../../src';
+import {
+  BehaviorSubject,
+  combineLatest,
+  defaultIfEmpty,
+  of,
+  pluck,
+  switchMap,
+} from 'rxjs';
+import { ProductContext, ProductDomain } from '../../src';
 import { styles } from './title.styles';
 
 export class TitleComponent extends LitElement {
@@ -12,17 +20,24 @@ export class TitleComponent extends LitElement {
   @property()
   protected uid?: string;
 
-  // TODO: Remove default code fallback once product service will be created
   @property()
-  protected code = '119';
+  protected code?: string;
 
   @observe()
   protected code$ = new BehaviorSubject(this.code);
 
   protected productService = resolve(this, ProductDomain.ProductService);
+  protected context = resolve(this, CoreServices.Context, null);
 
-  protected productTitle$ = this.code$.pipe(
-    switchMap((code) => this.productService.get({ sku: code })),
+  protected productTitle$ = combineLatest([
+    this.context
+      ?.get<string>(this, ProductContext.Code)
+      .pipe(defaultIfEmpty('')) ?? of(''),
+    this.code$,
+  ]).pipe(
+    switchMap(([code, propCode]) =>
+      this.productService.get({ sku: propCode ?? code })
+    ),
     pluck('name')
   );
 

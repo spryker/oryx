@@ -1,8 +1,20 @@
+import { CoreServices, DefaultContextService } from '@spryker-oryx/core';
+import { createInjector } from '@spryker-oryx/injector';
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
 
 describe('InputComponent', () => {
   beforeEach(async () => {
+    createInjector({
+      providers: [
+        {
+          provide: CoreServices.Context,
+          useClass: DefaultContextService,
+        },
+      ],
+      override: true,
+    });
+
     document.body.innerHTML = '<storefront-component></storefront-component>';
   });
 
