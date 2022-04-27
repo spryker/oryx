@@ -27,17 +27,18 @@ export class NotificationService {
     parentSelector = 'body',
     position?: Positions
   ): NotificationCenterComponent {
-    const notificationCenter = document.createElement(TAG_NAME);
-
-    if (position) {
-      notificationCenter.setAttribute('position', position);
-    }
     const parent = document.querySelector(parentSelector);
 
     if (!parent) {
       throw new Error(
         'Parent element not found for the creation of a new NotificationCenter'
       );
+    }
+
+    const notificationCenter = document.createElement(TAG_NAME);
+
+    if (position) {
+      notificationCenter.setAttribute('position', position);
     }
 
     parent.append(notificationCenter);

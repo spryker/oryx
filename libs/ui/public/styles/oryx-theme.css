@@ -51,6 +51,7 @@
 
   /* elevation */
   --oryx-elevation-color: rgb(23 11 11 / 15%);
+  --oryx-elevation-color-2: rgb(18 18 18 / 15%);
   --oryx-elevation-0: 0 1px 3px;
   --oryx-elevation-1: 0 4px 12px;
   --oryx-elevation-2: 1px 3px 18px;
@@ -99,6 +100,7 @@
     --oryx-color-neutral-dark: #efeeee;
     --oryx-color-neutral-darker: #f8f8f8;
     --oryx-elevation-color: rgb(237 237 237 / 15%);
+    --oryx-elevation-color-2: rgb(225 225 225 / 15%);
     --oryx-color-brand-lighter: #225e52;
     --oryx-color-brand-light: #138671;
     --oryx-color-brand: #17b497;

@@ -3,3 +3,8 @@ export enum Size {
   medium = 'medium',
   small = 'small',
 }
+
+export enum Position {
+  START = 'start',
+  END = 'end',
+}
