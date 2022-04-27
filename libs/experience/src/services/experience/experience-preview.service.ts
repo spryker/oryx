@@ -88,6 +88,11 @@ export class ExperiencePreviewService extends ExperienceService {
       map((data) => data.data.route)
     );
 
+  protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(
+    filter((e: any) => e.data?.interaction),
+    map((data) => data.data.interaction)
+  );
+
   protected sendPostMessage(message: unknown): void {
     if (typeof window !== 'undefined' && window.parent) {
       window.parent.postMessage(message, '*');
@@ -117,5 +122,9 @@ export class ExperiencePreviewService extends ExperienceService {
 
   getRouteData(): Observable<string> {
     return this.routeDataEvent$;
+  }
+
+  getInteractionData(): Observable<any> {
+    return this.interactionDataEvent$;
   }
 }
