@@ -5,10 +5,11 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
   defaultIfEmpty,
+  map,
   of,
-  pluck,
   switchMap,
 } from 'rxjs';
 import { ProductContext, ProductDomain } from '../../src';
@@ -29,16 +30,24 @@ export class TitleComponent extends LitElement {
   protected productService = resolve(this, ProductDomain.ProductService);
   protected context = resolve(this, CoreServices.Context, null);
 
-  protected productTitle$ = combineLatest([
-    this.context
-      ?.get<string>(this, ProductContext.Code)
-      .pipe(defaultIfEmpty('')) ?? of(''),
+  protected productCode$ = combineLatest([
+    // TODO: This should be simplified with proper context utility
+    this.context?.get<string>(this, ProductContext.Code).pipe(
+      // TODO: Remove when context won't be emitting EMPTY
+      defaultIfEmpty('')
+    ) ?? of(''),
     this.code$,
-  ]).pipe(
-    switchMap(([code, propCode]) =>
-      this.productService.get({ sku: propCode ?? code })
+  ]).pipe(map(([code, propCode]) => propCode ?? code));
+
+  protected productTitle$ = this.productCode$.pipe(
+    switchMap((code) =>
+      code
+        ? this.productService
+            .get({ sku: code })
+            .pipe(catchError(() => of(null)))
+        : of(null)
     ),
-    pluck('name')
+    map((product) => product?.name ?? '')
   );
 
   override render(): TemplateResult {
