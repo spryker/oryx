@@ -7,12 +7,11 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
-  defaultIfEmpty,
   map,
   of,
   switchMap,
 } from 'rxjs';
-import { ProductContext, ProductDomain } from '../../src';
+import { ProductDomain } from '../../src';
 import { styles } from './title.styles';
 
 export class TitleComponent extends LitElement {
@@ -22,7 +21,7 @@ export class TitleComponent extends LitElement {
   protected uid?: string;
 
   @property()
-  protected code?: string;
+  protected code = '119';
 
   @observe()
   protected code$ = new BehaviorSubject(this.code);
@@ -32,12 +31,14 @@ export class TitleComponent extends LitElement {
 
   protected productCode$ = combineLatest([
     // TODO: This should be simplified with proper context utility
+    /*
     this.context?.get<string>(this, ProductContext.Code).pipe(
       // TODO: Remove when context won't be emitting EMPTY
       defaultIfEmpty('')
     ) ?? of(''),
+    */
     this.code$,
-  ]).pipe(map(([code, propCode]) => propCode ?? code));
+  ]).pipe(map(([code]) => code));
 
   protected productTitle$ = this.productCode$.pipe(
     switchMap((code) =>
