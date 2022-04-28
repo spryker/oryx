@@ -1,1 +1,1 @@
-export const a11yConfig = { ignoredRules: ['color-contrast'] };
+export const a11yConfig = {};
