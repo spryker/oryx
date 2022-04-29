@@ -27,6 +27,7 @@ interface Props
   maxHeight?: string;
   dataSet?: 'branches' | 'states';
   useSelect?: boolean;
+  selected?: string;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -69,7 +70,12 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       >
         <select required>
           <option value="" hidden>Select an option</option>
-          ${data.map((option) => html`<option>${option}</option>`)}
+          ${data.map(
+            (option) =>
+              html`<option ?selected=${props.selected === option}>
+                ${option}
+              </option>`
+          )}
         </select>
       </oryx-select>
 
@@ -152,5 +158,11 @@ SelectDemo.argTypes = {
   suffixFill: {
     control: { type: 'boolean' },
     table: { category: 'Layout' },
+  },
+
+  selected: {
+    control: { type: 'select' },
+    table: { category: 'Select only' },
+    options: states,
   },
 };

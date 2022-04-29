@@ -101,6 +101,8 @@ export class SelectController implements ReactiveController {
     });
     this.mutationObserver.observe(getControl(this.host), {
       childList: true,
+      subtree: true,
+      attributeFilter: ['selected'],
     });
   }
 
