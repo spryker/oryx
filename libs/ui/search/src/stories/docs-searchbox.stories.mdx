@@ -1,18 +1,8 @@
 import { Story, Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 import { html, TemplateResult } from 'lit';
-import '../index';
+import { storybookPrefix } from '../../../.storybook/constant';
 
-<Meta title="UI/Search/SearchBox" />
-
-export const Template = () => {
-  return html`<oryx-search><input aria-label="search" /></oryx-search>`;
-};
-
-<Canvas>
-  <Story name="Search">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Search" />
+<Meta title={`${storybookPrefix}/Search/SearchBox/Docs`} />
 
 ### Search events
 
