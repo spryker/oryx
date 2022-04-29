@@ -11,12 +11,6 @@ export class RadioComponent extends LitElement implements ErrorOptions {
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
 
-  protected firstUpdated(): void {
-    if (!this.querySelector('input[type=radio]')) {
-      console?.warn('RadioComponent should contain input[type="radio"]');
-    }
-  }
-
   protected render(): TemplateResult {
     return html`
       <label>
