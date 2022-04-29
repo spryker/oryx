@@ -18,6 +18,14 @@
     "icon": {
       "default": "./Graphical/icon/index.js",
       "types": "./Graphical/icon/index.d.ts"
+    },
+    "radio": {
+      "default": "./form/radio/index.js",
+      "types": "./form/radio/index.d.ts"
+    },
+    "radio-list": {
+      "default": "./form/radio-list/index.js",
+      "types": "./form/radio-list/index.d.ts"
     }
   }
 }

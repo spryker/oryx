@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.storybook/constant';
+import { storybookPrefix } from '../../../../.storybook/constant';
 import '../index';
 
 export default { title: `${storybookPrefix}/Form/Radio/Static` } as Meta;
@@ -11,13 +11,13 @@ const Template: Story = (): TemplateResult =>
       <div class="row">
         <div>Default</div>
         <div>
-          <oryx-radio>
+          <oryx-radio errorMessage="Error message">
             <input type="radio" />
             Option
           </oryx-radio>
         </div>
         <div>
-          <oryx-radio>
+          <oryx-radio errorMessage="Error message">
             <input type="radio" checked />
             Option
           </oryx-radio>
@@ -25,33 +25,35 @@ const Template: Story = (): TemplateResult =>
       </div>
 
       <div class="row">
-        <div>Hovered</div>
+        <div>No message</div>
         <div>
-          <oryx-radio>
-            <input class="pseudo-hover" type="radio" />
+          <oryx-radio hasError>
+            <input type="radio" />
             Option
           </oryx-radio>
         </div>
         <div>
-          <oryx-radio>
-            <input class="pseudo-hover" type="radio" checked />
+          <oryx-radio hasError>
+            <input type="radio" checked />
             Option
           </oryx-radio>
         </div>
       </div>
 
       <div class="row">
-        <div>Focused</div>
+        <div>Custom</div>
         <div>
           <oryx-radio>
-            <input class="pseudo-focus-visible" type="radio" />
+            <input type="radio" />
             Option
+            <span slot="error">Custom error message</span>
           </oryx-radio>
         </div>
         <div>
           <oryx-radio>
-            <input class="pseudo-focus-visible" type="radio" checked />
+            <input type="radio" checked />
             Option
+            <span slot="error">Custom error message</span>
           </oryx-radio>
         </div>
       </div>
@@ -59,13 +61,13 @@ const Template: Story = (): TemplateResult =>
       <div class="row">
         <div>Disabled</div>
         <div>
-          <oryx-radio>
+          <oryx-radio hasError>
             <input type="radio" disabled />
             Option
           </oryx-radio>
         </div>
         <div>
-          <oryx-radio>
+          <oryx-radio hasError>
             <input type="radio" disabled checked />
             Option
           </oryx-radio>
@@ -94,4 +96,4 @@ const Template: Story = (): TemplateResult =>
       }
     </style>
   `;
-export const InputStates = Template.bind({});
+export const ErrorStates = Template.bind({});

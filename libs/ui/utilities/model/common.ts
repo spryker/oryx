@@ -8,3 +8,8 @@ export enum Position {
   START = 'start',
   END = 'end',
 }
+
+export enum Direction {
+  horizontal = 'horizontal',
+  vertical = 'vertical',
+}

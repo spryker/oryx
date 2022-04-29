@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { ErrorMessageComponent } from '../../error-message';
+import { ErrorMessageComponent } from '../../../error-message';
 import './index';
 import { RadioComponent } from './radio.component';
 

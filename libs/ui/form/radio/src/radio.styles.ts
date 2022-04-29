@@ -11,10 +11,14 @@ export const styles = css`
     column-gap: 8px;
     position: relative;
     outline: 0;
+    color: var(--oryx-color-inc);
+    font-size: 14px;
+    font-weight: 500;
   }
 
   ::slotted(input) {
     flex: 0 0 18px;
+    width: 18px;
     height: 18px;
     appearance: none;
     border-radius: 50%;
@@ -79,7 +83,7 @@ export const styles = css`
     border-color: var(--oryx-color-error);
   }
 
-  :host [hasErrorContent] {
+  [hasErrorContent] {
     margin-block-start: 1px;
     margin-inline-start: 1px;
     font-size: 12px;
