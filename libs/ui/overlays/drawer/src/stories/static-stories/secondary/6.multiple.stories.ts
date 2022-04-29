@@ -16,7 +16,12 @@ const Template: Story = (): TemplateResult => {
       <div style="padding:20px">First drawer</div>
     </oryx-drawer>
 
-    <oryx-drawer type=${DrawerType.SECONDARY} position=${Position.END} open>
+    <oryx-drawer
+      type=${DrawerType.SECONDARY}
+      position=${Position.END}
+      open
+      navAriaLabel="second drawer's navigation"
+    >
       <div style="padding:20px">Second drawer</div>
     </oryx-drawer>
   `;

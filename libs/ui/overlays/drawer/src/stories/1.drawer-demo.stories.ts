@@ -35,9 +35,13 @@ class DynamicComponent extends LitElement {
   render(): TemplateResult {
     return html`
       <style>
-        input {
+        button {
           width: 100%;
           margin-bottom: 20px;
+        }
+
+        button:focus {
+          outline: 2px solid blue;
         }
       </style>
       <oryx-drawer
@@ -50,7 +54,7 @@ class DynamicComponent extends LitElement {
         ?open=${this.props?.open}
       >
         <div style="padding:20px">
-          <input placeholder="Will be focused when no control buttons" />
+          <button>Will be focused when no control buttons</button>
 
           ${this.inProgress
             ? html`Loading...`
