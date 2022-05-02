@@ -8,10 +8,6 @@ export const errorStyles = css`
     border-color: var(--oryx-color-error);
   }
 
-  [hasErrorContent] {
-    margin-top: 7px;
-  }
-
   :host([disabled]) slot[name='error'] ::slotted(oryx-icon) {
     color: var(--oryx-color-neutral);
   }

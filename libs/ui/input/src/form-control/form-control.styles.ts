@@ -96,4 +96,8 @@ export const formControlStyles = css`
   ::slotted(input)::placeholder {
     color: var(--oryx-color-neutral-dark);
   }
+
+  [hasErrorContent] {
+    margin-block-start: 7px;
+  }
 `;
