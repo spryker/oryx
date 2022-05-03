@@ -63,7 +63,8 @@ export const toggleIconStyles = css`
   }
 
   ::slotted(input[disabled]) {
-    background: var(--oryx-color-neutral-light);
+    background: var(--oryx-color-neutral-lighter);
+    border-color: var(--oryx-color-neutral);
   }
 
   ::slotted(input[checked]:not([disabled])) {
@@ -76,15 +77,16 @@ export const toggleIconStyles = css`
     background: var(--oryx-color-neutral-lighter);
   }
 
+  ::slotted(input[checked]:hover) {
+    border-color: var(--oryx-color-brand-dark);
+    background-color: var(--oryx-color-neutral-lighter);
+  }
+
   ::slotted(input[checked][disabled]) {
     border-color: var(--oryx-color-neutral-dark);
   }
 
   :host([checked]:not([disabled])) ::slotted(oryx-icon) {
     color: var(--oryx-color-brand);
-  }
-
-  ::slotted(input[checked]:hover:not([disabled])) {
-    background-color: var(--oryx-color-neutral-lighter);
   }
 `;
