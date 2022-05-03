@@ -1,15 +1,17 @@
 import { expect } from '@storybook/jest';
-import { fireEvent, userEvent, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { DrawerComponent } from '../..';
 import { storybookPrefix } from '../../../../../.storybook/constant';
 import { Position } from '../../../../../utilities/model/common';
+import { OverlaysDecorator, wait } from '../../../../../utilities/storybook';
 import '../../index';
-import { toggle, wait } from './util';
+import { toggle } from './util';
 
 export default {
-  title: `${storybookPrefix}/Overlays/Drawer/interactive`,
+  title: `${storybookPrefix}/Overlays/Drawer/Interactive`,
+  decorators: [OverlaysDecorator],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
@@ -39,9 +41,6 @@ OpenStrategy.play = async (obj: {
 
   await wait(1000);
   userEvent.click(await within(obj.canvasElement).getByTestId('button'));
-  await wait(0);
+  await wait(500);
   expect(drawer.dialog?.open).toBeTruthy;
-  await wait(2000);
-  fireEvent.keyDown(drawer.dialog, { key: 'Escape' });
-  expect(drawer.dialog?.open).toBeFalsy;
 };

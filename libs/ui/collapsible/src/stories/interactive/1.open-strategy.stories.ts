@@ -8,7 +8,7 @@ import '../../index';
 import { wait } from './util';
 
 export default {
-  title: `${storybookPrefix}/Structure/Collapsible/interactive`,
+  title: `${storybookPrefix}/Structure/Collapsible/Interactive`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

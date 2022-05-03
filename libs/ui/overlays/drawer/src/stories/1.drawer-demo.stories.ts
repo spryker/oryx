@@ -5,6 +5,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { DrawerProperties, DrawerService, DrawerType } from '..';
 import { storybookPrefix } from '../../../../.storybook/constant';
 import { Position } from '../../../../utilities/model/common';
+import { OverlaysDecorator } from '../../../../utilities/storybook';
 import '../index';
 
 const service = new DrawerService();
@@ -70,6 +71,9 @@ class DynamicComponent extends LitElement {
 
 export default {
   title: `${storybookPrefix}/Overlays/Drawer`,
+  // disables Chromatic's snapshotting on a story level
+  chromatic: { disableSnapshot: true },
+  decorators: [OverlaysDecorator],
 } as Meta;
 const Template: Story<DrawerProperties> = (
   props: DrawerProperties

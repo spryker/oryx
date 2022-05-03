@@ -1,11 +1,13 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../../../.storybook/constant';
-import '../../../index';
+import { storybookPrefix } from '../../../../../.storybook/constant';
+import { OverlaysDecorator } from '../../../../../utilities/storybook';
+import '../../index';
 
 export default {
-  title: `${storybookPrefix}/Overlays/Drawer/Static/Primary`,
+  title: `${storybookPrefix}/Overlays/Drawer/Static`,
+  decorators: [OverlaysDecorator],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
