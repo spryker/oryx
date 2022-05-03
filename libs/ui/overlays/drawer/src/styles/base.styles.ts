@@ -12,7 +12,6 @@ export const drawerBaseStyles = css`
     transform: scaleX(var(--oryx-aside-visible, 0));
     transform-origin: left top;
     pointer-events: none;
-    overflow: visible;
     overscroll-behavior: none;
     box-sizing: border-box;
     outline: none;
@@ -29,7 +28,7 @@ export const drawerBaseStyles = css`
     position: relative;
     width: 100%;
     pointer-events: auto;
-    overflow: scroll;
+    overflow: auto;
     overscroll-behavior: contain;
   }
 
