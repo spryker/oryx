@@ -7,3 +7,7 @@ The component package provides reusable UI components that are used to build Spr
 ## Style linting
 
 Run `nx stylelint components` to lint styles.
+
+## Sprite generation
+
+Run `nx run ui:sprites` to generation new icons sprite

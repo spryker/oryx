@@ -23,6 +23,13 @@
         "exclude": ["public", "actions", "Graphical"]
       }
     },
+    "sprites": {
+      "executor": "./tools/executors/generate-icon-sprites:svg",
+      "options": {
+        "input": "Graphical/icon/src/icons/index.ts",
+        "output": "public/assets/icons.svg"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

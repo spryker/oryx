@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "svg": {
+      "implementation": "./svg",
+      "schema": "./schema.json",
+      "description": "Generates a svg-sprite with all the icons."
+    }
+  }
+}

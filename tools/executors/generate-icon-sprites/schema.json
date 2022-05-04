@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "cli": "nx",
+  "properties": {
+    "input": {
+      "type": "string",
+      "description": "Path to the file containing the exported icons."
+    },
+    "output": {
+      "type": "string",
+      "description": "The path where the sprite file is created."
+    }
+  },
+  "required": ["input", "output"]
+}
