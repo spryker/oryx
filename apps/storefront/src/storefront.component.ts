@@ -5,10 +5,13 @@ import { ProductContext } from '@spryker-oryx/product';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BehaviorSubject, tap } from 'rxjs';
+import { styles } from './storefront.styles';
 
 @customElement('storefront-component')
 export class StorefrontComponent extends LitElement {
   protected context = resolve(this, CoreServices.Context);
+
+  static styles = styles;
 
   @property({ type: String })
   protected route? = '/';
@@ -28,10 +31,13 @@ export class StorefrontComponent extends LitElement {
 
   override render(): TemplateResult {
     return html`<div>
+      <div class="product-preview-wrapper">
+        <product-image code="121"></product-image>
+        <product-title code="121"></product-title>
+      </div>
       <experience-composition
         key="${asyncValue(this.route$)}"
       ></experience-composition>
-      <product-title></product-title>
     </div> `;
   }
 }

@@ -22,4 +22,10 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-title uid="${uid}"></product-title>`,
   },
+  'product-image': {
+    tag: 'product-image',
+    component: () => import('@spryker-oryx/product/image'),
+    template: (uid: string) =>
+      html`<product-image uid="${uid}"></product-image>`,
+  },
 };
