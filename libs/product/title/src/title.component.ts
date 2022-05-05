@@ -11,7 +11,7 @@ import {
   of,
   switchMap,
 } from 'rxjs';
-import { ProductDomain } from '../../src';
+import { ProductService } from '../../src/services/product.service';
 import { styles } from './title.styles';
 
 export class TitleComponent extends LitElement {
@@ -20,13 +20,14 @@ export class TitleComponent extends LitElement {
   @property()
   protected uid?: string;
 
+  // TODO: Remove default code fallback once product service will be created
   @property()
   protected code = '119';
 
   @observe()
   protected code$ = new BehaviorSubject(this.code);
 
-  protected productService = resolve(this, ProductDomain.ProductService);
+  protected productService = resolve(this, ProductService);
   protected context = resolve(this, CoreServices.Context, null);
 
   protected productCode$ = combineLatest([

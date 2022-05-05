@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
-import { Product, ProductDomain, ProductQualifier } from '../models';
+import { Product, ProductQualifier } from '../models';
 
 export interface ProductService {
   get(qualifier: ProductQualifier): Observable<Product>;
 }
 
+export const ProductService = 'FES.ProductService';
+
 declare global {
   interface InjectionTokensContractMap {
-    [ProductDomain.ProductService]: ProductService;
+    [ProductService]: ProductService;
   }
 }
-
-export const ProductService = ProductDomain.ProductService;

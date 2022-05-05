@@ -1,7 +1,6 @@
 import { CoreServices } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
-import { ProductDomain } from '../../models';
 import { DefaultProductAdapter } from './default-product.adapter';
 import { ProductAdapter } from './product.adapter';
 
@@ -27,7 +26,7 @@ describe('DefaultProductService', () => {
         useClass: HttpTestService,
       },
       {
-        provide: ProductDomain.ProductAdapter,
+        provide: ProductAdapter,
         useClass: DefaultProductAdapter,
       },
       {
@@ -36,7 +35,7 @@ describe('DefaultProductService', () => {
       },
     ]);
 
-    service = testInjector.inject(ProductDomain.ProductAdapter);
+    service = testInjector.inject(ProductAdapter);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     http = testInjector.inject(CoreServices.Http) as HttpTestService;
   });

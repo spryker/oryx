@@ -1,14 +1,15 @@
-import { ProductDomain } from '../models';
 import { DefaultProductAdapter } from './adapter/default-product.adapter';
+import { ProductAdapter } from './adapter/product.adapter';
 import { DefaultProductService } from './default-product.service';
+import { ProductService } from './product.service';
 
 export const PRODUCT_PROVIDERS = [
   {
-    provide: ProductDomain.ProductAdapter,
+    provide: ProductAdapter,
     useClass: DefaultProductAdapter,
   },
   {
-    provide: ProductDomain.ProductService,
+    provide: ProductService,
     useClass: DefaultProductService,
   },
 ];

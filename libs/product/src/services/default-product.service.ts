@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { inject } from '@spryker-oryx/injector';
 import { Observable, ReplaySubject } from 'rxjs';
-import { Product, ProductDomain, ProductQualifier } from '../models';
+import { Product, ProductQualifier } from '../models';
+import { ProductAdapter } from './adapter';
 import { ProductService } from './product.service';
 
 export class DefaultProductService implements ProductService {
   protected products = new Map<string, ReplaySubject<Product>>();
 
-  constructor(protected adapter = inject(ProductDomain.ProductAdapter)) {}
+  constructor(protected adapter = inject(ProductAdapter)) {}
 
   get(qualifier: ProductQualifier): Observable<Product> {
     const key = this.adapter.getKey(qualifier);

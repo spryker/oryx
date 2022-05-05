@@ -1,9 +1,9 @@
-import { ProductDomain } from '../models';
+import { ProductService } from '../services/product.service';
 import { MockProductService } from './mock-product.service';
 
 export const MOCK_PRODUCT_PROVIDERS = [
   {
-    provide: ProductDomain.ProductService,
+    provide: ProductService,
     useClass: MockProductService,
   },
 ];

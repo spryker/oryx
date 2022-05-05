@@ -1,6 +1,6 @@
 import { Injector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
-import { ProductDomain, ProductQualifier } from '../models';
+import { ProductQualifier } from '../models';
 import { ProductAdapter } from './adapter/product.adapter';
 import { DefaultProductService } from './default-product.service';
 import { ProductService } from './product.service';
@@ -23,17 +23,17 @@ describe('DefaultProductService', () => {
   beforeEach(() => {
     testInjector = new Injector([
       {
-        provide: ProductDomain.ProductService,
+        provide: ProductService,
         useClass: DefaultProductService,
       },
       {
-        provide: ProductDomain.ProductAdapter,
+        provide: ProductAdapter,
         useClass: MockProductAdapter,
       },
     ]);
 
-    service = testInjector.inject(ProductDomain.ProductService);
-    adapter = testInjector.inject(ProductDomain.ProductAdapter);
+    service = testInjector.inject(ProductService);
+    adapter = testInjector.inject(ProductAdapter);
   });
 
   it('should be provided', () => {
