@@ -1,3 +1,8 @@
+export interface ProductImage {
+  externalUrlLarge: string;
+  externalUrlSmall: string;
+}
+
 export interface Product {
   sku?: string;
   averageRating?: string;
@@ -9,4 +14,5 @@ export interface Product {
   metaTitle?: string;
   metaKeywords?: string;
   metaDescription?: string;
+  images?: ProductImage[];
 }

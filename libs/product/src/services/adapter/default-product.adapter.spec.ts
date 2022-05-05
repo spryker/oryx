@@ -49,16 +49,55 @@ describe('DefaultProductService', () => {
     expect(result).toEqual(mockProduct.data.attributes);
   });
 
-  it('get should send `get` request', () => {
+  describe('get should send `get` request', () => {
     const callback = vi.fn();
     const mockQualifier = { sku: '123' };
+    const imageInclude = 'abstract-product-image-sets';
+    const concreteProductInclude = 'concrete-products';
 
-    http.flush(mockProduct);
-    service.get(mockQualifier).subscribe(callback);
+    beforeEach(() => {
+      http.flush(mockProduct);
+    });
 
-    expect(callback).toHaveBeenCalledWith(mockProduct.data.attributes);
-    expect(http.url).toBe(
-      `${mockApiUrl}/abstract-products/${mockQualifier.sku}`
-    );
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('should build url based on SKU', () => {
+      service.get(mockQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockProduct.data.attributes);
+      expect(http.url).toBe(
+        `${mockApiUrl}/abstract-products/${mockQualifier.sku}`
+      );
+    });
+
+    it('should add include to the url', () => {
+      service
+        .get({
+          ...mockQualifier,
+          include: [imageInclude],
+        })
+        .subscribe(callback);
+
+      expect(http.url?.split('?include=')[1]).toBe(imageInclude);
+    });
+
+    it('should add several includes to the url', () => {
+      const params = {
+        ...mockQualifier,
+        include: [imageInclude, concreteProductInclude],
+      };
+
+      service.get(params).subscribe(callback);
+
+      const includes = http.url?.split('?include=')[1].split(',');
+
+      expect(includes).toHaveLength(2);
+
+      includes?.forEach((include, index) => {
+        expect(include).toBe(params.include[index]);
+      });
+    });
   });
 });
