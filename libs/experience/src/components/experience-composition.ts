@@ -4,7 +4,11 @@ import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { filter, lastValueFrom, of, ReplaySubject, switchMap, tap } from 'rxjs';
-import { Component, Services } from '../services';
+import {
+  Component,
+  ComponentsRegistryService,
+  ExperienceService,
+} from '../services';
 
 export class ExperienceComposition extends LitElement {
   @state()
@@ -16,8 +20,8 @@ export class ExperienceComposition extends LitElement {
   @observe()
   protected key$ = new ReplaySubject<string>(1);
 
-  protected experienceService = resolve(this, Services.Experience, null);
-  protected registryService = resolve(this, Services.ComponentsRegistry);
+  protected experienceService = resolve(this, ExperienceService, null);
+  protected registryService = resolve(this, ComponentsRegistryService);
   protected ssrAwaiter = resolve(this, CoreServices.SSRAwaiter, null);
 
   components$ = this.key$.pipe(

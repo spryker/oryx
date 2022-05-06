@@ -1,2 +1,2 @@
-export * from './components-registry.contract';
 export * from './components-registry.service';
+export * from './default-components-registry.service';

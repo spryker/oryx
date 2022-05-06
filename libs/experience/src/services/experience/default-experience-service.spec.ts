@@ -2,6 +2,8 @@ import { CoreServices } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
 import { BehaviorSubject, switchMap } from 'rxjs';
+import { CONTENT_BACKEND_URL } from '../experience-tokens';
+import { DefaultExperienceService } from './default-experience.service';
 import { ExperienceService } from './experience.service';
 
 const mockStructureKey = 'bannerSlider';
@@ -46,7 +48,7 @@ const mockContent = {
   ],
 };
 
-describe('ExperienceService', () => {
+describe('DefaultExperienceService', () => {
   let service: ExperienceService;
   let http: HttpTestService;
   let testInjector;
@@ -54,8 +56,8 @@ describe('ExperienceService', () => {
   beforeEach(() => {
     testInjector = new Injector([
       {
-        provide: 'CONTENT_BACKEND_URL',
-        useValue: 'CONTENT_BACKEND_URL',
+        provide: CONTENT_BACKEND_URL,
+        useValue: CONTENT_BACKEND_URL,
       },
       {
         provide: CoreServices.Http,
@@ -63,7 +65,7 @@ describe('ExperienceService', () => {
       },
       {
         provide: 'ExperienceService',
-        useClass: ExperienceService,
+        useClass: DefaultExperienceService,
       },
     ]);
 
@@ -76,7 +78,7 @@ describe('ExperienceService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(ExperienceService);
+    expect(service).toBeInstanceOf(DefaultExperienceService);
   });
 
   describe('getStructure', () => {

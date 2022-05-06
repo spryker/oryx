@@ -1,1 +1,1 @@
-export * from './router.contract';
+export * from './router.service';

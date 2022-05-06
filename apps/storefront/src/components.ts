@@ -1,5 +1,4 @@
 import { html, TemplateResult } from 'lit';
-
 export interface ComponentMapping {
   tag: string;
   component?: () => void;

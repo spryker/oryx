@@ -1,4 +1,4 @@
-import { Services } from '@spryker-oryx/experience';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -21,7 +21,7 @@ export class BannerComponent extends LitElement {
   @observe()
   protected content$ = new ReplaySubject(1);
 
-  protected experienceContent = resolve(this, Services.Experience, null);
+  protected experienceContent = resolve(this, ExperienceService, null);
 
   contentResolver$ = defer(() =>
     this.uid && this.experienceContent

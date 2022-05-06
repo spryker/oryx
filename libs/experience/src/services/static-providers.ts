@@ -1,15 +1,17 @@
 import { Provider } from '@spryker-oryx/injector';
-import { ExperienceService } from './experience';
-import { ComponentsRegistryService } from './registry';
-import { Services } from './services';
+import { DefaultExperienceService, ExperienceService } from './experience';
+import {
+  ComponentsRegistryService,
+  DefaultComponentsRegistryService,
+} from './registry';
 
 export const STATIC_PROVIDERS: Provider[] = [
   {
-    provide: Services.Experience,
-    useClass: ExperienceService,
+    provide: ExperienceService,
+    useClass: DefaultExperienceService,
   },
   {
-    provide: Services.ComponentsRegistry,
-    useClass: ComponentsRegistryService,
+    provide: ComponentsRegistryService,
+    useClass: DefaultComponentsRegistryService,
   },
 ];

@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { Services } from '@spryker-oryx/experience';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
@@ -18,7 +18,7 @@ describe('Banner', () => {
   createInjector({
     providers: [
       {
-        provide: Services.Experience,
+        provide: ExperienceService,
         useClass: MockService,
       },
     ],

@@ -5,9 +5,8 @@ import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
 import {
   Component,
-  ComponentsRegistryContract,
+  ComponentsRegistryService,
   ExperienceService,
-  Services,
 } from '../services';
 import './';
 import { ExperienceComposition } from './experience-composition';
@@ -18,7 +17,7 @@ const BASE_COMPONENTS = [
   { id: '3', type: 'oryx-banner' },
 ];
 
-class MockExperience implements Partial<ExperienceService> {
+class MockExperienceService implements Partial<ExperienceService> {
   components = [...BASE_COMPONENTS];
   getStructure = (): Observable<Component> =>
     of({
@@ -37,7 +36,7 @@ class MockSSRAwaiter {
 }
 
 class MockComponentsRegistryService
-  implements Partial<ComponentsRegistryContract>
+  implements Partial<ComponentsRegistryService>
 {
   resolveComponent(type: string): Observable<string> {
     return of(type);
@@ -56,11 +55,11 @@ describe('Experience Composition', () => {
       override: true,
       providers: [
         {
-          provide: Services.Experience,
-          useClass: MockExperience,
+          provide: ExperienceService,
+          useClass: MockExperienceService,
         },
         {
-          provide: Services.ComponentsRegistry,
+          provide: ComponentsRegistryService,
           useClass: MockComponentsRegistryService,
         },
         {

@@ -8,17 +8,16 @@ import {
   ReplaySubject,
   share,
 } from 'rxjs';
-import { RouterEvent, RouterEventType } from '../router';
-import { Services } from '../services';
-import { ExperienceService } from './experience.service';
+import { RouterEvent, RouterEventType, RouterService } from '../router';
+import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 
 const REQUEST_MESSAGE_TYPE = 'vsf-preview-request';
 const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
 /* TODO: move it from current */
-export class ExperiencePreviewService extends ExperienceService {
-  constructor(protected routerService = inject(Services.Router)) {
+export class ExperiencePreviewService extends DefaultExperienceService {
+  constructor(protected routerService = inject(RouterService)) {
     super();
 
     this.structureDataEvent$.subscribe(

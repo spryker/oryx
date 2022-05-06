@@ -1,12 +1,12 @@
 import {
-  RouterContract,
   RouterEvent,
   RouterEventType,
+  RouterService,
 } from '@spryker-oryx/experience';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-export class RouterService implements RouterContract {
+export class StorefrontRouterService implements RouterService {
   private router = [];
   private routerEvents$: Subject<RouterEvent> = new Subject();
 
