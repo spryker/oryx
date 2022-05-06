@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { ChipType } from '../..';
-import { storybookPrefix } from '../../../.storybook/constant';
+import { storybookPrefix } from '../../../../.storybook/constant';
+import { ChipType } from '../../index';
 import '../index';
 
-export default { title: `${storybookPrefix}/Chip` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Chip` } as Meta;
 
 export interface ChipProperties {
   type?: ChipType;
@@ -20,9 +20,13 @@ const Template: Story<ChipProperties> = (
 
 export const ChipDemo = Template.bind({});
 
+ChipDemo.parameters = {
+  chromatic: { disableSnapshot: true },
+};
+
 ChipDemo.argTypes = {
   type: {
-    control: { type: 'radio' },
     options: Object.values(ChipType),
+    control: { type: 'radio' },
   },
 };

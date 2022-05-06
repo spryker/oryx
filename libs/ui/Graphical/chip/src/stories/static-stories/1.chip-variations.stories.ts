@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { ChipType } from '../..';
-import { storybookPrefix } from '../../../../.storybook/constant';
-export default { title: `${storybookPrefix}/Chip/Static` } as Meta;
+import { storybookPrefix } from '../../../../../.storybook/constant';
+import { ChipType } from '../../index';
+export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
 
 export interface ChipProperties {
   type?: ChipType;

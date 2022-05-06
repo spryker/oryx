@@ -46,6 +46,10 @@
     "typeahead": {
       "default": "./form/typeahead/index.js",
       "types": "./form/typeahead/index.d.ts"
+    },
+    "chip": {
+      "default": "./Graphical/chip/index.js",
+      "types": "./Graphical/chip/index.d.ts"
     }
   }
 }
