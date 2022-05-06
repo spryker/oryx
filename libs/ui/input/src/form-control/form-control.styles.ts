@@ -84,6 +84,7 @@ export const formControlStyles = css`
     outline: none;
     font: inherit;
     color: var(--oryx-color-ink);
+    border-radius: var(--oryx-border-radius);
   }
 
   textarea,
