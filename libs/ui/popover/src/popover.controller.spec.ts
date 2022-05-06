@@ -10,7 +10,7 @@ import {
   SelectedController,
 } from '.';
 import { a11yConfig } from '../../a11y';
-import { getControl } from '../../input';
+import { getControl } from '../../form/utilities/getControl';
 import '../../option';
 import { OptionComponent } from '../../option';
 

@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ErrorController, ErrorOptions, errorStyles } from '../../../input';
 import { Direction } from '../../../utilities';
+import { ErrorController, ErrorOptions, errorStyles } from '../../input';
 import { styles } from './radio-list.styles';
 
 export class RadioListComponent extends LitElement implements ErrorOptions {

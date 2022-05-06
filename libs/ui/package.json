@@ -26,6 +26,26 @@
     "radio-list": {
       "default": "./form/radio-list/index.js",
       "types": "./form/radio-list/index.d.ts"
+    },
+    "input": {
+      "default": "./form/input/index.js",
+      "types": "./form/input/index.d.ts"
+    },
+    "password": {
+      "default": "./form/password/index.js",
+      "types": "./form/password/index.d.ts"
+    },
+    "search": {
+      "default": "./form/search/index.js",
+      "types": "./form/search/index.d.ts"
+    },
+    "select": {
+      "default": "./form/select/index.js",
+      "types": "./form/select/index.d.ts"
+    },
+    "typeahead": {
+      "default": "./form/typeahead/index.js",
+      "types": "./form/typeahead/index.d.ts"
     }
   }
 }

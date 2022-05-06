@@ -1,5 +1,5 @@
 import { LitElement, ReactiveController } from 'lit';
-import { getControl } from '../../../input';
+import { getControl } from '../../../form/utilities';
 import { PopoverComponent } from '../popover.component';
 import { MaxHeightController } from './max-height.controller';
 
