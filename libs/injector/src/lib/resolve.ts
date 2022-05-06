@@ -1,5 +1,9 @@
 import { getInjector } from './get-injector';
 
+interface Type<T> extends Function {
+  new (...args: any[]): T;
+}
+
 export function resolve<K extends keyof InjectionTokensContractMap>(
   context: any,
   token: K
@@ -9,6 +13,12 @@ export function resolve<K extends keyof InjectionTokensContractMap, L>(
   token: K,
   defaultValue?: L
 ): InjectionTokensContractMap[K] | L;
+export function resolve<K>(context: any, token: Type<K>, defaultValue?: K): K;
+export function resolve<K, L>(
+  context: any,
+  token: Type<K>,
+  defaultValue?: L
+): K | L;
 export function resolve<K = any>(
   context: any,
   token: string,
@@ -16,7 +26,7 @@ export function resolve<K = any>(
 ): K;
 export function resolve<K = any>(
   context: any,
-  token: string,
+  token: any,
   defaultValue?: any
 ): K {
   try {
