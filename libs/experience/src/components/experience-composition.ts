@@ -3,6 +3,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { filter, lastValueFrom, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
   Component,
@@ -48,8 +49,11 @@ export class ExperienceComposition extends LitElement {
       ${asyncValue(
         this.components$,
         (components: any) =>
-          html`${components.map((component: any) =>
-            this.registryService.resolveTemplate(component.type, component.id)
+          html`${repeat(
+            components,
+            (component) => component.id,
+            (component: any) =>
+              this.registryService.resolveTemplate(component.type, component.id)
           )}`,
         () => html`Loading...`
       )}

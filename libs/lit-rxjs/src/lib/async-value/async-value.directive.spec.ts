@@ -165,7 +165,7 @@ describe('asyncValue', () => {
     });
 
     describe('disconnected method', () => {
-      it('should dispose from the current subscription and reset internal variables', () => {
+      it('should dispose from the current subscription and reset internal variables', async () => {
         const mockObservable = of('mockObservable');
 
         asyncValue.render(mockObservable);
@@ -179,7 +179,8 @@ describe('asyncValue', () => {
         );
         expect(asyncValue.object).toEqual(mockObservable);
 
-        asyncValue.disconnected();
+        asyncValue.isConnected = false;
+        await asyncValue.disconnected();
 
         expect(MockObservableStrategy.dispose).toHaveBeenCalled();
         expect(asyncValue.setValue).toHaveBeenCalledWith(null);

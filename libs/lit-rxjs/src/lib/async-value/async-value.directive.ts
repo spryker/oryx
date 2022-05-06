@@ -45,8 +45,11 @@ export class AsyncValueDirective extends AsyncDirective {
     return this.content.length ? this.content : noChange;
   }
 
-  disconnected(): void {
-    this.dispose();
+  async disconnected(): Promise<void> {
+    await 0;
+    if (!this.isConnected) {
+      this.dispose();
+    }
   }
 
   reconnected(): void {
