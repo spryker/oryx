@@ -8,32 +8,6 @@ import '../index';
 
 export default {
   title: `${storybookPrefix}/Actions/Button`,
-  argTypes: {
-    type: {
-      description: 'Visibility button UI',
-      options: Object.values(ButtonType),
-      defaultValue: ButtonType.Primary,
-      control: { type: 'select' },
-    },
-    size: {
-      description: 'Button size',
-      options: Object.values(Size),
-      defaultValue: Size.large,
-      control: { type: 'select' },
-    },
-    message: {
-      description: 'Button message',
-    },
-    disabled: {
-      description: 'Button disabled',
-    },
-    loading: {
-      description: 'Button loader',
-    },
-    icon: {
-      description: 'Button icon',
-    },
-  },
 } as Meta;
 
 interface Props {
@@ -95,15 +69,35 @@ const Template: Story<Props> = ({
 export const ButtonDemo = Template.bind({});
 
 ButtonDemo.args = {
+  type: ButtonType.Primary,
+  size: Size.large,
+  icon: undefined,
   message: 'Button',
   disabled: false,
-  icon: undefined,
   loading: false,
   outline: false,
 };
 
 ButtonDemo.argTypes = {
+  type: {
+    options: Object.values(ButtonType),
+    control: { type: 'select' },
+  },
+  size: {
+    options: Object.values(Size),
+    control: { type: 'select' },
+  },
   icon: {
+    description: 'Button icon',
     control: { type: 'text' },
+  },
+  message: {
+    description: 'Button message',
+  },
+  disabled: {
+    description: 'Button disabled',
+  },
+  loading: {
+    description: 'Button loader',
   },
 };

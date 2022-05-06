@@ -9,9 +9,7 @@ export default {
   title: `${storybookPrefix}/Notification/Static/Light`,
 } as Meta;
 
-const Template: Story = ({
-  backgroundColor = bodyBackgroundColor.options[0],
-}): TemplateResult => {
+const Template: Story = ({ backgroundColor }): TemplateResult => {
   return html`
     <style>
       body {
@@ -40,6 +38,9 @@ const Template: Story = ({
   `;
 };
 export const Subtext = Template.bind({});
+Subtext.args = {
+  backgroundColor: bodyBackgroundColor.options[0],
+};
 Subtext.argTypes = {
   backgroundColor: bodyBackgroundColor,
 };

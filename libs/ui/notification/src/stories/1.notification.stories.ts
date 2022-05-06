@@ -48,6 +48,7 @@ const Template: Story<Props> = ({
   `;
 };
 export const NotificationDemo = Template.bind({});
+
 NotificationDemo.args = {
   backgroundColor: bodyBackgroundColor.options[0],
   type: Types.INFO,
@@ -57,30 +58,27 @@ NotificationDemo.args = {
   floating: false,
   closable: false,
 };
+
 NotificationDemo.argTypes = {
   backgroundColor: bodyBackgroundColor,
   type: {
-    options: [Types.INFO, Types.ERROR, Types.WARNING, Types.SUCCESS],
+    options: Object.values(Types),
     control: { type: 'radio' },
   },
   scheme: {
-    options: [Schemes.LIGHT, Schemes.DARK],
+    options: Object.values(Schemes),
     control: { type: 'radio' },
   },
   floating: {
     control: { type: 'boolean' },
-    defaultValue: false,
   },
   closable: {
     control: { type: 'boolean' },
-    defaultValue: false,
   },
   title: {
     control: { type: 'text' },
-    defaultValue: 'Title',
   },
   subtext: {
     control: { type: 'text' },
-    defaultValue: 'Content text',
   },
 };

@@ -30,10 +30,13 @@ const Template: Story<FilterProps> = ({
 };
 
 export const StartOfWord = Template.bind({});
+StartOfWord.args = {
+  options: 'branches',
+};
+
 StartOfWord.argTypes = {
   options: {
     options: ['states', 'branches'],
     control: { type: 'select' },
-    defaultValue: 'branches',
   },
 };

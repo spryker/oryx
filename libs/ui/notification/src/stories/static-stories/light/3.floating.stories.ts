@@ -9,11 +9,11 @@ export default {
   title: `${storybookPrefix}/Notification/Static/Light`,
 } as Meta;
 
-const Template: Story = ({ bodyBackgroundColor }): TemplateResult => {
+const Template: Story = ({ backgroundColor }): TemplateResult => {
   return html`
     <style>
       body {
-        background: ${bodyBackgroundColor};
+        background: ${backgroundColor};
       }
       oryx-notification {
         margin-bottom: 18px;
@@ -42,6 +42,9 @@ const Template: Story = ({ bodyBackgroundColor }): TemplateResult => {
   `;
 };
 export const Floating = Template.bind({});
+Floating.args = {
+  backgroundColor: bodyBackgroundColor.options[0],
+};
 Floating.argTypes = {
-  bodyBackgroundColor,
+  backgroundColor: bodyBackgroundColor,
 };
