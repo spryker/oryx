@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.storybook/constant';
 
 export default {
-  title: `${storybookPrefix}/form/utilities/ErrorMessage`,
+  title: `${storybookPrefix}/Form/Utilities/ErrorMessage`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

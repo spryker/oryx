@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../.storybook/constant';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/form/utilities/Option`,
+  title: `${storybookPrefix}/Form/Utilities/Option`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

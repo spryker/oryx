@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../.storybook/constant';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/form/utilities/ErrorMessage`,
+  title: `${storybookPrefix}/Form/Utilities/ErrorMessage`,
 } as Meta;
 
 interface Props {

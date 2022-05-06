@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../.storybook/constant';
 import '../../form-control';
 
 export default {
-  title: `${storybookPrefix}/form/textarea`,
+  title: `${storybookPrefix}/Form/Textarea`,
 } as Meta;
 interface Props {
   disabled: boolean;

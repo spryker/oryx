@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../../.storybook/constant';
 import '../../../index';
 
 export default {
-  title: `${storybookPrefix}/form/form-control/suffix`,
+  title: `${storybookPrefix}/Form/Form-control/suffix`,
 } as Meta;
 
 interface Props {

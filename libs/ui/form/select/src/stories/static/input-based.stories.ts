@@ -6,7 +6,7 @@ import { sideBySide, states } from '../../../../../utilities/storybook';
 import '../../index';
 
 export default {
-  title: `${storybookPrefix}/form/Select/Static`,
+  title: `${storybookPrefix}/Form/Select/Static`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

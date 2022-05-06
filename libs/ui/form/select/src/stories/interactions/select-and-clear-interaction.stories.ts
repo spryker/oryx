@@ -8,7 +8,7 @@ import '../../index';
 import { SelectComponent } from '../../index';
 
 export default {
-  title: `${storybookPrefix}/form/Select/Interaction`,
+  title: `${storybookPrefix}/Form/Select/Interaction`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

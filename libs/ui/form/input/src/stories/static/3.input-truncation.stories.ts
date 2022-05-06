@@ -5,7 +5,7 @@ import { initMutationObserverForComponent } from '../../../../../utilities';
 import '../../form-control';
 
 export default {
-  title: `${storybookPrefix}/form/input/static`,
+  title: `${storybookPrefix}/Form/Input/static`,
 } as Meta;
 
 const variations = [
