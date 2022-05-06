@@ -3,6 +3,10 @@ import { css } from 'lit';
 export const styles = css`
   /* Showcasing different layout on desktop */
   .product-preview-wrapper {
+    --thumb-width: 32px;
+    --thumb-height: 32px;
+    --thumb-gap: 16px;
+    --preview-height: 350px;
     max-width: 1200px;
     margin: 0 auto;
   }
