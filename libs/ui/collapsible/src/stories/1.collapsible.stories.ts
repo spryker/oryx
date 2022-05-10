@@ -5,7 +5,11 @@ import { storybookPrefix } from '../../../.storybook/constant';
 import { IconTypes } from '../../../Graphical/icon';
 import '../index';
 
-export default { title: `${storybookPrefix}/Structure/Collapsible` } as Meta;
+export default {
+  title: `${storybookPrefix}/Structure/Collapsible`,
+  // disables Chromatic's snapshotting on a story level
+  chromatic: { disableSnapshot: true },
+} as Meta;
 
 export interface Props {
   open?: boolean;

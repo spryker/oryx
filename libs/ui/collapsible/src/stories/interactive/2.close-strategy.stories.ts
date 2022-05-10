@@ -12,12 +12,14 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html` <oryx-collapsible header="Header">Content</oryx-collapsible> `;
+  return html`
+    <oryx-collapsible header="Header" open>Content</oryx-collapsible>
+  `;
 };
 
-export const OpenStrategy = Template.bind({});
+export const CloseStrategy = Template.bind({});
 
-OpenStrategy.play = async (obj: {
+CloseStrategy.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const collapsible = obj.canvasElement.querySelector(
@@ -33,5 +35,5 @@ OpenStrategy.play = async (obj: {
   await wait(1000);
   userEvent.click(summary);
   await wait(0);
-  expect(details?.hasAttribute('open')).toBeTruthy;
+  expect(details?.hasAttribute('open')).toBeFalsy;
 };
