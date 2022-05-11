@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
 import { BehaviorSubject, switchMap } from 'rxjs';
@@ -60,7 +60,7 @@ describe('DefaultExperienceService', () => {
         useValue: CONTENT_BACKEND_URL,
       },
       {
-        provide: CoreServices.Http,
+        provide: HttpService,
         useClass: HttpTestService,
       },
       {
@@ -70,7 +70,7 @@ describe('DefaultExperienceService', () => {
     ]);
 
     service = testInjector.inject('ExperienceService');
-    http = testInjector.inject(CoreServices.Http) as HttpTestService;
+    http = testInjector.inject(HttpService) as HttpTestService;
   });
 
   afterEach(() => {

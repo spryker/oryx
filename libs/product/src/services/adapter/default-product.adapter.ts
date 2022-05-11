@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { map, Observable } from 'rxjs';
 import { Product, ProductImage, ProductQualifier } from '../../models';
@@ -43,7 +43,7 @@ export class DefaultProductAdapter implements ProductAdapter {
   protected productEndpoint = 'abstract-products';
 
   constructor(
-    protected http = inject(CoreServices.Http),
+    protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL')
   ) {}
 

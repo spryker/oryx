@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(CONTENT_BACKEND_URL),
-    protected http = inject(CoreServices.Http)
+    protected http = inject(HttpService)
   ) {}
 
   protected processStructure(components: Component[]): void {

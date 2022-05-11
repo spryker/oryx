@@ -1,4 +1,5 @@
 import { fromFetch } from 'rxjs/fetch';
+import { DefaultHttpService } from './default-http.service';
 import { HttpService } from './http.service';
 
 vi.mock('rxjs/fetch', () => ({
@@ -17,11 +18,11 @@ const mockBody = {
   test: 'test',
 };
 
-describe('HttpService', () => {
+describe('DefaultHttpService', () => {
   let service: HttpService;
 
   beforeEach(() => {
-    service = new HttpService();
+    service = new DefaultHttpService();
   });
 
   it('request method should call `fromFetch` with proper parameters', () => {

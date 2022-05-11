@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import { HttpContract, RequestOptions } from '@spryker-oryx/core';
+import { HttpService, RequestOptions } from '@spryker-oryx/core';
 import { Observable, of } from 'rxjs';
 
-export class HttpTestService implements HttpContract {
+export class HttpTestService implements HttpService {
   protected response?: any;
   url?: string;
 
