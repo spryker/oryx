@@ -34,7 +34,7 @@ export const collapsibleStyle = css`
     content: '';
     position: absolute;
     inset: 0;
-    box-shadow: var(--oryx-focus-elevation) var(--oryx-color-focus);
+    box-shadow: var(--oryx-box-shadow-focus);
     border-radius: var(--oryx-border-radius-small);
     pointer-events: none;
   }
