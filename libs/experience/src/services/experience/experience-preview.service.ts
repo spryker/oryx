@@ -12,10 +12,9 @@ import { RouterEvent, RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 
-const REQUEST_MESSAGE_TYPE = 'vsf-preview-request';
-const POST_MESSAGE_TYPE = 'experience-builder-preview';
+export const REQUEST_MESSAGE_TYPE = 'vsf-preview-request';
+export const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
-/* TODO: move it from current */
 export class ExperiencePreviewService extends DefaultExperienceService {
   constructor(protected routerService = inject(RouterService)) {
     super();
