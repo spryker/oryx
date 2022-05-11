@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -28,7 +28,7 @@ export class TitleComponent extends LitElement {
   protected code$ = new BehaviorSubject(this.code);
 
   protected productService = resolve(this, ProductService);
-  protected context = resolve(this, CoreServices.Context, null);
+  protected context = resolve(this, ContextService, null);
 
   protected productCode$ = combineLatest([
     // TODO: This should be simplified with proper context utility

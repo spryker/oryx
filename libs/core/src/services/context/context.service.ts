@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
-import { CoreServices } from '../services';
+
+export const ContextService = 'FES.ContextService';
 
 export interface ContextService {
   provide(element: Element, key: string, value: unknown): void;
@@ -9,6 +10,6 @@ export interface ContextService {
 
 declare global {
   interface InjectionTokensContractMap {
-    [CoreServices.Context]: ContextService;
+    [ContextService]: ContextService;
   }
 }

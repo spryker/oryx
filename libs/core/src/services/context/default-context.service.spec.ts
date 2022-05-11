@@ -3,7 +3,7 @@ import { createInjector, resolve } from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { finalize } from 'rxjs';
-import { CoreServices } from '../services';
+import { ContextService } from './context.service';
 import { DefaultContextService } from './default-context.service';
 
 const mockKey = 'mockKey';
@@ -14,7 +14,7 @@ const mockObject = {
 
 @customElement('overlay-parent-context')
 export class OverlayParentContext extends LitElement {
-  context = resolve(this, CoreServices.Context);
+  context = resolve(this, ContextService);
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;
@@ -23,7 +23,7 @@ export class OverlayParentContext extends LitElement {
 
 @customElement('shadow-parent-context')
 export class ShadowParentContext extends LitElement {
-  context = resolve(this, CoreServices.Context);
+  context = resolve(this, ContextService);
 
   protected override render(): TemplateResult {
     return html`<test-child-context></test-child-context>`;
@@ -32,7 +32,7 @@ export class ShadowParentContext extends LitElement {
 
 @customElement('test-child-context')
 export class TestChildContext extends LitElement {
-  context = resolve(this, CoreServices.Context);
+  context = resolve(this, ContextService);
 }
 
 describe('ContextService', () => {
@@ -43,7 +43,7 @@ describe('ContextService', () => {
       override: true,
       providers: [
         {
-          provide: CoreServices.Context,
+          provide: ContextService,
           useClass: DefaultContextService,
         },
       ],

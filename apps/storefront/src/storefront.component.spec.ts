@@ -1,4 +1,4 @@
-import { CoreServices, DefaultContextService } from '@spryker-oryx/core';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { createInjector } from '@spryker-oryx/injector';
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
@@ -8,7 +8,7 @@ describe('InputComponent', () => {
     createInjector({
       providers: [
         {
-          provide: CoreServices.Context,
+          provide: ContextService,
           useClass: DefaultContextService,
         },
       ],

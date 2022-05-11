@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
@@ -9,7 +9,7 @@ import { styles } from './storefront.styles';
 
 @customElement('storefront-component')
 export class StorefrontComponent extends LitElement {
-  protected context = resolve(this, CoreServices.Context);
+  protected context = resolve(this, ContextService);
 
   static styles = styles;
 
