@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CoreServices } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { createInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -63,7 +63,7 @@ describe('Experience Composition', () => {
           useClass: MockComponentsRegistryService,
         },
         {
-          provide: CoreServices.SSRAwaiter,
+          provide: SSRAwaiterService,
           useClass: MockSSRAwaiter,
         },
       ],

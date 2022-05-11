@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CoreServices, SSRAwaiterContract } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/injector';
 import { defer, Observable, of, tap } from 'rxjs';
 
@@ -7,15 +7,15 @@ export const ssrAwaiter = (
   observable: Observable<any> | undefined,
   context?: any
 ): Observable<any> => {
-  let ssrAwaiter: SSRAwaiterContract | null = null;
+  let ssrAwaiter: SSRAwaiterService | null = null;
 
   if (!context) {
-    ssrAwaiter = inject(CoreServices.SSRAwaiter);
+    ssrAwaiter = inject(SSRAwaiterService);
   }
 
   return defer(() => {
     if (context) {
-      ssrAwaiter = resolve(context, CoreServices.SSRAwaiter, null);
+      ssrAwaiter = resolve(context, SSRAwaiterService, null);
     }
 
     const resolveFn = ssrAwaiter?.getAwaiter();

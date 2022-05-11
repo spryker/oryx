@@ -1,2 +1,2 @@
+export * from './default-ssr-awaiter.service';
 export * from './ssr-awaiter';
-export * from './ssr-awaiter.service';

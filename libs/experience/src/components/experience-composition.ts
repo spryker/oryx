@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -23,7 +23,7 @@ export class ExperienceComposition extends LitElement {
 
   protected experienceService = resolve(this, ExperienceService, null);
   protected registryService = resolve(this, ComponentsRegistryService);
-  protected ssrAwaiter = resolve(this, CoreServices.SSRAwaiter, null);
+  protected ssrAwaiter = resolve(this, SSRAwaiterService, null);
 
   components$ = this.key$.pipe(
     filter((key) => !!key),

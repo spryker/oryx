@@ -1,7 +1,7 @@
 // organize-imports-ignore
 import './app.server';
 import { getInjector } from '@spryker-oryx/injector';
-import { CoreServices } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,7 +19,7 @@ export const renderComponent = async (
 };
 
 export const render = async (element): Promise<string> => {
-  const awaiter = getInjector().inject(CoreServices.SSRAwaiter);
+  const awaiter = getInjector().inject(SSRAwaiterService);
   const ssrResult = await renderComponent(element);
   let stream = '';
   let data = ssrResult.next();

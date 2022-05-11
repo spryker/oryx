@@ -1,6 +1,6 @@
-import { SSRAwaiterContract } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 
-export class SSRAwaiterService implements SSRAwaiterContract {
+export class DefaultSSRAwaiterService implements SSRAwaiterService {
   protected awaiters: Promise<unknown>[] = [];
 
   getAwaiter(): () => void {

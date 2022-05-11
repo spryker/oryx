@@ -1,11 +1,11 @@
-import { SSRAwaiterContract } from '@spryker-oryx/core';
-import { SSRAwaiterService } from './ssr-awaiter.service';
+import { SSRAwaiterService } from '@spryker-oryx/core';
+import { DefaultSSRAwaiterService } from './default-ssr-awaiter.service';
 
-describe('SSRAwaiterService', () => {
-  let service: SSRAwaiterContract;
+describe('DefaultSSRAwaiterService', () => {
+  let service: SSRAwaiterService;
 
   beforeEach(() => {
-    service = new SSRAwaiterService();
+    service = new DefaultSSRAwaiterService();
   });
 
   it('getAwaiter method should add awaiter', () => {

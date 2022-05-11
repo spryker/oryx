@@ -1,6 +1,6 @@
-import { CoreServices } from './services';
+export const SSRAwaiterService = 'FES.SSRAwaiterService';
 
-export interface SSRAwaiterContract {
+export interface SSRAwaiterService {
   getAwaiter(): () => void;
   hasAwaiter(): boolean;
   await(): Promise<unknown>;
@@ -8,6 +8,6 @@ export interface SSRAwaiterContract {
 
 declare global {
   interface InjectionTokensContractMap {
-    [CoreServices.SSRAwaiter]: SSRAwaiterContract;
+    [SSRAwaiterService]: SSRAwaiterService;
   }
 }
