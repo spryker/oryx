@@ -1,4 +1,4 @@
-import { CoreServices } from '@spryker-oryx/core';
+import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
 import { NEVER, of } from 'rxjs';
@@ -36,7 +36,7 @@ const providers = [
     useValue: CONTENT_BACKEND_URL,
   },
   {
-    provide: CoreServices.Http,
+    provide: HttpService,
     useClass: HttpTestService,
   },
   {
