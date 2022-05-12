@@ -29,7 +29,6 @@ const legacyObserve = (
 ): void => {
   const reactiveDescriptor = getReactiveDescriptor(proto, propertyKey);
   const internalSubjectKey = Symbol(subjectKey);
-  let innerValue: unknown;
 
   const propertyDescriptor = {
     ...reactiveDescriptor,
@@ -39,8 +38,6 @@ const legacyObserve = (
       if (this[internalSubjectKey]) {
         this[internalSubjectKey].next(newValue);
       }
-
-      innerValue = newValue;
     },
   };
 
@@ -58,10 +55,6 @@ const legacyObserve = (
       };
 
       Object.defineProperty(this, internalSubjectKey, descriptor);
-
-      if (innerValue) {
-        this[internalSubjectKey].next(innerValue);
-      }
     },
     enumerable: false,
     configurable: true,
