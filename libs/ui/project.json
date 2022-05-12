@@ -26,8 +26,12 @@
     "sprites": {
       "executor": "./tools/executors/generate-icon-sprites:svg",
       "options": {
-        "input": "Graphical/icon/src/icons/index.ts",
-        "output": "public/assets/icons.svg"
+        "iconSets": [
+          {
+            "input": "Graphical/icon/src/icons/index.ts",
+            "output": "public/assets/icons.svg"
+          }
+        ]
       }
     },
     "lint": {

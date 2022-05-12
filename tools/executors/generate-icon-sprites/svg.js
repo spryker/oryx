@@ -36,77 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var fs_1 = require("fs");
+var child_process_1 = require("child_process");
 var path_1 = require("path");
-var typescript_1 = require("typescript");
 function echoExecutor(options, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var cwd, tmpDir, tmpSprite, pathToFolder, removeTmpDir, iconsPath, program, files, _i, files_1, file, contents, icons, svgTemplate, templates, i, icon, sprites, output, _a;
+        var cwd, iconSets, tsConfig, nodeConfiguration, file, properties, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     cwd = context.workspace.projects[context.projectName].root;
-                    tmpDir = "tmpSprite";
-                    tmpSprite = context.root + "/" + tmpDir;
-                    pathToFolder = (0, path_1.dirname)(options.input);
-                    removeTmpDir = function () {
-                        if ((0, fs_1.existsSync)("" + tmpSprite)) {
-                            (0, fs_1.rmdirSync)("" + tmpSprite, { recursive: true });
-                        }
-                    };
-                    console.info("Getting the location of icon files");
-                    iconsPath = (0, path_1.resolve)(cwd, options.input);
+                    iconSets = JSON.stringify(options.iconSets);
+                    tsConfig = "TS_NODE_PROJECT=".concat((0, path_1.join)(__dirname, 'svg-module/tsconfig.json'));
+                    nodeConfiguration = '--loader=ts-node/esm --es-module-specifier-resolution=node';
+                    file = "".concat((0, path_1.join)(__dirname, 'svg-module/svg.ts'));
+                    properties = "--iconSets='".concat(iconSets, "' --cwd=").concat(cwd);
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 4, , 5]);
-                    console.info("Icon generating program");
-                    return [4 /*yield*/, (0, typescript_1.createProgram)([iconsPath], {
-                            moduleResolution: typescript_1.ModuleResolutionKind.NodeJs,
-                            target: typescript_1.ScriptTarget.ES2020,
-                            module: typescript_1.ModuleKind.CommonJS,
-                            outDir: tmpDir,
-                            skipLibCheck: true,
-                            skipDefaultLibCheck: true
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, (0, child_process_1.execSync)("".concat(tsConfig, " node ").concat(nodeConfiguration, " ").concat(file, " ").concat(properties), {
+                            stdio: 'inherit'
                         })];
                 case 2:
-                    program = _b.sent();
-                    program.emit();
-                    files = (0, fs_1.readdirSync)(tmpSprite + "/" + pathToFolder);
-                    for (_i = 0, files_1 = files; _i < files_1.length; _i++) {
-                        file = files_1[_i];
-                        contents = (0, fs_1.readFileSync)(tmpSprite + "/" + pathToFolder + "/" + file, {
-                            encoding: 'utf-8'
-                        });
-                        contents = contents
-                            .replace(/\(.*\.svg\)/g, '')
-                            .replace(/(?:const|let).*require.*lit.*;/, '');
-                        (0, fs_1.writeFileSync)(tmpSprite + "/" + pathToFolder + "/" + file, contents);
-                    }
-                    return [4 /*yield*/, Promise.resolve().then(function () { return require(tmpSprite + "/" + options.input.replace('.ts', '.js')); })];
+                    _b.sent();
+                    return [3 /*break*/, 4];
                 case 3:
-                    icons = _b.sent();
-                    console.info("Convert icons to the correct structure");
-                    svgTemplate = function (id, value) { return "<symbol id=\"" + id + "\">" + value + "</symbol>"; };
-                    templates = [];
-                    for (i in icons) {
-                        icon = icons[i];
-                        templates.push(svgTemplate(icon.type, icon.source));
-                    }
-                    console.info("Generating sprite");
-                    sprites = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n      <svg version=\"1.1\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n          " + templates.join('\n') + "\n      </svg>";
-                    console.info("Collected sprite record");
-                    output = (0, path_1.resolve)(cwd, options.output);
-                    if (!(0, fs_1.existsSync)((0, path_1.dirname)(output))) {
-                        (0, fs_1.mkdirSync)((0, path_1.dirname)(output), { recursive: true });
-                    }
-                    (0, fs_1.writeFileSync)(output, sprites);
-                    removeTmpDir();
-                    return [2 /*return*/, { success: true }];
-                case 4:
                     _a = _b.sent();
-                    removeTmpDir();
                     return [2 /*return*/, { success: false }];
-                case 5: return [2 /*return*/];
+                case 4: return [2 /*return*/, { success: true }];
             }
         });
     });

@@ -3,14 +3,26 @@
   "type": "object",
   "cli": "nx",
   "properties": {
-    "input": {
-      "type": "string",
-      "description": "Path to the file containing the exported icons."
-    },
-    "output": {
-      "type": "string",
-      "description": "The path where the sprite file is created."
+    "iconSets": {
+      "type": "array",
+      "description": "Array of icon entries objects",
+      "items": {
+        "type": "object",
+        "description": "Icon entries object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Path to the file containing the exported icons."
+          },
+          "output": {
+            "type": "string",
+            "description": "Path to the file where sprite is created."
+          }
+        },
+        "additionalProperties": false,
+        "required": ["input", "output"]
+      }
     }
   },
-  "required": ["input", "output"]
+  "required": ["iconSets"]
 }

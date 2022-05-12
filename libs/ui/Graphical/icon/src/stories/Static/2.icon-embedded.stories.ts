@@ -1,94 +1,19 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.storybook/constant';
-import '../../index';
-import {
-  actions,
-  add,
-  administration,
-  america,
-  back,
-  calendar,
-  catalog,
-  close,
-  comment,
-  content,
-  copy,
-  create,
-  customer,
-  darkMode,
-  dashboard,
-  dashboards,
-  desktop,
-  disconnect,
-  drag,
-  dropdown,
-  dropUp,
-  edit,
-  error,
-  fastForward,
-  file,
-  filter,
-  filters,
-  france,
-  front,
-  germany,
-  goldPartner,
-  help,
-  icon,
-  Icon,
-  imports,
-  info,
-  inputError,
-  inputStepper,
-  integration,
-  invisible,
-  lightMode,
-  link,
-  loader,
-  locker,
-  maintenance,
-  mark,
-  marketplace,
-  maximize,
-  menu,
-  merchandising,
-  merchant,
-  merchantProfile,
-  minimize,
-  minus,
-  mobile,
-  navigationArrow,
-  orders,
-  placeholder,
-  planet,
-  popular,
-  products,
-  profile,
-  ratings,
-  remove,
-  reset,
-  rocket,
-  sales,
-  search,
-  settings,
-  silverPartner,
-  sort,
-  spain,
-  star,
-  success,
-  tablet,
-  textAreaResizable,
-  trash,
-  users,
-  visible,
-  warning,
-} from '../../index';
+import * as filter from '../../icons/filter.icons';
+import * as language from '../../icons/language.icons';
+import * as misc from '../../icons/misc.icons';
+import * as navigation from '../../icons/navigation.icons';
+import * as navigationv2 from '../../icons/navigationv2.icons';
+import * as notification from '../../icons/notification.icons';
+import * as view from '../../icons/view.icons';
+import { Icon, icon } from '../../index';
 
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  const renderIconSet = (title: string, set: Icon[]): TemplateResult => {
+  const renderIconSet = <T = Icon[]>(title: string, set: T): TemplateResult => {
     return html` <h3>${title}</h3>
       <div class="icon-set">
         ${Object.values(set).map(
@@ -98,78 +23,11 @@ const Template: Story<unknown> = (): TemplateResult => {
   };
 
   return html`
-    ${renderIconSet('Navigation v2', [
-      sales,
-      dashboard,
-      catalog,
-      customer,
-      maintenance,
-      merchantProfile,
-      administration,
-      users,
-      marketplace,
-      merchandising,
-      content,
-      ratings,
-      rocket,
-    ])}
-    ${renderIconSet('Navigation', [
-      dashboards,
-      orders,
-      merchant,
-      products,
-      darkMode,
-      lightMode,
-      profile,
-    ])}
-    ${renderIconSet('Icons', [
-      close,
-      filters,
-      search,
-      settings,
-      sort,
-      calendar,
-      imports,
-      reset,
-      copy,
-      maximize,
-      minimize,
-      actions,
-      drag,
-      inputStepper,
-      navigationArrow,
-      inputError,
-      mark,
-      comment,
-      remove,
-      minus,
-      add,
-      fastForward,
-      create,
-      edit,
-      trash,
-      file,
-      visible,
-      invisible,
-      star,
-      integration,
-      placeholder,
-      dropdown,
-      dropUp,
-      back,
-      front,
-      loader,
-      disconnect,
-      locker,
-      textAreaResizable,
-      link,
-      help,
-      menu,
-    ])}
-    ${renderIconSet('View', [desktop, tablet, mobile])}
-    ${renderIconSet('Notifications', [success, warning, error, info])}
-    ${renderIconSet('Languages', [planet, germany, america, spain, france])}
-    ${renderIconSet('Filter', [filter, popular, goldPartner, silverPartner])}
+    ${renderIconSet('Navigation v2', navigationv2)}
+    ${renderIconSet('Navigation', navigation)} ${renderIconSet('Icons', misc)}
+    ${renderIconSet('View', view)}
+    ${renderIconSet('Notifications', notification)}
+    ${renderIconSet('Languages', language)} ${renderIconSet('Filter', filter)}
 
     <style>
       div.icon-set {

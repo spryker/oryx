@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": "../../../../",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "plugins": [
+      {
+        "transform": "./tools/executors/generate-icon-sprites/transformer/index.ts"
+      }
+    ]
+  },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true,
+    "compiler": "ttypescript"
+  }
+}

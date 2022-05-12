@@ -15,6 +15,14 @@
       "default": "./actions/icon-button/index.js",
       "types": "./actions/icon-button/index.d.ts"
     },
+    "icon": {
+      "default": "./Graphical/icon/index.js",
+      "types": "./Graphical/icon/index.d.ts"
+    },
+    "icons": {
+      "default": "./Graphical/icon/src/icons/index.js",
+      "types": "./Graphical/icon/src/icons/index.d.ts"
+    },
     "radio": {
       "default": "./form/radio/index.js",
       "types": "./form/radio/index.d.ts"
@@ -22,10 +30,6 @@
     "radio-list": {
       "default": "./form/radio-list/index.js",
       "types": "./form/radio-list/index.d.ts"
-    },
-    "icon": {
-      "default": "./Graphical/icon/index.js",
-      "types": "./Graphical/icon/index.d.ts"
     },
     "rating": {
       "default": "./Graphical/rating/index.js",

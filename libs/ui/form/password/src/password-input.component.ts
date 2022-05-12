@@ -8,7 +8,7 @@ import {
   FormControlOptions,
   inputStyles,
 } from '../../../form/input';
-import { invisible, visible } from '../../../Graphical/icon';
+import { invisible, visible } from '../../../Graphical/icon/src/icons';
 import { getControl } from '../../utilities/getControl';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { passwordInputStyles } from './password-input.styles';
