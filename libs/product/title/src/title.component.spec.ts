@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { createInjector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing/a11y';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
@@ -12,9 +12,12 @@ describe('Title', () => {
   beforeEach(async () => {
     createInjector({
       providers: MOCK_PRODUCT_PROVIDERS,
-      override: true,
     });
     element = await fixture(html`<product-title code="1"></product-title>`);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('is defined', () => {

@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
-import { createInjector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
 import {
@@ -52,7 +52,6 @@ describe('Experience Composition', () => {
 
   beforeEach(async () => {
     createInjector({
-      override: true,
       providers: [
         {
           provide: ExperienceService,
@@ -72,6 +71,10 @@ describe('Experience Composition', () => {
     element = await fixture(
       html`<experience-composition key="1"></experience-composition>`
     );
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('is defined', () => {

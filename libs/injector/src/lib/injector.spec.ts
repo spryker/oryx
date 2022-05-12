@@ -1,10 +1,17 @@
 import { inject } from './inject';
 import { Injector } from './injector';
 
+const mockDestroy = vi.fn();
+
 class MockImplementation {
   dependency = inject('dependency');
 }
 class DependencyImplementation {}
+class ServiceWithDestroy {
+  onDestroy() {
+    mockDestroy();
+  }
+}
 
 describe('Injector', () => {
   let injector: Injector;
@@ -22,6 +29,10 @@ describe('Injector', () => {
     injector.provide({
       provide: 'myValue',
       useValue: 'test',
+    });
+    injector.provide({
+      provide: 'destroyService',
+      useClass: ServiceWithDestroy,
     });
   });
 
@@ -48,6 +59,13 @@ describe('Injector', () => {
   it('should provide value', () => {
     const service = injector.inject('myValue');
     expect(service).toEqual('test');
+  });
+
+  it('should invoke onDestroy method of providers instance', () => {
+    injector.inject('destroyService');
+    injector.destroy();
+
+    expect(mockDestroy).toHaveBeenCalled();
   });
 
   describe('factory provider', () => {

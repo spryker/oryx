@@ -1,5 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { createInjector, resolve } from '@spryker-oryx/injector';
+import {
+  createInjector,
+  destroyInjector,
+  resolve,
+} from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { finalize } from 'rxjs';
@@ -40,7 +44,6 @@ describe('ContextService', () => {
 
   beforeEach(async () => {
     createInjector({
-      override: true,
       providers: [
         {
           provide: ContextService,
@@ -48,6 +51,10 @@ describe('ContextService', () => {
         },
       ],
     });
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   const testChildContext = (shadow = false): TestChildContext => {

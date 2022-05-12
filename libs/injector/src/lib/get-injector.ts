@@ -87,6 +87,25 @@ export function createInjector(options: {
 }
 
 /**
+ * Invoke destroy method of an injector and remove it from the registry
+ *
+ * @param context - Injector context.
+ */
+
+export function destroyInjector(
+  context: Element | InjectorContext | any = defaultContext()
+): void {
+  const registry = getRegistry();
+
+  if (!registry.has(context)) {
+    return;
+  }
+
+  registry.get(context)?.destroy();
+  registry.delete(context);
+}
+
+/**
  * Enable sharing injector between different copies of the injector code.
  *
  * Useful for cases, where injector code is bundled statically instead of an

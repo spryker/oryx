@@ -1,4 +1,4 @@
-import { createInjector } from './get-injector';
+import { createInjector, destroyInjector } from './get-injector';
 import { resolve } from './resolve';
 
 describe('resolve', () => {
@@ -7,13 +7,16 @@ describe('resolve', () => {
   beforeEach(() => {
     createInjector({
       providers: [{ provide: 'a', useValue: 'b' }],
-      override: true,
     });
     createInjector({
       context: context,
       providers: [{ provide: 'a', useValue: 'z' }],
-      override: true,
     });
+  });
+
+  afterEach(() => {
+    destroyInjector();
+    destroyInjector(context);
   });
 
   it('should resolve token', () => {

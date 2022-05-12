@@ -1,5 +1,5 @@
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { createInjector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import './storefront.component';
 import { StorefrontComponent } from './storefront.component';
 
@@ -12,10 +12,13 @@ describe('InputComponent', () => {
           useClass: DefaultContextService,
         },
       ],
-      override: true,
     });
 
     document.body.innerHTML = '<storefront-component></storefront-component>';
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   const getElement = (): StorefrontComponent => {

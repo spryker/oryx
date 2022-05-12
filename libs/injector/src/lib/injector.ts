@@ -85,6 +85,12 @@ export class Injector {
     return this.getInstance(token);
   }
 
+  destroy(): void {
+    this.providers.forEach(({ instance }) => {
+      instance?.onDestroy?.();
+    });
+  }
+
   private getInstance(token: any): any {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const providerInstance = this.providers.get(token)!;
