@@ -19,6 +19,14 @@
       "default": "./Graphical/icon/index.js",
       "types": "./Graphical/icon/index.d.ts"
     },
+    "checkbox": {
+      "default": "./form/checkbox/index.js",
+      "types": "./form/checkbox/index.d.ts"
+    },
+    "checkbox-list": {
+      "default": "./form/checkbox-list/index.js",
+      "types": "./form/checkbox-list/index.d.ts"
+    },
     "icons": {
       "default": "./Graphical/icon/src/icons/index.js",
       "types": "./Graphical/icon/src/icons/index.d.ts"
