@@ -17,7 +17,6 @@ export const styles = css`
   }
 
   .preview-container {
-    position: relative;
     width: 100%;
     height: var(--preview-height, 300px);
     overflow-x: scroll;

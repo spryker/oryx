@@ -1,8 +1,8 @@
 import { CORE_PROVIDERS } from '@spryker-oryx/core';
 import {
   COMPONENT_MAPPING,
-  ExperiencePreviewService,
   ExperienceService,
+  PreviewExperienceService,
   RouterService,
   STATIC_PROVIDERS,
 } from '@spryker-oryx/experience';
@@ -23,7 +23,7 @@ const previewModeProviders = (): Array<ClassProvider> => {
     return [
       {
         provide: ExperienceService,
-        useClass: ExperiencePreviewService,
+        useClass: PreviewExperienceService,
       },
     ];
   }

@@ -1,5 +1,9 @@
-import { ExperienceComposition } from './experience-composition';
-export * from './experience-composition';
+import { ExperienceCompositionComponent } from './experience-composition.component';
+export * from './experience-composition-preview.component';
+export * from './experience-composition.component';
 
 customElements.get('experience-composition') ||
-  customElements.define('experience-composition', ExperienceComposition);
+  customElements.define(
+    'experience-composition',
+    ExperienceCompositionComponent
+  );

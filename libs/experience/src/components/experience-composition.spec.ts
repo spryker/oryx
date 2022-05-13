@@ -9,7 +9,7 @@ import {
   ExperienceService,
 } from '../services';
 import './';
-import { ExperienceComposition } from './experience-composition';
+import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-banner' },
@@ -48,7 +48,7 @@ class MockComponentsRegistryService
 }
 
 describe('Experience Composition', () => {
-  let element: ExperienceComposition;
+  let element: ExperienceCompositionComponent;
 
   beforeEach(async () => {
     createInjector({
@@ -79,7 +79,7 @@ describe('Experience Composition', () => {
 
   it('is defined', () => {
     const el = document.createElement('experience-composition');
-    expect(el).toBeInstanceOf(ExperienceComposition);
+    expect(el).toBeInstanceOf(ExperienceCompositionComponent);
   });
 
   it('should render oryx-banner', () => {

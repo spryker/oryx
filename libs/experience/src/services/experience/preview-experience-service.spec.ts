@@ -7,10 +7,10 @@ import { CONTENT_BACKEND_URL } from '../experience-tokens';
 import { RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
 import {
-  ExperiencePreviewService,
   POST_MESSAGE_TYPE,
+  PreviewExperienceService,
   REQUEST_MESSAGE_TYPE,
-} from './experience-preview.service';
+} from './preview-experience.service';
 
 class MockRouterService implements Partial<RouterService> {
   go = () => ({});
@@ -29,7 +29,7 @@ class MockRouterServiceActive implements Partial<RouterService> {
 const providers = [
   {
     provide: 'ExperiencePreviewService',
-    useClass: ExperiencePreviewService,
+    useClass: PreviewExperienceService,
   },
   {
     provide: CONTENT_BACKEND_URL,
@@ -46,7 +46,7 @@ const providers = [
 ];
 
 describe('ExperiencePreviewService', () => {
-  let service: ExperiencePreviewService;
+  let service: PreviewExperienceService;
 
   beforeEach(() => {
     const testInjector = new Injector([
@@ -61,7 +61,7 @@ describe('ExperiencePreviewService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(ExperiencePreviewService);
+    expect(service).toBeInstanceOf(PreviewExperienceService);
   });
 
   it('should get route data', (done) => {

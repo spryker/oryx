@@ -15,7 +15,7 @@ import { Component } from './models';
 export const REQUEST_MESSAGE_TYPE = 'vsf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
-export class ExperiencePreviewService extends DefaultExperienceService {
+export class PreviewExperienceService extends DefaultExperienceService {
   constructor(protected routerService = inject(RouterService)) {
     super();
 

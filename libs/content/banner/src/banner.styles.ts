@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    display: block;
+    display: flex;
     position: relative;
     width: 100%;
     overflow: hidden;

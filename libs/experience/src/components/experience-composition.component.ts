@@ -11,7 +11,7 @@ import {
   ExperienceService,
 } from '../services';
 
-export class ExperienceComposition extends LitElement {
+export class ExperienceCompositionComponent extends LitElement {
   @state()
   protected components?: Array<Component>;
 

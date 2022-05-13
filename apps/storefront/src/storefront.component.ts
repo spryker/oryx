@@ -30,14 +30,14 @@ export class StorefrontComponent extends LitElement {
   }
 
   override render(): TemplateResult {
-    return html`<div>
+    return html`
+      <experience-composition
+        key="${asyncValue(this.route$)}"
+      ></experience-composition>
       <div class="product-preview-wrapper">
         <product-image code="121"></product-image>
         <product-title code="121"></product-title>
       </div>
-      <experience-composition
-        key="${asyncValue(this.route$)}"
-      ></experience-composition>
-    </div> `;
+    `;
   }
 }
