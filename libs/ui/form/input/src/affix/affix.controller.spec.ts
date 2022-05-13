@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../../a11y';
@@ -37,8 +37,8 @@ describe('AffixController', () => {
 
       it('should render the icon in the prefix slot', () => {
         expect(
-          element?.querySelector('slot[name=prefix] > oryx-icon')
-        ).toBeDefined();
+          getShadowElementBySelector(element, 'slot[name=prefix] > oryx-icon')
+        ).not.toBeNull();
       });
     });
 
@@ -52,7 +52,7 @@ describe('AffixController', () => {
       });
 
       it('should not have .has-prefix-content class', () => {
-        expect(element.classList.contains('has-prefix-content')).toBeFalsy();
+        expect(element.classList.contains('has-prefix-content')).toBe(false);
       });
     });
 
@@ -187,15 +187,14 @@ describe('AffixController', () => {
           html`<fake-affix suffixIcon="search"></fake-affix>`
         );
       });
-
       it('passes the a11y audit', async () => {
         await expect(element).shadowDom.to.be.accessible(a11yConfig);
       });
 
       it('should render the icon in the suffix slot', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=suffix] > oryx-icon')
-        ).toBeDefined();
+          getShadowElementBySelector(element, 'slot[name=suffix] > oryx-icon')
+        ).not.toBeNull();
       });
     });
 
@@ -209,7 +208,7 @@ describe('AffixController', () => {
       });
 
       it('should not have .has-suffix-content class', () => {
-        expect(element.classList.contains('has-suffix-content')).toBeFalsy();
+        expect(element.classList.contains('has-suffix-content')).toBe(false);
       });
     });
 
@@ -256,7 +255,6 @@ describe('AffixController', () => {
               >`
             );
           });
-
           it('passes the a11y audit', async () => {
             await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
@@ -278,7 +276,6 @@ describe('AffixController', () => {
             ></fake-affix>`
           );
         });
-
         it('passes the a11y audit', async () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
@@ -328,7 +325,6 @@ describe('AffixController', () => {
             html`<fake-affix><div slot="suffix">test</div></fake-affix>`
           );
         });
-
         it('passes the a11y audit', async () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });

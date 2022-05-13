@@ -70,9 +70,9 @@ describe('RegistryController', () => {
     it('should have unique keys', async () => {
       await addNotification();
       await addNotification();
-      expect(element.registry[0]?.key).toBeDefined();
-      expect(element.registry[1]?.key).toBeDefined();
-      expect(element.registry[0]?.key).not.toEqual(element.registry[1]?.key);
+      expect(element.registry[0]?.key).not.toBeNull();
+      expect(element.registry[1]?.key).not.toBeNull();
+      expect(element.registry[0]?.key).not.toBe(element.registry[1]?.key);
     });
   });
 
@@ -89,18 +89,18 @@ describe('RegistryController', () => {
     it('should be mounted and visible after opening', async () => {
       await addNotification();
       vi.advanceTimersByTime(0);
-      expect(element.registry[0]?._mounted).toBeTruthy();
-      expect(element.registry[0]?.visible).toBeTruthy();
+      expect(element.registry[0]?._mounted).toBe(true);
+      expect(element.registry[0]?.visible).toBe(true);
     });
 
     it('should auto-close after delay', async () => {
       await addNotification({ autoCloseTime });
 
       vi.advanceTimersByTime(0);
-      expect(element.registry[0]?.visible).toBeTruthy();
+      expect(element.registry[0]?.visible).toBe(true);
 
       vi.advanceTimersByTime(autoCloseTime);
-      expect(element.registry[0]?.visible).toBeFalsy();
+      expect(element.registry[0]?.visible).toBe(false);
 
       element.renderRoot.children[0]?.dispatchEvent(new Event('transitionend'));
 
@@ -115,12 +115,12 @@ describe('RegistryController', () => {
       await updated();
       vi.advanceTimersByTime(0);
 
-      expect(element.registry[0]?.visible).toBeTruthy();
-      expect(element.registry[1]?.visible).toBeTruthy();
+      expect(element.registry[0]?.visible).toBe(true);
+      expect(element.registry[1]?.visible).toBe(true);
 
       vi.advanceTimersByTime(autoCloseTime + 1);
-      expect(element.registry[0]?.visible).toBeFalsy();
-      expect(element.registry[1]?.visible).toBeTruthy();
+      expect(element.registry[0]?.visible).toBe(false);
+      expect(element.registry[1]?.visible).toBe(true);
     });
   });
 
@@ -141,7 +141,7 @@ describe('RegistryController', () => {
       element.renderRoot.children[0]?.dispatchEvent(new Event('mouseenter'));
 
       vi.advanceTimersByTime(autoCloseTime + 1);
-      expect(element.registry[0]?.visible).toBeTruthy();
+      expect(element.registry[0]?.visible).toBe(true);
     });
   });
 });

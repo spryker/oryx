@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import './index';
 import { NotificationComponent } from './notification.component';
 
@@ -7,12 +7,11 @@ describe('NotificationComponent', () => {
   let element: NotificationComponent;
 
   const getButton = (selector: string): HTMLElement | null | undefined =>
-    element.shadowRoot?.querySelector(selector);
+    getShadowElementBySelector(element, selector);
 
   describe('closable', () => {
     let button: HTMLElement | null | undefined;
     const callback = vi.fn();
-
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-notification closable @oryx.close=${callback}></oryx-notification>
@@ -21,7 +20,7 @@ describe('NotificationComponent', () => {
     });
 
     it('should render the close button', async () => {
-      expect(button).toBeDefined();
+      expect(button).not.toBeNull();
     });
 
     it('should dispatch the event when click the close button', async () => {
@@ -32,7 +31,6 @@ describe('NotificationComponent', () => {
 
   describe('translation', () => {
     const closeButtonAriaLabel = 'test';
-
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-notification
@@ -41,13 +39,10 @@ describe('NotificationComponent', () => {
         ></oryx-notification>
       `);
     });
-
     it('should have correct translated aria-labels', async () => {
       const closeBtn = getButton('button');
 
-      expect(closeBtn?.getAttribute('aria-label')).toEqual(
-        closeButtonAriaLabel
-      );
+      expect(closeBtn?.getAttribute('aria-label')).toBe(closeButtonAriaLabel);
     });
   });
 });

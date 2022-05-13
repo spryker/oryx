@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
 import { NDSDrawerComponent } from './drawer.component';
 
@@ -49,7 +50,7 @@ describe('NDSDrawerComponent', () => {
   });
 
   const getButton = (selector = 'button'): HTMLElement | null | undefined =>
-    element.shadowRoot?.querySelector(selector);
+    getShadowElementBySelector(element, selector);
 
   describe('click event', () => {
     beforeEach(async () => {

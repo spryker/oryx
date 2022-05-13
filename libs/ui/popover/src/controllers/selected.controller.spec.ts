@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -10,7 +10,7 @@ class FakeComponent extends LitElement {
   controller = new SelectedController(this, 'li');
 
   render(): TemplateResult {
-    return html`<slot></slot>`;
+    return html` <slot></slot>`;
   }
 }
 
@@ -18,7 +18,7 @@ describe('SelectedController', () => {
   let element: FakeComponent;
 
   beforeEach(async () => {
-    element = await fixture(html`<fake-selected>
+    element = await fixture(html` <fake-selected>
       <ol>
         <li>first</li>
         <li>second</li>
@@ -37,8 +37,8 @@ describe('SelectedController', () => {
 
     it('should have selected attribute', () => {
       expect(
-        element.querySelector<HTMLElement>('[selected]')?.textContent?.trim()
-      ).toBe('first');
+        element.querySelector<HTMLElement>('[selected]')?.textContent
+      ).toContain('first');
     });
   });
 
@@ -49,8 +49,8 @@ describe('SelectedController', () => {
 
     it('should have selected attribute', () => {
       expect(
-        element.querySelector<HTMLElement>('[selected]')?.textContent?.trim()
-      ).toBe('second');
+        element.querySelector<HTMLElement>('[selected]')?.textContent
+      ).toContain('second');
     });
   });
 
@@ -85,6 +85,10 @@ describe('SelectedController', () => {
     beforeEach(() => {
       item = element.querySelectorAll<HTMLElement>('li')?.[0];
       item.dispatchEvent(new Event('mouseup', { bubbles: true }));
+    });
+
+    afterEach(() => {
+      item.removeAttribute('selected');
     });
 
     it('should select the item', () => {

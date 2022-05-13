@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { a11yConfig } from '../../../a11y';
 import { CheckboxComponent } from './checkbox.component';
 import './index';

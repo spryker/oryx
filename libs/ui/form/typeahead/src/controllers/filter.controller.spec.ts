@@ -50,7 +50,7 @@ describe('FilterController', () => {
         const filteredOptions = element.querySelectorAll<OptionComponent>(
           'oryx-option:not([hide])'
         );
-        expect(filteredOptions.length).toEqual(count);
+        expect(filteredOptions.length).toBe(count);
       });
     });
   };
@@ -164,8 +164,7 @@ describe('FilterController', () => {
         prepareMatchByValue('fix/');
 
         it('should dispatch a oryx.popover event without a selected option', async () => {
-          const selected = undefined;
-          expect(callback.mock.calls[0][0].detail.selected).toBe(selected);
+          expect(callback.mock.calls[0][0].detail.selected).toBeUndefined();
         });
       });
     });

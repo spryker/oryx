@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { a11yConfig } from '../../../a11y';
 import './index';
 import { RatingComponent } from './rating.component';
@@ -97,7 +97,7 @@ describe('RatingComponent', () => {
       });
 
       it('should not render the reviewCount', () => {
-        expect(element.renderRoot?.querySelector('.review-count')).toBe(null);
+        expect(element.renderRoot?.querySelector('.review-count')).toBeNull();
       });
     });
 
@@ -125,7 +125,7 @@ describe('RatingComponent', () => {
 
     it('should set the disabled flag for each input', () => {
       expect(
-        element.renderRoot?.querySelectorAll('input[disabled').length
+        element.renderRoot?.querySelectorAll('input[disabled]').length
       ).toBe(element.scale);
     });
 

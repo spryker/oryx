@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '../../a11y';
 import './index';
 import { NavigationComponent } from './navigation.component';
@@ -15,7 +15,6 @@ describe('NavigationComponent', () => {
   describe('collapse', () => {
     describe('when custom toggle button aria label is provided', () => {
       const toggleButtonAriaLabel = 'custom aria label';
-
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-navigation .toggleButtonAriaLabel=${toggleButtonAriaLabel}>
@@ -28,10 +27,8 @@ describe('NavigationComponent', () => {
       });
 
       it('should apply custom aria label', () => {
-        const button = element.shadowRoot?.querySelector('button');
-        expect(button?.getAttribute('aria-label')).toEqual(
-          toggleButtonAriaLabel
-        );
+        const button = getShadowElementBySelector(element, 'button');
+        expect(button?.getAttribute('aria-label')).toBe(toggleButtonAriaLabel);
       });
     });
 
@@ -45,10 +42,8 @@ describe('NavigationComponent', () => {
       });
 
       it('should apply default aria label', () => {
-        const button = element.shadowRoot?.querySelector('button');
-        expect(button?.getAttribute('aria-label')).toEqual(
-          'collapse navigation'
-        );
+        const button = getShadowElementBySelector(element, 'button');
+        expect(button?.getAttribute('aria-label')).toBe('collapse navigation');
       });
 
       it('should have a collapsed attribute', () => {
@@ -56,34 +51,37 @@ describe('NavigationComponent', () => {
       });
     });
 
-    describe('when the collapse button is clicked', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
-        element.shadowRoot?.querySelector('button')?.click();
+    describe('when the collapse button clicked', () => {
+      describe('when the collapse button is clicked first time', () => {
+        beforeEach(async () => {
+          element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
+          getShadowElementBySelector(element, 'button')?.click();
+        });
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
+        it('should not have a collapsed attribute', () => {
+          expect(element.hasAttribute('collapsed')).toBe(false);
+        });
       });
 
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
+      describe('when the collapse button is clicked second time', () => {
+        beforeEach(async () => {
+          element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
+          const button = getShadowElementBySelector(element, 'button');
+          button?.click();
+          button?.click();
+        });
 
-      it('should not have a collapsed attribute', () => {
-        expect(element.hasAttribute('collapsed')).toBe(false);
-      });
-    });
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
 
-    describe('when the collapse button is clicked twice', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
-        element.shadowRoot?.querySelector('button')?.click();
-        element.shadowRoot?.querySelector('button')?.click();
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should have a collapsed attribute', () => {
-        expect(element.hasAttribute('collapsed')).toBe(true);
+        it('should have a collapsed attribute', () => {
+          expect(element.hasAttribute('collapsed')).toBe(true);
+        });
       });
     });
   });

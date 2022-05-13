@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { PopoverComponent } from '.';
 import { a11yConfig } from '../../a11y';
 import './index';
@@ -19,7 +19,7 @@ describe('PopoverComponent', () => {
     });
 
     it('should render the light dom content', () => {
-      expect(element.querySelector('#light-dom')).toBeDefined();
+      expect(element.querySelector('#light-dom')).not.toBeNull();
     });
   });
 

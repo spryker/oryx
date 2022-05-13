@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { a11yConfig } from '../../../a11y';
 import './index';
 import { LinkComponent } from './link.component';
@@ -10,7 +10,7 @@ describe('LinkComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-link');
-    expect(el).to.be.instanceof(LinkComponent);
+    expect(el).toBeInstanceOf(LinkComponent);
   });
 
   describe('link type', () => {
@@ -44,7 +44,7 @@ describe('LinkComponent', () => {
     });
 
     it('should reflect the disabled attribute on the host element', () => {
-      expect(element?.getAttribute('disabled')).toBeDefined();
+      expect(element?.getAttribute('disabled')).not.toBeNull();
     });
 
     describe('but when it becomes not disabled', () => {
@@ -72,7 +72,7 @@ describe('LinkComponent', () => {
     });
 
     it('should render icon', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-icon')).toBeDefined();
+      expect(element?.shadowRoot?.querySelector('oryx-icon')).not.toBeNull();
     });
   });
 });

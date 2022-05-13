@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../../a11y';
 import { dispatchKeydown } from '../../../../utilities';

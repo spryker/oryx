@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '../../a11y';
 import './index';
 import { NavigationItemComponent } from './navigation-item.component';
@@ -26,8 +26,8 @@ describe('NavigationItemComponent', () => {
 
       it('should not render an oryx-icon element', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon')
-        ).toBeDefined();
+          getShadowElementBySelector(element, 'slot[name=icon] > oryx-icon')
+        ).toBeNull();
       });
     });
 
@@ -44,8 +44,8 @@ describe('NavigationItemComponent', () => {
 
       it('should render an oryx-icon element', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=icon] > oryx-icon')
-        ).toBeDefined();
+          getShadowElementBySelector(element, 'slot[name=icon] > oryx-icon')
+        ).not.toBeNull();
       });
     });
   });

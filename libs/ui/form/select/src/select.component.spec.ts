@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { SelectComponent } from '.';
 import { a11yConfig } from '../../../a11y';
 import {
@@ -21,19 +21,19 @@ describe('SelectComponent', () => {
       clearIconAppearance: ClearIconAppearance
     ): void => {
       it('should have default suffixIcon', () => {
-        expect(element.suffixIcon).toEqual(suffixIcon);
+        expect(element.suffixIcon).toBe(suffixIcon);
       });
 
       it('should have default searchIconPosition', () => {
-        expect(element.searchIconPosition).toEqual(searchIconPosition);
+        expect(element.searchIconPosition).toBe(searchIconPosition);
       });
 
       it('should have default clearIconPosition', () => {
-        expect(element.clearIconPosition).toEqual(clearIconPosition);
+        expect(element.clearIconPosition).toBe(clearIconPosition);
       });
 
       it('should have default clearIconAppearance', () => {
-        expect(element.clearIconAppearance).toEqual(clearIconAppearance);
+        expect(element.clearIconAppearance).toBe(clearIconAppearance);
       });
     };
 
@@ -143,6 +143,7 @@ describe('SelectComponent', () => {
         html`<oryx-select><input value="foo" /></oryx-select>`
       );
     });
+
     describe('when the focusin event is dispatched', () => {
       beforeEach(() => {
         getControl(element).dispatchEvent(

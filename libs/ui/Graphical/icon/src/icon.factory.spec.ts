@@ -14,11 +14,11 @@ describe('factory', () => {
     });
 
     it('should create an instance of icon component', () => {
-      expect(element instanceof IconComponent).toBeTruthy();
+      expect(element).toBeInstanceOf(IconComponent);
     });
 
     it('should have icon type', () => {
-      expect(element.getAttribute('type')).toEqual('close');
+      expect(element.getAttribute('type')).toBe('close');
     });
 
     it('should use the default icon sprite', () => {
@@ -27,7 +27,7 @@ describe('factory', () => {
           ?.querySelector('svg use')
           ?.getAttribute('href')
           ?.startsWith('assets/icons.svg')
-      ).toBeTruthy();
+      ).toBe(true);
     });
   });
 
@@ -37,7 +37,7 @@ describe('factory', () => {
     });
 
     it('should have a medium size', () => {
-      expect(element.getAttribute('size')).toEqual('medium');
+      expect(element.getAttribute('size')).toBe('medium');
     });
   });
 
@@ -54,7 +54,7 @@ describe('factory', () => {
           ?.querySelector('svg use')
           ?.getAttribute('href')
           ?.startsWith('/foo/bar.svg')
-      ).toBeTruthy();
+      ).toBe(true);
     });
   });
 
@@ -68,7 +68,7 @@ describe('factory', () => {
     });
 
     it('should render the custom SVG source', () => {
-      expect(element.querySelector('svg circle')).toBeDefined();
+      expect(element.querySelector('svg circle')).not.toBeNull();
     });
   });
 });

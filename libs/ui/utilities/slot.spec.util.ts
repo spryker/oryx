@@ -51,7 +51,7 @@ export const checkSlots = (slots: string[], template: CheckSlotsTemplate) => {
 
         const el = queryFirstAssigned(element, options) as HTMLElement;
 
-        expect(el?.textContent?.trim()).toEqual(slotText);
+        expect(el?.textContent?.trim()).toBe(slotText);
       });
     });
   });

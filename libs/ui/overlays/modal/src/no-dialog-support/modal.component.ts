@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit';
-import { ModalComponent } from '../../../modal';
+import { ModalComponent } from '../modal.component';
 import { NDSStyles } from './modal.styles';
 
 export class NDSModalComponent extends ModalComponent {

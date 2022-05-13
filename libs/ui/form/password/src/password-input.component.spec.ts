@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { TemplateResult } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { getControl } from '../../utilities/getControl';
@@ -24,7 +24,7 @@ describe('PasswordComponent', () => {
     });
 
     it('should have an input with password type', () => {
-      expect(getControl(element).getAttribute('type')).toEqual('password');
+      expect(getControl(element).getAttribute('type')).toBe('password');
     });
   });
 
@@ -43,7 +43,7 @@ describe('PasswordComponent', () => {
     const expectAfterEvent = (event: string): void => {
       it('should make the password visible', () => {
         toggle?.dispatchEvent(new MouseEvent(event, { bubbles: true }));
-        expect(element.querySelector('input')?.getAttribute('type')).toEqual(
+        expect(element.querySelector('input')?.getAttribute('type')).toBe(
           'text'
         );
       });
@@ -52,16 +52,19 @@ describe('PasswordComponent', () => {
     const expectNotAfterEvent = (event: string): void => {
       it('should not make the password visible', () => {
         toggle?.dispatchEvent(new MouseEvent(event, { bubbles: true }));
-        expect(
-          element.querySelector('input')?.getAttribute('type')
-        ).not.toEqual('text');
+        expect(element.querySelector('input')?.getAttribute('type')).not.toBe(
+          'text'
+        );
       });
     };
 
     describe('when the strategy is set to NONE', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.NONE));
-        toggle = element.shadowRoot?.querySelector('oryx-icon');
+        toggle = getShadowElementBySelector(
+          element,
+          'oryx-icon'
+        ) as HTMLButtonElement;
       });
 
       it('should pass the a11y audit', async () => {
@@ -69,11 +72,11 @@ describe('PasswordComponent', () => {
       });
 
       it('should not have a button to make the password visible', () => {
-        expect(toggle).toBeDefined();
+        expect(toggle).toBeNull();
       });
 
       it('should have an input with password type', () => {
-        expect(element.querySelector('input')?.getAttribute('type')).toEqual(
+        expect(element.querySelector('input')?.getAttribute('type')).toBe(
           'password'
         );
       });
@@ -82,7 +85,10 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to CLICK', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.CLICK));
-        toggle = element.shadowRoot?.querySelector('oryx-icon');
+        toggle = getShadowElementBySelector(
+          element,
+          'oryx-icon'
+        ) as HTMLButtonElement;
       });
 
       it('should pass the a11y audit', async () => {
@@ -105,9 +111,9 @@ describe('PasswordComponent', () => {
         it('should make the password visible', () => {
           toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
           toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          expect(
-            element.querySelector('input')?.getAttribute('type')
-          ).not.toEqual('text');
+          expect(element.querySelector('input')?.getAttribute('type')).not.toBe(
+            'text'
+          );
         });
       });
     });
@@ -115,10 +121,13 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to MOUSEDOWN', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.MOUSEDOWN));
-        toggle = element.shadowRoot?.querySelector('oryx-icon');
+        toggle = getShadowElementBySelector(
+          element,
+          'oryx-icon'
+        ) as HTMLButtonElement;
       });
       it('should have a button', () => {
-        expect(toggle).toBeDefined();
+        expect(toggle).not.toBeNull();
       });
 
       describe('and when the element is clicked', () => {
@@ -137,7 +146,10 @@ describe('PasswordComponent', () => {
     describe('when the strategy is set to MOUSEOVER', () => {
       beforeEach(async () => {
         element = await fixture(render(PasswordVisibilityStrategy.HOVER));
-        toggle = element.shadowRoot?.querySelector('oryx-icon');
+        toggle = getShadowElementBySelector(
+          element,
+          'oryx-icon'
+        ) as HTMLButtonElement;
       });
 
       it('should pass the a11y audit', async () => {
@@ -169,7 +181,10 @@ describe('PasswordComponent', () => {
               <input type="password" aria-label="password" />
             </oryx-password-input>`
           );
-          toggle = element.shadowRoot?.querySelector('oryx-icon');
+          toggle = getShadowElementBySelector(
+            element,
+            'oryx-icon'
+          ) as HTMLButtonElement;
           toggle?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         });
 
@@ -183,9 +198,9 @@ describe('PasswordComponent', () => {
           });
 
           it('should still show the password', () => {
-            expect(
-              element.querySelector('input')?.getAttribute('type')
-            ).toEqual('text');
+            expect(element.querySelector('input')?.getAttribute('type')).toBe(
+              'text'
+            );
           });
         });
 
@@ -195,9 +210,9 @@ describe('PasswordComponent', () => {
           });
 
           it('should no longer show the password', () => {
-            expect(
-              element.querySelector('input')?.getAttribute('type')
-            ).toEqual('password');
+            expect(element.querySelector('input')?.getAttribute('type')).toBe(
+              'password'
+            );
           });
         });
       });

@@ -1,21 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '../../../option/';
 import { getControl } from '../../utilities/getControl';
 import { SelectController } from './select.controller';
 import { SelectOptions } from './select.model';
-
-/** innnerText is not implemented in jsdom */
-Object.defineProperty(Element.prototype, 'innerText', {
-  set: function (value: unknown) {
-    this.textContent = value;
-  },
-  get: function () {
-    return this?.textContent;
-  },
-});
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements SelectOptions {
@@ -70,7 +60,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the first value', () => {
-          expect(getControl(element).value).toEqual('first');
+          expect(getControl(element).value).toBe('first');
         });
       });
 
@@ -85,7 +75,7 @@ describe('SelectController', () => {
           </fake-typeahead>`);
         });
         it('should default to the selected value', () => {
-          expect(getControl(element).value).toEqual('second');
+          expect(getControl(element).value).toBe('second');
         });
       });
     });
@@ -104,10 +94,10 @@ describe('SelectController', () => {
         it('should have an empty (first) option', () => {
           expect(
             (getControl(element) as HTMLSelectElement)?.options?.[0].value
-          ).toEqual('');
+          ).toBe('');
         });
         it('should have a select with no value', () => {
-          expect(getControl(element).value).toEqual('');
+          expect(getControl(element).value).toBe('');
         });
       });
 
@@ -124,10 +114,10 @@ describe('SelectController', () => {
         it('should have an empty (first) option', () => {
           const firstOption = (getControl(element) as HTMLSelectElement)
             ?.options?.[0];
-          expect(firstOption.value).toEqual('');
+          expect(firstOption.value).toBe('');
         });
         it('should have a select with the selected value', () => {
-          expect(getControl(element).value).toEqual('second');
+          expect(getControl(element).value).toBe('second');
         });
       });
     });

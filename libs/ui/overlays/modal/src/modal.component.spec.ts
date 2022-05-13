@@ -1,24 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { checkSlots } from '../../../utilities/slot.spec.util';
 import { ModalComponent } from './modal.component';
-
-/* eslint-disable */
-// @ts-ignore
-if (window.HTMLDialogElement) {
-  // JsDom doesn't have implementation for open/close dialog
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.showModal = function (): void {
-    this.setAttribute('open', '');
-  };
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.close = function (): void {
-    this.removeAttribute('open');
-  };
-}
-/* eslint-enable */
 
 customElements.get('oryx-modal') ||
   customElements.define('oryx-modal', ModalComponent);
@@ -65,7 +50,7 @@ describe('Modal', () => {
           bubbles: true,
           cancelable: true,
         });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(event);
       });
 
       it('should close dialog', () => {
@@ -78,7 +63,7 @@ describe('Modal', () => {
         const event = new Event('click', {
           bubbles: true,
         });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(event);
       });
 
       it('should not close', () => {
@@ -141,7 +126,7 @@ describe('Modal', () => {
         const event = new Event('click', {
           bubbles: true,
         });
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(event);
       });
 
       it('should pass the a11y audit', async () => {
@@ -173,7 +158,7 @@ describe('Modal', () => {
           cancelable: true,
         });
 
-        element.shadowRoot?.querySelector('dialog')?.dispatchEvent(event);
+        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(event);
       });
 
       it('should pass the a11y audit', async () => {
@@ -212,7 +197,7 @@ describe('Modal', () => {
       const headerSlot = element?.shadowRoot?.querySelector(
         'oryx-card slot[name=header]'
       );
-      expect(headerSlot?.textContent?.trim()).toEqual(headerText);
+      expect(headerSlot?.textContent).toContain(headerText);
     });
   });
 

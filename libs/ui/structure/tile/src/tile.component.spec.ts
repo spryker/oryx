@@ -19,7 +19,7 @@ describe('TileComponent', () => {
     });
 
     it('should be correct initialisation', () => {
-      expect(queryFirstAssigned<HTMLHeadingElement>(element)?.id).toEqual(
+      expect(queryFirstAssigned<HTMLHeadingElement>(element)?.id).toBe(
         'header'
       );
     });

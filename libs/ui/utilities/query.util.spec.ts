@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../a11y';
@@ -49,7 +49,7 @@ describe('QueryUtil', () => {
             selector: 'input',
             flatten: true,
           });
-          expect(el?.length).toEqual(0);
+          expect(el?.length).toBe(0);
         });
       });
     });
@@ -69,7 +69,7 @@ describe('QueryUtil', () => {
             selector: 'input',
             flatten: true,
           });
-          expect(el?.length).toEqual(1);
+          expect(el?.length).toBe(1);
         });
 
         it('should find all shadow DOM', () => {
@@ -77,14 +77,14 @@ describe('QueryUtil', () => {
             selector: 'input',
             flatten: true,
           });
-          expect(el?.id).toEqual('shadow');
+          expect(el?.id).toBe('shadow');
         });
 
         it('should not find any shadow DOM', () => {
           const el = queryAssignedElements(element, {
             selector: 'span',
           });
-          expect(el?.length).toEqual(0);
+          expect(el?.length).toBe(0);
         });
 
         it('should not find element from shadow DOM', () => {
@@ -98,7 +98,7 @@ describe('QueryUtil', () => {
       describe('named slot', () => {
         it('should not find any elements for first slot', () => {
           const el = queryAssignedElements(element, { slot: 'first' });
-          expect(el.length).toEqual(0);
+          expect(el.length).toBe(0);
         });
 
         it('should not find shadow elements for second slot', () => {
@@ -106,7 +106,7 @@ describe('QueryUtil', () => {
             slot: 'second',
             flatten: true,
           });
-          expect(el.length).toEqual(2);
+          expect(el.length).toBe(2);
         });
       });
 
@@ -125,14 +125,14 @@ describe('QueryUtil', () => {
 
         it('should not find any assigned nodes', () => {
           const el = queryAssignedElements(element, {});
-          expect(el.length).toEqual(0);
+          expect(el.length).toBe(0);
         });
 
         it('should not find specific assigned nodes', () => {
           const el = queryAssignedElements(element, {
             selector: 'input',
           });
-          expect(el.length).toEqual(0);
+          expect(el.length).toBe(0);
         });
       });
     });

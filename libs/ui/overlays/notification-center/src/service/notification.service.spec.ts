@@ -22,12 +22,12 @@ describe('NotificationService', () => {
 
     it('should create if not found', async () => {
       const center = service.getCenter('#parent1');
-      expect(center).toBeDefined();
+      expect(center).not.toBeNull();
     });
 
     it('should create with position', async () => {
       const center = service.getCenter('#parent2', Positions.BOTTOM_END);
-      expect(center?.getAttribute('position')).toEqual(Positions.BOTTOM_END);
+      expect(center?.getAttribute('position')).toBe(Positions.BOTTOM_END);
     });
 
     it('should throw error if parent not found', () => {

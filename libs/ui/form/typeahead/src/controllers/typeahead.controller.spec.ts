@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstanceFn } from 'vitest';
@@ -32,10 +32,6 @@ class FakeComponent extends LitElement implements TypeaheadOptions {
 describe('TypeaheadController', () => {
   let element: FakeComponent;
 
-  beforeEach(async () => {
-    element = await fixture(html`<fake-typeahead></fake-typeahead>`);
-  });
-
   describe('slot', () => {
     describe('when oryx-option elements without a slot are provided', () => {
       beforeEach(async () => {
@@ -56,7 +52,7 @@ describe('TypeaheadController', () => {
       it('should add the option slot to it', () => {
         expect(
           element.querySelectorAll('oryx-option[slot=option]').length
-        ).toEqual(3);
+        ).toBe(3);
       });
     });
 
@@ -79,7 +75,7 @@ describe('TypeaheadController', () => {
       it('should add the option slot to it', () => {
         expect(
           element.querySelectorAll('oryx-option[slot=option]').length
-        ).toEqual(0);
+        ).toBe(0);
       });
     });
   });
@@ -97,7 +93,7 @@ describe('TypeaheadController', () => {
     });
 
     it('should dispatch a "oryx.typeahead" event', () => {
-      expect(result.query).toEqual('foo');
+      expect(result.query).toBe('foo');
     });
   });
 
@@ -110,7 +106,8 @@ describe('TypeaheadController', () => {
     });
 
     const dispatchSelectEvent = (): void => {
-      const selected = element.shadowRoot?.querySelector(
+      const selected = getShadowElementBySelector(
+        element,
         'oryx-option'
       ) as HTMLElement;
       const event = new CustomEvent<PopoverSelectEvent>('oryx.select', {

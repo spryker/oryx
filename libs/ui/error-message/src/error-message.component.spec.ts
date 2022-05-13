@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { a11yConfig } from '../../a11y';
 import { ErrorMessageComponent } from './error-message.component';
 import './index';
@@ -9,7 +9,7 @@ describe('ErrorMessageComponent', () => {
 
   it('is defined', () => {
     const el = document.createElement('oryx-error-message');
-    expect(el).to.be.instanceof(ErrorMessageComponent);
+    expect(el).toBeInstanceOf(ErrorMessageComponent);
   });
 
   describe('when a message is provided', () => {
@@ -27,7 +27,7 @@ describe('ErrorMessageComponent', () => {
     it('should render an error icon', () => {
       expect(
         element?.shadowRoot?.querySelector('oryx-icon[type=warning]')
-      ).toBeDefined();
+      ).not.toBeNull();
     });
 
     it('should render the message', () => {
@@ -35,7 +35,7 @@ describe('ErrorMessageComponent', () => {
         (item) => item.textContent === 'error validation message'
       );
 
-      expect(match).toBeTruthy();
+      expect(match).not.toBeNull();
     });
   });
 

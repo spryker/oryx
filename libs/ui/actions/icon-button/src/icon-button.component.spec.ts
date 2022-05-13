@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { queryFirstAssigned } from '../../../utilities';
 import { IconButtonComponent } from './icon-button.component';
 import './index';
@@ -24,6 +24,6 @@ describe('IconButtonComponent', () => {
       selector: 'button',
     }) as HTMLElement;
 
-    expect(el?.id).toEqual(id);
+    expect(el?.id).toBe(id);
   });
 });

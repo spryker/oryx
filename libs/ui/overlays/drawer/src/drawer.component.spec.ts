@@ -1,22 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
 import { DrawerComponent, TAG_NAME } from '.';
 import './index';
-
-/* eslint-disable */
-// @ts-ignore
-if (window.HTMLDialogElement) {
-  // JsDom doesn't have implementation for open/close dialog
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.show = function (): void {
-    this.setAttribute('open', 'open');
-  };
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.close = function (): void {
-    this.removeAttribute('open');
-  };
-}
-/* eslint-enable */
 
 customElements.get(TAG_NAME) ||
   customElements.define(TAG_NAME, DrawerComponent);
@@ -89,7 +76,7 @@ describe('DrawerComponent', () => {
   });
 
   const getButton = (selector = 'button'): HTMLElement | null | undefined =>
-    element.shadowRoot?.querySelector(selector);
+    getShadowElementBySelector(element, selector);
 
   describe('control buttons', () => {
     let button: HTMLElement | null | undefined;
@@ -118,7 +105,7 @@ describe('DrawerComponent', () => {
       });
 
       it('should exists', () => {
-        expect(button).toBeDefined();
+        expect(button).not.toBeNull();
       });
     });
 
@@ -131,7 +118,7 @@ describe('DrawerComponent', () => {
       });
 
       it('should exists', () => {
-        expect(button).toBeDefined();
+        expect(button).not.toBeNull();
       });
 
       it('should toggle the drawer width', async () => {
@@ -167,7 +154,7 @@ describe('DrawerComponent', () => {
     });
 
     it('should have correct translated aria-labels', async () => {
-      const nav = element.shadowRoot?.querySelector('nav');
+      const nav = getShadowElementBySelector(element, 'nav');
       const closeBtn = getButton('button:nth-child(1)');
       const resizeBtn = getButton('button:nth-child(2)');
 

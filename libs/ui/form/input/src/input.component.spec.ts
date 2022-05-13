@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { a11yConfig } from '../../../a11y';
 import './index';
 import { InputComponent } from './input.component';
@@ -22,7 +22,7 @@ describe('InputComponent', () => {
     });
 
     it('should render a wrapper element', () => {
-      expect(element.renderRoot.querySelector('div.control')).toBeDefined();
+      expect(element.renderRoot.querySelector('div.control')).not.toBeNull();
     });
 
     it('passes the a11y audit', async () => {

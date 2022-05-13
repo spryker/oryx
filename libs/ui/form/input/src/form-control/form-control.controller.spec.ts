@@ -1,5 +1,5 @@
 import { fixture, fixtureCleanup, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
@@ -172,7 +172,7 @@ describe('FormControlController', () => {
       });
 
       it('should reflect the disabled attribute on the host element', () => {
-        expect(element?.getAttribute('disabled')).toBeDefined();
+        expect(element?.getAttribute('disabled')).not.toBeNull();
       });
     });
   });

@@ -32,13 +32,13 @@ describe('Util', () => {
 
     describe('and no selector is used', () => {
       it('should return the input', () => {
-        expect(getControl(element).id).toEqual('first');
+        expect(getControl(element).id).toBe('first');
       });
     });
 
     describe('and the "input" selector is used', () => {
       it('should return the input', () => {
-        expect(getControl(element, 'input').id).toEqual('first');
+        expect(getControl(element, 'input').id).toBe('first');
       });
     });
 
@@ -61,13 +61,13 @@ describe('Util', () => {
 
     describe('and no selector is used', () => {
       it('should return the first input', () => {
-        expect(getControl(element).id).toEqual('first');
+        expect(getControl(element).id).toBe('first');
       });
     });
 
     describe('and the "input" selector is used', () => {
       it('should return the first input', () => {
-        expect(getControl(element, 'input').id).toEqual('first');
+        expect(getControl(element, 'input').id).toBe('first');
       });
     });
   });
@@ -82,16 +82,15 @@ describe('Util', () => {
         >`
       );
     });
-
     describe('and no selector is used', () => {
       it('should return the select', () => {
-        expect(getControl(element).id).toEqual('select');
+        expect(getControl(element).id).toBe('select');
       });
     });
 
     describe('and the "select" selector is used', () => {
       it('should return the select', () => {
-        expect(getControl(element, 'select').id).toEqual('select');
+        expect(getControl(element, 'select').id).toBe('select');
       });
     });
 

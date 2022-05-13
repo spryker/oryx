@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -31,9 +31,9 @@ describe('HighlightController', () => {
     const expectElementHighLight = (highlight: number): void => {
       items.forEach((item, index) => {
         if (index === highlight) {
-          expect(item.hasAttribute('highlight')).toBeTruthy();
+          expect(item.hasAttribute('highlight')).toBe(true);
         } else {
-          expect(item.hasAttribute('highlight')).toBeFalsy();
+          expect(item.hasAttribute('highlight')).toBe(false);
         }
       });
     };
@@ -59,10 +59,10 @@ describe('HighlightController', () => {
           element.controller.highlight = 10;
         });
         it('should no longer "highlight" the original highlighted item', () => {
-          expect(items[5].hasAttribute('highlight')).toBeFalsy();
+          expect(items[5].hasAttribute('highlight')).toBe(false);
         });
         it('should add the "highlight" attribute to the item', () => {
-          expect(items[10].hasAttribute('highlight')).toBeTruthy();
+          expect(items[10].hasAttribute('highlight')).toBe(true);
         });
       });
       describe('and the clear method is called', () => {
@@ -70,7 +70,7 @@ describe('HighlightController', () => {
           element.controller.clear();
         });
         it('should clear the selected item', () => {
-          expect(element.controller.highlight).toEqual(-1);
+          expect(element.controller.highlight).toBe(-1);
         });
       });
     });
@@ -84,7 +84,7 @@ describe('HighlightController', () => {
           element.controller.highlight = 5;
         });
         it('should add the "highlight" attribute to the item', () => {
-          expect(items[5].hasAttribute('highlight')).toBeTruthy();
+          expect(items[5].hasAttribute('highlight')).toBe(true);
         });
       });
 
@@ -95,7 +95,7 @@ describe('HighlightController', () => {
           );
         });
         it('should move the "highlight" to the next item', () => {
-          expect(items[0].hasAttribute('highlight')).toBeTruthy();
+          expect(items[0].hasAttribute('highlight')).toBe(true);
         });
       });
     });

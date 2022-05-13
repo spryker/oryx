@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html, LitElement } from 'lit';
 import { a11yConfig } from '../../a11y';
 import './index';
@@ -14,7 +14,7 @@ describe('CollapseToggleController', () => {
 
   const expectsCollapsed = (collapsed: boolean): void => {
     expect(element.hasAttribute('collapsed')).toBe(collapsed);
-    expect(element.style.getPropertyValue('--navigation-collapsed')).toEqual(
+    expect(element.style.getPropertyValue('--navigation-collapsed')).toBe(
       collapsed ? '1' : '0'
     );
   };

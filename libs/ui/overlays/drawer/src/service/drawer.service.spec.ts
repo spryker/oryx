@@ -1,22 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
+import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { DrawerComponent, DrawerService } from '..';
 import '../index';
 
-/* eslint-disable */
-// @ts-ignore
-if (window.HTMLDialogElement) {
-  // JsDom doesn't have implementation for open/close dialog
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.show = function (): void {
-    this.setAttribute('open', 'open');
-  };
-  // @ts-ignore
-  window.HTMLDialogElement.prototype.close = function (): void {
-    this.removeAttribute('open');
-  };
-}
-/* eslint-enable */
 class WrapperComponent extends LitElement {
   render(): TemplateResult {
     return html` <oryx-drawer id="nested-drawer"></oryx-drawer> `;
@@ -41,7 +28,7 @@ describe('DrawerService', () => {
 
       it('should find the drawer by selector', async () => {
         const drawer = service.get({ selector: '#drawer' });
-        expect(drawer).toBeDefined();
+        expect(drawer).not.toBeNull();
       });
 
       it('should throw error when not found', () => {
@@ -62,7 +49,7 @@ describe('DrawerService', () => {
 
       it('should find nested drawer inside other custom element', async () => {
         const drawer = service.get({ selector: '#drawer', parent: document });
-        expect(drawer).toBeDefined();
+        expect(drawer).not.toBeNull();
       });
     });
 
@@ -78,7 +65,7 @@ describe('DrawerService', () => {
           selector: '#nested-drawer',
           parent: element,
         });
-        expect(drawer).toBeDefined();
+        expect(drawer).not.toBeNull();
       });
     });
   });

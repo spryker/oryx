@@ -1,5 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { a11yConfig } from '../../../../a11y';
@@ -22,6 +22,7 @@ class ErrorComponent extends LitElement implements ErrorOptions {
 describe('ErrorController', () => {
   let element: ErrorComponent;
   let errorMessage: ErrorMessageComponent;
+
   describe('error', () => {
     describe('when an error message is provided', () => {
       beforeEach(async () => {

@@ -23,8 +23,8 @@ describe('Card', () => {
     it('should render title in default place', () => {
       const cardDefaultTitle = element?.shadowRoot?.querySelector('h5');
 
-      expect(cardDefaultTitle).toBeDefined();
-      expect(cardDefaultTitle?.textContent).toEqual(headerProp);
+      expect(cardDefaultTitle).not.toBeNull();
+      expect(cardDefaultTitle?.textContent).toContain(headerProp);
     });
   });
 
@@ -45,16 +45,17 @@ describe('Card', () => {
         slot: 'header',
       }) as HTMLElement;
 
-      expect(el.textContent).toEqual(titleText);
+      expect(el.textContent).toContain(titleText);
     });
   });
 
   describe('when content is provided', () => {
-    const contentText = 'Content text';
+    const textContent = 'Content text';
+
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-card>
-          <p>${contentText}</p>
+          <p>${textContent}</p>
         </oryx-card>
       `);
     });
@@ -64,7 +65,7 @@ describe('Card', () => {
         selector: 'p',
       }) as HTMLElement;
 
-      expect(el.textContent).toEqual(contentText);
+      expect(el.textContent).toContain(textContent);
     });
   });
 
@@ -84,7 +85,7 @@ describe('Card', () => {
         slot: 'footer',
       }) as HTMLElement;
 
-      expect(el.textContent).toEqual(footerText);
+      expect(el.textContent).toContain(footerText);
     });
   });
 });

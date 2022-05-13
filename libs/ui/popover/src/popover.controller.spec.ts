@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
@@ -13,16 +13,6 @@ import { a11yConfig } from '../../a11y';
 import { getControl } from '../../form/utilities/getControl';
 import '../../option';
 import { OptionComponent } from '../../option';
-
-/** innnerText is not implemented in jsdom */
-Object.defineProperty(Element.prototype, 'innerText', {
-  set: function (value: unknown) {
-    this.textContent = value;
-  },
-  get: function () {
-    return this?.textContent;
-  },
-});
 
 /** scrollIntoView is not implemented in jsdom */
 Element.prototype.scrollIntoView = vi.fn();
@@ -366,7 +356,7 @@ describe('PopoverController', () => {
       it('should select the option', () => {
         expect(
           element.querySelector<OptionComponent>('oryx-option[selected]')?.value
-        ).toEqual('bar');
+        ).toBe('bar');
       });
     });
 

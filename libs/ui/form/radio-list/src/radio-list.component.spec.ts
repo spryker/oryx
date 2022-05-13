@@ -42,7 +42,7 @@ describe('RadioListComponent', () => {
         const legend = element?.shadowRoot?.querySelector('legend');
 
         expect(legend?.getAttribute('hasHeading')).not.toBeNull();
-        expect(legend?.textContent?.trim()).toEqual('title');
+        expect(legend?.textContent).toContain('title');
       });
     });
 
@@ -68,7 +68,7 @@ describe('RadioListComponent', () => {
           ?.assignedElements() as Element[];
 
         expect(legend?.getAttribute('hasHeading')).not.toBeNull();
-        expect(heading?.textContent?.trim()).toEqual('title');
+        expect(heading?.textContent).toContain('title');
       });
     });
   });

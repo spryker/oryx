@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { Size } from '../../../utilities';
@@ -40,7 +40,7 @@ describe('Icon', () => {
 
     it('should render an SVG element', () => {
       const svg = element?.shadowRoot?.querySelector('svg');
-      expect(svg).toBeDefined();
+      expect(svg).not.toBeNull();
     });
 
     it('should reference an external SVG and include search ID', () => {

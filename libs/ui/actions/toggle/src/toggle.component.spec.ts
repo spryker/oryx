@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
 import { queryFirstAssigned } from '../../../utilities';
@@ -27,7 +27,7 @@ describe('Toggle component', () => {
         selector: 'input',
       }) as HTMLInputElement;
 
-      expect(input).to.exist;
+      expect(input).not.toBeNull();
     });
   });
 
@@ -41,9 +41,9 @@ describe('Toggle component', () => {
     });
 
     it('should render default slot input', () => {
-      const input = element.shadowRoot?.querySelector('input');
+      const input = getShadowElementBySelector(element, 'input');
 
-      expect(input).to.exist;
+      expect(input).not.toBeNull();
     });
   });
 });

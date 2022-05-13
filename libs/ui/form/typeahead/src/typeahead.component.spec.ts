@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '../../../a11y';
 import { queryAssignedElements } from '../../../utilities';
 import './index';
@@ -24,7 +24,7 @@ describe('TypeaheadComponent', () => {
         expect(
           queryAssignedElements(element, { slot: 'empty', flatten: true })
             .length
-        ).toEqual(0);
+        ).toBe(0);
       });
     });
 
@@ -44,8 +44,10 @@ describe('TypeaheadComponent', () => {
 
       it('should have an empty message', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
-            ?.textContent
+          getShadowElementBySelector(
+            element,
+            'slot[name=empty] div.placeholder'
+          )?.textContent
         ).toContain('No results found');
       });
     });
@@ -67,8 +69,10 @@ describe('TypeaheadComponent', () => {
 
       it('should have an empty message', () => {
         expect(
-          element.shadowRoot?.querySelector('slot[name=empty] div.placeholder')
-            ?.textContent
+          getShadowElementBySelector(
+            element,
+            'slot[name=empty] div.placeholder'
+          )?.textContent
         ).toContain('EMPTY');
       });
     });
@@ -91,7 +95,7 @@ describe('TypeaheadComponent', () => {
         expect(
           queryAssignedElements(element, { slot: 'empty', flatten: true })
             .length
-        ).toEqual(0);
+        ).toBe(0);
       });
     });
   });
@@ -110,7 +114,8 @@ describe('TypeaheadComponent', () => {
 
       it('should not have a loading spinner', () => {
         expect(
-          element.shadowRoot?.querySelector(
+          getShadowElementBySelector(
+            element,
             'slot[name=loading] div oryx-icon[type=loader]'
           )
         ).toBeNull();
@@ -133,10 +138,11 @@ describe('TypeaheadComponent', () => {
 
       it('should have a loading spinner', () => {
         expect(
-          element.shadowRoot?.querySelector(
+          getShadowElementBySelector(
+            element,
             'slot[name=loading] div oryx-icon[type=loader]'
           )
-        ).toBeDefined();
+        ).not.toBeNull();
       });
     });
 
@@ -156,7 +162,8 @@ describe('TypeaheadComponent', () => {
 
       it('should not have a loading spinner', () => {
         expect(
-          element.shadowRoot?.querySelector(
+          getShadowElementBySelector(
+            element,
             'slot[name=loading] div oryx-icon[type=loader]'
           )
         ).toBeNull();

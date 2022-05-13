@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
+import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../../../a11y';
@@ -229,7 +229,7 @@ describe('ToggleController', () => {
         element.controller.toggle(true);
       });
       it('should not throw an error', () => {
-        expect(element.controller.isOpen).toBeFalsy();
+        expect(element.controller.isOpen).toBe(false);
       });
     });
 
@@ -238,7 +238,7 @@ describe('ToggleController', () => {
         element.controller.toggle();
       });
       it('should not throw an error', () => {
-        expect(element.controller.isOpen).toBeFalsy();
+        expect(element.controller.isOpen).toBe(false);
       });
     });
   });

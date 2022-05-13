@@ -1,5 +1,4 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing/a11y';
 import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
 import { ButtonType } from './button.model';
@@ -22,6 +21,7 @@ describe('ButtonComponent', () => {
             size="small"
           ></oryx-button>`);
         });
+
         it('should reflect the type attribute on the node', () => {
           expect(element?.getAttribute('type')).toBe(type);
         });
@@ -51,9 +51,9 @@ describe('ButtonComponent', () => {
       element = await fixture(
         html`<oryx-button><button disabled></button></oryx-button>`
       );
-      expect(
-        element.querySelector('button')?.hasAttribute('disabled')
-      ).toBeTruthy();
+      expect(element.querySelector('button')?.hasAttribute('disabled')).toBe(
+        true
+      );
       expect(
         element.querySelector('button')?.setAttribute('disabled', 'disabled')
       );
@@ -63,22 +63,23 @@ describe('ButtonComponent', () => {
       element = await fixture(
         html`<oryx-button><button></button></oryx-button>`
       );
+      element.querySelector('button')?.removeAttribute('disabled');
       expect(element.querySelector('button')?.hasAttribute('disabled')).toBe(
         false
       );
     });
-  });
 
-  describe('loading button', () => {
-    describe('when the isLoading flag is not set', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-button><button></button></oryx-button>`
-        );
-      });
+    describe('loading button', () => {
+      describe('when the isLoading flag is not set', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-button><button></button></oryx-button>`
+          );
+        });
 
-      it('should not have a loading spinner', () => {
-        expect(element.querySelector('oryx-icon[type=loader]')).toBeNull();
+        it('should not have a loading spinner', () => {
+          expect(element.querySelector('oryx-icon[type=loader]')).toBeNull();
+        });
       });
     });
   });
@@ -94,7 +95,7 @@ describe('ButtonComponent', () => {
     });
 
     it('should render icon', () => {
-      expect(element?.querySelector('oryx-icon[type=close]')).toBeDefined();
+      expect(element?.querySelector('oryx-icon[type=close]')).not.toBeNull();
     });
   });
 });
