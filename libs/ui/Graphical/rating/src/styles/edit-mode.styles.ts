@@ -27,7 +27,7 @@ export const ratingEditModeStyles = css`
 
   fieldset input:valid:hover + slot ~ slot[has-char],
   fieldset input:hover + slot ~ slot[has-char],
-  fieldset :not(:hover) input:checked + slot ~ slot[has-char] {
+  fieldset:not(:hover) input:checked + slot ~ slot[has-char] {
     opacity: 30%;
   }
 `;
