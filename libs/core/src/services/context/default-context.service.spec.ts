@@ -60,12 +60,13 @@ describe('ContextService', () => {
   const testChildContext = (shadow = false): TestChildContext => {
     const currentElement = shadow ? element.shadowRoot : element;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return currentElement!.querySelector(
       'test-child-context'
     ) as TestChildContext;
   };
 
-  describe('Imperative', () => {
+  describe('imperative', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <overlay-parent-context>
@@ -126,7 +127,7 @@ describe('ContextService', () => {
     });
   });
 
-  describe('Declarative', () => {
+  describe('declarative', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <overlay-parent-context data-mockKey=${JSON.stringify(mockObject)}>
@@ -146,7 +147,7 @@ describe('ContextService', () => {
     });
   });
 
-  describe('withShadow dom', () => {
+  describe('with ShadowDom', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<shadow-parent-context></shadow-parent-context>`

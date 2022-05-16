@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { BehaviorSubject, defer, Observable, of } from 'rxjs';
 import { ContextService } from './context.service';
 
 declare global {
@@ -24,37 +24,33 @@ export class DefaultContextService implements ContextService {
     const stringifiedValue = JSON.stringify(value);
 
     this.contextMap.get(element)!.get(key)!.next(value);
-    element.setAttribute(this.keyGenerator(key), stringifiedValue);
+    element.setAttribute(this.getAttributeName(key), stringifiedValue);
   }
 
   get<T>(element: Element, key: string): Observable<T> {
-    const currentElement = this.closestPassShadow(
-      `[${this.keyGenerator(key)}]`,
-      element
-    );
+    return defer(() => {
+      const { element: currentElement, elementWithAttr } =
+        this.closestPassShadow(element, this.getAttributeName(key));
 
-    if (!currentElement) {
-      return EMPTY;
-    }
+      if (currentElement && this.hasKey(currentElement, key)) {
+        return this.contextMap.get(currentElement)!.get(key)!;
+      }
 
-    if (this.hasKey(currentElement, key)) {
-      return this.contextMap.get(currentElement)!.get(key)!;
-    }
+      if (elementWithAttr) {
+        const value = JSON.parse(
+          elementWithAttr.getAttribute(this.getAttributeName(key))!
+        );
+        this.provide(elementWithAttr, key, value);
 
-    const namespaceValues = this.contextMap.get(currentElement);
-    const value = JSON.parse(
-      currentElement.getAttribute(this.keyGenerator(key))!
-    );
+        return this.contextMap.get(elementWithAttr)!.get(key)!;
+      }
 
-    const subject = new BehaviorSubject(value);
-
-    namespaceValues?.set(key, subject);
-
-    return subject;
+      return of(undefined);
+    });
   }
 
   remove(element: Element, key: string): void {
-    element.removeAttribute(this.keyGenerator(key));
+    element.removeAttribute(this.getAttributeName(key));
 
     if (!this.hasKey(element, key)) {
       return;
@@ -71,7 +67,7 @@ export class DefaultContextService implements ContextService {
     }
   }
 
-  protected keyGenerator(key: string): string {
+  protected getAttributeName(key: string): string {
     return `${this.dataKey}${key}`;
   }
 
@@ -84,32 +80,58 @@ export class DefaultContextService implements ContextService {
   }
 
   protected closestPassShadow(
-    selector: string,
-    element: Element | Window | Document
-  ): Element | null {
+    element: Element | Window | Document,
+    selector: string
+  ): {
+    element?: Element;
+    elementWithAttr?: Element;
+  } {
     const isElement = (
-      currentElement: Element | Window | Document
-    ): currentElement is Element => {
-      return (
-        currentElement &&
-        currentElement !== window &&
-        currentElement !== document
-      );
+      element: Element | Window | Document
+    ): element is Element => {
+      return element && element !== window && element !== document;
     };
 
-    const closestFrom = (
-      currentElement: Element | Window | Document
-    ): Element | null => {
-      if (!isElement(currentElement)) {
-        return null;
+    while (isElement(element)) {
+      const result = this.closest(element, selector);
+
+      if (result) {
+        return result;
       }
 
-      return (
-        currentElement.closest(selector) ??
-        closestFrom(currentElement.getRootNode().host)
-      );
-    };
+      element = element.getRootNode().host;
+    }
 
-    return closestFrom(element);
+    return {};
+  }
+
+  protected closest(
+    element: Element | null,
+    selector: string
+  ): {
+    element?: Element;
+    elementWithAttr?: Element;
+  } | null {
+    while (element) {
+      const hasElement = this.contextMap.has(element);
+
+      if (hasElement) {
+        return {
+          element: element,
+        };
+      }
+
+      const hasAttr = element.hasAttribute(selector);
+
+      if (hasAttr) {
+        return {
+          elementWithAttr: element,
+        };
+      }
+
+      element = element.parentElement;
+    }
+
+    return null;
   }
 }

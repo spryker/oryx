@@ -11,7 +11,7 @@ import {
   of,
   switchMap,
 } from 'rxjs';
-import { ProductService } from '../../src/services/product.service';
+import { ProductContext, ProductService } from '../../src';
 import { styles } from './title.styles';
 
 export class TitleComponent extends LitElement {
@@ -20,9 +20,8 @@ export class TitleComponent extends LitElement {
   @property()
   protected uid?: string;
 
-  // TODO: Remove default code fallback once product service will be created
   @property()
-  protected code = '119';
+  protected code?: string;
 
   @observe()
   protected code$ = new BehaviorSubject(this.code);
@@ -31,15 +30,9 @@ export class TitleComponent extends LitElement {
   protected context = resolve(this, ContextService, null);
 
   protected productCode$ = combineLatest([
-    // TODO: This should be simplified with proper context utility
-    /*
-    this.context?.get<string>(this, ProductContext.Code).pipe(
-      // TODO: Remove when context won't be emitting EMPTY
-      defaultIfEmpty('')
-    ) ?? of(''),
-    */
+    this.context?.get<string>(this, ProductContext.Code) ?? of(''),
     this.code$,
-  ]).pipe(map(([code]) => code));
+  ]).pipe(map(([code, propCode]) => propCode ?? code));
 
   protected productTitle$ = this.productCode$.pipe(
     switchMap((code) =>

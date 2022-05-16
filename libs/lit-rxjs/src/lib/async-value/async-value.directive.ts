@@ -1,6 +1,6 @@
 import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
-import { directive } from 'lit/directive.js';
+import { directive, DirectiveResult } from 'lit/directive.js';
 import { isObservable, Observable, Subscription } from 'rxjs';
 import { isPromise } from '../internal';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
@@ -139,4 +139,12 @@ export class AsyncValueDirective extends AsyncDirective {
  *  }
  * }
  */
-export const asyncValue = directive(AsyncValueDirective);
+export const asyncValue = directive(AsyncValueDirective) as <T>(
+  object: T,
+  template?: (
+    value: T extends Promise<infer K> | Observable<infer K>
+      ? Exclude<K, null | undefined>
+      : unknown
+  ) => TemplateResult,
+  fallback?: () => TemplateResult
+) => DirectiveResult<typeof AsyncValueDirective>;
