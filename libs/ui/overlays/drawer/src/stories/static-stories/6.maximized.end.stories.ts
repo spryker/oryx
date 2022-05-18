@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../../.constants';
 import { Position } from '../../../../../utilities/model/common';
 import { OverlaysDecorator } from '../../../../../utilities/storybook';
 import '../../index';

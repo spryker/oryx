@@ -1,7 +1,7 @@
 import { forceReRender, Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import '..';
-import { storybookPrefix } from '../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../.constants';
 
 export default { title: `${storybookPrefix}/actions/Toggle Icon` } as Meta;
 

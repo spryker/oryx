@@ -3,7 +3,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DrawerProperties, DrawerService, DrawerType } from '..';
-import { storybookPrefix } from '../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../.constants';
 import { Position } from '../../../../utilities/model/common';
 import { OverlaysDecorator } from '../../../../utilities/storybook';
 import '../index';

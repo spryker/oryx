@@ -3,7 +3,7 @@ import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { NotificationCenterComponent } from '../..';
-import { storybookPrefix } from '../../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 import { Positions } from '../../notification-center.model';
 import { getNotification, open, wait } from './util';

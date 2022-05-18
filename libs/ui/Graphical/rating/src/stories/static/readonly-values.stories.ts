@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix } from '../../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 
 export default { title: `${storybookPrefix}/Graphical/Rating/Static` } as Meta;

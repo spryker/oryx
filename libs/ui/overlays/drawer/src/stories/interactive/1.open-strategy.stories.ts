@@ -3,7 +3,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { DrawerComponent } from '../..';
-import { storybookPrefix } from '../../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../../.constants';
 import { Position } from '../../../../../utilities/model/common';
 import { OverlaysDecorator, wait } from '../../../../../utilities/storybook';
 import '../../index';

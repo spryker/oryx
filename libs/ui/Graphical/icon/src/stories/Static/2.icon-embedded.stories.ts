@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../../.constants';
 import * as filter from '../../icons/filter.icons';
 import * as language from '../../icons/language.icons';
 import * as misc from '../../icons/misc.icons';

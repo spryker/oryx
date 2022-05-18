@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../.storybook/constant';
+import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../Graphical/icon';
 import '../../../../popover/index';
