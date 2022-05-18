@@ -1,7 +1,8 @@
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { html, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import { filter, merge, tap } from 'rxjs';
-import { PreviewExperienceService } from '../services/experience/preview-experience.service';
+import { PreviewExperienceService } from '../src/services/experience/preview-experience.service';
 import { styles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
@@ -67,8 +68,11 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       ${asyncValue(
         this.components$,
         (components: any) =>
-          html`${components.map((component: any) =>
-            this.registryService.resolveTemplate(component.type, component.id)
+          html`${repeat(
+            components,
+            (component) => component.id,
+            (component: any) =>
+              this.registryService.resolveTemplate(component.type, component.id)
           )}`,
         () => html`Loading...`
       )}

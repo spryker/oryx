@@ -26,7 +26,6 @@ export class StorefrontComponent extends LitElement {
 
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
     this.route$.subscribe();
   }
 

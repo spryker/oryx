@@ -1,6 +1,7 @@
+import { isClient } from '@spryker-oryx/typescript-utils';
 import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
-import { directive, DirectiveResult } from 'lit/directive.js';
+import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';
 import { isObservable, Observable, Subscription } from 'rxjs';
 import { isPromise } from '../internal';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
@@ -16,6 +17,7 @@ export class AsyncValueDirective extends AsyncDirective {
   subscription: Subscription | Promise<unknown> | null = null;
   template?: (value: unknown) => TemplateResult;
   fallback?: () => TemplateResult;
+  ssrRendered = false;
 
   content: Array<unknown> = [noChange];
 
@@ -26,6 +28,14 @@ export class AsyncValueDirective extends AsyncDirective {
     } catch (e) {
       this.content[0] = value;
     }
+  }
+
+  constructor(partInfo: PartInfo) {
+    super(partInfo);
+    // In the case of SSR rendering, we'd like to not render the fallback, and the markup should just be hydrated.
+    // The async directive does not directly have access to the component except through the constructor, so we do the check here.
+    this.ssrRendered =
+      !!(partInfo as any).options?.host?.shadowRoot && isClient();
   }
 
   render(
@@ -63,7 +73,7 @@ export class AsyncValueDirective extends AsyncDirective {
     template?: (value: unknown) => TemplateResult,
     fallback?: () => TemplateResult
   ): void {
-    if (fallback) {
+    if (fallback && !this.ssrRendered) {
       this.setValue(fallback());
     }
 

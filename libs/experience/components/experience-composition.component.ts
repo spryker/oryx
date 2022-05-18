@@ -1,6 +1,7 @@
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
+import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -9,7 +10,7 @@ import {
   Component,
   ComponentsRegistryService,
   ExperienceService,
-} from '../services';
+} from '../src/services';
 
 export class ExperienceCompositionComponent extends LitElement {
   @state()
@@ -24,6 +25,13 @@ export class ExperienceCompositionComponent extends LitElement {
   protected experienceService = resolve(this, ExperienceService, null);
   protected registryService = resolve(this, ComponentsRegistryService);
   protected ssrAwaiter = resolve(this, SSRAwaiterService, null);
+  protected hasSSR = false;
+  protected isHydrated = false;
+
+  constructor() {
+    super();
+    this.hasSSR = !!this.shadowRoot;
+  }
 
   components$ = this.key$.pipe(
     filter((key) => !!key),
@@ -36,7 +44,10 @@ export class ExperienceCompositionComponent extends LitElement {
         const resolve = this.ssrAwaiter?.getAwaiter();
         for (let i = 0; i < components!.length; i++) {
           await lastValueFrom(
-            this.registryService.resolveComponent(components![i].type)
+            this.registryService.resolveComponent(
+              components![i].type,
+              this.hasSSR
+            )
           );
         }
         resolve?.();
@@ -44,19 +55,35 @@ export class ExperienceCompositionComponent extends LitElement {
     })
   );
 
+  // Can be safely used any time on or after calling getUpdateComplete().
+  hydrateOnDemand(): void {
+    if (!this.isHydrated) {
+      this.isHydrated = true;
+      this.requestUpdate();
+    }
+  }
+
   override render(): TemplateResult {
-    return html`<div>
+    return html`
       ${asyncValue(
         this.components$,
         (components: any) =>
-          html`${repeat(
-            components,
-            (component) => component.id,
-            (component: any) =>
-              this.registryService.resolveTemplate(component.type, component.id)
-          )}`,
+          this.shadowRoot &&
+          (this.shadowRoot?.children.length ?? 0) > 0 &&
+          isClient() &&
+          !this.isHydrated
+            ? html`${[...this.shadowRoot.children]}`
+            : html`${repeat(
+                components,
+                (component) => component.id,
+                (component: any) =>
+                  this.registryService.resolveTemplate(
+                    component.type,
+                    component.id
+                  )
+              )}`,
         () => html`Loading...`
       )}
-    </div> `;
+    `;
   }
 }

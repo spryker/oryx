@@ -32,7 +32,7 @@ export class BannerComponent extends LitElement {
   );
 
   override render(): TemplateResult {
-    return html` ${asyncValue(
+    return html`${asyncValue(
       this.contentResolver$,
       (content: any) => {
         const contents = html`

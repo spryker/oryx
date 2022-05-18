@@ -12,7 +12,8 @@
   "typings": "./src/index.d.ts",
   "peerDependencies": {
     "lit": "^2.1.0",
-    "rxjs": "~7.4.0"
+    "rxjs": "~7.4.0",
+    "@spryker-oryx/typescript-utils": "~0.0.1"
   },
   "publishConfig": {
     "access": "public"

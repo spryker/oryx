@@ -7,7 +7,7 @@ import {
   Component,
   ComponentsRegistryService,
   ExperienceService,
-} from '../services';
+} from '../src/services';
 import './';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 

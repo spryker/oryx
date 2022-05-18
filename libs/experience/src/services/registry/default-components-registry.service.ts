@@ -1,7 +1,8 @@
 import { inject } from '@spryker-oryx/injector';
-import { TemplateResult } from 'lit';
+import { isClient } from '@spryker-oryx/typescript-utils';
+import { LitElement, TemplateResult } from 'lit';
 import { html, unsafeStatic } from 'lit/static-html.js';
-import { from, mapTo, Observable, of, tap } from 'rxjs';
+import { from, lastValueFrom, mapTo, Observable, of, tap } from 'rxjs';
 import { COMPONENT_MAPPING } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
 
@@ -32,11 +33,12 @@ export class DefaultComponentsRegistryService
         }"></${unsafeStatic(component.tag)}>`;
   }
 
-  resolveComponent(type: string): Observable<string> {
+  resolveComponent(type: string, hasSSR = false): Observable<string> {
     if (this.registeredComponents[type]) {
       if (
         this.registeredComponents[type].component &&
-        !this.resolvedComponents[type]
+        !this.resolvedComponents[type] &&
+        !(isClient() && hasSSR)
       ) {
         return from(this.registeredComponents[type].component?.() || of()).pipe(
           tap(() => {
@@ -50,5 +52,12 @@ export class DefaultComponentsRegistryService
       console.error(`Missing component implementation for type ${type}.`);
     }
     return of('');
+  }
+
+  async hydrateOnDemand(element: LitElement): Promise<void> {
+    if (!customElements.get(element.localName)) {
+      await lastValueFrom(this.resolveComponent(element.localName));
+    }
+    (element as any).hydrateOnDemand();
   }
 }

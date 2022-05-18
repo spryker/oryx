@@ -3,6 +3,9 @@
   "sourceRoot": "libs/typescript-utils/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
