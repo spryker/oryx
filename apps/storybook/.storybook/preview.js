@@ -3,3 +3,13 @@ import { initializeRTL } from 'storybook-addon-rtl';
 import './font.css';
 
 initializeRTL();
+
+export const parameters = {
+  options: {
+    storySort: {
+      includeName: true,
+      order: ['UI', '*'],
+      method: 'alphabetical',
+    },
+  },
+};
