@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
-import '../../form-control';
+import { storybookPrefix } from '../../../../.constants';
+import '../../../input/src/form-control';
 
 export default {
   title: `${storybookPrefix}/Form/Textarea`,
@@ -16,7 +16,7 @@ const Template: Story<Props> = ({ disabled }: Props): TemplateResult =>
       <textarea placeholder="Placeholder" ?disabled=${disabled}></textarea>
     </oryx-input>
   `;
-export const Textarea = Template.bind({});
-Textarea.args = {
+export const TextareaDemo = Template.bind({});
+TextareaDemo.args = {
   disabled: false,
 };

@@ -66,6 +66,10 @@
     "chip": {
       "default": "./Graphical/chip/index.js",
       "types": "./Graphical/chip/index.d.ts"
+    },
+    "textarea": {
+      "default": "./form/textarea/index.js",
+      "types": "./form/textarea/index.d.ts"
     }
   }
 }
