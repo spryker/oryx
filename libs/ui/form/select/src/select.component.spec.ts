@@ -6,7 +6,7 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchIconPosition,
-} from '../../search';
+} from '../../../search/searchbox';
 import { getControl } from '../../utilities/getControl';
 import './index';
 

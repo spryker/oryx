@@ -1,5 +1,5 @@
 import { LitElement, ReactiveController } from 'lit';
-import { TypeaheadOptions } from '../../typeahead';
+import { TypeaheadOptions } from '../../../search/typeahead';
 import { getControl } from '../../utilities/getControl';
 import { SelectOptions } from './select.model';
 

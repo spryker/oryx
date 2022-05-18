@@ -4,17 +4,17 @@ import { ErrorOptions, FormControlController } from '../../../form/input';
 import {
   ClearIconAppearance,
   ClearIconPosition,
-  SearchController,
+  SearchboxController,
   SearchIconPosition,
   SearchOptions,
-} from '../../search';
-import { SearchComponent } from '../../search/src/search.component';
+} from '../../../search/searchbox';
+import { SearchboxComponent } from '../../../search/searchbox/src/searchbox.component';
 import {
   FilterStrategyType,
   TypeaheadController,
   TypeaheadOptions,
   typeaheadStyles,
-} from '../../typeahead';
+} from '../../../search/typeahead';
 import { getControl } from '../../utilities/getControl';
 import { SelectController } from './select.controller';
 import { SelectOptions } from './select.model';
@@ -24,7 +24,7 @@ export class SelectComponent
   extends LitElement
   implements ErrorOptions, SearchOptions, TypeaheadOptions, SelectOptions
 {
-  static styles = [selectStyles, typeaheadStyles, ...SearchComponent.styles];
+  static styles = [selectStyles, typeaheadStyles, ...SearchboxComponent.styles];
 
   @property({ type: Boolean }) filter?: boolean;
   @property() filterStrategy?: FilterStrategyType;
@@ -50,7 +50,7 @@ export class SelectComponent
   protected typeaheadController = new TypeaheadController(this, {
     showOnFocus: false,
   });
-  protected searchController = new SearchController(this);
+  protected searchController = new SearchboxController(this);
   protected formControlController = new FormControlController(this);
 
   protected override render(): TemplateResult {

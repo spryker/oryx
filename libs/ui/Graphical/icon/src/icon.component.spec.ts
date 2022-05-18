@@ -29,7 +29,7 @@ describe('Icon', () => {
     });
   });
 
-  describe('when type is "search"', () => {
+  describe('when type is "searchbox"', () => {
     beforeEach(async () => {
       element = await fixture(html`<oryx-icon type="search"></oryx-icon>`);
     });
@@ -43,7 +43,7 @@ describe('Icon', () => {
       expect(svg).not.toBeNull();
     });
 
-    it('should reference an external SVG and include search ID', () => {
+    it('should reference an external SVG and include searchbox ID', () => {
       const svg = element?.shadowRoot?.querySelector('svg use');
       expect(svg?.getAttribute('href')).toBe('assets/icons.svg#search');
     });

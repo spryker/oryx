@@ -4,13 +4,16 @@ import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../Graphical/icon';
 import '../../../../popover/index';
-import { branches, states } from '../../../../utilities/storybook';
 import {
   ClearIconAppearance,
   SearchEvent,
   SearchOptions,
-} from '../../../search';
-import { FilterStrategyType, TypeaheadOptions } from '../../../typeahead';
+} from '../../../../search/searchbox';
+import {
+  FilterStrategyType,
+  TypeaheadOptions,
+} from '../../../../search/typeahead';
+import { branches, states } from '../../../../utilities/storybook';
 import '../index';
 import { SelectOptions } from '../index';
 
@@ -40,7 +43,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     console.log('oryx.select event', ev.detail.query);
   };
   const logSearch = (ev: CustomEvent<SearchEvent>): void => {
-    console.log('oryx.search event', ev.detail.query);
+    console.log('oryx.searchbox event', ev.detail.query);
   };
 
   return html`

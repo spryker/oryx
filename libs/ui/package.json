@@ -51,17 +51,17 @@
       "default": "./form/password/index.js",
       "types": "./form/password/index.d.ts"
     },
-    "search": {
-      "default": "./form/search/index.js",
-      "types": "./form/search/index.d.ts"
-    },
     "select": {
       "default": "./form/select/index.js",
       "types": "./form/select/index.d.ts"
     },
+    "searchbox": {
+      "default": "./search/searchbox/index.js",
+      "types": "./search/searchbox/index.d.ts"
+    },
     "typeahead": {
-      "default": "./form/typeahead/index.js",
-      "types": "./form/typeahead/index.d.ts"
+      "default": "./search/typeahead/index.js",
+      "types": "./search/typeahead/index.d.ts"
     },
     "chip": {
       "default": "./Graphical/chip/index.js",
