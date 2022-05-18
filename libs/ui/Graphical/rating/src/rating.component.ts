@@ -9,6 +9,9 @@ import {
   ratingReadonlyStyles,
 } from './styles';
 
+/** we'll have performance issues when someone accidentally uses a high scale */
+const MAX_SCALE = 25;
+
 export class RatingComponent extends LitElement implements RatingProperties {
   static styles = [
     ratingBaseStyles,
@@ -26,11 +29,13 @@ export class RatingComponent extends LitElement implements RatingProperties {
   protected override render(): TemplateResult {
     return html`
       <fieldset style=${`--rate: ${this.value};`}>
-        ${[...Array(this.scale)].map((_, i) => this.renderInput(i))}
+        ${[...Array(Math.min(this.scale, MAX_SCALE))].map((_, i) =>
+          this.renderInput(i)
+        )}
       </fieldset>
 
       ${when(
-        this.readonly && this.reviewCount !== undefined,
+        this.reviewCount !== undefined,
         () => html`<span class="review-count">${this.getCount()}</span>`
       )}
       ${this.renderClipPath()}
@@ -45,7 +50,7 @@ export class RatingComponent extends LitElement implements RatingProperties {
         value=${i + 1}
         ?required=${!this.readonly}
         ?disabled=${this.readonly}
-        ?checked=${this.value === i + 1}
+        ?checked=${Math.round(this.value) === i + 1}
         style=${`--pos: ${i + 1}`}
         aria-label=${i + 1}
       />${when(!this.readonly, () => this.renderSlot(i))}`;

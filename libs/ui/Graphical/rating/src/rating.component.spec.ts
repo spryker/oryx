@@ -48,18 +48,29 @@ describe('RatingComponent', () => {
       });
     });
 
-    describe('and the value does not matches a rating symbol', () => {
+    describe('and the value is a float (3.2)', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-rating value="3.2"></oryx-rating>`);
       });
 
-      it('should not select anything', () => {
-        const checked = element.renderRoot?.querySelector('input[checked]');
-        expect(checked).toBe(null);
+      it('should select the rounded value', () => {
+        const input = element.renderRoot?.querySelector(
+          'input[value="3"]'
+        ) as HTMLInputElement;
+        expect(input.checked).toBe(true);
+      });
+    });
+
+    describe('and the value is a float (3.6)', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-rating value="3.6"></oryx-rating>`);
       });
 
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      it('should select the rounded value', () => {
+        const input = element.renderRoot?.querySelector(
+          'input[value="4"]'
+        ) as HTMLInputElement;
+        expect(input.checked).toBe(true);
       });
     });
   });
@@ -83,22 +94,6 @@ describe('RatingComponent', () => {
       expect(
         element.renderRoot?.querySelectorAll('input[required]').length
       ).toBe(element.scale);
-    });
-
-    describe('and the reviewCount is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-rating .reviewCount=${'12.3K'}></oryx-rating>`
-        );
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should not render the reviewCount', () => {
-        expect(element.renderRoot?.querySelector('.review-count')).toBeNull();
-      });
     });
 
     describe('and an input event is dispatched on the 3rd symbol', () => {
@@ -131,38 +126,6 @@ describe('RatingComponent', () => {
 
     it('should not render a slots', () => {
       expect(element.renderRoot?.querySelectorAll('slot').length).toBe(0);
-    });
-
-    describe('and the reviewCount is not provided', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-rating readonly></oryx-rating>`);
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should not render the reviewCount', () => {
-        expect(element.renderRoot?.querySelector('.review-count')).toBe(null);
-      });
-    });
-
-    describe('and the reviewCount is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-rating readonly .reviewCount=${'12.3K'}></oryx-rating>`
-        );
-      });
-
-      it('passes the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should render the reviewCount', () => {
-        expect(
-          element.renderRoot?.querySelector('.review-count')?.textContent
-        ).toBe('12.3K');
-      });
     });
   });
 
@@ -236,6 +199,41 @@ describe('RatingComponent', () => {
             });
           }
         });
+    });
+  });
+
+  describe('review count', () => {
+    describe('when the reviewCount is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-rating></oryx-rating>`);
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
+      it('should not render the reviewCount', () => {
+        expect(element.renderRoot?.querySelector('.review-count')).toBe(null);
+      });
+    });
+
+    describe('when the reviewCount is provided', () => {
+      const reviewCount = '12.3K';
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-rating .reviewCount=${reviewCount}></oryx-rating>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible(a11yConfig);
+      });
+
+      it('should render the reviewCount', () => {
+        expect(
+          element.renderRoot?.querySelector('.review-count')?.textContent
+        ).toBe(reviewCount);
+      });
     });
   });
 });
