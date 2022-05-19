@@ -9,16 +9,9 @@ export interface Variant {
 
 const styles = html`
   <style>
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-      margin-bottom: 24px;
-    }
-    .col {
-      display: flex;
-      gap: 24px;
-      width: 150px;
+    th,
+    td {
+      padding: 10px;
     }
   </style>
 `;
@@ -43,26 +36,29 @@ export const generateVariantsMatrix = <T extends Variant>(
   };
 
   return html`
-    <div class="row">
-      <div class="col"></div>
-      ${categoriesY.map((header) => html`<div class="col">${header}</div>`)}
-    </div>
-    ${categoriesX.map(
-      (categoryX) => html`
-        <div class="row">
-          <div class="col">${categoryX}</div>
-          ${categoriesY.map(
-            (categoryY) => html`
-              <div class="col">
-                ${when(getVariant(categoryX, categoryY), () =>
-                  renderer(getVariant(categoryX, categoryY)!)
-                )}
-              </div>
-            `
-          )}
-        </div>
-      `
-    )}
+    <table>
+      <tr>
+        <th></th>
+        ${categoriesY.map((header) => html`<th>${header}</th>`)}
+      </tr>
+      ${categoriesX.map(
+        (categoryX) => html`
+          <tr>
+            <td>${categoryX}</td>
+            ${categoriesY.map(
+              (categoryY) => html`
+                <td>
+                  ${when(getVariant(categoryX, categoryY), () =>
+                    renderer(getVariant(categoryX, categoryY)!)
+                  )}
+                </td>
+              `
+            )}
+          </tr>
+        `
+      )}
+    </table>
+
     ${styles}
   `;
 };
