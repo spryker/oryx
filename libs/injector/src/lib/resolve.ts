@@ -1,8 +1,5 @@
 import { getInjector } from './get-injector';
-
-interface Type<T> extends Function {
-  new (...args: any[]): T;
-}
+import { Type } from './inject';
 
 export function resolve<K extends keyof InjectionTokensContractMap>(
   context: any,

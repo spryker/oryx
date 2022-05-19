@@ -2,11 +2,11 @@
   "name": "fes-storefront",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite -c vite.config.dev.ts",
     "preview": "vite preview",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "dev:ssr": "node --experimental-vm-modules server",
-    "build:server": "tsc && vite build --outDir ../../dist/apps/storefront/server --ssr src/entry-server.ts -c vite.config.server.ts",
+    "build:server": "vite build -c vite.config.server.ts",
     "build:ssr": "npm run build && npm run build:server",
     "test": "vitest",
     "test:watch": "vitest watch"

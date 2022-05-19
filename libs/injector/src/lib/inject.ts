@@ -1,5 +1,9 @@
 import { Injector } from './injector';
 
+export interface Type<T> extends Function {
+  new (...args: any[]): T;
+}
+
 let _currentInjector: undefined | Injector;
 
 /**
@@ -34,8 +38,10 @@ export function inject<K extends keyof InjectionTokensContractMap, L>(
   token: K,
   defaultValue?: L
 ): InjectionTokensContractMap[K] | L;
+export function inject<K>(token: Type<K>, defaultValue?: K): K;
+export function inject<K, L>(token: Type<K>, defaultValue?: L): K | L;
 export function inject<K = any>(token: string, defaultValue?: K): K;
-export function inject(token: string, defaultValue?: any): any {
+export function inject(token: any, defaultValue?: any): any {
   if (_currentInjector === undefined) {
     throw new Error(`inject() can't be used outside injection context!'`);
   }
