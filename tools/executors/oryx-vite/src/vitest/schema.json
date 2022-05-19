@@ -7,6 +7,16 @@
       "description": "Set watch mode",
       "default": false
     },
+    "typecheckingOff": {
+      "type": "boolean",
+      "description": "Disable type checking",
+      "default": false
+    },
+    "tsconfigPath": {
+      "type": "string",
+      "description": "tsconfig file path",
+      "default": "tsconfig.spec.json"
+    },
     "coverage": {
       "type": "object",
       "description": "Set coverage options. Uses C8Options interface",

@@ -7,6 +7,8 @@ declare global {
         showModal: () => void;
         show: () => void;
         close: () => void;
+        setAttribute: (attr: string, value: string) => void;
+        removeAttribute: (attr: string) => void;
       };
     };
   }

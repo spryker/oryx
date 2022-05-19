@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var devkit_1 = require("@nrwl/devkit");
+var run_commands_impl_1 = require("@nrwl/workspace/src/executors/run-commands/run-commands.impl");
 function vitestExecutor(options, context) {
     return __awaiter(this, void 0, void 0, function () {
         var projectDir, projectRoot, startVitest, result;
@@ -55,12 +56,20 @@ function vitestExecutor(options, context) {
             switch (_a.label) {
                 case 0:
                     projectDir = context.workspace.projects[context.projectName].root;
-                    projectRoot = (0, devkit_1.joinPathFragments)(context.root, projectDir);
-                    return [4 /*yield*/, Function("return import ('vitest/node')")()];
+                    projectRoot = devkit_1.joinPathFragments(context.root, projectDir);
+                    if (!!options.typechekingOff) return [3 /*break*/, 2];
+                    return [4 /*yield*/, run_commands_impl_1["default"]({
+                            command: "npx tsc " + (options.tsconfigPath ? '-p ' + options.tsconfigPath : ''),
+                            cwd: projectRoot
+                        }, context)];
                 case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [4 /*yield*/, Function("return import ('vitest/node')")()];
+                case 3:
                     startVitest = (_a.sent()).startVitest;
                     return [4 /*yield*/, startVitest([], __assign(__assign({}, options), { root: projectRoot }))];
-                case 2:
+                case 4:
                     result = _a.sent();
                     if (!options.watch) {
                         return [2 /*return*/, { success: result }];

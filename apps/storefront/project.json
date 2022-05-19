@@ -66,18 +66,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "vitest run --coverage",
-        "config": "apps/storefront/vitest.config.ts"
-      }
-    },
-    "test-watch": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "vitest",
-        "config": "apps/storefront/vitest.config.ts"
-      }
+      "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
