@@ -1,9 +1,9 @@
 import { ExecutorContext, readJsonFile } from '@nrwl/devkit';
 import { sortObjectByKeys } from '@nrwl/tao/src/utils/object-sort';
-import { Dirent, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { format, resolveConfig } from 'prettier';
-import { libDirsNormalizer, LibOptions } from './utils';
+import { DirData, libDirsNormalizer, LibOptions } from './utils';
 
 export interface ComponentsLibraryPathsExecutorOptions extends LibOptions {
   name: string;
@@ -27,12 +27,12 @@ export default async function componentsLibraryPathsExecutor(
     }
   }
 
-  libDirsNormalizer(options, (dir: Dirent) => {
-    const { name: dirName } = dir;
+  libDirsNormalizer(options, (dir: DirData) => {
+    const { name: dirName, path } = dir;
     const pathKey = dirName === 'src' ? '' : `/${dirName}`;
 
     tsConfig.compilerOptions.paths[`${packageJson.name}${pathKey}`] = [
-      `${options.cwd}/${dirName}/index.ts`,
+      `${options.cwd}/${path}/index.ts`,
     ];
   });
 

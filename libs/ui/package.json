@@ -3,73 +3,9 @@
   "version": "0.0.1",
   "type": "module",
   "exports": {
-    "button": {
-      "default": "./actions/button/index.js",
-      "types": "./actions/button/index.d.ts"
-    },
-    "link": {
-      "default": "./actions/link/index.js",
-      "types": "./actions/link/index.d.ts"
-    },
-    "icon-button": {
-      "default": "./actions/icon-button/index.js",
-      "types": "./actions/icon-button/index.d.ts"
-    },
-    "icon": {
-      "default": "./Graphical/icon/index.js",
-      "types": "./Graphical/icon/index.d.ts"
-    },
-    "checkbox": {
-      "default": "./form/checkbox/index.js",
-      "types": "./form/checkbox/index.d.ts"
-    },
-    "checkbox-list": {
-      "default": "./form/checkbox-list/index.js",
-      "types": "./form/checkbox-list/index.d.ts"
-    },
     "icons": {
       "default": "./Graphical/icon/src/icons/index.js",
       "types": "./Graphical/icon/src/icons/index.d.ts"
-    },
-    "radio": {
-      "default": "./form/radio/index.js",
-      "types": "./form/radio/index.d.ts"
-    },
-    "radio-list": {
-      "default": "./form/radio-list/index.js",
-      "types": "./form/radio-list/index.d.ts"
-    },
-    "rating": {
-      "default": "./Graphical/rating/index.js",
-      "types": "./Graphical/rating/index.d.ts"
-    },
-    "input": {
-      "default": "./form/input/index.js",
-      "types": "./form/input/index.d.ts"
-    },
-    "password": {
-      "default": "./form/password/index.js",
-      "types": "./form/password/index.d.ts"
-    },
-    "select": {
-      "default": "./form/select/index.js",
-      "types": "./form/select/index.d.ts"
-    },
-    "searchbox": {
-      "default": "./search/searchbox/index.js",
-      "types": "./search/searchbox/index.d.ts"
-    },
-    "typeahead": {
-      "default": "./search/typeahead/index.js",
-      "types": "./search/typeahead/index.d.ts"
-    },
-    "chip": {
-      "default": "./Graphical/chip/index.js",
-      "types": "./Graphical/chip/index.d.ts"
-    },
-    "textarea": {
-      "default": "./form/textarea/index.js",
-      "types": "./form/textarea/index.d.ts"
     }
   }
 }

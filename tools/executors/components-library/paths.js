@@ -70,10 +70,10 @@ function componentsLibraryPathsExecutor(options, context) {
                         }
                     }
                     (0, utils_1.libDirsNormalizer)(options, function (dir) {
-                        var dirName = dir.name;
+                        var dirName = dir.name, path = dir.path;
                         var pathKey = dirName === 'src' ? '' : "/".concat(dirName);
                         tsConfig.compilerOptions.paths["".concat(packageJson.name).concat(pathKey)] = [
-                            "".concat(options.cwd, "/").concat(dirName, "/index.ts"),
+                            "".concat(options.cwd, "/").concat(path, "/index.ts"),
                         ];
                     });
                     if (packageJson.exports) {

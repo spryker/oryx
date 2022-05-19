@@ -1,30 +1,68 @@
-import { Dirent, readdirSync, readFileSync } from 'fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 export interface LibOptions {
   cwd?: string;
   exclude?: string[];
 }
 
+export interface DirData {
+  name: string;
+  path?: string;
+}
+
 export const libDirsNormalizer = (
   options: LibOptions,
-  callback: (dir: Dirent) => void
+  callback: (dir: DirData) => void
 ) => {
-  const dirs = readdirSync(options.cwd, { withFileTypes: true });
+  const dirs: (string | DirData)[] = readdirSync(options.cwd);
   const globalIgnoreStr = readFileSync('.buildignore', { encoding: 'utf8' });
   const globalIgnore = globalIgnoreStr
     .split(/\r?\n/)
     .filter((line) => line.trim() !== '' && line.charAt(0) !== '#');
+  const generated = {};
 
-  for (let i = 0; i < dirs.length; i++) {
-    const dir = dirs[i];
+  while (dirs.length) {
+    const dir = dirs[0];
+    const dirData =
+      typeof dir === 'string'
+        ? {
+            name: dir,
+            path: dir,
+          }
+        : {
+            name: dir.name,
+            path: `${dir.path}/${dir.name}`,
+          };
+    const dirFullPath = join(options.cwd, dirData.path);
 
     if (
-      !dir.isDirectory() ||
-      [...(options?.exclude ?? []), ...globalIgnore]?.includes(dir.name)
+      !lstatSync(dirFullPath).isDirectory() ||
+      [...(options?.exclude ?? []), ...globalIgnore]?.includes(dirData.name) ||
+      generated[dirData.name]
     ) {
+      dirs.shift();
+
       continue;
     }
 
-    callback(dir);
+    if (existsSync(`${dirFullPath}/index.ts`)) {
+      generated[dirData.name] = true;
+      callback(dirData);
+      dirs.shift();
+
+      continue;
+    }
+
+    const nestedDirs = readdirSync(dirFullPath);
+
+    for (let i = 0; i < nestedDirs.length; i++) {
+      dirs.push({
+        name: nestedDirs[i],
+        path: dirData.path,
+      });
+    }
+
+    dirs.shift();
   }
 };

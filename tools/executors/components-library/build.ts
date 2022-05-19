@@ -1,9 +1,9 @@
 import { ExecutorContext, readJsonFile, writeJsonFile } from '@nrwl/devkit';
 import { TypeScriptExecutorOptions } from '@nrwl/workspace/src/executors/tsc/schema';
 import tsc from '@nrwl/workspace/src/executors/tsc/tsc.impl';
-import { Dirent, existsSync, rmdirSync } from 'fs';
+import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
-import { libDirsNormalizer, LibOptions } from './utils';
+import { DirData, libDirsNormalizer, LibOptions } from './utils';
 
 export interface ComponentsLibraryBuildExecutorOptions
   extends TypeScriptExecutorOptions,
@@ -48,12 +48,13 @@ export default async function componentsLibraryBuildExecutor(
   packageJson.exports = packageJson.exports ?? {};
   await tsc(options, context);
 
-  libDirsNormalizer(options, (dir: Dirent) => {
-    const dirName = dir.name === 'src' ? '.' : dir.name;
+  libDirsNormalizer(options, (dir: DirData) => {
+    const { name: dirName, path: dirPath } = dir;
+    const dirKey = dirName === 'src' ? '.' : dirName;
 
-    packageJson.exports[dirName] = {
-      default: `./${dir.name}/index.js`,
-      types: `./${dir.name}/index.d.ts`,
+    packageJson.exports[dirKey] = {
+      default: `./${dirPath}/index.js`,
+      types: `./${dirPath}/index.d.ts`,
     };
   });
 

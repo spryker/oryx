@@ -14,13 +14,13 @@
             "output": "/public/"
           }
         ],
-        "exclude": ["public", "actions", "Graphical"]
+        "exclude": ["public"]
       }
     },
     "paths": {
       "executor": "./tools/executors/components-library:paths",
       "options": {
-        "exclude": ["public", "actions", "Graphical"]
+        "exclude": ["public"]
       }
     },
     "sprites": {

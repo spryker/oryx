@@ -85,10 +85,11 @@ function componentsLibraryBuildExecutor(baseOptions, context) {
                 case 1:
                     _b.sent();
                     (0, utils_1.libDirsNormalizer)(options, function (dir) {
-                        var dirName = dir.name === 'src' ? '.' : dir.name;
-                        packageJson.exports[dirName] = {
-                            "default": "./".concat(dir.name, "/index.js"),
-                            types: "./".concat(dir.name, "/index.d.ts")
+                        var dirName = dir.name, dirPath = dir.path;
+                        var dirKey = dirName === 'src' ? '.' : dirName;
+                        packageJson.exports[dirKey] = {
+                            "default": "./".concat(dirPath, "/index.js"),
+                            types: "./".concat(dirPath, "/index.d.ts")
                         };
                     });
                     (0, devkit_1.writeJsonFile)((0, path_1.join)(options.outputPath, 'package.json'), packageJson);
