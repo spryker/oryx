@@ -57,6 +57,9 @@ export class FilterController implements ReactiveController {
   protected clearInput(): void {
     if (this.control) {
       this.control.value = '';
+      if (this.host.filterStrategy) {
+        this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
+      }
       this.control.dispatchEvent(
         new InputEvent('input', { bubbles: true, composed: true })
       );

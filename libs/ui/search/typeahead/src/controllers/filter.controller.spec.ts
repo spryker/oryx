@@ -55,6 +55,23 @@ describe('FilterController', () => {
     });
   };
 
+  const itShouldNotFilter = (): void => {
+    it(`should not filter options`, () => {
+      if (event) {
+        element.dispatchEvent(
+          new InputEvent('input', {
+            bubbles: true,
+            inputType: 'insertText',
+          })
+        );
+      }
+      const filteredOptions = element.querySelectorAll<OptionComponent>(
+        'oryx-option:not([hide])'
+      );
+      expect(filteredOptions.length).toBe(optionsValues.length);
+    });
+  };
+
   describe('when a filter strategy is used', () => {
     describe('and the strategy is set to START_WITH', () => {
       describe('and the input event is dispatched', () => {
@@ -101,6 +118,7 @@ describe('FilterController', () => {
           it('should clear the value', () => {
             expect(getControl(element).value).toBe('');
           });
+          itShouldNotFilter();
         });
       });
       describe('when there is a selected option', () => {
