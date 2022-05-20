@@ -70,6 +70,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         ?suffixFill=${props.suffixFill}
         clearIcon=${props.clearIcon}
         clearIconPosition=${props.clearIconPosition}
+        searchIconPosition=${props.searchIconPosition ?? 'None'}
       >
         <select required>
           <option value="" hidden>Select an option</option>
@@ -90,6 +91,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         ?suffixFill=${props.suffixFill}
         clearIcon=${props.clearIcon}
         clearIconPosition=${props.clearIconPosition}
+        searchIconPosition=${props.searchIconPosition ?? 'None'}
       >
         <input
           required

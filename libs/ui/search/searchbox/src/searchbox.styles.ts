@@ -17,6 +17,10 @@ export const searchboxStyles = css`
     align-self: center;
   }
 
+  :host(:not([has-value])) [appearance='SHOW'] {
+    display: none;
+  }
+
   :host([has-value]) .clear:not([appearance='HOVER']),
   :host([has-value]) .clear[appearance='HOVER']:hover {
     opacity: 100%;

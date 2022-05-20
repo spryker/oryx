@@ -71,8 +71,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(true);
+        it('should have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(true);
         });
       });
 
@@ -87,8 +87,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(false);
+        it('should not have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(false);
         });
 
         describe('but light dom is provided for the prefix slot ', () => {
@@ -104,8 +104,8 @@ describe('AffixController', () => {
             await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
-          it('should have prefix-fill attribute', () => {
-            expect(element.hasAttribute('prefix-fill')).toBe(true);
+          it('should have prefixFill attribute', () => {
+            expect(element.hasAttribute('prefixFill')).toBe(true);
           });
         });
       });
@@ -123,8 +123,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(false);
+        it('should not have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(false);
         });
       });
 
@@ -139,8 +139,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(false);
+        it('should not have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(false);
         });
       });
     });
@@ -157,8 +157,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(false);
+        it('should not have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(false);
         });
       });
 
@@ -173,8 +173,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have prefix-fill attribute', () => {
-          expect(element.hasAttribute('prefix-fill')).toBe(false);
+        it('should not have prefixFill attribute', () => {
+          expect(element.hasAttribute('prefixFill')).toBe(false);
         });
       });
     });
@@ -227,8 +227,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(true);
+        it('should have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(true);
         });
       });
 
@@ -243,8 +243,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(false);
+        it('should not have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(false);
         });
 
         describe('but light dom is provided for the suffix slot ', () => {
@@ -259,8 +259,8 @@ describe('AffixController', () => {
             await expect(element).shadowDom.to.be.accessible(a11yConfig);
           });
 
-          it('should have suffix-fill attribute', () => {
-            expect(element.hasAttribute('suffix-fill')).toBe(true);
+          it('should have suffixFill attribute', () => {
+            expect(element.hasAttribute('suffixFill')).toBe(true);
           });
         });
       });
@@ -280,8 +280,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(false);
+        it('should not have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(false);
         });
       });
 
@@ -296,8 +296,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(false);
+        it('should not have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(false);
         });
       });
     });
@@ -314,8 +314,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(false);
+        it('should not have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(false);
         });
       });
 
@@ -329,8 +329,8 @@ describe('AffixController', () => {
           await expect(element).shadowDom.to.be.accessible(a11yConfig);
         });
 
-        it('should not have suffix-fill attribute', () => {
-          expect(element.hasAttribute('suffix-fill')).toBe(false);
+        it('should not have suffixFill attribute', () => {
+          expect(element.hasAttribute('suffixFill')).toBe(false);
         });
       });
     });

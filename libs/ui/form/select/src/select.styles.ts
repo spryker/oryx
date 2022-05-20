@@ -6,7 +6,7 @@ export const selectStyles = css`
   }
 
   slot::slotted(select),
-  slot::slotted(input[readonly]) {
+  slot::slotted(input:not([readonly])) {
     cursor: pointer;
     background-color: transparent;
   }
@@ -27,15 +27,6 @@ export const selectStyles = css`
     appearance: none;
     font: inherit;
     text-overflow: ellipsis;
-  }
-
-  button.dropdown {
-    margin-inline-end: -18px;
-    color: var(--oryx-color-neutral-dark);
-  }
-
-  :host([disabled]) button.dropdown {
-    color: var(--oryx-color-neutral-darker);
   }
 
   oryx-icon[type='dropdown'] {

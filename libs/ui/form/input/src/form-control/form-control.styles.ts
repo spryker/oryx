@@ -12,6 +12,7 @@ export const formControlStyles = css`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    cursor: pointer;
   }
 
   slot[name='label'] {

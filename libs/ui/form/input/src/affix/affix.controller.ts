@@ -39,7 +39,7 @@ export class AffixController implements ReactiveController {
    */
   protected updateFill(): void {
     this.host.toggleAttribute(
-      'prefix-fill',
+      'prefixFill',
       !!this.host.prefixFill &&
         (!!this.host.prefixIcon ||
           queryAssignedElements(this.host, { slot: 'prefix', flatten: true })
@@ -47,7 +47,7 @@ export class AffixController implements ReactiveController {
     );
 
     this.host.toggleAttribute(
-      'suffix-fill',
+      'suffixFill',
       !!this.host.suffixFill &&
         (!!this.host.suffixIcon ||
           queryAssignedElements(this.host, { slot: 'suffix', flatten: true })
