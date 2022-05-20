@@ -28,7 +28,8 @@ export class SelectController implements ReactiveController {
     } else {
       control.toggleAttribute(
         'readonly',
-        this.host.filterStrategy === undefined
+        this.host.filterStrategy === undefined ||
+          (this.host.filterStrategy as string) === ''
       );
     }
   }

@@ -24,9 +24,14 @@ export const selectStyles = css`
     border: none;
     outline: none;
     color: var(--oryx-color-ink);
-    appearance: none;
+    pointer-events: none;
     font: inherit;
     text-overflow: ellipsis;
+    appearance: none;
+    /* stylelint-disable */
+    /* requires by safari < 15.4 */
+    -webkit-appearance: none;
+    /* stylelint-enable */
   }
 
   oryx-icon[type='dropdown'] {

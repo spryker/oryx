@@ -44,9 +44,7 @@ export const formControlStyles = css`
     pointer-events: none;
   }
 
-  :host([disabled]) .control,
-  input:read-only,
-  ::slotted(input:read-only) {
+  :host([disabled]) .control {
     border-radius: var(--oryx-border-radius);
     background-color: var(--oryx-color-neutral-lighter);
   }
