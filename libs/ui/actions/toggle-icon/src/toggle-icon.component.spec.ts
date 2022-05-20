@@ -3,12 +3,13 @@ import './index';
 import { ToggleIconComponent } from './toggle-icon.component';
 
 describe('ToggleIconComponent', () => {
+  let element: ToggleIconComponent;
+
   const querySlottedElements = (type: string): Element | undefined =>
     element.renderRoot
       .querySelector('slot')
       ?.assignedElements({ flatten: true })
       .find((el) => el.tagName.toLowerCase() === type.toLowerCase());
-  let element: ToggleIconComponent;
 
   describe('when a proper input is set', () => {
     beforeEach(async () => {
@@ -19,8 +20,8 @@ describe('ToggleIconComponent', () => {
     });
 
     it('should render the slotted elements', () => {
-      expect(querySlottedElements('input')).not.toBeUndefined;
-      expect(querySlottedElements('oryx-icon')).not.toBeUndefined;
+      expect(querySlottedElements('input')).not.toBeUndefined();
+      expect(querySlottedElements('oryx-icon')).not.toBeUndefined();
     });
 
     describe('if the input is checked initially', () => {
@@ -99,6 +100,36 @@ describe('ToggleIconComponent', () => {
           });
         });
       });
+    });
+  });
+});
+
+describe('ToggleButtonComponent', () => {
+  let element: ToggleIconComponent;
+
+  const querySlottedElements = (type: string): Element | undefined =>
+    element.renderRoot
+      .querySelector('slot')
+      ?.assignedElements({ flatten: true })
+      .find((el) => el.tagName.toLowerCase() === type.toLowerCase());
+
+  describe('when a proper input is set', () => {
+    beforeEach(async () => {
+      element = await fixture(`<oryx-toggle-icon>
+            <input type="radio" placeholder="make a11y happy" />
+            <oryx-icon></oryx-icon>
+            <span></span>
+          </oryx-toggle-icon>`);
+    });
+
+    it('should render the slotted elements', () => {
+      expect(querySlottedElements('input')).not.toBeUndefined();
+      expect(querySlottedElements('oryx-icon')).not.toBeUndefined();
+      expect(querySlottedElements('span')).not.toBeUndefined();
+    });
+
+    it('should have the has-text property in the host', () => {
+      expect(element.hasAttribute('has-text')).toBe(true);
     });
   });
 });

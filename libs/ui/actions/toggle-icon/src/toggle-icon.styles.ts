@@ -2,88 +2,128 @@ import { css } from 'lit';
 
 export const toggleIconStyles = css`
   :host {
+    --oryx-icon-size: var(--oryx-icon-size-large);
+
     position: relative;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: var(--oryx-border-radius-small);
+  }
+
+  :host([has-text]),
+  :host([has-text]) ::slotted(input)::after {
+    border-radius: var(--oryx-border-radius-large);
   }
 
   :host,
-  ::slotted(input) {
-    min-height: 38px;
-    min-width: 38px;
+  ::slotted(*) {
+    transition: var(--oryx-transition-time);
   }
 
-  ::slotted(oryx-icon) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: var(--oryx-color-neutral-dark);
-    pointer-events: none;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    transform: translate(-50%, -50%);
+  :host(:not([has-text])) {
+    padding: 7px;
   }
 
-  ::slotted(input) {
-    cursor: pointer;
-    margin: 0;
-    padding: 6px;
-    appearance: none;
-    flex: 1;
-    border: 1px solid var(--oryx-color-neutral-light);
-    background: var(--oryx-color-canvas);
-    box-sizing: border-box;
-    border-radius: 4px;
-    outline: none;
+  :host([has-text][size='small']) {
+    padding: 8px 12px;
+  }
+
+  :host([has-text]),
+  :host([has-text][size='medium']) {
+    padding: 8px 12px;
+  }
+
+  :host([has-text][size='large']) {
+    padding: 12px 16px;
   }
 
   ::slotted([disabled]) {
     pointer-events: none;
   }
 
-  ::slotted(input:hover) {
-    border-color: var(--oryx-color-neutral);
-    background: var(--oryx-color-neutral-lighter);
+  ::slotted(input) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    appearance: none;
+    outline: none;
+    border-radius: var(--oryx-border-radius-small);
   }
 
-  ::slotted(input:active) {
+  ::slotted(input)::after {
+    cursor: pointer;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: var(--oryx-border-radius-small);
+    background: var(--oryx-color-canvas);
+    border: 1px solid var(--oryx-color-neutral-light);
+  }
+
+  ::slotted(input:hover:not([disabled]))::after {
+    background: var(--oryx-color-neutral-lighter);
+    border-color: var(--oryx-color-neutral);
+  }
+
+  ::slotted(input:active:not([disabled]))::after {
     background: var(--oryx-color-neutral-lighter);
     border-color: var(--oryx-color-neutral-dark);
   }
 
-  ::slotted(input:focus-visible:not(:active)) {
+  ::slotted(input[checked]:active:not([disabled]))::after,
+  ::slotted(input[checked]:hover:not([disabled]))::after {
+    border-color: var(--oryx-color-brand-dark);
+  }
+
+  ::slotted(input[checked]:active:not([disabled]))::after {
+    background: var(--oryx-color-neutral-lighter);
+  }
+
+  ::slotted(input:focus-visible:not(:active))::after {
     box-shadow: 0 0 3px var(--oryx-color-brand);
     border: solid 1px transparent;
     outline: solid 1px var(--oryx-color-neutral);
     outline-offset: -2px;
   }
 
-  ::slotted(input[checked]:focus-visible:not(:active)) {
+  ::slotted(input[checked]:focus-visible:not(:active))::after {
     border-color: transparent;
     outline-color: var(--oryx-color-brand);
   }
 
-  ::slotted(input[disabled]) {
+  ::slotted(input[disabled])::after {
     background: var(--oryx-color-neutral-lighter);
     border-color: var(--oryx-color-neutral);
   }
 
-  ::slotted(input[checked]:not([disabled])) {
+  ::slotted(input[checked]:not([disabled]))::after {
     border-color: var(--oryx-color-brand);
     background: var(--oryx-color-brand-lighter);
   }
 
-  ::slotted(input[checked]:active:not([disabled])) {
-    border-color: var(--oryx-color-brand-dark);
-    background: var(--oryx-color-neutral-lighter);
-  }
-
-  ::slotted(input[checked]:hover) {
-    border-color: var(--oryx-color-brand-dark);
-    background-color: var(--oryx-color-neutral-lighter);
-  }
-
-  ::slotted(input[checked][disabled]) {
+  ::slotted(input[checked][disabled])::after {
     border-color: var(--oryx-color-neutral-dark);
+  }
+
+  ::slotted(oryx-icon),
+  :host([has-text]) > ::slotted(span) {
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  :host([has-text]) > ::slotted(span) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  ::slotted(oryx-icon) {
+    color: var(--oryx-color-neutral-dark);
   }
 
   :host([checked]:not([disabled])) ::slotted(oryx-icon) {

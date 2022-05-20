@@ -115,4 +115,4 @@ const Template: Story = (): TemplateResult =>
     `
   );
 
-export const ToggleIconStates = Template.bind({});
+export const States = Template.bind({});

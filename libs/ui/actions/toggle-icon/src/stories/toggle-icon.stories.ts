@@ -3,9 +3,23 @@ import { html, TemplateResult } from 'lit';
 import '..';
 import { storybookPrefix } from '../../../../.constants';
 
-export default { title: `${storybookPrefix}/actions/Toggle Icon` } as Meta;
+export default {
+  title: `${storybookPrefix}/actions/Toggle Icon`,
+  args: {
+    disabled: false,
+    type: 'checkbox',
+  },
+  argTypes: {
+    type: {
+      options: ['checkbox', 'radio'],
+      control: { type: 'radio' },
+    },
+  },
+  parameters: { chromatic: { disableSnapshot: true } },
+} as Meta;
 
 let checked = false;
+
 const DemoTemplate: Story<{
   disabled: boolean;
   type: 'checkbox' | 'radio';
@@ -20,7 +34,7 @@ const DemoTemplate: Story<{
       <input
         ?disabled=${disabled}
         @change=${onChange}
-        type=${type}
+        type=${type ?? 'checkbox'}
         placeholder="make a11y happy"
         ?checked=${checked}
       />
@@ -30,13 +44,3 @@ const DemoTemplate: Story<{
 };
 
 export const ToggleIconDemo = DemoTemplate.bind({});
-ToggleIconDemo.args = {
-  disabled: false,
-  type: 'checkbox',
-};
-ToggleIconDemo.argTypes = {
-  type: {
-    options: ['checkbox', 'radio'],
-    control: { type: 'radio' },
-  },
-};

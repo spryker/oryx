@@ -13,12 +13,25 @@ export class ToggleIconComponent extends LitElement {
       ) as HTMLInputElement;
   }
 
+  private getSpan(): HTMLSpanElement {
+    return this.shadowRoot
+      ?.querySelector('slot')
+      ?.assignedElements({ flatten: true })
+      .find(
+        (e: Element) => e.tagName.toLowerCase() === 'span'
+      ) as HTMLInputElement;
+  }
+
   private initAttribute(input: HTMLInputElement, name: string): void {
     this.toggleAttribute(name, input.hasAttribute(name));
   }
 
   firstUpdated(): void {
     const input = this.getInput();
+
+    const span = this.getSpan();
+
+    this.toggleAttribute('has-text', Boolean(span));
 
     if (input) {
       this.initAttribute(input, 'checked');
