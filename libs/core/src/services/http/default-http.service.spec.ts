@@ -1,4 +1,6 @@
+import { catchError, of, Subject, takeUntil } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
+import { SpyInstanceFn } from 'vitest';
 import { DefaultHttpService } from './default-http.service';
 import { HttpService } from './http.service';
 
@@ -17,12 +19,35 @@ const mockOptions = {
 const mockBody = {
   test: 'test',
 };
+const destroy$ = new Subject<void>();
 
 describe('DefaultHttpService', () => {
   let service: HttpService;
 
   beforeEach(() => {
     service = new DefaultHttpService();
+    (fromFetch as SpyInstanceFn<any[], any>).mockReturnValue(of({ ok: true }));
+  });
+
+  afterEach(() => {
+    vi.resetAllMocks();
+    destroy$.next();
+  });
+
+  it('request should throw an error', (done) => {
+    const mockCallback = vi.fn();
+    (fromFetch as SpyInstanceFn<any[], any>).mockReturnValue(
+      of({ ok: false, status: 404, statusText: 'statusText' })
+    );
+    service
+      .request(mockUrl, mockOptions)
+      .pipe(takeUntil(destroy$), catchError(mockCallback))
+      .subscribe({
+        error: (error) => {
+          expect(error).toBeDefined();
+          done();
+        },
+      });
   });
 
   it('request method should call `fromFetch` with proper parameters', () => {
@@ -31,7 +56,6 @@ describe('DefaultHttpService', () => {
     expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
       ...mockOptions,
       headers: mockHeaders,
-      selector: expect.any(Function),
     });
   });
 
@@ -42,7 +66,6 @@ describe('DefaultHttpService', () => {
       ...mockOptions,
       method: 'GET',
       headers: mockHeaders,
-      selector: expect.any(Function),
     });
   });
 
@@ -57,7 +80,6 @@ describe('DefaultHttpService', () => {
         ...mockHeaders,
       },
       body: JSON.stringify(mockBody),
-      selector: expect.any(Function),
     });
   });
 
@@ -72,7 +94,6 @@ describe('DefaultHttpService', () => {
         ...mockHeaders,
       },
       body: JSON.stringify(mockBody),
-      selector: expect.any(Function),
     });
   });
 });
