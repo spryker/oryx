@@ -9,14 +9,14 @@ export const formControlStyles = css`
 
   label {
     border-color: inherit;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     cursor: pointer;
   }
 
   slot[name='label'] {
-    display: inline;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: inherit;
     color: var(--oryx-color-ink);
     font-weight: 400;
