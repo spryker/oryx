@@ -30,16 +30,28 @@ export class FilterController implements ReactiveController {
   };
 
   hostConnected(): void {
-    this.host.addEventListener('input', this.inputHandler as EventListener);
-    this.host.addEventListener('focusout', this.focusOutHandler);
+    this.host.addEventListener('keydown', this.onKeydown);
+    this.host.addEventListener('input', this.onInput as EventListener);
+    this.host.addEventListener('focusout', this.onFocusOut);
   }
 
   hostDisconnected(): void {
-    this.host.removeEventListener('input', this.inputHandler as EventListener);
-    this.host.removeEventListener('focusout', this.focusOutHandler);
+    this.host.removeEventListener('keydown', this.onKeydown);
+    this.host.removeEventListener('input', this.onInput as EventListener);
+    this.host.removeEventListener('focusout', this.onFocusOut);
   }
 
-  protected focusOutHandler(): void {
+  protected onKeydown(e: KeyboardEvent): void {
+    if (
+      this.host.filterStrategy &&
+      e.key === ' ' &&
+      this.control.value === ''
+    ) {
+      e.preventDefault();
+    }
+  }
+
+  protected onFocusOut(): void {
     if (this.host.filterStrategy) {
       const hasSelectedItem = this.items.find((item) => item.selected);
       if (!hasSelectedItem) {
@@ -48,7 +60,7 @@ export class FilterController implements ReactiveController {
     }
   }
 
-  protected inputHandler(e: InputEvent): void {
+  protected onInput(e: InputEvent): void {
     if (this.host.filterStrategy && e.inputType) {
       this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
     }
@@ -151,7 +163,8 @@ export class FilterController implements ReactiveController {
   constructor(protected host: TypeaheadOptions & LitElement) {
     this.host.addController(this);
 
-    this.inputHandler = this.inputHandler.bind(this);
-    this.focusOutHandler = this.focusOutHandler.bind(this);
+    this.onKeydown = this.onKeydown.bind(this);
+    this.onInput = this.onInput.bind(this);
+    this.onFocusOut = this.onFocusOut.bind(this);
   }
 }

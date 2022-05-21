@@ -2,7 +2,7 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { SpyInstanceFn, vi } from 'vitest';
+import { SpyInstance, SpyInstanceFn, vi } from 'vitest';
 import { getControl } from '../../../../form/utilities/getControl';
 import '../../../../option';
 import { OptionComponent } from '../../../../option';
@@ -183,6 +183,58 @@ describe('FilterController', () => {
 
         it('should dispatch a oryx.popover event without a selected option', async () => {
           expect(callback.mock.calls[0][0].detail.selected).toBeUndefined();
+        });
+      });
+    });
+    describe('and the user starts using the space bar', () => {
+      let spy: SpyInstance<Event[]>;
+
+      const event = new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        composed: true,
+      });
+
+      describe('and the value is empty', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-filter .filterStrategy=${FilterStrategyType.START_WITH}>
+              <input value="" />
+              ${optionsValues.map(
+                (option) => html`<oryx-option .value=${option}></oryx-option>`
+              )}
+            </fake-filter>`
+          );
+        });
+
+        it('should not add the value', () => {
+          spy = vi.spyOn(event, 'preventDefault');
+          element.dispatchEvent(event);
+          expect(spy).toHaveBeenCalled();
+        });
+      });
+
+      describe('and the value is not empty', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<fake-filter .filterStrategy=${FilterStrategyType.START_WITH}>
+              <input value="not empty" />
+              ${optionsValues.map(
+                (option) => html`<oryx-option .value=${option}></oryx-option>`
+              )}
+            </fake-filter>`
+          );
+        });
+
+        it('should not add the value', () => {
+          const event = new KeyboardEvent('keydown', {
+            key: ' ',
+            bubbles: true,
+            composed: true,
+          });
+          spy = vi.spyOn(event, 'preventDefault');
+          element.dispatchEvent(event);
+          expect(spy).not.toHaveBeenCalled();
         });
       });
     });
