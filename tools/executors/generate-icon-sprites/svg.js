@@ -45,8 +45,8 @@ function echoExecutor(options, context) {
             switch (_b.label) {
                 case 0:
                     cwd = context.workspace.projects[context.projectName].root;
-                    iconSets = JSON.stringify(options.iconSets);
-                    tsConfig = "TS_NODE_PROJECT=".concat((0, path_1.join)(__dirname, 'svg-module/tsconfig.json'));
+                    iconSets = JSON.stringify(options.iconSets).replace(/"/g, "\"".concat(String.fromCharCode(92), "\""));
+                    tsConfig = "npx cross-env TS_NODE_PROJECT=".concat((0, path_1.join)(__dirname, 'svg-module/tsconfig.json'));
                     nodeConfiguration = '--loader=ts-node/esm --es-module-specifier-resolution=node';
                     file = "".concat((0, path_1.join)(__dirname, 'svg-module/svg.ts'));
                     properties = "--iconSets='".concat(iconSets, "' --cwd=").concat(cwd);

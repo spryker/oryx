@@ -16,8 +16,11 @@ export default async function echoExecutor(
   context: ExecutorContext
 ) {
   const cwd = context.workspace.projects[context.projectName].root;
-  const iconSets = JSON.stringify(options.iconSets);
-  const tsConfig = `TS_NODE_PROJECT=${join(
+  const iconSets = JSON.stringify(options.iconSets).replace(
+    /"/g,
+    `"${String.fromCharCode(92)}"`
+  );
+  const tsConfig = `npx cross-env TS_NODE_PROJECT=${join(
     __dirname,
     'svg-module/tsconfig.json'
   )}`;

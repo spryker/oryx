@@ -3,6 +3,7 @@
     "rootDir": "../../../../",
     "module": "es2020",
     "moduleResolution": "node",
+    "lib": ["es2021"],
     "plugins": [
       {
         "transform": "./tools/executors/generate-icon-sprites/transformer/index.ts"

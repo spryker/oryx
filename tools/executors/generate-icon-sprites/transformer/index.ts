@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { resolve } from 'path';
 import {
   Node,
   Program,
@@ -6,6 +6,7 @@ import {
   TransformationContext,
   visitEachChild,
 } from 'typescript';
+import { pathToFileURL } from 'url';
 // @ts-ignore
 import { compilerOptions } from '../../../../tsconfig.base.json';
 
@@ -18,23 +19,28 @@ declare module 'typescript' {
 const { paths } = compilerOptions;
 
 export default function pathsReplacer(program: Program) {
+  const { rootDir } = program.getCompilerOptions();
+
   return {
     before(ctx: TransformationContext) {
       return (sourceFile: SourceFile) => {
         const visitor = (node: Node): Node => {
           const path = paths[node?.text];
           const isLit = node?.text === 'lit';
-          const { rootDir } = program.getCompilerOptions();
           const resolveLit = isLit
             ? ctx.factory.createStringLiteral(
-                join(
-                  rootDir,
-                  '/tools/executors/generate-icon-sprites/svg-module/mock-svg-lit.ts'
-                )
+                pathToFileURL(
+                  resolve(
+                    rootDir,
+                    'tools/executors/generate-icon-sprites/svg-module/mock-svg-lit.ts'
+                  )
+                ).href
               )
             : node;
           const resolvedNode = path
-            ? ctx.factory.createStringLiteral(join(rootDir, path[0]))
+            ? ctx.factory.createStringLiteral(
+                pathToFileURL(resolve(rootDir, path[0])).href
+              )
             : resolveLit;
 
           return visitEachChild(resolvedNode, visitor, ctx);

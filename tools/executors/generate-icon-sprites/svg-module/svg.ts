@@ -1,16 +1,19 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
+import { pathToFileURL } from 'url';
 import { IconSet } from '../svg';
 
 async function svgSprite() {
   const argvs = process.argv.slice(2);
-  const iconSets: IconSet[] = JSON.parse(argvs[0].replace('--iconSets=', ''));
+  const iconSets: IconSet[] = JSON.parse(
+    argvs[0].replace('--iconSets=', '').replaceAll(`""`, '"')
+  );
   const cwd = argvs[1].replace('--cwd=', '');
 
   for (let i = 0; i < iconSets.length; i++) {
     const options = iconSets[i];
     console.info(`Getting the location of icon files`);
-    const input = resolve(cwd, options.input);
+    const input = pathToFileURL(resolve(cwd, options.input)).href;
     const output = resolve(cwd, options.output);
     const icons = await import(input);
     const svgTemplate = (id: string, value: string) =>
