@@ -20,20 +20,17 @@ export class TypeaheadController implements ReactiveController {
   protected lastValue?: string;
 
   hostConnected(): void {
-    this.host.addEventListener('input', this.inputEventHandler);
-    this.host.addEventListener('change', this.changeEventHandler);
-    this.host.addEventListener(
-      'oryx.select',
-      this.selectEventHandler as EventListener
-    );
+    this.host.addEventListener('input', this.onInput);
+    this.host.addEventListener('change', this.onChange);
+    this.host.addEventListener('oryx.select', this.onSelect as EventListener);
   }
 
   hostDisconnected(): void {
-    this.host.removeEventListener('input', this.inputEventHandler);
-    this.host.removeEventListener('change', this.changeEventHandler);
+    this.host.removeEventListener('input', this.onInput);
+    this.host.removeEventListener('change', this.onChange);
     this.host.removeEventListener(
       'oryx.select',
-      this.selectEventHandler as EventListener
+      this.onSelect as EventListener
     );
   }
 
@@ -50,7 +47,7 @@ export class TypeaheadController implements ReactiveController {
       this.lastValue = this.control.value;
     }
 
-    this.changeEventHandler();
+    this.onChange();
   }
 
   renderPopover(): TemplateResult {
@@ -79,7 +76,7 @@ export class TypeaheadController implements ReactiveController {
     `;
   }
 
-  protected inputEventHandler(): void {
+  protected onInput(): void {
     const event = new CustomEvent<SearchEvent>('oryx.typeahead', {
       detail: {
         query: this.control.value,
@@ -90,7 +87,7 @@ export class TypeaheadController implements ReactiveController {
     this.host.dispatchEvent(event);
   }
 
-  protected changeEventHandler(): void {
+  protected onChange(): void {
     const value = this.control.value;
     this.popoverController.selectByValue(value, this.lastValue === value);
     if (value === '') {
@@ -98,15 +95,16 @@ export class TypeaheadController implements ReactiveController {
     }
   }
 
-  protected selectEventHandler(e: CustomEvent<PopoverSelectEvent>): void {
+  protected onSelect(e: CustomEvent<PopoverSelectEvent>): void {
     if (e.detail.selected) {
       const value = this.getValue(e.detail.selected);
-      if (value) {
-        if (this.lastValue === value) {
-          return;
-        }
+      if (!value) {
+        return;
+      }
+      // the control value might have been reset during filtering, hence we'll set it always
+      this.control.value = value;
+      if (this.lastValue !== value) {
         this.lastValue = value;
-        this.control.value = value;
         this.control.dispatchEvent(
           new Event(
             this.control instanceof HTMLSelectElement ? 'change' : 'input',
@@ -133,8 +131,8 @@ export class TypeaheadController implements ReactiveController {
     this.filterController = new FilterController(host);
     this.popoverController = new PopoverController(host, options);
 
-    this.inputEventHandler = this.inputEventHandler.bind(this);
-    this.changeEventHandler = this.changeEventHandler.bind(this);
-    this.selectEventHandler = this.selectEventHandler.bind(this);
+    this.onInput = this.onInput.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 }

@@ -4,6 +4,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstanceFn } from 'vitest';
 import { a11yConfig } from '../../../../a11y';
+import { getControl } from '../../../../form/utilities';
 import '../../../../option/';
 import { PopoverSelectEvent } from '../../../../popover';
 import { SearchEvent } from '../../../searchbox';
@@ -202,7 +203,7 @@ describe('TypeaheadController', () => {
           it('should dispatch the input event', () => {
             expect(onInput).toHaveBeenCalled();
           });
-          it('should not dispatch the change event for input element', () => {
+          it('should not dispatch the change event', () => {
             expect(onChange).not.toHaveBeenCalled();
           });
         });
@@ -219,8 +220,22 @@ describe('TypeaheadController', () => {
           it('should not dispatch the input event', () => {
             expect(onInput).not.toHaveBeenCalled();
           });
-          it('should not dispatch the change event for input element', () => {
+          it('should not dispatch the change event', () => {
             expect(onChange).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and value has changed', () => {
+          beforeEach(() => {
+            getControl(element).value = 'changed';
+          });
+          describe('and the "oryx.select" event is dispatched', () => {
+            beforeEach(() => {
+              dispatchSelectEvent();
+            });
+            it('should set the value', () => {
+              expect(getControl(element).value).toBe('option-value');
+            });
           });
         });
       });
