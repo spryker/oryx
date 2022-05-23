@@ -1,12 +1,10 @@
 import { ContextService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/injector';
 import { defer, Observable, of } from 'rxjs';
-import { SSRStreamParserService } from '../ssr-stream-parser';
+import { DefaultSSRStreamParserService } from './default-ssr-stream-parser';
 
 export class ServerContextService implements ContextService {
+  protected streamParser = new DefaultSSRStreamParserService();
   protected dataKey = 'data-';
-
-  constructor(protected streamParser = inject(SSRStreamParserService)) {}
 
   provide(element: Element, key: string, value: unknown): void {
     element.setAttribute(`${this.dataKey}${key}`, JSON.stringify(value));
@@ -33,5 +31,9 @@ export class ServerContextService implements ContextService {
 
   remove(element: Element, key: string): void {
     element.removeAttribute(`${this.dataKey}${key}`);
+  }
+
+  fillStream(stream: string): void {
+    this.streamParser.fillStream(stream);
   }
 }

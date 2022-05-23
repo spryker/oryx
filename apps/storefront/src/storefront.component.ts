@@ -1,5 +1,4 @@
-import { ContextService } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/injector';
+import { ContextController } from '@spryker-oryx/core';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -9,7 +8,7 @@ import { styles } from './storefront.styles';
 
 @customElement('storefront-component')
 export class StorefrontComponent extends LitElement {
-  protected context = resolve(this, ContextService);
+  protected context = new ContextController(this);
 
   static styles = styles;
 
@@ -20,7 +19,7 @@ export class StorefrontComponent extends LitElement {
   protected route$ = new BehaviorSubject(this.route).pipe(
     tap((route) => {
       // TODO: fix hardcoded code
-      this.context.provide(this, ProductContext.Code, '119');
+      this.context.provide(ProductContext.Code, '119');
     })
   );
 

@@ -4,7 +4,7 @@ import { createInjector, resolve } from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { finalize } from 'rxjs';
-import { SSRStreamParserService } from '../ssr-stream-parser';
+import { SSRStreamParserService } from './default-ssr-stream-parser';
 import { ServerContextService } from './server-context.service';
 
 const mockKey = 'mockKey';
@@ -13,16 +13,20 @@ const mockObject = {
   value: 'value',
 };
 
-class MockSSRStreamParserService implements SSRStreamParserService {
-  fillStream = vi.fn();
-  getStreamStack() {
-    return [
-      {
-        mockKey: JSON.stringify(mockObject),
-      },
-    ];
-  }
-}
+vi.mock('./default-ssr-stream-parser.ts', () => {
+  return {
+    DefaultSSRStreamParserService: class implements SSRStreamParserService {
+      fillStream = vi.fn();
+      getStreamStack(): Record<string, string>[] {
+        return [
+          {
+            mockKey: JSON.stringify(mockObject),
+          },
+        ];
+      }
+    },
+  };
+});
 
 @customElement('overlay-parent-context')
 export class OverlayParentContext extends LitElement {
@@ -48,10 +52,6 @@ describe('SSRContextService', () => {
         {
           provide: ContextService,
           useClass: ServerContextService,
-        },
-        {
-          provide: SSRStreamParserService,
-          useClass: MockSSRStreamParserService,
         },
       ],
     });

@@ -1,8 +1,11 @@
 // organize-imports-ignore
 import './app.server';
 import { getInjector } from '@spryker-oryx/injector';
-import { SSRAwaiterService } from '@spryker-oryx/core';
-import { SSRStreamParserService } from '@spryker-oryx/core/server';
+import {
+  SSRAwaiterService,
+  ContextService,
+  ServerContextService,
+} from '@spryker-oryx/core';
 import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,7 +24,7 @@ export const renderComponent = async (
 
 export const render = async (element): Promise<string> => {
   const awaiter = getInjector().inject(SSRAwaiterService);
-  const streamParser = getInjector().inject(SSRStreamParserService);
+  const context = getInjector().inject(ContextService) as ServerContextService;
   const ssrResult = await renderComponent(element);
 
   let stream = '';
@@ -38,7 +41,7 @@ export const render = async (element): Promise<string> => {
 
     stream += data.value;
     data = ssrResult.next();
-    streamParser.fillStream(stream);
+    context.fillStream(stream);
   }
   return stream;
 };

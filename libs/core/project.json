@@ -13,7 +13,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/core/src/**/*.ts"]
+        "lintFilePatterns": ["libs/core/**/*.ts"]
       }
     },
     "test": {

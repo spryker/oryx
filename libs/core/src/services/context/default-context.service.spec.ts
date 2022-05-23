@@ -6,7 +6,6 @@ import {
 } from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { finalize } from 'rxjs';
 import { ContextService } from './context.service';
 import { DefaultContextService } from './default-context.service';
 
@@ -109,21 +108,34 @@ describe('ContextService', () => {
       expect(mockCallback).toHaveBeenNthCalledWith(2, mockReactive);
     });
 
-    it('should remove attribute and complete stream', () => {
+    it('should emit value if providing happened after subscribing', () => {
+      const mockCallback = vi.fn();
+
+      testChildContext()
+        .context.get(testChildContext(), mockKey)
+        .subscribe(mockCallback);
+
+      element.context.provide(element, mockKey, mockObject);
+
+      expect(mockCallback).toHaveBeenNthCalledWith(1, undefined);
+      expect(mockCallback).toHaveBeenNthCalledWith(2, mockObject);
+    });
+
+    it('should remove attribute and emit undefined', () => {
       const mockCallback = vi.fn();
 
       element.context.provide(element, mockKey, mockObject);
+
       testChildContext()
         .context.get(testChildContext(), mockKey)
-        .pipe(finalize(mockCallback))
-        .subscribe();
+        .subscribe(mockCallback);
 
       expect(element.hasAttribute(`data-${mockKey}`)).toBe(true);
 
       element.context.remove(element, mockKey);
 
       expect(element.hasAttribute(`data-${mockKey}`)).toBe(false);
-      expect(mockCallback).toHaveBeenCalled();
+      expect(mockCallback).toHaveBeenCalledWith(undefined);
     });
   });
 
