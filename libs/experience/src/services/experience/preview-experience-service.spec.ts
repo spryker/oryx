@@ -82,7 +82,7 @@ describe('ExperiencePreviewService', () => {
     });
   });
 
-  it('should get interaction data', (done) => {
+  it('should get interactive data', (done) => {
     const interactionValue = {
       action: 'test',
       componentId: '1',

@@ -8,7 +8,11 @@ export const parameters = {
   options: {
     storySort: {
       includeName: true,
-      order: ['UI', '*'],
+      order: [
+        'UI',
+        ['Actions', ['Button', ['Static', ['Primary', 'Secondary']]]],
+        '*',
+      ],
       method: 'alphabetical',
     },
   },

@@ -9,9 +9,9 @@ const Template: Story = (): TemplateResult => {
   return html` <oryx-toggle></oryx-toggle> `;
 };
 
-export const ToggleWithoutSlottedContent = Template.bind({});
+export const WithoutSlottedContent = Template.bind({});
 
-ToggleWithoutSlottedContent.parameters = {
+WithoutSlottedContent.parameters = {
   a11y: {
     config: {
       rules: [{ id: 'label', enabled: false }],

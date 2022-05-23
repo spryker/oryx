@@ -17,4 +17,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const ToggleWithLongText = Template.bind({});
+export const WithLongText = Template.bind({});

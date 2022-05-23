@@ -119,4 +119,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const ToggleVariants = Template.bind({});
+export const States = Template.bind({});
