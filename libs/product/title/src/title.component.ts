@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { BehaviorSubject, catchError, filter, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, switchMap } from 'rxjs';
 import { ProductContext, ProductService } from '../../src';
 import { styles } from './title.styles';
 
@@ -25,10 +25,7 @@ export class TitleComponent extends LitElement {
   protected productTitle$ = this.context
     .get(ProductContext.Code, this.code$)
     .pipe(
-      filter((code) => code !== undefined),
-      switchMap((code) =>
-        this.productService.get({ sku: code }).pipe(catchError(() => of(null)))
-      ),
+      switchMap((code) => this.productService.get({ sku: code })),
       map((product) => product?.name ?? '')
     );
 
