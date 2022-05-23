@@ -1,8 +1,13 @@
+import { HttpErrorResponse } from '@spryker-oryx/core';
+import { NullableGeneric } from '@spryker-oryx/typescript-utils';
 import { Observable } from 'rxjs';
 import { Product, ProductQualifier } from '../models';
 
 export interface ProductService {
-  get(qualifier: ProductQualifier): Observable<Product>;
+  get(qualifier: ProductQualifier): Observable<NullableGeneric<Product>>;
+  getError(
+    qualifier: ProductQualifier
+  ): Observable<NullableGeneric<HttpErrorResponse>>;
 }
 
 export const ProductService = 'FES.ProductService';

@@ -1,11 +1,11 @@
-import { catchError, of, Subject, takeUntil } from 'rxjs';
+import { of, Subject, takeUntil } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { SpyInstanceFn } from 'vitest';
 import { DefaultHttpService } from './default-http.service';
 import { HttpService } from './http.service';
 
 vi.mock('rxjs/fetch', () => ({
-  fromFetch: vi.fn(),
+  fromFetch: vi.fn().mockReturnValue(of({ ok: true })),
 }));
 
 const mockUrl = 'mockUrl';
@@ -26,22 +26,17 @@ describe('DefaultHttpService', () => {
 
   beforeEach(() => {
     service = new DefaultHttpService();
-    (fromFetch as SpyInstanceFn<any[], any>).mockReturnValue(of({ ok: true }));
+    (fromFetch as SpyInstanceFn).mockReturnValue(of({ ok: true }));
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
     destroy$.next();
   });
 
   it('request should throw an error', (done) => {
-    const mockCallback = vi.fn();
-    (fromFetch as SpyInstanceFn<any[], any>).mockReturnValue(
-      of({ ok: false, status: 404, statusText: 'statusText' })
-    );
     service
       .request(mockUrl, mockOptions)
-      .pipe(takeUntil(destroy$), catchError(mockCallback))
+      .pipe(takeUntil(destroy$))
       .subscribe({
         error: (error) => {
           expect(error).toBeDefined();

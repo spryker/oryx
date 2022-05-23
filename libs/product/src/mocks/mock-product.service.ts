@@ -3,7 +3,7 @@ import { Product } from '../models/product';
 import { ProductQualifier } from '../models/product-qualifier';
 import { ProductService } from '../services/product.service';
 
-export class MockProductService implements ProductService {
+export class MockProductService implements Partial<ProductService> {
   mockProducts: Product[] = [
     {
       sku: '1',
