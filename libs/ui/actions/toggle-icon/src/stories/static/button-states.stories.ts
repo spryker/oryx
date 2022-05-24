@@ -9,7 +9,7 @@ import {
 } from '../../../../../utilities';
 
 export default {
-  title: `${storybookPrefix}/actions/Toggle Button/Static`,
+  title: `${storybookPrefix}/Actions/Toggle Button/Static`,
 } as Meta;
 
 interface ToggleIconVariant extends Variant {

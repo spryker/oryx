@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../../../../.constants';
 import { generateVariantsMatrix, Variant } from '../../../../../utilities';
 
 export default {
-  title: `${storybookPrefix}/actions/Toggle Icon/Static`,
+  title: `${storybookPrefix}/Actions/Toggle Icon/Static`,
 } as Meta;
 
 interface ToggleIconVariant extends Variant {

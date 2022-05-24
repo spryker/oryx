@@ -4,7 +4,7 @@ import '..';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/actions/Toggle Icon`,
+  title: `${storybookPrefix}/Actions/Toggle Icon`,
   args: {
     disabled: false,
     type: 'checkbox',

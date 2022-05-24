@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
 
 export default {
-  title: `${storybookPrefix}/actions/Toggle Button`,
+  title: `${storybookPrefix}/Actions/Toggle Button`,
   args: {
     disabled: false,
     type: 'checkbox',
