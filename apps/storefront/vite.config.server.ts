@@ -1,6 +1,6 @@
 import { defineConfig, SSROptions } from 'vite';
+import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
-// import checker from 'vite-plugin-checker'
 
 declare module 'vite' {
   interface UserConfig {
@@ -26,12 +26,11 @@ export default defineConfig({
   },
   envPrefix: ['FES', 'SCOS'],
   plugins: [
-    // TODO: uncomment after fixing ts errors
-    // checker({
-    //   typescript: {
-    //     tsconfigPath: 'tsconfig.app.json',
-    //   },
-    // }),
+    checker({
+      typescript: {
+        tsconfigPath: 'tsconfig.app.json',
+      },
+    }),
     tsconfigPaths({ root: '../../' }),
   ],
 });

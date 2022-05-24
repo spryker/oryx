@@ -1,17 +1,14 @@
 // organize-imports-ignore
 import './app.server';
 import { getInjector } from '@spryker-oryx/injector';
-import {
-  SSRAwaiterService,
-  ContextService,
-  ServerContextService,
-} from '@spryker-oryx/core';
+import { SSRAwaiterService, ContextService } from '@spryker-oryx/core';
 import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import fetch from 'node-fetch';
 // We need vite to bundle this and for it to realize it's really an esm module in dev mode
-import AbortController from 'abort-controller/dist/abort-controller.mjs';
+import AbortController from 'abort-controller';
+import { ServerContextService } from '@spryker-oryx/core/server';
 
 globalThis.AbortController = AbortController;
 

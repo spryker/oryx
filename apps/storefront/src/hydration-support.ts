@@ -11,6 +11,7 @@ export interface PatchableLitElement extends HTMLElement {
   render(): unknown;
   renderOptions: RenderOptions;
   _$needsHydration: boolean;
+  hasSSR: boolean;
 }
 
 globalThis.patchHydrateSupport = ({

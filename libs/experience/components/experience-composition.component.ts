@@ -34,12 +34,13 @@ export class ExperienceCompositionComponent extends LitElement {
   }
 
   components$ = this.key$.pipe(
-    filter((key) => !!key),
+    filter((key: string) => !!key),
     switchMap(
-      (key) => this.experienceService?.getStructure({ key }) || of({} as any)
+      (key: string) =>
+        this.experienceService?.getStructure({ key }) || of({} as any)
     ),
-    switchMap((structures) => of(structures?.components)),
-    tap(async (components: Array<any>) => {
+    switchMap((structures: Component) => of(structures?.components)),
+    tap(async (components: Array<Component> | undefined) => {
       if (this.key && components) {
         const resolve = this.ssrAwaiter?.getAwaiter();
         for (let i = 0; i < components!.length; i++) {

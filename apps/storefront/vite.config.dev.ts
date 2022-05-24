@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
+import checker from 'vite-plugin-checker';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
-// import checker from 'vite-plugin-checker'
 
 export default defineConfig({
   envPrefix: ['FES', 'SCOS'],
@@ -9,12 +9,11 @@ export default defineConfig({
     sourcemap: true,
   },
   plugins: [
-    // TODO: uncomment after fixing ts errors
-    // checker({
-    //   typescript: {
-    //     tsconfigPath: 'tsconfig.app.json',
-    //   },
-    // }),
+    checker({
+      typescript: {
+        tsconfigPath: 'tsconfig.app.json',
+      },
+    }),
     tsconfigPaths({ root: '../../' }),
     viteStaticCopy({
       targets: [
