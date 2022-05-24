@@ -20,6 +20,14 @@ export const ssrAwaiter = (
 
     const resolveFn = ssrAwaiter?.getAwaiter();
 
-    return observable?.pipe(tap(resolveFn)) || of({});
+    return (
+      observable?.pipe(
+        tap({
+          next: () => resolveFn?.(),
+          error: () => resolveFn?.(),
+          complete: () => resolveFn?.(),
+        })
+      ) || of({})
+    );
   });
 };
