@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { pathToFileURL } from 'url';
 import { IconSet } from '../svg';
+import './mock-svg-lit';
 
 async function svgSprite() {
   const argvs = process.argv.slice(2);

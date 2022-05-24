@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var child_process_1 = require("child_process");
-var path_1 = require("path");
 function echoExecutor(options, context) {
     return __awaiter(this, void 0, void 0, function () {
         var cwd, iconSets, tsConfig, nodeConfiguration, file, properties, _a;
@@ -45,15 +44,15 @@ function echoExecutor(options, context) {
             switch (_b.label) {
                 case 0:
                     cwd = context.workspace.projects[context.projectName].root;
-                    iconSets = JSON.stringify(options.iconSets).replace(/"/g, "\"".concat(String.fromCharCode(92), "\""));
-                    tsConfig = "npx cross-env TS_NODE_PROJECT=".concat((0, path_1.join)(__dirname, 'svg-module/tsconfig.json'));
+                    iconSets = JSON.stringify(options.iconSets).replace(/"/g, "\"" + String.fromCharCode(92) + "\"");
+                    tsConfig = "npx cross-env TS_NODE_PROJECT=\"./tools/executors/generate-icon-sprites/svg-module/tsconfig.json\"";
                     nodeConfiguration = '--loader=ts-node/esm --es-module-specifier-resolution=node';
-                    file = "".concat((0, path_1.join)(__dirname, 'svg-module/svg.ts'));
-                    properties = "--iconSets='".concat(iconSets, "' --cwd=").concat(cwd);
+                    file = "./tools/executors/generate-icon-sprites/svg-module/svg.ts";
+                    properties = "--iconSets='" + iconSets + "' --cwd=" + cwd;
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, (0, child_process_1.execSync)("".concat(tsConfig, " node ").concat(nodeConfiguration, " ").concat(file, " ").concat(properties), {
+                    return [4 /*yield*/, child_process_1.execSync(tsConfig + " node " + nodeConfiguration + " " + file + " " + properties, {
                             stdio: 'inherit'
                         })];
                 case 2:

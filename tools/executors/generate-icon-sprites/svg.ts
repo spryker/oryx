@@ -1,6 +1,5 @@
 import { ExecutorContext } from '@nrwl/devkit';
 import { execSync } from 'child_process';
-import { join } from 'path';
 
 export interface IconSet {
   input: string;
@@ -20,13 +19,11 @@ export default async function echoExecutor(
     /"/g,
     `"${String.fromCharCode(92)}"`
   );
-  const tsConfig = `npx cross-env TS_NODE_PROJECT=${join(
-    __dirname,
-    'svg-module/tsconfig.json'
-  )}`;
+
+  const tsConfig = `npx cross-env TS_NODE_PROJECT="./tools/executors/generate-icon-sprites/svg-module/tsconfig.json"`;
   const nodeConfiguration =
     '--loader=ts-node/esm --es-module-specifier-resolution=node';
-  const file = `${join(__dirname, 'svg-module/svg.ts')}`;
+  const file = `./tools/executors/generate-icon-sprites/svg-module/svg.ts`;
   const properties = `--iconSets='${iconSets}' --cwd=${cwd}`;
 
   try {
