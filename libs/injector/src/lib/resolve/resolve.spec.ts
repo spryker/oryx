@@ -1,4 +1,4 @@
-import { createInjector, destroyInjector } from './get-injector';
+import { createInjector, destroyInjector } from '../get-injector';
 import { resolve } from './resolve';
 
 describe('resolve', () => {
@@ -23,7 +23,7 @@ describe('resolve', () => {
     expect(resolve(undefined, 'a')).toBe('b');
   });
 
-  it('should trow error for not provided token', () => {
+  it('should throw error for not provided token', () => {
     expect(() => resolve(undefined, 'c')).toThrow();
   });
 

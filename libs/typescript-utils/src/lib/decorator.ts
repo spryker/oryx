@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, UpdatingElement } from 'lit';
 
 export interface DecoratorContext {
@@ -11,4 +10,4 @@ export interface DecoratorContext {
   descriptor?: PropertyDescriptor;
 }
 
-export type TargetDecorator = Record<string, any> & LitElement;
+export type TargetDecorator = Record<string | symbol, any> & LitElement;

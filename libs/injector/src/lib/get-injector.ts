@@ -68,7 +68,7 @@ export function getInjector(
  * @param options
  */
 export function createInjector(options: {
-  context?: InjectorContext;
+  context?: InjectorContext | Element;
   parent?: Injector;
   providers?: Provider[];
   override?: boolean;

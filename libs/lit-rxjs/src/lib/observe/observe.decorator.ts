@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import {
+  DecoratorContext,
+  TargetDecorator,
+} from '@spryker-oryx/typescript-utils';
 import { ReactiveElement, UpdatingElement } from 'lit';
 import { Subject } from 'rxjs';
-import { DecoratorContext, TargetDecorator } from '../internal/types';
 
 const throwSubjectError = (subject$: any): void => {
   if (subject$ && !subject$?.next) {

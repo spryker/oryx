@@ -1,5 +1,5 @@
 import { ContextController } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/injector';
+import { service } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -19,7 +19,9 @@ export class TitleComponent extends LitElement {
   @observe()
   protected code$ = new BehaviorSubject(this.code);
 
-  protected productService = resolve(this, ProductService);
+  @service(ProductService)
+  protected productService!: ProductService;
+
   protected context = new ContextController(this);
 
   protected productTitle$ = this.context

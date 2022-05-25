@@ -3,10 +3,14 @@ import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';
 import { isObservable, Observable, Subscription } from 'rxjs';
-import { isPromise } from '../internal';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
 import { AsyncValueStrategy } from './types';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isPromise<T = any>(object: any): object is Promise<T> {
+  return typeof object?.then === 'function';
+}
 
 const asyncValueObservableInstance = new AsyncValueObservableStrategy();
 const asyncValuePromiseInstance = new AsyncValuePromiseStrategy();

@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import {
+  DecoratorContext,
+  TargetDecorator,
+} from '@spryker-oryx/typescript-utils';
 import { LitElement, ReactiveElement } from 'lit';
-import { DecoratorContext, TargetDecorator } from '../internal/types';
 import { SubscribeController } from './subscribe.controller';
 
 const SUBSCRIBE_CONTROLLER = Symbol('subscribeController');

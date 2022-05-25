@@ -1,5 +1,5 @@
-import { getInjector } from './get-injector';
-import { Type } from './inject';
+import { getInjector } from '../get-injector';
+import { Type } from '../inject';
 
 export function resolve<K extends keyof InjectionTokensContractMap>(
   context: any,
