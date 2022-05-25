@@ -12,10 +12,6 @@ export const styles = css`
     display: flex;
   }
 
-  slot:not([name]) {
-    overflow: auto;
-  }
-
   :host(:not([type='secondary'])) {
     --background-color: var(--oryx-color-canvas);
 

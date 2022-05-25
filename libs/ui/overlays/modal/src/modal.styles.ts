@@ -26,4 +26,8 @@ export const styles = css`
     justify-content: flex-end;
     gap: 10px;
   }
+
+  oryx-card::part(body) {
+    overflow: auto;
+  }
 `;

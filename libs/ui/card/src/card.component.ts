@@ -15,7 +15,7 @@ export class CardComponent extends LitElement {
       <slot name="header">
         <h5>${this.header}</h5>
       </slot>
-      <slot></slot>
+      <slot part="body"></slot>
       <slot name="footer"></slot>
     `;
   }
