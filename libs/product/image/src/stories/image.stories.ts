@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
+import { ProductImageNavigationDisplay } from '../image.model';
 import '../index';
 import { setupProductMocks } from './product-mocks';
 
@@ -10,18 +11,37 @@ export default {
   loaders: [setupProductMocks],
 } as Meta;
 
-const Template: Story<{ code: string }> = ({ code }): TemplateResult => {
-  return html`<product-image .code="${code}" />`;
+interface props {
+  code: string;
+  thumbDisplay: ProductImageNavigationDisplay;
+}
+
+const Template: Story<props> = (props): TemplateResult => {
+  return html`<product-image
+    .code="${props.code}"
+    .props=${props}
+    .navigationSettings="${{ layout: 'grid', display: 'aside' }}"
+  />`;
 };
 
-export const Image = Template.bind({});
+export const ProductImageDemo = Template.bind({});
 
-Image.args = {
-  code: '1',
+ProductImageDemo.args = {
+  code: '3',
+  thumbDisplay: ProductImageNavigationDisplay.BELOW,
 };
 
-Image.argTypes = {
+ProductImageDemo.argTypes = {
   code: {
     control: { type: 'text' },
+  },
+  thumbDisplay: {
+    options: [
+      ProductImageNavigationDisplay.BELOW,
+      ProductImageNavigationDisplay.ASIDE,
+      ProductImageNavigationDisplay.NONE,
+    ],
+    control: { type: 'select' },
+    table: { category: 'Thumbnails' },
   },
 };

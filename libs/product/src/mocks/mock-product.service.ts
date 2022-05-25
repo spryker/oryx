@@ -8,14 +8,134 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '1',
       name: 'Sample product',
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
     },
     {
       sku: '2',
       name: 'Second sample product',
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+      ],
     },
     {
       sku: '3',
       name: 'Sample product no. 3',
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
     },
   ];
 
