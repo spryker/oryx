@@ -1,7 +1,12 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { map, Observable } from 'rxjs';
-import { Product, ProductImage, ProductQualifier } from '../../models';
+import {
+  Product,
+  ProductImage,
+  ProductPrice,
+  ProductQualifier,
+} from '../../models';
 import { ProductAdapter } from './product.adapter';
 
 interface RELATIONSHIP {
@@ -22,8 +27,14 @@ interface GlueImageSets {
   }[];
 }
 
+interface GlueProductPrices {
+  price: number;
+  prices: ProductPrice[];
+}
+
 enum INCLUDES {
   ABSTRACT_PRODUCT_IMAGE_SETS = 'abstract-product-image-sets',
+  ABSTRACT_PRODUCT_PRICES = 'abstract-product-prices',
 }
 
 interface JSON_API_MODEL<T, A> {
@@ -34,10 +45,11 @@ interface JSON_API_MODEL<T, A> {
   included?: A;
 }
 
-type GlueProduct = JSON_API_MODEL<
-  Product,
-  INCLUDE<INCLUDES.ABSTRACT_PRODUCT_IMAGE_SETS, GlueImageSets>[]
->;
+type ProductIncludes =
+  | INCLUDE<INCLUDES.ABSTRACT_PRODUCT_IMAGE_SETS, GlueImageSets>
+  | INCLUDE<INCLUDES.ABSTRACT_PRODUCT_PRICES, GlueProductPrices>;
+
+type GlueProduct = JSON_API_MODEL<Product, ProductIncludes[]>;
 
 export class DefaultProductAdapter implements ProductAdapter {
   protected productEndpoint = 'abstract-products';
@@ -52,10 +64,14 @@ export class DefaultProductAdapter implements ProductAdapter {
   }
 
   getKey(qualifier: ProductQualifier): string {
-    return qualifier.sku ?? '';
+    return (qualifier.sku ?? '') + qualifier.include?.sort()?.join('');
   }
 
   get({ sku, include }: ProductQualifier): Observable<Product> {
+    include = [...Object.values(INCLUDES), ...(include ?? [])].filter(
+      (type, index, arr) => arr.indexOf(type) === index
+    );
+
     return this.http
       .get<GlueProduct>(
         `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${
@@ -86,13 +102,17 @@ export class DefaultProductAdapter implements ProductAdapter {
 
         switch (includeType) {
           case INCLUDES.ABSTRACT_PRODUCT_IMAGE_SETS:
-            product.images = attributes.imageSets.reduce(
+            product.images = (attributes as GlueImageSets).imageSets.reduce(
               (acc, imageSet) => [...acc, ...imageSet.images],
               [] as ProductImage[]
             );
 
             break;
+          case INCLUDES.ABSTRACT_PRODUCT_PRICES:
+            product.price = (attributes as GlueProductPrices).price;
+            product.prices = (attributes as GlueProductPrices).prices;
 
+            break;
           default:
             break;
         }

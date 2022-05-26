@@ -28,6 +28,30 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
         },
       ],
+      prices: [
+        {
+          priceTypeName: 'DEFAULT',
+          netAmount: null,
+          grossAmount: 1879,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+        {
+          priceTypeName: 'ORIGINAL',
+          netAmount: null,
+          grossAmount: 2000,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+      ],
     },
     {
       sku: '2',
@@ -38,6 +62,19 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
           externalUrlLarge:
             'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+      ],
+      prices: [
+        {
+          priceTypeName: 'DEFAULT',
+          netAmount: null,
+          grossAmount: 1879,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
         },
       ],
     },
@@ -134,6 +171,91 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
           externalUrlLarge:
             'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
+      prices: [],
+    },
+    {
+      sku: '4',
+      name: 'Sample product no. 3',
+      prices: [
+        {
+          priceTypeName: 'DEFAULT',
+          netAmount: 1879,
+          grossAmount: 1879,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+        {
+          priceTypeName: 'ORIGINAL',
+          netAmount: 1879,
+          grossAmount: 2000,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+      ],
+    },
+    {
+      sku: '5',
+      name: 'Sample product no. 3',
+      prices: [
+        {
+          priceTypeName: 'DEFAULT',
+          netAmount: 1879,
+          grossAmount: null,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+        {
+          priceTypeName: 'ORIGINAL',
+          netAmount: 1879,
+          grossAmount: null,
+          currency: {
+            code: 'EUR',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+      ],
+    },
+    {
+      sku: '6',
+      name: 'Sample product no. 3',
+      prices: [
+        {
+          priceTypeName: 'DEFAULT',
+          netAmount: 1879,
+          grossAmount: 1879,
+          currency: {
+            code: 'WRONG',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
+        },
+        {
+          priceTypeName: 'ORIGINAL',
+          netAmount: 1879,
+          grossAmount: 2000,
+          currency: {
+            code: 'WRONG',
+            name: 'Euro',
+            symbol: '€',
+          },
+          volumePrices: [],
         },
       ],
     },

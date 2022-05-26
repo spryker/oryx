@@ -3,6 +3,18 @@ export interface ProductImage {
   externalUrlSmall: string;
 }
 
+export interface ProductPrice {
+  priceTypeName: 'DEFAULT' | 'ORIGINAL';
+  netAmount: number | null;
+  grossAmount: number | null;
+  currency: {
+    code: string;
+    name: string;
+    symbol: string;
+  };
+  volumePrices: unknown[];
+}
+
 export interface Product {
   sku?: string;
   averageRating?: string;
@@ -15,4 +27,6 @@ export interface Product {
   metaKeywords?: string;
   metaDescription?: string;
   images?: ProductImage[];
+  price?: number;
+  prices?: ProductPrice[];
 }
