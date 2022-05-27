@@ -1,4 +1,4 @@
-import { of, Subject, takeUntil } from 'rxjs';
+import { of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { SpyInstanceFn } from 'vitest';
 import { DefaultHttpService } from './default-http.service';
@@ -19,7 +19,6 @@ const mockOptions = {
 const mockBody = {
   test: 'test',
 };
-const destroy$ = new Subject<void>();
 
 describe('DefaultHttpService', () => {
   let service: HttpService;
@@ -29,20 +28,13 @@ describe('DefaultHttpService', () => {
     (fromFetch as SpyInstanceFn).mockReturnValue(of({ ok: true }));
   });
 
-  afterEach(() => {
-    destroy$.next();
-  });
-
   it('request should throw an error', (done) => {
-    service
-      .request(mockUrl, mockOptions)
-      .pipe(takeUntil(destroy$))
-      .subscribe({
-        error: (error) => {
-          expect(error).toBeDefined();
-          done();
-        },
-      });
+    service.request(mockUrl, mockOptions).subscribe({
+      error: (error) => {
+        expect(error).toBeDefined();
+        done();
+      },
+    });
   });
 
   it('request method should call `fromFetch` with proper parameters', () => {

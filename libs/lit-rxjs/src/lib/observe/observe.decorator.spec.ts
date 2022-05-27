@@ -2,12 +2,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { observe } from './observe.decorator';
 
 const mockProperty = 'mockProperty';
 const mockAnotherProperty = 'mockAnotherProperty';
-const destroy$ = new Subject<void>();
 
 abstract class MockClass extends LitElement {
   abstract mock: string;
@@ -45,10 +44,6 @@ describe('observe decorator', () => {
     );
   });
 
-  afterEach(() => {
-    destroy$.next();
-  });
-
   describe('observable is BehaviorSubject', () => {
     beforeEach(() => {
       element.mock$ = new BehaviorSubject(mockProperty);
@@ -56,7 +51,7 @@ describe('observe decorator', () => {
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
       const callback = vi.fn();
-      element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
+      element.mock$!.subscribe(callback);
       expect(callback).toHaveBeenCalledWith(mockProperty);
       expect(element.mock$).toBeInstanceOf(BehaviorSubject);
       element.mock = mockAnotherProperty;
@@ -67,7 +62,7 @@ describe('observe decorator', () => {
   describe('observable is ReplaySubject', () => {
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
       const callback = vi.fn();
-      element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
+      element.mock$!.subscribe(callback);
       expect(callback).toHaveBeenCalledWith(mockProperty);
       expect(element.mock$).toBeInstanceOf(ReplaySubject);
       element.mock = mockAnotherProperty;
@@ -82,7 +77,7 @@ describe('observe decorator', () => {
 
     it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
       const callback = vi.fn();
-      element.mock$!.pipe(takeUntil(destroy$)).subscribe(callback);
+      element.mock$!.subscribe(callback);
 
       expect(callback).not.toHaveBeenCalled();
       expect(element.mock$).toBeInstanceOf(Subject);
@@ -102,7 +97,7 @@ describe('observe decorator', () => {
 
     it('should observe for the required property', () => {
       const callback = vi.fn();
-      element.mock$?.pipe(takeUntil(destroy$)).subscribe(callback);
+      element.mock$?.subscribe(callback);
       expect(callback).toHaveBeenCalledWith(mockProperty);
       element.anotherMock = mockAnotherProperty;
       expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
