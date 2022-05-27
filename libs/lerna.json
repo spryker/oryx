@@ -1,0 +1,14 @@
+{
+  "packages": ["*"],
+  "version": "0.5.3",
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
+      "message": "chore(release): publish ui-components release [skip ci]",
+      "allowBranch": ["development", "release/*"],
+      "tagVersionPrefix": "lib@"
+    }
+  }
+}
