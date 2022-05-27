@@ -33,8 +33,8 @@ interface GlueProductPrices {
 }
 
 enum INCLUDES {
-  ABSTRACT_PRODUCT_IMAGE_SETS = 'abstract-product-image-sets',
-  ABSTRACT_PRODUCT_PRICES = 'abstract-product-prices',
+  CONCRETE_PRODUCT_IMAGE_SETS = 'concrete-product-image-sets',
+  CONCRETE_PRODUCT_PRICES = 'concrete-product-prices',
 }
 
 interface JSON_API_MODEL<T, A> {
@@ -46,13 +46,13 @@ interface JSON_API_MODEL<T, A> {
 }
 
 type ProductIncludes =
-  | INCLUDE<INCLUDES.ABSTRACT_PRODUCT_IMAGE_SETS, GlueImageSets>
-  | INCLUDE<INCLUDES.ABSTRACT_PRODUCT_PRICES, GlueProductPrices>;
+  | INCLUDE<INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS, GlueImageSets>
+  | INCLUDE<INCLUDES.CONCRETE_PRODUCT_PRICES, GlueProductPrices>;
 
 type GlueProduct = JSON_API_MODEL<Product, ProductIncludes[]>;
 
 export class DefaultProductAdapter implements ProductAdapter {
-  protected productEndpoint = 'abstract-products';
+  protected productEndpoint = 'concrete-products';
 
   constructor(
     protected http = inject(HttpService),
@@ -101,14 +101,14 @@ export class DefaultProductAdapter implements ProductAdapter {
         if (!exist) return;
 
         switch (includeType) {
-          case INCLUDES.ABSTRACT_PRODUCT_IMAGE_SETS:
+          case INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS:
             product.images = (attributes as GlueImageSets).imageSets.reduce(
               (acc, imageSet) => [...acc, ...imageSet.images],
               [] as ProductImage[]
             );
 
             break;
-          case INCLUDES.ABSTRACT_PRODUCT_PRICES:
+          case INCLUDES.CONCRETE_PRODUCT_PRICES:
             product.price = (attributes as GlueProductPrices).price;
             product.prices = (attributes as GlueProductPrices).prices;
 

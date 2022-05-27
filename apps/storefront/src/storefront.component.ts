@@ -19,7 +19,7 @@ export class StorefrontComponent extends LitElement {
   protected route$ = new BehaviorSubject(this.route).pipe(
     tap((route) => {
       // TODO: fix hardcoded code
-      this.context.provide(ProductContext.Code, '119');
+      this.context.provide(ProductContext.Code, '119_29804808');
     })
   );
 

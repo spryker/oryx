@@ -52,8 +52,8 @@ describe('DefaultProductService', () => {
   describe('get should send `get` request', () => {
     const callback = vi.fn();
     const mockQualifier = { sku: '123' };
-    const imageInclude = 'abstract-product-image-sets';
-    const concreteProductInclude = 'concrete-products';
+    const imageInclude = 'concrete-product-image-sets';
+    const testInclude = 'test-include';
 
     beforeEach(() => {
       http.flush(mockProduct);
@@ -68,7 +68,7 @@ describe('DefaultProductService', () => {
 
       expect(callback).toHaveBeenCalledWith(mockProduct.data.attributes);
       expect(http.url).toContain(
-        `${mockApiUrl}/abstract-products/${mockQualifier.sku}`
+        `${mockApiUrl}/concrete-products/${mockQualifier.sku}`
       );
     });
 
@@ -88,13 +88,12 @@ describe('DefaultProductService', () => {
     it('should add several includes to the url', () => {
       const params = {
         ...mockQualifier,
-        include: [imageInclude, concreteProductInclude],
+        include: [imageInclude, testInclude],
       };
 
       service.get(params).subscribe(callback);
 
       const includes = http.url?.split('?include=')[1].split(',');
-
       expect(includes).toHaveLength(3);
     });
   });
