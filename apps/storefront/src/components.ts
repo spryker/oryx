@@ -27,4 +27,10 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-image uid="${uid}"></product-image>`,
   },
+  'product-price': {
+    tag: 'product-price',
+    component: () => import('@spryker-oryx/product/price'),
+    template: (uid: string) =>
+      html`<product-price uid="${uid}"></product-price>`,
+  },
 };

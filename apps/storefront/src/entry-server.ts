@@ -10,7 +10,7 @@ import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 import { ServerContextService } from '@spryker-oryx/core/server';
 
-globalThis.AbortController = AbortController;
+globalThis.prototype.AbortController = AbortController;
 
 export const renderComponent = async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
