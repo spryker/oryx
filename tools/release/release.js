@@ -1,5 +1,5 @@
 const { getLastTag } = require('./git');
-const { getVersion } = require('./lerna');
+const { getVersion, getTagPrefix } = require('./lerna');
 const { runScript } = require('./scripts');
 const { areVersionsDiffByMinor } = require('./version');
 
@@ -7,12 +7,14 @@ const RC_TAG = '-rc';
 
 function main() {
   const currentVersion = getVersion();
+  const tagPrefix = getTagPrefix();
+  const tagGlob = tagPrefix ? `${tagPrefix}**` : undefined;
 
   if (currentVersion.includes(RC_TAG)) {
     return releaseLatestRc();
   }
 
-  const releasedVersion = getLastTag();
+  const releasedVersion = getLastTag(tagGlob);
 
   if (releasedVersion.includes(RC_TAG)) {
     return releaseLatestFromRc();

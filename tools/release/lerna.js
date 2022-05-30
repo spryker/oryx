@@ -24,7 +24,16 @@ function getVersion(cwd) {
   return getConfig(cwd).version;
 }
 
+/**
+ * @param {string=} cwd
+ * @returns {string=}
+ */
+function getTagPrefix(cwd) {
+  return getConfig(cwd).command?.publish?.tagVersionPrefix;
+}
+
 module.exports = {
   getConfig,
   getVersion,
+  getTagPrefix,
 };
