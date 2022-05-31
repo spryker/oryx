@@ -31,8 +31,7 @@ describe('Banner', () => {
   });
 
   it('is defined', () => {
-    const el = document.createElement('oryx-banner');
-    expect(el).toBeInstanceOf(BannerComponent);
+    expect(element).toBeInstanceOf(BannerComponent);
   });
 
   it('passes the a11y audit', async () => {

@@ -1,4 +1,4 @@
-import { ContextController } from '@spryker-oryx/core';
+import { ContextController, hydratable } from '@spryker-oryx/core';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
@@ -24,6 +24,7 @@ import {
 } from './image.model';
 import { styles } from './image.styles';
 
+@hydratable('mouseover')
 export class ProductImageComponent extends LitElement {
   static styles = styles;
 

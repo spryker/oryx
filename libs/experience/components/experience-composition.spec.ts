@@ -78,8 +78,7 @@ describe('Experience Composition', () => {
   });
 
   it('is defined', () => {
-    const el = document.createElement('experience-composition');
-    expect(el).toBeInstanceOf(ExperienceCompositionComponent);
+    expect(element).toBeInstanceOf(ExperienceCompositionComponent);
   });
 
   it('should render oryx-banner', () => {

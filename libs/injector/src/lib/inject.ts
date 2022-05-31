@@ -1,8 +1,5 @@
+import { Type } from '@spryker-oryx/typescript-utils';
 import { Injector } from './injector';
-
-export interface Type<T> extends Function {
-  new (...args: any[]): T;
-}
 
 let _currentInjector: undefined | Injector;
 

@@ -1,3 +1,4 @@
+import { HYDRATE_ON_DEMAND } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { isClient } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
@@ -33,12 +34,15 @@ export class DefaultComponentsRegistryService
         }"></${unsafeStatic(component.tag)}>`;
   }
 
-  resolveComponent(type: string, hasSSR = false): Observable<string> {
+  resolveComponent(
+    type: string,
+    options?: { hasSSR?: boolean; hydratable?: boolean }
+  ): Observable<string> {
     if (this.registeredComponents[type]) {
       if (
         this.registeredComponents[type].component &&
         !this.resolvedComponents[type] &&
-        !(isClient() && hasSSR)
+        !(options?.hydratable && isClient() && options.hasSSR)
       ) {
         return from(this.registeredComponents[type].component?.() || of()).pipe(
           tap(() => {
@@ -55,9 +59,13 @@ export class DefaultComponentsRegistryService
   }
 
   async hydrateOnDemand(element: LitElement): Promise<void> {
+    if (!element.hasAttribute('hydratable')) {
+      return;
+    }
+
     if (!customElements.get(element.localName)) {
       await lastValueFrom(this.resolveComponent(element.localName));
     }
-    (element as any).hydrateOnDemand();
+    (element as any)[HYDRATE_ON_DEMAND]?.();
   }
 }

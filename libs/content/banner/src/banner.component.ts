@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
@@ -9,6 +10,7 @@ import { defer, of, ReplaySubject, switchMap } from 'rxjs';
 import { BannerContent } from './banner.model';
 import { styles } from './banner.styles';
 
+@hydratable('click')
 export class BannerComponent extends LitElement {
   static override styles = styles;
 

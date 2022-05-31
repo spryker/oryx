@@ -1,5 +1,5 @@
+import { Type } from '@spryker-oryx/typescript-utils';
 import { getInjector } from '../get-injector';
-import { Type } from '../inject';
 
 export function resolve<K extends keyof InjectionTokensContractMap>(
   context: any,

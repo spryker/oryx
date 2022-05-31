@@ -1,4 +1,4 @@
-import { SSRAwaiterService } from '@spryker-oryx/core';
+import { hydratable, SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { isClient } from '@spryker-oryx/typescript-utils';
@@ -12,6 +12,7 @@ import {
   ExperienceService,
 } from '../src/services';
 
+@hydratable()
 export class ExperienceCompositionComponent extends LitElement {
   @state()
   protected components?: Array<Component>;
@@ -31,6 +32,9 @@ export class ExperienceCompositionComponent extends LitElement {
   constructor() {
     super();
     this.hasSSR = !!this.shadowRoot;
+    if (isClient()) {
+      this.components$.subscribe();
+    }
   }
 
   components$ = this.key$.pipe(
@@ -44,11 +48,14 @@ export class ExperienceCompositionComponent extends LitElement {
       if (this.key && components) {
         const resolve = this.ssrAwaiter?.getAwaiter();
         for (let i = 0; i < components!.length; i++) {
+          const hydratable = this.shadowRoot
+            ?.querySelector(components[i].type)
+            ?.hasAttribute('hydratable');
           await lastValueFrom(
-            this.registryService.resolveComponent(
-              components![i].type,
-              this.hasSSR
-            )
+            this.registryService.resolveComponent(components![i].type, {
+              hasSSR: this.hasSSR,
+              hydratable,
+            })
           );
         }
         resolve?.();

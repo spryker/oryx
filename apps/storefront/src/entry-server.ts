@@ -6,11 +6,8 @@ import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import fetch from 'node-fetch';
-// We need vite to bundle this and for it to realize it's really an esm module in dev mode
-import AbortController from 'abort-controller';
+import 'abort-controller/polyfill';
 import { ServerContextService } from '@spryker-oryx/core/server';
-
-globalThis.prototype.AbortController = AbortController;
 
 export const renderComponent = async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

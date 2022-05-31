@@ -1,4 +1,4 @@
-import { ContextController } from '@spryker-oryx/core';
+import { ContextController, hydratable } from '@spryker-oryx/core';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -7,6 +7,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { styles } from './storefront.styles';
 
 @customElement('storefront-component')
+@hydratable()
 export class StorefrontComponent extends LitElement {
   protected context = new ContextController(this);
 

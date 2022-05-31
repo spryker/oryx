@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import {
   ContentComponentProperties,
   ContentController,
@@ -13,6 +14,7 @@ import { html } from 'lit/static-html.js';
 import { ProductTitleContent } from './model';
 import { styles } from './title.styles';
 
+@hydratable()
 export class TitleComponent
   extends LitElement
   implements
