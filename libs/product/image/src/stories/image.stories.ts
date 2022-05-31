@@ -2,7 +2,13 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { ProductImageNavigationDisplay } from '../image.model';
+import {
+  ProductImageComponentProperties,
+  ProductImageNavigationDisplay,
+  ProductImageNavigationLayout,
+  ProductImageNavigationPosition,
+  ProductImagePreviewLayout,
+} from '../image.model';
 import '../index';
 import { setupProductMocks } from './product-mocks';
 
@@ -11,37 +17,44 @@ export default {
   loaders: [setupProductMocks],
 } as Meta;
 
-interface props {
-  code: string;
-  thumbDisplay: ProductImageNavigationDisplay;
-}
-
-const Template: Story<props> = (props): TemplateResult => {
-  return html`<product-image
-    .code="${props.code}"
-    .props=${props}
-    .navigationSettings="${{ layout: 'grid', display: 'aside' }}"
-  />`;
+const Template: Story<ProductImageComponentProperties> = (
+  props
+): TemplateResult => {
+  return html`<product-image .code="${props.code}" .props=${props} />`;
 };
 
 export const ProductImageDemo = Template.bind({});
 
 ProductImageDemo.args = {
-  code: '3',
-  thumbDisplay: ProductImageNavigationDisplay.BELOW,
+  code: '1',
+  previewLayout: ProductImagePreviewLayout.CAROUSEL,
+  navigationDisplay: ProductImageNavigationDisplay.BELOW,
+  navigationLayout: ProductImageNavigationLayout.CAROUSEL,
+  navigationPosition: ProductImageNavigationPosition.INLINE,
 };
 
 ProductImageDemo.argTypes = {
   code: {
     control: { type: 'text' },
   },
-  thumbDisplay: {
-    options: [
-      ProductImageNavigationDisplay.BELOW,
-      ProductImageNavigationDisplay.ASIDE,
-      ProductImageNavigationDisplay.NONE,
-    ],
+  previewLayout: {
+    options: Object.values(ProductImagePreviewLayout),
     control: { type: 'select' },
-    table: { category: 'Thumbnails' },
+    table: { category: 'Preview' },
+  },
+  navigationDisplay: {
+    options: Object.values(ProductImageNavigationDisplay),
+    control: { type: 'select' },
+    table: { category: 'Navigation' },
+  },
+  navigationLayout: {
+    options: Object.values(ProductImageNavigationLayout),
+    control: { type: 'select' },
+    table: { category: 'Navigation' },
+  },
+  navigationPosition: {
+    options: Object.values(ProductImageNavigationPosition),
+    control: { type: 'select' },
+    table: { category: 'Navigation' },
   },
 };

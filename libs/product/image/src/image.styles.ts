@@ -1,5 +1,10 @@
 import { css, unsafeCSS } from 'lit';
-import { ProductImageThumbsPosition } from './image.model';
+import {
+  ProductImageNavigationDisplay as NavDisplay,
+  ProductImageNavigationLayout as NavLayout,
+  ProductImageNavigationPosition as NavPosition,
+  ProductImagePreviewLayout as PreviewLayout,
+} from './image.model';
 
 export const styles = css`
   :host {
@@ -15,6 +20,7 @@ export const styles = css`
     scroll-snap-type: both mandatory;
     -webkit-overflow-scrolling: touch;
     display: flex;
+    flex-grow: 1;
     background-color: var(--oryx-color-neutral-dark, gray);
     scrollbar-width: none; /* Firefox */
   }
@@ -44,13 +50,13 @@ export const styles = css`
     all: unset;
     margin: auto;
     max-width: 100%;
+    display: flex;
     order: 1;
+    z-index: 1;
     flex-shrink: 0;
     min-inline-size: auto;
-    padding: var(--oryx-space, 4px) 0;
+    padding: var(--oryx-space, 4px);
     position: relative;
-    z-index: 1;
-    display: flex;
     flex-direction: var(--navigation-direction, row);
     gap: var(--navigation-gap, 1rem);
     overflow: auto;
@@ -99,51 +105,52 @@ export const styles = css`
     border-color: var(--oryx-color-neutral-darker);
   }
 
-  :host([nav-position='${unsafeCSS(ProductImageThumbsPosition.FLOATING)}']) {
+  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) {
     position: relative;
   }
 
-  :host([nav-position='${unsafeCSS(ProductImageThumbsPosition.FLOATING)}'])
-    .nav {
+  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
     position: absolute;
     padding: var(--navigation-padding, 20px);
     top: auto;
     bottom: 0;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
+    inset-inline: 0;
+    align-items: center;
+    justify-content: center;
   }
 
-  :host([nav-display='aside']) {
+  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) {
     flex-direction: row;
   }
 
-  :host([nav-display='aside']) .nav {
+  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) .nav {
     top: 0;
     bottom: 0;
     order: 0;
     inset-inline-start: 0;
     inset-inline-end: auto;
     flex-direction: column;
-    padding: 0 var(--oryx-space, 4px);
     max-height: var(--preview-height, 300px);
   }
 
-  :host([layout='toggle']) section {
+  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}']) section {
     position: relative;
   }
 
-  :host([layout='toggle']) section > picture {
+  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}']) section > picture {
     position: absolute;
     inset: 0;
     opacity: 0%;
     transition: opacity var(--oryx-transition-time) ease;
   }
 
-  :host([layout='toggle']) section > picture.active {
+  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}'])
+    section
+    > picture.active {
     opacity: 100%;
   }
 
-  :host([nav-layout='grid']) .nav {
+  :host([nav-layout='${unsafeCSS(NavLayout.GRID)}']) .nav {
     flex-wrap: wrap;
   }
 `;

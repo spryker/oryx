@@ -1,33 +1,65 @@
 import { ContextController } from '@spryker-oryx/core';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  defer,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { ProductContext, ProductService } from '../../src';
 import {
-  ProductImage,
   ProductImageComponentProperties,
+  ProductImageComponentSettings,
   ProductImageNavigationDisplay,
   ProductImagePreviewLayout,
+  ProductImageSet,
 } from './image.model';
 import { styles } from './image.styles';
 
-export class ProductImageComponent
-  extends LitElement
-  implements ProductImageComponentProperties
-{
+export class ProductImageComponent extends LitElement {
   static styles = styles;
+
   @state() active = 0;
 
   @property({ type: String }) uid?: string;
   @property({ type: String }) code?: string;
   @property({ type: Object }) props: ProductImageComponentProperties = {};
 
+  protected groupName = `product-image-nav-${this.uid}`;
+
   @observe()
   protected code$ = new BehaviorSubject(this.code);
+
+  @observe()
+  protected props$ = new BehaviorSubject(this.props);
+
+  @observe()
+  protected active$ = new BehaviorSubject(this.active);
+
+  // TODO: Remove force typing here once resolve starts to return proper type
+  protected experienceContent = resolve(
+    this,
+    ExperienceService,
+    null
+  ) as ExperienceService | null;
+
+  protected contentResolver$ = defer(() =>
+    this.uid && this.experienceContent
+      ? this.experienceContent
+          .getContent<{ data: ProductImageComponentProperties }>({
+            key: this.uid,
+          })
+          .pipe(switchMap((res) => of(res?.data)))
+      : this.props$
+  );
 
   protected productService = resolve(this, ProductService);
   protected context = new ContextController(this);
@@ -36,35 +68,65 @@ export class ProductImageComponent
     .get(ProductContext.Code, this.code$)
     .pipe(map((code) => code));
 
-  protected productImages$ = this.productCode$.pipe(
-    switchMap((sku) =>
-      this.productService.get({ sku, include: ['abstract-product-image-sets'] })
-    ),
-    map((product) => product?.images ?? [])
+  protected productData$ = this.context
+    .get(ProductContext.Code, this.code$)
+    .pipe(
+      switchMap((sku) =>
+        this.productService.get({
+          sku,
+          include: ['abstract-product-image-sets'],
+        })
+      ),
+      map((product) => product?.images ?? [])
+    );
+
+  protected setHostAttr(attr: string, val?: string): void {
+    if (val) {
+      this.setAttribute(attr, val);
+      return;
+    }
+
+    this.removeAttribute(attr);
+  }
+
+  protected productImages$ = combineLatest([
+    this.contentResolver$,
+    this.active$,
+    this.productData$,
+  ]).pipe(
+    map(([props, active, images]) => {
+      const settings: ProductImageComponentSettings = {
+        previewWidth: '300',
+        previewHeight: '300',
+        groupName: this.groupName,
+        thumbWidth: '32',
+        thumbHeight: '32',
+        showPreview: props.previewLayout !== 'none',
+        showNavigation:
+          props.navigationDisplay !== ProductImageNavigationDisplay.NONE &&
+          images.length > 1,
+        ...props,
+      };
+
+      this.setHostAttr('layout', props.previewLayout);
+      this.setHostAttr('nav-position', props.navigationPosition);
+      this.setHostAttr('nav-layout', props.navigationLayout);
+      this.setHostAttr('nav-display', props.navigationDisplay);
+      return {
+        settings,
+        active,
+        images,
+      };
+    })
   );
 
   protected setActive(active: number): void {
     this.active = active;
-    const items = this.shadowRoot?.querySelectorAll('picture') || [];
-    items.forEach((item: HTMLElement) => {
-      item.classList.remove('active');
-    });
-    items[active]?.classList.add('active');
     if (this.props.previewLayout === ProductImagePreviewLayout.TOGGLE) {
       return;
     }
+    const items = this.shadowRoot?.querySelectorAll('picture') || [];
     items[active]?.scrollIntoView({ block: 'nearest', inline: 'start' });
-  }
-
-  protected shouldDisplayPreview(layout?: string): boolean {
-    return layout !== 'none';
-  }
-
-  protected shouldDisplayThumbs(
-    images: ProductImage[],
-    display?: ProductImageNavigationDisplay
-  ): boolean {
-    return display !== ProductImageNavigationDisplay.NONE && images.length > 1;
   }
 
   protected onInput(e: InputEvent): void {
@@ -73,46 +135,25 @@ export class ProductImageComponent
     this.setActive(+active);
   }
 
-  protected setHostAttr(attr: string, val?: string): void {
-    if (val) this.setAttribute(attr, val);
-    else this.removeAttribute(attr);
-  }
-
   protected override render(): TemplateResult {
-    const settings: ProductImageComponentProperties = {
-      previewWidth: '300',
-      previewHeight: '300',
-      name: `nav-${Math.round(Math.random() * 10000)}`,
-      thumbWidth: '32',
-      thumbHeight: '32',
-      ...this.props,
-    };
-
-    this.setHostAttr('layout', settings.previewLayout);
-    this.setHostAttr('nav-position', settings.thumbPosition);
-    this.setHostAttr('nav-layout', settings.thumbLayout);
-    this.setHostAttr('nav-display', settings.thumbDisplay);
-
     return html`
-      ${asyncValue(this.productImages$, (images) => {
+      ${asyncValue(this.productImages$, ({ settings, active, images }) => {
         return html`
           ${when(
-            this.shouldDisplayPreview(settings.previewLayout),
+            settings.showPreview,
             () => html`
               <section>
                 ${images.map(
                   (image, i) => html`
                     <picture
-                      class="${ifDefined(this.active === i ? 'active' : null)}"
+                      class="${ifDefined(active === i ? 'active' : null)}"
                     >
                       <img
                         .src="${image.externalUrlLarge}"
-                        .alt="image${i + 1}"
+                        .alt="preview${i + 1}"
                         width="${ifDefined(settings.previewWidth)}"
                         height="${ifDefined(settings.previewHeight)}"
-                        loading="${ifDefined(
-                          this.active !== i ? 'lazy' : null
-                        )}"
+                        loading="${ifDefined(active !== i ? 'lazy' : null)}"
                       />
                     </picture>
                   `
@@ -121,22 +162,22 @@ export class ProductImageComponent
             `
           )}
           ${when(
-            this.shouldDisplayThumbs(images, settings.thumbDisplay),
+            settings.showNavigation,
             () => html`
               <fieldset class="nav">
                 ${images.map(
-                  (image: ProductImage, i: number) => html`
+                  (image: ProductImageSet, i: number) => html`
                     <label class="nav-item">
                       <input
                         value="${i}"
                         type="radio"
-                        name="${ifDefined(settings.name)}"
-                        ?checked="${this.active === i}"
+                        name="${ifDefined(settings.groupName)}"
+                        ?checked="${active === i}"
                         @input="${this.onInput}"
                       />
                       <img
                         src="${image.externalUrlSmall}"
-                        alt="${ifDefined(settings.name)}"
+                        alt="${ifDefined(settings.groupName)}"
                         width="${ifDefined(settings.thumbWidth)}"
                         height="${ifDefined(settings.thumbHeight)}"
                         loading="lazy"
