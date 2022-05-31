@@ -2,6 +2,17 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    display: flex;
+    display: block;
+  }
+
+  :host([single-line]) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :host([single-line]) > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;

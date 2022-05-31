@@ -1,2 +1,3 @@
-export * from './models/index';
-export * from './services/index';
+export * from './controllers';
+export * from './models';
+export * from './services';

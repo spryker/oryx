@@ -4,7 +4,7 @@ import { ProductQualifier } from '../models/product-qualifier';
 import { ProductService } from '../services/product.service';
 
 export class MockProductService implements Partial<ProductService> {
-  mockProducts: Product[] = [
+  static mockProducts: Product[] = [
     {
       sku: '1',
       name: 'Sample product',
@@ -177,7 +177,7 @@ export class MockProductService implements Partial<ProductService> {
     },
     {
       sku: '4',
-      name: 'Sample product no. 3',
+      name: 'Sample product no. 4',
       prices: [
         {
           priceTypeName: 'DEFAULT',
@@ -205,7 +205,7 @@ export class MockProductService implements Partial<ProductService> {
     },
     {
       sku: '5',
-      name: 'Sample product no. 3',
+      name: 'Sample product no. 5',
       prices: [
         {
           priceTypeName: 'DEFAULT',
@@ -233,7 +233,7 @@ export class MockProductService implements Partial<ProductService> {
     },
     {
       sku: '6',
-      name: 'Sample product no. 3',
+      name: 'Sample product no. 6',
       prices: [
         {
           priceTypeName: 'DEFAULT',
@@ -262,7 +262,9 @@ export class MockProductService implements Partial<ProductService> {
   ];
 
   get(qualifier: ProductQualifier): Observable<Product> {
-    const product = this.mockProducts.find((p) => p.sku === qualifier.sku);
+    const product = MockProductService.mockProducts.find(
+      (p) => p.sku === qualifier.sku
+    );
     return product
       ? of(product)
       : throwError(() => new Error('Product not found'));

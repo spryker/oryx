@@ -1,1 +1,2 @@
-export * from './services/index';
+export * from './controllers';
+export * from './services';
