@@ -3,6 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../Graphical/icon';
+import { PopoverSelectEvent } from '../../../../popover';
 import '../../../../popover/index';
 import {
   ClearIconAppearance,
@@ -39,8 +40,11 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   const logTypeahead = (ev: CustomEvent<SearchEvent>): void => {
     console.log('oryx.typeahead event', ev.detail.query);
   };
-  const logSelect = (ev: CustomEvent<SearchEvent>): void => {
-    console.log('oryx.select event', ev.detail.query);
+  const logSelect = (ev: CustomEvent<PopoverSelectEvent>): void => {
+    console.log(
+      'oryx.select event',
+      (ev.detail.selected as HTMLOptionElement).value
+    );
   };
   const logSearch = (ev: CustomEvent<SearchEvent>): void => {
     console.log('oryx.searchbox event', ev.detail.query);
@@ -66,11 +70,13 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         label="Select with options"
         ?allowEmptyValue=${props.allowEmptyValue}
         clearIconAppearance=${props.clearIconAppearance}
+        filterStrategy=${props.filterStrategy}
         ?prefixFill=${props.prefixFill}
         ?suffixFill=${props.suffixFill}
         clearIcon=${props.clearIcon}
         clearIconPosition=${props.clearIconPosition}
         searchIconPosition=${props.searchIconPosition ?? 'None'}
+        contenteditable="false"
       >
         <select required>
           <option value="" hidden>Select an option</option>
@@ -135,7 +141,7 @@ SelectDemo.argTypes = {
       FilterStrategyType.CONTAINS,
     ],
     control: { type: 'select' },
-    table: { category: 'Input only' },
+    table: { category: 'Filtering' },
   },
   clearIcon: {
     options: Object.values(IconTypes),

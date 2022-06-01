@@ -16,15 +16,20 @@ import {
   typeaheadStyles,
 } from '../../../search/typeahead';
 import { getControl } from '../../utilities/getControl';
-import { SelectController } from './select.controller';
+import { SelectController, SelectFilterController } from './controllers';
 import { SelectOptions } from './select.model';
-import { selectStyles } from './select.styles';
+import { selectFilterStyles, selectStyles } from './styles';
 
 export class SelectComponent
   extends LitElement
   implements ErrorOptions, SearchOptions, TypeaheadOptions, SelectOptions
 {
-  static styles = [selectStyles, typeaheadStyles, ...SearchboxComponent.styles];
+  static styles = [
+    selectStyles,
+    selectFilterStyles,
+    typeaheadStyles,
+    ...SearchboxComponent.styles,
+  ];
 
   @property({ type: Boolean }) filter?: boolean;
   @property() filterStrategy?: FilterStrategyType;
@@ -47,6 +52,7 @@ export class SelectComponent
     ClearIconAppearance.HOVER;
 
   protected selectController = new SelectController(this);
+  protected selectFilterController = new SelectFilterController(this);
   protected typeaheadController = new TypeaheadController(this, {
     showOnFocus: false,
   });
@@ -56,7 +62,7 @@ export class SelectComponent
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
-        before: this.searchController.renderPrefix(),
+        before: this.renderPrefix(),
         after: this.searchController.renderSuffix(),
       })}
       ${this.typeaheadController.renderPopover()}
@@ -68,5 +74,9 @@ export class SelectComponent
       getControl(this) instanceof HTMLInputElement || this.allowEmptyValue
         ? ClearIconPosition.SUFFIX
         : ClearIconPosition.NONE;
+  }
+
+  protected renderPrefix(): TemplateResult {
+    return html`${this.searchController.renderPrefix()}${this.selectFilterController.render()}`;
   }
 }

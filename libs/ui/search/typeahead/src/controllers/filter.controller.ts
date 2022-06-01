@@ -62,7 +62,10 @@ export class FilterController implements ReactiveController {
 
   protected onInput(e: InputEvent): void {
     if (this.host.filterStrategy && e.inputType) {
-      this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
+      this.filterOptionsByValue(
+        this.controlItem.value,
+        this.host.filterStrategy
+      );
     }
   }
 
@@ -73,14 +76,20 @@ export class FilterController implements ReactiveController {
         this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
       }
       this.control.dispatchEvent(
-        new InputEvent('input', { bubbles: true, composed: true })
+        new Event(
+          this.control instanceof HTMLSelectElement ? 'change' : 'input',
+          { bubbles: true, composed: true }
+        )
       );
     }
   }
 
   hostUpdated(): void {
     if (this.host.filterStrategy) {
-      this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
+      this.filterOptionsByValue(
+        this.controlItem.value,
+        this.host.filterStrategy
+      );
     }
   }
 
@@ -98,16 +107,17 @@ export class FilterController implements ReactiveController {
     let visibleOptionCount = 0;
 
     this.items.forEach((item) => {
-      if (item.value) {
+      const itemValue = item.innerText || item.value;
+      if (itemValue) {
         const indexes = [
-          ...item.value.matchAll(getFilterRegExp(value, strategy)),
+          ...itemValue.matchAll(getFilterRegExp(value, strategy)),
         ].map((a) => a.index);
 
         item.hide = indexes.length === 0;
         if (!item.hide) {
           item.innerHTML = generateMarkedHtml(
             indexes as number[],
-            item.value,
+            itemValue,
             value,
             strategy
           );
@@ -135,8 +145,8 @@ export class FilterController implements ReactiveController {
 
     if (visibleOptionCount === 1) {
       const option = this.items.find((el) => !el.hide);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (option!.value!.toLowerCase() === value.toLowerCase()) {
+      const optionText = option?.innerText?.trim() || option?.value || '';
+      if (optionText.toLowerCase() === value.toLowerCase()) {
         selected = option;
       }
     }
@@ -152,8 +162,22 @@ export class FilterController implements ReactiveController {
     this.control.dispatchEvent(event);
   }
 
-  protected get control(): HTMLInputElement {
-    return getControl(this.host, 'input');
+  protected get control(): HTMLInputElement | HTMLSelectElement {
+    return getControl(this.host, 'input, select');
+  }
+
+  protected get filterControl(): HTMLInputElement {
+    return this.host.renderRoot.querySelector(
+      '[filterInput]'
+    ) as HTMLInputElement;
+  }
+
+  protected get controlItem(): HTMLInputElement | HTMLSelectElement {
+    if (this.host.hasAttribute('filterSelect')) {
+      return this.filterControl;
+    } else {
+      return this.control;
+    }
   }
 
   protected get items(): OptionComponent[] {

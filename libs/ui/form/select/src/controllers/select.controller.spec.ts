@@ -2,10 +2,10 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../../../option/';
-import { getControl } from '../../utilities/getControl';
+import '../../../../option';
+import { getControl } from '../../../utilities';
+import { SelectOptions } from '../select.model';
 import { SelectController } from './select.controller';
-import { SelectOptions } from './select.model';
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements SelectOptions {

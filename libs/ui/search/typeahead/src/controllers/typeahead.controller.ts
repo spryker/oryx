@@ -77,9 +77,10 @@ export class TypeaheadController implements ReactiveController {
   }
 
   protected onInput(): void {
+    const query = this.typeaheadControl?.value || this.control.value;
     const event = new CustomEvent<SearchEvent>('oryx.typeahead', {
       detail: {
-        query: this.control.value,
+        query,
       },
       bubbles: true,
       composed: true,
@@ -98,6 +99,7 @@ export class TypeaheadController implements ReactiveController {
   protected onSelect(e: CustomEvent<PopoverSelectEvent>): void {
     if (e.detail.selected) {
       const value = this.getValue(e.detail.selected);
+      const text = this.getText(e.detail.selected);
       if (!value) {
         return;
       }
@@ -112,6 +114,9 @@ export class TypeaheadController implements ReactiveController {
           )
         );
       }
+      if (text && this.typeaheadControl) {
+        this.typeaheadControl.value = text;
+      }
     }
   }
 
@@ -119,8 +124,18 @@ export class TypeaheadController implements ReactiveController {
     return getControl(this.host);
   }
 
+  protected get typeaheadControl(): HTMLInputElement | null {
+    return this.host.renderRoot?.querySelector<HTMLInputElement>(
+      '[typeaheadInput]'
+    );
+  }
+
   protected getValue(option: HTMLElement): string | undefined {
     return (option as OptionComponent).value;
+  }
+
+  protected getText(option: HTMLElement): string | undefined {
+    return (option as OptionComponent).innerText?.trim();
   }
 
   constructor(

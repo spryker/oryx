@@ -1,7 +1,7 @@
 import { LitElement, ReactiveController } from 'lit';
-import { TypeaheadOptions } from '../../../search/typeahead';
-import { getControl } from '../../utilities/getControl';
-import { SelectOptions } from './select.model';
+import { TypeaheadOptions } from '../../../../search/typeahead';
+import { getControl } from '../../../utilities';
+import { SelectOptions } from '../select.model';
 
 /**
  * Whenever a select element is projected in the default slot, this controller
@@ -76,7 +76,8 @@ export class SelectController implements ReactiveController {
       this.reflectOptions();
     }
 
-    this.host.isEmpty = !this.host.isLoading && this.options.length === 0;
+    this.host.isEmpty =
+      this.host.isEmpty || (!this.host.isLoading && this.options.length === 0);
   }
 
   protected reflectOptions(): void {

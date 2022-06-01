@@ -65,7 +65,11 @@ export class PopoverController implements ReactiveController {
     if (!e.inputType) {
       return;
     }
-    if ((e.target as HTMLInputElement | HTMLSelectElement).value) {
+    const composedTarget = e.composedPath()[0];
+    if (
+      (e.target as HTMLInputElement | HTMLSelectElement)?.value ||
+      (composedTarget instanceof HTMLInputElement && composedTarget?.value)
+    ) {
       this.toggleController.toggle(true);
     } else {
       this.selectedController.deselect();
