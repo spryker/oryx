@@ -1,0 +1,12 @@
+6,9c6
+< import { createRequire } from 'module';
+< const require = createRequire(import.meta.url);
+< // eslint-disable-next-line @typescript-eslint/no-var-requires
+< const parse5 = require('parse5');
+---
+> import parse5 from 'parse5';
+179c176
+< //# sourceMappingURL=parse5-utils.js.map
+\ No newline at end of file
+---
+> //# sourceMappingURL=parse5-utils.js.map

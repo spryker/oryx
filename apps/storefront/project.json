@@ -51,7 +51,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
-          "./patch.sh",
+          "tools/patches/patch.sh",
           "nx run storefront:build-ssr",
           "npm run storefront-lambda"
         ],
