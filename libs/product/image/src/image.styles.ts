@@ -48,6 +48,7 @@ export const styles = css`
 
   .nav {
     all: unset;
+    flex: auto;
     margin: auto;
     max-width: 100%;
     display: flex;
@@ -129,8 +130,13 @@ export const styles = css`
     order: 0;
     inset-inline-start: 0;
     inset-inline-end: auto;
-    flex-direction: column;
     max-height: var(--preview-height, 300px);
+    writing-mode: vertical-lr;
+    flex-direction: row;
+  }
+
+  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) section {
+    flex-basis: 100%;
   }
 
   :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}']) section {
