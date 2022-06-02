@@ -158,5 +158,6 @@ export const styles = css`
 
   :host([nav-layout='${unsafeCSS(NavLayout.GRID)}']) .nav {
     flex-wrap: wrap;
+    overflow: visible;
   }
 `;
