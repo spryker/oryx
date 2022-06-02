@@ -6,7 +6,7 @@ This patch fixes two bugs:
 - [Hydrating elements](https://spryker.atlassian.net/browse/FAAS-2863) rendered through asyncDirective classes
 
 * Affects: lit-html
-* Version: 2.2.0
+* Version: 2.2.5
 
 ## Files
 

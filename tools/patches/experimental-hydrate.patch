@@ -1,7 +1,3 @@
-87c87
-<             const parent = marker.parentElement;
----
->             const parent = marker.parentElement ? marker.parentElement : marker.previousSibling;
 252c252,257
 <     const state = stack[stack.length - 1];
 ---
@@ -11,8 +7,3 @@
 >       state = stack[stack.length - i];
 >       i++;
 >     }
-318c323
-< //# sourceMappingURL=experimental-hydrate.js.map
-\ No newline at end of file
----
-> //# sourceMappingURL=experimental-hydrate.js.map
