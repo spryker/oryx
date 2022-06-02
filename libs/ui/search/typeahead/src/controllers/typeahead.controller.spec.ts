@@ -1,12 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstanceFn } from 'vitest';
 import { a11yConfig } from '../../../../a11y';
 import { getControl } from '../../../../form/utilities';
 import '../../../../option/';
-import { PopoverSelectEvent } from '../../../../popover';
 import { SearchEvent } from '../../../searchbox';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { TypeaheadController } from './typeahead.controller';
@@ -53,6 +53,12 @@ describe('TypeaheadController', () => {
       it('should add the option slot to it', () => {
         expect(
           element.querySelectorAll('oryx-option[slot=option]').length
+        ).toBe(3);
+      });
+
+      it('should add "close-popover" attribute', () => {
+        expect(
+          element.querySelectorAll('oryx-option[close-popover]').length
         ).toBe(3);
       });
     });

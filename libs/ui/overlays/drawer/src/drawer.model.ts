@@ -5,13 +5,6 @@ export enum DrawerType {
   SECONDARY = 'secondary',
 }
 
-export interface DialogElement extends HTMLDialogElement {
-  open: boolean;
-  showModal(): void;
-  show(): void;
-  close(): void;
-}
-
 export interface DrawerProperties {
   /**
    *

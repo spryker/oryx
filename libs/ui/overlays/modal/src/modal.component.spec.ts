@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../a11y';
-import { checkSlots } from '../../../utilities/slot.spec.util';
+import { checkSlots } from '../../../testing/slot.util';
 import { ModalComponent } from './modal.component';
 
 customElements.get('oryx-modal') ||

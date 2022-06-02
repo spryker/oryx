@@ -2,8 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { a11yConfig } from '../../../../a11y';
-import { dispatchKeydown } from '../../../../utilities';
-import { checkSlots } from '../../../../utilities/slot.spec.util';
+import { checkSlots, dispatchKeydown } from '../../../../testing';
 import { NDSModalComponent } from './modal.component';
 
 customElements.get('oryx-modal-nds') ||
@@ -172,5 +171,20 @@ describe('NDS Modal', () => {
   checkSlots(['header', 'default', 'footer'], {
     tag: 'oryx-modal-nds',
     attributes: ['open'],
+  });
+
+  describe('when the component is removed from the dom', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-modal-nds open></oryx-modal-nds>`);
+      element.disconnectedCallback();
+    });
+
+    it('should clear the events handlers', () => {
+      dispatchKeydown(element, 'Escape');
+      expectDialogOpen(true);
+
+      element.dispatchEvent(new MouseEvent('click', {}));
+      expectDialogOpen(true);
+    });
   });
 });

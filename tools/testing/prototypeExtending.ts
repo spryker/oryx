@@ -9,6 +9,7 @@ declare global {
         close: () => void;
         setAttribute: (attr: string, value: string) => void;
         removeAttribute: (attr: string) => void;
+        dispatchEvent: (e: Event) => void;
       };
     };
   }
@@ -23,6 +24,7 @@ if (window.HTMLDialogElement) {
   };
   window.HTMLDialogElement.prototype.close = function (): void {
     this.removeAttribute('open');
+    this.dispatchEvent(new Event('close', { bubbles: true }));
   };
 }
 

@@ -9,7 +9,7 @@ import '../../index';
 
 export default {
   title: `${storybookPrefix}/Overlays/Drawer/Static`,
-  decorators: [OverlaysDecorator],
+  decorators: [OverlaysDecorator()],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

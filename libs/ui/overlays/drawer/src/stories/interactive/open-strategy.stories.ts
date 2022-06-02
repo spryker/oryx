@@ -11,7 +11,7 @@ import { toggle } from './util';
 
 export default {
   title: `${storybookPrefix}/Overlays/Drawer/Interactive`,
-  decorators: [OverlaysDecorator],
+  decorators: [OverlaysDecorator()],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

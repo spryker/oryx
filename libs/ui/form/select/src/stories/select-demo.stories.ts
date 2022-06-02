@@ -1,10 +1,10 @@
+import '@spryker-oryx/ui/popover';
+import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../Graphical/icon';
-import { PopoverSelectEvent } from '../../../../popover';
-import '../../../../popover/index';
 import {
   ClearIconAppearance,
   SearchEvent,

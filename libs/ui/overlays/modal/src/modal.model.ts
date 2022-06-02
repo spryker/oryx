@@ -6,9 +6,3 @@ export interface ModalProperties {
   open: () => void;
   close: () => void;
 }
-
-export interface DialogElement extends HTMLDialogElement {
-  showModal(): void;
-  show(): void;
-  close(): void;
-}

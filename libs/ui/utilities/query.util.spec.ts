@@ -3,7 +3,11 @@ import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { a11yConfig } from '../a11y';
-import { queryAssignedElements, queryFirstAssigned } from './query.util';
+import {
+  queryAssignedElements,
+  queryFirstAssigned,
+  queryFirstFocusable,
+} from './query.util';
 
 @customElement('fake-element')
 class FakeComponent extends LitElement {
@@ -26,6 +30,21 @@ class FakeComponent extends LitElement {
 class NoSlotComponent extends LitElement {
   render(): TemplateResult {
     return html``;
+  }
+}
+@customElement('fake-container')
+class FakeContainer extends LitElement {
+  render(): TemplateResult {
+    return html`
+      <slot></slot>
+      <input id="root-input" />
+      <div id="container">
+        <input id="input" />
+      </div>
+      <div id="empty-container">
+        <span>1</span>
+      </div>
+    `;
   }
 }
 
@@ -134,6 +153,35 @@ describe('QueryUtil', () => {
           });
           expect(el.length).toBe(0);
         });
+      });
+    });
+  });
+
+  describe('queryFirstFocusable', () => {
+    let element: FakeContainer;
+
+    describe('query first focusable element', () => {
+      beforeEach(async () => {
+        element = await fixture(html` <fake-container></fake-container> `);
+      });
+
+      it('should not found focusable element', () => {
+        const parent = element.shadowRoot?.getElementById('empty-container');
+        const firstFocusable = queryFirstFocusable(parent as HTMLElement);
+        expect(firstFocusable).toBeNull();
+      });
+
+      it('should find #input', () => {
+        const parent = element.shadowRoot?.getElementById('container');
+        const target = element.shadowRoot?.getElementById('input');
+        const firstFocusable = queryFirstFocusable(parent as HTMLElement);
+        expect(firstFocusable).toBe(target);
+      });
+
+      it('should find #slot-input', () => {
+        const target = element.shadowRoot?.getElementById('root-input');
+        const firstFocusable = queryFirstFocusable(element);
+        expect(firstFocusable).toBe(target);
       });
     });
   });

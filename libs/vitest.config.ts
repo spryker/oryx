@@ -10,6 +10,7 @@ export default defineConfig({
       reporter: ['html', 'text', 'text-summary'],
       exclude: ['**/*.mocks.ts', '**/*.spec.ts'],
     },
+    setupFiles: ['../../tools/setup-files/user-agent.ts'],
   },
   plugins: [tsconfigPaths({ root: '../../' })],
 });

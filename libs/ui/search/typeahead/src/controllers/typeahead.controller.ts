@@ -1,12 +1,13 @@
+import {
+  CLOSE_POPOVER_ATTR,
+  PopoverController,
+  PopoverOptions,
+  PopoverSelectEvent,
+} from '@spryker-oryx/ui/popover';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { getControl } from '../../../../form/utilities/getControl';
 import { OptionComponent } from '../../../../option';
-import {
-  PopoverController,
-  PopoverOptions,
-  PopoverSelectEvent,
-} from '../../../../popover';
 import { SearchEvent } from '../../../searchbox';
 import { TypeaheadOptions } from '../typeahead.model';
 import { FilterController } from './filter.controller';
@@ -38,6 +39,9 @@ export class TypeaheadController implements ReactiveController {
     this.host
       .querySelectorAll<OptionComponent>('oryx-option')
       .forEach((option) => {
+        //ensure that option has necessary attribute for closing popover
+        option.toggleAttribute(CLOSE_POPOVER_ATTR, true);
+
         if (!option.slot) {
           option.slot = 'option';
         }

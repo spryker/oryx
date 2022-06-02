@@ -1,6 +1,7 @@
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DialogElement, ModalProperties } from './modal.model';
+import { DialogElement } from '../../overlay.model';
+import { ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
 
 export class ModalComponent extends LitElement implements ModalProperties {

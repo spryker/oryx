@@ -7,12 +7,10 @@ export * from './modal.styles';
 export * from './no-dialog-support/modal.component';
 export * from './no-dialog-support/modal.styles';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-if (window.HTMLDialogElement) {
-  customElements.get('oryx-modal') ||
-    customElements.define('oryx-modal', ModalComponent);
-} else {
-  customElements.get('oryx-modal') ||
-    customElements.define('oryx-modal', NDSModalComponent);
-}
+customElements.get('oryx-modal') ||
+  customElements.define(
+    'oryx-modal',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.HTMLDialogElement ? ModalComponent : NDSModalComponent
+  );

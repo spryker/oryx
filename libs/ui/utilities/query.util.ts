@@ -40,3 +40,13 @@ export const isFocusable = (element: Element): boolean => {
     .map((selector) => selector.split('[')[0])
     .includes(element.tagName.toLowerCase());
 };
+
+export const queryFirstFocusable = (
+  parent: HTMLElement | LitElement
+): HTMLElement | null => {
+  return (
+    parent instanceof LitElement && parent.shadowRoot
+      ? parent.shadowRoot
+      : parent
+  ).querySelector(focusableSelectors.join(', '));
+};

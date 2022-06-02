@@ -1,7 +1,7 @@
+import { PopoverSelectEvent, POPOVER_EVENT } from '@spryker-oryx/ui/popover';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
 import { OptionComponent } from '../../../../option';
-import { PopoverSelectEvent } from '../../../../popover';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { generateMarkedHtml, getFilterRegExp } from './filter.utils';
 
@@ -151,7 +151,7 @@ export class FilterController implements ReactiveController {
       }
     }
 
-    const event = new CustomEvent<PopoverSelectEvent>('oryx.popover', {
+    const event = new CustomEvent<PopoverSelectEvent>(POPOVER_EVENT, {
       detail: {
         selected,
       },

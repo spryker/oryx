@@ -3,14 +3,14 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { isFocusable } from '../../../utilities';
 import { Position } from '../../../utilities/model/common';
-import { DialogElement, DrawerProperties, DrawerType } from './drawer.model';
+import { DialogElement } from '../../overlay.model';
+import { DrawerProperties, DrawerType } from './drawer.model';
 import {
   drawerBaseStyles,
   drawerStyles,
   panelBaseStyles,
   panelStyles,
 } from './styles';
-
 export const TAG_NAME = 'oryx-drawer';
 
 export class DrawerComponent extends LitElement implements DrawerProperties {

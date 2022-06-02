@@ -8,7 +8,7 @@ import '../index';
 export default {
   title: `${storybookPrefix}/Structure/Collapsible`,
   // disables Chromatic's snapshotting on a story level
-  chromatic: { disableSnapshot: true },
+  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 export interface Props {

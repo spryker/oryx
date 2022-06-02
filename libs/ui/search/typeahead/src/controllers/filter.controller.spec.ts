@@ -1,4 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { POPOVER_EVENT } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -8,6 +9,7 @@ import '../../../../option';
 import { OptionComponent } from '../../../../option';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { FilterController } from './filter.controller';
+
 @customElement('fake-filter')
 class FakeComponent extends LitElement implements TypeaheadOptions {
   @property() filterStrategy?: FilterStrategyType;
@@ -172,7 +174,7 @@ describe('FilterController', () => {
       describe('when an input event value is dispatched', () => {
         prepareMatchByValue('fix/fes-456');
 
-        it('should dispatch a oryx.popover event with a selected option', async () => {
+        it(`should dispatch a ${POPOVER_EVENT} event with a selected option`, async () => {
           const selected =
             element.querySelectorAll<HTMLElement>('oryx-option')[1];
           expect(callback.mock.calls[0][0].detail.selected).toBe(selected);
@@ -181,7 +183,7 @@ describe('FilterController', () => {
       describe('when an input event value is dispatched', () => {
         prepareMatchByValue('fix/');
 
-        it('should dispatch a oryx.popover event without a selected option', async () => {
+        it(`should dispatch a ${POPOVER_EVENT} event without a selected option`, async () => {
           expect(callback.mock.calls[0][0].detail.selected).toBeUndefined();
         });
       });

@@ -1,15 +1,8 @@
 import { html, TemplateResult } from 'lit';
 import { isFocusable } from '../../../../utilities';
+import { Dialog } from '../../../overlay.model';
 import { DrawerComponent } from '../drawer.component';
 import { drawerNDSStyles } from './drawer.styles';
-
-interface NDSDialog {
-  open: boolean;
-  show(): void;
-  close(): void;
-  showModal(): void;
-}
-
 export class NDSDrawerComponent extends DrawerComponent {
   static styles = [...DrawerComponent.styles, drawerNDSStyles];
 
@@ -25,7 +18,7 @@ export class NDSDrawerComponent extends DrawerComponent {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  override get dialog(): NDSDialog {
+  override get dialog(): Dialog {
     return {
       open: this.open,
       show: (): void => this.show(),

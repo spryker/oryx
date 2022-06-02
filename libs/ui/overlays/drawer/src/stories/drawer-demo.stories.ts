@@ -72,8 +72,8 @@ class DynamicComponent extends LitElement {
 export default {
   title: `${storybookPrefix}/Overlays/Drawer`,
   // disables Chromatic's snapshotting on a story level
-  chromatic: { disableSnapshot: true },
-  decorators: [OverlaysDecorator],
+  parameters: { chromatic: { disableSnapshot: true } },
+  decorators: [OverlaysDecorator()],
 } as Meta;
 const Template: Story<DrawerProperties> = (
   props: DrawerProperties

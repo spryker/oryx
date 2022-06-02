@@ -1,8 +1,10 @@
+import { POPOVER_HEIGHT } from '@spryker-oryx/ui/popover';
 import { css, unsafeCSS as unsafecss } from 'lit';
-import { POPOVER_MAX_HEIGHT_FALLBACK } from '../../../popover';
 
 export const typeaheadStyles = css`
   :host {
+    --oryx-popover-vertical-offset: 20px;
+
     position: relative;
     display: flex;
   }
@@ -12,14 +14,11 @@ export const typeaheadStyles = css`
   }
 
   oryx-popover {
-    margin: var(--oryx-popover-margin, 9px) 0;
+    margin: calc((var(--oryx-popover-vertical-offset) / 2) - 2px) 0;
     overflow: auto;
     max-height: min(
-      var(
-        --_available-popover-height,
-        ${unsafecss(POPOVER_MAX_HEIGHT_FALLBACK)}px
-      ),
-      var(--oryx-popover-maxheight, ${unsafecss(POPOVER_MAX_HEIGHT_FALLBACK)}px)
+      calc(var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px)),
+      var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
     width: 100%;
   }
