@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const { resolve, basename } = require('path');
 
 /**
  * @param {string=} cwd
@@ -32,8 +32,17 @@ function getTagPrefix(cwd) {
   return getConfig(cwd).command?.publish?.tagVersionPrefix;
 }
 
+/**
+ * Extract package name from `cwd`
+ * @returns {string}
+ */
+function getPackageName(cwd = process.cwd()) {
+  return basename(cwd);
+};
+
 module.exports = {
   getConfig,
   getVersion,
   getTagPrefix,
+  getPackageName,
 };
