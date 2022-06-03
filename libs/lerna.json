@@ -1,31 +1,17 @@
 {
-  "packages": [
-    "content",
-    "core",
-    "experience",
-    "injector",
-    "lit-rxjs",
-    "product",
-    "typescript-utils",
-    "ui"
-  ],
-  "version": "1.0.0-next.0",
+  "packages": ["*"],
+  "version": "0.0.1",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": [
-        "*.md",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-      ],
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
-      "allowBranch": [
-        "development",
-        "release/*"
-      ],
+      "createRelease": "github",
+      "gitRemote": "pub",
+      "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@"
     }
   }
