@@ -1,5 +1,14 @@
 {
-  "packages": ["*"],
+  "packages": [
+    "content",
+    "core",
+    "experience",
+    "injector",
+    "lit-rxjs",
+    "product",
+    "typescript-utils",
+    "ui"
+  ],
   "version": "0.0.1",
   "npmClient": "npm",
   "command": {
