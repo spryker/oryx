@@ -17,6 +17,7 @@ export const styles = css`
   }
 
   .original {
+    /* stylelint-disable-next-line */
     text-decoration-line: line-through;
     font-size: 1.357rem;
     line-height: 1;

@@ -8,7 +8,7 @@ export const styles = css`
   label {
     display: flex;
     align-items: center;
-    column-gap: 8px;
+    gap: 8px;
     position: relative;
     outline: 0;
     color: var(--oryx-color-inc);
@@ -30,8 +30,8 @@ export const styles = css`
 
   ::slotted(input:checked) {
     background-clip: content-box;
-    background-image: linear-gradient(currentColor 0%, currentColor 100%),
-      linear-gradient(transparent 0%, transparent 100%);
+    /* stylelint-disable-next-line */
+    background-image: linear-gradient(currentColor 0%, currentColor 100%);
     color: var(--oryx-color-brand);
   }
 

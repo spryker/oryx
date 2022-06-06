@@ -182,8 +182,6 @@ export const buttonStyles = css`
     position: absolute;
     width: 100%;
     height: 100%;
-    left: 0;
-    top: 0;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 16px;

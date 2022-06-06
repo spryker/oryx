@@ -10,7 +10,7 @@ export const NDSStyles = css`
     align-items: center;
     position: fixed;
     z-index: 999;
-    left: 0;
+    inset-inline-start: 0;
     top: 0;
     width: 100%;
     height: 100%;

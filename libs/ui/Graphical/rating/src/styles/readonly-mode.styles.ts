@@ -17,10 +17,12 @@ export const ratingReadonlyStyles = css`
   }
 
   :host([readonly]:not([size='small'])) input {
+    /* stylelint-disable-next-line */
     clip-path: url('#star-path');
   }
 
   :host([readonly][size='small']) input {
+    /* stylelint-disable-next-line */
     clip-path: url('#star-path-small');
   }
 
