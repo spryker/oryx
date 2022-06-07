@@ -35,7 +35,9 @@ ProductImageDemo.args = {
 
 ProductImageDemo.argTypes = {
   code: {
-    control: { type: 'text' },
+    options: ['1', '2', '3'],
+    control: { type: 'select' },
+    table: { category: 'Product' },
   },
   previewLayout: {
     options: Object.values(ProductImagePreviewLayout),
