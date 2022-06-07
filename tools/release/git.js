@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 
 /**
  * @param {string=} tagGlob Filter tags by a glob pattern
- * @returns string
+ * @returns {string=}
  */
 function getLastTag(tagGlob) {
   let cmd = `git describe --tags --abbrev=0`;
@@ -11,7 +11,15 @@ function getLastTag(tagGlob) {
     cmd += ` --match "${tagGlob.replace(/"/g, '\\"')}"`;
   }
 
-  return execSync(cmd, { encoding: 'utf-8' });
+  try {
+    return execSync(cmd, { encoding: 'utf-8' });
+  } catch (e) {
+    if (e.stderr.includes('fatal: No names found')) {
+      return;
+    }
+
+    throw e;
+  }
 }
 
 module.exports = {

@@ -16,11 +16,11 @@ function main() {
 
   const releasedVersion = getLastTag(tagGlob);
 
-  if (releasedVersion.includes(RC_TAG)) {
+  if (releasedVersion?.includes(RC_TAG)) {
     return releaseLatestFromRc();
   }
 
-  if (areVersionsDiffByMinor(currentVersion, releasedVersion)) {
+  if (!releasedVersion || areVersionsDiffByMinor(currentVersion, releasedVersion)) {
     releaseLatestRc();
   } else {
     releaseLatest();
@@ -29,12 +29,12 @@ function main() {
 
 function releaseLatestRc() {
   console.log('Releasing Latest RC...');
-  runScript('release:tag', { env: { RELEASE_TAG: 'rc' } });
+  runScript('release-tag', { env: { RELEASE_TAG: 'rc' } });
 }
 
 function releaseLatestFromRc() {
   console.log('Releasing Latest from RC...');
-  runScript('release:from-tag');
+  runScript('release-from-tag');
 }
 
 function releaseLatest() {
