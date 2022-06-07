@@ -160,4 +160,12 @@ export const styles = css`
     flex-wrap: wrap;
     overflow: visible;
   }
+
+  :host([nav-display='${unsafeCSS(
+        NavDisplay.ASIDE
+      )}'][nav-position='${unsafeCSS(NavPosition.FLOATING)}'])
+    .nav {
+    writing-mode: initial;
+    flex-direction: column;
+  }
 `;
