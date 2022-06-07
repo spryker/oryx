@@ -77,7 +77,8 @@ export class SelectController implements ReactiveController {
     }
 
     this.host.isEmpty =
-      this.host.isEmpty || (!this.host.isLoading && this.options.length === 0);
+      (this.host.isEmpty && this.host.hasAttribute('filterselect')) ||
+      (!this.host.isLoading && this.options.length === 0);
   }
 
   protected reflectOptions(): void {
