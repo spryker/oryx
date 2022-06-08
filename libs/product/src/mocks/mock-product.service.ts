@@ -1,7 +1,7 @@
 import { Observable, of, throwError } from 'rxjs';
+import { ProductQualifier } from '../models/';
 import { Product } from '../models/product';
-import { ProductQualifier } from '../models/product-qualifier';
-import { ProductService } from '../services/product.service';
+import { ProductService } from '../services/';
 
 export class MockProductService implements Partial<ProductService> {
   static mockProducts: Product[] = [
@@ -52,6 +52,11 @@ export class MockProductService implements Partial<ProductService> {
           volumePrices: [],
         },
       ],
+      description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      `,
     },
     {
       sku: '2',
@@ -77,6 +82,14 @@ export class MockProductService implements Partial<ProductService> {
           volumePrices: [],
         },
       ],
+      description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit
+
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      `,
     },
     {
       sku: '3',
@@ -202,6 +215,7 @@ export class MockProductService implements Partial<ProductService> {
           volumePrices: [],
         },
       ],
+      description: 'Lorem',
     },
     {
       sku: '5',
@@ -230,6 +244,7 @@ export class MockProductService implements Partial<ProductService> {
           volumePrices: [],
         },
       ],
+      description: 'Lorem sample',
     },
     {
       sku: '6',
@@ -258,6 +273,7 @@ export class MockProductService implements Partial<ProductService> {
           volumePrices: [],
         },
       ],
+      description: 'Lorem ipsum dolor sit amet.',
     },
   ];
 

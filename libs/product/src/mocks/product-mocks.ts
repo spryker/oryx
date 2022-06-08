@@ -1,5 +1,5 @@
 import { createInjector } from '@spryker-oryx/injector';
-import { MOCK_PRODUCT_PROVIDERS } from '../../../src/mocks/mock-product.providers';
+import { MOCK_PRODUCT_PROVIDERS } from '../mocks';
 
 export function setupProductMocks(): void {
   createInjector({

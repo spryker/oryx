@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
+import { setupProductMocks } from '../../../src/mocks';
 import {
   ProductImageComponentProperties,
   ProductImageNavigationDisplay,
@@ -10,12 +11,11 @@ import {
   ProductImagePreviewLayout,
 } from '../image.model';
 import '../index';
-import { setupProductMocks } from './product-mocks';
 
 export default {
   title: `${storybookPrefix}/Image`,
   loaders: [setupProductMocks],
-} as Meta;
+} as unknown as Meta;
 
 const Template: Story<ProductImageComponentProperties> = (
   props

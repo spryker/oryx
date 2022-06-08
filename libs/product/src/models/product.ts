@@ -21,6 +21,7 @@ export interface Product {
   reviewCount?: number;
   name?: string;
   description?: string;
+  truncateAfter?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attributes?: Record<string, any>;
   metaTitle?: string;

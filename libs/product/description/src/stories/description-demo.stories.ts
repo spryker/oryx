@@ -5,42 +5,34 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import '../index';
-import { ProductTitleContent } from '../model';
+import { ProductDescriptionContent } from '../model';
 
 export default {
-  title: `${storybookPrefix}/Title`,
+  title: `${storybookPrefix}/Description`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductTitleContent & ProductComponentProperties;
+type Props = ProductDescriptionContent & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  return html`<product-title .sku=${props.sku} .content=${props} />`;
+  return html`<product-description .sku=${props.sku} .content=${props} />`;
+};
+export const DescriptionDemo = Template.bind({});
+
+DescriptionDemo.args = {
+  sku: '1',
+  truncateCharacterCount: 100,
 };
 
-export const TitleDemo = Template.bind({});
-
-TitleDemo.args = {
-  sku: MockProductService.mockProducts[0].sku,
-  tag: '',
-  singleLine: false,
-};
-
-TitleDemo.argTypes = {
+DescriptionDemo.argTypes = {
   sku: {
     control: { type: 'select' },
     options: [
       ...MockProductService.mockProducts.map((p) => p.sku),
       'not-found',
     ],
-    table: { category: 'product' },
   },
-  tag: {
-    options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-    control: { type: 'select' },
-    table: { category: 'component' },
-  },
-  singleLine: {
-    table: { category: 'component' },
+  truncateCharacterCount: {
+    description: '100',
   },
 };
