@@ -85,15 +85,17 @@ export const toggleIconStyles = css`
   }
 
   ::slotted(input:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px var(--oryx-color-brand);
-    border: solid 1px transparent;
-    outline: solid 1px var(--oryx-color-neutral);
-    outline-offset: -2px;
+    box-shadow: 0 0 3px var(--oryx-color-brand),
+      inset 0 0 0 1px var(--oryx-color-canvas),
+      inset 0 0 0 2px var(--oryx-color-neutral);
+    border: none;
   }
 
   ::slotted(input[checked]:focus-visible:not(:active))::after {
-    border-color: transparent;
-    outline-color: var(--oryx-color-brand);
+    box-shadow: 0 0 3px var(--oryx-color-brand),
+      inset 0 0 0 1px var(--oryx-color-brand-lighter),
+      inset 0 0 0 2px var(--oryx-color-brand);
+    border: none;
   }
 
   ::slotted(input[disabled])::after {
