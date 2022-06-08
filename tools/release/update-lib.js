@@ -1,15 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const promisify = require('util').promisify;
-const copyfiles = require('copyfiles');
 
 const fsStat = promisify(fs.stat);
 const fsWriteFile = promisify(fs.writeFile);
-const copyfilesAsync = promisify(copyfiles);
+const fsUnlink = promisify(fs.unlink);
 
 const cwd = process.cwd();
 
-const tasks = [updatePackage(cwd), updateChangelog(cwd)];
+const tasks = [updatePackage(cwd), removeChangelog(cwd)];
 
 Promise.all(tasks).catch((err) => {
   console.error(err);
@@ -38,13 +37,17 @@ async function updatePackage(libPath) {
   await fsWriteFile(packageDistPath, JSON.stringify(packageDist, null, 2));
 }
 
-async function updateChangelog(libPath) {
-  const changelogName = 'CHANGELOG.md';
-  const changelogDistPath = 'dist';
+async function removeChangelog(libPath) {
+  const changelogPath = path.resolve(libPath, 'dist', 'CHANGELOG.md');
 
-  console.log(
-    `Updating changelog from ${changelogName} to ${changelogDistPath}`,
-  );
+  console.log(`Removing changelog ${changelogPath}`);
 
-  await copyfilesAsync([changelogName, changelogDistPath]);
+  try {
+    await fsStat(changelogPath);
+  } catch (e) {
+    console.log(`No changelog in dist folder found! Skipping...`);
+    return;
+  }
+
+  await fsUnlink(changelogPath);
 }
