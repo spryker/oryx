@@ -52,7 +52,6 @@ export const checkboxStyles = css`
     border: 2px solid var(--oryx-color-neutral);
     background-repeat: no-repeat;
     background-position: center;
-    outline-offset: -1px;
   }
 
   :host(:not([intermediate])) ::slotted(input:checked)::before {
@@ -109,11 +108,19 @@ export const checkboxStyles = css`
   }
 
   :host(:not([error])) ::slotted(input:not(:disabled):focus-visible)::before {
-    border-color: var(--oryx-color-brand);
-    box-shadow: 0 0 3px var(--oryx-color-focus);
+    height: 18px;
+    width: 18px;
+    border: none;
+    box-shadow: 0 0 3px var(--oryx-color-focus),
+      inset 0 0 0 2px var(--oryx-color-brand);
   }
 
-  ::slotted(input:checked:focus-visible)::before {
-    outline: 1px solid var(--oryx-color-canvas);
+  :host(:not([error]))
+    ::slotted(input:not(:disabled):checked:focus-visible)::before {
+    height: 18px;
+    width: 18px;
+    border: none;
+    box-shadow: 0 0 3px var(--oryx-color-focus),
+      inset 0 0 0 1px var(--oryx-color-canvas);
   }
 `;
