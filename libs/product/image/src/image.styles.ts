@@ -57,14 +57,14 @@ export const styles = css`
     flex-shrink: 0;
     box-sizing: border-box;
     min-inline-size: auto;
-    padding: var(--oryx-space, 4px);
+    padding-block: var(--navigation-padding, 8px);
     position: relative;
     flex-direction: var(--navigation-direction, row);
     gap: var(--navigation-gap, 1rem);
     overflow: auto;
     scroll-behavior: smooth;
     scroll-snap-type: both mandatory;
-    scrollbar-width: thin; /* Firefox */
+    scrollbar-width: none; /* Firefox */
     -webkit-overflow-scrolling: touch;
   }
 
@@ -111,27 +111,24 @@ export const styles = css`
     position: relative;
   }
 
-  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
-    position: absolute;
-    padding: var(--navigation-padding, 20px);
-    top: auto;
-    bottom: 0;
-    inset-inline: 0;
-    align-items: center;
-    justify-content: center;
-  }
-
   :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) {
     flex-direction: row;
   }
 
-  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) .nav {
-    top: 0;
+  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
+    position: absolute;
+    padding: var(--navigation-padding, 8px);
+    top: auto;
     bottom: 0;
+    transform: translateX(-50%);
+    inset-inline-start: 50%;
+  }
+
+  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) .nav {
     order: 0;
-    inset-inline-start: 0;
-    inset-inline-end: auto;
+    padding-inline: var(--navigation-padding, 8px);
     max-height: var(--preview-height, 300px);
+    inset-inline: auto;
     writing-mode: vertical-lr;
     flex-direction: row;
   }
@@ -166,7 +163,8 @@ export const styles = css`
         NavDisplay.ASIDE
       )}'][nav-position='${unsafeCSS(NavPosition.FLOATING)}'])
     .nav {
-    writing-mode: initial;
-    flex-direction: column;
+    padding: var(--navigation-padding, 8px);
+    transform: translateY(-50%);
+    top: 50%;
   }
 `;
