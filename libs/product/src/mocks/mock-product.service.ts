@@ -57,6 +57,8 @@ export class MockProductService implements Partial<ProductService> {
 
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       `,
+      averageRating: '2',
+      reviewCount: 5,
     },
     {
       sku: '2',
@@ -90,6 +92,8 @@ export class MockProductService implements Partial<ProductService> {
       Lorem ipsum dolor sit amet, consectetur adipisicing elit
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       `,
+      averageRating: '2.5',
+      reviewCount: 175,
     },
     {
       sku: '3',
@@ -187,6 +191,8 @@ export class MockProductService implements Partial<ProductService> {
         },
       ],
       prices: [],
+      averageRating: '0',
+      reviewCount: 0,
     },
     {
       sku: '4',
@@ -216,6 +222,7 @@ export class MockProductService implements Partial<ProductService> {
         },
       ],
       description: 'Lorem',
+      reviewCount: undefined,
     },
     {
       sku: '5',

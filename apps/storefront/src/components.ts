@@ -40,4 +40,11 @@ export const componentsMapping: ComponentsMapping = {
       return html`<product-description uid="${uid}"></product-description>`;
     },
   },
+
+  'product-average-rating': {
+    tag: 'product-average-rating',
+    component: () => import('@spryker-oryx/product/average-rating'),
+    template: (uid: string) =>
+      html`<product-average-rating uid="${uid}"></product-average-rating>`,
+  },
 };
