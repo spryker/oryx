@@ -55,6 +55,7 @@ export const styles = css`
     order: 1;
     z-index: 1;
     flex-shrink: 0;
+    box-sizing: border-box;
     min-inline-size: auto;
     padding: var(--oryx-space, 4px);
     position: relative;
