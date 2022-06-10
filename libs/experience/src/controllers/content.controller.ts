@@ -1,7 +1,7 @@
 import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { LitElement, ReactiveController } from 'lit';
-import { BehaviorSubject, filter, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { ContentComponentProperties } from './content-component.properties';
 
 export class ContentController<T = unknown> implements ReactiveController {
@@ -29,19 +29,19 @@ export class ContentController<T = unknown> implements ReactiveController {
     this.host.addController(this);
   }
 
-  content$ = this.componentContent.pipe(
-    switchMap((component) => {
-      if (component !== undefined) {
-        return of(component);
+  content$: Observable<T> = this.componentContent.pipe(
+    switchMap((content) => {
+      if (content !== undefined) {
+        return of(content);
       }
       return this.uid$.pipe(
-        filter((uid) => !!uid),
-        switchMap(
-          (uid) =>
-            this.experienceContent?.getContent<{ data: T }>({ key: uid! }) ??
-            of(undefined)
-        ),
-        map((component) => component?.data)
+        switchMap((key) =>
+          key && this.experienceContent
+            ? this.experienceContent
+                .getContent<{ data: T }>({ key })
+                .pipe(map((component) => component?.data))
+            : of()
+        )
       );
     })
   );

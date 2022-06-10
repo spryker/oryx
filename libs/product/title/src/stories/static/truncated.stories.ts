@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
-import { setupProductMocks } from '../../../../src/mocks';
+import { setupProductMocks } from '../../../../src/mocks/product.mock';
 import '../../index';
 
 export default {
@@ -18,7 +18,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           <product-title
             sku="1"
             .content=${{ tag: 'h' + (i + 1), singleLine: true }}
-          />
+          ></product-title>
         `
     )}
   </div>`;

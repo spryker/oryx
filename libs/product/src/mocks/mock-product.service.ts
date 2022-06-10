@@ -1,7 +1,7 @@
-import { Observable, of, throwError } from 'rxjs';
-import { ProductQualifier } from '../models/';
-import { Product } from '../models/product';
-import { ProductService } from '../services/';
+import { Observable, of } from 'rxjs';
+import { ProductQualifier } from '../models/product-qualifier';
+import { Product } from '../models/product.model';
+import { ProductService } from '../services/product.service';
 
 export class MockProductService implements Partial<ProductService> {
   static mockProducts: Product[] = [
@@ -28,35 +28,23 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
         },
       ],
-      prices: [
-        {
-          priceTypeName: 'DEFAULT',
-          netAmount: null,
-          grossAmount: 1879,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-        {
-          priceTypeName: 'ORIGINAL',
-          netAmount: null,
-          grossAmount: 2000,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-      ],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       `,
+      price: {
+        defaultPrice: {
+          currency: 'EUR',
+          value: 1879,
+          isNet: true,
+        },
+        originalPrice: {
+          currency: 'EUR',
+          value: 2879,
+          isNet: true,
+        },
+      },
       averageRating: '2',
       reviewCount: 5,
     },
@@ -71,19 +59,6 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
         },
       ],
-      prices: [
-        {
-          priceTypeName: 'DEFAULT',
-          netAmount: null,
-          grossAmount: 1879,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-      ],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
@@ -92,6 +67,13 @@ export class MockProductService implements Partial<ProductService> {
       Lorem ipsum dolor sit amet, consectetur adipisicing elit
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       `,
+      price: {
+        defaultPrice: {
+          value: 1095,
+          currency: 'EUR',
+          isNet: false,
+        },
+      },
       averageRating: '2.5',
       reviewCount: 175,
     },
@@ -190,97 +172,60 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
         },
       ],
-      prices: [],
       averageRating: '0',
       reviewCount: 0,
     },
     {
       sku: '4',
       name: 'Sample product no. 4',
-      prices: [
-        {
-          priceTypeName: 'DEFAULT',
-          netAmount: 1879,
-          grossAmount: 1879,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-        {
-          priceTypeName: 'ORIGINAL',
-          netAmount: 1879,
-          grossAmount: 2000,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-      ],
       description: 'Lorem',
+      price: {
+        defaultPrice: {
+          value: 1700,
+          isNet: false,
+          currency: 'EUR',
+        },
+        originalPrice: {
+          value: 1900,
+          isNet: false,
+          currency: 'EUR',
+        },
+      },
       reviewCount: undefined,
     },
     {
       sku: '5',
       name: 'Sample product no. 5',
-      prices: [
-        {
-          priceTypeName: 'DEFAULT',
-          netAmount: 1879,
-          grossAmount: null,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-        {
-          priceTypeName: 'ORIGINAL',
-          netAmount: 1879,
-          grossAmount: null,
-          currency: {
-            code: 'EUR',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-      ],
       description: 'Lorem sample',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
+        },
+        originalPrice: {
+          value: 1779,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
     },
     {
       sku: '6',
       name: 'Sample product no. 6',
-      prices: [
-        {
-          priceTypeName: 'DEFAULT',
-          netAmount: 1879,
-          grossAmount: 1879,
-          currency: {
-            code: 'WRONG',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-        {
-          priceTypeName: 'ORIGINAL',
-          netAmount: 1879,
-          grossAmount: 2000,
-          currency: {
-            code: 'WRONG',
-            name: 'Euro',
-            symbol: '€',
-          },
-          volumePrices: [],
-        },
-      ],
       description: 'Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
+        },
+        originalPrice: {
+          value: 1779,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
     },
   ];
 
@@ -288,8 +233,6 @@ export class MockProductService implements Partial<ProductService> {
     const product = MockProductService.mockProducts.find(
       (p) => p.sku === qualifier.sku
     );
-    return product
-      ? of(product)
-      : throwError(() => new Error('Product not found'));
+    return of(product ?? MockProductService.mockProducts[0]);
   }
 }

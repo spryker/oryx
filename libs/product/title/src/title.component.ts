@@ -28,8 +28,7 @@ export class TitleComponent
   @property({ type: Object }) content?: ProductTitleContent;
 
   protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController<ProductTitleContent>(this)
-    .content$;
+  protected content$ = new ContentController(this).content$;
 
   protected override render(): TemplateResult {
     return html`

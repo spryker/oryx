@@ -3,7 +3,8 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { MockProductService, setupProductMocks } from '../../../src/mocks';
+import { MockProductService } from '../../../src/mocks';
+import { setupProductMocks } from '../../../src/mocks/product.mock';
 import '../index';
 import { ProductTitleContent } from '../model';
 

@@ -3,7 +3,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import '../index';
-import { LinkContent, LinkTarget } from '../link.model';
+import { LinkContent } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
@@ -27,12 +27,11 @@ ContentLinkDemo.argTypes = {
   href: {
     control: { type: 'text' },
   },
-  icon: {
+  target: {
     control: { type: 'text' },
   },
-  target: {
-    options: Object.values(LinkTarget),
-    control: { type: 'select' },
+  icon: {
+    control: { type: 'text' },
   },
   noopener: {
     control: { type: 'boolean' },

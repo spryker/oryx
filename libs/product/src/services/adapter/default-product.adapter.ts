@@ -1,12 +1,15 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
+import { ApiModel, Product, ProductQualifier } from '../../models';
 import {
-  Product,
-  ProductImage,
-  ProductPrice,
-  ProductQualifier,
-} from '../../models';
+  convertProductImages,
+  GlueImageSets,
+} from './converters/product-image.converter';
+import {
+  convertPrices,
+  GlueProductPrices,
+} from './converters/product-price.converter';
 import { ProductAdapter } from './product.adapter';
 
 interface RELATIONSHIP {
@@ -18,18 +21,6 @@ interface INCLUDE<T, A> {
   type: T;
   id: string;
   attributes: A;
-}
-
-interface GlueImageSets {
-  imageSets: {
-    name: string;
-    images: ProductImage[];
-  }[];
-}
-
-interface GlueProductPrices {
-  price: number;
-  prices: ProductPrice[];
 }
 
 enum INCLUDES {
@@ -49,7 +40,7 @@ type ProductIncludes =
   | INCLUDE<INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS, GlueImageSets>
   | INCLUDE<INCLUDES.CONCRETE_PRODUCT_PRICES, GlueProductPrices>;
 
-type GlueProduct = JSON_API_MODEL<Product, ProductIncludes[]>;
+type GlueProduct = JSON_API_MODEL<ApiModel.Product, ProductIncludes[]>;
 
 export class DefaultProductAdapter implements ProductAdapter {
   protected productEndpoint = 'concrete-products';
@@ -60,7 +51,10 @@ export class DefaultProductAdapter implements ProductAdapter {
   ) {}
 
   normalize(product: GlueProduct): Product {
-    return { ...product.data.attributes, ...this.mapIncludes(product) };
+    return {
+      ...this.convertAttributes(product.data.attributes),
+      ...this.mapIncludes(product),
+    };
   }
 
   getKey(qualifier: ProductQualifier): string {
@@ -78,7 +72,24 @@ export class DefaultProductAdapter implements ProductAdapter {
           include ? '?include=' : ''
         }${include?.join(',') || ''}`
       )
-      .pipe(map((res) => this.normalize(res)));
+      .pipe(
+        map((res) => this.normalize(res)),
+        tap(console.log)
+      );
+  }
+
+  protected convertAttributes(attributes: ApiModel.Product): Product {
+    const { sku, name, description, averageRating } = attributes;
+    console.log('attributes', attributes);
+    const product: Product = {
+      sku,
+      name,
+      description,
+      ...{ averageRating },
+    };
+    return Object.fromEntries(
+      Object.entries(product).filter(([, v]) => v != null)
+    );
   }
 
   protected mapIncludes(response: GlueProduct): Product {
@@ -102,16 +113,11 @@ export class DefaultProductAdapter implements ProductAdapter {
 
         switch (includeType) {
           case INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS:
-            product.images = (attributes as GlueImageSets).imageSets.reduce(
-              (acc, imageSet) => [...acc, ...imageSet.images],
-              [] as ProductImage[]
-            );
+            product.images = convertProductImages(attributes as GlueImageSets);
 
             break;
           case INCLUDES.CONCRETE_PRODUCT_PRICES:
-            product.price = (attributes as GlueProductPrices).price;
-            product.prices = (attributes as GlueProductPrices).prices;
-
+            product.price = convertPrices(attributes as GlueProductPrices);
             break;
           default:
             break;
