@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/lit-rxjs",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0-next.0",
   "description": "Rxjs utilities for lit-element library",
   "author": "Spryker",
   "license": "MIT",
@@ -11,9 +11,9 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "peerDependencies": {
+    "@spryker-oryx/typescript-utils": "~0.0.1",
     "lit": "^2.1.0",
-    "rxjs": "~7.4.0",
-    "@spryker-oryx/typescript-utils": "~0.0.1"
+    "rxjs": "~7.4.0"
   },
   "publishConfig": {
     "access": "public"
