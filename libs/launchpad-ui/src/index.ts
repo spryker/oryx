@@ -1,1 +1,1 @@
-export * from './launchpad-ui';
+export * from './mission-control';

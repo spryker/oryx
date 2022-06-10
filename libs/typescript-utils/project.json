@@ -12,6 +12,12 @@
       "options": {
         "lintFilePatterns": ["libs/typescript-utils/**/*.ts"]
       }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "passWithNoTests": true
+      }
     }
   },
   "tags": []

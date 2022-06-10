@@ -1,3 +1,4 @@
+export * as AjaxClient from './lib/ajax';
 export * from './lib/converters';
 export * from './lib/decorator';
 export * from './lib/is-client';

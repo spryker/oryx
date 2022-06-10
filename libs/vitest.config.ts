@@ -6,11 +6,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['**/*.spec.ts'],
+    setupFiles: ['../setupTests.ts', '../../tools/setup-files/user-agent.ts'],
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
       exclude: ['**/*.mocks.ts', '**/*.spec.ts'],
     },
-    setupFiles: ['../../tools/setup-files/user-agent.ts'],
   },
   plugins: [tsconfigPaths({ root: '../../' })],
 });
