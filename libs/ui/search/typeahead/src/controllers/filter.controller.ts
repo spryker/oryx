@@ -45,7 +45,7 @@ export class FilterController implements ReactiveController {
     if (
       this.host.filterStrategy &&
       e.key === ' ' &&
-      this.control.value === ''
+      this.controlItem.value === ''
     ) {
       e.preventDefault();
     }

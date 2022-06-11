@@ -18,8 +18,28 @@ class FakeComponent extends LitElement implements TypeaheadOptions {
     return html` <slot></slot> `;
   }
 }
+@customElement('fake-filter-select')
+class FakeFilterSelectComponent extends LitElement implements TypeaheadOptions {
+  @property() filterStrategy?: FilterStrategyType;
+  protected filterController = new FilterController(this);
+
+  updated(): void {
+    this.setAttribute('filterSelect', 'true');
+
+    const inputValue = this.querySelector('input')?.value;
+    const filterInput = this.renderRoot.querySelector(
+      '[filterInput]'
+    ) as HTMLInputElement;
+    filterInput.value = inputValue || '';
+  }
+
+  render(): TemplateResult {
+    return html` <input filterInput /><slot></slot> `;
+  }
+}
 describe('FilterController', () => {
   let element: FakeComponent;
+  let selectElement: FakeFilterSelectComponent;
   const optionsValues = [
     '/feature/fes-123',
     'fix/fes-456',
@@ -237,6 +257,55 @@ describe('FilterController', () => {
           spy = vi.spyOn(event, 'preventDefault');
           element.dispatchEvent(event);
           expect(spy).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('and select filter is used', () => {
+        describe('and the value is empty', () => {
+          beforeEach(async () => {
+            selectElement = await fixture(
+              html`<fake-filter-select
+                .filterStrategy=${FilterStrategyType.START_WITH}
+              >
+                <input value="" />
+                ${optionsValues.map(
+                  (option) => html`<oryx-option .value=${option}></oryx-option>`
+                )}
+              </fake-filter-select>`
+            );
+          });
+
+          it('should not add the value', () => {
+            spy = vi.spyOn(event, 'preventDefault');
+            selectElement.dispatchEvent(event);
+            expect(spy).toHaveBeenCalled();
+          });
+        });
+
+        describe('and the value is not empty', () => {
+          beforeEach(async () => {
+            selectElement = await fixture(
+              html`<fake-filter-select
+                .filterStrategy=${FilterStrategyType.START_WITH}
+              >
+                <input value="not empty" />
+                ${optionsValues.map(
+                  (option) => html`<oryx-option .value=${option}></oryx-option>`
+                )}
+              </fake-filter-select>`
+            );
+          });
+
+          it('should not add the value', () => {
+            const event = new KeyboardEvent('keydown', {
+              key: ' ',
+              bubbles: true,
+              composed: true,
+            });
+            spy = vi.spyOn(event, 'preventDefault');
+            selectElement.dispatchEvent(event);
+            expect(spy).not.toHaveBeenCalled();
+          });
         });
       });
     });
