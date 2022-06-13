@@ -8,13 +8,13 @@ import { ProductImageComponent } from './image.component';
 
 describe('Image', () => {
   let element: ProductImageComponent;
+  createInjector({
+    providers: MOCK_PRODUCT_PROVIDERS,
+    override: true,
+  });
 
   beforeEach(async () => {
-    createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
-      override: true,
-    });
-    element = await fixture(html`<product-image code="1"></product-image>`);
+    element = await fixture(html`<product-image sku="1"></product-image>`);
   });
 
   it('is defined', () => {
@@ -41,7 +41,7 @@ describe('Image', () => {
   });
 
   it('hides thumbs by default when there is only 1 product image to preview', async () => {
-    element = await fixture(html`<product-image code="2"></product-image>`);
+    element = await fixture(html`<product-image sku="2"></product-image>`);
     const thumbs = element?.shadowRoot?.querySelector('.nav');
     expect(thumbs).toBeNull();
   });

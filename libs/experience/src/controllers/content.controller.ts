@@ -29,7 +29,7 @@ export class ContentController<T = unknown> implements ReactiveController {
     this.host.addController(this);
   }
 
-  content$: Observable<T> = this.componentContent.pipe(
+  content$: Observable<T | undefined> = this.componentContent.pipe(
     switchMap((content) => {
       if (content !== undefined) {
         return of(content);
@@ -40,7 +40,7 @@ export class ContentController<T = unknown> implements ReactiveController {
             ? this.experienceContent
                 .getContent<{ data: T }>({ key })
                 .pipe(map((component) => component?.data))
-            : of()
+            : of(undefined)
         )
       );
     })

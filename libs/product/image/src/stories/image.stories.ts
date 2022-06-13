@@ -1,10 +1,11 @@
+import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { setupProductMocks } from '../../../src/mocks';
+import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import {
-  ProductImageComponentProperties,
+  ProductImageComponentContent,
   ProductImageNavigationDisplay,
   ProductImageNavigationLayout,
   ProductImageNavigationPosition,
@@ -17,16 +18,16 @@ export default {
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-const Template: Story<ProductImageComponentProperties> = (
-  props
-): TemplateResult => {
-  return html`<product-image .code="${props.code}" .props=${props} />`;
+type Props = ProductImageComponentContent & ProductComponentProperties;
+
+const Template: Story<Props> = (content): TemplateResult => {
+  return html`<product-image .sku=${content.sku} .content=${content} />`;
 };
 
 export const ProductImageDemo = Template.bind({});
 
 ProductImageDemo.args = {
-  code: '1',
+  sku: MockProductService.mockProducts[0].sku,
   previewLayout: ProductImagePreviewLayout.CAROUSEL,
   navigationDisplay: ProductImageNavigationDisplay.BELOW,
   navigationLayout: ProductImageNavigationLayout.CAROUSEL,
@@ -34,10 +35,13 @@ ProductImageDemo.args = {
 };
 
 ProductImageDemo.argTypes = {
-  code: {
-    options: ['1', '2', '3'],
+  sku: {
     control: { type: 'select' },
-    table: { category: 'Product' },
+    options: [
+      ...MockProductService.mockProducts.map((p) => p.sku),
+      'not-found',
+    ],
+    table: { category: 'product' },
   },
   previewLayout: {
     options: Object.values(ProductImagePreviewLayout),

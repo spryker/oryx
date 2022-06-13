@@ -192,6 +192,26 @@ export class MockProductService implements Partial<ProductService> {
         },
       },
       reviewCount: undefined,
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
     },
     {
       sku: '5',
@@ -209,6 +229,26 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
     },
     {
       sku: '6',
@@ -226,6 +266,26 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
+      images: [
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+        },
+        {
+          externalUrlSmall:
+            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+          externalUrlLarge:
+            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+        },
+      ],
     },
   ];
 

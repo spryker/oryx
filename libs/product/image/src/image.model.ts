@@ -10,13 +10,7 @@ export interface ProductImageSet {
   externalUrlSmall: string;
 }
 
-export interface ProductImageComponentProperties {
-  /**
-   * Indicates the SKU of the product
-   * used to request product data
-   */
-  code?: string;
-
+export interface ProductImageComponentContent {
   /**
    * Preview layout
    * @default 'carousel'
@@ -43,7 +37,7 @@ export interface ProductImageComponentProperties {
 }
 
 export interface ProductImageComponentSettings
-  extends ProductImageComponentProperties {
+  extends ProductImageComponentContent {
   /**
    * Preview image width
    * @default '300'
