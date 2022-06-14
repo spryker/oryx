@@ -63,18 +63,19 @@ export class MicroFrontendComponent extends LitElement {
     const vendors = entryPoint.imports.map((vendor) => manifest[vendor].file);
     const styles = entryPoint.css;
 
-    styles.forEach((style) => {
-      addLink(`${this.hosting}/${style}`, {
-        'data-app': this.name as string,
-      });
-    });
-
-    [...vendors, entryPoint.file].forEach((script) => {
-      addScript(`${this.hosting}/${script}`, {
-        type: 'module',
-        'data-app': this.name as string,
-      });
-    });
+    await Promise.all([
+      ...styles.map(async (style) =>
+        addLink(`${this.hosting}/${style}`, {
+          'data-app': this.name as string,
+        })
+      ),
+      ...[...vendors, entryPoint.file].map(async (script) =>
+        addScript(`${this.hosting}/${script}`, {
+          type: 'module',
+          'data-app': this.name as string,
+        })
+      ),
+    ]);
   }
 
   async firstUpdated(): Promise<void> {
@@ -82,7 +83,6 @@ export class MicroFrontendComponent extends LitElement {
       if (!document.querySelector(`[data-app="${this.name}"]`)) {
         await this.loadMicroFrontend();
       }
-
       this.ready = true;
     } catch (e) {
       this.error = e as Error;

@@ -42,9 +42,16 @@ describe('micro-frontend', () => {
     });
 
     describe('when the manifest is loaded properly', () => {
+      const loadAssets = (): void => {
+        expectedAssets.forEach(([, selector]) => {
+          const asset = document.querySelector(selector);
+
+          asset?.dispatchEvent(new Event('load'));
+        });
+      };
       const expectedAssets: [string, string][] = [
-        ['entry point', `[src="${host}/assets/index.78fb593b.js"]`],
         ['style', `head [href="${host}/assets/index.8d81c154.css"]`],
+        ['entry point', `[src="${host}/assets/index.78fb593b.js"]`],
         ['vendor', `[src="${host}/assets/vendor.a068f0c7.js"]`],
       ];
 
@@ -65,6 +72,7 @@ describe('micro-frontend', () => {
         );
 
         element = await render('test-mf', host);
+        loadAssets();
         await wait(10);
       });
 
@@ -108,7 +116,6 @@ describe('micro-frontend', () => {
         );
 
         element = await render('test-mf', host);
-        await wait(10);
       });
 
       it('should not show the loading mask', () => {
@@ -132,7 +139,6 @@ describe('micro-frontend', () => {
     describe(`when the attribute ${missing} is not set`, () => {
       beforeEach(async () => {
         element = await render(name, hosting);
-        await wait(10);
       });
 
       it('should not show the loading mask', () => {
