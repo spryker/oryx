@@ -13,6 +13,7 @@ import {
   Provider,
 } from '@spryker-oryx/injector';
 import { PRODUCT_PROVIDERS } from '@spryker-oryx/product';
+import 'urlpattern-polyfill';
 import { componentsMapping } from './components';
 import { StorefrontRouterService } from './router.service';
 

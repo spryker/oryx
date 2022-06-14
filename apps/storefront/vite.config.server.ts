@@ -22,7 +22,16 @@ export default defineConfig({
     ssr: 'src/entry-server.ts',
   },
   ssr: {
-    noExternal: ['rxjs', 'lit', 'lit-element', '@lit-labs/ssr', 'lit-html'],
+    noExternal: [
+      'rxjs',
+      'lit',
+      'lit-element',
+      '@lit-labs/ssr',
+      '@lit-labs/router',
+      'urlpattern-polyfill',
+      '@webcomponents/template-shadowroot',
+      'lit-html',
+    ],
   },
   envPrefix: ['FES', 'SCOS'],
   plugins: [

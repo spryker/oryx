@@ -1,5 +1,6 @@
 // organize-imports-ignore
 import './bootstrap-injector';
+import '@spryker-oryx/product/title';
 import './experience-preview';
 import '@spryker-oryx/experience/components';
 import './storefront.component';

@@ -11,39 +11,41 @@ async function createServer() {
   const app = express();
 
   const vite = await createViteServer({
-    server: { middlewareMode: 'ssr' },
+    root: isProd ? '../../dist/apps/storefront/client/' : './',
+    server: {
+      middlewareMode: 'ssr',
+    },
   });
   app.use(vite.middlewares);
 
-  app.get('/', async (req, res) => {
+  app.get('/*', async (req, res, next) => {
     const url = req.originalUrl;
+    if (url.startsWith('/node_modules')) {
+      return next();
+    }
+
+    const originalUrl = new URL(
+      `${req.protocol}://${req.headers.host}${req.originalUrl}`
+    );
 
     try {
       let template = fs.readFileSync(
         path.resolve(
           path.dirname(fileURLToPath(import.meta.url)),
-          'index.html'
+          `${isProd ? '../../dist/apps/storefront/client/' : './'}index.html`
         ),
         'utf-8'
       );
-      template = await vite.transformIndexHtml(url, template);
       let render;
       if (isProd) {
         render = serverContext({
           base: '../../dist/apps/storefront/server/entry-server.js',
         });
       } else {
+        template = await vite.transformIndexHtml(url, template);
         ({ render } = await vite.ssrLoadModule('/src/entry-server.dev.ts'));
       }
-      const appHtml = await render({
-        tag: 'storefront-component',
-        props: {
-          content: {
-            banner: 'other-banner',
-            banner2: 'generic-banner',
-          },
-        },
-      });
+      const appHtml = await render({ route: originalUrl });
 
       const html = template.replace(
         `<storefront-component></storefront-component>`,

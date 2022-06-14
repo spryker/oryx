@@ -1,7 +1,7 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { LitElement, ReactiveController } from 'lit';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { defer, Observable, startWith, Subject, switchMap } from 'rxjs';
 import { Product, ProductContext } from '../models';
 import { ProductService } from '../services';
 import { ProductComponentProperties } from './product-component.properties';
@@ -13,7 +13,7 @@ import { ProductComponentProperties } from './product-component.properties';
 export class ProductController implements ReactiveController {
   protected context: ContextController;
   protected productService = resolve(this, ProductService);
-  protected sku$ = new BehaviorSubject<string | undefined>(undefined);
+  protected sku$ = new Subject<string | undefined>();
 
   /**
    * Exposes the product based on the context.
@@ -37,7 +37,16 @@ export class ProductController implements ReactiveController {
     this.context = new ContextController(host);
 
     this.product$ = this.context
-      .get(ProductContext.Code, this.sku$)
-      .pipe(switchMap((sku) => this.productService.get({ sku, include })));
+      .get(
+        ProductContext.Code,
+        defer(() =>
+          this.sku$.pipe(startWith<string | undefined>(this.host.sku))
+        )
+      )
+      .pipe(
+        switchMap((sku) => {
+          return this.productService.get({ sku, include });
+        })
+      );
   }
 }

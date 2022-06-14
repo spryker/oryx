@@ -32,9 +32,6 @@ export class ExperienceCompositionComponent extends LitElement {
   constructor() {
     super();
     this.hasSSR = !!this.shadowRoot;
-    if (isClient()) {
-      this.components$.subscribe();
-    }
   }
 
   components$ = this.key$.pipe(

@@ -17,6 +17,7 @@ export const renderComponent = async (
 };
 
 export const render = async (element): Promise<string> => {
+  window.location = element.route;
   const awaiter = getInjector().inject(SSRAwaiterService);
   const context = getInjector().inject(ContextService) as ServerContextService;
   const ssrResult = await renderComponent(element);

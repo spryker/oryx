@@ -13,6 +13,8 @@ export const serverContext = (options = {}) => {
     includeJSBuiltIns: true,
     props: {
       require: createRequire(url),
+      Event,
+      process,
     },
   });
   window.URLSearchParams = URLSearchParams;

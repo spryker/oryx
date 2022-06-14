@@ -1,5 +1,6 @@
 import { ComponentsRegistryService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
+import { LitElement } from 'lit';
 
 function $$$(selector, rootNode = document.body) {
   const arr = [];
@@ -51,4 +52,7 @@ export function initHydrateHooks() {
       el.addEventListener(mode, () => registryService.hydrateOnDemand(el));
     }
   });
+
+  const storefront = document.body.querySelector('storefront-component');
+  registryService.hydrateOnDemand(storefront as LitElement);
 }

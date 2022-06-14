@@ -8,10 +8,12 @@ import { LitElement } from 'lit';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
+export const HYDRATING = '$__HYDRATING';
 
 export interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
   new (...args: any[]): PatchableLitElement;
+  _$needsHydration?: boolean;
 }
 
 export const hydratable =
@@ -62,7 +64,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (this[DEFER_HYDRATION]) {
         return;
       }
+      if (this._$needsHydration) {
+        this[HYDRATING] = true;
+      }
       super.update(changedProperties);
+      this[HYDRATING] = false;
     }
 
     [HYDRATE_ON_DEMAND]() {

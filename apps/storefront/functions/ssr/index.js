@@ -6,6 +6,8 @@ import { serverContext } from './context';
 
 const storefrontHandler = async (event, context) => {
   try {
+    const originalUrl = new URL(event.rawUrl);
+
     // esbuild on netlify does not properly transform import.meta because it is not using esnext settings
     const url = 'file:///var/task/dist/apps/storefront/functions/ssr/index.js';
     const basepath = dirname(fileURLToPath(url));
@@ -16,7 +18,7 @@ const storefrontHandler = async (event, context) => {
     const render = serverContext({
       url,
     });
-    const appHtml = await render();
+    const appHtml = await render({ route: originalUrl });
     const html = template.replace(
       `<storefront-component></storefront-component>`,
       appHtml

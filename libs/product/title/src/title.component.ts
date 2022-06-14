@@ -11,6 +11,7 @@ import {
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
+import { map } from 'rxjs';
 import { ProductTitleContent } from './model';
 import { styles } from './title.styles';
 
@@ -28,7 +29,9 @@ export class TitleComponent
   @property({ type: Object }) content?: ProductTitleContent;
 
   protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController(this).content$;
+  protected content$ = new ContentController(this).content$.pipe(
+    map((content) => content ?? {})
+  );
 
   protected override render(): TemplateResult {
     return html`
@@ -58,8 +61,10 @@ export class TitleComponent
     title: TemplateResult,
     content: ProductTitleContent
   ): TemplateResult {
-    this.toggleAttribute('single-line', content.singleLine);
-    switch (content.tag) {
+    if (content.singleLine) {
+      this.setAttribute('single-line', '');
+    }
+    switch (content?.tag) {
       case 'h1':
         return html`<h1>${title}</h1>`;
       case 'h2':

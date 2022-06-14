@@ -1,6 +1,6 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ApiModel, Product, ProductQualifier } from '../../models';
 import {
   convertProductImages,
@@ -72,15 +72,11 @@ export class DefaultProductAdapter implements ProductAdapter {
           include ? '?include=' : ''
         }${include?.join(',') || ''}`
       )
-      .pipe(
-        map((res) => this.normalize(res)),
-        tap(console.log)
-      );
+      .pipe(map((res) => this.normalize(res)));
   }
 
   protected convertAttributes(attributes: ApiModel.Product): Product {
     const { sku, name, description, averageRating } = attributes;
-    console.log('attributes', attributes);
     const product: Product = {
       sku,
       name,

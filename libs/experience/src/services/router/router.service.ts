@@ -11,9 +11,16 @@ export interface RouterEvent {
   route: string;
 }
 
+export interface RouteParams {
+  [key: string]: string | undefined;
+}
+
 export interface RouterService {
   go(route: string): void;
   getEvents(type: RouterEventType): Observable<RouterEvent>;
+  currentRoute(): Observable<string>;
+  currentParams(): Observable<RouteParams>;
+  acceptParams(params: RouteParams): void;
 }
 
 declare global {

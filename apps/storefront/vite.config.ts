@@ -8,8 +8,19 @@ declare module 'vite' {
   }
 }
 
+const esbuild =
+  process.env.NODE_ENV === 'production'
+    ? {
+        mangleProps: /_\$needsHydration/,
+        mangleCache: {
+          _$needsHydration: '_$AG',
+        },
+      }
+    : undefined;
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  esbuild,
   build: {
     outDir: '../../dist/apps/storefront/client',
     emptyOutDir: true,

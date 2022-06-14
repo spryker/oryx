@@ -6,7 +6,7 @@ export interface ProductTitleContent {
    * get the best indexing from search engines. However, at other
    * places, the title might be rendered in a H3 or different.
    */
-  tag: string;
+  tag?: string;
 
   /**
    * Forces the title to not leave a single line. This can be helpful for
