@@ -85,7 +85,7 @@ export class SelectController implements ReactiveController {
     this.clearOptions();
     this.options.forEach((option) => {
       const newOption = `<oryx-option value='${option.value}' ${
-        option.selected && 'selected'
+        option.selected ? 'selected' : ''
       } slot="option">${option.text ?? option.value}</oryx-option>`;
       this.host.insertAdjacentHTML('beforeend', newOption);
     });
