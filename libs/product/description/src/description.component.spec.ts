@@ -6,7 +6,7 @@ import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductDescriptionComponent } from './description.component';
 
-describe('Description', () => {
+describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;
 
   beforeEach(async () => {

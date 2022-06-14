@@ -4,7 +4,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
-import { AverageRatingModel } from '../average-rating.model';
+import { ProductAverageRatingModel } from '../average-rating.model';
 import '../index';
 import { setupProductMocks } from './product-mocks';
 
@@ -13,7 +13,7 @@ export default {
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = AverageRatingModel & ProductComponentProperties;
+type Props = ProductAverageRatingModel & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`<product-average-rating .sku=${props.sku} .content=${props} />`;

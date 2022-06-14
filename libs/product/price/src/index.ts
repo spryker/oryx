@@ -1,9 +1,9 @@
-import { ProductPriceComponent } from './product-price.component';
+import { ProductPriceComponent } from './price.component';
 
-export * from './product-price.component';
-export * from './product-price.controller';
-export * from './product-price.model';
-export * from './product-price.styles';
+export * from './price.component';
+export * from './price.controller';
+export * from './price.model';
+export * from './price.styles';
 
 customElements.get('product-price') ||
   customElements.define('product-price', ProductPriceComponent);

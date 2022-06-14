@@ -27,10 +27,11 @@ export class ProductDescriptionComponent
   @property() uid?: string;
   @property({ type: Object }) content?: ProductDescriptionContent;
 
+  protected productController = new ProductController(this);
+  protected product$ = this.productController.getProduct();
+  protected contentController = new ContentController(this);
+  protected content$ = this.contentController.getContent();
   protected isHidden$ = new BehaviorSubject(true);
-  protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController<ProductDescriptionContent>(this)
-    .content$;
 
   protected descriptions$ = combineLatest([
     this.isHidden$,

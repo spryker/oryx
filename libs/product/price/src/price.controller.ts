@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/product';
 import { LitElement, ReactiveController } from 'lit';
 import { combineLatest, map, Observable } from 'rxjs';
-import { FormattedProductPrice } from './product-price.model';
+import { FormattedProductPrice } from './price.model';
 
 export class ProductPriceController implements ReactiveController {
   protected productController: ProductController;
@@ -33,7 +33,7 @@ export class ProductPriceController implements ReactiveController {
 
   protected getPrices(): Observable<FormattedProductPrice> {
     return combineLatest([
-      this.productController.product$,
+      this.productController.getProduct(),
       this.currencyService.get(),
       this.localeService.get(),
     ]).pipe(

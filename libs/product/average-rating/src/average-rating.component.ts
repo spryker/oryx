@@ -12,21 +12,24 @@ import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { property } from 'lit/decorators.js';
 import { combineLatest, map } from 'rxjs';
-import { AverageRatingModel } from './average-rating.model';
+import { ProductAverageRatingModel } from './average-rating.model';
 
+// TODO: add unit tests
 @hydratable()
-export class AverageRatingComponent
+export class ProductAverageRatingComponent
   extends LitElement
   implements
     ProductComponentProperties,
-    ContentComponentProperties<AverageRatingModel>
+    ContentComponentProperties<ProductAverageRatingModel>
 {
   @property() sku?: string;
   @property() uid?: string;
-  @property({ type: Object }) content?: AverageRatingModel;
+  @property({ type: Object }) content?: ProductAverageRatingModel;
 
-  protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController<AverageRatingModel>(this).content$;
+  protected productController = new ProductController(this);
+  protected contentController = new ContentController(this);
+  protected product$ = this.productController.getProduct();
+  protected content$ = this.contentController.getContent();
 
   protected rating$ = combineLatest([this.product$, this.content$]).pipe(
     map(([product, contents]) => {

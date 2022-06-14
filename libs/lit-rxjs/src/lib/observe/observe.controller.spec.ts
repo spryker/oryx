@@ -9,6 +9,15 @@ import { customElement, property } from 'lit/decorators.js';
 import { BehaviorSubject } from 'rxjs';
 import { ObserveController } from './observe.controller';
 
+vi.mock('rxjs', async () => {
+  const rxjs = (await vi.importActual('rxjs')) as Array<unknown>;
+
+  return {
+    ...rxjs,
+    defer: (fn: () => unknown): unknown => fn(),
+  };
+});
+
 @customElement('mock-component')
 class MockComponent extends LitElement {
   @property()

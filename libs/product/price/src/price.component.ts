@@ -8,9 +8,9 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
-import { ProductPriceController } from './product-price.controller';
-import { ProductPriceContent } from './product-price.model';
-import { ProductPriceStyles } from './product-price.styles';
+import { ProductPriceController } from './price.controller';
+import { ProductPriceContent } from './price.model';
+import { ProductPriceStyles } from './price.styles';
 
 export class ProductPriceComponent
   extends LitElement
@@ -28,7 +28,7 @@ export class ProductPriceComponent
   protected priceController = new ProductPriceController(this);
 
   protected price$ = combineLatest([
-    this.contentController.content$,
+    this.contentController.getContent(),
     this.priceController.price$,
   ]);
 

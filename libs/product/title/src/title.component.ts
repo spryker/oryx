@@ -16,7 +16,7 @@ import { ProductTitleContent } from './model';
 import { styles } from './title.styles';
 
 @hydratable()
-export class TitleComponent
+export class ProductTitleComponent
   extends LitElement
   implements
     ProductComponentProperties,
@@ -28,10 +28,12 @@ export class TitleComponent
   @property() uid?: string;
   @property({ type: Object }) content?: ProductTitleContent;
 
-  protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController(this).content$.pipe(
-    map((content) => content ?? {})
-  );
+  protected productController = new ProductController(this);
+  protected contentController = new ContentController(this);
+  protected product$ = this.productController.getProduct();
+  protected content$ = this.contentController
+    .getContent()
+    .pipe(map((content) => content ?? ({} as ProductTitleContent)));
 
   protected override render(): TemplateResult {
     return html`
@@ -61,10 +63,9 @@ export class TitleComponent
     title: TemplateResult,
     content: ProductTitleContent
   ): TemplateResult {
-    if (content.singleLine) {
-      this.setAttribute('single-line', '');
-    }
-    switch (content?.tag) {
+    this.toggleAttribute?.('single-line', !!content.singleLine);
+
+    switch (content.tag) {
       case 'h1':
         return html`<h1>${title}</h1>`;
       case 'h2':

@@ -1,5 +1,5 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, defer, Observable } from 'rxjs';
 
 export class ObserveController<T extends ReactiveControllerHost>
   implements ReactiveController
@@ -11,16 +11,18 @@ export class ObserveController<T extends ReactiveControllerHost>
     (this.host = host).addController(this);
   }
 
-  get<K extends keyof T>(property: K): BehaviorSubject<T[K]> {
-    if (!this.observablesMap.has(property)) {
-      const subject$ = new BehaviorSubject(this.host[property]);
-      this.observablesMap.set(property, subject$);
+  get<K extends keyof T>(property: K): Observable<T[K]> {
+    return defer(() => {
+      if (!this.observablesMap.has(property)) {
+        this.observablesMap.set(
+          property,
+          new BehaviorSubject(this.host[property])
+        );
+      }
 
-      return subject$;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.observablesMap.get(property)!;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.observablesMap.get(property)!;
+    });
   }
 
   hostUpdated(): void {

@@ -16,7 +16,7 @@ import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
-import { ProductPriceComponent } from './product-price.component';
+import { ProductPriceComponent } from './price.component';
 
 class MockExperienceService {
   getContent(): Observable<any> {

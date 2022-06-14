@@ -1,4 +1,7 @@
-import { ContentController } from '@spryker-oryx/experience';
+import {
+  ContentComponentProperties,
+  ContentController,
+} from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -6,14 +9,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LinkContent } from './link.model';
 import { styles } from './link.styles';
 
-export class ContentLinkComponent extends LitElement {
+export class ContentLinkComponent
+  extends LitElement
+  implements ContentComponentProperties<LinkContent>
+{
   static styles = styles;
 
   @property() uid?: string;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Object }) content?: LinkContent;
 
-  protected content$ = new ContentController<LinkContent>(this).content$;
+  protected contentController = new ContentController(this);
+  protected content$ = this.contentController.getContent();
 
   protected getRel(content: LinkContent): string | null {
     const rel: string[] = [];

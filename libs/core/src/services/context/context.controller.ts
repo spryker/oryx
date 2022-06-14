@@ -8,6 +8,7 @@ import {
   map,
   Observable,
   of,
+  skip,
   startWith,
   switchMap,
 } from 'rxjs';
@@ -28,12 +29,14 @@ export class ContextController implements ReactiveController {
     return combineLatest([
       overrideContext$.pipe(startWith(undefined)),
       this.triggerContext$.pipe(
+        startWith(undefined),
         switchMap(
           (): Observable<T | undefined> =>
             this.context?.get(this.host, key) ?? of(undefined)
         )
       ),
     ]).pipe(
+      skip(1),
       map(([overrideContext, context]) => overrideContext ?? context),
       distinctUntilChanged()
     );

@@ -1,12 +1,18 @@
 import { hydratable } from '@spryker-oryx/core';
-import { ContentController } from '@spryker-oryx/experience';
+import {
+  ContentComponentProperties,
+  ContentController,
+} from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
+import {
+  ProductComponentProperties,
+  ProductController,
+} from '@spryker-oryx/product';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
-import { ProductController } from '../../src';
 import {
   ProductImageComponentContent,
   ProductImageComponentSettings,
@@ -17,18 +23,25 @@ import {
 import { styles } from './image.styles';
 
 @hydratable('mouseover')
-export class ProductImageComponent extends LitElement {
+export class ProductImageComponent
+  extends LitElement
+  implements
+    ProductComponentProperties,
+    ContentComponentProperties<ProductImageComponentContent>
+{
   static styles = styles;
 
   @property({ type: String }) uid?: string;
   @property({ type: String }) sku?: string;
+  @property({ type: Object }) content?: ProductImageComponentContent;
 
   protected groupName = `product-image-nav-${this.uid}`;
 
   protected active$ = new BehaviorSubject(0);
-  protected product$ = new ProductController(this).product$;
-  protected content$ = new ContentController<ProductImageComponentContent>(this)
-    .content$;
+  protected productController = new ProductController(this);
+  protected contentController = new ContentController(this);
+  protected product$ = this.productController.getProduct();
+  protected content$ = this.contentController.getContent();
 
   protected setHostAttr(attr: string, val?: string): void {
     if (val) {
@@ -101,14 +114,16 @@ export class ProductImageComponent extends LitElement {
                 ${images.map(
                   (image, i) => html`
                     <picture
-                      class="${ifDefined(active === i ? 'active' : null)}"
+                      class="${ifDefined(active === i ? 'active' : undefined)}"
                     >
                       <img
                         .src="${image.externalUrlLarge}"
                         .alt="preview${i + 1}"
                         width="${ifDefined(settings.previewWidth)}"
                         height="${ifDefined(settings.previewHeight)}"
-                        loading="${ifDefined(active !== i ? 'lazy' : null)}"
+                        loading="${ifDefined(
+                          active !== i ? 'lazy' : undefined
+                        )}"
                       />
                     </picture>
                   `
@@ -128,7 +143,7 @@ export class ProductImageComponent extends LitElement {
                         type="radio"
                         name="${ifDefined(settings.groupName)}"
                         ?checked="${active === i}"
-                        @input="${(e: InputEvent) =>
+                        @input="${(e: InputEvent): void =>
                           this.onInput(e, settings.previewLayout)}"
                       />
                       <img

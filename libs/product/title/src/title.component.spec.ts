@@ -2,12 +2,15 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
-import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
-import { TitleComponent } from './title.component';
+import { ProductTitleComponent } from './title.component';
 
-describe('Title', () => {
-  let element: TitleComponent;
+const mockSku = '1';
+
+// TODO: unify unit tests for all sub packages
+describe('ProductTitleComponent', () => {
+  let element: ProductTitleComponent;
 
   beforeEach(async () => {
     createInjector({
@@ -15,8 +18,7 @@ describe('Title', () => {
     });
     element = await fixture(
       html`<product-title
-        sku="1"
-        uid="1"
+        sku="${mockSku}"
         .content=${{ tag: 'h1' }}
       ></product-title>`
     );
@@ -34,13 +36,18 @@ describe('Title', () => {
     describe(`<${tag}> tag`, () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-title sku="1" .content=${{ tag }}></product-title>`
+          html`<product-title
+            sku="${mockSku}"
+            .content=${{ tag }}
+          ></product-title>`
         );
       });
       it(`should render the product title in the tag`, () => {
-        const textContent = 'Sample product';
         const heading = element?.shadowRoot?.querySelector(tag);
-        expect(heading?.textContent?.trim()).to.be.equal(textContent);
+        const product = MockProductService.mockProducts.find(
+          (data) => data.sku === mockSku
+        );
+        expect(heading?.textContent).toContain(product?.name);
       });
     });
   };
@@ -56,20 +63,20 @@ describe('Title', () => {
     describe('it should not render a tag', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-title sku="1" uid="1" .content=${{}}></product-title>`
+          html`<product-title sku="${mockSku}" .content=${{}}></product-title>`
         );
       });
       it(`should not render a tag`, () => {
         expect(
           element?.shadowRoot?.querySelectorAll('*:not(style)').length
-        ).to.eq(0);
+        ).toBe(0);
       });
 
       it('should render product title as plain text', () => {
-        const textContent = 'Sample product';
-        expect(
-          element?.shadowRoot?.textContent?.trim().includes(textContent)
-        ).toBeTruthy();
+        const product = MockProductService.mockProducts.find(
+          (data) => data.sku === mockSku
+        );
+        expect(element?.shadowRoot?.textContent).toContain(product?.name);
       });
     });
   });

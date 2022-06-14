@@ -10,7 +10,7 @@ import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
 import { setupProductMocks } from '../../../src/mocks/product.mock';
 import '../index';
-import { ProductPriceContent } from '../product-price.model';
+import { ProductPriceContent } from '../price.model';
 
 export default {
   title: `${storybookPrefix}/Price`,

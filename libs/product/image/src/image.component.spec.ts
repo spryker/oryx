@@ -6,7 +6,7 @@ import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductImageComponent } from './image.component';
 
-describe('Image', () => {
+describe('ProductImageComponent', () => {
   let element: ProductImageComponent;
   createInjector({
     providers: MOCK_PRODUCT_PROVIDERS,
