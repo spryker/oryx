@@ -2,6 +2,9 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    /* stylelint-disable-next-line */
+    --_margin: 0px;
+
     display: flex;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
@@ -12,19 +15,18 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: currentColor;
-    max-width: var(--oryx-icon-size, 24px);
+    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin) * 2));
     aspect-ratio: 1 / 1;
+    margin: var(--_margin);
     transition: var(--oryx-transition-time);
   }
 
-  :host([size='medium']) svg,
-  :host([size='medium']) ::slotted(svg) {
-    margin: 3px;
+  :host([size='medium']) {
+    --_margin: 3px;
   }
 
-  :host([size='small']) svg,
-  :host([size='small']) ::slotted(svg) {
-    margin: 6px;
+  :host([size='small']) {
+    --_margin: 6px;
   }
 
   /* standard colors */
