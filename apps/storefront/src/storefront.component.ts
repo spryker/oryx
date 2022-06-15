@@ -26,7 +26,9 @@ export class StorefrontComponent extends LitElement {
       if (sku) {
         this.context.provide(ProductContext.Code, sku);
       } else {
-        this.context.remove(ProductContext.Code);
+        // TODO: Revert when EB editing will work for PDP
+        // this.context.remove(ProductContext.Code);
+        this.context.provide(ProductContext.Code, '139_24699831');
       }
     })
   );
