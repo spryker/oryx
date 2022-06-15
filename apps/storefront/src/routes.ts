@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 
 export const routes: RouteConfig[] = [
   {
-    path: '/',
+    pattern: new URLPattern({ pathname: '/{index.html}?' }),
     render: (): TemplateResult =>
       html`<experience-composition key="/"></experience-composition>`,
     name: 'Home',
