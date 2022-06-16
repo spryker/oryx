@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { a11yConfig } from '../../a11y';
+import { a11yConfig } from '../../../a11y';
 import './index';
 import { NavigationComponent } from './navigation.component';
 

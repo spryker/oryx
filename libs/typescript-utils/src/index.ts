@@ -4,5 +4,6 @@ export * from './lib/decorator';
 export * from './lib/is-client';
 export * from './lib/is-defined';
 export * from './lib/random-string';
+export * from './lib/throttle';
 export * from './lib/type';
 export * from './lib/wait';

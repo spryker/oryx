@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { html, LitElement } from 'lit';
-import { a11yConfig } from '../../a11y';
+import { a11yConfig } from '../../../a11y';
 import './index';
 import { CollapseToggleController } from './navigation-collapse.controller';
 

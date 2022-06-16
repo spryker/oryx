@@ -1,11 +1,11 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import '../../../navigation-item/src/index';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/Navigation`,
+  title: `${storybookPrefix}/Navigations/Navigation`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -53,4 +53,3 @@ const Template: Story<unknown> = (): TemplateResult => {
   `;
 };
 export const NavigationDemo = Template.bind({});
-NavigationDemo.argTypes = {};
