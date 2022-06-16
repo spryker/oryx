@@ -9,4 +9,6 @@ export interface ProductDescriptionContent {
    * @default undefined
    */
   truncateCharacterCount?: number;
+
+  isTruncated?: boolean;
 }

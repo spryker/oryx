@@ -31,7 +31,7 @@ export class ProductDescriptionComponent
   protected product$ = this.productController.getProduct();
   protected contentController = new ContentController(this);
   protected content$ = this.contentController.getContent();
-  protected isHidden$ = new BehaviorSubject(true);
+  protected isHidden$ = new BehaviorSubject(0);
 
   protected descriptions$ = combineLatest([
     this.isHidden$,
@@ -44,18 +44,23 @@ export class ProductDescriptionComponent
       if (!truncateAfter || description.length < truncateAfter) {
         return {
           shouldTruncate: false,
-          isHidden,
+          isHidden: isHidden > 0,
           description: this.convertToHTML(description),
         };
       }
 
-      const content = isHidden
-        ? `${description.slice(0, truncateAfter)}...`
-        : description;
+      if (isHidden === 0) {
+        isHidden = contents?.isTruncated ? 1 : -1;
+      }
+
+      const content =
+        isHidden > 0
+          ? `${description.slice(0, truncateAfter)}...`
+          : description;
 
       return {
         shouldTruncate: true,
-        isHidden,
+        isHidden: isHidden > 0,
         description: this.convertToHTML(content),
       };
     })
@@ -71,7 +76,12 @@ export class ProductDescriptionComponent
   }
 
   toggle(): void {
-    this.isHidden$.next(!this.isHidden$.getValue());
+    if (this.isHidden$.getValue() === 0) {
+      this.isHidden$.next(this.content?.isTruncated ? -1 : 1);
+    } else {
+      this.isHidden$.next(-1 * this.isHidden$.getValue());
+      ``;
+    }
   }
 
   protected override render(): TemplateResult {

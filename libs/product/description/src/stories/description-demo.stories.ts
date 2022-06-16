@@ -22,6 +22,7 @@ export const DescriptionDemo = Template.bind({});
 DescriptionDemo.args = {
   sku: '1',
   truncateCharacterCount: 100,
+  isTruncated: true,
 };
 
 DescriptionDemo.argTypes = {
@@ -34,5 +35,8 @@ DescriptionDemo.argTypes = {
   },
   truncateCharacterCount: {
     description: '100',
+  },
+  isTruncated: {
+    description: 'true',
   },
 };

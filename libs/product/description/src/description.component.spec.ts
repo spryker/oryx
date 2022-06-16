@@ -38,7 +38,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="6"
-        .content="${{ truncateCharacterCount: 10 }}"
+        .content="${{ truncateCharacterCount: 10, isTruncated: true }}"
       ></product-description>`
     );
     const textDescription = 'Lorem ipsu...';
@@ -51,7 +51,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="3"
-        .content="${{ truncateCharacterCount: 0 }}"
+        .content="${{ truncateCharacterCount: 0, isTruncated: true }}"
       ></product-description>`
     );
     const textDescription = '';
@@ -64,7 +64,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="1"
-        .content="${{ truncateCharacterCount: 100 }}"
+        .content="${{ truncateCharacterCount: 100, isTruncated: true }}"
       ></product-description>`
     );
     const button = element?.shadowRoot?.querySelector('oryx-button');
@@ -89,7 +89,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="6"
-        .content="${{ truncateCharacterCount: 10 }}"
+        .content="${{ truncateCharacterCount: 10, isTruncated: true }}"
       ></product-description>`
     );
     const descriptionMoreText = 'Lorem ipsu...';
@@ -108,7 +108,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="1"
-        .content="${{ truncateCharacterCount: 100 }}"
+        .content="${{ truncateCharacterCount: 100, isTruncated: true }}"
       ></product-description>`
     );
     const button = element?.shadowRoot?.querySelector('button');
@@ -121,7 +121,7 @@ describe('ProductDescriptionComponent', () => {
     element = await fixture(
       html` <product-description
         sku="1"
-        .content="${{ truncateCharacterCount: 100 }}"
+        .content="${{ truncateCharacterCount: 100, isTruncated: true }}"
       ></product-description>`
     );
     element.toggle();
