@@ -25,10 +25,9 @@ export const buttonStyles = css`
     background-color: var(--_color-accent);
     border: var(--oryx-border-thin) solid var(--_color-accent);
     border-radius: var(--oryx-border-radius);
-    outline: var(--oryx-border-thin) solid transparent;
-    outline-offset: -2px;
     cursor: pointer;
     transition: var(--oryx-transition-time);
+    position: relative;
   }
 
   :host([size='medium']) {
@@ -91,7 +90,7 @@ export const buttonStyles = css`
   :host([type='secondary']) {
     --oryx-icon-color: var(--oryx-color-neutral-darker);
     --_color-text: var(--oryx-color-neutral-darker);
-    --_color-accent: var(--oryx-color-canvas);
+    --_color-accent: var(--oryx-color-neutral);
     --_color-active: var(--oryx-color-neutral-lighter);
   }
 
@@ -102,13 +101,22 @@ export const buttonStyles = css`
 
   :host([outline])
     ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
-    outline-color: var(--_color-accent);
     border-color: var(--oryx-color-canvas);
+  }
+
+  :host([outline])
+    ::slotted(:is(button, a):focus-visible:not(:active):not([disabled]))::before {
+    content: '';
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    border: 1px solid var(--_color-accent);
   }
 
   :host([type='secondary'])
     ::slotted(:is(button, a):focus-visible:not(:active):not([disabled])) {
-    outline-color: var(--oryx-color-neutral);
     border-color: var(--oryx-color-canvas);
   }
 
