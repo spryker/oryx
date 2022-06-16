@@ -191,6 +191,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
+      averageRating: '1',
       reviewCount: undefined,
       images: [
         {

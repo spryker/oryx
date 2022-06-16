@@ -33,12 +33,12 @@ export class ProductAverageRatingComponent
 
   protected rating$ = combineLatest([this.product$, this.content$]).pipe(
     map(([product, contents]) => {
-      const reviewCountValue = contents?.hideReviewCount
-        ? product?.reviewCount
-        : undefined;
+      const reviewCount = contents?.hideReviewCount
+        ? undefined
+        : product?.reviewCount;
       return {
         rating: product?.averageRating,
-        reviewCount: reviewCountValue,
+        reviewCount,
       };
     })
   );
