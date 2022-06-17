@@ -21,6 +21,10 @@ export default async function vitestExecutor(
     );
   }
 
+  if (options.watch) {
+    delete options.coverage;
+  }
+
   // TODO: workaround to avoid transpiling of dynamic import
   const { startVitest } = await Function("return import ('vitest/node')")();
 

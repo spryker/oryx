@@ -3,9 +3,10 @@
   "compilerOptions": {
     "rootDir": ".",
     "module": "commonjs",
+    "lib": ["ESNext"],
     "types": ["node"],
     "importHelpers": false,
     "sourceMap": false
   },
-  "include": ["**/*.ts"]
+  "include": ["executors/**/*.ts"]
 }

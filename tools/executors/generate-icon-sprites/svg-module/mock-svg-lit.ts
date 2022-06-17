@@ -1,8 +1,8 @@
-globalThis.window = {};
+globalThis.window = {} as any;
 globalThis.document = {
-  createTreeWalker: () => {},
+  createTreeWalker: (() => {}) as any,
 };
-globalThis.HTMLElement = class {};
+globalThis.HTMLElement = class {} as any;
 
 export const TemplateResult = '';
 
