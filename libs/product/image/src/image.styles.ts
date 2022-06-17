@@ -156,6 +156,12 @@ export const styles = css`
 
   :host([nav-layout='${unsafeCSS(NavLayout.GRID)}']) .nav {
     flex-wrap: wrap;
+  }
+
+  :host([nav-layout='${unsafeCSS(NavLayout.GRID)}'][nav-position='${unsafeCSS(
+        NavPosition.FLOATING
+      )}'])
+    .nav {
     min-inline-size: fit-content;
   }
 
