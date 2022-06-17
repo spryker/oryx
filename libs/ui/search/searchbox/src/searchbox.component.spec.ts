@@ -208,15 +208,16 @@ describe('SearchComponent', () => {
       getShadowElementBySelector(element, '.search');
 
     const itShouldDispatchSearchEvent = (value: string): void => {
-      it(`should dispatch search event (${value})`, (done) => {
-        const emitter = ((ev: CustomEvent<SearchEvent>) => {
-          expect(ev.detail?.query).toBe(value);
-          done();
-        }) as EventListener;
-        element.addEventListener('oryx.search', emitter);
-        searchIcon()?.click();
-        element.removeEventListener('oryx.search', emitter);
-      });
+      it(`should dispatch search event (${value})`, () =>
+        new Promise<void>((done) => {
+          const emitter = ((ev: CustomEvent<SearchEvent>) => {
+            expect(ev.detail?.query).toBe(value);
+            done();
+          }) as EventListener;
+          element.addEventListener('oryx.search', emitter);
+          searchIcon()?.click();
+          element.removeEventListener('oryx.search', emitter);
+        }));
     };
 
     describe('when no custom input control is given', () => {
@@ -229,19 +230,20 @@ describe('SearchComponent', () => {
       });
 
       describe('and the enter key is used', () => {
-        it('should trigger the oryx.search event', (done) => {
-          const emitter = ((ev: CustomEvent<SearchEvent>) => {
-            expect(ev.detail?.query).toBe('');
-            done();
-          }) as EventListener;
-          element.addEventListener('oryx.search', emitter);
-          element.dispatchEvent(
-            new KeyboardEvent('keydown', {
-              key: 'Enter',
-            })
-          );
-          element.removeEventListener('oryx.search', emitter);
-        });
+        it('should trigger the oryx.search event', () =>
+          new Promise<void>((done) => {
+            const emitter = ((ev: CustomEvent<SearchEvent>) => {
+              expect(ev.detail?.query).toBe('');
+              done();
+            }) as EventListener;
+            element.addEventListener('oryx.search', emitter);
+            element.dispatchEvent(
+              new KeyboardEvent('keydown', {
+                key: 'Enter',
+              })
+            );
+            element.removeEventListener('oryx.search', emitter);
+          }));
       });
 
       describe('and when the value is changed ', () => {
@@ -274,19 +276,20 @@ describe('SearchComponent', () => {
       });
 
       describe('and the enter key is used', () => {
-        it('should trigger the oryx.search event', (done) => {
-          const emitter = ((ev: CustomEvent<SearchEvent>) => {
-            expect(ev.detail?.query).toBe('value123');
-            done();
-          }) as EventListener;
-          element.addEventListener('oryx.search', emitter);
-          element.dispatchEvent(
-            new KeyboardEvent('keydown', {
-              key: 'Enter',
-            })
-          );
-          element.removeEventListener('oryx.search', emitter);
-        });
+        it('should trigger the oryx.search event', () =>
+          new Promise<void>((done) => {
+            const emitter = ((ev: CustomEvent<SearchEvent>) => {
+              expect(ev.detail?.query).toBe('value123');
+              done();
+            }) as EventListener;
+            element.addEventListener('oryx.search', emitter);
+            element.dispatchEvent(
+              new KeyboardEvent('keydown', {
+                key: 'Enter',
+              })
+            );
+            element.removeEventListener('oryx.search', emitter);
+          }));
       });
 
       describe('and the value is changed ', () => {

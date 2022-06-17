@@ -28,14 +28,15 @@ describe('DefaultHttpService', () => {
     (fromFetch as SpyInstanceFn).mockReturnValue(of({ ok: true }));
   });
 
-  it('request should throw an error', (done) => {
-    service.request(mockUrl, mockOptions).subscribe({
-      error: (error) => {
-        expect(error).toBeDefined();
-        done();
-      },
-    });
-  });
+  it('request should throw an error', () =>
+    new Promise<void>((done) => {
+      service.request(mockUrl, mockOptions).subscribe({
+        error: (error) => {
+          expect(error).toBeDefined();
+          done();
+        },
+      });
+    }));
 
   it('request method should call `fromFetch` with proper parameters', () => {
     service.request(mockUrl, mockOptions);

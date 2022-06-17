@@ -45,6 +45,13 @@ const providers = [
   },
 ];
 
+beforeAll(() => {
+  Object.defineProperty(window, 'parent', {
+    value: window,
+    configurable: true,
+  });
+});
+
 describe('ExperiencePreviewService', () => {
   let service: PreviewExperienceService;
 
@@ -64,158 +71,165 @@ describe('ExperiencePreviewService', () => {
     expect(service).toBeInstanceOf(PreviewExperienceService);
   });
 
-  it('should get route data', (done) => {
-    const routeValue = '/';
+  it('should get route data', async () =>
+    await new Promise<void>((done) => {
+      const routeValue = '/';
 
-    window?.postMessage(
-      {
-        type: POST_MESSAGE_TYPE,
-        route: routeValue,
-      },
-      '*'
-    );
+      window?.postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          route: routeValue,
+        },
+        '*'
+      );
 
-    service.getRouteData().subscribe((route) => {
-      expect(route).toBe(routeValue);
-
-      done();
-    });
-  });
-
-  it('should get interactive data', (done) => {
-    const interactionValue = {
-      action: 'test',
-      componentId: '1',
-    };
-
-    window?.postMessage(
-      {
-        type: POST_MESSAGE_TYPE,
-        interaction: interactionValue,
-      },
-      '*'
-    );
-
-    service.getInteractionData().subscribe((interaction) => {
-      expect(interaction).toBeTruthy();
-      expect(interaction?.action).toBe(interactionValue.action);
-      expect(interaction?.componentId).toBe(interactionValue.componentId);
-
-      done();
-    });
-  });
-
-  it('should send post message to reload structure', (done) => {
-    const structure = 'test';
-
-    window?.addEventListener(
-      'message',
-      (e: MessageEvent) => {
-        expect(e.data.structure).toBe(structure);
-        expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
+      service.getRouteData().subscribe((route) => {
+        expect(route).toBe(routeValue);
 
         done();
-      },
-      { once: true }
-    );
+      });
+    }));
 
-    service.getStructure({ key: structure });
-  });
+  it('should get interactive data', async () =>
+    await new Promise<void>((done) => {
+      const interactionValue = {
+        action: 'test',
+        componentId: '1',
+      };
 
-  it('should send post message to reload content', (done) => {
-    const content = 'test';
+      window?.postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          interaction: interactionValue,
+        },
+        '*'
+      );
 
-    window?.addEventListener(
-      'message',
-      (e: MessageEvent) => {
-        expect(e.data.content).toBe(content);
-        expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
+      service.getInteractionData().subscribe((interaction) => {
+        expect(interaction).toBeTruthy();
+        expect(interaction?.action).toBe(interactionValue.action);
+        expect(interaction?.componentId).toBe(interactionValue.componentId);
 
         done();
-      },
-      { once: true }
-    );
+      });
+    }));
 
-    service.getContent({ key: content });
-  });
+  it('should send post message to reload structure', async () =>
+    await new Promise<void>((done) => {
+      const structure = 'test';
 
-  it('should get structure data', (done) => {
-    const structure = {
-      id: '/',
-      type: 'Page',
-      components: [
-        {
-          id: '1',
-          type: 'Banner',
+      window?.addEventListener(
+        'message',
+        (e: MessageEvent) => {
+          expect(e.data.structure).toBe(structure);
+          expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
+
+          done();
         },
-        {
-          id: '2',
-          type: 'Slider',
+        { once: true }
+      );
+
+      service.getStructure({ key: structure });
+    }));
+
+  it('should send post message to reload content', async () =>
+    await new Promise<void>((done) => {
+      const content = 'test';
+
+      window?.addEventListener(
+        'message',
+        (e: MessageEvent) => {
+          expect(e.data.content).toBe(content);
+          expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
+
+          done();
         },
-      ],
-    };
+        { once: true }
+      );
 
-    service.getStructure({ key: structure.id }).subscribe((data) => {
-      expect(data.type).toBe(structure.type);
-      expect(data.components?.length).toBe(structure.components.length);
+      service.getContent({ key: content });
+    }));
 
-      done();
-    });
+  it('should get structure data', async () =>
+    await new Promise<void>((done) => {
+      const structure = {
+        id: '/',
+        type: 'Page',
+        components: [
+          {
+            id: '1',
+            type: 'Banner',
+          },
+          {
+            id: '2',
+            type: 'Slider',
+          },
+        ],
+      };
 
-    window.postMessage(
-      {
-        type: POST_MESSAGE_TYPE,
-        structure,
-      },
-      '*'
-    );
-  });
+      service.getStructure({ key: structure.id }).subscribe((data) => {
+        expect(data.type).toBe(structure.type);
+        expect(data.components?.length).toBe(structure.components.length);
 
-  it('should get content data', (done) => {
-    const content = {
-      id: '1',
-      data: {
-        title: 'textarea title text1',
-      },
-    };
+        done();
+      });
 
-    service.getContent({ key: content.id }).subscribe((data) => {
-      expect(data.data.title).toBe(content.data.title);
+      window.postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          structure,
+        },
+        '*'
+      );
+    }));
 
-      done();
-    });
+  it('should get content data', async () =>
+    await new Promise<void>((done) => {
+      const content = {
+        id: '1',
+        data: {
+          title: 'textarea title text1',
+        },
+      };
 
-    window.postMessage(
-      {
-        type: POST_MESSAGE_TYPE,
-        content,
-      },
-      '*'
-    );
-  });
+      service.getContent({ key: content.id }).subscribe((data) => {
+        expect(data.data.title).toBe(content.data.title);
+
+        done();
+      });
+
+      window.postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          content,
+        },
+        '*'
+      );
+    }));
 });
 
 describe('ExperiencePreviewService', () => {
-  it('should send post message after route set', (done) => {
-    window?.addEventListener(
-      'message',
-      (e: MessageEvent) => {
-        expect(e.data.route).toBe('/');
-        expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
+  it('should send post message after route set', async () =>
+    await new Promise<void>((done) => {
+      window?.addEventListener(
+        'message',
+        (e: MessageEvent) => {
+          expect(e.data.route).toBe('/');
+          expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
 
-        done();
-      },
-      { once: true }
-    );
+          done();
+        },
+        { once: true }
+      );
 
-    const testInjector = new Injector([
-      {
-        provide: RouterService,
-        useClass: MockRouterServiceActive,
-      },
-      ...providers,
-    ]);
+      const testInjector = new Injector([
+        {
+          provide: RouterService,
+          useClass: MockRouterServiceActive,
+        },
+        ...providers,
+      ]);
 
-    testInjector.inject('ExperiencePreviewService');
-  });
+      testInjector.inject('ExperiencePreviewService');
+    }));
 });

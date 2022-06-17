@@ -72,6 +72,7 @@ describe('NDSDrawerComponent', () => {
         <input id="focusable" />
         <div id="not-focusable"></div>
       </nds-drawer>`);
+      document.body.appendChild(element);
     });
 
     afterEach(() => {

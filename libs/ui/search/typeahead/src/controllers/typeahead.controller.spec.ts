@@ -91,6 +91,7 @@ describe('TypeaheadController', () => {
     let result: SearchEvent;
 
     beforeEach(async () => {
+      document.body.appendChild(element);
       element.addEventListener('oryx.typeahead', ((
         ev: CustomEvent<SearchEvent>
       ) => {

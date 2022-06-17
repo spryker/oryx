@@ -182,6 +182,7 @@ describe('DrawerComponent', () => {
           <span id="not-focusable"></span>
         </oryx-drawer>
       `);
+      document.body.appendChild(element);
     });
 
     afterEach(() => {
