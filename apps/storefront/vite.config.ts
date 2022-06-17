@@ -1,4 +1,4 @@
-import { defineConfig, SSROptions } from 'vite';
+import { defineConfig, splitVendorChunkPlugin, SSROptions } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -30,6 +30,7 @@ export default defineConfig({
   },
   envPrefix: ['FES', 'SCOS'],
   plugins: [
+    splitVendorChunkPlugin(),
     checker({
       typescript: {
         tsconfigPath: 'tsconfig.app.json',
