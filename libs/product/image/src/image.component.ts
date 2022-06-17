@@ -79,6 +79,11 @@ export class ProductImageComponent
       this.setHostAttr('nav-position', settings.navigationPosition);
       this.setHostAttr('nav-layout', settings.navigationLayout);
       this.setHostAttr('nav-display', settings.navigationDisplay);
+      if (
+        window.getComputedStyle(this).getPropertyValue('direction') === 'rtl'
+      ) {
+        this.setHostAttr('dir', 'rtl');
+      }
     })
   );
 

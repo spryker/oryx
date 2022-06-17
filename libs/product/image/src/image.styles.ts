@@ -124,6 +124,10 @@ export const styles = css`
     inset-inline-start: 50%;
   }
 
+  :host([dir='rtl'][nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
+    transform: translateX(50%);
+  }
+
   :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) .nav {
     order: 0;
     padding-inline: var(--navigation-padding, 8px);
