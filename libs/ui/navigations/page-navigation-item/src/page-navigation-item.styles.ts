@@ -16,7 +16,7 @@ export const styles = css`
     cursor: pointer;
   }
 
-  h5::before {
+  h3::before {
     content: '';
     border-radius: 50%;
     width: 8px;
@@ -27,7 +27,7 @@ export const styles = css`
     inset-inline-start: 20px;
   }
 
-  h5 {
+  h3 {
     line-height: 22px;
     text-transform: uppercase;
     font-weight: 500;
@@ -45,11 +45,11 @@ export const styles = css`
     font-size: 14px;
   }
 
-  :host([active]) h5::before {
+  :host([active]) h3::before {
     background: var(--oryx-color-brand);
   }
 
-  :host([active]) h5 {
+  :host([active]) h3 {
     color: var(--oryx-color-brand);
   }
 

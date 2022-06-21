@@ -14,7 +14,7 @@ export class PageNavigationItemComponent
 
   protected override render(): TemplateResult {
     return html`
-      <h5><slot></slot></h5>
+      <h3><slot></slot></h3>
       <slot name="content"></slot>
     `;
   }
