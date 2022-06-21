@@ -1,9 +1,5 @@
-import {
-  AbstractProduct,
-  Resource,
-  Suggestion,
-  SuggestionQualifier,
-} from '../../models';
+import { Product } from '@spryker-oryx/product';
+import { Resource, Suggestion, SuggestionQualifier } from '../../models';
 
 const dummyUrl = (): string => `${window.location.href}#`;
 const makeTheNameGreatAgain = (name: string): string =>
@@ -22,14 +18,27 @@ const createResources = (
   }));
 };
 
-const createProducts = (completion: string[]): AbstractProduct[] => {
+const createProducts = (completion: string[]): Product[] => {
   return completion.map((c, i) => ({
-    //TODO: offered price based on presenting 'offer' word in completion name
-    //offeredPrice: ...
-    price: 1999,
-    abstractName: `${makeTheNameGreatAgain(c)}`,
-    abstractSku: String(i),
-    url: dummyUrl(),
+    price: {
+      defaultPrice: {
+        value: 1999,
+        currency: 'EUR',
+        isNet: false,
+      },
+      ...(i % 2
+        ? {
+            originalPrice: {
+              value: 2000,
+              currency: 'EUR',
+              isNet: false,
+            },
+          }
+        : {}),
+    },
+    name: `${makeTheNameGreatAgain(c)}`,
+    description: 'test',
+    sku: String(i),
     images: [
       {
         externalUrlSmall:
@@ -52,6 +61,6 @@ export const createSuggestionMock = (
     completion,
     categories: createResources(completion, 'Category'),
     cmsPages: createResources(completion, 'Pages'),
-    abstractProducts: createProducts(completion),
+    products: createProducts(completion),
   };
 };
