@@ -30,7 +30,6 @@ PageNavigationItemDemo.args = {
   heading: 'Title',
   content:
     'This is content. It can be used for description. This is content. It can be used for description. This is content. It can be used for description. This is content. It can be used for description. This is content. It can be used for description.',
-  targetId: 'someId',
   active: false,
   width: 50,
 };
