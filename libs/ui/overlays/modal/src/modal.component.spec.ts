@@ -22,13 +22,21 @@ describe('Modal', () => {
   };
 
   const testCloseStrategies = (): void => {
-    describe('and the "close()" method is called', () => {
-      beforeEach(() => {
+    describe('when the "close()" method is called', () => {
+      const callback = vi.fn();
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-modal open @oryx.close=${callback}></oryx-modal>`
+        );
         element.close();
       });
 
       it('should close dialog', () => {
         expectDialogOpen(false);
+      });
+
+      it('should dispatch close event', () => {
+        expect(callback).toHaveBeenCalled();
       });
     });
 
@@ -58,15 +66,19 @@ describe('Modal', () => {
       });
     });
 
-    describe('and the dialog overlay is clicked', () => {
-      beforeEach(() => {
-        const event = new Event('click', {
-          bubbles: true,
-        });
-        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(event);
+    describe('when the dialog backdrop is clicked', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-modal open></oryx-modal>`);
       });
 
-      it('should not close', () => {
+      it('should close the modal', () => {
+        getShadowElementBySelector(element, 'dialog')?.dispatchEvent(
+          new Event('click', {
+            bubbles: true,
+            composed: true,
+          })
+        );
+
         expectDialogOpen(false);
       });
     });

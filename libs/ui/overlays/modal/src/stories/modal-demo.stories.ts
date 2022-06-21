@@ -52,6 +52,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       ?disableCloseOnBackdrop=${props.firstModalDisableCloseOnBackdrop}
       header=${props.firstModalHeader}
       type=${props.firstModalType}
+      @oryx.close=${console.log}
     >
       <div>
         <p>${props.firstModalContent}</p>

@@ -6,6 +6,7 @@ import { styles } from './modal.styles';
 
 export class ModalComponent extends LitElement implements ModalProperties {
   backdropTargetTag = 'dialog';
+  private readonly closeEvent = 'oryx.close';
   static styles = styles;
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
@@ -35,7 +36,17 @@ export class ModalComponent extends LitElement implements ModalProperties {
     }
   }
 
+  protected emitCloseEvent(): void {
+    this.dispatchEvent(
+      new CustomEvent(this.closeEvent, {
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   close(): void {
+    this.emitCloseEvent();
     this.removeAttribute('open');
   }
 
