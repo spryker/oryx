@@ -75,12 +75,12 @@ export const toggleIconStyles = css`
     border-color: var(--oryx-color-neutral-dark);
   }
 
-  ::slotted(input[checked]:active:not([disabled]))::after,
-  ::slotted(input[checked]:hover:not([disabled]))::after {
+  ::slotted(input:checked:active:not([disabled]))::after,
+  ::slotted(input:checked:hover:not([disabled]))::after {
     border-color: var(--oryx-color-brand-dark);
   }
 
-  ::slotted(input[checked]:active:not([disabled]))::after {
+  ::slotted(input:checked:active:not([disabled]))::after {
     background: var(--oryx-color-neutral-lighter);
   }
 
@@ -91,7 +91,7 @@ export const toggleIconStyles = css`
     border: none;
   }
 
-  ::slotted(input[checked]:focus-visible:not(:active))::after {
+  ::slotted(input:checked:focus-visible:not(:active))::after {
     box-shadow: 0 0 3px var(--oryx-color-brand),
       inset 0 0 0 1px var(--oryx-color-brand-lighter),
       inset 0 0 0 2px var(--oryx-color-brand);
@@ -103,22 +103,22 @@ export const toggleIconStyles = css`
     border-color: var(--oryx-color-neutral);
   }
 
-  ::slotted(input[checked]:not([disabled]))::after {
+  ::slotted(input:checked:not([disabled]))::after {
     border-color: var(--oryx-color-brand);
     background: var(--oryx-color-brand-lighter);
   }
 
-  ::slotted(input[checked][disabled])::after {
+  ::slotted(input:checked[disabled])::after {
     border-color: var(--oryx-color-neutral-dark);
   }
 
   ::slotted(oryx-icon),
-  :host([has-text]) > ::slotted(span) {
+  ::slotted(span) {
     z-index: 1;
     pointer-events: none;
   }
 
-  :host([has-text]) > ::slotted(span) {
+  ::slotted(span) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

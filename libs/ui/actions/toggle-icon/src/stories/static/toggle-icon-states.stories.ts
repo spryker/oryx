@@ -101,18 +101,17 @@ const Template: Story = (): TemplateResult =>
   generateVariantsMatrix(
     variants,
     ({ options: { className, checked, disabled } }) => html`
-      <oryx-toggle-icon>
+      <oryx-toggle-icon ?checked=${checked}>
         <input
           ?disabled=${disabled}
-          ?checked=${checked}
-          class=${className}
+          .class=${className}
           type="radio"
           placeholder="make a11y happy"
-          checked
+          ?checked=${checked}
         />
         <oryx-icon type="rocket"></oryx-icon>
       </oryx-toggle-icon>
     `
   );
 
-export const StatesIcon = Template.bind({});
+export const States = Template.bind({});

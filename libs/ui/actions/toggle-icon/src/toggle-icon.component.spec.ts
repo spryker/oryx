@@ -38,13 +38,19 @@ describe('ToggleIconComponent', () => {
     });
 
     describe('if the input is not checked initially', () => {
-      it('should set the checked property in the host', async () => {
+      it('should not set the checked property in the host', async () => {
         expect(element.hasAttribute('checked')).toBe(false);
       });
 
       describe('when the input gets checked', () => {
         beforeEach(async () => {
           querySlottedElements('input')?.setAttribute('checked', 'checked');
+          querySlottedElements('input')?.dispatchEvent(
+            new InputEvent('input', {
+              bubbles: true,
+              composed: true,
+            })
+          );
         });
 
         it('should set the checked property in the host', async () => {
@@ -54,6 +60,12 @@ describe('ToggleIconComponent', () => {
         describe('and uncheck again', () => {
           beforeEach(async () => {
             querySlottedElements('input')?.removeAttribute('checked');
+            querySlottedElements('input')?.dispatchEvent(
+              new InputEvent('input', {
+                bubbles: true,
+                composed: true,
+              })
+            );
           });
 
           it('should update the checked property in the host', async () => {

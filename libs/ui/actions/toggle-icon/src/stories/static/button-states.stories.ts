@@ -298,13 +298,12 @@ const Template: Story = (): TemplateResult => html`
   ${generateVariantsMatrix(
     variants,
     ({ options: { className, checked, disabled, size } }) => {
-      console.log({ className, checked, disabled, size });
       return html`
         <oryx-toggle-icon size=${size}>
           <input
             ?disabled=${disabled}
             ?checked=${checked}
-            class=${className}
+            .class=${className}
             type="radio"
             placeholder="make a11y happy"
             checked
