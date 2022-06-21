@@ -12,7 +12,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html` <div style="display: flex;">
     <div class="visible" style="margin-right: 100px">
-      <p>Visible review Count</p>
+      <p>Hidden review count</p>
       ${Array.from(Array(5).keys()).map(
         (i) =>
           html` <product-average-rating
@@ -22,7 +22,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       )}
     </div>
     <div class="hidden">
-      <p>Hidden review count</p>
+      <p>Visible review Count</p>
       ${Array.from(Array(5).keys()).map(
         (i) =>
           html` <product-average-rating
