@@ -16,7 +16,7 @@ export class PageNavigationComponent
 
   protected override render(): TemplateResult {
     return html`
-      <nav>
+      <nav aria-label=${this.ariaLabel}>
         <slot></slot>
       </nav>
     `;

@@ -49,9 +49,12 @@ const longSubtitle =
 const Template: Story<undefined> = (): TemplateResult => {
   return generateVariantsMatrix(
     variants,
-    ({ options: { itemsCount, longSubtitleIndex, noSubtitleIndex } }) => html`
+    ({
+      options: { itemsCount, longSubtitleIndex, noSubtitleIndex },
+      categoryX,
+    }) => html`
       <div style="width: 240px;">
-        <oryx-page-navigation>
+        <oryx-page-navigation aria-label=${categoryX}>
           ${[...Array(itemsCount).keys()].map(
             (num) =>
               html`
