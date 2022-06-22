@@ -5,6 +5,7 @@ import {
 } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
+  Product,
   ProductComponentProperties,
   ProductController,
 } from '@spryker-oryx/product';
@@ -27,6 +28,7 @@ export class ProductTitleComponent
   @property() sku?: string;
   @property() uid?: string;
   @property({ type: Object }) content?: ProductTitleContent;
+  @property({ type: Object }) product?: Product;
 
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);

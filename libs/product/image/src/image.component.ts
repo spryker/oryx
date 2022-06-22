@@ -5,6 +5,7 @@ import {
 } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
+  Product,
   ProductComponentProperties,
   ProductController,
 } from '@spryker-oryx/product';
@@ -34,6 +35,7 @@ export class ProductImageComponent
   @property({ type: String }) uid?: string;
   @property({ type: String }) sku?: string;
   @property({ type: Object }) content?: ProductImageComponentContent;
+  @property({ type: Object }) product?: Product;
 
   protected groupName = `product-image-nav-${this.uid}`;
 

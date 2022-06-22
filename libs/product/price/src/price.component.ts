@@ -3,7 +3,7 @@ import {
   ContentController,
 } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { ProductComponentProperties } from '@spryker-oryx/product';
+import { Product, ProductComponentProperties } from '@spryker-oryx/product';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -23,6 +23,7 @@ export class ProductPriceComponent
   @property() uid?: string;
   @property() sku?: string;
   @property({ type: Object }) content?: ProductPriceContent;
+  @property({ type: Object }) product?: Product;
 
   protected contentController = new ContentController(this);
   protected priceController = new ProductPriceController(this);
