@@ -37,13 +37,19 @@ export class ProductImageComponent
   @property({ type: Object }) content?: ProductImageComponentContent;
   @property({ type: Object }) product?: Product;
 
-  protected groupName = `product-image-nav-${this.uid}`;
-
   protected active$ = new BehaviorSubject(0);
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);
-  protected product$ = this.productController.getProduct();
-  protected content$ = this.contentController.getContent();
+  protected product$ = this.productController.getProduct().pipe(
+    tap(() => {
+      this.setActive(0);
+    })
+  );
+  protected content$ = this.contentController.getContent().pipe(
+    tap((content) => {
+      this.setActive(0, content?.previewLayout);
+    })
+  );
 
   protected setHostAttr(attr: string, val?: string): void {
     if (val) {
@@ -56,10 +62,10 @@ export class ProductImageComponent
 
   protected productImages$ = combineLatest([
     this.content$,
+    this.product$,
     this.active$,
-    this.product$.pipe(tap(() => this.active$.next(0))),
   ]).pipe(
-    map(([content, active, product]) => {
+    map(([content, product, active]) => {
       const { previewLayout, navigationDisplay } = content || {};
       const images = product?.images || [];
       const settings: ProductImageComponentSettings = {
@@ -67,14 +73,14 @@ export class ProductImageComponent
         previewHeight: '300',
         thumbWidth: '32',
         thumbHeight: '32',
-        groupName: this.groupName,
+        groupName: `product-image-nav-${this.uid}`,
         showPreview: previewLayout !== 'none',
         showNavigation:
           navigationDisplay !== ProductImageNavigationDisplay.NONE &&
           images?.length > 1,
         ...content,
       };
-      return { settings, active, images };
+      return { settings, images, active };
     }),
     tap(({ settings }) => {
       this.setHostAttr('layout', settings.previewLayout);
@@ -95,10 +101,17 @@ export class ProductImageComponent
     layout?: ProductImagePreviewLayout
   ): void {
     this.active$.next(active);
+    const navItems: NodeListOf<HTMLInputElement> | undefined =
+      this.shadowRoot?.querySelectorAll('.nav-item input');
+    const activeNavItem = navItems?.[active];
+    if (activeNavItem) {
+      activeNavItem.checked = true;
+    }
     if (layout === ProductImagePreviewLayout.TOGGLE) {
       return;
     }
     const items = this.shadowRoot?.querySelectorAll('picture') || [];
+
     items[active]?.scrollIntoView({ block: 'nearest', inline: 'start' });
   }
 
@@ -113,7 +126,7 @@ export class ProductImageComponent
 
   protected override render(): TemplateResult {
     return html`
-      ${asyncValue(this.productImages$, ({ settings, active, images }) => {
+      ${asyncValue(this.productImages$, ({ settings, images, active }) => {
         return html`
           ${when(
             settings.showPreview,
@@ -125,8 +138,8 @@ export class ProductImageComponent
                       class="${ifDefined(active === i ? 'active' : undefined)}"
                     >
                       <img
-                        .src="${image.externalUrlLarge}"
-                        .alt="preview${i + 1}"
+                        src="${image.externalUrlLarge}"
+                        alt="preview${i + 1}"
                         width="${ifDefined(settings.previewWidth)}"
                         height="${ifDefined(settings.previewHeight)}"
                         loading="${ifDefined(
@@ -150,7 +163,7 @@ export class ProductImageComponent
                         value="${i}"
                         type="radio"
                         name="${ifDefined(settings.groupName)}"
-                        ?checked="${active === i}"
+                        ?checked="${i === active}"
                         @input="${(e: InputEvent): void =>
                           this.onInput(e, settings.previewLayout)}"
                       />
