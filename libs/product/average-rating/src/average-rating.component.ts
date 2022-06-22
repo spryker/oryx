@@ -9,8 +9,7 @@ import {
   ProductComponentProperties,
   ProductController,
 } from '@spryker-oryx/product';
-import { LitElement, TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { combineLatest, map } from 'rxjs';
 import { ProductAverageRatingModel } from './average-rating.model';
