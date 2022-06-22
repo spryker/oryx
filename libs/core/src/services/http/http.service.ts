@@ -6,6 +6,7 @@ export const HttpService = 'FES.HttpService';
 export interface HttpService {
   request<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T>;
   get<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T>;
+  delete<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T>;
   post<T = unknown>(
     url: string,
     body: unknown,

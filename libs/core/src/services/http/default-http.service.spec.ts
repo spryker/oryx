@@ -28,6 +28,10 @@ describe('DefaultHttpService', () => {
     (fromFetch as SpyInstanceFn).mockReturnValue(of({ ok: true }));
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('request should throw an error', () =>
     new Promise<void>((done) => {
       service.request(mockUrl, mockOptions).subscribe({
@@ -83,5 +87,21 @@ describe('DefaultHttpService', () => {
       },
       body: JSON.stringify(mockBody),
     });
+  });
+
+  it('delete method should call `fromFetch` with proper parameters', () => {
+    service.delete(mockUrl, mockOptions);
+
+    expect(fromFetch).toHaveBeenCalledWith(
+      mockUrl,
+      expect.objectContaining({
+        ...mockOptions,
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          ...mockHeaders,
+        },
+      })
+    );
   });
 });

@@ -1,3 +1,4 @@
+import { CART_PROVIDERS } from '@spryker-oryx/cart';
 import { CORE_PROVIDERS } from '@spryker-oryx/core';
 import {
   COMPONENT_MAPPING,
@@ -56,6 +57,7 @@ export const createInjector = (providers: Provider[] = []): Injector =>
         useClass: StorefrontRouterService,
       },
       ...PRODUCT_PROVIDERS,
+      ...CART_PROVIDERS,
       ...providers,
     ],
   });

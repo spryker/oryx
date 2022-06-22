@@ -49,4 +49,10 @@ export class HttpTestService implements HttpService {
     this.response = undefined;
     this.url = undefined;
   }
+
+  delete<T = unknown>(url: string, options: RequestOptions<T>): Observable<T> {
+    this.url = url;
+
+    return of(this.response);
+  }
 }

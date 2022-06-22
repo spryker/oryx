@@ -1,4 +1,4 @@
-import { Observable, switchMap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { HttpService } from './http.service';
 import { HttpErrorResponse, RequestOptions } from './model';
@@ -76,6 +76,20 @@ export class DefaultHttpService implements HttpService {
       body: JSON.stringify(body),
       headers,
       method: 'PATCH',
+    });
+  }
+
+  delete<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    };
+
+    return this.request(url, {
+      parser: () => of(null as unknown as T),
+      ...options,
+      headers,
+      method: 'DELETE',
     });
   }
 }
