@@ -11,7 +11,7 @@ interface Props {
   intermediate: boolean;
   checked: boolean;
   disabled: boolean;
-  error: boolean;
+  hasError: boolean;
   label?: string;
 }
 
@@ -20,12 +20,12 @@ const Template: Story<Props> = ({
   checked,
   disabled,
   label,
-  error,
+  hasError,
 }): TemplateResult => {
   return html`
     <oryx-checkbox
       ?intermediate=${intermediate}
-      ?error=${error}
+      ?hasError=${hasError}
       @click=${console.log}
     >
       <input type="checkbox" ?checked=${checked} ?disabled=${disabled} />
@@ -40,6 +40,6 @@ CheckboxDemo.args = {
   intermediate: false,
   checked: false,
   disabled: false,
-  error: false,
+  hasError: false,
   label: 'Option',
 };

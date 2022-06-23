@@ -31,12 +31,12 @@ const variations = [
     lightDomState: '',
   },
   {
-    name: 'error',
+    name: 'error-message',
     state: '',
     lightDomState: '',
   },
   {
-    name: 'error-message',
+    name: 'error',
     state: '',
     lightDomState: '',
   },
@@ -45,32 +45,24 @@ const variations = [
 const Template: Story = (): TemplateResult => {
   return html`
     <div class="row">
-      <div class="col variant">
-        <span />
-      </div>
+      <div class="col variant"></div>
       ${headings.map((heading) => html`<div class="col">${heading}</div>`)}
     </div>
     ${variations.map((variant) => {
       const isErrorMessage = variant.name === 'error-message';
       const isDisabled = variant.name === 'disabled';
-      const isError = variant.name === 'error' || isErrorMessage;
-
-      const errorMessage = isErrorMessage
-        ? html`
-            <oryx-error-message
-              slot="error"
-              message="Error validation text"
-              style="margin-top:0px;"
-            >
-            </oryx-error-message>
-          `
-        : html``;
+      const hasError = variant.name === 'error' || isErrorMessage;
+      const errorMessage = isErrorMessage ? 'Error validation text' : '';
 
       const renderCheckbox = ({
         checked = false,
         intermediate = false,
       }): TemplateResult => html`
-        <oryx-checkbox ?intermediate=${intermediate} ?error=${isError}>
+        <oryx-checkbox
+          ?intermediate=${intermediate}
+          ?hasError=${hasError}
+          errorMessage=${errorMessage}
+        >
           <input
             type="checkbox"
             defaultValue="false"
@@ -79,7 +71,7 @@ const Template: Story = (): TemplateResult => {
             class="${variant.lightDomState}"
             ?disabled=${isDisabled}
           />
-          Option ${errorMessage}
+          Option
         </oryx-checkbox>
       `;
 

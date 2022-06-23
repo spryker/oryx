@@ -86,28 +86,29 @@ export const checkboxStyles = css`
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMS4zMzM1IDhDMS4zMzM1IDcuMjYzNjIgMS45MzA0NSA2LjY2NjY3IDIuNjY2ODMgNi42NjY2N0gxMy4zMzM1QzE0LjA2OTkgNi42NjY2NyAxNC42NjY4IDcuMjYzNjIgMTQuNjY2OCA4QzE0LjY2NjggOC43MzYzOCAxNC4wNjk5IDkuMzMzMzMgMTMuMzMzNSA5LjMzMzMzSDIuNjY2ODNDMS45MzA0NSA5LjMzMzMzIDEuMzMzNSA4LjczNjM4IDEuMzMzNSA4WiIgZmlsbD0iIzlFQTFBNyIvPgogIDwvc3ZnPgogIA==');
   }
 
-  :host([error]) ::slotted(input:not(:disabled))::before {
+  :host([hasError]) ::slotted(input:not(:disabled))::before {
     border-color: var(--oryx-color-error);
   }
 
-  :host(:not([intermediate]):not([error]):hover)
+  :host(:not([intermediate]):not([hasError]):hover)
     ::slotted(input:checked:not(:disabled))::before {
     border-color: var(--oryx-color-brand-dark);
     background-color: var(--oryx-color-brand-dark);
   }
 
-  :host([intermediate]:not([error]):hover)
+  :host([intermediate]:not([hasError]):hover)
     ::slotted(input:not(:disabled))::before {
     border-color: var(--oryx-color-brand-dark);
     background-color: var(--oryx-color-brand-dark);
   }
 
-  :host(:not([intermediate]):not([error]):hover)
+  :host(:not([intermediate]):not([hasError]):hover)
     ::slotted(input:not(:disabled))::before {
     border-color: var(--oryx-color-neutral-dark);
   }
 
-  :host(:not([error])) ::slotted(input:not(:disabled):focus-visible)::before {
+  :host(:not([hasError]))
+    ::slotted(input:not(:disabled):focus-visible)::before {
     height: 18px;
     width: 18px;
     border: none;
@@ -115,7 +116,7 @@ export const checkboxStyles = css`
       inset 0 0 0 2px var(--oryx-color-brand);
   }
 
-  :host(:not([error]))
+  :host(:not([hasError]))
     ::slotted(input:not(:disabled):checked:focus-visible)::before {
     height: 18px;
     width: 18px;
