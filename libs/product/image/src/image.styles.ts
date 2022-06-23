@@ -1,10 +1,17 @@
 import { css, unsafeCSS } from 'lit';
 import {
-  ProductImageNavigationDisplay as NavDisplay,
-  ProductImageNavigationLayout as NavLayout,
-  ProductImageNavigationPosition as NavPosition,
-  ProductImagePreviewLayout as PreviewLayout,
+  ProductImageNavigationDisplay,
+  ProductImageNavigationLayout,
+  ProductImageNavigationPosition,
+  ProductImagePreviewLayout,
 } from './image.model';
+
+const layout = {
+  grid: unsafeCSS(ProductImageNavigationLayout.GRID),
+  float: unsafeCSS(ProductImageNavigationPosition.FLOATING),
+  aside: unsafeCSS(ProductImageNavigationDisplay.ASIDE),
+  toggle: unsafeCSS(ProductImagePreviewLayout.TOGGLE),
+};
 
 export const styles = css`
   :host {
@@ -107,15 +114,15 @@ export const styles = css`
     border-color: var(--oryx-color-neutral-darker);
   }
 
-  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) {
+  :host([nav-position='${layout.float}']) {
     position: relative;
   }
 
-  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) {
+  :host([nav-display='${layout.aside}']) {
     flex-direction: row;
   }
 
-  :host([nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
+  :host([nav-position='${layout.float}']) .nav {
     position: absolute;
     padding: var(--navigation-padding, 8px);
     top: auto;
@@ -124,11 +131,11 @@ export const styles = css`
     inset-inline-start: 50%;
   }
 
-  :host([dir='rtl'][nav-position='${unsafeCSS(NavPosition.FLOATING)}']) .nav {
+  :host([dir='rtl'][nav-position='${layout.float}']) .nav {
     transform: translateX(50%);
   }
 
-  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) .nav {
+  :host([nav-display='${layout.aside}']) .nav {
     order: 0;
     padding-inline: var(--navigation-padding, 8px);
     max-height: var(--preview-height, 300px);
@@ -137,44 +144,46 @@ export const styles = css`
     flex-direction: row;
   }
 
-  :host([nav-display='${unsafeCSS(NavDisplay.ASIDE)}']) section {
+  :host([nav-display='${layout.aside}']) section {
     flex-basis: 100%;
   }
 
-  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}']) section {
+  :host([layout='${layout.toggle}']) section {
     position: relative;
   }
 
-  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}']) section > picture {
+  :host([layout='${layout.toggle}']) section > picture {
     position: absolute;
     inset: 0;
     opacity: 0%;
     transition: opacity var(--oryx-transition-time) ease;
   }
 
-  :host([layout='${unsafeCSS(PreviewLayout.TOGGLE)}'])
-    section
-    > picture.active {
+  :host([layout='${layout.toggle}']) section > picture.active {
     opacity: 100%;
   }
 
-  :host([nav-layout='${unsafeCSS(NavLayout.GRID)}']) .nav {
+  :host([nav-layout='${layout.grid}']) .nav {
     flex-wrap: wrap;
   }
 
-  :host([nav-layout='${unsafeCSS(NavLayout.GRID)}'][nav-position='${unsafeCSS(
-        NavPosition.FLOATING
-      )}'])
+  :host([nav-layout='${layout.grid}'][nav-position='${layout.float}'][nav-display='${layout.aside}'])
     .nav {
-    min-inline-size: fit-content;
+    inset-block-end: auto;
+    top: 0;
   }
 
-  :host([nav-display='${unsafeCSS(
-        NavDisplay.ASIDE
-      )}'][nav-position='${unsafeCSS(NavPosition.FLOATING)}'])
-    .nav {
+  :host([nav-display='${layout.aside}'][nav-position='${layout.float}']) .nav {
     padding: var(--navigation-padding, 8px);
     transform: translateY(-50%);
     top: 50%;
+  }
+
+  :host([nav-layout='${layout.grid}'][nav-position='${layout.float}']) .nav {
+    inset: 0;
+    top: auto;
+    justify-content: center;
+    transform: none;
+    min-inline-size: fit-content;
   }
 `;
