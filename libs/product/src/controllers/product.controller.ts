@@ -4,8 +4,8 @@ import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { Observable, of, switchMap } from 'rxjs';
 import { Product, ProductContext } from '../models';
+import { ProductComponentProperties } from '../models/product-component';
 import { ProductService } from '../services';
-import { ProductComponentProperties } from './product-component.properties';
 
 /**
  * Controls product components by providing easy access to the

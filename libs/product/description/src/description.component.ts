@@ -1,16 +1,11 @@
 import { hydratable } from '@spryker-oryx/core';
-import {
-  ContentComponentProperties,
-  ContentController,
-} from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
-  Product,
-  ProductComponentProperties,
+  ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
@@ -18,17 +13,7 @@ import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { ProductDescriptionContent } from './model';
 
 @hydratable()
-export class ProductDescriptionComponent
-  extends LitElement
-  implements
-    ProductComponentProperties,
-    ContentComponentProperties<ProductDescriptionContent>
-{
-  @property() sku?: string;
-  @property() uid?: string;
-  @property({ type: Object }) content?: ProductDescriptionContent;
-  @property({ type: Object }) product?: Product;
-
+export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
   protected productController = new ProductController(this);
   protected product$ = this.productController.getProduct();
   protected contentController = new ContentController(this);

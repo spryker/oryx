@@ -1,32 +1,17 @@
 import { hydratable } from '@spryker-oryx/core';
-import {
-  ContentComponentProperties,
-  ContentController,
-} from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
-  Product,
-  ProductComponentProperties,
+  ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 import { ProductAverageRatingModel } from './average-rating.model';
 
 // TODO: add unit tests
 @hydratable()
-export class ProductAverageRatingComponent
-  extends LitElement
-  implements
-    ProductComponentProperties,
-    ContentComponentProperties<ProductAverageRatingModel>
-{
-  @property() sku?: string;
-  @property() uid?: string;
-  @property({ type: Object }) content?: ProductAverageRatingModel;
-  @property({ type: Object }) product?: Product;
-
+export class ProductAverageRatingComponent extends ProductComponentMixin<ProductAverageRatingModel>() {
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);
   protected product$ = this.productController.getProduct();

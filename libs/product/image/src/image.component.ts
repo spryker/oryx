@@ -1,16 +1,11 @@
 import { hydratable } from '@spryker-oryx/core';
-import {
-  ContentComponentProperties,
-  ContentController,
-} from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
-  Product,
-  ProductComponentProperties,
+  ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
@@ -24,18 +19,8 @@ import {
 import { styles } from './image.styles';
 
 @hydratable('mouseover')
-export class ProductImageComponent
-  extends LitElement
-  implements
-    ProductComponentProperties,
-    ContentComponentProperties<ProductImageComponentContent>
-{
+export class ProductImageComponent extends ProductComponentMixin<ProductImageComponentContent>() {
   static styles = styles;
-
-  @property({ type: String }) uid?: string;
-  @property({ type: String }) sku?: string;
-  @property({ type: Object }) content?: ProductImageComponentContent;
-  @property({ type: Object }) product?: Product;
 
   protected active$ = new BehaviorSubject(0);
   protected productController = new ProductController(this);

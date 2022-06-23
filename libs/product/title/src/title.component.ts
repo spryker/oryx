@@ -1,34 +1,19 @@
 import { hydratable } from '@spryker-oryx/core';
-import {
-  ContentComponentProperties,
-  ContentController,
-} from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
-  Product,
-  ProductComponentProperties,
+  ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { map } from 'rxjs';
 import { ProductTitleContent } from './model';
 import { styles } from './title.styles';
 
 @hydratable()
-export class ProductTitleComponent
-  extends LitElement
-  implements
-    ProductComponentProperties,
-    ContentComponentProperties<ProductTitleContent>
-{
+export class ProductTitleComponent extends ProductComponentMixin<ProductTitleContent>() {
   static styles = styles;
-
-  @property() sku?: string;
-  @property() uid?: string;
-  @property({ type: Object }) content?: ProductTitleContent;
-  @property({ type: Object }) product?: Product;
 
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);

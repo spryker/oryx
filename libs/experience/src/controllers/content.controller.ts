@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { ContentComponentProperties } from './content-component.properties';
+import { ContentComponentProperties } from '..';
 
 export class ContentController<T = unknown> {
   protected experienceContent = resolve(

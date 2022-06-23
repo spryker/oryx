@@ -1,29 +1,15 @@
-import {
-  ContentComponentProperties,
-  ContentController,
-} from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { Product, ProductComponentProperties } from '@spryker-oryx/product';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { ProductComponentMixin } from '@spryker-oryx/product';
+import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
 import { ProductPriceController } from './price.controller';
 import { ProductPriceContent } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
-export class ProductPriceComponent
-  extends LitElement
-  implements
-    ProductComponentProperties,
-    ContentComponentProperties<ProductPriceContent>
-{
+export class ProductPriceComponent extends ProductComponentMixin<ProductPriceContent>() {
   static styles = ProductPriceStyles;
-
-  @property() uid?: string;
-  @property() sku?: string;
-  @property({ type: Object }) content?: ProductPriceContent;
-  @property({ type: Object }) product?: Product;
 
   protected contentController = new ContentController(this);
   protected priceController = new ProductPriceController(this);
