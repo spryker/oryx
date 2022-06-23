@@ -5,6 +5,10 @@ export const styles = css`
     display: block;
   }
 
+  :host([hasError]) ::slotted(input) {
+    border-color: var(--oryx-color-error);
+  }
+
   ::slotted(:not(input)) {
     position: relative;
   }
@@ -111,5 +115,9 @@ export const styles = css`
   ::slotted(input:disabled),
   ::slotted(input:checked:disabled) {
     background: var(--oryx-color-neutral-light);
+  }
+
+  [hasErrorContent] {
+    margin-block-start: 1px;
   }
 `;

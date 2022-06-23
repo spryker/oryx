@@ -11,11 +11,13 @@ interface Props {
   secondToggleText: string;
   firstToggleDisabled?: boolean;
   secondToggleDisabled?: boolean;
+  hasError?: boolean;
+  errorMessage?: string;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
-    <oryx-toggle>
+    <oryx-toggle ?hasError=${props.hasError} errorMessage=${props.errorMessage}>
       <input
         name="test-group"
         value="one"
@@ -25,7 +27,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       />
       ${props.firstToggleText}
     </oryx-toggle>
-    <oryx-toggle>
+    <oryx-toggle ?hasError=${props.hasError} errorMessage=${props.errorMessage}>
       <input
         name="test-group"
         value="two"
@@ -52,6 +54,8 @@ ToggleDemo.args = {
   secondToggleText: 'Second toggle',
   firstToggleDisabled: false,
   secondToggleDisabled: false,
+  hasError: false,
+  errorMessage: '',
 };
 
 ToggleDemo.argTypes = {

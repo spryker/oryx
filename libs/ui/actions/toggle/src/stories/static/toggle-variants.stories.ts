@@ -13,6 +13,8 @@ interface ToggleVariant extends Variant {
     className?: string;
     checked?: boolean;
     disabled?: boolean;
+    hasError?: boolean;
+    errorMessage?: string;
   };
 }
 
@@ -89,6 +91,42 @@ const variants: ToggleVariant[] = [
       checked: true,
     },
   },
+  {
+    categoryY: 'Off',
+    categoryX: 'Error Message',
+    options: {
+      disabled: false,
+      hasError: true,
+      errorMessage: 'Error message',
+    },
+  },
+  {
+    categoryY: 'On',
+    categoryX: 'Error Message',
+    options: {
+      disabled: false,
+      hasError: true,
+      errorMessage: 'Error message',
+      checked: true,
+    },
+  },
+  {
+    categoryY: 'Off',
+    categoryX: 'Error',
+    options: {
+      disabled: false,
+      hasError: true,
+    },
+  },
+  {
+    categoryY: 'On',
+    categoryX: 'Error',
+    options: {
+      disabled: false,
+      hasError: true,
+      checked: true,
+    },
+  },
 ];
 
 const Template: Story = (): TemplateResult => {
@@ -99,8 +137,10 @@ const Template: Story = (): TemplateResult => {
 
         ${generateVariantsMatrix(
           variants,
-          ({ options: { className, checked, disabled } }) => html`
-            <oryx-toggle>
+          ({
+            options: { className, checked, disabled, hasError, errorMessage },
+          }) => html`
+            <oryx-toggle ?hasError=${hasError} errorMessage=${errorMessage}>
               <input
                 type=${inputType}
                 placeholder="make a11y happy"
