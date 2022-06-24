@@ -50,24 +50,15 @@ export class StorefrontComponent extends LitElement {
         <a href="/contact">Contact</a>
       </li>
       <li class="products">
-        <a href="/product/119_29804808"
-          ><product-title
-            style="font-size: 0.5em;"
-            sku="119_29804808"
-          ></product-title
-        ></a>
-        <a href="/product/060_24245592"
-          ><product-title
-            style="font-size: 0.5em;"
-            sku="060_24245592"
-          ></product-title
-        ></a>
-        <a href="/product/010_30692994"
-          ><product-title
-            style="font-size: 0.5em;"
-            sku="010_30692994"
-          ></product-title
-        ></a>
+        <a href="/product/119_29804808">
+          <product-title sku="119_29804808"></product-title>
+        </a>
+        <a href="/product/060_24245592">
+          <product-title sku="060_24245592"></product-title>
+        </a>
+        <a href="/product/010_30692994">
+          <product-title sku="010_30692994"></product-title>
+        </a>
       </li>
     </nav>`;
   }

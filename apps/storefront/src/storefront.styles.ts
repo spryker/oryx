@@ -21,6 +21,7 @@ export const styles = css`
     display: flex;
     justify-content: right;
     flex: 1;
+    font-size: 0.8em;
   }
 
   nav li,

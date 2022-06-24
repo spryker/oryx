@@ -1,7 +1,7 @@
 import { Price } from '@spryker-oryx/product';
 
 export interface ProductPriceContent {
-  original: boolean;
+  showOriginal: boolean;
 }
 
 export interface FormattedProductPrice {

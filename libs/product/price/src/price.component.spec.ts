@@ -134,7 +134,9 @@ describe('ProductPriceComponent', () => {
       describe('and the experience is configured to show original price', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-price uid="abc"></product-price>`
+            html`<product-price
+              .content=${{ showOriginal: true }}
+            ></product-price>`
           );
         });
         it('should not render the original price', () => {
@@ -158,7 +160,9 @@ describe('ProductPriceComponent', () => {
       describe('and the experience is configured to show original price', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-price .content=${{ original: true }}></product-price>`
+            html`<product-price
+              .content=${{ showOriginal: true }}
+            ></product-price>`
           );
         });
         it('should render the original price', () => {
@@ -174,7 +178,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ original: false }}
+              .content=${{ showOriginal: false }}
             ></product-price>`
           );
         });
@@ -187,7 +191,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ original: false }}
+              .content=${{ showOriginal: false }}
             ></product-price>`
           );
         });

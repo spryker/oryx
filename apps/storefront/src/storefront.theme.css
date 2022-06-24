@@ -1,0 +1,127 @@
+/* semantic design tokens */
+
+:root {
+  font-family: var(--oryx-font);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: var(--oryx-color-ink);
+  background-color: var(--oryx-color-canvas);
+
+  /* base font */
+  --oryx-font: 'Montserrat', sans-serif;
+
+  /* base color */
+  --oryx-color-canvas: #fff;
+  --oryx-color-ink: #121212;
+
+  /* neutral color */
+  --oryx-color-neutral: #d4d5d7;
+  --oryx-color-neutral-light: #efeeee;
+  --oryx-color-neutral-lighter: #f8f8f8;
+  --oryx-color-neutral-dark: #9ea1a7;
+  --oryx-color-neutral-darker: #71747c;
+
+  /* brand color */
+  --oryx-color-brand: #17b497;
+  --oryx-color-brand-light: #a0e1d5;
+  --oryx-color-brand-lighter: #f1f8f7;
+  --oryx-color-brand-dark: #138671;
+  --oryx-color-brand-darker: #225e52;
+
+  /* accent color */
+  --oryx-color-info: #2480f2;
+  --oryx-color-success: #17b497;
+  --oryx-color-warning: #eb553c;
+  --oryx-color-error: #f2392e;
+  --oryx-color-error-dark: #c72712;
+
+  /* theme color */
+  --oryx-color-accent: #2480f2;
+  --oryx-color-accent-light: #eaf1fa;
+  --oryx-color-accent-dark: #2261af;
+  --oryx-color-orange-light: #fef0e6;
+  --oryx-color-pink-light: #f9f2f1;
+
+  /* placeholder */
+  --oryx-color-placeholder: var(--oryx-color-neutral-dark);
+
+  /* focused */
+  --oryx-color-focus: var(--oryx-color-brand);
+  --oryx-box-shadow-focus: 0 0 3px var(--oryx-color-focus);
+
+  /* elevation */
+  --oryx-elevation-color: rgb(23 11 11 / 15%);
+  --oryx-elevation-color-2: rgb(18 18 18 / 15%);
+  --oryx-elevation-0: 0 1px 3px;
+  --oryx-elevation-1: 0 4px 12px;
+  --oryx-elevation-2: 1px 3px 18px;
+  --oryx-elevation-3: -2px 2px 20px;
+
+  /* effects */
+  --oryx-transition-time: 0.3s;
+  --oryx-transition-time-medium: 0.6s;
+  --oryx-transition-time-long: 0.9s;
+
+  /* border */
+  --oryx-border-thin: 1px;
+  --oryx-border-thick: 2px;
+  --oryx-border-radius: 10px;
+  --oryx-border-radius-small: 4px;
+  --oryx-border-radius-medium: 5px;
+  --oryx-border-radius-large: 24px;
+
+  /* space */
+  --oryx-space: 5px;
+  --oryx-space-2: calc(var(--oryx-space) * 2);
+  --oryx-space-4: calc(var(--oryx-space) * 4);
+
+  /* icon */
+  --oryx-icon-size-default: var(--oryx-icon-size-large);
+  --oryx-icon-size-large: 24px;
+  --oryx-icon-size-medium: 18px;
+  --oryx-icon-size-small: 12px;
+
+  /* modal */
+  --oryx-modal-min-width: min(100vw, 400px);
+  --oryx-modal-background-color: rgb(0 0 0 / 50%);
+}
+
+::placeholder {
+  color: var(--oryx-color-placeholder);
+}
+
+/* just to proof that we can do dark mode with this setup */
+@media (prefers-color-scheme: dark) {
+  :root:not([no-dark-mode]) {
+    --oryx-color-canvas: #333;
+    --oryx-color-ink: #fff;
+    --oryx-color-neutral-light: #aaa;
+    --oryx-color-neutral-lighter: #666;
+    --oryx-color-neutral-dark: #efeeee;
+    --oryx-color-neutral-darker: #f8f8f8;
+    --oryx-elevation-color: rgb(237 237 237 / 15%);
+    --oryx-elevation-color-2: rgb(225 225 225 / 15%);
+    --oryx-color-brand-lighter: #225e52;
+    --oryx-color-brand-light: #138671;
+    --oryx-color-brand: #17b497;
+    --oryx-color-brand-dark: #a0e1d5;
+    --oryx-color-brand-darker: #f1f8f7;
+    --oryx-chip-color: #efeeee;
+    --oryx-chip-background-color: #71747c;
+    --oryx-chip-success-color: #f1f8f7;
+    --oryx-chip-success-background-color: #138671;
+    --oryx-chip-inactive-color: #f8f8f8;
+    --oryx-chip-inactive-background-color: #71747c;
+    --oryx-chip-offline-color: #efeeee;
+    --oryx-chip-offline-background-color: #71747c;
+    --oryx-chip-low-color: #fffbe6;
+    --oryx-chip-low-background-color: #cd8814;
+    --oryx-chip-warning-color: #fef0e6;
+    --oryx-chip-warning-background-color: #b7540f;
+    --oryx-chip-info-color: #eaf1fa;
+    --oryx-chip-info-background-color: #2261af;
+    --oryx-chip-error-color: #f9f2f1;
+    --oryx-chip-error-background-color: #c72712;
+  }
+}

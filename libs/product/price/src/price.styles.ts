@@ -5,7 +5,7 @@ export const ProductPriceStyles = css`
     display: flex;
     gap: 10px;
     align-items: baseline;
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-warning);
   }
 
   .original {
