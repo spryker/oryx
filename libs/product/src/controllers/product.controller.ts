@@ -14,7 +14,7 @@ import { ProductService } from '../services';
 export class ProductController {
   protected context: ContextController;
   protected observe: ObserveController<LitElement & ProductComponentProperties>;
-  protected productService = resolve(this, ProductService);
+  protected productService = resolve(this, ProductService, null);
 
   constructor(
     protected host: LitElement & ProductComponentProperties,
@@ -35,8 +35,10 @@ export class ProductController {
         return this.context
           .get(ProductContext.Code, this.observe.get('sku'))
           .pipe(
-            switchMap((sku) =>
-              this.productService.get({ sku, include: this.include })
+            switchMap(
+              (sku) =>
+                this.productService?.get({ sku, include: this.include }) ??
+                of(null)
             )
           );
       })

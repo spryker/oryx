@@ -8,6 +8,7 @@ import { ProductController } from './product.controller';
 const mockSku = 'mockSku';
 const mockThis = {} as LitElement;
 const mockWithProduct = { product: { name: 'test' } } as unknown as LitElement;
+const mockNoService = { noService: true } as unknown as LitElement;
 const mockContextGet = vi.fn();
 const mockInclude = ['includeA', 'includeB'];
 
@@ -42,9 +43,14 @@ const mockProduct = {
 };
 
 vi.mock('@spryker-oryx/injector', () => ({
-  resolve: vi.fn().mockReturnValue({
-    get: (data: unknown) => mockGet.mockReturnValue(of(mockProduct))(data),
-  }),
+  resolve: vi.fn().mockImplementation(({ host }) =>
+    !host.noService
+      ? {
+          get: (data: unknown) =>
+            mockGet.mockReturnValue(of(mockProduct))(data),
+        }
+      : null
+  ),
 }));
 
 describe('ProductController', () => {
@@ -57,7 +63,11 @@ describe('ProductController', () => {
     const callback = vi.fn();
     productController.getProduct().subscribe(callback);
 
-    expect(resolve).toHaveBeenCalledWith(productController, ProductService);
+    expect(resolve).toHaveBeenCalledWith(
+      productController,
+      ProductService,
+      null
+    );
     expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'product');
     expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'sku');
     expect(mockContextGet).toHaveBeenCalledWith(
@@ -79,5 +89,15 @@ describe('ProductController', () => {
     expect(mockObserveGet).toHaveBeenCalledWith('product');
     expect(mockContextGet).not.toHaveBeenCalled();
     expect(callback).toHaveBeenCalledWith((mockWithProduct as any).product);
+  });
+
+  describe('when product service is not provided', () => {
+    it('should not expose product data', () => {
+      const productController = new ProductController(mockNoService);
+      const callback = vi.fn();
+      productController.getProduct().subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(null);
+    });
   });
 });
