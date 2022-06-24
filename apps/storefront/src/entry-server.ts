@@ -38,5 +38,6 @@ export const render = async (element): Promise<string> => {
     data = ssrResult.next();
     context.fillStream(stream);
   }
+  context.rendered();
   return stream;
 };

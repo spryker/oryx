@@ -1,6 +1,5 @@
-import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import { queryFirstAssigned, wait } from '@spryker-oryx/typescript-utils';
 import { expect } from '@storybook/jest';
-import { wait } from '../../../../../../overlays/notification-center/src/stories/interactive/util';
 import { PageNavigationItemComponent } from '../../../../../page-navigation-item';
 import { getNavItems, PageNavigationItem } from '../../common';
 import { TemplateProps } from '../common';

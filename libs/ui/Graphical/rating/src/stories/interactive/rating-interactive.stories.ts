@@ -1,3 +1,4 @@
+import { wait } from '@spryker-oryx/typescript-utils';
 import { expect } from '@storybook/jest';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
@@ -20,9 +21,6 @@ RatingInteractive.play = async (obj: {
   args: RatingProperties;
   canvasElement: HTMLElement;
 }): Promise<void> => {
-  const wait = (ms: number): Promise<void> =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   const component = obj.canvasElement.querySelector(
     'oryx-rating'
   ) as RatingComponent;

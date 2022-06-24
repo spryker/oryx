@@ -1,9 +1,9 @@
+import { wait } from '@spryker-oryx/typescript-utils';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { wait } from '../../../../../overlays/notification-center/src/stories/interactive/util';
 import { PageNavigationItemComponent } from '../../../../page-navigation-item';
 import { getTemplate, TemplateProps } from './common';
 

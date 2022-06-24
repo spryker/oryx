@@ -10,4 +10,4 @@ export interface DecoratorContext {
   descriptor?: PropertyDescriptor;
 }
 
-export type TargetDecorator = Record<string | symbol, any> & LitElement;
+export type TargetDecorator = Record<string | symbol, unknown> & LitElement;

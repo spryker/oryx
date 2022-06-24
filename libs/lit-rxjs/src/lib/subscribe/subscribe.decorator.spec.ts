@@ -1,13 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { wait } from '@spryker-oryx/typescript-utils';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { finalize, interval, tap } from 'rxjs';
 import { subscribe } from './subscribe.decorator';
 
 const tick = 50;
-const delay = (ms: number): Promise<unknown> =>
-  new Promise((res) => setTimeout(res, ms));
-
 @customElement('mock-component')
 class MockComponent extends LitElement {
   mockCallback = vi.fn();
@@ -50,24 +48,9 @@ describe('subscribe decorator', () => {
   });
 
   it('should subscribe to observable on connectedCallback hook', async () => {
-    await delay(tick + 10);
+    await wait(tick + 10);
 
     expect(element.mockCallback).toHaveBeenCalled();
     expect(element.mockAnotherCallback).toHaveBeenCalled();
-  });
-
-  it('should throw an error if initial value is not observable', async () => {
-    @customElement('mock-error-component')
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    class MockErrorComponent extends LitElement {
-      @subscribe()
-      mock = 'notObservable';
-    }
-
-    try {
-      document.createElement('mock-error-component');
-    } catch (error) {
-      expect(error).toBeTypeOf('string');
-    }
   });
 });

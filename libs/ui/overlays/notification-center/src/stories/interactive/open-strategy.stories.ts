@@ -1,3 +1,4 @@
+import { wait } from '@spryker-oryx/typescript-utils';
 import { expect } from '@storybook/jest';
 import { userEvent, within } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
@@ -6,7 +7,7 @@ import { NotificationCenterComponent } from '../..';
 import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 import { Positions } from '../../notification-center.model';
-import { getNotification, open, wait } from './util';
+import { getNotification, open } from './util';
 
 export default {
   title: `${storybookPrefix}/Overlays/Notification Center/Interactive`,

@@ -9,39 +9,49 @@ import { SubscribeController } from './subscribe.controller';
 
 const SUBSCRIBE_CONTROLLER = Symbol('subscribeController');
 
-function controllerCreation(target: any, name: string): void {
+function controllerCreation(target: any): void {
   if (!target[SUBSCRIBE_CONTROLLER]) {
     const descriptor = {
-      value: new SubscribeController(target, name),
+      value: new SubscribeController(target),
       enumerable: false,
       configurable: true,
     };
 
     Object.defineProperty(target, SUBSCRIBE_CONTROLLER, descriptor);
-
-    return;
   }
-
-  target[SUBSCRIBE_CONTROLLER].add(name);
 }
 
 const legacySubscribe = (context: TargetDecorator, name: string): void => {
   const constructor = context.constructor as typeof LitElement;
+  const internalKey = Symbol(name);
+
+  Object.defineProperty(context, name, {
+    get: function (this: TargetDecorator) {
+      return this[internalKey];
+    },
+    set: function (this: TargetDecorator, observable$: unknown) {
+      if (!this[internalKey]) {
+        (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(observable$);
+      }
+
+      this[internalKey] = observable$;
+    },
+    configurable: true,
+  });
 
   constructor.addInitializer((instance: ReactiveElement) => {
-    controllerCreation(instance, name);
+    controllerCreation(instance);
   });
 };
 
-const standardSubscribe = (
-  context: DecoratorContext,
-  name: string
-): DecoratorContext => {
+const standardSubscribe = (context: DecoratorContext): DecoratorContext => {
   return {
     ...context,
     initializer(this: TargetDecorator): void {
-      controllerCreation(this, name);
-      return context.initializer?.call(this);
+      const observable$ = context.initializer?.call(this);
+      controllerCreation(this);
+      (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(observable$);
+      return observable$;
     },
   };
 };
@@ -56,7 +66,6 @@ const standardSubscribe = (
  *  prop = from([1, 2, 3, 4]).pipe(// implementation //);
  * }
  */
-
 export function subscribe(): any {
   return (
     context: DecoratorContext | TargetDecorator,
@@ -67,6 +76,6 @@ export function subscribe(): any {
 
     return isLegacy
       ? legacySubscribe(context as TargetDecorator, propName)
-      : standardSubscribe(context as DecoratorContext, propName);
+      : standardSubscribe(context as DecoratorContext);
   };
 }

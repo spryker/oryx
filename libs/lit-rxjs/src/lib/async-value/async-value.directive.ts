@@ -7,6 +7,14 @@ import { AsyncValueObservableStrategy } from './async-value-observable-strategy'
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
 import { AsyncValueStrategy } from './types';
 
+interface PartInfoRoot {
+  options?: {
+    host?: {
+      shadowRoot?: Record<string, unknown>;
+    };
+  };
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isPromise<T = any>(object: any): object is Promise<T> {
   return typeof object?.then === 'function';
@@ -34,12 +42,11 @@ export class AsyncValueDirective extends AsyncDirective {
     }
   }
 
-  constructor(partInfo: PartInfo) {
+  constructor(partInfo: PartInfo & PartInfoRoot) {
     super(partInfo);
     // In the case of SSR rendering, we'd like to not render the fallback, and the markup should just be hydrated.
     // The async directive does not directly have access to the component except through the constructor, so we do the check here.
-    this.ssrRendered =
-      !!(partInfo as any).options?.host?.shadowRoot && isClient();
+    this.ssrRendered = !!partInfo.options?.host?.shadowRoot && isClient();
   }
 
   render(

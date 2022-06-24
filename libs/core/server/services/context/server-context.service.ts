@@ -1,10 +1,10 @@
-import { ContextService } from '@spryker-oryx/core';
-import { defer, Observable, of } from 'rxjs';
+import { DefaultContextService } from '@spryker-oryx/core';
+import { defer, Observable, of, ReplaySubject } from 'rxjs';
 import { DefaultSSRStreamParserService } from './default-ssr-stream-parser';
 
-export class ServerContextService implements ContextService {
+export class ServerContextService extends DefaultContextService {
   protected streamParser = new DefaultSSRStreamParserService();
-  protected dataKey = 'data-';
+  rendered$ = new ReplaySubject<void>(1);
 
   provide(element: Element, key: string, value: unknown): void {
     element.setAttribute(`${this.dataKey}${key}`, JSON.stringify(value));
@@ -35,5 +35,10 @@ export class ServerContextService implements ContextService {
 
   fillStream(stream: string): void {
     this.streamParser.fillStream(stream);
+  }
+
+  rendered(): void {
+    this.rendered$.next();
+    this.rendered$.complete();
   }
 }

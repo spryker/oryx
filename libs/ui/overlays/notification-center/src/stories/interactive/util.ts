@@ -8,8 +8,6 @@ import { generateNotification } from '../util';
 
 export const open = (strategy: NotificationStrategy = {}): void =>
   new NotificationService().getCenter().open(generateNotification(strategy));
-export const wait = async (t: number): Promise<void> =>
-  await new Promise((r) => setTimeout(r, t));
 export const getNotification = (
   center: NotificationCenterComponent,
   index = 0
