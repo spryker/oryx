@@ -1,5 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import { dispatchKeydown } from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
@@ -10,11 +12,9 @@ import {
   POPOVER_EVENT,
   SelectedController,
 } from '.';
-import { a11yConfig } from '../../../a11y';
 import { getControl } from '../../../form/utilities/getControl';
 import '../../../option';
 import { OptionComponent } from '../../../option';
-import { dispatchKeydown } from '../../../testing';
 
 /** scrollIntoView is not implemented in jsdom */
 Element.prototype.scrollIntoView = vi.fn();

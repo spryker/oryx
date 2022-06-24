@@ -1,9 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import {
+  a11yConfig,
+  queryAssignedElements,
+  queryFirstAssigned,
+} from '@spryker-oryx/typescript-utils';
 import { TemplateResult } from 'lit';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { a11yConfig } from '../../../a11y';
-import { queryAssignedElements, queryFirstAssigned } from '../../../utilities';
 import { PageNavigationComponent } from '../../page-navigation';
 import { PageNavigationItemComponent } from '../../page-navigation-item';
 import './../../page-navigation-item';

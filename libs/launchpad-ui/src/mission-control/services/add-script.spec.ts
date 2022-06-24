@@ -1,4 +1,4 @@
-import { removeElement } from '@spryker-oryx/typescript-utils/tests-helpers';
+import { removeElement } from '@spryker-oryx/testing';
 import { addScript } from './add-script';
 
 describe('addScript', () => {

@@ -1,8 +1,8 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { a11yConfig } from '../../../../a11y';
 import { AffixController } from './affix.controller';
 import { AffixOptions } from './affix.model';
 

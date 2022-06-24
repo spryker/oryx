@@ -1,8 +1,8 @@
 import { fixture, unsafeStatic } from '@open-wc/testing-helpers';
+import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { html as staticHtml } from 'lit/static-html.js';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { queryFirstAssigned } from '../utilities/query.util';
 
 interface CheckSlotsTemplate {
   tag: string;

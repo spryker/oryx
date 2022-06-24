@@ -1,7 +1,8 @@
+import { queryFirstFocusable } from '@spryker-oryx/typescript-utils';
 import { PopoverController } from '@spryker-oryx/ui/popover';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Position, queryFirstFocusable } from '../../../utilities';
+import { Position } from '../../../utilities';
 import { DropdownProperties } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 

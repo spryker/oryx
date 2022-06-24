@@ -1,5 +1,5 @@
+import { queryAssignedElements } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { queryAssignedElements } from '../../../../utilities/';
 import { AffixOptions } from './affix.model';
 
 export class AffixController implements ReactiveController {

@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import { dispatchKeydown } from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
-import { a11yConfig } from '../../../../a11y';
-import { dispatchKeydown } from '../../../../testing';
 import { CLOSE_EVENT } from '../popover.model';
 import { HighlightController } from './highlight.controller';
 

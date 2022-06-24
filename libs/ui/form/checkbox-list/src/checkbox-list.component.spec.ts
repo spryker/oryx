@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
-import { a11yConfig } from '../../../a11y';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { Direction } from '../../../utilities/model';
 import '../../checkbox/index';
 import { CheckboxListComponent } from './checkbox-list.component';

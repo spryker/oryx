@@ -1,10 +1,13 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import {
+  dispatchKeydown,
+  userAgentSafariMacOsX154,
+} from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { a11yConfig } from '../../../../a11y';
-import { dispatchKeydown, userAgentSafariMacOsX154 } from '../../../../testing';
 import '../index';
 import { PopoverComponent } from '../popover.component';
 import { CLOSE_EVENT } from '../popover.model';

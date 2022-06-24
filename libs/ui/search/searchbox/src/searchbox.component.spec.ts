@@ -1,7 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { a11yConfig } from '../../../a11y';
-import { queryFirstAssigned } from '../../../utilities';
+import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import './index';
 import {
   ClearIconAppearance,

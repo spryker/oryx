@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { a11yConfig } from '../../../a11y';
 import { Size } from '../../../utilities';
 import { IconComponent } from './icon.component';
 import './index';

@@ -1,6 +1,6 @@
 import { fixture, fixtureCleanup } from '@open-wc/testing-helpers';
+import { removeElement } from '@spryker-oryx/testing';
 import { AjaxClient, wait } from '@spryker-oryx/typescript-utils';
-import { removeElement } from '@spryker-oryx/typescript-utils/tests-helpers';
 import { html } from 'lit';
 import { SpyInstance } from 'vitest';
 import './index';

@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { queryFirstAssigned } from '../../../utilities';
+import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import './index';
 import { TileComponent } from './tile.component';
 

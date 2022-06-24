@@ -1,4 +1,4 @@
-import { removeElement } from '@spryker-oryx/typescript-utils/tests-helpers';
+import { removeElement } from '@spryker-oryx/testing';
 import { addLink } from './add-link';
 
 describe('addLink', () => {

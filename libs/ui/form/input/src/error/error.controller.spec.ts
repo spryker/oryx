@@ -1,8 +1,8 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { a11yConfig } from '../../../../a11y';
 import { ErrorMessageComponent } from '../../../../error-message/index';
 import { ErrorController } from './error.controller';
 import { ErrorOptions } from './error.model';

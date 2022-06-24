@@ -1,5 +1,5 @@
+import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { isFocusable } from '../../../../utilities';
 import { getControl } from '../../../utilities/getControl';
 import { ErrorController } from '../error/error.controller';
 import { FormControlOptions } from './form-control.model';

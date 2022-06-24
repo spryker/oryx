@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
+import { checkSlots, dispatchKeydown } from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { a11yConfig } from '../../../../a11y';
-import { checkSlots, dispatchKeydown } from '../../../../testing';
 import { NDSModalComponent } from './modal.component';
 
 customElements.get('oryx-modal-nds') ||

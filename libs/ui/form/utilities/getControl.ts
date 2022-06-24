@@ -1,5 +1,5 @@
+import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { LitElement } from 'lit';
-import { queryFirstAssigned } from '../../utilities';
 
 export class NoFormControlError {
   constructor() {

@@ -1,8 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { a11yConfig } from '../../../a11y';
-import { queryFirstAssigned } from '../../../utilities';
 import './index';
 import { ToggleComponent } from './toggle.component';
 

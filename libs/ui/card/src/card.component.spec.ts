@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { queryFirstAssigned } from '../../utilities';
 import { CardComponent } from './card.component';
 import './index';
 

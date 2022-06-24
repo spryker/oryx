@@ -1,5 +1,5 @@
+import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
-import { isFocusable } from '../../../../utilities';
 import { Dialog } from '../../../overlay.model';
 import { DrawerComponent } from '../drawer.component';
 import { drawerNDSStyles } from './drawer.styles';

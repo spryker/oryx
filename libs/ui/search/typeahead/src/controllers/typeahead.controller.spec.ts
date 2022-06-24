@@ -1,10 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstanceFn } from 'vitest';
-import { a11yConfig } from '../../../../a11y';
 import { getControl } from '../../../../form/utilities';
 import '../../../../option/';
 import { SearchEvent } from '../../../searchbox';

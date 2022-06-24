@@ -1,5 +1,5 @@
+import { isFocusable } from '@spryker-oryx/typescript-utils';
 import {
-  isFocusable,
   isSafari,
   nonFocusableOnClickInSafari,
 } from '@spryker-oryx/ui/utilities';
