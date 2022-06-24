@@ -7,20 +7,22 @@ export default {
   title: `${storybookPrefix}/Actions/Toggle Icon`,
   args: {
     disabled: false,
+    hasError: false,
   },
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 const iconTypes = ['mobile', 'tablet', 'desktop'];
 
-const DemoTemplate: Story<{ disabled: boolean }> = ({
+const DemoTemplate: Story<{ disabled: boolean; hasError: boolean }> = ({
   disabled,
+  hasError,
 }): TemplateResult => {
   return html`
     <h3>Single select</h3>
     ${iconTypes.map(
       (iconType) => html`
-        <oryx-toggle-icon>
+        <oryx-toggle-icon ?hasError=${hasError}>
           <input
             ?disabled=${disabled}
             type="radio"
@@ -36,7 +38,7 @@ const DemoTemplate: Story<{ disabled: boolean }> = ({
     <h3>Multi select</h3>
     ${iconTypes.map(
       (iconType) => html`
-        <oryx-toggle-icon>
+        <oryx-toggle-icon ?hasError=${hasError}>
           <input
             ?disabled=${disabled}
             type="checkbox"

@@ -13,6 +13,7 @@ interface ToggleIconVariant extends Variant {
     className?: string;
     checked?: boolean;
     disabled?: boolean;
+    hasError?: boolean;
   };
 }
 
@@ -95,13 +96,29 @@ const variants: ToggleIconVariant[] = [
       disabled: true,
     },
   },
+  {
+    categoryX: 'Error',
+    categoryY: 'Default',
+    options: {
+      checked: false,
+      hasError: true,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Clicked',
+    options: {
+      checked: true,
+      hasError: true,
+    },
+  },
 ];
 
 const Template: Story = (): TemplateResult =>
   generateVariantsMatrix(
     variants,
-    ({ options: { className, checked, disabled } }) => html`
-      <oryx-toggle-icon ?checked=${checked}>
+    ({ options: { className, checked, disabled, hasError } }) => html`
+      <oryx-toggle-icon ?checked=${checked} ?hasError=${hasError}>
         <input
           ?disabled=${disabled}
           .class=${className}

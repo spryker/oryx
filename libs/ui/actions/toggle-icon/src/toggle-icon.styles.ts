@@ -17,12 +17,18 @@ export const toggleIconStyles = css`
     border-radius: var(--oryx-border-radius-large);
   }
 
+  :host([hasError])
+    ::slotted(:is(input, input:hover, input:checked, input:checked:hover))::after {
+    border-color: var(--oryx-color-error);
+  }
+
   :host,
   ::slotted(*) {
     transition: var(--oryx-transition-time);
   }
 
   :host(:not([has-text])) {
+    gap: 0;
     padding: 7px;
   }
 
@@ -96,6 +102,18 @@ export const toggleIconStyles = css`
       inset 0 0 0 1px var(--oryx-color-brand-lighter),
       inset 0 0 0 2px var(--oryx-color-brand);
     border: none;
+  }
+
+  :host([hasError]) ::slotted(input:focus-visible:not(:active))::after {
+    box-shadow: 0 0 3px var(--oryx-color-brand),
+      inset 0 0 0 1px var(--oryx-color-error),
+      inset 0 0 0 2px var(--oryx-color-neutral);
+  }
+
+  :host([hasError]) ::slotted(input:checked:focus-visible:not(:active))::after {
+    box-shadow: 0 0 3px var(--oryx-color-brand),
+      inset 0 0 0 1px var(--oryx-color-error),
+      inset 0 0 0 2px var(--oryx-color-brand);
   }
 
   ::slotted(input[disabled])::after {

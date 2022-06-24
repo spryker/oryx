@@ -18,6 +18,7 @@ interface ToggleIconVariant extends Variant {
     checked?: boolean;
     disabled?: boolean;
     size?: Size;
+    hasError?: boolean;
   };
 }
 
@@ -110,6 +111,24 @@ const variants: ToggleIconVariant[] = [
       size: Size.large,
     },
   },
+  {
+    categoryX: 'Error',
+    categoryY: 'Large Default',
+    options: {
+      checked: false,
+      size: Size.large,
+      hasError: true,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Large Clicked',
+    options: {
+      checked: true,
+      size: Size.large,
+      hasError: true,
+    },
+  },
 
   //////////////
 
@@ -201,6 +220,24 @@ const variants: ToggleIconVariant[] = [
       size: Size.medium,
     },
   },
+  {
+    categoryX: 'Error',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      size: Size.medium,
+      hasError: true,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      size: Size.medium,
+      hasError: true,
+    },
+  },
 
   //////////////
 
@@ -290,6 +327,24 @@ const variants: ToggleIconVariant[] = [
       checked: true,
       disabled: true,
       size: Size.small,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Small Default',
+    options: {
+      checked: false,
+      size: Size.small,
+      hasError: true,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Small Clicked',
+    options: {
+      checked: true,
+      size: Size.small,
+      hasError: true,
     },
   },
 ];
@@ -297,9 +352,9 @@ const variants: ToggleIconVariant[] = [
 const Template: Story = (): TemplateResult => html`
   ${generateVariantsMatrix(
     variants,
-    ({ options: { className, checked, disabled, size } }) => {
+    ({ options: { className, checked, disabled, size, hasError } }) => {
       return html`
-        <oryx-toggle-icon size=${size}>
+        <oryx-toggle-icon size=${size} ?hasError=${hasError}>
           <input
             ?disabled=${disabled}
             ?checked=${checked}

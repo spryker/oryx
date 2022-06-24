@@ -1,4 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { getControl } from '../../../form/utilities';
 import { toggleIconStyles } from './toggle-icon.styles';
 
@@ -6,6 +7,8 @@ const GENERATED_INPUT_EVENT = 'oryx-gen';
 
 export class ToggleIconComponent extends LitElement {
   static styles = [toggleIconStyles];
+
+  @property({ type: Boolean }) hasError?: boolean;
 
   connectedCallback(): void {
     super.connectedCallback();
