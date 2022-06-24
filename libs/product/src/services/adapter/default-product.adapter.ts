@@ -76,12 +76,13 @@ export class DefaultProductAdapter implements ProductAdapter {
   }
 
   protected convertAttributes(attributes: ApiModel.Product): Product {
-    const { sku, name, description, averageRating } = attributes;
+    const { sku, name, description, averageRating, reviewCount } = attributes;
     const product: Product = {
       sku,
       name,
       description,
-      ...{ averageRating },
+      averageRating,
+      reviewCount,
     };
     return Object.fromEntries(
       Object.entries(product).filter(([, v]) => v != null)

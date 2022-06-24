@@ -9,13 +9,10 @@ import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 import { ProductAverageRatingModel } from './average-rating.model';
 
-// TODO: add unit tests
 @hydratable()
 export class ProductAverageRatingComponent extends ProductComponentMixin<ProductAverageRatingModel>() {
-  protected productController = new ProductController(this);
-  protected contentController = new ContentController(this);
-  protected product$ = this.productController.getProduct();
-  protected content$ = this.contentController.getContent();
+  protected product$ = new ProductController(this).getProduct();
+  protected content$ = new ContentController(this).getContent();
 
   protected rating$ = combineLatest([this.product$, this.content$]).pipe(
     map(([product, contents]) => {
@@ -35,7 +32,7 @@ export class ProductAverageRatingComponent extends ProductComponentMixin<Product
         return html`
           <oryx-rating
             readonly
-            .value=${Number(rating)}
+            .value=${Number(rating ?? 0)}
             .reviewCount=${reviewCount}
           ></oryx-rating>
         `;

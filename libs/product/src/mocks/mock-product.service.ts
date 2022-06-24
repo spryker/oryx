@@ -172,7 +172,7 @@ export class MockProductService implements Partial<ProductService> {
             'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
         },
       ],
-      averageRating: '0',
+      averageRating: undefined,
       reviewCount: 0,
     },
     {
