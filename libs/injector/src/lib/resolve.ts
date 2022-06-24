@@ -1,30 +1,33 @@
 import { Type } from '@spryker-oryx/typescript-utils';
-import { getInjector } from '../get-injector';
+import { getInjector, InjectorContext } from './get-injector';
 
 export function resolve<K extends keyof InjectionTokensContractMap>(
-  context: any,
   token: K
 ): InjectionTokensContractMap[K];
 export function resolve<K extends keyof InjectionTokensContractMap, L>(
-  context: any,
   token: K,
-  defaultValue?: L
+  defaultValue?: L,
+  context?: InjectorContext
 ): InjectionTokensContractMap[K] | L;
-export function resolve<K>(context: any, token: Type<K>, defaultValue?: K): K;
-export function resolve<K, L>(
-  context: any,
+export function resolve<K>(
   token: Type<K>,
-  defaultValue?: L
+  defaultValue?: K,
+  context?: InjectorContext
+): K;
+export function resolve<K, L>(
+  token: Type<K>,
+  defaultValue?: L,
+  context?: InjectorContext
 ): K | L;
 export function resolve<K = any>(
-  context: any,
   token: string,
-  defaultValue?: K
+  defaultValue?: K,
+  context?: InjectorContext
 ): K;
 export function resolve<K = any>(
-  context: any,
   token: any,
-  defaultValue?: any
+  defaultValue?: any,
+  context?: InjectorContext
 ): K {
   try {
     return getInjector(context).inject(token, defaultValue);

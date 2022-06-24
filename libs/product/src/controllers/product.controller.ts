@@ -14,7 +14,7 @@ import { ProductService } from '../services';
 export class ProductController {
   protected context: ContextController;
   protected observe: ObserveController<LitElement & ProductComponentProperties>;
-  protected productService = resolve(this, ProductService, null);
+  protected productService = resolve(ProductService, null);
 
   constructor(
     protected host: LitElement & ProductComponentProperties,

@@ -7,7 +7,6 @@ import { ContentComponentProperties } from '..';
 
 export class ContentController<T = unknown> {
   protected experienceContent = resolve(
-    this,
     ExperienceService,
     null
   ) as ExperienceService | null;

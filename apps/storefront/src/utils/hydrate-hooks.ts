@@ -40,7 +40,7 @@ function $$$(selector, rootNode = document.body) {
 }
 
 export function initHydrateHooks() {
-  const registryService = resolve(this, ComponentsRegistryService);
+  const registryService = resolve(ComponentsRegistryService);
 
   //TODO - remove this when we no longer need manual hydrate on demand
   globalThis.hydrateOnDemand =

@@ -1,59 +1,48 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Injector } from './injector';
 import { Provider } from './provider';
 
-/**
- * By default, injectors can be assigned to DOM Elements. Each DOM element can
- * provide a context for the injector.
- */
-export interface InjectorContext {
-  parentNode?: InjectorContext;
-}
+export type InjectorContext = string | symbol;
 
-let _injectorsRegistry: WeakMap<InjectorContext | any, Injector>;
+let _injectorsRegistry: Map<InjectorContext, Injector>;
 
-function getRegistry(
-  globalVariable = '_injectorsRegistry'
-): WeakMap<InjectorContext | any, Injector> {
+const REGISTRY_KEY = '_oryxInjectorsRegistry';
+
+function getRegistry(): Map<InjectorContext, Injector> {
   if (!_injectorsRegistry) {
-    if ((globalThis as any)[globalVariable]) {
-      _injectorsRegistry = (globalThis as any)[globalVariable];
+    if ((globalThis as any)[REGISTRY_KEY]) {
+      _injectorsRegistry = (globalThis as any)[REGISTRY_KEY];
     } else {
-      _injectorsRegistry = new WeakMap<InjectorContext, Injector>();
+      _injectorsRegistry = new Map<InjectorContext, Injector>();
+      (globalThis as any)[REGISTRY_KEY] = _injectorsRegistry;
     }
   }
   return _injectorsRegistry;
 }
 
-function defaultContext(): Document | typeof globalThis {
-  return globalThis.document ?? globalThis;
+let _theAppContext: InjectorContext | undefined;
+
+function defaultContext(): InjectorContext {
+  return _theAppContext ?? '';
 }
 
 /**
  * Function will return injector for the current context
  *
  * You may have different injectors working for different context.
- * By default, the window.document is used as a context, which works fine for the browser
- * or even for some SSR implementations.
  *
- * For most SSR rendering solutions, proper context (for rendering run) should be provided, otherwise injector could
- * be shared between different renders.
+ * For most SSR rendering solutions, proper context (for rendering run) should be provided,
+ * otherwise there is a risk that injector will be shared between renders.
  *
  * @param context
  */
 export function getInjector(
-  context: Element | InjectorContext | any = defaultContext()
+  context: InjectorContext = defaultContext()
 ): Injector {
   const registry = getRegistry();
-  while (context) {
-    if (registry.has(context)) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return registry.get(context)!;
-    }
-    context = context.parentNode ?? context.host;
-  }
-  if (registry.has(defaultContext())) {
+  if (registry.has(context)) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return registry.get(defaultContext())!;
+    return registry.get(context)!;
   }
   throw new Error('No injector found!');
 }
@@ -68,17 +57,16 @@ export function getInjector(
  * @param options
  */
 export function createInjector(options: {
-  context?: InjectorContext | Element;
+  context?: InjectorContext;
   parent?: Injector;
   providers?: Provider[];
-  override?: boolean;
 }): Injector {
-  const { context, parent, providers, override } = {
+  const { context, parent, providers } = {
     ...options,
-    context: options.context ?? defaultContext(),
+    context: options.context ?? '',
   };
   const registry = getRegistry();
-  if (!override && registry.has(context)) {
+  if (registry.has(context)) {
     throw new Error('Injector already created for context');
   }
   registry.set(context, new Injector(providers, parent));
@@ -87,14 +75,30 @@ export function createInjector(options: {
 }
 
 /**
+ * Create an injector for the application
+ *
+ * Application injector is shared by all components build together, using singleton context
+ * variable
+ *
+ * @param options
+ */
+export function createAppInjector(options: {
+  parent?: Injector;
+  providers?: Provider[];
+}): Injector {
+  if (_theAppContext) {
+    throw new Error('App injector already created');
+  }
+  _theAppContext = Symbol();
+  return createInjector({ ...options, context: _theAppContext });
+}
+
+/**
  * Invoke destroy method of an injector and remove it from the registry
  *
  * @param context - Injector context.
  */
-
-export function destroyInjector(
-  context: Element | InjectorContext | any = defaultContext()
-): void {
+export function destroyInjector(context: InjectorContext = ''): void {
   const registry = getRegistry();
 
   if (!registry.has(context)) {
@@ -106,18 +110,11 @@ export function destroyInjector(
 }
 
 /**
- * Enable sharing injector between different copies of the injector code.
- *
- * Useful for cases, where injector code is bundled statically instead of an
- * external import
- *
- * @param gobalVariable - Name of the global variable, that will be used for sharing global injector.
+ * Invoke destroy method of an app injector and remove it from the registry
  */
-export function enableSharedInjectorRegistry(
-  globalVariable = '_injectorsRegistry'
-): void {
-  if (!(globalThis as any)[globalVariable]) {
-    _injectorsRegistry = new WeakMap<InjectorContext, Injector>();
-    (globalThis as any)[globalVariable] = _injectorsRegistry;
+export function destroyAppInjector() {
+  if (_theAppContext) {
+    destroyInjector(_theAppContext);
   }
+  _theAppContext = undefined;
 }

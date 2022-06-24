@@ -11,8 +11,8 @@ import { FormattedProductPrice } from './price.model';
 export class ProductPriceController implements ReactiveController {
   protected productController: ProductController;
 
-  protected currencyService = resolve(this, CurrencyService);
-  protected localeService = resolve(this, LocaleService);
+  protected currencyService = resolve(CurrencyService);
+  protected localeService = resolve(LocaleService);
 
   /**
    * Formats the product prices by the help of the current locale.

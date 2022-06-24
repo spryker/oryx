@@ -8,8 +8,8 @@ import { tap } from 'rxjs';
 
 export class StorefrontRouter extends Router {
   protected id: string;
-  protected routerService = resolve(this, RouterService);
-  protected ssrAwaiter = resolve(this, SSRAwaiterService, null);
+  protected routerService = resolve(RouterService);
+  protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected ssrRendered = false;
   // TODO - @lit-labs/router does not expose _host. If they do, we will prefer it over this.
   protected readonly host: ReactiveControllerHost & HTMLElement;

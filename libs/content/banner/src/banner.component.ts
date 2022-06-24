@@ -23,7 +23,7 @@ export class BannerComponent extends LitElement {
   @observe()
   protected content$ = new ReplaySubject(1);
 
-  protected experienceContent = resolve(this, ExperienceService, null);
+  protected experienceContent = resolve(ExperienceService, null);
 
   contentResolver$ = defer(() =>
     this.uid && this.experienceContent

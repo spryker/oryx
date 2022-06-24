@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { createInjector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
@@ -8,13 +8,16 @@ import { ProductImageComponent } from './image.component';
 
 describe('ProductImageComponent', () => {
   let element: ProductImageComponent;
-  createInjector({
-    providers: MOCK_PRODUCT_PROVIDERS,
-    override: true,
-  });
 
   beforeEach(async () => {
+    createInjector({
+      providers: MOCK_PRODUCT_PROVIDERS,
+    });
     element = await fixture(html`<product-image sku="1"></product-image>`);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('is defined', () => {

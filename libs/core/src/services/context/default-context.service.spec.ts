@@ -17,7 +17,7 @@ const mockObject = {
 
 @customElement('overlay-parent-context')
 export class OverlayParentContext extends LitElement {
-  context = resolve(this, ContextService);
+  context = resolve(ContextService);
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;
@@ -26,7 +26,7 @@ export class OverlayParentContext extends LitElement {
 
 @customElement('shadow-parent-context')
 export class ShadowParentContext extends LitElement {
-  context = resolve(this, ContextService);
+  context = resolve(ContextService);
 
   protected override render(): TemplateResult {
     return html`<test-child-context></test-child-context>`;
@@ -35,7 +35,7 @@ export class ShadowParentContext extends LitElement {
 
 @customElement('test-child-context')
 export class TestChildContext extends LitElement {
-  context = resolve(this, ContextService);
+  context = resolve(ContextService);
 }
 
 describe('ContextService', () => {

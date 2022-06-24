@@ -1,6 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService } from '@spryker-oryx/core';
-import { createInjector, resolve } from '@spryker-oryx/injector';
+import {
+  createInjector,
+  destroyInjector,
+  resolve,
+} from '@spryker-oryx/injector';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { finalize } from 'rxjs';
@@ -30,7 +34,7 @@ vi.mock('./default-ssr-stream-parser.ts', () => {
 
 @customElement('overlay-parent-context')
 export class OverlayParentContext extends LitElement {
-  context = resolve(this, ContextService);
+  context = resolve(ContextService);
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;
@@ -39,7 +43,7 @@ export class OverlayParentContext extends LitElement {
 
 @customElement('test-child-context')
 export class TestChildContext extends LitElement {
-  context = resolve(this, ContextService);
+  context = resolve(ContextService);
 }
 
 describe('SSRContextService', () => {
@@ -47,7 +51,6 @@ describe('SSRContextService', () => {
 
   beforeEach(async () => {
     createInjector({
-      override: true,
       providers: [
         {
           provide: ContextService,
@@ -55,6 +58,10 @@ describe('SSRContextService', () => {
         },
       ],
     });
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   const testChildContext = (shadow = false): TestChildContext => {

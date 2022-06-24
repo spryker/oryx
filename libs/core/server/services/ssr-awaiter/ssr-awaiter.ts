@@ -1,33 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/injector';
-import { defer, Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
-export const ssrAwaiter = (
-  observable: Observable<any> | undefined,
-  context?: any
-): Observable<any> => {
+export const ssrAwaiter = (observable: Observable<any>): Observable<any> => {
   let ssrAwaiter: SSRAwaiterService | null = null;
 
-  if (!context) {
+  try {
     ssrAwaiter = inject(SSRAwaiterService);
+  } catch (_e) {
+    ssrAwaiter = resolve(SSRAwaiterService, null);
   }
 
-  return defer(() => {
-    if (context) {
-      ssrAwaiter = resolve(context, SSRAwaiterService, null);
-    }
+  if (!ssrAwaiter) return observable;
 
-    const resolveFn = ssrAwaiter?.getAwaiter();
+  const resolveFn = ssrAwaiter.getAwaiter();
 
-    return (
-      observable?.pipe(
-        tap({
-          next: () => resolveFn?.(),
-          error: () => resolveFn?.(),
-          complete: () => resolveFn?.(),
-        })
-      ) || of({})
-    );
-  });
+  return observable.pipe(
+    tap({
+      next: () => resolveFn(),
+      error: () => resolveFn(),
+      complete: () => resolveFn(),
+    })
+  );
 };

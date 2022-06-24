@@ -7,6 +7,6 @@ export class ServerHttpService extends DefaultHttpService {
     url: string,
     options?: RequestOptions<T>
   ): Observable<T> {
-    return ssrAwaiter(super.request(url, options), this);
+    return ssrAwaiter(super.request(url, options));
   }
 }

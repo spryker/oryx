@@ -15,7 +15,7 @@ import {
 import { ContextService } from './context.service';
 
 export class ContextController implements ReactiveController {
-  protected context = resolve(this, ContextService, null);
+  protected context = resolve(ContextService, null);
   protected triggerContext$ = new BehaviorSubject<void | null>(null);
 
   constructor(protected host: ReactiveControllerHost & Element) {

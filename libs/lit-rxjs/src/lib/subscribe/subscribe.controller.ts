@@ -6,11 +6,7 @@ import { isObservable, Subscription } from 'rxjs';
 
 export class SubscribeController implements ReactiveController {
   protected subscriptions = new Subscription();
-  protected context = resolve(
-    this,
-    ContextService,
-    null
-  ) as ServerContextService;
+  protected context = resolve(ContextService, null) as ServerContextService;
 
   constructor(public host: ReactiveControllerHost) {
     (this.host = host).addController(this);

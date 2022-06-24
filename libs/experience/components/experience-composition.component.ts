@@ -23,9 +23,9 @@ export class ExperienceCompositionComponent extends LitElement {
   @observe()
   protected key$ = new ReplaySubject<string>(1);
 
-  protected experienceService = resolve(this, ExperienceService, null);
-  protected registryService = resolve(this, ComponentsRegistryService);
-  protected ssrAwaiter = resolve(this, SSRAwaiterService, null);
+  protected experienceService = resolve(ExperienceService, null);
+  protected registryService = resolve(ComponentsRegistryService);
+  protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected hasSSR = false;
   protected isHydrated = false;
 

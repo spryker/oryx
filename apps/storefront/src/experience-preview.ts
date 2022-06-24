@@ -11,6 +11,6 @@ if (
       ExperienceCompositionPreviewComponent
     );
 
-  const routerService = resolve(this, RouterService);
+  const routerService = resolve(RouterService);
   routerService.go(window.location.pathname);
 }

@@ -15,7 +15,7 @@ import { styles } from './storefront.styles';
 @hydratable()
 export class StorefrontComponent extends LitElement {
   protected context = new ContextController(this);
-  protected routerService = resolve(this, RouterService);
+  protected routerService = resolve(RouterService);
   private _routes = new StorefrontRouter(this, routes);
 
   static styles = styles;

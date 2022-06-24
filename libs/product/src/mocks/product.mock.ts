@@ -6,7 +6,7 @@ export function setupProductMocks(): void {
   // changes in services. Somehow, services will not emit their changes
   // when they're changed inside stories, i.e. changing the price in the
   // product price demo story.
-  if (resolve<any>(undefined, 'MOCKS', '') !== 'productMocks') {
+  if (resolve<any>('MOCKS', '') !== 'productMocks') {
     createInjector({
       providers: [
         ...MOCK_PRODUCT_PROVIDERS,
@@ -15,7 +15,6 @@ export function setupProductMocks(): void {
           useValue: 'productMocks',
         },
       ],
-      override: true,
     });
   }
 }

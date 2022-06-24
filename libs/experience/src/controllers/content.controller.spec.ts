@@ -60,11 +60,7 @@ describe('ContentController', () => {
     const callback = vi.fn();
     contentController.getContent().subscribe(callback);
 
-    expect(resolve).toHaveBeenCalledWith(
-      contentController,
-      ExperienceService,
-      null
-    );
+    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
     expect(mockObserveGet).toHaveBeenCalledWith('content');
     expect(callback).toHaveBeenCalledWith(mockObserve);
   });
@@ -77,11 +73,7 @@ describe('ContentController', () => {
     const callback = vi.fn();
     contentController.getContent().subscribe(callback);
 
-    expect(resolve).toHaveBeenCalledWith(
-      contentController,
-      ExperienceService,
-      null
-    );
+    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
     expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'content');
     expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
     expect(mockGetContent).toHaveBeenCalledWith({
@@ -100,11 +92,7 @@ describe('ContentController', () => {
     const callback = vi.fn();
     contentController.getContent().subscribe(callback);
 
-    expect(resolve).toHaveBeenCalledWith(
-      contentController,
-      ExperienceService,
-      null
-    );
+    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
     expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'content');
     expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
     expect(mockGetContent).not.toHaveBeenCalled();
