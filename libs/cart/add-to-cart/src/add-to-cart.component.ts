@@ -90,7 +90,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartContent>(
                 </oryx-button>
               `
             )}
-            <oryx-button icon size="medium" ?loading=${content?.loading}>
+            <oryx-button icon size="small" ?loading=${content?.loading}>
               <button>
                 <oryx-icon type="add"></oryx-icon>
                 Add to Cart

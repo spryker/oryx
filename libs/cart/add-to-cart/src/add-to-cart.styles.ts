@@ -20,13 +20,14 @@ export const styles = css`
     appearance: none;
   }
 
-  oryx-button:first-child button,
-  oryx-button:nth-child(3) button {
+  oryx-button button {
     height: 28px;
   }
 
+  oryx-button:nth-of-type(2) {
+    margin-inline-end: 10px;
+  }
   oryx-button:last-child {
     flex-grow: 1;
-    margin-inline-start: 10px;
   }
 `;

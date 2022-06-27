@@ -52,4 +52,10 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-average-rating uid="${uid}"></product-average-rating>`,
   },
+
+  'add-to-cart': {
+    tag: 'add-to-cart',
+    component: () => import('@spryker-oryx/cart/add-to-cart'),
+    template: (uid: string) => html`<add-to-cart uid="${uid}"></add-to-cart>`,
+  },
 };
