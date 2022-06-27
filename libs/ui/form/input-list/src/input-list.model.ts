@@ -1,14 +1,15 @@
 import { Direction } from '../../../utilities/model';
+import { ErrorOptions } from '../../input';
 
-export interface CheckboxListProperties {
+export interface InputListProperties extends Partial<ErrorOptions> {
   /**
    * The heading of the list can be set, using the `heading` property
    * or by using the slot:
    *
    * ```html
-   * <checkbox-list>
+   * <oryx-input-list>
    *   <span slot="heading">heading</span>
-   * </checkbox-list>
+   * </oryx-input-list>
    * ```
    */
   heading?: string;
@@ -21,7 +22,7 @@ export interface CheckboxListProperties {
   direction?: Direction;
 }
 
-export enum CheckboxListStatus {
+export enum InputListStatus {
   checked = 'checked',
   unchecked = 'unchecked',
   partiallyChecked = 'partiallyChecked',

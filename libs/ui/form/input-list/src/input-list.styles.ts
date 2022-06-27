@@ -22,12 +22,13 @@ export const styles = css`
   }
 
   .content {
-    display: flex;
+    display: inline-flex;
     gap: 8px;
   }
 
   :host([direction='vertical']) .content {
     flex-direction: column;
+    align-items: start;
   }
 
   [hasErrorContent] {
