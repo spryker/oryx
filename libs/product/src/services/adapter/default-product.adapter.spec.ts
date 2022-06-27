@@ -10,6 +10,7 @@ const mockProduct = {
     attributes: {
       name: 'mockProduct',
       sku: 'sku',
+      averageRating: 0,
     },
   },
 };

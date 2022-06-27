@@ -1,7 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
-import { RatingComponent } from '@spryker-oryx/ui/rating';
 import { html } from 'lit';
 import { afterEach, beforeEach } from 'vitest';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
@@ -56,22 +55,5 @@ describe('Average Rating', () => {
     );
     const ratingEl: any = element?.shadowRoot?.querySelector('oryx-rating');
     expect(ratingEl.reviewCount).toBe(undefined);
-  });
-
-  describe('when the value is undefined', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<product-average-rating
-          sku="3"
-          .content="${{}}"
-        ></product-average-rating>`
-      );
-    });
-    it('should render a rating value of 0', () => {
-      const stars = element.shadowRoot?.querySelector(
-        'oryx-rating'
-      ) as RatingComponent;
-      expect(stars.value).toEqual(0);
-    });
   });
 });

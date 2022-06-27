@@ -81,7 +81,7 @@ export class DefaultProductAdapter implements ProductAdapter {
       sku,
       name,
       description,
-      averageRating,
+      averageRating: averageRating ? Number(averageRating) : 0,
       reviewCount,
     };
     return Object.fromEntries(

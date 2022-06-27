@@ -1,6 +1,6 @@
 export interface Product {
   sku?: string;
-  averageRating?: string;
+  averageRating?: number;
   reviewCount?: number;
   name?: string;
   description?: string;

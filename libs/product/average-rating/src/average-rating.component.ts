@@ -32,7 +32,7 @@ export class ProductAverageRatingComponent extends ProductComponentMixin<Product
         return html`
           <oryx-rating
             readonly
-            .value=${Number(rating ?? 0)}
+            .value=${rating}
             .reviewCount=${reviewCount}
           ></oryx-rating>
         `;

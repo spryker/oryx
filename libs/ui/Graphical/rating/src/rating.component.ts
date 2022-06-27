@@ -19,7 +19,7 @@ export class RatingComponent extends LitElement implements RatingProperties {
     ratingReadonlyStyles,
   ];
 
-  @property({ type: Number }) value = 0;
+  @property({ type: Number }) value?: number;
   @property({ type: Boolean, reflect: true }) readonly?: boolean;
   @property() reviewCount?: number | string;
   @property({ type: Number }) scale = 5;
@@ -28,7 +28,7 @@ export class RatingComponent extends LitElement implements RatingProperties {
 
   protected override render(): TemplateResult {
     return html`
-      <fieldset style=${`--rate: ${this.value};`}>
+      <fieldset style=${`--rate: ${this.getValue()};`}>
         ${[...Array(Math.min(this.scale, MAX_SCALE))].map((_, i) =>
           this.renderInput(i)
         )}
@@ -50,7 +50,7 @@ export class RatingComponent extends LitElement implements RatingProperties {
         value=${i + 1}
         ?required=${!this.readonly}
         ?disabled=${this.readonly}
-        ?checked=${Math.round(this.value) === i + 1}
+        ?checked=${Math.round(this.getValue()) === i + 1}
         style=${`--pos: ${i + 1}`}
         aria-label=${i + 1}
       />${when(!this.readonly, () => this.renderSlot(i))}`;
@@ -84,6 +84,10 @@ export class RatingComponent extends LitElement implements RatingProperties {
         </defs>
       </svg>
     `;
+  }
+
+  protected getValue(): number {
+    return this.value ?? 0;
   }
 
   protected setValue(value: number): void {

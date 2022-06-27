@@ -28,7 +28,22 @@ describe('RatingComponent', () => {
     });
   });
 
-  describe('when a value is provided', () => {
+  describe('when an undefined value is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-rating .value=${undefined}></oryx-rating>`
+      );
+    });
+    it('should have a --rate variable of 0', () => {
+      expect(
+        element.shadowRoot
+          ?.querySelector('fieldset')
+          ?.style.getPropertyValue('--rate')
+      ).toEqual('0');
+    });
+  });
+
+  describe('when a valid value is provided', () => {
     describe('and the value matches a rating symbol', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-rating value="3"></oryx-rating>`);

@@ -45,7 +45,7 @@ export class MockProductService implements Partial<ProductService> {
           isNet: true,
         },
       },
-      averageRating: '2',
+      averageRating: 2,
       reviewCount: 5,
     },
     {
@@ -74,7 +74,7 @@ export class MockProductService implements Partial<ProductService> {
           isNet: false,
         },
       },
-      averageRating: '2.5',
+      averageRating: 2.5,
       reviewCount: 175,
     },
     {
@@ -191,7 +191,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      averageRating: '1',
+      averageRating: 1,
       reviewCount: undefined,
       images: [
         {
