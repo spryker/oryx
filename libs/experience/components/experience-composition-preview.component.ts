@@ -53,8 +53,16 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
         ` [uid='${data.component.id}']`
       );
 
+      if (
+        targetComponent &&
+        getComputedStyle(targetComponent).display === 'inline'
+      ) {
+        (targetComponent as HTMLElement)?.style.setProperty('display', 'block');
+      }
+
       focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
       focusedComponent?.removeAttribute(focusedNameAttr);
+      (focusedComponent as HTMLElement)?.style.removeProperty('display');
 
       if (data.action !== 'mouseout') {
         targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);

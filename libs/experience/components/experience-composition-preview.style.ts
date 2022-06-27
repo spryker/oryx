@@ -2,9 +2,16 @@ import { css } from 'lit';
 
 export const styles = css`
   .eb-preview-focus {
+    position: relative;
+  }
+  .eb-preview-focus:before {
+    content: '';
     outline: 4px solid var(--oryx-color-brand);
     outline-offset: -4px;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: var(--oryx-overlay-z-index, 3);
   }
 
   .eb-preview-focus:after {
@@ -19,5 +26,6 @@ export const styles = css`
     font-family: 'Montserrat';
     padding: 2px 5px;
     background-color: var(--oryx-color-brand);
+    z-index: var(--oryx-overlay-z-index, 3);
   }
 `;
