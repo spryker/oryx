@@ -6,6 +6,12 @@ import '../index';
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination`,
+  args: {
+    hideNavigation: false,
+    current: 1,
+    max: 5,
+    size: 10,
+  },
 } as Meta;
 
 interface Props extends PaginationProperties {
@@ -26,18 +32,13 @@ const Template: Story<Props> = ({
     >
       ${Array.from(new Array(size).keys()).map((key) => {
         return html`<a
-          href="${window.location.search.split('&')[0]}&args=current:${key +
-          1};"
+          href="/?path=/story/ui-navigations-pagination--pagination-demo&args=current:${key +
+          1}"
           >${key + 1}</a
         >`;
       })}
     </oryx-pagination>
   `;
 };
+
 export const PaginationDemo = Template.bind({});
-PaginationDemo.args = {
-  hideNavigation: false,
-  current: 1,
-  max: 5,
-  size: 10,
-};
