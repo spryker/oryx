@@ -34,7 +34,7 @@ PaginationInteractive.play = async (obj: {
   await component.updateComplete;
 
   const nextPageArrow = component.shadowRoot?.querySelector(
-    'a[aria-label="Next page"]'
+    `a:last-of-type`
   ) as HTMLAnchorElement;
   nextPageArrow.addEventListener('click', (e) => {
     e.preventDefault();
