@@ -6,7 +6,7 @@ import {
   ReactiveControllerHost,
 } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ObserveController } from './observe.controller';
 
 vi.mock('rxjs', async () => {
@@ -51,10 +51,10 @@ describe('ObserveController', () => {
   });
 
   describe('get', () => {
-    it('should return BehaviorSubject', () => {
+    it('should return Observable', () => {
       const { observeController } = element.controller;
       const subject$ = observeController.get('mockA');
-      expect(subject$).toBeInstanceOf(BehaviorSubject);
+      expect(subject$).toBeInstanceOf(Observable);
     });
 
     it('should reuse created instance if it has been already created', () => {
@@ -62,8 +62,12 @@ describe('ObserveController', () => {
       const subjectFirstA$ = observeController.get('mockA');
       const subjectSecondA$ = observeController.get('mockA');
       const subjectB$ = observeController.get('mockB');
-      expect(subjectFirstA$).toEqual(subjectSecondA$);
-      expect(subjectFirstA$).not.toEqual(subjectB$);
+      expect(JSON.stringify(subjectFirstA$)).toEqual(
+        JSON.stringify(subjectSecondA$)
+      );
+      expect(JSON.stringify(subjectFirstA$)).not.toEqual(
+        JSON.stringify(subjectB$)
+      );
     });
 
     it('should emit property value', () => {
