@@ -136,7 +136,14 @@ export const paginationStyles = css`
   ::slotted(*[disabled]),
   a[disabled] {
     background-color: var(--oryx-color-neutral-lighter);
+  }
+
+  ::slotted(*[disabled]) {
     color: var(--oryx-color-neutral-dark);
+  }
+
+  a[disabled] {
+    color: var(--oryx-color-neutral);
   }
 
   slot[name='previous'] oryx-icon {
