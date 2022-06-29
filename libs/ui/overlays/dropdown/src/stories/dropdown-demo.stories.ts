@@ -4,8 +4,9 @@ import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import '../../../../actions/button';
 import { IconTypes } from '../../../../Graphical/icon';
-import { Position, Size } from '../../../../utilities';
+import { Size } from '../../../../utilities';
 import '../../../popover/index';
+import { Position } from '../dropdown.model';
 import '../index';
 import { renderCustomContent, renderOptions } from './utils';
 
@@ -18,6 +19,7 @@ export default {
 interface Props {
   content: 'options' | 'custom';
   position: Position;
+  verticalAlign: boolean;
   customContent: boolean;
   icon: typeof IconTypes;
   customTrigger: boolean;
@@ -39,7 +41,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       .container {
         display: flex;
         width: calc(200vw - 100px);
-        padding: 200px 0;
+        height: calc(200vh - 100px);
       }
 
       .wrapper {
@@ -61,6 +63,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 
         <oryx-dropdown
           position=${props.position}
+          ?vertical-align=${props.verticalAlign}
           triggerIconSize=${props.triggerIconSize}
           @oryx.close=${(): void => console.log('close')}
         >
@@ -87,6 +90,7 @@ export const DropdownDemo = Template.bind({});
 
 DropdownDemo.args = {
   position: Position.END,
+  verticalAlign: false,
   content: 'options',
   customTrigger: false,
   triggerIconSize: Size.medium,
@@ -108,11 +112,14 @@ DropdownDemo.argTypes = {
     table: { category: 'Slots' },
   },
   position: {
-    control: { type: 'radio' },
+    control: { type: 'select' },
     options: Object.values(Position),
   },
   triggerIconSize: {
     options: Object.values(Size),
     control: { type: 'select' },
+  },
+  verticalAlign: {
+    control: { type: 'boolean' },
   },
 };

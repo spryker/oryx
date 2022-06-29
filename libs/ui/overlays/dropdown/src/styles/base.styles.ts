@@ -1,6 +1,6 @@
 import { css, unsafeCSS as unsafecss } from 'lit';
-import { Position } from '../../../../utilities';
 import { POPOVER_HEIGHT } from '../../../popover';
+import { Position } from '../dropdown.model';
 
 export const dropdownBaseStyles = css`
   :host {
@@ -12,6 +12,15 @@ export const dropdownBaseStyles = css`
   }
 
   oryx-popover {
+    --_oryx-dropdown-start-offset: 100%;
+    --_oryx-dropdown-width: min(
+      max(
+        var(--_available-popover-width-start, var(--oryx-popover-maxwidth)),
+        var(--_available-popover-width-end, var(--oryx-popover-maxwidth))
+      ),
+      var(--oryx-popover-maxwidth)
+    );
+
     overflow: auto;
     max-height: min(
       calc(
@@ -20,12 +29,10 @@ export const dropdownBaseStyles = css`
       ),
       var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
-    width: min(
-      var(--_available-popover-width, var(--oryx-popover-maxwidth)),
-      var(--oryx-popover-maxwidth)
-    );
+    width: var(--_oryx-dropdown-width);
     top: 0;
-    inset-inline-start: 100%;
+    inset-inline: var(--_oryx-dropdown-start-offset, auto)
+      var(--_oryx-dropdown-end-offset, auto);
     transform-origin: var(--_dropdown-origin-x, left)
       var(--_dropdown-origin-y, top);
     transform: scaleX(var(--oryx-popover-visible, 0))
@@ -58,15 +65,102 @@ export const dropdownBaseStyles = css`
     --_dropdown-origin-y: bottom;
   }
 
-  :host([start]) oryx-popover,
+  :host([start]:not([vertical-align])) oryx-popover,
   :host(
-    [position=${unsafecss(Position.START)}]:not([end])
+    [position=${unsafecss(Position.START)}]:not([vertical-align]):not([end])
   ) oryx-popover {
-    inset-inline: auto 100%;
+    --_oryx-dropdown-start-offset: auto;
+    --_oryx-dropdown-end-offset: 100%;
   }
 
-  :host([up]) oryx-popover {
+  :host([up]:not([vertical-align])) oryx-popover {
     top: auto;
     bottom: 0;
+  }
+
+  :host([vertical-align]:not([up])) oryx-popover {
+    top: 100%;
+  }
+
+  :host([vertical-align][up]) oryx-popover {
+    top: auto;
+    bottom: 100%;
+  }
+
+  :host([vertical-align]) oryx-popover {
+    --_oryx-dropdown-width: min(
+      calc(
+        var(--_available-popover-width-start) +
+          var(--_available-popover-width-end) +
+          var(--_bounding-element-width, 0)
+      ),
+      calc(var(--oryx-popover-maxwidth) + var(--_bounding-element-width, 0))
+    );
+
+    max-height: min(
+      var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px),
+      var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
+    );
+  }
+
+  :host([vertical-align][position=${unsafecss(Position.END)}]) oryx-popover,
+  :host(
+    [vertical-align][position=${unsafecss(Position.START)}][end]
+  ) oryx-popover {
+    --_oryx-dropdown-start-offset: min(
+      calc(
+        var(--_available-popover-width-end) + var(--_bounding-element-width) -
+          var(--_oryx-dropdown-width)
+      ),
+      0px
+    );
+    --_oryx-dropdown-end-offset: auto;
+  }
+
+  :host(
+    [vertical-align][position=${unsafecss(Position.START)}]
+  ) oryx-popover,
+  :host(
+    [vertical-align][start]:not([position])
+  ) oryx-popover,
+  :host(
+    [vertical-align][start][position=${unsafecss(Position.END)}]
+  ) oryx-popover {
+    --_oryx-dropdown-start-offset: auto;
+    --_oryx-dropdown-end-offset: min(
+      calc(
+        var(--_available-popover-width-start) + var(--_bounding-element-width) -
+          var(--_oryx-dropdown-width)
+      ),
+      0px
+    );
+  }
+
+  :host([vertical-align][position=${unsafecss(Position.CENTER)}]) oryx-popover {
+    --_dropdown-origin-x: center;
+  }
+
+  :host(
+    [vertical-align][position=${unsafecss(Position.CENTER)}]:not([start])
+  ) oryx-popover {
+    --_oryx-dropdown-start-offset: max(
+      calc(
+        (var(--_oryx-dropdown-width) - var(--_bounding-element-width, 0)) / -2
+      ),
+      calc(var(--_available-popover-width-start) * -1)
+    );
+    --_oryx-dropdown-end-offset: auto;
+  }
+
+  :host(
+    [vertical-align][position=${unsafecss(Position.CENTER)}][start]
+  ) oryx-popover {
+    --_oryx-dropdown-start-offset: auto;
+    --_oryx-dropdown-end-offset: max(
+      calc(
+        (var(--_oryx-dropdown-width) - var(--_bounding-element-width, 0)) / -2
+      ),
+      calc(var(--_available-popover-width-end) * -1)
+    );
   }
 `;

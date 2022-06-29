@@ -2,8 +2,8 @@ import { queryFirstFocusable } from '@spryker-oryx/typescript-utils';
 import { PopoverController } from '@spryker-oryx/ui/popover';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Position, Size } from '../../../utilities';
-import { DropdownProperties } from './dropdown.model';
+import { Size } from '../../../utilities';
+import { DropdownProperties, Position } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 
 export const TAG_NAME = 'oryx-dropdown';
@@ -19,6 +19,8 @@ export class DropdownComponent
 
   @property({ reflect: true, type: Boolean }) open = false;
   @property() position?: Position;
+  @property({ type: Boolean, attribute: 'vertical-align' })
+  verticalAlign?: boolean;
   @property() triggerIconSize = Size.medium;
 
   //translation

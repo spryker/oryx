@@ -1,4 +1,9 @@
-import { Position, Size } from '../../../utilities';
+export enum Position {
+  START = 'start',
+  CENTER = 'center',
+  END = 'end',
+}
+import { Size } from '../../../utilities';
 
 export interface DropdownProperties {
   /**
@@ -13,10 +18,21 @@ export interface DropdownProperties {
    * Start and end are logical positions, the location depends on the direction
    * of reading (i.e. start position is when dropdown to the right of the trigger
    * left-to-right reading direction).
+   * Center is centering it against trigger element at the top or at the bottom.
    *
    * Defaults to Position.END.
    */
   position?: Position;
+
+  /**
+   * Change the alignments direction to vertical.
+   * Controlled by 'vertical-align' attribute
+   *
+   * The dropdown will appear below or above (if not enough space below) the trigger;
+   *
+   * Defaults to false.
+   */
+  verticalAlign?: boolean;
 
   /**
    * Allows to specify the size of the trigger icon element.

@@ -142,10 +142,16 @@ describe('DimensionController', () => {
             expect(element.hasAttribute('start')).toBe(true);
           });
 
-          it('should set the --_available-popover-width to 100px', () => {
+          it('should set the --_available-popover-width-start to 100px', () => {
             expect(
-              element.style.getPropertyValue('--_available-popover-width')
+              element.style.getPropertyValue('--_available-popover-width-start')
             ).toEqual('100px');
+          });
+
+          it('should set the --_available-popover-width-end to 90px', () => {
+            expect(
+              element.style.getPropertyValue('--_available-popover-width-end')
+            ).toEqual('90px');
           });
 
           it('should set the --_available-popover-height to 100px', () => {

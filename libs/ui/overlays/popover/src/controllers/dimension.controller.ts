@@ -53,7 +53,8 @@ export class DimensionController implements ReactiveController {
       '--_available-popover-height': `${
         Math.max(bottom, top) - Number(vOffset)
       }px`,
-      '--_available-popover-width': `${Math.max(left, right)}px`,
+      '--_available-popover-width-start': `${isRTL ? right : left}px`,
+      '--_available-popover-width-end': `${isRTL ? left : right}px`,
       '--_bounding-element-width': `${boundingElementWidth}px`,
       '--_bounding-element-height': `${boundingElementHeight}px`,
     };

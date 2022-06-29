@@ -1,6 +1,12 @@
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { states } from '../../../../utilities/storybook';
 import { CLOSE_EVENT } from '../../../popover';
+import '../../../popover/index';
+import { Position } from '../dropdown.model';
+import '../index';
+
+const dropdownMaxHeight = 200;
 
 export const renderCustomContent = (): TemplateResult => {
   const dispatchCloseEvent = (e: Event): void => {
@@ -42,3 +48,73 @@ export const renderOptions = (): TemplateResult => html`
       html`<oryx-option close-popover value=${option}>${option}</oryx-option>`
   )}
 `;
+
+@customElement('container-component')
+class ContainerComponent extends LitElement {
+  @property({ type: Array }) positions: Position[] = [];
+  @property({ type: Boolean }) vertical = false;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    // a bit tricky way to open dropdowns, but hooks inside components run earlier then
+    // storybook apply the size decorator and position of popover can be wrong
+    setTimeout(() => {
+      this.renderRoot
+        .querySelectorAll('oryx-dropdown')
+        .forEach((dropdown) =>
+          (dropdown as HTMLElement).dispatchEvent(new MouseEvent('mousedown'))
+        );
+    }, 0);
+  }
+
+  render(): TemplateResult {
+    return html`
+      <style>
+        .container {
+          padding: 0px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-width: calc(100vw - 2rem);
+          min-height: calc(100vh - 2rem);
+        }
+
+        .container > div {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          height: ${dropdownMaxHeight}px;
+        }
+
+        .container > div:last-child {
+          align-items: flex-end;
+        }
+
+        oryx-dropdown {
+          --oryx-transition-time: 0s;
+          --oryx-popover-maxheight: ${dropdownMaxHeight}px;
+        }
+      </style>
+
+      <div class="container">
+        ${Array.from(new Array(2).keys()).map(
+          () => html`
+            <div>
+              ${this.positions.map(
+                (position) => html`
+                  <oryx-dropdown
+                    position=${position}
+                    ?vertical-align=${this.vertical}
+                  >
+                    ${renderOptions()}
+                  </oryx-dropdown>
+                `
+              )}
+            </div>
+          `
+        )}
+      </div>
+    `;
+  }
+}
