@@ -54,12 +54,10 @@ export class DefaultCartService implements CartService {
   /** deletes existing cart */
   // remove() {}
 
-  load(data?: LoadCartsQualifier): Observable<Cart | null> {
+  load(data?: LoadCartsQualifier): void {
     if (data?.forceReload || this.carts.size === 0) {
       this.loadCarts();
     }
-
-    return this.activeCart$;
   }
 
   getCart(data?: CartQualifier): Observable<Cart | null> {
@@ -67,8 +65,8 @@ export class DefaultCartService implements CartService {
       this.loadCarts();
     }
 
-    if (this.carts.size !== 0 && data?.cartId) {
-      this.activeCartId$.next(data.cartId);
+    if (data?.cartId && this.carts.has(data.cartId)) {
+      return this.carts.get(data.cartId)!.value$;
     }
 
     return this.activeCart$;
@@ -102,15 +100,14 @@ export class DefaultCartService implements CartService {
     return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
       take(1),
       switchMap(([userData, activeId]) =>
-        this.adapter
-          .addEntry({
-            user: userData,
-            cartId: cartId ?? activeId!,
-            attributes,
-          })
-          .pipe(map((cart) => ({ cart, cartId: cartId ?? activeId! })))
+        this.adapter.addEntry({
+          user: userData,
+          cartId: cartId ?? activeId!,
+          attributes,
+        })
       ),
-      tap(({ cart, cartId }) => {
+      tap((cart) => {
+        const isNoCarts = this.carts.size === 0;
         const cartData = this.carts.get(cart.id);
 
         if (!cartData) {
@@ -119,7 +116,7 @@ export class DefaultCartService implements CartService {
           cartData.value$.next(cart);
         }
 
-        if (!cartId) {
+        if (isNoCarts) {
           this.activeCartId$.next(cart.id);
         }
       }),
@@ -226,7 +223,7 @@ export class DefaultCartService implements CartService {
   }
 
   protected updateError(error: HttpErrorResponse, cartId?: string): void {
-    combineLatest([this.activeCartId$]).subscribe(([activeCartId]) => {
+    this.activeCartId$.pipe(take(1)).subscribe((activeCartId) => {
       const id = cartId ?? activeCartId!;
       const cachedCart = this.carts.get(id)!;
 
@@ -234,7 +231,7 @@ export class DefaultCartService implements CartService {
     });
   }
 
-  private addCartToMap(cart: Cart): void {
+  protected addCartToMap(cart: Cart): void {
     const value$ = new ReplaySubject<Cart | null>(1);
 
     this.carts.set(cart.id, {

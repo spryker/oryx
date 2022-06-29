@@ -17,7 +17,7 @@ export interface STATE {
 }
 
 export interface CartService {
-  load(data?: LoadCartsQualifier): Observable<Cart | null>;
+  load(data?: LoadCartsQualifier): void;
   getCart(data?: CartQualifier): Observable<Cart | null>;
   getCartError(data?: CartQualifier): Observable<HttpErrorResponse | null>;
   getTotals(data?: CartQualifier): Observable<CartTotals | null>;

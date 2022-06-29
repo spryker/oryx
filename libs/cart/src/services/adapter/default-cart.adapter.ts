@@ -36,7 +36,13 @@ export class DefaultCartAdapter implements CartAdapter {
 
     return this.http
       .get<GlueCartsList>(url, options)
-      .pipe(map((response) => this.normalize(response)));
+      .pipe(
+        map((response) =>
+          response.data.map((cart) =>
+            this.normalizeCart(cart, response.included)
+          )
+        )
+      );
   }
 
   get(data: GetCartProps): Observable<Cart> {
@@ -47,7 +53,9 @@ export class DefaultCartAdapter implements CartAdapter {
 
     return this.http
       .get<GlueCart>(url, options)
-      .pipe(map((response) => this.normalize(response)));
+      .pipe(
+        map((response) => this.normalizeCart(response.data, response.included))
+      );
   }
 
   addEntry(data: AddCartEntityProps): Observable<Cart> {
@@ -69,7 +77,9 @@ export class DefaultCartAdapter implements CartAdapter {
 
     return this.http
       .post<GlueCart>(url, body, options)
-      .pipe(map((response) => this.normalize(response)));
+      .pipe(
+        map((response) => this.normalizeCart(response.data, response.included))
+      );
   }
 
   updateEntry(data: UpdateCartEntityProps): Observable<Cart> {
@@ -90,7 +100,9 @@ export class DefaultCartAdapter implements CartAdapter {
 
     return this.http
       .patch<GlueCart>(url, body, options)
-      .pipe(map((response) => this.normalize(response)));
+      .pipe(
+        map((response) => this.normalizeCart(response.data, response.included))
+      );
   }
 
   deleteEntry(data: DeleteCartEntityProps): Observable<null> {
@@ -106,7 +118,7 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.http.delete(url, options);
   }
 
-  protected normalizedCart(
+  protected normalizeCart(
     cart: CartResponse,
     included: CartIncludes[] | undefined
   ): Cart {
@@ -130,30 +142,18 @@ export class DefaultCartAdapter implements CartAdapter {
     };
   }
 
-  protected normalize(response: GlueCart): Cart;
-  protected normalize(response: GlueCartsList): Cart[];
-  protected normalize(response: GlueCartsList | GlueCart): Cart[] | Cart {
-    if (Array.isArray(response.data)) {
-      return response.data.map((cart) =>
-        this.normalizedCart(cart, response.included)
-      );
-    }
-
-    return this.normalizedCart(response.data, response.included);
-  }
-
   protected generateUrl(path: string, isIncludesAdded = true): string {
-    return `${this.SCOS_BASE_URL}/${path}/${
+    return `${this.SCOS_BASE_URL}/${path}${
       isIncludesAdded ? `?include=${this.getIncludes()}` : ''
     }`;
   }
 
-  private getIncludes(): string {
+  protected getIncludes(): string {
     return Object.values(CART_INCLUDES).join(',');
   }
 
   // ToDo: create some abstract class for getting request headers
-  private getHeaders(user: UserData): Record<string, string> {
+  protected getHeaders(user: UserData): Record<string, string> {
     return {
       ...(user.anonymousUserId
         ? { 'X-Anonymous-Customer-Unique-Id': user.anonymousUserId }

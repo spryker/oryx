@@ -5,18 +5,22 @@ import { Observable, of } from 'rxjs';
 export class HttpTestService implements HttpService {
   protected response?: any;
   url?: string;
+  body?: unknown;
+  options?: unknown;
 
   request<T = unknown>(
     url: string,
     options?: RequestOptions<T>
   ): Observable<T> {
     this.url = url;
+    this.options = options;
 
     return of(this.response);
   }
 
   get<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
     this.url = url;
+    this.options = options;
 
     return of(this.response);
   }
@@ -27,6 +31,8 @@ export class HttpTestService implements HttpService {
     options?: RequestOptions<T>
   ): Observable<T> {
     this.url = url;
+    this.body = body;
+    this.options = options;
 
     return of(this.response);
   }
@@ -37,6 +43,8 @@ export class HttpTestService implements HttpService {
     options?: RequestOptions<T>
   ): Observable<T> {
     this.url = url;
+    this.body = body;
+    this.options = options;
 
     return of(this.response);
   }
@@ -52,6 +60,7 @@ export class HttpTestService implements HttpService {
 
   delete<T = unknown>(url: string, options: RequestOptions<T>): Observable<T> {
     this.url = url;
+    this.options = options;
 
     return of(this.response);
   }
