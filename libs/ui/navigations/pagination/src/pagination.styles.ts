@@ -4,6 +4,10 @@ const navSize = unsafeCSS('36px');
 const indentSize = unsafeCSS('5px');
 
 export const paginationStyles = css`
+  :host([is-empty]) {
+    display: none;
+  }
+
   :host {
     position: relative;
     display: inline-flex;
@@ -30,7 +34,6 @@ export const paginationStyles = css`
   a {
     border: 1px solid var(--oryx-color-neutral-light);
     border-radius: var(--oryx-border-radius-small);
-    color: var(--oryx-color-neutral-darker);
     background: var(--oryx-color-canvas);
     transition: var(--oryx-transition-time);
     overflow: hidden;
@@ -49,8 +52,18 @@ export const paginationStyles = css`
     display: none;
   }
 
+  ::slotted(*) {
+    color: var(--oryx-color-neutral-darker);
+  }
+  ::slotted(*[disabled]) {
+    color: var(--oryx-color-neutral-dark);
+  }
+
   a {
     color: var(--oryx-color-neutral-dark);
+  }
+  a[disabled] {
+    color: var(--oryx-color-neutral);
   }
 
   slot[name='truncated'] * {
@@ -136,14 +149,6 @@ export const paginationStyles = css`
   ::slotted(*[disabled]),
   a[disabled] {
     background-color: var(--oryx-color-neutral-lighter);
-  }
-
-  ::slotted(*[disabled]) {
-    color: var(--oryx-color-neutral-dark);
-  }
-
-  a[disabled] {
-    color: var(--oryx-color-neutral);
   }
 
   slot[name='previous'] oryx-icon {

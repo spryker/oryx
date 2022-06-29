@@ -1,8 +1,8 @@
-import { PaginationProperties } from '@spryker-oryx/ui/pagination';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import '../index';
+import { PaginationProperties } from '../pagination.model';
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination`,
@@ -11,6 +11,11 @@ export default {
     current: 1,
     max: 5,
     size: 10,
+  },
+  argTypes: {
+    size: {
+      control: { type: 'number', max: 100 },
+    },
   },
 } as Meta;
 
@@ -24,6 +29,10 @@ const Template: Story<Props> = ({
   max,
   size,
 }: Props): TemplateResult => {
+  if (size > 100) {
+    alert('we support a size of max 100 pages');
+    size = 100;
+  }
   return html`
     <oryx-pagination
       ?hideNavigation=${hideNavigation}
@@ -33,7 +42,7 @@ const Template: Story<Props> = ({
       ${Array.from(new Array(size).keys()).map((key) => {
         return html`<a
           href="/?path=/story/ui-navigations-pagination--pagination-demo&args=current:${key +
-          1}"
+          1};hideNavigation:${hideNavigation};max:${max}"
           >${key + 1}</a
         >`;
       })}

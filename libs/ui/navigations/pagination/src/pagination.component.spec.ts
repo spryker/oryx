@@ -116,4 +116,43 @@ describe('PaginationComponent', () => {
       });
     });
   });
+
+  describe('isEmpty', () => {
+    describe('when there are no pages', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-pagination></oryx-pagination>`);
+      });
+
+      it('should not show pagination component', () => {
+        expect(element.isEmpty).toBe(true);
+      });
+    });
+
+    describe('when there is only 1 page', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-pagination><a>1</a></oryx-pagination>`
+        );
+      });
+
+      it('should not show pagination component', () => {
+        expect(element.isEmpty).toBe(true);
+      });
+    });
+
+    describe('when there is more then 1 page', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-pagination>
+            <a>1</a>
+            <a>2</a>
+          </oryx-pagination>`
+        );
+      });
+
+      it('should show the pagination component', () => {
+        expect(element.isEmpty).toBe(false);
+      });
+    });
+  });
 });

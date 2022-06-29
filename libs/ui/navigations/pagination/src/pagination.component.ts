@@ -21,6 +21,9 @@ export class PaginationComponent
 
   protected controller = new PaginationController(this);
 
+  @property({ type: Boolean, reflect: true, attribute: 'is-empty' }) isEmpty =
+    true;
+
   protected override render(): TemplateResult {
     return html`
       ${when(!this.hideNavigation, () =>
@@ -61,10 +64,6 @@ export class PaginationComponent
    * the truncation.
    *
    * The truncation can be customised using the _truncation_ slot.
-   *
-   * @TODO consider moving the truncated out in an utility component, so that
-   * we can slot in the content (currently not working twice), and it will  clean
-   * this component a bit.
    */
   protected renderTruncated(): TemplateResult {
     return html`
@@ -84,6 +83,8 @@ export class PaginationComponent
   }
 
   protected updatePages(): void {
+    this.isEmpty = !this.pages || this.pages?.length < 2;
+
     if (this.requiresUpdate) {
       this.requestUpdate();
       this.requiresUpdate = false;
