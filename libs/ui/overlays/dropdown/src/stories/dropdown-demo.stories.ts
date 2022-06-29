@@ -4,7 +4,7 @@ import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import '../../../../actions/button';
 import { IconTypes } from '../../../../Graphical/icon';
-import { Position } from '../../../../utilities';
+import { Position, Size } from '../../../../utilities';
 import '../../../popover/index';
 import '../index';
 import { renderCustomContent, renderOptions } from './utils';
@@ -21,6 +21,7 @@ interface Props {
   customContent: boolean;
   icon: typeof IconTypes;
   customTrigger: boolean;
+  triggerIconSize: Size;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -60,7 +61,8 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 
         <oryx-dropdown
           position=${props.position}
-          @oryx.close=${() => console.log('close')}
+          triggerIconSize=${props.triggerIconSize}
+          @oryx.close=${(): void => console.log('close')}
         >
           ${when(
             props.icon,
@@ -87,6 +89,7 @@ DropdownDemo.args = {
   position: Position.END,
   content: 'options',
   customTrigger: false,
+  triggerIconSize: Size.medium,
 };
 
 DropdownDemo.argTypes = {
@@ -107,6 +110,9 @@ DropdownDemo.argTypes = {
   position: {
     control: { type: 'radio' },
     options: Object.values(Position),
-    table: { category: 'Properties' },
+  },
+  triggerIconSize: {
+    options: Object.values(Size),
+    control: { type: 'select' },
   },
 };

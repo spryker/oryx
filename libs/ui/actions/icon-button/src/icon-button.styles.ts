@@ -10,6 +10,7 @@ export const iconButtonStyles = css`
     flex: 100%;
     align-items: center;
     justify-content: center;
+    padding: 0;
     cursor: pointer;
     transition: var(--oryx-transition-time);
     background: var(--oryx-color-canvas);
@@ -51,8 +52,7 @@ export const iconButtonStyles = css`
     padding: 5px;
   }
 
-  :host([size='medium']) ::slotted(*),
-  ::slotted(*) {
+  :host([size='medium']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-medium);
 
     padding: 10px;

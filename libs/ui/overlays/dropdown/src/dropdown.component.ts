@@ -2,7 +2,7 @@ import { queryFirstFocusable } from '@spryker-oryx/typescript-utils';
 import { PopoverController } from '@spryker-oryx/ui/popover';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Position } from '../../../utilities';
+import { Position, Size } from '../../../utilities';
 import { DropdownProperties } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 
@@ -13,12 +13,13 @@ export class DropdownComponent
   implements DropdownProperties
 {
   static styles = [dropdownBaseStyles, dropdownStyles];
-  protected popoverController = new PopoverController(this, {
+  protected controller = new PopoverController(this, {
     boundingElement: this,
   });
 
   @property({ reflect: true, type: Boolean }) open = false;
   @property() position?: Position;
+  @property() triggerIconSize = Size.medium;
 
   //translation
   @property() toggleButtonAriaLabel = 'Toggle dropdown';
@@ -26,7 +27,7 @@ export class DropdownComponent
   protected override render(): TemplateResult {
     return html`
       <slot name="trigger">
-        <oryx-icon-button>
+        <oryx-icon-button .size=${this.triggerIconSize}>
           <button aria-label=${this.toggleButtonAriaLabel}>
             <slot name="icon"><oryx-icon type="actions"></oryx-icon></slot>
           </button>

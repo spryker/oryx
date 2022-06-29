@@ -1,4 +1,4 @@
-import { Position } from '../../../utilities';
+import { Position, Size } from '../../../utilities';
 
 export interface DropdownProperties {
   /**
@@ -17,4 +17,13 @@ export interface DropdownProperties {
    * Defaults to Position.END.
    */
   position?: Position;
+
+  /**
+   * Allows to specify the size of the trigger icon element.
+   *
+   * This property will not be used when a custom trigger element is _slotted in_.
+   *
+   * @default `Size.medium`
+   */
+  triggerIconSize?: Size;
 }

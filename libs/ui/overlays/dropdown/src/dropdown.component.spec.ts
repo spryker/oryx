@@ -1,6 +1,8 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { IconButtonComponent } from '@spryker-oryx/ui/icon-button';
+import { Size } from '@spryker-oryx/ui/utilities';
 import { DropdownComponent } from '.';
 import { PopoverComponent } from '../../popover/src';
 import './index';
@@ -94,4 +96,22 @@ describe('DropdownComponent', () => {
       });
     });
   }
+
+  Object.values(Size).forEach((size) => {
+    describe(`when the triggerIconSize is '${size}'`, () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-dropdown open .triggerIconSize=${size}></oryx-dropdown>`
+        );
+      });
+
+      it('should project the triggerIconSize to the icon button', () => {
+        const el = element.shadowRoot?.querySelector(
+          'oryx-icon-button'
+        ) as IconButtonComponent;
+
+        expect(el.size).toBe(size);
+      });
+    });
+  });
 });
