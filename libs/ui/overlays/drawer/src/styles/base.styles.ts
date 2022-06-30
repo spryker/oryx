@@ -15,6 +15,7 @@ export const drawerBaseStyles = css`
     overscroll-behavior: none;
     box-sizing: border-box;
     outline: none;
+    z-index: inherit;
   }
 
   form {

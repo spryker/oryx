@@ -73,6 +73,14 @@ describe('DrawerComponent', () => {
       await update();
       expect(isMaximized(element)).toBe(false);
     });
+
+    it('should trigger on close event on submit event', async () => {
+      const spy = vi.fn();
+      element.dialog?.addEventListener('close', spy);
+      element.dialog?.dispatchEvent(new Event('submit'));
+      await update();
+      expect(spy).toBeCalled();
+    });
   });
 
   const getButton = (selector = 'button'): HTMLElement | null | undefined =>
@@ -170,39 +178,6 @@ describe('DrawerComponent', () => {
       expect(resizeBtn?.getAttribute('aria-label')).toBe(
         minimizeButtonAriaLabel
       );
-    });
-  });
-
-  describe('focus on dialog element', () => {
-    beforeAll(async () => {
-      vi.useFakeTimers();
-      element = await fixture(html`
-        <oryx-drawer open>
-          <button id="focusable"></button>
-          <span id="not-focusable"></span>
-        </oryx-drawer>
-      `);
-      document.body.appendChild(element);
-    });
-
-    afterEach(() => {
-      vi.clearAllTimers();
-    });
-
-    it('should not focus dialog element', () => {
-      const focusable = document.querySelector('#focusable') as HTMLElement;
-      focusable?.click();
-      vi.advanceTimersByTime(0);
-      expect(element.matches(':focus')).toBe(false);
-    });
-
-    it('should focus dialog element', () => {
-      const notFocusable = document.querySelector(
-        '#not-focusable'
-      ) as HTMLElement;
-      notFocusable?.click();
-      vi.advanceTimersByTime(0);
-      expect(element).toBe(document.activeElement);
     });
   });
 });

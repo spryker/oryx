@@ -1,4 +1,3 @@
-import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -75,7 +74,6 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
     return html`
       <dialog
         ?open=${this.open}
-        @click=${(e: MouseEvent): void => this.handleClick(e)}
         @keydown=${(e: KeyboardEvent): void => this.handleKeydown(e)}
         @submit=${(): void => this.handleSubmit()}
         tabindex="-1"
@@ -97,14 +95,9 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
     }
   }
 
-  protected handleClick(e: MouseEvent): void {
-    if (!isFocusable(e.target as Element)) {
-      this.dialog?.focus();
-    }
-  }
-
   protected handleSubmit(): void {
     this.open = false;
+    this.dialog?.close();
     this.resize(false);
   }
 }

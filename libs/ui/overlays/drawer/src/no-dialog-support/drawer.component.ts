@@ -1,4 +1,3 @@
-import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { Dialog } from '../../../overlay.model';
 import { DrawerComponent } from '../drawer.component';
@@ -64,13 +63,9 @@ export class NDSDrawerComponent extends DrawerComponent {
     }
   }
 
-  protected override handleClick(e: MouseEvent): void {
+  protected handleClick(e: MouseEvent): void {
     if (e.target === this.closeButtonElement) {
       this.close();
-    }
-
-    if (!isFocusable(e.target as Element)) {
-      this.dialogElement?.focus();
     }
   }
 }
