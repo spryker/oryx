@@ -104,15 +104,15 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     >
       ${inputs.map((item) => {
         switch (props.uxType) {
-          case 'radio':
+          case UxType.radio:
             return html`<oryx-radio>${input(item)}</oryx-radio>`;
-          case 'toggle':
+          case UxType.toggle:
             return html`<oryx-toggle>${input(item)}</oryx-toggle>`;
-          case 'toggleIcon':
+          case UxType.toggleIcon:
             return html`<oryx-toggle-icon
               >${input(item, false)}<oryx-icon type=${item}></oryx-icon
             ></oryx-toggle-icon>`;
-          case 'toggleButton':
+          case UxType.toggleButton:
             return html`<oryx-toggle-icon
               >${input(item, false)}<oryx-icon type=${item}></oryx-icon>
               <span>${item}</span>

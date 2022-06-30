@@ -21,19 +21,18 @@ const Template: Story<unknown> = (): TemplateResult => {
 
         <oryx-input-list heading=${type}>
           ${inputs.map((item, i) => {
-            console.log(i);
             const inputs = input(item, true, i < 2);
             switch (type) {
-              case 'radio':
+              case UxType.radio:
                 return html`<oryx-radio>${inputs}</oryx-radio>`;
-              case 'toggle':
+              case UxType.toggle:
                 return html`<oryx-toggle>${inputs}</oryx-toggle>`;
-              case 'toggle-icon':
+              case UxType.toggleIcon:
                 return html`<oryx-toggle-icon>
                   ${input(item, false, i < 2)}
                   <oryx-icon type=${item}></oryx-icon>
                 </oryx-toggle-icon>`;
-              case 'toggle-button':
+              case UxType.toggleButton:
                 return html`<oryx-toggle-icon>
                   ${input(item, false, i < 2)}
                   <oryx-icon type=${item}></oryx-icon>
