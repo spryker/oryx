@@ -13,7 +13,7 @@ import {
   ProductImageComponentOptions,
   ProductImageComponentSettings,
   ProductImageNavigationDisplay,
-  ProductImagePreviewLayout,
+  ProductImageScrollBehavior,
   ProductImageSet,
 } from './image.model';
 import { styles } from './image.styles';
@@ -31,8 +31,8 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
     })
   );
   protected options$ = this.contentController.getOptions().pipe(
-    tap((options) => {
-      this.setActive(0, options?.previewLayout);
+    tap(() => {
+      this.setActive(0, ProductImageScrollBehavior.SMOOTH);
     })
   );
 
@@ -81,32 +81,32 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
     })
   );
 
-  protected setActive(
-    active: number,
-    layout?: ProductImagePreviewLayout
-  ): void {
-    this.active$.next(active);
-    const navItems: NodeListOf<HTMLInputElement> | undefined =
-      this.shadowRoot?.querySelectorAll('.nav-item input');
-    const activeNavItem = navItems?.[active];
-    if (activeNavItem) {
-      activeNavItem.checked = true;
+  protected async setActive(
+    active?: number,
+    behavior: 'smooth' | 'auto' = 'auto'
+  ): Promise<void> {
+    const items = this.shadowRoot?.querySelectorAll('picture');
+    if (active !== undefined) {
+      this.active$.next(active);
+      const navItems: NodeListOf<HTMLInputElement> | undefined =
+        this.shadowRoot?.querySelectorAll('.nav-item input');
+      const activeNavItem = navItems?.[active];
+      if (activeNavItem) {
+        activeNavItem.checked = true;
+      }
     }
-    if (layout === ProductImagePreviewLayout.TOGGLE) {
-      return;
-    }
-    const items = this.shadowRoot?.querySelectorAll('picture') || [];
-
-    items[active]?.scrollIntoView({ block: 'nearest', inline: 'start' });
+    await 0;
+    items?.[this.active$.value]?.scrollIntoView({
+      block: 'nearest',
+      inline: 'start',
+      behavior,
+    });
   }
 
-  protected onInput(
-    e: InputEvent,
-    layout: ProductImagePreviewLayout | undefined
-  ): void {
+  protected onInput(e: InputEvent): void {
     const target = e.target as HTMLInputElement;
     const active = target?.value || 0;
-    this.setActive(+active, layout);
+    this.setActive(+active, 'smooth');
   }
 
   protected override render(): TemplateResult {
@@ -149,8 +149,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
                         type="radio"
                         name="${ifDefined(settings.groupName)}"
                         ?checked="${i === active}"
-                        @input="${(e: InputEvent): void =>
-                          this.onInput(e, settings.previewLayout)}"
+                        @input="${(e: InputEvent): void => this.onInput(e)}"
                       />
                       <img
                         src="${image.externalUrlSmall}"

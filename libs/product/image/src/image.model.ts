@@ -95,3 +95,8 @@ export enum ProductImageNavigationPosition {
   INLINE = 'inline',
   FLOATING = 'floating',
 }
+
+export enum ProductImageScrollBehavior {
+  SMOOTH = 'smooth',
+  AUTO = 'auto',
+}

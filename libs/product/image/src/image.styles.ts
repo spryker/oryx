@@ -23,7 +23,6 @@ export const styles = css`
     order: 1;
     height: var(--preview-height, 300px);
     overflow: auto;
-    scroll-behavior: smooth;
     scroll-snap-type: both mandatory;
     -webkit-overflow-scrolling: touch;
     display: flex;
@@ -77,6 +76,8 @@ export const styles = css`
 
   .nav input {
     appearance: none;
+    /* stylelint-disable-next-line */
+    -webkit-appearance: none; /* Safari */
     margin: 0;
     inset: 0;
     cursor: pointer;
