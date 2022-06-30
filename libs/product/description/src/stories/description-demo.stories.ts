@@ -21,8 +21,8 @@ export const DescriptionDemo = Template.bind({});
 
 DescriptionDemo.args = {
   sku: '1',
-  truncateCharacterCount: 100,
-  isTruncated: true,
+  truncateAfter: 3,
+  showToggle: true,
 };
 
 DescriptionDemo.argTypes = {
@@ -32,11 +32,5 @@ DescriptionDemo.argTypes = {
       ...MockProductService.mockProducts.map((p) => p.sku),
       'not-found',
     ],
-  },
-  truncateCharacterCount: {
-    description: '100',
-  },
-  isTruncated: {
-    description: 'true',
   },
 };

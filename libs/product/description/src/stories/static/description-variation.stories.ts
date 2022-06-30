@@ -16,19 +16,19 @@ const Template: Story<unknown> = (): TemplateResult => {
       <p>Collapsed</p>
       <product-description
         sku="1"
-        .options=${{ truncateCharacterCount: 100, isTruncated: true }}
+        .content=${{ truncateAfter: 2, expanded: false, showToggle: true }}
       />
     </div>
     <div class="variation-description">
       <p>Expanded</p>
       <product-description
         sku="1"
-        .options=${{ truncateCharacterCount: 100, isTruncated: false }}
+        .content=${{ truncateAfter: 2, expanded: true, showToggle: true }}
       />
     </div>
     <div class="variation-description">
       <p>Large Truncation Number</p>
-      <product-description sku="1" .options=${{ truncateCharacterCount: 0 }} />
+      <product-description sku="1" .content=${{ truncateAfter: 0 }} />
     </div>
 
     <style>

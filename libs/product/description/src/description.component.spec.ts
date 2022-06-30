@@ -4,6 +4,7 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
+import { ProductDescriptionContent } from '../index';
 import { ProductDescriptionComponent } from './description.component';
 
 describe('ProductDescriptionComponent', () => {
@@ -17,7 +18,7 @@ describe('ProductDescriptionComponent', () => {
       html` <product-description
         sku="1"
         uid="1"
-        .options="${{ truncateCharacterCount: 100 }}"
+        .content="${{ truncateAfter: 100 }}"
       ></product-description>`
     );
   });
@@ -30,102 +31,38 @@ describe('ProductDescriptionComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should is defined', () => {
-    expect(element).toBeInstanceOf(ProductDescriptionComponent);
-  });
+  describe('when the component is rendered', () => {
+    const oneLineBreak = `with one	
+    line break`;
 
-  it('should render internal description', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="6"
-        .options="${{ truncateCharacterCount: 10, isTruncated: true }}"
-      ></product-description>`
-    );
-    const textDescription = 'Lorem ipsu...';
-    const content = element?.shadowRoot?.querySelector('p');
-    expect(content).to.exist;
-    expect(content?.textContent).toContain(textDescription);
-  });
+    beforeEach(async () => {
+      element = await fixture(
+        html` <product-description
+          .product=${{ description: oneLineBreak }}
+          .options=${{
+            truncateAfter: 3,
+            showToggle: true,
+            expanded: true,
+          } as ProductDescriptionContent}
+        ></product-description>`
+      );
+    });
 
-  it('should not render if description is not defined', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="3"
-        .options="${{ truncateCharacterCount: 0, isTruncated: true }}"
-      ></product-description>`
-    );
-    const textDescription = '';
-    const content = element?.shadowRoot?.querySelector('p');
-    expect(content).to.exist;
-    expect(content?.textContent).toContain(textDescription);
-  });
+    it('should slot the product description into the oryx-text component', () => {
+      expect(element.shadowRoot?.querySelector('oryx-text p')?.innerHTML).toBe(
+        'with one<br>line break'
+      );
+    });
 
-  it('should render button if truncated value more then description', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="1"
-        .options="${{ truncateCharacterCount: 100, isTruncated: true }}"
-      ></product-description>`
-    );
-    const button = element?.shadowRoot?.querySelector('oryx-button');
-    expect(button).not.toBeNull();
-  });
-
-  it('should not rendered button if truncated value less then description', async () => {
-    element = await fixture(
-      html` <product-description sku="4"></product-description>`
-    );
-    expect(element?.shadowRoot?.querySelector('oryx-button')).to.toBeNull();
-  });
-
-  it('should not rendered button if truncated value is not defined', async () => {
-    element = await fixture(
-      html` <product-description sku="5"></product-description>`
-    );
-    expect(element?.shadowRoot?.querySelector('oryx-button')).to.toBeNull();
-  });
-
-  it('should show full/truncated text depends on toggled state', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="6"
-        .options="${{ truncateCharacterCount: 10, isTruncated: true }}"
-      ></product-description>`
-    );
-    const descriptionMoreText = 'Lorem ipsu...';
-    const descriptionLessText = 'Lorem ipsum dolor sit amet.';
-    const button = element?.shadowRoot?.querySelector('button');
-    expect(element?.shadowRoot?.querySelector('p')?.textContent).toContain(
-      descriptionMoreText
-    );
-    button?.click();
-    expect(element?.shadowRoot?.querySelector('p')?.textContent).toContain(
-      descriptionLessText
-    );
-  });
-
-  it('should change button text depends on toggled state', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="1"
-        .options="${{ truncateCharacterCount: 100, isTruncated: true }}"
-      ></product-description>`
-    );
-    const button = element?.shadowRoot?.querySelector('button');
-    expect(button?.textContent).toContain('Read more');
-    button?.click();
-    expect(button?.textContent).toContain('Read less');
-  });
-
-  it('should check number of paragraph and br tags, depending on the text', async () => {
-    element = await fixture(
-      html` <product-description
-        sku="1"
-        .options="${{ truncateCharacterCount: 100, isTruncated: true }}"
-      ></product-description>`
-    );
-    element.toggle();
-    expect(element.shadowRoot?.querySelectorAll('p').length).toBe(2);
-    expect(element.shadowRoot?.querySelectorAll('br').length).toBe(1);
+    it('should slot configure the oryx-text component', () => {
+      expect(
+        element.shadowRoot?.querySelector('oryx-text')?.hasAttribute('expanded')
+      ).toBe(true);
+      expect(
+        element.shadowRoot
+          ?.querySelector('oryx-text')
+          ?.hasAttribute('showToggle')
+      ).toBe(true);
+    });
   });
 });
