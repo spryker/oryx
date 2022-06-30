@@ -5,7 +5,7 @@ import { Size } from '../../../utilities';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 
-const DEFAULT_SPRITE = 'assets/icons.svg';
+const DEFAULT_SPRITE = '/assets/icons.svg';
 
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
@@ -32,10 +32,10 @@ export class IconComponent extends LitElement implements IconProperties {
    * The resulting SVG url uses the following format:
    *
    * ```html
-   * <use href="assets/icons.svg#iconType" />
+   * <use href="/assets/icons.svg#iconType" />
    * ```
    *
-   * Defaults to use 'assets/icons.svg'.
+   * Defaults to use '/assets/icons.svg'.
    */
   protected get spriteUrl(): string {
     let url = '';

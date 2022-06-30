@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -15,13 +14,5 @@ export default defineConfig({
       },
     }),
     tsconfigPaths({ root: '../../' }),
-    viteStaticCopy({
-      targets: [
-        {
-          src: '../../libs/ui/public/assets/*.*',
-          dest: 'assets',
-        },
-      ],
-    }),
   ],
 });

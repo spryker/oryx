@@ -26,7 +26,7 @@ describe('factory', () => {
         element.shadowRoot
           ?.querySelector('svg use')
           ?.getAttribute('href')
-          ?.startsWith('assets/icons.svg')
+          ?.startsWith('/assets/icons.svg')
       ).toBe(true);
     });
   });

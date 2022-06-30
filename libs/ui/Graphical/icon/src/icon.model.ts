@@ -41,7 +41,7 @@ export interface IconProperties {
    * An SVG icon sprite combines multiple icons in a single resource. The resources
    * is loaded from the internet, which is why the sprite url can be configured.
    *
-   * Defaults to `assets/icons.svg`
+   * Defaults to `/assets/icons.svg`
    */
   sprite?: string;
 }

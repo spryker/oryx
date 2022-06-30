@@ -30,4 +30,8 @@ export const styles = css`
   oryx-button:last-child {
     flex-grow: 1;
   }
+
+  [type='cart-add'] {
+    --oryx-icon-size: 24px;
+  }
 `;
