@@ -6,17 +6,17 @@ import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
 import { setupProductMocks } from '../../../src/mocks/product.mock';
 import '../index';
-import { ProductTitleContent } from '../model';
+import { ProductTitleOptions } from '../model';
 
 export default {
   title: `${storybookPrefix}/Title`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductTitleContent & ProductComponentProperties;
+type Props = ProductTitleOptions & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  return html`<product-title .sku=${props.sku} .content=${props} />`;
+  return html`<product-title .sku=${props.sku} .options=${props} />`;
 };
 
 export const TitleDemo = Template.bind({});

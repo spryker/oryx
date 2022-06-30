@@ -12,11 +12,11 @@ import { ProductAverageRatingModel } from './average-rating.model';
 @hydratable()
 export class ProductAverageRatingComponent extends ProductComponentMixin<ProductAverageRatingModel>() {
   protected product$ = new ProductController(this).getProduct();
-  protected content$ = new ContentController(this).getContent();
+  protected options$ = new ContentController(this).getOptions();
 
-  protected rating$ = combineLatest([this.product$, this.content$]).pipe(
-    map(([product, contents]) => {
-      const reviewCount = contents?.hideReviewCount
+  protected rating$ = combineLatest([this.product$, this.options$]).pipe(
+    map(([product, options]) => {
+      const reviewCount = options?.hideReviewCount
         ? undefined
         : product?.reviewCount;
       return {

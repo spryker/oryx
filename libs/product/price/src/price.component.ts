@@ -5,32 +5,32 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
 import { ProductPriceController } from './price.controller';
-import { FormattedProductPrice, ProductPriceContent } from './price.model';
+import { FormattedProductPrice, ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
-export class ProductPriceComponent extends ProductComponentMixin<ProductPriceContent>() {
+export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOptions>() {
   static styles = ProductPriceStyles;
 
-  protected content$ = new ContentController(this).getContent();
+  protected options$ = new ContentController(this).getOptions();
   protected price$ = new ProductPriceController(this).price$;
 
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(
-        combineLatest([this.content$, this.price$]),
+        combineLatest([this.options$, this.price$]),
         this.renderPrice
       )}
     `;
   }
 
-  protected renderPrice([content, price]: [
-    ProductPriceContent | undefined,
+  protected renderPrice([options, price]: [
+    ProductPriceOptions | undefined,
     FormattedProductPrice
   ]): TemplateResult {
     return html`
       ${price.defaultPrice?.formattedPrice}
       ${when(
-        content?.showOriginal && price.originalPrice,
+        options?.showOriginal && price.originalPrice,
         () =>
           html`<span class="original">
             ${price.originalPrice?.formattedPrice}

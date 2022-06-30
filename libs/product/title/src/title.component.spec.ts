@@ -1,12 +1,18 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { Observable, of } from 'rxjs';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductTitleComponent } from './title.component';
 
 const mockSku = '1';
+
+class MockExperienceContentService implements Partial<ExperienceService> {
+  getOptions = ({ key = '' }): Observable<any> => of({});
+}
 
 // TODO: unify unit tests for all sub packages
 describe('ProductTitleComponent', () => {
@@ -14,12 +20,18 @@ describe('ProductTitleComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: [
+        ...MOCK_PRODUCT_PROVIDERS,
+        {
+          provide: ExperienceService,
+          useClass: MockExperienceContentService,
+        },
+      ],
     });
     element = await fixture(
       html`<product-title
         sku="${mockSku}"
-        .content=${{ tag: 'h1' }}
+        .options=${{ tag: 'h1' }}
       ></product-title>`
     );
   });
@@ -38,7 +50,7 @@ describe('ProductTitleComponent', () => {
         element = await fixture(
           html`<product-title
             sku="${mockSku}"
-            .content=${{ tag }}
+            .options=${{ tag }}
           ></product-title>`
         );
       });
@@ -63,7 +75,7 @@ describe('ProductTitleComponent', () => {
     describe('it should not render a tag', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-title sku="${mockSku}" .content=${{}}></product-title>`
+          html`<product-title sku="${mockSku}" .options=${{}}></product-title>`
         );
       });
       it(`should not render a tag`, () => {

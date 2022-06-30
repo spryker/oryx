@@ -15,7 +15,7 @@ export default {
 type Props = ProductAverageRatingModel & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  return html`<product-average-rating .sku=${props.sku} .content=${props} />`;
+  return html`<product-average-rating .sku=${props.sku} .options=${props} />`;
 };
 
 export const AverageRatingDemo = Template.bind({});

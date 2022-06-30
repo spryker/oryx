@@ -19,7 +19,7 @@ const BASE_COMPONENTS = [
 
 class MockExperienceService implements Partial<ExperienceService> {
   components = [...BASE_COMPONENTS];
-  getStructure = (): Observable<Component> =>
+  getComponent = (): Observable<Component> =>
     of({
       id: '',
       type: '',

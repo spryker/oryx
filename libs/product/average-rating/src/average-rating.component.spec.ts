@@ -1,24 +1,36 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { Observable, of } from 'rxjs';
 import { afterEach, beforeEach } from 'vitest';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductAverageRatingComponent } from './average-rating.component';
+
+class MockExperienceContentService implements Partial<ExperienceService> {
+  getOptions = ({ key = '' }): Observable<any> => of({});
+}
 
 describe('Average Rating', () => {
   let element: ProductAverageRatingComponent;
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: [
+        ...MOCK_PRODUCT_PROVIDERS,
+        {
+          provide: ExperienceService,
+          useClass: MockExperienceContentService,
+        },
+      ],
     });
     element = await fixture(
       html`<product-average-rating
         sku="1"
         uid="1"
-        .content${{ hideReviewCount: true }}
+        .options=${{ hideReviewCount: true }}
       ></product-average-rating>`
     );
   });
@@ -39,7 +51,7 @@ describe('Average Rating', () => {
     element = await fixture(
       html`<product-average-rating
         sku="1"
-        .content="${{ hideReviewCount: false }}"
+        .options="${{ hideReviewCount: false }}"
       ></product-average-rating>`
     );
     const ratingEl: any = element?.shadowRoot?.querySelector('oryx-rating');
@@ -50,7 +62,7 @@ describe('Average Rating', () => {
     element = await fixture(
       html`<product-average-rating
         sku="1"
-        .content="${{ hideReviewCount: true }}"
+        .options="${{ hideReviewCount: true }}"
       ></product-average-rating>`
     );
     const ratingEl: any = element?.shadowRoot?.querySelector('oryx-rating');

@@ -21,7 +21,7 @@ describe('Add to cart', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<add-to-cart
-          .content=${{ hideQuantityInput: true }}
+          .options=${{ hideQuantityInput: true }}
         ></add-to-cart>`
       );
     });
@@ -182,7 +182,7 @@ describe('Add to cart', () => {
   describe('when "loading" prop is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<add-to-cart .content=${{ loading: true }}></add-to-cart>`
+        html`<add-to-cart .options=${{ loading: true }}></add-to-cart>`
       );
     });
 

@@ -38,7 +38,7 @@ export class ExperienceCompositionComponent extends LitElement {
     filter((key: string) => !!key),
     switchMap(
       (key: string) =>
-        this.experienceService?.getStructure({ key }) || of({} as any)
+        this.experienceService?.getComponent({ key }) || of({} as any)
     ),
     switchMap((structures: Component) => of(structures?.components)),
     tap(async (components: Array<Component> | undefined) => {

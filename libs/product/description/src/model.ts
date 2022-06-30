@@ -1,4 +1,4 @@
-export interface ProductDescriptionContent {
+export interface ProductDescriptionOptions {
   /**
    * Indicates the number of characters that are shown before truncation. When
    * the text is long enough to be truncated, a "read more" button will be

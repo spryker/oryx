@@ -10,6 +10,9 @@ class MockService {
   getContent(): Promise<any> {
     return new Promise<any>((resolve) => resolve({}));
   }
+  getOptions(): Promise<any> {
+    return new Promise<any>((resolve) => resolve({}));
+  }
 }
 
 describe('Link', () => {
@@ -27,7 +30,8 @@ describe('Link', () => {
   beforeEach(async () => {
     element = await fixture(
       html` <content-link
-        content=${{ text: 'test', href: '/test' }}
+        .content=${{ text: 'test', href: '/test' }}
+        .options=${{ target: '_blank' }}
       ></content-link>`
     );
   });

@@ -12,8 +12,19 @@ import { RouterEvent, RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 
-export const REQUEST_MESSAGE_TYPE = 'vsf-preview-request';
+export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';
+
+interface ExperiencePreviewEvent extends MessageEvent {
+  data: {
+    type?: string;
+    structure?: any;
+    content?: any;
+    interaction?: any;
+    options?: any;
+    route?: any;
+  };
+}
 
 export class PreviewExperienceService extends DefaultExperienceService {
   constructor(protected routerService = inject(RouterService)) {
@@ -21,34 +32,47 @@ export class PreviewExperienceService extends DefaultExperienceService {
 
     this.structureDataEvent$.subscribe(
       (structure: { id: string; type: string; components: Component[] }) => {
-        if (!this.dataStructure[structure.id]) {
-          this.dataStructure[structure.id] = new ReplaySubject<Component>(1);
+        if (!this.dataComponent[structure.id]) {
+          this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
         }
 
-        this.dataStructure[structure.id].next(structure);
+        this.dataComponent[structure.id].next(structure);
 
         if (Array.isArray(structure.components)) {
           structure.components.forEach((item: Component) => {
             if (item.id) {
-              if (!this.dataStructure[item.id]) {
-                this.dataStructure[item.id] = new ReplaySubject<Component>(1);
+              if (!this.dataComponent[item.id]) {
+                this.dataComponent[item.id] = new ReplaySubject<Component>(1);
               }
 
-              this.dataStructure[item.id].next(item);
+              this.dataComponent[item.id].next(item);
             }
           });
-          this.processStructure(structure.components);
+          this.processComponent(structure.components);
         }
       }
     );
 
     this.contentDataEvent$.subscribe((content) => {
-      if (content && content.id) {
-        if (!this.dataContent[content.id]) {
-          this.dataContent[content.id] = new ReplaySubject<any>(1);
-        }
-        this.dataContent[content.id].next(content);
+      if (!content?.id) {
+        return;
       }
+
+      if (!this.dataContent[content.id]) {
+        this.dataContent[content.id] = new ReplaySubject<any>(1);
+      }
+      this.dataContent[content.id].next(content);
+    });
+
+    this.optionsDataEvent$.subscribe((options) => {
+      if (!options?.id) {
+        return;
+      }
+
+      if (!this.dataOptions[options.id]) {
+        this.dataOptions[options.id] = new ReplaySubject<any>(1);
+      }
+      this.dataOptions[options.id].next(options);
     });
 
     this.routeDataEvent$.subscribe((route) => {
@@ -71,23 +95,28 @@ export class PreviewExperienceService extends DefaultExperienceService {
       : EMPTY;
 
   protected structureDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e: any) => e.data?.structure),
+    filter((e) => e.data?.structure),
     map((data) => data.data.structure)
   );
 
   protected contentDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e: any) => e.data?.content),
+    filter((e) => e.data?.content),
     map((data) => data.data.content)
+  );
+
+  protected optionsDataEvent$ = this.experiencePreviewEvent$.pipe(
+    filter((e) => e.data?.options),
+    map((data) => data.data.options)
   );
 
   protected routeDataEvent$: Observable<string> =
     this.experiencePreviewEvent$.pipe(
-      filter((e: any) => e.data?.route),
+      filter((e) => e.data?.route),
       map((data) => data.data.route)
     );
 
   protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e: any) => e.data?.interaction),
+    filter((e) => e.data?.interaction),
     map((data) => data.data.interaction)
   );
 
@@ -97,7 +126,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     }
   }
 
-  reloadStructure(key: string): void {
+  reloadComponent(key: string): void {
     this.sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       structure: key,
@@ -108,6 +137,13 @@ export class PreviewExperienceService extends DefaultExperienceService {
     this.sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       content: key,
+    });
+  }
+
+  reloadOptions(key: string): void {
+    this.sendPostMessage({
+      type: REQUEST_MESSAGE_TYPE,
+      options: key,
     });
   }
 

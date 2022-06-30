@@ -5,7 +5,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import {
-  ProductImageComponentContent,
+  ProductImageComponentOptions,
   ProductImageNavigationDisplay,
   ProductImageNavigationLayout,
   ProductImageNavigationPosition,
@@ -18,10 +18,10 @@ export default {
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductImageComponentContent & ProductComponentProperties;
+type Props = ProductImageComponentOptions & ProductComponentProperties;
 
-const Template: Story<Props> = (content): TemplateResult => {
-  return html`<product-image .sku=${content.sku} .content=${content} />`;
+const Template: Story<Props> = (options): TemplateResult => {
+  return html`<product-image .sku=${options.sku} .options=${options} />`;
 };
 
 export const ProductImageDemo = Template.bind({});

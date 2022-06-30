@@ -17,7 +17,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         (i) =>
           html` <product-average-rating
             sku=${i + 1}
-            .content=${{ hideReviewCount: true }}
+            .options=${{ hideReviewCount: true }}
           />`
       )}
     </div>
@@ -27,7 +27,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         (i) =>
           html` <product-average-rating
             sku=${i + 1}
-            .content=${{ hideReviewCount: false }}
+            .options=${{ hideReviewCount: false }}
           />`
       )}
     </div>

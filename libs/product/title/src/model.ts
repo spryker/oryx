@@ -1,4 +1,4 @@
-export interface ProductTitleContent {
+export interface ProductTitleOptions {
   /**
    * Specifies the html tag that is used to render the title.
    *

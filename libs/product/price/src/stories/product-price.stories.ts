@@ -10,14 +10,14 @@ import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
 import { setupProductMocks } from '../../../src/mocks/product.mock';
 import '../index';
-import { ProductPriceContent } from '../price.model';
+import { ProductPriceOptions } from '../price.model';
 
 export default {
   title: `${storybookPrefix}/Price`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductPriceContent &
+type Props = ProductPriceOptions &
   ProductComponentProperties & { locale: string };
 
 const getLocale = (): LocaleService => {
@@ -29,7 +29,7 @@ const Template: Story<Props> = (props): TemplateResult => {
 
   return html`<product-price
     .sku=${props.sku}
-    .content=${{ showOriginal: props.showOriginal }}
+    .options=${{ showOriginal: props.showOriginal }}
   ></product-price>`;
 };
 

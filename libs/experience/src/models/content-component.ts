@@ -1,4 +1,4 @@
-export interface ContentComponentProperties<T> {
+export interface ContentComponentProperties<T, K = T> {
   /**
    * Unique identifier that references the component. The `uid` is used to get
    * the component data from the page structure, or - if not available - from
@@ -12,4 +12,11 @@ export interface ContentComponentProperties<T> {
    * component uid will be ignored.
    */
   content?: T;
+
+  /**
+   * Component options are loaded from the backend, but can be added through a
+   * property as well. When options are added through component properties, the
+   * component uid will be ignored.
+   */
+  options?: K;
 }

@@ -8,37 +8,37 @@ import {
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { map } from 'rxjs';
-import { ProductTitleContent } from './model';
+import { ProductTitleOptions } from './model';
 import { styles } from './title.styles';
 
 @hydratable()
-export class ProductTitleComponent extends ProductComponentMixin<ProductTitleContent>() {
+export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOptions>() {
   static styles = styles;
 
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);
   protected product$ = this.productController.getProduct();
-  protected content$ = this.contentController
-    .getContent()
-    .pipe(map((content) => content ?? ({} as ProductTitleContent)));
+  protected options$ = this.contentController
+    .getOptions()
+    .pipe(map((options) => options ?? ({} as ProductTitleOptions)));
 
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(
-        this.content$,
-        (content) =>
+        this.options$,
+        (options) =>
           html`${this.renderTitle(
             html`
               ${asyncValue(this.product$, (product) => html`${product?.name}`)}
             `,
-            content
+            options
           )} `
       )}
     `;
   }
 
   /**
-   * Generates the TAG (h1 - h6) based on the content.
+   * Generates the TAG (h1 - h6) based on the options.
    *
    * When there's no tag provided, a plain text node is created.   *
    *
@@ -48,11 +48,11 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleCon
    */
   protected renderTitle(
     title: TemplateResult,
-    content: ProductTitleContent
+    options: ProductTitleOptions
   ): TemplateResult {
-    this.toggleAttribute?.('single-line', !!content.singleLine);
+    this.toggleAttribute?.('single-line', !!options.singleLine);
 
-    switch (content.tag) {
+    switch (options.tag) {
       case 'h1':
         return html`<h1>${title}</h1>`;
       case 'h2':

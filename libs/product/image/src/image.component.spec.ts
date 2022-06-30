@@ -1,17 +1,29 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductImageComponent } from './image.component';
+
+class MockExperienceContentService implements Partial<ExperienceService> {
+  getOptions = ({ key = '' }): Observable<any> => of({});
+}
 
 describe('ProductImageComponent', () => {
   let element: ProductImageComponent;
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: [
+        ...MOCK_PRODUCT_PROVIDERS,
+        {
+          provide: ExperienceService,
+          useClass: MockExperienceContentService,
+        },
+      ],
     });
     element = await fixture(html`<product-image sku="1"></product-image>`);
   });

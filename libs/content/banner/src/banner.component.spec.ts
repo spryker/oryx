@@ -10,6 +10,9 @@ class MockService {
   getContent(): Promise<any> {
     return new Promise<any>((resolve) => resolve({}));
   }
+  getOptions(): Promise<any> {
+    return new Promise<any>((resolve) => resolve({}));
+  }
 }
 
 describe('Banner', () => {
@@ -26,7 +29,10 @@ describe('Banner', () => {
 
   beforeEach(async () => {
     element = await fixture(
-      html` <oryx-banner content=${{ title: 'test' }}></oryx-banner>`
+      html` <oryx-banner
+        .content=${{ title: 'test', content: 'test' }}
+        .options=${{ alt: 'test' }}
+      ></oryx-banner>`
     );
   });
 

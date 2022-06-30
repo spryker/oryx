@@ -4,8 +4,9 @@ import { Component } from './models';
 export const ExperienceService = 'FES.ExperienceService';
 
 export interface ExperienceService {
-  getStructure({ key }: { key: string }): Observable<Component>;
+  getComponent({ key }: { key: string }): Observable<Component>;
   getContent<T>({ key }: { key: string }): Observable<T>;
+  getOptions<T>({ key }: { key: string }): Observable<T>;
 }
 
 declare global {

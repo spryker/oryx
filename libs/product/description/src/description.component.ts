@@ -10,24 +10,24 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
-import { ProductDescriptionContent } from './model';
+import { ProductDescriptionOptions } from './model';
 
 @hydratable()
-export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
+export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionOptions>() {
   protected productController = new ProductController(this);
   protected product$ = this.productController.getProduct();
   protected contentController = new ContentController(this);
-  protected content$ = this.contentController.getContent();
+  protected options$ = this.contentController.getOptions();
   protected isHidden$ = new BehaviorSubject(0);
 
   protected descriptions$ = combineLatest([
     this.isHidden$,
     this.product$,
-    this.content$,
+    this.options$,
   ]).pipe(
-    map(([isHidden, product, contents]) => {
+    map(([isHidden, product, options]) => {
       const description = product?.description ?? '';
-      const truncateAfter = contents?.truncateCharacterCount;
+      const truncateAfter = options?.truncateCharacterCount;
       if (!truncateAfter || description.length < truncateAfter) {
         return {
           shouldTruncate: false,
@@ -37,7 +37,7 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
       }
 
       if (isHidden === 0) {
-        isHidden = contents?.isTruncated ? 1 : -1;
+        isHidden = options?.isTruncated ? 1 : -1;
       }
 
       const content =
@@ -64,7 +64,7 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
 
   toggle(): void {
     if (this.isHidden$.getValue() === 0) {
-      this.isHidden$.next(this.content?.isTruncated ? -1 : 1);
+      this.isHidden$.next(this.options?.isTruncated ? -1 : 1);
     } else {
       this.isHidden$.next(-1 * this.isHidden$.getValue());
       ``;

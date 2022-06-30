@@ -5,17 +5,17 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import '../index';
-import { ProductDescriptionContent } from '../model';
+import { ProductDescriptionOptions } from '../model';
 
 export default {
   title: `${storybookPrefix}/Description`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductDescriptionContent & ProductComponentProperties;
+type Props = ProductDescriptionOptions & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  return html`<product-description .sku=${props.sku} .content=${props} />`;
+  return html`<product-description .sku=${props.sku} .options=${props} />`;
 };
 export const DescriptionDemo = Template.bind({});
 

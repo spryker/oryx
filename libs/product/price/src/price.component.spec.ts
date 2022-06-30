@@ -18,8 +18,8 @@ import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductPriceComponent } from './price.component';
 
-class MockExperienceService {
-  getContent(): Observable<any> {
+class MockExperienceService implements Partial<ExperienceService> {
+  getOptions(): Observable<any> {
     return of({ data: {} });
   }
 }
@@ -135,7 +135,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ showOriginal: true }}
+              .options=${{ showOriginal: true }}
             ></product-price>`
           );
         });
@@ -161,7 +161,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ showOriginal: true }}
+              .options=${{ showOriginal: true }}
             ></product-price>`
           );
         });
@@ -178,7 +178,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ showOriginal: false }}
+              .options=${{ showOriginal: false }}
             ></product-price>`
           );
         });
@@ -191,7 +191,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
-              .content=${{ showOriginal: false }}
+              .options=${{ showOriginal: false }}
             ></product-price>`
           );
         });

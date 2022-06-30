@@ -10,7 +10,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
 import {
-  ProductImageComponentContent,
+  ProductImageComponentOptions,
   ProductImageComponentSettings,
   ProductImageNavigationDisplay,
   ProductImagePreviewLayout,
@@ -19,7 +19,7 @@ import {
 import { styles } from './image.styles';
 
 @hydratable('mouseover')
-export class ProductImageComponent extends ProductComponentMixin<ProductImageComponentContent>() {
+export class ProductImageComponent extends ProductComponentMixin<ProductImageComponentOptions>() {
   static styles = styles;
 
   protected active$ = new BehaviorSubject(0);
@@ -30,9 +30,9 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
       this.setActive(0);
     })
   );
-  protected content$ = this.contentController.getContent().pipe(
-    tap((content) => {
-      this.setActive(0, content?.previewLayout);
+  protected options$ = this.contentController.getOptions().pipe(
+    tap((options) => {
+      this.setActive(0, options?.previewLayout);
     })
   );
 
@@ -46,12 +46,12 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
   }
 
   protected productImages$ = combineLatest([
-    this.content$,
+    this.options$,
     this.product$,
     this.active$,
   ]).pipe(
-    map(([content, product, active]) => {
-      const { previewLayout, navigationDisplay } = content || {};
+    map(([options, product, active]) => {
+      const { previewLayout, navigationDisplay } = options || {};
       const images = product?.images || [];
       const settings: ProductImageComponentSettings = {
         previewWidth: '300',
@@ -63,7 +63,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
         showNavigation:
           navigationDisplay !== ProductImageNavigationDisplay.NONE &&
           images?.length > 1,
-        ...content,
+        ...options,
       };
       return { settings, images, active };
     }),

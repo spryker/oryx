@@ -7,50 +7,51 @@ import { ExperienceService } from './experience.service';
 import { Component } from './models';
 
 export class DefaultExperienceService implements ExperienceService {
-  protected dataStructure: { [key: string]: ReplaySubject<Component> } = {};
+  protected dataComponent: { [key: string]: ReplaySubject<Component> } = {};
   protected dataContent: { [key: string]: ReplaySubject<any> } = {};
+  protected dataOptions: { [key: string]: ReplaySubject<any> } = {};
 
   constructor(
     protected contentBackendUrl = inject(CONTENT_BACKEND_URL),
     protected http = inject(HttpService)
   ) {}
 
-  protected processStructure(components: Component[]): void {
-    const targetComponent: any = components.find((component: any) =>
+  protected processComponent(components: Component[]): void {
+    const targetComponent = components.find((component: Component) =>
       component.components ? component.id : undefined
     );
 
     if (targetComponent && targetComponent.id) {
-      if (!this.dataStructure[targetComponent.id]) {
-        this.dataStructure[targetComponent.id] = new ReplaySubject<Component>(
+      if (!this.dataComponent[targetComponent.id]) {
+        this.dataComponent[targetComponent.id] = new ReplaySubject<Component>(
           1
         );
       }
-      this.dataStructure[targetComponent.id].next(targetComponent);
+      this.dataComponent[targetComponent.id].next(targetComponent);
     }
 
-    components.forEach((component: any) => {
+    components.forEach((component: Component) => {
       if (component.components && component.components.length > 0) {
-        this.processStructure(component.components);
+        this.processComponent(component.components);
       }
     });
   }
 
-  reloadStructure(key: string): void {
+  reloadComponent(key: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
-    }/structure/${encodeURIComponent(key)}`;
+    }/components/${encodeURIComponent(key)}`;
 
     this.http
       .get(componentsUrl)
       .pipe(
         map((res: any) => {
-          this.dataStructure[key].next(res);
-          this.processStructure([res]);
+          this.dataComponent[key].next(res);
+          this.processComponent([res]);
           return res;
         }),
         catchError(() => {
-          this.dataStructure[key].next({ type: '', components: [] });
+          this.dataComponent[key].next({ type: '', components: [] });
           return of({});
         })
       )
@@ -75,12 +76,30 @@ export class DefaultExperienceService implements ExperienceService {
       .subscribe();
   }
 
-  getStructure({ key }: { key: string }): Observable<Component> {
-    if (!this.dataStructure[key]) {
-      this.dataStructure[key] = new ReplaySubject<Component>(1);
-      this.reloadStructure(key);
+  reloadOptions(key: string): void {
+    const componentsUrl = `${this.contentBackendUrl}/options/${key}`;
+
+    this.http
+      .get(componentsUrl)
+      .pipe(
+        map((res) => {
+          this.dataOptions[key].next(res);
+          return res;
+        }),
+        catchError((e) => {
+          this.dataOptions[key].next({ error: e });
+          return of('');
+        })
+      )
+      .subscribe();
+  }
+
+  getComponent({ key }: { key: string }): Observable<Component> {
+    if (!this.dataComponent[key]) {
+      this.dataComponent[key] = new ReplaySubject<Component>(1);
+      this.reloadComponent(key);
     }
-    return this.dataStructure[key];
+    return this.dataComponent[key];
   }
 
   getContent({ key }: { key: string }): Observable<any> {
@@ -90,5 +109,14 @@ export class DefaultExperienceService implements ExperienceService {
     }
 
     return this.dataContent[key];
+  }
+
+  getOptions({ key }: { key: string }): Observable<any> {
+    if (!this.dataOptions[key]) {
+      this.dataOptions[key] = new ReplaySubject<any>(1);
+      this.reloadOptions(key);
+    }
+
+    return this.dataOptions[key];
   }
 }

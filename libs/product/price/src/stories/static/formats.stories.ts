@@ -19,7 +19,7 @@ const getLocale = (): LocaleService => {
 const Template: Story<any> = (args): TemplateResult => {
   getLocale().set(args.locale);
   return html`
-    <product-price sku="1" .content=${{ showOriginal: true }}></product-price>
+    <product-price sku="1" .options=${{ showOriginal: true }}></product-price>
   `;
 };
 

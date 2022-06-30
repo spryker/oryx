@@ -87,7 +87,7 @@ describe('DefaultExperienceService', () => {
 
       http.flush(mockStructure);
 
-      service.getStructure({ key: mockStructureKey }).subscribe(callback);
+      service.getComponent({ key: mockStructureKey }).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockStructure);
     });
@@ -95,7 +95,7 @@ describe('DefaultExperienceService', () => {
       const callback = vi.fn();
       const keyTrigger$ = new BehaviorSubject(mockStructureKey);
       const structure$ = keyTrigger$.pipe(
-        switchMap((key) => service.getStructure({ key }))
+        switchMap((key) => service.getComponent({ key }))
       );
 
       http.flush(mockStructure);

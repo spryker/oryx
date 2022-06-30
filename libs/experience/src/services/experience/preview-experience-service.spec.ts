@@ -129,7 +129,7 @@ describe('ExperiencePreviewService', () => {
         { once: true }
       );
 
-      service.getStructure({ key: structure });
+      service.getComponent({ key: structure });
     }));
 
   it('should send post message to reload content', async () =>
@@ -167,7 +167,7 @@ describe('ExperiencePreviewService', () => {
         ],
       };
 
-      service.getStructure({ key: structure.id }).subscribe((data) => {
+      service.getComponent({ key: structure.id }).subscribe((data) => {
         expect(data.type).toBe(structure.type);
         expect(data.components?.length).toBe(structure.components.length);
 

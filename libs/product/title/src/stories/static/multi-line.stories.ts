@@ -17,7 +17,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         html`
           <product-title
             sku="1"
-            .content=${{ tag: 'h' + (i + 1) }}
+            .options=${{ tag: 'h' + (i + 1) }}
           ></product-title>
         `
     )}

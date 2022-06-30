@@ -10,7 +10,7 @@ export interface ProductImageSet {
   externalUrlSmall: string;
 }
 
-export interface ProductImageComponentContent {
+export interface ProductImageComponentOptions {
   /**
    * Preview layout
    * @default 'carousel'
@@ -37,7 +37,7 @@ export interface ProductImageComponentContent {
 }
 
 export interface ProductImageComponentSettings
-  extends ProductImageComponentContent {
+  extends ProductImageComponentOptions {
   /**
    * Preview image width
    * @default '300'
