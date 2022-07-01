@@ -32,7 +32,7 @@ async function svgSprite() {
     console.info(`Converting icons to the correct structure`);
     for (const i in icons) {
       const icon = icons[i];
-      templates.push(svgTemplate(icon.type, icon.source));
+      templates.push(svgTemplate(icon.type, icon.source.join('')));
     }
 
     if (!existsSync(dirname(output))) {
