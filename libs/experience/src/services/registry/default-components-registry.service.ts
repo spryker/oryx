@@ -42,6 +42,7 @@ export class DefaultComponentsRegistryService
       if (
         this.registeredComponents[type].component &&
         !this.resolvedComponents[type] &&
+        !customElements.get(type) &&
         !(options?.hydratable && isClient() && options.hasSSR)
       ) {
         return from(this.registeredComponents[type].component?.() || of()).pipe(

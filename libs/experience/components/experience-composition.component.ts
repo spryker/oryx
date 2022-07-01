@@ -18,6 +18,9 @@ export class ExperienceCompositionComponent extends LitElement {
   protected components?: Array<Component>;
 
   @property()
+  protected uid?: string;
+
+  @property()
   protected key?: string;
 
   @observe()
@@ -40,7 +43,19 @@ export class ExperienceCompositionComponent extends LitElement {
       (key: string) =>
         this.experienceService?.getComponent({ key }) || of({} as any)
     ),
-    switchMap((structures: Component) => of(structures?.components)),
+    switchMap((structures: Component) => {
+      if (this.uid && structures.components) {
+        let components;
+        JSON.stringify(structures.components, (_, nested) => {
+          if (nested.id === this.uid && nested.components) {
+            components = nested.components;
+          }
+          return nested;
+        });
+        return of(components);
+      }
+      return of(structures?.components);
+    }),
     tap(async (components: Array<Component> | undefined) => {
       if (this.key && components) {
         const resolve = this.ssrAwaiter?.getAwaiter();

@@ -13,6 +13,7 @@ export class StorefrontRouter extends Router {
   protected ssrRendered = false;
   // TODO - @lit-labs/router does not expose _host. If they do, we will prefer it over this.
   protected readonly host: ReactiveControllerHost & HTMLElement;
+
   // window.location.pathname alternative to private _currentRoute is updated too early
   protected currentPath: string;
 
