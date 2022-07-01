@@ -16,7 +16,7 @@ export const input = (
   hasText = true,
   checked = false
 ): TemplateResult => html`
-  <input type="checkbox" ?checked=${checked} />
+  <input type="checkbox" ?checked=${checked} aria-label=${item} />
   ${when(hasText, () => html`${item}`)}
 `;
 
