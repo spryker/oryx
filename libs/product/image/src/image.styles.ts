@@ -1,16 +1,24 @@
-import { css, unsafeCSS } from 'lit';
+import { css, CSSResult, unsafeCSS } from 'lit';
 import {
+  ProductImageNavigationAlignment,
   ProductImageNavigationDisplay,
   ProductImageNavigationLayout,
   ProductImageNavigationPosition,
   ProductImagePreviewLayout,
 } from './image.model';
 
-const layout = {
-  grid: unsafeCSS(ProductImageNavigationLayout.GRID),
-  float: unsafeCSS(ProductImageNavigationPosition.FLOATING),
-  aside: unsafeCSS(ProductImageNavigationDisplay.ASIDE),
-  toggle: unsafeCSS(ProductImagePreviewLayout.TOGGLE),
+const getCSSValues = (obj: Record<string, string>): Record<string, CSSResult> =>
+  Object.fromEntries(Object.values(obj).map((key) => [key, unsafeCSS(key)]));
+
+const preview = {
+  layout: getCSSValues(ProductImagePreviewLayout),
+};
+
+const nav = {
+  position: getCSSValues(ProductImageNavigationPosition),
+  display: getCSSValues(ProductImageNavigationDisplay),
+  align: getCSSValues(ProductImageNavigationAlignment),
+  layout: getCSSValues(ProductImageNavigationLayout),
 };
 
 export const styles = css`
@@ -107,37 +115,40 @@ export const styles = css`
     object-fit: var(--navigation-fit, cover);
   }
 
-  .nav-item > img:hover,
   .nav-item > img.active,
+  .nav-item > input:hover + img,
   .nav-item > input:checked + img,
   .nav-item > input:focus + img {
     opacity: 100%;
     border-color: var(--oryx-color-neutral-darker);
   }
 
-  :host([nav-position='${layout.float}']) {
+  :host([nav-display='${nav.display.floating}']) {
     position: relative;
   }
 
-  :host([nav-display='${layout.aside}']) {
+  :host([nav-position='${nav.position.start}']),
+  :host([nav-position='${nav.position.end}']) {
     flex-direction: row;
   }
 
-  :host([nav-position='${layout.float}']) .nav {
+  :host([nav-display='${nav.display.floating}']) .nav {
     position: absolute;
     padding: var(--navigation-padding, 8px);
     top: auto;
     bottom: 0;
-    transform: translateX(-50%);
-    inset-inline-start: 50%;
   }
 
-  :host([dir='rtl'][nav-position='${layout.float}']) .nav {
-    transform: translateX(50%);
-  }
-
-  :host([nav-display='${layout.aside}']) .nav {
+  :host([nav-position='${nav.position.start}']) .nav {
     order: 0;
+  }
+
+  :host([nav-position='${nav.position.end}']) .nav {
+    inset-block-end: 0;
+  }
+
+  :host([nav-position='${nav.position.start}']) .nav,
+  :host([nav-position='${nav.position.end}']) .nav {
     padding-inline: var(--navigation-padding, 8px);
     max-height: var(--preview-height, 300px);
     inset-inline: auto;
@@ -145,46 +156,140 @@ export const styles = css`
     flex-direction: row;
   }
 
-  :host([nav-display='${layout.aside}']) section {
+  :host([dir='rtl'][nav-position='${nav.position.start}']) .nav,
+  :host([dir='rtl'][nav-position='${nav.position.end}']) .nav {
+    flex-direction: row-reverse;
+  }
+
+  :host([nav-position='${nav.position.start}']) section,
+  :host([nav-position='${nav.position.end}']) section {
     flex-basis: 100%;
   }
 
-  :host([layout='${layout.toggle}']) section {
+  :host([layout='${preview.layout.toggle}']) section {
     position: relative;
   }
 
-  :host([layout='${layout.toggle}']) section > picture {
+  :host([layout='${preview.layout.toggle}']) section > picture {
     position: absolute;
     inset: 0;
     opacity: 0%;
     transition: opacity var(--oryx-transition-time) ease;
   }
 
-  :host([layout='${layout.toggle}']) section > picture.active {
+  :host([layout='${preview.layout.toggle}']) section > picture.active {
     opacity: 100%;
   }
 
-  :host([nav-layout='${layout.grid}']) .nav {
+  :host([nav-layout='${nav.layout.grid}']) .nav {
     flex-wrap: wrap;
   }
 
-  :host([nav-layout='${layout.grid}'][nav-position='${layout.float}'][nav-display='${layout.aside}'])
+  :host([nav-layout='${nav.layout.grid}'][nav-display='${nav.display
+        .floating}'][nav-position='${nav.position.start}'])
+    .nav,
+  :host([nav-layout='${nav.layout.grid}'][nav-display='${nav.display
+        .floating}'][nav-position='${nav.position.end}'])
     .nav {
-    inset-block-end: auto;
+    inset-block: 0 auto;
+  }
+
+  :host([nav-position='${nav.position.end}'][nav-layout='${nav.layout
+        .grid}'][nav-display='${nav.display.floating}'])
+    .nav,
+  :host([dir='rtl'][nav-position='${nav.position.start}'][nav-layout='${nav
+        .layout.grid}'][nav-display='${nav.display.floating}'])
+    .nav {
+    inset-block: auto 0;
+  }
+
+  :host([dir='rtl'][nav-display='${nav.display.floating}'][nav-position='${nav
+        .position.end}'])
+    .nav {
+    inset-block: 0 auto;
+  }
+
+  :host([nav-position='${nav.position.start}'][nav-display='${nav.display
+        .floating}'])
+    .nav,
+  :host([nav-position='${nav.position.end}'][nav-display='${nav.display
+        .floating}'])
+    .nav {
+    padding: var(--navigation-padding, 8px);
+  }
+
+  :host([nav-layout='${nav.layout.grid}'][nav-display='${nav.display
+        .floating}'])
+    .nav {
+    inset: 0;
+    top: auto;
+    transform: none;
+    min-inline-size: fit-content;
+  }
+
+  :host([nav-align='${nav.align.start}']) .nav {
+    margin-inline-start: 0;
+    inset-inline-start: 0;
+    justify-content: start;
+  }
+
+  :host([nav-align='${nav.align.start}']:not([nav-position='${nav.position
+          .below}']))
+    .nav {
     top: 0;
   }
 
-  :host([nav-display='${layout.aside}'][nav-position='${layout.float}']) .nav {
-    padding: var(--navigation-padding, 8px);
+  :host([nav-align='${nav.align.center}'][nav-layout='${nav.layout.grid}'])
+    .nav {
+    justify-content: center;
+  }
+
+  :host([nav-align='${nav.align.center}'][nav-display='${nav.display
+        .floating}'])
+    .nav {
     transform: translateY(-50%);
+    inset-inline-start: 50%;
     top: 50%;
   }
 
-  :host([nav-layout='${layout.grid}'][nav-position='${layout.float}']) .nav {
-    inset: 0;
+  :host([dir='rtl'][nav-align='${nav.align.center}'][nav-display='${nav.display
+        .floating}']:not([nav-position='${nav.position.below}']))
+    .nav {
+    inset-inline-start: auto;
+  }
+
+  :host([nav-align='${nav.align.center}'][nav-display='${nav.display
+        .floating}'][nav-position='${nav.position.below}'])
+    .nav {
+    transform: translateX(-50%);
     top: auto;
-    justify-content: center;
-    transform: none;
-    min-inline-size: fit-content;
+  }
+
+  :host([dir='rtl'][nav-align='${nav.align.center}'][nav-display='${nav.display
+        .floating}'][nav-position='${nav.position.below}'])
+    .nav {
+    transform: translateX(50%);
+  }
+
+  :host([nav-align='${nav.align.end}'][nav-layout='${nav.layout.grid}']) .nav {
+    margin-inline-end: 0;
+    justify-content: end;
+  }
+
+  :host([nav-align='${nav.align.end}'][nav-display='${nav.display.inline}'])
+    .nav {
+    margin-bottom: 0;
+    margin-inline-end: 0;
+  }
+
+  :host([nav-align='${nav.align.end}'][nav-display='${nav.display.floating}'])
+    .nav {
+    inset-inline-end: 0;
+  }
+
+  :host([nav-align='${nav.align.end}'][nav-layout='${nav.layout
+        .grid}'][nav-position='${nav.position.below}'])
+    .nav {
+    justify-content: end;
   }
 `;

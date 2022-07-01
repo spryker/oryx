@@ -1,11 +1,12 @@
 import { ProductComponentProperties } from '@spryker-oryx/product';
-import { Meta, Story } from '@storybook/web-components';
+import { forceReRender, Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import {
   ProductImageComponentOptions,
+  ProductImageNavigationAlignment,
   ProductImageNavigationDisplay,
   ProductImageNavigationLayout,
   ProductImageNavigationPosition,
@@ -20,6 +21,22 @@ export default {
 
 type Props = ProductImageComponentOptions & ProductComponentProperties;
 
+const el = document.querySelector('html');
+let oldVal = el?.getAttribute('dir');
+
+const observer = new MutationObserver(([mutation]) => {
+  const newVal = el?.getAttribute(mutation.attributeName as string);
+  if (oldVal !== newVal) {
+    oldVal = newVal;
+    forceReRender();
+  }
+});
+
+observer.observe(el as HTMLHtmlElement, {
+  attributes: true,
+  attributeFilter: ['dir'],
+});
+
 const Template: Story<Props> = (options): TemplateResult => {
   return html`<product-image .sku=${options.sku} .options=${options} />`;
 };
@@ -29,9 +46,10 @@ export const ProductImageDemo = Template.bind({});
 ProductImageDemo.args = {
   sku: MockProductService.mockProducts[0].sku,
   previewLayout: ProductImagePreviewLayout.CAROUSEL,
-  navigationDisplay: ProductImageNavigationDisplay.BELOW,
+  navigationPosition: ProductImageNavigationPosition.BELOW,
   navigationLayout: ProductImageNavigationLayout.CAROUSEL,
-  navigationPosition: ProductImageNavigationPosition.INLINE,
+  navigationDisplay: ProductImageNavigationDisplay.INLINE,
+  navigationAlignment: ProductImageNavigationAlignment.CENTER,
 };
 
 ProductImageDemo.argTypes = {
@@ -48,8 +66,8 @@ ProductImageDemo.argTypes = {
     control: { type: 'select' },
     table: { category: 'Preview' },
   },
-  navigationDisplay: {
-    options: Object.values(ProductImageNavigationDisplay),
+  navigationPosition: {
+    options: Object.values(ProductImageNavigationPosition),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },
@@ -58,8 +76,13 @@ ProductImageDemo.argTypes = {
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },
-  navigationPosition: {
-    options: Object.values(ProductImageNavigationPosition),
+  navigationDisplay: {
+    options: Object.values(ProductImageNavigationDisplay),
+    control: { type: 'select' },
+    table: { category: 'Navigation' },
+  },
+  navigationAlignment: {
+    options: Object.values(ProductImageNavigationAlignment),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },

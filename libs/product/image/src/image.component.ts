@@ -69,9 +69,11 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
     }),
     tap(({ settings }) => {
       this.setHostAttr('layout', settings.previewLayout);
-      this.setHostAttr('nav-position', settings.navigationPosition);
-      this.setHostAttr('nav-layout', settings.navigationLayout);
       this.setHostAttr('nav-display', settings.navigationDisplay);
+      this.setHostAttr('nav-layout', settings.navigationLayout);
+      this.setHostAttr('nav-position', settings.navigationPosition);
+      this.setHostAttr('nav-align', settings.navigationAlignment);
+      this.setHostAttr('dir');
       if (
         window?.getComputedStyle?.(this)?.getPropertyValue?.('direction') ===
         'rtl'
