@@ -1,6 +1,6 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject, take } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CONTENT_BACKEND_URL } from '../experience-tokens';
 import { ExperienceService } from './experience.service';
@@ -16,10 +16,9 @@ export class DefaultExperienceService implements ExperienceService {
     protected http = inject(HttpService)
   ) {}
 
-  protected processComponent(components: Component[]): void {
-    const targetComponent = components.find((component: Component) =>
-      component.components ? component.id : undefined
-    );
+  protected processComponent(component: Component): void {
+    const targetComponent: Component = component;
+    const components = component?.components || [];
 
     if (targetComponent && targetComponent.id) {
       if (!this.dataComponent[targetComponent.id]) {
@@ -31,9 +30,7 @@ export class DefaultExperienceService implements ExperienceService {
     }
 
     components.forEach((component: Component) => {
-      if (component.components && component.components.length > 0) {
-        this.processComponent(component.components);
-      }
+      this.processComponent(component);
     });
   }
 
@@ -47,7 +44,7 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         map((res: any) => {
           this.dataComponent[key].next(res);
-          this.processComponent([res]);
+          this.processComponent(res);
           return res;
         }),
         catchError(() => {
@@ -59,39 +56,21 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   reloadContent(key: string): void {
-    const componentsUrl = `${this.contentBackendUrl}/content/${key}`;
-
-    this.http
-      .get(componentsUrl)
-      .pipe(
-        map((res: any) => {
-          this.dataContent[key].next(res);
-          return res;
-        }),
-        catchError((e) => {
-          this.dataContent[key].next({ error: e });
-          return of('');
-        })
-      )
-      .subscribe();
+    this.getComponent({ key })
+      .pipe(take(1))
+      .subscribe((component) => {
+        const content = component?.content ?? {};
+        this.dataContent[key].next(content);
+      });
   }
 
   reloadOptions(key: string): void {
-    const componentsUrl = `${this.contentBackendUrl}/options/${key}`;
-
-    this.http
-      .get(componentsUrl)
-      .pipe(
-        map((res) => {
-          this.dataOptions[key].next(res);
-          return res;
-        }),
-        catchError((e) => {
-          this.dataOptions[key].next({ error: e });
-          return of('');
-        })
-      )
-      .subscribe();
+    this.getComponent({ key })
+      .pipe(take(1))
+      .subscribe((component) => {
+        const options = component?.options ?? {};
+        this.dataOptions[key].next(options);
+      });
   }
 
   getComponent({ key }: { key: string }): Observable<Component> {

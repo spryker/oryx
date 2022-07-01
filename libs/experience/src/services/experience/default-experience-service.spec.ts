@@ -16,6 +16,20 @@ const mockStructure = {
     {
       id: 'homepage-banner',
       type: 'Banner',
+      content: {
+        data: {
+          items: [
+            {
+              title: 'Mock Dynamic component render',
+            },
+          ],
+        },
+      },
+      options: {
+        data: {
+          mode: 'carousel',
+        },
+      },
     },
     {
       id: 'bannerSlider2',
@@ -40,12 +54,23 @@ const mockStructure = {
   ],
 };
 
-const mockContent = {
-  items: [
-    {
-      title: 'Mock Dynamic component render',
+const mockComponentData = {
+  id: mockStructureKey,
+  type: 'LayoutSlot',
+  content: {
+    data: {
+      items: [
+        {
+          title: 'Mock Dynamic component render',
+        },
+      ],
     },
-  ],
+  },
+  options: {
+    data: {
+      mode: 'carousel',
+    },
+  },
 };
 
 describe('DefaultExperienceService', () => {
@@ -115,11 +140,11 @@ describe('DefaultExperienceService', () => {
     it('should return mock data', () => {
       const callback = vi.fn();
 
-      http.flush(mockContent);
+      http.flush(mockComponentData);
 
       service.getContent({ key: mockDataKey }).subscribe(callback);
 
-      expect(callback).toHaveBeenCalledWith(mockContent);
+      expect(callback).toHaveBeenCalledWith(mockComponentData.content);
     });
     it('should  not request second time if key the same', () => {
       const callback = vi.fn();
@@ -128,16 +153,16 @@ describe('DefaultExperienceService', () => {
         switchMap((key) => service.getContent({ key }))
       );
 
-      http.flush(mockContent);
+      http.flush(mockComponentData);
       structure$.subscribe(callback);
 
-      expect(callback).toHaveBeenNthCalledWith(1, mockContent);
+      expect(callback).toHaveBeenNthCalledWith(1, mockComponentData.content);
 
       http.flush('mockNewResponse');
 
       keyTrigger$.next(mockDataKey);
 
-      expect(callback).toHaveBeenNthCalledWith(2, mockContent);
+      expect(callback).toHaveBeenNthCalledWith(2, mockComponentData.content);
     });
   });
 });

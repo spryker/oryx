@@ -11,4 +11,10 @@ export interface Component {
   id?: string;
   type: string;
   components?: Component[];
+  options?: {
+    data?: any;
+  };
+  content?: {
+    data?: any;
+  };
 }

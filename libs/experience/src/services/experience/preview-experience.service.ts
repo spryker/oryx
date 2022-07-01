@@ -48,7 +48,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
               this.dataComponent[item.id].next(item);
             }
           });
-          this.processComponent(structure.components);
+          this.processComponent(structure);
         }
       }
     );
