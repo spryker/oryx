@@ -22,4 +22,11 @@ export const routes: RouteConfig[] = [
     ></experience-composition>`,
     name: 'Page',
   },
+  {
+    path: '/*',
+    render: (): TemplateResult =>
+      html`<h1>Error 404</h1>
+        <p>Page not found</p>`,
+    name: '404',
+  },
 ];
