@@ -53,6 +53,8 @@ export interface Icon extends IconProperties {
    */
   source?: TemplateResult;
 }
+// Fallback for sprites generation
+export const Icon = '';
 
 export enum NavigationIconsV2 {
   Sales = 'sales',

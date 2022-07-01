@@ -26,7 +26,8 @@ export default function pathsReplacer(program: Program) {
       return (sourceFile: SourceFile) => {
         const visitor = (node: Node): Node => {
           const path = paths[node?.text];
-          const isLit = node?.text === 'lit';
+          const isLit =
+            node?.text === 'lit' || node?.text?.startsWith?.('lit/');
           const resolveLit = isLit
             ? ctx.factory.createStringLiteral(
                 pathToFileURL(

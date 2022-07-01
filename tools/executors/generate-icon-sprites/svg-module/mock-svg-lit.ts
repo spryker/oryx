@@ -1,9 +1,18 @@
-globalThis.window = {} as any;
+globalThis.window = {};
 globalThis.document = {
-  createTreeWalker: (() => {}) as any,
+  createTreeWalker: () => {},
 };
-globalThis.HTMLElement = class {} as any;
+globalThis.HTMLElement = class {};
+globalThis.customElements = {
+  get: () => {},
+  define: () => {},
+};
+
+export class LitElement {}
 
 export const TemplateResult = '';
-
-export const svg = (svg: TemplateStringsArray): TemplateStringsArray => svg;
+export const html = () => '';
+export const css = () => '';
+export const property = () => '';
+export const when = () => '';
+export const svg = (svg) => svg;
