@@ -42,7 +42,7 @@ const Template: Story<Props> = ({
       ${Array.from(new Array(size).keys()).map((key) => {
         return html`<a
           href="/?path=/story/ui-navigations-pagination--pagination-demo&args=current:${key +
-          1};hideNavigation:${hideNavigation};max:${max}"
+          1};hideNavigation:${hideNavigation};max:${max};size:${size}"
           >${key + 1}</a
         >`;
       })}
