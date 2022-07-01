@@ -1,1 +1,1 @@
-export { add, cart, cart_add, minus } from './icons';
+export { add, cart, cart_add, dropdown, minus } from './icons';

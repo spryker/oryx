@@ -56,16 +56,6 @@ export const styles = css`
     color: #9ea1a6;
   }
 
-  :host([type='front']) {
-    transform: rotate(180deg);
-  }
-  :host([type='dropUp']) {
-    transform: rotate(90deg);
-  }
-  :host([type='dropdown']) {
-    transform: rotate(-90deg);
-  }
-
   :host([type='loader']) {
     color: var(--oryx-color-brand);
     animation-name: spin;

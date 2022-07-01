@@ -277,17 +277,17 @@ export const back: Icon = {
 
 export const front: Icon = {
   type: IconTypes.Front,
-  source: chevron,
+  source: svg`<g style="transform-origin: center;transform: rotate(180deg)">${chevron}</g>`,
 };
 
 export const dropdown: Icon = {
   type: IconTypes.Dropdown,
-  source: chevron,
+  source: svg`<g style="transform-origin: center;transform: rotate(-90deg)">${chevron}</g>`,
 };
 
 export const dropUp: Icon = {
   type: IconTypes.DropUp,
-  source: chevron,
+  source: svg`<g style="transform-origin: center;transform: rotate(90deg)">${chevron}</g>`,
 };
 
 export const loader: Icon = {
