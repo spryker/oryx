@@ -93,7 +93,7 @@
         "iconSets": [
           {
             "input": "src/icons/index.ts",
-            "output": "assets/icons.svg"
+            "output": "public/assets/icons.svg"
           }
         ]
       }
