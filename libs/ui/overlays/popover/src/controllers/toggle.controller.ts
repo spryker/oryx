@@ -58,7 +58,7 @@ export class ToggleController implements ReactiveController {
    * Until Safari has issue with focusing of some elements during click on them
    * need to remember those elements and make them focused manually
    */
-  protected shouldBeFocused: HTMLElement | null = null;
+  protected shouldBeFocused: EventTarget | null = null;
 
   hostConnected(): void {
     if (this.host.hasAttribute('open')) {
@@ -103,7 +103,6 @@ export class ToggleController implements ReactiveController {
     }
 
     this.skipOpeningOnNextFocus = false;
-    this.shouldBeFocused = null;
   }
 
   protected async handleFocusout(): Promise<void> {
@@ -111,9 +110,7 @@ export class ToggleController implements ReactiveController {
       this.toggle(false);
     }
 
-    if (this.shouldBeFocused) {
-      this.shouldBeFocused.focus();
-    }
+    this.focusShouldBeFocusedMaybe();
   }
 
   protected hostLostFocus(): Promise<boolean> {
@@ -134,13 +131,14 @@ export class ToggleController implements ReactiveController {
       return;
     }
 
-    if (
-      isSafari() &&
-      nonFocusableOnClickInSafari.some((selector) =>
-        (e.target as HTMLElement).matches(selector)
-      )
-    ) {
-      this.shouldBeFocused = e.target as HTMLElement;
+    if (isSafari()) {
+      this.shouldBeFocused =
+        e.composedPath().find((element) => {
+          return nonFocusableOnClickInSafari.some(
+            (selector) =>
+              element instanceof HTMLElement && element.matches(selector)
+          );
+        }) ?? null;
     }
 
     if (!this.isOpen) {
@@ -156,6 +154,8 @@ export class ToggleController implements ReactiveController {
     ) {
       this.toggle(false);
     }
+
+    this.focusShouldBeFocusedMaybe();
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
@@ -260,6 +260,13 @@ export class ToggleController implements ReactiveController {
           element instanceof Element &&
           element.hasAttribute(CLOSE_POPOVER_ATTR)
       );
+  }
+
+  protected focusShouldBeFocusedMaybe(): void {
+    if (this.shouldBeFocused) {
+      (this.shouldBeFocused as HTMLElement).focus();
+      this.shouldBeFocused = null;
+    }
   }
 
   /**

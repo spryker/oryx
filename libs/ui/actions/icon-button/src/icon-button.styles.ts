@@ -7,6 +7,7 @@ export const iconButtonStyles = css`
 
   ::slotted(*) {
     display: flex;
+    position: relative;
     flex: 100%;
     align-items: center;
     justify-content: center;
@@ -18,6 +19,16 @@ export const iconButtonStyles = css`
     border: solid var(--oryx-color-canvas) 1px;
     border-radius: 50%;
     color: inherit;
+  }
+
+  ::slotted(*)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
   }
 
   ::slotted(:hover:not([disabled])) {

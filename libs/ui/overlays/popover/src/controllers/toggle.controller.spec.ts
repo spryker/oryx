@@ -68,7 +68,7 @@ describe('ToggleController', () => {
     popover: (): PopoverComponent | null => {
       return element.renderRoot.querySelector('oryx-popover');
     },
-    passFocusLostCheck: async (): Promise<void> => {
+    simulateAsyncFocusLossCheck: async (): Promise<void> => {
       vi.advanceTimersByTime(0);
       element.requestUpdate();
       await elementUpdated(element);
@@ -212,7 +212,7 @@ describe('ToggleController', () => {
           beforeEach(async () => {
             outerButton?.focus();
 
-            await utils.passFocusLostCheck();
+            await utils.simulateAsyncFocusLossCheck();
           });
 
           it('should hide the popover', async () => {
@@ -302,7 +302,7 @@ describe('ToggleController', () => {
               new CustomEvent(CLOSE_EVENT, { bubbles: true, composed: true })
             );
 
-            await utils.passFocusLostCheck();
+            await utils.simulateAsyncFocusLossCheck();
           });
 
           it('should hide the popover', async () => {
@@ -550,7 +550,7 @@ describe('ToggleController', () => {
 
   describe('Safari focus on click behavior', () => {
     let button: HTMLButtonElement | null;
-    let input: Element | null;
+    let input: HTMLInputElement | null;
 
     beforeEach(async () => {
       mockUserAgent(userAgentSafariMacOsX154);
@@ -564,10 +564,9 @@ describe('ToggleController', () => {
         </fake-popover>`
       );
       vi.useFakeTimers();
-      button = element.querySelector('button');
 
-      input = element.getElementsByTagName('input')[0];
-      (input as HTMLInputElement).focus();
+      button = element.querySelector('button');
+      input = element.querySelector('input');
     });
 
     afterEach(() => {
@@ -579,14 +578,40 @@ describe('ToggleController', () => {
       expect(navigator.userAgent).toEqual(userAgentSafariMacOsX154);
     });
 
-    it('should not hide the popover', async () => {
-      button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    describe('when focus changes inside popover', () => {
+      beforeEach(async () => {
+        (input as HTMLInputElement).focus();
+      });
 
-      input?.dispatchEvent(new Event('focusout', { bubbles: true }));
+      it('should not hide the popover', async () => {
+        button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
 
-      await utils.passFocusLostCheck();
+        input?.dispatchEvent(new Event('focusout', { bubbles: true }));
 
-      expect(utils.popover()?.hasAttribute('show')).toBe(true);
+        await utils.simulateAsyncFocusLossCheck();
+
+        expect(utils.popover()?.hasAttribute('show')).toBe(true);
+      });
+    });
+
+    describe('when click on the focusable element inside popover', () => {
+      it('should focus the broken focusable element', async () => {
+        button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+        button?.dispatchEvent(new Event('mouseup', { bubbles: true }));
+
+        await utils.simulateAsyncFocusLossCheck();
+
+        expect(button?.matches(':focus')).toBe(true);
+      });
+
+      it('should not manually focus the non-broken focusable element', async () => {
+        input?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+        input?.dispatchEvent(new Event('mouseup', { bubbles: true }));
+
+        await utils.simulateAsyncFocusLossCheck();
+
+        expect(input?.matches(':focus')).toBe(false);
+      });
     });
   });
 });

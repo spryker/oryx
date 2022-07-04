@@ -53,4 +53,5 @@ IconButtonDemo.argTypes = {
 IconButtonDemo.args = {
   disabled: false,
   type: IconTypes.Rocket,
+  size: Size.medium,
 };
