@@ -1,7 +1,6 @@
 import { ContextService } from '@spryker-oryx/core';
 import { ServerContextService } from '@spryker-oryx/core/server';
 import { resolve } from '@spryker-oryx/injector';
-import { isClient } from '@spryker-oryx/typescript-utils';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { isObservable, Observable, Subscription } from 'rxjs';
 
@@ -16,7 +15,6 @@ export class SubscribeController implements ReactiveController {
   }
 
   hostConnected(): void {
-    // TODO: check performance
     for (const observable$ of this.observables) {
       this.subscribe(observable$);
     }
@@ -33,7 +31,7 @@ export class SubscribeController implements ReactiveController {
 
     this.observables.add(observable$);
 
-    if (!isClient) {
+    if (this.context?.rendered$) {
       this.subscribe(observable$);
     }
   }
