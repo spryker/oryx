@@ -72,6 +72,14 @@ export const textStyles = css`
     transform: rotate(180deg);
   }
 
+  /* FF won't render line-clamp properly wen there's not wrapping block element surrounding 
+   * various child elements. This breaks Safari, hence we limit this behaviour only to FF. */
+  @supports (-moz-appearance: none) {
+    slot:not([name]) {
+      display: block;
+    }
+  }
+
   :host(:not([requires-truncate])) slot[name='toggle'] {
     display: none;
   }
