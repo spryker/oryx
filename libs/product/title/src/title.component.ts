@@ -7,7 +7,6 @@ import {
 } from '@spryker-oryx/product';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { map } from 'rxjs';
 import { ProductTitleOptions } from './model';
 import { styles } from './title.styles';
 
@@ -18,9 +17,7 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
   protected productController = new ProductController(this);
   protected contentController = new ContentController(this);
   protected product$ = this.productController.getProduct();
-  protected options$ = this.contentController
-    .getOptions()
-    .pipe(map((options) => options ?? ({} as ProductTitleOptions)));
+  protected options$ = this.contentController.getOptions();
 
   protected override render(): TemplateResult {
     return html`
@@ -29,7 +26,7 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
         (options) =>
           html`${this.renderTitle(
             html`
-              ${asyncValue(this.product$, (product) => html`${product?.name}`)}
+              ${asyncValue(this.product$, (product) => html`${product.name}`)}
             `,
             options
           )} `

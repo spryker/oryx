@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
@@ -11,6 +12,7 @@ import { descriptionStyles } from './description.styles';
 import { ProductDescriptionContent } from './model';
 import { convertLineFeedsToHTML } from './utils';
 
+@hydratable()
 export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
   static styles = descriptionStyles;
 
@@ -21,14 +23,14 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
     return html`
       ${asyncValue(
         this.options$,
-        (c) => html`<oryx-text
-          .truncateAfter=${c?.truncateAfter ?? 0}
-          ?showToggle=${!!c.showToggle}
-          ?expanded=${!!c.expanded}
+        (options) => html`<oryx-text
+          .truncateAfter=${options.truncateAfter ?? 0}
+          ?showToggle=${!!options.showToggle}
+          ?expanded=${!!options.expanded}
         >
           ${asyncValue(
             this.product$,
-            (p) => html`${unsafeHTML(this.convert(p.description))}`
+            (product) => html`${unsafeHTML(this.convert(product.description))}`
           )}
         </oryx-text>`
       )}

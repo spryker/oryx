@@ -24,7 +24,7 @@ export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOpt
   }
 
   protected renderPrice([options, price]: [
-    ProductPriceOptions | undefined,
+    Partial<ProductPriceOptions> | undefined,
     FormattedProductPrice
   ]): TemplateResult {
     return html`

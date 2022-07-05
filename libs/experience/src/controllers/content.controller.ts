@@ -40,7 +40,7 @@ export class ContentController<T = unknown, K = unknown> {
     );
   }
 
-  getOptions(): Observable<K | undefined> {
+  getOptions(): Observable<Partial<K>> {
     return this.observe.get('options').pipe(
       switchMap((options) => {
         if (options !== undefined) {
@@ -53,8 +53,8 @@ export class ContentController<T = unknown, K = unknown> {
               key && this.experienceContent
                 ? this.experienceContent
                     .getOptions<{ data: K }>({ key })
-                    .pipe(map((component) => component?.data))
-                : of(undefined)
+                    .pipe(map((component) => component?.data ?? {}))
+                : of({})
             )
           );
       })

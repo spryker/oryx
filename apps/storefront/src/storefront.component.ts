@@ -50,8 +50,8 @@ export class StorefrontComponent extends LitElement {
         <a href="/contact">Contact</a>
       </li>
       <li class="products">
-        <a href="/product/119_29804808"
-          ><product-title sku="119_29804808" uid="navtitle"></product-title
+        <a href="/product/139_24699831"
+          ><product-title sku="139_24699831" uid="navtitle"></product-title
         ></a>
         <a href="/product/060_24245592"
           ><product-title sku="060_24245592" uid="navtitle"></product-title

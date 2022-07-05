@@ -112,7 +112,7 @@ describe('ContentController', () => {
     expect(callbackOptions).toHaveBeenCalledWith(mockOptions.data);
   });
 
-  it('should emit `undefined` if content, options, uid and ExperienceService are not defined', () => {
+  it('should emit `empty object` if content, options, uid and ExperienceService are not defined', () => {
     const contentController = new ContentController({
       content: false,
       options: false,
@@ -133,6 +133,6 @@ describe('ContentController', () => {
     expect(mockGetContent).not.toHaveBeenCalled();
     expect(mockGetOptions).not.toHaveBeenCalled();
     expect(callbackContent).toHaveBeenCalledWith(undefined);
-    expect(callbackOptions).toHaveBeenCalledWith(undefined);
+    expect(callbackOptions).toHaveBeenCalledWith({});
   });
 });
