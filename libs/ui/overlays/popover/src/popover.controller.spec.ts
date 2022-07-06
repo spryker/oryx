@@ -342,7 +342,11 @@ describe('PopoverController', () => {
   });
 
   describe('selectByValue()', () => {
+    let scrollFn: SpyInstance;
+
     beforeEach(async () => {
+      scrollFn = vi.spyOn(Element.prototype, 'scrollIntoView');
+
       element = await fixture(html`<fake-popover show>
         <input placeholder="a11y" />
         ${['foo', 'bar'].map(
@@ -352,24 +356,52 @@ describe('PopoverController', () => {
     });
 
     describe('when there is an option with the given value', () => {
-      beforeEach(() => {
-        element.controller.selectByValue('bar');
-      });
       it('should select the option', () => {
+        element.controller.selectByValue('bar');
         expect(
           element.querySelector<OptionComponent>('oryx-option[selected]')?.value
         ).toBe('bar');
       });
+
+      describe('if the dropdown is open', () => {
+        beforeEach(async () => {
+          popover()?.toggleAttribute('show', true);
+          element.controller.selectByValue('bar');
+        });
+
+        it('should scroll the item into view', () => {
+          expect(scrollFn).toHaveBeenCalled();
+        });
+      });
+
+      describe('if the dropdown is not open', () => {
+        beforeEach(async () => {
+          popover()?.toggleAttribute('show', false);
+          element.controller.selectByValue('bar');
+        });
+
+        it('should scroll the item into view', () => {
+          expect(scrollFn).not.toHaveBeenCalled();
+        });
+      });
     });
 
     describe('when there is no option with the given value', () => {
-      beforeEach(() => {
-        element.controller.selectByValue('foo nor bar');
-      });
-      it('should not throw an error', () => {
-        expect(() => {
-          (): void => undefined;
-        }).not.toThrow();
+      describe('and the dropdown is open', () => {
+        beforeEach(async () => {
+          popover()?.toggleAttribute('show', true);
+          element.controller.selectByValue('foo nor bar');
+        });
+
+        it('should not throw an error', () => {
+          expect(() => {
+            (): void => undefined;
+          }).not.toThrow();
+        });
+
+        it('should scroll the item into view', () => {
+          expect(scrollFn).not.toHaveBeenCalled();
+        });
       });
     });
   });

@@ -51,7 +51,9 @@ export class PopoverController implements ReactiveController {
   selectByValue(value: string, omitDispatchEvent?: boolean): void {
     const index = this.items.findIndex((item) => item.value === value);
     this.selectedController.select(index, omitDispatchEvent);
-    this.items[index]?.scrollIntoView({ block: 'nearest' });
+    if (this.toggleController.isOpen) {
+      this.items[index]?.scrollIntoView({ block: 'nearest' });
+    }
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
