@@ -1,6 +1,5 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { isClient } from '@spryker-oryx/typescript-utils';
 import { Observable, of, ReplaySubject, take } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CONTENT_BACKEND_URL } from '../experience-tokens';
@@ -36,28 +35,20 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   reloadComponent(key: string): void {
-    let componentId = key;
-    const pathname = window?.location?.pathname;
-
-    if (isClient() && pathname && !this.dataComponent[pathname]) {
-      this.dataComponent[pathname] = new ReplaySubject(1);
-      componentId = window?.location?.pathname;
-    }
-
     const componentsUrl = `${
       this.contentBackendUrl
-    }/components/${encodeURIComponent(componentId)}`;
+    }/components/${encodeURIComponent(key)}`;
 
     this.http
       .get(componentsUrl)
       .pipe(
         map((res: any) => {
-          this.dataComponent[componentId].next(res);
+          this.dataComponent[key].next(res);
           this.processComponent(res);
           return res;
         }),
         catchError(() => {
-          this.dataComponent[componentId].next({ type: '', components: [] });
+          this.dataComponent[key].next({ type: '', components: [] });
           return of({});
         })
       )
