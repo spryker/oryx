@@ -80,6 +80,26 @@ describe('ButtonComponent', () => {
         it('should not have a loading spinner', () => {
           expect(element.querySelector('oryx-icon[type=loader]')).toBeNull();
         });
+
+        it('should not have inert attribute on slot', () => {
+          expect(
+            element.renderRoot.querySelector('slot')?.hasAttribute('inert')
+          ).toBe(false);
+        });
+      });
+
+      describe('when the isLoading flag is set', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-button loading><button></button></oryx-button>`
+          );
+        });
+
+        it('should have inert attribute on slot', () => {
+          expect(
+            element.renderRoot.querySelector('slot')?.hasAttribute('inert')
+          ).toBe(true);
+        });
       });
     });
   });

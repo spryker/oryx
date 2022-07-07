@@ -183,6 +183,7 @@ export const buttonStyles = css`
     background-color: var(--oryx-color-brand-lighter);
     border-color: var(--oryx-color-brand-light);
     color: transparent;
+    user-select: none;
   }
 
   :host([loading]) ::slotted(:is(button, a))::before {

@@ -13,6 +13,6 @@ export class ButtonComponent extends LitElement {
   @property({ type: Boolean }) outline?: boolean;
 
   protected override render(): TemplateResult {
-    return html`<slot></slot>`;
+    return html`<slot ?inert=${this.loading}></slot>`;
   }
 }
