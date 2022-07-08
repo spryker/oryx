@@ -11,8 +11,12 @@ export const textStyles = css`
     transition: margin-bottom 0.8s cubic-bezier(0, 1, 0, 1);
   }
 
-  :host([concatenate][truncate]) ::slotted(*) {
+  :host([truncate]) ::slotted(p) {
     display: inline;
+  }
+
+  :host([truncate]) ::slotted(p)::after {
+    content: ' ';
   }
 
   .box {

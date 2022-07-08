@@ -12,7 +12,6 @@ export class TextComponent extends LitElement implements TextProperties {
   @property({ type: Number }) truncateAfter = 0;
   @property({ type: Boolean }) showToggle = false;
   @property({ type: Boolean }) expanded = false;
-  @property({ type: Boolean, reflect: true }) concatenate?: boolean;
 
   @property() readMoreLabel = 'Read more';
 
