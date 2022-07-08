@@ -1,5 +1,13 @@
-import { DefaultProductAdapter } from './adapter/default-product.adapter';
-import { ProductAdapter } from './adapter/product.adapter';
+import {
+  DefaultProductAdapter,
+  imagesNormalizer,
+  ImagesNormalizer,
+  priceNormalizer,
+  PriceNormalizer,
+  ProductAdapter,
+  productNormalizer,
+  ProductNormalizer,
+} from './adapter';
 import { CurrencyService } from './currency.service';
 import { DefaultCurrencyService } from './default-currency.service';
 import { DefaultLocaleService } from './default-locale.service';
@@ -23,5 +31,17 @@ export const PRODUCT_PROVIDERS = [
   {
     provide: LocaleService,
     useClass: DefaultLocaleService,
+  },
+  {
+    provide: PriceNormalizer,
+    useValue: priceNormalizer,
+  },
+  {
+    provide: ImagesNormalizer,
+    useValue: imagesNormalizer,
+  },
+  {
+    provide: ProductNormalizer,
+    useValue: productNormalizer,
   },
 ];

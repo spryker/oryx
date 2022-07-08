@@ -1,4 +1,4 @@
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { isClient, isPromise } from '@spryker-oryx/typescript-utils';
 import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';
@@ -13,11 +13,6 @@ interface PartInfoRoot {
       shadowRoot?: Record<string, unknown>;
     };
   };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isPromise<T = any>(object: any): object is Promise<T> {
-  return typeof object?.then === 'function';
 }
 
 const asyncValueObservableInstance = new AsyncValueObservableStrategy();

@@ -30,4 +30,9 @@ export module ApiModel {
     };
     volumePrices?: unknown[];
   }
+
+  export enum INCLUDES {
+    CONCRETE_PRODUCT_IMAGE_SETS = 'concrete-product-image-sets',
+    CONCRETE_PRODUCT_PRICES = 'concrete-product-prices',
+  }
 }

@@ -11,11 +11,16 @@ const mockWithProduct = { product: { name: 'test' } } as unknown as LitElement;
 const mockContextGet = vi.fn();
 const mockInclude = ['includeA', 'includeB'];
 
-vi.mock('@spryker-oryx/core', () => ({
-  ContextController: class {
-    get = mockContextGet.mockReturnValue(of(mockSku));
-  },
-}));
+vi.mock('@spryker-oryx/core', async () => {
+  const core = (await vi.importActual('@spryker-oryx/core')) as Array<unknown>;
+
+  return {
+    ...core,
+    ContextController: class {
+      get = mockContextGet.mockReturnValue(of(mockSku));
+    },
+  };
+});
 
 const mockObserveGet = vi.fn();
 const mockObserveReturn = 'mockObserveReturn';

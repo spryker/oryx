@@ -2,10 +2,10 @@ import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
   ApiModel as ProductApiModel,
-  convertPrices,
-  convertProductImages,
   GlueImageSets,
   GlueProductPrices,
+  imagesNormalizer,
+  priceNormalizer,
   Product,
 } from '@spryker-oryx/product';
 import { map, Observable } from 'rxjs';
@@ -147,10 +147,8 @@ export class DefaultServiceAdapter implements SuggestionAdapter {
           name,
           sku,
           description,
-          ...(images
-            ? { images: convertProductImages(images.attributes) }
-            : {}),
-          ...(price ? { price: convertPrices(price.attributes) } : {}),
+          ...(images ? { images: imagesNormalizer(images.attributes) } : {}),
+          ...(price ? { price: priceNormalizer(price.attributes) } : {}),
         };
       })
       .filter((product) => product) as Product[];

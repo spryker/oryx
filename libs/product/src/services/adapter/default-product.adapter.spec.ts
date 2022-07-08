@@ -1,7 +1,9 @@
-import { HttpService } from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
+import { of } from 'rxjs';
 import { DefaultProductAdapter } from './default-product.adapter';
+import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 const mockApiUrl = 'mockApiUrl';
@@ -13,6 +15,9 @@ const mockProduct = {
       averageRating: 0,
     },
   },
+};
+const mockTransformer = {
+  transform: vi.fn().mockReturnValue(of(null)),
 };
 
 describe('DefaultProductService', () => {
@@ -34,6 +39,10 @@ describe('DefaultProductService', () => {
         provide: 'SCOS_BASE_URL',
         useValue: mockApiUrl,
       },
+      {
+        provide: JsonAPITransformerService,
+        useValue: mockTransformer,
+      },
     ]);
 
     service = testInjector.inject(ProductAdapter);
@@ -45,13 +54,7 @@ describe('DefaultProductService', () => {
     expect(service).toBeInstanceOf(DefaultProductAdapter);
   });
 
-  it('normalize method should return attributes from JSON_API_MODEL', () => {
-    const result = service.normalize?.(mockProduct);
-    expect(result).toEqual(mockProduct.data.attributes);
-  });
-
-  describe('get should send `get` request', () => {
-    const callback = vi.fn();
+  describe('get', () => {
     const mockQualifier = { sku: '123' };
     const imageInclude = 'concrete-product-image-sets';
     const testInclude = 'test-include';
@@ -65,21 +68,18 @@ describe('DefaultProductService', () => {
     });
 
     it('should build url based on SKU', () => {
-      service.get(mockQualifier).subscribe(callback);
+      service.get(mockQualifier);
 
-      expect(callback).toHaveBeenCalledWith(mockProduct.data.attributes);
       expect(http.url).toContain(
         `${mockApiUrl}/concrete-products/${mockQualifier.sku}`
       );
     });
 
     it('should add include to the url', () => {
-      service
-        .get({
-          ...mockQualifier,
-          include: [imageInclude],
-        })
-        .subscribe(callback);
+      service.get({
+        ...mockQualifier,
+        include: [imageInclude],
+      });
 
       expect(http.url?.split('?include=')[1].split(',')).toContain(
         imageInclude
@@ -92,10 +92,29 @@ describe('DefaultProductService', () => {
         include: [imageInclude, testInclude],
       };
 
-      service.get(params).subscribe(callback);
+      service.get(params);
 
       const includes = http.url?.split('?include=')[1].split(',');
       expect(includes).toHaveLength(3);
+    });
+
+    it('should call transformer data with data from response', () => {
+      service.get(mockQualifier).subscribe();
+
+      expect(mockTransformer.transform).toHaveBeenCalledWith(
+        mockProduct,
+        ProductNormalizer
+      );
+    });
+
+    it('should return transformed data', () => {
+      const mockTransformerData = 'mockTransformerData';
+      const callback = vi.fn();
+      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+      service.get(mockQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 });
