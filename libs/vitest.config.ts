@@ -6,7 +6,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['**/*.spec.ts'],
-    setupFiles: ['../setupTests.ts', '../../tools/setup-files/user-agent.ts'],
+    setupFiles: [
+      '../setupTests.ts',
+      '../../tools/setup-files/user-agent.ts',
+      '../../tools/setup-files/focus-within.ts',
+    ],
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
       exclude: ['**/*.mocks.ts', '**/*.spec.ts'],

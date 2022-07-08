@@ -1,4 +1,4 @@
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import {
   dispatchKeydown,
@@ -67,11 +67,6 @@ describe('ToggleController', () => {
   const utils = {
     popover: (): PopoverComponent | null => {
       return element.renderRoot.querySelector('oryx-popover');
-    },
-    simulateAsyncFocusLossCheck: async (): Promise<void> => {
-      vi.advanceTimersByTime(0);
-      element.requestUpdate();
-      await elementUpdated(element);
     },
   };
 
@@ -199,31 +194,31 @@ describe('ToggleController', () => {
         });
 
         describe('and trying to open popover again', () => {
-          beforeEach(async () => {
+          beforeEach(() => {
             element.controller.toggle(true);
           });
 
-          it('should not hide the popover', async () => {
+          it('should not hide the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).toBe(true);
           });
         });
 
         describe('and the focus changes', () => {
-          beforeEach(async () => {
+          beforeEach(() => {
             outerButton?.focus();
 
-            await utils.simulateAsyncFocusLossCheck();
+            vi.advanceTimersByTime(0);
           });
 
-          it('should hide the popover', async () => {
+          it('should hide the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
 
-          it('should not have open attr', async () => {
+          it('should not have open attr', () => {
             expect(element.hasAttribute('open')).toBe(false);
           });
 
-          it('should dispatch close event', async () => {
+          it('should dispatch close event', () => {
             expect(callback).toHaveBeenCalled();
           });
         });
@@ -235,7 +230,7 @@ describe('ToggleController', () => {
             element.dispatchEvent(new MouseEvent('mouseup'));
           });
 
-          it('should not hide the popover', async () => {
+          it('should not hide the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
         });
@@ -269,7 +264,7 @@ describe('ToggleController', () => {
                 input?.dispatchEvent(new MouseEvent('mouseup'));
               });
 
-              it('should not hide the popover', async () => {
+              it('should not hide the popover', () => {
                 expect(utils.popover()?.hasAttribute('show')).toBe(true);
               });
             });
@@ -279,7 +274,7 @@ describe('ToggleController', () => {
                 button?.dispatchEvent(new MouseEvent('mouseup'));
               });
 
-              it('should not hide the popover', async () => {
+              it('should not hide the popover', () => {
                 expect(utils.popover()?.hasAttribute('show')).toBe(true);
               });
             });
@@ -291,21 +286,21 @@ describe('ToggleController', () => {
             dispatchKeydown(element, 'Escape');
           });
 
-          it('should hide the popover', async () => {
+          it('should hide the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
         });
 
         describe(`and ${CLOSE_EVENT} dispatched by content`, () => {
-          beforeEach(async () => {
+          beforeEach(() => {
             input?.dispatchEvent(
               new CustomEvent(CLOSE_EVENT, { bubbles: true, composed: true })
             );
 
-            await utils.simulateAsyncFocusLossCheck();
+            vi.advanceTimersByTime(0);
           });
 
-          it('should hide the popover', async () => {
+          it('should hide the popover', () => {
             expect(utils.popover()?.hasAttribute('show')).toBe(false);
           });
         });
@@ -579,36 +574,36 @@ describe('ToggleController', () => {
     });
 
     describe('when focus changes inside popover', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         (input as HTMLInputElement).focus();
       });
 
-      it('should not hide the popover', async () => {
+      it('should not hide the popover', () => {
         button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
 
         input?.dispatchEvent(new Event('focusout', { bubbles: true }));
 
-        await utils.simulateAsyncFocusLossCheck();
+        vi.advanceTimersByTime(0);
 
         expect(utils.popover()?.hasAttribute('show')).toBe(true);
       });
     });
 
     describe('when click on the focusable element inside popover', () => {
-      it('should focus the broken focusable element', async () => {
+      it('should focus the broken focusable element', () => {
         button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
         button?.dispatchEvent(new Event('mouseup', { bubbles: true }));
 
-        await utils.simulateAsyncFocusLossCheck();
+        vi.advanceTimersByTime(0);
 
         expect(button?.matches(':focus')).toBe(true);
       });
 
-      it('should not manually focus the non-broken focusable element', async () => {
+      it('should not manually focus the non-broken focusable element', () => {
         input?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
         input?.dispatchEvent(new Event('mouseup', { bubbles: true }));
 
-        await utils.simulateAsyncFocusLossCheck();
+        vi.advanceTimersByTime(0);
 
         expect(input?.matches(':focus')).toBe(false);
       });

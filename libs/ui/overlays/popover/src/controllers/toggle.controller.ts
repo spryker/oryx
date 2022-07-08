@@ -106,19 +106,11 @@ export class ToggleController implements ReactiveController {
   }
 
   protected async handleFocusout(): Promise<void> {
-    if (await this.hostLostFocus()) {
+    if (!this.host.matches(':focus-within')) {
       this.toggle(false);
     }
 
     this.focusShouldBeFocusedMaybe();
-  }
-
-  protected hostLostFocus(): Promise<boolean> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(!this.host.contains(document.activeElement));
-      }, 0);
-    });
   }
 
   protected handleMousedown(e: MouseEvent): void {

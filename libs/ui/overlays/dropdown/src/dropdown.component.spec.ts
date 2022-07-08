@@ -7,15 +7,6 @@ import { DropdownComponent } from '.';
 import { PopoverComponent } from '../../popover/src';
 import './index';
 
-const isJsdomSelectorValid = (selector: string): boolean => {
-  try {
-    document.createDocumentFragment().querySelector(selector);
-  } catch {
-    return false;
-  }
-  return true;
-};
-
 describe('DropdownComponent', () => {
   let element: DropdownComponent;
 
@@ -23,8 +14,8 @@ describe('DropdownComponent', () => {
     return element.renderRoot.querySelector('oryx-popover');
   };
 
-  const dispatchCloseEvent = (e: Event): void => {
-    (e.target as HTMLElement).dispatchEvent(
+  const dispatchCloseEvent = (element: HTMLElement | null): void => {
+    element?.dispatchEvent(
       new CustomEvent('oryx.close', {
         bubbles: true,
         composed: true,
@@ -60,42 +51,39 @@ describe('DropdownComponent', () => {
     });
   });
 
-  /**
-   * Currently jsdom doesn't support ":focus-within"
-   * and brakes the tests are connected with this selector.
-   *
-   * Issue has already opened in jsdom repo and has feature mark
-   * https://github.com/jsdom/jsdom/issues/3055
-   *
-   */
-  if (isJsdomSelectorValid(':focus-within')) {
-    describe('when "oryx.close" event dispatched', () => {
-      let closeButton: HTMLButtonElement | null | undefined;
+  describe('when "oryx.close" event dispatched', () => {
+    let input: HTMLInputElement | null | undefined;
 
-      beforeEach(async () => {
-        element = await fixture(html`<oryx-dropdown>
-          <button @click=${dispatchCloseEvent}></button>
-        </oryx-dropdown>`);
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-dropdown>
+        <input />
+      </oryx-dropdown>`);
 
-        vi.useFakeTimers();
+      vi.useFakeTimers();
 
-        closeButton = element.querySelector('button');
-        closeButton?.focus();
-        closeButton?.click();
-      });
-
-      afterEach(() => {
-        vi.clearAllTimers();
-      });
-
-      it('should restore focus on trigger', () => {
-        vi.advanceTimersByTime(0);
-        expect(document.activeElement).toBe(
-          element.renderRoot?.querySelector('slot[name="trigger"] button')
-        );
-      });
+      input = element.querySelector('input');
+      input?.focus();
     });
-  }
+
+    afterEach(() => {
+      vi.clearAllTimers();
+    });
+
+    it('should restore focus on trigger', async () => {
+      //due to that trigger-button is nested inside other custom element
+      //jsdom can't define activeElement correctly, thats why
+      //it's enough to check that input inside popover lost the focus
+      //and it passed to the component
+      vi.advanceTimersByTime(0);
+
+      expect(input?.matches(':focus')).toBe(true);
+
+      dispatchCloseEvent(getPopover());
+
+      expect(input?.matches(':focus')).toBe(false);
+      expect(element?.matches(':focus')).toBe(true);
+    });
+  });
 
   Object.values(Size).forEach((size) => {
     describe(`when the triggerIconSize is '${size}'`, () => {
