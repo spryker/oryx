@@ -19,6 +19,12 @@ describe('DrawerComponent', () => {
     element.requestUpdate();
     await element.updateComplete;
   };
+  const triggerSubmit = (): boolean =>
+    element.dialog?.dispatchEvent(
+      new Event('submit', {
+        cancelable: true,
+      })
+    );
 
   describe('handle open', () => {
     beforeEach(async () => {
@@ -69,17 +75,71 @@ describe('DrawerComponent', () => {
       expect(isMaximized(element)).toBe(false);
     });
     it('should remove maximized attribute on submit event', async () => {
-      element.dialog?.dispatchEvent(new Event('submit'));
+      triggerSubmit();
       await update();
       expect(isMaximized(element)).toBe(false);
     });
+  });
 
-    it('should trigger on close event on submit event', async () => {
+  describe('when the submit event is triggered', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-drawer open maximize></oryx-drawer>`);
+    });
+
+    it('should prevent the dialog to close by default', () => {
+      expect(triggerSubmit()).toBe(false);
+    });
+
+    it('should trigger on beforeclose event', async () => {
       const spy = vi.fn();
-      element.dialog?.addEventListener('close', spy);
-      element.dialog?.dispatchEvent(new Event('submit'));
-      await update();
+      element.addEventListener('beforeclose', spy);
+
+      triggerSubmit();
+
       expect(spy).toBeCalled();
+    });
+
+    describe('if the event is not prevented', () => {
+      it('should trigger on close event', async () => {
+        const spy = vi.fn();
+        element.dialog?.addEventListener('close', spy);
+
+        triggerSubmit();
+
+        expect(spy).toBeCalled();
+      });
+
+      it('should close the drawer', () => {
+        triggerSubmit();
+        expect(isClosed(element)).toBe(true);
+      });
+    });
+
+    describe('if the event is prevented', () => {
+      beforeEach(() => {
+        element.addEventListener('beforeclose', (e) => {
+          e.preventDefault();
+        });
+      });
+
+      it('should not trigger on close event', async () => {
+        const spy = vi.fn();
+        element.dialog?.addEventListener('close', spy);
+
+        triggerSubmit();
+
+        expect(spy).not.toBeCalled();
+      });
+
+      it('should not close the drawer', () => {
+        triggerSubmit();
+        expect(isClosed(element)).toBe(false);
+      });
+
+      it('should not resize the drawer', () => {
+        triggerSubmit();
+        expect(isMaximized(element)).toBe(true);
+      });
     });
   });
 

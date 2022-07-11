@@ -74,8 +74,8 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
     return html`
       <dialog
         ?open=${this.open}
-        @keydown=${(e: KeyboardEvent): void => this.handleKeydown(e)}
-        @submit=${(): void => this.handleSubmit()}
+        @keydown=${this.handleKeydown}
+        @submit=${this.handleSubmit}
         tabindex="-1"
       >
         <form method="dialog">${this.renderTemplate()}</form>
@@ -95,9 +95,20 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
     }
   }
 
-  protected handleSubmit(): void {
-    this.open = false;
-    this.dialog?.close();
-    this.resize(false);
+  protected handleSubmit(e: Event): void {
+    e.preventDefault();
+    const prevented = !this.dispatchEvent(
+      new CustomEvent('beforeclose', {
+        cancelable: true,
+        bubbles: true,
+        composed: true,
+      })
+    );
+
+    if (!prevented) {
+      this.dialog?.close();
+      this.open = false;
+      this.resize(false);
+    }
   }
 }
