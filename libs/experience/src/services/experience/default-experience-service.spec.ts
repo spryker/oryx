@@ -112,7 +112,7 @@ describe('DefaultExperienceService', () => {
 
       http.flush(mockStructure);
 
-      service.getComponent({ key: mockStructureKey }).subscribe(callback);
+      service.getComponent({ uid: mockStructureKey }).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockStructure);
     });
@@ -120,7 +120,7 @@ describe('DefaultExperienceService', () => {
       const callback = vi.fn();
       const keyTrigger$ = new BehaviorSubject(mockStructureKey);
       const structure$ = keyTrigger$.pipe(
-        switchMap((key) => service.getComponent({ key }))
+        switchMap((uid) => service.getComponent({ uid }))
       );
 
       http.flush(mockStructure);
@@ -142,7 +142,7 @@ describe('DefaultExperienceService', () => {
 
       http.flush(mockComponentData);
 
-      service.getContent({ key: mockDataKey }).subscribe(callback);
+      service.getContent({ uid: mockDataKey }).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockComponentData.content);
     });
@@ -150,7 +150,7 @@ describe('DefaultExperienceService', () => {
       const callback = vi.fn();
       const keyTrigger$ = new BehaviorSubject(mockDataKey);
       const structure$ = keyTrigger$.pipe(
-        switchMap((key) => service.getContent({ key }))
+        switchMap((uid) => service.getContent({ uid }))
       );
 
       http.flush(mockComponentData);

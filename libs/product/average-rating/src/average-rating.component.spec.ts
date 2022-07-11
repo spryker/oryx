@@ -10,7 +10,7 @@ import '../index';
 import { ProductAverageRatingComponent } from './average-rating.component';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ key = '' }): Observable<any> => of({});
+  getOptions = ({ uid = '' }): Observable<any> => of({});
 }
 
 describe('Average Rating', () => {

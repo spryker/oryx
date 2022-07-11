@@ -5,27 +5,27 @@ export const routes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
     render: (): TemplateResult =>
-      html`<experience-composition key="/"></experience-composition>`,
+      html`<experience-composition route="/"></experience-composition>`,
     name: 'Home',
   },
   {
     path: '/product/:sku',
     render: (): TemplateResult => html`<experience-composition
-      key="/product/:sku"
+      route="/product/:sku"
     ></experience-composition>`,
     name: 'Product test',
   },
   {
     path: '/category/:id',
     render: (): TemplateResult => html`<experience-composition
-      key="/category/:id"
+      route="/category/:id"
     ></experience-composition>`,
     name: 'Category test',
   },
   {
     path: '/:page',
     render: ({ page }): TemplateResult => html`<experience-composition
-      key="/${page}"
+      route="/${page}"
     ></experience-composition>`,
     name: 'Page',
   },

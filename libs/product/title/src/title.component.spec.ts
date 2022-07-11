@@ -11,7 +11,7 @@ import { ProductTitleComponent } from './title.component';
 const mockSku = '1';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ key = '' }): Observable<any> => of({});
+  getOptions = ({ uid = '' }): Observable<any> => of({});
 }
 
 // TODO: unify unit tests for all sub packages

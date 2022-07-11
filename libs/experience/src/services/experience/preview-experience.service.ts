@@ -126,24 +126,24 @@ export class PreviewExperienceService extends DefaultExperienceService {
     }
   }
 
-  reloadComponent(key: string): void {
+  reloadComponent(id: string): void {
     this.sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
-      structure: key,
+      structure: id,
     });
   }
 
-  reloadContent(key: string): void {
+  reloadContent(id: string): void {
     this.sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
-      content: key,
+      content: id,
     });
   }
 
-  reloadOptions(key: string): void {
+  reloadOptions(id: string): void {
     this.sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
-      options: key,
+      options: id,
     });
   }
 

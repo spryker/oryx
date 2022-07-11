@@ -9,7 +9,7 @@ import '../index';
 import { ProductImageComponent } from './image.component';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ key = '' }): Observable<any> => of({});
+  getOptions = ({ uid = '' }): Observable<any> => of({});
 }
 
 describe('ProductImageComponent', () => {

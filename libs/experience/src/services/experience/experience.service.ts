@@ -3,10 +3,15 @@ import { Component } from './models';
 
 export const ExperienceService = 'FES.ExperienceService';
 
+export interface ComponentQualifier {
+  uid?: string;
+  route?: string;
+}
+
 export interface ExperienceService {
-  getComponent({ key }: { key: string }): Observable<Component>;
-  getContent<T>({ key }: { key: string }): Observable<T>;
-  getOptions<T>({ key }: { key: string }): Observable<T>;
+  getComponent(qualifier: ComponentQualifier): Observable<Component>;
+  getContent<T>({ uid }: { uid: string }): Observable<T>;
+  getOptions<T>({ uid }: { uid: string }): Observable<T>;
 }
 
 declare global {

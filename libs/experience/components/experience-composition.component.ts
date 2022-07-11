@@ -5,7 +5,14 @@ import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { filter, lastValueFrom, of, ReplaySubject, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  lastValueFrom,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   Component,
   ComponentsRegistryService,
@@ -18,13 +25,16 @@ export class ExperienceCompositionComponent extends LitElement {
   protected components?: Array<Component>;
 
   @property()
-  protected uid?: string;
-
-  @property()
-  protected key?: string;
+  protected uid = '';
 
   @observe()
-  protected key$ = new ReplaySubject<string>(1);
+  protected uid$ = new BehaviorSubject<string>(this.uid);
+
+  @property()
+  protected route = '';
+
+  @observe()
+  protected route$ = new BehaviorSubject<string>(this.route);
 
   protected experienceService = resolve(ExperienceService, null);
   protected registryService = resolve(ComponentsRegistryService);
@@ -37,27 +47,14 @@ export class ExperienceCompositionComponent extends LitElement {
     this.hasSSR = !!this.shadowRoot;
   }
 
-  components$ = this.key$.pipe(
-    filter((key: string) => !!key),
+  protected components$ = combineLatest([this.uid$, this.route$]).pipe(
     switchMap(
-      (key: string) =>
-        this.experienceService?.getComponent({ key }) || of({} as any)
+      ([uid, route]) =>
+        this.experienceService?.getComponent({ uid, route }) || of({} as any)
     ),
-    switchMap((structures: Component) => {
-      if (this.uid && structures.components) {
-        let components;
-        JSON.stringify(structures.components, (_, nested) => {
-          if (nested.id === this.uid && nested.components) {
-            components = nested.components;
-          }
-          return nested;
-        });
-        return of(components);
-      }
-      return of(structures?.components);
-    }),
+    switchMap((component: Component) => of(component?.components)),
     tap(async (components: Array<Component> | undefined) => {
-      if (this.key && components) {
+      if (this.route && components) {
         const resolve = this.ssrAwaiter?.getAwaiter();
         for (let i = 0; i < components!.length; i++) {
           const hydratable = this.shadowRoot

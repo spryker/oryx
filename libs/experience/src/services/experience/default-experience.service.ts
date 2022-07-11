@@ -1,15 +1,16 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, of, ReplaySubject, take } from 'rxjs';
+import { Observable, of, ReplaySubject, switchMap, take } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CONTENT_BACKEND_URL } from '../experience-tokens';
-import { ExperienceService } from './experience.service';
+import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
 
 export class DefaultExperienceService implements ExperienceService {
-  protected dataComponent: { [key: string]: ReplaySubject<Component> } = {};
-  protected dataContent: { [key: string]: ReplaySubject<any> } = {};
-  protected dataOptions: { [key: string]: ReplaySubject<any> } = {};
+  protected dataRoutes: Record<string, ReplaySubject<string>> = {};
+  protected dataComponent: Record<string, ReplaySubject<Component>> = {};
+  protected dataContent: Record<string, ReplaySubject<any>> = {};
+  protected dataOptions: Record<string, ReplaySubject<any>> = {};
 
   constructor(
     protected contentBackendUrl = inject(CONTENT_BACKEND_URL),
@@ -17,16 +18,13 @@ export class DefaultExperienceService implements ExperienceService {
   ) {}
 
   protected processComponent(component: Component): void {
-    const targetComponent: Component = component;
     const components = component?.components || [];
 
-    if (targetComponent && targetComponent.id) {
-      if (!this.dataComponent[targetComponent.id]) {
-        this.dataComponent[targetComponent.id] = new ReplaySubject<Component>(
-          1
-        );
+    if (component?.id) {
+      if (!this.dataComponent[component.id]) {
+        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }
-      this.dataComponent[targetComponent.id].next(targetComponent);
+      this.dataComponent[component.id].next(component);
     }
 
     components.forEach((component: Component) => {
@@ -34,68 +32,113 @@ export class DefaultExperienceService implements ExperienceService {
     });
   }
 
-  reloadComponent(key: string): void {
+  protected reloadComponent(uid: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
-    }/components/${encodeURIComponent(key)}`;
+    }/components/${encodeURIComponent(uid)}`;
 
     this.http
-      .get(componentsUrl)
+      .get<Component>(componentsUrl)
       .pipe(
-        map((res: any) => {
-          this.dataComponent[key].next(res);
-          this.processComponent(res);
-          return res;
+        map((component) => {
+          this.dataComponent[uid].next(component);
+          this.processComponent(component);
+          return component;
         }),
         catchError(() => {
-          this.dataComponent[key].next({ type: '', components: [] });
+          this.dataComponent[uid].next({ type: '', components: [] });
           return of({});
         })
       )
       .subscribe();
   }
 
-  reloadContent(key: string): void {
-    this.getComponent({ key })
+  protected reloadComponentByRoute(route: string): void {
+    const componentsUrl = `${
+      this.contentBackendUrl
+    }/components/?meta.route=${encodeURIComponent(route)}`;
+
+    this.http
+      .get<Component[]>(componentsUrl)
+      .pipe(
+        map((component) => {
+          const componentId = component[0].id!;
+          this.dataRoutes[route].next(componentId);
+          if (!this.dataComponent[componentId]) {
+            this.dataComponent[componentId] = new ReplaySubject<Component>(1);
+          }
+          this.dataComponent[componentId].next(component[0]);
+          this.processComponent(component[0]);
+          return component[0];
+        })
+      )
+      .subscribe();
+  }
+
+  protected reloadContent(uid: string): void {
+    this.getComponent({ uid: uid })
       .pipe(take(1))
       .subscribe((component) => {
         const content = component?.content ?? {};
-        this.dataContent[key].next(content);
+        this.dataContent[uid].next(content);
       });
   }
 
-  reloadOptions(key: string): void {
-    this.getComponent({ key })
+  protected reloadOptions(uid: string): void {
+    this.getComponent({ uid: uid })
       .pipe(take(1))
       .subscribe((component) => {
         const options = component?.options ?? {};
-        this.dataOptions[key].next(options);
+        this.dataOptions[uid].next(options);
       });
   }
 
-  getComponent({ key }: { key: string }): Observable<Component> {
-    if (!this.dataComponent[key]) {
-      this.dataComponent[key] = new ReplaySubject<Component>(1);
-      this.reloadComponent(key);
+  getComponent({ uid, route }: ComponentQualifier): Observable<Component> {
+    if (uid) {
+      if (!this.dataComponent[uid]) {
+        this.dataComponent[uid] = new ReplaySubject<Component>(1);
+        this.reloadComponent(uid);
+      }
+      return this.dataComponent[uid];
     }
-    return this.dataComponent[key];
+
+    if (route) {
+      return this.getComponentByRoute(route);
+    }
+
+    throw new Error('Invalid qualifier for getComponent');
   }
 
-  getContent({ key }: { key: string }): Observable<any> {
-    if (!this.dataContent[key]) {
-      this.dataContent[key] = new ReplaySubject<any>(1);
-      this.reloadContent(key);
+  protected getComponentByRoute(route: string): Observable<Component> {
+    if (!this.dataRoutes[route]) {
+      this.dataRoutes[route] = new ReplaySubject<string>(1);
+      this.reloadComponentByRoute(route);
     }
-
-    return this.dataContent[key];
+    return this.dataRoutes[route].pipe(
+      switchMap((uid: string) => {
+        if (!this.dataComponent[uid]) {
+          this.dataComponent[uid] = new ReplaySubject<Component>(1);
+        }
+        return this.dataComponent[uid];
+      })
+    );
   }
 
-  getOptions({ key }: { key: string }): Observable<any> {
-    if (!this.dataOptions[key]) {
-      this.dataOptions[key] = new ReplaySubject<any>(1);
-      this.reloadOptions(key);
+  getContent({ uid }: { uid: string }): Observable<any> {
+    if (!this.dataContent[uid]) {
+      this.dataContent[uid] = new ReplaySubject<any>(1);
+      this.reloadContent(uid);
     }
 
-    return this.dataOptions[key];
+    return this.dataContent[uid];
+  }
+
+  getOptions({ uid }: { uid: string }): Observable<any> {
+    if (!this.dataOptions[uid]) {
+      this.dataOptions[uid] = new ReplaySubject<any>(1);
+      this.reloadOptions(uid);
+    }
+
+    return this.dataOptions[uid];
   }
 }

@@ -28,10 +28,10 @@ export class ContentController<T = unknown, K = unknown> {
         return this.observe
           .get('uid')
           .pipe(
-            switchMap((key) =>
-              key && this.experienceContent
+            switchMap((uid) =>
+              uid && this.experienceContent
                 ? this.experienceContent
-                    .getContent<{ data: T }>({ key })
+                    .getContent<{ data: T }>({ uid })
                     .pipe(map((component) => component?.data))
                 : of(undefined)
             )
@@ -49,10 +49,10 @@ export class ContentController<T = unknown, K = unknown> {
         return this.observe
           .get('uid')
           .pipe(
-            switchMap((key) =>
-              key && this.experienceContent
+            switchMap((uid) =>
+              uid && this.experienceContent
                 ? this.experienceContent
-                    .getOptions<{ data: K }>({ key })
+                    .getOptions<{ data: K }>({ uid })
                     .pipe(map((component) => component?.data ?? {}))
                 : of({})
             )

@@ -14,10 +14,7 @@ export const componentsMapping: ComponentsMapping = {
     tag: 'experience-composition',
     component: () => import('@spryker-oryx/experience/components'),
     template: (uid: string) =>
-      html`<experience-composition
-        uid="${uid}"
-        key="${window.location?.pathname}"
-      ></experience-composition>`,
+      html`<experience-composition uid="${uid}"></experience-composition>`,
   },
   'oryx-banner': {
     tag: 'oryx-banner',

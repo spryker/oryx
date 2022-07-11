@@ -129,7 +129,7 @@ describe('ExperiencePreviewService', () => {
         { once: true }
       );
 
-      service.getComponent({ key: structure });
+      service.getComponent({ uid: structure });
     }));
 
   it('should send post message to reload content', async () =>
@@ -147,7 +147,7 @@ describe('ExperiencePreviewService', () => {
         { once: true }
       );
 
-      service.getContent({ key: content });
+      service.getContent({ uid: content });
     }));
 
   it('should get structure data', async () =>
@@ -167,7 +167,7 @@ describe('ExperiencePreviewService', () => {
         ],
       };
 
-      service.getComponent({ key: structure.id }).subscribe((data) => {
+      service.getComponent({ uid: structure.id }).subscribe((data) => {
         expect(data.type).toBe(structure.type);
         expect(data.components?.length).toBe(structure.components.length);
 
@@ -192,7 +192,7 @@ describe('ExperiencePreviewService', () => {
         },
       };
 
-      service.getContent({ key: content.id }).subscribe((data) => {
+      service.getContent({ uid: content.id }).subscribe((data) => {
         expect(data.data.title).toBe(content.data.title);
 
         done();

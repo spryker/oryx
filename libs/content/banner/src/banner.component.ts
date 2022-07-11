@@ -41,7 +41,7 @@ export class BannerComponent extends LitElement {
   protected contentResolver$: Observable<BannerContent> = defer(() =>
     this.uid && this.experienceContent
       ? this.experienceContent
-          .getContent({ key: this.uid })
+          .getContent({ uid: this.uid })
           .pipe(switchMap((res: any) => of(res?.data)))
       : this.content$
   );
@@ -49,7 +49,7 @@ export class BannerComponent extends LitElement {
   protected optionsResolver$: Observable<BannerOptions> = defer(() =>
     this.uid && this.experienceContent
       ? this.experienceContent
-          .getOptions({ key: this.uid })
+          .getOptions({ uid: this.uid })
           .pipe(switchMap((res: any) => of(res?.data)))
       : this.options$
   );

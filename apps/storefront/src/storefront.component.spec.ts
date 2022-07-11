@@ -64,14 +64,14 @@ describe('InputComponent', () => {
     expect(experienceComposition).toBeTruthy();
   });
 
-  it('should render `experience-composition` with `key` attributes passed from the `route` property', async () => {
+  it('should render `experience-composition` with `route` attributes passed from the `route` property', async () => {
     const mockRout = '/contact';
     const element = getElement();
     const experienceComposition = element.shadowRoot?.querySelector(
       'experience-composition'
     );
 
-    expect(experienceComposition.getAttribute('key')).toBe('/');
+    expect(experienceComposition.getAttribute('route')).toBe('/');
 
     const routerService = getInjector().inject(RouterService);
     routerService.go(mockRout);
@@ -82,7 +82,7 @@ describe('InputComponent', () => {
         getElement(),
         'experience-composition'
       );
-      expect(updatedExperienceComposition.getAttribute('key')).toBe(mockRout);
+      expect(updatedExperienceComposition.getAttribute('route')).toBe(mockRout);
     });
   });
 });

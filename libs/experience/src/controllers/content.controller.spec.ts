@@ -15,7 +15,7 @@ const mockOptions = {
   data: 'mockContent',
 };
 const mockObserve = {
-  key: 'mockContent',
+  id: 'mockContent',
 };
 
 vi.mock('@spryker-oryx/lit-rxjs', () => ({
@@ -89,7 +89,7 @@ describe('ContentController', () => {
     expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'content');
     expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
     expect(mockGetContent).toHaveBeenCalledWith({
-      key: mockUid,
+      uid: mockUid,
     });
     expect(callbackContent).toHaveBeenCalledWith(mockContent.data);
   });
@@ -107,7 +107,7 @@ describe('ContentController', () => {
     expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'options');
     expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
     expect(mockGetOptions).toHaveBeenCalledWith({
-      key: mockUid,
+      uid: mockUid,
     });
     expect(callbackOptions).toHaveBeenCalledWith(mockOptions.data);
   });

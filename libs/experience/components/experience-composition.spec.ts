@@ -69,7 +69,7 @@ describe('Experience Composition', () => {
     });
 
     element = await fixture(
-      html`<experience-composition key="1"></experience-composition>`
+      html`<experience-composition uid="1"></experience-composition>`
     );
   });
 
