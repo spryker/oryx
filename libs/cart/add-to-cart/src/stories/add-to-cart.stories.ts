@@ -7,7 +7,7 @@ import { AddToCartOptions } from '../add-to-cart.model';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}`,
+  title: `${storybookPrefix}/Add to cart`,
 } as Meta;
 
 type Props = ProductComponentProperties & AddToCartOptions;
@@ -16,7 +16,6 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <add-to-cart
       .sku=${props.sku}
-      .content=${{}}
       .options=${{
         hideQuantityInput: props.hideQuantityInput,
         loading: props.loading,
@@ -25,15 +24,15 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   `;
 };
 
-export const AddToCart = Template.bind({});
+export const Demo = Template.bind({});
 
-AddToCart.args = {
+Demo.args = {
   sku: '1',
   hideQuantityInput: false,
   loading: false,
 };
 
-AddToCart.argTypes = {
+Demo.argTypes = {
   sku: {
     control: { type: 'select' },
     options: ['1', '2', '3', 'not-found'],

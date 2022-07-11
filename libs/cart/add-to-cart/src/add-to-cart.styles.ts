@@ -3,32 +3,17 @@ import { css } from 'lit';
 export const styles = css`
   form {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px 17px;
   }
 
-  input[type='number'] {
-    appearance: textfield;
-    width: 100px;
-    text-align: center;
-  }
-
-  oryx-input {
-    margin-inline: 5px;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    appearance: none;
+  oryx-button {
+    flex-grow: 1;
   }
 
   oryx-button button {
+    min-width: 175px;
     height: 28px;
-  }
-
-  oryx-button:nth-of-type(2) {
-    margin-inline-end: 10px;
-  }
-  oryx-button:last-child {
-    flex-grow: 1;
   }
 
   [type='cart-add'] {
