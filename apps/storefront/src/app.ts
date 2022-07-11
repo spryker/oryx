@@ -1,4 +1,5 @@
 // organize-imports-ignore
+import './global.shim';
 import './bootstrap-injector';
 import '@spryker-oryx/product/title';
 import './experience-preview';
