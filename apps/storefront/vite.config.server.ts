@@ -31,6 +31,7 @@ export default defineConfig({
       'urlpattern-polyfill',
       '@webcomponents/template-shadowroot',
       'lit-html',
+      'jsonapi-serializer',
     ],
   },
   envPrefix: ['FES', 'SCOS'],

@@ -22,9 +22,18 @@ export const ssrAwaiter = (
 
   return observable.pipe(
     tap({
-      next: () => setTimeout(resolveFn, 0),
-      error: () => setTimeout(resolveFn, 0),
-      complete: () => setTimeout(resolveFn, 0),
+      next: async () => {
+        await 0;
+        resolveFn();
+      },
+      error: async () => {
+        await 0;
+        resolveFn();
+      },
+      complete: async () => {
+        await 0;
+        resolveFn();
+      },
     })
   );
 };
