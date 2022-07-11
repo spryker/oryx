@@ -50,7 +50,8 @@ export class ContentLinkComponent
       return html`<oryx-link icon=${ifDefined(content?.icon)}>
         <a
           href=${content?.href}
-          target=${ifDefined(options?.target)}
+          aria-label=${ifDefined(options.label)}
+          target=${ifDefined(options.target)}
           rel=${ifDefined(this.getRel(options))}
           >${content?.text}</a
         >

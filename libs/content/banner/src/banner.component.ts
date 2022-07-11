@@ -69,15 +69,19 @@ export class BannerComponent extends LitElement {
             alt=${ifDefined(options?.alt)}
           />
           <div class="overlay">
-            <h1 aria-label="title">${content?.title}</h1>
-            <h2>${content?.content}</h2>
+            ${when(
+              content?.title,
+              () => html`<h1 aria-label="title">${content?.title}</h1>`
+            )}
+            ${when(content?.content, () => html`<h2>${content?.content}</h2>`)}
           </div>
         `;
         return html` ${when(
-          options?.link,
+          options.link,
           () => html`<a
-            href=${ifDefined(options?.link)}
-            target=${ifDefined(options?.urlTarget)}
+            href=${ifDefined(options.link)}
+            target=${ifDefined(options.urlTarget)}
+            aria-label=${ifDefined(options.linkLabel)}
           >
             ${contents}
           </a>`,

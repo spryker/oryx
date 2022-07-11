@@ -24,7 +24,7 @@ export const styles = css`
     font-size: 0.8em;
   }
 
-  nav li,
+  nav div,
   .products a {
     padding: 0 10px;
   }

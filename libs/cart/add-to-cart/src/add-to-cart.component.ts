@@ -96,7 +96,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
               `
             )}
             <oryx-button icon size="small" ?loading=${options?.loading}>
-              <button>
+              <button aria-label="Add to cart">
                 <oryx-icon type="cart-add"></oryx-icon>
                 Add to Cart
               </button>

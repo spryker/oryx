@@ -5,6 +5,7 @@ export interface LinkContent {
 }
 
 export interface LinkOptions {
+  label?: string;
   target?: string;
   noopener?: boolean;
   nofollow?: boolean;

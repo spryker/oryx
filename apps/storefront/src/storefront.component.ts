@@ -43,23 +43,23 @@ export class StorefrontComponent extends LitElement {
 
   renderNav(): TemplateResult {
     return html`<nav>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/contact">Contact</a>
-      </li>
-      <li class="products">
-        <a href="/product/139_24699831"
+      <div>
+        <a href="/" aria-label="Home page">Home</a>
+      </div>
+      <div>
+        <a href="/contact" aria-label="Contact page">Contact</a>
+      </div>
+      <div class="products">
+        <a href="/product/139_24699831" aria-label="Product page"
           ><product-title sku="139_24699831"></product-title
         ></a>
-        <a href="/product/060_24245592"
+        <a href="/product/060_24245592" aria-label="Product page"
           ><product-title sku="060_24245592"></product-title
         ></a>
-        <a href="/product/010_30692994"
+        <a href="/product/010_30692994" aria-label="Product page"
           ><product-title sku="010_30692994"></product-title
         ></a>
-      </li>
+      </div>
     </nav>`;
   }
 

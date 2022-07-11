@@ -1,5 +1,6 @@
 export interface BannerOptions {
   link?: string;
+  linkLabel?: string;
   urlTarget?: string;
   alt?: string;
 }
