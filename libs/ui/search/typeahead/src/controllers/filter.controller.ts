@@ -63,6 +63,17 @@ export class FilterController implements ReactiveController {
   protected onInput(e: InputEvent): void {
     if (this.host.filterStrategy && e.inputType) {
       this.filterOptionsByValue(
+        e.inputType === 'deleteContentBackward' && !this.controlItem.value
+          ? ''
+          : this.controlItem.value,
+        this.host.filterStrategy
+      );
+    }
+  }
+
+  hostUpdated(): void {
+    if (this.host.filterStrategy && this.filterValue) {
+      this.filterOptionsByValue(
         this.controlItem.value,
         this.host.filterStrategy
       );
@@ -80,15 +91,6 @@ export class FilterController implements ReactiveController {
           this.control instanceof HTMLSelectElement ? 'change' : 'input',
           { bubbles: true, composed: true }
         )
-      );
-    }
-  }
-
-  hostUpdated(): void {
-    if (this.host.filterStrategy) {
-      this.filterOptionsByValue(
-        this.controlItem.value,
-        this.host.filterStrategy
       );
     }
   }
@@ -113,8 +115,8 @@ export class FilterController implements ReactiveController {
           ...itemValue.matchAll(getFilterRegExp(value, strategy)),
         ].map((a) => a.index);
 
-        item.hide = indexes.length === 0;
-        if (!item.hide) {
+        item.toggleAttribute('hide', indexes.length === 0);
+        if (!item.hasAttribute('hide')) {
           item.innerHTML = generateMarkedHtml(
             indexes as number[],
             itemValue,
@@ -142,9 +144,8 @@ export class FilterController implements ReactiveController {
     value: string
   ): void {
     let selected: HTMLElement | undefined;
-
     if (visibleOptionCount === 1) {
-      const option = this.items.find((el) => !el.hide);
+      const option = this.items.find((el) => !el.hasAttribute('hide'));
       const optionText = option?.innerText?.trim() || option?.value || '';
       if (optionText.toLowerCase() === value.toLowerCase()) {
         selected = option;

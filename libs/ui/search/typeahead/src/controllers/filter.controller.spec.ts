@@ -15,7 +15,7 @@ class FakeComponent extends LitElement implements TypeaheadOptions {
   @property() filterStrategy?: FilterStrategyType;
   protected filterController = new FilterController(this);
   render(): TemplateResult {
-    return html` <slot></slot> `;
+    return html` <input filterInput /><slot></slot> `;
   }
 }
 @customElement('fake-filter-select')
@@ -40,12 +40,16 @@ class FakeFilterSelectComponent extends LitElement implements TypeaheadOptions {
 describe('FilterController', () => {
   let element: FakeComponent;
   let selectElement: FakeFilterSelectComponent;
+  let input: HTMLInputElement;
   const optionsValues = [
     '/feature/fes-123',
     'fix/fes-456',
     'release/1.0.1-next.0',
     'release/1.0.1-next.1',
   ];
+  const filteredOptions = (): NodeListOf<OptionComponent> => {
+    return element.querySelectorAll<OptionComponent>('oryx-option:not([hide])');
+  };
   const itShouldFilter = (
     count: number,
     value: string,
@@ -69,10 +73,7 @@ describe('FilterController', () => {
             new InputEvent('input', { bubbles: true, inputType: 'insertText' })
           );
         }
-        const filteredOptions = element.querySelectorAll<OptionComponent>(
-          'oryx-option:not([hide])'
-        );
-        expect(filteredOptions.length).toBe(count);
+        expect(filteredOptions().length).toBe(count);
       });
     });
   };
@@ -87,10 +88,7 @@ describe('FilterController', () => {
           })
         );
       }
-      const filteredOptions = element.querySelectorAll<OptionComponent>(
-        'oryx-option:not([hide])'
-      );
-      expect(filteredOptions.length).toBe(optionsValues.length);
+      expect(filteredOptions().length).toBe(optionsValues.length);
     });
   };
 
@@ -119,6 +117,53 @@ describe('FilterController', () => {
         itShouldFilter(4, 's', true, FilterStrategyType.CONTAINS);
         itShouldFilter(4, '/', true, FilterStrategyType.CONTAINS);
         itShouldFilter(2, '/fes', true, FilterStrategyType.CONTAINS);
+      });
+    });
+    describe('backspace handling', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<fake-filter
+            .filterStrategy=${FilterStrategyType.START_OF_WORD}
+            filterSelect
+          >
+            <input value="fes" />
+            ${optionsValues.map(
+              (option) => html`<oryx-option .value=${option}></oryx-option>`
+            )}
+          </fake-filter>`
+        );
+        input = element.shadowRoot?.querySelector(
+          '[filterInput]'
+        ) as HTMLInputElement;
+      });
+      it('should have initial filter applied', () => {
+        input.value = 'fes-1';
+        element.dispatchEvent(
+          new InputEvent('input', { bubbles: true, inputType: 'insertText' })
+        );
+        expect(filteredOptions().length).toBe(1);
+      });
+      describe('and user uses backspace', () => {
+        it('should still filter if input has value', () => {
+          input.value = 'fes-';
+          element.dispatchEvent(
+            new InputEvent('input', {
+              bubbles: true,
+              inputType: 'deleteContentBackward',
+            })
+          );
+          expect(filteredOptions().length).toBe(2);
+        });
+        it('should reset filter if input has no value', () => {
+          input.value = '';
+          element.dispatchEvent(
+            new InputEvent('input', {
+              bubbles: true,
+              inputType: 'deleteContentBackward',
+            })
+          );
+          expect(filteredOptions().length).toBe(4);
+        });
       });
     });
     describe('clear on blur', () => {

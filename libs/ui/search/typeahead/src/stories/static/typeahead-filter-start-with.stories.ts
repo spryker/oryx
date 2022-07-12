@@ -16,7 +16,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       ?filter=${true}
       filterStrategy=${FilterStrategyType.START_WITH}
     >
-      <input value="m" placeholder="filter the list by typing" />
+      <input value="Arizona" placeholder="filter the list by typing" />
       ${states.map((state) => html`<oryx-option value=${state}></oryx-option>`)}
     </oryx-typeahead>
   `);

@@ -12,10 +12,13 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return sideBySide(html`
-    <oryx-select ?filter=${true} filterStrategy=${FilterStrategyType.CONTAINS}>
-      <input value="a" placeholder="filter the list by typing" />
+    <oryx-typeahead
+      ?filter=${true}
+      filterStrategy=${FilterStrategyType.CONTAINS}
+    >
+      <input value="Arizona" placeholder="filter the list by typing" />
       ${states.map((state) => html`<oryx-option value=${state}></oryx-option>`)}
-    </oryx-select>
+    </oryx-typeahead>
   `);
 };
 
