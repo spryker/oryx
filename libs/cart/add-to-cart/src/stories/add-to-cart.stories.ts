@@ -18,7 +18,6 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       .sku=${props.sku}
       .options=${{
         hideQuantityInput: props.hideQuantityInput,
-        loading: props.loading,
       }}
     ></add-to-cart>
   `;
@@ -29,7 +28,6 @@ export const Demo = Template.bind({});
 Demo.args = {
   sku: '1',
   hideQuantityInput: false,
-  loading: false,
 };
 
 Demo.argTypes = {
