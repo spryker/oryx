@@ -9,5 +9,6 @@ export * from './lib/is-promise';
 export * from './lib/query.util';
 export * from './lib/random-string';
 export * from './lib/throttle';
+export * from './lib/time';
 export * from './lib/type';
 export * from './lib/wait';
