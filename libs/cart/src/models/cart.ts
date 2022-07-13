@@ -1,21 +1,21 @@
 export interface CartTotals {
-  expenseTotal: number;
-  discountTotal: number;
-  taxTotal: number;
-  subtotal: number;
   grandTotal: number;
   priceToPay: number;
+  expenseTotal?: number;
+  discountTotal?: number;
+  taxTotal?: number;
+  subtotal?: number;
 }
 
 export interface CartAttributes {
-  priceMode: string;
-  currency: string;
-  store: string;
   name: string;
   isDefault: boolean;
   totals: CartTotals;
-  discounts: unknown[];
-  thresholds: unknown[];
+  discounts?: unknown[];
+  thresholds?: unknown[];
+  priceMode?: string;
+  currency?: string;
+  store?: string;
 }
 
 export interface Cart extends CartAttributes {
@@ -24,25 +24,25 @@ export interface Cart extends CartAttributes {
 }
 
 export interface CartEntryCalculations {
-  unitPrice: number;
-  sumPrice: number;
-  taxRate: number;
-  unitNetPrice: number;
-  sumNetPrice: number;
-  unitGrossPrice: number;
-  sumGrossPrice: number;
-  unitTaxAmountFullAggregation: number;
-  sumTaxAmountFullAggregation: number;
-  sumSubtotalAggregation: number;
-  unitSubtotalAggregation: number;
-  unitProductOptionPriceAggregation: number;
-  sumProductOptionPriceAggregation: number;
-  unitDiscountAmountAggregation: number;
-  sumDiscountAmountAggregation: number;
-  unitDiscountAmountFullAggregation: number;
-  sumDiscountAmountFullAggregation: number;
-  unitPriceToPayAggregation: number;
-  sumPriceToPayAggregation: number;
+  unitPrice?: number;
+  sumPrice?: number;
+  taxRate?: number;
+  unitNetPrice?: number;
+  sumNetPrice?: number;
+  unitGrossPrice?: number;
+  sumGrossPrice?: number;
+  unitTaxAmountFullAggregation?: number;
+  sumTaxAmountFullAggregation?: number;
+  sumSubtotalAggregation?: number;
+  unitSubtotalAggregation?: number;
+  unitProductOptionPriceAggregation?: number;
+  sumProductOptionPriceAggregation?: number;
+  unitDiscountAmountAggregation?: number;
+  sumDiscountAmountAggregation?: number;
+  unitDiscountAmountFullAggregation?: number;
+  sumDiscountAmountFullAggregation?: number;
+  unitPriceToPayAggregation?: number;
+  sumPriceToPayAggregation?: number;
 }
 
 export interface CartEntryAttributes {
@@ -50,15 +50,15 @@ export interface CartEntryAttributes {
   quantity: number;
   groupKey: string;
   abstractSku: string;
-  amount: unknown;
-  productOfferReference: unknown;
-  merchantReference: unknown;
-  calculations: CartEntryCalculations;
-  configuredBundle: unknown;
-  configuredBundleItem: unknown;
-  productConfigurationInstance: unknown;
-  salesUnit: unknown;
-  selectedProductOptions: unknown[];
+  amount?: unknown;
+  productOfferReference?: unknown;
+  merchantReference?: unknown;
+  calculations?: CartEntryCalculations;
+  configuredBundle?: unknown;
+  configuredBundleItem?: unknown;
+  productConfigurationInstance?: unknown;
+  salesUnit?: unknown;
+  selectedProductOptions?: unknown[];
 }
 
 export interface CartEntry extends CartEntryAttributes {

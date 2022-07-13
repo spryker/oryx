@@ -1,9 +1,6 @@
 export const mockCartTotals = {
-  grandTotal: 'cart',
-};
-
-export const mockDefaultCartTotals = {
-  grandTotal: 'default',
+  grandTotal: 0,
+  priceToPay: 0,
 };
 
 export const mockCartResponse = {
@@ -32,7 +29,7 @@ export const mockCartDefaultResponse = {
   attributes: {
     name: 'Shopping cart',
     isDefault: true,
-    totals: mockDefaultCartTotals,
+    totals: mockCartTotals,
   },
   relationships: {
     'guest-cart-items': {
@@ -51,30 +48,27 @@ export const mockEntryInclude = {
   id: 'entry',
   attributes: {
     sku: 'sku',
+    groupKey: 'groupKey',
+    abstractSku: 'abstractSku',
     quantity: 1,
   },
+};
+
+export const mockNormalizedEntry = {
+  id: mockEntryInclude.id,
+  ...mockEntryInclude.attributes,
 };
 
 export const mockNormalizedCart = {
   id: mockCartResponse.id,
   ...mockCartResponse.attributes,
-  products: [
-    {
-      id: mockEntryInclude.id,
-      ...mockEntryInclude.attributes,
-    },
-  ],
+  products: [mockNormalizedEntry],
 };
 
 export const mockNormalizedDefaultCart = {
   id: mockCartDefaultResponse.id,
   ...mockCartDefaultResponse.attributes,
-  products: [
-    {
-      id: mockEntryInclude.id,
-      ...mockEntryInclude.attributes,
-    },
-  ],
+  products: [mockNormalizedEntry],
 };
 
 export const mockNormalizedCartWithoutProducts = {

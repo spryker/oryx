@@ -7,7 +7,6 @@ import {
 import { Observable, of } from 'rxjs';
 import {
   mockCartTotals,
-  mockDefaultCartTotals,
   mockNormalizedCart,
   mockNormalizedCartEntry,
   mockNormalizedCartWithoutProducts,
@@ -371,7 +370,7 @@ describe('DefaultCartService', () => {
       service.load();
       service.getTotals().subscribe(statusCallback);
 
-      expect(statusCallback).toHaveBeenCalledWith(mockDefaultCartTotals);
+      expect(statusCallback).toHaveBeenCalledWith(mockCartTotals);
     });
 
     it('should return cart totals of the cart by provided cartId', () => {
