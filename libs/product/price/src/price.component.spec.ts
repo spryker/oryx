@@ -67,12 +67,12 @@ describe('ProductPriceComponent', () => {
   });
 
   it('is defined', async () => {
-    element = await fixture(html`<product-price uid="abc"></product-price>`);
+    element = await fixture(html`<product-price sku="123"></product-price>`);
     expect(element).toBeInstanceOf(ProductPriceComponent);
   });
 
   it('passes the a11y audit', async () => {
-    element = await fixture(html`<product-price uid="abc"></product-price>`);
+    element = await fixture(html`<product-price sku="123"></product-price>`);
     await expect(element).shadowDom.to.be.accessible();
   });
 
@@ -82,7 +82,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           mockLocaleService.set(locale);
           element = await fixture(
-            html`<product-price uid="abc"></product-price>`
+            html`<product-price sku="123"></product-price>`
           );
         });
         it(`should have a formatted price (${formatted})`, () => {
@@ -135,6 +135,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
+              sku="123"
               .options=${{ showOriginal: true }}
             ></product-price>`
           );
@@ -161,6 +162,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
+              sku="123"
               .options=${{ showOriginal: true }}
             ></product-price>`
           );
@@ -178,6 +180,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
+              sku="123"
               .options=${{ showOriginal: false }}
             ></product-price>`
           );
@@ -191,6 +194,7 @@ describe('ProductPriceComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
+              sku="123"
               .options=${{ showOriginal: false }}
             ></product-price>`
           );

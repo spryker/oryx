@@ -35,11 +35,16 @@ export class ProductController {
         return this.context
           .get(ProductContext.Code, this.observe.get('sku'))
           .pipe(
-            switchMap(
-              (sku) =>
+            switchMap((sku) => {
+              if (!sku) {
+                return of(null);
+              }
+
+              return (
                 this.productService?.get({ sku, include: this.include }) ??
                 of(null)
-            )
+              );
+            })
           );
       })
     );
