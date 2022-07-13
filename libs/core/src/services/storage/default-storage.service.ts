@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { StorageType } from './model';
 import { StorageService } from './storage.service';
 
@@ -6,24 +7,34 @@ export class DefaultStorageService implements StorageService {
     return type === StorageType.DEFAULT ? localStorage : sessionStorage;
   }
 
-  get<T = unknown>(key: string, type = StorageType.DEFAULT): T | null {
+  get<T = unknown>(
+    key: string,
+    type = StorageType.DEFAULT
+  ): Observable<T | null> {
     try {
-      return JSON.parse(this.getStorage(type).getItem(key) as string);
+      return of(JSON.parse(this.getStorage(type).getItem(key) as string));
     } catch (e) {
       console.error(e);
     }
-    return null;
+    return of(null);
   }
 
-  set(key: string, value: unknown, type = StorageType.DEFAULT): void {
+  set(
+    key: string,
+    value: unknown,
+    type = StorageType.DEFAULT
+  ): Observable<void> {
     this.getStorage(type).setItem(key, JSON.stringify(value));
+    return of();
   }
 
-  remove(key: string, type = StorageType.DEFAULT): void {
+  remove(key: string, type = StorageType.DEFAULT): Observable<void> {
     this.getStorage(type).removeItem(key);
+    return of();
   }
 
-  clear(type = StorageType.DEFAULT): void {
+  clear(type = StorageType.DEFAULT): Observable<void> {
     this.getStorage(type).clear();
+    return of();
   }
 }

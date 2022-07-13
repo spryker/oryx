@@ -3,6 +3,7 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
+import { Observable, of } from 'rxjs';
 import { HttpTestService } from '../../../testing';
 import { HttpService } from '../http';
 import { StorageService, StorageType } from '../storage';
@@ -47,15 +48,16 @@ let expectedKey: any;
 let expectedValue: any;
 
 class MockStorageService implements Partial<StorageService> {
-  get(key: string, type?: StorageType): any {
-    return mockToken;
+  get(key: string, type?: StorageType): Observable<any> {
+    return of(mockToken);
   }
-  set(key: string, value: any, type?: StorageType): void {
+  set(key: string, value: any, type?: StorageType): Observable<void> {
     expectedKey = key;
     expectedValue = value;
+    return of();
   }
-  remove(key: string, type?: StorageType): void {
-    //mock
+  remove(key: string, type?: StorageType): Observable<void> {
+    return of();
   }
 }
 
@@ -128,7 +130,6 @@ describe('AccessTokenService', () => {
     vi.spyOn(storage, 'get');
     service.get().subscribe(() => {
       expect(storage.get).toHaveBeenCalledWith(key);
-      expect(storage.get).toHaveReturnedWith(mockToken);
     });
   });
   it('should store refreshed token', () => {

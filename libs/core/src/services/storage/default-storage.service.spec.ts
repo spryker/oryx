@@ -3,6 +3,7 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
+import { lastValueFrom } from 'rxjs';
 import { DefaultStorageService } from './default-storage.service';
 import { StorageType } from './model';
 import { StorageService } from './storage.service';
@@ -39,9 +40,10 @@ describe('DefaultStorageService', () => {
     );
   });
 
-  it('should get data from local storage', () => {
+  it('should get data from local storage', async () => {
     vi.spyOn(globalThis.localStorage.__proto__, 'getItem');
-    expect(service.get('mock')).toBe('somedata');
+    const data = await lastValueFrom(service.get('mock'));
+    expect(data).toBe('somedata');
     expect(globalThis.localStorage.getItem).toHaveBeenCalledWith('mock');
   });
 
@@ -60,9 +62,10 @@ describe('DefaultStorageService', () => {
     );
   });
 
-  it('should get data from session storage', () => {
+  it('should get data from session storage', async () => {
     vi.spyOn(globalThis.sessionStorage.__proto__, 'getItem');
-    expect(service.get('mock', StorageType.SESSION)).toBe('sessiondata');
+    const data = await lastValueFrom(service.get('mock', StorageType.SESSION));
+    expect(data).toBe('sessiondata');
     expect(globalThis.sessionStorage.getItem).toHaveBeenCalledWith('mock');
   });
 

@@ -1,6 +1,14 @@
 import { inject } from '@spryker-oryx/injector';
 import { toMilliseconds } from '@spryker-oryx/typescript-utils';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { StorageService } from '../storage';
 import { AccessTokenService } from './access-token.service';
@@ -22,17 +30,18 @@ export class DefaultAccessTokenService implements AccessTokenService {
    * @param key the logical key that is used to sync the token with local storage
    */
   get(): Observable<AccessToken | null> {
-    const token: AccessToken | null = this.storage.get(
-      this.ACCESS_TOKEN_IDENTIFIER
+    return this.storage.get<AccessToken>(this.ACCESS_TOKEN_IDENTIFIER).pipe(
+      switchMap((token) => {
+        if (!(token && requiresRefresh(token))) {
+          return of(token);
+        }
+        if (canRenew(token)) {
+          return this.renew(token as Required<AccessToken>);
+        }
+        this.remove();
+        return of(null);
+      })
     );
-    if (!(token && requiresRefresh(token))) {
-      return of(token);
-    }
-    if (canRenew(token)) {
-      return this.renew(token as Required<AccessToken>);
-    }
-    this.remove();
-    return of(null);
   }
 
   remove(): void {
