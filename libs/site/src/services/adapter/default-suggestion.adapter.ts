@@ -1,13 +1,12 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
-  ApiModel as ProductApiModel,
-  GlueImageSets,
-  GlueProductPrices,
+  ApiProductModel,
   imagesNormalizer,
   priceNormalizer,
   Product,
 } from '@spryker-oryx/product';
+import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
 import { map, Observable } from 'rxjs';
 import {
   ApiModel,
@@ -17,39 +16,11 @@ import {
 } from '../../models';
 import { SuggestionAdapter } from './suggestion.adapter';
 
-interface RELATIONSHIP {
-  id: string;
-  type: string;
-}
-
-type Relationships = {
-  [key in INCLUDES]: {
-    data: RELATIONSHIP[];
-  };
-};
-
-interface INCLUDE<T, A> {
-  type: T;
-  id: string;
-  attributes: A;
-  relationships?: Relationships;
-}
-
 enum INCLUDES {
   CONCRETE_PRODUCTS = 'concrete-products',
   ABSTRACT_PRODUCTS = 'abstract-products',
   CONCRETE_PRODUCT_IMAGE_SETS = 'concrete-product-image-sets',
   CONCRETE_PRODUCT_PRICES = 'concrete-product-prices',
-}
-
-interface JSON_API_MODEL<T, A> {
-  data: [
-    {
-      attributes: T;
-      relationships?: Record<string, Record<'data', RELATIONSHIP[]>>;
-    }
-  ];
-  included: A;
 }
 
 export interface SuggestionResponse {
@@ -58,15 +29,22 @@ export interface SuggestionResponse {
   cmsPages: Resource[];
 }
 
-type structures = ProductApiModel.Product | GlueImageSets | GlueProductPrices;
+type structures =
+  | ApiProductModel.Attributes
+  | ApiProductModel.ImageSets
+  | ApiProductModel.Prices;
 
 type includes =
-  | INCLUDE<INCLUDES.CONCRETE_PRODUCTS, ProductApiModel.Product>
-  | INCLUDE<INCLUDES.ABSTRACT_PRODUCTS, ApiModel.AbstractProduct>
-  | INCLUDE<INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS, GlueImageSets>
-  | INCLUDE<INCLUDES.CONCRETE_PRODUCT_PRICES, GlueProductPrices>;
+  | Include<INCLUDES.CONCRETE_PRODUCTS, ApiProductModel.Attributes>
+  | Include<INCLUDES.ABSTRACT_PRODUCTS, ApiModel.AbstractProduct>
+  | Include<INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS, ApiProductModel.ImageSets>
+  | Include<INCLUDES.CONCRETE_PRODUCT_PRICES, ApiProductModel.Prices>;
 
-type GlueSuggestion = JSON_API_MODEL<SuggestionResponse, includes[]>;
+type GlueSuggestion = JsonApiModel<
+  SuggestionResponse,
+  includes[],
+  Array<unknown>
+>;
 
 export class DefaultServiceAdapter implements SuggestionAdapter {
   protected productEndpoint = 'catalog-search-suggestions';
@@ -109,38 +87,42 @@ export class DefaultServiceAdapter implements SuggestionAdapter {
     included: includes[],
     resource: includes,
     relationType: T
-  ): INCLUDE<T, A> | undefined {
+  ): Include<T, A> | undefined {
     return included.find(
       (include) =>
         include.type === relationType &&
         include.id === this.getRelationId<T>(resource, relationType)
-    ) as INCLUDE<T, A>;
+    ) as Include<T, A>;
   }
 
   protected mapIncludes({ included }: GlueSuggestion): Product[] {
+    if (!included) {
+      return [];
+    }
+
     return included
       .filter(({ type }) => type === INCLUDES.ABSTRACT_PRODUCTS)
       .map((abstractProduct) => {
         const rawProduct = this.getRelation<
           INCLUDES.CONCRETE_PRODUCTS,
-          ProductApiModel.Product
+          ApiProductModel.Attributes
         >(included, abstractProduct, INCLUDES.CONCRETE_PRODUCTS);
 
         if (!rawProduct) {
           return;
         }
 
-        const { name, sku, description }: ProductApiModel.Product =
+        const { name, sku, description }: ApiProductModel.Attributes =
           rawProduct.attributes;
 
         const images = this.getRelation<
           INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS,
-          GlueImageSets
+          ApiProductModel.ImageSets
         >(included, rawProduct, INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS);
 
         const price = this.getRelation<
           INCLUDES.CONCRETE_PRODUCT_PRICES,
-          GlueProductPrices
+          ApiProductModel.Prices
         >(included, rawProduct, INCLUDES.CONCRETE_PRODUCT_PRICES);
 
         return {

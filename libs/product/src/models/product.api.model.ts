@@ -1,25 +1,37 @@
-export module ApiModel {
-  export interface Product {
-    sku?: string;
-    averageRating?: string;
-    reviewCount?: number;
-    name?: string;
-    description?: string;
+import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
+
+export module ApiProductModel {
+  export interface Attributes {
+    attributeNames?: Record<string, unknown>;
     attributes?: Record<string, unknown>;
-    metaTitle?: string;
-    metaKeywords?: string;
+    averageRating?: string;
+    description?: string;
+    discontinuedNote?: string;
+    id?: string;
+    isDiscontinued?: boolean;
     metaDescription?: string;
-    images?: ProductImage[];
-    price?: number;
-    prices?: ProductPrice[];
+    metaKeywords?: string;
+    metaTitle?: string;
+    name?: string;
+    productAbstractSku?: string;
+    reviewCount?: number;
+    sku?: string;
+    superAttributesDefinition?: string[];
   }
 
-  export interface ProductImage {
+  export interface Image {
     externalUrlLarge: string;
     externalUrlSmall: string;
   }
 
-  export interface ProductPrice {
+  export interface ImageSets {
+    imageSets: {
+      name: string;
+      images: Image[];
+    }[];
+  }
+
+  export interface Price {
     priceTypeName: 'DEFAULT' | 'ORIGINAL';
     netAmount?: number;
     grossAmount?: number;
@@ -31,8 +43,19 @@ export module ApiModel {
     volumePrices?: unknown[];
   }
 
-  export enum INCLUDES {
-    CONCRETE_PRODUCT_IMAGE_SETS = 'concrete-product-image-sets',
-    CONCRETE_PRODUCT_PRICES = 'concrete-product-prices',
+  export interface Prices {
+    price?: number;
+    prices?: Price[];
   }
+
+  export enum Includes {
+    ConcreteProductImageSets = 'concrete-product-image-sets',
+    ConcreteProductPrices = 'concrete-product-prices',
+  }
+
+  export type ResponseIncludes =
+    | Include<Includes.ConcreteProductImageSets, ImageSets>
+    | Include<Includes.ConcreteProductPrices, Prices>;
+
+  export type Response = JsonApiModel<Attributes, ResponseIncludes[]>;
 }

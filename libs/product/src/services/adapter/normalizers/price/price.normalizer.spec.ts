@@ -1,12 +1,12 @@
-import { priceNormalizer } from '@spryker-oryx/product';
-import { GlueProductPrices } from './model';
+import { ApiProductModel } from '../../../../models';
+import { priceNormalizer } from './price.normalizer';
 
 const generatePrice = (
   value: number,
   currencyCode = 'EUR',
   isNet = true,
   isDefault = true
-): GlueProductPrices => {
+): ApiProductModel.Prices => {
   return {
     prices: [
       {

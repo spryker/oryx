@@ -4,11 +4,7 @@ export interface Product {
   reviewCount?: number;
   name?: string;
   description?: string;
-  attributes?: Record<string, unknown>;
-  metaTitle?: string;
-  metaKeywords?: string;
-  metaDescription?: string;
-  price?: ProductPrice;
+  price?: ProductPrices;
   images?: ProductImage[];
 }
 
@@ -17,16 +13,16 @@ export interface ProductImage {
   externalUrlSmall: string;
 }
 
-export interface ProductPrice {
-  defaultPrice?: Price;
+export interface ProductPrices {
+  defaultPrice?: ProductPrice;
 
   /**
    * Often referred to as the _strikethrough_ or _purchase_ price.
    */
-  originalPrice?: Price;
+  originalPrice?: ProductPrice;
 }
 
-export interface Price {
+export interface ProductPrice {
   /**
    * The price value either is the gross or net value, depending on
    * the isNet flag.

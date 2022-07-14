@@ -1,9 +1,18 @@
-import { ProductImage } from '../../../../models';
-import { GlueImageSets } from './model';
+import { ApiProductModel, ProductImage } from '../../../../models';
 
-export function imagesNormalizer(data: GlueImageSets): ProductImage[] {
+export const ImagesNormalizer = 'FES.ImagesNormalizer';
+
+export function imagesNormalizer(
+  data: ApiProductModel.ImageSets
+): ProductImage[] {
   return data?.imageSets?.reduce?.(
     (acc, imageSet) => [...acc, ...imageSet.images],
-    [] as ProductImage[]
+    [] as ApiProductModel.Image[]
   );
+}
+
+declare global {
+  interface InjectionTokensContractMap {
+    [ImagesNormalizer]: Transformer;
+  }
 }

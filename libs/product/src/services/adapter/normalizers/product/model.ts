@@ -1,9 +1,13 @@
-import { Transformer } from '@spryker-oryx/core';
+import { CamelCase } from '@spryker-oryx/typescript-utils';
+import { ApiProductModel } from '../../../../models';
 
-export const ProductNormalizer = 'FES.ProductNormalizer';
+export type DeserializedIncludes = {
+  [P in ApiProductModel.Includes as `${CamelCase<P>}`]?: P extends ApiProductModel.Includes.ConcreteProductImageSets
+    ? ApiProductModel.ImageSets[]
+    : P extends ApiProductModel.Includes.ConcreteProductPrices
+    ? ApiProductModel.Prices[]
+    : never;
+};
 
-declare global {
-  interface InjectionTokensContractMap {
-    [ProductNormalizer]: Transformer[];
-  }
-}
+export type DeserializedProduct = ApiProductModel.Attributes &
+  DeserializedIncludes;

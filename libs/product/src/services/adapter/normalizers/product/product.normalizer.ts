@@ -1,14 +1,18 @@
-import { TransformerService } from '@spryker-oryx/core';
+import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/typescript-utils';
-import { ApiModel, Product } from '../../../../models';
+import { ApiProductModel, Product } from '../../../../models';
 import { ImagesNormalizer } from '../images';
-import { DeserializedProduct } from '../model';
 import { PriceNormalizer } from '../price';
+import { DeserializedProduct } from './model';
+
+export const ProductNormalizer = 'FES.ProductNormalizer';
 
 export const productNormalizer = [
   (data: DeserializedProduct, transformer: TransformerService): Product => {
-    const priceKey = camelize(ApiModel.INCLUDES.CONCRETE_PRODUCT_PRICES);
-    const imageKey = camelize(ApiModel.INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS);
+    const priceKey = camelize(ApiProductModel.Includes.ConcreteProductPrices);
+    const imageKey = camelize(
+      ApiProductModel.Includes.ConcreteProductImageSets
+    );
 
     const {
       sku,
@@ -31,3 +35,9 @@ export const productNormalizer = [
     };
   },
 ];
+
+declare global {
+  interface InjectionTokensContractMap {
+    [ProductNormalizer]: Transformer[];
+  }
+}

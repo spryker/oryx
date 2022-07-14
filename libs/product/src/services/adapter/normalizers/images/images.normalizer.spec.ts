@@ -1,7 +1,7 @@
+import { ApiProductModel } from '../../../../models';
 import { imagesNormalizer } from './images.normalizer';
-import { GlueImageSets } from './model';
 
-const mockGlueImageSets: GlueImageSets = {
+const mockGlueImageSets: ApiProductModel.ImageSets = {
   imageSets: [
     {
       name: 'name',

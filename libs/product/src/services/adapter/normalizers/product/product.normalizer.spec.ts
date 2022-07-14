@@ -1,8 +1,8 @@
 import { camelize } from '@spryker-oryx/typescript-utils';
-import { ApiModel, Product } from '../../../../models';
+import { ApiProductModel, Product } from '../../../../models';
 import { ImagesNormalizer } from '../images';
-import { DeserializedProduct } from '../model';
 import { PriceNormalizer } from '../price';
+import { DeserializedProduct } from './model';
 import { productNormalizer } from './product.normalizer';
 
 let mockDeserializedProduct: DeserializedProduct;
@@ -38,7 +38,7 @@ describe('Product Normalizer', () => {
       description: 'description',
       reviewCount: 3,
       averageRating: '5',
-      [camelize(ApiModel.INCLUDES.CONCRETE_PRODUCT_IMAGE_SETS)]: [
+      [camelize(ApiProductModel.Includes.ConcreteProductImageSets)]: [
         {
           imageSets: [
             {
@@ -53,7 +53,7 @@ describe('Product Normalizer', () => {
           ],
         },
       ],
-      [camelize(ApiModel.INCLUDES.CONCRETE_PRODUCT_PRICES)]: [
+      [camelize(ApiProductModel.Includes.ConcreteProductPrices)]: [
         {
           price: 100,
           prices: [

@@ -1,8 +1,15 @@
-import { ApiModel, Price, ProductPrice } from '../../../../models';
-import { GlueProductPrices } from './model';
+import {
+  ApiProductModel,
+  ProductPrice,
+  ProductPrices,
+} from '../../../../models';
 
-export function priceNormalizer(data: GlueProductPrices): ProductPrice {
-  const normalize = (data?: ApiModel.ProductPrice): Price | undefined => {
+export const PriceNormalizer = 'FES.PriceNormalizer';
+
+export function priceNormalizer(data: ApiProductModel.Prices): ProductPrices {
+  const normalize = (
+    data?: ApiProductModel.Price
+  ): ProductPrice | undefined => {
     const value = data?.grossAmount ?? data?.netAmount;
 
     if (!data || !value) {
@@ -24,4 +31,10 @@ export function priceNormalizer(data: GlueProductPrices): ProductPrice {
       data?.prices?.find((price) => price.priceTypeName === 'ORIGINAL')
     ),
   };
+}
+
+declare global {
+  interface InjectionTokensContractMap {
+    [PriceNormalizer]: Transformer;
+  }
 }

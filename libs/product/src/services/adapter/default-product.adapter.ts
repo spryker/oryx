@@ -1,8 +1,8 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, switchMap } from 'rxjs';
-import { ApiModel, Product, ProductQualifier } from '../../models';
-import { GlueProduct, ProductNormalizer } from './normalizers';
+import { ApiProductModel, Product, ProductQualifier } from '../../models';
+import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 export class DefaultProductAdapter implements ProductAdapter {
@@ -19,12 +19,13 @@ export class DefaultProductAdapter implements ProductAdapter {
   }
 
   get({ sku, include }: ProductQualifier): Observable<Product> {
-    include = [...Object.values(ApiModel.INCLUDES), ...(include ?? [])].filter(
-      (type, index, arr) => arr.indexOf(type) === index
-    );
+    include = [
+      ...Object.values(ApiProductModel.Includes),
+      ...(include ?? []),
+    ].filter((type, index, arr) => arr.indexOf(type) === index);
 
     return this.http
-      .get<GlueProduct>(
+      .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${
           include ? '?include=' : ''
         }${include?.join(',') || ''}`

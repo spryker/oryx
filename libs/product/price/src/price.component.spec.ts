@@ -8,7 +8,6 @@ import {
 import {
   CurrencyService,
   LocaleService,
-  ProductPrice,
   ProductService,
 } from '@spryker-oryx/product';
 import '@spryker-oryx/testing';
@@ -153,7 +152,7 @@ describe('ProductPriceComponent', () => {
             price: {
               defaultPrice: mockEur,
               originalPrice: mockEur,
-            } as ProductPrice,
+            },
           })
         );
       });
