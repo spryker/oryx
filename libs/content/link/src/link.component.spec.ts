@@ -1,22 +1,27 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
+import {
+  DefaultSemanticLinkService,
+  SemanticLinkService,
+  SemanticLinkType,
+} from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { Observable, of } from 'rxjs';
 import '../index';
 import { ContentLinkComponent } from './link.component';
+import { LinkOptions, LinkType } from './link.model';
 
 class MockService {
-  getContent(): Promise<any> {
-    return new Promise<any>((resolve) => resolve({}));
-  }
-  getOptions(): Promise<any> {
-    return new Promise<any>((resolve) => resolve({}));
+  getOptions(): Observable<LinkOptions> {
+    return of({});
   }
 }
 
 describe('Link', () => {
   let element: ContentLinkComponent;
+  let options: LinkOptions;
 
   createInjector({
     providers: [
@@ -24,21 +29,97 @@ describe('Link', () => {
         provide: ExperienceService,
         useClass: MockService,
       },
+      {
+        provide: SemanticLinkService,
+        useClass: DefaultSemanticLinkService,
+      },
     ],
   });
 
   beforeEach(async () => {
+    options = {
+      text: 'test',
+      type: LinkType.RawUrl,
+      id: 'test',
+    };
     element = await fixture(
-      html` <content-link
-        .content=${{ text: 'test', href: '/test' }}
-        .options=${{ target: '_blank' }}
-      ></content-link>`
+      html` <content-link .options=${options}></content-link>`
     );
   });
 
-  it('is defined', () => {
-    const el = document.createElement('content-link');
-    expect(el).toBeInstanceOf(ContentLinkComponent);
+  it('is defined', async () => {
+    expect(element).toBeInstanceOf(ContentLinkComponent);
+  });
+
+  it('renders correct link when no type is provided', async () => {
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      'test'
+    );
+  });
+
+  it('renders correct text inside of the link', async () => {
+    expect(element?.shadowRoot?.querySelector('a')?.innerText).toBe('test');
+  });
+
+  it('renders correct link when Category type is provided', async () => {
+    options.type = SemanticLinkType.Category;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      '/category/test'
+    );
+  });
+
+  it('renders correct link when Page type is provided', async () => {
+    options.type = SemanticLinkType.Page;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      '/test'
+    );
+  });
+
+  it('renders correct link when Product type is provided', async () => {
+    options.type = SemanticLinkType.Product;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      '/product/test'
+    );
+  });
+
+  it('renders unmodified link when RawUrl type is provided', async () => {
+    options.type = LinkType.RawUrl;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      'test'
+    );
+  });
+
+  it('renders correct link when correct type and no slash in href is provided', async () => {
+    options.type = SemanticLinkType.Category;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('href')).toBe(
+      '/category/test'
+    );
+  });
+
+  it('properly resolves rel attribute', async () => {
+    options.noopener = true;
+    options.nofollow = true;
+    element = await fixture(
+      html`<content-link .options=${options}></content-link>`
+    );
+    expect(element?.shadowRoot?.querySelector('a')?.getAttribute('rel')).toBe(
+      'noopener nofollow'
+    );
   });
 
   it('passes the a11y audit', async () => {

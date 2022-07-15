@@ -3,33 +3,29 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import '../index';
-import { LinkContent, LinkOptions } from '../link.model';
+import { LinkOptions } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
 } as Meta;
 
-const Template: Story<LinkOptions & LinkContent> = (props): TemplateResult => {
-  const content = {
-    text: props.text,
-    href: props.href,
-    icon: props.icon,
-  };
+const Template: Story<LinkOptions> = (props): TemplateResult => {
   const options = {
     target: props.target,
     noopener: !!props.noopener,
     nofollow: !!props.nofollow,
+    text: props.text,
+    href: props.id,
+    icon: props.icon,
   };
-  return html`
-    <content-link .content=${content} .options=${options}></content-link>
-  `;
+  return html` <content-link .options=${options}></content-link> `;
 };
 
 export const ContentLinkDemo = Template.bind({});
 
 ContentLinkDemo.args = {
   text: 'Furniture - Upgrade Your Office',
-  href: '/furniture',
+  id: '/furniture',
 };
 
 ContentLinkDemo.argTypes = {
@@ -45,7 +41,7 @@ ContentLinkDemo.argTypes = {
   text: {
     control: { type: 'text' },
   },
-  href: {
+  id: {
     control: { type: 'text' },
   },
   icon: {

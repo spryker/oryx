@@ -14,6 +14,7 @@ import {
   Provider,
 } from '@spryker-oryx/injector';
 import { PRODUCT_PROVIDERS } from '@spryker-oryx/product';
+import { SITE_PROVIDERS } from '@spryker-oryx/site';
 import 'urlpattern-polyfill';
 import { componentsMapping } from './components';
 import { StorefrontRouterService } from './router.service';
@@ -56,6 +57,7 @@ export const createInjector = (providers: Provider[] = []): Injector =>
         provide: RouterService,
         useClass: StorefrontRouterService,
       },
+      ...SITE_PROVIDERS,
       ...PRODUCT_PROVIDERS,
       ...CART_PROVIDERS,
       ...providers,
