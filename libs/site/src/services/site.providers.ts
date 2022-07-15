@@ -1,7 +1,4 @@
-import {
-  DefaultSemanticLinkService,
-  SemanticLinkService,
-} from '@spryker-oryx/site';
+import { DefaultSemanticLinkService, SemanticLinkService } from './index';
 
 export const SITE_PROVIDERS = [
   {
