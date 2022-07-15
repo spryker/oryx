@@ -1,6 +1,11 @@
-import { ExecutorContext, readJsonFile, writeJsonFile } from '@nrwl/devkit';
+import {
+  ExecutorContext,
+  joinPathFragments,
+  readJsonFile,
+  writeJsonFile,
+} from '@nrwl/devkit';
+import runCommands from '@nrwl/workspace/src/executors/run-commands/run-commands.impl';
 import { TypeScriptExecutorOptions } from '@nrwl/workspace/src/executors/tsc/schema';
-import tsc from '@nrwl/workspace/src/executors/tsc/tsc.impl';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
 import { DirData, libDirsNormalizer, LibOptions } from './utils';
@@ -16,7 +21,6 @@ const normalizeOptions = (
 
   options.outputPath = join(options.outputPath, options.cwd);
   options.main = join(options.cwd, options.main);
-  options.tsConfig = join(options.cwd, options.tsConfig);
 
   if (options.assets.length) {
     for (let i = 0; i < options.assets.length; i++) {
@@ -40,13 +44,23 @@ export default async function componentsLibraryBuildExecutor(
   context: ExecutorContext
 ) {
   baseOptions.cwd = context.workspace.projects[context.projectName].root;
+  const projectRoot = joinPathFragments(context.root, baseOptions.cwd);
 
   const options = normalizeOptions(baseOptions);
   const packageJson = readJsonFile(join(options.cwd, 'package.json'));
   const tmpPath = join(context.root, 'tmp');
 
   packageJson.exports = packageJson.exports ?? {};
-  await tsc(options, context);
+
+  await runCommands(
+    {
+      command: `npx tsc ${
+        baseOptions.tsConfig ? '-p ' + baseOptions.tsConfig : ''
+      }`,
+      cwd: projectRoot,
+    },
+    context
+  );
 
   libDirsNormalizer(options, (dir: DirData) => {
     const { name: dirName, path: dirPath } = dir;

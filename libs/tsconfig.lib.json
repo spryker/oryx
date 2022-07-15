@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "preserveConstEnums": true
+    "preserveConstEnums": true,
+    "outDir": "../dist"
   },
   "exclude": [
     "**/vitest.config.ts",
