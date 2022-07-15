@@ -19,12 +19,17 @@ const styles = html`
 export const generateVariantsMatrix = <T extends Variant>(
   variants: T[],
   renderer: (variant: T) => TemplateResult,
-  categoriesOrder?: { categoriesX?: string[]; categoriesY?: string[] }
+  options?: {
+    axisXOrder?: string[];
+    axisYOrder?: string[];
+    hideXAxisName?: boolean;
+    hideYAxisName?: boolean;
+  }
 ): TemplateResult => {
-  const categoriesY = categoriesOrder?.categoriesY || [
+  const categoriesY = options?.axisYOrder || [
     ...new Set(variants.map(({ categoryY }) => categoryY)),
   ];
-  const categoriesX = categoriesOrder?.categoriesX || [
+  const categoriesX = options?.axisXOrder || [
     ...new Set(variants.map(({ categoryX }) => categoryX)),
   ];
 
@@ -38,13 +43,18 @@ export const generateVariantsMatrix = <T extends Variant>(
   return html`
     <table>
       <tr>
-        <th></th>
-        ${categoriesY.map((header) => html`<th>${header}</th>`)}
+        ${when(
+          !options?.hideYAxisName,
+          () => html`
+            <th></th>
+            ${categoriesY.map((header) => html`<th>${header}</th>`)}
+          `
+        )}
       </tr>
       ${categoriesX.map(
         (categoryX) => html`
           <tr>
-            <td>${categoryX}</td>
+            <td>${options?.hideXAxisName ? '' : categoryX}</td>
             ${categoriesY.map(
               (categoryY) => html`
                 <td>

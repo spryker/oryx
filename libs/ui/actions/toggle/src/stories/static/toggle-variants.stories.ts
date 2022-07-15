@@ -151,7 +151,7 @@ const Template: Story = (): TemplateResult => {
             </oryx-toggle>
           `,
           {
-            categoriesY: ['On', 'Off'],
+            axisYOrder: ['On', 'Off'],
           }
         )}
       `

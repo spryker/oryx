@@ -104,6 +104,7 @@ export enum LanguageIcons {
 }
 
 export enum MiscIcons {
+  Cart = 'cart',
   Close = 'close',
   Filters = 'filters',
   Search = 'search',

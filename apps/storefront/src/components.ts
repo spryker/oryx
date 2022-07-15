@@ -47,9 +47,8 @@ export const componentsMapping: ComponentsMapping = {
   'product-description': {
     tag: 'product-description',
     component: () => import('@spryker-oryx/product/description'),
-    template: (uid: string) => {
-      return html`<product-description uid="${uid}"></product-description>`;
-    },
+    template: (uid: string) =>
+      html`<product-description uid="${uid}"></product-description>`,
   },
 
   'product-average-rating': {
