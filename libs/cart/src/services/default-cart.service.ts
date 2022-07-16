@@ -97,6 +97,7 @@ export class DefaultCartService implements CartService {
   }
 
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
+    this.load();
     return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
       take(1),
       switchMap(([userData, activeId]) =>
@@ -133,6 +134,7 @@ export class DefaultCartService implements CartService {
     cartId,
     groupKey,
   }: DeleteCartEntryQualifier): Observable<null> {
+    this.load();
     return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
       take(1),
       switchMap(([userData, activeId]) =>
@@ -170,6 +172,7 @@ export class DefaultCartService implements CartService {
     groupKey,
     ...attributes
   }: UpdateCartEntryQualifier): Observable<null> {
+    this.load();
     return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
       take(1),
       switchMap(([userData, activeId]) =>

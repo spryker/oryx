@@ -3,12 +3,14 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
+import { setupCartMocks } from '../../../src/mocks/cart.mock';
 import { AddToCartOptions } from '../add-to-cart.model';
 import '../index';
 
 export default {
   title: `${storybookPrefix}/Add to cart`,
-} as Meta;
+  loaders: [setupCartMocks],
+} as unknown as Meta;
 
 type Props = ProductComponentProperties & AddToCartOptions;
 
