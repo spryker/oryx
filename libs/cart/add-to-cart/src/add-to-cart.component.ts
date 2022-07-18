@@ -1,5 +1,6 @@
 import { CartService } from '@spryker-oryx/cart';
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
+import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -13,6 +14,7 @@ import '../../quantity-input';
 import { AddToCartOptions } from './add-to-cart.model';
 import { styles } from './add-to-cart.styles';
 
+@hydratable('mouseover')
 export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>() {
   static styles = styles;
 
