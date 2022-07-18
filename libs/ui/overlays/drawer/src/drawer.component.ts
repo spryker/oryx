@@ -72,12 +72,7 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
 
   protected override render(): TemplateResult {
     return html`
-      <dialog
-        ?open=${this.open}
-        @keydown=${this.handleKeydown}
-        @submit=${this.handleSubmit}
-        tabindex="-1"
-      >
+      <dialog ?open=${this.open} @submit=${this.handleSubmit} tabindex="-1">
         <form method="dialog">${this.renderTemplate()}</form>
       </dialog>
     `;
@@ -85,14 +80,6 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
 
   protected resize(force?: boolean): void {
     this.maximize = force ?? !this.maximize;
-  }
-
-  protected handleKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Escape') {
-      this.open = false;
-      this.dialog?.close();
-      this.resize(false);
-    }
   }
 
   protected handleSubmit(e: Event): void {

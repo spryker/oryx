@@ -36,19 +36,6 @@ describe('NDSDrawerComponent', () => {
     });
   });
 
-  describe('keydown event', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<nds-drawer open></nds-drawer>`);
-    });
-    it('should close the drawer when "Esc" key press', async () => {
-      element.dialogElement?.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Escape' })
-      );
-      await update();
-      expect(isClosed(element)).toBe(true);
-    });
-  });
-
   const getButton = (selector = 'button'): HTMLElement | null | undefined =>
     getShadowElementBySelector(element, selector);
 

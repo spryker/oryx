@@ -47,7 +47,6 @@ export class NDSDrawerComponent extends DrawerComponent {
       <dialog
         ?open=${this.open}
         @click=${(e: MouseEvent): void => this.handleClick(e)}
-        @keydown=${(e: KeyboardEvent): void => this.handleKeydown(e)}
         role="dialog"
         aria-modal="true"
         tabindex="-1"
@@ -55,12 +54,6 @@ export class NDSDrawerComponent extends DrawerComponent {
         ${super.renderTemplate()}
       </dialog>
     `;
-  }
-
-  protected override handleKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Escape') {
-      this.close();
-    }
   }
 
   protected handleClick(e: MouseEvent): void {

@@ -67,13 +67,6 @@ describe('DrawerComponent', () => {
     beforeEach(async () => {
       element = await fixture(html`<oryx-drawer open maximize></oryx-drawer>`);
     });
-    it('should remove maximized attribute on close', async () => {
-      element.dialog?.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Escape' })
-      );
-      await update();
-      expect(isMaximized(element)).toBe(false);
-    });
     it('should remove maximized attribute on submit event', async () => {
       triggerSubmit();
       await update();
