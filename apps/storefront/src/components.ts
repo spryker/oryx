@@ -50,14 +50,12 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-description uid="${uid}"></product-description>`,
   },
-
   'product-average-rating': {
     tag: 'product-average-rating',
     component: () => import('@spryker-oryx/product/average-rating'),
     template: (uid: string) =>
       html`<product-average-rating uid="${uid}"></product-average-rating>`,
   },
-
   'add-to-cart': {
     tag: 'add-to-cart',
     component: () => import('@spryker-oryx/cart/add-to-cart'),

@@ -4,8 +4,8 @@
   "type": "module",
   "exports": {
     "icons": {
-      "default": "./Graphical/icon/src/icons/index.js",
-      "types": "./Graphical/icon/src/icons/index.d.ts"
+      "default": "./graphical/icon/src/icons/index.js",
+      "types": "./graphical/icon/src/icons/index.d.ts"
     }
   }
 }

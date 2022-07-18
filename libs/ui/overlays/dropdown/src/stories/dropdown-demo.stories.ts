@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import '../../../../actions/button';
-import { IconTypes } from '../../../../Graphical/icon';
+import { IconTypes } from '../../../../graphical/icon';
 import { Size } from '../../../../utilities';
 import '../../../popover/index';
 import { Position } from '../dropdown.model';

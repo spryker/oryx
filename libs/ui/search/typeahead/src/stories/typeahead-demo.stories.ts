@@ -4,7 +4,7 @@ import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
-import { IconTypes } from '../../../../Graphical/icon';
+import { IconTypes } from '../../../../graphical/icon';
 import { branches, states } from '../../../../utilities/storybook/';
 import { SearchEvent, SearchOptions } from '../../../searchbox';
 import '../index';

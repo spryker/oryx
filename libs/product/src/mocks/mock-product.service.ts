@@ -52,9 +52,9 @@ export class MockProductService implements Partial<ProductService> {
       images: [
         {
           externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
           externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
         },
       ],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.

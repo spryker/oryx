@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { IconTypes } from '../../../../Graphical/icon';
+import { IconTypes } from '../../../../graphical/icon';
 import '../index';
 import {
   ClearIconAppearance,

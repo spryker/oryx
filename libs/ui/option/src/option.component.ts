@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Icons } from '../../Graphical/icon';
+import { Icons } from '../../graphical/icon';
 import { optionStyles } from './option.styles';
 
 export class OptionComponent extends LitElement {

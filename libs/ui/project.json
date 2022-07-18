@@ -28,7 +28,7 @@
       "options": {
         "iconSets": [
           {
-            "input": "Graphical/icon/src/icons/index.ts",
+            "input": "graphical/icon/src/icons/index.ts",
             "output": "public/assets/icons.svg"
           }
         ]
