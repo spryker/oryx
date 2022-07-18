@@ -1,4 +1,4 @@
-import { fixture, fixtureCleanup, html } from '@open-wc/testing-helpers';
+import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
@@ -22,8 +22,6 @@ class InputComponent extends LitElement implements FormControlOptions {
 
 describe('FormControlController', () => {
   let element: InputComponent;
-
-  afterEach(() => fixtureCleanup());
 
   describe('control', () => {
     describe('when no input is slotted in', () => {

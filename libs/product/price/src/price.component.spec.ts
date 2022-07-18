@@ -1,4 +1,4 @@
-import { fixture, fixtureCleanup } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import { ExperienceService } from '@spryker-oryx/experience';
 import {
   createInjector,
@@ -62,7 +62,6 @@ describe('ProductPriceComponent', () => {
 
   afterEach(() => {
     destroyInjector();
-    fixtureCleanup();
   });
 
   it('is defined', async () => {
