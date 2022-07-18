@@ -47,9 +47,15 @@ export function initHydrateHooks() {
     registryService.hydrateOnDemand.bind(registryService);
 
   $$$('[hydratable]').forEach((el) => {
-    const mode = el.getAttribute('hydratable');
-    if (typeof mode === 'string') {
-      el.addEventListener(mode, () => registryService.hydrateOnDemand(el));
+    const modes = el.getAttribute('hydratable')?.split?.(',');
+    for (let i = 0; i < modes.length; i++) {
+      const parts = modes[i].split(':');
+      const mode = parts[parts.length - 1];
+      let target = el;
+      if (parts.length > 1) {
+        target = parts[0] === 'window' ? window : el;
+      }
+      target.addEventListener(mode, () => registryService.hydrateOnDemand(el));
     }
   });
 

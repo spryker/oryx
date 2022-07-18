@@ -17,17 +17,23 @@ export interface PatchableLitElement extends LitElement {
 }
 
 export const hydratable =
-  (mode?: string) =>
+  (mode?: string[] | string) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
       ? legacyCustomElement(classOrDescriptor, mode)
       : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
 
-const legacyCustomElement = (clazz: Type<HTMLElement>, mode?: string) => {
+const legacyCustomElement = (
+  clazz: Type<HTMLElement>,
+  mode?: string[] | string
+) => {
   return hydratableClass(clazz, mode);
 };
 
-const standardCustomElement = (descriptor: ClassDescriptor, mode?: string) => {
+const standardCustomElement = (
+  descriptor: ClassDescriptor,
+  mode?: string[] | string
+) => {
   const { kind, elements } = descriptor;
   return {
     kind,
@@ -40,7 +46,7 @@ const standardCustomElement = (descriptor: ClassDescriptor, mode?: string) => {
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string
+  mode?: string[] | string
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;

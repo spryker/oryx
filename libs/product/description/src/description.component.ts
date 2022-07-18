@@ -12,7 +12,7 @@ import { descriptionStyles } from './description.styles';
 import { ProductDescriptionContent } from './model';
 import { convertLineFeedsToHTML } from './utils';
 
-@hydratable()
+@hydratable(['mouseover', 'window:resize'])
 export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
   static styles = descriptionStyles;
 
