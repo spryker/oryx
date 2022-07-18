@@ -87,7 +87,12 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                 ></quantity-input>
               `
             )}
-            <oryx-button icon size=${Size.small} ?loading=${loading}>
+            <oryx-button
+              icon
+              size=${Size.small}
+              ?loading=${loading}
+              type="primary"
+            >
               <button>
                 <!--TODO: change hardcoded type on enum when it will be available in UI lib -->
                 <oryx-icon type="cart-add" size=${Size.large}></oryx-icon>

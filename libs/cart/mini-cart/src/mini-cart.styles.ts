@@ -21,6 +21,7 @@ export const styles = css`
 
   a:hover {
     background: var(--oryx-color-neutral-light);
+    border-color: var(--oryx-color-neutral-light);
   }
 
   a:active {

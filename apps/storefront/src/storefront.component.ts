@@ -1,3 +1,4 @@
+import '@spryker-oryx/cart/mini-cart';
 import { ContextController, hydratable } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
@@ -57,6 +58,7 @@ export class StorefrontComponent extends LitElement {
         <a href="/product/010_30692994" aria-label="Product page"
           ><product-title sku="010_30692994"></product-title
         ></a>
+        <mini-cart></mini-cart>
       </div>
     </nav>`;
   }
