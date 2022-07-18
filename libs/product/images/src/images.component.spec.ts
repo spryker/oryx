@@ -6,14 +6,14 @@ import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
-import { ProductImageComponent } from './image.component';
+import { ProductImagesComponent } from './images.component';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});
 }
 
-describe('ProductImageComponent', () => {
-  let element: ProductImageComponent;
+describe('ProductImagesComponent', () => {
+  let element: ProductImagesComponent;
 
   beforeEach(async () => {
     createInjector({
@@ -25,7 +25,7 @@ describe('ProductImageComponent', () => {
         },
       ],
     });
-    element = await fixture(html`<product-image sku="1"></product-image>`);
+    element = await fixture(html`<product-images sku="1"></product-images>`);
   });
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('ProductImageComponent', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(ProductImageComponent);
+    expect(element).toBeInstanceOf(ProductImagesComponent);
   });
 
   it('renders internal image', () => {
@@ -56,7 +56,7 @@ describe('ProductImageComponent', () => {
   });
 
   it('hides thumbs by default when there is only 1 product image to preview', async () => {
-    element = await fixture(html`<product-image sku="2"></product-image>`);
+    element = await fixture(html`<product-images sku="2"></product-images>`);
     const thumbs = element?.shadowRoot?.querySelector('.nav');
     expect(thumbs).toBeNull();
   });

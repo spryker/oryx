@@ -10,16 +10,16 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
 import {
-  ProductImageComponentOptions,
-  ProductImageComponentSettings,
-  ProductImageNavigationDisplay,
-  ProductImageScrollBehavior,
-  ProductImageSet,
-} from './image.model';
-import { styles } from './image.styles';
+  ProductImagesComponentOptions,
+  ProductImagesComponentSettings,
+  ProductImagesNavigationDisplay,
+  ProductImagesScrollBehavior,
+  ProductImagesSet,
+} from './images.model';
+import { styles } from './images.styles';
 
 @hydratable('mouseover')
-export class ProductImageComponent extends ProductComponentMixin<ProductImageComponentOptions>() {
+export class ProductImagesComponent extends ProductComponentMixin<ProductImagesComponentOptions>() {
   static styles = styles;
 
   protected active$ = new BehaviorSubject(0);
@@ -32,7 +32,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
   );
   protected options$ = this.contentController.getOptions().pipe(
     tap(() => {
-      this.setActive(0, ProductImageScrollBehavior.SMOOTH);
+      this.setActive(0, ProductImagesScrollBehavior.SMOOTH);
     })
   );
 
@@ -53,7 +53,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
     map(([options, product, active]) => {
       const { previewLayout, navigationDisplay } = options || {};
       const images = product?.images || [];
-      const settings: ProductImageComponentSettings = {
+      const settings: ProductImagesComponentSettings = {
         previewWidth: '300',
         previewHeight: '300',
         thumbWidth: '32',
@@ -61,7 +61,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
         groupName: `product-image-nav-${this.uid}`,
         hidePreview: previewLayout === 'none',
         hideNavigation:
-          navigationDisplay === ProductImageNavigationDisplay.NONE ||
+          navigationDisplay === ProductImagesNavigationDisplay.NONE ||
           images?.length <= 1,
         ...options,
       };
@@ -144,7 +144,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
             () => html`
               <fieldset class="nav">
                 ${images.map(
-                  (image: ProductImageSet, i: number) => html`
+                  (image: ProductImagesSet, i: number) => html`
                     <label class="nav-item">
                       <input
                         value="${i}"

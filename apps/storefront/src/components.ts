@@ -27,14 +27,14 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-title uid="${uid}"></product-title>`,
   },
-  'product-image': {
-    tag: 'product-image',
-    component: () => import('@spryker-oryx/product/image'),
+  'product-images': {
+    tag: 'product-images',
+    component: () => import('@spryker-oryx/product/images'),
     template: (uid: string) =>
-      html`<product-image uid="${uid}"></product-image>`,
+      html`<product-images uid="${uid}"></product-images>`,
   },
   'content-link': {
-    tag: 'product-image',
+    tag: 'content-link',
     component: () => import('@spryker-oryx/content/link'),
     template: (uid: string) => html`<content-link uid="${uid}"></content-link>`,
   },

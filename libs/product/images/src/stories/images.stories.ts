@@ -5,21 +5,21 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import {
-  ProductImageComponentOptions,
-  ProductImageNavigationAlignment,
-  ProductImageNavigationDisplay,
-  ProductImageNavigationLayout,
-  ProductImageNavigationPosition,
-  ProductImagePreviewLayout,
-} from '../image.model';
+  ProductImagesComponentOptions,
+  ProductImagesNavigationAlignment,
+  ProductImagesNavigationDisplay,
+  ProductImagesNavigationLayout,
+  ProductImagesNavigationPosition,
+  ProductImagesPreviewLayout,
+} from '../images.model';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/Image`,
+  title: `${storybookPrefix}/Images`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductImageComponentOptions & ProductComponentProperties;
+type Props = ProductImagesComponentOptions & ProductComponentProperties;
 
 const el = document.querySelector('html');
 let oldVal = el?.getAttribute('dir');
@@ -38,21 +38,21 @@ observer.observe(el as HTMLHtmlElement, {
 });
 
 const Template: Story<Props> = (options): TemplateResult => {
-  return html`<product-image .sku=${options.sku} .options=${options} />`;
+  return html`<product-images .sku=${options.sku} .options=${options} />`;
 };
 
-export const ProductImageDemo = Template.bind({});
+export const ProductImagesDemo = Template.bind({});
 
-ProductImageDemo.args = {
+ProductImagesDemo.args = {
   sku: MockProductService.mockProducts[0].sku,
-  previewLayout: ProductImagePreviewLayout.CAROUSEL,
-  navigationPosition: ProductImageNavigationPosition.BELOW,
-  navigationLayout: ProductImageNavigationLayout.CAROUSEL,
-  navigationDisplay: ProductImageNavigationDisplay.INLINE,
-  navigationAlignment: ProductImageNavigationAlignment.CENTER,
+  previewLayout: ProductImagesPreviewLayout.CAROUSEL,
+  navigationPosition: ProductImagesNavigationPosition.BELOW,
+  navigationLayout: ProductImagesNavigationLayout.CAROUSEL,
+  navigationDisplay: ProductImagesNavigationDisplay.INLINE,
+  navigationAlignment: ProductImagesNavigationAlignment.CENTER,
 };
 
-ProductImageDemo.argTypes = {
+ProductImagesDemo.argTypes = {
   sku: {
     control: { type: 'select' },
     options: [
@@ -62,27 +62,27 @@ ProductImageDemo.argTypes = {
     table: { category: 'product' },
   },
   previewLayout: {
-    options: Object.values(ProductImagePreviewLayout),
+    options: Object.values(ProductImagesPreviewLayout),
     control: { type: 'select' },
     table: { category: 'Preview' },
   },
   navigationPosition: {
-    options: Object.values(ProductImageNavigationPosition),
+    options: Object.values(ProductImagesNavigationPosition),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },
   navigationLayout: {
-    options: Object.values(ProductImageNavigationLayout),
+    options: Object.values(ProductImagesNavigationLayout),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },
   navigationDisplay: {
-    options: Object.values(ProductImageNavigationDisplay),
+    options: Object.values(ProductImagesNavigationDisplay),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },
   navigationAlignment: {
-    options: Object.values(ProductImageNavigationAlignment),
+    options: Object.values(ProductImagesNavigationAlignment),
     control: { type: 'select' },
     table: { category: 'Navigation' },
   },

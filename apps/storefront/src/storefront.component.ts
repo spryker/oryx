@@ -35,7 +35,7 @@ export class StorefrontComponent extends LitElement {
   constructor() {
     super();
     if (!isClient()) {
-      // Workaround to peoperly set SKU context on the SSR
+      // Workaround to properly set SKU context on the SSR
       this.route$.pipe(take(1)).subscribe();
     }
   }

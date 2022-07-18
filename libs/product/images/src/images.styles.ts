@@ -1,24 +1,24 @@
 import { css, CSSResult, unsafeCSS } from 'lit';
 import {
-  ProductImageNavigationAlignment,
-  ProductImageNavigationDisplay,
-  ProductImageNavigationLayout,
-  ProductImageNavigationPosition,
-  ProductImagePreviewLayout,
-} from './image.model';
+  ProductImagesNavigationAlignment,
+  ProductImagesNavigationDisplay,
+  ProductImagesNavigationLayout,
+  ProductImagesNavigationPosition,
+  ProductImagesPreviewLayout,
+} from './images.model';
 
 const getCSSValues = (obj: Record<string, string>): Record<string, CSSResult> =>
   Object.fromEntries(Object.values(obj).map((key) => [key, unsafeCSS(key)]));
 
 const preview = {
-  layout: getCSSValues(ProductImagePreviewLayout),
+  layout: getCSSValues(ProductImagesPreviewLayout),
 };
 
 const nav = {
-  position: getCSSValues(ProductImageNavigationPosition),
-  display: getCSSValues(ProductImageNavigationDisplay),
-  align: getCSSValues(ProductImageNavigationAlignment),
-  layout: getCSSValues(ProductImageNavigationLayout),
+  position: getCSSValues(ProductImagesNavigationPosition),
+  display: getCSSValues(ProductImagesNavigationDisplay),
+  align: getCSSValues(ProductImagesNavigationAlignment),
+  layout: getCSSValues(ProductImagesNavigationLayout),
 };
 
 export const styles = css`

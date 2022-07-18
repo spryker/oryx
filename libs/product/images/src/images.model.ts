@@ -1,4 +1,4 @@
-export interface ProductImageSet {
+export interface ProductImagesSet {
   /**
    * Image that is used to display preview
    */
@@ -10,39 +10,39 @@ export interface ProductImageSet {
   externalUrlSmall: string;
 }
 
-export interface ProductImageComponentOptions {
+export interface ProductImagesComponentOptions {
   /**
    * Preview layout
    * @default 'carousel'
    */
-  previewLayout?: ProductImagePreviewLayout;
+  previewLayout?: ProductImagesPreviewLayout;
 
   /**
    * Allows to position the navigation below or aside, or hide it.
    * @default 'below'
    */
-  navigationPosition?: ProductImageNavigationPosition;
+  navigationPosition?: ProductImagesNavigationPosition;
 
   /**
    * Defines a layout type for the navigation
    * @default 'carousel'
    */
-  navigationLayout?: ProductImageNavigationLayout;
+  navigationLayout?: ProductImagesNavigationLayout;
 
   /**
    * Allows to set floating state for navigation
    * @default 'inline'
    */
-  navigationDisplay?: ProductImageNavigationDisplay;
+  navigationDisplay?: ProductImagesNavigationDisplay;
 
   /**
    * Allows to position navigation on the active axis
    */
-  navigationAlignment?: ProductImageNavigationAlignment;
+  navigationAlignment?: ProductImagesNavigationAlignment;
 }
 
-export interface ProductImageComponentSettings
-  extends ProductImageComponentOptions {
+export interface ProductImagesComponentSettings
+  extends ProductImagesComponentOptions {
   /**
    * Preview image width
    * @default '300'
@@ -79,36 +79,36 @@ export interface ProductImageComponentSettings
   hideNavigation?: boolean;
 }
 
-export enum ProductImagePreviewLayout {
+export enum ProductImagesPreviewLayout {
   CAROUSEL = 'carousel',
   TOGGLE = 'toggle',
   NONE = 'none',
 }
 
-export enum ProductImageNavigationPosition {
+export enum ProductImagesNavigationPosition {
   START = 'start',
   END = 'end',
   BELOW = 'below',
 }
 
-export enum ProductImageNavigationLayout {
+export enum ProductImagesNavigationLayout {
   CAROUSEL = 'carousel',
   GRID = 'grid',
 }
 
-export enum ProductImageNavigationDisplay {
+export enum ProductImagesNavigationDisplay {
   INLINE = 'inline',
   FLOATING = 'floating',
   NONE = 'none',
 }
 
-export enum ProductImageNavigationAlignment {
+export enum ProductImagesNavigationAlignment {
   START = 'start',
   CENTER = 'center',
   END = 'end',
 }
 
-export enum ProductImageScrollBehavior {
+export enum ProductImagesScrollBehavior {
   SMOOTH = 'smooth',
   AUTO = 'auto',
 }

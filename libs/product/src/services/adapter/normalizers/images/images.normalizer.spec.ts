@@ -32,7 +32,7 @@ const mockGlueImageSets: ApiProductModel.ImageSets = {
   ],
 };
 describe('DefaultImageNormalizerTransformerStrategy', () => {
-  it('should transform GlueImageSets into ProductImage[]', () => {
+  it('should transform GlueImageSets into ProductImages[]', () => {
     const mockResult = [
       ...mockGlueImageSets.imageSets[0].images,
       ...mockGlueImageSets.imageSets[1].images,
