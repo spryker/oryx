@@ -1,17 +1,20 @@
-import { throttle } from '@spryker-oryx/typescript-utils';
+import { isClient, throttle } from '@spryker-oryx/typescript-utils';
 import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
+let once = false;
+
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
-  @property({ type: Number }) truncateAfter = 0;
-  @property({ type: Boolean }) showToggle = false;
-  @property({ type: Boolean }) expanded = false;
+  @property({ type: Number, reflect: true }) truncateAfter = 0;
+  @property({ type: Boolean, reflect: true }) showToggle = false;
+  @property({ type: Boolean, reflect: true }) expanded = false;
 
   @property() readMoreLabel = 'Read more';
 
@@ -21,26 +24,62 @@ export class TextComponent extends LitElement implements TextProperties {
     }
   }
 
+  protected script(): string {
+    once = true;
+    return `<script>
+        const checkTruncate = async (host) => {
+          const truncateAfter = host.getAttribute('truncateAfter');
+          const expanded = host.hasAttribute('expanded');
+          const textElement = host.shadowRoot.querySelector('div.text');
+          if (textElement) {
+            host.removeAttribute('requires-truncate');
+            host.style.setProperty(
+              '--line-clamp',
+              truncateAfter > 0 ? truncateAfter.toString() : ''
+            );
+            host.toggleAttribute(
+              'truncate',
+              truncateAfter > 0 && !expanded
+            );
+
+            await 0;
+
+            const isClamped =
+              textElement.scrollHeight > textElement.clientHeight;
+            const lineHeight = textElement.style.lineHeight;
+            const factor = 1000;
+            textElement.style.lineHeight = factor + 'px';
+            const height = textElement.getBoundingClientRect().height;
+            textElement.style.lineHeight = lineHeight;
+            const lineCount = Math.floor(height / factor);
+            host.toggleAttribute(
+              'requires-truncate',
+              isClamped ||
+                (expanded && !!truncateAfter && lineCount > truncateAfter)
+            );
+          }
+        };
+        dryLogic('oryx-text', checkTruncate);
+      </script>`;
+  }
+
   protected override render(): TemplateResult {
-    return html`
-      <div class="box">
+    return html` <div class="box">
         <div class="text">
           <slot @slotchange=${this.setup.bind(this)}></slot>
         </div>
       </div>
       ${when(
         this.showToggle,
-        () => html`
-          <slot name="toggle">
-            <oryx-icon-button size="small">
-              <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
-                <oryx-icon type="dropdown"></oryx-icon>
-              </button>
-            </oryx-icon-button>
-          </slot>
-        `
+        () => html` <slot name="toggle">
+          <oryx-icon-button size="small">
+            <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
+              <oryx-icon type="dropdown"></oryx-icon>
+            </button>
+          </oryx-icon-button>
+        </slot>`
       )}
-    `;
+      ${isClient() || once ? '' : unsafeHTML(this.script())}`;
   }
 
   protected setup(): void {

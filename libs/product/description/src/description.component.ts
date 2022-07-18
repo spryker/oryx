@@ -25,8 +25,8 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
         this.options$,
         (options) => html`<oryx-text
           .truncateAfter=${options.truncateAfter ?? 0}
-          ?showToggle=${!!options.showToggle}
-          ?expanded=${!!options.expanded}
+          .showToggle=${!!options.showToggle}
+          .expanded=${!!options.expanded}
         >
           ${asyncValue(
             this.product$,

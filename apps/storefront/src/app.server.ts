@@ -6,4 +6,5 @@ import './experience-preview';
 import '@spryker-oryx/product/title';
 import '@spryker-oryx/ui/rating';
 import '@spryker-oryx/experience/components';
+import '@spryker-oryx/ui/text';
 import './storefront.component';

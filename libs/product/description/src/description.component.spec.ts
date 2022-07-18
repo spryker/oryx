@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
+import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
@@ -56,12 +57,12 @@ describe('ProductDescriptionComponent', () => {
 
     it('should slot configure the oryx-text component', () => {
       expect(
-        element.shadowRoot?.querySelector('oryx-text')?.hasAttribute('expanded')
+        (element.shadowRoot?.querySelector('oryx-text') as TextComponent)
+          ?.expanded
       ).toBe(true);
       expect(
-        element.shadowRoot
-          ?.querySelector('oryx-text')
-          ?.hasAttribute('showToggle')
+        (element.shadowRoot?.querySelector('oryx-text') as TextComponent)
+          ?.showToggle
       ).toBe(true);
     });
   });
