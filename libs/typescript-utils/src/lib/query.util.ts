@@ -24,9 +24,10 @@ export const queryFirstAssigned = <T>(
 };
 
 const focusableSelectors = [
-  'a[href]',
-  'button',
   '[tabindex]',
+  '[focusable]',
+  'a',
+  'button',
   'input',
   'select',
   'textarea',
@@ -34,11 +35,19 @@ const focusableSelectors = [
 
 /**
  * Indicates whether the given element is focusable (ie. button, select, input).
+ * Add `focusable` attribute to make element focusable
+ * Add `focusable="false"` attribute to make element not focusable
  */
 export const isFocusable = (element: Element): boolean => {
-  return focusableSelectors
-    .map((selector) => selector.split('[')[0])
-    .includes(element.tagName.toLowerCase());
+  const elementAttrsValue = Array.from(element.attributes)
+    .filter((attr) => focusableSelectors.includes(`[${attr.name}]`))
+    .map((attr) => attr.value);
+
+  if (elementAttrsValue.length) {
+    return !elementAttrsValue.includes('false');
+  }
+
+  return focusableSelectors.includes(element.tagName.toLowerCase());
 };
 
 export const queryFirstFocusable = (

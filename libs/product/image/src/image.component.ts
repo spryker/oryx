@@ -59,10 +59,10 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
         thumbWidth: '32',
         thumbHeight: '32',
         groupName: `product-image-nav-${this.uid}`,
-        showPreview: previewLayout !== 'none',
-        showNavigation:
-          navigationDisplay !== ProductImageNavigationDisplay.NONE &&
-          images?.length > 1,
+        hidePreview: previewLayout === 'none',
+        hideNavigation:
+          navigationDisplay === ProductImageNavigationDisplay.NONE ||
+          images?.length <= 1,
         ...options,
       };
       return { settings, images, active };
@@ -116,7 +116,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
       ${asyncValue(this.productImages$, ({ settings, images, active }) => {
         return html`
           ${when(
-            settings.showPreview,
+            !settings.hidePreview,
             () => html`
               <section>
                 ${images.map(
@@ -140,7 +140,7 @@ export class ProductImageComponent extends ProductComponentMixin<ProductImageCom
             `
           )}
           ${when(
-            settings.showNavigation,
+            !settings.hideNavigation,
             () => html`
               <fieldset class="nav">
                 ${images.map(

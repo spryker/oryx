@@ -75,8 +75,8 @@ export interface ProductImageComponentSettings
    * @default `product-image-nav-${this.uid}`
    */
   groupName?: string;
-  showPreview?: boolean;
-  showNavigation?: boolean;
+  hidePreview?: boolean;
+  hideNavigation?: boolean;
 }
 
 export enum ProductImagePreviewLayout {

@@ -30,7 +30,7 @@ export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOpt
     return html`
       ${price.defaultPrice?.formattedPrice}
       ${when(
-        options?.showOriginal && price.originalPrice,
+        !options?.hideOriginal && price.originalPrice,
         () =>
           html`<span class="original">
             ${price.originalPrice?.formattedPrice}

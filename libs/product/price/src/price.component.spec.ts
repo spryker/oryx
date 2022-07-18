@@ -179,7 +179,7 @@ describe('ProductPriceComponent', () => {
           element = await fixture(
             html`<product-price
               sku="123"
-              .options=${{ showOriginal: false }}
+              .options=${{ hideOriginal: true }}
             ></product-price>`
           );
         });
@@ -191,14 +191,11 @@ describe('ProductPriceComponent', () => {
       describe('and the experience is not configured', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-price
-              sku="123"
-              .options=${{ showOriginal: false }}
-            ></product-price>`
+            html`<product-price sku="123"></product-price>`
           );
         });
         it('should not render the original price', () => {
-          expect(element.shadowRoot?.querySelector('.original')).toBeNull();
+          expect(element.shadowRoot?.querySelector('.original')).not.toBeNull();
         });
       });
     });
