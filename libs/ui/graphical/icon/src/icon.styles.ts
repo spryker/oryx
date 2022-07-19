@@ -59,7 +59,7 @@ export const styles = css`
   :host([type='loader']) {
     color: var(--oryx-color-brand);
     animation-name: spin;
-    animation-duration: 3000ms;
+    animation-duration: 1200ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
@@ -69,7 +69,7 @@ export const styles = css`
       transform: rotate(0deg);
     }
     to {
-      transform: rotate(-360deg);
+      transform: rotate(360deg);
     }
   }
 `;

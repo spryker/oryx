@@ -42,7 +42,7 @@ const Template: Story<Props> = ({
         oryx-icon {
           margin-inline-end: 5px;
           animation-name: spin;
-          animation-duration: 3000ms;
+          animation-duration: 1200ms;
           animation-iteration-count: infinite;
           animation-timing-function: linear;
         }
