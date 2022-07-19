@@ -63,6 +63,7 @@ export class QuantityInputComponent extends LitElement {
           step="1"
           required
           @input=${this.validate}
+          @change=${this.updateQuantity}
           ?disabled=${this.disabled}
         />
       </oryx-input>

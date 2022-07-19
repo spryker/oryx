@@ -4,10 +4,12 @@ import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { ProductComponentMixin } from '@spryker-oryx/product';
+import {
+  ProductComponentMixin,
+  ProductController,
+} from '@spryker-oryx/product';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import '../../quantity-input';
@@ -18,21 +20,26 @@ import { styles } from './add-to-cart.styles';
 export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>() {
   static styles = styles;
 
-  @property() sku!: string;
-
   protected contentController = new ContentController(this);
+  protected product$ = new ProductController(this).getProduct();
+
   protected loading$ = new BehaviorSubject(false);
   protected cartService = resolve(CartService);
   protected options$ = combineLatest([
     this.contentController.getOptions(),
     this.loading$,
+    this.product$,
   ]);
   protected quantity = 1;
 
-  protected onSubmit(e: Event, hideQuantityInput: boolean | undefined): void {
+  protected onSubmit(
+    e: Event,
+    hideQuantityInput: boolean | undefined,
+    sku: string | undefined
+  ): void {
     e.preventDefault();
 
-    if (!hideQuantityInput && !this.isValidQuantity()) {
+    if ((!hideQuantityInput && !this.isValidQuantity()) || !sku) {
       return;
     }
 
@@ -40,7 +47,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
 
     this.cartService
       .addEntry({
-        sku: this.sku,
+        sku,
         quantity: hideQuantityInput ? 1 : this.quantity,
       })
       .subscribe({
@@ -72,10 +79,10 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
     return html`
       ${asyncValue(
         this.options$,
-        ([option, loading]) => html`
+        ([option, loading, product]) => html`
           <form
             @submit=${(e: Event): void =>
-              this.onSubmit(e, option.hideQuantityInput)}
+              this.onSubmit(e, option.hideQuantityInput, product?.sku)}
           >
             ${when(
               !option.hideQuantityInput,

@@ -5,6 +5,8 @@ import {
   destroyInjector,
   Injector,
 } from '@spryker-oryx/injector';
+import { ProductService } from '@spryker-oryx/product';
+import { MockProductService } from '@spryker-oryx/product/mocks';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -12,15 +14,8 @@ import { QuantityInputComponent } from '../../quantity-input';
 import '../index';
 import { AddToCartComponent } from './add-to-cart.component';
 
-class MockCartService implements CartService {
-  load = vi.fn().mockReturnValue({});
-  getCart = vi.fn().mockReturnValue(of({}));
-  getCartError = vi.fn().mockReturnValue(of({}));
-  getTotals = vi.fn().mockReturnValue(of({}));
-  getEntries = vi.fn().mockReturnValue(of([]));
+class MockCartService {
   addEntry = vi.fn().mockReturnValue(of(null));
-  updateEntry = vi.fn().mockReturnValue(of(null));
-  deleteEntry = vi.fn().mockReturnValue(of(null));
 }
 
 describe('Add to cart', () => {
@@ -36,14 +31,17 @@ describe('Add to cart', () => {
           provide: CartService,
           useClass: MockCartService,
         },
+        {
+          provide: ProductService,
+          useClass: MockProductService,
+        },
       ],
     });
 
-    service = <MockCartService>testInjector.inject(CartService);
+    service = testInjector.inject(CartService) as unknown as MockCartService;
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
     destroyInjector();
   });
 
