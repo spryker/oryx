@@ -128,6 +128,7 @@ export enum MiscIcons {
   Remove = 'remove',
   Minus = 'minus',
   Add = 'add',
+  CartAdd = 'cart-add',
   FastForward = 'fastForward',
   Create = 'create',
   Edit = 'edit',

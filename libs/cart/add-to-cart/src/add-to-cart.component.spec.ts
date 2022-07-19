@@ -45,6 +45,22 @@ describe('Add to cart', () => {
     destroyInjector();
   });
 
+  describe('when "disabled" prop is true', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<add-to-cart
+          sku="1"
+          .options=${{ hideQuantityInput: false, disabled: true }}
+        ></add-to-cart>`
+      );
+    });
+
+    it('should make submit button disabled', () => {
+      const button = element.renderRoot.querySelector('button');
+      expect(button?.hasAttribute('disabled')).toBe(true);
+    });
+  });
+
   describe('when "hideQuantityInput" prop is true', () => {
     beforeEach(async () => {
       element = await fixture(

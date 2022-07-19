@@ -8,6 +8,8 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { ButtonType } from '@spryker-oryx/ui/button';
+import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -98,11 +100,13 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
               icon
               size=${Size.small}
               ?loading=${loading}
-              type="primary"
+              type=${ButtonType.Primary}
             >
-              <button>
-                <!--TODO: change hardcoded type on enum when it will be available in UI lib -->
-                <oryx-icon type="cart-add" size=${Size.large}></oryx-icon>
+              <button ?disabled=${option.disabled}>
+                <oryx-icon
+                  type=${MiscIcons.CartAdd}
+                  size=${Size.large}
+                ></oryx-icon>
                 Add to Cart
               </button>
             </oryx-button>

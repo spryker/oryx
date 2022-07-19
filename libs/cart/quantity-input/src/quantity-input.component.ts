@@ -1,3 +1,4 @@
+import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -50,8 +51,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || this.value <= this.min}
         @click=${this.decrease}
       >
-        <!-- TODO: use enum for "type" attribute when the paths issue will be resolved -->
-        <oryx-icon type="minus" size=${Size.small}></oryx-icon>
+        <oryx-icon type=${MiscIcons.Minus} size=${Size.small}></oryx-icon>
       </button>
       <oryx-input>
         <input
@@ -72,8 +72,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || (this.max && this.value >= this.max)}
         @click=${this.increase}
       >
-        <!-- TODO: use enum for "type" attribute when the paths issue will be resolved -->
-        <oryx-icon type="add" size=${Size.small}></oryx-icon>
+        <oryx-icon type=${MiscIcons.Add} size=${Size.small}></oryx-icon>
       </button>
     `;
   }

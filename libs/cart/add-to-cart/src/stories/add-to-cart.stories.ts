@@ -19,6 +19,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     <add-to-cart
       .options=${{
         hideQuantityInput: props.hideQuantityInput,
+        disabled: props.disabled,
       }}
     ></add-to-cart>
   `;
@@ -28,4 +29,5 @@ export const Demo = Template.bind({});
 
 Demo.args = {
   hideQuantityInput: false,
+  disabled: false,
 };
