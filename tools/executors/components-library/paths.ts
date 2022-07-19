@@ -42,7 +42,7 @@ export default async function componentsLibraryPathsExecutor(
         join(
           options.cwd,
           packageJson.exports[key].default.replace(/.js$/, '.ts')
-        ),
+        ).replace(/\\/g, '/'),
       ];
     }
   }
