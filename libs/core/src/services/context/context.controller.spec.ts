@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, ReactiveControllerHost, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { ContextController } from './context.controller';
 import { ContextService } from './context.service';
@@ -44,48 +44,98 @@ class MockConsumer extends LitElement {
 }
 
 describe('ContextController', () => {
-  let element: MockController;
+  describe('template', () => {
+    let element: MockController;
 
-  beforeEach(async () => {
-    createInjector({
-      providers: [
-        {
-          provide: ContextService,
-          useClass: DefaultContextService,
-        },
-      ],
+    beforeEach(async () => {
+      createInjector({
+        providers: [
+          {
+            provide: ContextService,
+            useClass: DefaultContextService,
+          },
+        ],
+      });
+
+      element = await fixture(
+        html`<controller-component></controller-component> `
+      );
+    });
+
+    afterEach(() => {
+      destroyInjector();
+    });
+
+    it('should reemit on hostConnected if provided value has been changed', () => {
+      const mockCallback = vi.fn();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const consumer = getShadowElementBySelector(
+        element,
+        'consumer-component'
+      )! as MockConsumer;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const intermediate = getShadowElementBySelector(
+        element,
+        'intermediate-component'
+      )! as MockIntermediate;
+
+      consumer.context.get(mockKey).subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenNthCalledWith(1, mockData);
+
+      intermediate.shadowRoot?.appendChild(consumer);
+
+      expect(mockCallback).toHaveBeenNthCalledWith(2, mockAnotherData);
     });
   });
 
-  afterEach(() => {
-    destroyInjector();
-  });
+  describe('provide method', () => {
+    const mockElement = {
+      addController: vi.fn(),
+    } as unknown as ReactiveControllerHost & Element;
+    let controller: ContextController;
+    const mockContextService = {
+      remove: vi.fn(),
+      provide: vi.fn(),
+      get: vi.fn(),
+    };
 
-  beforeEach(async () => {
-    element = await fixture(
-      html`<controller-component></controller-component> `
-    );
-  });
+    beforeEach(async () => {
+      createInjector({
+        providers: [
+          {
+            provide: ContextService,
+            useValue: mockContextService,
+          },
+        ],
+      });
 
-  it('should reemit on hostConnected if provided value has been changed', () => {
-    const mockCallback = vi.fn();
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const consumer = getShadowElementBySelector(
-      element,
-      'consumer-component'
-    )! as MockConsumer;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const intermediate = getShadowElementBySelector(
-      element,
-      'intermediate-component'
-    )! as MockIntermediate;
+      controller = new ContextController(mockElement);
+    });
 
-    consumer.context.get(mockKey).subscribe(mockCallback);
+    afterEach(() => {
+      vi.clearAllMocks();
+      destroyInjector();
+    });
 
-    expect(mockCallback).toHaveBeenNthCalledWith(1, mockData);
+    it('should call provide method of ContextService', () => {
+      controller.provide(mockKey, mockData);
 
-    intermediate.shadowRoot?.appendChild(consumer);
+      expect(mockContextService.provide).toHaveBeenCalledWith(
+        mockElement,
+        mockKey,
+        mockData
+      );
+    });
 
-    expect(mockCallback).toHaveBeenNthCalledWith(2, mockAnotherData);
+    it('should call remove method of ContextService if value is undefined', () => {
+      controller.provide(mockKey, undefined);
+
+      expect(mockContextService.remove).toHaveBeenCalledWith(
+        mockElement,
+        mockKey
+      );
+      expect(mockContextService.provide).not.toHaveBeenCalled();
+    });
   });
 });

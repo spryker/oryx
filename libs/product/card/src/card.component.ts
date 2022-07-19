@@ -33,7 +33,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     this.observe.get('sku'),
   ]).pipe(
     tap(([options, propSku]) =>
-      this.context.provide(ProductContext.Code, options.sku ?? propSku)
+      this.context.provide(ProductContext.SKU, options.sku ?? propSku)
     )
   );
 

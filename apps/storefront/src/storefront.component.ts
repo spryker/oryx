@@ -22,13 +22,8 @@ export class StorefrontComponent extends LitElement {
   static styles = styles;
 
   protected route$ = this.routerService.currentParams().pipe(
-    tap(async (params: RouteParams) => {
-      const sku = params?.sku;
-      if (sku) {
-        this.context.provide(ProductContext.Code, sku);
-      } else {
-        this.context.remove(ProductContext.Code);
-      }
+    tap((params: RouteParams) => {
+      this.context.provide(ProductContext.SKU, params?.sku);
     })
   );
 

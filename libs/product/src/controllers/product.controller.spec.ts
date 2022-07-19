@@ -75,7 +75,7 @@ describe('ProductController', () => {
       expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'product');
       expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'sku');
       expect(mockContextGet).toHaveBeenCalledWith(
-        ProductContext.Code,
+        ProductContext.SKU,
         mockObserveReturn
       );
       expect(mockGet).toHaveBeenCalledWith({

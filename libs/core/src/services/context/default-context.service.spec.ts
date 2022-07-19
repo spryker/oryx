@@ -140,22 +140,54 @@ describe('ContextService', () => {
   });
 
   describe('declarative', () => {
-    beforeEach(async () => {
+    it('should get context from the parent element by key', async () => {
+      const mockCallback = vi.fn();
+
       element = await fixture(html`
         <overlay-parent-context data-mockKey=${JSON.stringify(mockObject)}>
           <test-child-context></test-child-context>
         </overlay-parent-context>
       `);
-    });
-
-    it('should get context from the parent element by key', () => {
-      const mockCallback = vi.fn();
 
       testChildContext()
         .context.get(testChildContext(), mockKey)
         .subscribe(mockCallback);
 
       expect(mockCallback).toHaveBeenCalledWith(mockObject);
+    });
+
+    it('should recognize context if property is not stringified', async () => {
+      const mockCallback = vi.fn();
+
+      element = await fixture(html`
+        <!-- @ts-ignore  -->
+        <overlay-parent-context data-mockKey=${mockObject}>
+          <test-child-context></test-child-context>
+        </overlay-parent-context>
+      `);
+
+      testChildContext()
+        .context.get(testChildContext(), mockKey)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith('[object Object]');
+    });
+
+    it('should recognize context if property is string', async () => {
+      const mockString = '';
+      const mockCallback = vi.fn();
+
+      element = await fixture(html`
+        <overlay-parent-context data-mockKey=${mockString}>
+          <test-child-context></test-child-context>
+        </overlay-parent-context>
+      `);
+
+      testChildContext()
+        .context.get(testChildContext(), mockKey)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith(mockString);
     });
   });
 

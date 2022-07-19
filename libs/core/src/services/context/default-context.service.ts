@@ -26,7 +26,8 @@ export class DefaultContextService implements ContextService {
   protected triggerManifest$ = new Subject<void>();
 
   provide(element: Element, key: string, value: unknown): void {
-    const stringifiedValue = JSON.stringify(value);
+    const stringifiedValue =
+      typeof value === 'string' ? value : JSON.stringify(value);
 
     element.setAttribute(this.getAttributeName(key), stringifiedValue);
 
@@ -57,9 +58,15 @@ export class DefaultContextService implements ContextService {
         }
 
         if (elementWithAttr) {
-          const value = JSON.parse(
-            elementWithAttr.getAttribute(this.getAttributeName(key))!
-          );
+          let value: string | undefined = elementWithAttr.getAttribute(
+            this.getAttributeName(key)
+          )!;
+
+          try {
+            value = JSON.parse(value);
+          } catch {
+            // fallback to string value if JSON.parse will fail
+          }
 
           this.provide(elementWithAttr, key, value);
 

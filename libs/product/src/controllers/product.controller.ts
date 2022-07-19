@@ -33,7 +33,7 @@ export class ProductController {
         }
 
         return this.context
-          .get(ProductContext.Code, this.observe.get('sku'))
+          .get(ProductContext.SKU, this.observe.get('sku'))
           .pipe(
             switchMap((sku) => {
               if (!sku) {

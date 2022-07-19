@@ -103,7 +103,7 @@ describe('ProductCardComponent', () => {
       await fixture(html`<product-card sku="${propSku}"></product-card>`);
 
       expect(mockContextProvide).toHaveBeenCalledWith(
-        ProductContext.Code,
+        ProductContext.SKU,
         propSku
       );
     });
@@ -114,7 +114,7 @@ describe('ProductCardComponent', () => {
       );
 
       expect(mockContextProvide).toHaveBeenCalledWith(
-        ProductContext.Code,
+        ProductContext.SKU,
         optionsSku
       );
     });
@@ -128,7 +128,7 @@ describe('ProductCardComponent', () => {
       );
 
       expect(mockContextProvide).toHaveBeenCalledWith(
-        ProductContext.Code,
+        ProductContext.SKU,
         optionsSku
       );
     });
