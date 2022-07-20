@@ -1,1 +1,1 @@
-export * from './price.normalizer';
+export * from './price.normalizers';

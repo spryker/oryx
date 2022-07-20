@@ -1,2 +1,2 @@
 export * from './model';
-export * from './product.normalizer';
+export * from './product.normalizers';

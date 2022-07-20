@@ -1,5 +1,5 @@
 import { inject } from './inject';
-import { Injector } from './injector';
+import { INJECTOR, Injector } from './injector';
 
 const mockDestroy = vi.fn();
 
@@ -46,6 +46,11 @@ describe('Injector', () => {
       const service = injector.inject('service');
       const service2 = injector.inject('service');
       expect(service).toBe(service2);
+    });
+
+    it('should inject itself', () => {
+      const injectedInjector = injector.inject(INJECTOR);
+      expect(injectedInjector).toBe(injector);
     });
 
     it('should properly instantiate dependencies', () => {

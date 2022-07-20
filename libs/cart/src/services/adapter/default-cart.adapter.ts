@@ -1,31 +1,26 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { HttpService } from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { map, Observable } from 'rxjs';
-import { Cart } from '../../models';
+import { Observable, switchMap } from 'rxjs';
+import { ApiCartModel, Cart } from '../../models';
 import { UserData } from '../user.service';
 import {
   AddCartEntityProps,
   CartAdapter,
-  CartIncludes,
-  CartResponse,
-  CART_INCLUDES,
   DeleteCartEntityProps,
   GetCartProps,
-  GlueCart,
-  GlueCartsList,
   UpdateCartEntityProps,
 } from './cart.adapter';
+import { CartNormalizers } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
-  private carts = 'carts';
-  private cartItems = 'items';
   private guestCarts = 'guest-carts';
   private guestCartItems = 'guest-cart-items';
 
   constructor(
     protected http = inject(HttpService),
-    protected SCOS_BASE_URL = inject('SCOS_BASE_URL')
+    protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
+    protected transformer = inject(JsonAPITransformerService)
   ) {}
 
   getAll(user: UserData): Observable<Cart[]> {
@@ -34,15 +29,11 @@ export class DefaultCartAdapter implements CartAdapter {
       headers: this.getHeaders(user),
     };
 
-    return this.http
-      .get<GlueCartsList>(url, options)
-      .pipe(
-        map((response) =>
-          response.data.map((cart) =>
-            this.normalizeCart(cart, response.included)
-          )
-        )
-      );
+    // TODO: Add transformer for multiple carts
+    return this.http.get<ApiCartModel.ResponseList>(
+      url,
+      options
+    ) as unknown as Observable<Cart[]>;
   }
 
   get(data: GetCartProps): Observable<Cart> {
@@ -52,9 +43,11 @@ export class DefaultCartAdapter implements CartAdapter {
     };
 
     return this.http
-      .get<GlueCart>(url, options)
+      .get<ApiCartModel.Response>(url, options)
       .pipe(
-        map((response) => this.normalizeCart(response.data, response.included))
+        switchMap((response) =>
+          this.transformer.transform<Cart>(response, CartNormalizers)
+        )
       );
   }
 
@@ -76,9 +69,11 @@ export class DefaultCartAdapter implements CartAdapter {
     };
 
     return this.http
-      .post<GlueCart>(url, body, options)
+      .post<ApiCartModel.Response>(url, body, options)
       .pipe(
-        map((response) => this.normalizeCart(response.data, response.included))
+        switchMap((response) =>
+          this.transformer.transform<Cart>(response, CartNormalizers)
+        )
       );
   }
 
@@ -99,13 +94,15 @@ export class DefaultCartAdapter implements CartAdapter {
     };
 
     return this.http
-      .patch<GlueCart>(url, body, options)
+      .patch<ApiCartModel.Response>(url, body, options)
       .pipe(
-        map((response) => this.normalizeCart(response.data, response.included))
+        switchMap((response) =>
+          this.transformer.transform<Cart>(response, CartNormalizers)
+        )
       );
   }
 
-  deleteEntry(data: DeleteCartEntityProps): Observable<null> {
+  deleteEntry(data: DeleteCartEntityProps): Observable<unknown> {
     const url = this.generateUrl(
       [this.guestCarts, data.cartId, this.guestCartItems, data.groupKey].join(
         '/'
@@ -118,30 +115,6 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.http.delete(url, options);
   }
 
-  protected normalizeCart(
-    cart: CartResponse,
-    included: CartIncludes[] | undefined
-  ): Cart {
-    return {
-      id: cart.id,
-      ...cart.attributes,
-      ...(included && {
-        products: cart.relationships![CART_INCLUDES.GUEST_CART_ITEMS].data.map(
-          ({ id: relationId, type }) => {
-            const { id, attributes } = included.find(
-              (include) => include.id === relationId && include.type === type
-            )!;
-
-            return {
-              id,
-              ...attributes,
-            };
-          }
-        ),
-      }),
-    };
-  }
-
   protected generateUrl(path: string, isIncludesAdded = true): string {
     return `${this.SCOS_BASE_URL}/${path}${
       isIncludesAdded ? `?include=${this.getIncludes()}` : ''
@@ -149,7 +122,7 @@ export class DefaultCartAdapter implements CartAdapter {
   }
 
   protected getIncludes(): string {
-    return Object.values(CART_INCLUDES).join(',');
+    return Object.values(ApiCartModel.Includes).join(',');
   }
 
   // ToDo: create some abstract class for getting request headers

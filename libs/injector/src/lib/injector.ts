@@ -6,9 +6,12 @@ import {
   ValueProvider,
 } from './provider';
 
+export const INJECTOR = 'FES.Injector';
+
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface InjectionTokensContractMap {}
+  export interface InjectionTokensContractMap {
+    [INJECTOR]: Injector;
+  }
 }
 
 function isValueProvider(provider: Provider): provider is ValueProvider {
@@ -69,6 +72,10 @@ export class Injector {
     token: K | any,
     defaultInstance?: K | any
   ): InjectionTokensContractMap[K] | any {
+    if (token === INJECTOR) {
+      return this;
+    }
+
     this._locked = true;
     if (!this.providers.has(token)) {
       // no local provider

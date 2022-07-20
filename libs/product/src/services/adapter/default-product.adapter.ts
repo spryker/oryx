@@ -2,7 +2,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, switchMap } from 'rxjs';
 import { ApiProductModel, Product, ProductQualifier } from '../../models';
-import { ProductNormalizer } from './normalizers';
+import { ProductNormalizers } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 export class DefaultProductAdapter implements ProductAdapter {
@@ -20,7 +20,8 @@ export class DefaultProductAdapter implements ProductAdapter {
 
   get({ sku, include }: ProductQualifier): Observable<Product> {
     include = [
-      ...Object.values(ApiProductModel.Includes),
+      ApiProductModel.Includes.ConcreteProductImageSets,
+      ApiProductModel.Includes.ConcreteProductPrices,
       ...(include ?? []),
     ].filter((type, index, arr) => arr.indexOf(type) === index);
 
@@ -32,7 +33,7 @@ export class DefaultProductAdapter implements ProductAdapter {
       )
       .pipe(
         switchMap((res) =>
-          this.transformer.transform<Product>(res, ProductNormalizer)
+          this.transformer.transform<Product>(res, ProductNormalizers)
         )
       );
   }

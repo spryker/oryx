@@ -1,12 +1,8 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of, take } from 'rxjs';
-import { DefaultTransformerService } from '../default-transformer.service';
 import { TransformerService } from '../transformer.service';
 import { DefaultJsonAPITransformerService } from './default-json-api-transformer.service';
 import { JsonAPITransformerService } from './json-api-transformer.service';
-
-const mockATransformer = vi.fn();
-const mockBTransformer = vi.fn();
 
 const mockData = 'mockData';
 const mockInputData = 'mockInputData';
@@ -22,28 +18,23 @@ vi.mock('../../../utilities', () => ({
   ssrAwaiter: vi.fn().mockImplementation((data) => of(data)),
 }));
 
+const mockDefaultTransformer = {
+  transform: vi.fn().mockImplementation((data) => of(data)),
+};
+
 describe('DefaultJsonAPITransformerService', () => {
   let service: DefaultJsonAPITransformerService;
-  let defaultService: DefaultTransformerService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
           provide: TransformerService,
-          useClass: DefaultTransformerService,
+          useValue: mockDefaultTransformer,
         },
         {
           provide: JsonAPITransformerService,
           useClass: DefaultJsonAPITransformerService,
-        },
-        {
-          provide: 'mockATransformer',
-          useValue: mockATransformer,
-        },
-        {
-          provide: 'mockBTransformer',
-          useValue: [mockBTransformer, mockATransformer],
         },
       ],
     });
@@ -51,9 +42,6 @@ describe('DefaultJsonAPITransformerService', () => {
     service = testInjector.inject(
       JsonAPITransformerService
     ) as DefaultJsonAPITransformerService;
-    defaultService = testInjector.inject(
-      TransformerService
-    ) as DefaultTransformerService;
   });
 
   afterEach(() => {
@@ -61,9 +49,7 @@ describe('DefaultJsonAPITransformerService', () => {
     destroyInjector();
   });
 
-  it('should call Deserializer.deserialize and call transformer callback with deserialized data', () => {
-    const mockDeserializedData = 'mockDeserializedData';
-    mockDeserialize.mockReturnValueOnce(mockDeserializedData);
+  it('should call Deserializer.deserialize', () => {
     service
       .transform(
         mockInputData,
@@ -72,55 +58,25 @@ describe('DefaultJsonAPITransformerService', () => {
       .pipe(take(1))
       .subscribe();
     expect(mockDeserialize).toHaveBeenCalledWith(mockInputData);
-    expect(mockATransformer).toHaveBeenCalledWith(
-      mockDeserializedData,
-      defaultService
-    );
   });
 
-  it('should resolve transformer by type and call', () => {
+  it('should call injected TransformerService.transform with deserialized data and return transformed data', () => {
+    const mockDeserializedData = 'mockDeserializedData';
+    const mockResult = 'mockResult';
+    mockDeserialize.mockReturnValueOnce(mockDeserializedData);
+    mockDefaultTransformer.transform.mockReturnValueOnce(of(mockResult));
     service
       .transform(
         mockInputData,
-        'mockATransformer' as keyof InjectionTokensContractMap
-      )
-      .pipe(take(1))
-      .subscribe();
-    expect(mockATransformer).toHaveBeenCalledWith(mockData, defaultService);
-  });
-
-  it('should resolve transformers array by type and call the in chain', () => {
-    service
-      .transform(
-        mockInputData,
-        'mockBTransformer' as keyof InjectionTokensContractMap
-      )
-      .pipe(take(1))
-      .subscribe();
-    expect(mockBTransformer).toHaveBeenCalledWith(mockData, defaultService);
-    expect(mockATransformer).toHaveBeenCalledWith(mockData, defaultService);
-  });
-
-  it('should return result with transformed concatenated data', () => {
-    const mockATransformerResult = {
-      mockA: 'mockATransformerResult',
-    };
-    const mockBTransformerResult = {
-      mockB: 'mockBTransformerResult',
-    };
-    mockATransformer.mockReturnValue(mockATransformerResult);
-    mockBTransformer.mockReturnValue(mockBTransformerResult);
-    service
-      .transform(
-        mockData,
         'mockBTransformer' as keyof InjectionTokensContractMap
       )
       .pipe(take(1))
       .subscribe((result) => {
-        expect(result).toEqual({
-          ...mockATransformerResult,
-          ...mockBTransformerResult,
-        });
+        expect(result).toBe(mockResult);
+        expect(mockDefaultTransformer.transform).toHaveBeenCalledWith(
+          mockDeserializedData,
+          'mockBTransformer'
+        );
       });
   });
 });

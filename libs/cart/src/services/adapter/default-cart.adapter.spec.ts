@@ -1,14 +1,15 @@
-import { HttpService } from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { of } from 'rxjs';
 import {
   mockGetCartResponse,
   mockGetCartsResponse,
-  mockNormalizedCart,
-  mockNormalizedDefaultCart,
 } from '../../mocks/mock-cart';
-import { CartAdapter, CART_INCLUDES } from './cart.adapter';
+import { ApiCartModel } from '../../models';
+import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';
+import { CartNormalizers } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
@@ -17,20 +18,20 @@ const mockUserQualifier = { anonymousUserId: 'anonymousUserId' };
 const mockRequestHeaders = {
   'X-Anonymous-Customer-Unique-Id': mockUserQualifier.anonymousUserId,
 };
+const mockTransformer = {
+  transform: vi.fn().mockReturnValue(of(null)),
+};
 
 describe('DefaultProductService', () => {
-  const callback = vi.fn();
-
   let service: CartAdapter;
   let http: HttpTestService;
-  let testInjector;
 
   function requestIncludes(): string {
-    return `?include=${Object.values(CART_INCLUDES).join(',')}`;
+    return `?include=${Object.values(ApiCartModel.Includes).join(',')}`;
   }
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: HttpService,
@@ -43,6 +44,10 @@ describe('DefaultProductService', () => {
         {
           provide: 'SCOS_BASE_URL',
           useValue: mockApiUrl,
+        },
+        {
+          provide: JsonAPITransformerService,
+          useValue: mockTransformer,
         },
       ],
     });
@@ -64,21 +69,17 @@ describe('DefaultProductService', () => {
   describe('getAll should send `get` request', () => {
     beforeEach(() => {
       http.flush(mockGetCartsResponse);
-      service.getAll(mockUserQualifier).subscribe(callback);
-    });
-
-    it('should return normalized cart array', () => {
-      expect(callback).toHaveBeenCalledWith([
-        mockNormalizedCart,
-        mockNormalizedDefaultCart,
-      ]);
     });
 
     it('should build url', () => {
+      service.getAll(mockUserQualifier);
+
       expect(http.url).toBe(`${mockApiUrl}/guest-carts${requestIncludes()}`);
     });
 
     it('should provide headers', () => {
+      service.getAll(mockUserQualifier);
+
       expect(http.options).toHaveProperty('headers', mockRequestHeaders);
     });
   });
@@ -89,15 +90,9 @@ describe('DefaultProductService', () => {
       user: mockUserQualifier,
     };
 
-    beforeEach(() => {
-      service.get(mockGetCartQualifier).subscribe(callback);
-    });
-
-    it('should return normalized cart', () => {
-      expect(callback).toHaveBeenCalledWith(mockNormalizedCart);
-    });
-
     it('should build url', () => {
+      service.get(mockGetCartQualifier);
+
       expect(http.url).toBe(
         `${mockApiUrl}/guest-carts/${
           mockGetCartQualifier.cartId
@@ -106,7 +101,28 @@ describe('DefaultProductService', () => {
     });
 
     it('should provide headers', () => {
+      service.get(mockGetCartQualifier);
+
       expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+    });
+
+    it('should call transformer data with data from response', () => {
+      service.get(mockGetCartQualifier).subscribe();
+
+      expect(mockTransformer.transform).toHaveBeenCalledWith(
+        mockGetCartResponse,
+        CartNormalizers
+      );
+    });
+
+    it('should return transformed data', () => {
+      const mockTransformerData = 'mockTransformerData';
+      const callback = vi.fn();
+      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+      service.get(mockGetCartQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 
@@ -120,15 +136,8 @@ describe('DefaultProductService', () => {
       },
     };
 
-    beforeEach(() => {
-      service.addEntry(mockAddEntryQualifier).subscribe(callback);
-    });
-
-    it('should return normalized cart', () => {
-      expect(callback).toHaveBeenCalledWith(mockNormalizedCart);
-    });
-
     it('should build url', () => {
+      service.addEntry(mockAddEntryQualifier);
       expect(http.url).toBe(
         `${mockApiUrl}/guest-carts/${
           mockAddEntryQualifier.cartId
@@ -137,16 +146,37 @@ describe('DefaultProductService', () => {
     });
 
     it('should provide headers', () => {
+      service.addEntry(mockAddEntryQualifier);
       expect(http.options).toHaveProperty('headers', mockRequestHeaders);
     });
 
     it('should provide body', () => {
+      service.addEntry(mockAddEntryQualifier);
       expect(http.body).toMatchObject({
         data: {
           type: 'guest-cart-items',
           attributes: mockAddEntryQualifier.attributes,
         },
       });
+    });
+
+    it('should call transformer data with data from response', () => {
+      service.addEntry(mockAddEntryQualifier).subscribe();
+
+      expect(mockTransformer.transform).toHaveBeenCalledWith(
+        mockGetCartResponse,
+        CartNormalizers
+      );
+    });
+
+    it('should return transformed data', () => {
+      const mockTransformerData = 'mockTransformerData';
+      const callback = vi.fn();
+      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+      service.addEntry(mockAddEntryQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 
@@ -161,15 +191,8 @@ describe('DefaultProductService', () => {
       },
     };
 
-    beforeEach(() => {
-      service.updateEntry(mockUpdateEntryQualifier).subscribe(callback);
-    });
-
-    it('should return normalized cart', () => {
-      expect(callback).toHaveBeenCalledWith(mockNormalizedCart);
-    });
-
     it('should build url', () => {
+      service.updateEntry(mockUpdateEntryQualifier);
       expect(http.url).toBe(
         `${mockApiUrl}/guest-carts/${
           mockUpdateEntryQualifier.cartId
@@ -180,16 +203,37 @@ describe('DefaultProductService', () => {
     });
 
     it('should provide headers', () => {
+      service.updateEntry(mockUpdateEntryQualifier);
       expect(http.options).toHaveProperty('headers', mockRequestHeaders);
     });
 
     it('should provide body', () => {
+      service.updateEntry(mockUpdateEntryQualifier);
       expect(http.body).toMatchObject({
         data: {
           type: 'guest-cart-items',
           attributes: mockUpdateEntryQualifier.attributes,
         },
       });
+    });
+
+    it('should call transformer data with data from response', () => {
+      service.addEntry(mockUpdateEntryQualifier).subscribe();
+
+      expect(mockTransformer.transform).toHaveBeenCalledWith(
+        mockGetCartResponse,
+        CartNormalizers
+      );
+    });
+
+    it('should return transformed data', () => {
+      const mockTransformerData = 'mockTransformerData';
+      const callback = vi.fn();
+      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+      service.addEntry(mockUpdateEntryQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 
@@ -202,14 +246,10 @@ describe('DefaultProductService', () => {
 
     beforeEach(() => {
       http.flush(null);
-      service.deleteEntry(mockDeleteEntryQualifier).subscribe(callback);
-    });
-
-    it('should return normalized cart', () => {
-      expect(callback).toHaveBeenCalledWith(null);
     });
 
     it('should build url', () => {
+      service.deleteEntry(mockDeleteEntryQualifier);
       expect(http.url).toBe(
         `${mockApiUrl}/guest-carts/${
           mockDeleteEntryQualifier.cartId
@@ -220,7 +260,14 @@ describe('DefaultProductService', () => {
     });
 
     it('should provide headers', () => {
+      service.deleteEntry(mockDeleteEntryQualifier);
       expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+    });
+
+    it('should do emission', () => {
+      const callback = vi.fn();
+      service.deleteEntry(mockDeleteEntryQualifier).subscribe(callback);
+      expect(callback).toHaveBeenCalled();
     });
   });
 });

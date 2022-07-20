@@ -1,15 +1,9 @@
-import { Observable } from 'rxjs';
-export const JsonAPITransformerService = 'FES.JsonAPITransformerService';
+import { TransformerService } from '../transformer.service';
 
-export interface JsonAPITransformerService {
-  transform<T, D = unknown>(
-    data: D,
-    token: keyof InjectionTokensContractMap
-  ): Observable<T>;
-}
+export const JsonAPITransformerService = 'FES.JsonAPITransformerService';
 
 declare global {
   interface InjectionTokensContractMap {
-    [JsonAPITransformerService]: JsonAPITransformerService;
+    [JsonAPITransformerService]: TransformerService;
   }
 }

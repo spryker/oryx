@@ -1,4 +1,9 @@
-import { CartAdapter, DefaultCartAdapter } from './adapter';
+import {
+  CartAdapter,
+  cartNormalizers,
+  CartNormalizers,
+  DefaultCartAdapter,
+} from './adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
 import { DefaultUserService } from './default-user.service';
@@ -16,5 +21,9 @@ export const CART_PROVIDERS = [
   {
     provide: UserService,
     useClass: DefaultUserService,
+  },
+  {
+    provide: CartNormalizers,
+    useValue: cartNormalizers,
   },
 ];

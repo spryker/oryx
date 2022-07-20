@@ -1,4 +1,4 @@
-import { Injector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of, switchMap } from 'rxjs';
 import { SpyInstanceFn } from 'vitest';
 import { createSuggestionMock } from '../mocks';
@@ -22,22 +22,27 @@ class MockedAdapter implements Partial<SuggestionAdapter> {
 describe('DefaultSuggestionService', () => {
   let service: SuggestionService;
   let adapter: SuggestionAdapter;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = new Injector([
-      {
-        provide: SuggestionService,
-        useClass: DefaultSuggestionService,
-      },
-      {
-        provide: SuggestionAdapter,
-        useClass: MockedAdapter,
-      },
-    ]);
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: SuggestionService,
+          useClass: DefaultSuggestionService,
+        },
+        {
+          provide: SuggestionAdapter,
+          useClass: MockedAdapter,
+        },
+      ],
+    });
 
     service = testInjector.inject(SuggestionService);
     adapter = testInjector.inject(SuggestionAdapter);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('should be provided', () => {

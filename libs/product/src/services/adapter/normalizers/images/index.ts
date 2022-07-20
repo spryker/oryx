@@ -1,1 +1,1 @@
-export * from './images.normalizer';
+export * from './images.normalizers';

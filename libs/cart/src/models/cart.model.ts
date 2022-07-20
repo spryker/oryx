@@ -1,3 +1,35 @@
+export interface CartId {
+  id: string;
+}
+
+export interface Cart extends CartId {
+  name: string;
+  isDefault: boolean;
+  totals: CartTotals;
+  discounts?: unknown[];
+  thresholds?: unknown[];
+  priceMode?: string;
+  currency?: string;
+  store?: string;
+  products?: CartEntry[];
+}
+
+export interface CartEntry {
+  sku: string;
+  quantity: number;
+  groupKey: string;
+  abstractSku: string;
+  amount?: unknown;
+  productOfferReference?: unknown;
+  merchantReference?: unknown;
+  calculations?: CartCalculations;
+  configuredBundle?: unknown;
+  configuredBundleItem?: unknown;
+  productConfigurationInstance?: unknown;
+  salesUnit?: unknown;
+  selectedProductOptions?: unknown[];
+}
+
 export interface CartTotals {
   grandTotal: number;
   priceToPay: number;
@@ -7,23 +39,7 @@ export interface CartTotals {
   subtotal?: number;
 }
 
-export interface CartAttributes {
-  name: string;
-  isDefault: boolean;
-  totals: CartTotals;
-  discounts?: unknown[];
-  thresholds?: unknown[];
-  priceMode?: string;
-  currency?: string;
-  store?: string;
-}
-
-export interface Cart extends CartAttributes {
-  id: string;
-  products?: CartEntry[];
-}
-
-export interface CartEntryCalculations {
+export interface CartCalculations {
   unitPrice?: number;
   sumPrice?: number;
   taxRate?: number;
@@ -43,24 +59,4 @@ export interface CartEntryCalculations {
   sumDiscountAmountFullAggregation?: number;
   unitPriceToPayAggregation?: number;
   sumPriceToPayAggregation?: number;
-}
-
-export interface CartEntryAttributes {
-  sku: string;
-  quantity: number;
-  groupKey: string;
-  abstractSku: string;
-  amount?: unknown;
-  productOfferReference?: unknown;
-  merchantReference?: unknown;
-  calculations?: CartEntryCalculations;
-  configuredBundle?: unknown;
-  configuredBundleItem?: unknown;
-  productConfigurationInstance?: unknown;
-  salesUnit?: unknown;
-  selectedProductOptions?: unknown[];
-}
-
-export interface CartEntry extends CartEntryAttributes {
-  id: string;
 }

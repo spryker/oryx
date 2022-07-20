@@ -1,9 +1,9 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
-import { Injector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { DefaultProductAdapter } from './default-product.adapter';
-import { ProductNormalizer } from './normalizers';
+import { ProductNormalizers } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 const mockApiUrl = 'mockApiUrl';
@@ -23,31 +23,36 @@ const mockTransformer = {
 describe('DefaultProductService', () => {
   let service: ProductAdapter;
   let http: HttpTestService;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = new Injector([
-      {
-        provide: HttpService,
-        useClass: HttpTestService,
-      },
-      {
-        provide: ProductAdapter,
-        useClass: DefaultProductAdapter,
-      },
-      {
-        provide: 'SCOS_BASE_URL',
-        useValue: mockApiUrl,
-      },
-      {
-        provide: JsonAPITransformerService,
-        useValue: mockTransformer,
-      },
-    ]);
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: HttpService,
+          useClass: HttpTestService,
+        },
+        {
+          provide: ProductAdapter,
+          useClass: DefaultProductAdapter,
+        },
+        {
+          provide: 'SCOS_BASE_URL',
+          useValue: mockApiUrl,
+        },
+        {
+          provide: JsonAPITransformerService,
+          useValue: mockTransformer,
+        },
+      ],
+    });
 
     service = testInjector.inject(ProductAdapter);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     http = testInjector.inject(HttpService) as HttpTestService;
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('should be provided', () => {
@@ -103,7 +108,7 @@ describe('DefaultProductService', () => {
 
       expect(mockTransformer.transform).toHaveBeenCalledWith(
         mockProduct,
-        ProductNormalizer
+        ProductNormalizers
       );
     });
 

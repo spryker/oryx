@@ -1,44 +1,6 @@
 import { Observable } from 'rxjs';
-import {
-  Cart,
-  CartAttributes,
-  CartEntryAttributes,
-  CartEntryAttributesQualifier,
-} from '../../models';
+import { Cart, CartEntryAttributesQualifier } from '../../models';
 import { UserData } from '../user.service';
-
-// ToDo: replace [RELATIONSHIP, INCLUDE, JSON_API_MODEL] with JSON API approach
-interface RELATIONSHIP {
-  id: string;
-  type: string;
-}
-
-interface INCLUDE<T, A> {
-  type: T;
-  id: string;
-  attributes: A;
-  relationships?: Record<string, Record<'data', RELATIONSHIP[]>>;
-}
-
-export interface JSON_API_MODEL<T, I> {
-  data: T;
-  included?: I;
-}
-
-export type CartResponse = INCLUDE<'guest-carts', CartAttributes>;
-
-export type CartIncludes = INCLUDE<
-  CART_INCLUDES.GUEST_CART_ITEMS,
-  CartEntryAttributes
->;
-
-export type GlueCartsList = JSON_API_MODEL<CartResponse[], CartIncludes[]>;
-
-export type GlueCart = JSON_API_MODEL<CartResponse, CartIncludes[]>;
-
-export enum CART_INCLUDES {
-  GUEST_CART_ITEMS = 'guest-cart-items',
-}
 
 export interface GetCartProps {
   user: UserData;
@@ -64,12 +26,12 @@ export interface DeleteCartEntityProps {
   groupKey: string;
 }
 
-export interface CartAdapter<T = Cart> {
-  getAll: (user: UserData) => Observable<T[]>;
-  get: (data: GetCartProps) => Observable<T>;
-  addEntry: (data: AddCartEntityProps) => Observable<T>;
-  deleteEntry: (data: DeleteCartEntityProps) => Observable<null>;
-  updateEntry: (data: UpdateCartEntityProps) => Observable<T>;
+export interface CartAdapter {
+  getAll: (user: UserData) => Observable<Cart[]>;
+  get: (data: GetCartProps) => Observable<Cart>;
+  addEntry: (data: AddCartEntityProps) => Observable<Cart>;
+  deleteEntry: (data: DeleteCartEntityProps) => Observable<unknown>;
+  updateEntry: (data: UpdateCartEntityProps) => Observable<Cart>;
 }
 
 export const CartAdapter = 'FES.CartAdapter';

@@ -1,6 +1,6 @@
 import { ApiProductModel, ProductImage } from '../../../../models';
 
-export const ImagesNormalizer = 'FES.ImagesNormalizer';
+export const ImagesNormalizers = 'FES.ImagesNormalizers';
 
 export function imagesNormalizer(
   data: ApiProductModel.ImageSets
@@ -11,8 +11,10 @@ export function imagesNormalizer(
   );
 }
 
+export const imagesNormalizers = [imagesNormalizer];
+
 declare global {
   interface InjectionTokensContractMap {
-    [ImagesNormalizer]: Transformer;
+    [ImagesNormalizers]: Transformer;
   }
 }

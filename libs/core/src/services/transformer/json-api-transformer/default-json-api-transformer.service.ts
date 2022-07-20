@@ -1,16 +1,13 @@
 import { inject } from '@spryker-oryx/injector';
 import { Deserializer } from 'jsonapi-serializer';
-import { map, Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { ssrAwaiter } from '../../../utilities';
-import { Transformer, TransformerService } from '../transformer.service';
-import { JsonAPITransformerService } from './json-api-transformer.service';
+import { TransformerService } from '../transformer.service';
 
 /**
  * Deserializes json response. Combines relationships, includes into one data (transforms include key e.g. 'include-example' into camelCase e.g 'includeExample').
  */
-export class DefaultJsonAPITransformerService
-  implements JsonAPITransformerService
-{
+export class DefaultJsonAPITransformerService implements TransformerService {
   protected deserializer = new Deserializer({
     keyForAttribute: 'camelCase',
   });
@@ -22,15 +19,8 @@ export class DefaultJsonAPITransformerService
     token: keyof InjectionTokensContractMap
   ): Observable<T> {
     return ssrAwaiter(this.deserializer.deserialize(data)).pipe(
-      map((deserializedData) =>
-        this.transformer.getTransformers(token).reduce(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (currentData: any, cb: Transformer<any>) => ({
-            ...currentData,
-            ...cb(deserializedData, this.transformer),
-          }),
-          null
-        )
+      switchMap((deserializedData) =>
+        this.transformer.transform<T, D>(deserializedData, token)
       )
     );
   }

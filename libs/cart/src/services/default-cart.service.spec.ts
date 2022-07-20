@@ -1,9 +1,5 @@
 import { HttpErrorResponse } from '@spryker-oryx/core';
-import {
-  createInjector,
-  destroyInjector,
-  Injector,
-} from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
 import {
   mockCartTotals,
@@ -51,14 +47,13 @@ class MockCartAdapter implements Partial<CartAdapter> {
 describe('DefaultCartService', () => {
   let service: CartService;
   let adapter: MockCartAdapter;
-  let testInjector: Injector;
 
   let cart$: Observable<Cart | null>;
   const cartCallback = vi.fn();
   const statusCallback = vi.fn();
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: CartAdapter,
@@ -76,7 +71,7 @@ describe('DefaultCartService', () => {
     });
 
     service = testInjector.inject(CartService);
-    adapter = <MockCartAdapter>testInjector.inject(CartAdapter);
+    adapter = testInjector.inject(CartAdapter) as MockCartAdapter;
   });
 
   afterEach(() => {

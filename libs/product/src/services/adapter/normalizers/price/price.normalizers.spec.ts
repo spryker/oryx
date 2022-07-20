@@ -1,5 +1,5 @@
 import { ApiProductModel } from '../../../../models';
-import { priceNormalizer } from './price.normalizer';
+import { priceNormalizer } from './price.normalizers';
 
 const generatePrice = (
   value: number,

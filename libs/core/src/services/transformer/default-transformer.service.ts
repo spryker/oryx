@@ -1,34 +1,56 @@
-import { resolve } from '@spryker-oryx/injector';
+import { inject, INJECTOR } from '@spryker-oryx/injector';
+import { isObservable, merge, Observable, reduce } from 'rxjs';
 import { Transformer, TransformerService } from './transformer.service';
 
 /**
  * Transforms data by transformer(s) callback
  */
 export class DefaultTransformerService implements TransformerService {
-  transform<T, D>(data: D, token: keyof InjectionTokensContractMap): T {
-    return this.getTransformers(token).reduce(
-      (currentData: unknown, cb: Transformer<any>) => {
+  constructor(protected injector = inject(INJECTOR)) {}
+
+  transform<T, D>(
+    data: D,
+    token: keyof InjectionTokensContractMap
+  ): Observable<T> {
+    const reducer = (fullData: unknown, currentData: unknown): unknown => {
+      if (
+        fullData === null ||
+        Array.isArray(fullData) ||
+        typeof fullData !== 'object'
+      ) {
+        return currentData;
+      }
+
+      return {
+        ...(currentData as Record<string, unknown>),
+        ...(fullData as Record<string, unknown>),
+      };
+    };
+    const asyncData: Observable<unknown>[] = [];
+    const syncData = this.getTransformers(token).reduce(
+      (currentData: unknown, cb: Transformer<unknown>) => {
         const cbData = cb(data, this);
 
-        if (
-          currentData === null ||
-          Array.isArray(currentData) ||
-          typeof currentData !== 'object'
-        ) {
-          return cbData;
+        if (isObservable(cbData)) {
+          asyncData.push(cbData);
+
+          return currentData;
         }
 
-        return {
-          ...currentData,
-          ...cbData,
-        };
+        return reducer(currentData, cbData);
       },
       null
     );
+
+    return merge(...asyncData).pipe(reduce(reducer, syncData)) as Observable<T>;
   }
 
-  getTransformers(token: keyof InjectionTokensContractMap): Transformer[] {
-    const transformer = resolve<Transformer | Transformer[]>(token);
+  protected getTransformers(
+    token: keyof InjectionTokensContractMap
+  ): Transformer[] {
+    const transformer = this.injector.inject(token) as unknown as
+      | Transformer
+      | Transformer[];
 
     return Array.isArray(transformer) ? transformer : [transformer];
   }

@@ -1,5 +1,6 @@
 import { TransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { of } from 'rxjs';
 import { DefaultTransformerService } from './default-transformer.service';
 
 const mockATransformer = vi.fn();
@@ -58,33 +59,56 @@ describe('DefaultTransformerService', () => {
   it('should return result with transformed data if initial value is null', () => {
     const mockATransformerResult = 'mockATransformerResult';
     mockATransformer.mockReturnValue(mockATransformerResult);
-    const result = service.transform(
-      mockData,
-      'mockBTransformer' as keyof InjectionTokensContractMap
-    );
-    expect(result).toBe(mockATransformerResult);
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toBe(mockATransformerResult);
+      });
   });
 
   it('should return result with transformed data if prev transformed data is array', () => {
     const mockATransformerResult = 'mockATransformerResult';
     mockATransformer.mockReturnValue(mockATransformerResult);
     mockBTransformer.mockReturnValue(['data']);
-    const result = service.transform(
-      mockData,
-      'mockBTransformer' as keyof InjectionTokensContractMap
-    );
-    expect(result).toBe(mockATransformerResult);
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toBe(mockATransformerResult);
+      });
   });
 
   it('should return result with transformed data if prev transformed data is primitive', () => {
     const mockATransformerResult = 'mockATransformerResult';
     mockATransformer.mockReturnValue(mockATransformerResult);
     mockBTransformer.mockReturnValue(2);
-    const result = service.transform(
-      mockData,
-      'mockBTransformer' as keyof InjectionTokensContractMap
-    );
-    expect(result).toBe(mockATransformerResult);
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toBe(mockATransformerResult);
+      });
+  });
+
+  it('should resolve observables result from transformer', () => {
+    const mockATransformerResult = 'mockATransformerResult';
+    mockATransformer.mockReturnValue(of(mockATransformerResult));
+    mockBTransformer.mockReturnValue(2);
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toBe(mockATransformerResult);
+      });
   });
 
   it('should return result with transformed concatenated data if prev transformed data is object', () => {
@@ -96,13 +120,16 @@ describe('DefaultTransformerService', () => {
     };
     mockATransformer.mockReturnValue(mockATransformerResult);
     mockBTransformer.mockReturnValue(mockBTransformerResult);
-    const result = service.transform(
-      mockData,
-      'mockBTransformer' as keyof InjectionTokensContractMap
-    );
-    expect(result).toEqual({
-      ...mockATransformerResult,
-      ...mockBTransformerResult,
-    });
+    service
+      .transform(
+        mockData,
+        'mockBTransformer' as keyof InjectionTokensContractMap
+      )
+      .subscribe((result) => {
+        expect(result).toEqual({
+          ...mockATransformerResult,
+          ...mockBTransformerResult,
+        });
+      });
   });
 });

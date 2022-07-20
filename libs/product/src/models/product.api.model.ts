@@ -6,17 +6,26 @@ export module ApiProductModel {
     attributes?: Record<string, unknown>;
     averageRating?: string;
     description?: string;
-    discontinuedNote?: string;
-    id?: string;
-    isDiscontinued?: boolean;
     metaDescription?: string;
     metaKeywords?: string;
     metaTitle?: string;
     name?: string;
-    productAbstractSku?: string;
     reviewCount?: number;
     sku?: string;
     superAttributesDefinition?: string[];
+  }
+
+  export interface Concrete extends Attributes {
+    discontinuedNote?: string;
+    id?: string;
+    isDiscontinued?: boolean;
+    productAbstractSku?: string;
+  }
+
+  export interface Abstract extends Attributes {
+    attributeMap?: string[][];
+    merchantReference?: string;
+    superAttributes?: string[];
   }
 
   export interface Image {
@@ -48,14 +57,16 @@ export module ApiProductModel {
     prices?: Price[];
   }
 
-  export enum Includes {
+  export const enum Includes {
     ConcreteProductImageSets = 'concrete-product-image-sets',
     ConcreteProductPrices = 'concrete-product-prices',
+    AbstractProducts = 'abstract-products',
+    ConcreteProducts = 'concrete-products',
   }
 
   export type ResponseIncludes =
     | Include<Includes.ConcreteProductImageSets, ImageSets>
     | Include<Includes.ConcreteProductPrices, Prices>;
 
-  export type Response = JsonApiModel<Attributes, ResponseIncludes[]>;
+  export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }

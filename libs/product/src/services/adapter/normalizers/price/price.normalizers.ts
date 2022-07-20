@@ -4,7 +4,7 @@ import {
   ProductPrices,
 } from '../../../../models';
 
-export const PriceNormalizer = 'FES.PriceNormalizer';
+export const PriceNormalizers = 'FES.PriceNormalizers';
 
 export function priceNormalizer(data: ApiProductModel.Prices): ProductPrices {
   const normalize = (
@@ -33,8 +33,10 @@ export function priceNormalizer(data: ApiProductModel.Prices): ProductPrices {
   };
 }
 
+export const priceNormalizers = [priceNormalizer];
+
 declare global {
   interface InjectionTokensContractMap {
-    [PriceNormalizer]: Transformer;
+    [PriceNormalizers]: Transformer;
   }
 }

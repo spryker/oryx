@@ -1,5 +1,5 @@
 import { ApiProductModel } from '../../../../models';
-import { imagesNormalizer } from './images.normalizer';
+import { imagesNormalizer } from './images.normalizers';
 
 const mockGlueImageSets: ApiProductModel.ImageSets = {
   imageSets: [
@@ -31,8 +31,8 @@ const mockGlueImageSets: ApiProductModel.ImageSets = {
     },
   ],
 };
-describe('DefaultImageNormalizerTransformerStrategy', () => {
-  it('should transform GlueImageSets into ProductImages[]', () => {
+describe('Images Normalizer', () => {
+  it('should transform ApiProductModel.ImageSets into ProductImage[]', () => {
     const mockResult = [
       ...mockGlueImageSets.imageSets[0].images,
       ...mockGlueImageSets.imageSets[1].images,

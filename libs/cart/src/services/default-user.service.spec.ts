@@ -5,10 +5,9 @@ import { UserService } from './user.service';
 
 describe('DefaultUserService', () => {
   let service: UserService;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: UserService,

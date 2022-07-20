@@ -1,12 +1,14 @@
 import {
+  ConcreteProductsNormalizers,
+  concreteProductsNormalizers,
   DefaultProductAdapter,
-  imagesNormalizer,
-  ImagesNormalizer,
-  priceNormalizer,
-  PriceNormalizer,
+  imagesNormalizers,
+  ImagesNormalizers,
+  priceNormalizers,
+  PriceNormalizers,
   ProductAdapter,
-  productNormalizer,
-  ProductNormalizer,
+  productNormalizers,
+  ProductNormalizers,
 } from './adapter';
 import { CurrencyService } from './currency.service';
 import { DefaultCurrencyService } from './default-currency.service';
@@ -33,15 +35,19 @@ export const PRODUCT_PROVIDERS = [
     useClass: DefaultLocaleService,
   },
   {
-    provide: PriceNormalizer,
-    useValue: priceNormalizer,
+    provide: PriceNormalizers,
+    useValue: priceNormalizers,
   },
   {
-    provide: ImagesNormalizer,
-    useValue: imagesNormalizer,
+    provide: ImagesNormalizers,
+    useValue: imagesNormalizers,
   },
   {
-    provide: ProductNormalizer,
-    useValue: productNormalizer,
+    provide: ProductNormalizers,
+    useValue: productNormalizers,
+  },
+  {
+    provide: ConcreteProductsNormalizers,
+    useValue: concreteProductsNormalizers,
   },
 ];

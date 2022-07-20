@@ -1,13 +1,13 @@
 import { Product } from '@spryker-oryx/product';
 
-export type Resource = {
+export interface SuggestionResource {
   name: string;
   url: string;
-};
+}
 
 export interface Suggestion {
   completion: string[];
-  categories: Resource[];
-  cmsPages: Resource[];
+  categories: SuggestionResource[];
+  cmsPages: SuggestionResource[];
   products: Product[];
 }

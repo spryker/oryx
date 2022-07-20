@@ -16,12 +16,13 @@ import {
 import {
   AddCartEntryQualifier,
   Cart,
+  CartEntry,
   CartQualifier,
+  CartTotals,
   DeleteCartEntryQualifier,
+  LoadCartsQualifier,
   UpdateCartEntryQualifier,
 } from '../models';
-import { CartEntry, CartTotals } from '../models/cart';
-import { LoadCartsQualifier } from '../models/cart-qualifier';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService, STATE } from './cart.service';
 import { UserService } from './user.service';

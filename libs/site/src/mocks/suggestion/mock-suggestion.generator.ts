@@ -1,5 +1,9 @@
 import { Product } from '@spryker-oryx/product';
-import { Resource, Suggestion, SuggestionQualifier } from '../../models';
+import {
+  Suggestion,
+  SuggestionQualifier,
+  SuggestionResource,
+} from '../../models';
 
 const dummyUrl = (): string => `${window.location.href}#`;
 const makeTheNameGreatAgain = (name: string): string =>
@@ -11,7 +15,7 @@ const makeTheNameGreatAgain = (name: string): string =>
 const createResources = (
   completion: string[],
   resourceName: string
-): Resource[] => {
+): SuggestionResource[] => {
   return completion.map((c) => ({
     name: `${makeTheNameGreatAgain(c)} ${resourceName}`,
     url: dummyUrl(),
