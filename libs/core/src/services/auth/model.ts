@@ -13,4 +13,5 @@ export interface AccessToken {
 export interface TokenExchangeParams {
   username?: string;
   password?: string;
+  persist?: boolean;
 }

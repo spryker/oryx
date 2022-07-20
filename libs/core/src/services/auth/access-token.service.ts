@@ -5,7 +5,7 @@ export const AccessTokenService = 'FES.AccessTokenService';
 
 export interface AccessTokenService {
   get(): Observable<AccessToken | null>;
-  remove(): void;
+  remove(): Observable<void>;
   load(params: TokenExchangeParams): Observable<AccessToken>;
   renew(token: Required<AccessToken>): Observable<AccessToken>;
 }

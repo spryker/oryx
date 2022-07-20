@@ -3,7 +3,7 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { HttpTestService } from '../../../testing';
 import { HttpService } from '../http';
 import { StorageService, StorageType } from '../storage';
@@ -44,27 +44,31 @@ const mockApiUrl = 'mockApiUrl';
 
 const key = 'access-token';
 
-let expectedKey: any;
+let expectedKey: string;
 let expectedValue: any;
+let expectedType: StorageType | undefined;
 
-class MockStorageService implements Partial<StorageService> {
-  get(key: string, type?: StorageType): Observable<any> {
-    return of(mockToken);
-  }
-  set(key: string, value: any, type?: StorageType): Observable<void> {
-    expectedKey = key;
-    expectedValue = value;
-    return of();
-  }
-  remove(key: string, type?: StorageType): Observable<void> {
-    return of();
-  }
-}
+let persist = false;
+
+const MockStorageService = {
+  get: vi.fn().mockImplementation((key) => {
+    return key === 'access-token-persist' ? of(persist) : of(mockToken);
+  }),
+  set: vi
+    .fn()
+    .mockImplementation((key: string, value: any, type?: StorageType) => {
+      expectedKey = key;
+      expectedValue = value;
+      expectedType = type;
+      return of(null);
+    }),
+  remove: vi.fn().mockImplementation(() => of(null)),
+};
 
 describe('AccessTokenService', () => {
   let service: AccessTokenService;
   let http: HttpTestService;
-  let storage: MockStorageService;
+  let storage: any;
 
   beforeEach(() => {
     createInjector({
@@ -83,14 +87,14 @@ describe('AccessTokenService', () => {
         },
         {
           provide: StorageService,
-          useClass: MockStorageService,
+          useValue: MockStorageService,
         },
       ],
     });
 
     service = getInjector().inject(AccessTokenService);
     http = getInjector().inject(HttpService) as HttpTestService;
-    storage = getInjector().inject(StorageService) as MockStorageService;
+    storage = getInjector().inject(StorageService);
   });
   afterEach(() => {
     destroyInjector();
@@ -128,8 +132,9 @@ describe('AccessTokenService', () => {
   });
   it('should get a token', () => {
     vi.spyOn(storage, 'get');
-    service.get().subscribe(() => {
-      expect(storage.get).toHaveBeenCalledWith(key);
+    service.get().subscribe((token) => {
+      expect(storage.get).toHaveBeenCalledWith(key, StorageType.SESSION);
+      expect(token).toBe(mockToken);
     });
   });
   it('should store refreshed token', () => {
@@ -145,9 +150,50 @@ describe('AccessTokenService', () => {
         );
       });
   });
-  it('should remove a token', () => {
+  it('should remove a token', async () => {
     vi.spyOn(storage, 'remove');
-    service.remove();
-    expect(storage.remove).toHaveBeenCalledWith(key);
+    service.remove().subscribe(() => {
+      expect(storage.remove).toHaveBeenCalledWith(key, StorageType.SESSION);
+    });
+  });
+  it('should store a password token in local storage', () => {
+    vi.spyOn(storage, 'set');
+    http.flush(mockPasswordResponse);
+    persist = true;
+    service
+      .load({ username: 'user', password: 'password', persist: true })
+      .subscribe(() => {
+        expect(storage.set).toHaveBeenCalled();
+        expect(expectedKey).toBe(key);
+        expect(expectedType).toBe(StorageType.DEFAULT);
+        expect(expectedValue.accessToken).toBe(mockToken.accessToken);
+      });
+  });
+  it('should get a token from local storage', () => {
+    vi.spyOn(storage, 'get');
+    service.get().subscribe((token) => {
+      expect(storage.get).toHaveBeenCalledWith(key, StorageType.DEFAULT);
+      expect(token).toBe(mockToken);
+    });
+  });
+  it('should store refreshed token in local storage', () => {
+    vi.spyOn(storage, 'set');
+    http.flush(mockRefreshResponse);
+    service
+      .renew({ ...mockCodeResponse, refreshTokenExpiresAt: 0 })
+      .subscribe(() => {
+        expect(storage.set).toHaveBeenCalled();
+        expect(expectedKey).toBe(key);
+        expect(expectedType).toBe(StorageType.DEFAULT);
+        expect(expectedValue.accessToken).toBe(
+          mockRefreshResponse.access_token
+        );
+      });
+  });
+  it('should remove a token from local storage', async () => {
+    vi.spyOn(storage, 'remove');
+    service.remove().subscribe(() => {
+      expect(storage.remove).toHaveBeenCalledWith(key, StorageType.DEFAULT);
+    });
   });
 });

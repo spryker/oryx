@@ -1,5 +1,10 @@
 import { Provider } from '@spryker-oryx/injector';
-import { AccessTokenService, DefaultAccessTokenService } from './auth';
+import {
+  AccessTokenService,
+  AuthService,
+  DefaultAccessTokenService,
+  DefaultAuthService,
+} from './auth';
 import { ContextService, DefaultContextService } from './context';
 import { DefaultHttpService, HttpService } from './http';
 import { DefaultStorageService, StorageService } from './storage';
@@ -22,6 +27,10 @@ export const CORE_PROVIDERS: Provider[] = [
   {
     provide: AccessTokenService,
     useClass: DefaultAccessTokenService,
+  },
+  {
+    provide: AuthService,
+    useClass: DefaultAuthService,
   },
   {
     provide: JsonAPITransformerService,
