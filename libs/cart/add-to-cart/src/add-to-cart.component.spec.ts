@@ -8,14 +8,15 @@ import {
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import '@spryker-oryx/testing';
+import { wait } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { delay, of } from 'rxjs';
 import { QuantityInputComponent } from '../../quantity-input';
 import '../index';
 import { AddToCartComponent } from './add-to-cart.component';
 
 class MockCartService {
-  addEntry = vi.fn().mockReturnValue(of(null));
+  addEntry = vi.fn().mockReturnValue(of(null).pipe(delay(1)));
 }
 
 describe('Add to cart', () => {
@@ -59,6 +60,11 @@ describe('Add to cart', () => {
       const button = element.renderRoot.querySelector('button');
       expect(button?.hasAttribute('disabled')).toBe(true);
     });
+
+    it('should make quantity input disabled', () => {
+      const input = element.renderRoot.querySelector('quantity-input');
+      expect(input?.hasAttribute('disabled')).toBe(true);
+    });
   });
 
   describe('when "hideQuantityInput" prop is true', () => {
@@ -84,6 +90,23 @@ describe('Add to cart', () => {
           sku: '1',
           quantity: 1,
         });
+      });
+
+      it('should set loading state', () => {
+        const oryxButton = element.renderRoot.querySelector('oryx-button');
+        expect(oryxButton?.hasAttribute('loading')).toBe(true);
+      });
+
+      it('should set "success" state for 800ms', async () => {
+        const oryxButton = element.renderRoot.querySelector('oryx-button');
+        const button = element.renderRoot.querySelector('button');
+        await wait(1);
+        expect(oryxButton?.hasAttribute('loading')).toBe(false);
+        expect(oryxButton?.hasAttribute('outline')).toBe(true);
+        expect(button?.hasAttribute('inert')).toBe(true);
+        await wait(800);
+        expect(oryxButton?.hasAttribute('outline')).toBe(false);
+        expect(button?.hasAttribute('inert')).toBe(false);
       });
     });
 
@@ -119,6 +142,23 @@ describe('Add to cart', () => {
           sku: '1',
           quantity: 1,
         });
+      });
+
+      it('should set loading state', () => {
+        const oryxButton = element.renderRoot.querySelector('oryx-button');
+        expect(oryxButton?.hasAttribute('loading')).toBe(true);
+      });
+
+      it('should set "success" state for 800ms', async () => {
+        const oryxButton = element.renderRoot.querySelector('oryx-button');
+        const button = element.renderRoot.querySelector('button');
+        await wait(1);
+        expect(oryxButton?.hasAttribute('loading')).toBe(false);
+        expect(oryxButton?.hasAttribute('outline')).toBe(true);
+        expect(button?.hasAttribute('inert')).toBe(true);
+        await wait(800);
+        expect(oryxButton?.hasAttribute('outline')).toBe(false);
+        expect(button?.hasAttribute('inert')).toBe(false);
       });
     });
 

@@ -8,6 +8,7 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
@@ -26,11 +27,13 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
   protected product$ = new ProductController(this).getProduct();
 
   protected loading$ = new BehaviorSubject(false);
+  protected showSuccessButton$ = new BehaviorSubject(false);
   protected cartService = resolve(CartService);
   protected options$ = combineLatest([
     this.contentController.getOptions(),
     this.loading$,
     this.product$,
+    this.showSuccessButton$,
   ]);
   protected quantity = 1;
 
@@ -53,10 +56,14 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
         quantity: hideQuantityInput ? 1 : this.quantity,
       })
       .subscribe({
-        next: () => {
+        next: async () => {
           this.loading$.next(false);
+
+          this.showSuccessButton$.next(true);
+          await wait(800);
+          this.showSuccessButton$.next(false);
         },
-        error: () => {
+        error: async () => {
           this.loading$.next(false);
         },
       });
@@ -81,7 +88,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
     return html`
       ${asyncValue(
         this.options$,
-        ([option, loading, product]) => html`
+        ([option, loading, product, showSuccessButton]) => html`
           <form
             @submit=${(e: Event): void =>
               this.onSubmit(e, option.hideQuantityInput, product?.sku)}
@@ -91,7 +98,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
               () => html`
                 <quantity-input
                   value=${this.quantity}
-                  ?disabled=${loading}
+                  ?disabled=${option.disabled}
                   @update=${this.setQuantity}
                 ></quantity-input>
               `
@@ -101,13 +108,14 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
               size=${Size.small}
               ?loading=${loading}
               type=${ButtonType.Primary}
+              ?outline=${showSuccessButton}
             >
-              <button ?disabled=${option.disabled}>
+              <button ?disabled=${option.disabled} ?inert=${showSuccessButton}>
                 <oryx-icon
-                  type=${MiscIcons.CartAdd}
+                  type=${showSuccessButton ? MiscIcons.Mark : MiscIcons.CartAdd}
                   size=${Size.large}
                 ></oryx-icon>
-                Add to Cart
+                ${showSuccessButton ? '' : 'Add to Cart'}
               </button>
             </oryx-button>
           </form>

@@ -17,6 +17,7 @@ type Props = ProductComponentProperties & AddToCartOptions;
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <add-to-cart
+      sku="1"
       .options=${{
         hideQuantityInput: props.hideQuantityInput,
         disabled: props.disabled,
