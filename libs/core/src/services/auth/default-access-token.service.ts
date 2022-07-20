@@ -41,9 +41,7 @@ export class DefaultAccessTokenService implements AccessTokenService {
                 return this.token$;
               }
               if (token && canRenew(token)) {
-                return this.renew(token as Required<AccessToken>).pipe(
-                  switchMapTo(this.token$)
-                );
+                return this.renew(token).pipe(switchMapTo(this.token$));
               }
               this.remove();
               return this.token$;

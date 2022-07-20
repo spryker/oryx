@@ -5,8 +5,9 @@ import { AuthService } from './auth.service';
 import { AccessToken, TokenExchangeParams } from './model';
 
 export class DefaultAuthService implements AuthService {
-  protected accessTokenService = inject(AccessTokenService);
   protected remember = false;
+
+  constructor(protected accessTokenService = inject(AccessTokenService)) {}
 
   login(
     username: string,
@@ -20,9 +21,7 @@ export class DefaultAuthService implements AuthService {
     };
     this.logout();
     return this.accessTokenService.load(login).pipe(
-      catchError(() => {
-        return of(null);
-      }),
+      catchError(() => of(null)),
       map((token: AccessToken | null) => !!token)
     );
   }

@@ -1,77 +1,75 @@
-import {
-  createInjector,
-  destroyInjector,
-  getInjector,
-} from '@spryker-oryx/injector';
-import { of } from 'rxjs';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { Observable, of, Subject, switchMap } from 'rxjs';
 import { HttpTestService } from '../../../testing';
 import { HttpService } from '../http';
 import { StorageService, StorageType } from '../storage';
 import { AccessTokenService } from './access-token.service';
 import { DefaultAccessTokenService } from './default-access-token.service';
 
-const now = Date.now();
+const accessTokenIdentifier = 'access-token';
+const persistTokenIdentifier = 'access-token-persist';
+const mockApiUrl = 'mockApiUrl';
+const mockDateNow = 100;
+const mockToMilliseconds = 100;
 
-const mockPasswordResponse = {
-  access_token: 'token value',
-  expires_in: 28800,
-  refresh_token: 'refresh token value',
-  token_type: 'Bearer',
-};
-
-const mockCodeResponse = {
-  accessToken: 'code token value',
-  expiresAt: now + 28800,
-  refreshToken: 'refresh token value',
-  tokenType: 'Bearer',
+const mockCredentials = {
+  username: 'user',
+  password: 'correct',
+  persist: true,
 };
 
 const mockRefreshResponse = {
   access_token: 'a new token',
-  expires_in: 28800,
+  expires_in: 228800,
   refresh_token: 'have another',
-  token_type: 'Bearer',
+  token_type: 'Bearer B',
 };
-
 const mockToken = {
   accessToken: 'token value',
-  expiresAt: now + 28800,
+  expiresAt: 28800,
   refreshToken: 'refresh token value',
   tokenType: 'Bearer',
+  refreshTokenExpiresAt: 140,
+};
+const mockConvertedRefreshToken = {
+  accessToken: mockRefreshResponse.access_token,
+  refreshToken: mockRefreshResponse.refresh_token,
+  tokenType: mockRefreshResponse.token_type,
+  expiresAt: mockDateNow + mockToMilliseconds,
 };
 
-const mockApiUrl = 'mockApiUrl';
+class MockStorageService implements Partial<StorageService> {
+  get = vi.fn();
+  set = vi.fn();
+  remove = vi.fn();
+}
 
-const key = 'access-token';
-
-let expectedKey: string;
-let expectedValue: any;
-let expectedType: StorageType | undefined;
-
-let persist = false;
-
-const MockStorageService = {
-  get: vi.fn().mockImplementation((key) => {
-    return key === 'access-token-persist' ? of(persist) : of(mockToken);
-  }),
-  set: vi
-    .fn()
-    .mockImplementation((key: string, value: any, type?: StorageType) => {
-      expectedKey = key;
-      expectedValue = value;
-      expectedType = type;
-      return of(null);
-    }),
-  remove: vi.fn().mockImplementation(() => of(null)),
+const utils = {
+  requiresRefresh: vi.fn(),
+  canRenew: vi.fn(),
 };
+
+vi.mock('./utils.ts', () => ({
+  requiresRefresh: (): boolean => utils.requiresRefresh(),
+  canRenew: (): boolean => utils.canRenew(),
+}));
+
+vi.mock('@spryker-oryx/typescript-utils', () => ({
+  toMilliseconds: (): number => mockToMilliseconds,
+}));
+
+const storageType = (persist: boolean): StorageType =>
+  persist ? StorageType.DEFAULT : StorageType.SESSION;
 
 describe('AccessTokenService', () => {
   let service: AccessTokenService;
   let http: HttpTestService;
-  let storage: any;
+  let storage: MockStorageService;
 
   beforeEach(() => {
-    createInjector({
+    vi.spyOn(global.Date, 'now').mockReturnValue(mockDateNow);
+
+    const testInjector = createInjector({
       providers: [
         {
           provide: HttpService,
@@ -87,113 +85,268 @@ describe('AccessTokenService', () => {
         },
         {
           provide: StorageService,
-          useValue: MockStorageService,
+          useClass: MockStorageService,
         },
       ],
     });
 
-    service = getInjector().inject(AccessTokenService);
-    http = getInjector().inject(HttpService) as HttpTestService;
-    storage = getInjector().inject(StorageService);
-  });
-  afterEach(() => {
-    destroyInjector();
-  });
-  it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultAccessTokenService);
+    service = testInjector.inject(AccessTokenService);
+    http = testInjector.inject(HttpService) as HttpTestService;
+    storage = testInjector.inject(
+      StorageService
+    ) as unknown as MockStorageService;
   });
 
-  it('should load a password token', () => {
-    http.flush(mockPasswordResponse);
-    service
-      .load({ username: 'user', password: 'password' })
-      .subscribe((token) => {
-        expect(token).toBeDefined();
-        expect(token?.accessToken).toBe(mockPasswordResponse.access_token);
-      });
+  afterEach(() => {
+    vi.resetAllMocks();
+    destroyInjector();
+    http.clear();
   });
-  it('should refresh a token', () => {
-    http.flush(mockRefreshResponse);
-    service
-      .renew({ ...mockCodeResponse, refreshTokenExpiresAt: 0 })
-      .subscribe((token) => {
-        expect(token).toBeDefined();
-        expect(token?.accessToken).toBe(mockRefreshResponse.access_token);
+
+  const request = (
+    cb: () => {
+      observable$: Observable<unknown>;
+      body: string;
+    }
+  ): void => {
+    beforeEach(() => {
+      http.flush(mockRefreshResponse);
+      storage.get.mockReturnValue(of(mockToken));
+    });
+
+    it('should send post request', () => {
+      storage.get.mockReturnValueOnce(of(true));
+      cb().observable$.subscribe();
+
+      expect(http.url).toBe(`${mockApiUrl}/token`);
+      expect(http.options).toEqual({
+        body: cb().body,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       });
-  });
-  it('should store a password token', () => {
-    vi.spyOn(storage, 'set');
-    http.flush(mockPasswordResponse);
-    service.load({ username: 'user', password: 'password' }).subscribe(() => {
-      expect(storage.set).toHaveBeenCalled();
-      expect(expectedKey).toBe(key);
-      expect(expectedValue.accessToken).toBe(mockToken.accessToken);
+    });
+
+    it('should return Observable<AccessToken>', () => {
+      const callback = vi.fn();
+      storage.get.mockReturnValueOnce(of(true));
+      cb().observable$.subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(mockConvertedRefreshToken);
+    });
+  };
+
+  describe('remove', () => {
+    it(`should call StorageService.remove with ${accessTokenIdentifier} and StorageType depends on result of StorageService.get with ${persistTokenIdentifier}`, () => {
+      const trigger$ = new Subject();
+      storage.remove.mockReturnValue(of(null));
+      trigger$
+        .pipe(
+          switchMap((persist) => {
+            storage.get.mockReturnValue(of(persist));
+
+            return service.remove();
+          })
+        )
+        .subscribe();
+
+      trigger$.next(true);
+      expect(storage.get).toHaveBeenNthCalledWith(1, persistTokenIdentifier);
+      expect(storage.remove).toHaveBeenNthCalledWith(
+        1,
+        accessTokenIdentifier,
+        StorageType.DEFAULT
+      );
+      trigger$.next(false);
+      expect(storage.get).toHaveBeenNthCalledWith(2, persistTokenIdentifier);
+      expect(storage.remove).toHaveBeenNthCalledWith(
+        2,
+        accessTokenIdentifier,
+        StorageType.SESSION
+      );
     });
   });
-  it('should get a token', () => {
-    vi.spyOn(storage, 'get');
-    service.get().subscribe((token) => {
-      expect(storage.get).toHaveBeenCalledWith(key, StorageType.SESSION);
-      expect(token).toBe(mockToken);
+
+  describe('get', () => {
+    beforeEach(() => {
+      utils.requiresRefresh.mockReturnValue(false);
     });
-  });
-  it('should store refreshed token', () => {
-    vi.spyOn(storage, 'set');
-    http.flush(mockRefreshResponse);
-    service
-      .renew({ ...mockCodeResponse, refreshTokenExpiresAt: 0 })
-      .subscribe(() => {
-        expect(storage.set).toHaveBeenCalled();
-        expect(expectedKey).toBe(key);
-        expect(expectedValue.accessToken).toBe(
-          mockRefreshResponse.access_token
+
+    it(`should call StorageService.get with ${accessTokenIdentifier} and StorageType depends on result of StorageService.get with ${persistTokenIdentifier}`, () => {
+      const trigger$ = new Subject<boolean>();
+      storage.get.mockReturnValue(of(null));
+      trigger$
+        .pipe(
+          switchMap((persist: boolean) => {
+            storage.get.mockReturnValueOnce(of(persist));
+            storage.get.mockReturnValueOnce(of(storageType(persist)));
+
+            return service.get();
+          })
+        )
+        .subscribe();
+
+      trigger$.next(true);
+      expect(storage.get).toHaveBeenNthCalledWith(1, persistTokenIdentifier);
+      expect(storage.get).toHaveBeenNthCalledWith(
+        2,
+        accessTokenIdentifier,
+        storageType(true)
+      );
+      trigger$.next(false);
+      expect(storage.get).toHaveBeenNthCalledWith(3, persistTokenIdentifier);
+      expect(storage.get).toHaveBeenNthCalledWith(
+        4,
+        accessTokenIdentifier,
+        storageType(false)
+      );
+    });
+
+    it('should return Observable<token> from storage if token exist and should not be refreshed', () => {
+      const callback = vi.fn();
+      storage.get.mockReturnValueOnce(of(true));
+      storage.get.mockReturnValue(of(mockToken));
+      service.get().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(mockToken);
+    });
+
+    it('should return Observable<null> if token is null', () => {
+      const callback = vi.fn();
+      storage.get.mockReturnValueOnce(of(true));
+      storage.get.mockReturnValue(of(null));
+      service.get().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(null);
+    });
+
+    describe('with refresh', () => {
+      beforeEach(() => {
+        utils.canRenew.mockReturnValue(true);
+        utils.requiresRefresh.mockReturnValue(true);
+        storage.get.mockReturnValue(of(mockToken));
+      });
+
+      request(() => ({
+        observable$: service.get(),
+        body: `grant_type=refresh_token&refresh_token=${mockToken.refreshToken}`,
+      }));
+
+      it(`should call StorageService.set with ${accessTokenIdentifier}, converted token and StorageType depends on result of StorageService.get with ${persistTokenIdentifier}`, () => {
+        const trigger$ = new Subject();
+        storage.set.mockReturnValue(of(null));
+        trigger$
+          .pipe(
+            switchMap((persist) => {
+              storage.get.mockReturnValueOnce(of(true));
+              storage.get.mockReturnValueOnce(of(mockToken));
+              storage.get.mockReturnValue(of(persist));
+
+              return service.get();
+            })
+          )
+          .subscribe();
+
+        trigger$.next(true);
+        expect(storage.get).toHaveBeenNthCalledWith(3, persistTokenIdentifier);
+        expect(storage.set).toHaveBeenNthCalledWith(
+          1,
+          accessTokenIdentifier,
+          mockConvertedRefreshToken,
+          StorageType.DEFAULT
+        );
+        trigger$.next(false);
+        expect(storage.get).toHaveBeenNthCalledWith(6, persistTokenIdentifier);
+        expect(storage.set).toHaveBeenNthCalledWith(
+          2,
+          accessTokenIdentifier,
+          mockConvertedRefreshToken,
+          StorageType.SESSION
         );
       });
-  });
-  it('should remove a token', async () => {
-    vi.spyOn(storage, 'remove');
-    service.remove().subscribe(() => {
-      expect(storage.remove).toHaveBeenCalledWith(key, StorageType.SESSION);
     });
   });
-  it('should store a password token in local storage', () => {
-    vi.spyOn(storage, 'set');
-    http.flush(mockPasswordResponse);
-    persist = true;
-    service
-      .load({ username: 'user', password: 'password', persist: true })
-      .subscribe(() => {
-        expect(storage.set).toHaveBeenCalled();
-        expect(expectedKey).toBe(key);
-        expect(expectedType).toBe(StorageType.DEFAULT);
-        expect(expectedValue.accessToken).toBe(mockToken.accessToken);
-      });
-  });
-  it('should get a token from local storage', () => {
-    vi.spyOn(storage, 'get');
-    service.get().subscribe((token) => {
-      expect(storage.get).toHaveBeenCalledWith(key, StorageType.DEFAULT);
-      expect(token).toBe(mockToken);
+
+  describe('renew', () => {
+    request(() => ({
+      observable$: service.renew(mockToken),
+      body: `grant_type=refresh_token&refresh_token=${mockToken.refreshToken}`,
+    }));
+
+    it(`should call StorageService.set with ${accessTokenIdentifier}, converted token and StorageType depends on result of StorageService.get with ${persistTokenIdentifier}`, () => {
+      const trigger$ = new Subject();
+      storage.set.mockReturnValue(of(null));
+      trigger$
+        .pipe(
+          switchMap((persist) => {
+            storage.get.mockReturnValue(of(persist));
+
+            return service.renew(mockToken);
+          })
+        )
+        .subscribe();
+
+      trigger$.next(true);
+      expect(storage.get).toHaveBeenNthCalledWith(1, persistTokenIdentifier);
+      expect(storage.set).toHaveBeenNthCalledWith(
+        1,
+        accessTokenIdentifier,
+        mockConvertedRefreshToken,
+        StorageType.DEFAULT
+      );
+      trigger$.next(false);
+      expect(storage.get).toHaveBeenNthCalledWith(2, persistTokenIdentifier);
+      expect(storage.set).toHaveBeenNthCalledWith(
+        2,
+        accessTokenIdentifier,
+        mockConvertedRefreshToken,
+        StorageType.SESSION
+      );
     });
   });
-  it('should store refreshed token in local storage', () => {
-    vi.spyOn(storage, 'set');
-    http.flush(mockRefreshResponse);
-    service
-      .renew({ ...mockCodeResponse, refreshTokenExpiresAt: 0 })
-      .subscribe(() => {
-        expect(storage.set).toHaveBeenCalled();
-        expect(expectedKey).toBe(key);
-        expect(expectedType).toBe(StorageType.DEFAULT);
-        expect(expectedValue.accessToken).toBe(
-          mockRefreshResponse.access_token
-        );
-      });
-  });
-  it('should remove a token from local storage', async () => {
-    vi.spyOn(storage, 'remove');
-    service.remove().subscribe(() => {
-      expect(storage.remove).toHaveBeenCalledWith(key, StorageType.DEFAULT);
+
+  describe('load', () => {
+    it(`should store persist value into storage`, () => {
+      storage.get.mockReturnValue(of(mockToken));
+      service.load(mockCredentials);
+      expect(storage.set).toHaveBeenCalledWith(
+        persistTokenIdentifier,
+        mockCredentials.persist
+      );
+    });
+
+    request(() => ({
+      observable$: service.load(mockCredentials),
+      body: `grant_type=password&username=${mockCredentials.username}&password=${mockCredentials.password}`,
+    }));
+
+    it(`should call StorageService.set with ${accessTokenIdentifier}, converted token and StorageType depends on result of StorageService.get with ${persistTokenIdentifier}`, () => {
+      const trigger$ = new Subject();
+      storage.set.mockReturnValue(of(null));
+      trigger$
+        .pipe(
+          switchMap((persist) => {
+            storage.get.mockReturnValue(of(persist));
+
+            return service.load(mockCredentials);
+          })
+        )
+        .subscribe();
+
+      trigger$.next(true);
+      expect(storage.get).toHaveBeenNthCalledWith(1, persistTokenIdentifier);
+      expect(storage.set).toHaveBeenNthCalledWith(
+        2,
+        accessTokenIdentifier,
+        mockConvertedRefreshToken,
+        StorageType.DEFAULT
+      );
+      trigger$.next(false);
+      expect(storage.get).toHaveBeenNthCalledWith(2, persistTokenIdentifier);
+      expect(storage.set).toHaveBeenNthCalledWith(
+        4,
+        accessTokenIdentifier,
+        mockConvertedRefreshToken,
+        StorageType.SESSION
+      );
     });
   });
 });

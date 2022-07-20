@@ -1,6 +1,6 @@
 import { AccessToken } from './model';
 
-export function canRenew(token: AccessToken): boolean {
+export function canRenew(token: AccessToken): token is Required<AccessToken> {
   return hasValidRefreshToken(token);
 }
 

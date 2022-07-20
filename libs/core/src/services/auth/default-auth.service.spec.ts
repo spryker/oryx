@@ -1,13 +1,8 @@
-import {
-  createInjector,
-  destroyInjector,
-  getInjector,
-} from '@spryker-oryx/injector';
-import { of, throwError } from 'rxjs';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { of, Subject, switchMap, throwError } from 'rxjs';
 import { AccessTokenService } from './access-token.service';
 import { AuthService } from './auth.service';
 import { DefaultAuthService } from './default-auth.service';
-import { AccessToken, TokenExchangeParams } from './model';
 
 const mockToken = {
   accessToken: 'token value',
@@ -16,30 +11,28 @@ const mockToken = {
   tokenType: 'Bearer',
 };
 
-let token: AccessToken | null;
-
-const MockAccessTokenService = {
-  load: vi.fn(),
-  remove: vi.fn().mockImplementation(() => {
-    token = null;
-    return of(null);
-  }),
-  get: vi.fn().mockImplementation(() => {
-    return of(token);
-  }),
+const mockCredentials = {
+  username: 'user',
+  password: 'correct',
+  persist: false,
 };
 
-let persistToken: boolean;
+class MockAccessTokenService implements Partial<AccessTokenService> {
+  load = vi.fn();
+  remove = vi.fn();
+  get = vi.fn();
+}
 
-describe('AuthService', () => {
+describe('DefaultAuthService', () => {
   let service: AuthService;
-  let accessTokenService: any;
+  let accessTokenService: MockAccessTokenService;
+
   beforeEach(() => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: AccessTokenService,
-          useValue: MockAccessTokenService,
+          useClass: MockAccessTokenService,
         },
         {
           provide: AuthService,
@@ -47,87 +40,104 @@ describe('AuthService', () => {
         },
       ],
     });
-    service = getInjector().inject(AuthService);
-    accessTokenService = getInjector().inject(AccessTokenService);
+
+    service = testInjector.inject(AuthService);
+    accessTokenService = testInjector.inject(
+      AccessTokenService
+    ) as unknown as MockAccessTokenService;
   });
+
   afterEach(() => {
+    vi.resetAllMocks();
     destroyInjector();
   });
-  it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultAuthService);
+
+  describe('logout', () => {
+    it('should call AccessTokenService.remove', () => {
+      service.logout();
+      expect(accessTokenService.remove).toHaveBeenCalled();
+    });
   });
 
-  it('should login successfully', () => {
-    accessTokenService.load.mockImplementation(() => {
-      token = mockToken;
-      return of(mockToken);
+  describe('login', () => {
+    it('should call logout', () => {
+      accessTokenService.load.mockReturnValue(of(mockToken));
+      service.login(
+        mockCredentials.username,
+        mockCredentials.password,
+        mockCredentials.persist
+      );
+      expect(accessTokenService.remove).toHaveBeenCalled();
     });
-    vi.spyOn(accessTokenService, 'load');
-    service.login('user', 'correct', false).subscribe((success) => {
-      expect(accessTokenService.load).toHaveBeenCalledWith({
-        username: 'user',
-        password: 'correct',
-        persist: false,
-      });
-      expect(success).toBe(true);
-      expect(persistToken).toBeFalsy();
+
+    it('should call AccessTokenService.load method', () => {
+      accessTokenService.load.mockReturnValue(of(mockToken));
+      service.login(
+        mockCredentials.username,
+        mockCredentials.password,
+        mockCredentials.persist
+      );
+      expect(accessTokenService.load).toHaveBeenCalledWith(mockCredentials);
+    });
+
+    it('should return Observable<boolean> depends on AccessTokenService.load result', () => {
+      const trigger$ = new Subject();
+      const callback = vi.fn();
+      trigger$
+        .pipe(
+          switchMap((value) => {
+            accessTokenService.load.mockReturnValue(value);
+
+            return service.login(
+              mockCredentials.username,
+              mockCredentials.password,
+              mockCredentials.persist
+            );
+          })
+        )
+        .subscribe(callback);
+      trigger$.next(throwError(() => null));
+      expect(callback).toHaveBeenNthCalledWith(1, false);
+      trigger$.next(of(mockToken));
+      expect(callback).toHaveBeenNthCalledWith(2, true);
+      trigger$.next(of(null));
+      expect(callback).toHaveBeenNthCalledWith(3, false);
     });
   });
-  it('should obtain a token', () => {
-    vi.spyOn(accessTokenService, 'get');
-    service.getToken().subscribe((token) => {
+
+  describe('getToken', () => {
+    it('should return result of AccessTokenService.get', () => {
+      const mockResult = 'mockResult';
+      accessTokenService.get.mockReturnValue(mockResult);
+      const result = service.getToken();
       expect(accessTokenService.get).toHaveBeenCalled();
-      expect(token).toBe(mockToken);
-    });
-  });
-  it('should be authenticated', () => {
-    service.isAuthenticated().subscribe((authenticated) => {
-      expect(authenticated).toBeTruthy();
-    });
-  });
-  it('should logout', () => {
-    vi.spyOn(accessTokenService, 'remove');
-    service.logout();
-    expect(accessTokenService.remove).toHaveBeenCalled();
-    service.getToken().subscribe((token) => {
-      expect(token).toBeDefined();
-    });
-  });
-  it('should not be authenticated', () => {
-    service.isAuthenticated().subscribe((authenticated) => {
-      expect(authenticated).toBeFalsy();
-    });
-  });
-  it('should fail login with wrong password', () => {
-    accessTokenService.load.mockImplementation(() => {
-      return throwError(() => 'no token');
-    });
-    service.login('user', 'wrong', false).subscribe((success) => {
-      expect(success).toBe(false);
-    });
-  });
-  it('should get no token', () => {
-    service.getToken().subscribe((token) => {
-      expect(token).toBeFalsy();
+      expect(result).toBe(mockResult);
     });
   });
 
-  it('should remember login successfully', () => {
-    accessTokenService.load.mockImplementation(
-      (params: TokenExchangeParams) => {
-        persistToken = params.persist ?? false;
-        return of(mockToken);
-      }
-    );
-    vi.spyOn(accessTokenService, 'load');
-    service.login('user', 'correct', true).subscribe((success) => {
-      expect(success).toBeTruthy();
-      expect(accessTokenService.load).toHaveBeenCalledWith({
-        username: 'user',
-        password: 'correct',
-        persist: true,
-      });
-      expect(persistToken).toBeTruthy();
+  describe('isAuthenticated', () => {
+    it('should call getToken', () => {
+      service.getToken();
+      expect(accessTokenService.get).toHaveBeenCalled();
+    });
+
+    it('should return Observable<boolean> depends on getToken result', () => {
+      const trigger$ = new Subject();
+      const callback = vi.fn();
+      trigger$
+        .pipe(
+          switchMap((value) => {
+            accessTokenService.get.mockReturnValue(value);
+
+            return service.isAuthenticated();
+          })
+        )
+        .subscribe(callback);
+
+      trigger$.next(of(mockToken));
+      expect(callback).toHaveBeenNthCalledWith(1, true);
+      trigger$.next(of(null));
+      expect(callback).toHaveBeenNthCalledWith(2, false);
     });
   });
 });
