@@ -3,31 +3,31 @@ import { ProductQualifier } from '../models/product-qualifier';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
 
+const images = [
+  {
+    externalUrlSmall: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+    externalUrlLarge:
+      'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+  },
+  {
+    externalUrlSmall:
+      'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+    externalUrlLarge:
+      'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+  },
+  {
+    externalUrlSmall:
+      'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+    externalUrlLarge: 'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+  },
+];
+
 export class MockProductService implements Partial<ProductService> {
   static mockProducts: Product[] = [
     {
       sku: '1',
       name: 'Sample product',
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-      ],
+      images,
       description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum..`,
@@ -49,14 +49,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '2',
       name: 'Second sample product',
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-      ],
+      images: [images[1]],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
@@ -78,98 +71,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '3',
       name: 'Sample product no. 3',
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-      ],
+      images: [...images, ...images, ...images, ...images, ...images],
       averageRating: undefined,
       reviewCount: 0,
     },
@@ -191,26 +93,7 @@ export class MockProductService implements Partial<ProductService> {
       },
       averageRating: 1,
       reviewCount: undefined,
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-      ],
+      images,
     },
     {
       sku: '5',
@@ -228,30 +111,11 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-      ],
+      images,
     },
     {
       sku: '6',
-      name: 'Sample product no. 6',
+      name: 'Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6',
       description: 'Lorem ipsum dolor sit amet.',
       price: {
         defaultPrice: {
@@ -265,26 +129,22 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images: [
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+      images,
+    },
+    {
+      sku: '7',
+      name: 'Sample product no. 7',
+      description:
+        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
         },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
-        },
-        {
-          externalUrlSmall:
-            'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-          externalUrlLarge:
-            'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
-        },
-      ],
+      },
+      images: [],
+      averageRating: 1,
     },
   ];
 

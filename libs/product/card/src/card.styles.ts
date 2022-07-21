@@ -28,5 +28,6 @@ export const ProductCardStyles = css`
 
   .grow1 {
     flex-grow: 1;
+    max-width: calc(100% - 1rem);
   }
 `;

@@ -41,9 +41,9 @@ const Template: Story<Props> = (options): TemplateResult => {
   return html`<product-images .sku=${options.sku} .options=${options} />`;
 };
 
-export const ProductImagesDemo = Template.bind({});
+export const ImagesDemo = Template.bind({});
 
-ProductImagesDemo.args = {
+ImagesDemo.args = {
   sku: MockProductService.mockProducts[0].sku,
   previewLayout: ProductImagesPreviewLayout.CAROUSEL,
   navigationPosition: ProductImagesNavigationPosition.BELOW,
@@ -52,7 +52,7 @@ ProductImagesDemo.args = {
   navigationAlignment: ProductImagesNavigationAlignment.CENTER,
 };
 
-ProductImagesDemo.argTypes = {
+ImagesDemo.argTypes = {
   sku: {
     control: { type: 'select' },
     options: [

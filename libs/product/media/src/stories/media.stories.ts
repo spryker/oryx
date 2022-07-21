@@ -25,14 +25,14 @@ const Template: Story<Props> = (content): TemplateResult => {
   />`;
 };
 
-export const ProductMediaDemo = Template.bind({});
+export const MediaDemo = Template.bind({});
 
-ProductMediaDemo.args = {
+MediaDemo.args = {
   sku: MockProductService.mockProducts[0].sku,
   size: '100%',
 };
 
-ProductMediaDemo.argTypes = {
+MediaDemo.argTypes = {
   sku: {
     control: { type: 'select' },
     options: [

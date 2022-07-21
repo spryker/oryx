@@ -55,9 +55,9 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
           @click=${this.clickHandler}
         >
           <div class="image">
-            <product-image
+            <product-images
               .options="${{ hideNavigation: true }}"
-            ></product-image>
+            ></product-images>
           </div>
           <div class="info">
             <div class="info-row">
@@ -83,7 +83,6 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
               </div>
               <div class="info-col">
                 <add-to-cart
-                  focusable
                   .options="${{
                     hideQuantityInput: true,
                   }}"

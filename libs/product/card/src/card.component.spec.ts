@@ -62,8 +62,8 @@ describe('ProductCardComponent', () => {
       expect(children[0]).toBeInstanceOf(HTMLAnchorElement);
     });
 
-    it('Image component', () => {
-      const component = element.shadowRoot?.querySelector('product-image');
+    it('Images component', () => {
+      const component = element.shadowRoot?.querySelector('product-images');
 
       expect(component).not.toBeNull();
     });
