@@ -1,4 +1,4 @@
-import { fixture, html } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import {
   a11yConfig,
@@ -96,6 +96,9 @@ describe('Page navigation', () => {
 
   describe('when navigation is active', () => {
     let el: HTMLElement;
+    const targetId = 'some-id-3';
+    const heading = 'Heading 3';
+    const content = 'Subtitle 3';
 
     beforeEach(async () => {
       el = await fixture(getTemplate(false));
@@ -114,6 +117,46 @@ describe('Page navigation', () => {
       navigationElements.forEach((navigationElement, index) => {
         navigationElement.click();
         expect(sections[index].scrollIntoView).toHaveBeenCalled();
+      });
+    });
+
+    describe('and navigation items have been changed', () => {
+      beforeEach(async () => {
+        element = el.querySelector(
+          'oryx-page-navigation'
+        ) as PageNavigationComponent;
+        element.insertAdjacentHTML(
+          'beforeend',
+          `<oryx-page-navigation-item .targetId=${targetId}>
+            <span>${heading}</span>
+            <span slot="content">${content}</span>
+          </oryx-page-navigation-item>`
+        );
+        const sectionsContainer = el.querySelector(
+          '#sections-container'
+        ) as HTMLElement;
+        sectionsContainer.insertAdjacentHTML(
+          'beforeend',
+          `<section id=${targetId}></section>`
+        );
+        await elementUpdated(el);
+      });
+
+      it('should render new navigation item at the end of the list', () => {
+        const slottedItems = queryAssignedElements(
+          element
+        ) as PageNavigationItemComponent[];
+        const index = navigationItems.length;
+
+        const defaultSlotContent = queryFirstAssigned(
+          slottedItems[index]
+        ) as HTMLSpanElement;
+        expect(defaultSlotContent.textContent).toContain(heading);
+
+        const subtitleSlotContent = queryFirstAssigned(slottedItems[index], {
+          slot: 'content',
+        }) as HTMLSpanElement;
+        expect(subtitleSlotContent.textContent).toContain(content);
       });
     });
   });

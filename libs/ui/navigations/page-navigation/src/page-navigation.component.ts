@@ -17,7 +17,7 @@ export class PageNavigationComponent
   protected override render(): TemplateResult {
     return html`
       <nav aria-label=${this.ariaLabel}>
-        <slot></slot>
+        <slot @slotchange=${(): void => this.requestUpdate()}></slot>
       </nav>
     `;
   }
