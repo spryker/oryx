@@ -50,6 +50,8 @@ export const styles = css`
     top: 6px;
     padding: 1px 6px;
     font-weight: 500;
+    line-height: 16px;
+    text-align: center;
   }
 
   span {
@@ -71,7 +73,7 @@ export const styles = css`
     }
 
     oryx-icon {
-      --oryx-icon-size: 20px;
+      --oryx-icon-size: 17px;
     }
 
     span {
