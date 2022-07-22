@@ -2,14 +2,34 @@
 
 :root {
   font-family: var(--oryx-font);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--oryx-font-size-base);
+  font-weight: var(--oryx-font-weight-medium);
   letter-spacing: 0.005em;
   color: var(--oryx-color-ink);
   background-color: var(--oryx-color-canvas);
 
   /* base font */
   --oryx-font: 'Montserrat', sans-serif;
+
+  /* font styles */
+  --oryx-font-size-base: 14px;
+  --oryx-line-height-base: 24px;
+  --oryx-font-size-caption: 12px;
+  --oryx-line-height-caption: 26px;
+  --oryx-font-size-h1: 30px;
+  --oryx-line-height-h1: 40px;
+  --oryx-font-size-h2: 26px;
+  --oryx-line-height-h2: 38px;
+  --oryx-font-size-h3: 20px;
+  --oryx-line-height-h3: 28px;
+  --oryx-font-size-h4: 18px;
+  --oryx-line-height-h4: 26px;
+  --oryx-font-size-h5: 16px;
+  --oryx-line-height-h5: 22px;
+  --oryx-font-size-h6: 16px;
+  --oryx-line-height-h6: 22px;
+  --oryx-font-weight-medium: 500;
+  --oryx-font-weight-semibold: 600;
 
   /* base color */
   --oryx-color-canvas: #fff;
