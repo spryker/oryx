@@ -42,10 +42,7 @@
       }
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest",
-      "options": {
-        "passWithNoTests": true
-      }
+      "executor": "./tools/executors/oryx-vite:vitest"
     }
   }
 }

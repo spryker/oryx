@@ -20,7 +20,7 @@ export const typeaheadStyles = css`
       calc(var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px)),
       var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
-    width: 100%;
+    width: var(--oryx-popover-width, 100%);
   }
 
   :host(:not([up]):not([popoverDirection])) oryx-popover,

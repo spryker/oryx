@@ -18,12 +18,12 @@
   /* neutral color */
   --oryx-color-neutral: #d4d5d7;
   --oryx-color-neutral-light: #efeeee;
-  --oryx-color-neutral-lighter: #f8f8f8;
+  --oryx-color-neutral-lighter: #f5f5f5;
   --oryx-color-neutral-dark: #9ea1a7;
-  --oryx-color-neutral-darker: #71747c;
+  --oryx-color-neutral-darker: #333;
 
   /* brand color */
-  --oryx-color-brand: #17b497;
+  --oryx-color-brand: #0064b4;
   --oryx-color-brand-light: #a0e1d5;
   --oryx-color-brand-lighter: #f1f8f7;
   --oryx-color-brand-dark: #138671;

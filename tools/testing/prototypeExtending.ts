@@ -36,3 +36,13 @@ Object.defineProperty(Element.prototype, 'innerText', {
     return this?.textContent;
   },
 });
+
+Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {
+  configurable: true,
+  set: function (value) {
+    this._scrollHeight = value;
+  },
+  get: function () {
+    return this._scrollHeight;
+  },
+});

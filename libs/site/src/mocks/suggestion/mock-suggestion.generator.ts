@@ -5,7 +5,7 @@ import {
   SuggestionResource,
 } from '../../models';
 
-const dummyUrl = (): string => `${window.location.href}#`;
+const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>
   name
     .split(' ')
