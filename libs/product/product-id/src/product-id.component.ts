@@ -23,8 +23,7 @@ export class ProductIdComponent extends ProductComponentMixin<Props>() {
       ${asyncValue(
         this.data$,
         ([options, product]) =>
-          html`<span class="prefix">${options.prefix ?? 'SKU'}</span>:
-            <span class="sku-value">${product?.sku}</span>`
+          html`${options.prefix ?? 'SKU'}: ${product?.sku}`
       )}
     `;
   }

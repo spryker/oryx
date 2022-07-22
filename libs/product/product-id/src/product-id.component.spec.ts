@@ -44,15 +44,11 @@ describe('ProductIdComponent', () => {
   });
 
   it('should render sku prefix', () => {
-    expect(element.shadowRoot?.querySelector('.prefix')?.textContent).toContain(
-      'Test prefix'
-    );
+    expect(element.shadowRoot?.textContent).toContain('Test prefix');
   });
 
   it('should render sku', () => {
-    expect(
-      element.shadowRoot?.querySelector('.sku-value')?.textContent
-    ).toContain(mockSku);
+    expect(element.shadowRoot?.textContent).toContain(mockSku);
   });
 
   describe('when prefix is empty', () => {
@@ -63,9 +59,7 @@ describe('ProductIdComponent', () => {
     });
 
     it('should render default sku prefix', () => {
-      expect(
-        element.shadowRoot?.querySelector('.prefix')?.textContent
-      ).toContain('SKU');
+      expect(element.shadowRoot?.textContent).toContain('SKU');
     });
   });
 });
