@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import {
   ContentComponentProperties,
   ContentController,
@@ -13,6 +14,7 @@ import { combineLatest, of, switchMap } from 'rxjs';
 import { LinkOptions, LinkType } from './link.model';
 import { styles } from './link.styles';
 
+@hydratable()
 export class ContentLinkComponent
   extends LitElement
   implements ContentComponentProperties<LinkOptions>
@@ -21,7 +23,7 @@ export class ContentLinkComponent
 
   @property() uid?: string;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
-  @property({ type: Object }) options?: LinkOptions;
+  @property({ type: Object, reflect: true }) options?: LinkOptions;
 
   protected contentController = new ContentController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
@@ -64,7 +66,7 @@ export class ContentLinkComponent
             aria-label=${ifDefined(options.label)}
             target=${ifDefined(options.target)}
             rel=${ifDefined(this.getRel(options))}
-            >${options.text}</a
+            ><slot>${options.text}</slot></a
           >`
         )}
       </oryx-link>`;

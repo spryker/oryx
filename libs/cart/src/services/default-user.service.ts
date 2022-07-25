@@ -24,17 +24,15 @@ export class DefaultUserService implements UserService {
   }
 
   private getUser(): UserData {
-    const sessionData = window.sessionStorage.getItem(this.sessionKey);
-
-    if (sessionData !== null) {
+    const sessionData = window?.sessionStorage?.getItem(this.sessionKey);
+    if (sessionData) {
       return JSON.parse(sessionData);
     }
 
     const data = {
       anonymousUserId: generateID(8),
     };
-
-    window.sessionStorage.setItem(this.sessionKey, JSON.stringify(data));
+    window?.sessionStorage?.setItem(this.sessionKey, JSON.stringify(data));
 
     return data;
   }

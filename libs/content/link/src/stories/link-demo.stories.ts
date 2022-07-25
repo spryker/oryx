@@ -19,7 +19,7 @@ export const LinkDemo = Template.bind({});
 
 LinkDemo.args = {
   type: LinkType.RawUrl,
-  id: '/?path=/story/ui-actions-link--link-demo',
+  id: '?path=/story/content-link--link-demo',
   text: 'Link',
   label: 'link',
   icon: undefined,

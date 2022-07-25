@@ -1,9 +1,11 @@
 import '@spryker-oryx/cart/mini-cart';
+import { LinkType } from '@spryker-oryx/content/link';
 import { ContextController, hydratable } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
@@ -38,21 +40,51 @@ export class StorefrontComponent extends LitElement {
   renderNav(): TemplateResult {
     return html`<nav>
       <div>
-        <a href="/" aria-label="Home page">Home</a>
+        <content-link
+          class="link"
+          .options="${{ type: LinkType.RawUrl, id: '/', label: 'Home Page' }}"
+          >Home</content-link
+        >
       </div>
       <div>
-        <a href="/contact" aria-label="Contact page">Contact</a>
+        <content-link
+          class="link"
+          .options="${{
+            type: LinkType.RawUrl,
+            id: '/contact',
+            label: 'Contact Page',
+          }}"
+          >Contact</content-link
+        >
       </div>
       <div class="products">
-        <a href="/product/139_24699831" aria-label="Product page"
+        <content-link
+          class="link"
+          .options="${{
+            type: SemanticLinkType.Product,
+            id: '139_24699831',
+            label: 'Product page',
+          }}"
           ><product-title sku="139_24699831"></product-title
-        ></a>
-        <a href="/product/060_24245592" aria-label="Product page"
+        ></content-link>
+        <content-link
+          class="link"
+          .options="${{
+            type: SemanticLinkType.Product,
+            id: '060_24245592',
+            label: 'Product page',
+          }}"
           ><product-title sku="060_24245592"></product-title
-        ></a>
-        <a href="/product/010_30692994" aria-label="Product page"
+        ></content-link>
+        <content-link
+          class="link"
+          .options="${{
+            type: SemanticLinkType.Product,
+            id: '010_30692994',
+            label: 'Product page',
+          }}"
           ><product-title sku="010_30692994"></product-title
-        ></a>
+        ></content-link>
         <mini-cart></mini-cart>
       </div>
     </nav>`;

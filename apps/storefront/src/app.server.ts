@@ -7,4 +7,5 @@ import '@spryker-oryx/product/title';
 import '@spryker-oryx/ui/rating';
 import '@spryker-oryx/experience/components';
 import '@spryker-oryx/ui/text';
+import '@spryker-oryx/ui/link';
 import './storefront.component';
