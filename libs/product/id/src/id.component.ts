@@ -8,7 +8,7 @@ import {
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { combineLatest } from 'rxjs';
-import { Props } from './product-id.model';
+import { Props } from './id.model';
 
 export const TAG_NAME = 'product-id';
 

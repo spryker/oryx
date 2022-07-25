@@ -6,7 +6,7 @@ import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
-import { ProductIdComponent } from './product-id.component';
+import { ProductIdComponent } from './id.component';
 
 const mockSku = '1';
 
