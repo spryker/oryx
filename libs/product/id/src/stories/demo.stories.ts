@@ -6,7 +6,7 @@ import { Props } from '../id.model';
 import '../index';
 
 export default {
-  title: `${storybookPrefix}/Product Id`,
+  title: `${storybookPrefix}/Id`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
@@ -17,9 +17,9 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   ></product-id>`;
 };
 
-export const ProductIdDemo = Template.bind({});
+export const IdDemo = Template.bind({});
 
-ProductIdDemo.args = {
+IdDemo.args = {
   sku: '1',
   prefix: 'SKU',
 };
