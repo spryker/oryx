@@ -36,7 +36,7 @@ export const styles = css`
 
   button {
     cursor: pointer;
-    width: 38px;
+    width: 42px;
     height: 42px;
     background: #f5f5f5;
     color: #121212;
