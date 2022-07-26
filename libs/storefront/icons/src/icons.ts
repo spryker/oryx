@@ -1,3 +1,4 @@
+export { rocket } from '@spryker-oryx/ui/icons';
 import { Icon } from '@spryker-oryx/ui/icon';
 import { svg } from 'lit';
 import { StorefrontIconTypes } from './icon.types';

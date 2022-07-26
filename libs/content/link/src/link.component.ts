@@ -1,4 +1,3 @@
-import { hydratable } from '@spryker-oryx/core';
 import {
   ContentComponentProperties,
   ContentController,
@@ -6,6 +5,9 @@ import {
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { SemanticLinkService } from '@spryker-oryx/site';
+// TODO: Remove this once the issue with registering nested component will be resolved
+// https://spryker.atlassian.net/browse/HRZ-661
+import '@spryker-oryx/ui/link';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -14,7 +16,6 @@ import { combineLatest, of, switchMap } from 'rxjs';
 import { LinkOptions, LinkType } from './link.model';
 import { styles } from './link.styles';
 
-@hydratable()
 export class ContentLinkComponent
   extends LitElement
   implements ContentComponentProperties<LinkOptions>
@@ -58,7 +59,7 @@ export class ContentLinkComponent
 
   protected override render(): TemplateResult {
     return html`${asyncValue(this.data$, ([options, link]) => {
-      return html`<oryx-link icon=${ifDefined(options.icon)}>
+      return html`<oryx-link .icon=${ifDefined(options.icon?.trim() || null)}>
         ${when(
           link,
           () => html`<a
