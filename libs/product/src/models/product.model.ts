@@ -1,5 +1,7 @@
 export interface Product {
   sku?: string;
+  attributeNames?: Record<string, string>;
+  attributes?: Record<string, string>;
   averageRating?: number;
   reviewCount?: number;
   name?: string;

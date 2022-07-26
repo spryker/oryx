@@ -16,7 +16,15 @@ export const ProductNormalizers = 'FES.ProductNormalizers';
 export function productAttributeNormalizer(
   data: DeserializedProduct
 ): Partial<Product> {
-  const { sku, name, description, averageRating, reviewCount } = data;
+  const {
+    sku,
+    name,
+    description,
+    averageRating,
+    reviewCount,
+    attributes,
+    attributeNames,
+  } = data;
 
   return {
     sku,
@@ -24,6 +32,8 @@ export function productAttributeNormalizer(
     description,
     averageRating: averageRating ? Number(averageRating) : 0,
     reviewCount,
+    attributes,
+    attributeNames,
   };
 }
 

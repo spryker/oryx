@@ -45,6 +45,15 @@ export class MockProductService implements Partial<ProductService> {
       },
       averageRating: 2,
       reviewCount: 5,
+
+      attributes: {
+        brand: 'Brand1',
+        color: 'color1',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
     {
       sku: '2',
@@ -67,6 +76,15 @@ export class MockProductService implements Partial<ProductService> {
       },
       averageRating: 2.5,
       reviewCount: 175,
+
+      attributes: {
+        brand: 'Brand2',
+        color: 'color2',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
     {
       sku: '3',
@@ -74,6 +92,15 @@ export class MockProductService implements Partial<ProductService> {
       images: [...images, ...images, ...images, ...images, ...images],
       averageRating: undefined,
       reviewCount: 0,
+
+      attributes: {
+        brand: 'Brand3',
+        color: 'color3',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
     {
       sku: '4',
@@ -94,6 +121,15 @@ export class MockProductService implements Partial<ProductService> {
       averageRating: 1,
       reviewCount: undefined,
       images,
+
+      attributes: {
+        brand: 'Brand4',
+        color: 'color4',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
     {
       sku: '5',
@@ -112,6 +148,14 @@ export class MockProductService implements Partial<ProductService> {
         },
       },
       images,
+      attributes: {
+        brand: 'Brand5',
+        color: 'color5',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
     {
       sku: '6',
@@ -145,6 +189,14 @@ export class MockProductService implements Partial<ProductService> {
       },
       images: [],
       averageRating: 1,
+      attributes: {
+        brand: 'Brand6',
+        color: 'color6',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        color: 'Color',
+      },
     },
   ];
 

@@ -2,8 +2,8 @@ import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
 
 export module ApiProductModel {
   export interface Attributes {
-    attributeNames?: Record<string, unknown>;
-    attributes?: Record<string, unknown>;
+    attributeNames?: Record<string, string>;
+    attributes?: Record<string, string>;
     averageRating?: string;
     description?: string;
     metaDescription?: string;

@@ -70,6 +70,14 @@ describe('Product Normalizers', () => {
           ],
         },
       ],
+      attributes: {
+        color: 'red',
+        brand: 'Brand1',
+      },
+      attributeNames: {
+        color: 'Color',
+        brand: 'Brand',
+      },
     };
   });
 
@@ -81,6 +89,8 @@ describe('Product Normalizers', () => {
         description: mockDeserializedProduct.description,
         averageRating: Number(mockDeserializedProduct.averageRating),
         reviewCount: mockDeserializedProduct.reviewCount,
+        attributes: mockDeserializedProduct.attributes,
+        attributeNames: mockDeserializedProduct.attributeNames,
       };
       const normalized = productAttributeNormalizer(mockDeserializedProduct);
       expect(normalized).toEqual(mockResult);

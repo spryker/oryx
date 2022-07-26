@@ -76,6 +76,12 @@ export const componentsMapping: ComponentsMapping = {
     component: () => import('@spryker-oryx/product/card'),
     template: (uid: string) => html`<product-card uid="${uid}"></product-card>`,
   },
+  'product-attributes': {
+    tag: 'product-attributes',
+    component: () => import('@spryker-oryx/product/attributes'),
+    template: (uid: string) =>
+      html`<product-attributes uid="${uid}"></product-attributes>`,
+  },
 
   'mini-cart': {
     tag: 'add-to-cart',

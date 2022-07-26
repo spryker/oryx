@@ -62,6 +62,15 @@ export class StorefrontComponent extends LitElement {
           class="link"
           .options="${{
             type: SemanticLinkType.Product,
+            id: '001_25904006',
+            label: 'Product page',
+          }}"
+          ><product-title sku="001_25904006"></product-title
+        ></content-link>
+        <content-link
+          class="link"
+          .options="${{
+            type: SemanticLinkType.Product,
             id: '139_24699831',
             label: 'Product page',
           }}"
