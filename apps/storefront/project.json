@@ -86,17 +86,6 @@
       "options": {
         "project": "storefront"
       }
-    },
-    "sprites": {
-      "executor": "./tools/executors/generate-icon-sprites:svg",
-      "options": {
-        "iconSets": [
-          {
-            "input": "src/icons/index.ts",
-            "output": "public/assets/icons.svg"
-          }
-        ]
-      }
     }
   }
 }
