@@ -1,13 +1,13 @@
-import { isClient, throttle } from '@spryker-oryx/typescript-utils';
+import { script } from '@spryker-oryx/core';
+import { throttle } from '@spryker-oryx/typescript-utils';
 import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
-let once = false;
+export const TAG_NAME = 'oryx-text';
 
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
@@ -24,10 +24,7 @@ export class TextComponent extends LitElement implements TextProperties {
     }
   }
 
-  protected script(): string {
-    once = true;
-    return `<script>
-        const checkTruncate = async (host) => {
+  protected script = `async (host) => {
           const truncateAfter = host.getAttribute('truncateAfter');
           const expanded = host.hasAttribute('expanded');
           const textElement = host.shadowRoot.querySelector('div.text');
@@ -58,10 +55,7 @@ export class TextComponent extends LitElement implements TextProperties {
                 (expanded && !!truncateAfter && lineCount > truncateAfter)
             );
           }
-        };
-        dryLogic('oryx-text', checkTruncate);
-      </script>`;
-  }
+        };`;
 
   protected override render(): TemplateResult {
     return html` <div class="box">
@@ -79,7 +73,7 @@ export class TextComponent extends LitElement implements TextProperties {
           </oryx-icon-button>
         </slot>`
       )}
-      ${isClient() || once ? '' : unsafeHTML(this.script())}`;
+      ${script(this.script, TAG_NAME)}`;
   }
 
   protected setup(): void {

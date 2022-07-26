@@ -11,6 +11,7 @@ import '@spryker-oryx/ui/icon-button';
 import '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/icon';
 import '@spryker-oryx/ui/text';
-import { initHydrateHooks } from './utils/hydrate-hooks';
+import { initHydrateHooks, initInlineScripts } from './utils/hydrate-hooks';
 
 initHydrateHooks();
+initInlineScripts();

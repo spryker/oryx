@@ -2,7 +2,6 @@ export * from './text.component';
 export * from './text.model';
 export * from './text.styles';
 
-import { TextComponent } from './text.component';
+import { TAG_NAME, TextComponent } from './text.component';
 
-customElements.get('oryx-text') ||
-  customElements.define('oryx-text', TextComponent);
+customElements.get(TAG_NAME) || customElements.define(TAG_NAME, TextComponent);
