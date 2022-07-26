@@ -48,7 +48,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var devkit_1 = require("@nrwl/devkit");
-var object_sort_1 = require("@nrwl/tao/src/utils/object-sort");
 var fs_1 = require("fs");
 var path_1 = require("path");
 var prettier_1 = require("prettier");
@@ -71,22 +70,22 @@ function componentsLibraryPathsExecutor(options, context) {
                     }
                     (0, utils_1.libDirsNormalizer)(options, function (dir) {
                         var dirName = dir.name, path = dir.path;
-                        var pathKey = dirName === 'src' ? '' : "/" + dirName;
-                        tsConfig.compilerOptions.paths["" + packageJson.name + pathKey] = [
-                            options.cwd + "/" + path + "/index.ts",
+                        var pathKey = dirName === 'src' ? '' : "/".concat(dirName);
+                        tsConfig.compilerOptions.paths["".concat(packageJson.name).concat(pathKey)] = [
+                            "".concat(options.cwd, "/").concat(path, "/index.ts"),
                         ];
                     });
                     if (packageJson.exports) {
                         for (key in packageJson.exports) {
-                            tsConfig.compilerOptions.paths[packageJson.name + "/" + key] = [
+                            tsConfig.compilerOptions.paths["".concat(packageJson.name, "/").concat(key)] = [
                                 (0, path_1.join)(options.cwd, packageJson.exports[key]["default"].replace(/.js$/, '.ts')).replace(/\\/g, '/'),
                             ];
                         }
                     }
-                    tsConfig.compilerOptions.paths = (0, object_sort_1.sortObjectByKeys)(tsConfig.compilerOptions.paths);
+                    tsConfig.compilerOptions.paths = (0, utils_1.sortObjectByKeys)(tsConfig.compilerOptions.paths);
                     generatedConfig = JSON.stringify(tsConfig);
                     if (!options.update && generatedConfig !== realConfig) {
-                        console.error("Please, update " + options.name + " in the " + packageJson.name + " library.\nPlease, run command 'nx paths " + context.projectName + " --update'\n      ");
+                        console.error("Please, update ".concat(options.name, " in the ").concat(packageJson.name, " library.\nPlease, run command 'nx paths ").concat(context.projectName, " --update'\n      "));
                         return [2 /*return*/, { success: false }];
                     }
                     if (!options.update) return [3 /*break*/, 2];

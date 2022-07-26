@@ -1,5 +1,5 @@
 {
-  "root": "libs/experience",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/experience/src",
   "projectType": "library",
   "targets": {

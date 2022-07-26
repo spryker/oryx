@@ -1,7 +1,7 @@
 export interface Dialog {
   open: boolean;
   show(): void;
-  close(): void;
+  close(returnValue?: string): void;
   showModal(): void;
 }
 

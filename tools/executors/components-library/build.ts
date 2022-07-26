@@ -5,14 +5,22 @@ import {
   writeJsonFile,
 } from '@nrwl/devkit';
 import runCommands from '@nrwl/workspace/src/executors/run-commands/run-commands.impl';
-import { TypeScriptExecutorOptions } from '@nrwl/workspace/src/executors/tsc/schema';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
 import { DirData, libDirsNormalizer, LibOptions } from './utils';
 
-export interface ComponentsLibraryBuildExecutorOptions
-  extends TypeScriptExecutorOptions,
-    LibOptions {}
+export interface ComponentsLibraryBuildExecutorOptions extends LibOptions {
+  tsConfig: string;
+  main: string;
+  outputPath: string;
+  exclude: string[];
+  assets: (
+    | {
+        input: string;
+      }
+    | string
+  )[];
+}
 
 const normalizeOptions = (
   options: ComponentsLibraryBuildExecutorOptions
@@ -27,12 +35,12 @@ const normalizeOptions = (
       const asset = options.assets[i];
 
       if (typeof asset === 'string') {
-        options.assets[i] = join(options.cwd, options.assets[i]);
+        options.assets[i] = join(options.cwd, asset);
 
         continue;
       }
 
-      options.assets[i].input = join(options.cwd, options.assets[i].input);
+      asset.input = join(options.cwd, asset.input);
     }
   }
 
@@ -58,6 +66,7 @@ export default async function componentsLibraryBuildExecutor(
         baseOptions.tsConfig ? '-p ' + baseOptions.tsConfig : ''
       }`,
       cwd: projectRoot,
+      __unparsed__: [],
     },
     context
   );

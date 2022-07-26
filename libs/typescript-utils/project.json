@@ -1,5 +1,5 @@
 {
-  "root": "libs/typescript-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/typescript-utils/src",
   "projectType": "library",
   "targets": {

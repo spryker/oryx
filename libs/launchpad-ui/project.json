@@ -1,5 +1,5 @@
 {
-  "root": "libs/launchpad-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/launchpad-ui/src",
   "projectType": "library",
   "targets": {

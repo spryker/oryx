@@ -16,6 +16,8 @@ export default async function vitestExecutor(
           options.tsconfigPath ? '-p ' + options.tsconfigPath : ''
         }`,
         cwd: projectRoot,
+        // check this
+        __unparsed__: [''],
       },
       context
     );

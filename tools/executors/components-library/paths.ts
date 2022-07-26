@@ -1,9 +1,13 @@
 import { ExecutorContext, readJsonFile } from '@nrwl/devkit';
-import { sortObjectByKeys } from '@nrwl/tao/src/utils/object-sort';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { format, resolveConfig } from 'prettier';
-import { DirData, libDirsNormalizer, LibOptions } from './utils';
+import {
+  DirData,
+  libDirsNormalizer,
+  LibOptions,
+  sortObjectByKeys,
+} from './utils';
 
 export interface ComponentsLibraryPathsExecutorOptions extends LibOptions {
   name: string;

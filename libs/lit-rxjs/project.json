@@ -1,5 +1,5 @@
 {
-  "root": "libs/lit-rxjs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/lit-rxjs/src",
   "projectType": "library",
   "targets": {

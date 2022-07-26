@@ -14,7 +14,7 @@ const createKey = (registry: NotificationRegistry[]): string => {
 
 export class RegistryController implements ReactiveController {
   private _registry: NotificationRegistry[] = [];
-  private _delayedCallbacks: { [key: string]: number } = {};
+  private _delayedCallbacks: { [key: string]: NodeJS.Timeout } = {};
 
   set registry(newRegistry: NotificationRegistry[]) {
     //need to add keys and delayed callback to the new Notification items

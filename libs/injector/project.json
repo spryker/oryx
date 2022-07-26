@@ -1,5 +1,5 @@
 {
-  "root": "libs/injector",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/injector/src",
   "projectType": "library",
   "targets": {

@@ -9,6 +9,8 @@ async function vitestExecutor(options, context) {
         await (0, run_commands_impl_1.default)({
             command: `npx tsc ${options.tsconfigPath ? '-p ' + options.tsconfigPath : ''}`,
             cwd: projectRoot,
+            // check this
+            __unparsed__: [''],
         }, context);
     }
     if (options.watch) {

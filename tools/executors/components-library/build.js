@@ -48,10 +48,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var devkit_1 = require("@nrwl/devkit");
+var run_commands_impl_1 = require("@nrwl/workspace/src/executors/run-commands/run-commands.impl");
 var fs_1 = require("fs");
 var path_1 = require("path");
 var utils_1 = require("./utils");
-var run_commands_impl_1 = require("@nrwl/workspace/src/executors/run-commands/run-commands.impl");
 var normalizeOptions = function (options) {
     options = __assign({}, options);
     options.outputPath = (0, path_1.join)(options.outputPath, options.cwd);
@@ -60,10 +60,10 @@ var normalizeOptions = function (options) {
         for (var i = 0; i < options.assets.length; i++) {
             var asset = options.assets[i];
             if (typeof asset === 'string') {
-                options.assets[i] = (0, path_1.join)(options.cwd, options.assets[i]);
+                options.assets[i] = (0, path_1.join)(options.cwd, asset);
                 continue;
             }
-            options.assets[i].input = (0, path_1.join)(options.cwd, options.assets[i].input);
+            asset.input = (0, path_1.join)(options.cwd, asset.input);
         }
     }
     return options;
@@ -82,8 +82,9 @@ function componentsLibraryBuildExecutor(baseOptions, context) {
                     tmpPath = (0, path_1.join)(context.root, 'tmp');
                     packageJson.exports = (_a = packageJson.exports) !== null && _a !== void 0 ? _a : {};
                     return [4 /*yield*/, (0, run_commands_impl_1["default"])({
-                            command: "npx tsc " + (baseOptions.tsConfig ? '-p ' + baseOptions.tsConfig : ''),
-                            cwd: projectRoot
+                            command: "npx tsc ".concat(baseOptions.tsConfig ? '-p ' + baseOptions.tsConfig : ''),
+                            cwd: projectRoot,
+                            __unparsed__: []
                         }, context)];
                 case 1:
                     _b.sent();
@@ -91,8 +92,8 @@ function componentsLibraryBuildExecutor(baseOptions, context) {
                         var dirName = dir.name, dirPath = dir.path;
                         var dirKey = dirName === 'src' ? '.' : dirName;
                         packageJson.exports[dirKey] = {
-                            "default": "./" + dirPath + "/index.js",
-                            types: "./" + dirPath + "/index.d.ts"
+                            "default": "./".concat(dirPath, "/index.js"),
+                            types: "./".concat(dirPath, "/index.d.ts")
                         };
                     });
                     (0, devkit_1.writeJsonFile)((0, path_1.join)(options.outputPath, 'package.json'), packageJson);
