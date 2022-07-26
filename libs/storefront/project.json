@@ -1,0 +1,35 @@
+{
+  "projectType": "library",
+  "root": "libs/storefront",
+  "sourceRoot": "libs/storefront/src",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/storefront/**/*.ts"]
+      }
+    },
+    "sprites": {
+      "executor": "./tools/executors/generate-icon-sprites:svg",
+      "options": {
+        "iconSets": [
+          {
+            "input": "icons/index.ts",
+            "output": "public/assets/icons.svg"
+          }
+        ]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "options": {
+        "exclude": ["public"]
+      }
+    }
+  }
+}

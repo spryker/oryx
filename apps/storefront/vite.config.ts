@@ -1,5 +1,6 @@
 import { defineConfig, splitVendorChunkPlugin, SSROptions } from 'vite';
 import checker from 'vite-plugin-checker';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 declare module 'vite' {
@@ -41,5 +42,13 @@ export default defineConfig({
       },
     }),
     tsconfigPaths({ root: '../../' }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: '../../libs/storefront/public/assets/icons.svg',
+          dest: './assets',
+        },
+      ],
+    }),
   ],
 });
