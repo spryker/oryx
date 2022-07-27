@@ -19,21 +19,15 @@ export const ssrAwaiter = (
   if (!ssrAwaiter) return observable;
 
   const resolveFn = ssrAwaiter.getAwaiter();
+  const tapFn = (): void => {
+    setTimeout(resolveFn, 0);
+  };
 
   return observable.pipe(
     tap({
-      next: async () => {
-        await 0;
-        resolveFn();
-      },
-      error: async () => {
-        await 0;
-        resolveFn();
-      },
-      complete: async () => {
-        await 0;
-        resolveFn();
-      },
+      next: tapFn,
+      error: tapFn,
+      complete: tapFn,
     })
   );
 };

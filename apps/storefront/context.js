@@ -20,6 +20,7 @@ export const serverContext = (options = {}) => {
   window.URLSearchParams = URLSearchParams;
   window.URL = URL;
   window.exports = {};
+  window.setTimeout = setTimeout;
   const script = new vm.Script(`${fs.readFileSync(
     resolve(base, server),
     'utf8'
