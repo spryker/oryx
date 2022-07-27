@@ -1,8 +1,29 @@
 import { css } from 'lit';
 
 export const baseSearchboxStyles = css`
-  :host(:not([not-found])) {
-    --oryx-popover-width: auto;
+  /* TODO: make alignments with required screen width for mobile */
+  @media (min-width: 769px) {
+    :host(:not([not-found])) {
+      --oryx-popover-width: auto;
+    }
+
+    oryx-icon-button[slot='suffix'] {
+      display: none;
+    }
+
+    [slot='option'],
+    [slot='option'] > * {
+      min-width: 530px;
+    }
+
+    [slot='option'] > * {
+      display: flex;
+    }
+
+    section:first-child {
+      max-width: 50%;
+      padding-bottom: 20px;
+    }
   }
 
   oryx-typeahead {
@@ -16,15 +37,12 @@ export const baseSearchboxStyles = css`
   [slot='option'] {
     position: relative;
     display: flex;
-    min-width: 530px;
     overflow: hidden;
   }
 
   [slot='option'] > * {
     position: relative;
-    display: flex;
     align-items: flex-start;
-    min-width: 530px;
     flex-grow: 1;
     overflow: auto;
   }
@@ -60,6 +78,10 @@ export const baseSearchboxStyles = css`
 
   section {
     padding: 20px;
+  }
+
+  section:first-child {
+    padding-bottom: 0;
   }
 
   section + section {
@@ -114,13 +136,6 @@ export const baseSearchboxStyles = css`
     display: block;
   }
 
-  /* TODO: make alignments with required screen width for mobile */
-  @media (min-width: 769px) {
-    oryx-icon-button[slot='suffix'] {
-      display: none;
-    }
-  }
-
   oryx-typeahead:not([open]) oryx-icon-button[slot='suffix'] {
     display: none;
   }
@@ -133,6 +148,7 @@ export const baseSearchboxStyles = css`
     text-decoration: none;
     min-height: 60px;
     box-sizing: border-box;
+    margin-bottom: 5px;
   }
 
   product-media {

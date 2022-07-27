@@ -1,19 +1,8 @@
-import { LitElement, ReactiveController, TemplateResult } from 'lit';
+import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { QueryControlTranslations, SiteSearchboxProperties } from '..';
+import { SiteSearchboxOptions } from '..';
 
-interface HostProperties
-  extends SiteSearchboxProperties,
-    QueryControlTranslations,
-    LitElement {}
-
-export class QueryControlsController implements ReactiveController {
-  hostConnected?(): void;
-
-  constructor(protected host: HostProperties) {
-    this.host.addController(this);
-  }
-
+export class QueryControlsController {
   protected dispatchEvent(e: Event, eventType: string): void {
     e.target?.dispatchEvent(
       new CustomEvent(eventType, { bubbles: true, composed: true })
@@ -29,24 +18,20 @@ export class QueryControlsController implements ReactiveController {
     e.preventDefault();
   }
 
-  renderControls(): TemplateResult {
-    if (!this.host.query) {
-      return html``;
-    }
-
+  renderControls(options: SiteSearchboxOptions): TemplateResult {
     return html`
       <oryx-button slot="suffix" type="text">
         <button
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.clear')}
           @mousedown=${this.muteMousedown}
         >
-          ${this.host.clearButtonTitle}
+          ${options.clearButtonTitle || 'Clear'}
         </button>
       </oryx-button>
 
       <oryx-icon-button slot="suffix" size="small">
         <button
-          aria-label=${this.host.closeButtonArialLabel}
+          aria-label=${options.closeButtonArialLabel || 'Close results'}
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.close')}
           @mousedown=${this.muteMousedown}
         >

@@ -1,23 +1,27 @@
 import { hydratable } from '@spryker-oryx/core';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { Suggestion, SuggestionService } from '@spryker-oryx/site';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
-import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { html } from 'lit/static-html.js';
 import {
   BehaviorSubject,
+  combineLatest,
   debounce,
   distinctUntilChanged,
   fromEvent,
   map,
   of,
+  shareReplay,
   switchMap,
   tap,
   timer,
+  withLatestFrom,
 } from 'rxjs';
 import {
   QueryControlsController,
@@ -27,7 +31,6 @@ import {
 import {
   SiteSearchboxOptions,
   SiteSearchboxProperties,
-  SiteSearchboxTranslations,
 } from './searchbox.model';
 import { baseSearchboxStyles, searchboxStyles } from './styles';
 
@@ -35,21 +38,30 @@ export const TAG_NAME = 'site-searchbox';
 
 @hydratable()
 export class SearchboxComponent
-  extends LitElement
-  implements SiteSearchboxProperties, SiteSearchboxTranslations
+  extends ComponentMixin<SiteSearchboxOptions>()
+  implements SiteSearchboxProperties
 {
   static styles = [baseSearchboxStyles, searchboxStyles];
 
-  //TODO: rename to defaultOptions and merge them with eb options
-  private options: SiteSearchboxOptions = {
+  private defaultOptions: SiteSearchboxOptions = {
     minChars: 2,
+    completionsCount: 5,
+    productsCount: 6,
+    categoriesCount: 5,
+    cmsCount: 5,
   };
 
+  protected contentController = new ContentController(this);
   protected suggestionService = resolve(SuggestionService);
+  protected options$ = this.contentController.getOptions().pipe(
+    map((options) => ({ ...this.defaultOptions, ...options })),
+    shareReplay({ refCount: true, bufferSize: 1 }),
+    tap((options) => this.applyInputTexts(options))
+  );
 
   protected scrollingAreaController = new ScrollingAreaController(this);
-  protected queryControlsController = new QueryControlsController(this);
-  protected renderSuggestionController = new RenderSuggestionController(this);
+  protected queryControlsController = new QueryControlsController();
+  protected renderSuggestionController = new RenderSuggestionController();
 
   protected triggerInputValue$ = new BehaviorSubject('');
 
@@ -57,18 +69,45 @@ export class SearchboxComponent
     debounce(() => timer(300)),
     map((q) => q.trim()),
     distinctUntilChanged(),
-    switchMap((query) => {
-      if (!this.options.minChars || query.length >= this.options.minChars) {
-        return this.suggestionService.get({ query });
+    withLatestFrom(this.options$),
+    switchMap(([query, options]) => {
+      const {
+        minChars,
+        completionsCount,
+        productsCount,
+        categoriesCount,
+        cmsCount,
+      } = options;
+
+      if (!minChars || query.length >= minChars) {
+        return this.suggestionService.get({ query }).pipe(
+          map((raw) => {
+            const suggestion = raw
+              ? {
+                  completion: raw.completion.slice(0, completionsCount),
+                  products: raw.products?.slice(0, productsCount) ?? [],
+                  categories: raw.categories.slice(0, categoriesCount),
+                  cmsPages: raw.cmsPages.slice(0, cmsCount),
+                }
+              : raw;
+
+            return { suggestion, options };
+          })
+        );
       }
 
-      return of(null);
+      return of({ suggestion: null, options });
     }),
-    tap((suggestion) => {
+    tap(({ suggestion }) => {
       this.notFound =
         this.renderSuggestionController.isNothingFound(suggestion);
     })
   );
+
+  protected controlButtons$ = combineLatest([
+    this.options$,
+    this.triggerInputValue$,
+  ]).pipe(map(([options, query]) => ({ options, showButtons: !!query })));
 
   @subscribe()
   protected scrollEvent = fromEvent(
@@ -87,25 +126,8 @@ export class SearchboxComponent
   @property({ type: Boolean, reflect: true, attribute: 'not-found' })
   protected notFound = false;
 
-  // Translations
-  // Temporary solution. Need to replace by props or options
-  placeholder = 'Search';
-
-  clearButtonTitle = 'Clear';
-  closeButtonArialLabel = 'Close results';
-
-  nothingFoundText = 'Nothing found…';
-
-  completionTitle = 'Search suggestions';
-  categoriesTitle = 'In categories';
-  cmsTitle = 'In CMS pages';
-  productsTitle = 'Products';
-  viewAllProductsButtonTitle = 'View all products';
-
-  protected firstUpdated(
-    properties: PropertyValueMap<any> | Map<PropertyKey, unknown>
-  ): void {
-    if (properties.has('query')) {
+  protected firstUpdated(): void {
+    if (this.query) {
       (this.inputRef.value as HTMLInputElement).value = this.query;
       this.triggerInputValue$.next(this.query);
     }
@@ -160,9 +182,24 @@ export class SearchboxComponent
     );
   }
 
-  protected renderSuggestion(suggestion: Suggestion): TemplateResult {
+  protected applyInputTexts(options: SiteSearchboxOptions): void {
+    const { placeholder } = options;
+
+    if (placeholder) {
+      this.inputRef?.value?.setAttribute('placeholder', placeholder);
+    }
+  }
+
+  protected renderSuggestion(
+    suggestion: Suggestion | null,
+    options: SiteSearchboxOptions
+  ): TemplateResult {
+    if (!suggestion) {
+      return html``;
+    }
+
     if (this.renderSuggestionController.isNothingFound(suggestion)) {
-      return this.renderSuggestionController.renderNothingFound();
+      return this.renderSuggestionController.renderNothingFound(options);
     }
 
     return html`
@@ -171,8 +208,14 @@ export class SearchboxComponent
           @scroll=${this.dispatchContainerScroll}
           ${ref(this.scrollContainerRef)}
         >
-          ${this.renderSuggestionController.renderLinksSection(suggestion)}
-          ${this.renderSuggestionController.renderProductsSection(suggestion)}
+          ${this.renderSuggestionController.renderLinksSection(
+            suggestion,
+            options
+          )}
+          ${this.renderSuggestionController.renderProductsSection(
+            suggestion,
+            options
+          )}
         </div>
       </div>
     `;
@@ -184,11 +227,17 @@ export class SearchboxComponent
         clearIconPosition=${ClearIconPosition.NONE}
         @oryx.typeahead=${this.onTypeahead}
       >
-        <input placeholder=${this.placeholder} ${ref(this.inputRef)} />
-        ${asyncValue(this.suggestion$, (suggestion) =>
-          this.renderSuggestion(suggestion)
+        <input ${ref(this.inputRef)} placeholder="Search" />
+        ${asyncValue(
+          this.suggestion$,
+          ({ suggestion, options }) =>
+            html`${this.renderSuggestion(suggestion, options)}`
         )}
-        ${this.queryControlsController.renderControls()}
+        ${asyncValue(this.controlButtons$, ({ options, showButtons }) =>
+          showButtons
+            ? this.queryControlsController.renderControls(options)
+            : html``
+        )}
       </oryx-typeahead>
     `;
   }

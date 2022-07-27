@@ -65,25 +65,30 @@ const productsOnly: Suggestion = {
 
 @customElement('fake-container')
 class FakeContainer extends LitElement {
-  controller = new RenderSuggestionController(this);
+  protected options = {
+    nothingFoundText: '',
+    completionTitle: '',
+    categoriesTitle: '',
+    cmsTitle: '',
+    productsTitle: '',
+    viewAllProductsButtonTitle: '',
+  };
+
+  controller = new RenderSuggestionController();
 
   @property({ type: Object }) suggestion: Suggestion = notFoundSuggestion;
-
-  nothingFoundText = '';
-  completionTitle = '';
-  categoriesTitle = '';
-  cmsTitle = '';
-  productsTitle = '';
-  viewAllProductsButtonTitle = '';
 
   render(): TemplateResult {
     return html`
       ${when(
         this.controller.isNothingFound(this.suggestion),
-        () => this.controller.renderNothingFound(),
+        () => this.controller.renderNothingFound(this.options),
         () => html`
-          ${this.controller.renderLinksSection(this.suggestion)}
-          ${this.controller.renderProductsSection(this.suggestion)}
+          ${this.controller.renderLinksSection(this.suggestion, this.options)}
+          ${this.controller.renderProductsSection(
+            this.suggestion,
+            this.options
+          )}
         `
       )}
     `;

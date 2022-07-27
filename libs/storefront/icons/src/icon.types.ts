@@ -4,4 +4,6 @@ export enum StorefrontIconTypes {
   Add = 'cart-add',
   Increase = 'add',
   Decrease = 'minus',
+  Search = 'search',
+  Close = 'close',
 }

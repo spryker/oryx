@@ -3,7 +3,7 @@ import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { SuggestionQualifier } from '../../models';
-import { DefaultServiceAdapter } from './default-suggestion.adapter';
+import { DefaultSuggestionAdapter } from './default-suggestion.adapter';
 import { SuggestionNormalizers } from './normalizers';
 import { SuggestionAdapter } from './suggestion.adapter';
 
@@ -23,7 +23,7 @@ const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
 };
 
-describe('DefaultSuggestionService', () => {
+describe('DefaultSuggestionAdapter', () => {
   let service: SuggestionAdapter;
   let http: HttpTestService;
 
@@ -36,7 +36,7 @@ describe('DefaultSuggestionService', () => {
         },
         {
           provide: SuggestionAdapter,
-          useClass: DefaultServiceAdapter,
+          useClass: DefaultSuggestionAdapter,
         },
         {
           provide: 'SCOS_BASE_URL',
@@ -59,7 +59,7 @@ describe('DefaultSuggestionService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultServiceAdapter);
+    expect(service).toBeInstanceOf(DefaultSuggestionAdapter);
   });
 
   describe('get method', () => {

@@ -6,19 +6,21 @@ import { QueryControlsController } from './query-controls.controller';
 
 @customElement('fake-container')
 class FakeContainer extends LitElement {
-  controller = new QueryControlsController(this);
+  controller = new QueryControlsController();
 
   @property({ type: String }) query = '';
 
-  clearButtonTitle = '';
-  closeButtonArialLabel = '';
+  protected options = {
+    clearButtonTitle: '',
+    closeButtonArialLabel: '',
+  };
 
   get input(): HTMLInputElement {
     return this.renderRoot.querySelector('input') as HTMLInputElement;
   }
 
   render(): TemplateResult {
-    return html` <div>${this.controller.renderControls()}</div> `;
+    return html` <div>${this.controller.renderControls(this.options)}</div> `;
   }
 }
 
@@ -41,28 +43,6 @@ describe('QueryControlsController', () => {
     expect(stopped).toHaveBeenCalledOnce();
     expect(prevented).toHaveBeenCalledOnce();
   };
-
-  describe('when query string is not provided', () => {
-    beforeAll(async () => {
-      element = await fixture(html` <fake-container></fake-container> `);
-    });
-
-    it('should not render the controls', () => {
-      expect(getControls().length).toBe(0);
-    });
-  });
-
-  describe('when query string is provided', () => {
-    beforeAll(async () => {
-      element = await fixture(html`
-        <fake-container query="123"></fake-container>
-      `);
-    });
-
-    it('should render the controls', () => {
-      expect(getControls().length).toBe(2);
-    });
-  });
 
   describe('when clear button clicked', () => {
     const callback = vi.fn();

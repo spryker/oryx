@@ -1,21 +1,15 @@
 import { Product } from '@spryker-oryx/product';
-import { LitElement, ReactiveController, TemplateResult } from 'lit';
+import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { Suggestion, SuggestionResource } from '../../../src';
-import { SuggestionTranslations } from '../searchbox.model';
+import { SiteSearchboxOptions } from '../searchbox.model';
 
 interface LinksSection {
-  title: string;
+  title?: string;
   options: SuggestionResource[];
 }
 
-export class RenderSuggestionController implements ReactiveController {
-  hostConnected?(): void;
-
-  constructor(protected host: SuggestionTranslations & LitElement) {
-    this.host.addController(this);
-  }
-
+export class RenderSuggestionController {
   protected hasLinks({
     completion,
     cmsPages,
@@ -62,27 +56,38 @@ export class RenderSuggestionController implements ReactiveController {
     `;
   }
 
-  renderNothingFound(): TemplateResult {
+  renderNothingFound({
+    nothingFoundText,
+  }: SiteSearchboxOptions): TemplateResult {
     return html`
       <div slot="empty">
         <oryx-icon type="search"></oryx-icon>
-        <span>${this.host.nothingFoundText}</span>
+        <span>${nothingFoundText || 'Nothing found…'}</span>
       </div>
     `;
   }
 
-  renderLinksSection(suggestion: Suggestion): TemplateResult {
+  renderLinksSection(
+    suggestion: Suggestion,
+    options: SiteSearchboxOptions
+  ): TemplateResult {
     if (!this.hasLinks(suggestion)) {
       return html``;
     }
 
     const links: LinksSection[] = [
       {
-        title: this.host.completionTitle,
+        title: options.completionTitle || 'Search suggestions',
         options: this.processCompletions(suggestion.completion),
       },
-      { title: this.host.categoriesTitle, options: suggestion.categories },
-      { title: this.host.cmsTitle, options: suggestion.cmsPages },
+      {
+        title: options.categoriesTitle || 'In categories',
+        options: suggestion.categories,
+      },
+      {
+        title: options.cmsTitle || 'In CMS pages',
+        options: suggestion.cmsPages,
+      },
     ];
 
     return html` <section>${links.map((l) => this.renderLink(l))}</section> `;
@@ -98,18 +103,23 @@ export class RenderSuggestionController implements ReactiveController {
     `;
   }
 
-  renderProductsSection(suggestion: Suggestion): TemplateResult {
+  renderProductsSection(
+    suggestion: Suggestion,
+    options: SiteSearchboxOptions
+  ): TemplateResult {
     if (!this.hasProducts(suggestion)) {
       return html``;
     }
 
     return html`
       <section>
-        <h5>${this.host.productsTitle}</h5>
+        <h5>${options.productsTitle || 'Products'}</h5>
         ${suggestion.products.map(this.renderProduct)}
         <!-- TODO link to search page -->
         <oryx-button outline>
-          <a href="#">${this.host.viewAllProductsButtonTitle}</a>
+          <a href="#"
+            >${options.viewAllProductsButtonTitle || 'View all products'}</a
+          >
         </oryx-button>
       </section>
     `;

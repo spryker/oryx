@@ -61,6 +61,12 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-average-rating uid="${uid}"></product-average-rating>`,
   },
+  'product-media': {
+    tag: 'product-media',
+    component: () => import('@spryker-oryx/product/media'),
+    template: (uid: string) =>
+      html`<product-media uid="${uid}"></product-media>`,
+  },
   'user-login': {
     tag: 'user-login',
     component: () => import('@spryker-oryx/user/login'),
@@ -87,10 +93,21 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) =>
       html`<product-attributes uid="${uid}"></product-attributes>`,
   },
-
   'mini-cart': {
     tag: 'add-to-cart',
     component: () => import('@spryker-oryx/cart/mini-cart'),
     template: (uid: string) => html`<mini-cart uid="${uid}"></mini-cart>`,
+  },
+
+  'site-searchbox': {
+    tag: 'site-searchbox',
+    component: async () => {
+      await import('@spryker-oryx/site/searchbox');
+      await import('@spryker-oryx/ui/image');
+      await import('@spryker-oryx/product/media');
+      await import('@spryker-oryx/product/price');
+    },
+    template: (uid: string) =>
+      html`<site-searchbox uid="${uid}"></site-searchbox>`,
   },
 };

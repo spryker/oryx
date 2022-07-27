@@ -27,28 +27,6 @@ export const searchboxStyles = css`
   }
 
   .product product-title {
-    margin: 0 0 4px;
+    margin-bottom: 4px;
   }
-
-  /* TODO: align with sf theme */
-
-  /* .product p {
-    margin: 0;
-    font-weight: var(--oryx-font-extra-bold);
-    font-size: 16px;
-    color: #eb553c;
-    display: flex;
-    align-items: center;
-  }
-
-  .product p > :last-child {
-    color: var(--oryx-color-neutral-darkest);
-  }
-
-  .product p > span + span {
-    font-size: 12px;
-    line-height: 18px;
-    font-weight: var(--oryx-font-medium);
-    margin-inline-start: 5px;
-  } */
 `;

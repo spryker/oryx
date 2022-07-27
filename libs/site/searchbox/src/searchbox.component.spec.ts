@@ -1,15 +1,38 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { of } from 'rxjs';
 import { SearchboxComponent } from '.';
 import { MOCK_SUGGESTION_PROVIDERS } from '../../src/mocks';
 import '../index';
+
+const mockedOptions = {
+  placeholder: 'placeholder',
+};
+
+const brokenOptions = {
+  placeholder: '',
+};
+
+class MockEBService implements Partial<ExperienceService> {
+  getOptions = vi.fn().mockReturnValue(of({}));
+}
 
 const query = 'pro';
 
 describe('ProductPreviewComponent', () => {
   let element: SearchboxComponent;
+
+  const hasControls = (): boolean => {
+    return (
+      element.renderRoot.querySelectorAll(
+        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]
+    `
+      ).length === 2
+    );
+  };
 
   const update = async (): Promise<void> => {
     element.requestUpdate();
@@ -43,7 +66,13 @@ describe('ProductPreviewComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_SUGGESTION_PROVIDERS,
+      providers: [
+        {
+          provide: ExperienceService,
+          useClass: MockEBService,
+        },
+        ...MOCK_SUGGESTION_PROVIDERS,
+      ],
     });
     element = await fixture(html`<site-searchbox></site-searchbox>`);
   });
@@ -69,6 +98,10 @@ describe('ProductPreviewComponent', () => {
 
     it('should not render result`s container', async () => {
       await hasResults(false);
+    });
+
+    it('should not render the controls', () => {
+      expect(hasControls()).toBe(false);
     });
   });
 
@@ -112,6 +145,10 @@ describe('ProductPreviewComponent', () => {
     it('should not render result`s container', async () => {
       await hasResults(false);
     });
+
+    it('should render the controls', () => {
+      expect(hasControls()).toBe(true);
+    });
   });
 
   describe('when query is provided', () => {
@@ -132,6 +169,10 @@ describe('ProductPreviewComponent', () => {
 
     it('should render result`s container with results', async () => {
       await hasResults();
+    });
+
+    it('should render the controls', () => {
+      expect(hasControls()).toBe(true);
     });
   });
 
@@ -256,6 +297,40 @@ describe('ProductPreviewComponent', () => {
       element.dispatchEvent(new CustomEvent('oryx.close'));
 
       expect(typeahead.hasAttribute('open')).toBe(false);
+    });
+  });
+
+  describe('when options provided', () => {
+    describe('and data is correct', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<site-searchbox .options=${mockedOptions}></site-searchbox>`
+        );
+      });
+
+      it('should apply placeholder to input', () => {
+        const input = element.renderRoot.querySelector('input') as HTMLElement;
+
+        expect(input.getAttribute('placeholder')).toBe(
+          mockedOptions.placeholder
+        );
+      });
+    });
+
+    describe('and data is incorrect', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<site-searchbox .options=${brokenOptions}></site-searchbox>`
+        );
+      });
+
+      it('should not apply placeholder from options to input', () => {
+        const input = element.renderRoot.querySelector('input') as HTMLElement;
+
+        expect(input.getAttribute('placeholder')).not.toBe(
+          brokenOptions.placeholder
+        );
+      });
     });
   });
 });
