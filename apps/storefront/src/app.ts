@@ -5,6 +5,8 @@ import '@spryker-oryx/product/title';
 import './experience-preview';
 import '@spryker-oryx/experience/components';
 import './storefront.component';
+import '@spryker-oryx/ui/card';
+import '@spryker-oryx/ui/password';
 import '@spryker-oryx/ui/rating';
 import '@spryker-oryx/ui/button';
 import '@spryker-oryx/ui/icon-button';

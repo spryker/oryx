@@ -57,7 +57,7 @@ export class AffixController implements ReactiveController {
 
   protected hasContent(slotName: string, icon?: string): boolean {
     return (
-      !!icon || this.host.querySelectorAll(`*[slot=${slotName}]`).length > 0
+      !!icon || this.host?.querySelectorAll?.(`*[slot=${slotName}]`)?.length > 0
     );
   }
 

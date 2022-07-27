@@ -1,0 +1,13 @@
+{
+  "name": "@spryker-oryx/user",
+  "type": "module",
+  "version": "0.1.0-next.0",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

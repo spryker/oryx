@@ -4,9 +4,14 @@ import { resolve } from '@spryker-oryx/injector';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { isObservable, Observable, Subscription } from 'rxjs';
 
+interface ObservablesData {
+  observable$: Observable<unknown>;
+  subscription: Subscription | null;
+}
+
 export class SubscribeController implements ReactiveController {
   protected subscriptions = new Subscription();
-  protected observables = new Set<Observable<unknown>>();
+  protected observables = new Map<string, ObservablesData>();
   protected context = resolve(ContextService, null) as ServerContextService;
 
   constructor(public host: ReactiveControllerHost) {
@@ -15,7 +20,7 @@ export class SubscribeController implements ReactiveController {
   }
 
   hostConnected(): void {
-    for (const observable$ of this.observables) {
+    for (const observable$ of this.observables.keys()) {
       this.subscribe(observable$);
     }
   }
@@ -24,23 +29,42 @@ export class SubscribeController implements ReactiveController {
     this.unsubscribe();
   }
 
-  add(observable$: unknown): void {
+  add(observable$: unknown, key: string): void {
+    if (this.observables.has(key)) {
+      return;
+    }
+
     if (!isObservable(observable$)) {
       throw `Invalid SubscribeController value: incorrect ${observable$} for SubscribeController, use observable`;
     }
 
-    this.observables.add(observable$);
+    this.observables.set(key, {
+      observable$,
+      subscription: null,
+    });
 
     if (this.context?.rendered$) {
-      this.subscribe(observable$);
+      this.subscribe(key);
     }
   }
 
-  protected subscribe(observable$: Observable<unknown>): void {
-    this.subscriptions.add(observable$.subscribe());
+  protected subscribe(key: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const data = this.observables.get(key)!;
+
+    if (data?.subscription) {
+      return;
+    }
+
+    data.subscription = data.observable$.subscribe();
   }
 
   protected unsubscribe(): void {
-    this.subscriptions.unsubscribe();
+    for (const observable$ of this.observables.values()) {
+      if (observable$.subscription) {
+        observable$.subscription.unsubscribe();
+        observable$.subscription = null;
+      }
+    }
   }
 }

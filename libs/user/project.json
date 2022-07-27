@@ -1,0 +1,44 @@
+{
+  "projectType": "library",
+  "root": "libs/user",
+  "sourceRoot": "libs/user",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/user/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/web-components",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/user/.storybook"
+        },
+        "staticDir": ["libs/user/public"]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/user/**/*.css", "libs/user/**/*.styles.ts"]
+      }
+    }
+  }
+}

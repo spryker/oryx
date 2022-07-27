@@ -17,6 +17,15 @@ export class StorefrontRouterService implements RouterService {
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
   }
 
+  navigate(route: string): void {
+    window.history.pushState({}, '', route);
+    this.go(route);
+  }
+
+  back(): void {
+    window.history.back();
+  }
+
   getEvents(type: RouterEventType): Observable<RouterEvent> {
     return this.routerEvents$.pipe(filter((event) => event.type === type));
   }

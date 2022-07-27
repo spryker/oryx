@@ -31,7 +31,10 @@ const legacySubscribe = (context: TargetDecorator, name: string): void => {
     },
     set: function (this: TargetDecorator, observable$: unknown) {
       if (!this[internalKey]) {
-        (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(observable$);
+        (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(
+          observable$,
+          name
+        );
       }
 
       this[internalKey] = observable$;
@@ -44,13 +47,19 @@ const legacySubscribe = (context: TargetDecorator, name: string): void => {
   });
 };
 
-const standardSubscribe = (context: DecoratorContext): DecoratorContext => {
+const standardSubscribe = (
+  context: DecoratorContext,
+  name: string
+): DecoratorContext => {
   return {
     ...context,
     initializer(this: TargetDecorator): void {
       const observable$ = context.initializer?.call(this);
       controllerCreation(this);
-      (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(observable$);
+      (this[SUBSCRIBE_CONTROLLER] as SubscribeController).add(
+        observable$,
+        name
+      );
       return observable$;
     },
   };
@@ -76,6 +85,6 @@ export function subscribe(): any {
 
     return isLegacy
       ? legacySubscribe(context as TargetDecorator, propName)
-      : standardSubscribe(context as DecoratorContext);
+      : standardSubscribe(context as DecoratorContext, propName);
   };
 }
