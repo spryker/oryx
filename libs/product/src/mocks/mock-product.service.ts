@@ -190,12 +190,40 @@ export class MockProductService implements Partial<ProductService> {
       images: [],
       averageRating: 1,
       attributes: {
-        brand: 'Brand6',
-        color: 'color6',
+        brand: 'Brand7',
+        color: 'color7',
       },
       attributeNames: {
         brand: 'Brand',
         color: 'Color',
+      },
+    },
+    {
+      sku: '8',
+      name: 'Sample product no. 8',
+      description: 'Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1900,
+          isNet: true,
+          currency: 'EUR',
+        },
+        originalPrice: {
+          value: 1958,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
+      images,
+      attributes: {
+        brand: 'Brand8',
+        SampleAttribute:
+          'Sample attribute lengthy value, Sample attribute lengthy value, Sample attribute lengthy value.',
+      },
+      attributeNames: {
+        brand: 'Brand',
+        SampleAttribute:
+          'Sample attribute lengthy name, Sample attribute lengthy name, Sample attribute lengthy name.',
       },
     },
   ];
