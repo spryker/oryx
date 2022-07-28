@@ -142,7 +142,7 @@ describe('TypeaheadComponent', () => {
         expect(
           getShadowElementBySelector(
             element,
-            'slot[name=loading] div oryx-icon[type=loader]'
+            'slot[name=loading] div oryx-spinner'
           )
         ).not.toBeNull();
       });

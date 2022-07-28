@@ -13,7 +13,7 @@ import {
 } from '../../icon.model';
 import '../../index';
 
-export default { title: `${storybookPrefix}/graphical/Icon/Static` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   const renderIconSet = (

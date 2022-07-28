@@ -10,7 +10,7 @@ import * as notification from '../../icons/notification.icons';
 import * as view from '../../icons/view.icons';
 import { Icon, icon } from '../../index';
 
-export default { title: `${storybookPrefix}/graphical/Icon/Static` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   const renderIconSet = <T = Icon[]>(title: string, set: T): TemplateResult => {

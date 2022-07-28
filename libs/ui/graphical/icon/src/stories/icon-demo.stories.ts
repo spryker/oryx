@@ -6,7 +6,7 @@ import { Size } from '../../../../utilities/';
 import { IconProperties, IconTypes } from '../icon.model';
 import '../index';
 
-export default { title: `${storybookPrefix}/graphical/Icon` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
 
 interface Props extends IconProperties {
   color: string;

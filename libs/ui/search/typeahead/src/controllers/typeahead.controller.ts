@@ -72,7 +72,7 @@ export class TypeaheadController implements ReactiveController {
             this.host.isLoading,
             () =>
               html`<div class="placeholder">
-                <oryx-icon type="loader"></oryx-icon>
+                <oryx-spinner></oryx-spinner>
               </div>`
           )}
         </slot>

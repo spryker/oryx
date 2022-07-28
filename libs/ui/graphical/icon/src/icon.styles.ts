@@ -55,21 +55,4 @@ export const styles = css`
   :host([type='silverPartner']) {
     color: #9ea1a6;
   }
-
-  :host([type='loader']) {
-    color: var(--oryx-color-brand);
-    animation-name: spin;
-    animation-duration: 1200ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 `;

@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../.constants';
 import { ChipType } from '../../index';
 import '../index';
 
-export default { title: `${storybookPrefix}/graphical/Chip` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Chip` } as Meta;
 
 export interface ChipProperties {
   type?: ChipType;

@@ -4,7 +4,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 
-export default { title: `${storybookPrefix}/graphical/Rating/Static` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Rating/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`

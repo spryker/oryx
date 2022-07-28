@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 import { m, xl, xs } from '../images';
 
-export default { title: `${storybookPrefix}/graphical/Image/Static` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Image/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   const renderImage = (factor: number): TemplateResult => {

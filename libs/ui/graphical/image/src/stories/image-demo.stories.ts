@@ -8,7 +8,7 @@ interface ImagesProps {
   minWidth: number;
 }
 
-export default { title: `${storybookPrefix}/graphical/Image` } as Meta;
+export default { title: `${storybookPrefix}/Graphical/Image` } as Meta;
 
 const Template: Story<ImagesProps> = (props: ImagesProps): TemplateResult => {
   return html`

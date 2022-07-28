@@ -8,7 +8,7 @@ import '../index';
 import { RatingProperties } from '../index';
 
 export default {
-  title: `${storybookPrefix}/graphical/Rating`,
+  title: `${storybookPrefix}/Graphical/Rating`,
   args: {
     scale: 5,
     characters: '',

@@ -8,7 +8,7 @@ import '../../index';
 import { RatingComponent, RatingProperties } from '../../index';
 
 export default {
-  title: `${storybookPrefix}/graphical/Rating/Interactive`,
+  title: `${storybookPrefix}/Graphical/Rating/Interactive`,
 } as Meta;
 
 const Template: Story<RatingProperties> = (): TemplateResult => {
