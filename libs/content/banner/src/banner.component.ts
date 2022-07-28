@@ -1,73 +1,32 @@
 import { hydratable } from '@spryker-oryx/core';
-import { ExperienceService } from '@spryker-oryx/experience';
-import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { asyncValue } from '@spryker-oryx/lit-rxjs';
+import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import {
-  BehaviorSubject,
-  combineLatest,
-  defer,
-  Observable,
-  of,
-  switchMap,
-} from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { BannerContent, BannerOptions } from './banner.model';
 import { styles } from './banner.styles';
 
 @hydratable('click')
-export class BannerComponent extends LitElement {
-  static override styles = styles;
+export class BannerComponent extends ComponentMixin<
+  BannerContent,
+  BannerOptions
+>() {
+  static styles = styles;
 
-  @property()
-  protected uid?: string;
+  protected contentController = new ContentController(this);
+  protected content$ = this.contentController.getContent();
+  protected options$ = this.contentController.getOptions();
 
-  @property({ type: Object })
-  protected content?: BannerContent;
-
-  @property({ type: Object })
-  protected options?: BannerOptions;
-
-  @observe()
-  protected content$ = new BehaviorSubject(this.content);
-
-  @observe()
-  protected options$ = new BehaviorSubject(this.options);
-
-  protected experienceContent = resolve(ExperienceService, null);
-
-  protected contentResolver$: Observable<BannerContent> = defer(() =>
-    this.uid && this.experienceContent
-      ? this.experienceContent
-          .getContent({ uid: this.uid })
-          .pipe(switchMap((res: any) => of(res?.data)))
-      : this.content$
-  );
-
-  protected optionsResolver$: Observable<BannerOptions> = defer(() =>
-    this.uid && this.experienceContent
-      ? this.experienceContent
-          .getOptions({ uid: this.uid })
-          .pipe(switchMap((res: any) => of(res?.data)))
-      : this.options$
-  );
-
-  protected data$ = combineLatest([
-    this.contentResolver$,
-    this.optionsResolver$,
-  ]);
+  protected data$ = combineLatest([this.content$, this.options$]);
 
   override render(): TemplateResult {
     return html`${asyncValue(
       this.data$,
       ([content, options]) => {
         const contents = html`
-          <img
-            src=${ifDefined(content?.image)}
-            alt=${ifDefined(options?.alt)}
-          />
+          <img src=${ifDefined(content?.image)} alt=${ifDefined(options.alt)} />
           <div class="overlay">
             ${when(
               content?.title,

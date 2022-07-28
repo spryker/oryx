@@ -132,7 +132,7 @@ export class DefaultContextService implements ContextService {
         return result;
       }
 
-      element = element.getRootNode().host;
+      element = element.getRootNode?.().host;
     }
 
     return {};
@@ -154,7 +154,7 @@ export class DefaultContextService implements ContextService {
         };
       }
 
-      const hasAttr = element.hasAttribute(selector);
+      const hasAttr = element.hasAttribute?.(selector);
 
       if (hasAttr) {
         return {
