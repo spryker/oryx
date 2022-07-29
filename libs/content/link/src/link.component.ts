@@ -5,9 +5,6 @@ import {
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { SemanticLinkService } from '@spryker-oryx/site';
-// TODO: Remove this once the issue with registering nested component will be resolved
-// https://spryker.atlassian.net/browse/HRZ-661
-import '@spryker-oryx/ui/link';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
