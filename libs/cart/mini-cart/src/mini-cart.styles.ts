@@ -20,25 +20,25 @@ export const styles = css`
   }
 
   a:hover {
-    background: var(--oryx-color-neutral-light);
-    border-color: var(--oryx-color-neutral-light);
+    background: var(--oryx-color-neutral-greyblue);
+    border-color: var(--oryx-color-neutral-greyblue);
   }
 
   a:active {
-    background: var(--oryx-color-neutral-light);
-    border-color: var(--oryx-color-neutral-dark);
+    background: var(--oryx-color-neutral-greyblue);
+    border-color: var(--oryx-color-neutral-greyblue-darker);
   }
 
   a:focus-visible {
-    border-color: var(--oryx-color-focus);
-    box-shadow: 0 0 3px var(--oryx-color-focus);
+    border-color: var(--oryx-color-brand-dark);
+    box-shadow: 0 0 3px var(--oryx-color-brand-dark);
   }
 
   oryx-icon {
-    --oryx-icon-size: 32px;
+    --oryx-icon-size: 38px;
 
     display: block;
-    padding-inline-start: 8px;
+    padding-inline-start: 6px;
   }
 
   .badge + oryx-icon {
@@ -68,9 +68,15 @@ export const styles = css`
     a {
       display: inline-flex;
       flex-direction: row-reverse;
+      align-items: center;
+      justify-content: center;
       width: auto;
       height: auto;
       gap: 6px;
+      border-radius: 0;
+      min-width: 41px;
+      padding-top: 7px;
+      padding-bottom: 7px;
     }
 
     .badge {
@@ -78,7 +84,7 @@ export const styles = css`
     }
 
     oryx-icon {
-      --oryx-icon-size: 17px;
+      --oryx-icon-size: 24px;
 
       padding-inline-start: 0;
       margin-inline-start: 0;
