@@ -358,7 +358,7 @@ const Template: Story = (): TemplateResult => html`
           <input
             ?disabled=${disabled}
             ?checked=${checked}
-            .class=${className}
+            class=${className}
             type="radio"
             placeholder="make a11y happy"
             checked

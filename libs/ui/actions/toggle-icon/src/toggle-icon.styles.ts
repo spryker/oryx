@@ -74,6 +74,7 @@ export const toggleIconStyles = css`
   ::slotted(input:hover:not([disabled]))::after {
     background: var(--oryx-color-neutral-lighter);
     border-color: var(--oryx-color-neutral);
+    box-shadow: 0 1px 3px 0 var(--oryx-elevation-color-2);
   }
 
   ::slotted(input:active:not([disabled]))::after {

@@ -121,7 +121,7 @@ const Template: Story = (): TemplateResult =>
       <oryx-toggle-icon ?checked=${checked} ?hasError=${hasError}>
         <input
           ?disabled=${disabled}
-          .class=${className}
+          class=${className}
           type="radio"
           placeholder="make a11y happy"
           ?checked=${checked}
