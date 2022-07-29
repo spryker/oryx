@@ -10,26 +10,6 @@ interface LinksSection {
 }
 
 export class RenderSuggestionController {
-  protected hasLinks({
-    completion,
-    cmsPages,
-    categories,
-  }: Suggestion): boolean {
-    return !!(completion.length || cmsPages.length || categories.length);
-  }
-
-  protected hasProducts(suggestion: Suggestion): boolean {
-    return !!suggestion.products.length;
-  }
-
-  isNothingFound(suggestion: Suggestion | null): boolean {
-    return (
-      !!suggestion &&
-      !this.hasLinks(suggestion) &&
-      !this.hasProducts(suggestion)
-    );
-  }
-
   protected processCompletions(completions: string[]): SuggestionResource[] {
     //TODO: url generation
     return completions.map((name) => ({ name, url: '/' }));
@@ -71,10 +51,6 @@ export class RenderSuggestionController {
     suggestion: Suggestion,
     options: SiteSearchboxOptions
   ): TemplateResult {
-    if (!this.hasLinks(suggestion)) {
-      return html``;
-    }
-
     const links: LinksSection[] = [
       {
         title: options.completionTitle || 'Search suggestions',
@@ -107,10 +83,6 @@ export class RenderSuggestionController {
     suggestion: Suggestion,
     options: SiteSearchboxOptions
   ): TemplateResult {
-    if (!this.hasProducts(suggestion)) {
-      return html``;
-    }
-
     return html`
       <section>
         <h5>${options.productsTitle || 'Products'}</h5>

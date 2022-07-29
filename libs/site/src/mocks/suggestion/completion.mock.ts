@@ -7,6 +7,7 @@ export const completion: string[] = [
   'product new',
   'product with title',
   'prodotto dall`italia',
+  'product 6',
   'two words',
   'best product ever 2000',
   'qwerty asdfg zxcvb',

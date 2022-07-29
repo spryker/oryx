@@ -4,15 +4,15 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SearchboxComponent } from '.';
+import { SearchboxComponent, SiteSearchboxOptions } from '.';
 import { MOCK_SUGGESTION_PROVIDERS } from '../../src/mocks';
 import '../index';
 
-const mockedOptions = {
+const mockedOptions: SiteSearchboxOptions = {
   placeholder: 'placeholder',
 };
 
-const brokenOptions = {
+const brokenOptions: SiteSearchboxOptions = {
   placeholder: '',
 };
 
@@ -174,6 +174,10 @@ describe('ProductPreviewComponent', () => {
     it('should render the controls', () => {
       expect(hasControls()).toBe(true);
     });
+
+    it('should set `stretched` attr', async () => {
+      expect(element.hasAttribute('stretched')).toBe(true);
+    });
   });
 
   describe('when not found', () => {
@@ -196,10 +200,6 @@ describe('ProductPreviewComponent', () => {
 
     it('should render `not found` container', async () => {
       expect(element.renderRoot.querySelector('[slot="empty"]')).not.toBeNull();
-    });
-
-    it('should set `not-found` attr', async () => {
-      expect(element.hasAttribute('not-found')).toBe(true);
     });
   });
 
@@ -330,6 +330,66 @@ describe('ProductPreviewComponent', () => {
         expect(input.getAttribute('placeholder')).not.toBe(
           brokenOptions.placeholder
         );
+      });
+    });
+  });
+
+  describe('suggestion is provided partially', () => {
+    describe('and there are links only', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <site-searchbox
+            query="pro"
+            .options=${{ productsCount: 0 }}
+          ></site-searchbox>
+        `);
+
+        vi.useFakeTimers();
+
+        //debounce the typeahead event dispatching
+        vi.advanceTimersByTime(301);
+      });
+
+      afterEach(() => {
+        vi.clearAllTimers();
+      });
+
+      it('should render only one section', () => {
+        const sections = element.renderRoot.querySelectorAll(
+          '[slot="option"] section'
+        );
+        expect(sections?.length).toBe(1);
+      });
+    });
+
+    describe('and there are products only', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <site-searchbox
+            query="pro"
+            .options=${{
+              categoriesCount: 0,
+              completionsCount: 0,
+              cmsCount: 0,
+            }}
+          ></site-searchbox>
+        `);
+
+        vi.useFakeTimers();
+
+        //debounce the typeahead event dispatching
+        vi.advanceTimersByTime(301);
+      });
+
+      afterEach(() => {
+        vi.clearAllTimers();
+      });
+
+      it('should render only one section', () => {
+        const sections = element.renderRoot.querySelectorAll(
+          '[slot="option"] section'
+        );
+        expect(sections?.length).toBe(1);
       });
     });
   });

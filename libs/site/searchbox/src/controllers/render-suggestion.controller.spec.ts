@@ -42,11 +42,11 @@ const notFoundSuggestion: Suggestion = {
   products: [],
 };
 
-const linksOnly: Suggestion = {
+const suggestion: Suggestion = {
   completion: [resource.url],
   categories: [resource],
   cmsPages: [resource],
-  products: [],
+  products: [product],
 };
 
 const completionOnly: Suggestion = {
@@ -54,13 +54,6 @@ const completionOnly: Suggestion = {
   categories: [],
   cmsPages: [],
   products: [],
-};
-
-const productsOnly: Suggestion = {
-  completion: [],
-  categories: [],
-  cmsPages: [],
-  products: [product],
 };
 
 @customElement('fake-container')
@@ -76,12 +69,20 @@ class FakeContainer extends LitElement {
 
   controller = new RenderSuggestionController();
 
+  protected isNothingFound(suggestion: Suggestion): boolean {
+    return (
+      !suggestion.products.length &&
+      !suggestion.categories.length &&
+      !suggestion.cmsPages.length &&
+      !suggestion.completion.length
+    );
+  }
   @property({ type: Object }) suggestion: Suggestion = notFoundSuggestion;
 
   render(): TemplateResult {
     return html`
       ${when(
-        this.controller.isNothingFound(this.suggestion),
+        this.isNothingFound(this.suggestion),
         () => this.controller.renderNothingFound(this.options),
         () => html`
           ${this.controller.renderLinksSection(this.suggestion, this.options)}
@@ -122,22 +123,22 @@ describe('RenderSuggestionController', () => {
   });
 
   describe('when suggestion results are provided', () => {
-    describe('and there are links only', () => {
-      beforeAll(async () => {
-        element = await fixture(html`
-          <fake-container .suggestion=${linksOnly}></fake-container>
-        `);
-      });
+    beforeAll(async () => {
+      element = await fixture(html`
+        <fake-container .suggestion=${suggestion}></fake-container>
+      `);
+    });
 
-      it('should render only one section', () => {
-        const sections = element.renderRoot.querySelectorAll('section');
-        expect(sections.length).toBe(1);
-      });
+    it('should render sections', () => {
+      const sections = element.renderRoot.querySelectorAll('section');
+      expect(sections.length).toBe(2);
+    });
 
-      it('should render the whole list of links', () => {
-        const links = element.renderRoot.querySelectorAll('section > ul');
-        expect(links.length).toBe(3);
-      });
+    it('should render the whole list of links', () => {
+      const links = element.renderRoot.querySelectorAll(
+        'section:nth-child(1) > ul'
+      );
+      expect(links.length).toBe(3);
     });
 
     describe('and there is completion only', () => {
@@ -148,26 +149,10 @@ describe('RenderSuggestionController', () => {
       });
 
       it('should render completion links only', () => {
-        const sections = element.renderRoot.querySelectorAll('section > ul');
+        const sections = element.renderRoot.querySelectorAll(
+          'section:nth-child(1) > ul'
+        );
         expect(sections.length).toBe(1);
-      });
-    });
-
-    describe('and there are products only', () => {
-      beforeAll(async () => {
-        element = await fixture(html`
-          <fake-container .suggestion=${productsOnly}></fake-container>
-        `);
-      });
-
-      it('should render only one section', () => {
-        const sections = element.renderRoot.querySelectorAll('section');
-        expect(sections.length).toBe(1);
-      });
-
-      it('should render a product link', () => {
-        const product = element.renderRoot.querySelector('.product');
-        expect(product).not.toBeNull();
       });
     });
   });

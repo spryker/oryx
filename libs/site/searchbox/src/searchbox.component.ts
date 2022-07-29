@@ -6,6 +6,7 @@ import { Suggestion, SuggestionService } from '@spryker-oryx/site';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { html } from 'lit/static-html.js';
@@ -99,8 +100,7 @@ export class SearchboxComponent
       return of({ suggestion: null, options });
     }),
     tap(({ suggestion }) => {
-      this.notFound =
-        this.renderSuggestionController.isNothingFound(suggestion);
+      this.stretched = this.hasCompleteData(suggestion);
     })
   );
 
@@ -123,8 +123,8 @@ export class SearchboxComponent
   );
 
   @property({ type: String }) query = '';
-  @property({ type: Boolean, reflect: true, attribute: 'not-found' })
-  protected notFound = false;
+  @property({ type: Boolean, reflect: true })
+  protected stretched = false;
 
   protected firstUpdated(): void {
     if (this.query) {
@@ -190,6 +190,26 @@ export class SearchboxComponent
     }
   }
 
+  protected hasLinks(suggestion: Suggestion | null): boolean {
+    return !!(
+      suggestion?.completion.length ||
+      suggestion?.cmsPages.length ||
+      suggestion?.categories.length
+    );
+  }
+
+  protected hasProducts(suggestion: Suggestion | null): boolean {
+    return !!suggestion?.products?.length;
+  }
+
+  protected isNothingFound(suggestion: Suggestion | null): boolean {
+    return !this.hasLinks(suggestion) && !this.hasProducts(suggestion);
+  }
+
+  protected hasCompleteData(suggestion: Suggestion | null): boolean {
+    return this.hasLinks(suggestion) && this.hasProducts(suggestion);
+  }
+
   protected renderSuggestion(
     suggestion: Suggestion | null,
     options: SiteSearchboxOptions
@@ -198,7 +218,7 @@ export class SearchboxComponent
       return html``;
     }
 
-    if (this.renderSuggestionController.isNothingFound(suggestion)) {
+    if (this.isNothingFound(suggestion)) {
       return this.renderSuggestionController.renderNothingFound(options);
     }
 
@@ -208,13 +228,17 @@ export class SearchboxComponent
           @scroll=${this.dispatchContainerScroll}
           ${ref(this.scrollContainerRef)}
         >
-          ${this.renderSuggestionController.renderLinksSection(
-            suggestion,
-            options
+          ${when(this.hasLinks(suggestion), () =>
+            this.renderSuggestionController.renderLinksSection(
+              suggestion,
+              options
+            )
           )}
-          ${this.renderSuggestionController.renderProductsSection(
-            suggestion,
-            options
+          ${when(this.hasProducts(suggestion), () =>
+            this.renderSuggestionController.renderProductsSection(
+              suggestion,
+              options
+            )
           )}
         </div>
       </div>

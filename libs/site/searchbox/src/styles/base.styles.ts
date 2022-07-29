@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const baseSearchboxStyles = css`
   /* TODO: make alignments with required screen width for mobile */
   @media (min-width: 769px) {
-    :host(:not([not-found])) {
+    :host([stretched]) {
       --oryx-popover-width: auto;
     }
 
@@ -11,18 +11,13 @@ export const baseSearchboxStyles = css`
       display: none;
     }
 
-    [slot='option'],
-    [slot='option'] > * {
+    :host([stretched]) [slot='option'] > * {
       min-width: 530px;
-    }
-
-    [slot='option'] > * {
       display: flex;
     }
 
-    section:first-child {
+    section:first-child:not(:last-child) {
       max-width: 50%;
-      padding-bottom: 20px;
     }
   }
 
@@ -80,7 +75,7 @@ export const baseSearchboxStyles = css`
     padding: 20px;
   }
 
-  section:first-child {
+  section:first-child:not(:last-child) {
     padding-bottom: 0;
   }
 
