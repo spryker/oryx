@@ -11,7 +11,6 @@ import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { html } from 'lit/static-html.js';
 import {
-  BehaviorSubject,
   combineLatest,
   debounce,
   distinctUntilChanged,
@@ -19,6 +18,7 @@ import {
   map,
   of,
   shareReplay,
+  Subject,
   switchMap,
   tap,
   timer,
@@ -64,7 +64,7 @@ export class SearchboxComponent
   protected queryControlsController = new QueryControlsController();
   protected renderSuggestionController = new RenderSuggestionController();
 
-  protected triggerInputValue$ = new BehaviorSubject('');
+  protected triggerInputValue$ = new Subject<string>();
 
   protected suggestion$ = this.triggerInputValue$.pipe(
     debounce(() => timer(300)),
@@ -79,8 +79,7 @@ export class SearchboxComponent
         categoriesCount,
         cmsCount,
       } = options;
-
-      if (!minChars || query.length >= minChars) {
+      if (query && (!minChars || query.length >= minChars)) {
         return this.suggestionService.get({ query }).pipe(
           map((raw) => {
             const suggestion = raw
@@ -251,6 +250,7 @@ export class SearchboxComponent
         clearIconPosition=${ClearIconPosition.NONE}
         @oryx.typeahead=${this.onTypeahead}
       >
+        <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
         <input ${ref(this.inputRef)} placeholder="Search" />
         ${asyncValue(
           this.suggestion$,

@@ -1,6 +1,31 @@
 import { css } from 'lit';
 
 export const searchboxStyles = css`
+  [slot='prefix'] {
+    color: var(--oryx-color-neutral-darker);
+  }
+
+  input::placeholder {
+    color: var(--oryx-color-neutral-dark);
+  }
+
+  input {
+    padding-block: 16px;
+    height: 56px;
+  }
+
+  oryx-button[slot='suffix'] {
+    --_color-text: var(--oryx-color-brand);
+  }
+
+  oryx-icon-button[slot='suffix'] {
+    --oryx-icon-button-color: var(--oryx-color-neutral-darker);
+  }
+
+  oryx-icon-button[slot='suffix'] oryx-icon {
+    --oryx-icon-size: 16px;
+  }
+
   [slot='option']::before,
   [slot='option']::after {
     height: 30px;
@@ -28,5 +53,13 @@ export const searchboxStyles = css`
 
   .product product-title {
     margin-bottom: 4px;
+  }
+
+  /* TODO: make alignments with required screen width for mobile */
+  @media (min-width: 769px) {
+    input {
+      padding-block: 9px;
+      height: 42px;
+    }
   }
 `;

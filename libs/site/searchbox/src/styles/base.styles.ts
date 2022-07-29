@@ -1,30 +1,11 @@
 import { css } from 'lit';
 
 export const baseSearchboxStyles = css`
-  /* TODO: make alignments with required screen width for mobile */
-  @media (min-width: 769px) {
-    :host([stretched]) {
-      --oryx-popover-width: auto;
-    }
-
-    oryx-icon-button[slot='suffix'] {
-      display: none;
-    }
-
-    :host([stretched]) [slot='option'] > * {
-      min-width: 530px;
-      display: flex;
-    }
-
-    section:first-child:not(:last-child) {
-      max-width: 50%;
-    }
-  }
-
   oryx-typeahead {
     --oryx-popover-maxheight: 480px;
     --oryx-border-radius: 2px;
     --oryx-popover-vertical-offset: 0;
+    --oryx-popover-distance: 62px;
 
     max-width: 400px;
   }
@@ -69,13 +50,15 @@ export const baseSearchboxStyles = css`
 
   oryx-link a {
     padding: 0;
+    white-space: normal;
+    border-radius: 0;
   }
 
   section {
     padding: 20px;
   }
 
-  section:first-child:not(:last-child) {
+  section:first-child:not(:only-child) {
     padding-bottom: 0;
   }
 
@@ -153,5 +136,29 @@ export const baseSearchboxStyles = css`
     position: absolute;
     top: 5px;
     inset-inline-start: 5px;
+  }
+
+  /* TODO: make alignments with required screen width for mobile */
+  @media (min-width: 769px) {
+    :host([stretched]) {
+      --oryx-popover-width: auto;
+    }
+
+    oryx-typeahead {
+      --oryx-popover-distance: 48px;
+    }
+
+    oryx-icon-button[slot='suffix'] {
+      display: none;
+    }
+
+    :host([stretched]) [slot='option'] > * {
+      min-width: 530px;
+      display: flex;
+    }
+
+    section:first-child:not(:only-child) {
+      max-width: 50%;
+    }
   }
 `;
