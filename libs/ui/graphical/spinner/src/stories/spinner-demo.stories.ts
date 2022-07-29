@@ -30,6 +30,9 @@ const Template: Story<Props> = ({
 };
 
 export const SpinnerDemo = Template.bind({});
+SpinnerDemo.parameters = {
+  chromatic: { delay: 300 },
+};
 
 SpinnerDemo.argTypes = {
   size: {

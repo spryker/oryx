@@ -66,7 +66,7 @@
   --oryx-color-pink-light: #f9f2f1;
 
   /* placeholder */
-  --oryx-color-placeholder: var(--oryx-color-neutral-dark);
+  --oryx-color-placeholder: var(--oryx-color-neutral-darker);
 
   /* focused */
   --oryx-color-focus: var(--oryx-color-brand);
@@ -121,7 +121,7 @@
     --oryx-color-neutral-light: #aaa;
     --oryx-color-neutral-lighter: #666;
     --oryx-color-neutral-dark: #efeeee;
-    --oryx-color-neutral-darker: #f8f8f8;
+    --oryx-color-neutral-darker: #71747c;
     --oryx-elevation-color: rgb(237 237 237 / 15%);
     --oryx-elevation-color-2: rgb(225 225 225 / 15%);
     --oryx-color-brand-lighter: #225e52;

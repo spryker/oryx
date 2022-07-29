@@ -87,15 +87,15 @@ export const formControlStyles = css`
     border-radius: var(--oryx-border-radius);
   }
 
+  ::slotted(input[disabled]),
+  ::slotted(textarea[disabled]) {
+    color: var(--oryx-color-neutral-darker);
+  }
+
   textarea,
   ::slotted(textarea) {
     min-height: 80px;
     min-width: 100%;
-  }
-
-  ::placeholder,
-  ::slotted(input)::placeholder {
-    color: var(--oryx-color-neutral-dark);
   }
 
   [hasErrorContent] {
