@@ -11,7 +11,7 @@ import {
   GetCartProps,
   UpdateCartEntityProps,
 } from './cart.adapter';
-import { CartNormalizers } from './normalizers';
+import { CartNormalizers, CartsNormalizers } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
   private guestCarts = 'guest-carts';
@@ -29,11 +29,13 @@ export class DefaultCartAdapter implements CartAdapter {
       headers: this.getHeaders(user),
     };
 
-    // TODO: Add transformer for multiple carts
-    return this.http.get<ApiCartModel.ResponseList>(
-      url,
-      options
-    ) as unknown as Observable<Cart[]>;
+    return this.http
+      .get<ApiCartModel.ResponseList>(url, options)
+      .pipe(
+        switchMap((response) =>
+          this.transformer.transform<Cart[]>(response, CartsNormalizers)
+        )
+      );
   }
 
   get(data: GetCartProps): Observable<Cart> {
