@@ -38,7 +38,12 @@ export const styles = css`
     --oryx-icon-size: 32px;
 
     display: block;
+    padding-inline-start: 8px;
+  }
+
+  .badge + oryx-icon {
     margin-inline-start: 1px;
+    padding-inline-start: 0;
   }
 
   .badge {
@@ -62,7 +67,7 @@ export const styles = css`
   @media (max-width: 375px) {
     a {
       display: inline-flex;
-      flex-direction: row;
+      flex-direction: row-reverse;
       width: auto;
       height: auto;
       gap: 6px;
@@ -74,6 +79,9 @@ export const styles = css`
 
     oryx-icon {
       --oryx-icon-size: 17px;
+
+      padding-inline-start: 0;
+      margin-inline-start: 0;
     }
 
     span {

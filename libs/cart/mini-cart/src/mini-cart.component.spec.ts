@@ -136,12 +136,12 @@ describe('Mini Card', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it(`should render 0 as quantity`, () => {
+    it(`should not render quantity badge`, () => {
       const quantityBadge = element.renderRoot.querySelector(
         '.badge'
       ) as HTMLDivElement;
 
-      expect(quantityBadge.textContent).toContain('0');
+      expect(quantityBadge).toBe(null);
     });
   });
 });
