@@ -4,8 +4,6 @@ import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
 
-// kick netlify; keeping this here so netlify development builds when merged instead of cancelling. Feel free to remove afterwards.
-
 const storefrontHandler = async (event, context) => {
   try {
     const originalUrl = new URL(event.rawUrl);
