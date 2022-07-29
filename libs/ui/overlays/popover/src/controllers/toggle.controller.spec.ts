@@ -76,7 +76,7 @@ describe('ToggleController', () => {
   });
 
   describe('when "open" attr set by default', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       element = await fixture(html`<fake-popover open>
         <input placeholder="make a11y happy" />
       </fake-popover>`);
@@ -476,7 +476,7 @@ describe('ToggleController', () => {
         <fake-popover>
           <input placeholder="make a11y happy" />
           <button>custom close</button>
-        </ake-popover>
+        </fake-popover>
       `);
       //simulate disconnect hook
       element.controller.hostDisconnected();

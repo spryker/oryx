@@ -60,11 +60,7 @@ export class ToggleController implements ReactiveController {
    */
   protected shouldBeFocused: EventTarget | null = null;
 
-  hostConnected(): void {
-    if (this.host.hasAttribute('open')) {
-      this.setBoundingBox();
-    }
-
+  async hostConnected(): Promise<void> {
     window.addEventListener('blur', this.handleBlur);
 
     this.host.addEventListener(CLOSE_EVENT, this.handleContentCloseEvent);
@@ -74,6 +70,14 @@ export class ToggleController implements ReactiveController {
     this.host.addEventListener('mouseup', this.handleMouseup);
     this.host.addEventListener('keydown', this.handleKeydown);
     this.host.addEventListener('keyup', this.handleKeyup);
+
+    if (this.host.hasAttribute('open')) {
+      //simulate first updated hook
+      this.host.requestUpdate();
+      await this.host.updateComplete;
+
+      this.setBoundingBox();
+    }
   }
 
   hostDisconnected(): void {

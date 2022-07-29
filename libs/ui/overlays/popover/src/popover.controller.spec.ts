@@ -410,6 +410,7 @@ describe('PopoverController', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <fake-popover show>
+          <input placeholder="a11y" />
           <oryx-option>first</oryx-option>
           <oryx-option>second</oryx-option>
         </fake-popover>
@@ -422,9 +423,7 @@ describe('PopoverController', () => {
       let highlightedItem: HTMLElement | null;
 
       beforeEach(async () => {
-        highlightedItem = element.querySelector<HTMLElement>(
-          'oryx-option:nth-child(1)'
-        );
+        highlightedItem = element.querySelector<HTMLElement>('oryx-option');
         highlightedItem?.toggleAttribute('highlight', true);
         dispatchKeydown(element, 'Enter');
       });

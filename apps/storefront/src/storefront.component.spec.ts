@@ -1,3 +1,4 @@
+import { MOCK_CART_PROVIDERS } from '@spryker-oryx/cart';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import {
@@ -5,6 +6,7 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
+import { MOCK_SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import 'urlpattern-polyfill';
@@ -40,6 +42,8 @@ describe('InputComponent', () => {
           provide: RouterService,
           useClass: MockRouterService,
         },
+        ...MOCK_SEMANTIC_LINK_PROVIDERS,
+        ...MOCK_CART_PROVIDERS,
       ],
     });
 
