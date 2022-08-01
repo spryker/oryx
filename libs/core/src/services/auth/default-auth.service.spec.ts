@@ -54,22 +54,20 @@ describe('DefaultAuthService', () => {
 
   describe('logout', () => {
     it('should call AccessTokenService.remove', () => {
+      accessTokenService.remove.mockReturnValue(of(null));
       service.logout();
       expect(accessTokenService.remove).toHaveBeenCalled();
+    });
+
+    it('should return Observable<null>', () => {
+      const callback = vi.fn();
+      accessTokenService.remove.mockReturnValue(of(null));
+      service.logout().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(null);
     });
   });
 
   describe('login', () => {
-    it('should call logout', () => {
-      accessTokenService.load.mockReturnValue(of(mockToken));
-      service.login(
-        mockCredentials.username,
-        mockCredentials.password,
-        mockCredentials.persist
-      );
-      expect(accessTokenService.remove).toHaveBeenCalled();
-    });
-
     it('should call AccessTokenService.load method', () => {
       accessTokenService.load.mockReturnValue(of(mockToken));
       service.login(

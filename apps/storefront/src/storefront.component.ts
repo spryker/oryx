@@ -94,6 +94,7 @@ export class StorefrontComponent extends LitElement {
           }}"
           ><product-title sku="010_30692994"></product-title
         ></content-link>
+        <user-logout .options="${{ customRedirect: 'contact' }}"></user-logout>
         <mini-cart></mini-cart>
       </div>
     </nav>`;

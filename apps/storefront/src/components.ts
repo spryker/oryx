@@ -72,6 +72,11 @@ export const componentsMapping: ComponentsMapping = {
     component: () => import('@spryker-oryx/user/login'),
     template: (uid: string) => html`<user-login uid="${uid}"></user-login>`,
   },
+  'user-logout': {
+    tag: 'user-logout',
+    component: () => import('@spryker-oryx/user/logout'),
+    template: (uid: string) => html`<user-logout uid="${uid}"></user-logout>`,
+  },
   'product-id': {
     tag: 'product-id',
     component: () => import('@spryker-oryx/product/id'),

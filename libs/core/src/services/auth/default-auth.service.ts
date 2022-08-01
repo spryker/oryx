@@ -1,5 +1,6 @@
 import { inject } from '@spryker-oryx/injector';
 import { catchError, map, Observable, of } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 import { AccessTokenService } from './access-token.service';
 import { AuthService } from './auth.service';
 import { AccessToken, TokenExchangeParams } from './model';
@@ -19,15 +20,15 @@ export class DefaultAuthService implements AuthService {
       password,
       persist,
     };
-    this.logout();
+
     return this.accessTokenService.load(login).pipe(
       catchError(() => of(null)),
       map((token: AccessToken | null) => !!token)
     );
   }
 
-  logout(): void {
-    this.accessTokenService.remove();
+  logout(): Observable<null> {
+    return this.accessTokenService.remove().pipe(mapTo(null));
   }
 
   getToken(): Observable<AccessToken | null> {

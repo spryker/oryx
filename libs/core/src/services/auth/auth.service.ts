@@ -9,7 +9,7 @@ export interface AuthService {
     password: string,
     remember: boolean
   ): Observable<boolean>;
-  logout(): void;
+  logout(): Observable<null>;
   getToken(): Observable<AccessToken | null>;
   isAuthenticated(): Observable<boolean>;
 }
