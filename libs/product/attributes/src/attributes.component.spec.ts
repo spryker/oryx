@@ -15,7 +15,10 @@ describe('Product attributes', () => {
       providers: MOCK_PRODUCT_PROVIDERS,
     });
     element = await fixture(html`
-      <product-attributes sku="1"></product-attributes>
+      <product-attributes
+        sku="1"
+        .options=${{ columnCount: 3 }}
+      ></product-attributes>
     `);
   });
 
@@ -25,6 +28,14 @@ describe('Product attributes', () => {
 
   it('should be defined', () => {
     expect(element).toBeInstanceOf(ProductAttributesComponent);
+  });
+
+  it('should have colum count style defined', () => {
+    const columCount = window
+      .getComputedStyle(element)
+      .getPropertyValue('--column-count');
+
+    expect(columCount).toBe('3');
   });
 
   it('should render attributes', () => {
@@ -54,5 +65,33 @@ describe('Product attributes', () => {
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
+  });
+
+  describe('when no attributes available in product', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <product-attributes sku="6" columnCount="3"></product-attributes>
+      `);
+    });
+
+    it('should not render any attributes', () => {
+      const attributesList = element.shadowRoot?.querySelectorAll('li');
+
+      expect(attributesList?.length).toBe(0);
+    });
+  });
+
+  describe('when bad sku provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <product-attributes></product-attributes>
+      `);
+    });
+
+    it('should not render any attributes', () => {
+      const attributesList = element.shadowRoot?.querySelectorAll('li');
+
+      expect(attributesList?.length).toBe(0);
+    });
   });
 });
