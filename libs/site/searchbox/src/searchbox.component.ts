@@ -11,9 +11,12 @@ import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { html } from 'lit/static-html.js';
 import {
+  catchError,
   combineLatest,
   debounce,
+  defer,
   distinctUntilChanged,
+  filter,
   fromEvent,
   map,
   of,
@@ -37,7 +40,7 @@ import { baseSearchboxStyles, searchboxStyles } from './styles';
 
 export const TAG_NAME = 'site-searchbox';
 
-@hydratable()
+@hydratable('click')
 export class SearchboxComponent
   extends ComponentMixin<SiteSearchboxOptions>()
   implements SiteSearchboxProperties
@@ -109,10 +112,11 @@ export class SearchboxComponent
   ]).pipe(map(([options, query]) => ({ options, showButtons: !!query })));
 
   @subscribe()
-  protected scrollEvent = fromEvent(
-    this as EventTarget,
-    'containerScroll'
+  protected scrollEvent = defer(() =>
+    fromEvent(this as EventTarget, 'containerScroll')
   ).pipe(
+    catchError(() => of(null)),
+    filter((v) => v !== null),
     debounce(() => timer(20)),
     tap(() => {
       this.scrollingAreaController.setScrollAttributes(
