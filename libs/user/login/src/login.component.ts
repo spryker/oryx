@@ -85,14 +85,17 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
         <oryx-password-input label="Password *" strategy="${ifDefined(
           options.strategy
         )}"/><input type="password" name="password" placeholder="Password" required/></oryx-password-input>
-      ${
-        options.showRememberMe
-          ? html` <oryx-checkbox
-              ><input type="checkbox" name="rememberme" /> Remember
-              me</oryx-checkbox
-            >`
-          : ``
-      }
+        <div class="options">
+          ${
+            options.showRememberMe
+              ? html` <oryx-checkbox
+                  ><input type="checkbox" name="rememberme" /> Remember
+                  me</oryx-checkbox
+                >`
+              : html`<span></span>`
+          }
+          <oryx-link><a href="#">Forgot Password?</a></oryx-link>
+        </div>
         <oryx-button size="small"><button type="submit" ?disabled=${loading}>Login</button></oryx-button>
       </form>
     </oryx-card>`;
