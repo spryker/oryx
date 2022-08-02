@@ -12,4 +12,11 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => getTemplate();
 
-export const MiniCartDesktopVariations = Template.bind({});
+export const MiniCartResponsiveDesign = Template.bind({});
+
+MiniCartResponsiveDesign.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  viewport: {
+    defaultViewport: 'mobile1',
+  },
+};

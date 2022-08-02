@@ -23,3 +23,7 @@ export const MiniCartDemo = Template.bind({});
 MiniCartDemo.args = {
   quantity: 5,
 };
+
+MiniCartDemo.parameters = {
+  chromatic: { disableSnapshot: true },
+};
