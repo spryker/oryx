@@ -111,6 +111,7 @@ export const componentsMapping: ComponentsMapping = {
       await import('@spryker-oryx/ui/image');
       await import('@spryker-oryx/product/media');
       await import('@spryker-oryx/product/price');
+      await import('@spryker-oryx/content/link');
     },
     template: (uid: string) =>
       html`<site-searchbox uid="${uid}"></site-searchbox>`,

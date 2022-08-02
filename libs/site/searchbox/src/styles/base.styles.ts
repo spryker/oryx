@@ -43,32 +43,12 @@ export const baseSearchboxStyles = css`
     margin-bottom: 20px;
   }
 
-  /* TODO */
-  oryx-link:hover {
-    color: var(--oryx-color-brand);
-  }
-
-  oryx-link a {
-    padding: 0;
-    white-space: normal;
-    border-radius: 0;
-  }
-
   section {
     padding: 20px;
   }
 
   section:first-child:not(:only-child) {
     padding-bottom: 0;
-  }
-
-  section + section {
-    flex-grow: 1;
-  }
-
-  site-product {
-    display: block;
-    margin-bottom: 5px;
   }
 
   [slot='empty'] {
@@ -157,8 +137,12 @@ export const baseSearchboxStyles = css`
       display: flex;
     }
 
+    section {
+      flex: 1 1 auto;
+    }
+
     section:first-child:not(:only-child) {
-      max-width: 50%;
+      padding-bottom: 20px;
     }
   }
 `;

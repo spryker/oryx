@@ -6,6 +6,7 @@ export interface SemanticLink {
 }
 
 export const enum SemanticLinkType {
+  ProductList = 'plp',
   Page = 'page',
   Product = 'product',
   Category = 'category',

@@ -60,6 +60,7 @@ export class ContentLinkComponent
         ${when(
           link,
           () => html`<a
+            part="link"
             href="${link}"
             aria-label=${ifDefined(options.label)}
             target=${ifDefined(options.target)}

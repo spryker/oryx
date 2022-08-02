@@ -1,5 +1,9 @@
 import { setUpMockProviders } from '@spryker-oryx/injector';
-import { MOCK_SUGGESTION_PROVIDERS } from '@spryker-oryx/site';
+import {
+  completion,
+  MOCK_SEMANTIC_LINK_PROVIDERS,
+  MOCK_SUGGESTION_PROVIDERS,
+} from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
@@ -9,13 +13,31 @@ import '../index';
 
 export default {
   title: `${storybookPrefix}/Search`,
-  loaders: [setUpMockProviders(MOCK_SUGGESTION_PROVIDERS)],
+  loaders: [
+    setUpMockProviders(MOCK_SUGGESTION_PROVIDERS, MOCK_SEMANTIC_LINK_PROVIDERS),
+  ],
 } as unknown as Meta;
 
 const Template: Story<SiteSearchboxOptions> = (
   options: SiteSearchboxOptions
 ): TemplateResult => {
-  return html`<site-searchbox .options=${options} />`;
+  return html`
+    <style>
+      h4 {
+        margin-bottom: 8px;
+      }
+
+      small {
+        display: block;
+        margin: 0 0 4px;
+      }
+    </style>
+
+    <site-searchbox .options=${options}></site-searchbox>
+
+    <h4>List of mocked phrases:</h4>
+    ${completion.map((c) => html`<small>${c}</small>`)}
+  `;
 };
 
 export const SearchDemo = Template.bind({});

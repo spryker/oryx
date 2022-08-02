@@ -7,6 +7,9 @@ import {
 
 export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
+    // TODO: PLP link generation with search params
+    [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
+      `/plp${encodeURIComponent(link.id)}`,
     [SemanticLinkType.Page]: (link: SemanticLink): string =>
       `/${encodeURIComponent(link.id)}`,
     [SemanticLinkType.Product]: (link: SemanticLink): string =>
