@@ -41,11 +41,6 @@ export const searchboxStyles = css`
     background: linear-gradient(0deg, #fff 0, #fff0 100%);
   }
 
-  /* TODO */
-  content-link::part(anchor):hover {
-    color: var(--oryx-color-brand);
-  }
-
   content-link::part(link) {
     padding: 0;
     white-space: normal;

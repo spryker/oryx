@@ -4,9 +4,17 @@ import { ProductContext } from '@spryker-oryx/product';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import '../index';
 import { ProductCardComponent } from './card.component';
+
+// TODO: fix for real interface when get rid of circular dependency
+interface ContentLinkComponent extends Element {
+  options: {
+    type: string;
+    id: string;
+  };
+}
 
 const mockContextProvide = vi.fn();
 
@@ -53,13 +61,21 @@ describe('ProductCardComponent', () => {
       element = await fixture(html`<product-card uid="1"></product-card>`);
     });
 
-    it('Child elements wrapped into a', () => {
+    it('Child elements wrapped into content-link with proper options', () => {
       const children = Array.from(element.shadowRoot?.children || []).filter(
         (item) => item.tagName.toLowerCase() !== 'style'
       );
+      const component = element.shadowRoot?.querySelector(
+        'content-link'
+      ) as ContentLinkComponent;
 
       expect(children.length).toBe(1);
-      expect(children[0]).toBeInstanceOf(HTMLAnchorElement);
+      expect(component).not.toBeNull();
+      expect(component?.options.id).toBe(
+        MockProductService.mockProducts[0].sku
+      );
+      // TODO: fix on SemanticLinkType when get rid of circular dependency
+      expect(component?.options.type).toBe('product');
     });
 
     it('Images component', () => {

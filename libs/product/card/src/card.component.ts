@@ -49,10 +49,13 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     return html`${asyncValue(
       this.product$,
       (product) => html`
-        <a
-          class="wrapper"
-          href="/product/${product.sku}"
+        <content-link
           @click=${this.clickHandler}
+          .options="${{
+            // TODO: fix on SemanticLinkType when get rid of circular dependency
+            type: 'product',
+            id: product.sku,
+          }}"
         >
           <div class="image">
             <product-images
@@ -83,6 +86,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
               </div>
               <div class="info-col">
                 <add-to-cart
+                  @click="${(e: Event): void => e.stopPropagation()}"
                   .options="${{
                     hideQuantityInput: true,
                   }}"
@@ -90,7 +94,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
               </div>
             </div>
           </div>
-        </a>
+        </content-link>
       `
     )}`;
   }

@@ -3,20 +3,16 @@ import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import {
-  MockProductService,
-  MOCK_CARD_PROVIDERS,
-  MOCK_PRODUCT_PROVIDERS,
-} from '../../../src/mocks';
+import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../../src/mocks';
 import '../index';
 
 export default {
   title: `${storybookPrefix}/Card`,
-  loaders: [setUpMockProviders(MOCK_CARD_PROVIDERS, MOCK_PRODUCT_PROVIDERS)],
+  loaders: [setUpMockProviders(MOCK_PRODUCT_PROVIDERS)],
 } as unknown as Meta;
 
 const Template: Story<ProductComponentProperties> = (
-  props: Props
+  props: ProductComponentProperties
 ): TemplateResult => {
   return html`<product-card .sku=${props.sku}></product-card>`;
 };

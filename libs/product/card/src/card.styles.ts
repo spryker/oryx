@@ -1,13 +1,24 @@
 import { css } from 'lit';
 
 export const ProductCardStyles = css`
-  .wrapper {
+  content-link {
     display: block;
     color: #333;
     border: 1px solid #dce0e5;
     text-decoration: none;
     border-radius: 2px;
     background-color: #fff;
+  }
+
+  content-link::part(wrapper) {
+    display: block;
+  }
+
+  content-link::part(link) {
+    display: block;
+    padding: 0;
+    border-radius: 0;
+    border: none;
   }
 
   .info {
