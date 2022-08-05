@@ -174,4 +174,32 @@ describe('FormControlController', () => {
       });
     });
   });
+
+  describe('when "floatLabel" prop is provided', () => {
+    describe('when input has no value', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<fake-input label="some label" floatLabel><input /></fake-input>`
+        );
+      });
+
+      it('should not have "has-value" attribute', () => {
+        expect(element.hasAttribute('has-value')).toBe(false);
+      });
+    });
+
+    describe('when input has value', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<fake-input label="some label" floatLabel
+            ><input value="value"
+          /></fake-input>`
+        );
+      });
+
+      it('should have "has-value" attribute', () => {
+        expect(element.hasAttribute('has-value')).toBe(true);
+      });
+    });
+  });
 });

@@ -13,6 +13,9 @@ export interface FormControlOptions extends ErrorOptions {
    * ```
    */
   label?: string;
+
+  /** The property that defines position of the label. */
+  floatLabel?: boolean;
 }
 
 export declare class FormControlInterface {

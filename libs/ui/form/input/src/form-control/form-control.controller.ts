@@ -14,7 +14,7 @@ export class FormControlController implements ReactiveController {
   }
 
   hostDisconnected(): void {
-    this.host.addEventListener('mousedown', this.mouseDownHandler);
+    this.host.removeEventListener('mousedown', this.mouseDownHandler);
     this.controlAttrObserver?.disconnect();
   }
 
@@ -40,7 +40,10 @@ export class FormControlController implements ReactiveController {
         <slot name="label">${this.host.label}</slot>
         <div class="control">
           ${content.before}
-          <slot @slotchange=${(): void => this.handleDisabled()}>
+          <slot
+            @slotchange=${(): void => this.handleSlotChange()}
+            @input=${(): void => this.toggleHasValueAttribute()}
+          >
             <input />
           </slot>
           ${content.after}
@@ -52,7 +55,16 @@ export class FormControlController implements ReactiveController {
 
   protected controlAttrObserver?: MutationObserver;
 
-  protected handleDisabled(): void {
+  protected handleSlotChange(): void {
+    this.toggleHasValueAttribute();
+    this.adjustDisabledState();
+  }
+
+  protected toggleHasValueAttribute(): void {
+    this.host.toggleAttribute('has-value', !!this.control.value);
+  }
+
+  protected adjustDisabledState(): void {
     this.host.toggleAttribute('disabled', this.control.disabled);
     this.registerListener({ attributes: ['disabled', 'readonly'] }, () => {
       this.host.toggleAttribute('disabled', this.control.disabled);

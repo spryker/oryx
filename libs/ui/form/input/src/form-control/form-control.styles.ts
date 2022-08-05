@@ -85,11 +85,13 @@ export const formControlStyles = css`
     font: inherit;
     color: var(--oryx-color-ink);
     border-radius: var(--oryx-border-radius);
+    line-height: 24px;
   }
 
   ::slotted(input[disabled]),
   ::slotted(textarea[disabled]) {
     color: var(--oryx-color-neutral-darker);
+    background-color: var(--oryx-color-neutral-lighter);
   }
 
   textarea,

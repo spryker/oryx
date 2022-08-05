@@ -8,20 +8,29 @@ export default {
 } as Meta;
 
 interface Props {
+  label: string;
   disabled: boolean;
   type: string;
+  floatLabel: boolean;
 }
 
-const Template: Story<Props> = ({ disabled, type }: Props): TemplateResult => {
+const Template: Story<Props> = ({
+  disabled,
+  type,
+  floatLabel,
+  label,
+}: Props): TemplateResult => {
   return html`
-    <oryx-input>
+    <oryx-input ?floatLabel=${floatLabel} label=${label}>
       <input placeholder="Placeholder..." ?disabled=${disabled} type=${type} />
     </oryx-input>
   `;
 };
 export const InputDemo = Template.bind({});
 InputDemo.args = {
+  label: 'Label',
   disabled: false,
+  floatLabel: false,
   type: 'text',
 };
 
