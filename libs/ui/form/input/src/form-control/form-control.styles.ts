@@ -101,4 +101,11 @@ export const formControlStyles = css`
   [hasErrorContent] {
     margin-block-start: 7px;
   }
+
+  @media (max-width: 767px) {
+    input,
+    ::slotted(input) {
+      height: 46px;
+    }
+  }
 `;

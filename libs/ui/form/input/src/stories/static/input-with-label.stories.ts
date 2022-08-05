@@ -108,3 +108,7 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 export const StatesWithLabel = Template.bind({});
+
+StatesWithLabel.parameters = {
+  chromatic: { viewports: [320, 1200] },
+};
