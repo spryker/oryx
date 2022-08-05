@@ -251,7 +251,7 @@ export class SearchboxComponent
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
-        clearIconPosition=${ClearIconPosition.NONE}
+        .clearIconPosition=${ClearIconPosition.NONE}
         @oryx.typeahead=${this.onTypeahead}
       >
         <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
