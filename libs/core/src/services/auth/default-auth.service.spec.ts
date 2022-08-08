@@ -85,6 +85,7 @@ describe('DefaultAuthService', () => {
         .pipe(
           switchMap((value) => {
             accessTokenService.load.mockReturnValue(value);
+            accessTokenService.remove.mockReturnValue(of(null));
 
             return service.login(
               mockCredentials.username,
@@ -94,7 +95,7 @@ describe('DefaultAuthService', () => {
           })
         )
         .subscribe(callback);
-      trigger$.next(throwError(() => null));
+      trigger$.next(throwError(() => of(null)));
       expect(callback).toHaveBeenNthCalledWith(1, false);
       trigger$.next(of(mockToken));
       expect(callback).toHaveBeenNthCalledWith(2, true);
