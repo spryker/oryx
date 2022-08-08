@@ -6,9 +6,9 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
   combineLatest,
@@ -28,13 +28,17 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
   static styles = styles;
 
   protected contentController = new ContentController(this);
-  protected semanticLink = resolve(SemanticLinkService);
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
 
   protected options$ = this.contentController.getOptions();
+  protected success$ = new BehaviorSubject(true);
   protected loading$ = new BehaviorSubject(false);
-  protected data$ = combineLatest([this.options$, this.loading$]);
+  protected data$ = combineLatest([
+    this.options$,
+    this.loading$,
+    this.success$,
+  ]);
 
   protected authTrigger$ = new ReplaySubject<LoginParameters>(1);
 
@@ -47,20 +51,22 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
     withLatestFrom(this.options$),
     switchMap(([success, options]) => {
       if (!success) {
-        return this.semanticLink
-          ?.get?.({ type: SemanticLinkType.Page, id: 'unauthorized' })
-          .pipe(
-            tap((link) => {
-              this.routerService.navigate(link ?? '');
-            })
-          );
+        this.success$.next(success);
+        return EMPTY;
       }
       if (options.url) {
         this.routerService.navigate(options.url);
         return EMPTY;
       }
-      this.routerService.back();
-      return EMPTY;
+      return this.routerService.previousRoute().pipe(
+        tap((previousPage) => {
+          if (previousPage) {
+            this.routerService.navigate(previousPage);
+            return;
+          }
+          this.routerService.navigate('/');
+        })
+      );
     }),
     tap(() => this.loading$.next(false))
   );
@@ -77,25 +83,33 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.data$, ([options, loading]) => {
+    return html`${asyncValue(this.data$, ([options, loading, success]) => {
       return html`<oryx-card>
       <h1 slot="header">Access your account</h1>
+      ${
+        success
+          ? ''
+          : html`<oryx-notification type="error"
+              >The email or/and password entered is not valid. Please try
+              again.</oryx-notification
+            >`
+      }
       <form @submit=${this.handleLogin} method="post">
-        <oryx-input label="Email *"><input name="email" placeholder="Email" required/></oryx-input>
-        <oryx-password-input label="Password *" strategy="${ifDefined(
-          options.strategy
-        )}"/><input type="password" name="password" placeholder="Password" required/></oryx-password-input>
+        <oryx-input label="Email *" ?haserror="${!success}"><input type="email" name="email" placeholder="Email" required/></oryx-input>
+        <oryx-password-input ?haserror="${!success}" label="Password *" strategy="${ifDefined(
+        options.strategy
+      )}"/><input type="password" name="password" placeholder="Password" required/></oryx-password-input>
         <div class="options">
-          ${
-            options.showRememberMe
-              ? html` <oryx-checkbox>
-                  <label>
-                    <input type="checkbox" name="rememberme" />
-                    Remember me
-                  </label>
-                </oryx-checkbox>`
-              : html`<span></span>`
-          }
+          ${when(
+            options.showRememberMe,
+            () => html` <oryx-checkbox>
+              <label>
+                <input type="checkbox" name="rememberme" />
+                Remember me
+              </label>
+            </oryx-checkbox>`,
+            () => html`<span></span>`
+          )}
           <oryx-link><a href="#">Forgot Password?</a></oryx-link>
         </div>
         <oryx-button size="small"><button type="submit" ?disabled=${loading}>Login</button></oryx-button>

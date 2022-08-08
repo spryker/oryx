@@ -10,6 +10,7 @@ import '@spryker-oryx/ui/password';
 import '@spryker-oryx/ui/rating';
 import '@spryker-oryx/ui/button';
 import '@spryker-oryx/ui/icon-button';
+import '@spryker-oryx/ui/notification';
 import '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/icon';
 import '@spryker-oryx/ui/link';

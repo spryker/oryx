@@ -18,6 +18,7 @@ export interface RouteParams {
 export interface RouterService {
   go(route: string): void;
   back(): void;
+  previousRoute(): Observable<string>;
   navigate(route: string): void;
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   currentRoute(): Observable<string>;

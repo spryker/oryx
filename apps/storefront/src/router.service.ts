@@ -1,16 +1,31 @@
+import { StorageService, StorageType } from '@spryker-oryx/core';
 import {
   RouteParams,
   RouterEvent,
   RouterEventType,
   RouterService,
 } from '@spryker-oryx/experience';
-import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { inject } from '@spryker-oryx/injector';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  ReplaySubject,
+  Subject,
+  withLatestFrom,
+} from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+const CURRENT_PAGE = 'currentPage';
+const PREVIOUS_PAGE = 'previousPage';
+
 export class StorefrontRouterService implements RouterService {
-  private router$ = new BehaviorSubject('');
+  private router$ = new BehaviorSubject(window.location.pathname);
   private params$ = new ReplaySubject<RouteParams>(1);
   private routerEvents$: Subject<RouterEvent> = new Subject();
+  private storedRoute$ = new BehaviorSubject('');
+
+  protected storageService = inject(StorageService);
 
   go(route: string): void {
     this.router$.next(route);
@@ -30,8 +45,25 @@ export class StorefrontRouterService implements RouterService {
     return this.routerEvents$.pipe(filter((event) => event.type === type));
   }
 
+  previousRoute(): Observable<string> {
+    return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
+  }
+
   currentRoute(): Observable<string> {
-    return this.router$;
+    return this.router$.pipe(
+      withLatestFrom(this.storedRoute$),
+      map(([route, currentPage]) => {
+        if (currentPage) {
+          this.storageService.set(
+            PREVIOUS_PAGE,
+            currentPage,
+            StorageType.SESSION
+          );
+        }
+        this.storeRoute(route);
+        return route;
+      })
+    );
   }
 
   currentParams(): Observable<RouteParams> {
@@ -40,5 +72,10 @@ export class StorefrontRouterService implements RouterService {
 
   acceptParams(params: RouteParams): void {
     this.params$.next(params);
+  }
+
+  protected storeRoute(value: string): void {
+    this.storageService.set(CURRENT_PAGE, value, StorageType.SESSION);
+    this.storedRoute$.next(value);
   }
 }
