@@ -1,3 +1,4 @@
+import { isSafari } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './image.styles';
 
@@ -8,6 +9,9 @@ export class ImageComponent extends LitElement {
 
   protected move(e: Event): void {
     (e.target as HTMLSlotElement).assignedElements().forEach((element) => {
+      if (isSafari() && element.hasAttribute('loading')) {
+        element.removeAttribute('loading');
+      }
       this.renderRoot.querySelector('picture')?.appendChild(element);
     });
   }
