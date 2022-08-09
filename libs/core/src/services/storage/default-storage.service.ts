@@ -25,16 +25,16 @@ export class DefaultStorageService implements StorageService {
     type = StorageType.DEFAULT
   ): Observable<void> {
     this.getStorage(type).setItem(key, JSON.stringify(value));
-    return of();
+    return of(undefined);
   }
 
   remove(key: string, type = StorageType.DEFAULT): Observable<void> {
     this.getStorage(type).removeItem(key);
-    return of();
+    return of(undefined);
   }
 
   clear(type = StorageType.DEFAULT): Observable<void> {
     this.getStorage(type).clear();
-    return of();
+    return of(undefined);
   }
 }
