@@ -6,6 +6,7 @@ import './experience-preview';
 import '@spryker-oryx/experience/components';
 import './storefront.component';
 import '@spryker-oryx/ui/card';
+import '@spryker-oryx/ui/checkbox';
 import '@spryker-oryx/ui/password';
 import '@spryker-oryx/ui/rating';
 import '@spryker-oryx/ui/button';

@@ -103,10 +103,8 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
           ${when(
             options.showRememberMe,
             () => html` <oryx-checkbox>
-              <label>
-                <input type="checkbox" name="rememberme" />
-                Remember me
-              </label>
+              <input type="checkbox" name="rememberme" />
+              Remember me
             </oryx-checkbox>`,
             () => html`<span></span>`
           )}
