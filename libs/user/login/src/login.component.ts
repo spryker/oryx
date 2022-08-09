@@ -12,7 +12,7 @@ import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
   combineLatest,
-  EMPTY,
+  of,
   ReplaySubject,
   switchMap,
   tap,
@@ -52,11 +52,11 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
     switchMap(([success, options]) => {
       if (!success) {
         this.success$.next(success);
-        return EMPTY;
+        return of(undefined);
       }
       if (options.url) {
         this.routerService.navigate(options.url);
-        return EMPTY;
+        return of(undefined);
       }
       return this.routerService.previousRoute().pipe(
         tap((previousPage) => {
