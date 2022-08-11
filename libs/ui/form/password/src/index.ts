@@ -1,8 +1,11 @@
+import { componentDef } from '@spryker-oryx/core';
+
 export * from './password-input.component';
 export * from './password-input.model';
 export * from './password-input.styles';
 
-import { PasswordInputComponent } from './password-input.component';
-
-customElements.get('oryx-password-input') ||
-  customElements.define('oryx-password-input', PasswordInputComponent);
+export const passwordInputComponent = componentDef({
+  name: 'oryx-password-input',
+  impl: () =>
+    import('./password-input.component').then((m) => m.PasswordInputComponent),
+});

@@ -1,9 +1,13 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
-import { PageNavigationItemComponent } from '../../page-navigation-item';
-import './index';
+import {
+  PageNavigationItemComponent,
+  pageNavigationItemComponent,
+} from './index';
+
+useComponent(pageNavigationItemComponent);
 
 describe('Page navigation item', () => {
   let element: PageNavigationItemComponent;
@@ -13,7 +17,7 @@ describe('Page navigation item', () => {
     const content = 'Subtitle';
 
     beforeEach(async () => {
-      element = await fixture(html` <oryx-page-navigation-item>
+      element = await fixture(html`<oryx-page-navigation-item>
         <span>${heading}</span>
         <span slot="content">${content}</span>
       </oryx-page-navigation-item>`);

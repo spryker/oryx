@@ -1,7 +1,9 @@
-import { MiniCartComponent } from './mini-cart.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './mini-cart.component';
 export * from './mini-cart.styles';
 
-customElements.get('mini-cart') ||
-  customElements.define('mini-cart', MiniCartComponent);
+export const miniCartComponent = componentDef({
+  name: 'mini-cart',
+  impl: () => import('./mini-cart.component').then((m) => m.MiniCartComponent),
+});

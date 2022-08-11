@@ -7,8 +7,6 @@ import { html } from 'lit/static-html.js';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
-export const TAG_NAME = 'oryx-text';
-
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
@@ -73,7 +71,7 @@ export class TextComponent extends LitElement implements TextProperties {
           </oryx-icon-button>
         </slot>`
       )}
-      ${script(this.script, TAG_NAME)}`;
+      ${script(this.script, 'oryx-text')}`;
   }
 
   protected setup(): void {

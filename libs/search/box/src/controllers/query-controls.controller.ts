@@ -1,6 +1,6 @@
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { SearchBoxOptions } from '..';
+import { SearchBoxOptions } from '../index';
 
 export class QueryControlsController {
   protected dispatchEvent(e: Event, eventType: string): void {

@@ -1,12 +1,17 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { checkSlots, dispatchKeydown } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
+import { modalComponent } from '../../index';
 import { NDSModalComponent } from './modal.component';
 
-customElements.get('oryx-modal-nds') ||
-  customElements.define('oryx-modal-nds', NDSModalComponent);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+window.HTMLDialogElement = null;
+
+useComponent(modalComponent);
 
 describe('NDS Modal', () => {
   let element: NDSModalComponent;
@@ -67,7 +72,7 @@ describe('NDS Modal', () => {
 
   describe('when the "open()" method is called', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal-nds></oryx-modal-nds>`);
+      element = await fixture(html`<oryx-modal></oryx-modal>`);
       element.open();
     });
 
@@ -88,7 +93,7 @@ describe('NDS Modal', () => {
 
   describe('when the "open" attribute is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal-nds open></oryx-modal-nds>`);
+      element = await fixture(html`<oryx-modal open></oryx-modal>`);
     });
 
     it('should pass the a11y audit', async () => {
@@ -105,7 +110,7 @@ describe('NDS Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal-nds disableCloseOnBackdrop></oryx-modal-nds>`
+        html`<oryx-modal disableCloseOnBackdrop></oryx-modal>`
       );
       element.open();
     });
@@ -135,7 +140,7 @@ describe('NDS Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal-nds disableCloseOnEscape></oryx-modal-nds>`
+        html`<oryx-modal disableCloseOnEscape></oryx-modal>`
       );
       element.open();
     });
@@ -161,7 +166,7 @@ describe('NDS Modal', () => {
 
   describe('when is close', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal-nds></oryx-modal-nds>`);
+      element = await fixture(html`<oryx-modal></oryx-modal>`);
     });
 
     it('should not open dialog', () => {
@@ -169,13 +174,13 @@ describe('NDS Modal', () => {
     });
   });
   checkSlots(['header', 'default', 'footer'], {
-    tag: 'oryx-modal-nds',
+    tag: 'oryx-modal',
     attributes: ['open'],
   });
 
   describe('when the component is removed from the dom', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal-nds open></oryx-modal-nds>`);
+      element = await fixture(html`<oryx-modal open></oryx-modal>`);
       element.disconnectedCallback();
     });
 

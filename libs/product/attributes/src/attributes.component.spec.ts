@@ -1,11 +1,17 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { ProductAttributesComponent } from '@spryker-oryx/product/attributes';
 import {
   MockProductService,
   MOCK_PRODUCT_PROVIDERS,
 } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
+import {
+  productAttributesComponent,
+  ProductAttributesComponent,
+} from './index';
+
+useComponent(productAttributesComponent);
 
 describe('Product attributes', () => {
   let element: ProductAttributesComponent;

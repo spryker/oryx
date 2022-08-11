@@ -1,7 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
+import { radioComponent } from '../index';
+
+useComponent(radioComponent);
 
 export default { title: `${storybookPrefix}/Form/Radio` } as Meta;
 

@@ -1,13 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { afterEach, beforeEach } from 'vitest';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import '../index';
 import { ProductAverageRatingComponent } from './average-rating.component';
+import { productAverageRatingComponent } from './index';
+
+useComponent(productAverageRatingComponent);
 
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});

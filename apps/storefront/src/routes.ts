@@ -1,5 +1,6 @@
 import { RouteConfig } from '@lit-labs/router';
 import { html, TemplateResult } from 'lit';
+import 'urlpattern-polyfill';
 
 export const routes: RouteConfig[] = [
   {

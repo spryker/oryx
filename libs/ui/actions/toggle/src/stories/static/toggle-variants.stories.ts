@@ -2,7 +2,6 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { generateVariantsMatrix, Variant } from '../../../../../utilities';
-import '../../index';
 
 export default { title: `${storybookPrefix}/Actions/Toggle/Static` } as Meta;
 

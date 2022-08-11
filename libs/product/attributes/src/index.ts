@@ -1,6 +1,11 @@
-import { ProductAttributesComponent, TAG_NAME } from './attributes.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './attributes.component';
+export * from './attributes.model';
+export * from './attributes.styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, ProductAttributesComponent);
+export const productAttributesComponent = componentDef({
+  name: 'product-attributes',
+  impl: () =>
+    import('./attributes.component').then((m) => m.ProductAttributesComponent),
+});

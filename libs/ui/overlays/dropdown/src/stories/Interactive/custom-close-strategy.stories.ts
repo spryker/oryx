@@ -3,10 +3,10 @@ import { expect } from '@storybook/jest';
 import { fireEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { DropdownComponent } from '../..';
 import { storybookPrefix } from '../../../../../.constants';
 import { OverlaysDecorator } from '../../../../../utilities/storybook';
-import '../../index';
+import { DropdownComponent } from '../../index';
+
 import { renderCustomContent } from '../utils';
 
 export default {

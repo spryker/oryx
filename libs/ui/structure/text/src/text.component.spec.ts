@@ -1,8 +1,10 @@
 // organize-imports-ignore
 import { fixture, html } from '@open-wc/testing-helpers';
 import './ponyfill';
-import './index';
-import { TextComponent } from './index';
+import { TextComponent, textComponent } from './index';
+import { useComponent } from '@spryker-oryx/core/utilities';
+
+useComponent(textComponent);
 
 const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text

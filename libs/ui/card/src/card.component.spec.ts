@@ -1,8 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { CardComponent } from './card.component';
-import './index';
+import { cardComponent } from './index';
+
+useComponent(cardComponent);
 
 describe('Card', () => {
   let element: CardComponent;

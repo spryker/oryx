@@ -1,8 +1,13 @@
-import { PageNavigationComponent } from './page-navigation.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './page-navigation.component';
 export * from './page-navigation.controller';
 export * from './page-navigation.styles';
 
-customElements.get('oryx-page-navigation') ||
-  customElements.define('oryx-page-navigation', PageNavigationComponent);
+export const pageNavigationComponent = componentDef({
+  name: 'oryx-page-navigation',
+  impl: () =>
+    import('./page-navigation.component').then(
+      (m) => m.PageNavigationComponent
+    ),
+});

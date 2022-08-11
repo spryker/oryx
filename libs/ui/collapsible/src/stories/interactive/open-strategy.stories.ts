@@ -3,9 +3,8 @@ import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { CollapsibleComponent } from '../..';
 import { storybookPrefix } from '../../../../.constants';
-import '../../index';
+import { CollapsibleComponent } from '../../index';
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible/Interactive`,

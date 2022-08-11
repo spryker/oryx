@@ -1,8 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import './index';
+import { ratingComponent } from './index';
 import { RatingComponent } from './rating.component';
+
+useComponent(ratingComponent);
 
 describe('RatingComponent', () => {
   let element: RatingComponent;

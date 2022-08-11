@@ -12,7 +12,7 @@ describe('addLink', () => {
   it('should attach the link to the dom properly', () => {
     addLink('my-path/path.css');
 
-    expect(selector).toBeInDOM();
+    expect(selector).toBeInTheDocument();
   });
 
   describe('if there are extra attributes', () => {

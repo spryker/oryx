@@ -1,10 +1,13 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
-import '../index';
 import { BannerComponent } from './banner.component';
+import { bannerComponent } from './index';
+
+useComponent(bannerComponent);
 
 class MockService {
   getContent(): Promise<any> {
@@ -29,7 +32,7 @@ describe('Banner', () => {
 
   beforeEach(async () => {
     element = await fixture(
-      html` <oryx-banner
+      html`<oryx-banner
         .content=${{ title: 'test', content: 'test' }}
         .options=${{ alt: 'test' }}
       ></oryx-banner>`

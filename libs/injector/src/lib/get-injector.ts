@@ -2,7 +2,16 @@
 import { Injector } from './injector';
 import { Provider } from './provider';
 
-export type InjectorContext = string | symbol;
+export const enum InjectorContextKey {
+  App,
+}
+export type InjectorContext = string | symbol | InjectorContextKey.App;
+
+export interface InjectorOptions {
+  context?: InjectorContext;
+  parent?: Injector;
+  providers?: Provider[];
+}
 
 let _injectorsRegistry: Map<InjectorContext, Injector>;
 
@@ -50,47 +59,46 @@ export function getInjector(
 /**
  * Create an injector for specified context.
  *
- * Is context is not specified, injector is created globally.
+ * If context is not specified, injector is created globally.
+ * if context is specified as InjectorContextKey.App, application injector is shared by all components build together, using singleton context
  *
  * Returns teardown logic
  *
  * @param options
  */
-export function createInjector(options: {
-  context?: InjectorContext;
-  parent?: Injector;
-  providers?: Provider[];
-}): Injector {
+export function createInjector(options: InjectorOptions): Injector {
+  const isAppInjector = (context?: InjectorContext): boolean => {
+    if (context === InjectorContextKey.App) {
+      if (!_theAppContext) {
+        _theAppContext = Symbol();
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
   const { context, parent, providers } = {
     ...options,
-    context: options.context ?? '',
+    context: isAppInjector(options.context)
+      ? (_theAppContext as InjectorContext)
+      : options.context ?? '',
   };
+
   const registry = getRegistry();
+
   if (registry.has(context)) {
-    throw new Error('Injector already created for context');
+    throw new Error(
+      `Injector already created for context - ${
+        options.context === InjectorContextKey.App ? 'App' : String(context)
+      }`
+    );
   }
+
   registry.set(context, new Injector(providers, parent));
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return registry.get(context)!;
-}
-
-/**
- * Create an injector for the application
- *
- * Application injector is shared by all components build together, using singleton context
- * variable
- *
- * @param options
- */
-export function createAppInjector(options: {
-  parent?: Injector;
-  providers?: Provider[];
-}): Injector {
-  if (_theAppContext) {
-    throw new Error('App injector already created');
-  }
-  _theAppContext = Symbol();
-  return createInjector({ ...options, context: _theAppContext });
 }
 
 /**
@@ -99,6 +107,11 @@ export function createAppInjector(options: {
  * @param context - Injector context.
  */
 export function destroyInjector(context: InjectorContext = ''): void {
+  context =
+    context === InjectorContextKey.App
+      ? (_theAppContext as InjectorContext)
+      : context;
+
   const registry = getRegistry();
 
   if (!registry.has(context)) {
@@ -107,14 +120,8 @@ export function destroyInjector(context: InjectorContext = ''): void {
 
   registry.get(context)?.destroy();
   registry.delete(context);
-}
 
-/**
- * Invoke destroy method of an app injector and remove it from the registry
- */
-export function destroyAppInjector() {
-  if (_theAppContext) {
-    destroyInjector(_theAppContext);
+  if (context === InjectorContextKey.App) {
+    _theAppContext = undefined;
   }
-  _theAppContext = undefined;
 }

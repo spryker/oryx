@@ -2,4 +2,4 @@
 
 export {};
 
-globalThis.global = globalThis as any;
+globalThis.global = globalThis;

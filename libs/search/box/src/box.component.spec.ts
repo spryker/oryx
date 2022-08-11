@@ -1,12 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
+import { typeheadComponent } from '@spryker-oryx/ui/typeahead';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SearchBoxComponent, SearchBoxOptions } from '.';
 import { MOCK_SUGGESTION_PROVIDERS } from '../../src/mocks';
-import '../index';
+import {
+  SearchBoxComponent,
+  searchBoxComponent,
+  SearchBoxOptions,
+} from './index';
+
+useComponent([searchBoxComponent, typeheadComponent]);
 
 const mockedOptions: SearchBoxOptions = {
   placeholder: 'placeholder',

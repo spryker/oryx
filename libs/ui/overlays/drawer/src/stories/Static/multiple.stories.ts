@@ -1,11 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { DrawerType } from '../..';
 import { storybookPrefix } from '../../../../../.constants';
 import { Position } from '../../../../../utilities/model/common';
 import { OverlaysDecorator } from '../../../../../utilities/storybook';
-import '../../index';
+import { DrawerType } from '../../index';
 
 export default {
   title: `${storybookPrefix}/Overlays/Drawer/Static`,

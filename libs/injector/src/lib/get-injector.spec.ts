@@ -1,9 +1,8 @@
 import {
-  createAppInjector,
   createInjector,
-  destroyAppInjector,
   destroyInjector,
   getInjector,
+  InjectorContextKey,
 } from './get-injector';
 import { Injector } from './injector';
 
@@ -46,36 +45,47 @@ describe('createInjector', () => {
     expect(() => createInjector({})).toThrow();
     destroyInjector();
   });
-});
 
-describe('createAppInjector', () => {
-  it('should create separate UI container for the application', () => {
-    const injector = createInjector({});
-    const appInjector = createAppInjector({});
-    expect(injector).not.toBe(appInjector);
-    destroyAppInjector();
-    destroyInjector();
-  });
-
-  it('should be able to reuse global injector as a parent', () => {
-    createInjector({
-      providers: [
-        {
-          provide: 'A',
-          useValue: 'B',
-        },
-      ],
+  describe('context is InjectorContextKey.App', () => {
+    it('should create separate UI container for the application', () => {
+      const injector = createInjector({});
+      const appInjector = createInjector({
+        context: InjectorContextKey.App,
+      });
+      expect(injector).not.toBe(appInjector);
+      destroyInjector(InjectorContextKey.App);
+      destroyInjector();
     });
-    const appInjector = createAppInjector({ parent: getInjector() });
-    expect(appInjector.inject('A')).toBe('B');
-    destroyAppInjector();
-    destroyInjector();
-  });
 
-  it('should not create app injector if already created', () => {
-    createAppInjector({});
-    expect(() => createAppInjector({})).toThrow();
-    destroyAppInjector();
+    it('should be able to reuse global injector as a parent', () => {
+      createInjector({
+        providers: [
+          {
+            provide: 'A',
+            useValue: 'B',
+          },
+        ],
+      });
+      const appInjector = createInjector({
+        context: InjectorContextKey.App,
+        parent: getInjector(''),
+      });
+      expect(appInjector.inject('A')).toBe('B');
+      destroyInjector(InjectorContextKey.App);
+      destroyInjector();
+    });
+
+    it('should not create app injector if already created', () => {
+      createInjector({
+        context: InjectorContextKey.App,
+      });
+      expect(() =>
+        createInjector({
+          context: InjectorContextKey.App,
+        })
+      ).toThrow();
+      destroyInjector(InjectorContextKey.App);
+    });
   });
 });
 
@@ -104,13 +114,13 @@ describe('destroyInjector', () => {
   it('should not throw an error if no injector', () => {
     expect(() => destroyInjector('non-existing context')).not.toThrowError();
   });
-});
 
-describe('destroyAppInjector', () => {
-  it('should destroy app injector', () => {
-    createAppInjector({});
+  it('should destroy app injector with app context', () => {
+    createInjector({
+      context: InjectorContextKey.App,
+    });
     expect(getInjector()).toBeTruthy();
-    destroyAppInjector();
-    expect(() => getInjector()).toThrow();
+    destroyInjector(InjectorContextKey.App);
+    expect(() => getInjector(InjectorContextKey.App)).toThrow();
   });
 });

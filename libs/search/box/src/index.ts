@@ -1,9 +1,11 @@
-import { SearchBoxComponent, TAG_NAME } from './box.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './box.component';
 export * from './box.model';
 export * from './controllers';
 export * from './styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, SearchBoxComponent);
+export const searchBoxComponent = componentDef({
+  name: 'search-box',
+  impl: () => import('./box.component').then((m) => m.SearchBoxComponent),
+});

@@ -1,8 +1,11 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import '../index';
+import { quantityInputComponent } from '../index';
+
+useComponent(quantityInputComponent);
 
 export default {
   title: `${storybookPrefix}/Quantity input`,

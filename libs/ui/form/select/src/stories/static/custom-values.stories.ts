@@ -1,10 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import '../../../../../option/src';
 import { PopoverSelectEvent } from '../../../../../overlays/popover/src/popover.model';
 import { sideBySide } from '../../../../../utilities/storybook';
-import '../../index';
 
 export default {
   title: `${storybookPrefix}/Form/Select/Static`,

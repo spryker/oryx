@@ -8,7 +8,6 @@ import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import '../index';
 import { PopoverComponent } from '../popover.component';
 import { CLOSE_EVENT } from '../popover.model';
 import { ToggleController } from './toggle.controller';

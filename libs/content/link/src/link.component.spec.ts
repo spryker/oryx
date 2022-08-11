@@ -1,13 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector } from '@spryker-oryx/injector';
 import { SemanticLinkType, SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import '../index';
+import { contentLinkComponent } from './index';
 import { ContentLinkComponent } from './link.component';
 import { LinkOptions, LinkType } from './link.model';
+
+useComponent(contentLinkComponent);
 
 class MockService {
   getOptions(): Observable<LinkOptions> {
@@ -36,7 +39,7 @@ describe('ContentLinkComponent', () => {
       id: 'test',
     };
     element = await fixture(
-      html` <content-link .options=${options}></content-link>`
+      html`<content-link .options=${options}></content-link>`
     );
   });
 

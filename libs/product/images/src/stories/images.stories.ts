@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { forceReRender, Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
@@ -12,7 +13,9 @@ import {
   ProductImagesNavigationPosition,
   ProductImagesPreviewLayout,
 } from '../images.model';
-import '../index';
+import { productImagesComponent } from '../index';
+
+useComponent(productImagesComponent);
 
 export default {
   title: `${storybookPrefix}/Images`,

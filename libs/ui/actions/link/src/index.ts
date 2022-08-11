@@ -1,8 +1,10 @@
-import { LinkComponent } from './link.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './link.component';
 export * from './link.model';
 export * from './link.styles';
 
-customElements.get('oryx-link') ||
-  customElements.define('oryx-link', LinkComponent);
+export const linkComponent = componentDef({
+  name: 'oryx-link',
+  impl: () => import('./link.component').then((m) => m.LinkComponent),
+});

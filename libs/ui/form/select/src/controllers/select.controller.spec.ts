@@ -4,7 +4,6 @@ import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
-import '../../../../option';
 import { getControl } from '../../../utilities';
 import { SelectOptions } from '../select.model';
 import { SelectController } from './select.controller';

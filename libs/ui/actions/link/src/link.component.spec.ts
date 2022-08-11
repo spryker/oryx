@@ -1,9 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import './index';
+import { linkComponent } from './index';
 import { LinkComponent } from './link.component';
 import { LinkTypes } from './link.model';
+
+useComponent(linkComponent);
 
 describe('LinkComponent', () => {
   let element: LinkComponent;
@@ -18,9 +21,7 @@ describe('LinkComponent', () => {
     Object.values(types).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
-          element = await fixture(
-            html` <oryx-link type="${type}"></oryx-link>`
-          );
+          element = await fixture(html`<oryx-link type="${type}"></oryx-link>`);
         });
 
         it('passes the a11y audit', async () => {
@@ -36,7 +37,7 @@ describe('LinkComponent', () => {
 
   describe('when link is disabled', () => {
     beforeEach(async () => {
-      element = await fixture(html` <oryx-link disabled></oryx-link>`);
+      element = await fixture(html`<oryx-link disabled></oryx-link>`);
     });
 
     it('passes the a11y audit', async () => {

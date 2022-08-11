@@ -1,7 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
+import { tileComponent } from '../index';
+
+useComponent(tileComponent);
 
 export default {
   title: `${storybookPrefix}/Structure/Tile`,

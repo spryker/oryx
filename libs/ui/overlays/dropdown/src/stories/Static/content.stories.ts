@@ -2,8 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { OverlaysDecorator } from '../../../../../utilities/storybook';
-import '../../../../popover/index';
-import '../../index';
+
 import { renderCustomContent, renderOptions } from '../utils';
 
 export default {

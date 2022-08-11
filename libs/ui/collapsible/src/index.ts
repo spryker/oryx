@@ -1,8 +1,11 @@
-import { CollapsibleComponent, TAG_NAME } from './collapsible.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './collapsible.component';
 export * from './collapsible.model';
 export * from './styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, CollapsibleComponent);
+export const collapsibleComponent = componentDef({
+  name: 'oryx-collapsible',
+  impl: () =>
+    import('./collapsible.component').then((m) => m.CollapsibleComponent),
+});

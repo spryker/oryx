@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../../.constants';
+
 import {
   FilterIcons,
   LanguageIcons,
@@ -11,7 +12,6 @@ import {
   NotificationIcons,
   ViewIcons,
 } from '../../icon.model';
-import '../../index';
 
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 

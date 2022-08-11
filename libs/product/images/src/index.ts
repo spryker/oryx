@@ -1,8 +1,11 @@
-import { ProductImagesComponent } from './images.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './images.component';
 export * from './images.model';
 export * from './images.styles';
 
-customElements.get('product-images') ||
-  customElements.define('product-images', ProductImagesComponent);
+export const productImagesComponent = componentDef({
+  name: 'product-images',
+  impl: () =>
+    import('./images.component').then((m) => m.ProductImagesComponent),
+});

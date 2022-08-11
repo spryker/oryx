@@ -1,7 +1,7 @@
 import {
   OverlayService,
   OverlayServiceOptions,
-} from '../../../../utilities/service';
+} from '@spryker-oryx/ui/utilities';
 import { DrawerComponent, TAG_NAME } from '../drawer.component';
 
 interface DrawerServiceToggleOptions extends OverlayServiceOptions {
@@ -39,9 +39,8 @@ export class DrawerService extends OverlayService<DrawerComponent> {
   }
 
   protected findAndCloseOtherDrawers(current?: DrawerComponent): void {
-    const otherDrawers: NodeListOf<DrawerComponent> = document.querySelectorAll(
-      `${TAG_NAME}`
-    );
+    const otherDrawers: NodeListOf<DrawerComponent> =
+      document.querySelectorAll(TAG_NAME);
 
     otherDrawers.forEach((drawer: DrawerComponent): void => {
       if (drawer !== current && drawer.dialog?.open) {

@@ -1,6 +1,4 @@
 import { html, TemplateResult } from 'lit';
-import '../../../page-navigation-item';
-import '../index';
 
 export const getPageNavigation = (
   itemsNumber: number,

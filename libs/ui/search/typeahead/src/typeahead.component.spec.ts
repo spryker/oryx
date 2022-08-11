@@ -1,11 +1,14 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import {
   a11yConfig,
   queryAssignedElements,
 } from '@spryker-oryx/typescript-utils';
-import './index';
+import { typeheadComponent } from './index';
 import { TypeaheadComponent } from './typeahead.component';
+
+useComponent(typeheadComponent);
 
 describe('TypeaheadComponent', () => {
   let element: TypeaheadComponent;

@@ -1,11 +1,14 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { TemplateResult } from 'lit';
 import { getControl } from '../../utilities/getControl';
-import './index';
+import { passwordInputComponent } from './index';
 import { PasswordInputComponent } from './password-input.component';
 import { PasswordVisibilityStrategy } from './password-input.model';
+
+useComponent(passwordInputComponent);
 
 describe('PasswordComponent', () => {
   let element: PasswordInputComponent;

@@ -1,6 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { NotificationService, TAG_NAME } from '..';
-import '../index';
+import { NotificationService, TAG_NAME } from '../index';
 import { Positions } from '../notification-center.model';
 
 describe('NotificationService', () => {

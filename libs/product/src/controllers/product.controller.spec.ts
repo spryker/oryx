@@ -1,47 +1,34 @@
+import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
+import { SpyInstanceFn } from 'vitest';
 import { ProductContext } from '../models';
 import { ProductService } from '../services';
 import { ProductController } from './product.controller';
 
 const mockSku = 'mockSku';
 const mockThis = {} as LitElement;
-const mockWithProduct = { product: { name: 'test' } } as unknown as LitElement;
-const mockContextGet = vi.fn();
+const mockWithProduct = { product: { name: 'test' } };
 const mockInclude = ['includeA', 'includeB'];
 
-vi.mock('@spryker-oryx/core', async () => {
-  const core = (await vi.importActual('@spryker-oryx/core')) as Array<unknown>;
+const mockContext = {
+  get: vi.fn().mockReturnValue(of(mockSku)),
+};
+vi.spyOn(core, 'ContextController') as SpyInstanceFn;
+(core.ContextController as unknown as SpyInstanceFn).mockReturnValue(
+  mockContext
+);
 
-  return {
-    ...core,
-    ContextController: class {
-      get = mockContextGet.mockReturnValue(of(mockSku));
-    },
-  };
-});
+const mockObserve = {
+  get: vi.fn(),
+};
+vi.spyOn(litRxjs, 'ObserveController') as SpyInstanceFn;
+(litRxjs.ObserveController as unknown as SpyInstanceFn).mockReturnValue(
+  mockObserve
+);
 
-const mockObserveGet = vi.fn();
-const mockObserveReturn = 'mockObserveReturn';
-
-vi.mock('@spryker-oryx/lit-rxjs', () => ({
-  ObserveController: vi.fn((data) => {
-    if (data.product) {
-      return {
-        get: mockObserveGet.mockReturnValue(of(data.product)),
-      };
-    }
-
-    return {
-      get: mockObserveGet.mockImplementation((key) =>
-        key !== 'product' ? mockObserveReturn : of(null)
-      ),
-    };
-  }),
-}));
-
-const mockGet = vi.fn();
 const mockProduct = {
   product: 'product',
 };
@@ -53,32 +40,39 @@ describe('ProductController', () => {
   });
 
   describe('when product service is provided', () => {
+    let productService: ProductService;
+
     beforeEach(() => {
-      createInjector({
+      const testInjector = createInjector({
         providers: [
           {
             provide: ProductService,
             useValue: {
-              get: (data: unknown) =>
-                mockGet.mockReturnValue(of(mockProduct))(data),
+              get: vi.fn().mockReturnValue(of(mockProduct)),
             },
           },
         ],
       });
+
+      productService = testInjector.inject(ProductService);
     });
 
     it('should expose the product based on the context', () => {
+      const mockObserveReturn = 'mockObserveReturn';
+      mockObserve.get.mockImplementation((key) =>
+        key !== 'product' ? mockObserveReturn : of(null)
+      );
       const productController = new ProductController(mockThis, mockInclude);
       const callback = vi.fn();
       productController.getProduct().subscribe(callback);
 
-      expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'product');
-      expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'sku');
-      expect(mockContextGet).toHaveBeenCalledWith(
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'product');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'sku');
+      expect(mockContext.get).toHaveBeenCalledWith(
         ProductContext.SKU,
         mockObserveReturn
       );
-      expect(mockGet).toHaveBeenCalledWith({
+      expect(productService.get).toHaveBeenCalledWith({
         sku: mockSku,
         include: mockInclude,
       });
@@ -86,18 +80,22 @@ describe('ProductController', () => {
     });
 
     it('should expose the product from the host "product" property', () => {
-      const productController = new ProductController(mockWithProduct);
+      mockObserve.get.mockReturnValue(of(mockWithProduct.product));
+      const productController = new ProductController(
+        mockWithProduct as unknown as LitElement
+      );
       const callback = vi.fn();
       productController.getProduct().subscribe(callback);
 
-      expect(mockObserveGet).toHaveBeenCalledWith('product');
-      expect(mockContextGet).not.toHaveBeenCalled();
+      expect(mockObserve.get).toHaveBeenCalledWith('product');
+      expect(mockContext.get).not.toHaveBeenCalled();
       expect(callback).toHaveBeenCalledWith((mockWithProduct as any).product);
     });
   });
 
   describe('when product service is not provided', () => {
     it('should not expose product data', () => {
+      mockObserve.get.mockReturnValue(of(null));
       const productController = new ProductController(mockThis);
       const callback = vi.fn();
       productController.getProduct().subscribe(callback);

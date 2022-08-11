@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import '../../index';
 import { m, xl, xs } from '../images';
 
 export default { title: `${storybookPrefix}/Graphical/Image/Static` } as Meta;

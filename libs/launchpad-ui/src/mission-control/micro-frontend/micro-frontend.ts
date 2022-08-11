@@ -1,7 +1,7 @@
 import { AjaxClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { addLink, addScript } from '..';
+import { addLink, addScript } from '../index';
 
 export interface EntryPoint {
   file: string;

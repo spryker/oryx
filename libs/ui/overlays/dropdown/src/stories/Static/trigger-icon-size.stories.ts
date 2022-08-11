@@ -2,9 +2,6 @@ import { Size } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import '../../../../../actions/button';
-import '../../../../popover/index';
-import '../../index';
 
 export default {
   title: `${storybookPrefix}/Overlays/Dropdown/Static`,

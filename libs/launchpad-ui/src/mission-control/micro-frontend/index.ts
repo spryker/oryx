@@ -1,4 +1,8 @@
-import { MicroFrontendComponent } from './micro-frontend';
+import { componentDef } from '@spryker-oryx/core';
 
-customElements.get('oryx-micro-frontend') ||
-  customElements.define('oryx-micro-frontend', MicroFrontendComponent);
+export * from './micro-frontend';
+
+export const microFrontendComponent = componentDef({
+  name: 'oryx-micro-frontend',
+  impl: () => import('./micro-frontend').then((m) => m.MicroFrontendComponent),
+});

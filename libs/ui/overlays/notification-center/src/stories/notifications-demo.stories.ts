@@ -1,9 +1,15 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
-import { NotificationService, Positions } from '../index';
+import {
+  notificationCenterComponent,
+  NotificationService,
+  Positions,
+} from '../index';
 import { generateRandomNotification } from './util';
+
+useComponent(notificationCenterComponent);
 
 export default {
   title: `${storybookPrefix}/Overlays/Notification Center`,

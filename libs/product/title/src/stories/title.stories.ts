@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
@@ -5,8 +6,10 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
 import { setupProductMocks } from '../../../src/mocks/product.mock';
-import '../index';
+import { productTitleComponent } from '../index';
 import { ProductTitleOptions } from '../model';
+
+useComponent(productTitleComponent);
 
 export default {
   title: `${storybookPrefix}/Title`,

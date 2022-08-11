@@ -1,20 +1,23 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { dispatchKeydown } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { OptionComponent, optionComponent } from '@spryker-oryx/ui/option';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
+import { getControl } from '../../../form/utilities/getControl';
 import {
   PopoverComponent,
+  popoverComponent,
   PopoverController,
   PopoverSelectEvent,
   POPOVER_EVENT,
   SelectedController,
-} from '.';
-import { getControl } from '../../../form/utilities/getControl';
-import '../../../option';
-import { OptionComponent } from '../../../option';
+} from './index';
+
+useComponent([popoverComponent, optionComponent]);
 
 /** scrollIntoView is not implemented in jsdom */
 Element.prototype.scrollIntoView = vi.fn();

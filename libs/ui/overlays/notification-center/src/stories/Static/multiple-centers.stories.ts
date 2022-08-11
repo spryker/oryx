@@ -1,8 +1,8 @@
+import { Types } from '@spryker-oryx/ui/notification';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { Types } from '../../../../../notification';
-import '../../index';
+
 import { NotificationService, Positions } from '../../index';
 import { generateNotification, removeAllMountedCenters } from '../util';
 

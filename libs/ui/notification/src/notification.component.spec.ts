@@ -1,7 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import './index';
+import { notificationComponent } from './index';
 import { NotificationComponent } from './notification.component';
+
+useComponent(notificationComponent);
 
 describe('NotificationComponent', () => {
   let element: NotificationComponent;

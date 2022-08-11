@@ -1,9 +1,11 @@
-import { ProductPriceComponent } from './price.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './price.component';
 export * from './price.controller';
 export * from './price.model';
 export * from './price.styles';
 
-customElements.get('product-price') ||
-  customElements.define('product-price', ProductPriceComponent);
+export const productPriceComponent = componentDef({
+  name: 'product-price',
+  impl: () => import('./price.component').then((m) => m.ProductPriceComponent),
+});

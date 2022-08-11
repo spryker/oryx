@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
@@ -15,8 +16,9 @@ import {
   TypeaheadOptions,
 } from '../../../../search/typeahead';
 import { branches, states } from '../../../../utilities/storybook';
-import '../index';
-import { SelectOptions } from '../index';
+import { selectComponent, SelectOptions } from '../index';
+
+useComponent(selectComponent);
 
 export default {
   title: `${storybookPrefix}/Form/Select`,

@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import '../../../index';
 import { Props } from './model';
 
 export default {

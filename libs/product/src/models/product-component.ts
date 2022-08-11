@@ -1,4 +1,4 @@
-import { Product } from '.';
+import { Product } from './index';
 
 export interface ProductComponentProperties {
   /**

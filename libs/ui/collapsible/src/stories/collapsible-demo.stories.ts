@@ -1,9 +1,12 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
 import { IconTypes } from '../../../graphical/icon';
-import '../index';
+import { collapsibleComponent } from '../index';
+
+useComponent(collapsibleComponent);
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible`,

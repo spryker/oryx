@@ -7,6 +7,7 @@ import { isClient, Type } from '@spryker-oryx/typescript-utils';
 import { LitElement } from 'lit';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
+const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 
@@ -50,6 +51,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
+    private [HYDRATION_CALLS] = 0;
+
     constructor(...args: any[]) {
       super();
       this.setAttribute('hydratable', mode ?? '');
@@ -78,10 +81,16 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     [HYDRATE_ON_DEMAND]() {
-      const prototype = Object.getPrototypeOf(Object.getPrototypeOf(this));
+      const prototype = Array(this[HYDRATION_CALLS])
+        .fill(null)
+        .reduce(Object.getPrototypeOf, this);
+
       if (prototype[HYDRATE_ON_DEMAND]) {
+        this[HYDRATION_CALLS]++;
         prototype[HYDRATE_ON_DEMAND].call(this);
+        this[HYDRATION_CALLS]--;
       }
+
       if (this.renderRoot) {
         return;
       }

@@ -1,9 +1,12 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { setupCartMocks } from '../../../src/mocks/cart.mock';
-import '../index';
+import { miniCartComponent } from '../index';
+
+useComponent(miniCartComponent);
 
 interface Props {
   quantity: number;

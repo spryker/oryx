@@ -1,7 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
+import { headlineComponent } from '../index';
+
+useComponent(headlineComponent);
 
 export default {
   title: `${storybookPrefix}/Structure/Headline`,
@@ -38,7 +41,7 @@ const getHeader = (text: string, level: string): TemplateResult => {
 };
 
 const Template: Story<Props> = ({ text, level }: Props): TemplateResult => {
-  return html` <oryx-headline> ${getHeader(text, level)} </oryx-headline> `;
+  return html`<oryx-headline> ${getHeader(text, level)} </oryx-headline>`;
 };
 
 export const HeadlineDemo = Template.bind({});

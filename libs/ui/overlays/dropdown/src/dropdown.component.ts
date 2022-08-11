@@ -6,8 +6,6 @@ import { Size } from '../../../utilities';
 import { DropdownProperties, Position } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 
-export const TAG_NAME = 'oryx-dropdown';
-
 export class DropdownComponent
   extends LitElement
   implements DropdownProperties

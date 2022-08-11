@@ -1,8 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { CheckboxComponent } from './checkbox.component';
-import './index';
+import { checkboxComponent } from './index';
+
+useComponent(checkboxComponent);
 
 const getInput = (element: CheckboxComponent): HTMLInputElement => {
   const [input] = element.shadowRoot
@@ -99,7 +102,7 @@ describe('CheckboxComponent', () => {
   describe('when checkbox is intermediate', () => {
     beforeEach(async () => {
       element = await fixture(
-        html` <oryx-checkbox intermediate
+        html`<oryx-checkbox intermediate
           ><input type="checkbox" />Option</oryx-checkbox
         >`
       );
@@ -116,7 +119,7 @@ describe('CheckboxComponent', () => {
   describe('when checkbox has error', () => {
     beforeEach(async () => {
       element = await fixture(
-        html` <oryx-checkbox error
+        html`<oryx-checkbox error
           ><input type="checkbox" />Option</oryx-checkbox
         >`
       );
@@ -133,7 +136,7 @@ describe('CheckboxComponent', () => {
   describe('when the checkbox is checked/unchecked', () => {
     beforeEach(async () => {
       element = await fixture(
-        html` <oryx-checkbox><input type="checkbox" />Option</oryx-checkbox>`
+        html`<oryx-checkbox><input type="checkbox" />Option</oryx-checkbox>`
       );
     });
     it('should dispatch a "input" event', () => {
@@ -147,7 +150,7 @@ describe('CheckboxComponent', () => {
   describe('when the checkbox is disabled checked/unchecked', () => {
     beforeEach(async () => {
       element = await fixture(
-        html` <oryx-checkbox
+        html`<oryx-checkbox
           ><input type="checkbox" disabled />Option</oryx-checkbox
         >`
       );

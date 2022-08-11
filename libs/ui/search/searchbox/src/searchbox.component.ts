@@ -1,11 +1,11 @@
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import {
   AffixOptions,
   FormControlController,
   FormControlOptions,
   inputStyles,
-} from '../../../form/input';
+} from '@spryker-oryx/ui/input';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { SearchboxController } from './searchbox.controller';
 import {
   ClearIconAppearance,

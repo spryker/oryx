@@ -21,8 +21,6 @@ import {
 import { LoginOptions, LoginParameters } from './login.model';
 import { styles } from './login.styles';
 
-export const TAG_NAME = 'user-login';
-
 @hydratable(['mouseover', 'focus'])
 export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
   static styles = styles;

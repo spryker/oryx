@@ -1,11 +1,14 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { IconTypes } from '../../../../graphical/icon';
 import { Size } from '../../../../utilities';
-import '../index';
+import { spinnerComponent } from '../index';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
+
+useComponent(spinnerComponent);
 
 export default { title: `${storybookPrefix}/Graphical/Spinner` } as Meta;
 

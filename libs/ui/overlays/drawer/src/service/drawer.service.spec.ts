@@ -1,17 +1,18 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
-import { DrawerComponent, DrawerService } from '..';
-import '../index';
+import { customElement } from 'lit/decorators.js';
+import { DrawerComponent, drawerComponent, DrawerService } from '../index';
 
+useComponent(drawerComponent);
+
+@customElement('wrapper-component')
 class WrapperComponent extends LitElement {
   render(): TemplateResult {
-    return html` <oryx-drawer id="nested-drawer"></oryx-drawer> `;
+    return html`<oryx-drawer id="nested-drawer"></oryx-drawer>`;
   }
 }
-
-customElements.get('wrapper-component') ||
-  customElements.define('wrapper-component', WrapperComponent);
 
 describe('DrawerService', () => {
   let element: DrawerComponent;
@@ -74,7 +75,7 @@ describe('DrawerService', () => {
     let element1: DrawerComponent;
 
     beforeEach(async () => {
-      element = await fixture(html` <oryx-drawer id="drawer1"></oryx-drawer> `);
+      element = await fixture(html`<oryx-drawer id="drawer1"></oryx-drawer>`);
       element1 = await fixture(html`
         <oryx-drawer id="drawer2"></oryx-drawer>
       `);

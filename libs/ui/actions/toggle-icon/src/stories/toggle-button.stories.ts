@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import '..';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
+import '../index';
 
 export default {
   title: `${storybookPrefix}/Actions/Toggle Button`,

@@ -1,7 +1,7 @@
 import { Type } from '@spryker-oryx/typescript-utils';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ContentComponentProperties } from '..';
+import { ContentComponentProperties } from '../index';
 
 export const ComponentMixin = <A, B = A>(): Type<
   LitElement & ContentComponentProperties<A, B>

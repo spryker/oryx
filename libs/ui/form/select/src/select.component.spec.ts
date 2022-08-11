@@ -1,14 +1,16 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import { SelectComponent } from '.';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchIconPosition,
 } from '../../../search/searchbox';
 import { getControl } from '../../utilities/getControl';
-import './index';
+import { SelectComponent, selectComponent } from './index';
+
+useComponent(selectComponent);
 
 describe('SelectComponent', () => {
   let element: SelectComponent;

@@ -1,7 +1,9 @@
-import { RadioComponent } from './radio.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './radio.component';
 export * from './radio.styles';
 
-customElements.get('oryx-radio') ||
-  customElements.define('oryx-radio', RadioComponent);
+export const radioComponent = componentDef({
+  name: 'oryx-radio',
+  impl: () => import('./radio.component').then((m) => m.RadioComponent),
+});

@@ -1,9 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import '../../../../../option/src/index';
 import { sideBySide, states } from '../../../../../utilities';
-import '../../index';
+
 import { FilterStrategyType } from '../../index';
 
 export default {

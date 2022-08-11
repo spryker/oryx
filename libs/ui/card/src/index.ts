@@ -1,7 +1,9 @@
-import { CardComponent } from './card.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './card.component';
 export * from './card.model';
 
-customElements.get('oryx-card') ||
-  customElements.define('oryx-card', CardComponent);
+export const cardComponent = componentDef({
+  name: 'oryx-card',
+  impl: () => import('./card.component').then((m) => m.CardComponent),
+});

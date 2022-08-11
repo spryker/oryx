@@ -2,8 +2,6 @@ import { isSafari } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './image.styles';
 
-export const TAG_NAME = 'oryx-image';
-
 export class ImageComponent extends LitElement {
   static styles = styles;
 

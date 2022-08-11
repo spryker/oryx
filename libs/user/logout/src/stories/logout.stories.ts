@@ -1,11 +1,14 @@
 import { MOCK_AUTH_PROVIDERS } from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { MOCK_ROUTER_PROVIDERS } from '@spryker-oryx/experience';
 import { setUpMockProviders } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import '../index';
+import { userLogoutComponent } from '../index';
 import { LogoutOptions } from '../logout.model';
+
+useComponent(userLogoutComponent);
 
 export default {
   title: `${storybookPrefix}/Logout`,

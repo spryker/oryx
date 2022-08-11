@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
@@ -5,7 +6,9 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import { ProductAverageRatingModel } from '../average-rating.model';
-import '../index';
+import { productAverageRatingComponent } from '../index';
+
+useComponent(productAverageRatingComponent);
 
 export default {
   title: `${storybookPrefix}/Average rating`,

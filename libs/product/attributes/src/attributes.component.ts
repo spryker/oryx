@@ -11,8 +11,6 @@ import { map, tap } from 'rxjs';
 import { ProductAttributesComponentOptions } from './attributes.model';
 import { ProductAttributeStyles } from './attributes.styles';
 
-export const TAG_NAME = 'product-attributes';
-
 interface ProductAttributeItem {
   key: string;
   label: string;

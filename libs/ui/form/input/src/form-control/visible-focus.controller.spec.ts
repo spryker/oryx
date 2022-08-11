@@ -2,8 +2,10 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { VisibleFocusController } from './visible-focus.controller';
 
+@customElement('test-control')
 export class TestComponent extends LitElement {
   protected visibleFocusController = new VisibleFocusController(this);
 
@@ -11,7 +13,6 @@ export class TestComponent extends LitElement {
     return html`<slot><input aria-label="some label" /></slot>`;
   }
 }
-customElements.define('test-control', TestComponent);
 
 describe('VisibleFocusController', () => {
   let element: TestComponent;

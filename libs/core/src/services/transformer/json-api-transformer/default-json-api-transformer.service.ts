@@ -1,7 +1,7 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/injector';
 import { Deserializer } from 'jsonapi-serializer';
 import { Observable, switchMap } from 'rxjs';
-import { ssrAwaiter } from '../../../utilities';
 import { TransformerService } from '../transformer.service';
 
 /**

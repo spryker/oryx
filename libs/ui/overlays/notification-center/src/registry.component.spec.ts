@@ -6,7 +6,7 @@ import {
   NotificationRegistry,
   NotificationStrategy,
   RegistryController,
-} from '.';
+} from './index';
 
 @customElement('fake-component')
 class FakeComponent extends LitElement {

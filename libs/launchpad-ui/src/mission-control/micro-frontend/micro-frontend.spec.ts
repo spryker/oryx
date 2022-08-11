@@ -1,10 +1,13 @@
-import { fixture, fixtureCleanup } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { removeElement } from '@spryker-oryx/testing';
 import { AjaxClient, wait } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { SpyInstance } from 'vitest';
-import './index';
+import { microFrontendComponent } from './index';
 import { MicroFrontendComponent } from './micro-frontend';
+
+useComponent(microFrontendComponent);
 
 const host = 'https://my-microfrontend.com';
 
@@ -24,21 +27,17 @@ describe('micro-frontend', () => {
     getSpy = vi.spyOn(AjaxClient, 'get');
   });
 
-  afterEach(() => {
-    fixtureCleanup();
-  });
-
   describe('when the attribute name and hosting are set', () => {
     it('should render the loading mask while fetching the data', async () => {
       element = await render('test-mf', host);
 
-      expect('[data-testid="loading-mask"]').toBeInDOMBy(element);
+      expect(element).toContainElement('[data-testid="loading-mask"]');
     });
 
     it('should not render the component', async () => {
       element = await render('test-mf', host);
 
-      expect('h1').not.toBeInDOMBy(element);
+      expect(element).not.toContainElement('h1');
     });
 
     describe('when the manifest is loaded properly', () => {
@@ -82,16 +81,16 @@ describe('micro-frontend', () => {
 
       expectedAssets.forEach(([name, selector]) => {
         it(`should inject the ${name} file in the DOM`, () => {
-          expect(selector).toBeInDOM();
+          expect(selector).toBeInTheDocument();
         });
       });
 
       it('should hide the loading mask', () => {
-        expect('[data-testid="loading-mask"]').not.toBeInDOMBy(element);
+        expect(element).not.toContainElement('[data-testid="loading-mask"]');
       });
 
       it('should render the component', () => {
-        expect('h1').toBeSlottedBy(element);
+        expect(element).toContainSlottedElement('h1');
       });
 
       describe('if the micro frontend is mounted again', () => {
@@ -100,11 +99,11 @@ describe('micro-frontend', () => {
         });
 
         it('should not render the loading again', () => {
-          expect('[data-testid="loading-mask"]').not.toBeInDOMBy(element);
+          expect(element).not.toContainElement('[data-testid="loading-mask"]');
         });
 
         it('should render the component', () => {
-          expect('h1').toBeSlottedBy(element);
+          expect(element).toContainSlottedElement('h1');
         });
       });
     });
@@ -119,15 +118,15 @@ describe('micro-frontend', () => {
       });
 
       it('should not show the loading mask', () => {
-        expect('[data-testid="loading-mask"]').not.toBeInDOMBy(element);
+        expect(element).not.toContainElement('[data-testid="loading-mask"]');
       });
 
       it('should not render the component', () => {
-        expect('h1').not.toBeInDOMBy(element);
+        expect(element).not.toContainElement('h1');
       });
 
       it('should render the error', () => {
-        expect('[data-testid="error"]').toBeInDOMBy(element);
+        expect(element).toContainElement('[data-testid="error"]');
       });
     });
   });
@@ -142,15 +141,15 @@ describe('micro-frontend', () => {
       });
 
       it('should not show the loading mask', () => {
-        expect('[data-testid="loading-mask"]').not.toBeInDOMBy(element);
+        expect(element).not.toContainElement('[data-testid="loading-mask"]');
       });
 
       it('should not render the component', () => {
-        expect('h1').not.toBeInDOMBy(element);
+        expect(element).not.toContainElement('h1');
       });
 
       it('should render the error', () => {
-        expect('[data-testid="error"]').toBeInDOMBy(element);
+        expect(element).toContainElement('[data-testid="error"]');
       });
     });
   });

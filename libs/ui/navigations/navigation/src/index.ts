@@ -1,4 +1,11 @@
-import { NavigationComponent } from './navigation.component';
+import { componentDef } from '@spryker-oryx/core';
 
-customElements.get('oryx-navigation') ||
-  customElements.define('oryx-navigation', NavigationComponent);
+export * from './navigation-collapse.controller';
+export * from './navigation.component';
+export * from './navigation.styles';
+
+export const navigationComponent = componentDef({
+  name: 'oryx-navigation',
+  impl: () =>
+    import('./navigation.component').then((m) => m.NavigationComponent),
+});

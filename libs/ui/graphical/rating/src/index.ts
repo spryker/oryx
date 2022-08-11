@@ -1,8 +1,10 @@
+import { componentDef } from '@spryker-oryx/core';
+
 export * from './rating.component';
 export * from './rating.model';
 export * from './styles';
 
-import { RatingComponent } from './rating.component';
-
-customElements.get('oryx-rating') ||
-  customElements.define('oryx-rating', RatingComponent);
+export const ratingComponent = componentDef({
+  name: 'oryx-rating',
+  impl: () => import('./rating.component').then((m) => m.RatingComponent),
+});

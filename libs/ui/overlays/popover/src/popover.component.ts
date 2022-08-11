@@ -1,5 +1,6 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { popoverBaseStyles, popoverStyles } from './styles';
+
 export const TAG_NAME = 'oryx-popover';
 
 export class PopoverComponent extends LitElement {

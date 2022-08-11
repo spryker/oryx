@@ -1,8 +1,5 @@
-import {
-  DefaultHttpService,
-  RequestOptions,
-  ssrAwaiter,
-} from '@spryker-oryx/core';
+import { DefaultHttpService, RequestOptions } from '@spryker-oryx/core';
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { Observable } from 'rxjs';
 
 export class ServerHttpService extends DefaultHttpService {

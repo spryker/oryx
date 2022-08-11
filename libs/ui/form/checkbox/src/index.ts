@@ -1,8 +1,10 @@
-import { CheckboxComponent } from './checkbox.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './checkbox.component';
 export * from './checkbox.model';
 export * from './checkbox.styles';
 
-customElements.get('oryx-checkbox') ||
-  customElements.define('oryx-checkbox', CheckboxComponent);
+export const checkboxComponent = componentDef({
+  name: 'oryx-checkbox',
+  impl: () => import('./checkbox.component').then((m) => m.CheckboxComponent),
+});

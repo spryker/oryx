@@ -1,10 +1,13 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { setUpMockProviders } from '@spryker-oryx/injector';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../../src/mocks';
-import '../index';
+import { productCardComponent } from '../index';
+
+useComponent(productCardComponent);
 
 export default {
   title: `${storybookPrefix}/Card`,

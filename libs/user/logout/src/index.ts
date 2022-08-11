@@ -1,7 +1,9 @@
-import { TAG_NAME, UserLogoutComponent } from './logout.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './logout.component';
 export * from './logout.model';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, UserLogoutComponent);
+export const userLogoutComponent = componentDef({
+  name: 'user-logout',
+  impl: () => import('./logout.component').then((m) => m.UserLogoutComponent),
+});

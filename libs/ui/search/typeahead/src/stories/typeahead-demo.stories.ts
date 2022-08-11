@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -7,8 +8,13 @@ import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../graphical/icon';
 import { branches, states } from '../../../../utilities/storybook/';
 import { SearchEvent, SearchOptions } from '../../../searchbox';
-import '../index';
-import { FilterStrategyType, TypeaheadOptions } from '../index';
+import {
+  FilterStrategyType,
+  TypeaheadOptions,
+  typeheadComponent,
+} from '../index';
+
+useComponent(typeheadComponent);
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,

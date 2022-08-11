@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/injector';
 import { isPromise } from '@spryker-oryx/typescript-utils';
 import { from, Observable, tap } from 'rxjs';
-import { SSRAwaiterService } from '../services';
 
 export const ssrAwaiter = (
   object: Observable<any> | Promise<any>

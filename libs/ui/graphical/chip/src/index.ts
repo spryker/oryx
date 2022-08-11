@@ -1,8 +1,10 @@
-import { ChipComponent } from './chip.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './chip.component';
 export * from './chip.model';
 export * from './chip.styles';
 
-customElements.get('oryx-chip') ||
-  customElements.define('oryx-chip', ChipComponent);
+export const chipComponent = componentDef({
+  name: 'oryx-chip',
+  impl: () => import('./chip.component').then((m) => m.ChipComponent),
+});

@@ -1,3 +1,4 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
@@ -5,7 +6,9 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { setupCartMocks } from '../../../src/mocks/cart.mock';
 import { AddToCartOptions } from '../add-to-cart.model';
-import '../index';
+import { addToCartComponent } from '../index';
+
+useComponent(addToCartComponent);
 
 export default {
   title: `${storybookPrefix}/Add to cart`,

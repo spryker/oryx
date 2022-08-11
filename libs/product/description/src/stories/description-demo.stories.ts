@@ -1,18 +1,20 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
-import '../index';
-import { ProductDescriptionOptions } from '../model';
+import { productDescriptionComponent } from '../index';
+
+useComponent(productDescriptionComponent);
 
 export default {
   title: `${storybookPrefix}/Description`,
   loaders: [setupProductMocks],
 } as unknown as Meta;
 
-type Props = ProductDescriptionOptions & ProductComponentProperties;
+type Props = ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`<product-description .sku=${props.sku} .options=${props} />`;

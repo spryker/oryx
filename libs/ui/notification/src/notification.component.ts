@@ -5,8 +5,6 @@ import { notificationBaseStyles } from './notification.base.styles';
 import { CLOSE_EVENT, Schemes, Types } from './notification.model';
 import { notificationStyles } from './notification.oryx.styles';
 
-export const TAG_NAME = 'oryx-notification';
-
 export class NotificationComponent extends LitElement {
   static styles = [notificationBaseStyles, notificationStyles];
 

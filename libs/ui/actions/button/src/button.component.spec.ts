@@ -1,8 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
 import { ButtonType } from './button.model';
-import './index';
+import { buttonComponent } from './index';
+
+useComponent(buttonComponent);
 
 describe('ButtonComponent', () => {
   let element: ButtonComponent;
@@ -16,10 +19,9 @@ describe('ButtonComponent', () => {
     Object.values(ButtonType).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-button
-            type="${type}"
-            size="small"
-          ></oryx-button>`);
+          element = await fixture(
+            html`<oryx-button type="${type}" size="small"></oryx-button>`
+          );
         });
 
         it('should reflect the type attribute on the node', () => {
@@ -33,10 +35,9 @@ describe('ButtonComponent', () => {
     Object.values(Size).forEach((size) => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-button
-            type="primary"
-            size="${size}"
-          ></oryx-button>`);
+          element = await fixture(
+            html`<oryx-button type="primary" size="${size}"></oryx-button>`
+          );
         });
 
         it('should reflect the size attribute on the node', () => {

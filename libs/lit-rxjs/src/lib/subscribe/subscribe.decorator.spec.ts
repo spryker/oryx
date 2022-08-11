@@ -1,11 +1,9 @@
-import { fixture } from '@open-wc/testing-helpers';
-import { wait } from '@spryker-oryx/typescript-utils';
+import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { finalize, interval, tap } from 'rxjs';
 import { subscribe } from './subscribe.decorator';
 
-const tick = 50;
 @customElement('mock-component')
 class MockComponent extends LitElement {
   mockCallback = vi.fn();
@@ -14,13 +12,13 @@ class MockComponent extends LitElement {
   mockDisconnectedAnotherCallback = vi.fn();
 
   @subscribe()
-  mock$ = interval(tick).pipe(
+  mock$ = interval(10).pipe(
     tap(this.mockCallback),
     finalize(this.mockDisconnectedCallback)
   );
 
   @subscribe()
-  mockAnother$ = interval(tick).pipe(
+  mockAnother$ = interval(10).pipe(
     tap(this.mockAnotherCallback),
     finalize(this.mockDisconnectedAnotherCallback)
   );
@@ -48,7 +46,7 @@ describe('subscribe decorator', () => {
   });
 
   it('should subscribe to observable on connectedCallback hook', async () => {
-    await wait(tick + 10);
+    await nextFrame();
 
     expect(element.mockCallback).toHaveBeenCalled();
     expect(element.mockAnotherCallback).toHaveBeenCalled();

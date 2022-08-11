@@ -1,7 +1,9 @@
-import { HeadlineComponent, TAG_NAME } from './headline.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './headline.component';
 export * from './headline.styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, HeadlineComponent);
+export const headlineComponent = componentDef({
+  name: 'oryx-headline',
+  impl: () => import('./headline.component').then((m) => m.HeadlineComponent),
+});

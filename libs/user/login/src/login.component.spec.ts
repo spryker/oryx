@@ -1,16 +1,20 @@
 import { fixture, oneEvent } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import {
   PasswordInputComponent,
+  passwordInputComponent,
   PasswordVisibilityStrategy,
 } from '@spryker-oryx/ui/password';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import '../index';
+import { userLoginComponent } from './index';
 import { UserLoginComponent } from './login.component';
+
+useComponent([userLoginComponent, passwordInputComponent]);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();

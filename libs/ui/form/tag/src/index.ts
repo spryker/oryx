@@ -1,7 +1,9 @@
-import { TagComponent } from './tag.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './tag.component';
 export * from './tag.styles';
 
-customElements.get('oryx-tag') ||
-  customElements.define('oryx-tag', TagComponent);
+export const tagComponent = componentDef({
+  name: 'oryx-tag',
+  impl: () => import('./tag.component').then((m) => m.TagComponent),
+});

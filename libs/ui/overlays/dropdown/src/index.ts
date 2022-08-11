@@ -1,8 +1,10 @@
-import { DropdownComponent, TAG_NAME } from './dropdown.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './dropdown.component';
 export * from './dropdown.model';
 export * from './styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, DropdownComponent);
+export const dropdownComponent = componentDef({
+  name: 'oryx-dropdown',
+  impl: () => import('./dropdown.component').then((m) => m.DropdownComponent),
+});

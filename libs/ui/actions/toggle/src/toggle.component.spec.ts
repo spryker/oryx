@@ -1,9 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import './index';
+import { toggleComponent } from './index';
 import { ToggleComponent } from './toggle.component';
+
+useComponent(toggleComponent);
 
 describe('Toggle component', () => {
   let element: ToggleComponent;
@@ -32,7 +35,7 @@ describe('Toggle component', () => {
 
   describe('when nothing is slotted', () => {
     beforeEach(async () => {
-      element = await fixture(html` <oryx-toggle></oryx-toggle> `);
+      element = await fixture(html`<oryx-toggle></oryx-toggle>`);
     });
 
     it('fails the a11y audit', async () => {

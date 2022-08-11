@@ -1,6 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
+  quantityInputComponent,
+  QuantityInputComponent,
+} from '@spryker-oryx/cart/quantity-input';
+import { useComponent } from '@spryker-oryx/core/utilities';
+import {
   createInjector,
   destroyInjector,
   Injector,
@@ -11,9 +16,10 @@ import '@spryker-oryx/testing';
 import { wait } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { delay, of } from 'rxjs';
-import { QuantityInputComponent } from '../../quantity-input';
-import '../index';
 import { AddToCartComponent } from './add-to-cart.component';
+import { addToCartComponent } from './index';
+
+useComponent([quantityInputComponent, addToCartComponent]);
 
 class MockCartService {
   addEntry = vi.fn().mockReturnValue(of(null).pipe(delay(1)));

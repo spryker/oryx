@@ -1,10 +1,12 @@
-import { ProductAverageRatingComponent } from './average-rating.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './average-rating.component';
 export * from './average-rating.model';
 
-customElements.get('product-average-rating') ||
-  customElements.define(
-    'product-average-rating',
-    ProductAverageRatingComponent
-  );
+export const productAverageRatingComponent = componentDef({
+  name: 'product-average-rating',
+  impl: () =>
+    import('./average-rating.component').then(
+      (m) => m.ProductAverageRatingComponent
+    ),
+});

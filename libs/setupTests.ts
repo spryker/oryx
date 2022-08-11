@@ -23,7 +23,7 @@ const querySlottedElements = (
 
 beforeAll(() => {
   expect.extend({
-    toBeInDOM: (selector: string) => {
+    toBeInTheDocument: (selector: string) => {
       if (!document.querySelector(selector)) {
         return {
           message: (): string =>
@@ -37,7 +37,7 @@ beforeAll(() => {
         pass: true,
       };
     },
-    toBeInDOMBy: (selector: string, component: LitElement) => {
+    toContainElement: (component: LitElement, selector: string) => {
       if (!getShadowElementBySelector(component, selector)) {
         return {
           message: (): string =>
@@ -51,9 +51,9 @@ beforeAll(() => {
         pass: true,
       };
     },
-    toBeSlottedBy: (
-      type: keyof HTMLElementTagNameMap,
+    toContainSlottedElement: (
       component: LitElement,
+      type: keyof HTMLElementTagNameMap,
       slotName = ''
     ) => {
       if (!querySlottedElements(type, component, slotName)) {
@@ -77,9 +77,9 @@ afterEach(() => {
 });
 
 export interface CustomMatchers<R = unknown> {
-  toBeInDOMBy(component: LitElement): R;
-  toBeSlottedBy(component: LitElement, slotName?: string): R;
-  toBeInDOM(): R;
+  toContainElement(selector: string): R;
+  toContainSlottedElement(selector: string, slotName?: string): R;
+  toBeInTheDocument(): R;
 }
 
 /* eslint-disable */
@@ -87,5 +87,9 @@ declare global {
   namespace Vi {
     interface Assertion extends CustomMatchers {}
     interface AsymmetricMatchersContaining extends CustomMatchers {}
+  }
+
+  namespace jest {
+    interface Matchers<R, T = {}> extends CustomMatchers<R> {}
   }
 }

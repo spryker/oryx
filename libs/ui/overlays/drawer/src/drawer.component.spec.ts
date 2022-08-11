@@ -1,12 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
-import { DrawerComponent, TAG_NAME } from '.';
-import './index';
+import { DrawerComponent } from './drawer.component';
+import { drawerComponent } from './index';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, DrawerComponent);
+useComponent(drawerComponent);
 
 const isClosed = (element: DrawerComponent): boolean => !element.dialog?.open;
 const isMaximized = (element: DrawerComponent): boolean =>
@@ -145,7 +145,7 @@ describe('DrawerComponent', () => {
     describe('when not-closable and non-resizable attrs are set', () => {
       beforeEach(async () => {
         element = await fixture(
-          html` <oryx-drawer open not-closable not-resizable></oryx-drawer> `
+          html`<oryx-drawer open not-closable not-resizable></oryx-drawer>`
         );
       });
 

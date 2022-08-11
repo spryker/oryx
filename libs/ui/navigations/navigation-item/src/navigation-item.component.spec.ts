@@ -1,8 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import './index';
+import { navigationItemComponent } from './index';
 import { NavigationItemComponent } from './navigation-item.component';
+
+useComponent(navigationItemComponent);
 
 describe('NavigationItemComponent', () => {
   let element: NavigationItemComponent;

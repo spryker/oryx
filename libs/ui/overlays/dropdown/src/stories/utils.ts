@@ -2,9 +2,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { states } from '../../../../utilities/storybook';
 import { CLOSE_EVENT } from '../../../popover';
-import '../../../popover/index';
 import { Position } from '../dropdown.model';
-import '../index';
 
 const dropdownMaxHeight = 200;
 

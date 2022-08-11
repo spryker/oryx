@@ -1,9 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { beforeEach, describe } from 'vitest';
-import './index';
+import { tagComponent } from './index';
 import { TagComponent } from './tag.component';
+
+useComponent(tagComponent);
 
 describe('TagComponent', () => {
   let element: TagComponent;
@@ -16,7 +18,7 @@ describe('TagComponent', () => {
   describe('tag text message', () => {
     const message = 'Custom text message';
     beforeEach(async () => {
-      element = await fixture(html` <oryx-tag>${message}</oryx-tag>`);
+      element = await fixture(html`<oryx-tag>${message}</oryx-tag>`);
     });
 
     it('should contain message text', () => {
@@ -26,7 +28,7 @@ describe('TagComponent', () => {
 
   describe('tag disabled state', () => {
     beforeEach(async () => {
-      element = await fixture(html` <oryx-tag disabled></oryx-tag>`);
+      element = await fixture(html`<oryx-tag disabled></oryx-tag>`);
     });
 
     it('should disable the close button', () => {
@@ -38,7 +40,7 @@ describe('TagComponent', () => {
     const callback = vi.fn();
 
     beforeEach(async () => {
-      element = await fixture(html` <oryx-tag @click=${callback}></oryx-tag>`);
+      element = await fixture(html`<oryx-tag @click=${callback}></oryx-tag>`);
     });
 
     it('should dispatch close event on button click', async () => {

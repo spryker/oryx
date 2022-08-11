@@ -1,11 +1,13 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { IconButtonComponent } from '@spryker-oryx/ui/icon-button';
 import { Size } from '@spryker-oryx/ui/utilities';
-import { DropdownComponent } from '.';
 import { PopoverComponent } from '../../popover/src';
-import './index';
+import { DropdownComponent, dropdownComponent } from './index';
+
+useComponent(dropdownComponent);
 
 describe('DropdownComponent', () => {
   let element: DropdownComponent;

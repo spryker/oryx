@@ -1,6 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import '../../../error-message/src/index';
 import {
   AffixController,
   AffixOptions,

@@ -10,8 +10,6 @@ import { html } from 'lit/static-html.js';
 import { combineLatest } from 'rxjs';
 import { Props } from './id.model';
 
-export const TAG_NAME = 'product-id';
-
 @hydratable()
 export class ProductIdComponent extends ProductComponentMixin<Props>() {
   protected product$ = new ProductController(this).getProduct();

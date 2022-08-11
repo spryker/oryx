@@ -1,9 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { OptionComponent } from './';
-import './index';
+import { OptionComponent, optionComponent } from './index';
+
+useComponent(optionComponent);
 
 describe('OptionComponent', () => {
   let element: OptionComponent;
@@ -30,7 +32,9 @@ describe('OptionComponent', () => {
     describe('when the item has no value', () => {
       beforeEach(async () => {
         const parent = await fixture(
-          html`<div><oryx-option>mock inner text</oryx-option></div>`
+          html`<div>
+            <oryx-option>mock inner text</oryx-option>
+          </div>`
         );
         element = parent.querySelector('oryx-option') as OptionComponent;
       });

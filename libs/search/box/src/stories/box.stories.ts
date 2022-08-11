@@ -1,12 +1,14 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { setUpMockProviders } from '@spryker-oryx/injector';
 import { completion, MOCK_SUGGESTION_PROVIDERS } from '@spryker-oryx/search';
 import { SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { SearchBoxOptions } from '..';
 import { storybookPrefix } from '../../../.constants';
-import '../index';
+import { searchBoxComponent, SearchBoxOptions } from '../index';
+
+useComponent(searchBoxComponent);
 
 export default {
   title: `${storybookPrefix}/SearchBox`,

@@ -1,9 +1,12 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import '../index';
+import { notificationComponent } from '../index';
 import { Schemes, Types } from '../notification.model';
 import { bodyBackgroundColor } from './util';
+
+useComponent(notificationComponent);
 
 export default {
   title: `${storybookPrefix}/Notification`,

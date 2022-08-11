@@ -1,9 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { userAgentSafariMacOsX154 } from '@spryker-oryx/testing';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { ImageComponent } from './image.component';
-import './index';
+import { imageComponent } from './index';
+
+useComponent(imageComponent);
 
 describe('ImageComponent', () => {
   let element: ImageComponent;

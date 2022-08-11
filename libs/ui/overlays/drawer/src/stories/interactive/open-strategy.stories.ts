@@ -3,11 +3,11 @@ import { expect } from '@storybook/jest';
 import { userEvent, within } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { DrawerComponent } from '../..';
 import { storybookPrefix } from '../../../../../.constants';
 import { Position } from '../../../../../utilities/model/common';
 import { OverlaysDecorator } from '../../../../../utilities/storybook';
-import '../../index';
+import { DrawerComponent } from '../../index';
+
 import { toggle } from './util';
 
 export default {

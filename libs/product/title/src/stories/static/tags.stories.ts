@@ -3,7 +3,6 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { setupProductMocks } from '../../../../src/mocks/product.mock';
-import '../../index';
 
 export default {
   title: `${storybookPrefix}/Title/Static`,

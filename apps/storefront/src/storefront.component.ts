@@ -1,6 +1,10 @@
 import '@spryker-oryx/cart/mini-cart';
 import { LinkType } from '@spryker-oryx/content/link';
-import { ContextController, hydratable } from '@spryker-oryx/core';
+import {
+  componentDef,
+  ContextController,
+  hydratable,
+} from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -8,13 +12,11 @@ import { ProductContext } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators.js';
 import { take, tap } from 'rxjs';
 import { routes } from './routes';
 import { StorefrontRouter } from './storefront.router';
 import { styles } from './storefront.styles';
 
-@customElement('storefront-component')
 @hydratable()
 export class StorefrontComponent extends LitElement {
   protected context = new ContextController(this);
@@ -107,3 +109,8 @@ export class StorefrontComponent extends LitElement {
     )}`;
   }
 }
+
+export const storefrontComponent = componentDef({
+  name: 'storefront-component',
+  impl: StorefrontComponent,
+});

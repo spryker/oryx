@@ -1,8 +1,11 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
+import { navigationItemComponent } from '@spryker-oryx/ui/navigation-item';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../../../navigation-item/src/index';
-import '../index';
+import { navigationComponent } from '../index';
+
+useComponent([navigationComponent, navigationItemComponent]);
 
 export default {
   title: `${storybookPrefix}/Navigations/Navigation`,
@@ -46,8 +49,8 @@ const Template: Story<unknown> = (): TemplateResult => {
             </svg>
           </oryx-icon>
 
-          test</oryx-navigation-item
-        >
+          test
+        </oryx-navigation-item>
       </oryx-navigation>
     </div>
   `;

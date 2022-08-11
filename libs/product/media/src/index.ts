@@ -1,7 +1,9 @@
-import { ProductMediaComponent, TAG_NAME } from './media.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './media.component';
 export * from './media.model';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, ProductMediaComponent);
+export const productMediaComponent = componentDef({
+  name: 'product-media',
+  impl: () => import('./media.component').then((m) => m.ProductMediaComponent),
+});

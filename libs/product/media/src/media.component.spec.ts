@@ -1,10 +1,13 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import '../index';
+import { productMediaComponent } from './index';
 import { ProductMediaComponent } from './media.component';
+
+useComponent(productMediaComponent);
 
 describe('ProductMediaComponent', () => {
   let element: ProductMediaComponent;

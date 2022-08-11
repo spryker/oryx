@@ -2,7 +2,6 @@ import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../../../../option';
 import { FilterStrategyType } from '../../../../search/typeahead';
 import { SelectOptions } from '../select.model';
 import { SelectFilterController } from './select-filter.controller';

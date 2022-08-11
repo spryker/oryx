@@ -1,5 +1,6 @@
 import { MOCK_CART_PROVIDERS } from '@spryker-oryx/cart';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import {
   createInjector,
@@ -10,7 +11,12 @@ import { SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import 'urlpattern-polyfill';
-import { StorefrontComponent } from './storefront.component';
+import {
+  storefrontComponent,
+  StorefrontComponent,
+} from './storefront.component';
+
+useComponent(storefrontComponent);
 
 class MockRouterService implements Partial<RouterService> {
   private router$ = new BehaviorSubject('');

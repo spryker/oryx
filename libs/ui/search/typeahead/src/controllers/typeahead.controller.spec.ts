@@ -1,15 +1,18 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { optionComponent } from '@spryker-oryx/ui/option';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstanceFn } from 'vitest';
 import { getControl } from '../../../../form/utilities';
-import '../../../../option/';
 import { SearchEvent } from '../../../searchbox';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { TypeaheadController } from './typeahead.controller';
+
+useComponent(optionComponent);
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements TypeaheadOptions {

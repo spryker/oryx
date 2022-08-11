@@ -1,54 +1,52 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
+import { drawerComponent } from '../index';
 import { NDSDrawerComponent } from './drawer.component';
 
-customElements.get('nds-drawer') ||
-  customElements.define('nds-drawer', NDSDrawerComponent);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+window.HTMLDialogElement = null;
 
-const isClosed = (element: NDSDrawerComponent): boolean => !element.open;
+useComponent(drawerComponent);
 
 describe('NDSDrawerComponent', () => {
   let element: NDSDrawerComponent;
 
-  const update = async (): Promise<void> => {
-    element.requestUpdate();
-    await element.updateComplete;
-  };
-
   describe('dialog methods', () => {
     beforeEach(async () => {
-      element = await fixture(html`<nds-drawer></nds-drawer>`);
+      element = await fixture(html`<oryx-drawer></oryx-drawer>`);
     });
     it('should toggle opened state', async () => {
       element.dialog?.show();
-      await update();
-      expect(isClosed(element)).toBe(false);
+      await element.updateComplete;
+      expect(element.open).toBe(true);
 
       element.dialog?.close();
-      await update();
-      expect(isClosed(element)).toBe(true);
+      await element.updateComplete;
+      expect(element.open).toBe(false);
     });
 
     it('should do nothing when showModal method is calling', async () => {
       element.dialog?.showModal();
-      expect(isClosed(element)).toBe(true);
+      expect(element.open).toBe(false);
     });
   });
 
-  const getButton = (selector = 'button'): HTMLElement | null | undefined =>
-    getShadowElementBySelector(element, selector);
-
   describe('click event', () => {
     beforeEach(async () => {
-      element = await fixture(html`<nds-drawer open></nds-drawer>`);
+      element = await fixture(html`<oryx-drawer open></oryx-drawer>`);
     });
 
     it('should close the drawer on click on close button', async () => {
-      const closeButton = getButton('button[value="cancel"]');
+      const closeButton = getShadowElementBySelector(
+        element,
+        'button[value="cancel"]'
+      );
       closeButton?.click();
-      await update();
-      expect(isClosed(element)).toBe(true);
+      await element.updateComplete;
+      expect(element.open).toBe(false);
     });
   });
 });

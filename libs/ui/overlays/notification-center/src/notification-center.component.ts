@@ -1,9 +1,9 @@
+import { Schemes } from '@spryker-oryx/ui/notification';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { Schemes } from '../../../notification';
 import {
   NotificationRegistry,
   NotificationStrategy,

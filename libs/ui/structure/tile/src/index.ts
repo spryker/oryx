@@ -1,7 +1,9 @@
-import { TileComponent } from './tile.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './tile.component';
 export * from './tile.styles';
 
-customElements.get('oryx-tile') ||
-  customElements.define('oryx-tile', TileComponent);
+export const tileComponent = componentDef({
+  name: 'oryx-tile',
+  impl: () => import('./tile.component').then((m) => m.TileComponent),
+});

@@ -1,7 +1,9 @@
-import { ProductIdComponent, TAG_NAME } from './id.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './id.component';
 export * from './id.model';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, ProductIdComponent);
+export const productIdComponent = componentDef({
+  name: 'product-id',
+  impl: () => import('./id.component').then((m) => m.ProductIdComponent),
+});

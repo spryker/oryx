@@ -1,5 +1,4 @@
 import '@spryker-oryx/testing';
-import { describe, vi } from 'vitest';
 import { throttle } from './throttle';
 
 describe('Throttle', () => {

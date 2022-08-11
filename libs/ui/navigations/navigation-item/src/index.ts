@@ -1,4 +1,12 @@
-import { NavigationItemComponent } from './navigation-item.component';
+import { componentDef } from '@spryker-oryx/core';
 
-customElements.get('oryx-navigation-item') ||
-  customElements.define('oryx-navigation-item', NavigationItemComponent);
+export * from './navigation-item.component';
+export * from './navigation-item.styles';
+
+export const navigationItemComponent = componentDef({
+  name: 'oryx-navigation-item',
+  impl: () =>
+    import('./navigation-item.component').then(
+      (m) => m.NavigationItemComponent
+    ),
+});

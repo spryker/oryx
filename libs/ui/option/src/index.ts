@@ -1,7 +1,9 @@
+import { componentDef } from '@spryker-oryx/core';
+
 export * from './option.component';
 export * from './option.styles';
 
-import { OptionComponent } from './option.component';
-
-customElements.get('oryx-option') ||
-  customElements.define('oryx-option', OptionComponent);
+export const optionComponent = componentDef({
+  name: 'oryx-option',
+  impl: () => import('./option.component').then((m) => m.OptionComponent),
+});

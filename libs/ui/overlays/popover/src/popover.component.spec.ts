@@ -1,8 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import { PopoverComponent } from '.';
-import './index';
+import { PopoverComponent, popoverComponent } from './index';
+
+useComponent(popoverComponent);
 
 describe('PopoverComponent', () => {
   let element: PopoverComponent;

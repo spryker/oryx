@@ -1,9 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html, LitElement } from 'lit';
-import { iconAsset, Logo } from './logo';
+import { logo } from './index';
+import { iconAsset } from './logo';
 
-customElements.define('oryx-lp-logo', Logo);
+useComponent(logo);
 
 describe('Logo', () => {
   let element: LitElement;
@@ -13,7 +15,7 @@ describe('Logo', () => {
   });
 
   it('should render the logo', () => {
-    expect('[data-testid="logo"]').toBeInDOMBy(element);
+    expect(element).toContainElement('[data-testid="logo"]');
   });
 
   it('should render the icon part properly', () => {

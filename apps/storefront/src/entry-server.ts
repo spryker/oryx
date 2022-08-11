@@ -1,14 +1,16 @@
 // organize-imports-ignore
-import './app.server';
+import { storefrontAppOrchestrator } from './app.server';
 import { getInjector } from '@spryker-oryx/injector';
 import { RouterService } from '@spryker-oryx/experience';
-import { SSRAwaiterService, ContextService } from '@spryker-oryx/core';
+import { App, SSRAwaiterService, ContextService } from '@spryker-oryx/core';
 import { render as litRender } from '@lit-labs/ssr/lib/render-lit-html.js';
 import { html } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import fetch from 'node-fetch';
 import 'abort-controller/polyfill';
 import { ServerContextService } from '@spryker-oryx/core/server';
+
+let orchestrator: App | void;
 
 export const renderComponent = async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,6 +20,9 @@ export const renderComponent = async (
 };
 
 export const render = async (element): Promise<string> => {
+  if (!orchestrator) {
+    orchestrator = await storefrontAppOrchestrator();
+  }
   window.location = element.route;
   const routerService = getInjector().inject(RouterService);
   const awaiter = getInjector().inject(SSRAwaiterService);

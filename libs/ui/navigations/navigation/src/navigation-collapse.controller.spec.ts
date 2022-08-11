@@ -1,23 +1,20 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html, LitElement } from 'lit';
-import './index';
+import { customElement } from 'lit/decorators.js';
+import { navigationComponent } from './index';
 import { CollapseToggleController } from './navigation-collapse.controller';
 
+useComponent(navigationComponent);
+
+@customElement('fake-element')
 export class FakeComponent extends LitElement {}
-customElements.define('fake-element', FakeComponent);
 
 describe('CollapseToggleController', () => {
   let element: FakeComponent;
   let controller: CollapseToggleController;
-
-  const expectsCollapsed = (collapsed: boolean): void => {
-    expect(element.hasAttribute('collapsed')).toBe(collapsed);
-    expect(element.style.getPropertyValue('--navigation-collapsed')).toBe(
-      collapsed ? '1' : '0'
-    );
-  };
 
   beforeEach(async () => {
     element = await fixture(html`<fake-element> </fake-element>`);

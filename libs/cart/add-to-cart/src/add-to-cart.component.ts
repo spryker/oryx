@@ -15,7 +15,6 @@ import { Size } from '@spryker-oryx/ui/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import '../../quantity-input';
 import { AddToCartOptions } from './add-to-cart.model';
 import { styles } from './add-to-cart.styles';
 

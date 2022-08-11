@@ -1,8 +1,11 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
+import { imageComponent } from '../index';
 import { m, xl, xs } from './images';
+
+useComponent(imageComponent);
 
 interface ImagesProps {
   minWidth: number;

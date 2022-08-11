@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import {
   createInjector,
@@ -11,8 +12,10 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import '../index';
+import { productPriceComponent } from './index';
 import { ProductPriceComponent } from './price.component';
+
+useComponent(productPriceComponent);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions(): Observable<any> {

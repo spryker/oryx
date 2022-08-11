@@ -3,8 +3,6 @@ import { property } from 'lit/decorators.js';
 import { CollapsibleProps } from './collapsible.model';
 import { collapsibleBaseStyle, collapsibleStyle } from './styles';
 
-export const TAG_NAME = 'oryx-collapsible';
-
 export class CollapsibleComponent
   extends LitElement
   implements CollapsibleProps

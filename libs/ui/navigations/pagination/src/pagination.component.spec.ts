@@ -1,9 +1,11 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { beforeEach, describe } from 'vitest';
-import './index';
+import { paginationComponent } from './index';
 import { PaginationComponent } from './pagination.component';
+
+useComponent(paginationComponent);
 
 describe('PaginationComponent', () => {
   let element: PaginationComponent;

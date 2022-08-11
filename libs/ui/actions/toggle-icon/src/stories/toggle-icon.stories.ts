@@ -1,7 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import '..';
 import { storybookPrefix } from '../../../../.constants';
+import { toggleIconComponent } from '../index';
+
+useComponent(toggleIconComponent);
 
 export default {
   title: `${storybookPrefix}/Actions/Toggle Icon`,

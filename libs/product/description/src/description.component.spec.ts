@@ -1,12 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import '../index';
 import { ProductDescriptionContent } from '../index';
 import { ProductDescriptionComponent } from './description.component';
+import { productDescriptionComponent } from './index';
+
+useComponent(productDescriptionComponent);
 
 describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;
@@ -33,7 +36,7 @@ describe('ProductDescriptionComponent', () => {
   });
 
   describe('when the component is rendered', () => {
-    const oneLineBreak = `with one	
+    const oneLineBreak = `with one
     line break`;
 
     beforeEach(async () => {

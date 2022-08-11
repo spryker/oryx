@@ -17,8 +17,6 @@ import { combineLatest, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
-export const TAG_NAME = 'product-card';
-
 export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
   static styles = ProductCardStyles;
 
@@ -42,7 +40,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     const target = e.target as HTMLElement;
 
     if (isFocusable(target)) {
-      e.preventDefault();
+      e.stopPropagation();
     }
   }
 
@@ -86,7 +84,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
               </div>
               <div class="info-col">
                 <add-to-cart
-                  @click="${(e: Event): void => e.stopPropagation()}"
+                  focusable
                   .options="${{
                     hideQuantityInput: true,
                   }}"

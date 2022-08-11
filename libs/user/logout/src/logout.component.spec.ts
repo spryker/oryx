@@ -1,12 +1,15 @@
 import { fixture, oneEvent } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import '../index';
+import { userLogoutComponent } from './index';
 import { UserLogoutComponent } from './logout.component';
+
+useComponent(userLogoutComponent);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();

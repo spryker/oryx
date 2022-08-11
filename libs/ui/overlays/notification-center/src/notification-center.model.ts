@@ -1,5 +1,5 @@
+import { Schemes, Types } from '@spryker-oryx/ui/notification';
 import { TemplateResult } from 'lit';
-import { Schemes, Types } from '../../../notification';
 
 export enum Positions {
   TOP_START = 'top-start',

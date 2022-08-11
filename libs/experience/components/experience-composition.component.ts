@@ -5,14 +5,7 @@ import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import {
-  BehaviorSubject,
-  combineLatest,
-  lastValueFrom,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import {
   Component,
   ComponentsRegistryService,
@@ -50,26 +43,10 @@ export class ExperienceCompositionComponent extends LitElement {
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
     switchMap(
       ([uid, route]) =>
-        this.experienceService?.getComponent({ uid, route }) || of({} as any)
+        this.experienceService?.getComponent({ uid, route }) ||
+        of({} as Component)
     ),
-    switchMap((component: Component) => of(component?.components)),
-    tap(async (components: Array<Component> | undefined) => {
-      if (this.route && components) {
-        const resolve = this.ssrAwaiter?.getAwaiter();
-        for (let i = 0; i < components!.length; i++) {
-          const hydratable = this.shadowRoot
-            ?.querySelector(components[i].type)
-            ?.hasAttribute('hydratable');
-          await lastValueFrom(
-            this.registryService.resolveComponent(components![i].type, {
-              hasSSR: this.hasSSR,
-              hydratable,
-            })
-          );
-        }
-        resolve?.();
-      }
-    })
+    map((component: Component) => component?.components)
   );
 
   // Can be safely used any time on or after calling getUpdateComplete().
@@ -84,7 +61,7 @@ export class ExperienceCompositionComponent extends LitElement {
     return html`
       ${asyncValue(
         this.components$,
-        (components: any) =>
+        (components) =>
           this.shadowRoot &&
           (this.shadowRoot?.children.length ?? 0) > 0 &&
           isClient() &&
@@ -93,10 +70,11 @@ export class ExperienceCompositionComponent extends LitElement {
             : html`${repeat(
                 components,
                 (component) => component.id,
-                (component: any) =>
+                (component) =>
                   this.registryService.resolveTemplate(
                     component.type,
-                    component.id
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    component.id!
                   )
               )}`,
         () => html`Loading...`

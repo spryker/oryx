@@ -1,7 +1,9 @@
-import { ProductTitleComponent } from './title.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './title.component';
 export * from './title.styles';
 
-customElements.get('product-title') ||
-  customElements.define('product-title', ProductTitleComponent);
+export const productTitleComponent = componentDef({
+  name: 'product-title',
+  impl: () => import('./title.component').then((m) => m.ProductTitleComponent),
+});

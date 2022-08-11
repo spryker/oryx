@@ -9,7 +9,7 @@ describe('addScript', () => {
   it('should attach the script to the dom properly', () => {
     addScript('my-path/path.js');
 
-    expect('script[src="my-path/path.js"]').toBeInDOM();
+    expect('script[src="my-path/path.js"]').toBeInTheDocument();
   });
 
   describe('if there are extra attributes', () => {

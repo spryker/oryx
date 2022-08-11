@@ -11,8 +11,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, map, Observable } from 'rxjs';
 import { ProductMediaComponentOptions } from './media.model';
 
-export const TAG_NAME = 'product-media';
-
 @hydratable('mouseover')
 export class ProductMediaComponent extends ProductComponentMixin<ProductMediaComponentOptions>() {
   protected productController = new ProductController(this);

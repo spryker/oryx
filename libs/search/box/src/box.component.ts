@@ -35,8 +35,6 @@ import {
 } from './controllers';
 import { baseSearchboxStyles, searchboxStyles } from './styles';
 
-export const TAG_NAME = 'search-box';
-
 @hydratable('click')
 export class SearchBoxComponent
   extends ComponentMixin<SearchBoxOptions>()

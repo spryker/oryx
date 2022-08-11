@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -8,8 +9,10 @@ import {
   ComponentsRegistryService,
   ExperienceService,
 } from '../src/services';
-import './';
 import { ExperienceCompositionComponent } from './experience-composition.component';
+import { experienceCompositionComponent } from './index';
+
+useComponent(experienceCompositionComponent);
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-banner' },

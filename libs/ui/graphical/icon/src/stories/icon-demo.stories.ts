@@ -1,10 +1,13 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../utilities/';
+import { Size } from '../../../../utilities';
 import { IconProperties, IconTypes } from '../icon.model';
-import '../index';
+import { iconComponent } from '../index';
+
+useComponent(iconComponent);
 
 export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
 

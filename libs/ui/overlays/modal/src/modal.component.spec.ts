@@ -1,11 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { checkSlots, getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
+import { modalComponent } from './index';
 import { ModalComponent } from './modal.component';
 
-customElements.get('oryx-modal') ||
-  customElements.define('oryx-modal', ModalComponent);
+useComponent(modalComponent);
 
 describe('Modal', () => {
   let element: ModalComponent;

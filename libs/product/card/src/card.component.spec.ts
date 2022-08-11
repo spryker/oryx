@@ -1,28 +1,28 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContentLinkComponent } from '@spryker-oryx/content/link';
+import * as core from '@spryker-oryx/core';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductContext } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { SpyInstanceFn } from 'vitest';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import '../index';
+import { productCardComponent } from '../index';
 import { ProductCardComponent } from './card.component';
 
-const mockContextProvide = vi.fn();
+useComponent(productCardComponent);
 
-vi.mock('@spryker-oryx/core', async () => {
-  const core = (await vi.importActual('@spryker-oryx/core')) as Array<unknown>;
-
-  return {
-    ...core,
-    ContextController: class {
-      get = vi.fn().mockReturnValue(of('mockSku'));
-      provide = mockContextProvide;
-    },
-  };
-});
+const mockContext = {
+  get: vi.fn().mockReturnValue(of('mockSku')),
+  provide: vi.fn(),
+};
+vi.spyOn(core, 'ContextController') as SpyInstanceFn;
+(core.ContextController as unknown as SpyInstanceFn).mockReturnValue(
+  mockContext
+);
 
 describe('ProductCardComponent', () => {
   let element: ProductCardComponent;
@@ -112,7 +112,7 @@ describe('ProductCardComponent', () => {
     it('sku from the property', async () => {
       await fixture(html`<product-card sku="${propSku}"></product-card>`);
 
-      expect(mockContextProvide).toHaveBeenCalledWith(
+      expect(mockContext.provide).toHaveBeenCalledWith(
         ProductContext.SKU,
         propSku
       );
@@ -123,7 +123,7 @@ describe('ProductCardComponent', () => {
         html`<product-card .options="${{ sku: optionsSku }}"></product-card>`
       );
 
-      expect(mockContextProvide).toHaveBeenCalledWith(
+      expect(mockContext.provide).toHaveBeenCalledWith(
         ProductContext.SKU,
         optionsSku
       );
@@ -137,7 +137,7 @@ describe('ProductCardComponent', () => {
         ></product-card>`
       );
 
-      expect(mockContextProvide).toHaveBeenCalledWith(
+      expect(mockContext.provide).toHaveBeenCalledWith(
         ProductContext.SKU,
         optionsSku
       );

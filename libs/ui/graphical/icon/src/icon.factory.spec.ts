@@ -1,11 +1,13 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { svg } from 'lit';
 import { Size } from '../../../utilities';
 import { IconComponent } from './icon.component';
-import './index';
-import { icon } from './index';
+import { icon, iconComponent } from './index';
 
-describe('factory', () => {
+useComponent(iconComponent);
+
+describe('icon factory', () => {
   let element: IconComponent;
 
   describe('when an icon type is given', () => {
@@ -62,7 +64,8 @@ describe('factory', () => {
     beforeEach(async () => {
       element = await fixture(
         html`${icon({
-          source: svg`<circle cx="12" cy="12" r="12" />`,
+          source: svg`
+<circle cx="12" cy="12" r="12" />`,
         })}`
       );
     });

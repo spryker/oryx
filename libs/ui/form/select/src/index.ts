@@ -1,9 +1,11 @@
-import { SelectComponent } from './select.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './controllers';
 export * from './select.component';
 export * from './select.model';
 export * from './styles';
 
-customElements.get('oryx-select') ||
-  customElements.define('oryx-select', SelectComponent);
+export const selectComponent = componentDef({
+  name: 'oryx-select',
+  impl: () => import('./select.component').then((m) => m.SelectComponent),
+});

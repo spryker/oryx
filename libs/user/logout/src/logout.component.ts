@@ -10,8 +10,6 @@ import { html, TemplateResult } from 'lit';
 import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';
 import { LogoutOptions } from './logout.model';
 
-export const TAG_NAME = 'user-logout';
-
 export class UserLogoutComponent extends ComponentMixin<LogoutOptions>() {
   protected routerService = resolve(RouterService);
 

@@ -10,6 +10,7 @@ import {
   panelBaseStyles,
   panelStyles,
 } from './styles';
+
 export const TAG_NAME = 'oryx-drawer';
 
 export class DrawerComponent extends LitElement implements DrawerProperties {

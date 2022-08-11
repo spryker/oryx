@@ -1,5 +1,5 @@
+import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { AffixController } from '../../../form/input';
 import { getControl } from '../../../form/utilities';
 import {
   ClearIconAppearance,

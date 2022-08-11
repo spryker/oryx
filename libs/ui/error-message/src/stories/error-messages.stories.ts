@@ -1,7 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import '../index';
+import { errorMessageComponent } from '../../index';
+
+useComponent(errorMessageComponent);
 
 export default {
   title: `${storybookPrefix}/Form/Utilities/ErrorMessage`,
@@ -12,7 +15,7 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ message }: Props): TemplateResult => {
-  return html` <oryx-error-message .message=${message}> </oryx-error-message> `;
+  return html`<oryx-error-message .message=${message}> </oryx-error-message>`;
 };
 export const ErrorMessages = Template.bind({});
 ErrorMessages.args = { message: 'Error validation text' };

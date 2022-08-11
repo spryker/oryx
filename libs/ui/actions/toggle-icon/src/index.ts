@@ -1,7 +1,10 @@
-import { ToggleIconComponent } from './toggle-icon.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './toggle-icon.component';
 export * from './toggle-icon.styles';
 
-customElements.get('oryx-toggle-icon') ||
-  customElements.define('oryx-toggle-icon', ToggleIconComponent);
+export const toggleIconComponent = componentDef({
+  name: 'oryx-toggle-icon',
+  impl: () =>
+    import('./toggle-icon.component').then((m) => m.ToggleIconComponent),
+});

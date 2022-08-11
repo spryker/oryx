@@ -1,6 +1,9 @@
-import { ImageComponent, TAG_NAME } from './image.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './image.component';
 export * from './image.styles';
 
-customElements.get(TAG_NAME) || customElements.define(TAG_NAME, ImageComponent);
+export const imageComponent = componentDef({
+  name: 'oryx-image',
+  impl: () => import('./image.component').then((m) => m.ImageComponent),
+});

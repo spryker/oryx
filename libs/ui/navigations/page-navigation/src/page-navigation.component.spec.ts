@@ -1,16 +1,20 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import {
   a11yConfig,
   queryAssignedElements,
   queryFirstAssigned,
 } from '@spryker-oryx/typescript-utils';
+import {
+  PageNavigationItemComponent,
+  pageNavigationItemComponent,
+} from '@spryker-oryx/ui/page-navigation-item';
 import { TemplateResult } from 'lit';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { PageNavigationComponent } from '../../page-navigation';
-import { PageNavigationItemComponent } from '../../page-navigation-item';
-import './../../page-navigation-item';
-import './index';
+import { PageNavigationComponent, pageNavigationComponent } from './index';
+
+useComponent([pageNavigationComponent, pageNavigationItemComponent]);
 
 describe('Page navigation', () => {
   let element: PageNavigationComponent;

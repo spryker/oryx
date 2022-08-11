@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -5,6 +6,7 @@ import { property } from 'lit/decorators.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { styles } from './quantity-input.styles';
 
+@hydratable()
 export class QuantityInputComponent extends LitElement {
   static styles = styles;
 

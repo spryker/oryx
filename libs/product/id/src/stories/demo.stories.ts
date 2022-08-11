@@ -1,9 +1,12 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { setupProductMocks } from '../../../src/mocks';
+import { productIdComponent } from '../../index';
 import { Props } from '../id.model';
-import '../index';
+
+useComponent(productIdComponent);
 
 export default {
   title: `${storybookPrefix}/Id`,

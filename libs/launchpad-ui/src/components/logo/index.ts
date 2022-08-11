@@ -1,4 +1,6 @@
-import { Logo } from './logo';
+import { componentDef } from '@spryker-oryx/core';
 
-customElements.get('oryx-lp-logo') ||
-  customElements.define('oryx-lp-logo', Logo);
+export const logo = componentDef({
+  name: 'oryx-lp-logo',
+  impl: () => import('./logo').then((m) => m.Logo),
+});

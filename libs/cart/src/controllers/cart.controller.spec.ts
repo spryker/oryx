@@ -2,7 +2,6 @@ import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { of } from 'rxjs';
-import { beforeEach, describe } from 'vitest';
 import { CartController } from './cart.controller';
 
 class MockCartService {

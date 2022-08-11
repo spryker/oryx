@@ -1,8 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { ErrorMessageComponent } from './error-message.component';
-import './index';
+import { errorMessageComponent } from './index';
+
+useComponent(errorMessageComponent);
 
 describe('ErrorMessageComponent', () => {
   let element: ErrorMessageComponent;

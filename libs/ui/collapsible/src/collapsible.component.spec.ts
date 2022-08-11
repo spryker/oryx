@@ -1,6 +1,9 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { CollapsibleComponent } from './collapsible.component';
-import './index';
+import { collapsibleComponent } from './index';
+
+useComponent(collapsibleComponent);
 
 describe('CollapsibleComponent', () => {
   let element: CollapsibleComponent;

@@ -1,8 +1,10 @@
+import { componentDef } from '@spryker-oryx/core';
+
 export * from './spinner.component';
 export * from './spinner.model';
 export * from './spinner.styles';
 
-import { SpinnerComponent } from './spinner.component';
-
-customElements.get('oryx-spinner') ||
-  customElements.define('oryx-spinner', SpinnerComponent);
+export const spinnerComponent = componentDef({
+  name: 'oryx-spinner',
+  impl: () => import('./spinner.component').then((m) => m.SpinnerComponent),
+});

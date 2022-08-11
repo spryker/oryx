@@ -1,8 +1,10 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { ChipType } from '../../index';
-import '../index';
+import { chipComponent, ChipType } from '../../index';
+
+useComponent(chipComponent);
 
 export default { title: `${storybookPrefix}/Graphical/Chip` } as Meta;
 

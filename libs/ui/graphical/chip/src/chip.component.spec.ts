@@ -1,9 +1,12 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { ChipComponent } from './chip.component';
 import { ChipType } from './chip.model';
-import './index';
+import { chipComponent } from './index';
+
+useComponent(chipComponent);
 
 describe('ChipComponent', () => {
   let element: ChipComponent;
@@ -29,9 +32,7 @@ describe('ChipComponent', () => {
     Object.values(types).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
-          element = await fixture(
-            html` <oryx-chip type="${type}"></oryx-chip>`
-          );
+          element = await fixture(html`<oryx-chip type="${type}"></oryx-chip>`);
         });
 
         it('passes the a11y audit', async () => {

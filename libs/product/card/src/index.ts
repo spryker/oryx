@@ -1,8 +1,10 @@
-import { ProductCardComponent, TAG_NAME } from './card.component';
+import { componentDef } from '@spryker-oryx/core';
 
 export * from './card.component';
 export * from './card.model';
 export * from './card.styles';
 
-customElements.get(TAG_NAME) ||
-  customElements.define(TAG_NAME, ProductCardComponent);
+export const productCardComponent = componentDef({
+  name: 'product-card',
+  impl: () => import('./card.component').then((m) => m.ProductCardComponent),
+});

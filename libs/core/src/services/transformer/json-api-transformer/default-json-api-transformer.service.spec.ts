@@ -14,7 +14,7 @@ vi.mock('jsonapi-serializer', () => ({
     .mockImplementation(() => ({ deserialize: mockDeserialize })),
 }));
 
-vi.mock('../../../utilities', () => ({
+vi.mock('@spryker-oryx/core/utilities', () => ({
   ssrAwaiter: vi.fn().mockImplementation((data) => of(data)),
 }));
 

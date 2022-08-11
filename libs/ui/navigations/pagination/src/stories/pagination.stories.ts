@@ -1,8 +1,11 @@
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import '../index';
+import { paginationComponent } from '../index';
 import { PaginationProperties } from '../pagination.model';
+
+useComponent(paginationComponent);
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination`,
