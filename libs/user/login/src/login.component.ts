@@ -89,10 +89,9 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
       ${
         success
           ? ''
-          : html`<oryx-notification type="error"
-              >The email or/and password entered is not valid. Please try
-              again.</oryx-notification
-            >`
+          : html`<oryx-notification type="error">
+              The email or/and password entered is not valid. Please try again.
+            </oryx-notification>`
       }
       <form @submit=${this.handleLogin} method="post">
         <oryx-input label="Email *" ?haserror="${!success}"><input type="email" name="email" placeholder="Email" required/></oryx-input>
