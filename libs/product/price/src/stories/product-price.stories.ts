@@ -1,8 +1,6 @@
 import { getInjector } from '@spryker-oryx/injector';
-import {
-  LocaleService,
-  ProductComponentProperties,
-} from '@spryker-oryx/product';
+import { ProductComponentProperties } from '@spryker-oryx/product';
+import { LocaleService } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';

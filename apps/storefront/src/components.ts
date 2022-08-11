@@ -104,16 +104,15 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string) => html`<mini-cart uid="${uid}"></mini-cart>`,
   },
 
-  'site-searchbox': {
-    tag: 'site-searchbox',
+  'search-box': {
+    tag: 'search-box',
     component: async () => {
-      await import('@spryker-oryx/site/searchbox');
+      await import('@spryker-oryx/search/box');
       await import('@spryker-oryx/ui/image');
       await import('@spryker-oryx/product/media');
       await import('@spryker-oryx/product/price');
       await import('@spryker-oryx/content/link');
     },
-    template: (uid: string) =>
-      html`<site-searchbox uid="${uid}"></site-searchbox>`,
+    template: (uid: string) => html`<search-box uid="${uid}"></search-box>`,
   },
 };

@@ -6,7 +6,7 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
-import { MOCK_SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
+import { SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import 'urlpattern-polyfill';
@@ -42,7 +42,7 @@ describe('InputComponent', () => {
           provide: RouterService,
           useClass: MockRouterService,
         },
-        ...MOCK_SEMANTIC_LINK_PROVIDERS,
+        ...SEMANTIC_LINK_PROVIDERS,
         ...MOCK_CART_PROVIDERS,
       ],
     });

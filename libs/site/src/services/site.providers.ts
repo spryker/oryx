@@ -1,29 +1,27 @@
 import {
+  CurrencyService,
+  DefaultCurrencyService,
+  DefaultLocaleService,
   DefaultSemanticLinkService,
-  DefaultSuggestionAdapter,
-  DefaultSuggestionService,
+  LocaleService,
   SemanticLinkService,
-  SuggestionAdapter,
-  SuggestionNormalizers,
-  suggestionNormalizers,
-  SuggestionService,
-} from '.';
+} from './index';
 
-export const SITE_PROVIDERS = [
+export const SEMANTIC_LINK_PROVIDERS = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
   },
+];
+
+export const SITE_PROVIDERS = [
+  ...SEMANTIC_LINK_PROVIDERS,
   {
-    provide: SuggestionAdapter,
-    useClass: DefaultSuggestionAdapter,
+    provide: CurrencyService,
+    useClass: DefaultCurrencyService,
   },
   {
-    provide: SuggestionService,
-    useClass: DefaultSuggestionService,
-  },
-  {
-    provide: SuggestionNormalizers,
-    useValue: suggestionNormalizers,
+    provide: LocaleService,
+    useClass: DefaultLocaleService,
   },
 ];

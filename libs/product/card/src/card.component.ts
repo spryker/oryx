@@ -10,6 +10,7 @@ import {
   ProductContext,
   ProductController,
 } from '@spryker-oryx/product';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, tap } from 'rxjs';
@@ -52,8 +53,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
         <content-link
           @click=${this.clickHandler}
           .options="${{
-            // TODO: fix on SemanticLinkType when get rid of circular dependency
-            type: 'product',
+            type: SemanticLinkType.Product,
             id: product.sku,
           }}"
         >

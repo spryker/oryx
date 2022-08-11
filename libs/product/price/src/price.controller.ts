@@ -1,9 +1,6 @@
 import { resolve } from '@spryker-oryx/injector';
-import {
-  CurrencyService,
-  LocaleService,
-  ProductController,
-} from '@spryker-oryx/product';
+import { ProductController } from '@spryker-oryx/product';
+import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import { LitElement, ReactiveController } from 'lit';
 import { combineLatest, map, Observable } from 'rxjs';
 import { FormattedProductPrice } from './price.model';

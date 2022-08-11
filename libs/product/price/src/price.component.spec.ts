@@ -5,11 +5,8 @@ import {
   destroyInjector,
   getInjector,
 } from '@spryker-oryx/injector';
-import {
-  CurrencyService,
-  LocaleService,
-  ProductService,
-} from '@spryker-oryx/product';
+import { ProductService } from '@spryker-oryx/product';
+import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';

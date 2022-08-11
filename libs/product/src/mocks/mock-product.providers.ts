@@ -1,9 +1,11 @@
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
+import {
+  CurrencyService,
+  DefaultCurrencyService,
+  DefaultLocaleService,
+  LocaleService,
+} from '@spryker-oryx/site';
 import { delay, Observable, of } from 'rxjs';
-import { CurrencyService } from '../services/currency.service';
-import { DefaultCurrencyService } from '../services/default-currency.service';
-import { DefaultLocaleService } from '../services/default-locale.service';
-import { LocaleService } from '../services/locale.service';
 import { ProductService } from '../services/product.service';
 import { MockProductService } from './mock-product.service';
 
@@ -16,7 +18,7 @@ export const MOCK_CART_PROVIDERS = [
   },
 ];
 
-export const MOCK_SEMANTIC_LINK_PROVIDERS = [
+export const SEMANTIC_LINK_PROVIDERS = [
   {
     provide: 'FES.SemanticLinkService',
     useValue: {
@@ -43,6 +45,6 @@ export const MOCK_PRODUCT_PROVIDERS = [
     provide: LocaleService,
     useClass: DefaultLocaleService,
   },
+  ...SEMANTIC_LINK_PROVIDERS,
   ...MOCK_CART_PROVIDERS,
-  ...MOCK_SEMANTIC_LINK_PROVIDERS,
 ];
