@@ -34,7 +34,7 @@ const Template: Story<Props> = ({
 
 export const SpinnerDemo = Template.bind({});
 SpinnerDemo.parameters = {
-  chromatic: { pauseAnimationAtEnd: true },
+  chromatic: { disableSnapshot: true },
 };
 
 SpinnerDemo.argTypes = {
