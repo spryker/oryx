@@ -3,6 +3,7 @@ import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import { IconTypes } from '../../../../graphical/icon';
@@ -34,6 +35,7 @@ interface Props
   dataSet?: 'branches' | 'states';
   useSelect?: boolean;
   selected?: string;
+  floatLabel?: boolean;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -69,6 +71,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       @oryx.search=${logSearch}
     >
       <oryx-select
+        ?floatLabel=${props.floatLabel}
         label="Select with options"
         ?allowEmptyValue=${props.allowEmptyValue}
         clearIconAppearance=${props.clearIconAppearance}
@@ -81,7 +84,10 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         contenteditable="false"
       >
         <select required>
-          <option value="" hidden>Select an option</option>
+          ${when(
+            !props.floatLabel,
+            () => html` <option value="" hidden>Select an option</option> `
+          )}
           ${data.map(
             (option) =>
               html`<option ?selected=${props.selected === option}>
@@ -92,6 +98,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       </oryx-select>
 
       <oryx-select
+        ?floatLabel=${props.floatLabel}
         label="input with options"
         clearIconAppearance=${props.clearIconAppearance}
         filterStrategy=${props.filterStrategy}
@@ -125,6 +132,7 @@ SelectDemo.args = {
   clearIconAppearance: ClearIconAppearance.HOVER,
   prefixFill: false,
   suffixFill: false,
+  floatLabel: false,
 };
 
 SelectDemo.argTypes = {

@@ -14,7 +14,10 @@ export class AffixController implements ReactiveController {
       const icon = this.host.prefixIcon;
       if (this.hasContent('prefix', icon)) {
         content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
+        this.host.setAttribute('has-prefix', '');
       }
+    } else {
+      this.host.setAttribute('has-prefix', '');
     }
     return this.renderContent('prefix', content);
   }

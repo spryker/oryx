@@ -1,11 +1,7 @@
 import { TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-
-export interface Variant {
-  categoryX: string;
-  categoryY: string;
-}
+import { Variant } from './variant.model';
 
 const styles = html`
   <style>

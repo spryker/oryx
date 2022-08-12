@@ -1,110 +1,89 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { initMutationObserverForComponent } from '../../../../../utilities';
+import { generateVariantsMatrix } from '../../../../../utilities';
+import {
+  VariantsGroup,
+  variantsGroupTemplate,
+} from '../../../../../utilities/storybook/variants/variants-group';
+import '../../../../input/src/form-control';
+import {
+  getInputVariants,
+  InputVariantOptions,
+} from '../../../../input/src/stories/static/common';
+import { setTextAreaMutationObserver } from './common';
 
 export default {
   title: `${storybookPrefix}/Form/Textarea/Static`,
 } as Meta;
 
-const variations = [
+const groups: VariantsGroup<InputVariantOptions>[] = [
   {
-    name: 'Default',
-    state: '',
-    lightDomState: '',
+    title: 'Standard label',
+    options: {
+      floatLabel: false,
+    },
   },
   {
-    name: 'Hovered',
-    state: 'pseudo-hover',
-    lightDomState: 'pseudo-hover',
+    title: 'Floating label',
+    options: {
+      floatLabel: true,
+    },
   },
   {
-    name: 'Focused',
-    state: 'pseudo-focus-within',
-    lightDomState: 'pseudo-focus-within',
-  },
-  {
-    name: 'Disabled',
-    state: '',
-    lightDomState: '',
-  },
-  {
-    name: 'Error',
-    state: '',
-    lightDomState: '',
-    errorState: 'Error validation text',
+    title: 'Truncated floating label',
+    options: {
+      floatLabel: true,
+      label: 'Very loooong truncated text',
+    },
   },
 ];
 
-const Template: Story = (): TemplateResult => {
-  return html`
-    <h1>With label</h1>
-    <div class="input-component">
-      ${variations.map((variant) => {
-        const isDisabled = variant.name === 'Disabled';
-        return html`
-          <div class="variation-input-component">
-            <div class="variation-input">
-              <p>${variant.name}</p>
-              <oryx-input label="label" errormessage="${variant.errorState}">
-                <textarea
-                  placeholder="Placeholder"
-                  ?disabled=${isDisabled}
-                  class="${variant.lightDomState}"
-                ></textarea>
-              </oryx-input>
-            </div>
-            <div class="variation-input">
-              <oryx-input label="label" errormessage="${variant.errorState}">
-                <textarea
-                  placeholder="Placeholder"
-                  ?disabled=${isDisabled}
-                  class="${variant.lightDomState}"
-                >
-Value</textarea
-                >
-              </oryx-input>
-            </div>
-          </div>
-        `;
-      })}
-    </div>
+const Template: Story = (): TemplateResult => html`
+  ${groups.map((group, index) =>
+    variantsGroupTemplate(
+      () => html`
+        ${generateVariantsMatrix(
+          [
+            ...getInputVariants({ label: 'Label', ...group.options }),
+            ...getInputVariants({
+              value: 'Value',
+              label: 'Label',
+              ...group.options,
+            }),
+          ],
+          ({
+            options: {
+              label,
+              floatLabel,
+              errorMessage,
+              isDisabled,
+              className,
+              value,
+            },
+          }) => html`
+            <oryx-input
+              label=${label}
+              ?floatLabel=${floatLabel}
+              errormessage=${errorMessage}
+            >
+              <textarea
+                placeholder="Placeholder"
+                ?disabled=${isDisabled}
+                class=${className}
+              >
+${value}</textarea
+              >
+            </oryx-input>
+          `
+        )}
+      `,
+      { title: group.title, addSeparator: index < groups.length - 1 }
+    )
+  )}
 
-    <script>
-      ${initMutationObserverForComponent({
-        targetComponent: 'oryx-input',
-        targetSelector: '.control',
-        sourceSelector: 'textarea',
-      })};
-    </script>
-
-    <style>
-      .variation-input-component {
-        display: flex;
-        align-items: center;
-      }
-
-      .variation-input {
-        display: flex;
-        align-items: center;
-      }
-
-      .variation-input {
-        display: flex;
-        margin-bottom: 20px;
-        margin-right: 50px;
-        gap: 20px;
-        align-items: center;
-      }
-
-      .variation-input oryx-input {
-        width: 350px;
-      }
-
-      .variation-input p {
-        width: 100px;
-      }
-    </style>
-  `;
-};
+  <script>
+    ${setTextAreaMutationObserver()};
+  </script>
+`;
 export const StatesWithLabel = Template.bind({});

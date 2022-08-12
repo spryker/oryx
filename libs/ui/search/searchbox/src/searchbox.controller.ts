@@ -51,7 +51,7 @@ export class SearchboxController implements ReactiveController {
     if (!pos || pos === SearchIconPosition.PREFIX) {
       content = this.searchButton;
     }
-    return content ?? html``;
+    return content;
   }
 
   /**

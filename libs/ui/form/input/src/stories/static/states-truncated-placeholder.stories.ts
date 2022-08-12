@@ -2,35 +2,32 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { generateVariantsMatrix } from '../../../../../utilities';
-import '../../../../input/src/form-control';
-import { getInputVariants } from '../../../../input/src/stories/static/common';
-import { setTextAreaMutationObserver } from './common';
+import '../../form-control';
+import { getInputVariants, setInputMutationObserver } from './common';
 
 export default {
-  title: `${storybookPrefix}/Form/Textarea/Static`,
+  title: `${storybookPrefix}/Form/Input/Static`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
   return html`
     ${generateVariantsMatrix(
-      [...getInputVariants(), ...getInputVariants({ value: 'Value' })],
+      getInputVariants(),
       ({ options: { errorMessage, isDisabled, className, value } }) => html`
-        <oryx-input errormessage=${errorMessage}>
-          <textarea
-            placeholder="Placeholder"
-            readonly
+        <oryx-input label="Label" errormessage=${errorMessage}>
+          <input
+            placeholder="Very long truncated placeholder"
+            value=${value}
             ?disabled=${isDisabled}
             class=${className}
-          >
-${value}</textarea
-          >
+          />
         </oryx-input>
       `
     )}
 
     <script>
-      ${setTextAreaMutationObserver()};
+      ${setInputMutationObserver()};
     </script>
   `;
 };
-export const StatesReadonly = Template.bind({});
+export const TruncatedPlaceholder = Template.bind({});

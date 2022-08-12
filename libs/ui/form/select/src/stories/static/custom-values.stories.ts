@@ -3,13 +3,13 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { PopoverSelectEvent } from '../../../../../overlays/popover/src/popover.model';
 import { sideBySide } from '../../../../../utilities/storybook';
+import { selectOptions } from './common';
 
 export default {
   title: `${storybookPrefix}/Form/Select/Static`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  const selectOptions = ['Red', 'Green', 'Blue'];
   const logSelect = (ev: CustomEvent<PopoverSelectEvent>): void => {
     console.log(
       'oryx.select value',

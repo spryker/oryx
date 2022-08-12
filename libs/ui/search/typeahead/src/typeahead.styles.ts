@@ -42,6 +42,10 @@ export const typeaheadStyles = css`
     --oryx-label-height: 23px;
   }
 
+  :host([floatLabel]) oryx-popover {
+    --oryx-label-height: 4px;
+  }
+
   slot .placeholder {
     height: 120px;
   }

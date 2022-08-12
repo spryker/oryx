@@ -5,21 +5,31 @@ import { storybookPrefix } from '../../../../../../.constants';
 export default {
   title: `${storybookPrefix}/Form/Form Control/Prefix`,
   args: {
+    label: 'Label',
+    floatLabel: false,
     prefixFill: true,
     disabled: false,
   },
 } as Meta;
 interface Props {
+  label: string;
+  floatLabel: boolean;
   prefixFill: boolean;
   disabled: boolean;
 }
 
 const Template: Story<Props> = ({
+  floatLabel,
+  label,
   prefixFill,
   disabled,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input ?prefixFill=${prefixFill}>
+    <oryx-input
+      label=${label}
+      ?floatLabel=${floatLabel}
+      ?prefixFill=${prefixFill}
+    >
       <input placeholder="Placeholder..." ?disabled=${disabled} />
       <oryx-icon slot="prefix" type="search"></oryx-icon>
       <span slot="prefix">more...</span>

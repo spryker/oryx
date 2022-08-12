@@ -1,87 +1,79 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { initMutationObserverForComponent } from '../../../../../utilities';
+import { generateVariantsMatrix } from '../../../../../utilities';
+import {
+  VariantsGroup,
+  variantsGroupTemplate,
+} from '../../../../../utilities/storybook/variants/variants-group';
+import '../../form-control';
+import {
+  getInputVariants,
+  InputVariantOptions,
+  setInputMutationObserver,
+} from './common';
 
 export default {
   title: `${storybookPrefix}/Form/Input/Static`,
 } as Meta;
 
-const variations = [
+const groups: VariantsGroup<InputVariantOptions>[] = [
   {
-    name: 'Default',
-    state: '',
-    lightDomState: '',
+    title: 'Standard label',
+    options: {
+      floatLabel: false,
+    },
   },
   {
-    name: 'Hovered',
-    state: 'pseudo-hover',
-    lightDomState: 'pseudo-hover',
-  },
-  {
-    name: 'Focused',
-    state: 'pseudo-focus-within',
-    lightDomState: 'pseudo-focus-within',
-  },
-  {
-    name: 'Disabled',
-    state: '',
-    lightDomState: '',
-  },
-  {
-    name: 'Error',
-    state: '',
-    lightDomState: '',
-    errorState: 'Error validation text',
+    title: 'Floating label',
+    options: {
+      floatLabel: true,
+    },
   },
 ];
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <h1>Input readonly</h1>
-    <div class="input-component">
-      ${variations.map((variant) => {
-        const isDisabled = variant.name === 'Disabled';
-        return html`
-          <div class="variation-input">
-            <p>${variant.name}</p>
-            <oryx-input errormessage="${variant.errorState}">
-              <input
-                placeholder="Placeholder"
-                readonly
-                ?disabled=${isDisabled}
-                class="${variant.lightDomState}"
-              />
-            </oryx-input>
-          </div>
-        `;
-      })}
-    </div>
+    ${groups.map((group, index) =>
+      variantsGroupTemplate(
+        () => html`
+          ${generateVariantsMatrix(
+            [
+              ...getInputVariants(group.options),
+              ...getInputVariants({ value: 'Value', ...group.options }),
+            ],
+            ({
+              options: {
+                floatLabel,
+                errorMessage,
+                isDisabled,
+                className,
+                value,
+              },
+            }) => html`
+              <oryx-input
+                label="Label"
+                ?floatLabel=${floatLabel}
+                errormessage=${errorMessage}
+              >
+                <input
+                  placeholder="Placeholder"
+                  readonly
+                  value=${value}
+                  ?disabled=${isDisabled}
+                  class=${className}
+                />
+              </oryx-input>
+            `
+          )}
+        `,
+        { title: group.title, addSeparator: index < groups.length - 1 }
+      )
+    )}
 
     <script>
-      ${initMutationObserverForComponent({
-        targetComponent: 'oryx-input',
-        targetSelector: '.control',
-        sourceSelector: 'input',
-      })};
+      ${setInputMutationObserver()};
     </script>
-
-    <style>
-      .variation-input {
-        display: flex;
-        margin-bottom: 20px;
-        gap: 20px;
-        align-items: center;
-      }
-
-      .variation-input oryx-input {
-        width: 100%;
-      }
-
-      .variation-input p {
-        width: 100px;
-      }
-    </style>
   `;
 };
-export const StatesReadonly = Template.bind({});
+export const Readonly = Template.bind({});

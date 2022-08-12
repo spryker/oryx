@@ -13,6 +13,16 @@ export class FormControlController implements ReactiveController {
     this.host.addEventListener('mousedown', this.mouseDownHandler);
   }
 
+  hostUpdated(): void {
+    const prefix = this.host.renderRoot.querySelector(
+      'slot[name="prefix"]'
+    ) as HTMLSlotElement;
+    this.host.style.setProperty(
+      '--float-label-start-gap',
+      `${prefix?.offsetWidth}px`
+    );
+  }
+
   hostDisconnected(): void {
     this.host.removeEventListener('mousedown', this.mouseDownHandler);
     this.controlAttrObserver?.disconnect();

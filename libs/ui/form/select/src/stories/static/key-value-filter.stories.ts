@@ -8,13 +8,13 @@ export default {
   title: `${storybookPrefix}/Form/Select/Static`,
 } as Meta;
 
-const Template: Story<unknown> = (): TemplateResult => {
-  const selectOptions = [
-    { key: 1, value: 'Red' },
-    { key: 2, value: 'Green' },
-    { key: 3, value: 'Blue' },
-  ];
+const selectOptions = [
+  { key: 1, value: 'Red' },
+  { key: 2, value: 'Green' },
+  { key: 3, value: 'Blue' },
+];
 
+const Template: Story<unknown> = (): TemplateResult => {
   const logValue = (e): void => {
     const el = e.target.parentElement.querySelector('[slot="label"] > span');
     el.textContent = e.target.value;

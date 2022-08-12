@@ -106,7 +106,7 @@ export const formControlStyles = css`
 
   @media (max-width: 767px) {
     input,
-    ::slotted(input) {
+    slot:not([name])::slotted(*) {
       height: 46px;
     }
   }
