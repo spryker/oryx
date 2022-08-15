@@ -9,15 +9,24 @@ interface Props {
   label: string;
   disabled: boolean;
   floatLabel: boolean;
+  hasError: boolean;
+  errorMessage: string;
 }
 
 const Template: Story<Props> = ({
+  label,
   disabled,
   floatLabel,
-  label,
+  hasError,
+  errorMessage,
 }: Props): TemplateResult =>
   html`
-    <oryx-input ?floatLabel=${floatLabel} label=${label}>
+    <oryx-input
+      label=${label}
+      ?floatLabel=${floatLabel}
+      ?hasError=${hasError}
+      errorMessage=${errorMessage}
+    >
       <textarea placeholder="Placeholder" ?disabled=${disabled}></textarea>
     </oryx-input>
   `;
@@ -26,4 +35,6 @@ TextareaDemo.args = {
   label: 'Label',
   disabled: false,
   floatLabel: false,
+  hasError: false,
+  errorMessage: '',
 };

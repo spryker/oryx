@@ -60,11 +60,13 @@ const Template: Story = (): TemplateResult => html`
               isDisabled,
               className,
               value,
+              hasError,
             },
           }) => html`
             <oryx-input
               label=${label}
               ?floatLabel=${floatLabel}
+              ?hasError=${hasError}
               errormessage=${errorMessage}
             >
               <textarea

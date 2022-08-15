@@ -26,11 +26,22 @@ const Template: Story<unknown> = (): TemplateResult => {
                 },
               }),
             ],
-            ({ options: { floatLabel, disabled, value, visible } }) => html`
+            ({
+              options: {
+                floatLabel,
+                disabled,
+                value,
+                visible,
+                errorMessage,
+                hasError,
+              },
+            }) => html`
               <oryx-password-input
                 label="Label"
                 ?floatLabel=${floatLabel}
                 ?visible=${visible}
+                errorMessage=${errorMessage}
+                ?hasError=${hasError}
               >
                 <input
                   type=${visible ? 'text' : 'password'}

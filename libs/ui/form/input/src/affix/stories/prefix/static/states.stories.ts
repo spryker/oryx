@@ -110,6 +110,7 @@ const Template: Story = (): TemplateResult => html`
                     prefixIcon,
                     prefixContent,
                     prefixFill,
+                    hasError,
                   },
                 }) => html`
                   <oryx-input
@@ -118,6 +119,7 @@ const Template: Story = (): TemplateResult => html`
                     ?prefixFill=${prefixFill}
                     prefixIcon=${prefixIcon}
                     errormessage=${errorMessage}
+                    ?hasError=${hasError}
                   >
                     ${when(
                       prefixContent,

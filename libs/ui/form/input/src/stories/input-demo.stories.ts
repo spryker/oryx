@@ -15,6 +15,8 @@ interface Props {
   disabled: boolean;
   type: string;
   floatLabel: boolean;
+  hasError: boolean;
+  errorMessage: string;
 }
 
 const Template: Story<Props> = ({
@@ -22,9 +24,16 @@ const Template: Story<Props> = ({
   type,
   floatLabel,
   label,
+  hasError,
+  errorMessage,
 }: Props): TemplateResult => {
   return html`
-    <oryx-input ?floatLabel=${floatLabel} label=${label}>
+    <oryx-input
+      label=${label}
+      ?floatLabel=${floatLabel}
+      ?hasError=${hasError}
+      errorMessage=${errorMessage}
+    >
       <input placeholder="Placeholder..." ?disabled=${disabled} type=${type} />
     </oryx-input>
   `;
@@ -34,6 +43,8 @@ InputDemo.args = {
   label: 'Label',
   disabled: false,
   floatLabel: false,
+  hasError: false,
+  errorMessage: '',
   type: 'text',
 };
 

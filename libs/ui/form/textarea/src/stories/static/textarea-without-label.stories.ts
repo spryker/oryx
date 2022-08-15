@@ -14,8 +14,10 @@ const Template: Story = (): TemplateResult => {
   return html`
     ${generateVariantsMatrix(
       [...getInputVariants(), ...getInputVariants({ value: 'Value' })],
-      ({ options: { errorMessage, isDisabled, className, value } }) => html`
-        <oryx-input errormessage=${errorMessage}>
+      ({
+        options: { hasError, errorMessage, isDisabled, className, value },
+      }) => html`
+        <oryx-input ?hasError=${hasError} errormessage=${errorMessage}>
           <textarea
             placeholder="Placeholder"
             value=${value}

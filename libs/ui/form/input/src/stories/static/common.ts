@@ -11,12 +11,14 @@ export enum CategoryX {
   FOCUSED = 'Focused',
   DISABLED = 'Disabled',
   ERROR = 'Error',
+  ERROR_WITHOUT_MESSAGE = 'Error without message',
 }
 
 export interface InputVariantOptions extends VariantOptions {
   className?: string;
   errorMessage?: string;
   isDisabled?: boolean;
+  hasError?: boolean;
   floatLabel?: boolean;
   label?: string;
   value?: string | number;
@@ -73,6 +75,13 @@ export const baseInputVariants: InputVariant[] = [
     categoryY: '',
     options: {
       errorMessage: 'Error message',
+    },
+  },
+  {
+    categoryX: CategoryX.ERROR_WITHOUT_MESSAGE,
+    categoryY: '',
+    options: {
+      hasError: true,
     },
   },
 ];

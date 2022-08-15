@@ -13,6 +13,7 @@ interface Props {
   timeout: number;
   label: string;
   floatLabel: boolean;
+  hasError: boolean;
 }
 
 export default {
@@ -40,11 +41,13 @@ const Template: Story<Props> = ({
   timeout,
   label,
   floatLabel,
+  hasError,
 }: Props): TemplateResult => {
   return html`<oryx-password-input
     label=${label}
     strategy=${strategy}
     timeout=${timeout}
+    ?hasError=${hasError}
     ?floatLabel=${floatLabel}
   >
     <input
@@ -64,4 +67,5 @@ PasswordDemo.args = {
   disabled: false,
   label: 'Password with label',
   floatLabel: false,
+  hasError: false,
 };

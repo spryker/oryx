@@ -49,11 +49,13 @@ const Template: Story = (): TemplateResult => {
                 isDisabled,
                 className,
                 value,
+                hasError,
               },
             }) => html`
               <oryx-input
                 label="Label"
                 ?floatLabel=${floatLabel}
+                ?hasError=${hasError}
                 errormessage=${errorMessage}
               >
                 <input

@@ -5,6 +5,8 @@ export enum CategoryX {
   INVISIBLE = 'Invisible',
   VISIBLE = 'Visible',
   DISABLED = 'Disabled',
+  ERROR_MESSAGE = 'Error message',
+  ERROR_WITHOUT_MESSAGE = 'Error without message',
 }
 
 export interface PasswordInputVariantOptions extends VariantOptions {
@@ -13,6 +15,8 @@ export interface PasswordInputVariantOptions extends VariantOptions {
   value?: string | number;
   disabled?: boolean;
   visible?: boolean;
+  errorMessage?: string;
+  hasError?: boolean;
 }
 
 export interface PasswordInputVariant extends Variant {
@@ -37,6 +41,20 @@ export const basePasswordInputVariants: PasswordInputVariant[] = [
     categoryY: '',
     options: {
       disabled: true,
+    },
+  },
+  {
+    categoryX: CategoryX.ERROR_MESSAGE,
+    categoryY: '',
+    options: {
+      errorMessage: 'Error message',
+    },
+  },
+  {
+    categoryX: CategoryX.ERROR_WITHOUT_MESSAGE,
+    categoryY: '',
+    options: {
+      hasError: true,
     },
   },
 ];
