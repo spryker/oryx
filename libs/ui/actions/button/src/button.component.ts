@@ -9,8 +9,8 @@ export class ButtonComponent extends LitElement {
 
   @property({ reflect: true }) size?: Size;
   @property({ reflect: true }) type?: ButtonType;
-  @property({ type: Boolean }) loading?: boolean;
-  @property({ type: Boolean }) outline?: boolean;
+  @property({ type: Boolean, reflect: true }) loading?: boolean;
+  @property({ type: Boolean, reflect: true }) outline?: boolean;
 
   protected override render(): TemplateResult {
     return html`<slot ?inert=${this.loading}></slot>`;
