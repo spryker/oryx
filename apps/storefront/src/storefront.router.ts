@@ -4,7 +4,7 @@ import { RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, ReactiveControllerHost } from 'lit';
-import { skip, tap } from 'rxjs';
+import { identity, skip, tap } from 'rxjs';
 
 export class StorefrontRouter extends Router {
   protected id: string;
@@ -28,7 +28,7 @@ export class StorefrontRouter extends Router {
     this.routerService
       .currentRoute()
       .pipe(
-        skip(1),
+        this.ssrRendered ? skip(1) : identity,
         tap(async (route: string) => {
           if (route && route !== '') {
             const resolve = this.ssrAwaiter?.getAwaiter();
@@ -39,10 +39,6 @@ export class StorefrontRouter extends Router {
         })
       )
       .subscribe();
-
-    if (!this.ssrRendered) {
-      this.routerService.go(window.location.pathname);
-    }
   }
 
   async _goto(pathname: string): Promise<void> {

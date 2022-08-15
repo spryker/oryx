@@ -3,9 +3,12 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
 } from '@spryker-oryx/core';
+import { RouterService } from '@spryker-oryx/experience';
+import { resolve } from '@spryker-oryx/injector';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit-element';
 import 'lit/experimental-hydrate-support.js';
+import { storefrontComponent } from './storefront.component';
 import { initHydrateHooks, initInlineScripts } from './utils/hydrate-hooks';
 
 export class StorefrontPlugin
@@ -27,9 +30,9 @@ export class StorefrontPlugin
   }
 
   apply(): void | Promise<void> {
-    //We should avoid doing this on SSR rendered client side environments because it will automatically trigger hydration for us
-    //Currently handled in the router, but if we can somehow detect the correct environment, we can move it here.
-    //resolve(RouterService).go(window.location.pathname);
+    if (!document.body.querySelector(storefrontComponent().name)?.shadowRoot) {
+      resolve(RouterService).go(window.location.pathname);
+    }
   }
 
   afterApply(): void | Promise<void> {

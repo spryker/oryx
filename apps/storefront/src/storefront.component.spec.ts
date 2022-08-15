@@ -37,6 +37,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 describe('InputComponent', () => {
+  let routerService: MockRouterService;
   beforeEach(async () => {
     createInjector({
       providers: [
@@ -52,6 +53,11 @@ describe('InputComponent', () => {
         ...MOCK_CART_PROVIDERS,
       ],
     });
+
+    routerService = getInjector().inject(
+      RouterService
+    ) as unknown as MockRouterService;
+    routerService.go('/');
 
     document.body.innerHTML = '<storefront-component></storefront-component>';
   });
@@ -83,7 +89,6 @@ describe('InputComponent', () => {
 
     expect(experienceComposition.getAttribute('route')).toBe('/');
 
-    const routerService = getInjector().inject(RouterService);
     routerService.go(mockRout);
 
     routerService.currentParams().subscribe((value) => {
