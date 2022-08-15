@@ -30,7 +30,7 @@ const Template: Story<Props> = (props): TemplateResult => {
 
   return html`<product-price
     .sku=${props.sku}
-    .options=${{ showOriginal: props.showOriginal }}
+    .options=${{ hideOriginal: props.hideOriginal }}
   ></product-price>`;
 };
 
@@ -38,7 +38,7 @@ export const PriceDemo = Template.bind({});
 
 PriceDemo.args = {
   sku: '1',
-  showOriginal: true,
+  hideOriginal: false,
   locale: 'en-EN',
 };
 

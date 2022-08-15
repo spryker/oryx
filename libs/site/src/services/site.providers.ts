@@ -2,8 +2,10 @@ import {
   CurrencyService,
   DefaultCurrencyService,
   DefaultLocaleService,
+  DefaultPricingService,
   DefaultSemanticLinkService,
   LocaleService,
+  PricingService,
   SemanticLinkService,
 } from './index';
 
@@ -23,5 +25,9 @@ export const SITE_PROVIDERS = [
   {
     provide: LocaleService,
     useClass: DefaultLocaleService,
+  },
+  {
+    provide: PricingService,
+    useClass: DefaultPricingService,
   },
 ];

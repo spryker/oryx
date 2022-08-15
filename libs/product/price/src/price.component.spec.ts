@@ -7,7 +7,7 @@ import {
   getInjector,
 } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
-import { CurrencyService, LocaleService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -29,17 +29,10 @@ const mockEur = {
   isNet: true,
 };
 
-const mockUSD = {
-  currency: 'USD',
-  value: 1195,
-  isNet: true,
-};
-
 describe('ProductPriceComponent', () => {
   let element: ProductPriceComponent;
 
   let mockLocaleService: LocaleService;
-  let mockCurrencyService: CurrencyService;
   let mockProductService: ProductService;
 
   beforeEach(async () => {
@@ -52,11 +45,8 @@ describe('ProductPriceComponent', () => {
         },
       ],
     });
-  });
 
-  beforeEach(async () => {
     mockLocaleService = getInjector().inject(LocaleService);
-    mockCurrencyService = getInjector().inject(CurrencyService);
     mockProductService = getInjector().inject(ProductService);
   });
 
@@ -74,47 +64,36 @@ describe('ProductPriceComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('format price', () => {
-    const expectFormattedPrice = (locale: string, formatted: string): void => {
-      describe(`when the locale is ${locale}`, () => {
-        beforeEach(async () => {
-          mockLocaleService.set(locale);
-          element = await fixture(
-            html`<product-price sku="123"></product-price>`
-          );
-        });
-        it(`should have a formatted price (${formatted})`, () => {
-          expect(element.shadowRoot?.textContent?.includes(formatted)).toBe(
-            true
-          );
-        });
-      });
-    };
+  describe('default price', () => {
+    beforeEach(async () => {
+      mockLocaleService.set('en-EN');
+    });
 
-    describe('when the active currency is EUR', () => {
+    describe('and default price is provided', () => {
       beforeEach(async () => {
         vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
           of({ price: { defaultPrice: mockEur } })
         );
+        element = await fixture(
+          html`<product-price sku="123"></product-price>`
+        );
       });
-      expectFormattedPrice('de-DE', '10,95 €');
-      expectFormattedPrice('nl-NL', '€ 10,95');
-      expectFormattedPrice('en-EN', '€10.95');
 
-      describe('and there is no price available', () => {
-        it('should not render a price');
+      it(`should render default price`, () => {
+        expect(element.shadowRoot?.textContent?.includes('€10.95')).toBe(true);
       });
     });
 
-    describe('when the active currency is USD', () => {
+    describe('and default price is not provided', () => {
       beforeEach(async () => {
-        mockCurrencyService.set('USD');
         vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
-          of({ price: { defaultPrice: mockUSD } })
+          of({})
         );
       });
-      expectFormattedPrice('de-DE', '11,95 $');
-      expectFormattedPrice('nl-NL', '$ 11,95');
+
+      it(`should not render default price`, () => {
+        expect(element.shadowRoot?.textContent?.trim()).toContain('');
+      });
     });
   });
 
@@ -129,13 +108,10 @@ describe('ProductPriceComponent', () => {
           of({ price: { defaultPrice: mockEur } })
         );
       });
-      describe('and the experience is configured to show original price', () => {
+      describe('and the experience is configured to not hide original price', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-price
-              sku="123"
-              .options=${{ showOriginal: true }}
-            ></product-price>`
+            html`<product-price sku="123"></product-price>`
           );
         });
         it('should not render the original price', () => {
@@ -156,13 +132,10 @@ describe('ProductPriceComponent', () => {
         );
       });
 
-      describe('and the experience is configured to show original price', () => {
+      describe('and the experience is configured to not hide original price', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-price
-              sku="123"
-              .options=${{ showOriginal: true }}
-            ></product-price>`
+            html`<product-price sku="123"></product-price>`
           );
         });
         it('should render the original price', () => {
@@ -174,7 +147,7 @@ describe('ProductPriceComponent', () => {
         });
       });
 
-      describe('and the experience is configured to not show original price', () => {
+      describe('and the experience is configured to hide original price', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<product-price
@@ -194,7 +167,7 @@ describe('ProductPriceComponent', () => {
             html`<product-price sku="123"></product-price>`
           );
         });
-        it('should not render the original price', () => {
+        it('should render the original price', () => {
           expect(element.shadowRoot?.querySelector('.original')).not.toBeNull();
         });
       });

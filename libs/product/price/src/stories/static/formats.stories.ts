@@ -17,9 +17,7 @@ const getLocale = (): LocaleService => {
 
 const Template: Story<any> = (args): TemplateResult => {
   getLocale().set(args.locale);
-  return html`
-    <product-price sku="1" .options=${{ showOriginal: true }}></product-price>
-  `;
+  return html` <product-price sku="1"></product-price> `;
 };
 
 export const EurUsFormat = Template.bind({});

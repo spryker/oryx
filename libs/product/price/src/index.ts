@@ -1,7 +1,6 @@
 import { componentDef } from '@spryker-oryx/core';
 
 export * from './price.component';
-export * from './price.controller';
 export * from './price.model';
 export * from './price.styles';
 

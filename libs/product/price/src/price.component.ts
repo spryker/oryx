@@ -1,40 +1,49 @@
 import { ContentController } from '@spryker-oryx/experience';
+import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { ProductComponentMixin } from '@spryker-oryx/product';
+import {
+  ProductComponentMixin,
+  ProductController,
+} from '@spryker-oryx/product';
+import { PricingService } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest } from 'rxjs';
-import { ProductPriceController } from './price.controller';
-import { FormattedProductPrice, ProductPriceOptions } from './price.model';
+import { combineLatest, switchMap } from 'rxjs';
+import { ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
-
 export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOptions>() {
   static styles = ProductPriceStyles;
 
+  protected productController = new ProductController(this);
+
+  protected pricingService = resolve(PricingService);
+
   protected options$ = new ContentController(this).getOptions();
-  protected price$ = new ProductPriceController(this).price$;
+  protected price$ = combineLatest([
+    this.options$,
+    this.productController.getProduct(),
+  ]).pipe(
+    switchMap(([options, product]) =>
+      combineLatest([
+        this.pricingService.format(product?.price?.defaultPrice),
+        this.pricingService.format(
+          !options?.hideOriginal ? product?.price?.originalPrice : undefined
+        ),
+      ])
+    )
+  );
 
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(
-        combineLatest([this.options$, this.price$]),
-        this.renderPrice
-      )}
-    `;
-  }
-
-  protected renderPrice([options, price]: [
-    Partial<ProductPriceOptions> | undefined,
-    FormattedProductPrice
-  ]): TemplateResult {
-    return html`
-      ${price.defaultPrice?.formattedPrice}
-      ${when(
-        !options?.hideOriginal && price.originalPrice,
-        () =>
-          html`<span class="original">
-            ${price.originalPrice?.formattedPrice}
-          </span>`
+        this.price$,
+        ([defaultPrice, originalPrice]) => html`
+          ${defaultPrice}
+          ${when(
+            originalPrice,
+            () => html`<span class="original">${originalPrice}</span>`
+          )}
+        `
       )}
     `;
   }

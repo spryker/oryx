@@ -1,10 +1,5 @@
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import {
-  CurrencyService,
-  DefaultCurrencyService,
-  DefaultLocaleService,
-  LocaleService,
-} from '@spryker-oryx/site';
+import { SITE_PROVIDERS } from '@spryker-oryx/site';
 import { delay, Observable, of } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { MockProductService } from './mock-product.service';
@@ -37,14 +32,7 @@ export const MOCK_PRODUCT_PROVIDERS = [
     provide: ProductService,
     useClass: MockProductService,
   },
-  {
-    provide: CurrencyService,
-    useClass: DefaultCurrencyService,
-  },
-  {
-    provide: LocaleService,
-    useClass: DefaultLocaleService,
-  },
+  ...SITE_PROVIDERS,
   ...SEMANTIC_LINK_PROVIDERS,
   ...MOCK_CART_PROVIDERS,
 ];
