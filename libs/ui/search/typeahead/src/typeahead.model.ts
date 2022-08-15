@@ -34,10 +34,6 @@ export interface TypeaheadOptions {
   filterStrategy?: FilterStrategyType;
 }
 
-export interface OptionSelectEvent {
-  option: HTMLElement;
-}
-
 export const enum FilterStrategyType {
   START_WITH = 'start_with',
   START_OF_WORD = 'start_of_word',
