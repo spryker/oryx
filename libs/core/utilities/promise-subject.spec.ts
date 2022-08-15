@@ -79,4 +79,41 @@ describe('PromiseSubject', () => {
       expect(promiseSubject).rejects.toBe('error');
     });
   });
+
+  describe('asPromise() method', () => {
+    it('should return a different promise', () => {
+      const promiseSubject = new PromiseSubject();
+
+      const promise = promiseSubject.asPromise();
+
+      expect(promise).toBeInstanceOf(Promise);
+      expect(promise).not.toBe(promiseSubject);
+    });
+
+    it('should resolve returned promise', () => {
+      const promiseSubject = new PromiseSubject();
+      const promise = promiseSubject.asPromise();
+
+      promiseSubject.resolve('value');
+      expect(promise).resolves.toBe('value');
+    });
+
+    it('should reject returned promise', () => {
+      const promiseSubject = new PromiseSubject();
+      const promise = promiseSubject.asPromise();
+
+      promiseSubject.reject('error');
+      expect(promise).rejects.toBe('error');
+    });
+
+    it('should NOT have subject`s methods', () => {
+      const promiseSubject = new PromiseSubject();
+      const promise = promiseSubject.asPromise();
+
+      expect(promise).not.toEqual({
+        resolve: expect.any(Function),
+        reject: expect.any(Function),
+      });
+    });
+  });
 });

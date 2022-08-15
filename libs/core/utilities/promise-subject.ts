@@ -1,6 +1,6 @@
-type PromiseResolveFn<T> = (value: T | PromiseLike<T>) => void;
-type PromiseRejectFn = (reason?: unknown) => void;
-type PromiseExecutorFn<T> = (
+export type PromiseResolveFn<T> = (value: T | PromiseLike<T>) => void;
+export type PromiseRejectFn = (reason?: unknown) => void;
+export type PromiseExecutorFn<T> = (
   resolve: PromiseResolveFn<T>,
   reject: PromiseRejectFn
 ) => void;
@@ -32,5 +32,9 @@ export class PromiseSubject<T> extends Promise<T> {
 
   reject(reason?: unknown): void {
     this._reject(reason);
+  }
+
+  asPromise(): Promise<T> {
+    return new Promise((res, rej) => this.then(res).catch(rej));
   }
 }

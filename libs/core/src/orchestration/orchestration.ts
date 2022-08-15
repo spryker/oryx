@@ -130,7 +130,7 @@ class SimpleApp implements App {
   protected readonly readyPromise = new PromiseSubject<SimpleApp>();
 
   whenReady(): Promise<SimpleApp> {
-    return this.readyPromise;
+    return this.readyPromise.asPromise();
   }
 
   findPlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T | undefined {

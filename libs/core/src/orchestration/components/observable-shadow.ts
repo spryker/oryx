@@ -22,7 +22,7 @@ export function observableShadow<T extends Type<HTMLElement>>(
     private _attachedShadow = new PromiseSubject<ShadowRoot>();
 
     whenShadowAttached(): Promise<ShadowRoot> {
-      return this._attachedShadow;
+      return this._attachedShadow.asPromise();
     }
 
     attachShadow(
@@ -38,6 +38,8 @@ export function observableShadow<T extends Type<HTMLElement>>(
 export function isObservableShadowElement<T extends HTMLElement>(
   element: T
 ): element is T & ObservableShadow {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return typeof (element as any).whenShadowAttached === 'function';
+  return (
+    typeof (element as unknown as ObservableShadow).whenShadowAttached ===
+    'function'
+  );
 }
