@@ -1,6 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of, switchMap } from 'rxjs';
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { createSuggestionMock } from '../../mocks';
 import { SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter/suggestion.adapter';
@@ -72,7 +72,7 @@ describe('DefaultSuggestionService', () => {
     });
 
     it('should return an observable with null if error has been caught', () => {
-      (adapter.get as SpyInstanceFn).mockReturnValue(
+      (adapter.get as unknown as SpyInstance).mockReturnValue(
         of(null).pipe(
           switchMap(() => {
             throw 'error';
@@ -92,7 +92,7 @@ describe('DefaultSuggestionService', () => {
     };
 
     beforeEach(() => {
-      (adapter.get as SpyInstanceFn).mockReturnValue(
+      (adapter.get as unknown as SpyInstance).mockReturnValue(
         of(null).pipe(
           switchMap(() => {
             throw mockObjectError;

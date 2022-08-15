@@ -6,7 +6,7 @@ import { optionComponent } from '@spryker-oryx/ui/option';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { getControl } from '../../../../form/utilities';
 import { SearchEvent } from '../../../searchbox';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
@@ -109,8 +109,8 @@ describe('TypeaheadController', () => {
   });
 
   describe('"oryx.select" event', () => {
-    let onChange: SpyInstanceFn;
-    let onInput: SpyInstanceFn;
+    let onChange: SpyInstance;
+    let onInput: SpyInstance;
 
     afterEach(() => {
       vi.clearAllMocks();

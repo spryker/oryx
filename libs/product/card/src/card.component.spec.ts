@@ -8,7 +8,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import { productCardComponent } from '../index';
 import { ProductCardComponent } from './card.component';
@@ -19,10 +19,8 @@ const mockContext = {
   get: vi.fn().mockReturnValue(of('mockSku')),
   provide: vi.fn(),
 };
-vi.spyOn(core, 'ContextController') as SpyInstanceFn;
-(core.ContextController as unknown as SpyInstanceFn).mockReturnValue(
-  mockContext
-);
+vi.spyOn(core, 'ContextController') as SpyInstance;
+(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
 
 describe('ProductCardComponent', () => {
   let element: ProductCardComponent;

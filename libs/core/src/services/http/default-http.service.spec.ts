@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { DefaultHttpService } from './default-http.service';
 import { HttpService } from './http.service';
 
@@ -25,7 +25,7 @@ describe('DefaultHttpService', () => {
 
   beforeEach(() => {
     service = new DefaultHttpService();
-    (fromFetch as SpyInstanceFn).mockReturnValue(of({ ok: true }));
+    (fromFetch as unknown as SpyInstance).mockReturnValue(of({ ok: true }));
   });
 
   afterEach(() => {

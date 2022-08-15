@@ -1,4 +1,4 @@
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { App, AppRef } from '../app';
 import { InjectionPlugin, InjectionPluginName } from './injection';
 
@@ -18,7 +18,7 @@ const mockOptions = {
 const mockCreateInjector = vi.fn();
 
 vi.mock('@spryker-oryx/injector', () => ({
-  createInjector: (value: unknown): SpyInstanceFn => mockCreateInjector(value),
+  createInjector: (value: unknown): SpyInstance => mockCreateInjector(value),
 }));
 
 describe('InjectionPlugin', () => {

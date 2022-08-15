@@ -9,7 +9,9 @@ import { NDSDrawerComponent } from './drawer.component';
 // @ts-ignore
 window.HTMLDialogElement = null;
 
-useComponent(drawerComponent);
+beforeAll(async () => {
+  await useComponent(drawerComponent);
+});
 
 describe('NDSDrawerComponent', () => {
   let element: NDSDrawerComponent;

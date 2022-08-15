@@ -3,7 +3,7 @@ import { POPOVER_EVENT } from '@spryker-oryx/ui/popover';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { SpyInstance, SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { getControl } from '../../../../form/utilities/getControl';
 import { OptionComponent } from '../../../../option';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
@@ -211,7 +211,7 @@ describe('FilterController', () => {
       });
     });
     describe('exact match', () => {
-      let callback: SpyInstanceFn;
+      let callback: SpyInstance;
       const prepareMatchByValue = (value?: string): void => {
         beforeEach(async () => {
           callback = vi.fn();

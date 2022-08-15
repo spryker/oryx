@@ -3,7 +3,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstanceFn } from 'vitest';
+import { SpyInstance } from 'vitest';
 import { ProductContext } from '../models';
 import { ProductService } from '../services';
 import { ProductController } from './product.controller';
@@ -16,16 +16,14 @@ const mockInclude = ['includeA', 'includeB'];
 const mockContext = {
   get: vi.fn().mockReturnValue(of(mockSku)),
 };
-vi.spyOn(core, 'ContextController') as SpyInstanceFn;
-(core.ContextController as unknown as SpyInstanceFn).mockReturnValue(
-  mockContext
-);
+vi.spyOn(core, 'ContextController') as SpyInstance;
+(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
 
 const mockObserve = {
   get: vi.fn(),
 };
-vi.spyOn(litRxjs, 'ObserveController') as SpyInstanceFn;
-(litRxjs.ObserveController as unknown as SpyInstanceFn).mockReturnValue(
+vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
+(litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue(
   mockObserve
 );
 
