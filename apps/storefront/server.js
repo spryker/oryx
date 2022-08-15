@@ -13,8 +13,9 @@ async function createServer() {
   const vite = await createViteServer({
     root: isProd ? '../../dist/apps/storefront/client/' : './',
     server: {
-      middlewareMode: 'ssr',
+      middlewareMode: true,
     },
+    appType: 'custom',
   });
   app.use(vite.middlewares);
 
