@@ -1,4 +1,4 @@
-import { AuthService } from '@spryker-oryx/core';
+import { AuthService, hydratable } from '@spryker-oryx/core';
 import {
   ComponentMixin,
   ContentController,
@@ -10,6 +10,7 @@ import { html, TemplateResult } from 'lit';
 import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';
 import { LogoutOptions } from './logout.model';
 
+@hydratable('window:load')
 export class UserLogoutComponent extends ComponentMixin<LogoutOptions>() {
   protected routerService = resolve(RouterService);
 
