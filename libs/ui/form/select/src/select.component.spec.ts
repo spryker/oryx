@@ -15,6 +15,29 @@ useComponent(selectComponent);
 describe('SelectComponent', () => {
   let element: SelectComponent;
 
+  describe('when the value is set', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-select>
+          <select @change=${callback}>
+            <option value="foo"></option>
+            <option value="bar"></option>
+          </select>
+        </oryx-select>`
+      );
+      element.setValue('bar');
+    });
+    it('should set the value of the underlying select', () => {
+      const select = element.querySelector('select');
+      expect(select?.value).toBe('bar');
+    });
+    it('should dispatch a change event', () => {
+      expect(callback).toHaveBeenCalled();
+    });
+  });
+
   describe('options', () => {
     const expectOptions = (
       suffixIcon: string,

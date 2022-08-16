@@ -51,6 +51,20 @@ export class SelectComponent
   @property() clearIconAppearance?: ClearIconAppearance =
     ClearIconAppearance.HOVER;
 
+  /**
+   * Sets the value of the select element and dispatches
+   * a change event to ensure that the select component will
+   * reflect the state.
+   */
+  setValue(value: string): void {
+    const control = getControl(this);
+    if (control.value === value) return;
+    control.value = value;
+    control.dispatchEvent(
+      new Event('change', { bubbles: true, composed: true })
+    );
+  }
+
   protected selectController = new SelectController(this);
   protected selectFilterController = new SelectFilterController(this);
   protected typeaheadController = new TypeaheadController(this, {
