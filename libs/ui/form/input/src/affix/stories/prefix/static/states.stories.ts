@@ -158,3 +158,9 @@ const Template: Story = (): TemplateResult => html`
 `;
 
 export const States = Template.bind({});
+
+States.parameters = {
+  chromatic: {
+    delay: 1300,
+  },
+};
