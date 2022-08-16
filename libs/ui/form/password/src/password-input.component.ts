@@ -20,11 +20,11 @@ export class PasswordInputComponent
 
   @property() label?: string;
   @property() errorMessage?: string;
-  @property({ type: Boolean }) hasError?: boolean;
+  @property({ type: Boolean, reflect: true }) hasError?: boolean;
   @property() prefixIcon?: string;
-  @property({ type: Boolean }) prefixFill?: boolean;
+  @property({ type: Boolean, reflect: true }) prefixFill?: boolean;
   @property() suffixIcon?: string;
-  @property({ type: Boolean }) suffixFill?: boolean;
+  @property({ type: Boolean, reflect: true }) suffixFill?: boolean;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);
