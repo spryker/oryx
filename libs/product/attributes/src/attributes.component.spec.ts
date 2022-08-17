@@ -2,8 +2,8 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import {
+  mockProductProviders,
   MockProductService,
-  MOCK_PRODUCT_PROVIDERS,
 } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { ProductAttributesComponent } from './attributes.component';
@@ -18,7 +18,7 @@ describe('Product attributes', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: mockProductProviders,
     });
     element = await fixture(html`
       <product-attributes

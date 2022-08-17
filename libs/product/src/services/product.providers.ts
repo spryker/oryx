@@ -14,7 +14,7 @@ import {
 import { DefaultProductService } from './default-product.service';
 import { ProductService } from './product.service';
 
-export const PRODUCT_PROVIDERS = [
+export const productProviders = [
   {
     provide: ProductAdapter,
     useClass: DefaultProductAdapter,

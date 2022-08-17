@@ -9,7 +9,7 @@ import {
   DefaultComponentsRegistryService,
 } from './registry';
 
-export const STATIC_PROVIDERS: Provider[] = [
+export const statictProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: DefaultExperienceService,
@@ -20,7 +20,7 @@ export const STATIC_PROVIDERS: Provider[] = [
   },
 ];
 
-export const STATIC_PREVIEW_PROVIDERS: Provider[] = [
+export const statictPreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,

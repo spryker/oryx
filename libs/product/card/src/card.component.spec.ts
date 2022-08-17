@@ -9,7 +9,7 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './component';
 
@@ -29,7 +29,7 @@ describe('ProductCardComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: [...MOCK_PRODUCT_PROVIDERS],
+      providers: [...mockProductProviders],
     });
   });
 

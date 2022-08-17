@@ -1,6 +1,6 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { setUpMockProviders } from '@spryker-oryx/injector';
-import { SemanticLinkType, SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
+import { semanticLinkProviders, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -12,7 +12,7 @@ useComponent(contentLinkComponent);
 
 export default {
   title: `${storybookPrefix}/Link`,
-  loaders: [setUpMockProviders(SEMANTIC_LINK_PROVIDERS)],
+  loaders: [setUpMockProviders(semanticLinkProviders)],
 } as unknown as Meta;
 
 const Template: Story<LinkOptions> = (options): TemplateResult => {

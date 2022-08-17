@@ -8,10 +8,10 @@ import { productImagesComponent } from '../images/src/component';
 import { productMediaComponent } from '../media/src/component';
 import { productPriceComponent } from '../price/src/component';
 import { productTitleComponent } from '../title/src/component';
-import { PRODUCT_PROVIDERS } from './services';
+import { productProviders } from './services';
 
 export const productFeature: AppFeature = {
-  providers: PRODUCT_PROVIDERS,
+  providers: productProviders,
   components: [
     productAttributesComponent,
     productAverageRatingComponent,

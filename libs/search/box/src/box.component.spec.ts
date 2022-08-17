@@ -6,7 +6,7 @@ import '@spryker-oryx/testing';
 import { typeheadComponent } from '@spryker-oryx/ui/typeahead';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MOCK_SUGGESTION_PROVIDERS } from '../../src/mocks';
+import { mockSuggestionProviders } from '../../src/mocks';
 import { SearchBoxComponent } from './box.component';
 import { SearchBoxOptions } from './box.model';
 import { searchBoxComponent } from './component';
@@ -78,7 +78,7 @@ describe('SearchBoxComponent', () => {
           provide: ExperienceService,
           useClass: MockEBService,
         },
-        ...MOCK_SUGGESTION_PROVIDERS,
+        ...mockSuggestionProviders,
       ],
     });
     element = await fixture(html`<search-box></search-box>`);

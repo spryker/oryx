@@ -4,14 +4,14 @@ import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../../src/mocks';
 import { productCardComponent } from '../component';
 
 useComponent(productCardComponent);
 
 export default {
   title: `${storybookPrefix}/Card`,
-  loaders: [setUpMockProviders(MOCK_PRODUCT_PROVIDERS)],
+  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 const Template: Story<ProductComponentProperties> = (

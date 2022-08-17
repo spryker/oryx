@@ -6,7 +6,7 @@ import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { customElement, property } from 'lit/decorators.js';
-import { MOCK_SUGGESTION_PROVIDERS } from '../../../src/mocks';
+import { mockSuggestionProviders } from '../../../src/mocks';
 import { RenderSuggestionController } from './render-suggestion.controller';
 
 const resource: SuggestionResource = {
@@ -101,7 +101,7 @@ describe('RenderSuggestionController', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: [...MOCK_SUGGESTION_PROVIDERS],
+      providers: [...mockSuggestionProviders],
     });
   });
 

@@ -15,7 +15,7 @@ import {
   TransformerService,
 } from './transformer';
 
-export const CORE_PROVIDERS: Provider[] = [
+export const coreProviders: Provider[] = [
   {
     provide: HttpService,
     useClass: DefaultHttpService,

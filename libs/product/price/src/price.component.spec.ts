@@ -11,7 +11,7 @@ import { LocaleService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { mockProductProviders } from '../../src/mocks';
 import { productPriceComponent } from './component';
 import { ProductPriceComponent } from './price.component';
 
@@ -39,7 +39,7 @@ describe('ProductPriceComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
-        ...MOCK_PRODUCT_PROVIDERS,
+        ...mockProductProviders,
         {
           provide: ExperienceService,
           useClass: MockExperienceService,

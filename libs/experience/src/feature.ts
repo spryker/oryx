@@ -3,14 +3,14 @@ import {
   experienceCompositionComponent,
   experiencePreviewCompositionComponent,
 } from '../composition/src/component';
-import { STATIC_PREVIEW_PROVIDERS, STATIC_PROVIDERS } from './services';
+import { statictPreviewProviders, statictProviders } from './services';
 
 export const experienceFeature: AppFeature = {
-  providers: STATIC_PROVIDERS,
+  providers: statictProviders,
   components: [experienceCompositionComponent],
 };
 
 export const experiencePreviewFeature: AppFeature = {
-  providers: STATIC_PREVIEW_PROVIDERS,
+  providers: statictPreviewProviders,
   components: [experiencePreviewCompositionComponent],
 };

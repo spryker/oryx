@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
-import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { productMediaComponent } from './component';
 import { ProductMediaComponent } from './media.component';
 
@@ -16,7 +16,7 @@ describe('ProductMediaComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: mockProductProviders,
     });
     element = await fixture(html`<product-media sku="1"></product-media>`);
   });

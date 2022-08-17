@@ -1,10 +1,10 @@
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { SITE_PROVIDERS } from '@spryker-oryx/site';
+import { siteProviders } from '@spryker-oryx/site';
 import { delay, Observable, of } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { MockProductService } from './mock-product.service';
 
-export const MOCK_CART_PROVIDERS = [
+export const mockCartProviders = [
   {
     provide: 'FES.CartService',
     useValue: {
@@ -13,7 +13,7 @@ export const MOCK_CART_PROVIDERS = [
   },
 ];
 
-export const SEMANTIC_LINK_PROVIDERS = [
+export const semanticLinkProviders = [
   {
     provide: 'FES.SemanticLinkService',
     useValue: {
@@ -23,7 +23,7 @@ export const SEMANTIC_LINK_PROVIDERS = [
   },
 ];
 
-export const MOCK_PRODUCT_PROVIDERS = [
+export const mockProductProviders = [
   {
     provide: ContextService,
     useClass: DefaultContextService,
@@ -32,7 +32,7 @@ export const MOCK_PRODUCT_PROVIDERS = [
     provide: ProductService,
     useClass: MockProductService,
   },
-  ...SITE_PROVIDERS,
-  ...SEMANTIC_LINK_PROVIDERS,
-  ...MOCK_CART_PROVIDERS,
+  ...siteProviders,
+  ...semanticLinkProviders,
+  ...mockCartProviders,
 ];

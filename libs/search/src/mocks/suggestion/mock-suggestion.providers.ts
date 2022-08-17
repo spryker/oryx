@@ -7,7 +7,7 @@ import {
 import { SuggestionService } from '../../services';
 import { MockSuggestionService } from './mock-suggestion.service';
 
-export const MOCK_SUGGESTION_PROVIDERS = [
+export const mockSuggestionProviders = [
   {
     provide: SuggestionService,
     useClass: MockSuggestionService,

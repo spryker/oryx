@@ -1,6 +1,6 @@
-import { MOCK_AUTH_PROVIDERS } from '@spryker-oryx/core';
+import { mockAuthProviders } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { MOCK_ROUTER_PROVIDERS } from '@spryker-oryx/experience';
+import { mockRouterProviders } from '@spryker-oryx/experience';
 import { setUpMockProviders } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -12,7 +12,7 @@ useComponent(userLogoutComponent);
 
 export default {
   title: `${storybookPrefix}/Logout`,
-  loaders: [setUpMockProviders(MOCK_ROUTER_PROVIDERS, MOCK_AUTH_PROVIDERS)],
+  loaders: [setUpMockProviders(mockRouterProviders, mockAuthProviders)],
 } as unknown as Meta;
 
 const Template: Story<LogoutOptions> = (props): TemplateResult => {

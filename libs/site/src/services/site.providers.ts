@@ -9,15 +9,15 @@ import {
   SemanticLinkService,
 } from './index';
 
-export const SEMANTIC_LINK_PROVIDERS = [
+export const semanticLinkProviders = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
   },
 ];
 
-export const SITE_PROVIDERS = [
-  ...SEMANTIC_LINK_PROVIDERS,
+export const siteProviders = [
+  ...semanticLinkProviders,
   {
     provide: CurrencyService,
     useClass: DefaultCurrencyService,

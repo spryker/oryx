@@ -5,7 +5,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { productTitleComponent } from './component';
 import { ProductTitleComponent } from './title.component';
 
@@ -26,7 +26,7 @@ describe('ProductTitleComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
-        ...MOCK_PRODUCT_PROVIDERS,
+        ...mockProductProviders,
         {
           provide: ExperienceService,
           useClass: MockExperienceContentService,

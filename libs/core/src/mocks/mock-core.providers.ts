@@ -9,7 +9,7 @@ import {
   StorageService,
 } from '../services';
 
-export const MOCK_AUTH_PROVIDERS = [
+export const mockAuthProviders = [
   {
     provide: AccessTokenService,
     useClass: DefaultAccessTokenService,

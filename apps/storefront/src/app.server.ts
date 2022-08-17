@@ -1,5 +1,5 @@
 import { App } from '@spryker-oryx/core';
-import { CORE_SERVER_PROVIDERS } from '@spryker-oryx/core/server';
+import { coreServerProviders } from '@spryker-oryx/core/server';
 import { storefront } from './config';
 
 export const storefrontAppOrchestrator = async (): Promise<void | App> =>
@@ -9,6 +9,6 @@ export const storefrontAppOrchestrator = async (): Promise<void | App> =>
         preload: true,
       },
     })
-    .withProviders(CORE_SERVER_PROVIDERS)
+    .withProviders(coreServerProviders)
     .create()
     .catch(console.error);

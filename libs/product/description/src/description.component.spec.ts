@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
-import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { mockProductProviders } from '../../src/mocks';
 import { ProductDescriptionContent } from '../index';
 import { productDescriptionComponent } from './component';
 import { ProductDescriptionComponent } from './description.component';
@@ -18,7 +18,7 @@ describe('ProductDescriptionComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: MOCK_PRODUCT_PROVIDERS,
+      providers: mockProductProviders,
     });
     element = await fixture(
       html` <product-description

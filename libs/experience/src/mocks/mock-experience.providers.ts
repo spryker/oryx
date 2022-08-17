@@ -12,7 +12,7 @@ class MockRouterService implements Partial<RouterService> {
   }
 }
 
-export const MOCK_ROUTER_PROVIDERS = [
+export const mockRouterProviders = [
   {
     provide: RouterService,
     useClass: MockRouterService,

@@ -11,7 +11,7 @@ import { DefaultCartService } from './default-cart.service';
 import { DefaultUserService } from './default-user.service';
 import { UserService } from './user.service';
 
-export const CART_PROVIDERS = [
+export const cartProviders = [
   {
     provide: CartAdapter,
     useClass: DefaultCartAdapter,

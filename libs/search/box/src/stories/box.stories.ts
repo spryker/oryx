@@ -1,18 +1,19 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { setUpMockProviders } from '@spryker-oryx/injector';
-import { completion, MOCK_SUGGESTION_PROVIDERS } from '@spryker-oryx/search';
-import { SITE_PROVIDERS } from '@spryker-oryx/site';
+import { completion, mockSuggestionProviders } from '@spryker-oryx/search';
+import { siteProviders } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
+import { SearchBoxOptions } from '../box.model';
 import { searchBoxComponent } from '../component';
 
 useComponent(searchBoxComponent);
 
 export default {
   title: `${storybookPrefix}/SearchBox`,
-  loaders: [setUpMockProviders(MOCK_SUGGESTION_PROVIDERS, SITE_PROVIDERS)],
+  loaders: [setUpMockProviders(mockSuggestionProviders, siteProviders)],
 } as unknown as Meta;
 
 const Template: Story<SearchBoxOptions> = (

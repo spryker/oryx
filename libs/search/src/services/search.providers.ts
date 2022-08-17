@@ -7,7 +7,7 @@ import {
   SuggestionService,
 } from '.';
 
-export const SEARCH_SUGGESTION_PROVIDERS = [
+export const searchSuggestionProviders = [
   {
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,
@@ -22,4 +22,4 @@ export const SEARCH_SUGGESTION_PROVIDERS = [
   },
 ];
 
-export const SEARCH_PROVIDERS = [...SEARCH_SUGGESTION_PROVIDERS];
+export const searchProviders = [...searchSuggestionProviders];

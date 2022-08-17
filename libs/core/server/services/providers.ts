@@ -10,7 +10,7 @@ import { ServerHttpService } from './http';
 import { DefaultSSRAwaiterService } from './ssr-awaiter';
 import { ServerStorageService } from './storage';
 
-export const CORE_SERVER_PROVIDERS: Provider[] = [
+export const coreServerProviders: Provider[] = [
   {
     provide: HttpService,
     useClass: ServerHttpService,

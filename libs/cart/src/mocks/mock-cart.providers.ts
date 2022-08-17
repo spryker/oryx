@@ -7,7 +7,7 @@ import {
 import { CartAdapter } from '../services/adapter/cart.adapter';
 import { MockCartAdapter } from './mock-cart.adapter';
 
-export const MOCK_CART_PROVIDERS = [
+export const mockCartProviders = [
   {
     provide: CartAdapter,
     useClass: MockCartAdapter,

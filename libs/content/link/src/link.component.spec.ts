@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { SemanticLinkType, SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
+import { semanticLinkProviders, SemanticLinkType } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -31,7 +31,7 @@ describe('ContentLinkComponent', () => {
           provide: ExperienceService,
           useClass: MockService,
         },
-        ...SEMANTIC_LINK_PROVIDERS,
+        ...semanticLinkProviders,
       ],
     });
 
