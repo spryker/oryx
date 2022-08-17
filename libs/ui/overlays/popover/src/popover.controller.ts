@@ -10,7 +10,7 @@ import {
   PopoverSelectEvent,
   POPOVER_EVENT,
 } from './popover.model';
-import { TAG_NAME } from './utilities';
+import { TAG_NAME } from './tag';
 
 /**
  * Controls the popover behaviour by mouse and keyboard:

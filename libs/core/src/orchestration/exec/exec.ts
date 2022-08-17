@@ -51,8 +51,4 @@ export class ExecPlugin
       return this.fn(this.app);
     }
   }
-
-  destroy(): void {
-    //
-  }
 }

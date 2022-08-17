@@ -1,4 +1,9 @@
 import { hydratable, SSRAwaiterService } from '@spryker-oryx/core';
+import {
+  Component,
+  ComponentsRegistryService,
+  ExperienceService,
+} from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { isClient } from '@spryker-oryx/typescript-utils';
@@ -6,11 +11,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
-import {
-  Component,
-  ComponentsRegistryService,
-  ExperienceService,
-} from '../src/services';
 
 @hydratable()
 export class ExperienceCompositionComponent extends LitElement {

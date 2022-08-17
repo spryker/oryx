@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { NotificationCenterComponent } from '../../notification-center.component';
 import { Positions } from '../../notification-center.model';
-import { TAG_NAME } from '../../utilities';
+import { TAG_NAME } from '../../tag';
 import { getNotification, open } from './util';
 
 export default {

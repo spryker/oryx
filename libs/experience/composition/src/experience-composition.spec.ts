@@ -1,14 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { html, TemplateResult } from 'lit';
-import { Observable, of } from 'rxjs';
 import {
   Component,
   ComponentsRegistryService,
   ExperienceService,
-} from '../src/services';
+} from '@spryker-oryx/experience';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { html, TemplateResult } from 'lit';
+import { Observable, of } from 'rxjs';
 import { experienceCompositionComponent } from './component';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 

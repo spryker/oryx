@@ -3,7 +3,7 @@ import {
   OverlayServiceOptions,
 } from '@spryker-oryx/ui/utilities';
 import { DrawerComponent } from '../drawer.component';
-import { TAG_NAME } from '../utilities';
+import { TAG_NAME } from '../tag';
 
 interface DrawerServiceToggleOptions extends OverlayServiceOptions {
   force?: boolean;

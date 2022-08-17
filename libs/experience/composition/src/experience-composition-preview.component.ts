@@ -1,8 +1,8 @@
+import { PreviewExperienceService } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { filter, merge, tap } from 'rxjs';
-import { PreviewExperienceService } from '../src/services/experience/preview-experience.service';
 import { styles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 

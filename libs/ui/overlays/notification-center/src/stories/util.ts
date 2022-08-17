@@ -1,6 +1,6 @@
 import { Schemes, Types } from '@spryker-oryx/ui/notification';
 import { NotificationStrategy } from '../index';
-import { TAG_NAME } from '../utilities';
+import { TAG_NAME } from '../tag';
 
 const types = Object.values(Types);
 const schemes = Object.values(Schemes);

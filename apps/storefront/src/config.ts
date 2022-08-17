@@ -18,14 +18,14 @@ const isPreview = new URLSearchParams(new URL(window.location.href).search).has(
 );
 
 export const storefront = app()
-  .withFeature(storefrontApp)
+  .withFeature(uiFeature)
+  .withFeature(coreFeature)
   .withFeature(cartFeature)
   .withFeature(contentFeature)
-  .withFeature(coreFeature)
   .withFeature(experienceFeature)
   .withFeature(isPreview ? experiencePreviewFeature : {})
   .withFeature(productFeature)
   .withFeature(searchFeature)
   .withFeature(siteFeature)
-  .withFeature(uiFeature)
-  .withFeature(userFeature);
+  .withFeature(userFeature)
+  .withFeature(storefrontApp);

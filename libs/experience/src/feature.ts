@@ -2,7 +2,7 @@ import { AppFeature } from '@spryker-oryx/core';
 import {
   experienceCompositionComponent,
   experiencePreviewCompositionComponent,
-} from '../components/component';
+} from '../composition/src/component';
 import { STATIC_PREVIEW_PROVIDERS, STATIC_PROVIDERS } from './services';
 
 export const experienceFeature: AppFeature = {

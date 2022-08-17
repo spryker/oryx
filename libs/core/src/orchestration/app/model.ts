@@ -46,7 +46,7 @@ export interface AppBuilderWithModules
 export interface AppPlugin {
   getName(): string;
   apply(app: App): void | Promise<void>;
-  destroy(): void;
+  destroy?(): void;
 }
 
 export interface AppPluginBeforeApply {
