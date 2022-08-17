@@ -5,7 +5,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
-import { productMediaComponent } from '../index';
+import { productMediaComponent } from '../component';
 
 useComponent(productMediaComponent);
 

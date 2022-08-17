@@ -1,13 +1,15 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { notificationComponent } from '@spryker-oryx/ui/notification';
-import { notificationCenterComponent } from './index';
+import { notificationCenterComponent } from './component';
 import { NotificationCenterComponent } from './notification-center.component';
-
-useComponent([notificationCenterComponent, notificationComponent]);
 
 describe('NotificationCenterComponent', () => {
   let element: NotificationCenterComponent;
+
+  beforeAll(async () => {
+    await useComponent([notificationCenterComponent, notificationComponent]);
+  });
 
   describe('handle notification', () => {
     beforeEach(async () => {

@@ -7,7 +7,7 @@ import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { userLoginComponent } from '../index';
+import { userLoginComponent } from '../component';
 import { LoginOptions } from '../login.model';
 
 useComponent(userLoginComponent);

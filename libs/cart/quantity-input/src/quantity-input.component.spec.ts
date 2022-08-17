@@ -2,16 +2,18 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
-import { quantityInputComponent } from './index';
+import { quantityInputComponent } from './component';
 import { QuantityInputComponent } from './quantity-input.component';
-
-useComponent(quantityInputComponent);
 
 describe('Quantity input', () => {
   let element: QuantityInputComponent;
   const getInput = (): HTMLInputElement => {
     return element.renderRoot.querySelector('input') as HTMLInputElement;
   };
+
+  beforeAll(async () => {
+    await useComponent(quantityInputComponent);
+  });
 
   describe('when "min" property is provided', () => {
     const min = 4;

@@ -1,6 +1,7 @@
 import { AppPluginBeforeApply } from '@spryker-oryx/core';
 import {
   createInjector,
+  destroyInjector,
   Injector,
   InjectorOptions,
   Provider,
@@ -43,5 +44,9 @@ export class InjectionPlugin implements AppPlugin, AppPluginBeforeApply {
     // Injector is created before anyone can call this method
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.injector!;
+  }
+
+  destroy(): void {
+    destroyInjector(this.options?.context ?? '');
   }
 }

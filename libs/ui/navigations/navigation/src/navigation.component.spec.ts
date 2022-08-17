@@ -2,13 +2,15 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import { navigationComponent } from './index';
+import { navigationComponent } from './component';
 import { NavigationComponent } from './navigation.component';
-
-useComponent(navigationComponent);
 
 describe('NavigationComponent', () => {
   let element: NavigationComponent;
+
+  beforeAll(async () => {
+    await useComponent(navigationComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-navigation');

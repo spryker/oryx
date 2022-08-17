@@ -3,12 +3,14 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
 import { ButtonType } from './button.model';
-import { buttonComponent } from './index';
-
-useComponent(buttonComponent);
+import { buttonComponent } from './component';
 
 describe('ButtonComponent', () => {
   let element: ButtonComponent;
+
+  beforeAll(async () => {
+    await useComponent(buttonComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-button');

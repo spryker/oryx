@@ -3,12 +3,15 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { OptionComponent, optionComponent } from './index';
-
-useComponent(optionComponent);
+import { optionComponent } from './component';
+import { OptionComponent } from './option.component';
 
 describe('OptionComponent', () => {
   let element: OptionComponent;
+
+  beforeAll(async () => {
+    await useComponent(optionComponent);
+  });
 
   describe('when an icon is given', () => {
     beforeEach(async () => {

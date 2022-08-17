@@ -1,4 +1,5 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
@@ -6,7 +7,6 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
-import { IconTypes } from '../../../../graphical/icon';
 import {
   ClearIconAppearance,
   SearchEvent,
@@ -17,7 +17,8 @@ import {
   TypeaheadOptions,
 } from '../../../../search/typeahead';
 import { branches, states } from '../../../../utilities/storybook';
-import { selectComponent, SelectOptions } from '../index';
+import { selectComponent } from '../component';
+import { SelectOptions } from '../select.model';
 
 useComponent(selectComponent);
 

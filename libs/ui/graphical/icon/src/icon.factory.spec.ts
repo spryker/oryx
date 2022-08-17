@@ -2,13 +2,16 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { svg } from 'lit';
 import { Size } from '../../../utilities';
+import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
-import { icon, iconComponent } from './index';
-
-useComponent(iconComponent);
+import { icon } from './icon.factory';
 
 describe('icon factory', () => {
   let element: IconComponent;
+
+  beforeAll(async () => {
+    await useComponent(iconComponent);
+  });
 
   describe('when an icon type is given', () => {
     beforeEach(async () => {

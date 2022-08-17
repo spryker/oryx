@@ -1,16 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
-import { createInjector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { SemanticLinkType, SEMANTIC_LINK_PROVIDERS } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { contentLinkComponent } from './index';
+import { contentLinkComponent } from './component';
 import { ContentLinkComponent } from './link.component';
 import { LinkOptions, LinkType } from './link.model';
-
-useComponent(contentLinkComponent);
 
 class MockService {
   getOptions(): Observable<LinkOptions> {
@@ -22,17 +20,21 @@ describe('ContentLinkComponent', () => {
   let element: ContentLinkComponent;
   let options: LinkOptions;
 
-  createInjector({
-    providers: [
-      {
-        provide: ExperienceService,
-        useClass: MockService,
-      },
-      ...SEMANTIC_LINK_PROVIDERS,
-    ],
+  beforeAll(async () => {
+    await useComponent(contentLinkComponent);
   });
 
   beforeEach(async () => {
+    createInjector({
+      providers: [
+        {
+          provide: ExperienceService,
+          useClass: MockService,
+        },
+        ...SEMANTIC_LINK_PROVIDERS,
+      ],
+    });
+
     options = {
       text: 'test',
       type: LinkType.RawUrl,
@@ -41,6 +43,10 @@ describe('ContentLinkComponent', () => {
     element = await fixture(
       html`<content-link .options=${options}></content-link>`
     );
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('is defined', async () => {

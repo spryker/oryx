@@ -4,7 +4,7 @@ import { InputType } from '@storybook/csf';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { pageNavigationComponent } from '../index';
+import { pageNavigationComponent } from '../component';
 
 useComponent([pageNavigationComponent, pageNavigationItemComponent]);
 

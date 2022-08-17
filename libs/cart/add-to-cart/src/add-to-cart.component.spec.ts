@@ -5,11 +5,7 @@ import {
   QuantityInputComponent,
 } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import {
-  createInjector,
-  destroyInjector,
-  Injector,
-} from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import '@spryker-oryx/testing';
@@ -17,9 +13,7 @@ import { wait } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { delay, of } from 'rxjs';
 import { AddToCartComponent } from './add-to-cart.component';
-import { addToCartComponent } from './index';
-
-useComponent([quantityInputComponent, addToCartComponent]);
+import { addToCartComponent } from './component';
 
 class MockCartService {
   addEntry = vi.fn().mockReturnValue(of(null).pipe(delay(1)));
@@ -27,12 +21,14 @@ class MockCartService {
 
 describe('Add to cart', () => {
   let element: AddToCartComponent;
-
   let service: Partial<MockCartService>;
-  let testInjector: Injector;
+
+  beforeAll(async () => {
+    await useComponent([quantityInputComponent, addToCartComponent]);
+  });
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: CartService,

@@ -115,6 +115,10 @@ export class ComponentsPlugin implements AppPlugin {
     this.observe(rootElement);
   }
 
+  destroy(): void {
+    this.observer.disconnect();
+  }
+
   registerComponents(componentsInfo: ComponentsInfo): void {
     componentsInfo.flat().forEach((info) => {
       const def = this.processDef(info);

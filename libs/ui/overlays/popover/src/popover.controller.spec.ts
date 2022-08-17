@@ -1,6 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { dispatchKeydown } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { OptionComponent, optionComponent } from '@spryker-oryx/ui/option';
@@ -8,16 +7,11 @@ import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
 import { getControl } from '../../../form/utilities/getControl';
-import {
-  PopoverComponent,
-  popoverComponent,
-  PopoverController,
-  PopoverSelectEvent,
-  POPOVER_EVENT,
-  SelectedController,
-} from './index';
-
-useComponent([popoverComponent, optionComponent]);
+import { popoverComponent } from './component';
+import { SelectedController } from './controllers';
+import { PopoverComponent } from './popover.component';
+import { PopoverController } from './popover.controller';
+import { PopoverSelectEvent, POPOVER_EVENT } from './popover.model';
 
 /** scrollIntoView is not implemented in jsdom */
 Element.prototype.scrollIntoView = vi.fn();
@@ -62,6 +56,10 @@ describe('PopoverController', () => {
   const popover = (): PopoverComponent | null => {
     return element.renderRoot?.querySelector('oryx-popover');
   };
+
+  beforeAll(async () => {
+    await useComponent([popoverComponent, optionComponent]);
+  });
 
   describe('handleKeydown', () => {
     describe('when the popover is open', () => {

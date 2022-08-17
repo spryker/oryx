@@ -4,13 +4,15 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import { productMediaComponent } from './index';
+import { productMediaComponent } from './component';
 import { ProductMediaComponent } from './media.component';
-
-useComponent(productMediaComponent);
 
 describe('ProductMediaComponent', () => {
   let element: ProductMediaComponent;
+
+  beforeAll(async () => {
+    await useComponent(productMediaComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

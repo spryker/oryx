@@ -3,13 +3,15 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { spinnerComponent } from './index';
+import { spinnerComponent } from './component';
 import { SpinnerComponent } from './spinner.component';
-
-useComponent(spinnerComponent);
 
 describe('Spinner', () => {
   let element: SpinnerComponent;
+
+  beforeAll(async () => {
+    await useComponent(spinnerComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-spinner');

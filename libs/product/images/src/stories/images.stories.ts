@@ -5,6 +5,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
+import { productImagesComponent } from '../component';
 import {
   ProductImagesComponentOptions,
   ProductImagesNavigationAlignment,
@@ -13,7 +14,6 @@ import {
   ProductImagesNavigationPosition,
   ProductImagesPreviewLayout,
 } from '../images.model';
-import { productImagesComponent } from '../index';
 
 useComponent(productImagesComponent);
 

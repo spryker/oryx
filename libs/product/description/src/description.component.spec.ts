@@ -6,13 +6,15 @@ import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import { ProductDescriptionContent } from '../index';
+import { productDescriptionComponent } from './component';
 import { ProductDescriptionComponent } from './description.component';
-import { productDescriptionComponent } from './index';
-
-useComponent(productDescriptionComponent);
 
 describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;
+
+  beforeAll(async () => {
+    await useComponent(productDescriptionComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

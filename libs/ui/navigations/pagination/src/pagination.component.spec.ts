@@ -2,13 +2,15 @@ import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { paginationComponent } from './index';
+import { paginationComponent } from './component';
 import { PaginationComponent } from './pagination.component';
-
-useComponent(paginationComponent);
 
 describe('PaginationComponent', () => {
   let element: PaginationComponent;
+
+  beforeAll(async () => {
+    await useComponent(paginationComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-pagination');

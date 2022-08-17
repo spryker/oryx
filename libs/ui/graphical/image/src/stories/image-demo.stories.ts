@@ -2,7 +2,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { imageComponent } from '../index';
+import { imageComponent } from '../component';
 import { m, xl, xs } from './images';
 
 useComponent(imageComponent);

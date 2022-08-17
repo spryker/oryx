@@ -6,15 +6,15 @@ import {
   MOCK_PRODUCT_PROVIDERS,
 } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import {
-  productAttributesComponent,
-  ProductAttributesComponent,
-} from './index';
-
-useComponent(productAttributesComponent);
+import { ProductAttributesComponent } from './attributes.component';
+import { productAttributesComponent } from './component';
 
 describe('Product attributes', () => {
   let element: ProductAttributesComponent;
+
+  beforeAll(async () => {
+    await useComponent(productAttributesComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

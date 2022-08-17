@@ -3,7 +3,7 @@ import { navigationItemComponent } from '@spryker-oryx/ui/navigation-item';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { navigationComponent } from '../index';
+import { navigationComponent } from '../component';
 
 useComponent([navigationComponent, navigationItemComponent]);
 

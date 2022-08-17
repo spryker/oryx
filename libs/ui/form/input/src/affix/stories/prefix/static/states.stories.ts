@@ -18,6 +18,7 @@ import {
 
 export default {
   title: `${storybookPrefix}/Form/Form Control/Prefix/Static`,
+  parameters: { chromatic: { pauseAnimationAtEnd: true } },
 } as Meta;
 
 const groups: VariantsGroup<InputVariantOptions>[] = [

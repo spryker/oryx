@@ -3,10 +3,8 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { checkSlots, getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { modalComponent } from './index';
+import { modalComponent } from './component';
 import { ModalComponent } from './modal.component';
-
-useComponent(modalComponent);
 
 describe('Modal', () => {
   let element: ModalComponent;
@@ -20,6 +18,10 @@ describe('Modal', () => {
       expect(dialog?.hasAttribute('open')).toBe(false);
     }
   };
+
+  beforeAll(async () => {
+    await useComponent(modalComponent);
+  });
 
   const testCloseStrategies = (): void => {
     describe('when the "close()" method is called', () => {

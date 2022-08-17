@@ -1,9 +1,9 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { CardType } from '@spryker-oryx/ui/card';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { CardType } from '../../../../card';
-import { modalComponent } from '../index';
+import { modalComponent } from '../component';
 
 useComponent(modalComponent);
 

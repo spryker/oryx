@@ -2,13 +2,15 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ErrorMessageComponent } from '../../../error-message';
 import { Direction } from '../../../utilities/model';
-import { inputListComponent } from './index';
+import { inputListComponent } from './component';
 import { InputListComponent } from './input-list.component';
-
-useComponent(inputListComponent);
 
 describe('InputListComponent', () => {
   let element: InputListComponent;
+
+  beforeAll(async () => {
+    await useComponent(inputListComponent);
+  });
 
   it('should be defined', () => {
     const el = document.createElement('oryx-input-list');

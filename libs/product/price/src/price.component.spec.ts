@@ -12,10 +12,8 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import { productPriceComponent } from './index';
+import { productPriceComponent } from './component';
 import { ProductPriceComponent } from './price.component';
-
-useComponent(productPriceComponent);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions(): Observable<any> {
@@ -31,9 +29,12 @@ const mockEur = {
 
 describe('ProductPriceComponent', () => {
   let element: ProductPriceComponent;
-
   let mockLocaleService: LocaleService;
   let mockProductService: ProductService;
+
+  beforeAll(async () => {
+    await useComponent(productPriceComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

@@ -39,4 +39,8 @@ export class StorefrontPlugin
     initHydrateHooks();
     initInlineScripts();
   }
+
+  destroy(): void {
+    //
+  }
 }

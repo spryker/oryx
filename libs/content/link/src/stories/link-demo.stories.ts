@@ -5,7 +5,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { contentLinkComponent } from '../index';
+import { contentLinkComponent } from '../component';
 import { LinkOptions, LinkType } from '../link.model';
 
 useComponent(contentLinkComponent);

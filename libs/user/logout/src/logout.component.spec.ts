@@ -6,10 +6,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import { userLogoutComponent } from './index';
+import { userLogoutComponent } from './component';
 import { UserLogoutComponent } from './logout.component';
-
-useComponent(userLogoutComponent);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();
@@ -29,6 +27,10 @@ describe('User Login', () => {
   let element: UserLogoutComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
+
+  beforeAll(async () => {
+    await useComponent(userLogoutComponent);
+  });
 
   beforeEach(() => {
     const testInjector = createInjector({

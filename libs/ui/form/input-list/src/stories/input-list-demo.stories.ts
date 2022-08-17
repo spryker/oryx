@@ -6,7 +6,8 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Direction } from '../../../../utilities/model';
-import { InputListComponent, inputListComponent } from '../index';
+import { inputListComponent } from '../component';
+import { InputListComponent } from '../input-list.component';
 import { UxType } from './util';
 
 useComponent(inputListComponent);

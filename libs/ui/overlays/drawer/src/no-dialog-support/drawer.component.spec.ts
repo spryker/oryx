@@ -2,19 +2,19 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
-import { drawerComponent } from '../index';
+import { drawerComponent } from '../component';
 import { NDSDrawerComponent } from './drawer.component';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 window.HTMLDialogElement = null;
 
-beforeAll(async () => {
-  await useComponent(drawerComponent);
-});
-
 describe('NDSDrawerComponent', () => {
   let element: NDSDrawerComponent;
+
+  beforeAll(async () => {
+    await useComponent(drawerComponent);
+  });
 
   describe('dialog methods', () => {
     beforeEach(async () => {

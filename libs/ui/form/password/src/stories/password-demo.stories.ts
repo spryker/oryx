@@ -2,7 +2,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { passwordInputComponent } from '../index';
+import { passwordInputComponent } from '../component';
 import { PasswordVisibilityStrategy } from '../password-input.model';
 
 useComponent(passwordInputComponent);

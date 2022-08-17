@@ -5,10 +5,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { miniCartComponent } from './index';
+import { miniCartComponent } from './component';
 import { MiniCartComponent } from './mini-cart.component';
-
-useComponent(miniCartComponent);
 
 class MockCartService {
   getCart = vi.fn();
@@ -17,6 +15,10 @@ class MockCartService {
 describe('Mini Card', () => {
   let element: MiniCartComponent;
   let service: MockCartService;
+
+  beforeAll(async () => {
+    await useComponent(miniCartComponent);
+  });
 
   beforeEach(() => {
     const testInjector = createInjector({

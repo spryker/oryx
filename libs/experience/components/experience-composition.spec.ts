@@ -9,10 +9,8 @@ import {
   ComponentsRegistryService,
   ExperienceService,
 } from '../src/services';
+import { experienceCompositionComponent } from './component';
 import { ExperienceCompositionComponent } from './experience-composition.component';
-import { experienceCompositionComponent } from './index';
-
-useComponent(experienceCompositionComponent);
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-banner' },
@@ -52,6 +50,10 @@ class MockComponentsRegistryService
 
 describe('Experience Composition', () => {
   let element: ExperienceCompositionComponent;
+
+  beforeAll(async () => {
+    await useComponent(experienceCompositionComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

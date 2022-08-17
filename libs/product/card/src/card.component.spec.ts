@@ -10,10 +10,8 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import { productCardComponent } from '../index';
 import { ProductCardComponent } from './card.component';
-
-useComponent(productCardComponent);
+import { productCardComponent } from './component';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('mockSku')),
@@ -24,6 +22,10 @@ vi.spyOn(core, 'ContextController') as SpyInstance;
 
 describe('ProductCardComponent', () => {
   let element: ProductCardComponent;
+
+  beforeAll(async () => {
+    await useComponent(productCardComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

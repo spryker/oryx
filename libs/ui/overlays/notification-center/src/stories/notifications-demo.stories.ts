@@ -2,11 +2,9 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import {
-  notificationCenterComponent,
-  NotificationService,
-  Positions,
-} from '../index';
+import { notificationCenterComponent } from '../component';
+import { Positions } from '../notification-center.model';
+import { NotificationService } from '../service';
 import { generateRandomNotification } from './util';
 
 useComponent(notificationCenterComponent);

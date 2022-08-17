@@ -1,13 +1,15 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import { headlineComponent } from './component';
 import { HeadlineComponent } from './headline.component';
-import { headlineComponent } from './index';
-
-useComponent(headlineComponent);
 
 describe('HeadlineComponent', () => {
   let element: HeadlineComponent;
+
+  beforeAll(async () => {
+    await useComponent(headlineComponent);
+  });
 
   beforeEach(async () => {
     element = await fixture(

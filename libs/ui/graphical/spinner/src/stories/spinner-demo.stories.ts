@@ -1,11 +1,11 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
-import { IconTypes } from '../../../../graphical/icon';
 import { Size } from '../../../../utilities';
-import { spinnerComponent } from '../index';
+import { spinnerComponent } from '../component';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
 
 useComponent(spinnerComponent);

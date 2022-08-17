@@ -4,8 +4,8 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
+import { iconComponent } from '../component';
 import { IconProperties, IconTypes } from '../icon.model';
-import { iconComponent } from '../index';
 
 useComponent(iconComponent);
 

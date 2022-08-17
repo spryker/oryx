@@ -3,9 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { CheckboxComponent } from './checkbox.component';
-import { checkboxComponent } from './index';
-
-useComponent(checkboxComponent);
+import { checkboxComponent } from './component';
 
 const getInput = (element: CheckboxComponent): HTMLInputElement => {
   const [input] = element.shadowRoot
@@ -18,9 +16,13 @@ const getInput = (element: CheckboxComponent): HTMLInputElement => {
 describe('CheckboxComponent', () => {
   let element: CheckboxComponent;
 
+  beforeAll(async () => {
+    await useComponent(checkboxComponent);
+  });
+
   it('is defined', () => {
     const el = document.createElement('oryx-checkbox');
-    expect(el).to.be.instanceof(CheckboxComponent);
+    expect(el).toBeInstanceOf(CheckboxComponent);
   });
 
   describe('when checkbox is disabled', () => {
@@ -39,7 +41,7 @@ describe('CheckboxComponent', () => {
     it('should reflect the disabled attribute on the input element', () => {
       const input = getInput(element);
 
-      expect(input.disabled).to.be.true;
+      expect(input.disabled).toBe(true);
     });
 
     describe('but when it becomes not disabled', () => {
@@ -56,7 +58,7 @@ describe('CheckboxComponent', () => {
       it('the host should not have disabled attribute', () => {
         const input = getInput(element);
 
-        expect(input.disabled).to.be.false;
+        expect(input.disabled).toBe(false);
       });
     });
   });
@@ -77,7 +79,7 @@ describe('CheckboxComponent', () => {
     it('should reflect the checked attribute on the input element', () => {
       const input = getInput(element);
 
-      expect(input.checked).to.be.true;
+      expect(input.checked).toBe(true);
     });
 
     describe('but when it becomes not checked', () => {
@@ -94,7 +96,7 @@ describe('CheckboxComponent', () => {
       it('the host should not have checked attribute', () => {
         const input = getInput(element);
 
-        expect(input.checked).to.be.false;
+        expect(input.checked).toBe(false);
       });
     });
   });
@@ -113,7 +115,7 @@ describe('CheckboxComponent', () => {
     });
 
     it('should reflect the intermediate attribute on the host element', () => {
-      expect(element?.getAttribute('intermediate')).to.exist;
+      expect(element?.hasAttribute('intermediate')).toBe(true);
     });
   });
   describe('when checkbox has error', () => {
@@ -130,7 +132,7 @@ describe('CheckboxComponent', () => {
     });
 
     it('should reflect the error attribute on the host element', () => {
-      expect(element?.getAttribute('error')).to.exist;
+      expect(element?.hasAttribute('error')).toBe(true);
     });
   });
   describe('when the checkbox is checked/unchecked', () => {
@@ -142,9 +144,9 @@ describe('CheckboxComponent', () => {
     it('should dispatch a "input" event', () => {
       const input = getInput(element);
 
-      expect(input.checked).to.be.false;
+      expect(input.checked).toBe(false);
       input.click();
-      expect(input.checked).to.be.true;
+      expect(input.checked).toBe(true);
     });
   });
   describe('when the checkbox is disabled checked/unchecked', () => {
@@ -158,9 +160,9 @@ describe('CheckboxComponent', () => {
     it('should dispatch a "input" event', () => {
       const input = getInput(element);
 
-      expect(input.checked).to.be.false;
+      expect(input.checked).toBe(false);
       input.click();
-      expect(input.checked).to.be.false;
+      expect(input.checked).toBe(false);
     });
   });
 });

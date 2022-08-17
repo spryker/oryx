@@ -18,10 +18,11 @@ export const STATIC_PROVIDERS: Provider[] = [
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
   },
-  new URLSearchParams(new URL(window.location.href).search).get('ebPreview')
-    ? {
-        provide: ExperienceService,
-        useClass: PreviewExperienceService,
-      }
-    : ({} as Provider),
+];
+
+export const STATIC_PREVIEW_PROVIDERS: Provider[] = [
+  {
+    provide: ExperienceService,
+    useClass: PreviewExperienceService,
+  },
 ];

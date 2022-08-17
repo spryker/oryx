@@ -5,13 +5,15 @@ import {
   a11yConfig,
   queryAssignedElements,
 } from '@spryker-oryx/typescript-utils';
-import { typeheadComponent } from './index';
+import { typeheadComponent } from './component';
 import { TypeaheadComponent } from './typeahead.component';
-
-useComponent(typeheadComponent);
 
 describe('TypeaheadComponent', () => {
   let element: TypeaheadComponent;
+
+  beforeAll(async () => {
+    await useComponent(typeheadComponent);
+  });
 
   describe('empty', () => {
     describe('when the isEmpty is not set', () => {

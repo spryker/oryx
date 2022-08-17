@@ -6,10 +6,8 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
-import { productTitleComponent } from './index';
+import { productTitleComponent } from './component';
 import { ProductTitleComponent } from './title.component';
-
-useComponent(productTitleComponent);
 
 const mockSku = '1';
 
@@ -20,6 +18,10 @@ class MockExperienceContentService implements Partial<ExperienceService> {
 // TODO: unify unit tests for all sub packages
 describe('ProductTitleComponent', () => {
   let element: ProductTitleComponent;
+
+  beforeAll(async () => {
+    await useComponent(productTitleComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

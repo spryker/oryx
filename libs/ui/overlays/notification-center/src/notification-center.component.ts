@@ -12,8 +12,6 @@ import {
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
 
-export const TAG_NAME = 'oryx-notification-center';
-
 export const defaultStrategy: NotificationStrategy = {
   scheme: Schemes.LIGHT,
   autoClose: true,

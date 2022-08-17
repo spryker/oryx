@@ -8,7 +8,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService } from '../../../src/mocks';
 import { setupProductMocks } from '../../../src/mocks/product.mock';
-import { productPriceComponent } from '../index';
+import { productPriceComponent } from '../component';
 import { ProductPriceOptions } from '../price.model';
 
 useComponent(productPriceComponent);

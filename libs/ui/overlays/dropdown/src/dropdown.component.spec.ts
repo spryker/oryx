@@ -3,11 +3,10 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { IconButtonComponent } from '@spryker-oryx/ui/icon-button';
+import { PopoverComponent } from '@spryker-oryx/ui/popover';
 import { Size } from '@spryker-oryx/ui/utilities';
-import { PopoverComponent } from '../../popover/src';
-import { DropdownComponent, dropdownComponent } from './index';
-
-useComponent(dropdownComponent);
+import { dropdownComponent } from './component';
+import { DropdownComponent } from './dropdown.component';
 
 describe('DropdownComponent', () => {
   let element: DropdownComponent;
@@ -24,6 +23,10 @@ describe('DropdownComponent', () => {
       })
     );
   };
+
+  beforeAll(async () => {
+    await useComponent(dropdownComponent);
+  });
 
   beforeEach(async () => {
     element = await fixture(html`<oryx-dropdown></oryx-dropdown>`);

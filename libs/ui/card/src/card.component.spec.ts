@@ -3,12 +3,14 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { CardComponent } from './card.component';
-import { cardComponent } from './index';
-
-useComponent(cardComponent);
+import { cardComponent } from './component';
 
 describe('Card', () => {
   let element: CardComponent;
+
+  beforeAll(async () => {
+    await useComponent(cardComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-card');

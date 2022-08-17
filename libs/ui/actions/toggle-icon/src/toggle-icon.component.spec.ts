@@ -1,9 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { toggleIconComponent } from './index';
+import { toggleIconComponent } from './component';
 import { ToggleIconComponent } from './toggle-icon.component';
-
-useComponent(toggleIconComponent);
 
 describe('ToggleIconComponent', () => {
   let element: ToggleIconComponent;
@@ -13,6 +11,10 @@ describe('ToggleIconComponent', () => {
       .querySelector('slot')
       ?.assignedElements({ flatten: true })
       .find((el) => el.tagName.toLowerCase() === type.toLowerCase());
+
+  beforeAll(async () => {
+    await useComponent(toggleIconComponent);
+  });
 
   describe('when a proper input is set', () => {
     beforeEach(async () => {

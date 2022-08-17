@@ -1,14 +1,15 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { tagComponent } from './index';
+import { tagComponent } from './component';
 import { TagComponent } from './tag.component';
-
-useComponent(tagComponent);
 
 describe('TagComponent', () => {
   let element: TagComponent;
+
+  beforeAll(async () => {
+    await useComponent(tagComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-tag');

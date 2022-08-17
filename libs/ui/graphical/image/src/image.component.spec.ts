@@ -1,15 +1,16 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { userAgentSafariMacOsX154 } from '@spryker-oryx/testing';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
+import { imageComponent } from './component';
 import { ImageComponent } from './image.component';
-import { imageComponent } from './index';
-
-useComponent(imageComponent);
 
 describe('ImageComponent', () => {
   let element: ImageComponent;
+
+  beforeAll(async () => {
+    await useComponent(imageComponent);
+  });
 
   beforeEach(async () => {
     element = await fixture(

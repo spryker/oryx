@@ -3,9 +3,9 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { DrawerComponent, drawerComponent, DrawerService } from '../index';
-
-useComponent(drawerComponent);
+import { drawerComponent } from '../component';
+import { DrawerComponent } from '../drawer.component';
+import { DrawerService } from './drawer.service';
 
 @customElement('wrapper-component')
 class WrapperComponent extends LitElement {
@@ -17,6 +17,10 @@ class WrapperComponent extends LitElement {
 describe('DrawerService', () => {
   let element: DrawerComponent;
   const service = new DrawerService();
+
+  beforeAll(async () => {
+    await useComponent(drawerComponent);
+  });
 
   describe('getDrawer', () => {
     describe('without parent param', () => {

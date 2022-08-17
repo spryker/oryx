@@ -2,19 +2,21 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import { searchboxComponent } from './component';
+import { SearchboxComponent } from './searchbox.component';
 import {
   ClearIconAppearance,
   ClearIconPosition,
-  searchboxComponent,
   SearchEvent,
   SearchIconPosition,
-} from './index';
-import { SearchboxComponent } from './searchbox.component';
-
-useComponent(searchboxComponent);
+} from './searchbox.model';
 
 describe('SearchComponent', () => {
   let element: SearchboxComponent;
+
+  beforeAll(async () => {
+    await useComponent(searchboxComponent);
+  });
 
   describe('search', () => {
     describe('searchIcon', () => {

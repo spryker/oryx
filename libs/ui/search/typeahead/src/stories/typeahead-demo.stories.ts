@@ -1,18 +1,15 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
+import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
+import { SearchEvent, SearchOptions } from '@spryker-oryx/ui/searchbox';
+import { branches, states } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { AffixOptions } from '../../../../form/input';
-import { IconTypes } from '../../../../graphical/icon';
-import { branches, states } from '../../../../utilities/storybook/';
-import { SearchEvent, SearchOptions } from '../../../searchbox';
-import {
-  FilterStrategyType,
-  TypeaheadOptions,
-  typeheadComponent,
-} from '../index';
+import { typeheadComponent } from '../component';
+import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 useComponent(typeheadComponent);
 

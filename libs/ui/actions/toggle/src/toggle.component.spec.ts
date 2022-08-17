@@ -3,13 +3,15 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
-import { toggleComponent } from './index';
+import { toggleComponent } from './component';
 import { ToggleComponent } from './toggle.component';
-
-useComponent(toggleComponent);
 
 describe('Toggle component', () => {
   let element: ToggleComponent;
+
+  beforeAll(async () => {
+    await useComponent(toggleComponent);
+  });
 
   describe('when input is slotted', () => {
     beforeEach(async () => {

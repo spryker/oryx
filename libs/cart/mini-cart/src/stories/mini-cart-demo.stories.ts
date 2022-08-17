@@ -4,7 +4,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { setupCartMocks } from '../../../src/mocks/cart.mock';
-import { miniCartComponent } from '../index';
+import { miniCartComponent } from '../component';
 
 useComponent(miniCartComponent);
 

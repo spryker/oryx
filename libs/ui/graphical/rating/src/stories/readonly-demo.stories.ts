@@ -5,7 +5,8 @@ import { html } from 'lit-html';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
-import { ratingComponent, RatingProperties } from '../index';
+import { ratingComponent } from '../component';
+import { RatingProperties } from '../rating.model';
 
 useComponent(ratingComponent);
 

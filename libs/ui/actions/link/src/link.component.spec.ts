@@ -2,14 +2,16 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import { linkComponent } from './index';
+import { linkComponent } from './component';
 import { LinkComponent } from './link.component';
 import { LinkTypes } from './link.model';
 
-useComponent(linkComponent);
-
 describe('LinkComponent', () => {
   let element: LinkComponent;
+
+  beforeAll(async () => {
+    await useComponent(linkComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-link');

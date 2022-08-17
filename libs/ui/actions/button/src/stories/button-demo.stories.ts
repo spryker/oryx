@@ -5,7 +5,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
 import { ButtonType } from '../button.model';
-import { buttonComponent } from '../index';
+import { buttonComponent } from '../component';
 
 useComponent(buttonComponent);
 

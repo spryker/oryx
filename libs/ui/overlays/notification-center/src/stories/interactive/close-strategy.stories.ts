@@ -4,9 +4,9 @@ import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { NotificationCenterComponent, TAG_NAME } from '../../index';
-
+import { NotificationCenterComponent } from '../../notification-center.component';
 import { Positions } from '../../notification-center.model';
+import { TAG_NAME } from '../../utilities';
 import { getNotification, open } from './util';
 
 export default {

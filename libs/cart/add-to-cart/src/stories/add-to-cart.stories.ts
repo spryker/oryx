@@ -6,7 +6,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { setupCartMocks } from '../../../src/mocks/cart.mock';
 import { AddToCartOptions } from '../add-to-cart.model';
-import { addToCartComponent } from '../index';
+import { addToCartComponent } from '../component';
 
 useComponent(addToCartComponent);
 

@@ -7,13 +7,9 @@ import { typeheadComponent } from '@spryker-oryx/ui/typeahead';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { MOCK_SUGGESTION_PROVIDERS } from '../../src/mocks';
-import {
-  SearchBoxComponent,
-  searchBoxComponent,
-  SearchBoxOptions,
-} from './index';
-
-useComponent([searchBoxComponent, typeheadComponent]);
+import { SearchBoxComponent } from './box.component';
+import { SearchBoxOptions } from './box.model';
+import { searchBoxComponent } from './component';
 
 const mockedOptions: SearchBoxOptions = {
   placeholder: 'placeholder',
@@ -70,6 +66,10 @@ describe('SearchBoxComponent', () => {
 
     expect(container).toBeNull();
   };
+
+  beforeAll(async () => {
+    await useComponent([searchBoxComponent, typeheadComponent]);
+  });
 
   beforeEach(async () => {
     createInjector({

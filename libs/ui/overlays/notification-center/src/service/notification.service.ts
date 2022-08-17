@@ -1,8 +1,6 @@
-import {
-  NotificationCenterComponent,
-  TAG_NAME,
-} from '../notification-center.component';
+import { NotificationCenterComponent } from '../notification-center.component';
 import { Positions } from '../notification-center.model';
+import { TAG_NAME } from '../utilities';
 
 const ensurePosition = (position?: Positions): string =>
   position ? `[position=${position}]` : '';

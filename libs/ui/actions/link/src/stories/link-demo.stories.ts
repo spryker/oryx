@@ -1,9 +1,9 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { IconTypes } from '../../../../graphical/icon';
-import { linkComponent } from '../index';
+import { linkComponent } from '../component';
 import { LinkTypes } from '../link.model';
 
 useComponent(linkComponent);

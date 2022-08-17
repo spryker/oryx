@@ -2,6 +2,7 @@ import { html, TemplateResult } from 'lit';
 import { Dialog } from '../../../overlay.model';
 import { DrawerComponent } from '../drawer.component';
 import { drawerNDSStyles } from './drawer.styles';
+
 export class NDSDrawerComponent extends DrawerComponent {
   static styles = [...DrawerComponent.styles, drawerNDSStyles];
 

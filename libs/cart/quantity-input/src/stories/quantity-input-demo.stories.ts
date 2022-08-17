@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { quantityInputComponent } from '../index';
+import { quantityInputComponent } from '../component';
 
 useComponent(quantityInputComponent);
 

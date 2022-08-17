@@ -4,12 +4,14 @@ import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { ChipComponent } from './chip.component';
 import { ChipType } from './chip.model';
-import { chipComponent } from './index';
-
-useComponent(chipComponent);
+import { chipComponent } from './component';
 
 describe('ChipComponent', () => {
   let element: ChipComponent;
+
+  beforeAll(async () => {
+    await useComponent(chipComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-chip');
@@ -17,19 +19,7 @@ describe('ChipComponent', () => {
   });
 
   describe('chip type', () => {
-    const types: ChipType[] = [
-      ChipType.DEFAULT,
-      ChipType.ONLINE,
-      ChipType.ACTIVE,
-      ChipType.OFFLINE,
-      ChipType.INACTIVE,
-      ChipType.LOW,
-      ChipType.INFO,
-      ChipType.WARNING,
-      ChipType.ERROR,
-      ChipType.SUCCESS,
-    ];
-    Object.values(types).forEach((type) => {
+    Object.values(Object.values(ChipType)).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-chip type="${type}"></oryx-chip>`);

@@ -4,7 +4,7 @@ import { html } from 'lit-html';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
-import { RatingProperties } from '../index';
+import { RatingProperties } from '../rating.model';
 
 export default {
   title: `${storybookPrefix}/Graphical/Rating`,

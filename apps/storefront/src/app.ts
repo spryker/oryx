@@ -1,6 +1,6 @@
 // organize-imports-ignore
 import './global.shim';
-import { storefrontApp } from './bootstrap';
+import { storefront } from './config';
 import { StorefrontPlugin } from './storefront.plugin';
 
-storefrontApp().with(new StorefrontPlugin()).create().catch(console.error);
+storefront.with(new StorefrontPlugin()).create().catch(console.error);

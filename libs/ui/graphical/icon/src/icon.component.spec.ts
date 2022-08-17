@@ -4,13 +4,15 @@ import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html } from 'lit';
 import { Size } from '../../../utilities';
+import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
-import { iconComponent } from './index';
-
-useComponent(iconComponent);
 
 describe('Icon', () => {
   let element: IconComponent;
+
+  beforeAll(async () => {
+    await useComponent(iconComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-icon');

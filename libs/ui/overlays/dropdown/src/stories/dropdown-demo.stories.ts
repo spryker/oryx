@@ -5,8 +5,8 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
+import { dropdownComponent } from '../component';
 import { Position } from '../dropdown.model';
-import { dropdownComponent } from '../index';
 import { renderCustomContent, renderOptions } from './utils';
 
 useComponent(dropdownComponent);

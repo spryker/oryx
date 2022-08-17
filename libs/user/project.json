@@ -39,6 +39,9 @@
       "options": {
         "lintFilePatterns": ["libs/user/**/*.css", "libs/user/**/*.styles.ts"]
       }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
     }
   }
 }

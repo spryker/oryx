@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing';
 import {
   dispatchKeydown,
   userAgentSafariMacOsX154,

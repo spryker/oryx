@@ -4,7 +4,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { BannerContent, BannerOptions } from '../banner.model';
-import { bannerComponent } from '../index';
+import { bannerComponent } from '../component';
 
 useComponent(bannerComponent);
 

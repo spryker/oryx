@@ -5,7 +5,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, MOCK_PRODUCT_PROVIDERS } from '../../../src/mocks';
-import { productCardComponent } from '../index';
+import { productCardComponent } from '../component';
 
 useComponent(productCardComponent);
 

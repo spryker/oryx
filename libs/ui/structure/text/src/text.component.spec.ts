@@ -1,8 +1,9 @@
 // organize-imports-ignore
 import { fixture, html } from '@open-wc/testing-helpers';
 import './ponyfill';
-import { TextComponent, textComponent } from './index';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { textComponent } from './component';
+import { TextComponent } from './text.component';
 
 useComponent(textComponent);
 
@@ -27,6 +28,10 @@ const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
 
 describe('TextComponent', () => {
   let element: TextComponent;
+
+  beforeAll(async () => {
+    await useComponent(textComponent);
+  });
 
   it('is defined', () => {
     const el = document.createElement('oryx-text');

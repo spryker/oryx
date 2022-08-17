@@ -4,14 +4,16 @@ import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { TemplateResult } from 'lit';
 import { getControl } from '../../utilities/getControl';
-import { passwordInputComponent } from './index';
+import { passwordInputComponent } from './component';
 import { PasswordInputComponent } from './password-input.component';
 import { PasswordVisibilityStrategy } from './password-input.model';
 
-useComponent(passwordInputComponent);
-
 describe('PasswordComponent', () => {
   let element: PasswordInputComponent;
+
+  beforeAll(async () => {
+    await useComponent(passwordInputComponent);
+  });
 
   describe('when the password control is rendered', () => {
     beforeEach(async () => {

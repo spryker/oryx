@@ -4,10 +4,8 @@ import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { navigationComponent } from './index';
+import { navigationComponent } from './component';
 import { CollapseToggleController } from './navigation-collapse.controller';
-
-useComponent(navigationComponent);
 
 @customElement('fake-element')
 export class FakeComponent extends LitElement {}
@@ -15,6 +13,10 @@ export class FakeComponent extends LitElement {}
 describe('CollapseToggleController', () => {
   let element: FakeComponent;
   let controller: CollapseToggleController;
+
+  beforeAll(async () => {
+    await useComponent(navigationComponent);
+  });
 
   beforeEach(async () => {
     element = await fixture(html`<fake-element> </fake-element>`);

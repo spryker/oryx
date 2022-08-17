@@ -11,10 +11,8 @@ import {
   pageNavigationItemComponent,
 } from '@spryker-oryx/ui/page-navigation-item';
 import { TemplateResult } from 'lit';
-import { beforeEach, describe, expect, it } from 'vitest';
-import { PageNavigationComponent, pageNavigationComponent } from './index';
-
-useComponent([pageNavigationComponent, pageNavigationItemComponent]);
+import { pageNavigationComponent } from './component';
+import { PageNavigationComponent } from './page-navigation.component';
 
 describe('Page navigation', () => {
   let element: PageNavigationComponent;
@@ -31,6 +29,10 @@ describe('Page navigation', () => {
       content: 'Subtitle 2',
     },
   ];
+
+  beforeAll(async () => {
+    await useComponent([pageNavigationComponent, pageNavigationItemComponent]);
+  });
 
   describe('when navigation items are passed', () => {
     beforeEach(async () => {

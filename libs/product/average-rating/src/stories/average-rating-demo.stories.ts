@@ -6,7 +6,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import { ProductAverageRatingModel } from '../average-rating.model';
-import { productAverageRatingComponent } from '../index';
+import { productAverageRatingComponent } from '../component';
 
 useComponent(productAverageRatingComponent);
 

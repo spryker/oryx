@@ -5,12 +5,13 @@ import {
   SelectedController,
   ToggleController,
 } from './controllers';
-import { TAG_NAME } from './popover.component';
 import {
   PopoverOptions,
   PopoverSelectEvent,
   POPOVER_EVENT,
 } from './popover.model';
+import { TAG_NAME } from './utilities';
+
 /**
  * Controls the popover behaviour by mouse and keyboard:
  * - toggle the popover (delegated to `ToggleController`)

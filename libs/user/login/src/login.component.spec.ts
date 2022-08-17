@@ -11,10 +11,8 @@ import {
 } from '@spryker-oryx/ui/password';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { userLoginComponent } from './index';
+import { userLoginComponent } from './component';
 import { UserLoginComponent } from './login.component';
-
-useComponent([userLoginComponent, passwordInputComponent]);
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();
@@ -34,6 +32,10 @@ describe('User Login', () => {
   let element: UserLoginComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
+
+  beforeAll(async () => {
+    await useComponent([userLoginComponent, passwordInputComponent]);
+  });
 
   beforeEach(() => {
     const testInjector = createInjector({

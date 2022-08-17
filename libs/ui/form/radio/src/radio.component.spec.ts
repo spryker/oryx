@@ -2,13 +2,15 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { ErrorMessageComponent } from '../../../error-message';
-import { radioComponent } from './index';
+import { radioComponent } from './component';
 import { RadioComponent } from './radio.component';
-
-useComponent(radioComponent);
 
 describe('RadioComponent', () => {
   let element: RadioComponent;
+
+  beforeAll(async () => {
+    await useComponent(radioComponent);
+  });
 
   describe('when radio is projected', () => {
     beforeEach(async () => {

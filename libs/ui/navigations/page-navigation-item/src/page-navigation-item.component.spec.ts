@@ -2,15 +2,15 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
-import {
-  PageNavigationItemComponent,
-  pageNavigationItemComponent,
-} from './index';
-
-useComponent(pageNavigationItemComponent);
+import { pageNavigationItemComponent } from './component';
+import { PageNavigationItemComponent } from './page-navigation-item.component';
 
 describe('Page navigation item', () => {
   let element: PageNavigationItemComponent;
+
+  beforeAll(async () => {
+    await useComponent(pageNavigationItemComponent);
+  });
 
   describe('when slots are filled', () => {
     const heading = 'Heading';

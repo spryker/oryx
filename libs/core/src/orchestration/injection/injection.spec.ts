@@ -15,10 +15,16 @@ const mockProviders = [
 const mockOptions = {
   context: 'context',
 };
-const mockCreateInjector = vi.fn();
+const mockInjector = {
+  createInjector: vi.fn(),
+  destroyInjector: vi.fn(),
+};
 
 vi.mock('@spryker-oryx/injector', () => ({
-  createInjector: (value: unknown): SpyInstance => mockCreateInjector(value),
+  createInjector: (value: unknown): SpyInstance =>
+    mockInjector.createInjector(value),
+  destroyInjector: (value: unknown): SpyInstance =>
+    mockInjector.destroyInjector(value),
 }));
 
 describe('InjectionPlugin', () => {
@@ -39,7 +45,7 @@ describe('InjectionPlugin', () => {
     it('should createInjector', () => {
       const mockApp = 'mockApp' as unknown as App;
       plugin.beforeApply(mockApp);
-      expect(mockCreateInjector).toHaveBeenCalledWith({
+      expect(mockInjector.createInjector).toHaveBeenCalledWith({
         ...mockOptions,
         providers: [...mockProviders, { provide: AppRef, useValue: mockApp }],
       });
@@ -48,20 +54,29 @@ describe('InjectionPlugin', () => {
 
   describe('getInjector', () => {
     it('should return injector', () => {
-      const mockInjector = 'mockInjector';
-      mockCreateInjector.mockReturnValue(mockInjector);
+      const mockInjectorValue = 'mockInjector';
+      mockInjector.createInjector.mockReturnValue(mockInjectorValue);
       plugin.beforeApply('mockApp' as unknown as App);
-      expect(plugin.getInjector()).toBe(mockInjector);
+      expect(plugin.getInjector()).toBe(mockInjectorValue);
     });
   });
 
   describe('provide', () => {
     it('should call provide method from injector', () => {
-      const mockInjector = { provide: vi.fn() };
-      mockCreateInjector.mockReturnValue(mockInjector);
+      const mockInjectorValue = { provide: vi.fn() };
+      mockInjector.createInjector.mockReturnValue(mockInjectorValue);
       plugin.beforeApply('mockApp' as unknown as App);
       plugin.provide(mockProviders[0]);
-      expect(mockInjector.provide).toHaveBeenCalledWith(mockProviders[0]);
+      expect(mockInjectorValue.provide).toHaveBeenCalledWith(mockProviders[0]);
+    });
+  });
+
+  describe('destroy', () => {
+    it('should call destroyInjector', () => {
+      plugin.destroy();
+      expect(mockInjector.destroyInjector).toHaveBeenCalledWith(
+        mockOptions.context
+      );
     });
   });
 });

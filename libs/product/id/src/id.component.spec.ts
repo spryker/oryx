@@ -6,10 +6,8 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
+import { productIdComponent } from './component';
 import { ProductIdComponent } from './id.component';
-import { productIdComponent } from './index';
-
-useComponent(productIdComponent);
 
 const mockSku = '1';
 
@@ -19,6 +17,10 @@ class MockExperienceContentService implements Partial<ExperienceService> {
 
 describe('ProductIdComponent', () => {
   let element: ProductIdComponent;
+
+  beforeAll(async () => {
+    await useComponent(productIdComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

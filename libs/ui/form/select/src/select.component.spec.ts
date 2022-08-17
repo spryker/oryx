@@ -8,12 +8,15 @@ import {
   SearchIconPosition,
 } from '../../../search/searchbox';
 import { getControl } from '../../utilities/getControl';
-import { SelectComponent, selectComponent } from './index';
-
-useComponent(selectComponent);
+import { selectComponent } from './component';
+import { SelectComponent } from './select.component';
 
 describe('SelectComponent', () => {
   let element: SelectComponent;
+
+  beforeAll(async () => {
+    await useComponent(selectComponent);
+  });
 
   describe('when the value is set', () => {
     const callback = vi.fn();

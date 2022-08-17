@@ -4,15 +4,13 @@ import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { optionComponent } from '@spryker-oryx/ui/option';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
+import { SearchEvent } from '@spryker-oryx/ui/searchbox';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
 import { getControl } from '../../../../form/utilities';
-import { SearchEvent } from '../../../searchbox';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { TypeaheadController } from './typeahead.controller';
-
-useComponent(optionComponent);
 
 @customElement('fake-typeahead')
 class FakeComponent extends LitElement implements TypeaheadOptions {
@@ -35,6 +33,10 @@ class FakeComponent extends LitElement implements TypeaheadOptions {
 
 describe('TypeaheadController', () => {
   let element: FakeComponent;
+
+  beforeAll(async () => {
+    await useComponent(optionComponent);
+  });
 
   describe('slot', () => {
     describe('when oryx-option elements without a slot are provided', () => {

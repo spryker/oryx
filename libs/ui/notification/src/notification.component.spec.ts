@@ -1,16 +1,18 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { notificationComponent } from './index';
+import { notificationComponent } from './component';
 import { NotificationComponent } from './notification.component';
-
-useComponent(notificationComponent);
 
 describe('NotificationComponent', () => {
   let element: NotificationComponent;
 
   const getButton = (selector: string): HTMLElement | null | undefined =>
     getShadowElementBySelector(element, selector);
+
+  beforeAll(async () => {
+    await useComponent(notificationComponent);
+  });
 
   describe('closable', () => {
     let button: HTMLElement | null | undefined;

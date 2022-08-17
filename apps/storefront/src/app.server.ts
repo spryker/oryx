@@ -1,10 +1,9 @@
 import { App } from '@spryker-oryx/core';
 import { CORE_SERVER_PROVIDERS } from '@spryker-oryx/core/server';
-
-import { storefrontApp } from './bootstrap';
+import { storefront } from './config';
 
 export const storefrontAppOrchestrator = async (): Promise<void | App> =>
-  storefrontApp()
+  storefront
     .withOptions({
       components: {
         preload: true,

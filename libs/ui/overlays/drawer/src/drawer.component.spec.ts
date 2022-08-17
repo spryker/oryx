@@ -1,12 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { html } from 'lit';
+import { drawerComponent } from './component';
 import { DrawerComponent } from './drawer.component';
-import { drawerComponent } from './index';
-
-useComponent(drawerComponent);
 
 const isClosed = (element: DrawerComponent): boolean => !element.dialog?.open;
 const isMaximized = (element: DrawerComponent): boolean =>
@@ -25,6 +22,10 @@ describe('DrawerComponent', () => {
         cancelable: true,
       })
     );
+
+  beforeAll(async () => {
+    await useComponent(drawerComponent);
+  });
 
   describe('handle open', () => {
     beforeEach(async () => {

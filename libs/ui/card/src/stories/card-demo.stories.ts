@@ -4,7 +4,8 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
 import { IconTypes } from '../../../graphical/icon';
-import { cardComponent, CardType } from '../../index';
+import { CardType } from '../card.model';
+import { cardComponent } from '../component';
 
 useComponent(cardComponent);
 

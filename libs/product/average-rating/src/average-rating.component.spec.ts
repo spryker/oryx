@@ -7,9 +7,7 @@ import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { MOCK_PRODUCT_PROVIDERS } from '../../src/mocks';
 import { ProductAverageRatingComponent } from './average-rating.component';
-import { productAverageRatingComponent } from './index';
-
-useComponent(productAverageRatingComponent);
+import { productAverageRatingComponent } from './component';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});
@@ -17,6 +15,10 @@ class MockExperienceContentService implements Partial<ExperienceService> {
 
 describe('Average Rating', () => {
   let element: ProductAverageRatingComponent;
+
+  beforeAll(async () => {
+    await useComponent(productAverageRatingComponent);
+  });
 
   beforeEach(async () => {
     createInjector({

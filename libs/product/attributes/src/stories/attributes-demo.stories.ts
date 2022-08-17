@@ -6,7 +6,7 @@ import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
 import { MockProductService, setupProductMocks } from '../../../src/mocks';
 import { ProductAttributesComponentOptions } from '../attributes.model';
-import { productAttributesComponent } from '../index';
+import { productAttributesComponent } from '../component';
 
 useComponent(productAttributesComponent);
 
