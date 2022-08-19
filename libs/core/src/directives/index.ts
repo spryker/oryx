@@ -1,1 +1,1 @@
-export * from './script';
+export * from './prehydrate';

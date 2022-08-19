@@ -75,16 +75,3 @@ export function initHydrateHooks(): void {
   const storefront = document.body.querySelector('storefront-component');
   registryService.hydrateOnDemand(storefront as LitElement);
 }
-
-export function initInlineScripts(): void {
-  if (window.scriptFns) {
-    const scripts = Object.keys(window.scriptFns);
-    for (let i = 0; i < scripts.length; i++) {
-      const fn = window.scriptFns[scripts[i]];
-      const components = treewalk(scripts[i]);
-      for (let j = 0; j < components.length; j++) {
-        fn(components[j]);
-      }
-    }
-  }
-}

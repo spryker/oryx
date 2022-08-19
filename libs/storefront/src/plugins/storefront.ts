@@ -6,10 +6,10 @@ import {
 import { RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
 import { storefrontComponent } from '../../storefront/src/component';
-import { initHydrateHooks, initInlineScripts } from '../utilities';
+import { initHydrateHooks } from '../utilities';
 
 declare global {
   function litElementHydrateSupport(param: { LitElement: unknown }): void;
@@ -41,6 +41,5 @@ export class StorefrontPlugin
 
   afterApply(): void | Promise<void> {
     initHydrateHooks();
-    initInlineScripts();
   }
 }

@@ -1,9 +1,10 @@
-import { script } from '@spryker-oryx/core';
+import { prehydrate } from '@spryker-oryx/core';
 import { throttle } from '@spryker-oryx/typescript-utils';
 import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
+import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
@@ -22,39 +23,6 @@ export class TextComponent extends LitElement implements TextProperties {
     }
   }
 
-  protected script = `async (host) => {
-          const truncateAfter = host.getAttribute('truncateAfter');
-          const expanded = host.hasAttribute('expanded');
-          const textElement = host.shadowRoot.querySelector('div.text');
-          if (textElement) {
-            host.removeAttribute('requires-truncate');
-            host.style.setProperty(
-              '--line-clamp',
-              truncateAfter > 0 ? truncateAfter.toString() : ''
-            );
-            host.toggleAttribute(
-              'truncate',
-              truncateAfter > 0 && !expanded
-            );
-
-            await 0;
-
-            const isClamped =
-              textElement.scrollHeight > textElement.clientHeight;
-            const lineHeight = textElement.style.lineHeight;
-            const factor = 1000;
-            textElement.style.lineHeight = factor + 'px';
-            const height = textElement.getBoundingClientRect().height;
-            textElement.style.lineHeight = lineHeight;
-            const lineCount = Math.floor(height / factor);
-            host.toggleAttribute(
-              'requires-truncate',
-              isClamped ||
-                (expanded && !!truncateAfter && lineCount > truncateAfter)
-            );
-          }
-        };`;
-
   protected override render(): TemplateResult {
     return html` <div class="box">
         <div class="text">
@@ -71,7 +39,7 @@ export class TextComponent extends LitElement implements TextProperties {
           </oryx-icon-button>
         </slot>`
       )}
-      ${script(this.script, 'oryx-text')}`;
+      ${prehydrate(truncateFix, 'oryx-text')}`;
   }
 
   protected setup(): void {
