@@ -1,10 +1,11 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { setUpMockProviders } from '@spryker-oryx/injector';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { forceReRender, Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { MockProductService, setupProductMocks } from '../../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../../src/mocks';
 import { productImagesComponent } from '../component';
 import {
   ProductImagesComponentOptions,
@@ -19,7 +20,7 @@ useComponent(productImagesComponent);
 
 export default {
   title: `${storybookPrefix}/Images`,
-  loaders: [setupProductMocks],
+  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 type Props = ProductImagesComponentOptions & ProductComponentProperties;

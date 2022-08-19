@@ -1,10 +1,11 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { setUpMockProviders } from '@spryker-oryx/injector';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { MockProductService, setupProductMocks } from '../../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../../src/mocks';
 import { ProductAttributesComponentOptions } from '../attributes.model';
 import { productAttributesComponent } from '../component';
 
@@ -12,7 +13,7 @@ useComponent(productAttributesComponent);
 
 export default {
   title: `${storybookPrefix}/Attributes`,
-  loaders: [setupProductMocks],
+  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 type Props = ProductAttributesComponentOptions & ProductComponentProperties;

@@ -1,12 +1,13 @@
+import { setUpMockProviders } from '@spryker-oryx/injector';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
-import { setupProductMocks } from '../../../../src/mocks/product.mock';
 
 export default {
   title: `${storybookPrefix}/Title/Static`,
-  loaders: [setupProductMocks],
+  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
