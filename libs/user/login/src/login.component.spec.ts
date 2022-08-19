@@ -1,4 +1,4 @@
-import { fixture, oneEvent } from '@open-wc/testing-helpers';
+import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
@@ -150,15 +150,8 @@ describe('User Login', () => {
     };
 
     const submit = async (): Promise<void> => {
-      const submit = element.shadowRoot?.querySelector(
-        'button'
-      ) as HTMLButtonElement;
-
-      setTimeout(() => {
-        submit.click();
-      }, 0);
-
-      await oneEvent(submit, 'click');
+      element.shadowRoot?.querySelector('form')?.submit();
+      await nextFrame();
     };
 
     const notification = (): HTMLElement | null => {
@@ -209,11 +202,7 @@ describe('User Login', () => {
       const rememberme = element.shadowRoot?.querySelector(
         'input[name="rememberme"]'
       ) as HTMLInputElement;
-      setTimeout(() => {
-        rememberme.click();
-      }, 0);
-
-      await oneEvent(rememberme, 'click');
+      rememberme.click();
       await submit();
       expect(authService.login).toHaveBeenCalledWith('email', 'password', true);
     });
