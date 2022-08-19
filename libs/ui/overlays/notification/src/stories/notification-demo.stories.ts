@@ -1,16 +1,12 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import { notificationComponent } from '../component';
 import { Schemes, Types } from '../notification.model';
 import { bodyBackgroundColor } from './util';
 
 useComponent(notificationComponent);
-
-export default {
-  title: `${storybookPrefix}/Notification`,
-} as Meta;
 
 interface Props {
   type: string;
@@ -21,6 +17,33 @@ interface Props {
   closable: boolean;
   backgroundColor: string;
 }
+
+export default {
+  title: `${storybookPrefix}/Overlays/Notification`,
+  args: {
+    type: Types.INFO,
+    title: 'Title',
+    subtext: 'Content text',
+    backgroundColor: bodyBackgroundColor.options[0],
+    scheme: Schemes.LIGHT,
+    floating: false,
+    closable: false,
+  },
+  argTypes: {
+    backgroundColor: bodyBackgroundColor,
+    type: {
+      options: Object.values(Types),
+      control: { type: 'radio' },
+    },
+    scheme: {
+      options: Object.values(Schemes),
+      control: { type: 'radio' },
+    },
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+} as Meta;
 
 const Template: Story<Props> = ({
   type,
@@ -51,37 +74,3 @@ const Template: Story<Props> = ({
   `;
 };
 export const NotificationDemo = Template.bind({});
-
-NotificationDemo.args = {
-  backgroundColor: bodyBackgroundColor.options[0],
-  type: Types.INFO,
-  subtext: 'Content text',
-  title: 'Title',
-  scheme: Schemes.LIGHT,
-  floating: false,
-  closable: false,
-};
-
-NotificationDemo.argTypes = {
-  backgroundColor: bodyBackgroundColor,
-  type: {
-    options: Object.values(Types),
-    control: { type: 'radio' },
-  },
-  scheme: {
-    options: Object.values(Schemes),
-    control: { type: 'radio' },
-  },
-  floating: {
-    control: { type: 'boolean' },
-  },
-  closable: {
-    control: { type: 'boolean' },
-  },
-  title: {
-    control: { type: 'text' },
-  },
-  subtext: {
-    control: { type: 'text' },
-  },
-};

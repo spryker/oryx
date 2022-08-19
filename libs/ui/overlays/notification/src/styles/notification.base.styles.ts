@@ -8,7 +8,6 @@ export const notificationBaseStyles = css`
     padding-top: 17px;
     padding-bottom: 17px;
     padding-inline: 15px 15px;
-    min-height: 24px;
   }
 
   :host([closable]) {

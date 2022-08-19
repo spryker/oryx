@@ -1,9 +1,8 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { notificationBaseStyles } from './notification.base.styles';
 import { CLOSE_EVENT, Schemes, Types } from './notification.model';
-import { notificationStyles } from './notification.oryx.styles';
+import { notificationBaseStyles, notificationStyles } from './styles';
 
 export class NotificationComponent extends LitElement {
   static styles = [notificationBaseStyles, notificationStyles];
@@ -12,13 +11,12 @@ export class NotificationComponent extends LitElement {
   @property({ type: Boolean }) closable = false;
   @property({ type: Boolean }) floating = false;
   @property({ type: String, reflect: true }) scheme?: Schemes;
-
   @property() subtext?: string;
 
   //translation
   @property() closeButtonAriaLabel = 'close the notification';
 
-  dispatchCloseEvent(): void {
+  protected dispatchCloseEvent(): void {
     this.dispatchEvent(
       new CustomEvent(CLOSE_EVENT, {
         composed: true,
@@ -27,11 +25,10 @@ export class NotificationComponent extends LitElement {
     );
   }
 
-  render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <slot></slot>
       <slot name="subtext">${this.subtext}</slot>
-
       ${when(
         this.closable,
         () => html`
