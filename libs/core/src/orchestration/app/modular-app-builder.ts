@@ -59,6 +59,12 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       this.withOptions(feature.options);
     }
 
+    if (feature.plugins) {
+      feature.plugins.forEach((plugin) => {
+        this.with(plugin);
+      });
+    }
+
     return this;
   }
 

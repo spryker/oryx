@@ -11,10 +11,8 @@ import { semanticLinkProviders } from '@spryker-oryx/site';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import 'urlpattern-polyfill';
-import {
-  storefrontComponent,
-  StorefrontComponent,
-} from './storefront.component';
+import { storefrontComponent } from './component';
+import { StorefrontComponent } from './storefront.component';
 
 useComponent(storefrontComponent);
 
@@ -67,7 +65,8 @@ describe('InputComponent', () => {
   });
 
   const getElement = (): StorefrontComponent => {
-    return document.body.querySelector('storefront-component');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return document.body.querySelector('storefront-component')!;
   };
 
   it('should render `experience-composition` tag', () => {
@@ -87,7 +86,7 @@ describe('InputComponent', () => {
       'experience-composition'
     );
 
-    expect(experienceComposition.getAttribute('route')).toBe('/');
+    expect(experienceComposition?.getAttribute('route')).toBe('/');
 
     routerService.go(mockRout);
 
@@ -97,7 +96,9 @@ describe('InputComponent', () => {
         getElement(),
         'experience-composition'
       );
-      expect(updatedExperienceComposition.getAttribute('route')).toBe(mockRout);
+      expect(updatedExperienceComposition?.getAttribute('route')).toBe(
+        mockRout
+      );
     });
   });
 });

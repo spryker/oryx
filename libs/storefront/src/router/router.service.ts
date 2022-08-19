@@ -45,7 +45,7 @@ export class StorefrontRouterService implements RouterService {
     return this.routerEvents$.pipe(filter((event) => event.type === type));
   }
 
-  previousRoute(): Observable<string> {
+  previousRoute(): Observable<string | null> {
     return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
   }
 

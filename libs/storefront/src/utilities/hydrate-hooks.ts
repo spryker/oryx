@@ -3,6 +3,8 @@ import { resolve } from '@spryker-oryx/injector';
 import { LitElement } from 'lit';
 
 declare global {
+  function hydrateOnDemand(element: LitElement): Promise<void>;
+
   interface Window {
     scriptFns: {
       [key: string]: (host: LitElement) => void;
@@ -11,12 +13,12 @@ declare global {
 }
 
 export function treewalk(
-  selector,
-  rootNode = document.body
-): Array<LitElement> {
-  const arr = [];
+  selector: string,
+  rootNode = document.body as LitElement
+): LitElement[] {
+  const arr: LitElement[] = [];
 
-  const traverser = (node): void => {
+  const traverser = (node: LitElement): void => {
     // 1. decline all nodes that are not elements
     if (node.nodeType !== Node.ELEMENT_NODE) {
       return;
@@ -28,7 +30,7 @@ export function treewalk(
     }
 
     // 3. loop through the children
-    const children = node.children;
+    const children = node.children as unknown as LitElement[];
     if (children.length) {
       for (const child of children) {
         traverser(child);
@@ -38,7 +40,7 @@ export function treewalk(
     // 4. check for shadow DOM, and loop through it's children
     const shadowRoot = node.shadowRoot;
     if (shadowRoot) {
-      const shadowChildren = shadowRoot.children;
+      const shadowChildren = shadowRoot.children as unknown as LitElement[];
       for (const shadowChild of shadowChildren) {
         traverser(shadowChild);
       }
@@ -58,7 +60,7 @@ export function initHydrateHooks(): void {
     registryService.hydrateOnDemand.bind(registryService);
 
   treewalk('[hydratable]').forEach((el) => {
-    const modes = el.getAttribute('hydratable')?.split?.(',');
+    const modes = el.getAttribute('hydratable')?.split?.(',') ?? [];
     for (let i = 0; i < modes.length; i++) {
       const parts = modes[i].split(':');
       const mode = parts[parts.length - 1];

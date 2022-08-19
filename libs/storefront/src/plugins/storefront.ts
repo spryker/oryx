@@ -8,8 +8,12 @@ import { resolve } from '@spryker-oryx/injector';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit-element';
 import 'lit/experimental-hydrate-support.js';
-import { storefrontComponent } from './storefront.component';
-import { initHydrateHooks, initInlineScripts } from './utils/hydrate-hooks';
+import { storefrontComponent } from '../../storefront/src/component';
+import { initHydrateHooks, initInlineScripts } from '../utilities';
+
+declare global {
+  function litElementHydrateSupport(param: { LitElement: unknown }): void;
+}
 
 export class StorefrontPlugin
   implements AppPlugin, AppPluginBeforeApply, AppPluginAfterApply

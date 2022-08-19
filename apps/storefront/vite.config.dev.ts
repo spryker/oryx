@@ -4,9 +4,6 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  define: {
-    global: {},
-  },
   envPrefix: ['FES', 'SCOS'],
   build: {
     sourcemap: true,

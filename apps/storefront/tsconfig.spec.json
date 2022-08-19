@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "types": ["vitest/globals", "vitest/node"],
-    "noEmit": true
-  },
-  "include": ["**/*.spec.ts"]
-}

@@ -1,13 +1,13 @@
+import { Provider } from '@spryker-oryx/injector';
 import {
   DefaultSuggestionAdapter,
-  DefaultSuggestionService,
   SuggestionAdapter,
   SuggestionNormalizers,
   suggestionNormalizers,
-  SuggestionService,
-} from '.';
+} from './adapter';
+import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
-export const searchSuggestionProviders = [
+export const searchSuggestionProviders: Provider[] = [
   {
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,

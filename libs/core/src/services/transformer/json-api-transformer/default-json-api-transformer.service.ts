@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import './json-api.shim';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/injector';
 import { Deserializer } from 'jsonapi-serializer';

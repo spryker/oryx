@@ -3,11 +3,11 @@ import { PatchableLitElement, SSRAwaiterService } from '@spryker-oryx/core';
 import { RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { isClient } from '@spryker-oryx/typescript-utils';
-import { html, ReactiveControllerHost } from 'lit';
+import { html, ReactiveControllerHost, TemplateResult } from 'lit';
 import { identity, skip, tap } from 'rxjs';
 
 export class StorefrontRouter extends Router {
-  protected id: string;
+  protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected ssrRendered = false;
@@ -15,7 +15,7 @@ export class StorefrontRouter extends Router {
   protected readonly host: ReactiveControllerHost & HTMLElement;
 
   // window.location.pathname alternative to private _currentRoute is updated too early
-  protected currentPath: string;
+  protected currentPath?: string;
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
@@ -69,7 +69,7 @@ export class StorefrontRouter extends Router {
     }
   }
 
-  override outlet() {
+  override outlet(): TemplateResult {
     const result = html`<outlet>${super.outlet()}</outlet>`;
     return result;
   }

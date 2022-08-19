@@ -2,15 +2,13 @@
   "name": "fes-storefront",
   "version": "0.1.0-next.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite -c vite.config.dev.ts",
     "preview": "vite preview",
     "build": "vite build",
     "dev:ssr": "node --experimental-vm-modules server",
     "build:server": "vite build -c vite.config.server.ts",
-    "build:ssr": "npm run build && npm run build:server",
-    "test": "vitest",
-    "test:watch": "vitest watch"
-  },
-  "type": "module"
+    "build:ssr": "npm run build && npm run build:server"
+  }
 }

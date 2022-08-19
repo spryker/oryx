@@ -65,9 +65,6 @@
         "cwd": "apps/storefront"
       }
     },
-    "test": {
-      "executor": "./tools/executors/oryx-vite:vitest"
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

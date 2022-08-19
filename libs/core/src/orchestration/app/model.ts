@@ -19,6 +19,7 @@ export interface AppFeature {
   providers?: Provider[];
   components?: ComponentsInfo;
   options?: ModularAppBuilderOptions;
+  plugins?: AppPlugin[];
 }
 
 export interface App {

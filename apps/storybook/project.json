@@ -32,13 +32,6 @@
         "staticDir": ["libs/ui/public"]
       }
     },
-    "test": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["nx run ui:test", "nx run content:test"],
-        "parallel": false
-      }
-    },
     "generate-dep-tree": {
       "executor": "./tools/executors/generate-dependency-tree:generate-dep-tree",
       "options": {

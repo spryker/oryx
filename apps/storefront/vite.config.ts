@@ -17,11 +17,7 @@ const esbuild =
           _$needsHydration: '_$AG',
         },
       }
-    : {
-        define: {
-          global: 'global',
-        },
-      };
+    : {};
 
 // https://vitejs.dev/config/
 export default defineConfig({

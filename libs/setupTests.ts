@@ -2,6 +2,9 @@ import { fixtureCleanup } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { LitElement } from 'lit';
 import fetch from 'node-fetch';
+const { getComputedStyle } = window;
+
+window.getComputedStyle = (elt): CSSStyleDeclaration => getComputedStyle(elt);
 window.fetch = fetch as any;
 
 const querySlottedElements = (
