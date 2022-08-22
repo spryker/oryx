@@ -66,8 +66,30 @@ export class FormControlController implements ReactiveController {
   protected controlAttrObserver?: MutationObserver;
 
   protected handleSlotChange(): void {
+    this.detectAutofill();
     this.toggleHasValueAttribute();
     this.adjustDisabledState();
+  }
+
+  protected detectAutofill(): void {
+    let timesToTry = 30;
+
+    const interval = setInterval(() => {
+      if (timesToTry === 0) {
+        clearInterval(interval);
+      }
+      timesToTry--;
+
+      // try catch is needed here to avoid JSDOM tests error
+      try {
+        if (this.control.matches(':-webkit-autofill')) {
+          this.host.toggleAttribute('has-value', true);
+          clearInterval(interval);
+        }
+      } catch (e) {
+        clearInterval(interval);
+      }
+    }, 30);
   }
 
   protected toggleHasValueAttribute(): void {
