@@ -20,6 +20,7 @@ export class PasswordInputComponent
 
   @property() label?: string;
   @property() errorMessage?: string;
+  @property({ type: Boolean, reflect: true }) floatLabel?: boolean;
   @property({ type: Boolean, reflect: true }) hasError?: boolean;
   @property() prefixIcon?: string;
   @property({ type: Boolean, reflect: true }) prefixFill?: boolean;
