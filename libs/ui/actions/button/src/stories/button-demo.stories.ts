@@ -71,6 +71,10 @@ const Template: Story<Props> = ({
 
 export const ButtonDemo = Template.bind({});
 
+ButtonDemo.parameters = {
+  chromatic: { viewports: [320, 1200] },
+};
+
 ButtonDemo.args = {
   type: ButtonType.Primary,
   size: Size.large,
