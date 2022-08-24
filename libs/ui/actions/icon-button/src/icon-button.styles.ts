@@ -14,9 +14,9 @@ export const iconButtonStyles = css`
     padding: 0;
     cursor: pointer;
     transition: var(--oryx-transition-time);
-    background: var(--oryx-color-canvas);
+    background: transparent;
     outline: none;
-    border: solid var(--oryx-color-canvas) 1px;
+    border: solid transparent 1px;
     border-radius: 50%;
     color: inherit;
   }
