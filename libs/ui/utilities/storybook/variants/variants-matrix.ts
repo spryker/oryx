@@ -3,15 +3,6 @@ import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { Variant } from './variant.model';
 
-const styles = html`
-  <style>
-    th,
-    td {
-      padding: 10px;
-    }
-  </style>
-`;
-
 export const generateVariantsMatrix = <T extends Variant>(
   variants: T[],
   renderer: (variant: T) => TemplateResult,
@@ -20,6 +11,7 @@ export const generateVariantsMatrix = <T extends Variant>(
     axisYOrder?: string[];
     hideXAxisName?: boolean;
     hideYAxisName?: boolean;
+    smallDisplayBreakpoint?: number;
   }
 ): TemplateResult => {
   const categoriesY = options?.axisYOrder || [
@@ -42,7 +34,7 @@ export const generateVariantsMatrix = <T extends Variant>(
         ${when(
           !options?.hideYAxisName,
           () => html`
-            <th></th>
+            ${when(!options?.hideXAxisName, () => html`<th></th>`)}
             ${categoriesY.map((header) => html`<th>${header}</th>`)}
           `
         )}
@@ -50,12 +42,19 @@ export const generateVariantsMatrix = <T extends Variant>(
       ${categoriesX.map(
         (categoryX) => html`
           <tr>
-            <td>${options?.hideXAxisName ? '' : categoryX}</td>
+            ${when(!options?.hideXAxisName, () => html`<td>${categoryX}</td>`)}
             ${categoriesY.map(
               (categoryY) => html`
                 <td>
-                  ${when(getVariant(categoryX, categoryY), () =>
-                    renderer(getVariant(categoryX, categoryY)!)
+                  ${when(
+                    getVariant(categoryX, categoryY),
+                    () =>
+                      html`
+                        <p>
+                          <b>${categoryX}${categoryY && ','} ${categoryY}</b>
+                        </p>
+                        ${renderer(getVariant(categoryX, categoryY)!)}
+                      `
                   )}
                 </td>
               `
@@ -65,6 +64,32 @@ export const generateVariantsMatrix = <T extends Variant>(
       )}
     </table>
 
-    ${styles}
+    <style>
+      th,
+      td {
+        padding: 10px;
+      }
+
+      td > p {
+        display: none;
+      }
+
+      @media (max-width: ${options?.smallDisplayBreakpoint}px) {
+        tr th,
+        tr td:first-child {
+          display: none;
+        }
+
+        td > p {
+          display: block;
+        }
+
+        th,
+        td {
+          display: inline-block;
+          width: 100%;
+        }
+      }
+    </style>
   `;
 };
