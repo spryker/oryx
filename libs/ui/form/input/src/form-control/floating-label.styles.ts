@@ -19,6 +19,12 @@ export const floatingLabelStyles = css`
     max-width: calc(100% - 26px - var(--float-label-start-gap));
     z-index: 1;
     transition: 100ms;
+    /* stylelint-disable-next-line */
+    background: linear-gradient(
+      to bottom,
+      transparent 10px,
+      var(--_label-background-color) 10px
+    );
   }
 
   :host([floatLabel]) slot:not([name])::slotted(*)::placeholder {
@@ -26,11 +32,11 @@ export const floatingLabelStyles = css`
   }
 
   :host([floatLabel]:is(:focus-within, [has-value])) slot[name='label'] {
-    background-color: var(--oryx-color-canvas);
+    --_label-background-color: var(--oryx-color-canvas);
+
     padding: 3px 8px;
     top: -10px;
     inset-inline-start: 20px;
-    border-radius: var(--oryx-border-radius-small);
     max-width: calc(100% - 56px);
   }
 
@@ -41,7 +47,7 @@ export const floatingLabelStyles = css`
   }
 
   :host([floatLabel][has-value][disabled]) slot[name='label'] {
-    background-color: var(--oryx-color-neutral-lighter);
+    --_label-background-color: var(--oryx-color-neutral-lighter);
   }
 
   @media (max-width: 767px) {
