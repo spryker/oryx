@@ -12,7 +12,7 @@ export const floatingLabelStyles = css`
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-dark);
     position: absolute;
     top: 13px;
     inset-inline-start: calc(var(--float-label-start-gap) + 13px);
@@ -34,6 +34,9 @@ export const floatingLabelStyles = css`
   :host([floatLabel]:is(:focus-within, [has-value])) slot[name='label'] {
     --_label-background-color: var(--oryx-color-canvas);
 
+    color: var(--oryx-color-neutral-darker);
+    font-size: 12px;
+    background-color: var(--oryx-color-canvas);
     padding: 3px 8px;
     top: -10px;
     inset-inline-start: 20px;

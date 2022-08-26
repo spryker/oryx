@@ -65,6 +65,10 @@ export const formControlStyles = css`
     transition-property: box-shadow, border;
   }
 
+  slot:not([name])::slotted(*:-webkit-autofill) {
+    -webkit-text-fill-color: var(--oryx-color-ink);
+  }
+
   input,
   ::slotted(input) {
     height: 38px;
