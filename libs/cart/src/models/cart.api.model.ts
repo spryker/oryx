@@ -1,3 +1,4 @@
+import { ApiProductModel } from '@spryker-oryx/product';
 import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
 
 export module ApiCartModel {
@@ -34,7 +35,7 @@ export module ApiCartModel {
     configuredBundleItem?: unknown;
     productConfigurationInstance?: unknown;
     salesUnit?: unknown;
-    selectedProductOptions?: unknown[];
+    selectedProductOptions?: ApiProductModel.ProductOption[];
   }
 
   export interface Calculations {
@@ -61,9 +62,12 @@ export module ApiCartModel {
 
   export enum Includes {
     GuestCartItems = 'guest-cart-items',
+    ProductOptions = 'product-options',
   }
 
-  export type ResponseIncludes = Include<Includes.GuestCartItems, Entry>;
+  export type ResponseIncludes =
+    | Include<Includes.GuestCartItems, Entry>
+    | Include<Includes.ProductOptions, ApiProductModel.ProductOption>;
 
   export type ResponseList = JsonApiModel<
     Attributes,

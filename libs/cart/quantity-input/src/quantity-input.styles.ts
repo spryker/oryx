@@ -8,6 +8,7 @@ export const styles = css`
   input[type='number'] {
     appearance: textfield;
     text-align: center;
+    height: 38px;
   }
 
   oryx-input {

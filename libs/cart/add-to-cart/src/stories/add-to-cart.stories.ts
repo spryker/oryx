@@ -12,7 +12,7 @@ useComponent(addToCartComponent);
 
 export default {
   title: `${storybookPrefix}/Add to cart`,
-  loaders: [setupCartMocks],
+  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 type Props = ProductComponentProperties & AddToCartOptions;

@@ -17,7 +17,7 @@ export interface PricingService {
    *
    * @return formatted price as string
    */
-  format(price?: PriceValue): Observable<string>;
+  format(price?: PriceValue): Observable<string | null>;
 }
 
 export const PricingService = 'FES.PricingService';

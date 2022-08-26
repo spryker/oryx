@@ -235,4 +235,22 @@ describe('Quantity input', () => {
       expect(getInput().hasAttribute('disabled')).toBe(true);
     });
   });
+
+  describe('when property "value" is changed', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<quantity-input value=${1}></quantity-input>`
+      );
+    });
+
+    it('should update input`s value', async () => {
+      expect(getInput().value).toBe('1');
+
+      element.value = 2;
+      element.requestUpdate();
+      await element.updateComplete;
+
+      expect(getInput().value).toBe('2');
+    });
+  });
 });

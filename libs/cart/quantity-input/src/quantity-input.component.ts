@@ -1,9 +1,10 @@
 import { hydratable } from '@spryker-oryx/core';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
+import { QUANTITY_EVENT } from './quantity-input.model';
 import { styles } from './quantity-input.styles';
 
 @hydratable()
@@ -32,18 +33,32 @@ export class QuantityInputComponent extends LitElement {
     return input.reportValidity();
   }
 
+  protected willUpdate(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    //align input's value with property 'value'
+    if (
+      _changedProperties.has('value') &&
+      this.inputRef.value &&
+      this.value !== +this.inputRef.value.value
+    ) {
+      this.inputRef.value.value = String(this.value);
+    }
+  }
+
   protected updateQuantity(): void {
-    this.value = Number(this.inputRef.value?.value);
+    const quantity = Number(this.inputRef.value?.value);
+    this.value = quantity;
 
-    const updateEvent = new CustomEvent('update', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        quantity: Number(this.inputRef.value?.value),
-      },
-    });
-
-    this.dispatchEvent(updateEvent);
+    this.dispatchEvent(
+      new CustomEvent(QUANTITY_EVENT, {
+        bubbles: true,
+        composed: true,
+        detail: {
+          quantity,
+        },
+      })
+    );
   }
 
   protected override render(): TemplateResult {
@@ -57,6 +72,7 @@ export class QuantityInputComponent extends LitElement {
       </button>
       <oryx-input>
         <input
+          aria-label="quantity-input"
           type="number"
           ${ref(this.inputRef)}
           value=${this.value}

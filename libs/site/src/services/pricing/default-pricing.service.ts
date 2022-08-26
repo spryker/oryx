@@ -7,7 +7,7 @@ export class DefaultPricingService implements PricingService {
   protected currencyService = resolve(CurrencyService);
   protected localeService = resolve(LocaleService);
 
-  format(price?: PriceValue): Observable<string> {
+  format(price?: PriceValue): Observable<string | null> {
     return combineLatest([
       this.currencyService.get(),
       this.localeService.get(),
@@ -20,9 +20,9 @@ export class DefaultPricingService implements PricingService {
     price: PriceValue,
     currency: string,
     locale: string
-  ): string {
+  ): string | null {
     if (typeof price === 'undefined') {
-      return '';
+      return null;
     }
 
     const isComplexPrice = typeof price === 'object';

@@ -1,5 +1,6 @@
+import { MockProductService } from '@spryker-oryx/product';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
-import { Cart, CartEntry } from '../models';
+import { Cart, CartCalculations, CartEntry } from '../models';
 import {
   AddCartEntityProps,
   CartAdapter,
@@ -34,11 +35,13 @@ export class MockCartAdapter implements Partial<CartAdapter> {
 
     if (products.length && productIndex >= 0) {
       const productFromCart = products[productIndex];
+      const quantity =
+        Number(productFromCart.quantity) + Number(data.attributes.quantity);
 
       products.splice(productIndex, 1, {
         ...productFromCart,
-        quantity:
-          Number(productFromCart.quantity) + Number(data.attributes.quantity),
+        quantity,
+        calculations: this.createCalculations(data.attributes.sku, quantity),
       });
     } else {
       products.push({
@@ -46,6 +49,10 @@ export class MockCartAdapter implements Partial<CartAdapter> {
         sku: data.attributes.sku,
         groupKey: data.attributes.sku,
         quantity: data.attributes.quantity,
+        calculations: this.createCalculations(
+          data.attributes.sku,
+          data.attributes.quantity
+        ),
       });
     }
 
@@ -70,6 +77,10 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     products.splice(productIndex, 1, {
       ...products[productIndex],
       quantity: data.attributes.quantity,
+      calculations: this.createCalculations(
+        data.attributes.sku,
+        data.attributes.quantity
+      ),
     });
 
     const mappedCart = {
@@ -152,5 +163,21 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     }
 
     return total;
+  }
+
+  protected createCalculations(
+    sku: string,
+    quantity: number
+  ): CartCalculations {
+    const basePrice =
+      MockProductService.mockProducts.find((product) => product.sku === sku)
+        ?.price?.defaultPrice?.value ?? 0;
+
+    return {
+      unitPrice: basePrice,
+      sumPrice: basePrice * quantity,
+      unitGrossPrice: basePrice,
+      sumGrossPrice: basePrice * quantity,
+    };
   }
 }

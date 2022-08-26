@@ -136,7 +136,7 @@ export const buttonStyles = css`
     --_margin: 4px 2px;
     --oryx-icon-color: var(--oryx-color-neutral-dark);
     --_color-text: var(--oryx-color-ink);
-    --_color-accent: var(--oryx-color-canvas);
+    --_color-accent: transparent;
     --_color-active: var(--oryx-color-canvas);
   }
 

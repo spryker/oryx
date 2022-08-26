@@ -1,8 +1,4 @@
-import {
-  createInjector,
-  destroyInjector,
-  getInjector,
-} from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import {
   CurrencyService,
   DefaultCurrencyService,
@@ -25,13 +21,11 @@ const mockUSD: Price = {
 
 describe('DefaultPricingService', () => {
   let service: PricingService;
-  let testInjector;
-
   let mockLocaleService: LocaleService;
   let mockCurrencyService: CurrencyService;
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: LocaleService,
@@ -48,12 +42,9 @@ describe('DefaultPricingService', () => {
       ],
     });
 
-    mockLocaleService = getInjector().inject(LocaleService);
-    mockCurrencyService = getInjector().inject(CurrencyService);
-
-    service = testInjector.inject(
-      PricingService
-    ) as unknown as DefaultPricingService;
+    mockLocaleService = testInjector.inject(LocaleService);
+    mockCurrencyService = testInjector.inject(CurrencyService);
+    service = testInjector.inject(PricingService);
   });
 
   afterEach(() => {
@@ -91,10 +82,10 @@ describe('DefaultPricingService', () => {
       expect(service.format(0)).toBeInstanceOf(Observable);
     });
 
-    it('should return empty string when price is not provided', () => {
+    it('should return null when price is not provided', () => {
       const cb = vi.fn();
       service.format().subscribe(cb);
-      expect(cb).toHaveBeenCalledWith('');
+      expect(cb).toHaveBeenCalledWith(null);
     });
 
     it('should accept strings and return formatted value', () => {

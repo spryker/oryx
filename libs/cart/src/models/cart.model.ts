@@ -27,7 +27,7 @@ export interface CartEntry {
   configuredBundleItem?: unknown;
   productConfigurationInstance?: unknown;
   salesUnit?: unknown;
-  selectedProductOptions?: unknown[];
+  selectedProductOptions?: ProductOption[];
 }
 
 export interface CartTotals {
@@ -59,4 +59,11 @@ export interface CartCalculations {
   sumDiscountAmountFullAggregation?: number;
   unitPriceToPayAggregation?: number;
   sumPriceToPayAggregation?: number;
+}
+
+export interface ProductOption {
+  optionGroupName?: string;
+  sku?: string;
+  optionName?: string;
+  price?: number;
 }

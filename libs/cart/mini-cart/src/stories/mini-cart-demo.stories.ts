@@ -14,7 +14,7 @@ interface Props {
 
 export default {
   title: `${storybookPrefix}/Mini cart`,
-  loaders: [setupCartMocks],
+  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 const Template: Story<Props> = ({ quantity }: Props): TemplateResult => {

@@ -20,7 +20,8 @@
   --oryx-color-neutral-light: #efeeee;
   --oryx-color-neutral-lighter: #f5f5f5;
   --oryx-color-neutral-dark: #8f8f8f;
-  --oryx-color-neutral-darker: #333;
+  --oryx-color-neutral-darker: #71747c;
+  --oryx-color-neutral-greyblue: #e7eaee;
 
   /* brand color */
   --oryx-color-brand: #0064b4;

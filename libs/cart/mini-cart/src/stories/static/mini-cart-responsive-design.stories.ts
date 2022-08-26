@@ -6,7 +6,7 @@ import { getTemplate } from './common';
 
 export default {
   title: `${storybookPrefix}/Mini cart/Static`,
-  loaders: [setupCartMocks],
+  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => getTemplate();

@@ -25,7 +25,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       min=${props.min}
       max=${props.max}
       value=${props.value}
-      @update=${({
+      @oryx.quantity=${({
         detail: { quantity },
       }: {
         detail: { quantity: number };

@@ -57,6 +57,14 @@ export module ApiProductModel {
     prices?: Price[];
   }
 
+  export interface ProductOption {
+    optionGroupName?: string;
+    sku?: string;
+    optionName?: string;
+    price?: number;
+    currencyIsoCode?: string;
+  }
+
   export const enum Includes {
     ConcreteProductImageSets = 'concrete-product-image-sets',
     ConcreteProductPrices = 'concrete-product-prices',
