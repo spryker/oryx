@@ -2,12 +2,8 @@ import { ExecutorContext, readJsonFile } from '@nrwl/devkit';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { format, resolveConfig } from 'prettier';
-import {
-  DirData,
-  libDirsNormalizer,
-  LibOptions,
-  sortObjectByKeys,
-} from './utils';
+import { sortObjectByKeys } from '../../utils';
+import { DirData, libDirsNormalizer, LibOptions } from './utils';
 
 export interface ComponentsLibraryPathsExecutorOptions extends LibOptions {
   name: string;

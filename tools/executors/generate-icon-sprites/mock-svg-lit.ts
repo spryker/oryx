@@ -1,15 +1,16 @@
-globalThis.window = {};
+globalThis.window = {} as any;
 globalThis.document = {
   createTreeWalker: () => {},
-};
-globalThis.HTMLElement = class {};
+} as any;
+globalThis.HTMLElement = class {} as any;
 globalThis.customElements = {
   get: () => {},
   define: () => {},
-};
+} as any;
 
 export class LitElement {}
-
+export class Directive {}
+export function directive() {}
 export const TemplateResult = '';
 export const html = () => '';
 export const css = () => '';
