@@ -1,11 +1,11 @@
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { storybookPrefix, storybookViewports } from '../../../../../.constants';
 import {
   extendVariants,
   generateVariantsMatrix,
-} from '../../../../../utilities';
-import { variantsGroupTemplate } from '../../../../../utilities/storybook/variants/variants-group';
+  variantsGroupTemplate,
+} from '@spryker-oryx/ui/utilities';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix, storybookViewports } from '../../../../../.constants';
 import { basePasswordInputVariants, groups } from './common';
 
 export default {

@@ -1,11 +1,11 @@
+import {
+  generateVariantsMatrix,
+  VariantsGroup,
+  variantsGroupTemplate,
+} from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { generateVariantsMatrix } from '../../../../../utilities';
-import {
-  VariantsGroup,
-  variantsGroupTemplate,
-} from '../../../../../utilities/storybook/variants/variants-group';
 import '../../../../input/src/form-control';
 import {
   getInputVariants,

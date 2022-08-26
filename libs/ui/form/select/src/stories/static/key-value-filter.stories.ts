@@ -3,16 +3,11 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { FilterStrategyType } from '../../../../../search/typeahead';
 import { sideBySide } from '../../../../../utilities/storybook';
+import { keyValueSelectOptions } from './common';
 
 export default {
   title: `${storybookPrefix}/Form/Select/Static`,
 } as Meta;
-
-const selectOptions = [
-  { key: 1, value: 'Red' },
-  { key: 2, value: 'Green' },
-  { key: 3, value: 'Blue' },
-];
 
 const Template: Story<unknown> = (): TemplateResult => {
   const logValue = (e): void => {
@@ -31,7 +26,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         <span slot="label">Selected Value: <span></span></span>
         <select @change=${logValue}>
           <option value hidden>select something from the list</option>
-          ${selectOptions.map(
+          ${keyValueSelectOptions.map(
             (option) =>
               html`<option value=${option.key}>${option.value}</option>`
           )}
@@ -42,3 +37,9 @@ const Template: Story<unknown> = (): TemplateResult => {
 };
 
 export const KeyValueFilter = Template.bind({});
+
+KeyValueFilter.parameters = {
+  chromatic: {
+    disableSnapshot: true,
+  },
+};

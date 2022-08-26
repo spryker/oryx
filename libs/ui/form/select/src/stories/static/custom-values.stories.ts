@@ -29,3 +29,9 @@ const Template: Story<unknown> = (): TemplateResult => {
 };
 
 export const CustomValues = Template.bind({});
+
+CustomValues.parameters = {
+  chromatic: {
+    disableSnapshot: true,
+  },
+};

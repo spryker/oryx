@@ -1,5 +1,8 @@
-import { Variant, VariantOptions } from '../../../../../utilities';
-import { VariantsGroup } from '../../../../../utilities/storybook/variants/variants-group';
+import {
+  Variant,
+  VariantOptions,
+  VariantsGroup,
+} from '@spryker-oryx/ui/utilities';
 
 export enum CategoryX {
   INVISIBLE = 'Invisible',

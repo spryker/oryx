@@ -126,6 +126,12 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 
 export const SelectDemo = Template.bind({});
 
+SelectDemo.parameters = {
+  chromatic: {
+    disableSnapshot: true,
+  },
+};
+
 SelectDemo.args = {
   maxHeight: '300px',
   allowEmptyValue: true,
