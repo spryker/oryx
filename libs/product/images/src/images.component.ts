@@ -27,12 +27,12 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
   protected contentController = new ContentController(this);
   protected product$ = this.productController.getProduct().pipe(
     tap(() => {
-      this.setActive(0);
+      this.setActive(0, ProductImagesScrollBehavior.Disable);
     })
   );
   protected options$ = this.contentController.getOptions().pipe(
     tap(() => {
-      this.setActive(0, ProductImagesScrollBehavior.SMOOTH);
+      this.setActive(0, ProductImagesScrollBehavior.Disable);
     })
   );
 
@@ -85,9 +85,10 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
 
   protected async setActive(
     active?: number,
-    behavior: 'smooth' | 'auto' = 'auto'
+    behavior: ProductImagesScrollBehavior = ProductImagesScrollBehavior.Auto
   ): Promise<void> {
     const items = this.shadowRoot?.querySelectorAll('picture');
+
     if (active !== undefined) {
       this.active$.next(active);
       const navItems: NodeListOf<HTMLInputElement> | undefined =
@@ -97,18 +98,23 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
         activeNavItem.checked = true;
       }
     }
-    await 0;
-    items?.[this.active$.value]?.scrollIntoView({
+    if (behavior === ProductImagesScrollBehavior.Disable) {
+      (items?.[this.active$.getValue()]?.parentNode as Element)?.scrollTo(0, 0);
+
+      return;
+    }
+
+    items?.[this.active$.getValue()]?.scrollIntoView({
       block: 'nearest',
       inline: 'start',
-      behavior,
+      behavior: behavior as ScrollBehavior,
     });
   }
 
   protected onInput(e: InputEvent): void {
     const target = e.target as HTMLInputElement;
     const active = target?.value || 0;
-    this.setActive(+active, 'smooth');
+    this.setActive(+active, ProductImagesScrollBehavior.Smooth);
   }
 
   protected override render(): TemplateResult {

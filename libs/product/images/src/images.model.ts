@@ -109,6 +109,7 @@ export enum ProductImagesNavigationAlignment {
 }
 
 export enum ProductImagesScrollBehavior {
-  SMOOTH = 'smooth',
-  AUTO = 'auto',
+  Smooth = 'smooth',
+  Auto = 'auto',
+  Disable = 'disable',
 }
