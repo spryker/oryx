@@ -7,6 +7,10 @@ export const floatingLabelStyles = css`
     position: relative;
   }
 
+  :host([floatLabel]) slot[name='label']::slotted(*) {
+    pointer-events: none;
+  }
+
   :host([floatLabel]) slot[name='label'] {
     text-transform: none;
     font-weight: 500;
