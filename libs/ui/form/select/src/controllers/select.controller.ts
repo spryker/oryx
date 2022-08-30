@@ -61,7 +61,7 @@ export class SelectController implements ReactiveController {
         } = {
           value: nativeOption.value,
         };
-        const text = nativeOption.innerText.trim();
+        const text = nativeOption.textContent?.trim();
         if (text !== '' && text !== nativeOption.value) {
           reflectedOption.text = text;
         }
