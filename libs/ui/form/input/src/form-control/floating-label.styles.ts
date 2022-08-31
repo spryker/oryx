@@ -36,6 +36,11 @@ export const floatingLabelStyles = css`
     opacity: 0%;
   }
 
+  :host([floatLabel]) slot[name='label'],
+  :host([floatLabel]) slot[name='label']::slotted(*) {
+    cursor: text;
+  }
+
   :host([floatLabel]:is(:focus-within, [has-value])) slot[name='label'] {
     --_label-background-color: var(--oryx-color-canvas);
 

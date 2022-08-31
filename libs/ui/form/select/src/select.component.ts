@@ -19,6 +19,7 @@ import { getControl } from '../../utilities/getControl';
 import { SelectController, SelectFilterController } from './controllers';
 import { SelectOptions } from './select.model';
 import { selectFilterStyles, selectStyles } from './styles';
+import { selectFloatingLabelStyles } from './styles/select-floating-label.styles';
 
 export class SelectComponent
   extends LitElement
@@ -29,6 +30,7 @@ export class SelectComponent
     selectFilterStyles,
     typeaheadStyles,
     ...SearchboxComponent.styles,
+    selectFloatingLabelStyles,
   ];
 
   @property({ type: Boolean }) filter?: boolean;
