@@ -1,22 +1,23 @@
 import { css } from 'lit';
 
 export const styles = css`
-  form {
+  :host {
     display: flex;
     flex-wrap: wrap;
     gap: 12px 17px;
   }
 
+  form {
+    display: contents;
+  }
+
   oryx-button {
-    flex-grow: 1;
+    flex: auto;
   }
 
-  oryx-button button {
-    min-width: 175px;
-    height: 28px;
-  }
-
-  [type='cart-add'] {
+  button {
     --oryx-icon-size: 24px;
+
+    height: 28px;
   }
 `;
