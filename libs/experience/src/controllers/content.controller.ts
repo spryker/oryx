@@ -1,9 +1,9 @@
-import { ExperienceService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { ContentComponentProperties } from '../models';
+import { ExperienceService } from '../services';
 
 export class ContentController<T = unknown, K = unknown> {
   protected experienceContent = resolve(

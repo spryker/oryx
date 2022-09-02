@@ -5,6 +5,7 @@ import {
   Component,
   ComponentsRegistryService,
   ExperienceService,
+  LayoutBuilder,
 } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
@@ -26,6 +27,11 @@ class MockExperienceService implements Partial<ExperienceService> {
       type: '',
       components: this.components,
     });
+}
+
+class MockLayoutBuilder implements Partial<LayoutBuilder> {
+  getLayoutClasses = (): string => '';
+  getLayoutStyles = (): string => '';
 }
 
 class MockSSRAwaiter {
@@ -65,6 +71,10 @@ describe('Experience Composition', () => {
         {
           provide: ComponentsRegistryService,
           useClass: MockComponentsRegistryService,
+        },
+        {
+          provide: LayoutBuilder,
+          useClass: MockLayoutBuilder,
         },
         {
           provide: SSRAwaiterService,

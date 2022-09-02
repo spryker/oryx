@@ -1,12 +1,13 @@
+import * as injector from '@spryker-oryx/injector';
 import { resolve } from '@spryker-oryx/injector';
+import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
+import { SpyInstance } from 'vitest';
 import { ExperienceService } from '../services';
 import { ContentController } from './content.controller';
 
-const mockObserveGet = vi.fn();
-const mockGetContent = vi.fn();
-const mockGetOptions = vi.fn();
+const mockElement = {} as unknown as LitElement;
 const mockUid = 'mockUid';
 const mockContent = {
   data: 'mockContent',
@@ -14,125 +15,111 @@ const mockContent = {
 const mockOptions = {
   data: 'mockContent',
 };
-const mockObserve = {
+const mockObserveValue = {
   id: 'mockContent',
 };
 
-vi.mock('@spryker-oryx/lit-rxjs', () => ({
-  ObserveController: vi.fn((data) => {
-    if (data.content || data.options) {
-      return {
-        get: mockObserveGet.mockReturnValue(of(mockObserve)),
-      };
-    }
+const callbackContent = vi.fn();
+const callbackOptions = vi.fn();
+const mockExperienceService = {
+  getContent: vi.fn(),
+  getOptions: vi.fn(),
+};
+vi.spyOn(injector, 'resolve') as SpyInstance;
+(injector.resolve as unknown as SpyInstance).mockReturnValue(
+  mockExperienceService
+);
 
-    return {
-      get: mockObserveGet.mockImplementation((key) => {
-        if (key !== 'content' && key !== 'options' && !data.noKey) {
-          return of(mockUid);
-        }
-
-        return of(undefined);
-      }),
-    };
-  }),
-}));
-
-vi.mock('@spryker-oryx/injector', () => ({
-  resolve: vi.fn().mockImplementation((data) => {
-    if (data.noExperienceService) {
-      return null;
-    }
-
-    return {
-      getContent: (data: unknown) =>
-        mockGetContent.mockReturnValue(of(mockContent))(data),
-      getOptions: (data: unknown) =>
-        mockGetOptions.mockReturnValue(of(mockOptions))(data),
-    };
-  }),
-}));
+const mockObserve = {
+  get: vi.fn(),
+};
+vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
+(litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue(
+  mockObserve
+);
 
 describe('ContentController', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should expose content and options directly if content exist', () => {
-    const contentController = new ContentController({
-      content: true,
-      options: true,
-    } as unknown as LitElement);
+  describe('getContent', () => {
+    it('should expose content directly if content exist', () => {
+      mockObserve.get.mockReturnValue(of(mockObserveValue));
+      const contentController = new ContentController(mockElement);
+      contentController.getContent().subscribe(callbackContent);
 
-    const callbackContent = vi.fn();
-    const callbackOptions = vi.fn();
-    contentController.getContent().subscribe(callbackContent);
-    contentController.getOptions().subscribe(callbackOptions);
-
-    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
-    expect(mockObserveGet).toHaveBeenCalledWith('content');
-    expect(mockObserveGet).toHaveBeenCalledWith('options');
-    expect(callbackContent).toHaveBeenCalledWith(mockObserve);
-    expect(callbackOptions).toHaveBeenCalledWith(mockObserve);
-  });
-
-  it('should expose content from service by uid', () => {
-    const contentController = new ContentController({
-      content: false,
-      options: false,
-    } as unknown as LitElement);
-
-    const callbackContent = vi.fn();
-    contentController.getContent().subscribe(callbackContent);
-
-    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
-    expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'content');
-    expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
-    expect(mockGetContent).toHaveBeenCalledWith({
-      uid: mockUid,
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenCalledWith('content');
+      expect(callbackContent).toHaveBeenCalledWith(mockObserveValue);
     });
-    expect(callbackContent).toHaveBeenCalledWith(mockContent.data);
-  });
 
-  it('should expose options from service by uid', () => {
-    const contentController = new ContentController({
-      content: false,
-      options: false,
-    } as unknown as LitElement);
+    it('should expose content from service by uid', () => {
+      mockObserve.get.mockReturnValueOnce(of(undefined));
+      mockObserve.get.mockReturnValue(of(mockUid));
+      mockExperienceService.getContent.mockReturnValue(of(mockContent));
+      const contentController = new ContentController(mockElement);
+      contentController.getContent().subscribe(callbackContent);
 
-    const callbackOptions = vi.fn();
-    contentController.getOptions().subscribe(callbackOptions);
-
-    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
-    expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'options');
-    expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
-    expect(mockGetOptions).toHaveBeenCalledWith({
-      uid: mockUid,
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'content');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'uid');
+      expect(mockExperienceService.getContent).toHaveBeenCalledWith({
+        uid: mockUid,
+      });
+      expect(callbackContent).toHaveBeenCalledWith(mockContent.data);
     });
-    expect(callbackOptions).toHaveBeenCalledWith(mockOptions.data);
+
+    it('should emit `undefined` if content, uid and ExperienceService are not defined', () => {
+      mockObserve.get.mockReturnValue(of(undefined));
+      const contentController = new ContentController(mockElement);
+      contentController.getContent().subscribe(callbackContent);
+
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'content');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'uid');
+      expect(mockExperienceService.getContent).not.toHaveBeenCalled();
+      expect(callbackContent).toHaveBeenCalledWith(undefined);
+    });
   });
 
-  it('should emit `empty object` if content, options, uid and ExperienceService are not defined', () => {
-    const contentController = new ContentController({
-      content: false,
-      options: false,
-      noExperienceService: true,
-      noKey: true,
-    } as unknown as LitElement);
+  describe('getOptions', () => {
+    it('should expose options directly if options exist', () => {
+      mockObserve.get.mockReturnValue(of(mockObserveValue));
+      const contentController = new ContentController(mockElement);
+      contentController.getOptions().subscribe(callbackOptions);
 
-    const callbackContent = vi.fn();
-    const callbackOptions = vi.fn();
-    contentController.getContent().subscribe(callbackContent);
-    contentController.getOptions().subscribe(callbackOptions);
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenCalledWith('options');
+      expect(callbackOptions).toHaveBeenCalledWith(mockObserveValue);
+    });
 
-    expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
-    expect(mockObserveGet).toHaveBeenNthCalledWith(1, 'content');
-    expect(mockObserveGet).toHaveBeenNthCalledWith(2, 'uid');
-    expect(mockObserveGet).toHaveBeenNthCalledWith(3, 'options');
-    expect(mockObserveGet).toHaveBeenNthCalledWith(4, 'uid');
-    expect(mockGetContent).not.toHaveBeenCalled();
-    expect(mockGetOptions).not.toHaveBeenCalled();
-    expect(callbackContent).toHaveBeenCalledWith(undefined);
-    expect(callbackOptions).toHaveBeenCalledWith({});
+    it('should expose options from service by uid', () => {
+      mockObserve.get.mockReturnValueOnce(of(undefined));
+      mockObserve.get.mockReturnValue(of(mockUid));
+      mockExperienceService.getOptions.mockReturnValue(of(mockOptions));
+      const contentController = new ContentController(mockElement);
+      contentController.getOptions().subscribe(callbackOptions);
+
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'options');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'uid');
+      expect(mockExperienceService.getOptions).toHaveBeenCalledWith({
+        uid: mockUid,
+      });
+      expect(callbackOptions).toHaveBeenCalledWith(mockOptions.data);
+    });
+
+    it('should emit `empty object` if options, uid and ExperienceService are not defined', () => {
+      mockObserve.get.mockReturnValue(of(undefined));
+      const contentController = new ContentController(mockElement);
+      contentController.getOptions().subscribe(callbackOptions);
+
+      expect(resolve).toHaveBeenCalledWith(ExperienceService, null);
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'options');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'uid');
+      expect(mockExperienceService.getOptions).not.toHaveBeenCalled();
+      expect(callbackOptions).toHaveBeenCalledWith({});
+    });
   });
 });

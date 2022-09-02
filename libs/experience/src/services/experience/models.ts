@@ -18,3 +18,8 @@ export interface Component {
     data?: any;
   };
 }
+
+export interface ComponentLayout {
+  classes?: string;
+  styles?: string;
+}

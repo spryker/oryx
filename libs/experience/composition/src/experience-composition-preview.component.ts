@@ -3,13 +3,28 @@ import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { filter, merge, tap } from 'rxjs';
-import { styles } from './experience-composition-preview.style';
+import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
+
+import {
+  baseLayoutStyles,
+  carouselLayoutStyles,
+  columnLayoutStyles,
+  containerLayoutStyles,
+  stickyLayoutStyles,
+} from './style';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
-  static styles = styles;
+  static override styles = [
+    baseLayoutStyles,
+    carouselLayoutStyles,
+    columnLayoutStyles,
+    containerLayoutStyles,
+    stickyLayoutStyles,
+    previewStyles,
+  ];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService
@@ -71,7 +86,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     })
   );
 
-  override render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       ${asyncValue(
         this.components$,
@@ -80,7 +95,11 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
             components,
             (component) => component.id,
             (component: any) =>
-              this.registryService.resolveTemplate(component.type, component.id)
+              this.registryService.resolveTemplate(
+                component.type,
+                component.id,
+                this.getLayout(component?.options?.data)
+              )
           )}`,
         () => html`Loading...`
       )}

@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const previewStyles = css`
   .eb-preview-focus {
     position: relative;
   }

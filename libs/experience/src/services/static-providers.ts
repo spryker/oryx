@@ -1,7 +1,9 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
   DefaultExperienceService,
+  DefaultLayoutBuilder,
   ExperienceService,
+  LayoutBuilder,
   PreviewExperienceService,
 } from './experience';
 import {
@@ -9,10 +11,14 @@ import {
   DefaultComponentsRegistryService,
 } from './registry';
 
-export const statictProviders: Provider[] = [
+export const staticProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: DefaultExperienceService,
+  },
+  {
+    provide: LayoutBuilder,
+    useClass: DefaultLayoutBuilder,
   },
   {
     provide: ComponentsRegistryService,
@@ -20,7 +26,7 @@ export const statictProviders: Provider[] = [
   },
 ];
 
-export const statictPreviewProviders: Provider[] = [
+export const staticPreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,

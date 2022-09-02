@@ -1,24 +1,44 @@
 import { hydratable, SSRAwaiterService } from '@spryker-oryx/core';
 import {
   Component,
+  ComponentLayout,
   ComponentsRegistryService,
+  CompositionProperties,
   ExperienceService,
+  LayoutBuilder,
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { isClient } from '@spryker-oryx/typescript-utils';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { ComponentMixin } from '../../src/mixins';
+
+import {
+  baseLayoutStyles,
+  carouselLayoutStyles,
+  columnLayoutStyles,
+  containerLayoutStyles,
+  stickyLayoutStyles,
+} from './style';
 
 @hydratable()
-export class ExperienceCompositionComponent extends LitElement {
+export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
+  static styles = [
+    baseLayoutStyles,
+    stickyLayoutStyles,
+    containerLayoutStyles,
+    columnLayoutStyles,
+    carouselLayoutStyles,
+  ];
+
   @state()
   protected components?: Array<Component>;
 
   @property()
-  protected uid = '';
+  uid = '';
 
   @observe()
   protected uid$ = new BehaviorSubject<string>(this.uid);
@@ -34,6 +54,8 @@ export class ExperienceCompositionComponent extends LitElement {
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected hasSSR = false;
   protected isHydrated = false;
+
+  protected layoutBuilder = resolve(LayoutBuilder);
 
   constructor() {
     super();
@@ -57,7 +79,7 @@ export class ExperienceCompositionComponent extends LitElement {
     }
   }
 
-  override render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       ${asyncValue(
         this.components$,
@@ -74,11 +96,19 @@ export class ExperienceCompositionComponent extends LitElement {
                   this.registryService.resolveTemplate(
                     component.type,
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    component.id!
+                    component.id!,
+                    this.getLayout(component?.options?.data)
                   )
               )}`,
         () => html`Loading...`
       )}
     `;
+  }
+
+  protected getLayout(data?: Partial<CompositionProperties>): ComponentLayout {
+    return {
+      classes: this.layoutBuilder.getLayoutClasses(data),
+      styles: this.layoutBuilder.getLayoutStyles(data),
+    };
   }
 }
