@@ -43,7 +43,10 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
           <!-- TODO: replace by product configuration -->
           <span>Product config section</span>
 
-          <cart-entry-price .price=${this.options?.calculations?.unitPrice}>
+          <cart-entry-price
+            .price="${this.options?.calculations?.unitPrice}"
+            ?loading="${this.options?.updating}"
+          >
             <!-- TODO: replace by tooltip -->
             <oryx-icon type="inputError"></oryx-icon>
             Price
@@ -55,10 +58,13 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
             ${ref(this.quantityInputRef)}
             min=${0}
             .value=${this.options?.quantity}
-            ?disabled=${this.disabled}
+            ?disabled=${this.disabled || this.options?.disabled}
           ></quantity-input>
 
-          <cart-entry-price .price=${this.options?.calculations?.sumPrice}>
+          <cart-entry-price
+            .price="${this.options?.calculations?.sumPrice}"
+            ?loading="${this.options?.updating}"
+          >
             Subtotal
           </cart-entry-price>
         </div>

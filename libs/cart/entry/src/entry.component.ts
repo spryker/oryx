@@ -117,30 +117,23 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
           )}
 
           <section>
-            ${asyncValue(
-              this.triggerConfirmationRequired$,
-              (confirmationRequired) => html`
-                <cart-entry-content
-                  .options=${entry}
-                  ?disabled=${confirmationRequired}
-                  @oryx.quantity=${(e: CustomEvent): void =>
-                    this.onQuantityChange(e, !!silentRemove)}
-                ></cart-entry-content>
-              `
-            )}
+            <cart-entry-content
+              .options=${entry}
+              ?disabled=${asyncValue(this.triggerConfirmationRequired$)}
+              @oryx.quantity=${(e: CustomEvent): void =>
+                this.onQuantityChange(e, !!silentRemove)}
+            ></cart-entry-content>
+
             ${when(
               hasOptions,
               () =>
-                html`${asyncValue(
-                  this.showOptions$,
-                  (showOptions) => html`
-                    <cart-entry-options
-                      .options=${entry}
-                      ?show-options=${showOptions}
-                      @toggle=${this.toggleOptions}
-                    ></cart-entry-options>
-                  `
-                )}`
+                html`
+                  <cart-entry-options
+                    .options=${entry}
+                    ?show-options=${asyncValue(this.showOptions$)}
+                    @toggle=${this.toggleOptions}
+                  ></cart-entry-options>
+                `
             )}
           </section>
         </div>

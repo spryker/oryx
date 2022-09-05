@@ -84,7 +84,7 @@ class FakeEntriesComponent extends LitElement {
       calculations: {
         unitPrice,
         sumPrice,
-        unitPriceToPayAggregation: sumPrice + optionsPrice,
+        sumPriceToPayAggregation: sumPrice + optionsPrice,
       },
       ...(hasOptions
         ? {

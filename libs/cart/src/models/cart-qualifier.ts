@@ -31,7 +31,6 @@ export interface AddCartEntryQualifier extends CartEntryAttributesQualifier {
 export interface UpdateCartEntryQualifier extends CartEntryAttributesQualifier {
   cartId?: string;
   groupKey: string;
-  quantity: number;
 }
 
 export interface DeleteCartEntryQualifier {

@@ -15,4 +15,24 @@ export const cartEntryPriceStyles = css`
     margin-inline-end: 2px;
     color: var(--oryx-color-neutral-darker);
   }
+
+  span {
+    position: relative;
+  }
+
+  span::before {
+    content: '';
+    position: absolute;
+    display: none;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--oryx-border-radius-small);
+    background: var(--oryx-color-neutral-light);
+  }
+
+  :host([loading]) span::before {
+    display: block;
+  }
 `;

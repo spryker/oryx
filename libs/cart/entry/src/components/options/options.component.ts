@@ -16,6 +16,7 @@ export class CartEntryOptionsComponent extends ComponentMixin<CartEntryCompositi
 
   protected render(): TemplateResult {
     const selectedProductOptions = this.options?.selectedProductOptions;
+
     return html`
       <span>
         Product options (${selectedProductOptions?.length}):
@@ -31,7 +32,10 @@ export class CartEntryOptionsComponent extends ComponentMixin<CartEntryCompositi
         ${selectedProductOptions?.map(
           ({ optionName, price }) => html`<li>
             <span>${optionName}</span>
-            <cart-entry-price .price=${price}></cart-entry-price>
+            <cart-entry-price
+              .price="${price}"
+              ?loading="${this.options?.updating}"
+            ></cart-entry-price>
           </li>`
         )}
       </ul>

@@ -37,3 +37,10 @@ export interface ProductPrice {
   /** Indicates whether the price is net or gross */
   isNet: boolean;
 }
+
+export interface ProductOption {
+  optionGroupName?: string;
+  sku?: string;
+  optionName?: string;
+  price?: number;
+}

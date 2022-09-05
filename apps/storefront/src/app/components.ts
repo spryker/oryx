@@ -124,4 +124,7 @@ export const componentsMapping: ComponentsMapping = {
         class=${layout.classes}
       ></search-box>`,
   },
+  ['cart-entries']: {
+    template: (uid: string) => html`<cart-entries uid="${uid}"></cart-entries>`,
+  },
 };

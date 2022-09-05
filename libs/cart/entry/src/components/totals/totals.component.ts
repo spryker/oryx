@@ -7,10 +7,12 @@ export class CartEntryTotalsComponent extends ComponentMixin<CartEntryOptions>()
   static styles = cartEntryTotalsStyles;
 
   protected render(): TemplateResult {
-    const price = this.options?.calculations?.unitPriceToPayAggregation;
+    const price = this.options?.calculations?.sumPriceToPayAggregation;
 
     return html`
-      <cart-entry-price .price=${price}> Total price </cart-entry-price>
+      <cart-entry-price .price="${price}" ?loading="${this.options?.updating}">
+        Total price
+      </cart-entry-price>
     `;
   }
 }

@@ -1,4 +1,4 @@
-import { MockProductService } from '@spryker-oryx/product';
+import { MockProductService, ProductOption } from '@spryker-oryx/product';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
 import { Cart, CartCalculations, CartEntry } from '../models';
 import {
@@ -16,6 +16,27 @@ import {
 export class MockCartAdapter implements Partial<CartAdapter> {
   private carts: Cart[] = [mockNormalizedDefaultCartWithoutProducts];
   private responseDelay = 300;
+
+  private selectedProductOptions = [
+    {
+      optionGroupName: 'Three (3) year limited warranty',
+      sku: 'OP_3_year_warranty',
+      optionName: 'Three (3) year limited warranty',
+      price: 2000,
+    },
+    {
+      optionGroupName: 'Two (2) year insurance coverage',
+      sku: 'OP_insurance',
+      optionName: 'Two (2) year insurance coverage',
+      price: 10000,
+    },
+    {
+      optionGroupName: 'Gift wrapping',
+      sku: 'OP_gift_wrapping',
+      optionName: 'Gift wrapping',
+      price: 500,
+    },
+  ];
 
   getAll(): Observable<Cart[]> {
     return of(this.carts).pipe(take(1));
@@ -41,7 +62,11 @@ export class MockCartAdapter implements Partial<CartAdapter> {
       products.splice(productIndex, 1, {
         ...productFromCart,
         quantity,
-        calculations: this.createCalculations(data.attributes.sku, quantity),
+        calculations: this.createCalculations(
+          data.attributes.sku,
+          quantity,
+          this.selectedProductOptions
+        ),
       });
     } else {
       products.push({
@@ -49,9 +74,11 @@ export class MockCartAdapter implements Partial<CartAdapter> {
         sku: data.attributes.sku,
         groupKey: data.attributes.sku,
         quantity: data.attributes.quantity,
+        selectedProductOptions: this.selectedProductOptions,
         calculations: this.createCalculations(
           data.attributes.sku,
-          data.attributes.quantity
+          data.attributes.quantity,
+          this.selectedProductOptions
         ),
       });
     }
@@ -79,7 +106,8 @@ export class MockCartAdapter implements Partial<CartAdapter> {
       quantity: data.attributes.quantity,
       calculations: this.createCalculations(
         data.attributes.sku,
-        data.attributes.quantity
+        data.attributes.quantity,
+        this.selectedProductOptions
       ),
     });
 
@@ -167,17 +195,23 @@ export class MockCartAdapter implements Partial<CartAdapter> {
 
   protected createCalculations(
     sku: string,
-    quantity: number
+    quantity: number,
+    options: ProductOption[]
   ): CartCalculations {
-    const basePrice =
+    const unitPrice =
       MockProductService.mockProducts.find((product) => product.sku === sku)
         ?.price?.defaultPrice?.value ?? 0;
+    const sumPrice = unitPrice * quantity;
+    const sumPriceToPayAggregation =
+      options.reduce((sum, { price = 0 }) => sum + price, 0) + sumPrice;
 
     return {
-      unitPrice: basePrice,
-      sumPrice: basePrice * quantity,
-      unitGrossPrice: basePrice,
-      sumGrossPrice: basePrice * quantity,
+      unitPrice,
+      sumPrice,
+      unitGrossPrice: unitPrice,
+      sumGrossPrice: sumPrice,
+      sumPriceToPayAggregation,
+      sumSubtotalAggregation: sumPriceToPayAggregation,
     };
   }
 }

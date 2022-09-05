@@ -26,6 +26,16 @@ export interface CartEntryOptions extends CartEntry {
    * @default 'close'
    */
   removeButtonIcon?: Icons;
+
+  /**
+   * Indicates that all types of interactions are disabled
+   */
+  disabled?: boolean;
+
+  /**
+   * Indicates that entry is updating
+   */
+  updating?: boolean;
 }
 
 export interface CartEntryCompositionOptions extends CartEntryOptions {

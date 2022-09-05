@@ -10,7 +10,7 @@ import { CartEntryTotalsComponent } from './totals.component';
 
 describe('CartEntryTotalsComponent', () => {
   let element: CartEntryTotalsComponent;
-  const unitPriceToPayAggregation = 1000;
+  const sumPriceToPayAggregation = 1000;
 
   beforeAll(async () => {
     await useComponent(cartEntryTotalsComponent);
@@ -22,7 +22,7 @@ describe('CartEntryTotalsComponent', () => {
     });
     element = await fixture(html`
       <cart-entry-totals
-        .options=${{ calculations: { unitPriceToPayAggregation } }}
+        .options=${{ calculations: { sumPriceToPayAggregation } }}
       ></cart-entry-totals>
     `);
   });
@@ -35,11 +35,11 @@ describe('CartEntryTotalsComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should render "unitPriceToPayAggregation" price', () => {
+  it('should render "sumPriceToPayAggregation" price', () => {
     const priceElement = element.renderRoot.querySelector(
       'cart-entry-price'
     ) as CartEntryPriceComponent;
 
-    expect(priceElement?.price).toBe(unitPriceToPayAggregation);
+    expect(priceElement?.price).toBe(sumPriceToPayAggregation);
   });
 });

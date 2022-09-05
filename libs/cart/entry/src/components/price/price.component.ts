@@ -15,6 +15,8 @@ export class CartEntryPriceComponent
 
   @property() price?: number;
 
+  @property({ type: Boolean, reflect: true }) loading = false;
+
   protected pricingService = resolve(PricingService);
 
   @observe()
