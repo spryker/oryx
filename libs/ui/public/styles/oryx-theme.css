@@ -113,6 +113,13 @@
   color: var(--oryx-color-placeholder);
 }
 
+@media (max-width: 767px) {
+  :root {
+    --oryx-font-size-base: 16px;
+    --oryx-font-weight-medium: 600;
+  }
+}
+
 /* just to proof that we can do dark mode with this setup */
 @media (prefers-color-scheme: dark) {
   :root:not([no-dark-mode]) {

@@ -236,11 +236,4 @@ export const buttonStyles = css`
     background-color: var(--oryx-color-canvas);
     border-color: #f9d3ce;
   }
-
-  @media (max-width: 767px) {
-    :host {
-      font-size: 16px;
-      font-weight: 600;
-    }
-  }
 `;

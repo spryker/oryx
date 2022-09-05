@@ -1,6 +1,12 @@
 import { css } from 'lit';
 
 export const styles = css`
+  @media (max-width: 767px) {
+    :host {
+      --oryx-radio-size: 24px;
+    }
+  }
+
   :host {
     display: block;
   }
@@ -12,14 +18,12 @@ export const styles = css`
     position: relative;
     outline: 0;
     color: var(--oryx-color-inc);
-    font-size: 14px;
-    font-weight: 500;
   }
 
   ::slotted(input) {
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
+    flex: 0 0 var(--oryx-radio-size, 18px);
+    width: var(--oryx-radio-size, 18px);
+    height: var(--oryx-radio-size, 18px);
     appearance: none;
     border-radius: 50%;
     margin: 3px 0;
@@ -86,7 +90,7 @@ export const styles = css`
   [hasErrorContent] {
     margin-block-start: 1px;
     margin-inline-start: 1px;
-    font-size: 12px;
+    font-size: 0.85em;
     font-weight: 400;
   }
 `;
