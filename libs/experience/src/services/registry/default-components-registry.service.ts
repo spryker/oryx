@@ -42,9 +42,9 @@ export class DefaultComponentsRegistryService
     }
     return component.template
       ? component.template(uid, layout)
-      : html`<${unsafeStatic(component.tag)} uid=${component.id} style=${
+      : html`<${unsafeStatic(component.tag ?? type)} uid=${uid} style=${
           layout?.styles
-        } class=${layout?.classes}></${unsafeStatic(component.tag)}>`;
+        } class=${layout?.classes}></${unsafeStatic(component.tag ?? type)}>`;
   }
 
   async hydrateOnDemand(element: LitElement): Promise<void> {
