@@ -229,8 +229,8 @@ describe('TypeaheadController', () => {
           beforeEach(() => {
             dispatchSelectEvent();
           });
-          it('should not dispatch the input event', () => {
-            expect(onInput).not.toHaveBeenCalled();
+          it('should dispatch the input event', () => {
+            expect(onInput).toHaveBeenCalled();
           });
           it('should not dispatch the change event', () => {
             expect(onChange).not.toHaveBeenCalled();

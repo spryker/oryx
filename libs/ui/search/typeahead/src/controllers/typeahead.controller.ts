@@ -109,15 +109,12 @@ export class TypeaheadController implements ReactiveController {
       }
       // the control value might have been reset during filtering, hence we'll set it always
       this.control.value = value;
-      if (this.lastValue !== value) {
-        this.lastValue = value;
-        this.control.dispatchEvent(
-          new Event(
-            this.control instanceof HTMLSelectElement ? 'change' : 'input',
-            { bubbles: true, composed: true }
-          )
-        );
-      }
+      this.control.dispatchEvent(
+        new Event(
+          this.control instanceof HTMLSelectElement ? 'change' : 'input',
+          { bubbles: true, composed: true }
+        )
+      );
       if (text && this.typeaheadControl) {
         this.typeaheadControl.value = text;
       }

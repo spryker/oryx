@@ -33,12 +33,14 @@ export class FilterController implements ReactiveController {
     this.host.addEventListener('keydown', this.onKeydown);
     this.host.addEventListener('input', this.onInput as EventListener);
     this.host.addEventListener('focusout', this.onFocusOut);
+    this.host.addEventListener('change', this.onChange);
   }
 
   hostDisconnected(): void {
     this.host.removeEventListener('keydown', this.onKeydown);
     this.host.removeEventListener('input', this.onInput as EventListener);
     this.host.removeEventListener('focusout', this.onFocusOut);
+    this.host.removeEventListener('change', this.onChange);
   }
 
   protected onKeydown(e: KeyboardEvent): void {
@@ -65,18 +67,14 @@ export class FilterController implements ReactiveController {
       this.filterOptionsByValue(
         e.inputType === 'deleteContentBackward' && !this.controlItem.value
           ? ''
-          : this.controlItem.value,
-        this.host.filterStrategy
+          : this.controlItem.value
       );
     }
   }
 
   hostUpdated(): void {
     if (this.host.filterStrategy && this.filterValue) {
-      this.filterOptionsByValue(
-        this.controlItem.value,
-        this.host.filterStrategy
-      );
+      this.filterOptionsByValue(this.controlItem.value);
     }
   }
 
@@ -84,7 +82,7 @@ export class FilterController implements ReactiveController {
     if (this.control) {
       this.control.value = '';
       if (this.host.filterStrategy) {
-        this.filterOptionsByValue(this.control.value, this.host.filterStrategy);
+        this.filterOptionsByValue(this.control.value);
       }
       this.control.dispatchEvent(
         new Event(
@@ -95,18 +93,30 @@ export class FilterController implements ReactiveController {
     }
   }
 
-  protected filterOptionsByValue(
-    value = '',
-    strategyType: FilterStrategyType
-  ): void {
-    if (this.filterValue === value || (!this.filterValue && value === '')) {
+  protected setEmptyState(value: boolean): void {
+    const isEmpty = !!this.host.isEmpty;
+    // set isEmpty to true when there are no visible items
+    // and - when changed - ensure that the state is taken into account in the host
+    if (isEmpty !== value) {
+      this.host.isEmpty = value;
+      this.host.requestUpdate('isEmpty', isEmpty);
+    }
+  }
+
+  protected onChange(): void {
+    if (this.filterValue === this.controlItem.value) {
       return;
     }
-    this.filterValue = value;
 
-    const strategy = this.strategies[strategyType];
+    this.filterOptions('', true);
+  }
 
+  protected filterOptions(value = '', omitDispatchEvent?: boolean): void {
+    if (!this.host.filterStrategy) {
+      return;
+    }
     let visibleOptionCount = 0;
+    const strategy = this.strategies[this.host.filterStrategy];
 
     this.items.forEach((item) => {
       const itemValue = item.innerText || item.value;
@@ -128,15 +138,20 @@ export class FilterController implements ReactiveController {
       }
     });
 
-    this.dispatchMatchEvent(visibleOptionCount, value);
-
-    const isEmpty = !!this.host.isEmpty;
-    // set isEmpty to true when there are no visible items
-    // and - when changed - ensure that the state is taken into account in the host
-    if (isEmpty !== (visibleOptionCount === 0)) {
-      this.host.isEmpty = visibleOptionCount === 0;
-      this.host.requestUpdate('isEmpty', isEmpty);
+    if (!omitDispatchEvent) {
+      this.dispatchMatchEvent(visibleOptionCount, value);
     }
+
+    this.setEmptyState(visibleOptionCount === 0);
+  }
+
+  protected filterOptionsByValue(value = ''): void {
+    if (this.filterValue === value || (!this.filterValue && value === '')) {
+      return;
+    }
+    this.filterValue = value;
+
+    this.filterOptions(value);
   }
 
   protected dispatchMatchEvent(
@@ -191,5 +206,6 @@ export class FilterController implements ReactiveController {
     this.onKeydown = this.onKeydown.bind(this);
     this.onInput = this.onInput.bind(this);
     this.onFocusOut = this.onFocusOut.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 }
