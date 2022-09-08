@@ -1,11 +1,18 @@
 import { ComponentsInfo, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
+import { Theme, ThemePlugin } from '../theme';
 import { ModularAppBuilder } from './modular-app-builder';
 
 const mockApply = vi.fn();
 
 vi.mock('../components', () => ({
   ComponentsPlugin: vi.fn().mockReturnValue({
+    apply: () => mockApply(),
+  }),
+}));
+
+vi.mock('../theme', () => ({
+  ThemePlugin: vi.fn().mockReturnValue({
     apply: () => mockApply(),
   }),
 }));
@@ -115,6 +122,24 @@ describe('ModularAppBuilder', () => {
         mockOptions.injector
       );
       expect(mockApply).toHaveBeenCalled();
+    });
+  });
+
+  describe('withTheme', () => {
+    const mockTheme = {
+      a: {
+        styles: 'a',
+      },
+    } as unknown as Theme;
+
+    it('should return instance of itself', () => {
+      expect(modularAppBuilder.withTheme(mockTheme)).toBe(modularAppBuilder);
+      expect(modularAppBuilder.withTheme([mockTheme])).toBe(modularAppBuilder);
+    });
+
+    it('should add themes and pass them to the ThemePlugin', async () => {
+      await modularAppBuilder.withTheme(mockTheme).create();
+      expect(ThemePlugin).toHaveBeenCalledWith([mockTheme]);
     });
   });
 });

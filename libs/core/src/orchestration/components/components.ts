@@ -1,6 +1,8 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
 import { isDefined, Type } from '@spryker-oryx/typescript-utils';
-import { AppPlugin } from '../app';
+import { CSSResult, unsafeCSS } from 'lit';
+import { App, AppPlugin } from '../app';
+import { ThemeData, ThemeImpl, ThemePlugin, ThemeStrategies } from '../theme';
 import {
   isObservableShadowElement,
   observableShadow,
@@ -14,6 +16,7 @@ export type ComponentsInfo = (ComponentInfo | ComponentInfo[])[];
 export interface ComponentDef {
   readonly name: string;
   readonly impl: ComponentDefImpl;
+  readonly theme?: ThemeImpl;
 }
 
 export type ComponentDefFn = () => ComponentDef;
@@ -60,6 +63,7 @@ export const ComponentsPluginName = 'core$components';
  *  Registers, loads and defines components. Observes nodes (including shadowDOM)
  */
 export class ComponentsPlugin implements AppPlugin {
+  protected theme?: ThemePlugin;
   protected readonly componentDefMap = new Map<string, ComponentDef>();
 
   protected readonly logger = this.options.logger ?? console;
@@ -90,7 +94,9 @@ export class ComponentsPlugin implements AppPlugin {
     return ComponentsPluginName;
   }
 
-  async apply(): Promise<void> {
+  async apply(app: App): Promise<void> {
+    this.theme = app.findPlugin(ThemePlugin);
+
     if (this.options.preload) {
       await this.preloadComponents();
 
@@ -272,17 +278,54 @@ export class ComponentsPlugin implements AppPlugin {
       return this.componentMap.get(def.name);
     }
 
-    const componentType = await this.loadComponentImpl(def, meta);
+    const [componentType, themes] = await Promise.all([
+      this.loadComponentImpl(def, meta),
+      this.theme?.resolve(def.name, def.theme),
+    ]);
 
     if (!componentType) {
       return;
     }
+
+    this.applyThemes(componentType, themes);
 
     const observableType = observableShadow(componentType);
 
     this.componentMap.set(def.name, observableType);
 
     return observableType;
+  }
+
+  protected applyThemes(
+    component: ComponentType & { styles?: CSSResult[] },
+    themes?: ThemeData[] | null
+  ): void {
+    if (!themes) {
+      return;
+    }
+
+    const transformer = (theme: CSSResult[] | string): CSSResult[] =>
+      Array.isArray(theme) ? theme : [unsafeCSS(theme)];
+    const bases = component.styles ?? [];
+    let innerTheme = [...bases];
+
+    for (const theme of themes) {
+      if (theme.strategy === ThemeStrategies.ReplaceAll) {
+        innerTheme = transformer(theme.styles);
+
+        continue;
+      }
+
+      if (theme.strategy === ThemeStrategies.Replace) {
+        innerTheme = [...bases, ...transformer(theme.styles)];
+
+        continue;
+      }
+
+      innerTheme = [...innerTheme, ...transformer(theme.styles)];
+    }
+
+    component.styles = innerTheme;
   }
 
   protected async loadComponentImpl(

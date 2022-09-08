@@ -1,6 +1,8 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
+import { vi } from 'vitest';
+import { App } from '../app';
 import {
   ComponentDef,
   componentDef,
@@ -18,18 +20,6 @@ const enum Tags {
   GlobalPreload = 'mock-global-preload-component',
 }
 
-class MockAComponent extends LitElement {}
-
-class MockPreloadComponent extends LitElement {}
-
-class MockBComponent extends LitElement {}
-
-class MockCComponent extends LitElement {}
-
-class MockDComponent extends LitElement {}
-
-class MockGlobalPreloadComponent extends LitElement {}
-
 class MockRootComponent extends LitElement {
   render(): TemplateResult {
     return html`<mock-a-component><slot></slot></mock-a-component>`;
@@ -38,12 +28,12 @@ class MockRootComponent extends LitElement {
 
 const components = {
   [Tags.Root]: MockRootComponent,
-  [Tags.Preload]: MockPreloadComponent,
-  [Tags.A]: MockAComponent,
-  [Tags.B]: MockBComponent,
-  [Tags.C]: MockCComponent,
-  [Tags.D]: MockDComponent,
-  [Tags.GlobalPreload]: MockGlobalPreloadComponent,
+  [Tags.Preload]: class MockPreloadComponent extends LitElement {},
+  [Tags.A]: class MockAComponent extends LitElement {},
+  [Tags.B]: class MockBComponent extends LitElement {},
+  [Tags.C]: class MockCComponent extends LitElement {},
+  [Tags.D]: class MockDComponent extends LitElement {},
+  [Tags.GlobalPreload]: class MockGlobalPreloadComponent extends LitElement {},
 };
 
 const createComponentDef = (tag: Tags, preload = false): (() => ComponentDef) =>
@@ -53,6 +43,10 @@ const createComponentDef = (tag: Tags, preload = false): (() => ComponentDef) =>
       ? { load: () => Promise.resolve(components[tag]) }
       : components[tag],
   });
+
+const mockApp = {
+  findPlugin: vi.fn(),
+} as unknown as App;
 
 describe('ComponentsPlugin', () => {
   beforeEach(() => {
@@ -73,7 +67,7 @@ describe('ComponentsPlugin', () => {
       const plugin = new ComponentsPlugin([createComponentDef(Tags.Root)], {
         root: createComponentDef(Tags.Root),
       });
-      await expect(plugin.apply()).rejects.toThrow();
+      await expect(plugin.apply(mockApp)).rejects.toThrow();
     });
 
     it('should define custom root component', async () => {
@@ -84,7 +78,7 @@ describe('ComponentsPlugin', () => {
         root: createComponentDef(Tags.Root),
       });
       expect(element).not.toBeInstanceOf(components[Tags.Root]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       await nextFrame();
       expect(element).toBeInstanceOf(components[Tags.Root]);
     });
@@ -102,7 +96,7 @@ describe('ComponentsPlugin', () => {
       const componentInShadowDom = element.renderRoot.querySelector(Tags.A);
 
       expect(componentInShadowDom).not.toBeInstanceOf(components[Tags.A]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       await nextFrame();
       expect(componentInShadowDom).toBeInstanceOf(components[Tags.A]);
     });
@@ -123,7 +117,7 @@ describe('ComponentsPlugin', () => {
         selector: Tags.B,
       });
       expect(componentInLightDom).not.toBeInstanceOf(components[Tags.B]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       await nextFrame();
       expect(componentInLightDom).toBeInstanceOf(components[Tags.B]);
     });
@@ -139,7 +133,7 @@ describe('ComponentsPlugin', () => {
         }
       );
       expect(element).not.toBeInstanceOf(components[Tags.Preload]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       expect(element).toBeInstanceOf(components[Tags.Preload]);
     });
 
@@ -155,7 +149,7 @@ describe('ComponentsPlugin', () => {
         }
       );
       expect(element).not.toBeInstanceOf(components[Tags.GlobalPreload]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       expect(element).toBeInstanceOf(components[Tags.GlobalPreload]);
     });
   });
@@ -175,7 +169,7 @@ describe('ComponentsPlugin', () => {
         selector: Tags.C,
       });
       expect(component).not.toBeInstanceOf(components[Tags.C]);
-      await plugin.apply();
+      await plugin.apply(mockApp);
       await nextFrame();
       expect(component).toBeInstanceOf(components[Tags.C]);
     });

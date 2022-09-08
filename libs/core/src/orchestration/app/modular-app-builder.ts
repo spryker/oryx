@@ -5,6 +5,7 @@ import {
   ComponentsPluginOptions,
 } from '../components';
 import { InjectionPlugin } from '../injection';
+import { Theme, ThemePlugin } from '../theme';
 import { SimpleAppBuilder } from './app-builder';
 import {
   App,
@@ -20,6 +21,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   protected componentsInfo: ComponentsInfo = [];
   protected providers: Provider[] = [];
   protected options?: ModularAppBuilderOptions;
+  protected themes: Theme[] = [];
 
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
     this.options = {
@@ -68,19 +70,28 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
+  withTheme(theme: Theme | Theme[]): AppBuilderWithModules {
+    this.themes.push(...(Array.isArray(theme) ? theme : [theme]));
+    return this;
+  }
+
   async create(): Promise<App> {
-    if (this.componentsInfo) {
+    if (this.themes.length) {
+      this.plugins.push(new ThemePlugin(this.themes));
+    }
+
+    if (this.providers.length) {
+      this.plugins.push(
+        new InjectionPlugin(this.providers, this.options?.injector)
+      );
+    }
+
+    if (this.componentsInfo.length) {
       this.plugins.push(
         new ComponentsPlugin(
           this.componentsInfo,
           this.options?.components as ComponentsPluginOptions
         )
-      );
-    }
-
-    if (this.providers) {
-      this.plugins.push(
-        new InjectionPlugin(this.providers, this.options?.injector)
       );
     }
 

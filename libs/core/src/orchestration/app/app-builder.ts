@@ -11,7 +11,7 @@ import {
 /**
  * Creates application. Plugins can be added with chaining.
  */
-export class SimpleAppBuilder<T = unknown> implements AppBuilder<T> {
+export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
   protected readonly plugins: AppPlugin[] = [];
 
   with(plugin: AppPlugin): Builder<T> {

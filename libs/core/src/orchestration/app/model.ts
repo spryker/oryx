@@ -1,6 +1,7 @@
 import { InjectorOptions, Provider } from '@spryker-oryx/injector';
 import { Type } from '@spryker-oryx/typescript-utils';
 import { ComponentsInfo, ComponentsPluginOptions } from '../components';
+import { Theme } from '../theme';
 
 export const AppRef = 'FES.AppRef';
 
@@ -25,16 +26,18 @@ export interface AppFeature {
 export interface App {
   findPlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T | undefined;
   requirePlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T;
+  registerPlugin(plugin: AppPlugin): void;
   whenReady(): Promise<App>;
+  markReady(): void;
   destroy(): void;
 }
 
-export interface AppBuilder<T = unknown> {
+export interface AppBuilder<T = ''> {
   with(plugin: AppPlugin): Builder<T>;
   create(): Promise<App>;
 }
 
-export type Builder<T> = T extends unknown ? AppBuilder : T;
+export type Builder<T> = T extends string ? AppBuilder : T;
 
 export interface AppBuilderWithModules
   extends AppBuilder<AppBuilderWithModules> {
@@ -42,12 +45,13 @@ export interface AppBuilderWithModules
   withProviders(providers: Provider[]): AppBuilderWithModules;
   withFeature(feature: AppFeature): AppBuilderWithModules;
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
+  withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
 }
 
 export interface AppPlugin {
   getName(): string;
   apply(app: App): void | Promise<void>;
-  destroy?(): void;
+  destroy?(app: App): void;
 }
 
 export interface AppPluginBeforeApply {

@@ -9,7 +9,7 @@ import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { storefrontFeature } from '@spryker-oryx/storefront';
-import { uiFeature } from '@spryker-oryx/ui';
+import { uiBackofficeTheme, uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import 'urlpattern-polyfill';
 import { appFeature } from './feature';
@@ -30,4 +30,5 @@ export const appBuilder = app()
   .withFeature(siteFeature)
   .withFeature(userFeature)
   .withFeature(storefrontFeature)
-  .withFeature(appFeature);
+  .withFeature(appFeature)
+  .withTheme([uiBackofficeTheme]);

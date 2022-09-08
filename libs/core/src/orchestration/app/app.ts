@@ -42,7 +42,7 @@ export class SimpleApp implements App {
 
   destroy(): void {
     this.plugins.forEach((plugin) => {
-      plugin.destroy?.();
+      plugin.destroy?.(this);
     });
 
     this.plugins.length = 0;

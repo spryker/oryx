@@ -39,7 +39,12 @@ import { tileComponent } from '../structure/tile/src/component';
 
 export const uiFeature: AppFeature = {
   components: [
-    buttonComponent,
+    buttonComponent({
+      theme: () =>
+        import('../actions/button/src/styles/themes/storefront.styles').then(
+          (b) => b.theme
+        ),
+    }),
     cardComponent,
     checkboxComponent,
     chipComponent,

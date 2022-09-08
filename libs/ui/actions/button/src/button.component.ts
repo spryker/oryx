@@ -2,7 +2,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Size } from '../../../utilities';
 import { ButtonType } from './button.model';
-import { buttonStyles } from './button.styles';
+import { buttonStyles } from './styles';
 
 export class ButtonComponent extends LitElement {
   static styles = [buttonStyles];
