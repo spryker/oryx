@@ -1,6 +1,6 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
 import { isDefined, Type } from '@spryker-oryx/typescript-utils';
-import { CSSResult, unsafeCSS } from 'lit';
+import { CSSResult, CSSResultGroup, CSSResultOrNative, unsafeCSS } from 'lit';
 import { App, AppPlugin } from '../app';
 import { ThemeData, ThemeImpl, ThemePlugin, ThemeStrategies } from '../theme';
 import {
@@ -25,6 +25,13 @@ export type ComponentDefFn = () => ComponentDef;
 export interface Component extends HTMLElement {}
 
 export type ComponentType = Type<Component>;
+
+export interface ComponentStatic {
+  styles?: CSSResult[];
+  elementStyles?: CSSResultOrNative[];
+  finalized?: boolean;
+  finalizeStyles?(styles?: CSSResultGroup): CSSResultOrNative[];
+}
 
 export type ComponentDefImpl =
   | ComponentType
@@ -297,7 +304,7 @@ export class ComponentsPlugin implements AppPlugin {
   }
 
   protected applyThemes(
-    component: ComponentType & { styles?: CSSResult[] },
+    component: ComponentType & ComponentStatic,
     themes?: ThemeData[] | null
   ): void {
     if (!themes) {
@@ -326,6 +333,11 @@ export class ComponentsPlugin implements AppPlugin {
     }
 
     component.styles = innerTheme;
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (component.hasOwnProperty('finalized')) {
+      component.elementStyles = component.finalizeStyles?.(component.styles);
+    }
   }
 
   protected async loadComponentImpl(
