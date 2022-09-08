@@ -4,7 +4,7 @@ import {
   DefaultUserService,
   UserService,
 } from '../services';
-import { CartAdapter } from '../services/adapter/cart.adapter';
+import { CartAdapter } from '../services/adapter';
 import { MockCartAdapter } from './mock-cart.adapter';
 
 export const mockCartProviders = [

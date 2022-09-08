@@ -1,6 +1,5 @@
 import { Adapter } from '@spryker-oryx/core';
-import { Product } from '../../models';
-import { ProductQualifier } from '../../models/product-qualifier';
+import { Product, ProductQualifier } from '../../models';
 
 export type ProductAdapter = Adapter<Product, ProductQualifier>;
 

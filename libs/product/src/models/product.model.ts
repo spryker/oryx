@@ -10,6 +10,10 @@ export interface Product {
   images?: ProductImage[];
 }
 
+export interface ProductList {
+  products: Product[];
+}
+
 export interface ProductImage {
   externalUrlLarge: string;
   externalUrlSmall: string;

@@ -5,6 +5,7 @@ import { productCardComponent } from '../card/src/component';
 import { productDescriptionComponent } from '../description/src/component';
 import { productIdComponent } from '../id/src/component';
 import { productImagesComponent } from '../images/src/component';
+import { productListComponent } from '../list/src/component';
 import { productMediaComponent } from '../media/src/component';
 import { productPriceComponent } from '../price/src/component';
 import { productTitleComponent } from '../title/src/component';
@@ -19,6 +20,7 @@ export const productFeature: AppFeature = {
     productDescriptionComponent,
     productIdComponent,
     productImagesComponent,
+    productListComponent,
     productMediaComponent,
     productPriceComponent,
     productTitleComponent,

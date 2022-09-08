@@ -11,7 +11,13 @@ import {
   ProductNormalizers,
 } from './adapter';
 
+import {
+  productListNormalizers,
+  ProductListNormalizers,
+} from './adapter/normalizers/product-list';
+import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
+import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
 
 export const productProviders = [
@@ -24,6 +30,10 @@ export const productProviders = [
     useClass: DefaultProductService,
   },
   {
+    provide: ProductListService,
+    useClass: DefaultProductListService,
+  },
+  {
     provide: PriceNormalizers,
     useValue: priceNormalizers,
   },
@@ -34,6 +44,10 @@ export const productProviders = [
   {
     provide: ProductNormalizers,
     useValue: productNormalizers,
+  },
+  {
+    provide: ProductListNormalizers,
+    useValue: productListNormalizers,
   },
   {
     provide: ConcreteProductsNormalizers,

@@ -1,7 +1,6 @@
 import { Observable, of } from 'rxjs';
-import { ProductQualifier } from '../models/product-qualifier';
-import { Product } from '../models/product.model';
-import { ProductService } from '../services/product.service';
+import { Product, ProductQualifier } from '../models';
+import { ProductService } from '../services';
 
 const images = [
   {

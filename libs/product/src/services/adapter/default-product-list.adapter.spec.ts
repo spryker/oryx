@@ -1,27 +1,31 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import {
+  DefaultProductListAdapter,
+  ProductListAdapter,
+} from '@spryker-oryx/product';
 import { of } from 'rxjs';
-import { DefaultProductAdapter } from './default-product.adapter';
-import { ProductNormalizers } from './normalizers';
-import { ProductAdapter } from './product.adapter';
+import { ProductListQualifier } from '../../models/product-list-qualifier';
+import { ProductListNormalizers } from './normalizers/product-list';
 
 const mockApiUrl = 'mockApiUrl';
-const mockProduct = {
-  data: {
-    attributes: {
-      name: 'mockProduct',
-      sku: 'sku',
-      averageRating: 0,
+const mockProducts = {
+  data: [
+    {
+      attributes: {
+        abstractProducts: [],
+        concreteProducts: [],
+      },
     },
-  },
+  ],
 };
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
 };
 
-describe('DefaultProductService', () => {
-  let service: ProductAdapter;
+describe('DefaultProductCategoryAdapter', () => {
+  let service: ProductListAdapter;
   let http: HttpTestService;
 
   beforeEach(() => {
@@ -32,8 +36,8 @@ describe('DefaultProductService', () => {
           useClass: HttpTestService,
         },
         {
-          provide: ProductAdapter,
-          useClass: DefaultProductAdapter,
+          provide: ProductListAdapter,
+          useClass: DefaultProductListAdapter,
         },
         {
           provide: 'SCOS_BASE_URL',
@@ -46,7 +50,7 @@ describe('DefaultProductService', () => {
       ],
     });
 
-    service = testInjector.inject(ProductAdapter);
+    service = testInjector.inject(ProductListAdapter);
     http = testInjector.inject(HttpService) as HttpTestService;
   });
 
@@ -55,59 +59,34 @@ describe('DefaultProductService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultProductAdapter);
+    expect(service).toBeInstanceOf(DefaultProductListAdapter);
   });
 
-  describe('get', () => {
-    const mockQualifier = { sku: '123' };
-    const imageInclude = 'concrete-product-image-sets';
-    const testInclude = 'test-include';
+  describe('get method', () => {
+    const mockQualifier: ProductListQualifier = { q: 'test' };
 
     beforeEach(() => {
-      http.flush(mockProduct);
+      http.flush(mockProducts);
     });
 
     afterEach(() => {
       vi.clearAllMocks();
     });
 
-    it('should build url based on SKU', () => {
+    it('should build correct base url', () => {
       service.get(mockQualifier);
 
       expect(http.url).toContain(
-        `${mockApiUrl}/concrete-products/${mockQualifier.sku}`
+        `${mockApiUrl}/catalog-search?q=${mockQualifier.q}`
       );
-    });
-
-    it('should add include to the url', () => {
-      service.get({
-        ...mockQualifier,
-        include: [imageInclude],
-      });
-
-      expect(http.url?.split('?include=')[1].split(',')).toContain(
-        imageInclude
-      );
-    });
-
-    it('should add several includes to the url', () => {
-      const params = {
-        ...mockQualifier,
-        include: [imageInclude, testInclude],
-      };
-
-      service.get(params);
-
-      const includes = http.url?.split('?include=')[1].split(',');
-      expect(includes).toHaveLength(3);
     });
 
     it('should call transformer data with data from response', () => {
       service.get(mockQualifier).subscribe();
 
       expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockProduct,
-        ProductNormalizers
+        mockProducts,
+        ProductListNormalizers
       );
     });
 
@@ -119,6 +98,22 @@ describe('DefaultProductService', () => {
       service.get(mockQualifier).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockTransformerData);
+    });
+  });
+
+  describe('getKey method', () => {
+    it('should generate key from query string', () => {
+      const query = { q: 'test', brand: 'sony', color: 'red' };
+      expect(service.getKey(query)).toBe('q=test&brand=sony&color=red');
+    });
+
+    it('should correct transform alias to query string', () => {
+      const query = { q: 'test', maxPrice: 12, minPrice: 1 };
+      expect(service.getKey(query)).toBe('q=test&price[max]=12&price[min]=1');
+    });
+
+    it('should generate empty string when query param is not provided', () => {
+      expect(service.getKey({})).toBe('');
     });
   });
 });

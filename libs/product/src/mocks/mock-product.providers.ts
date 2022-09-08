@@ -1,8 +1,28 @@
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
+import { RouteParams, RouterService } from '@spryker-oryx/experience';
+import {
+  DefaultProductListPageService,
+  DefaultProductListService,
+  ProductListAdapter,
+  ProductService,
+} from '@spryker-oryx/product';
 import { siteProviders } from '@spryker-oryx/site';
-import { delay, Observable, of } from 'rxjs';
-import { ProductService } from '../services/product.service';
+import { delay, Observable, of, ReplaySubject } from 'rxjs';
+import { ProductListPageService, ProductListService } from '../services';
 import { MockProductService } from './mock-product.service';
+import { MockProductListAdapter } from './product-list/mock-product-list.adapter';
+
+class MockRouterService implements Partial<RouterService> {
+  private params$ = new ReplaySubject<RouteParams>(1);
+
+  currentParams(): Observable<RouteParams> {
+    return this.params$;
+  }
+
+  acceptParams(params: RouteParams): void {
+    this.params$.next(params);
+  }
+}
 
 export const mockCartProviders = [
   {
@@ -35,4 +55,24 @@ export const mockProductProviders = [
   ...siteProviders,
   ...semanticLinkProviders,
   ...mockCartProviders,
+];
+
+export const mockProductListProviders = [
+  ...mockProductProviders,
+  {
+    provide: ProductListService,
+    useClass: DefaultProductListService,
+  },
+  {
+    provide: RouterService,
+    useClass: MockRouterService,
+  },
+  {
+    provide: ProductListPageService,
+    useClass: DefaultProductListPageService,
+  },
+  {
+    provide: ProductListAdapter,
+    useClass: MockProductListAdapter,
+  },
 ];

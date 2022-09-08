@@ -1,6 +1,6 @@
-import { MockProductService, ProductOption } from '@spryker-oryx/product';
+import { MockProductService } from '@spryker-oryx/product/mocks';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
-import { Cart, CartCalculations, CartEntry } from '../models';
+import { Cart, CartCalculations, CartEntry, ProductOption } from '../models';
 import {
   AddCartEntityProps,
   CartAdapter,

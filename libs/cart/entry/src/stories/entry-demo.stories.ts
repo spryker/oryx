@@ -1,5 +1,5 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { MockProductService } from '@spryker-oryx/product';
+import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Icons, IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { LitElement, TemplateResult } from 'lit';
