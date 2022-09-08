@@ -16,7 +16,6 @@ import { cartEntryComponent } from './component';
 import { CartEntryOptionsComponent } from './components';
 import { CartEntryContentComponent } from './components/content';
 import { CartEntryComponent } from './entry.component';
-import { CartEntryCompositionOptions } from './entry.model';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('mockSku')),
@@ -31,13 +30,6 @@ describe('CartEntryComponent', () => {
   const sku = product.sku as string;
 
   const options = { sku, quantity: 1 };
-
-  const getCurrentOptions = (): CartEntryCompositionOptions | void => {
-    const component = element.renderRoot.querySelector(
-      'cart-entry-content'
-    ) as CartEntryContentComponent;
-    return component.options;
-  };
 
   const getPart = <T = Element>(selector: string): T => {
     return element.renderRoot.querySelector(selector) as unknown as T;

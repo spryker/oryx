@@ -31,11 +31,13 @@ export class CartEntriesComponent extends CartComponentMixin<unknown>() {
     this.entries$,
     this.loading$,
     this.currentlyUpdated$,
+    this.options$,
   ]).pipe(
-    map(([entries, loading, currentlyUpdated]) => ({
+    map(([entries, loading, currentlyUpdated, options]) => ({
       entries,
       loading,
       currentlyUpdated,
+      options,
     }))
   );
 
@@ -68,7 +70,7 @@ export class CartEntriesComponent extends CartComponentMixin<unknown>() {
     return html`
       ${asyncValue(
         this.entriesData$,
-        ({ entries, loading, currentlyUpdated }) => {
+        ({ entries, loading, currentlyUpdated, options }) => {
           if (!entries) {
             return html``;
           }
@@ -82,6 +84,7 @@ export class CartEntriesComponent extends CartComponentMixin<unknown>() {
               <cart-entry
                 ?inert=${loading}
                 .options=${{
+                  ...options,
                   ...entry,
                   disabled: loading,
                   updating: entry.groupKey === currentlyUpdated,
