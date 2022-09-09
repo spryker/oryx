@@ -4,7 +4,15 @@ import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { BehaviorSubject, map, merge, Subject, take, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  merge,
+  Subject,
+  take,
+  tap,
+} from 'rxjs';
 import { CartEntryOptions, REMOVE_EVENT } from './entry.model';
 import { baseStyles, styles } from './styles';
 
@@ -15,6 +23,12 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
   protected options$ = new ContentController(this).getOptions();
 
   protected triggerConfirmationRequired$ = new BehaviorSubject(false);
+  protected confirmation$ = combineLatest([
+    this.triggerConfirmationRequired$,
+    this.options$,
+  ]).pipe(
+    map(([confirmationRequired, entry]) => ({ confirmationRequired, entry }))
+  );
 
   protected triggerShowOptions$ = new Subject<boolean>();
   protected showOptions$ = merge(
@@ -71,26 +85,21 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
 
   protected override render(): TemplateResult {
     return html`${asyncValue(this.options$, (entry) => {
-      const {
-        hidePreview,
-        silentRemove,
-        removeButtonIcon,
-        selectedProductOptions,
-      } = entry;
+      const { hidePreview, silentRemove, selectedProductOptions } = entry;
 
       const hasOptions = !!selectedProductOptions?.length;
 
       return html`
         ${asyncValue(
-          this.triggerConfirmationRequired$,
-          (confirmationRequired) =>
+          this.confirmation$,
+          ({ confirmationRequired, entry }) =>
             html`${when(
               confirmationRequired,
               () => html`
                 <cart-entry-confirmation
                   .options=${entry}
                   @remove=${(): void =>
-                    this.onRemove(silentRemove || confirmationRequired)}
+                    this.onRemove(entry.silentRemove || confirmationRequired)}
                   @cancel=${this.onCancelRemoving}
                 ></cart-entry-confirmation>
               `,
@@ -98,10 +107,12 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
                 <oryx-icon-button>
                   <button
                     @click=${(): void =>
-                      this.onRemove(silentRemove || confirmationRequired)}
+                      this.onRemove(entry.silentRemove || confirmationRequired)}
                     aria-label="remove"
                   >
-                    <oryx-icon .type=${removeButtonIcon ?? 'close'}></oryx-icon>
+                    <oryx-icon
+                      .type=${entry.removeButtonIcon ?? 'close'}
+                    ></oryx-icon>
                   </button>
                 </oryx-icon-button>
               `

@@ -1,25 +1,21 @@
+import { setupCartMocks } from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { Icons, IconTypes } from '@spryker-oryx/ui/icon';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { customElement, property, state } from 'lit/decorators.js';
 import { storybookPrefix } from '../../../.constants';
-import { setupCartMocks } from '../../../src/mocks/cart.mock';
-import { CartEntryOptions } from '../entry.model';
+import { CartEntryCompositionOptions, CartEntryOptions } from '../entry.model';
 import { cartEntryComponents } from '../index';
+import { selectedProductOptions } from './common';
 
 useComponent(cartEntryComponents);
 
-type FakeEntriesProps = {
-  sku: string;
+interface FakeEntriesProps extends CartEntryCompositionOptions {
   productOptions: boolean;
-  defaultExpandedOptions: boolean;
-  hidePreview: boolean;
-  silentRemove: boolean;
-  removeButtonIcon?: Icons;
-};
+}
 
 export default {
   title: `${storybookPrefix}/Entry`,
@@ -43,27 +39,6 @@ class FakeEntriesComponent extends LitElement {
     super.requestUpdate(name, oldValue);
   }
 
-  protected selectedProductOptions = [
-    {
-      optionGroupName: 'Three (3) year limited warranty',
-      sku: 'OP_3_year_warranty',
-      optionName: 'Three (3) year limited warranty',
-      price: 2000,
-    },
-    {
-      optionGroupName: 'Two (2) year insurance coverage',
-      sku: 'OP_insurance',
-      optionName: 'Two (2) year insurance coverage',
-      price: 10000,
-    },
-    {
-      optionGroupName: 'Gift wrapping',
-      sku: 'OP_gift_wrapping',
-      optionName: 'Gift wrapping',
-      price: 500,
-    },
-  ];
-
   protected updateEntry(quantity = 1): void {
     const product = MockProductService.mockProducts.find(
       ({ sku }) => sku === this.sku
@@ -73,7 +48,7 @@ class FakeEntriesComponent extends LitElement {
 
     const hasOptions = !!this.props?.productOptions;
     const optionsPrice = hasOptions
-      ? this.selectedProductOptions.reduce((sum, { price }) => sum + price, 0)
+      ? selectedProductOptions.reduce((sum, { price }) => sum + price, 0)
       : 0;
 
     this.entry = {
@@ -88,7 +63,7 @@ class FakeEntriesComponent extends LitElement {
       },
       ...(hasOptions
         ? {
-            selectedProductOptions: this.selectedProductOptions,
+            selectedProductOptions,
           }
         : {}),
     };
@@ -114,12 +89,20 @@ const Template: Story<FakeEntriesProps> = (
 
 export const Demo = Template.bind({});
 
+Demo.parameters = {
+  chromatic: {
+    disableSnapshot: true,
+  },
+};
+
 Demo.args = {
   sku: MockProductService.mockProducts[0].sku,
   productOptions: true,
   defaultExpandedOptions: false,
   hidePreview: false,
   silentRemove: false,
+  disabled: false,
+  updating: false,
 };
 
 Demo.argTypes = {

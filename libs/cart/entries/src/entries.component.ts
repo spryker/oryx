@@ -1,15 +1,15 @@
-import { CartEntry, CartService } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartEntry, CartService } from '@spryker-oryx/cart';
 import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
-import { CartComponentMixin } from '../../src/mixins/cart.mixin';
+import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
+import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
 
 @hydratable()
-export class CartEntriesComponent extends CartComponentMixin<unknown>() {
+export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>() {
   static styles = styles;
 
   protected cartService = resolve(CartService);
@@ -20,11 +20,15 @@ export class CartEntriesComponent extends CartComponentMixin<unknown>() {
   protected loading$ = new BehaviorSubject(true);
   protected currentlyUpdated$ = new BehaviorSubject<string | null>(null);
 
-  protected entries$ = this.cartService.getEntries().pipe(
-    tap(() => {
-      this.loading$.next(false);
-      this.currentlyUpdated$.next(null);
-    })
+  protected entries$ = this.options$.pipe(
+    switchMap(({ cartId }) =>
+      this.cartService.getEntries({ cartId }).pipe(
+        tap(() => {
+          this.loading$.next(false);
+          this.currentlyUpdated$.next(null);
+        })
+      )
+    )
   );
 
   protected entriesData$ = combineLatest([

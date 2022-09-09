@@ -1,11 +1,11 @@
 import { CartService } from '@spryker-oryx/cart';
+import { setupCartMocks } from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
-import { setupCartMocks } from '../../../src/mocks/cart.mock';
 import { cartEntriesComponent } from '../component';
 
 useComponent(cartEntriesComponent);
@@ -17,18 +17,26 @@ export default {
     (): void => {
       const cartService = resolve(CartService);
 
-      cartService.addEntry({ sku: '1', quantity: 1 }).subscribe();
-      cartService.addEntry({ sku: '2', quantity: 3 }).subscribe();
+      cartService.getCart({ cartId: 'default' }).subscribe((cart) => {
+        if (cart && !cart.products?.length) {
+          cartService
+            .addEntry({ sku: '1', quantity: 1, cartId: 'default' })
+            .subscribe();
+          cartService
+            .addEntry({ sku: '2', quantity: 3, cartId: 'default' })
+            .subscribe();
+        }
+      });
     },
   ],
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`<cart-entries></cart-entries>`;
+  return html`<cart-entries .options=${{ cartId: 'default' }}></cart-entries>`;
 };
 
-export const CartEntriesDemo = Template.bind({});
+export const Demo = Template.bind({});
 
-CartEntriesDemo.parameters = {
+Demo.parameters = {
   chromatic: { disableSnapshot: true },
 };

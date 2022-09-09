@@ -81,6 +81,16 @@ export const mockNormalizedDefaultCartWithoutProducts = {
   ...mockCartDefaultResponse.attributes,
 };
 
+export const mockNormalizedCartWithSingleProducts = {
+  ...mockCartDefaultResponse.attributes,
+  id: 'single',
+};
+
+export const mockNormalizedCartWithMultipleProducts = {
+  ...mockCartDefaultResponse.attributes,
+  id: 'multiple',
+};
+
 export const mockNormalizedCartEntry = {
   id: mockEntryInclude.id,
   ...mockEntryInclude.attributes,

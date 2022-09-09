@@ -1,0 +1,61 @@
+import { CartService } from '@spryker-oryx/cart';
+import { setupCartMocks } from '@spryker-oryx/cart/mocks';
+import { resolve } from '@spryker-oryx/injector';
+import { Meta, Story } from '@storybook/web-components';
+import { TemplateResult } from 'lit';
+import { html } from 'lit-html';
+import { storybookPrefix, storybookViewports } from '../../../../.constants';
+
+export default {
+  title: `${storybookPrefix}/Entries/Static`,
+  loaders: [
+    setupCartMocks(),
+    (): void => {
+      const cartService = resolve(CartService);
+
+      cartService.getCart({ cartId: 'single' }).subscribe((cart) => {
+        if (cart && !cart.products?.length) {
+          cartService
+            .addEntry({ sku: '4', quantity: 1, cartId: 'single' })
+            .subscribe();
+        }
+      });
+
+      cartService.getCart({ cartId: 'multiple' }).subscribe((cart) => {
+        if (cart && !cart.products?.length) {
+          cartService
+            .addEntry({ sku: '1', quantity: 1, cartId: 'multiple' })
+            .subscribe();
+          cartService
+            .addEntry({ sku: '2', quantity: 2, cartId: 'multiple' })
+            .subscribe();
+          cartService
+            .addEntry({ sku: '3', quantity: 3, cartId: 'multiple' })
+            .subscribe();
+        }
+      });
+    },
+  ],
+} as unknown as Meta;
+
+const Template: Story<unknown> = (): TemplateResult => {
+  return html`
+    <p>Empty cart</p>
+    <cart-entries .options=${{ cartId: 'default' }}></cart-entries>
+
+    <p>Single entry</p>
+    <cart-entries .options=${{ cartId: 'single' }}></cart-entries>
+
+    <p>Multiple entries</p>
+    <cart-entries .options=${{ cartId: 'multiple' }}></cart-entries>
+  `;
+};
+
+export const States = Template.bind({});
+
+States.parameters = {
+  chromatic: {
+    delay: 3000,
+    viewports: [storybookViewports.mobile.min, storybookViewports.desktop.min],
+  },
+};

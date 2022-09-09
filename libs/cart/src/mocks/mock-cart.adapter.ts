@@ -10,11 +10,17 @@ import {
 } from '../services';
 import {
   mockNormalizedCartEntry,
+  mockNormalizedCartWithMultipleProducts,
+  mockNormalizedCartWithSingleProducts,
   mockNormalizedDefaultCartWithoutProducts,
 } from './mock-cart';
 
 export class MockCartAdapter implements Partial<CartAdapter> {
-  private carts: Cart[] = [mockNormalizedDefaultCartWithoutProducts];
+  private carts: Cart[] = [
+    mockNormalizedDefaultCartWithoutProducts,
+    mockNormalizedCartWithSingleProducts,
+    mockNormalizedCartWithMultipleProducts,
+  ];
   private responseDelay = 300;
 
   private selectedProductOptions = [

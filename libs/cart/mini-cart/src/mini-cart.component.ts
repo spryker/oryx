@@ -1,11 +1,10 @@
+import { CartComponentMixin, CartController } from '@spryker-oryx/cart';
 import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';
-import { CartController } from '../../src/controllers/cart.controller';
-import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 import { MiniCartOptions } from './mini-cart.model';
 import { styles } from './mini-cart.styles';
 

@@ -1,4 +1,4 @@
-import { mockCartProviders } from '@spryker-oryx/cart';
+import { mockCartProviders } from '@spryker-oryx/cart/mocks';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';

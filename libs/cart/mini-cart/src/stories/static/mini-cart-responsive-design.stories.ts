@@ -1,7 +1,7 @@
+import { setupCartMocks } from '@spryker-oryx/cart/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { setupCartMocks } from '../../../../src/mocks/cart.mock';
 import { getTemplate } from './common';
 
 export default {
