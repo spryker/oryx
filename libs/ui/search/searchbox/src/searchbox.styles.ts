@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { breakpoints } from '../../../.constants';
 
 export const searchboxStyles = css`
   .search,
@@ -33,5 +34,11 @@ export const searchboxStyles = css`
   :host([has-value]) .clear[appearance='TOGGLE'] + .search,
   :host([has-value]) .clear[appearance='HOVER']:hover + .search {
     opacity: 0%;
+  }
+
+  @media (max-width: ${breakpoints.mobile}px) {
+    .clear[type='remove'] {
+      --oryx-icon-size: var(--oryx-icon-size-large);
+    }
   }
 `;

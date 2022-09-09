@@ -13,3 +13,8 @@ export const storybookViewports = {
     min: 1024,
   },
 };
+
+export const breakpoints = {
+  mobile: 767,
+  tablet: 1023,
+};

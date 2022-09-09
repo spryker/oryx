@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { breakpoints } from '../../../../.constants';
 
 export const formControlStyles = css`
   :host {
@@ -108,7 +109,7 @@ export const formControlStyles = css`
     margin-block-start: 7px;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: ${breakpoints.mobile}px) {
     input,
     slot:not([name])::slotted(*) {
       height: 46px;

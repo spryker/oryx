@@ -7,7 +7,6 @@ import {
   FormControlOptions,
   inputStyles,
 } from '../../../form/input';
-import { invisible, visible } from '../../../graphical/icon/src/icons';
 import { getControl } from '../../utilities/getControl';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { passwordInputStyles } from './password-input.styles';
@@ -45,6 +44,8 @@ export class PasswordInputComponent
    */
   @property({ type: Number }) timeout = 5000;
 
+  @property({ type: Boolean }) visible?: boolean;
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
@@ -68,41 +69,34 @@ export class PasswordInputComponent
       case PasswordVisibilityStrategy.HOVER:
         return html`
           <oryx-icon
+            type=${this.visibilityIcon}
             @mouseover=${this.showVisibility}
             @mouseout=${this.hideVisibility}
-          >
-            ${this.getIcon()}
-          </oryx-icon>
+          ></oryx-icon>
         `;
 
       case PasswordVisibilityStrategy.MOUSEDOWN:
         return html`
           <oryx-icon
+            type=${this.visibilityIcon}
             @mousedown=${this.showVisibility}
             @mouseup=${this.hideVisibility}
             @mouseout=${this.hideVisibility}
-          >
-            ${this.getIcon()}
-          </oryx-icon>
+          ></oryx-icon>
         `;
 
       default:
         return html`
-          <oryx-icon @click=${this.toggleVisibility}>
-            ${this.getIcon()}
-          </oryx-icon>
+          <oryx-icon
+            type=${this.visibilityIcon}
+            @click=${this.toggleVisibility}
+          ></oryx-icon>
         `;
     }
   }
 
-  /**
-   * @returns a single SVG with both visible and invisible icons, which will be shown/hidden by CSS.
-   */
-  protected getIcon(): TemplateResult {
-    return html`<svg viewBox="0 0 24 24">
-      <g class="invisible">${invisible.source}</g>
-      <g class="visible">${visible.source}</g>
-    </svg>`;
+  protected get visibilityIcon(): string {
+    return this.visible ? 'invisible' : 'visible';
   }
 
   protected toggleVisibility(): void {
