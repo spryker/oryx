@@ -1,10 +1,16 @@
+export const enum Loading {
+  Lazy = 'lazy',
+  Auto = 'auto',
+  Eager = 'eager',
+}
+
 export interface ProductMediaComponentOptions {
   /**
    * Preview image src
    *
    * By default selects first 'externalUrlSmall' image of the product
    */
-  src?: string;
+  src?: string | null;
 
   /**
    * Src for the high definition version of image.
@@ -34,5 +40,5 @@ export interface ProductMediaComponentOptions {
    *
    * @default 'lazy'
    */
-  loading?: 'lazy' | 'auto' | 'eager';
+  loading?: Loading;
 }

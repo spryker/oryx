@@ -5,7 +5,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { mockProductProviders } from '../../src/mocks';
+import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { productImagesComponent } from './component';
 import { ProductImagesComponent } from './images.component';
 
@@ -42,8 +42,9 @@ describe('ProductImagesComponent', () => {
   });
 
   it('renders internal image', () => {
-    const src =
-      'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg';
+    const src = MockProductService.mockProducts.find(({ sku }) => sku === '1')
+      ?.images?.[0].externalUrlLarge;
+
     const firstPreview = element?.shadowRoot?.querySelector('picture');
     expect(firstPreview).toBeDefined();
     expect(firstPreview?.querySelector('img')?.src).toBe(src);

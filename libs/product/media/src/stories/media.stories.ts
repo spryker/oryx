@@ -20,20 +20,28 @@ type Props = ProductComponentProperties & {
 };
 
 const Template: Story<Props> = (content): TemplateResult => {
-  return html`<product-media
-    .sku=${content.sku}
-    .style=${`
-        --image-max-width: ${content.size};
-        --image-max-height: ${content.size}
-      `}
-  />`;
+  return html` <style>
+      product-media {
+        display: block;
+        width: ${content.size};
+        height: ${content.size};
+      }
+    </style>
+
+    <product-media .sku=${content.sku} />`;
 };
 
 export const MediaDemo = Template.bind({});
 
+MediaDemo.parameters = {
+  chromatic: {
+    disableSnapshot: true,
+  },
+};
+
 MediaDemo.args = {
   sku: MockProductService.mockProducts[0].sku,
-  size: '100%',
+  size: '300px',
 };
 
 MediaDemo.argTypes = {
@@ -47,7 +55,7 @@ MediaDemo.argTypes = {
   },
   size: {
     control: { type: 'select' },
-    options: ['100%', '32px', '64px', '100px', '300px'],
+    options: ['32px', '64px', '100px', '300px'],
     table: { category: 'product' },
   },
 };

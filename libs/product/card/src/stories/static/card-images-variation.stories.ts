@@ -15,7 +15,7 @@ const Template: Story<unknown> = (): TemplateResult => {
     <product-card sku="1"></product-card>
 
     <h4>Without images</h4>
-    <product-card sku="7"></product-card>
+    <product-card sku="without-images"></product-card>
   `;
 };
 

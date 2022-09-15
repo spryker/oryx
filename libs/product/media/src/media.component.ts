@@ -8,33 +8,77 @@ import {
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { combineLatest, map, Observable } from 'rxjs';
-import { ProductMediaComponentOptions } from './media.model';
+import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { Loading, ProductMediaComponentOptions } from './media.model';
+import { styles } from './media.styles';
 
 @hydratable('mouseover')
 export class ProductMediaComponent extends ProductComponentMixin<ProductMediaComponentOptions>() {
-  protected productController = new ProductController(this);
-  protected contentController = new ContentController(this);
-  protected product$ = this.productController.getProduct();
-  protected options$ = this.contentController.getOptions();
+  static styles = styles;
+
+  protected product$ = new ProductController(this).getProduct();
+  protected options$ = new ContentController(this).getOptions();
+
+  protected invalidResources$ = new BehaviorSubject<string[]>([]);
+
+  protected getValidResource(
+    resources: (string | undefined | null)[],
+    invalidResources: string[]
+  ): string | undefined | null {
+    return resources.find(
+      (resource) => !!resource && !invalidResources.includes(resource)
+    );
+  }
 
   protected productMedia$: Observable<ProductMediaComponentOptions> =
-    combineLatest([this.options$, this.product$]).pipe(
-      map(([options, product]) => {
-        const src = product?.images?.[0]?.externalUrlSmall;
-        const hdSrc = product?.images?.[0]?.externalUrlLarge;
+    combineLatest([this.options$, this.product$, this.invalidResources$]).pipe(
+      map(([options, product, invalidResources]) => {
+        const { externalUrlSmall, externalUrlLarge } =
+          product?.images?.[0] ?? {};
+
+        let src = 'src' in options ? options.src : externalUrlSmall;
+        let hdSrc = 'hdSrc' in options ? options.hdSrc : externalUrlLarge;
+
+        if (invalidResources.length || !src) {
+          src = this.getValidResource([src, hdSrc], invalidResources);
+          hdSrc = undefined;
+        }
+
         const alt = product?.name;
 
         return {
-          src,
-          hdSrc,
           alt,
-          loading: 'lazy',
+          loading: Loading.Lazy,
           breakpoint: 768,
           ...options,
+          src,
+          hdSrc,
         };
+      }),
+      tap(({ src }) => {
+        if (!src) {
+          this.toggleAttribute('fallback', true);
+        }
       })
     );
+
+  protected handleError(options: ProductMediaComponentOptions): void {
+    const { src, hdSrc, breakpoint } = options;
+
+    //define which resource is invalid
+    const invalidResource =
+      hdSrc && breakpoint && window.innerWidth >= breakpoint ? hdSrc : src;
+
+    this.invalidResources$.next([
+      ...this.invalidResources$.getValue(),
+      invalidResource as string,
+    ]);
+  }
+
+  protected handleValid(): void {
+    this.toggleAttribute('fallback', false);
+    this.toggleAttribute('fetched', true);
+  }
 
   protected override render(): TemplateResult {
     return html` ${asyncValue(
@@ -43,11 +87,11 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaCom
         const { src, hdSrc, alt, loading, breakpoint } = options;
 
         if (!src) {
-          return html``;
+          return html`<oryx-icon type="image"></oryx-icon>`;
         }
 
         return html`
-          <oryx-image>
+          <picture>
             ${when(
               !!hdSrc,
               () =>
@@ -57,11 +101,13 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaCom
                 />`
             )}
             <img
-              src="${src}"
+              src=${src}
               alt=${ifDefined(alt)}
-              loading="${ifDefined(loading)}"
+              loading=${ifDefined(loading)}
+              @load=${this.handleValid}
+              @error=${(): void => this.handleError(options)}
             />
-          </oryx-image>
+          </picture>
         `;
       }
     )}`;

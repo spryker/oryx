@@ -1,4 +1,4 @@
-import { fixture } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import '@spryker-oryx/testing';
@@ -8,7 +8,16 @@ import { productMediaComponent } from './component';
 import { ProductMediaComponent } from './media.component';
 
 describe('ProductMediaComponent', () => {
+  const defaultWindowWidth = window.innerWidth;
   let element: ProductMediaComponent;
+
+  const getImg = (): HTMLImageElement | null =>
+    element.renderRoot.querySelector('img');
+
+  const setWindowWidth = (innerWidth = defaultWindowWidth): void => {
+    window.innerWidth = innerWidth;
+    window.dispatchEvent(new Event('resize'));
+  };
 
   beforeAll(async () => {
     await useComponent(productMediaComponent);
@@ -23,6 +32,7 @@ describe('ProductMediaComponent', () => {
 
   afterEach(() => {
     destroyInjector();
+    setWindowWidth();
   });
 
   it('passes the a11y audit', async () => {
@@ -63,6 +73,8 @@ describe('ProductMediaComponent', () => {
         element = await fixture(html`
           <product-media sku="1" .options=${options}></product-media>
         `);
+
+        getImg()?.dispatchEvent(new Event('load'));
       });
 
       it('should render content correctly', () => {
@@ -73,6 +85,11 @@ describe('ProductMediaComponent', () => {
         expect(img?.alt).toBe(options.alt);
         expect(img?.hasAttribute('loading')).toBe(false);
         expect(source?.getAttribute('media')).toBe('(min-width: 400px)');
+      });
+
+      it('should set "fetched" attribute', async () => {
+        await elementUpdated(element);
+        expect(element.hasAttribute('fetched')).toBe(true);
       });
     });
 
@@ -88,28 +105,90 @@ describe('ProductMediaComponent', () => {
       });
 
       it('should not render hd version', () => {
-        const source = element.renderRoot.querySelector('source');
-
-        expect(source).toBeNull();
+        expect(element).not.toContainElement('source');
       });
     });
 
     describe('with invalid data', () => {
       describe('when src is wrong', () => {
-        const options = {
-          src: '',
-        };
-
+        const options = { src: '/src', hdSrc: '/hdSrc' };
         beforeEach(async () => {
           element = await fixture(html`
             <product-media sku="1" .options=${options}></product-media>
           `);
+
+          setWindowWidth(400);
+
+          getImg()?.dispatchEvent(new Event('error'));
+
+          await elementUpdated(element);
         });
 
-        it('should not render the image', () => {
-          const img = element.renderRoot.querySelector('oryx-image');
+        it('should replace src by hdSrc', () => {
+          expect(getImg()?.src).toContain(options.hdSrc);
+        });
 
-          expect(img).toBeNull();
+        it('should not render the source', () => {
+          expect(element).not.toContainElement('source');
+        });
+      });
+
+      describe('when hdSrc is wrong', () => {
+        beforeEach(async () => {
+          element = await fixture(html`
+            <product-media sku="1"></product-media>
+          `);
+
+          getImg()?.dispatchEvent(new Event('error'));
+
+          await elementUpdated(element);
+        });
+
+        it('should not render the source', () => {
+          expect(element).not.toContainElement('source');
+        });
+      });
+
+      describe('when product images are not specified', () => {
+        beforeEach(async () => {
+          element = await fixture(html`
+            <product-media sku="without-images"></product-media>
+          `);
+
+          setWindowWidth(400);
+
+          getImg()?.dispatchEvent(new Event('error'));
+
+          await elementUpdated(element);
+        });
+
+        it('should not render the picture', async () => {
+          expect(element).not.toContainElement('picture');
+        });
+
+        it('should set fallback attribute', async () => {
+          expect(element.hasAttribute('fallback')).toBe(true);
+        });
+      });
+
+      describe('when src and hdSrc are invalid options', () => {
+        const options = { src: 'test', hdSrc: null };
+        beforeEach(async () => {
+          element = await fixture(html`
+            <product-media sku="1" .options=${options}></product-media>
+          `);
+
+          getImg()?.dispatchEvent(new Event('error'));
+
+          await elementUpdated(element);
+        });
+
+        it('should not render the picture', async () => {
+          expect(element).not.toContainElement('picture');
+        });
+
+        it('should set fallback attribute', async () => {
+          expect(element.hasAttribute('fallback')).toBe(true);
         });
       });
 

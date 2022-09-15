@@ -6,4 +6,5 @@ export enum StorefrontIconTypes {
   Decrease = 'minus',
   Search = 'search',
   Close = 'close',
+  Image = 'image',
 }

@@ -16,7 +16,6 @@ import { selectComponent } from '../form/select/src/component';
 import { tagComponent } from '../form/tag/src/component';
 import { chipComponent } from '../graphical/chip/src/component';
 import { iconComponent } from '../graphical/icon/src/component';
-import { imageComponent } from '../graphical/image/src/component';
 import { ratingComponent } from '../graphical/rating/src/component';
 import { spinnerComponent } from '../graphical/spinner/src/component';
 import { navigationItemComponent } from '../navigations/navigation-item/src/component';
@@ -55,7 +54,6 @@ export const uiFeature: AppFeature = {
     headlineComponent,
     iconButtonComponent,
     iconComponent,
-    imageComponent,
     inputComponent,
     inputListComponent,
     linkComponent,

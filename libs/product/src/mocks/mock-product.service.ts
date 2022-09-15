@@ -4,9 +4,9 @@ import { ProductService } from '../services';
 
 const images = [
   {
-    externalUrlSmall: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
-    externalUrlLarge:
+    externalUrlSmall:
       'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+    externalUrlLarge: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
   },
   {
     externalUrlSmall:
@@ -177,17 +177,20 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '7',
       name: 'Sample product no. 7',
-      description:
-        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
+      description: 'Lorem ipsum dolor sit amet.',
       price: {
         defaultPrice: {
-          value: 1879,
+          value: 1900,
+          isNet: true,
+          currency: 'EUR',
+        },
+        originalPrice: {
+          value: 1958,
           isNet: true,
           currency: 'EUR',
         },
       },
-      images: [],
-      averageRating: 1,
+      images,
       attributes: {
         brand: 'Brand7',
         color: 'color7',
@@ -224,6 +227,52 @@ export class MockProductService implements Partial<ProductService> {
         SampleAttribute:
           'Sample attribute lengthy name, Sample attribute lengthy name, Sample attribute lengthy name.',
       },
+    },
+    {
+      sku: 'without-images',
+      name: 'Sample product without images',
+      description:
+        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
+      images: [],
+    },
+    {
+      sku: 'without-small-image',
+      name: 'Sample product without small image',
+      description:
+        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
+      images: [
+        { externalUrlLarge: images[0].externalUrlLarge, externalUrlSmall: '' },
+      ],
+    },
+    {
+      sku: 'without-large-image',
+      name: 'Sample product without large image',
+      description:
+        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
+      price: {
+        defaultPrice: {
+          value: 1879,
+          isNet: true,
+          currency: 'EUR',
+        },
+      },
+      images: [
+        { externalUrlSmall: images[0].externalUrlSmall, externalUrlLarge: '' },
+      ],
     },
   ];
 
