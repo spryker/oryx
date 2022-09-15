@@ -100,6 +100,14 @@ export const componentsMapping: ComponentsMapping = {
         class=${layout.classes}
       ></product-attributes>`,
   },
+  ['product-list']: {
+    template: (uid: string, layout?: ComponentLayout) =>
+      html`<product-list
+        uid="${uid}"
+        .style=${layout.styles}
+        class=${layout.classes}
+      ></product-list>`,
+  },
   ['user-login']: {
     template: (uid: string, layout?: ComponentLayout) =>
       html`<user-login

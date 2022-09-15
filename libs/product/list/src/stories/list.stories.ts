@@ -42,6 +42,7 @@ ProductDemo.args = {
   page: 0,
   maxPrice: 12,
   minPrice: 1,
+  minRating: 1,
   ipp: 0,
   storageCapacity: '',
   brand: '',
@@ -50,7 +51,7 @@ ProductDemo.args = {
   color: '',
   category: '',
   currency: '',
-  sort: SortParamNames.none,
+  sort: SortParamNames.None,
 };
 
 ProductDemo.argTypes = {

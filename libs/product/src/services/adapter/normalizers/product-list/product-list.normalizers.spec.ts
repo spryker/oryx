@@ -4,8 +4,9 @@ import { take } from 'rxjs/operators';
 import { productNormalizer } from './product-list.normalizers';
 
 const mockDeserializedProductList = {
-  concreteProducts: [],
+  abstractProducts: [],
 };
+
 const mockTransformer = {
   transform: vi.fn(),
 };
@@ -21,7 +22,7 @@ describe('Product Catalog Normalizers', () => {
           products: mockProductsResult,
         });
         expect(mockTransformer.transform).toHaveBeenCalledWith(
-          mockDeserializedProductList.concreteProducts,
+          mockDeserializedProductList.abstractProducts,
           ConcreteProductsNormalizers
         );
       });

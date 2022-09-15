@@ -2,6 +2,7 @@ export interface ProductListQualifier {
   q?: string;
   minPrice?: number;
   maxPrice?: number;
+  minRating?: number;
   storageCapacity?: string;
   brand?: string;
   label?: string;

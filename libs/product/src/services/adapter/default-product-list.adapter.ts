@@ -14,6 +14,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
   protected readonly alias: Record<string, string> = {
     minPrice: 'price[min]',
     maxPrice: 'price[max]',
+    minRating: 'rating[min]',
     storageCapacity: 'storage_capacity[]',
   };
 
@@ -49,7 +50,9 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
           qualifier
-        )}&include=${ApiProductModel.Includes.ConcreteProducts}`
+        )}&include=${ApiProductModel.Includes.AbstractProducts},${
+          ApiProductModel.Includes.ConcreteProducts
+        }`
       )
       .pipe(
         switchMap((res) =>

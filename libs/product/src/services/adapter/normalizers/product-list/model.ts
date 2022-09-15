@@ -7,5 +7,5 @@ import { CamelCase } from '@spryker-oryx/typescript-utils';
 export type DeserializedProductList = ApiProductModel.Attributes &
   Pick<
     DeserializedProductIncludes,
-    CamelCase<ApiProductModel.Includes.ConcreteProducts>
+    CamelCase<ApiProductModel.Includes.AbstractProducts>
   >;

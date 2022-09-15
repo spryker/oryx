@@ -15,8 +15,8 @@ export function productNormalizer(
   data: DeserializedProductList[],
   transformer: TransformerService
 ): Observable<ProductList> {
-  const concreteKey = camelize(ApiProductModel.Includes.ConcreteProducts);
-  const { [concreteKey]: products } = data[0];
+  const abstractKey = camelize(ApiProductModel.Includes.AbstractProducts);
+  const { [abstractKey]: products } = data[0];
 
   return transformer
     .transform<Product[]>(products, ConcreteProductsNormalizers)
