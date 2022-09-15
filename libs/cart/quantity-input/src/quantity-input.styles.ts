@@ -2,13 +2,19 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    --oryx-icon-size: 22px;
+
     display: inline-flex;
   }
 
-  input[type='number'] {
+  :host([label]:not([label=''])) {
+    position: relative;
+    padding-top: 22px;
+  }
+
+  input {
     appearance: textfield;
     text-align: center;
-    height: 38px;
   }
 
   oryx-input {
@@ -36,9 +42,10 @@ export const styles = css`
   }
 
   button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
     cursor: pointer;
-    width: 42px;
-    height: 42px;
     background: #f5f5f5;
     color: #121212;
     border: 2px solid #dce0e5;
@@ -49,23 +56,38 @@ export const styles = css`
   button[disabled] {
     color: #b2b2b2;
     cursor: default;
+    pointer-events: none;
   }
 
-  button:not([disabled]):hover {
+  button:hover {
     background: #e7eaee;
     border-color: #dce0e5;
   }
 
-  button:not([disabled]):active,
-  oryx-input:not([disabled]):hover,
-  oryx-input:not([disabled]):active {
+  button:active,
+  oryx-input:hover,
+  oryx-input:active {
     border-color: #b7bec9;
     z-index: 1;
   }
 
-  button:not([disabled]):focus-visible {
+  button:focus-visible {
     border: 2px solid var(--oryx-color-brand);
     box-shadow: 0 0 3px var(--oryx-color-brand);
     z-index: 1;
+  }
+
+  oryx-input::part(label) {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    text-transform: unset;
+  }
+
+  @media (min-width: 769px) {
+    :host {
+      --oryx-icon-size: 18px;
+    }
   }
 `;

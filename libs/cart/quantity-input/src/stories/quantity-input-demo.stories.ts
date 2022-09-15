@@ -16,6 +16,7 @@ interface Props {
   min: number;
   max: number;
   value: number;
+  label: string;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -25,6 +26,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       min=${props.min}
       max=${props.max}
       value=${props.value}
+      label=${props.label}
       @oryx.quantity=${({
         detail: { quantity },
       }: {
@@ -38,9 +40,14 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 
 export const Demo = Template.bind({});
 
+Demo.parameters = {
+  chromatic: { disableSnapshot: true },
+};
+
 Demo.args = {
   disabled: false,
   min: 1,
   max: 10,
   value: 1,
+  label: 'Quantity',
 };

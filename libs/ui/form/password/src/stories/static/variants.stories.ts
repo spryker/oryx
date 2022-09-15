@@ -1,11 +1,12 @@
 import {
   extendVariants,
   generateVariantsMatrix,
+  storybookDefaultViewports,
   variantsGroupTemplate,
 } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix, storybookViewports } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../../.constants';
 import { basePasswordInputVariants, groups } from './common';
 
 export default {
@@ -51,7 +52,7 @@ const Template: Story<unknown> = (): TemplateResult => {
                 />
               </oryx-password-input>
             `,
-            { smallDisplayBreakpoint: storybookViewports.mobile.max }
+            { smallDisplayBreakpoint: storybookDefaultViewports.mobile.max }
           )}
         `,
         { title: group.title, addSeparator: index < groups.length - 1 }

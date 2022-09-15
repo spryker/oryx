@@ -253,4 +253,20 @@ describe('Quantity input', () => {
       expect(getInput().value).toBe('2');
     });
   });
+
+  describe('when label is provided', () => {
+    const label = 'label';
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<quantity-input value=${1} label=${label}></quantity-input>`
+      );
+    });
+
+    it('should pass the label to the oryx-input', async () => {
+      expect(
+        element.renderRoot.querySelector('oryx-input')?.getAttribute('label')
+      ).toBe(label);
+    });
+  });
 });

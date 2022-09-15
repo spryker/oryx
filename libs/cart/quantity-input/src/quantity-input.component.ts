@@ -1,7 +1,7 @@
 import { hydratable } from '@spryker-oryx/core';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { QUANTITY_EVENT } from './quantity-input.model';
@@ -15,6 +15,7 @@ export class QuantityInputComponent extends LitElement {
   @property({ type: Number }) min = 1;
   @property({ type: Number }) max?: number;
   @property({ type: Number }) value = this.min;
+  @property({ type: String }) label?: string;
 
   protected inputRef: Ref<HTMLInputElement> = createRef();
 
@@ -68,16 +69,16 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || this.value <= this.min}
         @click=${this.decrease}
       >
-        <oryx-icon type=${MiscIcons.Minus} size=${Size.small}></oryx-icon>
+        <oryx-icon type=${MiscIcons.Minus}></oryx-icon>
       </button>
-      <oryx-input>
+      <oryx-input label=${ifDefined(this.label)}>
         <input
           aria-label="quantity-input"
           type="number"
           ${ref(this.inputRef)}
           value=${this.value}
           min=${this.min}
-          max=${this.max}
+          max=${ifDefined(this.max)}
           step="1"
           required
           @input=${this.validate}
@@ -87,10 +88,10 @@ export class QuantityInputComponent extends LitElement {
       </oryx-input>
       <button
         aria-label="increase"
-        ?disabled=${this.disabled || (this.max && this.value >= this.max)}
+        ?disabled=${this.disabled || !!(this.max && this.value >= this.max)}
         @click=${this.increase}
       >
-        <oryx-icon type=${MiscIcons.Add} size=${Size.small}></oryx-icon>
+        <oryx-icon type=${MiscIcons.Add}></oryx-icon>
       </button>
     `;
   }

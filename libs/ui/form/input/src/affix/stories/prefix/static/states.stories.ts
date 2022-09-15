@@ -1,5 +1,6 @@
 import {
   generateVariantsMatrix,
+  storybookDefaultViewports,
   VariantOptions,
   VariantsGroup,
   variantsGroupTemplate,
@@ -7,10 +8,7 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import {
-  storybookPrefix,
-  storybookViewports,
-} from '../../../../../../../.constants';
+import { storybookPrefix } from '../../../../../../../.constants';
 import {
   getInputVariants,
   InputVariantOptions,
@@ -135,7 +133,7 @@ const Template: Story = (): TemplateResult => html`
                     />
                   </oryx-input>
                 `,
-                { smallDisplayBreakpoint: storybookViewports.mobile.max }
+                { smallDisplayBreakpoint: storybookDefaultViewports.mobile.max }
               )}
             </div>
           `
@@ -165,6 +163,9 @@ export const States = Template.bind({});
 States.parameters = {
   chromatic: {
     delay: 5000,
-    viewports: [storybookViewports.mobile.min, storybookViewports.desktop.min],
+    viewports: [
+      storybookDefaultViewports.mobile.min,
+      storybookDefaultViewports.desktop.min,
+    ],
   },
 };

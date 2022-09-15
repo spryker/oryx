@@ -1,6 +1,7 @@
 import {
   extendVariants,
   generateVariantsMatrix,
+  storybookDefaultViewports,
   Variant,
   VariantOptions,
   VariantsGroup,
@@ -9,7 +10,7 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { storybookPrefix, storybookViewports } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 import { selectOptions } from './common';
 
@@ -211,7 +212,7 @@ const Template: Story<unknown> = (): TemplateResult => {
                 </oryx-select>
               </div>
             `,
-            { smallDisplayBreakpoint: storybookViewports.mobile.max }
+            { smallDisplayBreakpoint: storybookDefaultViewports.mobile.max }
           ),
         { title: group.title, addSeparator: index < groups.length - 1 }
       )
@@ -222,7 +223,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         --oryx-popover-visible: 1;
       }
 
-      @media (min-width: ${storybookViewports.mobile.max}px) {
+      @media (min-width: ${storybookDefaultViewports.mobile.max}px) {
         td:not(:first-child) {
           width: 350px;
           max-width: 350px;
@@ -233,7 +234,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           height: 210px;
         }
       }
-      @media (max-width: ${storybookViewports.mobile.max}px) {
+      @media (max-width: ${storybookDefaultViewports.mobile.max}px) {
         td {
           max-width: 275px;
         }
@@ -249,6 +250,9 @@ export const Variants = Template.bind({});
 Variants.parameters = {
   chromatic: {
     delay: 300,
-    viewports: [storybookViewports.mobile.min, storybookViewports.desktop.min],
+    viewports: [
+      storybookDefaultViewports.mobile.min,
+      storybookDefaultViewports.desktop.min,
+    ],
   },
 };

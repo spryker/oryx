@@ -47,7 +47,7 @@ export class FormControlController implements ReactiveController {
   ): TemplateResult {
     return html`
       <label>
-        <slot name="label">${this.host.label}</slot>
+        <slot name="label" part="label">${this.host.label}</slot>
         <div class="control">
           ${content.before}
           <slot

@@ -1,10 +1,11 @@
 import { CartService } from '@spryker-oryx/cart';
 import { setupCartMocks } from '@spryker-oryx/cart/mocks';
 import { resolve } from '@spryker-oryx/injector';
+import { storybookDefaultViewports } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
-import { storybookPrefix, storybookViewports } from '../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Entries/Static`,
@@ -56,6 +57,9 @@ export const States = Template.bind({});
 States.parameters = {
   chromatic: {
     delay: 3000,
-    viewports: [storybookViewports.mobile.min, storybookViewports.desktop.min],
+    viewports: [
+      storybookDefaultViewports.mobile.min,
+      storybookDefaultViewports.desktop.min,
+    ],
   },
 };

@@ -28,6 +28,9 @@ export const generateVariantsMatrix = <T extends Variant>(
     );
   };
 
+  const capitalized = (label: string): string =>
+    label && label[0].toUpperCase() + label.slice(1);
+
   return html`
     <table>
       <tr>
@@ -35,14 +38,19 @@ export const generateVariantsMatrix = <T extends Variant>(
           !options?.hideYAxisName,
           () => html`
             ${when(!options?.hideXAxisName, () => html`<th></th>`)}
-            ${categoriesY.map((header) => html`<th>${header}</th>`)}
+            ${categoriesY.map(
+              (header) => html`<th>${capitalized(header)}</th>`
+            )}
           `
         )}
       </tr>
       ${categoriesX.map(
         (categoryX) => html`
           <tr>
-            ${when(!options?.hideXAxisName, () => html`<td>${categoryX}</td>`)}
+            ${when(
+              !options?.hideXAxisName,
+              () => html`<td>${capitalized(categoryX)}</td>`
+            )}
             ${categoriesY.map(
               (categoryY) => html`
                 <td>
@@ -51,7 +59,12 @@ export const generateVariantsMatrix = <T extends Variant>(
                     () =>
                       html`
                         <p>
-                          <b>${categoryX}${categoryY && ','} ${categoryY}</b>
+                          <b
+                            >${capitalized(categoryX)}${capitalized(
+                              categoryY
+                            ) && ','}
+                            ${capitalized(categoryY)}</b
+                          >
                         </p>
                         ${renderer(getVariant(categoryX, categoryY)!)}
                       `
