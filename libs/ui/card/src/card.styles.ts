@@ -26,13 +26,16 @@ export const styles = css`
     --background-color: var(--oryx-color-neutral-lighter);
   }
 
-  :host(:not([type='secondary'])) slot:not([name]),
   :host(:not([type='secondary'])) slot[name='header'] {
-    padding: 18px 30px;
+    padding: var(--oryx-card-header-padding, 18px 30px);
+  }
+
+  :host(:not([type='secondary'])) slot:not([name]) {
+    padding: var(--oryx-card-body-padding, 18px 30px);
   }
 
   :host(:not([type='secondary'])) slot[name='footer'] {
-    padding: 0 30px;
+    padding: var(--oryx-card-footer-padding, 0 30px);
   }
 
   :host(:not([type='secondary'])) slot[name='footer']::slotted(*) {
@@ -40,13 +43,16 @@ export const styles = css`
     margin-bottom: 18px;
   }
 
-  :host([type='secondary']) slot:not([name]),
   :host([type='secondary']) slot[name='header'] {
-    padding: 13px 20px;
+    padding: var(--oryx-card-header-padding, 13px 20px);
+  }
+
+  :host([type='secondary']) slot:not([name]) {
+    padding: var(--oryx-card-body-padding, 13px 20px);
   }
 
   :host([type='secondary']) slot[name='footer'] {
-    padding: 0 20px;
+    padding: var(--oryx-card-footer-padding, 0 20px);
   }
 
   :host([type='secondary']) slot[name='footer']::slotted(*) {
