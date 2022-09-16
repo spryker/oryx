@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { HttpErrorResponse } from '@spryker-oryx/core';
+import {
+  AuthService,
+  HttpErrorResponse,
+  IdentityService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
   catchError,
-  combineLatest,
   map,
   mapTo,
   Observable,
   of,
   ReplaySubject,
+  Subscription,
   switchMap,
   take,
   tap,
@@ -20,16 +24,15 @@ import {
   CartQualifier,
   CartTotals,
   DeleteCartEntryQualifier,
-  LoadCartsQualifier,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService, STATE } from './cart.service';
-import { UserService } from './user.service';
 
 export class DefaultCartService implements CartService {
+  protected isAuthenticatedCached$ = new ReplaySubject<boolean>();
   protected carts = new Map<string, STATE>();
-
+  protected subscription = new Subscription();
   protected activeCartId$ = new ReplaySubject<string | null>(1);
   protected activeCart$ = this.activeCartId$.pipe(
     switchMap((id) =>
@@ -44,8 +47,54 @@ export class DefaultCartService implements CartService {
 
   constructor(
     protected adapter = inject(CartAdapter),
-    protected userService = inject(UserService)
-  ) {}
+    protected authService = inject(AuthService),
+    protected identity = inject(IdentityService)
+  ) {
+    this.initSubscriptions();
+  }
+
+  protected initSubscriptions(): void {
+    const loadCartsSubs = this.authService
+      .isAuthenticated()
+      .pipe(switchMap(() => this.loadCarts()))
+      .subscribe();
+
+    this.subscription.add(loadCartsSubs);
+  }
+
+  protected loadCarts(): Observable<Cart[]> {
+    return this.adapter.getAll().pipe(
+      tap((carts) => {
+        this.carts.clear();
+
+        if (!carts?.length) {
+          this.activeCartId$.next(null);
+
+          return;
+        }
+
+        carts.forEach((cart) => {
+          this.addCartToMap(cart);
+
+          if (cart.isDefault) {
+            this.activeCartId$.next(cart.id);
+          }
+        });
+      })
+    );
+  }
+
+  load(): Observable<null> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap(() => this.loadCarts()),
+      mapTo(null)
+    );
+  }
+
+  onDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   // ToDo: implement such methods for multi-cart behavior
   /** get all carts (multi-cart) */
@@ -55,17 +104,7 @@ export class DefaultCartService implements CartService {
   /** deletes existing cart */
   // remove() {}
 
-  load(data?: LoadCartsQualifier): void {
-    if (data?.forceReload || this.carts.size === 0) {
-      this.loadCarts();
-    }
-  }
-
   getCart(data?: CartQualifier): Observable<Cart | null> {
-    if (this.carts.size === 0) {
-      this.loadCarts();
-    }
-
     if (data?.cartId && this.carts.has(data.cartId)) {
       return this.carts.get(data.cartId)!.value$;
     }
@@ -89,7 +128,7 @@ export class DefaultCartService implements CartService {
     return cart$.pipe(map((cart) => cart?.totals ?? null));
   }
 
-  getEntries(data?: CartQualifier): Observable<CartEntry[] | []> {
+  getEntries(data?: CartQualifier): Observable<CartEntry[]> {
     const cart$ = data?.cartId
       ? this.carts.get(data!.cartId)!.value$
       : this.activeCart$;
@@ -99,11 +138,10 @@ export class DefaultCartService implements CartService {
 
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
     this.load();
-    return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
+    return this.activeCartId$.pipe(
       take(1),
-      switchMap(([userData, activeId]) =>
+      switchMap((activeId) =>
         this.adapter.addEntry({
-          user: userData,
           cartId: cartId ?? activeId!,
           attributes,
         })
@@ -136,19 +174,17 @@ export class DefaultCartService implements CartService {
     groupKey,
   }: DeleteCartEntryQualifier): Observable<null> {
     this.load();
-    return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
+    return this.activeCartId$.pipe(
       take(1),
-      switchMap(([userData, activeId]) =>
+      switchMap((activeId) =>
         this.adapter
           .deleteEntry({
-            user: userData,
             cartId: cartId ?? activeId!,
             groupKey,
           })
           .pipe(
             switchMap(() =>
               this.adapter.get({
-                user: userData,
                 cartId: cartId ?? activeId!,
               })
             )
@@ -174,12 +210,11 @@ export class DefaultCartService implements CartService {
     ...attributes
   }: UpdateCartEntryQualifier): Observable<null> {
     this.load();
-    return combineLatest([this.userService.get(), this.activeCartId$]).pipe(
+    return this.activeCartId$.pipe(
       take(1),
-      switchMap(([userData, activeId]) =>
+      switchMap((activeId) =>
         this.adapter.updateEntry({
           groupKey,
-          user: userData,
           cartId: cartId ?? activeId!,
           attributes,
         })
@@ -196,34 +231,6 @@ export class DefaultCartService implements CartService {
       }),
       mapTo(null)
     );
-  }
-
-  protected loadCarts(): void {
-    this.userService
-      .get()
-      .pipe(
-        take(1),
-        switchMap((userData) => this.adapter.getAll(userData))
-      )
-      .subscribe({
-        next: (carts) => {
-          const isCartsEmpty = this.carts.size === 0;
-
-          if (!carts?.length) {
-            this.activeCartId$.next(null);
-
-            return;
-          }
-
-          carts.forEach((cart) => {
-            this.addCartToMap(cart);
-
-            if (isCartsEmpty && cart.isDefault) {
-              this.activeCartId$.next(cart.id);
-            }
-          });
-        },
-      });
   }
 
   protected updateError(error: HttpErrorResponse, cartId?: string): void {

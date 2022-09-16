@@ -8,11 +8,11 @@ import { of } from 'rxjs';
 import { miniCartComponent } from './component';
 import { MiniCartComponent } from './mini-cart.component';
 
-class MockCartService {
-  getCart = vi.fn();
+class MockCartService implements Partial<CartService> {
+  getEntries = vi.fn();
 }
 
-describe('Mini Card', () => {
+describe('Mini Cart', () => {
   let element: MiniCartComponent;
   let service: MockCartService;
 
@@ -41,7 +41,7 @@ describe('Mini Card', () => {
     const quantity = 5;
 
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of({ products: [{ quantity }] }));
+      service.getEntries.mockReturnValue(of([{ quantity }]));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 
@@ -62,7 +62,7 @@ describe('Mini Card', () => {
     const quantity = 155;
 
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of({ products: [{ quantity }] }));
+      service.getEntries.mockReturnValue(of([{ quantity }]));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 
@@ -83,7 +83,7 @@ describe('Mini Card', () => {
     const quantity = 5;
 
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of(null));
+      service.getEntries.mockReturnValue(of([]));
       element = await fixture(
         html`<mini-cart uid="1" .options=${{ quantity }}></mini-cart>`
       );
@@ -107,9 +107,7 @@ describe('Mini Card', () => {
     const propQuantity = 5;
 
     beforeEach(async () => {
-      service.getCart.mockReturnValue(
-        of({ products: [{ quantity: serviceQuantity }] })
-      );
+      service.getEntries.mockReturnValue(of([{ quantity: serviceQuantity }]));
       element = await fixture(
         html`<mini-cart
           uid="1"
@@ -133,7 +131,7 @@ describe('Mini Card', () => {
 
   describe('when quantity is not provided through service and prop', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of(null));
+      service.getEntries.mockReturnValue(of([]));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 

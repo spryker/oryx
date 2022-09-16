@@ -61,12 +61,21 @@ export module ApiCartModel {
   }
 
   export enum Includes {
+    Items = 'items',
     GuestCartItems = 'guest-cart-items',
     ProductOptions = 'product-options',
   }
 
+  export enum UrlParts {
+    Customers = 'customers',
+    Carts = 'carts',
+    Items = 'items',
+    GuestCarts = 'guest-carts',
+    GuestCartItems = 'guest-cart-items',
+  }
+
   export type ResponseIncludes =
-    | Include<Includes.GuestCartItems, Entry>
+    | Include<Includes.Items | Includes.GuestCartItems, Entry>
     | Include<Includes.ProductOptions, ApiProductModel.ProductOption>;
 
   export type ResponseList = JsonApiModel<

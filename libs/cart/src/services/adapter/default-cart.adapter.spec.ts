@@ -1,4 +1,8 @@
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  HttpService,
+  IdentityService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
@@ -9,25 +13,47 @@ import {
 import { ApiCartModel } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';
-import { CartNormalizers } from './normalizers';
+import { CartNormalizers, CartsNormalizers } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
-const mockUserQualifier = { anonymousUserId: 'anonymousUserId' };
+const mockAnonymousUser = {
+  id: 'userId',
+  anonymous: true,
+};
+
+const mockUser = {
+  id: 'userId',
+  anonymous: false,
+  token: { accessToken: 'token' },
+};
 
 const mockRequestHeaders = {
-  'X-Anonymous-Customer-Unique-Id': mockUserQualifier.anonymousUserId,
+  Authorization: 'Authorization',
+};
+
+const mockAnonymousRequestHeaders = {
+  'X-Anonymous-Customer-Unique-Id': mockAnonymousUser.id,
 };
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
 };
 
-describe('DefaultProductService', () => {
+class MockIdentityService implements Partial<IdentityService> {
+  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  getHeaders = vi.fn().mockReturnValue(of(mockAnonymousRequestHeaders));
+}
+
+describe('DefaultCartAdapter', () => {
   let service: CartAdapter;
+  let identity: MockIdentityService;
   let http: HttpTestService;
 
-  function requestIncludes(): string {
-    return `?include=${Object.values(ApiCartModel.Includes).join(',')}`;
+  function requestIncludes(isAuthenticated = false): string {
+    return `?include=${(isAuthenticated
+      ? [ApiCartModel.Includes.Items]
+      : [ApiCartModel.Includes.GuestCartItems]
+    ).join(',')}`;
   }
 
   beforeEach(() => {
@@ -49,16 +75,21 @@ describe('DefaultProductService', () => {
           provide: JsonAPITransformerService,
           useValue: mockTransformer,
         },
+        {
+          provide: IdentityService,
+          useClass: MockIdentityService,
+        },
       ],
     });
 
     service = testInjector.inject(CartAdapter);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     http = testInjector.inject(HttpService) as HttpTestService;
+    identity = testInjector.inject(IdentityService) as MockIdentityService;
     http.flush(mockGetCartResponse);
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     destroyInjector();
   });
 
@@ -71,202 +102,407 @@ describe('DefaultProductService', () => {
       http.flush(mockGetCartsResponse);
     });
 
-    it('should build url', () => {
-      service.getAll(mockUserQualifier);
+    describe('guest user', () => {
+      it('should build url', () => {
+        service.getAll().subscribe();
 
-      expect(http.url).toBe(`${mockApiUrl}/guest-carts${requestIncludes()}`);
+        expect(http.url).toBe(`${mockApiUrl}/guest-carts${requestIncludes()}`);
+      });
+
+      it('should provide headers', () => {
+        service.getAll().subscribe();
+
+        expect(http.options).toHaveProperty(
+          'headers',
+          mockAnonymousRequestHeaders
+        );
+      });
     });
 
-    it('should provide headers', () => {
-      service.getAll(mockUserQualifier);
+    describe('loggedIn user', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
+      });
 
-      expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      it('should build url', () => {
+        service.getAll().subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/customers/${mockUser.id}/carts${requestIncludes(true)}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.getAll().subscribe();
+
+        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      });
+    });
+
+    describe('data transforming', () => {
+      it('should call transformer data with data from response', () => {
+        service.getAll().subscribe();
+
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockGetCartsResponse,
+          CartsNormalizers
+        );
+      });
+
+      it('should return transformed data', () => {
+        const mockTransformerData = 'mockTransformerData';
+        const callback = vi.fn();
+        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+        service.getAll().subscribe(callback);
+
+        expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      });
     });
   });
 
   describe('get should send `get` request', () => {
-    const mockGetCartQualifier = {
+    const mockGuestGetCartQualifier = {
       cartId: 'test',
-      user: mockUserQualifier,
+    };
+    const mockGetCartQualifier = {
+      ...mockGuestGetCartQualifier,
     };
 
-    it('should build url', () => {
-      service.get(mockGetCartQualifier);
+    describe('guest user', () => {
+      it('should build url', () => {
+        service.get(mockGuestGetCartQualifier).subscribe();
 
-      expect(http.url).toBe(
-        `${mockApiUrl}/guest-carts/${
-          mockGetCartQualifier.cartId
-        }${requestIncludes()}`
-      );
+        expect(http.url).toBe(
+          `${mockApiUrl}/guest-carts/${
+            mockGuestGetCartQualifier.cartId
+          }${requestIncludes()}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.get(mockGuestGetCartQualifier).subscribe();
+
+        expect(http.options).toHaveProperty(
+          'headers',
+          mockAnonymousRequestHeaders
+        );
+      });
     });
 
-    it('should provide headers', () => {
-      service.get(mockGetCartQualifier);
+    describe('loggedIn user', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
+      });
 
-      expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      it('should build url', () => {
+        service.get(mockGetCartQualifier).subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/carts/${mockGetCartQualifier.cartId}${requestIncludes(
+            true
+          )}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.get(mockGetCartQualifier).subscribe();
+
+        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      });
     });
 
-    it('should call transformer data with data from response', () => {
-      service.get(mockGetCartQualifier).subscribe();
+    describe('data transforming', () => {
+      it('should call transformer data with data from response', () => {
+        service.get(mockGuestGetCartQualifier).subscribe();
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockGetCartResponse,
-        CartNormalizers
-      );
-    });
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockGetCartResponse,
+          CartNormalizers
+        );
+      });
 
-    it('should return transformed data', () => {
-      const mockTransformerData = 'mockTransformerData';
-      const callback = vi.fn();
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+      it('should return transformed data', () => {
+        const mockTransformerData = 'mockTransformerData';
+        const callback = vi.fn();
+        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
 
-      service.get(mockGetCartQualifier).subscribe(callback);
+        service.get(mockGuestGetCartQualifier).subscribe(callback);
 
-      expect(callback).toHaveBeenCalledWith(mockTransformerData);
+        expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      });
     });
   });
 
   describe('addEntry should send `post` request', () => {
-    const mockAddEntryQualifier = {
+    const mockGuestAddEntryQualifier = {
       cartId: 'test',
-      user: mockUserQualifier,
       attributes: {
         sku: 'sku',
         quantity: 1,
       },
     };
+    const mockAddEntryQualifier = {
+      ...mockGuestAddEntryQualifier,
+    };
 
-    it('should build url', () => {
-      service.addEntry(mockAddEntryQualifier);
-      expect(http.url).toBe(
-        `${mockApiUrl}/guest-carts/${
-          mockAddEntryQualifier.cartId
-        }/guest-cart-items${requestIncludes()}`
-      );
-    });
+    describe('guest user', () => {
+      it('should build url', () => {
+        service.addEntry(mockGuestAddEntryQualifier).subscribe();
 
-    it('should provide headers', () => {
-      service.addEntry(mockAddEntryQualifier);
-      expect(http.options).toHaveProperty('headers', mockRequestHeaders);
-    });
+        expect(http.url).toBe(
+          `${mockApiUrl}/guest-carts/${
+            mockGuestAddEntryQualifier.cartId
+          }/guest-cart-items${requestIncludes()}`
+        );
+      });
 
-    it('should provide body', () => {
-      service.addEntry(mockAddEntryQualifier);
-      expect(http.body).toMatchObject({
-        data: {
-          type: 'guest-cart-items',
-          attributes: mockAddEntryQualifier.attributes,
-        },
+      it('should provide headers', () => {
+        service.addEntry(mockGuestAddEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty(
+          'headers',
+          mockAnonymousRequestHeaders
+        );
+      });
+
+      it('should provide body', () => {
+        service.addEntry(mockGuestAddEntryQualifier).subscribe();
+
+        expect(http.body).toEqual({
+          data: {
+            type: 'guest-cart-items',
+            attributes: mockGuestAddEntryQualifier.attributes,
+          },
+        });
       });
     });
 
-    it('should call transformer data with data from response', () => {
-      service.addEntry(mockAddEntryQualifier).subscribe();
+    describe('loggedIn user', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
+      });
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockGetCartResponse,
-        CartNormalizers
-      );
+      it('should build url', () => {
+        service.addEntry(mockAddEntryQualifier).subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/carts/${
+            mockAddEntryQualifier.cartId
+          }/items${requestIncludes(true)}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.addEntry(mockAddEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      });
+
+      it('should provide body', () => {
+        service.addEntry(mockAddEntryQualifier).subscribe();
+
+        expect(http.body).toEqual({
+          data: {
+            type: 'items',
+            attributes: mockAddEntryQualifier.attributes,
+          },
+        });
+      });
     });
 
-    it('should return transformed data', () => {
-      const mockTransformerData = 'mockTransformerData';
-      const callback = vi.fn();
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+    describe('transforming data', () => {
+      it('should call transformer data with data from response', () => {
+        service.addEntry(mockGuestAddEntryQualifier).subscribe();
 
-      service.addEntry(mockAddEntryQualifier).subscribe(callback);
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockGetCartResponse,
+          CartNormalizers
+        );
+      });
 
-      expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      it('should return transformed data', () => {
+        const mockTransformerData = 'mockTransformerData';
+        const callback = vi.fn();
+        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+        service.addEntry(mockGuestAddEntryQualifier).subscribe(callback);
+
+        expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      });
     });
   });
 
   describe('updateEntry should send `patch` request', () => {
-    const mockUpdateEntryQualifier = {
+    const mockGuestUpdateEntryQualifier = {
       cartId: 'test',
-      user: mockUserQualifier,
       groupKey: 'groupKey',
       attributes: {
         sku: 'sku',
         quantity: 1,
       },
     };
+    const mockUpdateEntryQualifier = {
+      ...mockGuestUpdateEntryQualifier,
+    };
 
-    it('should build url', () => {
-      service.updateEntry(mockUpdateEntryQualifier);
-      expect(http.url).toBe(
-        `${mockApiUrl}/guest-carts/${
-          mockUpdateEntryQualifier.cartId
-        }/guest-cart-items/${
-          mockUpdateEntryQualifier.groupKey
-        }${requestIncludes()}`
-      );
-    });
+    describe('guest user', () => {
+      it('should build url', () => {
+        service.updateEntry(mockGuestUpdateEntryQualifier).subscribe();
 
-    it('should provide headers', () => {
-      service.updateEntry(mockUpdateEntryQualifier);
-      expect(http.options).toHaveProperty('headers', mockRequestHeaders);
-    });
+        expect(http.url).toBe(
+          `${mockApiUrl}/guest-carts/${
+            mockGuestUpdateEntryQualifier.cartId
+          }/guest-cart-items/${
+            mockGuestUpdateEntryQualifier.groupKey
+          }${requestIncludes()}`
+        );
+      });
 
-    it('should provide body', () => {
-      service.updateEntry(mockUpdateEntryQualifier);
-      expect(http.body).toMatchObject({
-        data: {
-          type: 'guest-cart-items',
-          attributes: mockUpdateEntryQualifier.attributes,
-        },
+      it('should provide headers', () => {
+        service.updateEntry(mockGuestUpdateEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty(
+          'headers',
+          mockAnonymousRequestHeaders
+        );
+      });
+
+      it('should provide body', () => {
+        service.updateEntry(mockGuestUpdateEntryQualifier).subscribe();
+
+        expect(http.body).toEqual({
+          data: {
+            type: 'guest-cart-items',
+            attributes: mockGuestUpdateEntryQualifier.attributes,
+          },
+        });
       });
     });
 
-    it('should call transformer data with data from response', () => {
-      service.addEntry(mockUpdateEntryQualifier).subscribe();
+    describe('loggedIn user', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
+      });
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockGetCartResponse,
-        CartNormalizers
-      );
+      it('should build url', () => {
+        service.updateEntry(mockUpdateEntryQualifier).subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/carts/${mockUpdateEntryQualifier.cartId}/items/${
+            mockUpdateEntryQualifier.groupKey
+          }${requestIncludes(true)}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.updateEntry(mockUpdateEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      });
+
+      it('should provide body', () => {
+        service.updateEntry(mockUpdateEntryQualifier).subscribe();
+
+        expect(http.body).toEqual({
+          data: {
+            type: 'items',
+            attributes: mockUpdateEntryQualifier.attributes,
+          },
+        });
+      });
     });
 
-    it('should return transformed data', () => {
-      const mockTransformerData = 'mockTransformerData';
-      const callback = vi.fn();
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+    describe('transforming data', () => {
+      it('should call transformer data with data from response', () => {
+        service.addEntry(mockUpdateEntryQualifier).subscribe();
 
-      service.addEntry(mockUpdateEntryQualifier).subscribe(callback);
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockGetCartResponse,
+          CartNormalizers
+        );
+      });
 
-      expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      it('should return transformed data', () => {
+        const mockTransformerData = 'mockTransformerData';
+        const callback = vi.fn();
+        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+
+        service.addEntry(mockUpdateEntryQualifier).subscribe(callback);
+
+        expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      });
     });
   });
 
   describe('deleteEntry should send `delete` request', () => {
-    const mockDeleteEntryQualifier = {
+    const mockGuestDeleteEntryQualifier = {
       cartId: 'test',
-      user: mockUserQualifier,
       groupKey: 'groupKey',
+    };
+    const mockDeleteEntryQualifier = {
+      ...mockGuestDeleteEntryQualifier,
     };
 
     beforeEach(() => {
       http.flush(null);
     });
 
-    it('should build url', () => {
-      service.deleteEntry(mockDeleteEntryQualifier);
-      expect(http.url).toBe(
-        `${mockApiUrl}/guest-carts/${
-          mockDeleteEntryQualifier.cartId
-        }/guest-cart-items/${
-          mockDeleteEntryQualifier.groupKey
-        }${requestIncludes()}`
-      );
+    describe('guest user', () => {
+      it('should build url', () => {
+        service.deleteEntry(mockGuestDeleteEntryQualifier).subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/guest-carts/${
+            mockGuestDeleteEntryQualifier.cartId
+          }/guest-cart-items/${
+            mockGuestDeleteEntryQualifier.groupKey
+          }${requestIncludes()}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.deleteEntry(mockGuestDeleteEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty(
+          'headers',
+          mockAnonymousRequestHeaders
+        );
+      });
     });
 
-    it('should provide headers', () => {
-      service.deleteEntry(mockDeleteEntryQualifier);
-      expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+    describe('loggedIn user', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
+      });
+
+      it('should build url', () => {
+        service.deleteEntry(mockDeleteEntryQualifier).subscribe();
+
+        expect(http.url).toBe(
+          `${mockApiUrl}/carts/${mockDeleteEntryQualifier.cartId}/items/${
+            mockDeleteEntryQualifier.groupKey
+          }${requestIncludes(true)}`
+        );
+      });
+
+      it('should provide headers', () => {
+        service.deleteEntry(mockDeleteEntryQualifier).subscribe();
+
+        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
+      });
     });
 
     it('should do emission', () => {
       const callback = vi.fn();
+
       service.deleteEntry(mockDeleteEntryQualifier).subscribe(callback);
+
       expect(callback).toHaveBeenCalled();
     });
   });

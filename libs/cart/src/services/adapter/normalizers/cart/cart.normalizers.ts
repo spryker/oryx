@@ -7,8 +7,10 @@ export const CartNormalizers = 'FES.CartNormalizers';
 
 export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   const guestItemsKey = camelize(ApiCartModel.Includes.GuestCartItems);
-  const { [guestItemsKey]: products } = data;
+  const itemsKey = camelize(ApiCartModel.Includes.Items);
+  const products = data[itemsKey] ?? data[guestItemsKey];
 
+  delete data[itemsKey];
   delete data[guestItemsKey];
 
   return {

@@ -2,12 +2,12 @@ import {
   AccessTokenService,
   AuthService,
   DefaultAccessTokenService,
-  DefaultAuthService,
   DefaultHttpService,
   DefaultStorageService,
   HttpService,
   StorageService,
 } from '../services';
+import { MockAuthService } from './moct-auth-service';
 
 export const mockAuthProviders = [
   {
@@ -16,7 +16,7 @@ export const mockAuthProviders = [
   },
   {
     provide: AuthService,
-    useClass: DefaultAuthService,
+    useClass: MockAuthService,
   },
   {
     provide: HttpService,

@@ -1,4 +1,4 @@
 export const enum StorageType {
-  DEFAULT = 'local',
+  LOCAL = 'local',
   SESSION = 'session',
 }

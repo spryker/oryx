@@ -10,7 +10,7 @@ import {
   PasswordVisibilityStrategy,
 } from '@spryker-oryx/ui/password';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { userLoginComponent } from './component';
 import { UserLoginComponent } from './login.component';
 
@@ -176,11 +176,11 @@ describe('User Login', () => {
       });
 
       await submit();
-      expect(authService.login).toHaveBeenCalledWith(
-        'email',
-        'password',
-        false
-      );
+      expect(authService.login).toHaveBeenCalledWith({
+        password: 'password',
+        username: 'email',
+        remember: false,
+      });
 
       expect(mutation).toHaveBeenCalled();
     });
@@ -199,16 +199,20 @@ describe('User Login', () => {
       authService.login.mockReturnValue(of(true));
       routerService.previousRoute.mockReturnValue(of(null));
       setupLogin();
-      const rememberme = element.shadowRoot?.querySelector(
+      const rememberMe = element.shadowRoot?.querySelector(
         'input[name="rememberme"]'
       ) as HTMLInputElement;
-      rememberme.click();
+      rememberMe.click();
       await submit();
-      expect(authService.login).toHaveBeenCalledWith('email', 'password', true);
+      expect(authService.login).toHaveBeenCalledWith({
+        password: 'password',
+        username: 'email',
+        remember: true,
+      });
     });
 
     it('should show error when login fails', async () => {
-      authService.login.mockReturnValue(of(false));
+      authService.login.mockReturnValue(throwError(() => new Error('Error')));
       setupLogin();
 
       expect(notification()).toBeNull();

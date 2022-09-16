@@ -3,13 +3,13 @@ import { StorageType } from './model';
 import { StorageService } from './storage.service';
 
 export class DefaultStorageService implements StorageService {
-  protected getStorage(type = StorageType.DEFAULT): Storage {
-    return type === StorageType.DEFAULT ? localStorage : sessionStorage;
+  protected getStorage(type = StorageType.LOCAL): Storage {
+    return type === StorageType.LOCAL ? localStorage : sessionStorage;
   }
 
   get<T = unknown>(
     key: string,
-    type = StorageType.DEFAULT
+    type = StorageType.LOCAL
   ): Observable<T | null> {
     try {
       return of(JSON.parse(this.getStorage(type).getItem(key) as string));
@@ -19,21 +19,17 @@ export class DefaultStorageService implements StorageService {
     return of(null);
   }
 
-  set(
-    key: string,
-    value: unknown,
-    type = StorageType.DEFAULT
-  ): Observable<void> {
+  set(key: string, value: unknown, type = StorageType.LOCAL): Observable<void> {
     this.getStorage(type).setItem(key, JSON.stringify(value));
     return of(undefined);
   }
 
-  remove(key: string, type = StorageType.DEFAULT): Observable<void> {
+  remove(key: string, type = StorageType.LOCAL): Observable<void> {
     this.getStorage(type).removeItem(key);
     return of(undefined);
   }
 
-  clear(type = StorageType.DEFAULT): Observable<void> {
+  clear(type = StorageType.LOCAL): Observable<void> {
     this.getStorage(type).clear();
     return of(undefined);
   }

@@ -4,8 +4,8 @@ import '@spryker-oryx/testing';
 import { of } from 'rxjs';
 import { CartController } from './cart.controller';
 
-class MockCartService {
-  getCart = vi.fn();
+class MockCartService implements Partial<CartService> {
+  getEntries = vi.fn();
 }
 
 describe('Cart controller', () => {
@@ -30,7 +30,7 @@ describe('Cart controller', () => {
 
   describe('when one product in quantity "1" is in the cart', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of({ products: [{ quantity: 1 }] }));
+      service.getEntries.mockReturnValue(of([{ quantity: 1 }]));
     });
 
     it('should return total quantity', () => {
@@ -45,7 +45,7 @@ describe('Cart controller', () => {
 
   describe('when one product in quantity "2" is in the cart', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of({ products: [{ quantity: 2 }] }));
+      service.getEntries.mockReturnValue(of([{ quantity: 2 }]));
     });
 
     it('should return total quantity', () => {
@@ -60,8 +60,8 @@ describe('Cart controller', () => {
 
   describe('when two products in quantity "1" are in the cart', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(
-        of({ products: [{ quantity: 1 }, { quantity: 1 }] })
+      service.getEntries.mockReturnValue(
+        of([{ quantity: 1 }, { quantity: 1 }])
       );
     });
 
@@ -76,8 +76,8 @@ describe('Cart controller', () => {
   });
   describe('when two products in quantity "2" are in the cart', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(
-        of({ products: [{ quantity: 2 }, { quantity: 2 }] })
+      service.getEntries.mockReturnValue(
+        of([{ quantity: 2 }, { quantity: 2 }])
       );
     });
 

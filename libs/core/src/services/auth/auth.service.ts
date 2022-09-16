@@ -1,16 +1,11 @@
 import { Observable } from 'rxjs';
-import { AccessToken } from './model';
+import { AuthenticateQualifier } from './adapter';
 
 export const AuthService = 'FES.AuthService';
 
 export interface AuthService {
-  login(
-    username: string,
-    password: string,
-    remember: boolean
-  ): Observable<boolean>;
-  logout(): Observable<null>;
-  getToken(): Observable<AccessToken | null>;
+  login(qualifier: AuthenticateQualifier): Observable<boolean>;
+  logout(): Observable<unknown>;
   isAuthenticated(): Observable<boolean>;
 }
 

@@ -28,7 +28,7 @@ export const appBuilder = app()
   .withFeature(productFeature)
   .withFeature(searchFeature)
   .withFeature(siteFeature)
-  .withFeature(userFeature)
   .withFeature(storefrontFeature)
   .withFeature(appFeature)
+  .withFeature(userFeature)
   .withTheme([uiStorefrontTheme]);

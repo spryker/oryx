@@ -7,7 +7,6 @@ import {
   CartQualifier,
   CartTotals,
   DeleteCartEntryQualifier,
-  LoadCartsQualifier,
   UpdateCartEntryQualifier,
 } from '../models';
 
@@ -17,11 +16,11 @@ export interface STATE {
 }
 
 export interface CartService {
-  load(data?: LoadCartsQualifier): void;
+  load(): Observable<null>;
   getCart(data?: CartQualifier): Observable<Cart | null>;
   getCartError(data?: CartQualifier): Observable<HttpErrorResponse | null>;
   getTotals(data?: CartQualifier): Observable<CartTotals | null>;
-  getEntries(data?: CartQualifier): Observable<CartEntry[] | []>;
+  getEntries(data?: CartQualifier): Observable<CartEntry[]>;
   addEntry(data: AddCartEntryQualifier): Observable<null>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<null>;
   deleteEntry(data: DeleteCartEntryQualifier): Observable<null>;

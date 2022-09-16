@@ -8,8 +8,6 @@ import {
 } from './adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
-import { DefaultUserService } from './default-user.service';
-import { UserService } from './user.service';
 
 export const cartProviders = [
   {
@@ -19,10 +17,6 @@ export const cartProviders = [
   {
     provide: CartService,
     useClass: DefaultCartService,
-  },
-  {
-    provide: UserService,
-    useClass: DefaultUserService,
   },
   {
     provide: CartNormalizers,

@@ -4,7 +4,7 @@ export const mockCartTotals = {
 };
 
 export const mockCartResponse = {
-  type: 'guest-carts',
+  type: 'carts',
   id: 'cart',
   attributes: {
     name: 'Shopping cart',
@@ -12,10 +12,10 @@ export const mockCartResponse = {
     totals: mockCartTotals,
   },
   relationships: {
-    'guest-cart-items': {
+    items: {
       data: [
         {
-          type: 'guest-cart-items',
+          type: 'items',
           id: 'entry',
         },
       ],
@@ -24,7 +24,7 @@ export const mockCartResponse = {
 };
 
 export const mockCartDefaultResponse = {
-  type: 'guest-carts',
+  type: 'carts',
   id: 'default',
   attributes: {
     name: 'Shopping cart',
@@ -32,10 +32,10 @@ export const mockCartDefaultResponse = {
     totals: mockCartTotals,
   },
   relationships: {
-    'guest-cart-items': {
+    items: {
       data: [
         {
-          type: 'guest-cart-items',
+          type: 'items',
           id: 'entry',
         },
       ],
@@ -44,7 +44,7 @@ export const mockCartDefaultResponse = {
 };
 
 export const mockEntryInclude = {
-  type: 'guest-cart-items',
+  type: 'items',
   id: 'entry',
   attributes: {
     sku: 'sku',

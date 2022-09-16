@@ -5,12 +5,12 @@ import { map, Observable } from 'rxjs';
 export class CartController {
   protected cartService = resolve(CartService);
 
-  getTotalItemsQuantity(data?: CartQualifier): Observable<number | undefined> {
+  getTotalItemsQuantity(data?: CartQualifier): Observable<number> {
     return this.cartService
-      .getCart(data)
+      .getEntries(data)
       .pipe(
-        map((cart) =>
-          cart?.products?.reduce((acc, { quantity }) => acc + quantity, 0)
+        map((products) =>
+          products.reduce((acc, { quantity }) => acc + quantity, 0)
         )
       );
   }

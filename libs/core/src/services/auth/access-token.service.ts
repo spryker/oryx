@@ -1,13 +1,12 @@
 import { Observable } from 'rxjs';
-import { AccessToken, TokenExchangeParams } from './model';
+import { AccessToken } from './model';
 
 export const AccessTokenService = 'FES.AccessTokenService';
 
 export interface AccessTokenService {
+  set(props: { token: AccessToken; persist?: boolean }): Observable<unknown>;
   get(): Observable<AccessToken | null>;
-  remove(): Observable<void>;
-  load(params: TokenExchangeParams): Observable<AccessToken>;
-  renew(token: Required<AccessToken>): Observable<AccessToken>;
+  remove(): Observable<unknown>;
 }
 
 declare global {

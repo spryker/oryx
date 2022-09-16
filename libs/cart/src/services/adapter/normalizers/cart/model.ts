@@ -5,6 +5,8 @@ import { DeserializedCartIncludes } from '../model';
 export type DeserializedCart = ApiCartModel.Attributes &
   Pick<
     DeserializedCartIncludes,
-    CamelCase<ApiCartModel.Includes.GuestCartItems>
+    CamelCase<
+      ApiCartModel.Includes.Items | ApiCartModel.Includes.GuestCartItems
+    >
   > &
   CartId;

@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  HttpService,
+  IdentityService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap, take } from 'rxjs';
 import { ApiCartModel, Cart } from '../../models';
-import { UserData } from '../user.service';
 import {
   AddCartEntityProps,
   CartAdapter,
@@ -14,125 +17,149 @@ import {
 import { CartNormalizers, CartsNormalizers } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
-  private guestCarts = 'guest-carts';
-  private guestCartItems = 'guest-cart-items';
-
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected transformer = inject(JsonAPITransformerService)
+    protected transformer = inject(JsonAPITransformerService),
+    protected identity = inject(IdentityService)
   ) {}
 
-  getAll(user: UserData): Observable<Cart[]> {
-    const url = this.generateUrl(this.guestCarts);
-    const options = {
-      headers: this.getHeaders(user),
-    };
+  getAll(): Observable<Cart[]> {
+    return combineLatest([
+      this.identity.get(),
+      this.identity.getHeaders(),
+    ]).pipe(
+      take(1),
+      switchMap(([identity, headers]) => {
+        const url = this.generateUrl(
+          !identity.anonymous
+            ? `${ApiCartModel.UrlParts.Customers}/${identity.id}/${ApiCartModel.UrlParts.Carts}`
+            : ApiCartModel.UrlParts.GuestCarts,
+          identity.anonymous
+        );
 
-    return this.http
-      .get<ApiCartModel.ResponseList>(url, options)
-      .pipe(
-        switchMap((response) =>
-          this.transformer.transform<Cart[]>(response, CartsNormalizers)
-        )
-      );
+        return this.http.get<ApiCartModel.ResponseList>(url, { headers });
+      }),
+      switchMap((response) =>
+        this.transformer.transform<Cart[]>(response, CartsNormalizers)
+      )
+    );
   }
 
   get(data: GetCartProps): Observable<Cart> {
-    const url = this.generateUrl([this.guestCarts, data.cartId].join('/'));
-    const options = {
-      headers: this.getHeaders(data.user),
-    };
+    return combineLatest([
+      this.identity.get(),
+      this.identity.getHeaders(),
+    ]).pipe(
+      take(1),
+      switchMap(([identity, headers]) => {
+        const url = this.generateUrl(
+          `${
+            !identity.anonymous
+              ? ApiCartModel.UrlParts.Carts
+              : ApiCartModel.UrlParts.GuestCarts
+          }/${data.cartId}`,
+          identity.anonymous
+        );
 
-    return this.http
-      .get<ApiCartModel.Response>(url, options)
-      .pipe(
-        switchMap((response) =>
-          this.transformer.transform<Cart>(response, CartNormalizers)
-        )
-      );
+        return this.http.get<ApiCartModel.Response>(url, { headers });
+      }),
+      switchMap((response) =>
+        this.transformer.transform<Cart>(response, CartNormalizers)
+      )
+    );
   }
 
   addEntry(data: AddCartEntityProps): Observable<Cart> {
-    const url = data.cartId
-      ? this.generateUrl(
-          [this.guestCarts, data.cartId, this.guestCartItems].join('/')
-        )
-      : this.generateUrl(this.guestCartItems);
+    return combineLatest([
+      this.identity.get(),
+      this.identity.getHeaders(),
+    ]).pipe(
+      take(1),
+      switchMap(([identity, headers]) => {
+        const url = data.cartId
+          ? this.generateUrl(
+              !identity.anonymous
+                ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}`
+                : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}`,
+              identity.anonymous
+            )
+          : this.generateUrl(
+              ApiCartModel.UrlParts.GuestCartItems,
+              identity.anonymous
+            );
 
-    const body = {
-      data: {
-        type: this.guestCartItems,
-        attributes: data.attributes,
-      },
-    };
-    const options = {
-      headers: this.getHeaders(data.user),
-    };
+        const body = {
+          data: {
+            type: !identity.anonymous
+              ? ApiCartModel.UrlParts.Items
+              : ApiCartModel.UrlParts.GuestCartItems,
+            attributes: data.attributes,
+          },
+        };
 
-    return this.http
-      .post<ApiCartModel.Response>(url, body, options)
-      .pipe(
-        switchMap((response) =>
-          this.transformer.transform<Cart>(response, CartNormalizers)
-        )
-      );
+        return this.http.post<ApiCartModel.Response>(url, body, { headers });
+      }),
+      switchMap((response) =>
+        this.transformer.transform<Cart>(response, CartNormalizers)
+      )
+    );
   }
 
   updateEntry(data: UpdateCartEntityProps): Observable<Cart> {
-    const url = this.generateUrl(
-      [this.guestCarts, data.cartId, this.guestCartItems, data.groupKey].join(
-        '/'
+    return combineLatest([
+      this.identity.get(),
+      this.identity.getHeaders(),
+    ]).pipe(
+      take(1),
+      switchMap(([identity, headers]) => {
+        const url = this.generateUrl(
+          !identity.anonymous
+            ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
+            : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}/${data.groupKey}`,
+          identity.anonymous
+        );
+        const body = {
+          data: {
+            type: !identity.anonymous
+              ? ApiCartModel.UrlParts.Items
+              : ApiCartModel.UrlParts.GuestCartItems,
+            attributes: data.attributes,
+          },
+        };
+
+        return this.http.patch<ApiCartModel.Response>(url, body, { headers });
+      }),
+      switchMap((response) =>
+        this.transformer.transform<Cart>(response, CartNormalizers)
       )
     );
-    const body = {
-      data: {
-        type: this.guestCartItems,
-        attributes: data.attributes,
-      },
-    };
-    const options = {
-      headers: this.getHeaders(data.user),
-    };
-
-    return this.http
-      .patch<ApiCartModel.Response>(url, body, options)
-      .pipe(
-        switchMap((response) =>
-          this.transformer.transform<Cart>(response, CartNormalizers)
-        )
-      );
   }
 
   deleteEntry(data: DeleteCartEntityProps): Observable<unknown> {
-    const url = this.generateUrl(
-      [this.guestCarts, data.cartId, this.guestCartItems, data.groupKey].join(
-        '/'
-      )
+    return combineLatest([
+      this.identity.get(),
+      this.identity.getHeaders(),
+    ]).pipe(
+      take(1),
+      switchMap(([identity, headers]) => {
+        const url = this.generateUrl(
+          !identity.anonymous
+            ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
+            : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}/${data.groupKey}`,
+          identity.anonymous
+        );
+
+        return this.http.delete(url, { headers });
+      })
     );
-    const options = {
-      headers: this.getHeaders(data.user),
-    };
-
-    return this.http.delete(url, options);
   }
 
-  protected generateUrl(path: string, isIncludesAdded = true): string {
-    return `${this.SCOS_BASE_URL}/${path}${
-      isIncludesAdded ? `?include=${this.getIncludes()}` : ''
-    }`;
-  }
+  protected generateUrl(path: string, isAnonymous: boolean): string {
+    const includes = isAnonymous
+      ? [ApiCartModel.Includes.GuestCartItems]
+      : [ApiCartModel.Includes.Items];
 
-  protected getIncludes(): string {
-    return Object.values(ApiCartModel.Includes).join(',');
-  }
-
-  // ToDo: create some abstract class for getting request headers
-  protected getHeaders(user: UserData): Record<string, string> {
-    return {
-      ...(user.anonymousUserId
-        ? { 'X-Anonymous-Customer-Unique-Id': user.anonymousUserId }
-        : {}),
-    };
+    return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
   }
 }

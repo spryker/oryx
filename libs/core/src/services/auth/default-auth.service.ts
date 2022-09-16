@@ -1,41 +1,47 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@spryker-oryx/injector';
-import { catchError, map, Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { AccessTokenService } from './access-token.service';
+import { AuthAdapter, AuthenticateQualifier } from './adapter';
 import { AuthService } from './auth.service';
-import { AccessToken, TokenExchangeParams } from './model';
+import { AccessToken } from './model';
 
 export class DefaultAuthService implements AuthService {
-  protected remember = false;
+  constructor(
+    protected adapter = inject(AuthAdapter),
+    protected accessToken = inject(AccessTokenService)
+  ) {}
 
-  constructor(protected accessTokenService = inject(AccessTokenService)) {}
-
-  login(
-    username: string,
-    password: string,
-    persist: boolean
-  ): Observable<boolean> {
-    const login: TokenExchangeParams = {
-      username,
-      password,
-      persist,
-    };
-
-    return this.accessTokenService.load(login).pipe(
-      catchError(() => this.logout()),
-      map((token: AccessToken | null) => !!token)
+  login(qualifier: AuthenticateQualifier): Observable<boolean> {
+    return this.adapter.authenticate(qualifier).pipe(
+      tap((token) =>
+        this.accessToken.set({ token, persist: qualifier.remember })
+      ),
+      catchError((e: HttpErrorResponse) =>
+        this.logout().pipe(
+          switchMap(() => throwError(() => new Error(`${e.name} ${e.status}`)))
+        )
+      ),
+      map((token: AccessToken | unknown) => !!token)
     );
   }
 
-  logout(): Observable<null> {
-    return this.accessTokenService.remove().pipe(mapTo(null));
-  }
-
-  getToken(): Observable<AccessToken | null> {
-    return this.accessTokenService.get();
+  logout(): Observable<unknown> {
+    return this.accessToken
+      .remove()
+      .pipe(switchMap((ret) => this.adapter.revoke?.() ?? of(ret)));
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this.getToken().pipe(map((token) => !!token));
+    return this.accessToken.get().pipe(map(Boolean), distinctUntilChanged());
   }
 }

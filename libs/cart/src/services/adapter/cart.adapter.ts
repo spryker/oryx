@@ -1,33 +1,34 @@
+import { AuthHeaders } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Cart, CartEntryAttributesQualifier } from '../../models';
-import { UserData } from '../user.service';
 
 export interface GetCartProps {
-  user: UserData;
   cartId: string;
 }
 
 export interface AddCartEntityProps {
-  user: UserData;
   cartId: string;
   attributes: CartEntryAttributesQualifier;
 }
 
 export interface UpdateCartEntityProps {
-  user: UserData;
   cartId: string;
   groupKey: string;
   attributes: CartEntryAttributesQualifier;
 }
 
 export interface DeleteCartEntityProps {
-  user: UserData;
   cartId: string;
   groupKey: string;
 }
 
+export interface GuestUserHeaders {
+  'X-Anonymous-Customer-Unique-Id': string;
+}
+export type UserHeaders = AuthHeaders;
+
 export interface CartAdapter {
-  getAll: (user: UserData) => Observable<Cart[]>;
+  getAll: () => Observable<Cart[]>;
   get: (data: GetCartProps) => Observable<Cart>;
   addEntry: (data: AddCartEntityProps) => Observable<Cart>;
   deleteEntry: (data: DeleteCartEntityProps) => Observable<unknown>;

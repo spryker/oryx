@@ -11,7 +11,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
+  EMPTY,
   of,
   ReplaySubject,
   switchMap,
@@ -42,10 +44,14 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
 
   @subscribe()
   protected auth$ = this.authTrigger$.pipe(
-    switchMap((user) => {
-      this.loading$.next(true);
-      return this.authService.login(user.email, user.password, user.rememberme);
-    }),
+    tap(() => this.loading$.next(true)),
+    switchMap((user) =>
+      this.authService.login({
+        username: user.email,
+        password: user.password,
+        remember: user.rememberme,
+      })
+    ),
     withLatestFrom(this.options$),
     switchMap(([success, options]) => {
       if (!success) {
@@ -66,7 +72,15 @@ export class UserLoginComponent extends ComponentMixin<LoginOptions>() {
         })
       );
     }),
-    tap(() => this.loading$.next(false))
+    catchError(() => {
+      this.success$.next(false);
+
+      return EMPTY;
+    }),
+    tap({
+      next: () => this.success$.next(true),
+      complete: () => this.loading$.next(false),
+    })
   );
 
   protected handleLogin(e: Event): void {
