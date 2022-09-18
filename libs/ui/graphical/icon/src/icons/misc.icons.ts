@@ -297,9 +297,19 @@ export const dropdown: Icon = {
   source: svg`<g style="transform-origin: center;transform: rotate(-90deg)">${chevron}</g>`,
 };
 
+export const expand: Icon = {
+  type: IconTypes.Expand,
+  alias: IconTypes.Dropdown,
+};
+
 export const dropUp: Icon = {
   type: IconTypes.DropUp,
   source: svg`<g style="transform-origin: center;transform: rotate(90deg)">${chevron}</g>`,
+};
+
+export const collapse: Icon = {
+  type: IconTypes.Collapse,
+  alias: IconTypes.DropUp,
 };
 
 export const loader: Icon = {

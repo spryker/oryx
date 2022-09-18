@@ -47,6 +47,10 @@ export default async function echoExecutor(
     const icons = sortObjectByKeys(unsortedIcons);
     const svgTemplate = (id: string, value: string) =>
       `<symbol id="${id}">${value}</symbol>`;
+
+    const aliasTemplate = (id: string, alias: string) =>
+      `<symbol id="${id}"><use href="#${alias}"/></symbol>`;
+
     const spriteTemplate = (
       sprites: string[]
     ) => `<?xml version="1.0" encoding="utf-8"?>
@@ -61,7 +65,11 @@ export default async function echoExecutor(
 
     for (const i in icons) {
       const icon = icons[i];
-      templates.push(svgTemplate(icon.type, icon.source.join('')));
+      if (icon.alias) {
+        templates.push(aliasTemplate(icon.type, icon.alias));
+      } else {
+        templates.push(svgTemplate(icon.type, icon.source.join('')));
+      }
     }
 
     if (!existsSync(dirname(output))) {

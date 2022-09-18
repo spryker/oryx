@@ -17,6 +17,20 @@ export interface IconProperties {
   type?: Icons | string;
 
   /**
+   * An icon can make an alias to another icon, so that it will be used as a reference to an existing icon. This feature allows
+   * for adding multiple semantic versions of the same icon.
+   *
+   * The icon is referenced by using SVGs `<use>` feature:
+   *
+   * ```svg
+   * <symbol id="type">
+   *  <use href="#alias"/>
+   * <symbol>
+   * ```
+   */
+  alias?: Icons | string;
+
+  /**
    * The oryx icon system is based on 24px by 24px. The icons are centered inside this space
    * and are optimised to use the full size. In case you need a smaller icon, you can set the
    * icon size to `Size.medium` or `Size.small`.
@@ -120,7 +134,9 @@ export enum MiscIcons {
   Drag = 'drag',
   DragSmall = 'dragSmall',
   DropUp = 'dropUp',
+  Collapse = 'collapse',
   Dropdown = 'dropdown',
+  Expand = 'expand',
   Edit = 'edit',
   FastForward = 'fastForward',
   File = 'file',
