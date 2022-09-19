@@ -14,7 +14,7 @@ export const styles = css`
 
   svg,
   ::slotted(svg) {
-    fill: currentColor;
+    fill: var(--oryx-icon-color, currentColor);
     width: calc(var(--oryx-icon-size, 24px) - (var(--_margin) * 2));
     aspect-ratio: 1 / 1;
     margin: var(--_margin);
@@ -27,32 +27,5 @@ export const styles = css`
 
   :host([size='small']) {
     --_margin: 6px;
-  }
-
-  /* standard colors */
-  :host([type='warning']) {
-    color: var(--oryx-color-warning);
-  }
-  :host([type='error']) {
-    color: var(--oryx-color-error);
-  }
-  :host([type='success']) {
-    color: var(--oryx-color-success);
-  }
-  :host([type='info']),
-  :host([type='filter']) {
-    color: var(--oryx-color-info);
-  }
-
-  :host([type='popular']) {
-    color: #ff6800;
-  }
-
-  :host([type='goldPartner']) {
-    color: #fdaf1c;
-  }
-
-  :host([type='silverPartner']) {
-    color: #9ea1a6;
   }
 `;
