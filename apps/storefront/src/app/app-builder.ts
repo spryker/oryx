@@ -1,4 +1,5 @@
 import { cartFeature } from '@spryker-oryx/cart';
+import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
 import { app, coreFeature } from '@spryker-oryx/core';
 import {
@@ -22,6 +23,7 @@ export const appBuilder = app()
   .withFeature(uiFeature)
   .withFeature(coreFeature)
   .withFeature(cartFeature)
+  .withFeature(checkoutFeature)
   .withFeature(contentFeature)
   .withFeature(experienceFeature)
   .withFeature(isPreview ? experiencePreviewFeature : {})
