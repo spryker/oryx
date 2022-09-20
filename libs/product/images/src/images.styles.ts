@@ -107,7 +107,7 @@ export const styles = css`
   .nav-item > img {
     border: var(--oryx-border-thin) solid transparent;
     cursor: pointer;
-    opacity: 50%;
+    opacity: 0.5;
     transition: all 0.35s ease;
     padding: 0;
     transition-property: opacity, border-color;
@@ -119,7 +119,7 @@ export const styles = css`
   .nav-item > input:hover + img,
   .nav-item > input:checked + img,
   .nav-item > input:focus + img {
-    opacity: 100%;
+    opacity: 1;
     border-color: var(--oryx-color-neutral-darker);
   }
 
@@ -173,12 +173,12 @@ export const styles = css`
   :host([layout='${preview.layout.toggle}']) section > picture {
     position: absolute;
     inset: 0;
-    opacity: 0%;
+    opacity: 0;
     transition: opacity var(--oryx-transition-time) ease;
   }
 
   :host([layout='${preview.layout.toggle}']) section > picture.active {
-    opacity: 100%;
+    opacity: 1;
   }
 
   :host([nav-layout='${nav.layout.grid}']) .nav {

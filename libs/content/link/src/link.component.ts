@@ -8,11 +8,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { LinkOptions, LinkType } from './link.model';
-import { styles } from './link.styles';
 
 export class ContentLinkComponent extends ComponentMixin<LinkOptions>() {
-  static styles = styles;
-
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Object, reflect: true }) options?: LinkOptions;
 

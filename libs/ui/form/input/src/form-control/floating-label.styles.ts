@@ -33,7 +33,7 @@ export const floatingLabelStyles = css`
 
   :host([floatLabel]) slot:not([name])::slotted(*)::placeholder,
   :host([floatLabel]) slot:not([name])::slotted(select:invalid) {
-    opacity: 0%;
+    opacity: 0;
   }
 
   :host([floatLabel]) slot[name='label'],

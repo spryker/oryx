@@ -63,7 +63,7 @@ export const ratingBaseStyles = css`
 
   label {
     position: absolute;
-    opacity: 0%;
+    opacity: 0;
   }
 
   slot,

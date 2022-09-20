@@ -55,6 +55,7 @@ export const paginationStyles = css`
   ::slotted(*) {
     color: var(--oryx-color-neutral-darker);
   }
+
   ::slotted(*[disabled]) {
     color: var(--oryx-color-neutral-dark);
   }
@@ -62,6 +63,7 @@ export const paginationStyles = css`
   a {
     color: var(--oryx-color-neutral-dark);
   }
+
   a[disabled] {
     color: var(--oryx-color-neutral);
   }

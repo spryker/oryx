@@ -12,7 +12,7 @@ export const searchboxStyles = css`
   }
 
   .clear {
-    opacity: 0%;
+    opacity: 0;
     z-index: 1;
     transition: opacity var(--oryx-transition-time, 0.3s);
     align-self: center;
@@ -24,7 +24,7 @@ export const searchboxStyles = css`
 
   :host([has-value]) .clear:not([appearance='HOVER']),
   :host([has-value]) .clear[appearance='HOVER']:hover {
-    opacity: 100%;
+    opacity: 1;
   }
 
   .clear:not([appearance='SHOW']) + oryx-icon {
@@ -33,7 +33,7 @@ export const searchboxStyles = css`
 
   :host([has-value]) .clear[appearance='TOGGLE'] + .search,
   :host([has-value]) .clear[appearance='HOVER']:hover + .search {
-    opacity: 0%;
+    opacity: 0;
   }
 
   @media (max-width: ${breakpoints.mobile}px) {

@@ -24,7 +24,6 @@ export const navigationItemStyles = css`
   .text {
     display: flex;
     transition: all var(--oryx-transition-time);
-    /* stylelint-disable */
     opacity: calc((var(--navigation-collapsed) - 1) * -1);
   }
 

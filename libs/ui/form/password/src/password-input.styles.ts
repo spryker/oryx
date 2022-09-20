@@ -27,6 +27,6 @@ export const passwordInputStyles = css`
 
   :host(:not([visible])) svg .invisible,
   :host([visible]) svg .visible {
-    opacity: 0%;
+    opacity: 0;
   }
 `;

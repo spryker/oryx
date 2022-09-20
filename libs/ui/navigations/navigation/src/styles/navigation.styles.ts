@@ -20,7 +20,6 @@ export const navigationStyles = css`
 
   :host([collapsed]) {
     width: 96px;
-    align-items: center;
     align-items: stretch;
   }
 

@@ -41,13 +41,13 @@ export const notificationCenterBaseStyles = css`
 
   :host > * {
     margin-bottom: 10px;
-    opacity: 0%;
+    opacity: 0;
     transition-property: opacity;
     transition-duration: var(--oryx-transition-time-long);
   }
 
   :host > [visible] {
-    opacity: 100%;
+    opacity: 1;
     transition-duration: var(--oryx-transition-time-medium);
   }
 `;

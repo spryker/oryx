@@ -27,7 +27,6 @@ export const navigationStyles = css`
 
   :host([collapsed]) {
     width: 96px;
-    align-items: center;
     align-items: stretch;
   }
 
@@ -40,7 +39,7 @@ export const navigationStyles = css`
   }
 
   :host([collapsed]) .letter-logo {
-    opacity: 0%;
+    opacity: 0;
   }
 
   button {

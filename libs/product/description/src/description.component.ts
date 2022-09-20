@@ -8,14 +8,11 @@ import {
 import { TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
-import { descriptionStyles } from './description.styles';
 import { ProductDescriptionContent } from './model';
 import { convertLineFeedsToHTML } from './utils';
 
 @hydratable(['mouseover', 'window:resize'])
 export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
-  static styles = descriptionStyles;
-
   protected options$ = new ContentController(this).getOptions();
   protected product$ = new ProductController(this).getProduct();
 
