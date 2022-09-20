@@ -17,14 +17,10 @@ export default {
     (): void => {
       const cartService = resolve(CartService);
 
-      cartService.getCart({ cartId: 'default' }).subscribe((cart) => {
+      cartService.getCart().subscribe((cart) => {
         if (cart && !cart.products?.length) {
-          cartService
-            .addEntry({ sku: '1', quantity: 1, cartId: 'default' })
-            .subscribe();
-          cartService
-            .addEntry({ sku: '2', quantity: 3, cartId: 'default' })
-            .subscribe();
+          cartService.addEntry({ sku: '1', quantity: 1 }).subscribe();
+          cartService.addEntry({ sku: '2', quantity: 3 }).subscribe();
         }
       });
     },
@@ -32,7 +28,7 @@ export default {
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`<cart-entries .options=${{ cartId: 'default' }}></cart-entries>`;
+  return html`<cart-entries></cart-entries>`;
 };
 
 export const Demo = Template.bind({});
