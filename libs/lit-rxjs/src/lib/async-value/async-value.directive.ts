@@ -89,15 +89,7 @@ export class AsyncValueDirective extends AsyncDirective {
     this.strategy = this.select(object);
 
     this.subscription = this.strategy.createSubscription(object, (value) => {
-      const isUndefined = value === null || value === undefined;
-
-      if (fallback && isUndefined) {
-        this.setValue(fallback());
-
-        return;
-      }
-
-      if (template && !isUndefined) {
+      if (template) {
         this.setValue(template(value));
 
         return;

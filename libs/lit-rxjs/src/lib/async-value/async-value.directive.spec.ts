@@ -3,7 +3,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { PartInfo } from 'lit/directive';
-import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { BehaviorSubject, of, Subject, Subscription } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
@@ -52,7 +52,7 @@ export class MockComponent extends LitElement {
 
 @customElement('mock-component-with-callback')
 export class MockComponentCallback extends LitElement {
-  mock$?: BehaviorSubject<any>;
+  mock$ = new Subject();
 
   render(): TemplateResult {
     return html`<div>
@@ -268,44 +268,21 @@ describe('asyncValue', () => {
       });
 
       it('should render defined template if callback is defined', async () => {
-        element.mock$ = new BehaviorSubject(mockInitialValue);
+        element.mock$.next(mockInitialValue);
         element.requestUpdate();
         await element.updateComplete;
 
         const callbackBlock = element.shadowRoot?.querySelector('.callback');
-        const fallbackBlock = element.shadowRoot?.querySelector('.fallback');
 
-        expect(callbackBlock).toBeTruthy();
-        expect(fallbackBlock).toBeFalsy();
+        expect(element).toContainElement('.callback');
+        expect(element).not.toContainElement('.fallback');
         expect(callbackBlock?.textContent).toEqual(mockInitialValue);
       });
 
-      it('should render defined fallback if emmited value is null or undefined', async () => {
-        element.mock$ = new BehaviorSubject(null);
+      it('should render defined fallback if emisson has not happened', async () => {
         element.requestUpdate();
         await element.updateComplete;
-
-        let callbackBlock = element.shadowRoot?.querySelector('.callback');
-        let fallbackBlock = element.shadowRoot?.querySelector('.fallback');
-
-        expect(fallbackBlock).toBeTruthy();
-        expect(callbackBlock).toBeFalsy();
-
-        element.mock$.next('mockUpdateValue');
-
-        callbackBlock = element.shadowRoot?.querySelector('.callback');
-        fallbackBlock = element.shadowRoot?.querySelector('.fallback');
-
-        expect(fallbackBlock).toBeFalsy();
-        expect(callbackBlock).toBeTruthy();
-
-        element.mock$.next(undefined);
-
-        callbackBlock = element.shadowRoot?.querySelector('.callback');
-        fallbackBlock = element.shadowRoot?.querySelector('.fallback');
-
-        expect(fallbackBlock).toBeTruthy();
-        expect(callbackBlock).toBeFalsy();
+        expect(element).toContainElement('.fallback');
       });
     });
   });

@@ -22,32 +22,28 @@ export class BannerComponent extends ComponentMixin<
   protected data$ = combineLatest([this.content$, this.options$]);
 
   override render(): TemplateResult {
-    return html`${asyncValue(
-      this.data$,
-      ([content, options]) => {
-        const contents = html`
-          <img src=${ifDefined(content?.image)} alt=${ifDefined(options.alt)} />
-          <div class="overlay">
-            ${when(
-              content?.title,
-              () => html`<h1 aria-label="title">${content?.title}</h1>`
-            )}
-            ${when(content?.content, () => html`<h2>${content?.content}</h2>`)}
-          </div>
-        `;
-        return html` ${when(
-          options.link,
-          () => html`<a
-            href=${ifDefined(options.link)}
-            target=${ifDefined(options.urlTarget)}
-            aria-label=${ifDefined(options.linkLabel)}
-          >
-            ${contents}
-          </a>`,
-          () => html`${contents}`
-        )}`;
-      },
-      () => html``
-    )}`;
+    return html`${asyncValue(this.data$, ([content, options]) => {
+      const contents = html`
+        <img src=${ifDefined(content?.image)} alt=${ifDefined(options.alt)} />
+        <div class="overlay">
+          ${when(
+            content?.title,
+            () => html`<h1 aria-label="title">${content?.title}</h1>`
+          )}
+          ${when(content?.content, () => html`<h2>${content?.content}</h2>`)}
+        </div>
+      `;
+      return html` ${when(
+        options.link,
+        () => html`<a
+          href=${ifDefined(options.link)}
+          target=${ifDefined(options.urlTarget)}
+          aria-label=${ifDefined(options.linkLabel)}
+        >
+          ${contents}
+        </a>`,
+        () => html`${contents}`
+      )}`;
+    })}`;
   }
 }
