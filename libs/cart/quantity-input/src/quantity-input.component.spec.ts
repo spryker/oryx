@@ -10,6 +10,9 @@ describe('Quantity input', () => {
   const getInput = (): HTMLInputElement => {
     return element.renderRoot.querySelector('input') as HTMLInputElement;
   };
+  const dispatchChangeEvent = (): void => {
+    getInput().dispatchEvent(new Event('change'));
+  };
 
   beforeAll(async () => {
     await useComponent(quantityInputComponent);
@@ -267,6 +270,81 @@ describe('Quantity input', () => {
       expect(
         element.renderRoot.querySelector('oryx-input')?.getAttribute('label')
       ).toBe(label);
+    });
+  });
+
+  describe('when incorrect input value is set', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      element = await fixture(
+        html` <quantity-input
+          min=${1}
+          value=${1}
+          max=${2}
+          @oryx.quantity=${callback}
+        ></quantity-input>`
+      );
+    });
+
+    describe('and value is less then min', () => {
+      beforeEach(() => {
+        getInput().value = '0';
+        dispatchChangeEvent();
+      });
+
+      it('should not dispatch the quantity event', () => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and value is greater then max', () => {
+      beforeEach(() => {
+        getInput().value = '3';
+        dispatchChangeEvent();
+      });
+
+      it('should not dispatch the quantity event', () => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and input`s value equals to the property`s value', () => {
+      beforeEach(() => {
+        getInput().value = '1';
+        dispatchChangeEvent();
+      });
+
+      it('should not dispatch the quantity event', () => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when custom icons are provided', () => {
+    const customIcon = 'close';
+
+    beforeEach(async () => {
+      element = await fixture(
+        html` <quantity-input
+          decrease-icon=${customIcon}
+          increase-icon=${customIcon}
+        ></quantity-input>`
+      );
+    });
+
+    it('should override the default icon for decrease button', () => {
+      const icon = element.renderRoot.querySelector(
+        'button[aria-label="decrease"] oryx-icon'
+      );
+      expect(icon?.getAttribute('type')).toBe(customIcon);
+    });
+
+    it('should override the default icon for increase button', () => {
+      const icon = element.renderRoot.querySelector(
+        'button[aria-label="increase"] oryx-icon'
+      );
+      expect(icon?.getAttribute('type')).toBe(customIcon);
     });
   });
 });

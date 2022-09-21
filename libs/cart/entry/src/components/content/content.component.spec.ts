@@ -8,6 +8,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { siteProviders } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
+import { RemoveByQuantity } from '../../entry.model';
 import { CartEntryPriceComponent } from '../price/price.component';
 import { cartEntryContentComponent } from './component';
 import { CartEntryContentComponent } from './content.component';
@@ -95,6 +96,26 @@ describe('CartEntryContentComponent', () => {
       await elementUpdated(element);
 
       expect(getQuantityInputComponent()?.value).toBe(options.quantity);
+    });
+  });
+
+  describe('when removeByQuantity is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<cart-entry-content
+        .options=${{
+          ...options,
+          quantity: 1,
+          removeByQuantity: RemoveByQuantity.ShowBin,
+        }}
+      ></cart-entry-content>`);
+    });
+    it('should set min value to 0', async () => {
+      expect(getQuantityInputComponent()?.min).toBe(0);
+    });
+    it('should set "decrease-icon" attribute', async () => {
+      expect(getQuantityInputComponent()?.hasAttribute('decrease-icon')).toBe(
+        true
+      );
     });
   });
 });

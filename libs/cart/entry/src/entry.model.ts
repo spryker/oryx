@@ -16,6 +16,12 @@ export interface CartEntryOptions extends CartEntry {
   hidePreview?: boolean;
 
   /**
+   * Allow to remove entry when quantity is set to 0.
+   * Possible options: 'allowZero' | 'showBin'
+   */
+  removeByQuantity?: RemoveByQuantity;
+
+  /**
    * Emit removing immediately without confirmation.
    */
   silentRemove?: boolean;
@@ -36,6 +42,18 @@ export interface CartEntryOptions extends CartEntry {
    * Indicates that entry is updating
    */
   updating?: boolean;
+}
+
+export enum RemoveByQuantity {
+  /**
+   * Shows the bin icon at the minus control whenever the quantity is `1`.
+   */
+  ShowBin = 'showBin',
+
+  /**
+   * Allows to remove the product from cart when the quantity becomes zero.
+   */
+  AllowZero = 'allowZero',
 }
 
 export interface CartEntryCompositionOptions extends CartEntryOptions {

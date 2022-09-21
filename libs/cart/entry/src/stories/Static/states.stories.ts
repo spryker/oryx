@@ -5,7 +5,10 @@ import { Meta, Story } from '@storybook/web-components';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
-import { CartEntryCompositionOptions } from '../../entry.model';
+import {
+  CartEntryCompositionOptions,
+  RemoveByQuantity,
+} from '../../entry.model';
 import { selectedProductOptions } from '../common';
 
 const sku = '1';
@@ -100,6 +103,16 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <p>Updated</p>
     <cart-entry .options=${createEntry({ updating: true })}></cart-entry>
+
+    <p>Allow zero quantity</p>
+    <cart-entry
+      .options=${createEntry({ removeByQuantity: RemoveByQuantity.AllowZero })}
+    ></cart-entry>
+
+    <p>Allow zero quantity with bin</p>
+    <cart-entry
+      .options=${createEntry({ removeByQuantity: RemoveByQuantity.ShowBin })}
+    ></cart-entry>
   `;
 };
 

@@ -1,9 +1,13 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { CartEntryCompositionOptions } from '../../entry.model';
+import {
+  CartEntryCompositionOptions,
+  RemoveByQuantity,
+} from '../../entry.model';
 import { cartEntryContentStyles } from './content.styles';
 
 export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositionOptions>() {
@@ -22,6 +26,12 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
       (this.quantityInputRef.value as QuantityInputComponent).value = this
         .options?.quantity as number;
     }
+  }
+
+  protected getDecreaseIcon(): string | undefined {
+    return this.options?.removeByQuantity === RemoveByQuantity.ShowBin
+      ? 'trash'
+      : undefined;
   }
 
   protected render(): TemplateResult {
@@ -56,9 +66,10 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
         <div class="col">
           <quantity-input
             ${ref(this.quantityInputRef)}
-            min=${0}
+            min=${!this.options?.removeByQuantity ? 1 : 0}
             .value=${this.options?.quantity}
             ?disabled=${this.disabled || this.options?.disabled}
+            decrease-icon=${ifDefined(this.getDecreaseIcon())}
           ></quantity-input>
 
           <cart-entry-price

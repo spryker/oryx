@@ -1,5 +1,5 @@
 import { hydratable } from '@spryker-oryx/core';
-import { MiscIcons } from '@spryker-oryx/ui/icon';
+import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
@@ -16,6 +16,8 @@ export class QuantityInputComponent extends LitElement {
   @property({ type: Number }) max?: number;
   @property({ type: Number }) value = this.min;
   @property({ type: String }) label?: string;
+  @property({ attribute: 'decrease-icon' }) decreaseIcon?: Icons;
+  @property({ attribute: 'increase-icon' }) increaseIcon?: Icons;
 
   protected inputRef: Ref<HTMLInputElement> = createRef();
 
@@ -49,6 +51,18 @@ export class QuantityInputComponent extends LitElement {
 
   protected updateQuantity(): void {
     const quantity = Number(this.inputRef.value?.value);
+
+    if (
+      quantity < this.min ||
+      (this.max !== undefined && quantity > this.max) ||
+      quantity === this.value
+    ) {
+      if (this.inputRef.value) {
+        this.inputRef.value.value = String(this.value);
+      }
+      return;
+    }
+
     this.value = quantity;
 
     this.dispatchEvent(
@@ -69,7 +83,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || this.value <= this.min}
         @click=${this.decrease}
       >
-        <oryx-icon type=${MiscIcons.Minus}></oryx-icon>
+        <oryx-icon type=${this.decreaseIcon ?? MiscIcons.Minus}></oryx-icon>
       </button>
       <oryx-input label=${ifDefined(this.label)}>
         <input
@@ -91,7 +105,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || !!(this.max && this.value >= this.max)}
         @click=${this.increase}
       >
-        <oryx-icon type=${MiscIcons.Add}></oryx-icon>
+        <oryx-icon type=${this.increaseIcon ?? MiscIcons.Add}></oryx-icon>
       </button>
     `;
   }

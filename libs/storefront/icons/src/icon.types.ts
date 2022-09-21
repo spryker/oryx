@@ -9,4 +9,6 @@ export enum StorefrontIconTypes {
   Search = 'search',
   Close = 'close',
   Image = 'image',
+  InputError = 'inputError',
+  Trash = 'trash',
 }

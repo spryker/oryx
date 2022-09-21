@@ -7,7 +7,11 @@ import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { customElement, property, state } from 'lit/decorators.js';
 import { storybookPrefix } from '../../../.constants';
-import { CartEntryCompositionOptions, CartEntryOptions } from '../entry.model';
+import {
+  CartEntryCompositionOptions,
+  CartEntryOptions,
+  RemoveByQuantity,
+} from '../entry.model';
 import { cartEntryComponents } from '../index';
 import { selectedProductOptions } from './common';
 
@@ -112,6 +116,10 @@ Demo.argTypes = {
   },
   removeButtonIcon: {
     options: Object.values(IconTypes),
+    control: { type: 'select' },
+  },
+  removeByQuantity: {
+    options: Object.values(RemoveByQuantity),
     control: { type: 'select' },
   },
 };
