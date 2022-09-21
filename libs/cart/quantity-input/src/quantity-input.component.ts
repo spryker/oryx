@@ -7,7 +7,7 @@ import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { QUANTITY_EVENT } from './quantity-input.model';
 import { styles } from './quantity-input.styles';
 
-@hydratable()
+@hydratable(['click', 'focusin'])
 export class QuantityInputComponent extends LitElement {
   static styles = styles;
 

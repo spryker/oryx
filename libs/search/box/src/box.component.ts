@@ -35,7 +35,7 @@ import {
 } from './controllers';
 import { baseSearchboxStyles, searchboxStyles } from './styles';
 
-@hydratable('click')
+@hydratable('focusin')
 export class SearchBoxComponent
   extends ComponentMixin<SearchBoxOptions>()
   implements SearchBoxProperties

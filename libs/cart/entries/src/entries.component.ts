@@ -8,7 +8,7 @@ import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
 
-@hydratable()
+@hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>() {
   static styles = styles;
 

@@ -8,7 +8,7 @@ import { combineLatest, map } from 'rxjs';
 import { MiniCartOptions } from './mini-cart.model';
 import { styles } from './mini-cart.styles';
 
-@hydratable()
+@hydratable('window:load')
 export class MiniCartComponent extends CartComponentMixin<MiniCartOptions>() {
   static styles = styles;
 

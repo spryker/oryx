@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/core';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
@@ -18,6 +19,7 @@ import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 import { typeaheadStyles } from './typeahead.styles';
 
+@hydratable('focusin')
 export class TypeaheadComponent
   extends LitElement
   implements
