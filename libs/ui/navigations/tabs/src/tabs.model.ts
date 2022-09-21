@@ -7,8 +7,18 @@ export interface TabsProperties {
 
   /**
    * The given value is used to display a shadow in tabs bar border.
+   *
+   * @defaults `false`
    */
   shadow: boolean;
+
+  /**
+   * Allows to set `primary` or `secondary` appearance. The appearance can be used
+   * to create alternative UIs.
+   *
+   * @defaults `TabsAppearance.Primary`
+   */
+  appearance: TabsAppearance;
 }
 
 /**

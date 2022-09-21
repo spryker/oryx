@@ -17,27 +17,16 @@ const Template: Story<Props> = (): TemplateResult => {
     <h3>Primary tab</h3>
 
     <oryx-tabs appearance="primary">
-      <oryx-tab for="p1" selected>Tab 1</oryx-tab>
+      <oryx-tab>Tab 1</oryx-tab>
+      <div slot="panels">Сontent for primary tab 1</div>
     </oryx-tabs>
-
-    <oryx-tab-panel id="p1">Сontent for primary tab 1</oryx-tab-panel>
 
     <h3>Secondary tab</h3>
 
     <oryx-tabs appearance="secondary">
-      <oryx-tab for="s1" selected>Tab 1</oryx-tab>
+      <oryx-tab>Tab 1</oryx-tab>
+      <div slot="panels">Сontent for secondary tab 1</div>
     </oryx-tabs>
-
-    <oryx-tab-panel id="s1">Сontent for secondary tab 1</oryx-tab-panel>
-
-    <style>
-      oryx-tabs {
-        display: flex;
-      }
-      oryx-tab-panel {
-        padding: 24px;
-      }
-    </style>
   `;
 };
 

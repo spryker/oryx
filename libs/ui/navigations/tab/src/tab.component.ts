@@ -1,9 +1,9 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
+import { TabProperties } from './tab.model';
 import { tabStyles } from './tab.styles';
 
-export class TabComponent extends LitElement {
+export class TabComponent extends LitElement implements TabProperties {
   static styles = tabStyles;
 
   @property() for?: string;
@@ -11,9 +11,6 @@ export class TabComponent extends LitElement {
   @property({ type: Boolean, reflect: true }) error = false;
 
   render(): TemplateResult {
-    return html`${when(
-        this.error,
-        () => html` <oryx-icon type="error"></oryx-icon>`
-      )} <slot></slot>`;
+    return html`<slot></slot>`;
   }
 }

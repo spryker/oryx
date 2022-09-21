@@ -9,110 +9,72 @@ export class TabsComponent extends LitElement implements TabsProperties {
   static styles = tabsStyles;
 
   @property({ type: Number }) activeTabIndex = 0;
-  @property({ type: String }) appearance = TabsAppearance.Primary;
-  @property({ type: Boolean }) shadow = false;
+  @property({ type: String, reflect: true }) appearance =
+    TabsAppearance.Primary;
+  @property({ type: Boolean, reflect: true }) shadow = false;
 
   @queryAssignedElements({ selector: 'oryx-tab' })
   tabs!: Array<TabComponent>;
+  @queryAssignedElements({ slot: 'panels' })
+  protected panels?: Array<HTMLElement>;
 
-  @state() panels!: Array<HTMLElement>;
-  @state() selectedTab?: TabComponent;
   @state() rangeValue?: number;
-
-  firstUpdated(): void {
-    this.selectedTab =
-      this.tabs.find((tab) => tab.selected) || this.tabs[this.activeTabIndex];
-    this.panels = this.getPanels(this.tabs);
-    this.selectTab(this.selectedTab?.for);
-    this.selectPanel(this.selectedTab?.for);
-  }
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.addEventListener('click', this.onClick as EventListener);
-  }
-
-  disconnectedCallback(): void {
-    this.removeEventListener('click', this.onClick as EventListener);
-  }
 
   protected render(): TemplateResult {
     return html`
       <input
         type="range"
         aria-label="tabs"
-        name="tabs"
         min="1"
         @change=${this.onChange}
         value="${ifDefined(this.rangeValue)}"
         .max=${(this.tabs.length ?? 0).toString()}
       />
-
-      <slot type=${this.appearance}></slot>
+      <slot @click=${this.onClick} @slotchange=${this.onSlotChange}></slot>
+      <slot name="panels"></slot>
     `;
   }
 
-  protected getPanels(tabs: TabComponent[]): HTMLElement[] {
-    const panels: HTMLElement[] = [];
-    tabs.forEach((tab) => {
-      const panel = document.querySelector(`#${tab.for}`) as HTMLElement;
-      if (panel) {
-        panels.push(panel);
+  protected select(tab?: TabComponent | null): void {
+    if (!tab) {
+      return;
+    }
+
+    this.tabs?.forEach((t, index) => {
+      t.selected = t === tab;
+      if (t.selected) {
+        this.rangeValue = index + 1;
       }
     });
-    return panels;
+    if (tab.hasAttribute('for')) {
+      this.panels?.forEach((panel) =>
+        panel.toggleAttribute('selected', panel.id === tab.getAttribute('for'))
+      );
+    } else {
+      const tabIndex = this.tabs?.indexOf(tab);
+      this.panels?.forEach((panel, index) =>
+        panel.toggleAttribute('selected', tabIndex === index)
+      );
+    }
+
+    tab.scrollIntoView({ block: 'nearest' });
   }
 
-  protected selectTab(tabId?: string): void {
-    const target = this.tabs.find((tab) => tab.for === tabId);
-    if (target) {
-      target?.scrollIntoView({ inline: 'nearest' });
-    }
-
-    if (tabId) {
-      this.tabs.forEach((tab, index) => {
-        tab.selected = tab.for === tabId;
-        this.rangeValue =
-          tab.for === tabId ? Number(index + 1) : this.rangeValue;
-      });
-    }
-  }
-
-  protected selectPanel(tabId?: string): void {
-    if (this.panels) {
-      this.panels.forEach((panel) => {
-        if (panel.id === tabId) {
-          panel.setAttribute('selected', '');
-        } else {
-          panel.removeAttribute('selected');
-        }
-      });
-    }
+  protected onSlotChange(): void {
+    const tab =
+      this.tabs?.find((tab) => tab.selected) ||
+      this.tabs?.[this.activeTabIndex];
+    this.select(tab);
   }
 
   protected onClick(e: Event): void {
-    const targetId = (e.target as HTMLElement)
-      .closest('oryx-tab')
-      ?.getAttribute('for');
-
-    const tab: TabComponent | undefined = this.tabs.find(
-      (tab) => tab.for === targetId
-    );
-
-    this.tabSelect(tab);
+    const tab = (e.target as HTMLElement).closest<TabComponent>('oryx-tab');
+    this.select(tab);
   }
 
   protected onChange(e: Event): void {
-    const el = e.target as HTMLInputElement;
-    const tab: TabComponent | undefined = this.tabs[Number(el.value) - 1];
-
-    this.tabSelect(tab);
-  }
-
-  private tabSelect(tab?: TabComponent): void {
-    if (tab) {
-      this.selectTab(tab.for);
-      this.selectPanel(tab.for);
-    }
+    const target = e.target as HTMLInputElement;
+    const tab: TabComponent | undefined = this.tabs?.[Number(target.value) - 1];
+    this.select(tab);
   }
 }

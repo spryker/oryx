@@ -25,11 +25,6 @@ export const tabStyles = css`
     }
   }
 
-  :host:focus-within {
-    color: var(--oryx-color-ink);
-    border-color: var(--oryx-color-neutral-darker);
-  }
-
   :host(:not([selected]):hover) {
     color: var(--oryx-color-ink);
     border-color: var(--oryx-color-neutral-darker);

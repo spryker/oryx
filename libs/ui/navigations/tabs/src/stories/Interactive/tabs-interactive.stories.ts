@@ -16,15 +16,13 @@ export default {
 
 const Template: Story<Props> = (): TemplateResult => {
   return html`<oryx-tabs>
-      ${Array.from(new Array(5).keys()).map((key) => {
-        return html`<oryx-tab for="n${key + 1}"> Tab ${key + 1}</oryx-tab>`;
-      })}
-    </oryx-tabs>
     ${Array.from(new Array(5).keys()).map((key) => {
-      return html`<oryx-tab-panel id="n${key + 1}"
-        >Content for tab ${key + 1}</oryx-tab-panel
-      >`;
-    })} `;
+      return html`<oryx-tab> Tab ${key + 1}</oryx-tab>`;
+    })}
+    ${Array.from(new Array(5).keys()).map((key) => {
+      return html`<div slot="panels">Content for tab ${key + 1}</div>`;
+    })}
+  </oryx-tabs> `;
 };
 
 export const TabsInteractive = Template.bind({});

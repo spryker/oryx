@@ -23,7 +23,6 @@ import { navigationComponent } from '../navigations/navigation/src/component';
 import { pageNavigationItemComponent } from '../navigations/page-navigation-item/src/component';
 import { pageNavigationComponent } from '../navigations/page-navigation/src/component';
 import { paginationComponent } from '../navigations/pagination/src/component';
-import { tabPanelComponent } from '../navigations/tab-panel/src/tab-panel.def';
 import { tabComponent } from '../navigations/tab/src/tab.def';
 import { tabsComponent } from '../navigations/tabs/src/tabs.def';
 import { optionComponent } from '../option/src/component';
@@ -78,7 +77,6 @@ export const uiFeature: AppFeature = {
     spinnerComponent,
     tabComponent,
     tabsComponent,
-    tabPanelComponent,
     tagComponent,
     textComponent,
     tileComponent,
