@@ -299,7 +299,7 @@ export const dropdown: Icon = {
 
 export const expand: Icon = {
   type: IconTypes.Expand,
-  alias: IconTypes.Dropdown,
+  alias: IconTypes.Minus,
 };
 
 export const dropUp: Icon = {
@@ -309,7 +309,7 @@ export const dropUp: Icon = {
 
 export const collapse: Icon = {
   type: IconTypes.Collapse,
-  alias: IconTypes.DropUp,
+  alias: IconTypes.Add,
 };
 
 export const loader: Icon = {

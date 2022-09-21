@@ -1,80 +1,57 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { uiBackofficeTheme } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
-import { IconTypes } from '../../../graphical/icon';
-import { collapsibleComponent } from '../component';
+import { collapsibleComponent } from '../collapsible.def';
+import {
+  CollapsibleAppearance,
+  CollapsibleProps,
+  CollapsibleToggleControlType,
+} from '../collapsible.model';
 
-useComponent(collapsibleComponent);
+useComponent(
+  collapsibleComponent({ theme: uiBackofficeTheme['oryx-collapsible'] })
+);
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible`,
-  // disables Chromatic's snapshotting on a story level
-  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    appearance: CollapsibleAppearance.Block,
+    toggleAppearance: CollapsibleToggleControlType.IconButton,
+    header: 'header',
+  },
+  argTypes: {
+    appearance: {
+      options: [CollapsibleAppearance.Block, CollapsibleAppearance.Inline],
+      control: { type: 'select' },
+    },
+    toggleAppearance: {
+      options: [
+        CollapsibleToggleControlType.IconButton,
+        CollapsibleToggleControlType.TextButton,
+      ],
+      control: { type: 'select' },
+    },
+    open: {
+      control: { type: 'boolean' },
+    },
+  },
 } as Meta;
 
-export interface Props {
-  open?: boolean;
-  header?: string;
-  content?: string;
-  iconCollapse?: string;
-  iconExpand?: string;
-}
-
-const Template: Story<Props> = ({
-  open,
-  header,
-  content,
-  iconCollapse,
-  iconExpand,
-}: Props): TemplateResult => {
+const Template: Story<CollapsibleProps> = (
+  props: CollapsibleProps
+): TemplateResult => {
   return html`
-    <oryx-collapsible ?open=${open}>
-      <span slot="header">${header}</span>
-      ${when(
-        iconExpand,
-        () =>
-          html`<oryx-icon
-            type=${iconExpand}
-            size="medium"
-            slot="expand-icon"
-          ></oryx-icon>`
-      )}${when(
-        iconCollapse,
-        () =>
-          html`<oryx-icon
-            type=${iconCollapse}
-            size="medium"
-            slot="collapse-icon"
-          ></oryx-icon>`
-      )}
-      ${content}
+    <oryx-collapsible
+      ?open=${props.open}
+      .appearance=${props.appearance}
+      .toggleAppearance=${props.toggleControlType}
+      .header=${props.header}
+    >
+      Content with <button>accessible</button> elements.
     </oryx-collapsible>
   `;
 };
 
 export const CollapsibleDemo = Template.bind({});
-CollapsibleDemo.args = {
-  header: 'Header',
-  content: 'Content text',
-};
-CollapsibleDemo.argTypes = {
-  open: {
-    control: { type: 'boolean' },
-  },
-  header: {
-    control: { type: 'text' },
-  },
-  content: {
-    control: { type: 'text' },
-  },
-  iconExpand: {
-    options: Object.values(IconTypes),
-    control: { type: 'select' },
-  },
-  iconCollapse: {
-    options: Object.values(IconTypes),
-    control: { type: 'select' },
-  },
-};

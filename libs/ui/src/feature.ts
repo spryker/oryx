@@ -5,7 +5,7 @@ import { linkComponent } from '../actions/link/src/component';
 import { toggleIconComponent } from '../actions/toggle-icon/src/component';
 import { toggleComponent } from '../actions/toggle/src/component';
 import { cardComponent } from '../card/src/component';
-import { collapsibleComponent } from '../collapsible/src/component';
+import { collapsibleComponent } from '../collapsible/src/collapsible.def';
 import { errorMessageComponent } from '../error-message/src/component';
 import { checkboxComponent } from '../form/checkbox/src/component';
 import { inputListComponent } from '../form/input-list/src/component';
