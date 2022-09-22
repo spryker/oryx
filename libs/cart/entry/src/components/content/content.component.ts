@@ -29,7 +29,8 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
   }
 
   protected getDecreaseIcon(): string | undefined {
-    return this.options?.removeByQuantity === RemoveByQuantity.ShowBin
+    return this.options?.removeByQuantity === RemoveByQuantity.ShowBin &&
+      this.options?.quantity === 1
       ? 'trash'
       : undefined;
   }
