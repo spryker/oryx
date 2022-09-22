@@ -150,9 +150,7 @@ export class AsyncValueDirective extends AsyncDirective {
 export const asyncValue = directive(AsyncValueDirective) as <T>(
   object: T,
   template?: (
-    value: T extends Promise<infer K> | Observable<infer K>
-      ? Exclude<K, null | undefined>
-      : unknown
+    value: T extends Promise<infer K> | Observable<infer K> ? K : unknown
   ) => TemplateResult,
   fallback?: () => TemplateResult
 ) => DirectiveResult<typeof AsyncValueDirective>;

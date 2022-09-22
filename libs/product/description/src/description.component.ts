@@ -27,7 +27,7 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
         >
           ${asyncValue(
             this.product$,
-            (product) => html`${unsafeHTML(this.convert(product.description))}`
+            (product) => html`${unsafeHTML(this.convert(product?.description))}`
           )}
         </oryx-text>`
       )}

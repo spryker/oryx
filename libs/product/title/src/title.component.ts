@@ -27,7 +27,7 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
           html`${this.renderTitle(
             html` ${asyncValue(
               this.product$,
-              (product) => html`${product.name}`
+              (product) => html`${product?.name}`
             )}`,
             options
           )} `

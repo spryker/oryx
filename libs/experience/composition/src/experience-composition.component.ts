@@ -89,7 +89,8 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
           isClient() &&
           !this.isHydrated
             ? html`${[...this.shadowRoot.children]}`
-            : html`${repeat(
+            : components
+            ? html`${repeat(
                 components,
                 (component) => component.id,
                 (component) =>
@@ -99,7 +100,8 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
                     component.id!,
                     this.getLayout(component?.options?.data)
                   )
-              )}`,
+              )}`
+            : html``,
         () => html`Loading...`
       )}
     `;

@@ -45,55 +45,56 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(
-      this.product$,
-      (product) => html`
-        <content-link
-          @click=${this.clickHandler}
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: product.sku,
-          }}"
-        >
-          <div class="image">
-            <product-images
-              .options="${{ hideNavigation: true }}"
-            ></product-images>
-          </div>
-          <div class="info">
-            <div class="info-row">
-              <div class="info-col grow1">
-                <product-title
-                  .options="${{ singleLine: true }}"
-                ></product-title>
+    return html`${asyncValue(this.product$, (product) =>
+      product
+        ? html`
+            <content-link
+              @click=${this.clickHandler}
+              .options="${{
+                type: SemanticLinkType.Product,
+                id: product.sku,
+              }}"
+            >
+              <div class="image">
+                <product-images
+                  .options="${{ hideNavigation: true }}"
+                ></product-images>
               </div>
-            </div>
-            <div class="info-row">
-              <div class="info-col">
-                <product-price></product-price>
+              <div class="info">
+                <div class="info-row">
+                  <div class="info-col grow1">
+                    <product-title
+                      .options="${{ singleLine: true }}"
+                    ></product-title>
+                  </div>
+                </div>
+                <div class="info-row">
+                  <div class="info-col">
+                    <product-price></product-price>
+                  </div>
+                  <div class="info-col">
+                    <product-average-rating></product-average-rating>
+                  </div>
+                </div>
+                <div class="info-row">
+                  <div class="info-col grow1">
+                    <oryx-button type="primary" outline size="medium">
+                      <button focusable="false" class="action">View</button>
+                    </oryx-button>
+                  </div>
+                  <div class="info-col">
+                    <add-to-cart
+                      focusable
+                      .options="${{
+                        hideQuantityInput: true,
+                      }}"
+                    ></add-to-cart>
+                  </div>
+                </div>
               </div>
-              <div class="info-col">
-                <product-average-rating></product-average-rating>
-              </div>
-            </div>
-            <div class="info-row">
-              <div class="info-col grow1">
-                <oryx-button type="primary" outline size="medium">
-                  <button focusable="false" class="action">View</button>
-                </oryx-button>
-              </div>
-              <div class="info-col">
-                <add-to-cart
-                  focusable
-                  .options="${{
-                    hideQuantityInput: true,
-                  }}"
-                ></add-to-cart>
-              </div>
-            </div>
-          </div>
-        </content-link>
-      `
+            </content-link>
+          `
+        : html``
     )}`;
   }
 }
