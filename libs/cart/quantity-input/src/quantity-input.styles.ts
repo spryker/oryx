@@ -51,6 +51,7 @@ export const styles = css`
     border: 2px solid #dce0e5;
     outline: none;
     border-radius: 2px;
+    margin: 0;
   }
 
   button[disabled] {
