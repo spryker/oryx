@@ -2,13 +2,24 @@ export interface CartId {
   id: string;
 }
 
+export enum PriceMode {
+  GrossMode = 'GROSS_MODE',
+  NetMode = 'NET_MODE',
+}
+
+export interface CartDiscount {
+  displayName: string;
+  amount: number;
+  code?: string;
+}
+
 export interface Cart extends CartId {
   name: string;
   isDefault: boolean;
   totals: CartTotals;
-  discounts?: unknown[];
+  priceMode: PriceMode;
+  discounts?: CartDiscount[];
   thresholds?: unknown[];
-  priceMode?: string;
   currency?: string;
   store?: string;
   products?: CartEntry[];
@@ -31,12 +42,32 @@ export interface CartEntry {
 }
 
 export interface CartTotals {
-  grandTotal: number;
-  priceToPay: number;
-  expenseTotal?: number;
-  discountTotal?: number;
-  taxTotal?: number;
+  /**
+   * The subtotal of the cart, including or excluding tax depending on the configuration.
+   */
   subtotal?: number;
+  /**
+   * The sub total of the cart.
+   */
+  grandTotal: number;
+  /**
+   * Total amount that must be paid including tax and fees but excluding discounts.
+   *
+   * As long as the user have not selected a shipment or payment method, this value is misleading though.
+   */
+  priceToPay: number;
+  /**
+   * Additional fees that are added to the cart totals.
+   */
+  expenseTotal?: number;
+  /**
+   * Total amount of discounts (if any)
+   */
+  discountTotal?: number;
+  /**
+   * Total amount of tax for the cart.
+   */
+  taxTotal?: number;
 }
 
 export interface CartCalculations {

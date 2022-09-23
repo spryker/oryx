@@ -2,13 +2,22 @@ import { ApiProductModel } from '@spryker-oryx/product';
 import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
 
 export module ApiCartModel {
+  export enum PriceMode {
+    GrossMode = 'GROSS_MODE',
+    NetMode = 'NET_MODE',
+  }
+  export interface Discount {
+    displayName: string;
+    amount: number;
+    code?: string;
+  }
   export interface Attributes {
     name: string;
     isDefault: boolean;
     totals: Totals;
-    discounts?: unknown[];
+    priceMode: PriceMode;
+    discounts?: Discount[];
     thresholds?: unknown[];
-    priceMode?: string;
     currency?: string;
     store?: string;
   }

@@ -21,6 +21,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     mockNormalizedCartWithSingleProducts,
     mockNormalizedCartWithMultipleProducts,
   ];
+
   private responseDelay = 300;
 
   private selectedProductOptions = [

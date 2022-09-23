@@ -1,15 +1,23 @@
 import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { PricingService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
-import { of } from 'rxjs';
+import { of, take } from 'rxjs';
+import { mockCartTotals } from '../mocks/mock-cart';
 import { CartController } from './cart.controller';
 
+class MockPricingService {
+  format = vi.fn();
+}
+
 class MockCartService implements Partial<CartService> {
-  getEntries = vi.fn();
+  getCart = vi.fn();
+  getTotals = vi.fn();
 }
 
 describe('Cart controller', () => {
   let service: MockCartService;
+  let pricingService: MockPricingService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -18,76 +26,121 @@ describe('Cart controller', () => {
           provide: CartService,
           useClass: MockCartService,
         },
+        {
+          provide: PricingService,
+          useClass: MockPricingService,
+        },
       ],
     });
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
+    pricingService = testInjector.inject(
+      PricingService
+    ) as unknown as MockPricingService;
   });
 
   afterEach(() => {
     destroyInjector();
+    vi.clearAllMocks();
   });
 
   describe('when one product in quantity "1" is in the cart', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{ quantity: 1 }]));
+      service.getCart.mockReturnValue(of({ products: [{ quantity: 1 }] }));
     });
 
     it('should return total quantity', () => {
-      let quantity: number | undefined;
-
       new CartController()
         .getTotalItemsQuantity()
-        .subscribe((val) => (quantity = val));
-      expect(quantity).toBe(1);
+        .subscribe((val) => expect(val).toBe(1));
     });
   });
 
   describe('when one product in quantity "2" is in the cart', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{ quantity: 2 }]));
+      service.getCart.mockReturnValue(of({ products: [{ quantity: 2 }] }));
     });
 
     it('should return total quantity', () => {
-      let quantity: number | undefined;
-
       new CartController()
         .getTotalItemsQuantity()
-        .subscribe((val) => (quantity = val));
-      expect(quantity).toBe(2);
+        .subscribe((val) => expect(val).toBe(2));
     });
   });
 
   describe('when two products in quantity "1" are in the cart', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(
-        of([{ quantity: 1 }, { quantity: 1 }])
+      service.getCart.mockReturnValue(
+        of({ products: [{ quantity: 1 }, { quantity: 1 }] })
       );
     });
 
     it('should return total quantity', () => {
-      let quantity: number | undefined;
-
       new CartController()
         .getTotalItemsQuantity()
-        .subscribe((val) => (quantity = val));
-      expect(quantity).toBe(2);
+        .subscribe((val) => expect(val).toBe(2));
     });
   });
+
   describe('when two products in quantity "2" are in the cart', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(
-        of([{ quantity: 2 }, { quantity: 2 }])
+      service.getCart.mockReturnValue(
+        of({ products: [{ quantity: 2 }, { quantity: 2 }] })
       );
     });
 
     it('should return total quantity', () => {
-      let quantity: number | undefined;
-
       new CartController()
         .getTotalItemsQuantity()
-        .subscribe((val) => (quantity = val));
-      expect(quantity).toBe(4);
+        .subscribe((val) => expect(val).toBe(4));
+    });
+  });
+
+  describe('getTotals', () => {
+    it('should return formatted totals values', () => {
+      const mockFormattedPrice = 'formatted price';
+      service.getCart.mockReturnValue(of({ products: [{ quantity: 2 }] }));
+      service.getTotals.mockReturnValue(of(mockCartTotals));
+      pricingService.format.mockReturnValue(of(mockFormattedPrice));
+
+      new CartController()
+        .getTotals()
+        .pipe(take(1))
+        .subscribe((totals) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          Object.values(totals!).forEach((price) => {
+            expect(price).toBe(mockFormattedPrice);
+          });
+        });
+    });
+
+    it('should not return formatted totals with 0 value', () => {
+      service.getCart.mockReturnValue(of({ products: [{ quantity: 0 }] }));
+      service.getTotals.mockReturnValue(
+        of({
+          expenseTotal: 0,
+          taxTotal: 0,
+        })
+      );
+
+      new CartController()
+        .getTotals()
+        .pipe(take(1))
+        .subscribe((totals) => {
+          expect(totals).toBe(null);
+        });
+    });
+
+    it('should return null if cart does not exist', () => {
+      service.getCart.mockReturnValue(of(null));
+      service.getTotals.mockReturnValue(of(null));
+
+      new CartController()
+        .getTotals()
+        .pipe(take(1))
+        .subscribe((totals) => {
+          expect(totals).toBe(null);
+        });
     });
   });
 });

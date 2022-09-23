@@ -1,6 +1,19 @@
+import { PriceMode } from '../models';
+
+export const mockDiscounts = [
+  {
+    displayName: '€5 every tuesday and wednesday for buying 5 items',
+    amount: 12075,
+  },
+];
+
 export const mockCartTotals = {
-  grandTotal: 0,
-  priceToPay: 0,
+  expenseTotal: 1000,
+  discountTotal: 12075,
+  taxTotal: 6386,
+  subtotal: 161942,
+  grandTotal: 149867,
+  priceToPay: 150867,
 };
 
 export const mockCartResponse = {
@@ -10,6 +23,8 @@ export const mockCartResponse = {
     name: 'Shopping cart',
     isDefault: false,
     totals: mockCartTotals,
+    discounts: mockDiscounts,
+    priceMode: PriceMode.NetMode,
   },
   relationships: {
     items: {
@@ -30,6 +45,8 @@ export const mockCartDefaultResponse = {
     name: 'Shopping cart',
     isDefault: true,
     totals: mockCartTotals,
+    discounts: mockDiscounts,
+    priceMode: PriceMode.GrossMode,
   },
   relationships: {
     items: {

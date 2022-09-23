@@ -135,4 +135,7 @@ export const componentsMapping: ComponentsMapping = {
   ['cart-entries']: {
     template: (uid: string) => html`<cart-entries uid="${uid}"></cart-entries>`,
   },
+  ['cart-totals']: {
+    template: (uid: string) => html`<cart-totals uid="${uid}"></cart-totals>`,
+  },
 };

@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { PricingService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -9,7 +10,11 @@ import { miniCartComponent } from './component';
 import { MiniCartComponent } from './mini-cart.component';
 
 class MockCartService implements Partial<CartService> {
-  getEntries = vi.fn();
+  getCart = vi.fn();
+}
+
+class mockPricingService {
+  format = vi.fn();
 }
 
 describe('Mini Cart', () => {
@@ -27,6 +32,10 @@ describe('Mini Cart', () => {
           provide: CartService,
           useClass: MockCartService,
         },
+        {
+          provide: PricingService,
+          useClass: mockPricingService,
+        },
       ],
     });
 
@@ -41,7 +50,7 @@ describe('Mini Cart', () => {
     const quantity = 5;
 
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{ quantity }]));
+      service.getCart.mockReturnValue(of({ products: [{ quantity }] }));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 
@@ -62,7 +71,7 @@ describe('Mini Cart', () => {
     const quantity = 155;
 
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{ quantity }]));
+      service.getCart.mockReturnValue(of({ products: [{ quantity }] }));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 
@@ -83,7 +92,7 @@ describe('Mini Cart', () => {
     const quantity = 5;
 
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([]));
+      service.getCart.mockReturnValue(of({ products: [] }));
       element = await fixture(
         html`<mini-cart uid="1" .options=${{ quantity }}></mini-cart>`
       );
@@ -107,7 +116,9 @@ describe('Mini Cart', () => {
     const propQuantity = 5;
 
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{ quantity: serviceQuantity }]));
+      service.getCart.mockReturnValue(
+        of({ products: [{ quantity: serviceQuantity }] })
+      );
       element = await fixture(
         html`<mini-cart
           uid="1"
@@ -131,7 +142,7 @@ describe('Mini Cart', () => {
 
   describe('when quantity is not provided through service and prop', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([]));
+      service.getCart.mockReturnValue(of({ products: [] }));
       element = await fixture(html`<mini-cart uid="1"></mini-cart>`);
     });
 

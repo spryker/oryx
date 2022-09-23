@@ -1,5 +1,6 @@
 export enum StorefrontIconTypes {
   Dropdown = 'dropdown',
+  DropUp = 'dropUp',
   Cart = 'cart',
   Expand = 'expand',
   Collapse = 'collapse',
@@ -11,4 +12,5 @@ export enum StorefrontIconTypes {
   Image = 'image',
   InputError = 'inputError',
   Trash = 'trash',
+  Info = 'info',
 }

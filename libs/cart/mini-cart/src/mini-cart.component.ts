@@ -36,7 +36,7 @@ export class MiniCartComponent extends CartComponentMixin<MiniCartOptions>() {
               quantity,
               () => html`
                 <div class="badge">
-                  ${quantity > this.maxVisibleQuantity
+                  ${Number(quantity) > this.maxVisibleQuantity
                     ? `${this.maxVisibleQuantity}+`
                     : quantity}
                 </div>
