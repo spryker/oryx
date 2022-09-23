@@ -4,39 +4,50 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { tabComponent } from '../../../tab/src/tab.def';
 import { tabsComponent } from '../tabs.def';
+import { TabsProperties } from '../tabs.model';
 
-useComponent(tabsComponent);
-useComponent(tabComponent);
+useComponent([tabsComponent, tabComponent]);
+
+const numberOfTabs = 3;
 
 export default {
   title: `${storybookPrefix}/Navigations/Tabs`,
   args: {
+    activeTabIndex: 0,
     appearance: 'primary',
-    showShadow: false,
+    shadow: false,
     error: false,
   },
   argTypes: {
+    activeTabIndex: {
+      control: { type: 'select' },
+      options: [...Array(numberOfTabs).keys()],
+    },
     appearance: {
       control: {
         type: 'radio',
         options: ['primary', 'secondary'],
       },
-      defaultValue: 'primary',
     },
   },
 } as Meta;
 
-interface Props {
-  [key: string]: string;
+interface Props extends TabsProperties {
+  error: boolean;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  const numberOfTabs = 3;
-
   return html`
-    <oryx-tabs appearance="${props.appearance}" ?shadow="${props.showShadow}">
+    <oryx-tabs
+      activeTabIndex="${props.activeTabIndex}"
+      appearance="${props.appearance}"
+      ?shadow="${props.shadow}"
+    >
       ${[...Array(numberOfTabs).keys()].map((i) => {
-        return html`<oryx-tab for="n${i + 1}" ?error="${props.error}"
+        return html`<oryx-tab
+          ?selected="${i === props.activeTabIndex}"
+          for="n${i + 1}"
+          ?error="${props.error}"
           >Tab ${i + 1}</oryx-tab
         > `;
       })}
