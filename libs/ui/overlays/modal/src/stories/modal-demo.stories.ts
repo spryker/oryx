@@ -10,6 +10,9 @@ useComponent(modalComponent);
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
 
 interface Props {
+  firstModalFullscreen?: boolean;
+  secondModalFullscreen?: boolean;
+
   firstModalHeader?: string;
   secondModalHeader?: string;
 
@@ -53,6 +56,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     <oryx-modal
       ?disableCloseOnEscape=${props.firstModalDisableCloseOnEscape}
       ?disableCloseOnBackdrop=${props.firstModalDisableCloseOnBackdrop}
+      ?fullscreen=${props.firstModalFullscreen}
       header=${props.firstModalHeader}
       type=${props.firstModalType}
       @oryx.close=${console.log}
@@ -64,6 +68,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <oryx-modal
           ?disableCloseOnEscape=${props.secondModalDisableCloseOnEscape}
           ?disableCloseOnBackdrop=${props.secondModalDisableCloseOnBackdrop}
+          ?fullscreen=${props.secondModalFullscreen}
           header=${props.secondModalHeader}
           type=${props.secondModalType}
         >
@@ -77,6 +82,8 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 export const ModalDemo = Template.bind({});
 
 ModalDemo.args = {
+  firstModalFullscreen: false,
+  secondModalFullscreen: false,
   firstModalDisableCloseOnBackdrop: false,
   secondModalDisableCloseOnBackdrop: false,
   firstModalDisableCloseOnEscape: false,
@@ -90,6 +97,14 @@ ModalDemo.args = {
 };
 
 ModalDemo.argTypes = {
+  firstModalFullscreen: {
+    table: { category: 'First modal' },
+    control: { type: 'boolean' },
+  },
+  secondModalFullscreen: {
+    table: { category: 'Second modal' },
+    control: { type: 'boolean' },
+  },
   firstModalDisableCloseOnBackdrop: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },

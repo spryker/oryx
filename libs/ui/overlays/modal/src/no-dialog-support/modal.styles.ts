@@ -13,8 +13,9 @@ export const NDSStyles = css`
     inset-inline-start: 0;
     top: 0;
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    max-height: 100vh;
+    height: 100vh;
+    overflow: none;
     background-color: var(--oryx-modal-background-color);
   }
 
@@ -26,7 +27,16 @@ export const NDSStyles = css`
     background: transparent;
     min-width: var(--oryx-modal-min-width);
     max-width: calc(100% - 60px);
-    max-height: calc(100% - 60px);
+  }
+
+  oryx-card {
+    max-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  oryx-card::part(body) {
+    overflow: auto;
   }
 
   div[slot='footer'] {

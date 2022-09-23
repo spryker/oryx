@@ -1,10 +1,11 @@
 import { html, TemplateResult } from 'lit';
+import { fullscreenModalStyles } from '../fullscreen-modal.styles';
 import { ModalComponent } from '../modal.component';
 import { NDSStyles } from './modal.styles';
 
 export class NDSModalComponent extends ModalComponent {
   override backdropTargetTag = this.tagName.toLowerCase();
-  static styles = NDSStyles;
+  static styles = [NDSStyles, fullscreenModalStyles];
 
   protected override setDialogState(): void {
     if (this.isOpen) {
