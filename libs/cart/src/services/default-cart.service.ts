@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import {
-  AuthService,
-  HttpErrorResponse,
-  IdentityService,
-} from '@spryker-oryx/core';
+import { HttpErrorResponse, IdentityService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
   catchError,
@@ -47,15 +43,14 @@ export class DefaultCartService implements CartService {
 
   constructor(
     protected adapter = inject(CartAdapter),
-    protected authService = inject(AuthService),
     protected identity = inject(IdentityService)
   ) {
     this.initSubscriptions();
   }
 
   protected initSubscriptions(): void {
-    const loadCartsSubs = this.authService
-      .isAuthenticated()
+    const loadCartsSubs = this.identity
+      .get()
       .pipe(switchMap(() => this.loadCarts()))
       .subscribe();
 
