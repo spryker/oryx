@@ -40,6 +40,12 @@ export const tabStyles = css`
     color: var(--oryx-color-error);
   }
 
+  :host(:not([selected])[error]:hover) {
+    color: var(--oryx-color-error);
+    background: none;
+    border-color: var(--oryx-color-neutral-darker);
+  }
+
   :host(:not([selected])[error]) {
     border-color: var(--oryx-color-neutral-light);
     color: var(--oryx-color-error);
