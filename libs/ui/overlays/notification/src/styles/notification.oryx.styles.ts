@@ -95,9 +95,4 @@ export const notificationStyles = css`
   slot[name='subtext'] {
     color: var(--oryx-color-neutral-dark);
   }
-
-  button {
-    color: var(--oryx-color-neutral-dark);
-    cursor: pointer;
-  }
 `;

@@ -5,8 +5,7 @@ export const notificationBaseStyles = css`
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-top: 17px;
-    padding-bottom: 17px;
+    padding-block: 17px;
     padding-inline: 15px 15px;
   }
 
@@ -18,8 +17,9 @@ export const notificationBaseStyles = css`
     line-height: 24px;
   }
 
-  button {
-    all: unset;
+  oryx-icon-button {
+    --oryx-icon-size: 12px;
+
     position: absolute;
     top: 16px;
     inset-inline-end: 16px;

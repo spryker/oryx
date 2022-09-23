@@ -32,12 +32,14 @@ export class NotificationComponent extends LitElement {
       ${when(
         this.closable,
         () => html`
-          <button
-            aria-label=${this.closeButtonAriaLabel}
-            @click="${(): void => this.dispatchCloseEvent()}"
-          >
-            <oryx-icon type="close" size="small"></oryx-icon>
-          </button>
+          <oryx-icon-button size="small">
+            <button
+              aria-label=${this.closeButtonAriaLabel}
+              @click="${(): void => this.dispatchCloseEvent()}"
+            >
+              <oryx-icon type="close"></oryx-icon>
+            </button>
+          </oryx-icon-button>
         `
       )}
     `;
