@@ -1,34 +1,62 @@
-import { fixture } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture, nextFrame } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
   quantityInputComponent,
   QuantityInputComponent,
 } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import {
+  createInjector,
+  destroyInjector,
+  Injector,
+} from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import '@spryker-oryx/testing';
 import { wait } from '@spryker-oryx/typescript-utils';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { html } from 'lit';
-import { delay, of } from 'rxjs';
+import { delay, map, of } from 'rxjs';
 import { AddToCartComponent } from './add-to-cart.component';
-import { addToCartComponent } from './component';
+import { addToCartComponent } from './add-to-cart.def';
 
 class MockCartService {
   addEntry = vi.fn().mockReturnValue(of(null).pipe(delay(1)));
 }
 
-describe('Add to cart', () => {
+describe('AddToCartComponent', () => {
   let element: AddToCartComponent;
   let service: Partial<MockCartService>;
+  let testInjector: Injector;
+
+  const getQuantityInput = (): QuantityInputComponent =>
+    element.renderRoot.querySelector(
+      'quantity-input'
+    ) as QuantityInputComponent;
+
+  const handleQuantity = async (quantity: number): Promise<void> => {
+    const input = getQuantityInput();
+    input.value = quantity;
+
+    input.requestUpdate();
+    await elementUpdated(input);
+
+    input.dispatchEvent(
+      new CustomEvent('oryx.quantity', { detail: { quantity } })
+    );
+  };
+
+  const submit = (): void => {
+    const form = element.renderRoot.querySelector('form') as HTMLFormElement;
+    form.submit();
+  };
 
   beforeAll(async () => {
     await useComponent([quantityInputComponent, addToCartComponent]);
   });
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    testInjector = createInjector({
       providers: [
         {
           provide: CartService,
@@ -46,6 +74,7 @@ describe('Add to cart', () => {
 
   afterEach(() => {
     destroyInjector();
+    vi.clearAllMocks();
   });
 
   describe('when "disabled" prop is true', () => {
@@ -81,10 +110,7 @@ describe('Add to cart', () => {
 
     describe('and form is submitted', () => {
       beforeEach(() => {
-        const form = element.renderRoot.querySelector(
-          'form'
-        ) as HTMLFormElement;
-        form.submit();
+        submit();
       });
 
       it('should call "addEntry" cart service method', () => {
@@ -102,7 +128,7 @@ describe('Add to cart', () => {
       it('should set "success" state for 800ms', async () => {
         const oryxButton = element.renderRoot.querySelector('oryx-button');
         const button = element.renderRoot.querySelector('button');
-        await wait(1);
+        await nextFrame();
         expect(oryxButton?.hasAttribute('loading')).toBe(false);
         expect(oryxButton?.hasAttribute('outline')).toBe(true);
         expect(button?.hasAttribute('inert')).toBe(true);
@@ -133,10 +159,7 @@ describe('Add to cart', () => {
 
     describe('and form is submitted', () => {
       beforeEach(() => {
-        const form = element.renderRoot.querySelector(
-          'form'
-        ) as HTMLFormElement;
-        form.submit();
+        submit();
       });
 
       it('should call "addEntry" cart service method', () => {
@@ -154,7 +177,7 @@ describe('Add to cart', () => {
       it('should set "success" state for 800ms', async () => {
         const oryxButton = element.renderRoot.querySelector('oryx-button');
         const button = element.renderRoot.querySelector('button');
-        await wait(1);
+        await nextFrame();
         expect(oryxButton?.hasAttribute('loading')).toBe(false);
         expect(oryxButton?.hasAttribute('outline')).toBe(true);
         expect(button?.hasAttribute('inert')).toBe(true);
@@ -164,48 +187,30 @@ describe('Add to cart', () => {
       });
     });
 
-    describe('then number was increased and form is submitted', () => {
-      beforeEach(() => {
-        const quantityInput = element.renderRoot.querySelector(
-          'quantity-input'
-        ) as QuantityInputComponent;
-        quantityInput.value = 1.5;
+    describe('and form submitted with incorrect quantity', () => {
+      beforeEach(async () => {
+        handleQuantity(0.5);
 
-        const increaseButton = quantityInput.renderRoot.querySelector(
-          'button[aria-label="increase"]'
-        ) as HTMLButtonElement;
-        increaseButton.click();
+        element.requestUpdate();
+        await elementUpdated(element);
 
-        const form = element.renderRoot.querySelector(
-          'form'
-        ) as HTMLFormElement;
-        form.submit();
+        submit();
       });
 
-      it('should call "addEntry" cart service method', () => {
-        expect(service.addEntry).toHaveBeenCalledWith({
-          sku: '1',
-          quantity: 2,
-        });
+      it('should not call "addEntry" cart service method', () => {
+        expect(service.addEntry).not.toHaveBeenCalled();
       });
     });
 
-    describe('then wrong number is provided and form is submitted', () => {
-      beforeEach(() => {
-        const quantityInput = element.renderRoot.querySelector(
-          'quantity-input'
-        ) as QuantityInputComponent;
-        quantityInput.value = 1.5;
+    describe('and wrong sku is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<add-to-cart
+            .options=${{ hideQuantityInput: false }}
+          ></add-to-cart>`
+        );
 
-        const input = quantityInput.renderRoot.querySelector(
-          'input'
-        ) as HTMLInputElement;
-        input.setAttribute('value', '1.5');
-
-        const form = element.renderRoot.querySelector(
-          'form'
-        ) as HTMLFormElement;
-        form.submit();
+        submit();
       });
 
       it('should not call "addEntry" cart service method', () => {
@@ -214,11 +219,79 @@ describe('Add to cart', () => {
     });
 
     it('should render quantity controls', () => {
-      const quantityControls = element.renderRoot.querySelector(
-        'oryx-button'
-      ) as HTMLElement;
+      expect(element).toContainElement('oryx-button');
+    });
+  });
 
-      expect(quantityControls).not.toBeNull();
+  describe('when product changes', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<add-to-cart sku="1"></add-to-cart>`);
+    });
+
+    it('should restore default quantity', async () => {
+      handleQuantity(3);
+
+      element.requestUpdate();
+      await elementUpdated(element);
+
+      expect(getQuantityInput().value).toBe(3);
+
+      element.sku = '2';
+
+      element.requestUpdate();
+      await elementUpdated(element);
+
+      expect(getQuantityInput().value).toBe(1);
+    });
+  });
+
+  describe('when submit gets error', () => {
+    class MockCartService {
+      addEntry = vi.fn().mockReturnValue(
+        of(null).pipe(
+          delay(1),
+          map(() => {
+            throw new Error();
+          })
+        )
+      );
+    }
+
+    beforeEach(async () => {
+      destroyInjector();
+      createInjector({
+        providers: [
+          {
+            provide: CartService,
+            useClass: MockCartService,
+          },
+          {
+            provide: ProductService,
+            useClass: MockProductService,
+          },
+        ],
+      });
+
+      element = await fixture(
+        html`<add-to-cart
+          sku="1"
+          .options=${{ hideQuantityInput: true }}
+        ></add-to-cart>`
+      );
+    });
+
+    it('should interrupt loading', async () => {
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+
+      submit();
+
+      expect(button.hasAttribute('loading')).toBe(true);
+
+      await nextFrame();
+
+      expect(button.hasAttribute('loading')).toBe(false);
     });
   });
 });

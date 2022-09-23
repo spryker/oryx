@@ -5,8 +5,8 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../.constants';
+import { addToCartComponent } from '../add-to-cart.def';
 import { AddToCartOptions } from '../add-to-cart.model';
-import { addToCartComponent } from '../component';
 
 useComponent(addToCartComponent);
 

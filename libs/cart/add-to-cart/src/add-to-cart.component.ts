@@ -14,7 +14,7 @@ import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, tap } from 'rxjs';
 import { AddToCartOptions } from './add-to-cart.model';
 import { styles } from './add-to-cart.styles';
 
@@ -23,23 +23,30 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
   static styles = styles;
 
   protected contentController = new ContentController(this);
-  protected product$ = new ProductController(this).getProduct();
+  protected product$ = new ProductController(this).getProduct().pipe(
+    //restore the default value when product changes
+    tap(() => {
+      this.quantity$.next(1);
+    })
+  );
 
   protected loading$ = new BehaviorSubject(false);
   protected showSuccessButton$ = new BehaviorSubject(false);
   protected cartService = resolve(CartService);
+  protected quantity$ = new BehaviorSubject(1);
   protected options$ = combineLatest([
     this.contentController.getOptions(),
     this.loading$,
     this.product$,
     this.showSuccessButton$,
+    this.quantity$,
   ]);
-  protected quantity = 1;
 
   protected onSubmit(
     e: Event,
-    hideQuantityInput: boolean | undefined,
-    sku: string | undefined
+    quantity: number,
+    hideQuantityInput?: boolean,
+    sku?: string
   ): void {
     e.preventDefault();
 
@@ -52,7 +59,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
     this.cartService
       .addEntry({
         sku,
-        quantity: hideQuantityInput ? 1 : this.quantity,
+        quantity,
       })
       .subscribe({
         next: async () => {
@@ -62,7 +69,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
           await wait(800);
           this.showSuccessButton$.next(false);
         },
-        error: async () => {
+        error: () => {
           this.loading$.next(false);
         },
       });
@@ -80,45 +87,57 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
   }: {
     detail: { quantity: number };
   }): void {
-    this.quantity = quantity;
+    this.quantity$.next(quantity);
   }
 
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(
         this.options$,
-        ([option, loading, product, showSuccessButton]) => html`
-          <form
-            @submit=${(e: Event): void =>
-              this.onSubmit(e, option.hideQuantityInput, product?.sku)}
-          >
-            ${when(
-              !option.hideQuantityInput,
-              () => html`
-                <quantity-input
-                  value=${this.quantity}
-                  ?disabled=${option.disabled}
-                  @oryx.quantity=${this.setQuantity}
-                ></quantity-input>
-              `
-            )}
-            <oryx-button
-              icon
-              size=${Size.small}
-              ?loading=${loading}
-              type=${ButtonType.Primary}
-              ?outline=${showSuccessButton}
+        ([option, loading, product, showSuccessButton, quantity]) => {
+          return html`
+            <form
+              @submit=${(e: Event): void =>
+                this.onSubmit(
+                  e,
+                  quantity,
+                  option.hideQuantityInput,
+                  product?.sku
+                )}
             >
-              <button ?disabled=${option.disabled} ?inert=${showSuccessButton}>
-                <oryx-icon
-                  type=${showSuccessButton ? MiscIcons.Mark : MiscIcons.CartAdd}
-                  size=${Size.large}
-                ></oryx-icon>
-                ${showSuccessButton ? '' : 'Add to Cart'}
-              </button>
-            </oryx-button>
-          </form>
-        `
+              ${when(
+                !option.hideQuantityInput,
+                () => html`
+                  <quantity-input
+                    value=${quantity}
+                    ?disabled=${option.disabled}
+                    @oryx.quantity=${this.setQuantity}
+                  ></quantity-input>
+                `
+              )}
+              <oryx-button
+                icon
+                size=${Size.small}
+                ?loading=${loading}
+                type=${ButtonType.Primary}
+                ?outline=${showSuccessButton}
+              >
+                <button
+                  ?disabled=${option.disabled}
+                  ?inert=${showSuccessButton}
+                >
+                  <oryx-icon
+                    type=${showSuccessButton
+                      ? MiscIcons.Mark
+                      : MiscIcons.CartAdd}
+                    size=${Size.large}
+                  ></oryx-icon>
+                  ${showSuccessButton ? '' : 'Add to Cart'}
+                </button>
+              </oryx-button>
+            </form>
+          `;
+        }
       )}
     `;
   }

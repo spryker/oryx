@@ -1,5 +1,5 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { addToCartComponent } from '../add-to-cart/src/component';
+import { addToCartComponent } from '../add-to-cart/src/add-to-cart.def';
 import { cartEntriesComponent } from '../entries/src/component';
 import { cartEntryComponents } from '../entry/src/component';
 import { miniCartComponent } from '../mini-cart/src/component';
