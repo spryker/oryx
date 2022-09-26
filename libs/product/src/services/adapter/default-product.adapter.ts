@@ -1,6 +1,6 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiProductModel, Product, ProductQualifier } from '../../models';
 import { ProductNormalizers } from './normalizers';
 import { ProductAdapter } from './product.adapter';
@@ -31,10 +31,6 @@ export class DefaultProductAdapter implements ProductAdapter {
           include ? '?include=' : ''
         }${include?.join(',') || ''}`
       )
-      .pipe(
-        switchMap((res) =>
-          this.transformer.transform<Product>(res, ProductNormalizers)
-        )
-      );
+      .pipe(this.transformer.do(ProductNormalizers));
   }
 }

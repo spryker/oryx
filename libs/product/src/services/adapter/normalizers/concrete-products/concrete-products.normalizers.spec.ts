@@ -29,6 +29,7 @@ describe('Concrete Products Normalizer', () => {
     const mockTransformed = 'mockTransformed';
     const mockTransformer = {
       transform: vi.fn().mockReturnValue(of(mockTransformed)),
+      do: vi.fn().mockReturnValue(() => of(mockTransformed)),
     };
     concreteProductsNormalizer(mockAbstracts, mockTransformer)
       .pipe(take(1))

@@ -1,12 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/typescript-utils';
 import { map, Observable } from 'rxjs';
-import {
-  ApiProductModel,
-  Product,
-  ProductImage,
-  ProductPrices,
-} from '../../../../models';
+import { ApiProductModel, Product } from '../../../../models';
 import { ImagesNormalizers } from '../images';
 import { PriceNormalizers } from '../price';
 import { DeserializedProduct } from './model';
@@ -44,13 +39,11 @@ export function productPriceNormalizer(
   const priceKey = camelize(ApiProductModel.Includes.ConcreteProductPrices);
   const { [priceKey]: price } = data;
 
-  return transformer
-    .transform<ProductPrices>(price?.[0], PriceNormalizers)
-    .pipe(
-      map((price) => ({
-        price,
-      }))
-    );
+  return transformer.transform(price?.[0], PriceNormalizers).pipe(
+    map((price) => ({
+      price,
+    }))
+  );
 }
 
 export function productImagesNormalizer(
@@ -60,13 +53,11 @@ export function productImagesNormalizer(
   const imageKey = camelize(ApiProductModel.Includes.ConcreteProductImageSets);
   const { [imageKey]: images } = data;
 
-  return transformer
-    .transform<ProductImage[]>(images?.[0], ImagesNormalizers)
-    .pipe(
-      map((images) => ({
-        images,
-      }))
-    );
+  return transformer.transform(images?.[0], ImagesNormalizers).pipe(
+    map((images) => ({
+      images,
+    }))
+  );
 }
 
 export const productNormalizers = [
@@ -77,6 +68,6 @@ export const productNormalizers = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [ProductNormalizers]: Transformer[];
+    [ProductNormalizers]: Transformer<Product>[];
   }
 }

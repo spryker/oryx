@@ -19,3 +19,7 @@ export interface JsonApiModel<A, I, U = unknown> {
   data: U extends Array<unknown> ? Data<A>[] : Data<A>;
   included?: I;
 }
+
+export interface JsonApiPayload<T> {
+  data: T;
+}

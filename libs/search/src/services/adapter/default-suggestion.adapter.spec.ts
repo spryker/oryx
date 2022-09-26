@@ -21,6 +21,7 @@ const mockSuggestion = {
 };
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
+  do: vi.fn().mockReturnValue(() => of(null)),
 };
 
 describe('DefaultSuggestionAdapter', () => {
@@ -81,19 +82,16 @@ describe('DefaultSuggestionAdapter', () => {
       );
     });
 
-    it('should call transformer data with data from response', () => {
+    it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockSuggestion,
-        SuggestionNormalizers
-      );
+      expect(mockTransformer.do).toHaveBeenCalledWith(SuggestionNormalizers);
     });
 
     it('should return transformed data', () => {
       const mockTransformerData = 'mockTransformerData';
       const callback = vi.fn();
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
       service.get(mockQualifier).subscribe(callback);
 

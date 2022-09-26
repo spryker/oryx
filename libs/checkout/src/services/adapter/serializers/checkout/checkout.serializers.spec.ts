@@ -32,21 +32,15 @@ const mockUpdateCheckoutDataProps = {
   },
 };
 
-const mockTransformer = {
-  transform: vi.fn(),
-};
-
 describe('Checkout Serializers', () => {
   describe('Checkout Attributes Serializer', () => {
     it('should transform UpdateCheckoutDataProps into Payload', () => {
       const mockResult = {
-        data: {
-          attributes: {
-            idCart: mockUpdateCheckoutDataProps.idCart,
-            ...mockUpdateCheckoutDataProps.attributes,
-          },
-          type: 'checkout-data',
+        attributes: {
+          idCart: mockUpdateCheckoutDataProps.idCart,
+          ...mockUpdateCheckoutDataProps.attributes,
         },
+        type: 'checkout-data',
       };
 
       const serialized = checkoutAttributesSerializer(

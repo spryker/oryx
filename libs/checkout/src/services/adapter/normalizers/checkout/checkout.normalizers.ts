@@ -29,6 +29,6 @@ export const checkoutNormalizers = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [CheckoutNormalizers]: Transformer[];
+    [CheckoutNormalizers]: Transformer<CheckoutData>[];
   }
 }

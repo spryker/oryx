@@ -2,7 +2,6 @@ import { Transformer, TransformerService } from '@spryker-oryx/core';
 import {
   ApiProductModel,
   ConcreteProductsNormalizers,
-  Product,
   ProductList,
 } from '@spryker-oryx/product';
 import { camelize } from '@spryker-oryx/typescript-utils';
@@ -19,7 +18,7 @@ export function productNormalizer(
   const { [abstractKey]: products } = data[0];
 
   return transformer
-    .transform<Product[]>(products, ConcreteProductsNormalizers)
+    .transform(products, ConcreteProductsNormalizers)
     .pipe(map((products) => ({ products })));
 }
 
@@ -27,6 +26,6 @@ export const productListNormalizers = [productNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [ProductListNormalizers]: Transformer[];
+    [ProductListNormalizers]: Transformer<ProductList>[];
   }
 }

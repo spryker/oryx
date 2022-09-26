@@ -42,6 +42,6 @@ export const suggestionNormalizers = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [SuggestionNormalizers]: Transformer[];
+    [SuggestionNormalizers]: Transformer<Suggestion>[];
   }
 }

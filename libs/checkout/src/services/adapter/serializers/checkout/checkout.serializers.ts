@@ -1,17 +1,21 @@
-import { Transformer } from '@spryker-oryx/core';
-import { UpdateCheckoutDataProps } from '../../';
+import { Serializer } from '@spryker-oryx/core';
 import { ApiCheckoutModel } from '../../../../models';
+import {
+  GetCheckoutDataProps,
+  UpdateCheckoutDataProps,
+} from '../../checkout.adapter';
 
 export const CheckoutSerializers = 'FES.CheckoutSerializers';
 
 export function checkoutAttributesSerializer(
-  data: UpdateCheckoutDataProps
+  data: UpdateCheckoutDataProps | GetCheckoutDataProps
 ): Partial<ApiCheckoutModel.Payload> {
   return {
-    data: {
-      attributes: { idCart: data.idCart, ...data.attributes },
-      type: 'checkout-data',
+    attributes: {
+      idCart: data.idCart,
+      ...(data as UpdateCheckoutDataProps).attributes,
     },
+    type: 'checkout-data',
   };
 }
 
@@ -19,6 +23,8 @@ export const checkoutSerializers = [checkoutAttributesSerializer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [CheckoutSerializers]: Transformer[];
+    [CheckoutSerializers]: Serializer<
+      UpdateCheckoutDataProps | GetCheckoutDataProps
+    >[];
   }
 }

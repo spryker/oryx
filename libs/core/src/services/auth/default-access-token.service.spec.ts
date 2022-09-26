@@ -4,7 +4,6 @@ import {
   Injector,
 } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
-import { vi } from 'vitest';
 import { HttpTestService } from '../../../testing';
 import { HttpService } from '../http';
 import { StorageService, StorageType } from '../storage';

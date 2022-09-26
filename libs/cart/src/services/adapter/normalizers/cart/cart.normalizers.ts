@@ -23,6 +23,6 @@ export const cartNormalizers = [cartAttributesNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [CartNormalizers]: Transformer[];
+    [CartNormalizers]: Transformer<Cart>[];
   }
 }

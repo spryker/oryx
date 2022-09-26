@@ -10,7 +10,7 @@ export function cartsNormalizer(
   data: DeserializedCart[],
   transformer: TransformerService
 ): Observable<Cart[]> {
-  return combineLatest<Cart[]>(
+  return combineLatest(
     data.map((cart) => transformer.transform(cart, CartNormalizers))
   );
 }
@@ -19,6 +19,6 @@ export const cartsNormalizers = [cartsNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [CartsNormalizers]: Transformer[];
+    [CartsNormalizers]: Transformer<Cart[]>[];
   }
 }

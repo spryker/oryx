@@ -42,6 +42,7 @@ describe('Cart Normalizers', () => {
     it('should transform DeserializedCart array into Cart array', () => {
       const mockTransformed = 'mockTransformed';
       const mockTransformer = {
+        do: vi.fn().mockReturnValue(() => of(mockTransformed)),
         transform: vi.fn().mockReturnValue(of(mockTransformed)),
       };
 

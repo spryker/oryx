@@ -6,7 +6,6 @@ import {
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { BehaviorSubject, Observable, of, switchMap, take } from 'rxjs';
-import { vi } from 'vitest';
 import {
   mockCartTotals,
   mockNormalizedCart,

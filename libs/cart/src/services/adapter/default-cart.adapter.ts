@@ -27,6 +27,7 @@ export class DefaultCartAdapter implements CartAdapter {
   getAll(): Observable<Cart[]> {
     return combineLatest([
       this.identity.get(),
+
       this.identity.getHeaders(),
     ]).pipe(
       take(1),
@@ -38,11 +39,10 @@ export class DefaultCartAdapter implements CartAdapter {
           identity.anonymous
         );
 
-        return this.http.get<ApiCartModel.ResponseList>(url, { headers });
-      }),
-      switchMap((response) =>
-        this.transformer.transform<Cart[]>(response, CartsNormalizers)
-      )
+        return this.http
+          .get<ApiCartModel.ResponseList>(url, { headers })
+          .pipe(this.transformer.do(CartsNormalizers));
+      })
     );
   }
 
@@ -62,11 +62,10 @@ export class DefaultCartAdapter implements CartAdapter {
           identity.anonymous
         );
 
-        return this.http.get<ApiCartModel.Response>(url, { headers });
-      }),
-      switchMap((response) =>
-        this.transformer.transform<Cart>(response, CartNormalizers)
-      )
+        return this.http
+          .get<ApiCartModel.Response>(url, { headers })
+          .pipe(this.transformer.do(CartNormalizers));
+      })
     );
   }
 
@@ -98,11 +97,10 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
-        return this.http.post<ApiCartModel.Response>(url, body, { headers });
-      }),
-      switchMap((response) =>
-        this.transformer.transform<Cart>(response, CartNormalizers)
-      )
+        return this.http
+          .post<ApiCartModel.Response>(url, body, { headers })
+          .pipe(this.transformer.do(CartNormalizers));
+      })
     );
   }
 
@@ -128,11 +126,10 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
-        return this.http.patch<ApiCartModel.Response>(url, body, { headers });
-      }),
-      switchMap((response) =>
-        this.transformer.transform<Cart>(response, CartNormalizers)
-      )
+        return this.http
+          .patch<ApiCartModel.Response>(url, body, { headers })
+          .pipe(this.transformer.do(CartNormalizers));
+      })
     );
   }
 

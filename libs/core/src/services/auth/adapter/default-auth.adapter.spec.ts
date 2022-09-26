@@ -24,8 +24,8 @@ const mockToken = {
   refreshTokenExpiresAt: 140,
 };
 
-class MockTransformerService implements TransformerService {
-  transform = vi.fn().mockReturnValue(of(null));
+class MockTransformerService implements Partial<TransformerService> {
+  do = vi.fn().mockReturnValue(() => of(null));
 }
 
 describe('DefaultAuthAdapter', () => {
@@ -58,7 +58,7 @@ describe('DefaultAuthAdapter', () => {
     service = testInjector.inject(AuthAdapter);
     transformer = testInjector.inject(
       TransformerService
-    ) as MockTransformerService;
+    ) as unknown as MockTransformerService;
     http = testInjector.inject(HttpService) as HttpTestService;
     http.flush(mockToken);
   });
@@ -84,10 +84,7 @@ describe('DefaultAuthAdapter', () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      expect(transformer.transform).toHaveBeenCalledWith(
-        mockToken,
-        TokenNormalizers
-      );
+      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizers);
     });
   });
 
@@ -107,10 +104,7 @@ describe('DefaultAuthAdapter', () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      expect(transformer.transform).toHaveBeenCalledWith(
-        mockRefreshResponse,
-        TokenNormalizers
-      );
+      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizers);
     });
   });
 });

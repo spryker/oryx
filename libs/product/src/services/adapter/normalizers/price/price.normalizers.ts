@@ -1,3 +1,4 @@
+import { Transformer } from '@spryker-oryx/core';
 import {
   ApiProductModel,
   ProductPrice,
@@ -37,6 +38,6 @@ export const priceNormalizers = [priceNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [PriceNormalizers]: Transformer;
+    [PriceNormalizers]: Transformer<ProductPrices>[];
   }
 }

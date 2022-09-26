@@ -5,7 +5,7 @@ import {
   ProductList,
   ProductListAdapter,
 } from '@spryker-oryx/product';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ProductListQualifier } from '../../models/product-list-qualifier';
 import { ProductListNormalizers } from './normalizers/product-list';
 
@@ -54,10 +54,6 @@ export class DefaultProductListAdapter implements ProductListAdapter {
           ApiProductModel.Includes.ConcreteProducts
         }`
       )
-      .pipe(
-        switchMap((res) =>
-          this.transformer.transform<ProductList>(res, ProductListNormalizers)
-        )
-      );
+      .pipe(this.transformer.do(ProductListNormalizers));
   }
 }

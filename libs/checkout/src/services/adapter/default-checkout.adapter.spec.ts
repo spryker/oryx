@@ -2,7 +2,6 @@ import {
   HttpService,
   IdentityService,
   JsonAPITransformerService,
-  TransformerService,
 } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
@@ -21,6 +20,8 @@ const idCart = 'mockid';
 
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
+  serialize: vi.fn().mockReturnValue(of(null)),
+  do: vi.fn().mockReturnValue(() => of(null)),
 };
 
 const mockUser = {
@@ -71,10 +72,6 @@ describe('DefaultCheckoutService', () => {
           useValue: mockTransformer,
         },
         {
-          provide: TransformerService,
-          useValue: mockTransformer,
-        },
-        {
           provide: IdentityService,
           useClass: MockIdentityService,
         },
@@ -118,7 +115,7 @@ describe('DefaultCheckoutService', () => {
     });
 
     it('should provide body', () => {
-      mockTransformer.transform.mockReturnValue(
+      mockTransformer.serialize.mockReturnValue(
         of(mockSerializedGetCheckoutDataProps)
       );
       service.get(mockGetCheckoutDataQualifier).subscribe(() => {
@@ -143,18 +140,15 @@ describe('DefaultCheckoutService', () => {
       });
     });
 
-    it('should call transformer data with data from response', () => {
+    it('should call transformer with proper normalizer', () => {
       http.flush(mockGetShipmentResponse);
       service.get(mockGetCheckoutDataQualifier).subscribe();
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockGetShipmentResponse,
-        CheckoutNormalizers
-      );
+      expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizers);
     });
 
     it('should return transformed data', () => {
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
       service.get(mockGetCheckoutDataQualifier).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockTransformerData);
@@ -204,7 +198,7 @@ describe('DefaultCheckoutService', () => {
     });
 
     it('should provide body', () => {
-      mockTransformer.transform.mockReturnValue(
+      mockTransformer.serialize.mockReturnValue(
         of(mockSerializedUpdateCheckoutDataProps)
       );
       service.update(mockUpdateQualifier).subscribe(() => {
@@ -212,18 +206,15 @@ describe('DefaultCheckoutService', () => {
       });
     });
 
-    it('should call transformer data with data from response', () => {
+    it('should call transformer with proper normalizer', () => {
       http.flush(mockGetShipmentResponse);
       service.update(mockUpdateQualifier).subscribe();
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockGetShipmentResponse,
-        CheckoutNormalizers
-      );
+      expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizers);
     });
 
     it('should return transformed data', () => {
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
       service.update(mockUpdateQualifier).subscribe(callback);
 

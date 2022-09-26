@@ -28,6 +28,7 @@ const mockDeserializedSuggestion = {
 } as DeserializedSuggestion;
 const mockTransformer = {
   transform: vi.fn(),
+  do: vi.fn(),
 };
 
 describe('Suggestion Normalizers', () => {

@@ -1,6 +1,11 @@
 import { inject, INJECTOR } from '@spryker-oryx/injector';
-import { isObservable, merge, Observable, reduce } from 'rxjs';
-import { Transformer, TransformerService } from './transformer.service';
+import { isObservable, merge, Observable, reduce, switchMap } from 'rxjs';
+import {
+  InheritTransformerResult,
+  Transformer,
+  TransformerService,
+  TransformerType,
+} from './transformer.service';
 
 /**
  * Transforms data by transformer(s) callback
@@ -8,10 +13,14 @@ import { Transformer, TransformerService } from './transformer.service';
 export class DefaultTransformerService implements TransformerService {
   constructor(protected injector = inject(INJECTOR)) {}
 
-  transform<T, D>(
-    data: D,
+  transform<T extends keyof InjectionTokensContractMap>(
+    data: unknown,
+    token: T
+  ): Observable<TransformerType<T>>;
+  transform<T>(
+    data: unknown,
     token: keyof InjectionTokensContractMap
-  ): Observable<T> {
+  ): Observable<TransformerType<T>> {
     const reducer = (fullData: unknown, currentData: unknown): unknown => {
       if (
         fullData === null ||
@@ -42,7 +51,16 @@ export class DefaultTransformerService implements TransformerService {
       null
     );
 
-    return merge(...asyncData).pipe(reduce(reducer, syncData)) as Observable<T>;
+    return merge(...asyncData).pipe(reduce(reducer, syncData)) as Observable<
+      TransformerType<T>
+    >;
+  }
+
+  do<T extends keyof InjectionTokensContractMap>(
+    token: T
+  ): (source$: Observable<unknown>) => InheritTransformerResult<T> {
+    return (source$) =>
+      source$.pipe(switchMap((data) => this.transform<T>(data, token)));
   }
 
   protected getTransformers(

@@ -36,7 +36,8 @@ const mockAnonymousRequestHeaders = {
   'X-Anonymous-Customer-Unique-Id': mockAnonymousUser.id,
 };
 const mockTransformer = {
-  transform: vi.fn().mockReturnValue(of(null)),
+  do: vi.fn().mockReturnValue(() => of(null)),
+  transform: vi.fn(),
 };
 
 class MockIdentityService implements Partial<IdentityService> {
@@ -125,7 +126,7 @@ describe('DefaultCartAdapter', () => {
         identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
-      it('should build url', () => {
+      it('should build url', async () => {
         service.getAll().subscribe();
 
         expect(http.url).toBe(
@@ -141,19 +142,16 @@ describe('DefaultCartAdapter', () => {
     });
 
     describe('data transforming', () => {
-      it('should call transformer data with data from response', () => {
+      it('should call transformer with proper normalizer', () => {
         service.getAll().subscribe();
 
-        expect(mockTransformer.transform).toHaveBeenCalledWith(
-          mockGetCartsResponse,
-          CartsNormalizers
-        );
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartsNormalizers);
       });
 
       it('should return transformed data', () => {
         const mockTransformerData = 'mockTransformerData';
         const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+        mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
         service.getAll().subscribe(callback);
 
@@ -215,19 +213,16 @@ describe('DefaultCartAdapter', () => {
     });
 
     describe('data transforming', () => {
-      it('should call transformer data with data from response', () => {
+      it('should call transformer data with proper normalizer', () => {
         service.get(mockGuestGetCartQualifier).subscribe();
 
-        expect(mockTransformer.transform).toHaveBeenCalledWith(
-          mockGetCartResponse,
-          CartNormalizers
-        );
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
       });
 
       it('should return transformed data', () => {
         const mockTransformerData = 'mockTransformerData';
         const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+        mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
         service.get(mockGuestGetCartQualifier).subscribe(callback);
 
@@ -315,19 +310,16 @@ describe('DefaultCartAdapter', () => {
     });
 
     describe('transforming data', () => {
-      it('should call transformer data with data from response', () => {
+      it('should call transformer with proper normalizer', () => {
         service.addEntry(mockGuestAddEntryQualifier).subscribe();
 
-        expect(mockTransformer.transform).toHaveBeenCalledWith(
-          mockGetCartResponse,
-          CartNormalizers
-        );
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
       });
 
       it('should return transformed data', () => {
         const mockTransformerData = 'mockTransformerData';
         const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+        mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
         service.addEntry(mockGuestAddEntryQualifier).subscribe(callback);
 
@@ -418,19 +410,16 @@ describe('DefaultCartAdapter', () => {
     });
 
     describe('transforming data', () => {
-      it('should call transformer data with data from response', () => {
+      it('should call transformer with proper normalizer', () => {
         service.addEntry(mockUpdateEntryQualifier).subscribe();
 
-        expect(mockTransformer.transform).toHaveBeenCalledWith(
-          mockGetCartResponse,
-          CartNormalizers
-        );
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
       });
 
       it('should return transformed data', () => {
         const mockTransformerData = 'mockTransformerData';
         const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+        mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
         service.addEntry(mockUpdateEntryQualifier).subscribe(callback);
 

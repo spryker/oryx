@@ -1,4 +1,4 @@
-import { TransformerService } from '@spryker-oryx/core';
+import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { ProductNormalizers } from '@spryker-oryx/product';
 import { camelize } from '@spryker-oryx/typescript-utils';
 import { combineLatest, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export function concreteProductsNormalizer(
     ApiProductModel.Includes.ConcreteProducts
   );
 
-  return combineLatest<Product[]>(
+  return combineLatest(
     data
       .map((abstract) => abstract[concreteProductsKey])
       .flat()
@@ -27,6 +27,6 @@ export const concreteProductsNormalizers = [concreteProductsNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [ConcreteProductsNormalizers]: Transformer;
+    [ConcreteProductsNormalizers]: Transformer<Product[]>[];
   }
 }

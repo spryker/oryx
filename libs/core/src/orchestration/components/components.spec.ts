@@ -1,7 +1,6 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
-import { vi } from 'vitest';
 import { App } from '../app';
 import {
   ComponentDef,

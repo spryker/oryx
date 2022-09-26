@@ -4,7 +4,7 @@ import {
   TransformerService,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthAdapter, AuthenticateQualifier } from './auth.adapter';
 import { TokenNormalizers } from './normalizers/token.normalizer';
 
@@ -34,11 +34,7 @@ export class DefaultAuthAdapter implements AuthAdapter {
         method: 'POST',
         headers: this.HTTP_HEADERS,
       })
-      .pipe(
-        switchMap((response) =>
-          this.transformer.transform<AccessToken>(response, TokenNormalizers)
-        )
-      );
+      .pipe(this.transformer.do(TokenNormalizers));
   }
 
   refresh(token: AccessToken): Observable<AccessToken> {

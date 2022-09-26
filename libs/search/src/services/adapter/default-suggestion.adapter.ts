@@ -1,6 +1,6 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   ApiSuggestionModel,
   Suggestion,
@@ -27,10 +27,6 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
       .get<ApiSuggestionModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=abstract-products,concrete-products,concrete-product-image-sets,concrete-product-prices`
       )
-      .pipe(
-        switchMap((res) =>
-          this.transformer.transform<Suggestion>(res, SuggestionNormalizers)
-        )
-      );
+      .pipe(this.transformer.do(SuggestionNormalizers));
   }
 }

@@ -69,6 +69,7 @@ const mockDeserializedCheckout = {
 
 const mockTransformer = {
   transform: vi.fn(),
+  do: vi.fn(),
 };
 
 describe('Checkout Normalizers', () => {

@@ -1,3 +1,4 @@
+import { Transformer } from '@spryker-oryx/core';
 import { ApiProductModel, ProductImage } from '../../../../models';
 
 export const ImagesNormalizers = 'FES.ImagesNormalizers';
@@ -15,6 +16,6 @@ export const imagesNormalizers = [imagesNormalizer];
 
 declare global {
   interface InjectionTokensContractMap {
-    [ImagesNormalizers]: Transformer;
+    [ImagesNormalizers]: Transformer<ProductImage[]>[];
   }
 }

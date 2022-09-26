@@ -17,7 +17,7 @@ const mockProduct = {
   },
 };
 const mockTransformer = {
-  transform: vi.fn().mockReturnValue(of(null)),
+  do: vi.fn().mockReturnValue(() => of(null)),
 };
 
 describe('DefaultProductService', () => {
@@ -102,19 +102,16 @@ describe('DefaultProductService', () => {
       expect(includes).toHaveLength(3);
     });
 
-    it('should call transformer data with data from response', () => {
+    it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();
 
-      expect(mockTransformer.transform).toHaveBeenCalledWith(
-        mockProduct,
-        ProductNormalizers
-      );
+      expect(mockTransformer.do).toHaveBeenCalledWith(ProductNormalizers);
     });
 
     it('should return transformed data', () => {
       const mockTransformerData = 'mockTransformerData';
       const callback = vi.fn();
-      mockTransformer.transform.mockReturnValue(of(mockTransformerData));
+      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
       service.get(mockQualifier).subscribe(callback);
 

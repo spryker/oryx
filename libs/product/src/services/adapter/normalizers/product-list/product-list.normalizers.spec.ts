@@ -9,6 +9,7 @@ const mockDeserializedProductList = {
 
 const mockTransformer = {
   transform: vi.fn(),
+  do: vi.fn(),
 };
 
 describe('Product Catalog Normalizers', () => {

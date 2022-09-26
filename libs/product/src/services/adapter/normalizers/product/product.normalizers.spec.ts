@@ -32,6 +32,7 @@ const mockTransformer = {
     .mockImplementation((data, token: keyof typeof mockTokensData): unknown =>
       of(mockTokensData[token])
     ),
+  do: vi.fn(),
 };
 
 describe('Product Normalizers', () => {

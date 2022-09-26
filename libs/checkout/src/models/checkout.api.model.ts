@@ -22,10 +22,8 @@ export module ApiCheckoutModel {
   }
 
   export interface Payload {
-    data: {
-      attributes?: { idCart: string } & CheckoutData;
-      type: string;
-    };
+    type: 'checkout-data';
+    attributes?: { idCart: string } & CheckoutData;
   }
 
   export interface Address {

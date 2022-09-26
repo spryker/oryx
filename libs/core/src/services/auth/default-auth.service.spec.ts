@@ -1,6 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of, Subject, switchMap, throwError } from 'rxjs';
-import { vi } from 'vitest';
 import { AccessTokenService } from './access-token.service';
 import { AuthAdapter } from './adapter';
 import { AuthService } from './auth.service';
