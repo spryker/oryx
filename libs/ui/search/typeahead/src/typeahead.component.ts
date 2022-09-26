@@ -45,7 +45,7 @@ export class TypeaheadComponent
   @property() searchIcon?: string;
   @property() searchIconPosition?: SearchIconPosition;
   @property() clearIcon?: string;
-  @property() clearIconPosition?: ClearIconPosition;
+  @property({ reflect: true }) clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance;
 
   protected typeaheadController = new TypeaheadController(this);
