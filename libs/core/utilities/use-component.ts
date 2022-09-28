@@ -63,7 +63,10 @@ export async function useComponent(
       }
 
       if (theme.strategy === ThemeStrategies.Replace || !theme.strategy) {
-        innerTheme = [...innerTheme, ...transformer(theme.styles)];
+        innerTheme = [
+          ...(Array.isArray(innerTheme) ? innerTheme : [innerTheme]),
+          ...transformer(theme.styles),
+        ];
       }
 
       component.styles = innerTheme;

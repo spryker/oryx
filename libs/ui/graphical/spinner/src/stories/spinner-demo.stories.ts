@@ -1,14 +1,33 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
+import isChromatic from 'chromatic/isChromatic';
+import { css, TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
 import { spinnerComponent } from '../component';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
 
-useComponent(spinnerComponent);
+useComponent(
+  spinnerComponent(
+    isChromatic()
+      ? {
+          theme: {
+            // TODO: fix it with just css after theme refactoring
+            styles: [
+              css`
+                oryx-icon,
+                ::slotted(oryx-icon) {
+                  animation-iteration-count: 0;
+                }
+              `,
+            ],
+          },
+        }
+      : {}
+  )
+);
 
 export default { title: `${storybookPrefix}/Graphical/Spinner` } as Meta;
 
@@ -33,9 +52,6 @@ const Template: Story<Props> = ({
 };
 
 export const SpinnerDemo = Template.bind({});
-SpinnerDemo.parameters = {
-  chromatic: { disableSnapshot: true },
-};
 
 SpinnerDemo.argTypes = {
   size: {

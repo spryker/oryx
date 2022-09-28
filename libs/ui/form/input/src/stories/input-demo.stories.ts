@@ -1,10 +1,27 @@
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import isChromatic from 'chromatic/isChromatic';
+import { css, html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { inputComponent } from '../component';
 
-useComponent(inputComponent);
+useComponent(
+  inputComponent(
+    isChromatic()
+      ? {
+          theme: {
+            styles: [
+              css`
+                :host([floatLabel]) slot[name='label'] {
+                  transition: none;
+                }
+              `,
+            ],
+          },
+        }
+      : {}
+  )
+);
 
 export default {
   title: `${storybookPrefix}/Form/Input`,
