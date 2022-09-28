@@ -1,12 +1,13 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ChipType } from './chip.model';
+import { ChipAppearance, ChipAttributes } from './chip.model';
 import { styles } from './chip.styles';
 
-export class ChipComponent extends LitElement {
+export class ChipComponent extends LitElement implements ChipAttributes {
   static styles = styles;
 
-  @property({ reflect: true }) type?: ChipType;
+  @property({ reflect: true }) appearance?: ChipAppearance;
+  @property({ reflect: true }) dense?: boolean;
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;

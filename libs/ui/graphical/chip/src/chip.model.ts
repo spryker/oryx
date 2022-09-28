@@ -1,18 +1,32 @@
-export enum ChipType {
-  DEFAULT = 'default',
-  SUCCESS = 'success',
-  OFFLINE = 'offline',
-  INACTIVE = 'inactive',
-  LOW = 'low',
-  INFO = 'info',
-  WARNING = 'warning',
-  ERROR = 'error',
+export enum ChipAppearance {
+  Default = 'default',
+  Success = 'success',
+  Offline = 'offline',
+  Inactive = 'inactive',
+  Low = 'low',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
   /**
    * `ONLINE` is a synonym for the `SUCCESS` chip type.
    */
-  ONLINE = 'online',
+  Online = 'online',
   /**
    * `ACTIVE` is a synonym for the `SUCCESS` chip type.
    */
-  ACTIVE = 'active',
+  Active = 'active',
+}
+
+export interface ChipAttributes {
+  /**
+   * Defines the chip color
+   *
+   * @defaults `ChipAppearance.Default`
+   */
+  appearance?: ChipAppearance;
+
+  /**
+   * Makes smaller chip paddings
+   */
+  dense?: boolean;
 }

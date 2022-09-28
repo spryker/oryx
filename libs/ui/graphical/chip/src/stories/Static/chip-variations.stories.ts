@@ -1,89 +1,66 @@
+import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
-import { ChipType } from '../../index';
+import { ChipAppearance } from '../../index';
 export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
-
-export interface ChipProperties {
-  type?: ChipType;
-}
 
 const longText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim';
 
-const variations = [
-  {
-    type: ChipType.ONLINE,
-    color: 'Green',
-  },
-  {
-    type: ChipType.INFO,
-    color: 'Blue',
-  },
-  {
-    type: ChipType.LOW,
-    color: 'Yellow',
-  },
-  {
-    type: ChipType.WARNING,
-    color: 'Orange',
-  },
-  {
-    type: ChipType.ERROR,
-    color: 'Red',
-  },
-  {
-    type: ChipType.OFFLINE,
-    color: 'Gray',
-  },
-  {
-    type: ChipType.INACTIVE,
-    color: 'Gray lighter',
-  },
-];
+enum CategoryY {
+  Dense = 'Dense',
+  Standard = 'Standard',
+  Truncated = 'Truncated',
+}
+
+const generateVariants = (): Variant[] => {
+  const result: Variant[] = [];
+
+  Object.values(CategoryY).forEach((categoryY) => {
+    Object.values(ChipAppearance).forEach((categoryX) => {
+      result.push({
+        categoryY,
+        categoryX,
+        options: {},
+      });
+    });
+  });
+
+  return result;
+};
 
 const Template: Story = (): TemplateResult => {
   return html`
-    ${variations.map((variant) => {
-      return html`
-        <div class="row">
-          <div class="col variant">
-            <span>${variant.type}</span>
-          </div>
-          <div class="col type">
-            <oryx-chip .type=${variant.type}> ${variant.color} </oryx-chip>
-          </div>
-          <div class="col">
-            <oryx-chip .type=${variant.type} class="long-text">
-              ${longText}
+    ${generateVariantsMatrix(
+      generateVariants(),
+      ({ categoryX, categoryY }) => html`
+        ${when(
+          categoryY === CategoryY.Dense,
+          () =>
+            [...Array(10).keys()].map(
+              (num) => html`
+                <oryx-chip appearance=${categoryX} dense>
+                  ${num + 1}
+                </oryx-chip>
+              `
+            ),
+          () => html`
+            <oryx-chip
+              appearance=${categoryX}
+              ?dense=${categoryY === CategoryY.Dense}
+            >
+              ${categoryY === CategoryY.Truncated ? longText : categoryY}
             </oryx-chip>
-          </div>
-        </div>
-      `;
-    })}
+          `
+        )}
+      `
+    )}
 
     <style>
-      .row {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-        margin-bottom: 24px;
-      }
-      .col {
-        display: flex;
-        align-items: start;
-        flex-direction: column;
-        gap: 24px;
-      }
-      .col.variant {
-        width: 100px;
-        color: #71747c;
-      }
-      .col.type {
-        width: 200px;
-      }
-      .long-text {
-        width: 200px;
+      oryx-chip {
+        max-width: 200px;
       }
     </style>
   `;

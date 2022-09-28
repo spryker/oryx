@@ -3,8 +3,8 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { ChipComponent } from './chip.component';
-import { ChipType } from './chip.model';
-import { chipComponent } from './component';
+import { chipComponent } from './chip.def';
+import { ChipAppearance } from './chip.model';
 
 describe('ChipComponent', () => {
   let element: ChipComponent;
@@ -19,7 +19,7 @@ describe('ChipComponent', () => {
   });
 
   describe('chip type', () => {
-    Object.values(Object.values(ChipType)).forEach((type) => {
+    Object.values(Object.values(ChipAppearance)).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-chip type="${type}"></oryx-chip>`);

@@ -2,22 +2,25 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { ChipType } from '../chip.model';
-import { chipComponent } from '../component';
+import { chipComponent } from '../chip.def';
+import { ChipAppearance, ChipAttributes } from '../chip.model';
 
 useComponent(chipComponent);
 
-export default { title: `${storybookPrefix}/Graphical/Chip` } as Meta;
+export default {
+  title: `${storybookPrefix}/Graphical/Chip`,
+  args: {
+    dense: false,
+  },
+} as Meta;
 
-export interface ChipProperties {
-  type?: ChipType;
-}
-
-const Template: Story<ChipProperties> = (
-  props: ChipProperties
+const Template: Story<ChipAttributes> = (
+  props: ChipAttributes
 ): TemplateResult => {
   return html`
-    <oryx-chip .type=${props.type}> Text <b>content</b> </oryx-chip>
+    <oryx-chip .appearance=${props.appearance} ?dense=${props.dense}
+      >Text <b>content</b>
+    </oryx-chip>
   `;
 };
 
@@ -28,8 +31,8 @@ ChipDemo.parameters = {
 };
 
 ChipDemo.argTypes = {
-  type: {
-    options: Object.values(ChipType),
-    control: { type: 'radio' },
+  appearance: {
+    options: Object.values(ChipAppearance),
+    control: { type: 'select' },
   },
 };

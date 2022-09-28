@@ -14,7 +14,7 @@ import { passwordInputComponent } from '../form/password/src/component';
 import { radioComponent } from '../form/radio/src/component';
 import { selectComponent } from '../form/select/src/component';
 import { tagComponent } from '../form/tag/src/component';
-import { chipComponent } from '../graphical/chip/src/component';
+import { chipComponent } from '../graphical/chip/src/chip.def';
 import { iconComponent } from '../graphical/icon/src/component';
 import { ratingComponent } from '../graphical/rating/src/component';
 import { spinnerComponent } from '../graphical/spinner/src/component';
