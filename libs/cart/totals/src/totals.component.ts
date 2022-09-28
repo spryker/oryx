@@ -3,7 +3,7 @@ import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import {
   CartController,
   FormattedCartTotals,
@@ -16,9 +16,50 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
   static styles = styles;
 
   protected cartTotals$ = combineLatest([
-    new CartController().getTotals(),
+    new CartController().getTotals().pipe(
+      tap((totals) => {
+        this.toggleAttribute('is-empty', !totals?.itemsQuantity);
+      })
+    ),
     new ContentController(this).getOptions(),
   ]);
+
+  protected override render(): TemplateResult {
+    return html`
+      ${asyncValue(this.cartTotals$, ([totals, options]) => {
+        if (!totals?.itemsQuantity) {
+          return html``;
+        }
+
+        return html`
+          <h4>Summary</h4>
+
+          ${this.renderSection(
+            html`
+              Subtotal
+              <span>(${totals.itemsQuantity} items)</span>
+            `,
+            String(totals.calculations.subtotal)
+          )}
+          ${this.renderDiscountsSection(options, totals)}
+          ${when(totals.calculations.expenseTotal, () =>
+            this.renderSection(
+              'Expense',
+              String(totals.calculations.expenseTotal)
+            )
+          )}
+          ${when(options.showTax, () =>
+            this.renderSection('Tax', String(totals.calculations.taxTotal))
+          )}
+          ${this.renderDeliverySection(options)}
+
+          <hr />
+
+          ${this.renderSummarySection(options, totals)}
+        `;
+      })}
+    `;
+  }
 
   protected renderSection(
     title: string | TemplateResult,
@@ -91,42 +132,5 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           </div>`
       )}`
     );
-  }
-
-  protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(this.cartTotals$, ([totals, options]) => {
-        if (!totals || totals === null) {
-          return html``;
-        }
-
-        return html`
-          <h4>Summary</h4>
-
-          ${this.renderSection(
-            html`
-              Subtotal
-              <span>(${totals.itemsQuantity} items)</span>
-            `,
-            String(totals.calculations.subtotal)
-          )}
-          ${this.renderDiscountsSection(options, totals)}
-          ${when(totals.calculations.expenseTotal, () =>
-            this.renderSection(
-              'Expense',
-              String(totals.calculations.expenseTotal)
-            )
-          )}
-          ${when(options.showTax, () =>
-            this.renderSection('Tax', String(totals.calculations.taxTotal))
-          )}
-          ${this.renderDeliverySection(options)}
-
-          <hr />
-
-          ${this.renderSummarySection(options, totals)}
-        `;
-      })}
-    `;
   }
 }

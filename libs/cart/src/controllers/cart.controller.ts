@@ -55,17 +55,10 @@ export class CartController {
       : null;
   }
 
-  protected formatDiscounts(
-    cart: Cart
-  ): Observable<FormattedDiscount[] | null> {
+  protected formatDiscounts(cart: Cart): Observable<FormattedDiscount[]> {
     return of(cart).pipe(
-      filter(
-        <T extends Cart>(cart: T | null): cart is T =>
-          cart !== null && Array.isArray(cart.discounts)
-      ),
       switchMap((cart) =>
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        cart.discounts!.reduce(
+        (cart.discounts ?? []).reduce(
           (acc$, discount) =>
             acc$.pipe(
               switchMap((acc) =>
@@ -81,6 +74,11 @@ export class CartController {
     );
   }
 
+  /**
+   * Formats the cart totals by using the `PricingService.format()` method. The price
+   * formatting requires a lookup on the locale and currency, which is why this API is
+   * observable based.
+   */
   protected formatTotals(
     cart: Cart
   ): Observable<FormattedCartTotals['calculations']> {

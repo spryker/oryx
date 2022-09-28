@@ -10,7 +10,11 @@ import { PricingService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { mockCartTotals, mockNormalizedCart } from '../../src/mocks/mock-cart';
+import {
+  mockCartTotals,
+  mockEmptyCart,
+  mockNormalizedCart,
+} from '../../src/mocks/mock-cart';
 import { PriceMode } from '../../src/models';
 import { CartTotalsComponent } from './totals.component';
 import { cartTotalsComponent } from './totals.def';
@@ -73,6 +77,24 @@ describe('Cart totals component', () => {
       (item) => item.innerText === title
     );
   };
+
+  describe('when the cart is empty', () => {
+    beforeEach(async () => {
+      service.getCart.mockReturnValue(of(mockEmptyCart));
+      element = await fixture(
+        html`<cart-totals .options=${{ showDiscounts: true }}></cart-totals>`
+      );
+    });
+
+    it('should not render any html', () => {
+      const elements = element.shadowRoot?.querySelectorAll('*:not(style)');
+      expect(elements?.length).toBe(0);
+    });
+
+    it('should render an is-empty attribute', () => {
+      expect(element.hasAttribute('is-empty')).toBe(true);
+    });
+  });
 
   describe('options', () => {
     beforeEach(() => {

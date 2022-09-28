@@ -1,4 +1,4 @@
-import { CartService } from '@spryker-oryx/cart';
+import { CartService, CartTotals } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { PricingService } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
@@ -99,7 +99,9 @@ describe('Cart controller', () => {
   describe('getTotals', () => {
     it('should return formatted totals values', () => {
       const mockFormattedPrice = 'formatted price';
-      service.getCart.mockReturnValue(of({ products: [{ quantity: 2 }] }));
+      service.getCart.mockReturnValue(
+        of({ totals: { priceToPay: 5 } as CartTotals })
+      );
       service.getTotals.mockReturnValue(of(mockCartTotals));
       pricingService.format.mockReturnValue(of(mockFormattedPrice));
 
@@ -107,10 +109,7 @@ describe('Cart controller', () => {
         .getTotals()
         .pipe(take(1))
         .subscribe((totals) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          Object.values(totals!).forEach((price) => {
-            expect(price).toBe(mockFormattedPrice);
-          });
+          expect(totals?.calculations.priceToPay).toBe(mockFormattedPrice);
         });
     });
 
@@ -127,7 +126,7 @@ describe('Cart controller', () => {
         .getTotals()
         .pipe(take(1))
         .subscribe((totals) => {
-          expect(totals).toBe(null);
+          expect(totals?.calculations).toEqual({});
         });
     });
 

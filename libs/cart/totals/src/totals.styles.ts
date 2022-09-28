@@ -8,12 +8,15 @@ export const styles = css`
 
     display: grid;
     grid-gap: 10px;
-    padding: 20px;
     border-radius: 4px;
     background: #f5f5f5;
     color: #121212;
     font-size: 16px;
     line-height: 1.5;
+  }
+
+  :host(:not([is-empty])) {
+    padding: 20px;
   }
 
   h5 + *,

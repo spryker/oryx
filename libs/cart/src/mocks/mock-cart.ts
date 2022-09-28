@@ -76,6 +76,10 @@ export const mockNormalizedEntry = {
   ...mockEntryInclude.attributes,
 };
 
+export const mockEmptyCart = {
+  id: mockCartResponse.id,
+};
+
 export const mockNormalizedCart = {
   id: mockCartResponse.id,
   ...mockCartResponse.attributes,
