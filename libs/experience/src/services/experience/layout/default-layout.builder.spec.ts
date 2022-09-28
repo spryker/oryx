@@ -4,6 +4,8 @@ import {
   CompositionProperties,
   StyleProperties,
 } from '../../../models';
+import { BreakpointService } from './breakpoint.service';
+import { DefaultBreakpointService } from './default-breakpoint.service';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 
 describe('DefaultLayoutBuilder', () => {
@@ -14,6 +16,10 @@ describe('DefaultLayoutBuilder', () => {
       {
         provide: 'LayoutBuilder',
         useClass: DefaultLayoutBuilder,
+      },
+      {
+        provide: BreakpointService,
+        useClass: DefaultBreakpointService,
       },
     ]);
 
@@ -79,7 +85,7 @@ describe('DefaultLayoutBuilder', () => {
 
     describe('container', () => {
       describe('when a container is configured', () => {
-        beforeEach(() => populateLayout({ container: true }));
+        beforeEach(() => populateLayout({ rules: [{ container: true }] }));
         it('should add the container class', () => {
           expect(layoutClasses).toContain('container');
         });
@@ -94,7 +100,7 @@ describe('DefaultLayoutBuilder', () => {
 
     describe('jumbotron', () => {
       describe('when a jumbotron is configured', () => {
-        beforeEach(() => populateLayout({ jumbotron: true }));
+        beforeEach(() => populateLayout({ rules: [{ jumbotron: true }] }));
         it('should add the jumbotron class', () => {
           expect(layoutClasses).toContain('jumbotron');
         });
@@ -111,7 +117,7 @@ describe('DefaultLayoutBuilder', () => {
       describe('column', () => {
         describe(`when the layout is column`, () => {
           beforeEach(() => {
-            populateLayout({ layout: CompositionLayout.column });
+            populateLayout({ rules: [{ layout: CompositionLayout.column }] });
           });
           it(`should have a layout-column class`, () => {
             expect(layoutClasses).toContain('layout-column');
@@ -120,8 +126,12 @@ describe('DefaultLayoutBuilder', () => {
             describe(`and a column-count of ${columnCount} is also provided`, () => {
               beforeEach(() => {
                 populateLayout({
-                  layout: CompositionLayout.column,
-                  columnCount,
+                  rules: [
+                    {
+                      layout: CompositionLayout.column,
+                      columnCount,
+                    },
+                  ],
                 });
               });
               it(`should add a column-count-${columnCount} class`, () => {
@@ -141,7 +151,7 @@ describe('DefaultLayoutBuilder', () => {
           [1, 2, 3, 4].forEach((columnCount) => {
             describe(`but a column-count of ${columnCount} is provided`, () => {
               beforeEach(() => {
-                populateLayout({ columnCount });
+                populateLayout({ rules: [{ columnCount }] });
               });
               it(`it should not add the column-count-${columnCount} class`, () => {
                 expect(layoutClasses).toBeUndefined();
@@ -152,7 +162,7 @@ describe('DefaultLayoutBuilder', () => {
 
         describe(`when the layout is not column`, () => {
           beforeEach(() => {
-            populateLayout({ layout: CompositionLayout.carousel });
+            populateLayout({ rules: [{ layout: CompositionLayout.carousel }] });
           });
           it(`should not have a layout-column class`, () => {
             expect(layoutClasses).not.toContain('layout-column');
@@ -163,7 +173,7 @@ describe('DefaultLayoutBuilder', () => {
       describe('carousel', () => {
         describe(`when the layout is carousel`, () => {
           beforeEach(() => {
-            populateLayout({ layout: CompositionLayout.carousel });
+            populateLayout({ rules: [{ layout: CompositionLayout.carousel }] });
           });
           it(`should have a layout-carousel class`, () => {
             expect(layoutClasses).toContain('layout-carousel');
@@ -181,7 +191,7 @@ describe('DefaultLayoutBuilder', () => {
 
         describe(`when the layout is not carousel`, () => {
           beforeEach(() => {
-            populateLayout({ layout: CompositionLayout.column });
+            populateLayout({ rules: [{ layout: CompositionLayout.column }] });
           });
           it(`should not have a layout-carousel class`, () => {
             expect(layoutClasses).not.toContain('layout-carousel');
@@ -192,13 +202,15 @@ describe('DefaultLayoutBuilder', () => {
 
     describe('position', () => {
       describe('when a position is sticky', () => {
-        beforeEach(() => populateLayout({ position: 'sticky' }));
+        beforeEach(() => populateLayout({ rules: [{ position: 'sticky' }] }));
         it('should add the sticky class', () => {
           expect(layoutClasses).toContain('sticky');
         });
       });
       describe('when an alternative position is provided', () => {
-        beforeEach(() => populateLayout({ position: 'alternative' as any }));
+        beforeEach(() =>
+          populateLayout({ rules: [{ position: 'alternative' as any }] })
+        );
         it('should not have a sticky class', () => {
           expect(layoutClasses).toBeUndefined();
         });

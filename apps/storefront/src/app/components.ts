@@ -1,10 +1,9 @@
-import { ComponentLayout } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 
 export interface ComponentMapping {
   tag?: string;
   component?: () => void;
-  template?: (uid: string, layout?: ComponentLayout) => TemplateResult;
+  template?: (uid: string, layoutClasses?: string) => TemplateResult;
 }
 
 export interface ComponentsMapping {
@@ -13,127 +12,83 @@ export interface ComponentsMapping {
 
 export const componentsMapping: ComponentsMapping = {
   ['experience-composition']: {
-    template: (uid: string, layout?: ComponentLayout) =>
+    template: (uid: string, layoutClasses?: string) =>
       html`<experience-composition
         uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
+        class=${layoutClasses}
       ></experience-composition>`,
   },
   ['oryx-banner']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<oryx-banner
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></oryx-banner>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<oryx-banner uid="${uid}" class=${layoutClasses}></oryx-banner>`,
   },
   ['product-title']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-title
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-title>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-title uid="${uid}" class=${layoutClasses}></product-title>`,
   },
   ['product-images']: {
-    template: (uid: string, layout?: ComponentLayout) =>
+    template: (uid: string, layoutClasses?: string) =>
       html`<product-images
         uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
+        class=${layoutClasses}
       ></product-images>`,
   },
   ['product-price']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-price
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-price>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-price uid="${uid}" class=${layoutClasses}></product-price>`,
   },
   ['product-description']: {
-    template: (uid: string, layout?: ComponentLayout) =>
+    template: (uid: string, layoutClasses?: string) =>
       html`<product-description
         uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
+        class=${layoutClasses}
       ></product-description>`,
   },
   ['product-average-rating']: {
-    template: (uid: string, layout?: ComponentLayout) =>
+    template: (uid: string, layoutClasses?: string) =>
       html`<product-average-rating
         uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
+        class=${layoutClasses}
       ></product-average-rating>`,
   },
   ['product-media']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-media
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-media>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-media uid="${uid}" class=${layoutClasses}></product-media>`,
   },
   ['product-id']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-id
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-id>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-id uid="${uid}" class=${layoutClasses}></product-id>`,
   },
   ['product-card']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-card
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-card>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-card uid="${uid}" class=${layoutClasses}></product-card>`,
   },
   ['product-attributes']: {
-    template: (uid: string, layout?: ComponentLayout) =>
+    template: (uid: string, layoutClasses?: string) =>
       html`<product-attributes
         uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
+        class=${layoutClasses}
       ></product-attributes>`,
   },
   ['product-list']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<product-list
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></product-list>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-list uid="${uid}" class=${layoutClasses}></product-list>`,
   },
   ['user-login']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<user-login
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></user-login>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<user-login uid="${uid}" class=${layoutClasses}></user-login>`,
   },
   ['add-to-cart']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<add-to-cart
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></add-to-cart>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<add-to-cart uid="${uid}" class=${layoutClasses}></add-to-cart>`,
   },
   ['search-box']: {
-    template: (uid: string, layout?: ComponentLayout) =>
-      html`<search-box
-        uid="${uid}"
-        .style=${layout.styles}
-        class=${layout.classes}
-      ></search-box>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<search-box uid="${uid}" class=${layoutClasses}></search-box>`,
   },
   ['cart-entries']: {
-    template: (uid: string) => html`<cart-entries uid="${uid}"></cart-entries>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<cart-entries uid="${uid}" class=${layoutClasses}></cart-entries>`,
   },
   ['cart-totals']: {
     template: (uid: string) => html`<cart-totals uid="${uid}"></cart-totals>`,

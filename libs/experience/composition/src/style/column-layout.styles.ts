@@ -11,15 +11,17 @@ import { css } from 'lit';
  * Only when there's a column-count > 1, the grid is used. grid items can
  * be organised using col span.
  */
-export const columnLayoutStyles = css`
-  .layout-column {
-    flex-wrap: nowrap;
-  }
 
+const baseRules = css`
   :host([class*='column-count-']:not(.column-count-1)) {
     display: grid;
     grid-template-rows: repeat(auto-fit, var(--height));
     grid-auto-rows: var(--height, minmax(min-content, max-content));
+  }
+
+  [class*='-layout-column']:not([class*='column-count-']) > *,
+  .column-count-1 > * {
+    flex: var(--fixed, 1 1) var(--width, auto);
   }
 
   .column-count-2 {
@@ -33,9 +35,24 @@ export const columnLayoutStyles = css`
   .column-count-4 {
     grid-template-columns: repeat(4, 1fr);
   }
+`;
 
-  .layout-column:not([class*='column-count-']) > *,
-  .column-count-1 > * {
-    flex: var(--fixed, 1 1) var(--width, auto);
+export const columnLayoutStyles = css`
+  ${baseRules};
+
+  .xs-layout-column {
+    flex-wrap: nowrap;
+  }
+
+  @media (min-width: 767px) {
+    .md-layout-column {
+      flex-wrap: nowrap;
+    }
+  }
+
+  @media (min-width: 1008px) {
+    .lg-layout-column {
+      flex-wrap: nowrap;
+    }
   }
 `;

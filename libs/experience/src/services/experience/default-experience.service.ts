@@ -46,7 +46,7 @@ export class DefaultExperienceService implements ExperienceService {
           return component;
         }),
         catchError(() => {
-          this.dataComponent[uid].next({ type: '', components: [] });
+          this.dataComponent[uid].next({ id: uid, type: '', components: [] });
           return of({});
         })
       )

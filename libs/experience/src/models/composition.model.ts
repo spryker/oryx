@@ -1,4 +1,12 @@
-export interface CompositionProperties extends StyleProperties {
+import { Breakpoint } from '../services/experience/layout/constants';
+
+export interface CompositionProperties {
+  rules?: StyleRuleSet[];
+}
+
+export interface StyleRuleSet extends StyleProperties {
+  breakpoint?: Breakpoint;
+
   layout?: CompositionLayout;
 
   /** the number of columns that are used for a column layout  */

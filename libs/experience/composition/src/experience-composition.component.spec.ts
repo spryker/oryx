@@ -32,6 +32,7 @@ class MockExperienceService implements Partial<ExperienceService> {
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
   getLayoutClasses = (): string => '';
   getLayoutStyles = (): string => '';
+  collectStyles = (): string => '';
 }
 
 class MockSSRAwaiter {

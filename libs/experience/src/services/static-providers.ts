@@ -1,5 +1,7 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
+  BreakpointService,
+  DefaultBreakpointService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
   ExperienceService,
@@ -15,6 +17,10 @@ export const staticProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: DefaultExperienceService,
+  },
+  {
+    provide: BreakpointService,
+    useClass: DefaultBreakpointService,
   },
   {
     provide: LayoutBuilder,

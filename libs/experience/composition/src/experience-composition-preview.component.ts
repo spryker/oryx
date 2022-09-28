@@ -90,17 +90,20 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     return html`
       ${asyncValue(
         this.components$,
-        (components: any) =>
-          html`${repeat(
-            components,
-            (component) => component.id,
-            (component: any) =>
-              this.registryService.resolveTemplate(
-                component.type,
-                component.id,
-                this.getLayout(component?.options?.data)
+        (components) =>
+          html`${components
+            ? repeat(
+                components,
+                (component) => component.id,
+                (component) =>
+                  this.registryService.resolveTemplate(
+                    component.type,
+                    component.id,
+                    this.getLayoutClasses(component)
+                  )
               )
-          )}`,
+            : ``}
+          ${this.addInlineStyles(components)}`,
         () => html`Loading...`
       )}
     `;

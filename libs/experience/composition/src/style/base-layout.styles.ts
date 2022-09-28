@@ -1,23 +1,27 @@
 import { css } from 'lit';
 
 export const baseLayoutStyles = css`
-  :host {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    /* we cannot use overflow hidden when there's a sticky child */
-    /* overflow: hidden; */
-  }
+  @layer layout {
+    :host {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      min-width: 0;
+      /* we cannot use overflow hidden when there's a sticky child */
+      /* overflow: hidden; */
+      gap: var(--oryx-composition-gap);
+    }
 
-  :host > * {
-    height: var(--height);
-  }
+    :host > * {
+      height: var(--height);
+    }
 
-  :host > * {
-    flex: 100%;
+    :host > * {
+      flex: 100%;
 
-    /* ensure the items will be aligned at the start by default */
-    align-content: start;
+      /* ensure the items will be aligned at the start by default */
+      align-content: start;
+    }
   }
 `;

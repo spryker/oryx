@@ -1,7 +1,6 @@
 import { hydratable, SSRAwaiterService } from '@spryker-oryx/core';
 import {
   Component,
-  ComponentLayout,
   ComponentsRegistryService,
   CompositionProperties,
   ExperienceService,
@@ -10,12 +9,11 @@ import {
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { isClient } from '@spryker-oryx/typescript-utils';
-import { html, TemplateResult } from 'lit';
+import { html, TemplateResult, unsafeCSS } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { ComponentMixin } from '../../src/mixins';
-
 import {
   baseLayoutStyles,
   carouselLayoutStyles,
@@ -28,10 +26,10 @@ import {
 export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
   static styles = [
     baseLayoutStyles,
-    stickyLayoutStyles,
-    containerLayoutStyles,
-    columnLayoutStyles,
     carouselLayoutStyles,
+    columnLayoutStyles,
+    containerLayoutStyles,
+    stickyLayoutStyles,
   ];
 
   @state()
@@ -94,23 +92,50 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
                 components,
                 (component) => component.id,
                 (component) =>
-                  this.registryService.resolveTemplate(
+                  html`${this.registryService.resolveTemplate(
                     component.type,
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     component.id!,
-                    this.getLayout(component?.options?.data)
-                  )
-              )}`
+                    this.getLayoutClasses(component)
+                  )} `
+              )}
+              ${this.addInlineStyles(components)}`
             : html``,
         () => html`Loading...`
       )}
     `;
   }
 
-  protected getLayout(data?: Partial<CompositionProperties>): ComponentLayout {
-    return {
-      classes: this.layoutBuilder.getLayoutClasses(data),
-      styles: this.layoutBuilder.getLayoutStyles(data),
-    };
+  /**
+   * collects the inline styles for the list of components and writes them
+   * in a `<style>` tag.
+   * The styles are unique to the component and are not reusable, hence it's
+   * ok to render them inline. Rendering them inline will improve loading them
+   * as additional resources, which would cause a layout shift.
+   */
+  protected addInlineStyles(
+    components: Component[] | undefined
+  ): TemplateResult {
+    if (!components) return html``;
+    const styles = this.layoutBuilder.collectStyles(components);
+    if (styles !== '') {
+      return html`
+        <style>
+          ${unsafeCSS(styles)}
+        </style>
+      `;
+    }
+
+    return html``;
+  }
+
+  /**
+   * returns the CSS classes for the given composition.
+   */
+  protected getLayoutClasses(component: Component): string | undefined {
+    if (!component.options?.data) {
+      return undefined;
+    }
+    return this.layoutBuilder.getLayoutClasses(component.options.data);
   }
 }
