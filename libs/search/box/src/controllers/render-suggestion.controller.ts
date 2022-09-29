@@ -34,6 +34,7 @@ export class RenderSuggestionController {
                   id: url,
                   text: name,
                 }}"
+                close-popover
               ></content-link>
             </li>
           `
@@ -85,6 +86,7 @@ export class RenderSuggestionController {
           id: product.sku,
           label: product.name,
         }}"
+        close-popover
       >
         <product-media .product=${product}></product-media>
         <product-title .product=${product}></product-title>

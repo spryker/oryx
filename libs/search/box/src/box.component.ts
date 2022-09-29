@@ -3,7 +3,6 @@ import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
-import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
@@ -45,9 +44,9 @@ export class SearchBoxComponent
   private defaultOptions: SearchBoxOptions = {
     minChars: 2,
     completionsCount: 5,
-    productsCount: 6,
+    productsCount: 5,
     categoriesCount: 5,
-    cmsCount: 5,
+    cmsCount: 0,
   };
 
   protected contentController = new ContentController(this);
@@ -70,22 +69,15 @@ export class SearchBoxComponent
     distinctUntilChanged(),
     withLatestFrom(this.options$),
     switchMap(([query, options]) => {
-      const {
-        minChars,
-        completionsCount,
-        productsCount,
-        categoriesCount,
-        cmsCount,
-      } = options;
-      if (query && (!minChars || query.length >= minChars)) {
+      if (query && (!options.minChars || query.length >= options.minChars)) {
         return this.suggestionService.get({ query }).pipe(
           map((raw) => {
             const suggestion = raw
               ? {
-                  completion: raw.completion.slice(0, completionsCount),
-                  products: raw.products?.slice(0, productsCount) ?? [],
-                  categories: raw.categories.slice(0, categoriesCount),
-                  cmsPages: raw.cmsPages.slice(0, cmsCount),
+                  completion: raw.completion.slice(0, options.completionsCount),
+                  products: raw.products?.slice(0, options.productsCount) ?? [],
+                  categories: raw.categories.slice(0, options.categoriesCount),
+                  cmsPages: raw.cmsPages.slice(0, options.cmsCount),
                 }
               : raw;
 
@@ -245,10 +237,7 @@ export class SearchBoxComponent
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-typeahead
-        .clearIconPosition=${ClearIconPosition.NONE}
-        @oryx.typeahead=${this.onTypeahead}
-      >
+      <oryx-typeahead @oryx.typeahead=${this.onTypeahead}>
         <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
         <input ${ref(this.inputRef)} placeholder="Search" />
         ${asyncValue(

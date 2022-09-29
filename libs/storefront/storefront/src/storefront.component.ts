@@ -53,6 +53,7 @@ export class StorefrontComponent extends LitElement {
           >Contact</content-link
         >
       </div>
+      <search-box .options="{{cmsCount: 0}}"></search-box>
       <div class="products">
         <content-link
           class="link"
