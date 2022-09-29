@@ -1,8 +1,10 @@
 import { css } from 'lit';
 
 export const styles = css`
-  cart-entry {
-    margin-bottom: var(--oryx-space-4);
+  :host {
+    display: flex;
+    flex-direction: column;
+    gap: var(--oryx-space-4);
   }
 
   section {

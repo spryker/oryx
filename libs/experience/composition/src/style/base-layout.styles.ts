@@ -5,6 +5,7 @@ export const baseLayoutStyles = css`
     :host {
       display: flex;
       flex-direction: row;
+      align-items: flex-start;
       flex-wrap: wrap;
       box-sizing: border-box;
       min-width: 0;
