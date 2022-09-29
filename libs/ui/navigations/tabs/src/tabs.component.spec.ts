@@ -4,6 +4,7 @@ import {
   a11yConfig,
   queryAssignedElements,
 } from '@spryker-oryx/typescript-utils';
+import { vi } from 'vitest';
 import { TabComponent } from '../../tab';
 import { tabComponent } from '../../tab/src/tab.def';
 import { TabsComponent } from './tabs.component';
@@ -14,7 +15,7 @@ Element.prototype.scrollIntoView = vi.fn();
 
 describe('Tab component', () => {
   let element: TabsComponent;
-
+  let inputRange: HTMLInputElement | undefined | null;
   const numberOfTabs = 3;
 
   beforeAll(async () => {
@@ -35,6 +36,8 @@ describe('Tab component', () => {
           })}
         </oryx-tabs>
       `);
+
+      inputRange = element.shadowRoot?.querySelector('input');
     });
 
     it('should pass the a11y audit', async () => {
@@ -51,35 +54,53 @@ describe('Tab component', () => {
       const slottedPanels = queryAssignedElements(element, { slot: 'panels' });
       const defaultSlotPanelContent = slottedPanels[0];
       expect(defaultSlotPanelContent.hasAttribute('selected')).toBe(true);
+    });
 
-      it('should have appearance primary theme as default', async () => {
-        expect(element).toHaveProperty('appearance', 'primary');
+    it('should have appearance primary theme as default', async () => {
+      expect(element).toHaveProperty('appearance', 'primary');
+    });
+
+    describe('when the 2nd tab is selected', () => {
+      const selectTabIndex = 1;
+      beforeEach(() => {
+        const slottedItems = queryAssignedElements(element) as TabComponent[];
+        slottedItems[selectTabIndex].click();
       });
 
-      describe('when the 2nd tab is selected', () => {
-        const selectTabIndex = 1;
+      it('should select second tab', async () => {
+        const slottedItems = queryAssignedElements(element) as TabComponent[];
+        const defaultSlotContent = slottedItems[selectTabIndex];
+        expect(defaultSlotContent.hasAttribute('selected')).toBe(true);
+      });
 
-        beforeEach(() => {
-          const slottedItems = queryAssignedElements(element) as TabComponent[];
-          slottedItems[selectTabIndex].click();
-        });
+      it('should select second panel', async () => {
+        const panels = queryAssignedElements(element, { slot: 'panels' });
+        const defaultSlotPanelContent = panels[selectTabIndex];
+        expect(defaultSlotPanelContent.hasAttribute('selected')).toBe(true);
+      });
 
-        it('should select second tab', async () => {
-          const slottedItems = queryAssignedElements(element) as TabComponent[];
-          const defaultSlotContent = slottedItems[selectTabIndex];
-          expect(defaultSlotContent.hasAttribute('selected')).toBe(true);
-        });
+      it('should set input of type range to be 2', async () => {
+        const input = element.shadowRoot?.querySelector(
+          'input[type="range"]'
+        ) as HTMLInputElement;
 
-        it('should select second panel', async () => {
-          const panels = queryAssignedElements(element, { slot: 'panels' });
-          const defaultSlotPanelContent = panels[selectTabIndex];
-          expect(defaultSlotPanelContent.hasAttribute('selected')).toBe(true);
-        });
+        expect(input?.value).toBe('2');
+      });
+    });
 
-        it('should focus the input after using the mouse', async () => {
-          const input = element.shadowRoot?.querySelector('input');
-          expect(input?.focus).toBe(true);
-        });
+    describe('when the input value changes', () => {
+      const selectedTabIndex = 1;
+      beforeEach(() => {
+        if (inputRange) {
+          inputRange.value = '2';
+          inputRange.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+
+      it('should select second tab', async () => {
+        const slottedItems = queryAssignedElements(element) as TabComponent[];
+        const defaultSlotContent = slottedItems[selectedTabIndex];
+        expect(defaultSlotContent.hasAttribute('selected')).toBe(true);
       });
     });
 
@@ -111,6 +132,31 @@ describe('Tab component', () => {
 
       it('should have appearance secondary theme as default', async () => {
         expect(element).toHaveProperty('appearance', 'secondary');
+      });
+    });
+
+    describe('when tabs are defined without for attribute', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-tabs>
+            ${[...Array(numberOfTabs).keys()].map((i) => {
+              return html`<oryx-tab>Tab ${i + 1}</oryx-tab> `;
+            })}
+            ${[...Array(numberOfTabs).keys()].map((i) => {
+              return html`<div slot="panels" id="n${i + 1}">
+                Сontent for tab ${i + 1}
+              </div> `;
+            })}
+          </oryx-tabs>
+        `);
+      });
+
+      it('should select the panels by index', async () => {
+        const slottedPanels = queryAssignedElements(element, {
+          slot: 'panels',
+        });
+        const defaultSlotPanelContent = slottedPanels[0];
+        expect(defaultSlotPanelContent.hasAttribute('selected')).toBe(true);
       });
     });
   });
