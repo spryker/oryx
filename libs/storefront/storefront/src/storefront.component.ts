@@ -4,7 +4,6 @@ import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { routes, StorefrontRouter } from '@spryker-oryx/storefront';
 import { isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -34,15 +33,13 @@ export class StorefrontComponent extends LitElement {
   }
 
   renderNav(): TemplateResult {
-    return html`<nav>
+    return html`
       <div>
         <content-link
           class="link"
           .options="${{ type: LinkType.RawUrl, id: '/', label: 'Home Page' }}"
           >Home</content-link
         >
-      </div>
-      <div>
         <content-link
           class="link"
           .options="${{
@@ -53,48 +50,12 @@ export class StorefrontComponent extends LitElement {
           >Contact</content-link
         >
       </div>
-      <search-box .options="{{cmsCount: 0}}"></search-box>
-      <div class="products">
-        <content-link
-          class="link"
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: '001_25904006',
-            label: 'Product page',
-          }}"
-          ><product-title sku="001_25904006"></product-title
-        ></content-link>
-        <content-link
-          class="link"
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: '139_24699831',
-            label: 'Product page',
-          }}"
-          ><product-title sku="139_24699831"></product-title
-        ></content-link>
-        <content-link
-          class="link"
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: '060_24245592',
-            label: 'Product page',
-          }}"
-          ><product-title sku="060_24245592"></product-title
-        ></content-link>
-        <content-link
-          class="link"
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: '010_30692994',
-            label: 'Product page',
-          }}"
-          ><product-title sku="010_30692994"></product-title
-        ></content-link>
+      <nav>
+        <search-box .options="{{cmsCount: 0}}"></search-box>
         <user-logout .options="${{ customRedirect: 'contact' }}"></user-logout>
         <mini-cart></mini-cart>
-      </div>
-    </nav>`;
+      </nav>
+    `;
   }
 
   override render(): TemplateResult {

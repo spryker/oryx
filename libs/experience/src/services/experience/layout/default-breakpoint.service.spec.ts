@@ -36,16 +36,16 @@ describe('DefaultBreakpointService', () => {
     });
 
     describe('when breakpoint is Md', () => {
-      it('should return a media query with min 767px', () => {
+      it('should return a media query with min 768px', () => {
         const query = service.getMediaQuery(Breakpoint.Md);
-        expect(query).toBe('@media (min-width: 767px)');
+        expect(query).toBe('@media (min-width: 768px)');
       });
     });
 
     describe('when breakpoint is Lg', () => {
-      it('should return a media query with min 1008px', () => {
+      it('should return a media query with min 124px', () => {
         const query = service.getMediaQuery(Breakpoint.Lg);
-        expect(query).toBe('@media (min-width: 1008px)');
+        expect(query).toBe('@media (min-width: 1024px)');
       });
     });
   });

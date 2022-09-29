@@ -109,7 +109,7 @@ export const formControlStyles = css`
     margin-block-start: 7px;
   }
 
-  @media (max-width: ${breakpoints.mobile}px) {
+  @media (max-width: ${breakpoints.tablet}px) {
     input,
     slot:not([name])::slotted(*) {
       height: 44px;

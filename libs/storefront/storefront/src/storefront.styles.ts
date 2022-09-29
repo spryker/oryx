@@ -4,6 +4,7 @@ export const styles = css`
   nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   nav .products {

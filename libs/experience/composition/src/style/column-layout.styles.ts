@@ -13,7 +13,7 @@ import { css } from 'lit';
  */
 
 const baseRules = css`
-  :host([class*='column-count-']:not(.column-count-1)) {
+  [class*='column-count-']:not(.column-count-1) {
     display: grid;
     grid-template-rows: repeat(auto-fit, var(--height));
     grid-auto-rows: var(--height, minmax(min-content, max-content));
@@ -24,16 +24,8 @@ const baseRules = css`
     flex: var(--fixed, 1 1) var(--width, auto);
   }
 
-  .column-count-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .column-count-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .column-count-4 {
-    grid-template-columns: repeat(4, 1fr);
+  [class*='-column-count-1'] {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -44,15 +36,51 @@ export const columnLayoutStyles = css`
     flex-wrap: nowrap;
   }
 
-  @media (min-width: 767px) {
+  .xs-column-count-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .xs-column-count-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .xs-column-count-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 768px) {
     .md-layout-column {
       flex-wrap: nowrap;
     }
+
+    .md-column-count-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .md-column-count-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .md-column-count-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
-  @media (min-width: 1008px) {
+  @media (min-width: 1024px) {
     .lg-layout-column {
       flex-wrap: nowrap;
+    }
+
+    .lg-column-count-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lg-column-count-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .lg-column-count-4 {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 `;

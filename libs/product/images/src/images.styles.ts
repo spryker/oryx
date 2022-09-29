@@ -35,7 +35,6 @@ export const styles = css`
     -webkit-overflow-scrolling: touch;
     display: flex;
     flex-grow: 1;
-    background-color: var(--oryx-color-neutral-dark, gray);
     scrollbar-width: none; /* Firefox */
   }
 
@@ -47,7 +46,6 @@ export const styles = css`
   section > picture {
     flex: 1 0 100%;
     scroll-snap-align: start;
-    padding: var(--preview-padding, 24px);
     box-sizing: border-box;
 
     /* Prevents collapsing for elements with 0 height */

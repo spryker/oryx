@@ -4,7 +4,6 @@ export const containerLayoutStyles = css`
   :is(.container, .xs-container, .md-container, .lg-container):not(.jumbotron) {
     margin: auto;
     max-width: var(--container-width);
-    /* padding: var(--container-padding, 10px); */
   }
 
   :is(.container, .xs-container, .md-container, .lg-container).jumbotron {

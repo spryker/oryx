@@ -94,10 +94,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add('jumbotron', ruleSet.jumbotron);
     add('layout-carousel', ruleSet.layout === CompositionLayout.carousel);
     add('layout-column', ruleSet.layout === CompositionLayout.column);
-    add(
-      `column-count-${ruleSet.columnCount}`,
-      ruleSet.layout === CompositionLayout.column && !!ruleSet.columnCount
-    );
+    add(`column-count-${ruleSet.columnCount}`, !!ruleSet.columnCount);
     add('sticky', ruleSet.position === 'sticky');
 
     return classes;

@@ -145,27 +145,18 @@ describe('DefaultLayoutBuilder', () => {
           beforeEach(() => {
             populateLayout({});
           });
-          it(`should have a layout-column class`, () => {
+          it(`should not have a layout-column class`, () => {
             expect(layoutClasses).toBeUndefined();
           });
           [1, 2, 3, 4].forEach((columnCount) => {
-            describe(`but a column-count of ${columnCount} is provided`, () => {
+            describe(`but when a column-count of ${columnCount} is provided`, () => {
               beforeEach(() => {
                 populateLayout({ rules: [{ columnCount }] });
               });
-              it(`it should not add the column-count-${columnCount} class`, () => {
-                expect(layoutClasses).toBeUndefined();
+              it(`it should add the column-count-${columnCount} class`, () => {
+                expect(layoutClasses).toContain(`-column-count-${columnCount}`);
               });
             });
-          });
-        });
-
-        describe(`when the layout is not column`, () => {
-          beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.carousel }] });
-          });
-          it(`should not have a layout-column class`, () => {
-            expect(layoutClasses).not.toContain('layout-column');
           });
         });
       });

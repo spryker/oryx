@@ -1,7 +1,7 @@
 /* semantic design tokens */
 
 :root {
-  --container-width: 1170px;
+  --container-width: 1340px;
 
   font-family: var(--oryx-font);
   font-size: 14px;

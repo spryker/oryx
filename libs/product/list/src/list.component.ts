@@ -12,9 +12,12 @@ import {
 } from '@spryker-oryx/product';
 import { map } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
+import { baseListStyles } from './styles';
 
 @hydratable('window:load')
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
+  static styles = baseListStyles;
+
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
   protected options$ = new ContentController(this).getOptions();
