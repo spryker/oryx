@@ -1,6 +1,6 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { buttonComponent } from '../actions/button/src/component';
-import { iconButtonComponent } from '../actions/icon-button/src/component';
+import { iconButtonComponent } from '../actions/icon-button/src/icon-button.def';
 import { linkComponent } from '../actions/link/src/component';
 import { toggleIconComponent } from '../actions/toggle-icon/src/component';
 import { toggleComponent } from '../actions/toggle/src/component';
@@ -37,6 +37,14 @@ import { typeheadComponent } from '../search/typeahead/src/component';
 import { headlineComponent } from '../structure/headline/src/component';
 import { textComponent } from '../structure/text/src/component';
 import { tileComponent } from '../structure/tile/src/component';
+
+export {
+  iconButtonComponent,
+  collapsibleComponent,
+  chipComponent,
+  tabComponent,
+  tabsComponent,
+};
 
 export const uiFeature: AppFeature = {
   components: [

@@ -141,5 +141,18 @@ describe('Cart controller', () => {
           expect(totals).toBe(null);
         });
     });
+
+    it('should return negative price for discount', () => {
+      service.getCart.mockReturnValue(
+        of({ totals: { discountTotal: 100 } as CartTotals })
+      );
+      service.getTotals.mockReturnValue(of(mockCartTotals));
+      pricingService.format.mockReturnValue(of('whatever'));
+
+      new CartController().getTotals().subscribe();
+
+      expect(pricingService.format).toHaveBeenCalledTimes(1);
+      expect(pricingService.format).toHaveBeenCalledWith(-100);
+    });
   });
 });

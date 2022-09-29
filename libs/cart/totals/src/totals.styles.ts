@@ -3,14 +3,12 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     --oryx-icon-size-small: 15px;
-    --oryx-icon-color: --oryx-color-ink;
-    --oryx-color-info: --oryx-color-ink;
+    --oryx-icon-button-color: var(--oryx-color-ink);
 
     display: grid;
     grid-gap: 10px;
     border-radius: 4px;
-    background: #f5f5f5;
-    color: #121212;
+    background-color: var(--oryx-color-neutral-lightest);
     font-size: 16px;
     line-height: 1.5;
   }
@@ -22,6 +20,7 @@ export const styles = css`
   h5 + *,
   oryx-collapsible > div > :last-child {
     justify-self: end;
+    text-align: end;
   }
 
   h4,
@@ -37,10 +36,10 @@ export const styles = css`
   }
 
   h5 > span,
-  oryx-collapsible > div > :first-child,
+  oryx-collapsible > div > :nth-child(odd),
   h5:last-of-type + div > div,
   .delivery-message {
-    color: #71747c;
+    color: var(--oryx-color-neutral-darker);
   }
 
   hr {
@@ -66,7 +65,7 @@ export const styles = css`
   }
 
   [slot='aside'],
-  oryx-collapsible > div > :last-child {
+  oryx-collapsible > div > :nth-child(even) {
     color: #bc4430;
   }
 
@@ -75,18 +74,17 @@ export const styles = css`
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     padding: 10px 0;
-    font-size: 14px;
+    font-size: 1rem;
     line-height: 22px;
   }
 
-  h5:last-of-type,
-  h5:last-of-type + div {
+  :host > h5:last-of-type,
+  :host > h5:last-of-type + div {
     font-weight: 600;
   }
 
-  h5:last-of-type + div {
+  :host > h5:last-of-type + div {
     font-size: 22px;
-    text-align: end;
   }
 
   h5:last-of-type + div > div {

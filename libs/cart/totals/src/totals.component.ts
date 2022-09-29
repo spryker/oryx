@@ -79,20 +79,19 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
       ${when(
         options.showDiscounts && totals.calculations.discountTotal,
         () => html`
-          <oryx-collapsible appearance="${CollapsibleAppearance.Inline}" open>
-            <span slot="header">Discounts</span>
+          <oryx-collapsible
+            appearance="${CollapsibleAppearance.Inline}"
+            header="Discounts"
+            open
+          >
+            <span slot="aside">${totals.calculations.discountTotal}</span>
 
-            <span slot="aside">-${totals.calculations.discountTotal}</span>
-            ${when(
-              totals?.discounts,
-              () =>
-                html`<div>
-                  ${totals?.discounts?.map(
-                    (discount) => html` <div>${discount.displayName}</div>
-                      <div>-${discount.amount}</div>`
-                  )}
-                </div>`
-            )}
+            <div>
+              ${totals?.discounts?.map(
+                (discount) => html` <h5>${discount.displayName}</h5>
+                  <div>${discount.amount}</div>`
+              )}
+            </div>
           </oryx-collapsible>
         `
       )}

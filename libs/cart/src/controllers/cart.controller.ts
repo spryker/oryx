@@ -62,7 +62,7 @@ export class CartController {
           (acc$, discount) =>
             acc$.pipe(
               switchMap((acc) =>
-                this.pricingService.format(discount.amount).pipe(
+                this.pricingService.format(-discount.amount).pipe(
                   filter(<T>(amount: T | null): amount is T => amount !== null),
                   map((amount) => [...acc, { ...discount, amount }])
                 )
@@ -87,6 +87,9 @@ export class CartController {
         Object.entries(cart.totals ?? {}).reduce((acc$, [priceType, price]) => {
           if (!price) {
             return acc$;
+          }
+          if (priceType === 'discountTotal') {
+            price = -price;
           }
 
           return acc$.pipe(

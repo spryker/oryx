@@ -5,7 +5,7 @@ import { TemplateResult } from 'lit';
 import { html } from 'lit-html';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
-import { iconButtonComponent } from '../component';
+import { iconButtonComponent } from '../icon-button.def';
 
 useComponent(iconButtonComponent);
 

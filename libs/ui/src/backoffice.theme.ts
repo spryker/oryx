@@ -5,6 +5,6 @@ export const uiBackofficeTheme = {
     ),
   'oryx-collapsible': () =>
     import('../collapsible/src/styles/themes/backoffice.styles').then(
-      (b) => b.composableBackofficeUI
+      (b) => b.collapsibleBackofficeUI
     ),
 };

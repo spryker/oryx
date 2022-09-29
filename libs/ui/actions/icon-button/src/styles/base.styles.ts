@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const iconButtonStyles = css`
+export const iconButtonBaseStyles = css`
   :host {
     color: var(--oryx-icon-button-color, var(--oryx-color-neutral-dark));
   }
@@ -19,16 +19,6 @@ export const iconButtonStyles = css`
     border: solid transparent 1px;
     border-radius: 50%;
     color: inherit;
-  }
-
-  ::slotted(*)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    inset-inline-start: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
   }
 
   ::slotted(:hover:not([disabled])) {

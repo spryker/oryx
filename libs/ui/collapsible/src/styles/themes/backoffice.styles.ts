@@ -71,6 +71,6 @@ const styles = [
   `,
 ];
 
-export const composableBackofficeUI: ThemeData = {
+export const collapsibleBackofficeUI: ThemeData = {
   styles,
 };

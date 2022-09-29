@@ -24,8 +24,10 @@
   --oryx-color-neutral: #d4d5d7;
   --oryx-color-neutral-light: #efeeee;
   --oryx-color-neutral-lighter: #f5f5f5;
+  --oryx-color-neutral-lightest: #f5f5f5;
   --oryx-color-neutral-dark: #8f8f8f;
   --oryx-color-neutral-darker: #71747c;
+  --oryx-color-neutral-darkest: #121212;
   --oryx-color-neutral-greyblue: #e7eaee;
 
   /* brand color */
@@ -111,6 +113,7 @@
     --oryx-color-ink: #fff;
     --oryx-color-neutral-light: #aaa;
     --oryx-color-neutral-lighter: #666;
+    --oryx-color-neutral-lightest: #121212;
     --oryx-color-neutral-dark: #efeeee;
     --oryx-color-neutral-darker: #f8f8f8;
     --oryx-elevation-color: rgb(237 237 237 / 15%);

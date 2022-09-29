@@ -2,18 +2,18 @@ import { ThemeData } from '@spryker-oryx/core';
 import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
-const inlineCollapsable = css`
+const inlineAppearance = css`
   :host(${inlineSelector}) nav {
     transition-duration: 0.6s;
     transition-property: transform;
   }
 
   :host(${inlineSelector}) details[open] oryx-icon-button {
-    transform: rotate(180deg);
+    transform: rotate(-180deg);
   }
 
   :host(${inlineSelector}) details[open] oryx-icon-button oryx-icon {
-    transform: rotate(180deg);
+    transform: rotate(-180deg);
   }
 `;
 
@@ -75,6 +75,6 @@ const blockAppearance = css`
   }
 `;
 
-export const composableStorefrontUI: ThemeData = {
-  styles: [inlineCollapsable, blockAppearance],
+export const collapsibleStorefrontUI: ThemeData = {
+  styles: [inlineAppearance, blockAppearance],
 };

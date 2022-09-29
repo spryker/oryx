@@ -2,8 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import '@spryker-oryx/testing';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
-import { iconButtonComponent } from './component';
 import { IconButtonComponent } from './icon-button.component';
+import { iconButtonComponent } from './icon-button.def';
 
 describe('IconButtonComponent', () => {
   let element: IconButtonComponent;
