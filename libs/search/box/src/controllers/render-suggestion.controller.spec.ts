@@ -43,14 +43,14 @@ const notFoundSuggestion: Suggestion = {
 };
 
 const suggestion: Suggestion = {
-  completion: [resource.url],
+  completion: [resource.url ?? ''],
   categories: [resource],
   cmsPages: [resource],
   products: [product],
 };
 
 const completionOnly: Suggestion = {
-  completion: [resource.url],
+  completion: [resource.url ?? ''],
   categories: [],
   cmsPages: [],
   products: [],

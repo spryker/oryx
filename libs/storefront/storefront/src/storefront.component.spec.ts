@@ -19,13 +19,13 @@ useComponent(storefrontComponent);
 class MockRouterService implements Partial<RouterService> {
   private router$ = new BehaviorSubject('');
   private params$: Subject<RouteParams> = new Subject();
+
   go(route: string): void {
     this.router$.next(route);
   }
   currentRoute(): Observable<string> {
     return this.router$;
   }
-
   currentParams(): Observable<RouteParams> {
     return this.params$;
   }

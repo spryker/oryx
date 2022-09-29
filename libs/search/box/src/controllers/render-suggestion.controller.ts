@@ -13,8 +13,7 @@ interface LinksSection {
 
 export class RenderSuggestionController {
   protected processCompletions(completions: string[]): SuggestionResource[] {
-    //TODO: url generation PLP + ?q=${completion}
-    return completions.map((name) => ({ name, url: `?q=${name}` }));
+    return completions.map((name) => ({ name, params: { q: name } }));
   }
 
   protected renderLink({ title, options, type }: LinksSection): TemplateResult {
@@ -26,12 +25,13 @@ export class RenderSuggestionController {
       <h5>${title}</h5>
       <ul>
         ${options.map(
-          ({ name, url }) => html`
+          ({ name, url, params }) => html`
             <li>
               <content-link
                 .options="${{
                   type,
-                  id: url,
+                  id: url ?? '',
+                  params: params ?? null,
                   text: name,
                 }}"
                 close-popover

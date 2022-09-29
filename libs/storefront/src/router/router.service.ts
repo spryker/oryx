@@ -49,6 +49,18 @@ export class StorefrontRouterService implements RouterService {
     return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
   }
 
+  getUrlParams(): RouteParams {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(decodeURIComponent(queryString));
+    return Array.from(urlParams.entries()).reduce(
+      (result, [key, value]) => ({
+        ...result,
+        [key]: value,
+      }),
+      {}
+    );
+  }
+
   currentRoute(): Observable<string> {
     return this.router$.pipe(
       withLatestFrom(this.storedRoute$),

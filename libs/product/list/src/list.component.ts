@@ -13,7 +13,7 @@ import {
 import { map } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
 
-@hydratable()
+@hydratable('window:load')
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);

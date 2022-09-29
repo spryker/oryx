@@ -9,11 +9,15 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
     // TODO: PLP link generation with search params
     [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
-      `/plp${encodeURIComponent(link.id)}`,
+      `/search${
+        link.params
+          ? `?${encodeURIComponent(this.getUrlParams(link.params))}`
+          : encodeURIComponent(link.id ?? '')
+      }`,
     [SemanticLinkType.Page]: (link: SemanticLink): string =>
-      `/${encodeURIComponent(link.id)}`,
+      `/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.Product]: (link: SemanticLink): string =>
-      `/product/${encodeURIComponent(link.id)}`,
+      `/product/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.Category]: (link: SemanticLink): string =>
       `/category/${link.id}`,
   };
@@ -23,5 +27,9 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       return throwError(() => new Error('Link type is not supported'));
     }
     return of(this.types[link.type]?.(link));
+  }
+
+  private getUrlParams(params: Record<string, string>): string {
+    return new URLSearchParams(params).toString();
   }
 }

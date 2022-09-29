@@ -6,7 +6,7 @@ import {
   ProductListService,
 } from '@spryker-oryx/product';
 import { NullableGeneric } from '@spryker-oryx/typescript-utils';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export class DefaultProductListPageService implements ProductListPageService {
   constructor(
@@ -15,10 +15,6 @@ export class DefaultProductListPageService implements ProductListPageService {
   ) {}
 
   get(): Observable<NullableGeneric<ProductList>> {
-    return this.routerService.currentParams().pipe(
-      switchMap((params) => {
-        return this.productListService.get(params);
-      })
-    );
+    return this.productListService.get(this.routerService.getUrlParams());
   }
 }

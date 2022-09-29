@@ -21,12 +21,13 @@ export class ContentLinkComponent extends ComponentMixin<LinkOptions>() {
     switchMap((options) => {
       return combineLatest([
         of(options),
-        ...(!options.id || !options.type || options.type === LinkType.RawUrl
+        ...(!options.type || options.type === LinkType.RawUrl
           ? [of(options.id)]
           : [
               this.semanticLinkService.get({
                 type: options.type,
                 id: options.id,
+                params: options.params,
               }),
             ]),
       ]);

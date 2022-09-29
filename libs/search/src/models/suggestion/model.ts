@@ -2,7 +2,8 @@ import { Product } from '@spryker-oryx/product';
 
 export interface SuggestionResource {
   name: string;
-  url: string;
+  url?: string;
+  params?: Record<string, string>;
 }
 
 export interface Suggestion {

@@ -8,6 +8,7 @@ export interface LinkOptions {
   type?: SemanticLinkType | LinkType;
   text?: string;
   id?: string;
+  params?: Record<string, string>;
   icon?: string;
   label?: string;
   target?: string;

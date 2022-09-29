@@ -2,11 +2,12 @@ import { Observable } from 'rxjs';
 
 export interface SemanticLink {
   type: SemanticLinkType;
-  id: string;
+  id?: string;
+  params?: Record<string, string>;
 }
 
 export const enum SemanticLinkType {
-  ProductList = 'plp',
+  ProductList = 'search',
   Page = 'page',
   Product = 'product',
   Category = 'category',
