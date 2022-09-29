@@ -66,7 +66,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
         this.experienceService?.getComponent({ uid, route }) ||
         of({} as Component)
     ),
-    map((component: Component) => component?.components)
+    map((component: Component) => component?.components ?? [])
   );
 
   // Can be safely used any time on or after calling getUpdateComplete().
