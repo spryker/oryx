@@ -11,6 +11,8 @@ export interface ProductListService {
   getError(
     qualifier: ProductListQualifier
   ): Observable<NullableGeneric<HttpErrorResponse>>;
+
+  getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
 }
 
 export const ProductListService = 'FES.ProductListService';

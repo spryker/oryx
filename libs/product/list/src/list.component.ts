@@ -22,11 +22,12 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
   protected productListPageService = resolve(ProductListPageService);
   protected options$ = new ContentController(this).getOptions();
   protected products$ = this.options$.pipe(
-    switchMap((options) =>
-      this.hasOptions(options)
-        ? this.productListService.get(options)
-        : this.productListPageService.get()
-    ),
+    switchMap((options) => {
+      const searchParams = this.productListService.getSearchParams(options);
+      return this.hasOptions(searchParams)
+        ? this.productListService.get(searchParams)
+        : this.productListPageService.get();
+    }),
     map((list) => list?.products ?? [])
   );
 

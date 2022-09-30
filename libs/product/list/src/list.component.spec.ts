@@ -9,11 +9,46 @@ import { mockProductListProviders } from '@spryker-oryx/product/mocks';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { ProductListQualifier } from '../../src/models/product-list-qualifier';
 import { productListComponent } from './component';
 import { ProductListComponent } from './list.component';
 
 class MockProductListService implements Partial<ProductListService> {
+  protected readonly productListSearchParams: Array<
+    keyof ProductListQualifier
+  > = [
+    'q',
+    'page',
+    'maxPrice',
+    'minPrice',
+    'minRating',
+    'ipp',
+    'brand',
+    'label',
+    'weight',
+    'color',
+    'category',
+    'sort',
+  ];
+
   get = vi.fn();
+  getSearchParams = (
+    qualifier: ProductListQualifier
+  ): Record<string, string> => {
+    return this.productListSearchParams.reduce(
+      (
+        params: Record<string | number, string>,
+        key: keyof ProductListQualifier
+      ) => {
+        if (qualifier[key]) {
+          params[key] = qualifier[key] as string;
+        }
+
+        return params;
+      },
+      {}
+    );
+  };
 }
 
 class MockProductListPageService implements Partial<ProductListPageService> {
