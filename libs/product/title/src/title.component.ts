@@ -2,36 +2,49 @@ import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
+  Product,
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { ProductTitleOptions } from './model';
+import { combineLatest } from 'rxjs';
+import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
 
 @hydratable()
 export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOptions>() {
   static styles = styles;
 
-  protected productController = new ProductController(this);
-  protected contentController = new ContentController(this);
-  protected product$ = this.productController.getProduct();
-  protected options$ = this.contentController.getOptions();
+  protected product$ = new ProductController(this).getProduct();
+  protected options$ = new ContentController(this).getOptions();
 
   protected override render(): TemplateResult {
+    return html` ${asyncValue(
+      combineLatest([this.options$, this.product$]),
+      ([options, product]) =>
+        this.renderTitle(this.renderContent(product, options.link), options)
+    )}`;
+  }
+
+  protected renderContent(
+    product: Product | null,
+    renderLink = false
+  ): TemplateResult {
+    if (!renderLink) {
+      return html`${product?.name}`;
+    }
+
     return html`
-      ${asyncValue(
-        this.options$,
-        (options) =>
-          html`${this.renderTitle(
-            html` ${asyncValue(
-              this.product$,
-              (product) => html`${product?.name}`
-            )}`,
-            options
-          )} `
-      )}
+      <content-link
+        .options="${{
+          type: SemanticLinkType.Product,
+          id: product?.sku,
+        }}"
+      >
+        ${product?.name}
+      </content-link>
     `;
   }
 

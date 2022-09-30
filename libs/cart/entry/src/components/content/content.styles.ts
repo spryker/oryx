@@ -1,13 +1,13 @@
 import { css } from 'lit';
 
 export const cartEntryContentStyles = css`
-  h3 {
+  product-title {
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
   }
 
-  h3,
+  product-title,
   product-id {
     margin: 0 0 2px;
     padding-inline-end: calc(var(--oryx-space-2) * 3);

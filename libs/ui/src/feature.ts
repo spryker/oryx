@@ -1,7 +1,7 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { buttonComponent } from '../actions/button/src/component';
 import { iconButtonComponent } from '../actions/icon-button/src/icon-button.def';
-import { linkComponent } from '../actions/link/src/component';
+import { linkComponent } from '../actions/link/src/link.def';
 import { toggleIconComponent } from '../actions/toggle-icon/src/component';
 import { toggleComponent } from '../actions/toggle/src/component';
 import { cardComponent } from '../card/src/component';
@@ -44,6 +44,7 @@ export {
   chipComponent,
   tabComponent,
   tabsComponent,
+  linkComponent,
 };
 
 export const uiFeature: AppFeature = {

@@ -6,8 +6,8 @@ import { semanticLinkProviders, SemanticLinkType } from '@spryker-oryx/site';
 import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { contentLinkComponent } from './component';
 import { ContentLinkComponent } from './link.component';
+import { contentLinkComponent } from './link.def';
 import { LinkOptions, LinkType } from './link.model';
 
 class MockService {

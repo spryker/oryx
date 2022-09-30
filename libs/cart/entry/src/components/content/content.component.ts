@@ -37,9 +37,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
 
   protected render(): TemplateResult {
     return html`
-      <h3>
-        <product-title></product-title>
-      </h3>
+      <product-title .options=${{ link: true }}></product-title>
 
       <product-id></product-id>
 

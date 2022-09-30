@@ -6,8 +6,8 @@ import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { mockProductProviders, MockProductService } from '../../src/mocks';
-import { productTitleComponent } from './component';
 import { ProductTitleComponent } from './title.component';
+import { productTitleComponent } from './title.def';
 
 const mockSku = '1';
 
@@ -49,7 +49,7 @@ describe('ProductTitleComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  const expectContentInTag = (tag: string) => {
+  const expectContentInTag = (tag: string): void => {
     describe(`<${tag}> tag`, () => {
       beforeEach(async () => {
         element = await fixture(
@@ -68,6 +68,34 @@ describe('ProductTitleComponent', () => {
       });
     });
   };
+
+  describe('link to pdp', () => {
+    describe('when the link is set to true', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<product-title
+            sku="${mockSku}"
+            .options=${{ link: true }}
+          ></product-title>`
+        );
+      });
+
+      it('should wrap the element inside a link', () => {
+        expect(element).toContainElement('content-link');
+      });
+    });
+
+    describe('when the link is not set', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<product-title sku="${mockSku}" .options=${{}}></product-title>`
+        );
+      });
+      it('should not wrap the element inside a link', () => {
+        expect(element).not.toContainElement('content-link');
+      });
+    });
+  });
 
   describe('tags', () => {
     expectContentInTag('h1');

@@ -14,4 +14,9 @@ export interface ProductTitleOptions {
    * or shopping cart entry.
    */
   singleLine?: boolean;
+
+  /**
+   * Indicates whether to generate a link to the Product Detail Page.
+   */
+  link?: boolean;
 }
