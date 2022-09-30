@@ -46,7 +46,6 @@ export const floatingLabelStyles = css`
 
     color: var(--oryx-color-neutral-darker);
     font-size: 12px;
-    background-color: var(--oryx-color-canvas);
     padding: 3px 8px;
     top: -10px;
     inset-inline-start: 20px;

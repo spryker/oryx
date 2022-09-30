@@ -7,7 +7,7 @@ export const ProductCardStyles = css`
     border: 1px solid #dce0e5;
     text-decoration: none;
     border-radius: 2px;
-    background-color: #fff;
+    background-color: var(--oryx-color-canvas);
   }
 
   content-link::part(wrapper) {

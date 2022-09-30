@@ -57,7 +57,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '2',
       name: 'Second sample product',
-      images: [images[1]],
+      images: [],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 

@@ -59,11 +59,11 @@ describe('ProductMediaComponent', () => {
 
   describe('when options provided', () => {
     describe('with valid data', () => {
+      const src =
+        MockProductService?.mockProducts?.[0]?.images?.[0]?.externalUrlLarge;
       const options = {
-        src: MockProductService?.mockProducts?.[0]?.images?.[0]
-          ?.externalUrlLarge,
-        hdSrc:
-          MockProductService?.mockProducts?.[1]?.images?.[0]?.externalUrlLarge,
+        src,
+        hdSrc: src,
         alt: 'test',
         breakpoint: 400,
         loading: undefined,
@@ -84,7 +84,7 @@ describe('ProductMediaComponent', () => {
         expect(img?.src).toBe(options.src);
         expect(img?.alt).toBe(options.alt);
         expect(img?.hasAttribute('loading')).toBe(false);
-        expect(source?.getAttribute('media')).toBe('(min-width: 400px)');
+        expect(source?.getAttribute('media')).toContain('(min-width: 400px)');
       });
 
       it('should set "fetched" attribute', async () => {

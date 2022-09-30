@@ -28,7 +28,7 @@ export class CollapsibleComponent
           <nav>${this.renderToggleControl()}</nav>
           <slot name="aside"></slot>
         </summary>
-        <slot></slot>
+        <slot part="content"></slot>
       </details>
     `;
   }
