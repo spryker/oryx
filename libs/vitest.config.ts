@@ -13,7 +13,7 @@ export default defineConfig({
     ],
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
-      exclude: ['**/*.mocks.ts', '**/*.spec.ts'],
+      exclude: ['**/*mock*.ts', '**/feature.ts', '**/*.spec.ts'],
     },
   },
   plugins: [tsconfigPaths({ root: '../../' })],

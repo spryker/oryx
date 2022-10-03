@@ -15,9 +15,9 @@ import {
   mockEmptyCart,
   mockNormalizedCart,
 } from '../../src/mocks/mock-cart';
-import { PriceMode } from '../../src/models';
 import { CartTotalsComponent } from './totals.component';
 import { cartTotalsComponent } from './totals.def';
+import { CartTotalsComponentAttributes } from './totals.model';
 
 useComponent([cartTotalsComponent]);
 
@@ -60,7 +60,6 @@ describe('Cart totals component', () => {
 
   it('is defined', async () => {
     element = await fixture(html`<cart-totals></cart-totals>`);
-
     expect(element).toBeInstanceOf(CartTotalsComponent);
   });
 
@@ -72,137 +71,183 @@ describe('Cart totals component', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  const findTitle = (title: string): HTMLHeadingElement | undefined => {
-    return Array.from(element.renderRoot.querySelectorAll('h5')).find(
-      (item) => item.innerText === title
-    );
-  };
-
   describe('when the cart is empty', () => {
     beforeEach(async () => {
       service.getCart.mockReturnValue(of(mockEmptyCart));
-      element = await fixture(
-        html`<cart-totals .options=${{ showDiscounts: true }}></cart-totals>`
-      );
+      element = await fixture(html`<cart-totals></cart-totals>`);
     });
 
     it('should not render any html', () => {
-      const elements = element.shadowRoot?.querySelectorAll('*:not(style)');
+      const elements = element.renderRoot.querySelectorAll('*:not(style)');
       expect(elements?.length).toBe(0);
-    });
-
-    it('should render an is-empty attribute', () => {
-      expect(element.hasAttribute('is-empty')).toBe(true);
     });
   });
 
   describe('options', () => {
+    const renderCartTotals = (
+      options: CartTotalsComponentAttributes = {}
+    ): void => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<cart-totals .options=${options}></cart-totals>`
+        );
+      });
+    };
+
     beforeEach(() => {
       service.getTotals.mockReturnValue(of(mockCartTotals));
       service.getCart.mockReturnValue(of(mockNormalizedCart));
     });
 
-    describe('discounts', () => {
-      it('should not render by default', () => {
-        expect(element).not.toContainElement('oryx-collapsible');
+    describe('subtotal', () => {
+      describe('when hideSubtotal is not set', () => {
+        renderCartTotals();
+        it('should render the subtotal', () => {
+          expect(element).toContainElement('.subtotal');
+        });
       });
+      describe('when hideSubtotal is false', () => {
+        renderCartTotals({ hideSubtotal: false });
+        it('should render the subtotal', () => {
+          expect(element).toContainElement('.subtotal');
+        });
+      });
+      describe('when hideSubtotal is true', () => {
+        renderCartTotals({ hideSubtotal: true });
+        it('should not render the subtotal', () => {
+          expect(element).not.toContainElement('.subtotal');
+        });
+      });
+    });
 
-      it('should render if showDiscounts options is true', async () => {
-        element = await fixture(
-          html`<cart-totals .options=${{ showDiscounts: true }}></cart-totals>`
-        );
+    describe('discount', () => {
+      describe('when hideDiscount is not set', () => {
+        renderCartTotals();
+        it('should render the discounts', () => {
+          expect(element).toContainElement('.discounts');
+        });
+      });
+      describe('when hideDiscounts is false', () => {
+        renderCartTotals({ hideDiscounts: false });
+        it('should render the discounts', () => {
+          expect(element).toContainElement('.discounts');
+        });
+      });
+      describe('when hideDiscounts is true', () => {
+        renderCartTotals({ hideDiscounts: true });
+        it('should not render the discounts', () => {
+          expect(element).not.toContainElement('.discounts');
+        });
+      });
+      describe('when collapseDiscounts is not set', () => {
+        renderCartTotals();
+        it('should set the discounts collapsible to open', () => {
+          const d = element.renderRoot.querySelector('.discounts');
+          expect(d?.hasAttribute('open')).toBe(true);
+        });
+      });
+      describe('when collapseDiscounts is false', () => {
+        renderCartTotals({ collapseDiscounts: false });
+        it('should set the discounts collapsible to open', () => {
+          const d = element.renderRoot.querySelector('.discounts');
+          expect(d?.hasAttribute('open')).toBe(true);
+        });
+      });
+      describe('when collapseDiscounts is true', () => {
+        renderCartTotals({ collapseDiscounts: true });
+        it('should set the discounts collapsible to closed', () => {
+          const d = element.renderRoot.querySelector('.discounts');
+          expect(d?.hasAttribute('open')).toBe(false);
+        });
+      });
+    });
 
-        expect(element).toContainElement('oryx-collapsible');
+    describe('expense', () => {
+      describe('when hideExpense is not set', () => {
+        renderCartTotals();
+        it('should render the expense', () => {
+          expect(element).toContainElement('.expense');
+        });
+      });
+      describe('when hideExpense is false', () => {
+        renderCartTotals({ hideExpense: false });
+        it('should render the expense', () => {
+          expect(element).toContainElement('.expense');
+        });
+      });
+      describe('when hideExpense is true', () => {
+        renderCartTotals({ hideExpense: true });
+        it('should not render the expense', () => {
+          expect(element).not.toContainElement('.expense');
+        });
       });
     });
 
     describe('tax', () => {
-      it('should not render by default', () => {
-        const target = findTitle('Tax');
-
-        expect(target).toBe(undefined);
+      describe('when hideTaxAmount is not set', () => {
+        renderCartTotals();
+        it('should render the tax amount', () => {
+          expect(element).toContainElement('.tax');
+        });
       });
-
-      it('should render if showTax options is true', async () => {
-        element = await fixture(
-          html`<cart-totals .options=${{ showTax: true }}></cart-totals>`
-        );
-
-        const target = findTitle('Tax');
-
-        expect(target).not.toBe(undefined);
+      describe('when hideTaxAmount is false', () => {
+        renderCartTotals({ hideTaxAmount: false });
+        it('should render the tax amount', () => {
+          expect(element).toContainElement('.tax');
+        });
+      });
+      describe('when hideTaxAmount is true', () => {
+        renderCartTotals({ hideTaxAmount: true });
+        it('should not render the tax amount', () => {
+          expect(element).not.toContainElement('.tax');
+        });
+      });
+      describe('when hideTaxMessage is not set', () => {
+        renderCartTotals();
+        it('should render the tax message', () => {
+          expect(element).toContainElement('.tax-message');
+        });
+      });
+      describe('when hideTaxMessage is false', () => {
+        renderCartTotals({ hideTaxMessage: false });
+        it('should render the tax message', () => {
+          expect(element).toContainElement('.tax-message');
+        });
+      });
+      describe('when hideTaxMessage is true', () => {
+        renderCartTotals({ hideTaxMessage: true });
+        it('should not render the tax message', () => {
+          expect(element).not.toContainElement('.tax-message');
+        });
       });
     });
 
-    describe('showTaxMessage', () => {
-      it('should not render by default', () => {
-        expect(element).not.toContainElement('h5:last-of-type + div > div');
+    describe('delivery', () => {
+      describe('when hideDelivery is not set', () => {
+        renderCartTotals();
+        it('should render the delivery', () => {
+          expect(element).toContainElement('.delivery');
+        });
       });
-
-      it('should render if showTaxMessage options is true', async () => {
-        element = await fixture(
-          html`<cart-totals .options=${{ showTaxMessage: true }}></cart-totals>`
-        );
-
-        expect(element).toContainElement('h5:last-of-type + div > div');
+      describe('when hideDelivery is false', () => {
+        renderCartTotals({ hideDelivery: false });
+        it('should render the delivery', () => {
+          expect(element).toContainElement('.delivery');
+        });
+      });
+      describe('when hideDelivery is true', () => {
+        renderCartTotals({ hideDelivery: true });
+        it('should not render the delivery', () => {
+          expect(element).not.toContainElement('.delivery');
+        });
       });
     });
 
-    it('should render delivery message from deliveryMessage option', async () => {
-      const mockMessage = 'Some message';
-      element = await fixture(
-        html`<cart-totals
-          .options=${{ deliveryMessage: mockMessage }}
-        ></cart-totals>`
-      );
-
-      const target = <HTMLElement>(
-        element.renderRoot.querySelector('.delivery-message')
-      );
-
-      expect(target.innerText.trim()).toBe(mockMessage);
-    });
-  });
-
-  describe('tax message', () => {
-    beforeEach(() => {
-      service.getTotals.mockReturnValue(of(mockCartTotals));
-    });
-
-    it('should render incl. tax text if cart in a gross mode', async () => {
-      service.getCart.mockReturnValue(
-        of({
-          ...mockNormalizedCart,
-          priceMode: PriceMode.GrossMode,
-        })
-      );
-
-      element = await fixture(
-        html`<cart-totals .options=${{ showTaxMessage: true }}></cart-totals>`
-      );
-      const taxMessage = <HTMLElement>(
-        element.renderRoot.querySelector('h5:last-of-type + div > div')
-      );
-
-      expect(taxMessage.innerText.trim()).toBe('incl. tax');
-    });
-
-    it('should render excl. tax text if cart in a net mode', async () => {
-      service.getCart.mockReturnValue(
-        of({
-          ...mockNormalizedCart,
-          priceMode: PriceMode.NetMode,
-        })
-      );
-
-      element = await fixture(
-        html`<cart-totals .options=${{ showTaxMessage: true }}></cart-totals>`
-      );
-      const taxMessage = <HTMLElement>(
-        element.renderRoot.querySelector('h5:last-of-type + div > div')
-      );
-
-      expect(taxMessage.innerText.trim()).toBe('excl. tax');
+    describe('summary', () => {
+      renderCartTotals();
+      it('should render the summary', () => {
+        expect(element).toContainElement('.summary');
+      });
     });
   });
 });

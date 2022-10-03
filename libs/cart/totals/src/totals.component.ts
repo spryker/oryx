@@ -3,133 +3,159 @@ import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest, tap } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import {
   CartController,
   FormattedCartTotals,
 } from '../../src/controllers/cart.controller';
 import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 import { PriceMode } from '../../src/models';
-import { CartTotalsComponentOptions } from './totals.model';
+import { CartTotalsComponentAttributes } from './totals.model';
 import { styles } from './totals.styles';
-export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentOptions>() {
+export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentAttributes>() {
   static styles = styles;
 
   protected cartTotals$ = combineLatest([
-    new CartController().getTotals().pipe(
-      tap((totals) => {
-        this.toggleAttribute('is-empty', !totals?.itemsQuantity);
-      })
-    ),
+    new CartController().getTotals(),
     new ContentController(this).getOptions(),
   ]);
 
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(this.cartTotals$, ([totals, options]) => {
-        if (!totals?.itemsQuantity) {
+        if (!totals) {
           return html``;
         }
 
         return html`
           <h4>Summary</h4>
-
-          ${this.renderSection(
-            html`
-              Subtotal
-              <span>(${totals.itemsQuantity} items)</span>
-            `,
-            String(totals.calculations.subtotal)
-          )}
-          ${this.renderDiscountsSection(options, totals)}
-          ${when(totals.calculations.expenseTotal, () =>
-            this.renderSection(
-              'Expense',
-              String(totals.calculations.expenseTotal)
-            )
-          )}
-          ${when(options.showTax, () =>
-            this.renderSection('Tax', String(totals.calculations.taxTotal))
-          )}
-          ${this.renderDeliverySection(options)}
-
-          <hr />
-
-          ${this.renderSummarySection(options, totals)}
+          ${this.renderSubtotal(options, totals)}
+          ${this.renderDiscounts(options, totals)}
+          ${this.renderExpense(options, totals)}
+          ${this.renderTax(options, totals)}
+          ${this.renderDelivery(options, totals)}
+          ${this.renderSummary(options, totals)}
         `;
       })}
     `;
   }
 
-  protected renderSection(
-    title: string | TemplateResult,
-    content: string | TemplateResult
+  protected renderSubtotal(
+    options: CartTotalsComponentAttributes,
+    totals: FormattedCartTotals
   ): TemplateResult {
-    return html`
-      <h5>${title}</h5>
-      <div>${content}</div>
-    `;
+    return !options.hideSubtotal
+      ? this.renderSection(
+          'subtotal',
+          html`
+            Subtotal
+            <span>(${totals.itemsQuantity} items)</span>
+          `,
+          String(totals.calculations?.subtotal)
+        )
+      : html``;
   }
 
-  protected renderDiscountsSection(
-    options: CartTotalsComponentOptions,
+  protected renderDiscounts(
+    options: CartTotalsComponentAttributes,
     totals: FormattedCartTotals
   ): TemplateResult {
     return html`
       ${when(
-        options.showDiscounts && totals.calculations.discountTotal,
+        !options.hideDiscounts && totals.calculations.discountTotal,
         () => html`
           <oryx-collapsible
+            class="discounts"
             appearance="${CollapsibleAppearance.Inline}"
             header="Discounts"
-            open
+            ?open=${!options.collapseDiscounts}
           >
             <span slot="aside">${totals.calculations.discountTotal}</span>
 
-            <div>
-              ${totals?.discounts?.map(
-                (discount) => html` <h5>${discount.displayName}</h5>
-                  <div>${discount.amount}</div>`
-              )}
-            </div>
+            ${totals?.discounts?.map(({ displayName, amount }) =>
+              this.renderSection('discount', displayName, amount)
+            )}
           </oryx-collapsible>
         `
       )}
     `;
   }
 
-  protected renderDeliverySection(
-    options: CartTotalsComponentOptions
+  protected renderExpense(
+    options: CartTotalsComponentAttributes,
+    totals: FormattedCartTotals
   ): TemplateResult {
-    return this.renderSection(
-      'Delivery',
-      html`
-        <span class="delivery-message">${options?.deliveryMessage ?? ''}</span>
-        <oryx-icon-button size="small">
-          <a href="#" title="Click here to read about delivery options">
-            <oryx-icon type="info"></oryx-icon>
-          </a>
-        </oryx-icon-button>
-      `
-    );
+    return !options.hideExpense && totals.calculations.expenseTotal
+      ? this.renderSection(
+          'expense',
+          'Expense',
+          String(totals.calculations.expenseTotal)
+        )
+      : html``;
   }
 
-  protected renderSummarySection(
-    options: CartTotalsComponentOptions,
+  protected renderTax(
+    options: CartTotalsComponentAttributes,
+    totals: FormattedCartTotals
+  ): TemplateResult {
+    return !options.hideTaxAmount
+      ? this.renderSection('tax', 'Tax', String(totals.calculations.taxTotal))
+      : html``;
+  }
+
+  protected renderDelivery(
+    options: CartTotalsComponentAttributes,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    totals: FormattedCartTotals
+  ): TemplateResult {
+    return options.hideDelivery
+      ? html``
+      : this.renderSection(
+          'delivery',
+          'Delivery',
+          html`
+            <small class="delivery-message">
+              ${options?.deliveryMessage ?? ''}
+              <oryx-icon-button size="small">
+                <a href="#" title="Click here to read about delivery options">
+                  <oryx-icon type="info"></oryx-icon>
+                </a>
+              </oryx-icon-button>
+            </small>
+          `
+        );
+  }
+
+  protected renderSummary(
+    options: CartTotalsComponentAttributes,
     totals: FormattedCartTotals
   ): TemplateResult {
     return this.renderSection(
+      'summary',
       'Total',
       html` ${totals.calculations.priceToPay}
       ${when(
-        options.showTaxMessage,
+        !options.hideTaxMessage,
         () =>
-          html`<div>
+          html`<small class="tax-message">
             ${totals.priceMode === PriceMode.GrossMode
               ? 'incl. tax'
               : 'excl. tax'}
-          </div>`
+          </small>`
       )}`
     );
+  }
+
+  protected renderSection(
+    type: string,
+    title: string | TemplateResult,
+    content: string | TemplateResult
+  ): TemplateResult {
+    return html`
+      <dl class=${type}>
+        <dt>${title}</dt>
+        <dd>${content}</dd>
+      </dl>
+    `;
   }
 }

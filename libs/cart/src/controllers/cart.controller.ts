@@ -20,39 +20,50 @@ export class CartController {
   protected cartService = resolve(CartService);
   protected pricingService = resolve(PricingService);
 
-  getTotalItemsQuantity(data?: CartQualifier): Observable<number | null> {
+  /**
+   * Returns the cumulated quantities of all cart entries.
+   */
+  getTotalQuantity(data?: CartQualifier): Observable<number | null> {
     return this.cartService
       .getCart(data)
-      .pipe(map((cart) => this.calculateQuantity(cart)));
+      .pipe(map((cart) => this.cumulateQuantity(cart)));
   }
 
   getTotals(data?: CartQualifier): Observable<FormattedCartTotals | null> {
     return this.cartService.getCart(data).pipe(
       filter(<T extends Cart>(cart: T | null): cart is T => cart !== null),
-      switchMap((cart) =>
-        combineLatest([
-          this.formatTotals(cart),
-          this.formatDiscounts(cart),
-          of({
-            itemsQuantity: this.calculateQuantity(cart),
-            priceMode: cart.priceMode,
-          }),
-        ])
-      ),
-      map(([totals, discounts, details]) => {
-        return {
-          calculations: totals,
-          ...(discounts && { discounts }),
-          ...details,
-        };
+      switchMap((cart) => {
+        const itemsQuantity = this.cumulateQuantity(cart);
+        return itemsQuantity
+          ? combineLatest([
+              this.formatTotals(cart),
+              this.formatDiscounts(cart),
+              of({
+                itemsQuantity,
+                priceMode: cart.priceMode,
+              }),
+            ])
+          : of([]);
+      }),
+      map(([calculations, discounts, details]) => {
+        return !calculations
+          ? null
+          : {
+              calculations,
+              ...(discounts && { discounts }),
+              ...details,
+            };
       })
     );
   }
 
-  protected calculateQuantity(cart: Cart | null): number | null {
-    return cart !== null
-      ? cart?.products?.reduce((acc, { quantity }) => acc + quantity, 0) ?? null
-      : null;
+  /**
+   * Cumulates the quantities for all the cart entries.
+   */
+  protected cumulateQuantity(cart: Cart | null): number | null {
+    return (
+      cart?.products?.reduce((acc, { quantity }) => acc + quantity, 0) ?? null
+    );
   }
 
   protected formatDiscounts(cart: Cart): Observable<FormattedDiscount[]> {
@@ -84,25 +95,24 @@ export class CartController {
   ): Observable<FormattedCartTotals['calculations']> {
     return of(cart).pipe(
       switchMap((cart) =>
-        Object.entries(cart.totals ?? {}).reduce((acc$, [priceType, price]) => {
-          if (!price) {
-            return acc$;
-          }
-          if (priceType === 'discountTotal') {
-            price = -price;
-          }
-
-          return acc$.pipe(
-            switchMap((acc) =>
-              this.pricingService.format(price).pipe(
-                map((formattedPrice) => ({
-                  ...acc,
-                  [priceType]: formattedPrice as string,
-                }))
+        Object.entries(cart.totals ?? {}).reduce(
+          (acc$, [priceType, price = 0]) => {
+            if (priceType === 'discountTotal') {
+              price = -price;
+            }
+            return acc$.pipe(
+              switchMap((acc) =>
+                this.pricingService.format(price).pipe(
+                  map((formattedPrice) => ({
+                    ...acc,
+                    [priceType]: formattedPrice as string,
+                  }))
+                )
               )
-            )
-          );
-        }, of({} as FormattedCartTotals['calculations']))
+            );
+          },
+          of({} as FormattedCartTotals['calculations'])
+        )
       )
     );
   }

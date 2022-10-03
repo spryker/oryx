@@ -3,6 +3,9 @@
 :root {
   --container-width: 1340px;
 
+  --oryx-font-size-medium: 16px;
+  --oryx-font-size-large: 22px;
+
   font-family: var(--oryx-font);
   font-size: 14px;
   font-weight: 500;
@@ -21,12 +24,12 @@
   --oryx-color-ink: #121212;
 
   /* neutral color */
-  --oryx-color-neutral: #d4d5d7;
-  --oryx-color-neutral-light: #efeeee;
-  --oryx-color-neutral-lighter: #f5f5f5;
+  --oryx-color-neutral: #71747c;
+  --oryx-color-neutral-light: #b2b2b2;
+  --oryx-color-neutral-lighter: #dbdbdb;
   --oryx-color-neutral-lightest: #f5f5f5;
-  --oryx-color-neutral-dark: #8f8f8f;
-  --oryx-color-neutral-darker: #71747c;
+  --oryx-color-neutral-dark: #d4d5d7;
+  --oryx-color-neutral-darker: #333333;
   --oryx-color-neutral-darkest: #121212;
   --oryx-color-neutral-greyblue: #e7eaee;
 
@@ -38,6 +41,7 @@
   --oryx-color-brand-darker: #225e52;
 
   /* accent color */
+  --oryx-color-highlight: #bc4430;
   --oryx-color-info: #2480f2;
   --oryx-color-success: #17b497;
   --oryx-color-warning: #eb553c;
@@ -82,6 +86,7 @@
   /* space */
   --oryx-space: 5px;
   --oryx-space-2: calc(var(--oryx-space) * 2);
+  --oryx-space-3: calc(var(--oryx-space) * 3);
   --oryx-space-4: calc(var(--oryx-space) * 4);
 
   /* icon */
@@ -111,11 +116,14 @@
   :root:not([no-dark-mode]) {
     --oryx-color-canvas: #333;
     --oryx-color-ink: #fff;
-    --oryx-color-neutral-light: #aaa;
-    --oryx-color-neutral-lighter: #666;
+
+    --oryx-color-neutral-light: #d4d5d7;
+    --oryx-color-neutral-lighter: #333333;
     --oryx-color-neutral-lightest: #121212;
-    --oryx-color-neutral-dark: #efeeee;
-    --oryx-color-neutral-darker: #f8f8f8;
+    --oryx-color-neutral-dark: #b2b2b2;
+    --oryx-color-neutral-darker: #dbdbdb;
+    --oryx-color-neutral-darkest: #f5f5f5;
+
     --oryx-elevation-color: rgb(237 237 237 / 15%);
     --oryx-elevation-color-2: rgb(225 225 225 / 15%);
     --oryx-color-brand-lighter: #225e52;

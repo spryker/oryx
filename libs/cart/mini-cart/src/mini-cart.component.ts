@@ -18,7 +18,7 @@ export class MiniCartComponent extends CartComponentMixin<MiniCartOptions>() {
   protected maxVisibleQuantity = 99;
 
   protected quantity$ = combineLatest([
-    this.cartController.getTotalItemsQuantity(),
+    this.cartController.getTotalQuantity(),
     this.contentController.getOptions(),
   ]).pipe(
     map(([cartQuantity, options]) => {

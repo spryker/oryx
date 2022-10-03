@@ -100,6 +100,7 @@ export class DefaultCartService implements CartService {
   // remove() {}
 
   getCart(data?: CartQualifier): Observable<Cart | null> {
+    this.loadCarts();
     if (data?.cartId && this.carts.has(data.cartId)) {
       return this.carts.get(data.cartId)!.value$;
     }
