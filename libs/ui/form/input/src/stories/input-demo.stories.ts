@@ -11,9 +11,20 @@ useComponent(
       ? {
           theme: {
             styles: [
+              //TODO: remove hardcoded `inset-inline-start` after refactoring the calculation of label position
               css`
                 :host([floatLabel]) slot[name='label'] {
                   transition: none;
+                }
+
+                :host([floatLabel][has-prefix]:not([prefixicon='search']))
+                  slot[name='label'] {
+                  inset-inline-start: 75px;
+                }
+
+                :host([floatLabel][has-prefix]:not([prefixicon='search']):is(:focus-within, [has-value]))
+                  slot[name='label'] {
+                  inset-inline-start: 65px;
                 }
               `,
             ],

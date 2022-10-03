@@ -3,7 +3,8 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import isChromatic from 'chromatic';
+import { css, html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
@@ -20,7 +21,34 @@ import { branches, states } from '../../../../utilities/storybook';
 import { selectComponent } from '../component';
 import { SelectOptions } from '../select.model';
 
-useComponent(selectComponent);
+useComponent(
+  selectComponent(
+    isChromatic()
+      ? {
+          theme: {
+            styles: [
+              //TODO: remove hardcoded `inset-inline-start` after refactoring the calculation of label position
+              css`
+                :host([floatLabel]) slot[name='label'] {
+                  transition: none;
+                }
+
+                :host([floatLabel][has-prefix]:not([prefixicon='search']))
+                  slot[name='label'] {
+                  inset-inline-start: 75px;
+                }
+
+                :host([floatLabel][has-prefix]:not([prefixicon='search']):is(:focus-within, [has-value]))
+                  slot[name='label'] {
+                  inset-inline-start: 65px;
+                }
+              `,
+            ],
+          },
+        }
+      : {}
+  )
+);
 
 export default {
   title: `${storybookPrefix}/Form/Select`,
