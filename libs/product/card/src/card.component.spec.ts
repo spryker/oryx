@@ -14,7 +14,7 @@ import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './component';
 
 const mockContext = {
-  get: vi.fn().mockReturnValue(of('mockSku')),
+  get: vi.fn().mockReturnValue(of('1')),
   provide: vi.fn(),
 };
 vi.spyOn(core, 'ContextController') as SpyInstance;

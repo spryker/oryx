@@ -206,6 +206,7 @@ describe('AddToCartComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<add-to-cart
+            sku="test"
             .options=${{ hideQuantityInput: false }}
           ></add-to-cart>`
         );

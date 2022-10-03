@@ -279,7 +279,8 @@ export class MockProductService implements Partial<ProductService> {
   get(qualifier: ProductQualifier): Observable<Product> {
     const product = MockProductService.mockProducts.find(
       (p) => p.sku === qualifier.sku
-    );
-    return of(product ?? MockProductService.mockProducts[0]);
+    ) as Product;
+
+    return of(product);
   }
 }
