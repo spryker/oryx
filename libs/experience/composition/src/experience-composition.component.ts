@@ -9,9 +9,10 @@ import {
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { isClient } from '@spryker-oryx/typescript-utils';
-import { html, TemplateResult, unsafeCSS } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { ComponentMixin } from '../../src/mixins';
 import {
@@ -119,11 +120,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
     if (!components) return html``;
     const styles = this.layoutBuilder.collectStyles(components);
     if (styles !== '') {
-      return html`
-        <style>
-          ${unsafeCSS(styles)}
-        </style>
-      `;
+      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
     }
 
     return html``;
