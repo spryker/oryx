@@ -58,7 +58,30 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
 
   constructor() {
     super();
-    this.hasSSR = !!this.shadowRoot;
+    this.hasSSR = !!this.renderRoot;
+  }
+
+  protected isEmpty(): boolean {
+    /**
+     * Lit is using adoptedStyleSheets native feature for the styles are specified by
+     * static 'styles' property:
+     * https://www.w3.org/TR/cssom-1/#extensions-to-the-document-or-shadow-root-interface
+     * That is not yet supported by safari:
+     * https://caniuse.com/mdn-api_document_adoptedstylesheets
+     *
+     * In result safari uses the common approach and just creates bunch of <style> elements
+     * inside components, that makes them not empty
+     *
+     * To overcome this limitation need to check presence of any other elements
+     * inside component, except for style elements
+     */
+    return !this.renderRoot.querySelector(':not(style)');
+  }
+
+  protected shouldRenderChildren(): boolean {
+    return (
+      !!this.renderRoot && !this.isEmpty() && isClient() && !this.isHydrated
+    );
   }
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
@@ -83,11 +106,8 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
       ${asyncValue(
         this.components$,
         (components) =>
-          this.shadowRoot &&
-          (this.shadowRoot?.children.length ?? 0) > 0 &&
-          isClient() &&
-          !this.isHydrated
-            ? html`${[...this.shadowRoot.children]}`
+          this.shouldRenderChildren()
+            ? html`${[...this.renderRoot.children]}`
             : components
             ? html`${repeat(
                 components,
