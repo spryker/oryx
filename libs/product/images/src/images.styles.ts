@@ -31,7 +31,7 @@ export const styles = css`
     order: 1;
     height: var(--preview-height, 300px);
     overflow: auto;
-    scroll-snap-type: both mandatory;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     display: flex;
     flex-grow: 1;
