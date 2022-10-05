@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const ProductCardStyles = css`
+  :host {
+    position: relative;
+  }
+
   content-link {
     display: block;
     color: #333;
@@ -40,5 +44,9 @@ export const ProductCardStyles = css`
   .grow1 {
     flex-grow: 1;
     max-width: calc(100% - 1rem);
+  }
+
+  product-labels {
+    position: absolute;
   }
 `;

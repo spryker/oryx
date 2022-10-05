@@ -8,8 +8,18 @@ export interface Product {
   description?: string;
   price?: ProductPrices;
   images?: ProductImage[];
+  labels?: ProductLabel[];
 }
 
+export interface ProductLabel {
+  name: string;
+  appearance?: ProductLabelAppearance;
+}
+
+export const enum ProductLabelAppearance {
+  Highlight = 'highlight',
+  Info = 'info',
+}
 export interface ProductList {
   products: Product[];
 }

@@ -57,6 +57,16 @@ export module ApiProductModel {
     prices?: Price[];
   }
 
+  export interface ProductLabel {
+    id: string;
+    name: string;
+    isExclusive?: boolean;
+    position: number;
+    frontEndReference?: string;
+  }
+  export interface ProductLabels {
+    labels?: ProductLabel[];
+  }
   export interface ProductOption {
     optionGroupName?: string;
     sku?: string;
@@ -70,11 +80,13 @@ export module ApiProductModel {
     ConcreteProductPrices = 'concrete-product-prices',
     AbstractProducts = 'abstract-products',
     ConcreteProducts = 'concrete-products',
+    Labels = 'product-labels',
   }
 
   export type ResponseIncludes =
     | Include<Includes.ConcreteProductImageSets, ImageSets>
-    | Include<Includes.ConcreteProductPrices, Prices>;
+    | Include<Includes.ConcreteProductPrices, Prices>
+    | Include<Includes.Labels, ProductLabels>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }

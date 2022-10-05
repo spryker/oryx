@@ -7,4 +7,5 @@ export type DeserializedProduct = ApiProductModel.Concrete &
     DeserializedProductIncludes,
     | CamelCase<ApiProductModel.Includes.ConcreteProductImageSets>
     | CamelCase<ApiProductModel.Includes.ConcreteProductPrices>
+    | CamelCase<ApiProductModel.Includes.Labels>
   >;

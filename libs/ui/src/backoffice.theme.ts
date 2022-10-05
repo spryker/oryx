@@ -7,4 +7,8 @@ export const uiBackofficeTheme = {
     import('../collapsible/src/styles/themes/backoffice.styles').then(
       (b) => b.collapsibleBackofficeUI
     ),
+  'oryx-chip': () =>
+    import('../graphical/chip/src/styles/themes/backoffice.styles').then(
+      (b) => b.chipBackofficeUI
+    ),
 };

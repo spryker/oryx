@@ -10,4 +10,8 @@ export const uiStorefrontTheme = {
     import('../collapsible/src/styles/themes/storefront.styles').then(
       (b) => b.collapsibleStorefrontUI
     ),
+  'oryx-chip': () =>
+    import('../graphical/chip/src/styles/themes/storefront.styles').then(
+      (b) => b.chipStorefrontUI
+    ),
 };

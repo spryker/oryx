@@ -59,6 +59,13 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string, layoutClasses?: string) =>
       html`<product-id uid="${uid}" class=${layoutClasses}></product-id>`,
   },
+  ['product-labels']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<product-labels
+        uid="${uid}"
+        class=${layoutClasses}
+      ></product-labels>`,
+  },
   ['product-card']: {
     template: (uid: string, layoutClasses?: string) =>
       html`<product-card uid="${uid}" class=${layoutClasses}></product-card>`,

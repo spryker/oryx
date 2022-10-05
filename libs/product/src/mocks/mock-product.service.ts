@@ -1,5 +1,10 @@
 import { Observable, of } from 'rxjs';
-import { Product, ProductQualifier } from '../models';
+import {
+  Product,
+  ProductLabel,
+  ProductLabelAppearance,
+  ProductQualifier,
+} from '../models';
 import { ProductService } from '../services';
 
 const images = [
@@ -20,6 +25,16 @@ const images = [
     externalUrlLarge: 'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
   },
 ];
+
+const newLabel: ProductLabel = {
+  name: 'New',
+  appearance: ProductLabelAppearance.Highlight,
+};
+
+const saleLabel: ProductLabel = {
+  name: 'sale',
+  appearance: ProductLabelAppearance.Info,
+};
 
 export class MockProductService implements Partial<ProductService> {
   static mockProducts: Product[] = [
@@ -53,6 +68,7 @@ export class MockProductService implements Partial<ProductService> {
         brand: 'Brand',
         color: 'Color',
       },
+      labels: [newLabel],
     },
     {
       sku: '2',
@@ -84,6 +100,7 @@ export class MockProductService implements Partial<ProductService> {
         brand: 'Brand',
         color: 'Color',
       },
+      labels: [newLabel, saleLabel],
     },
     {
       sku: '3',

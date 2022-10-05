@@ -54,6 +54,7 @@
   --oryx-color-brand-darker: #225e52;
 
   /* accent color */
+  --oryx-color-highlight: #f2392e;
   --oryx-color-info: #2480f2;
   --oryx-color-success: #17b497;
   --oryx-color-warning: #ff6800;

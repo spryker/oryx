@@ -12,6 +12,10 @@ import {
   productNormalizers,
   ProductNormalizers,
 } from './adapter';
+import {
+  productLabelsNormalizers,
+  ProductLabelsNormalizers,
+} from './adapter/normalizers/labels/labels.normalizer';
 
 import {
   productListNormalizers,
@@ -48,6 +52,10 @@ export const productProviders = [
   {
     provide: PriceNormalizers,
     useValue: priceNormalizers,
+  },
+  {
+    provide: ProductLabelsNormalizers,
+    useValue: productLabelsNormalizers,
   },
   {
     provide: ImagesNormalizers,

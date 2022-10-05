@@ -55,6 +55,8 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                 id: product.sku,
               }}"
             >
+              <product-labels></product-labels>
+
               <div class="image">
                 <product-images
                   .options="${{ hideNavigation: true }}"

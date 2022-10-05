@@ -99,7 +99,7 @@ describe('DefaultProductService', () => {
       service.get(params);
 
       const includes = http.url?.split('?include=')[1].split(',');
-      expect(includes).toHaveLength(3);
+      expect(includes).toHaveLength(4);
     });
 
     it('should call transformer with proper normalizer', () => {

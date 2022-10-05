@@ -7,6 +7,7 @@ export enum ChipAppearance {
   Info = 'info',
   Warning = 'warning',
   Error = 'error',
+  Highlight = 'highlight',
   /**
    * `ONLINE` is a synonym for the `SUCCESS` chip type.
    */
