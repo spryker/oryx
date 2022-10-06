@@ -2,7 +2,6 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { siteProviders } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { cartEntryConfirmationComponent } from './component';
 import { CartEntryConfirmationComponent } from './confirmation.component';

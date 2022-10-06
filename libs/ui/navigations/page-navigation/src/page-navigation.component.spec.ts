@@ -1,6 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import {
   a11yConfig,
   queryAssignedElements,

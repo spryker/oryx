@@ -1,8 +1,8 @@
 import { prehydrate } from '@spryker-oryx/core';
 import { throttle } from '@spryker-oryx/typescript-utils';
 import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';

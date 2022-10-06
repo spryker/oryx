@@ -2,10 +2,9 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { mockProductProviders } from '../../src/mocks';
 import { ProductAverageRatingComponent } from './average-rating.component';
 import { productAverageRatingComponent } from './component';
 

@@ -2,10 +2,12 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
+import {
+  mockProductProviders,
+  MockProductService,
+} from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { ProductTitleComponent } from './title.component';
 import { productTitleComponent } from './title.def';
 

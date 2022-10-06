@@ -7,7 +7,6 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductContext, ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { siteProviders } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { html } from 'lit';
 import { of } from 'rxjs';

@@ -1,6 +1,6 @@
 import { ThemeData } from '@spryker-oryx/core';
 
-const styles = ``;
+const styles = '';
 
 export const theme: ThemeData = {
   styles,

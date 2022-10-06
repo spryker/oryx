@@ -3,13 +3,12 @@ const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   ...rootMain,
-
   core: { ...rootMain.core, builder: 'webpack5' },
-
   stories: [...rootMain.stories, '../../../libs/**/*.stories.@(ts|tsx|mdx)'],
   addons: [
     ...rootMain.addons,
     'storybook-addon-rtl',
+    './oryx-theme-addon/register.js',
     {
       name: '@storybook/addon-docs',
       options: {

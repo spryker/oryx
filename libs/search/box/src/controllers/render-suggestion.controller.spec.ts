@@ -2,11 +2,10 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Product, ProductPrice } from '@spryker-oryx/product';
 import { Suggestion, SuggestionResource } from '@spryker-oryx/search';
-import '@spryker-oryx/testing';
+import { mockSearchProviders } from '@spryker-oryx/search/mocks';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { customElement, property } from 'lit/decorators.js';
-import { mockSuggestionProviders } from '../../../src/mocks';
+import { when } from 'lit/directives/when.js';
 import { RenderSuggestionController } from './render-suggestion.controller';
 
 const resource: SuggestionResource = {
@@ -101,7 +100,7 @@ describe('RenderSuggestionController', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: [...mockSuggestionProviders],
+      providers: mockSearchProviders,
     });
   });
 

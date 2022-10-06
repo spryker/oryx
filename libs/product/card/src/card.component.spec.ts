@@ -4,12 +4,14 @@ import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductContext } from '@spryker-oryx/product';
+import {
+  mockProductProviders,
+  MockProductService,
+} from '@spryker-oryx/product/mocks';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './component';
 

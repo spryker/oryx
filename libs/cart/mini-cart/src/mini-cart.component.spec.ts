@@ -3,7 +3,6 @@ import { CartService } from '@spryker-oryx/cart';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { PricingService } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { miniCartComponent } from './component';

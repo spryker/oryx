@@ -13,7 +13,7 @@ import {
   DefaultComponentsRegistryService,
 } from './registry';
 
-export const staticProviders: Provider[] = [
+export const experienceProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: DefaultExperienceService,
@@ -32,7 +32,7 @@ export const staticProviders: Provider[] = [
   },
 ];
 
-export const staticPreviewProviders: Provider[] = [
+export const experiencePreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,

@@ -1,12 +1,12 @@
 import { IdentityService } from '@spryker-oryx/auth';
+import {
+  mockGetShipmentResponse,
+  mockShipmentAttributes,
+} from '@spryker-oryx/checkout/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
-import {
-  mockGetShipmentResponse,
-  mockShipmentAttributes,
-} from '../../mocks/mock-checkout';
 import { ApiCheckoutModel } from '../../models';
 import { CheckoutAdapter, UpdateCheckoutDataProps } from './checkout.adapter';
 import { DefaultCheckoutAdapter } from './default-checkout.adapter';

@@ -1,7 +1,10 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import {
+  mockCurrentAddress,
+  mockNormalizedAddresses,
+} from '@spryker-oryx/user/mocks';
 import { Observable, of, Subject, switchMap } from 'rxjs';
-import { mockCurrentAddress, mockNormalizedAddresses } from '../mocks';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
 import { DefaultAddressService } from './default-address.service';

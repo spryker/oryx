@@ -1,16 +1,12 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { searchboxComponent } from '../component';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchIconPosition,
 } from '../searchbox.model';
-
-useComponent(searchboxComponent);
 
 export default {
   title: `${storybookPrefix}/Search/SearchBox`,

@@ -1,20 +1,14 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { resolve, setUpMockProviders } from '@spryker-oryx/injector';
+import { resolve } from '@spryker-oryx/injector';
 import { ProductComponentProperties } from '@spryker-oryx/product';
+import { MockProductService } from '@spryker-oryx/product/mocks';
 import { LocaleService } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { mockProductProviders, MockProductService } from '../../../src/mocks';
-import { productPriceComponent } from '../component';
 import { ProductPriceOptions } from '../price.model';
-
-useComponent(productPriceComponent);
 
 export default {
   title: `${storybookPrefix}/Price`,
-  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 type Props = ProductPriceOptions &

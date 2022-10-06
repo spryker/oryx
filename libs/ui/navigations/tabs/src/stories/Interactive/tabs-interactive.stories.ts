@@ -1,7 +1,6 @@
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { TabComponent } from '../../../../tab/src/index';

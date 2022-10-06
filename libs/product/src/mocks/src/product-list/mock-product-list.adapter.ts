@@ -1,6 +1,9 @@
-import { ProductList, ProductListAdapter } from '@spryker-oryx/product';
+import {
+  ProductList,
+  ProductListAdapter,
+  ProductListQualifier,
+} from '@spryker-oryx/product';
 import { Observable, of } from 'rxjs';
-import { ProductListQualifier } from '../../models/product-list-qualifier';
 import { createProductListMock } from './mock-product-list.generator';
 
 export class MockProductListAdapter implements ProductListAdapter {

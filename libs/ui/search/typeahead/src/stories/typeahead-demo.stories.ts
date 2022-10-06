@@ -1,4 +1,3 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
@@ -8,10 +7,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { typeheadComponent } from '../component';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
-
-useComponent(typeheadComponent);
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,

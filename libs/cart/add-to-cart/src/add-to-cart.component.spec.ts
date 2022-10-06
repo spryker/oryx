@@ -12,7 +12,6 @@ import {
 } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import '@spryker-oryx/testing';
 import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { html } from 'lit';

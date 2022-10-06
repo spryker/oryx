@@ -1,10 +1,7 @@
-import { setupCartMocks } from '@spryker-oryx/cart/mocks';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
-import { LitElement, TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { storybookPrefix } from '../../../.constants';
 import {
@@ -12,10 +9,7 @@ import {
   CartEntryOptions,
   RemoveByQuantity,
 } from '../entry.model';
-import { cartEntryComponents } from '../index';
 import { selectedProductOptions } from './common';
-
-useComponent(cartEntryComponents);
 
 interface FakeEntriesProps extends CartEntryCompositionOptions {
   productOptions: boolean;
@@ -23,7 +17,6 @@ interface FakeEntriesProps extends CartEntryCompositionOptions {
 
 export default {
   title: `${storybookPrefix}/Entry`,
-  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 @customElement('fake-entries')

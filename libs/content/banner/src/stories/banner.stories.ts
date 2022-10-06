@@ -1,12 +1,7 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { BannerContent, BannerOptions } from '../banner.model';
-import { bannerComponent } from '../component';
-
-useComponent(bannerComponent);
 
 export default {
   title: `${storybookPrefix}/Banner`,

@@ -26,10 +26,7 @@ export class InjectionPlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   beforeApply(app: App): void | Promise<void> {
-    this.injector = createInjector({
-      ...this.options,
-      providers: [...this.providers, { provide: AppRef, useValue: app }],
-    });
+    this.createInjector(app);
   }
 
   apply(): void | Promise<void> {
@@ -46,7 +43,15 @@ export class InjectionPlugin implements AppPlugin, AppPluginBeforeApply {
     return this.injector!;
   }
 
+  createInjector(app: App): void {
+    this.injector = createInjector({
+      ...this.options,
+      providers: [...this.providers, { provide: AppRef, useValue: app }],
+    });
+  }
+
   destroy(): void {
+    this.injector = undefined;
     destroyInjector(this.options?.context ?? '');
   }
 }

@@ -1,19 +1,12 @@
 import { CartService } from '@spryker-oryx/cart';
-import { setupCartMocks } from '@spryker-oryx/cart/mocks';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { cartEntriesComponent } from '../component';
-
-useComponent(cartEntriesComponent);
 
 export default {
   title: `${storybookPrefix}/Entries`,
   loaders: [
-    setupCartMocks(),
     (): void => {
       const cartService = resolve(CartService);
 

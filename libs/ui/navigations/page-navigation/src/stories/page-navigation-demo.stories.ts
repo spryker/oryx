@@ -1,12 +1,7 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { pageNavigationItemComponent } from '@spryker-oryx/ui/page-navigation-item';
 import { InputType } from '@storybook/csf';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { pageNavigationComponent } from '../component';
-
-useComponent([pageNavigationComponent, pageNavigationItemComponent]);
 
 export default {
   title: `${storybookPrefix}/Navigations/Page navigation`,

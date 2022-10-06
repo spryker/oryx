@@ -1,12 +1,12 @@
 import { IdentityService } from '@spryker-oryx/auth';
+import {
+  mockGetCartResponse,
+  mockGetCartsResponse,
+} from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
-import {
-  mockGetCartResponse,
-  mockGetCartsResponse,
-} from '../../mocks/mock-cart';
 import { ApiCartModel } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';

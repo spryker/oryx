@@ -3,7 +3,7 @@ import {
   Suggestion,
   SuggestionQualifier,
   SuggestionResource,
-} from '../../models';
+} from '@spryker-oryx/search';
 
 const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>

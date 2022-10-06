@@ -1,6 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { paginationComponent } from './component';
 import { PaginationComponent } from './pagination.component';

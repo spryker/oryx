@@ -1,12 +1,8 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { storybookPrefix } from '../../../../.constants';
-import { textComponent } from '../component';
 import { TextProperties } from '../text.model';
-
-useComponent(textComponent);
 
 export default {
   title: `${storybookPrefix}/Structure/Text`,

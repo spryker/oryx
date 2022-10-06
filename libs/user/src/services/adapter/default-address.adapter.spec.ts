@@ -7,13 +7,13 @@ import {
 } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { of } from 'rxjs';
 import {
   mockAddress,
   mockCurrentAddress,
   mockCurrentAddressResponse,
   mockGetAddressesResponse,
-} from '../../mocks';
+} from '@spryker-oryx/user/mocks';
+import { of } from 'rxjs';
 import { AddressAdapter } from './address.adapter';
 import { DefaultAddressAdapter } from './default-address.adapter';
 import { AddressesNormalizers, AddressNormalizers } from './normalizers';

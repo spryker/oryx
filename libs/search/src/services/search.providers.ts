@@ -7,7 +7,7 @@ import {
 } from './adapter';
 import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
-export const searchSuggestionProviders: Provider[] = [
+export const searchProviders: Provider[] = [
   {
     provide: SuggestionAdapter,
     useClass: DefaultSuggestionAdapter,
@@ -21,5 +21,3 @@ export const searchSuggestionProviders: Provider[] = [
     useValue: suggestionNormalizers,
   },
 ];
-
-export const searchProviders = [...searchSuggestionProviders];

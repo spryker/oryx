@@ -1,18 +1,11 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { uiBackofficeTheme } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { collapsibleComponent } from '../collapsible.def';
 import {
   CollapsibleAppearance,
   CollapsibleProps,
   CollapsibleToggleControlType,
 } from '../collapsible.model';
-
-useComponent(
-  collapsibleComponent({ theme: uiBackofficeTheme['oryx-collapsible'] })
-);
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible`,

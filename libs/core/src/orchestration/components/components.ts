@@ -58,7 +58,7 @@ export interface ComponentsPluginOptions {
 }
 
 export function componentDef(def: ComponentDef) {
-  return (overrides?: Partial<ComponentDef>): ComponentDef => ({
+  return <T = ComponentDef>(overrides?: Partial<T>): ComponentDef => ({
     ...def,
     ...overrides,
   });
@@ -73,7 +73,7 @@ export class ComponentsPlugin implements AppPlugin {
   protected theme?: ThemePlugin;
   protected readonly componentDefMap = new Map<string, ComponentDef>();
 
-  protected readonly logger = this.options.logger ?? console;
+  protected readonly logger = this.options?.logger ?? console;
 
   protected readonly componentMap = new Map<
     string,

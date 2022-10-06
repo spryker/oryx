@@ -1,12 +1,7 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { tabComponent } from '../../../tab/src/tab.def';
-import { tabsComponent } from '../tabs.def';
 import { TabsProperties } from '../tabs.model';
-
-useComponent([tabsComponent, tabComponent]);
 
 const numberOfTabs = 3;
 

@@ -1,16 +1,13 @@
 import { CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { setupCartMocks } from '../../../../src/mocks/cart.mock';
 import { CartTotalsComponentAttributes } from '../../totals.model';
 
 export default {
   title: `${storybookPrefix}/Cart totals/Static`,
   loaders: [
-    setupCartMocks(),
     (): void => {
       const cartService = resolve(CartService);
       cartService.getCart().subscribe((cart) => {

@@ -1,7 +1,4 @@
 import { AuthService, Identity, IdentityService } from '@spryker-oryx/auth';
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { BehaviorSubject, Observable, of, switchMap, take } from 'rxjs';
 import {
   mockCartTotals,
   mockNormalizedCart,
@@ -9,7 +6,10 @@ import {
   mockNormalizedCartWithoutProducts,
   mockNormalizedDefaultCart,
   mockNormalizedDefaultCartWithoutProducts,
-} from '../mocks/mock-cart';
+} from '@spryker-oryx/cart/mocks';
+import { HttpErrorResponse } from '@spryker-oryx/core';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { BehaviorSubject, Observable, of, switchMap, take } from 'rxjs';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';

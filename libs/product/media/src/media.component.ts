@@ -6,8 +6,8 @@ import {
   ProductController,
 } from '@spryker-oryx/product';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { Loading, ProductMediaComponentOptions } from './media.model';
 import { styles } from './media.styles';

@@ -6,7 +6,6 @@ import {
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { siteProviders } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { RemoveByQuantity } from '../../entry.model';
 import { CartEntryPriceComponent } from '../price/price.component';

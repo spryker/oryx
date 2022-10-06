@@ -1,11 +1,11 @@
 import { CartService } from '@spryker-oryx/cart';
-import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { Observable, of } from 'rxjs';
 import {
   mockNormalizedCheckoutData,
   mockNormalizedUpdatedCheckoutData,
   mockShipmentAttributes,
-} from '../mocks/mock-checkout';
+} from '@spryker-oryx/checkout/mocks';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { Observable, of } from 'rxjs';
 import { Shipment } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutService } from './checkout.service';

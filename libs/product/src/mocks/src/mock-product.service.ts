@@ -1,11 +1,11 @@
-import { Observable, of } from 'rxjs';
 import {
   Product,
   ProductLabel,
   ProductLabelAppearance,
   ProductQualifier,
-} from '../models';
-import { ProductService } from '../services';
+  ProductService,
+} from '@spryker-oryx/product';
+import { Observable, of } from 'rxjs';
 
 const images = [
   {

@@ -1,6 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { errorMessageComponent } from './component';
 import { ErrorMessageComponent } from './error-message.component';

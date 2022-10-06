@@ -5,8 +5,7 @@ import {
   ProductListPageService,
   ProductListService,
 } from '@spryker-oryx/product';
-import { mockProductListProviders } from '@spryker-oryx/product/mocks';
-import '@spryker-oryx/testing';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
@@ -67,7 +66,7 @@ describe('ProductListComponent', () => {
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
-        ...mockProductListProviders,
+        ...mockProductProviders,
         {
           provide: ProductListService,
           useClass: MockProductListService,

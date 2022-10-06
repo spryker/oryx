@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 
 export enum UxType {
   checkbox = 'checkbox',

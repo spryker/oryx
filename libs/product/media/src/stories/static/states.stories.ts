@@ -1,14 +1,10 @@
-import { setUpMockProviders } from '@spryker-oryx/injector';
 import { OverlaysDecorator } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { mockProductProviders } from '../../../../src/mocks';
 
 export default {
   title: `${storybookPrefix}/Media/Static`,
-  loaders: [setUpMockProviders(mockProductProviders)],
   decorators: [OverlaysDecorator()],
 } as unknown as Meta;
 

@@ -77,6 +77,7 @@ export class Injector {
     }
 
     this._locked = true;
+
     if (!this.providers.has(token)) {
       // no local provider
       if (this.parent) {

@@ -1,6 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';

@@ -1,4 +1,4 @@
-import { PriceMode } from '../models';
+import { PriceMode } from '@spryker-oryx/cart';
 
 export const mockDiscounts = [
   {

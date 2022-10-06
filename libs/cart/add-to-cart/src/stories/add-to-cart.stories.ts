@@ -1,18 +1,11 @@
-import { setupCartMocks } from '@spryker-oryx/cart/mocks';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { addToCartComponent } from '../add-to-cart.def';
 import { AddToCartOptions } from '../add-to-cart.model';
-
-useComponent(addToCartComponent);
 
 export default {
   title: `${storybookPrefix}/Add to cart`,
-  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 type Props = ProductComponentProperties & AddToCartOptions;

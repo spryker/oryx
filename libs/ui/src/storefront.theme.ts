@@ -1,6 +1,7 @@
+import { Theme } from '@spryker-oryx/core';
 import { theme } from '../actions/button/src/styles/themes/storefront.styles';
 
-export const uiStorefrontTheme = {
+export const uiStorefrontTheme: Theme = {
   'oryx-button': theme,
   'oryx-icon-button': () =>
     import('../actions/icon-button/src/styles/themes/storefront.styles').then(

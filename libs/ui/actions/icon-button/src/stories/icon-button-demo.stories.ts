@@ -1,13 +1,8 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconProperties, IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
-import { iconButtonComponent } from '../icon-button.def';
-
-useComponent(iconButtonComponent);
 
 export default { title: `${storybookPrefix}/Actions/Icon Button` } as Meta;
 

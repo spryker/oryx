@@ -2,7 +2,6 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { BannerComponent } from './banner.component';
 import { bannerComponent } from './component';

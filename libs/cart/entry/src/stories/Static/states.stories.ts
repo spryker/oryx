@@ -1,9 +1,7 @@
-import { setupCartMocks } from '@spryker-oryx/cart/mocks';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { storybookDefaultViewports } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { LitElement, TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, LitElement, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import {
   CartEntryCompositionOptions,
@@ -49,7 +47,6 @@ const createEntry = (
 
 export default {
   title: `${storybookPrefix}/Entry/Static`,
-  loaders: [setupCartMocks()],
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

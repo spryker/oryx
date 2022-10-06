@@ -1,16 +1,9 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { setUpMockProviders } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { mockProductProviders } from '../../../src/mocks';
-import { productLabelsComponent } from '../label.def';
-
-useComponent(productLabelsComponent);
 
 export default {
   title: `${storybookPrefix}/Labels/Static`,
-  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {

@@ -1,9 +1,8 @@
 import { Cart, CartController, CartService } from '@spryker-oryx/cart';
+import { mockCartTotals } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { PricingService } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { of, take } from 'rxjs';
-import { mockCartTotals } from '../mocks/mock-cart';
 
 class MockPricingService {
   format = vi.fn();

@@ -1,10 +1,6 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { optionComponent } from '../component';
-
-useComponent(optionComponent);
 
 export default {
   title: `${storybookPrefix}/Form/Utilities/Option`,

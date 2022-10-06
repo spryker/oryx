@@ -1,3 +1,4 @@
+import { Provider } from '@spryker-oryx/injector';
 import { AddressAdapter, DefaultAddressAdapter } from './adapter';
 import {
   addressesNormalizers,
@@ -9,7 +10,7 @@ import { addressSerializers, AddressSerializers } from './adapter/serializers';
 import { AddressService } from './address.service';
 import { DefaultAddressService } from './default-address.service';
 
-export const userProviders = [
+export const userProviders: Provider[] = [
   {
     provide: AddressService,
     useClass: DefaultAddressService,

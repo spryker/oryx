@@ -1,1 +1,2 @@
-export * from './mock-auth.providers';
+export * from './feature';
+export * from './src';

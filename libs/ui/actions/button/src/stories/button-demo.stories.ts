@@ -1,13 +1,8 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
 import { ButtonType } from '../button.model';
-import { buttonComponent } from '../component';
-
-useComponent(buttonComponent);
 
 export default {
   title: `${storybookPrefix}/Actions/Button`,

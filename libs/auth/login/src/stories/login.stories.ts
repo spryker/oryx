@@ -1,28 +1,11 @@
-import { mockAuthProviders } from '@spryker-oryx/auth';
-import { mockCoreProviders } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { mockRouterProviders } from '@spryker-oryx/experience';
-import { setUpMockProviders } from '@spryker-oryx/injector';
-import { semanticLinkProviders } from '@spryker-oryx/site';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { authLoginComponent } from '../component';
 import { LoginOptions } from '../login.model';
-
-useComponent(authLoginComponent);
 
 export default {
   title: `${storybookPrefix}/Login`,
-  loaders: [
-    setUpMockProviders(
-      mockRouterProviders,
-      semanticLinkProviders,
-      mockCoreProviders,
-      mockAuthProviders
-    ),
-  ],
   argTypes: {
     strategy: {
       options: [

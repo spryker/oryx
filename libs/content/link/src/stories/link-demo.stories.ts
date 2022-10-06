@@ -1,18 +1,12 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { setUpMockProviders } from '@spryker-oryx/injector';
-import { semanticLinkProviders, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { contentLinkComponent } from '../link.def';
 import { LinkOptions, LinkType } from '../link.model';
-
-useComponent(contentLinkComponent);
 
 export default {
   title: `${storybookPrefix}/Link`,
-  loaders: [setUpMockProviders(semanticLinkProviders)],
 } as unknown as Meta;
 
 const Template: Story<LinkOptions> = (options): TemplateResult => {

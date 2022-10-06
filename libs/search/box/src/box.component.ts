@@ -5,9 +5,9 @@ import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import '@spryker-oryx/ui/typeahead';
 import { TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
   catchError,

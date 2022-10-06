@@ -1,6 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';

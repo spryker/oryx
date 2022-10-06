@@ -1,14 +1,9 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
-import { ratingComponent } from '../component';
 import { RatingProperties } from '../rating.model';
-
-useComponent(ratingComponent);
 
 export default {
   title: `${storybookPrefix}/Graphical/Rating`,

@@ -17,6 +17,7 @@ import {
   ProductLabelsNormalizers,
 } from './adapter/normalizers/labels/labels.normalizer';
 
+import { Provider } from '@spryker-oryx/injector';
 import {
   productListNormalizers,
   ProductListNormalizers,
@@ -28,7 +29,7 @@ import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
 
-export const productProviders = [
+export const productProviders: Provider[] = [
   {
     provide: ProductAdapter,
     useClass: DefaultProductAdapter,

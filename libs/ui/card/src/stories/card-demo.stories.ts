@@ -1,13 +1,9 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
 import { IconTypes } from '../../../graphical/icon';
 import { CardType } from '../card.model';
-import { cardComponent } from '../component';
-
-useComponent(cardComponent);
 
 export default { title: `${storybookPrefix}/Structure/Card` } as Meta;
 

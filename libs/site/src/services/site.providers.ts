@@ -1,3 +1,4 @@
+import { Provider } from '@spryker-oryx/injector';
 import {
   CurrencyService,
   DefaultCurrencyService,
@@ -9,15 +10,11 @@ import {
   SemanticLinkService,
 } from './index';
 
-export const semanticLinkProviders = [
+export const siteProviders: Provider[] = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
   },
-];
-
-export const siteProviders = [
-  ...semanticLinkProviders,
   {
     provide: CurrencyService,
     useClass: DefaultCurrencyService,

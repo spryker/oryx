@@ -1,9 +1,11 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
+import {
+  mockProductProviders,
+  MockProductService,
+} from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import { mockProductProviders, MockProductService } from '../../src/mocks';
 import { productMediaComponent } from './component';
 import { ProductMediaComponent } from './media.component';
 

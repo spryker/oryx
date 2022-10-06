@@ -1,7 +1,7 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { createSuggestionMock } from '@spryker-oryx/search/mocks';
 import { Observable, of, switchMap } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { createSuggestionMock } from '../../mocks';
 import { SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter/suggestion.adapter';
 import { DefaultSuggestionService } from './default-suggestion.service';

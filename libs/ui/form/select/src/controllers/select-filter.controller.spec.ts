@@ -1,5 +1,4 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { FilterStrategyType } from '../../../../search/typeahead';

@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { quantityInputComponent } from './component';
 import { QuantityInputComponent } from './quantity-input.component';

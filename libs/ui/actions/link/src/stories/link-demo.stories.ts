@@ -1,12 +1,8 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { linkComponent } from '../link.def';
 import { LinkTypes } from '../link.model';
-
-useComponent(linkComponent);
 
 export default {
   title: `${storybookPrefix}/Actions/Link`,

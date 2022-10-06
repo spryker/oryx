@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { QueryControlsController } from './query-controls.controller';

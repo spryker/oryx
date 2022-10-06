@@ -1,8 +1,8 @@
 import { hydratable } from '@spryker-oryx/core';
 import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { QUANTITY_EVENT } from './quantity-input.model';
 import { styles } from './quantity-input.styles';

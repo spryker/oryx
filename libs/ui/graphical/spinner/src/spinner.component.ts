@@ -6,7 +6,7 @@ import { SpinnerProperties, SpinnerRotation } from './spinner.model';
 import { styles } from './spinner.styles';
 
 export class SpinnerComponent extends LitElement implements SpinnerProperties {
-  static styles = styles;
+  static styles = [styles];
 
   @property() icon: Icons | string = MiscIcons.Loader;
   @property() size = Size.medium;

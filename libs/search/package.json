@@ -7,5 +7,11 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    "mocks": {
+      "default": "./src/mocks/index.js",
+      "types": "./src/mocks/index.d.ts"
+    }
   }
 }

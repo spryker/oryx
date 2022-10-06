@@ -1,16 +1,11 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { CheckboxComponent } from '@spryker-oryx/ui/checkbox';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
-import { when } from 'lit-html/directives/when.js';
+import { html, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Direction } from '../../../../utilities/model';
-import { inputListComponent } from '../component';
 import { InputListComponent } from '../input-list.component';
 import { UxType } from './util';
-
-useComponent(inputListComponent);
 
 interface Props {
   title: string;

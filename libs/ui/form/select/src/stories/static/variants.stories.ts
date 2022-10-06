@@ -9,7 +9,7 @@ import {
 } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
 import { selectOptions } from './common';

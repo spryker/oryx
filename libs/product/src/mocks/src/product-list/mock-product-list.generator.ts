@@ -1,5 +1,8 @@
-import { Product, ProductList } from '@spryker-oryx/product';
-import { ProductListQualifier } from '../../models/product-list-qualifier';
+import {
+  Product,
+  ProductList,
+  ProductListQualifier,
+} from '@spryker-oryx/product';
 
 const images = [
   {

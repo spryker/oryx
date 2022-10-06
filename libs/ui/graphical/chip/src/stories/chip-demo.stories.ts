@@ -1,12 +1,7 @@
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { uiBackofficeTheme } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { chipComponent } from '../chip.def';
 import { ChipAppearance, ChipAttributes } from '../chip.model';
-
-useComponent(chipComponent({ theme: uiBackofficeTheme['oryx-chip'] }));
 
 export default {
   title: `${storybookPrefix}/Graphical/Chip`,

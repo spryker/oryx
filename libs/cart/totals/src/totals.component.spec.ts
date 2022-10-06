@@ -1,5 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
+import {
+  mockCartTotals,
+  mockEmptyCart,
+  mockNormalizedCart,
+} from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import {
   createInjector,
@@ -7,14 +12,8 @@ import {
   Injector,
 } from '@spryker-oryx/injector';
 import { PricingService } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import {
-  mockCartTotals,
-  mockEmptyCart,
-  mockNormalizedCart,
-} from '../../src/mocks/mock-cart';
 import { CartTotalsComponent } from './totals.component';
 import { cartTotalsComponent } from './totals.def';
 import { CartTotalsComponentAttributes } from './totals.model';

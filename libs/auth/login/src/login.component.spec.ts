@@ -3,7 +3,6 @@ import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
 import {
   PasswordInputComponent,
   passwordInputComponent,

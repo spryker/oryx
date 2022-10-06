@@ -1,6 +1,5 @@
 import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui/utilities';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 
 interface MiniCartVariant extends Variant {
   options: {

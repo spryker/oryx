@@ -1,1 +1,2 @@
-export * from './mock-experience.providers';
+export * from './feature';
+export * from './src';

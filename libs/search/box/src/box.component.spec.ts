@@ -2,11 +2,10 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
+import { mockSearchProviders } from '@spryker-oryx/search/mocks';
 import { typeheadComponent } from '@spryker-oryx/ui/typeahead';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { mockSuggestionProviders } from '../../src/mocks';
 import { SearchBoxComponent } from './box.component';
 import { SearchBoxOptions } from './box.model';
 import { searchBoxComponent } from './component';
@@ -78,7 +77,7 @@ describe('SearchBoxComponent', () => {
           provide: ExperienceService,
           useClass: MockEBService,
         },
-        ...mockSuggestionProviders,
+        ...mockSearchProviders,
       ],
     });
     element = await fixture(html`<search-box></search-box>`);

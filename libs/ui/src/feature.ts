@@ -49,12 +49,7 @@ export {
 
 export const uiFeature: AppFeature = {
   components: [
-    buttonComponent({
-      theme: () =>
-        import('../actions/button/src/styles/themes/storefront.styles').then(
-          (b) => b.theme
-        ),
-    }),
+    buttonComponent,
     cardComponent,
     checkboxComponent,
     chipComponent,

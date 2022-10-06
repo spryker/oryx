@@ -3,7 +3,7 @@ import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
   combineLatest,

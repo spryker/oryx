@@ -1,22 +1,15 @@
-import { getInjector, setUpMockProviders } from '@spryker-oryx/injector';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { resolve } from '@spryker-oryx/injector';
 import { LocaleService } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Price/Static`,
-  loaders: [setUpMockProviders(mockProductProviders)],
 } as unknown as Meta;
 
-const getLocale = (): LocaleService => {
-  return getInjector().inject(LocaleService);
-};
-
 const Template: Story<any> = (args): TemplateResult => {
-  getLocale().set(args.locale);
+  resolve(LocaleService).set(args.locale);
   return html` <product-price sku="1"></product-price> `;
 };
 

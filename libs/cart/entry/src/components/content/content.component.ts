@@ -1,8 +1,8 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import {
   CartEntryCompositionOptions,

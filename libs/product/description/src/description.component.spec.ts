@@ -1,10 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import '@spryker-oryx/testing';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
-import { mockProductProviders } from '../../src/mocks';
 import { ProductDescriptionContent } from '../index';
 import { productDescriptionComponent } from './component';
 import { ProductDescriptionComponent } from './description.component';

@@ -1,4 +1,3 @@
-import '@spryker-oryx/testing';
 import { throttle } from './throttle';
 
 describe('Throttle', () => {

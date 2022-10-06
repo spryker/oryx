@@ -4,7 +4,6 @@ import {
   a11yConfig,
   queryAssignedElements,
 } from '@spryker-oryx/typescript-utils';
-import { vi } from 'vitest';
 import { TabComponent } from '../../tab';
 import { tabComponent } from '../../tab/src/tab.def';
 import { TabsComponent } from './tabs.component';

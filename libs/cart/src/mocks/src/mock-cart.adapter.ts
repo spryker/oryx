@@ -1,13 +1,16 @@
-import { MockProductService } from '@spryker-oryx/product/mocks';
-import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
-import { Cart, CartCalculations, CartEntry, ProductOption } from '../models';
 import {
   AddCartEntityProps,
+  Cart,
   CartAdapter,
+  CartCalculations,
+  CartEntry,
   DeleteCartEntityProps,
   GetCartProps,
+  ProductOption,
   UpdateCartEntityProps,
-} from '../services';
+} from '@spryker-oryx/cart';
+import { MockProductService } from '@spryker-oryx/product/mocks';
+import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
 import {
   mockNormalizedCartEntry,
   mockNormalizedCartWithMultipleProducts,

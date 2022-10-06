@@ -1,4 +1,6 @@
-export const uiBackofficeTheme = {
+import { Theme } from '@spryker-oryx/core';
+
+export const uiBackofficeTheme: Theme = {
   'oryx-button': () =>
     import('../actions/button/src/styles/themes/backoffice.styles').then(
       (b) => b.theme

@@ -7,11 +7,10 @@ import {
   getInjector,
 } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
-import { LocaleService } from '@spryker-oryx/site';
-import '@spryker-oryx/testing';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { LocaleService, siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { mockProductProviders } from '../../src/mocks';
 import { productPriceComponent } from './component';
 import { ProductPriceComponent } from './price.component';
 
@@ -39,6 +38,7 @@ describe('ProductPriceComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
+        ...siteProviders,
         ...mockProductProviders,
         {
           provide: ExperienceService,
