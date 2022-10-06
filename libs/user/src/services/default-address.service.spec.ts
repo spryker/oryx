@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/core';
+import { IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of, Subject, switchMap } from 'rxjs';
 import { mockCurrentAddress, mockNormalizedAddresses } from '../mocks';

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { HttpErrorResponse, IdentityService } from '@spryker-oryx/core';
+import { IdentityService } from '@spryker-oryx/auth';
+import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
   catchError,

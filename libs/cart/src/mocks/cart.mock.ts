@@ -1,8 +1,5 @@
-import {
-  ContextService,
-  DefaultContextService,
-  IdentityService,
-} from '@spryker-oryx/core';
+import { IdentityService, mockAuthProviders } from '@spryker-oryx/auth';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { setUpMockProviders } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
@@ -20,6 +17,7 @@ export const setupCartMocks = (): (() => void) =>
   setUpMockProviders([
     ...siteProviders,
     ...mockCartProviders,
+    ...mockAuthProviders,
     {
       provide: IdentityService,
       useClass: MockIdentityService,

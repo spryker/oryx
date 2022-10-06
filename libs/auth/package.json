@@ -1,0 +1,21 @@
+{
+  "name": "@spryker-oryx/auth",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "mocks": {
+      "default": "./src/mocks/index.js",
+      "types": "./src/mocks/index.d.ts"
+    }
+  }
+}

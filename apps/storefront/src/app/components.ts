@@ -81,9 +81,9 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string, layoutClasses?: string) =>
       html`<product-list uid="${uid}" class=${layoutClasses}></product-list>`,
   },
-  ['user-login']: {
+  ['auth-login']: {
     template: (uid: string, layoutClasses?: string) =>
-      html`<user-login uid="${uid}" class=${layoutClasses}></user-login>`,
+      html`<auth-login uid="${uid}" class=${layoutClasses}></-login>`,
   },
   ['add-to-cart']: {
     template: (uid: string, layoutClasses?: string) =>

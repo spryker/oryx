@@ -1,6 +1,6 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import {
   HttpService,
-  IdentityService,
   JsonAPITransformerService,
   StorageService,
   StorageType,

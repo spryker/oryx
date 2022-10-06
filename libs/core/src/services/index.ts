@@ -1,5 +1,4 @@
 export * from './adapter/adapter.model';
-export * from './auth';
 export * from './context';
 export * from './http';
 export * from './providers';

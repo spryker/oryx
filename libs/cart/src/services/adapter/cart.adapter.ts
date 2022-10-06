@@ -1,4 +1,4 @@
-import { AuthHeaders } from '@spryker-oryx/core';
+import { AuthHeaders } from '@spryker-oryx/auth';
 import { Observable } from 'rxjs';
 import { Cart, CartEntryAttributesQualifier } from '../../models';
 

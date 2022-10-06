@@ -52,7 +52,7 @@ export class StorefrontComponent extends LitElement {
       </div>
       <nav>
         <search-box .options="{{cmsCount: 0}}"></search-box>
-        <user-logout .options="${{ customRedirect: 'contact' }}"></user-logout>
+        <auth-logout .options="${{ customRedirect: 'contact' }}"></auth-logout>
         <mini-cart></mini-cart>
       </nav>
     `;

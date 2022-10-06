@@ -1,9 +1,5 @@
-import {
-  AuthService,
-  HttpErrorResponse,
-  Identity,
-  IdentityService,
-} from '@spryker-oryx/core';
+import { AuthService, Identity, IdentityService } from '@spryker-oryx/auth';
+import { HttpErrorResponse } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { BehaviorSubject, Observable, of, switchMap, take } from 'rxjs';
 import {

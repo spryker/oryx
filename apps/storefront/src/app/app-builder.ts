@@ -1,3 +1,4 @@
+import { authFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
@@ -33,4 +34,5 @@ export const appBuilder = app()
   .withFeature(storefrontFeature)
   .withFeature(appFeature)
   .withFeature(userFeature)
+  .withFeature(authFeature)
   .withTheme([uiStorefrontTheme]);

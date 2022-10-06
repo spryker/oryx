@@ -1,4 +1,4 @@
-import { AuthHeaders, Identity } from '@spryker-oryx/core';
+import { AuthHeaders, Identity } from '@spryker-oryx/auth';
 import { JsonApiPayload } from '@spryker-oryx/typescript-utils';
 import { Observable } from 'rxjs';
 import { Address } from '../../models';

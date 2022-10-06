@@ -1,8 +1,5 @@
-import {
-  HttpService,
-  IdentityService,
-  JsonAPITransformerService,
-} from '@spryker-oryx/core';
+import { IdentityService } from '@spryker-oryx/auth';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';

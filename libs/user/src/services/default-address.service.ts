@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/core';
+import { IdentityService } from '@spryker-oryx/auth';
 import { inject } from '@spryker-oryx/injector';
 import {
   BehaviorSubject,
