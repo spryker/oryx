@@ -1,4 +1,3 @@
-import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -14,7 +13,6 @@ import { map } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
 import { baseListStyles } from './styles';
 
-@hydratable('window:load')
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
   static styles = baseListStyles;
 
@@ -33,7 +31,7 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
 
   protected renderProducts(products: Product[]): TemplateResult {
     return html`${products.map(
-      (p) => html`<product-card .sku=${p.sku}></product-card>`
+      (p) => html`<product-card data-sku=${p.sku}></product-card>`
     )}`;
   }
 

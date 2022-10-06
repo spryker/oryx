@@ -13,7 +13,7 @@ import {
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { isFocusable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, tap } from 'rxjs';
+import { combineLatest, filter, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
@@ -31,6 +31,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     // TODO: investigate issue observe decorator with mixin
     this.observe.get('sku'),
   ]).pipe(
+    filter(([options, propSku]) => Boolean(options.sku ?? propSku)),
     tap(([options, propSku]) =>
       this.context.provide(ProductContext.SKU, options.sku ?? propSku)
     )
