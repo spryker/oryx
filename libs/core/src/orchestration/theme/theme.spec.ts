@@ -1,5 +1,6 @@
 import { CSSResult } from 'lit';
 import {
+  Theme,
   ThemeData,
   ThemePlugin,
   ThemePluginName,
@@ -7,25 +8,29 @@ import {
 } from './theme';
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
-const mockATheme = {
-  a: {
-    styles: stylesMocker('a'),
+const mockATheme: Theme = {
+  components: {
+    a: {
+      styles: stylesMocker('a'),
+    },
+    b: (): Promise<ThemeData> =>
+      Promise.resolve({
+        styles: stylesMocker('b'),
+      }),
   },
-  b: (): Promise<ThemeData> =>
-    Promise.resolve({
-      styles: stylesMocker('b'),
-    }),
 };
 
-const mockBTheme = {
-  a: {
-    styles: stylesMocker('aA'),
+const mockBTheme: Theme = {
+  components: {
+    a: {
+      styles: stylesMocker('aA'),
+    },
+    b: (): Promise<ThemeData> =>
+      Promise.resolve({
+        styles: stylesMocker('bB'),
+        strategy: ThemeStrategies.ReplaceAll,
+      }),
   },
-  b: (): Promise<ThemeData> =>
-    Promise.resolve({
-      styles: stylesMocker('bB'),
-      strategy: ThemeStrategies.ReplaceAll,
-    }),
 };
 
 const mockComponentTheme = {

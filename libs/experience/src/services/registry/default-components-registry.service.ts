@@ -1,9 +1,6 @@
-import {
-  AppRef,
-  ComponentsPlugin,
-  HYDRATE_ON_DEMAND,
-} from '@spryker-oryx/core';
+import { AppRef, ComponentsPlugin } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
+import { HYDRATE_ON_DEMAND } from '@spryker-oryx/typescript-utils';
 import { LitElement, TemplateResult } from 'lit';
 import { html, unsafeStatic } from 'lit/static-html.js';
 import { COMPONENT_MAPPING } from '../experience-tokens';

@@ -1,11 +1,11 @@
 import { LinkType } from '@spryker-oryx/content/link';
-import { ContextController, hydratable } from '@spryker-oryx/core';
+import { ContextController } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { routes, StorefrontRouter } from '@spryker-oryx/storefront';
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { hydratable, isClient } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { take, tap } from 'rxjs';
 import { styles } from './storefront.styles';

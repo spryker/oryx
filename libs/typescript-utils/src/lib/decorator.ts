@@ -8,6 +8,9 @@ export interface DecoratorContext {
   extras?: DecoratorContext[];
   finisher?: (clazz: typeof UpdatingElement) => typeof UpdatingElement | void;
   descriptor?: PropertyDescriptor;
+  [key: string]: unknown;
 }
 
-export type TargetDecorator = Record<string | symbol, unknown> & LitElement;
+export interface TargetDecorator extends LitElement {
+  [key: string | symbol]: unknown;
+}

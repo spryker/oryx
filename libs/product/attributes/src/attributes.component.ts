@@ -1,10 +1,10 @@
-import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { hydratable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { map, tap } from 'rxjs';

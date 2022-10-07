@@ -13,14 +13,13 @@ describe('Icon', () => {
     await useComponent(iconComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-icon');
-    expect(el).toBeInstanceOf(IconComponent);
-  });
-
   describe('when no type is given', () => {
     beforeEach(async () => {
       element = await fixture(html`<oryx-icon></oryx-icon>`);
+    });
+
+    it('is defined', () => {
+      expect(element).toBeInstanceOf(IconComponent);
     });
 
     it('passes the a11y audit', async () => {

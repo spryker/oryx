@@ -1,8 +1,8 @@
 import { RouteConfig, Router } from '@lit-labs/router';
-import { PatchableLitElement, SSRAwaiterService } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { isClient, PatchableLitElement } from '@spryker-oryx/typescript-utils';
 import { html, ReactiveControllerHost, TemplateResult } from 'lit';
 import { identity, skip, tap } from 'rxjs';
 

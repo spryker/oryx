@@ -1,5 +1,3 @@
-import { ContextService } from '@spryker-oryx/core';
-import { ServerContextService } from '@spryker-oryx/core/server';
 import { resolve } from '@spryker-oryx/injector';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { isObservable, Observable, Subscription } from 'rxjs';
@@ -12,11 +10,13 @@ interface ObservablesData {
 export class SubscribeController implements ReactiveController {
   protected subscriptions = new Subscription();
   protected observables = new Map<string, ObservablesData>();
-  protected context = resolve(ContextService, null) as ServerContextService;
+  // TODO: temporary solution should be solved with proper hook provided from lit
+  protected context = resolve('FES.ContextService', null);
 
   constructor(public host: ReactiveControllerHost) {
     (this.host = host).addController(this);
-    this.context?.rendered$?.subscribe?.(() => this.unsubscribe());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (this.context as any)?.rendered$?.subscribe?.(() => this.unsubscribe());
   }
 
   hostConnected(): void {
@@ -43,7 +43,8 @@ export class SubscribeController implements ReactiveController {
       subscription: null,
     });
 
-    if (this.context?.rendered$) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((this.context as any)?.rendered$) {
       this.subscribe(key);
     }
   }

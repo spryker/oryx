@@ -23,13 +23,13 @@ export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
     const app = this.createApp();
 
     await this.forEveryPlugin((plugin) => {
+      app.registerPlugin(plugin);
       if (isAppPluginBeforeApply(plugin)) {
         return plugin.beforeApply(app);
       }
     });
 
     await this.forEveryPlugin((plugin) => {
-      app.registerPlugin(plugin);
       return plugin.apply(app);
     });
 

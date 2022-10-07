@@ -20,21 +20,23 @@ const noTransitionField = css`
 
 export const chromaticTheme: Theme = isChromatic()
   ? {
-      'oryx-spinner': {
-        styles: [
-          css`
-            oryx-icon,
-            ::slotted(oryx-icon) {
-              animation-iteration-count: 0;
-            }
-          `,
-        ],
-      },
-      'oryx-input': {
-        styles: [noTransitionField],
-      },
-      'oryx-select': {
-        styles: [noTransitionField],
+      components: {
+        'oryx-spinner': {
+          styles: [
+            css`
+              oryx-icon,
+              ::slotted(oryx-icon) {
+                animation-iteration-count: 0;
+              }
+            `,
+          ],
+        },
+        'oryx-input': {
+          styles: [noTransitionField],
+        },
+        'oryx-select': {
+          styles: [noTransitionField],
+        },
       },
     }
-  : {};
+  : { components: {} };

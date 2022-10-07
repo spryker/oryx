@@ -1,10 +1,10 @@
-import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { hydratable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 import { ProductAverageRatingModel } from './average-rating.model';

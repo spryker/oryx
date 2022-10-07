@@ -1,4 +1,4 @@
-import { hydratable } from '@spryker-oryx/core';
+import { hydratable } from '@spryker-oryx/typescript-utils';
 import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';

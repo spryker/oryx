@@ -1,6 +1,6 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { isDefined, Type } from '@spryker-oryx/typescript-utils';
-import { CSSResult, CSSResultGroup, CSSResultOrNative, unsafeCSS } from 'lit';
+import { HOOKS_KEY, isDefined, Type } from '@spryker-oryx/typescript-utils';
+import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 import { App, AppPlugin } from '../app';
 import { ThemeData, ThemeImpl, ThemePlugin, ThemeStrategies } from '../theme';
 import {
@@ -23,8 +23,11 @@ export type ComponentDefFn = () => ComponentDef;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Component extends HTMLElement {}
+export interface ComponentProps {
+  [HOOKS_KEY]?: Record<string, string>;
+}
 
-export type ComponentType = Type<Component>;
+export type ComponentType = Type<Component> & ComponentProps;
 
 export interface ComponentStatic {
   styles?: CSSResult[];
@@ -50,11 +53,17 @@ export interface ComponentImplStrategy {
   ): Promise<ComponentType | undefined>;
 }
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface HooksTokenMap {}
+}
+
 export interface ComponentsPluginOptions {
   root: ComponentInfo | string;
   elementOptions?: ElementDefinitionOptions;
   logger?: Pick<Console, 'warn'>;
   preload?: boolean;
+  [HOOKS_KEY]?: HooksTokenMap;
 }
 
 export function componentDef(def: ComponentDef) {
@@ -77,7 +86,7 @@ export class ComponentsPlugin implements AppPlugin {
 
   protected readonly componentMap = new Map<
     string,
-    Type<ObservableShadowElement>
+    Type<ObservableShadowElement> & ComponentProps
   >();
 
   protected readonly observer = new MutationObserver(
@@ -92,7 +101,7 @@ export class ComponentsPlugin implements AppPlugin {
 
   constructor(
     componentsInfo: ComponentsInfo,
-    protected readonly options: ComponentsPluginOptions
+    public options: ComponentsPluginOptions
   ) {
     this.registerComponents(componentsInfo);
   }
@@ -261,7 +270,10 @@ export class ComponentsPlugin implements AppPlugin {
     def: ComponentDef,
     meta: ComponentImplMeta
   ): Promise<
-    | { def: ComponentDef; componentType: Type<ObservableShadowElement> }
+    | {
+        def: ComponentDef;
+        componentType: Type<ObservableShadowElement> & ComponentProps;
+      }
     | undefined
   > {
     if (!isComponentImplStrategy(def.impl) && !this.options.preload) {
@@ -280,7 +292,7 @@ export class ComponentsPlugin implements AppPlugin {
   protected async loadComponentDef(
     def: ComponentDef,
     meta: ComponentImplMeta
-  ): Promise<Type<ObservableShadowElement> | undefined> {
+  ): Promise<(Type<ObservableShadowElement> & ComponentProps) | undefined> {
     if (this.componentMap.has(def.name)) {
       return this.componentMap.get(def.name);
     }
@@ -292,6 +304,20 @@ export class ComponentsPlugin implements AppPlugin {
 
     if (!componentType) {
       return;
+    }
+
+    if (componentType[HOOKS_KEY] && this.options[HOOKS_KEY]) {
+      for (const [token, methodName] of Object.entries(
+        componentType[HOOKS_KEY]
+      )) {
+        const newHook = this.options[HOOKS_KEY][token as keyof HooksTokenMap];
+
+        if (methodName) {
+          componentType[
+            methodName as keyof Omit<ComponentType, 'length' | 'name'>
+          ] = newHook;
+        }
+      }
     }
 
     this.applyThemes(componentType, themes);
@@ -311,25 +337,27 @@ export class ComponentsPlugin implements AppPlugin {
       return;
     }
 
-    const transformer = (theme: CSSResult[] | string): CSSResult[] =>
-      Array.isArray(theme) ? theme : [unsafeCSS(theme)];
-    const bases = component.styles ?? [];
+    const base = component.styles ?? [];
+    const bases = Array.isArray(base) ? base : [base];
     let innerTheme = [...bases];
 
     for (const theme of themes) {
       if (theme.strategy === ThemeStrategies.ReplaceAll) {
-        innerTheme = transformer(theme.styles);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        innerTheme = this.theme!.transformer(theme.styles);
 
         continue;
       }
 
       if (theme.strategy === ThemeStrategies.Replace) {
-        innerTheme = [...bases, ...transformer(theme.styles)];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        innerTheme = [...bases, ...this.theme!.transformer(theme.styles)];
 
         continue;
       }
 
-      innerTheme = [...innerTheme, ...transformer(theme.styles)];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      innerTheme = [...innerTheme, ...this.theme!.transformer(theme.styles)];
     }
 
     component.styles = innerTheme;

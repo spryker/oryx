@@ -1,4 +1,4 @@
-import { hydratable, SSRAwaiterService } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import {
   Component,
   ComponentsRegistryService,
@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { hydratable, isClient } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

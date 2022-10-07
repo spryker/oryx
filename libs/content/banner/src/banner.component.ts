@@ -1,6 +1,6 @@
-import { hydratable } from '@spryker-oryx/core';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
+import { hydratable } from '@spryker-oryx/typescript-utils';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';

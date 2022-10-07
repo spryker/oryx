@@ -1,8 +1,8 @@
-import { hydratable } from '@spryker-oryx/core';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
+import { hydratable } from '@spryker-oryx/typescript-utils';
 import '@spryker-oryx/ui/typeahead';
 import { TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';

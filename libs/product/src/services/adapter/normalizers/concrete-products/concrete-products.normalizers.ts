@@ -1,8 +1,8 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
-import { ProductNormalizers } from '@spryker-oryx/product';
 import { camelize } from '@spryker-oryx/typescript-utils';
 import { combineLatest, Observable } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
+import { ProductNormalizers } from '../product';
 import { DeserializedAbstract } from './model';
 
 export const ConcreteProductsNormalizers = 'FES.ConcreteProductsNormalizers';

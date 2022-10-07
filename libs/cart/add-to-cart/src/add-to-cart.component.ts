@@ -1,6 +1,5 @@
 import { CartService } from '@spryker-oryx/cart';
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
-import { hydratable } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -8,7 +7,7 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { wait } from '@spryker-oryx/typescript-utils';
+import { hydratable, wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';

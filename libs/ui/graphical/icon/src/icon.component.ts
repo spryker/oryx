@@ -1,3 +1,4 @@
+import { hook, IconHookToken } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -10,6 +11,16 @@ const DEFAULT_SPRITE = '/assets/icons.svg';
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 
+  @hook(IconHookToken)
+  static renderIcon: IconHookToken = (
+    type?: string,
+    spriteUrl = ''
+  ): TemplateResult => html`
+    <svg viewBox="0 0 24 24">
+      <use href="${spriteUrl}" />
+    </svg>
+  `;
+
   @property({ reflect: true }) type?: Icons | string;
   @property({ reflect: true }) size?: Size;
   @property() sprite?: string;
@@ -17,11 +28,8 @@ export class IconComponent extends LitElement implements IconProperties {
   render(): TemplateResult {
     return html`
       <slot>
-        ${when(
-          this.type,
-          () => html`<svg viewBox="0 0 24 24">
-            <use href="${this.spriteUrl}" />
-          </svg>`
+        ${when(this.type, () =>
+          IconComponent.renderIcon(this.type as string, this.spriteUrl)
         )}
       </slot>
     `;

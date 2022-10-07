@@ -4,6 +4,7 @@ import { DefaultSSRStreamParserService } from './default-ssr-stream-parser';
 
 export class ServerContextService extends DefaultContextService {
   protected streamParser = new DefaultSSRStreamParserService();
+  // TODO: Create mini service or use proper hook, when Lit will expose it which signalize rendered state.
   rendered$ = new ReplaySubject<void>(1);
 
   provide(element: Element, key: string, value: unknown): void {
