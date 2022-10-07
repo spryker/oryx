@@ -1,0 +1,12 @@
+{
+  "name": "@spryker-oryx/form",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "Spryker",
+  "license": "MIT",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

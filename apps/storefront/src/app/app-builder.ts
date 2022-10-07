@@ -7,6 +7,7 @@ import {
   experienceFeature,
   experiencePreviewFeature,
 } from '@spryker-oryx/experience';
+import { formFeature } from '@spryker-oryx/form';
 import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
@@ -26,6 +27,7 @@ export const appBuilder = app()
   .withFeature(cartFeature)
   .withFeature(checkoutFeature)
   .withFeature(contentFeature)
+  .withFeature(formFeature)
   .withFeature(experienceFeature)
   .withFeature(isPreview ? experiencePreviewFeature : {})
   .withFeature(productFeature)
