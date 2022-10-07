@@ -11,8 +11,8 @@ export const ComponentMixin = <A, B = A>(): Type<
     implements ContentComponentProperties<A, B>
   {
     @property() uid?: string;
-    @property({ type: Object }) content?: A;
-    @property({ type: Object }) options?: B;
+    @property({ type: Object, reflect: true }) content?: A;
+    @property({ type: Object, reflect: true }) options?: B;
   }
   return Component as Type<LitElement & ContentComponentProperties<A, B>>;
 };

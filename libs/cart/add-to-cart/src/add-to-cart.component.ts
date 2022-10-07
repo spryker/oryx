@@ -100,16 +100,16 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                 this.onSubmit(
                   e,
                   quantity,
-                  option.hideQuantityInput,
+                  option?.hideQuantityInput,
                   product?.sku
                 )}
             >
               ${when(
-                !option.hideQuantityInput,
+                !option?.hideQuantityInput,
                 () => html`
                   <quantity-input
                     value=${quantity}
-                    ?disabled=${option.disabled}
+                    ?disabled=${option?.disabled}
                     @oryx.quantity=${this.setQuantity}
                   ></quantity-input>
                 `
@@ -122,7 +122,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                 ?outline=${showSuccessButton}
               >
                 <button
-                  ?disabled=${option.disabled}
+                  ?disabled=${option?.disabled}
                   ?inert=${showSuccessButton}
                 >
                   <oryx-icon
