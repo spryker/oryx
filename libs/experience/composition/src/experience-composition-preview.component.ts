@@ -6,25 +6,12 @@ import { filter, merge, tap } from 'rxjs';
 import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
-import {
-  baseLayoutStyles,
-  carouselLayoutStyles,
-  columnLayoutStyles,
-  containerLayoutStyles,
-  stickyLayoutStyles,
-} from './style';
+import { layoutStyles } from './style';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
-  static override styles = [
-    baseLayoutStyles,
-    carouselLayoutStyles,
-    columnLayoutStyles,
-    containerLayoutStyles,
-    stickyLayoutStyles,
-    previewStyles,
-  ];
+  static override styles = [...layoutStyles, previewStyles];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService

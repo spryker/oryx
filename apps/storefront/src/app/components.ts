@@ -83,7 +83,7 @@ export const componentsMapping: ComponentsMapping = {
   },
   ['auth-login']: {
     template: (uid: string, layoutClasses?: string) =>
-      html`<auth-login uid="${uid}" class=${layoutClasses}></-login>`,
+      html`<auth-login uid="${uid}" class=${layoutClasses}></auth-login>`,
   },
   ['add-to-cart']: {
     template: (uid: string, layoutClasses?: string) =>
@@ -98,6 +98,7 @@ export const componentsMapping: ComponentsMapping = {
       html`<cart-entries uid="${uid}" class=${layoutClasses}></cart-entries>`,
   },
   ['cart-totals']: {
-    template: (uid: string) => html`<cart-totals uid="${uid}"></cart-totals>`,
+    template: (uid: string, layoutClasses?: string) =>
+      html`<cart-totals uid="${uid}" class=${layoutClasses}></cart-totals>`,
   },
 };

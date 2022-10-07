@@ -15,23 +15,11 @@ import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { ComponentMixin } from '../../src/mixins';
-import {
-  baseLayoutStyles,
-  carouselLayoutStyles,
-  columnLayoutStyles,
-  containerLayoutStyles,
-  stickyLayoutStyles,
-} from './style';
+import { layoutStyles } from './style';
 
 @hydratable()
 export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
-  static styles = [
-    baseLayoutStyles,
-    carouselLayoutStyles,
-    columnLayoutStyles,
-    containerLayoutStyles,
-    stickyLayoutStyles,
-  ];
+  static styles = layoutStyles;
 
   @state()
   protected components?: Array<Component>;

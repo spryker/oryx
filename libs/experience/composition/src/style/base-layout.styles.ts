@@ -4,25 +4,29 @@ export const baseLayoutStyles = css`
   @layer layout {
     :host {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      gap: var(--oryx-layout-gap);
       align-items: flex-start;
-      flex-wrap: wrap;
       box-sizing: border-box;
       min-width: 0;
-      /* we cannot use overflow hidden when there's a sticky child */
-      /* overflow: hidden; */
-      gap: var(--oryx-composition-gap);
+      width: 100%;
     }
 
-    :host > * {
-      height: var(--height);
+    :host([class*='-layout-']) > * {
+      height: var(--oryx-layout-height, 0%);
+      box-sizing: border-box;
     }
 
-    :host > * {
-      flex: 100%;
+    @media (min-width: 768px) {
+      :host {
+        --oryx-layout-item-count: 2;
+      }
+    }
 
-      /* ensure the items will be aligned at the start by default */
-      align-content: start;
+    @media (min-width: 1024px) {
+      :host {
+        --oryx-layout-item-count: 4;
+      }
     }
   }
 `;

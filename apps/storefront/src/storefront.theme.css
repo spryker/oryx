@@ -1,7 +1,7 @@
 /* semantic design tokens */
 
 :root {
-  --container-width: 1340px;
+  --oryx-container-width: 1340px;
 
   --oryx-font-size-medium: 16px;
   --oryx-font-size-large: 22px;
@@ -17,7 +17,7 @@
   --oryx-font: 'Montserrat', sans-serif;
 
   /* layout */
-  --oryx-composition-gap: 10px;
+  --oryx-layout-gap: 10px;
 
   /* base color */
   --oryx-color-canvas: #fff;

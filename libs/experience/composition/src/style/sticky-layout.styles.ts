@@ -1,30 +1,30 @@
-import { css, unsafeCSS } from 'lit';
+import { Breakpoint } from '@spryker-oryx/experience';
+import { css, CSSResult, unsafeCSS } from 'lit';
 
-const rules = `
+const stickyLayout = (breakpoint: Breakpoint): CSSResult => css`
+  .${unsafeCSS(breakpoint)}-sticky {
     position: sticky;
-
-    /* trick to avoid full height compositions that block sticky compositions to work  */
     top: 0px;
-    
-    /* the height of a sticky composition is forced to default to 0% 
-     * to overcome a lengthy height which would block stickiness. */
     height: 0%;
+  }
 `;
 
+/**
+ * Provides layout features for stickiness of a composition.
+ *
+ * We'll use a sticky position in combination with a (default) 0 offset from the top.
+ * To avoid a conflict with a lengthy height blocking stickiness, we'll default the height to 0%.
+ */
 export const stickyLayoutStyles = css`
-  .xs-sticky {
-    ${unsafeCSS(rules)};
-  }
+  @layer layout {
+    ${stickyLayout(Breakpoint.Xs)}
 
-  @media (min-width: 767px) {
-    .md-sticky {
-      ${unsafeCSS(rules)};
+    @media (min-width: 768px) {
+      ${stickyLayout(Breakpoint.Md)}
     }
-  }
 
-  @media (min-width: 1008px) {
-    .lg-sticky {
-      ${unsafeCSS(rules)};
+    @media (min-width: 1024px) {
+      ${stickyLayout(Breakpoint.Lg)}
     }
   }
 `;

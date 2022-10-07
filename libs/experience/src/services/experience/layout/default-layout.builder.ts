@@ -31,7 +31,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (!perBreakpoint[breakpoint]) {
         perBreakpoint[breakpoint] = '';
       }
-      perBreakpoint[breakpoint] += `[uid=${id}]{${rules}}`;
+      perBreakpoint[breakpoint] += `[uid="${id}"]{${rules}}`;
     };
 
     components.forEach((component) => {
@@ -92,9 +92,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add('container', ruleSet.container);
     add('jumbotron', ruleSet.jumbotron);
-    add('layout-carousel', ruleSet.layout === CompositionLayout.carousel);
-    add('layout-column', ruleSet.layout === CompositionLayout.column);
-    add(`column-count-${ruleSet.columnCount}`, !!ruleSet.columnCount);
+    add('layout-carousel', ruleSet.layout === CompositionLayout.Carousel);
+    add('layout-column', ruleSet.layout === CompositionLayout.Column);
+    add('layout-grid', ruleSet.layout === CompositionLayout.Grid);
     add('sticky', ruleSet.position === 'sticky');
 
     return classes;
@@ -114,7 +114,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (value) styles.push(`${style}:${value};`);
     };
 
-    add('gap', data.gap);
+    if (data.gap) {
+      add('--oryx-layout-gap', data.gap);
+    }
+
     add('padding', data.padding);
     add('margin', data.margin);
     add('border', data.border);
@@ -123,18 +126,20 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add('top', data.top);
     add('bottom', data.bottom);
 
-    // TODO: consider dropping the CSS variable to avoid inheritance in descendant components
-    add('--height', data.height);
+    add('--oryx-layout-height', data.height);
+    // add('height', data.height);
 
-    // col span is used in grid systems, so that a grid item can span multiple columns
-    if (data.gridColSpan && data.gridColSpan > 0) {
-      add('grid-column', `span ${data.gridColSpan}`);
+    if (data.columnCount) {
+      add('--oryx-layout-item-count', data.columnCount.toString());
+    }
+
+    if (data.span) {
+      add('--oryx-layout-span', data.span.toString());
     }
 
     if (data.width) {
-      // both width and flex are explicitly set to accommodate grid and flex box systems
-      // TODO: consider to subtract the gap-size
-      add('width', data.width);
+      // width is explicitly set to accommodate flex box systems
+      add('--oryx-layout-item-width', data.width);
       add('flex', `0 0 ${data.width}`);
     }
 

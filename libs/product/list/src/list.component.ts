@@ -5,16 +5,16 @@ import { Product, ProductComponentMixin } from '@spryker-oryx/product';
 import { html, TemplateResult } from 'lit';
 import { switchMap } from 'rxjs';
 
+import { layoutStyles } from '@spryker-oryx/experience/composition';
 import {
   ProductListPageService,
   ProductListService,
 } from '@spryker-oryx/product';
 import { map } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
-import { baseListStyles } from './styles';
 
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
-  static styles = baseListStyles;
+  static styles = layoutStyles;
 
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);

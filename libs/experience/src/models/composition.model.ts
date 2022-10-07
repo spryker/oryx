@@ -9,9 +9,6 @@ export interface StyleRuleSet extends StyleProperties {
 
   layout?: CompositionLayout;
 
-  /** the number of columns that are used for a column layout  */
-  columnCount?: number;
-
   /** Indicates whether the content is rendered inside a container */
   container?: boolean;
 
@@ -33,8 +30,9 @@ export interface StyleRuleSet extends StyleProperties {
 }
 
 export enum CompositionLayout {
-  column = 'column',
-  carousel = 'carousel',
+  Column = 'column',
+  Carousel = 'carousel',
+  Grid = 'grid',
 }
 
 export interface StyleProperties {
@@ -43,7 +41,10 @@ export interface StyleProperties {
   style?: string;
 
   /** works only with grid based layouts (i.e. two-column grid) */
-  gridColSpan?: number;
+  span?: number;
+
+  /** the number of columns that are used for a column layout  */
+  columnCount?: number;
 
   top?: string;
   bottom?: string;

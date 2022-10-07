@@ -11,6 +11,29 @@ import { DefaultLayoutBuilder } from './default-layout.builder';
 describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
 
+  let styles: string | undefined;
+  const populate = (data: StyleProperties): void => {
+    styles = service.getLayoutStyles(data);
+  };
+  const expectStyleRule = (
+    key: string,
+    value: string,
+    expectedRule: string
+  ): void => {
+    describe(`when the ${key} is configured`, () => {
+      beforeEach(() => populate({ [key]: value }));
+      it('should generate the rule', () => {
+        expect(styles).toContain(expectedRule);
+      });
+    });
+    describe(`when the ${key} is not configured`, () => {
+      beforeEach(() => populate({}));
+      it('should generate the rule', () => {
+        expect(styles).toBeUndefined();
+      });
+    });
+  };
+
   beforeEach(() => {
     const testInjector = new Injector([
       {
@@ -31,30 +54,6 @@ describe('DefaultLayoutBuilder', () => {
   });
 
   describe('styles', () => {
-    let styles: string | undefined;
-    const populate = (data: StyleProperties): void => {
-      styles = service.getLayoutStyles(data);
-    };
-
-    const expectStyleRule = (
-      key: string,
-      value: string,
-      expectedRule: string
-    ): void => {
-      describe(`when the ${key} is configured`, () => {
-        beforeEach(() => populate({ [key]: value }));
-        it('should generate the rule', () => {
-          expect(styles).toContain(expectedRule);
-        });
-      });
-      describe(`when the ${key} is not configured`, () => {
-        beforeEach(() => populate({}));
-        it('should generate the rule', () => {
-          expect(styles).toBeUndefined();
-        });
-      });
-    };
-
     expectStyleRule('gap', '10px', 'gap:10px;');
     expectStyleRule('margin', '10px', 'margin:10px;');
     expectStyleRule('padding', '10px', 'padding:10px;');
@@ -64,8 +63,8 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule('top', '10px', 'top:10px;');
     expectStyleRule('bottom', '10px', 'bottom:10px;');
     expectStyleRule('width', '50%', 'width:50%;flex:0 0 50%');
-    expectStyleRule('height', '50%', '--height:50%');
-    expectStyleRule('gridColSpan', '4', 'grid-column:span 4');
+    expectStyleRule('height', '50%', '--oryx-layout-height:50%');
+    expectStyleRule('span', '4', '--oryx-layout-span:4');
   });
 
   describe('classes', () => {
@@ -117,7 +116,7 @@ describe('DefaultLayoutBuilder', () => {
       describe('column', () => {
         describe(`when the layout is column`, () => {
           beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.column }] });
+            populateLayout({ rules: [{ layout: CompositionLayout.Column }] });
           });
           it(`should have a layout-column class`, () => {
             expect(layoutClasses).toContain('layout-column');
@@ -128,33 +127,18 @@ describe('DefaultLayoutBuilder', () => {
                 populateLayout({
                   rules: [
                     {
-                      layout: CompositionLayout.column,
+                      layout: CompositionLayout.Column,
                       columnCount,
                     },
                   ],
                 });
               });
               it(`should add a column-count-${columnCount} class`, () => {
-                expect(layoutClasses).toContain(`column-count-${columnCount}`);
-              });
-            });
-          });
-        });
-
-        describe(`when no layout is provided`, () => {
-          beforeEach(() => {
-            populateLayout({});
-          });
-          it(`should not have a layout-column class`, () => {
-            expect(layoutClasses).toBeUndefined();
-          });
-          [1, 2, 3, 4].forEach((columnCount) => {
-            describe(`but when a column-count of ${columnCount} is provided`, () => {
-              beforeEach(() => {
-                populateLayout({ rules: [{ columnCount }] });
-              });
-              it(`it should add the column-count-${columnCount} class`, () => {
-                expect(layoutClasses).toContain(`-column-count-${columnCount}`);
+                expectStyleRule(
+                  '--oryx-layout-item-count',
+                  columnCount.toString(),
+                  `--oryx-layout-item-count:${columnCount}`
+                );
               });
             });
           });
@@ -164,7 +148,7 @@ describe('DefaultLayoutBuilder', () => {
       describe('carousel', () => {
         describe(`when the layout is carousel`, () => {
           beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.carousel }] });
+            populateLayout({ rules: [{ layout: CompositionLayout.Carousel }] });
           });
           it(`should have a layout-carousel class`, () => {
             expect(layoutClasses).toContain('layout-carousel');
@@ -182,7 +166,7 @@ describe('DefaultLayoutBuilder', () => {
 
         describe(`when the layout is not carousel`, () => {
           beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.column }] });
+            populateLayout({ rules: [{ layout: CompositionLayout.Column }] });
           });
           it(`should not have a layout-carousel class`, () => {
             expect(layoutClasses).not.toContain('layout-carousel');
