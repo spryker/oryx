@@ -1,4 +1,4 @@
-import { camelize } from '@spryker-oryx/typescript-utils';
+import { camelize } from '@spryker-oryx/core/utilities';
 import { ApiCheckoutModel, Shipment, ShipmentMethod } from '../../../../models';
 import { DeserializedCheckout } from '../checkout/model';
 

@@ -1,18 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import {
-  DecoratorContext,
-  TargetDecorator,
-} from '@spryker-oryx/typescript-utils';
-import { LitElement, ReactiveElement } from 'lit';
+import { DecoratorContext, TargetDecorator } from '@spryker-oryx/utilities';
+import { LitElement, ReactiveControllerHost, ReactiveElement } from 'lit';
 import { SubscribeController } from './subscribe.controller';
 
 const SUBSCRIBE_CONTROLLER = Symbol('subscribeController');
 
-function controllerCreation(target: any): void {
+function controllerCreation(target: TargetDecorator): void {
   if (!target[SUBSCRIBE_CONTROLLER]) {
     const descriptor = {
-      value: new SubscribeController(target),
+      value: new SubscribeController(target as ReactiveControllerHost),
       enumerable: false,
       configurable: true,
     };
@@ -43,7 +38,7 @@ const legacySubscribe = (context: TargetDecorator, name: string): void => {
   });
 
   constructor.addInitializer((instance: ReactiveElement) => {
-    controllerCreation(instance);
+    controllerCreation(instance as TargetDecorator);
   });
 };
 
@@ -75,16 +70,22 @@ const standardSubscribe = (
  *  prop = from([1, 2, 3, 4]).pipe(// implementation //);
  * }
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function subscribe(): any {
   return (
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
   ): DecoratorContext | void => {
-    const isLegacy = name !== undefined;
-    const propName = (isLegacy ? name : context.key) as string;
+    const isLegacy = (
+      context: unknown,
+      name?: PropertyKey
+    ): context is TargetDecorator => {
+      return name !== undefined;
+    };
+    const propName = (isLegacy(context, name) ? name : context.key) as string;
 
-    return isLegacy
-      ? legacySubscribe(context as TargetDecorator, propName)
-      : standardSubscribe(context as DecoratorContext, propName);
+    return isLegacy(context, name)
+      ? legacySubscribe(context, propName)
+      : (standardSubscribe(context, propName) as unknown as void);
   };
 }

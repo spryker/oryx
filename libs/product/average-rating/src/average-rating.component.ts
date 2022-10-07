@@ -4,7 +4,7 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { hydratable } from '@spryker-oryx/typescript-utils';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 import { ProductAverageRatingModel } from './average-rating.model';

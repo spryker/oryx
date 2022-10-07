@@ -1,4 +1,4 @@
-import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/typescript-utils';
+import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import { iconHook } from '../../hooks';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';

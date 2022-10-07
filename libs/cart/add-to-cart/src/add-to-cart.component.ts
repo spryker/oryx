@@ -7,10 +7,11 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { hydratable, wait } from '@spryker-oryx/typescript-utils';
+import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, combineLatest, tap } from 'rxjs';

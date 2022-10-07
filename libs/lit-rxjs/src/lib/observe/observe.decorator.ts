@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import {
-  DecoratorContext,
-  TargetDecorator,
-} from '@spryker-oryx/typescript-utils';
+import { DecoratorContext, TargetDecorator } from '@spryker-oryx/utilities';
 import { ReactiveElement, UpdatingElement } from 'lit';
 import { Subject } from 'rxjs';
 
-const throwSubjectError = (subject$: any): void => {
-  if (subject$ && !subject$?.next) {
+const throwSubjectError = (subject$: unknown): void => {
+  if (subject$ && !(subject$ as Record<string, unknown>).next) {
     throw `Invalid observe value: incorrect ${subject$} for observe decorator, please use rxjs subjects`;
   }
 };
@@ -36,7 +31,7 @@ const legacyObserve = (
 
   const propertyDescriptor = {
     ...reactiveDescriptor,
-    set(this: any, newValue: unknown): void {
+    set(this: Record<symbol, Subject<unknown>>, newValue: unknown): void {
       reactiveDescriptor.set?.call(this, newValue);
 
       if (this[internalSubjectKey]) {
@@ -46,10 +41,10 @@ const legacyObserve = (
   };
 
   const subjectDescriptor = {
-    get(this: any): Subject<any> {
+    get(this: TargetDecorator): unknown {
       return this[internalSubjectKey];
     },
-    set(this: any, value$: Subject<any>): void {
+    set(this: TargetDecorator, value$: Subject<unknown>): void {
       throwSubjectError(value$);
 
       const descriptor = {
@@ -75,7 +70,7 @@ const standardObserve = (
 ): DecoratorContext => {
   return {
     ...context,
-    initializer(this: TargetDecorator): Subject<any> {
+    initializer(this: TargetDecorator): Subject<unknown> {
       const subject$ = context.initializer?.call(this);
 
       throwSubjectError(subject$);
@@ -90,7 +85,7 @@ const standardObserve = (
 
       const propertyDescriptor = {
         ...reactiveDescriptor,
-        set(this: Record<string, any>, newValue: unknown): void {
+        set(this: Record<string, Subject<unknown>>, newValue: unknown): void {
           reactiveDescriptor.set?.call(this, newValue);
 
           if (this[subjectKey]) {
@@ -129,17 +124,23 @@ const standardObserve = (
  *  prop3$ = new Subject();
  * }
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function observe(property?: string): any {
   return (
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
   ): DecoratorContext | void => {
-    const isLegacy = name !== undefined;
-    const subjectKey = (isLegacy ? name : context.key) as string;
+    const isLegacy = (
+      context: DecoratorContext | TargetDecorator,
+      name?: PropertyKey
+    ): context is TargetDecorator => {
+      return name !== undefined;
+    };
+    const subjectKey = (isLegacy(context, name) ? name : context.key) as string;
     const propertyKey = property ?? subjectKey.slice(0, -1);
 
-    return isLegacy
-      ? legacyObserve(context as TargetDecorator, subjectKey, propertyKey)
-      : standardObserve(context as DecoratorContext, subjectKey, propertyKey);
+    return isLegacy(context, name)
+      ? legacyObserve(context, subjectKey, propertyKey)
+      : (standardObserve(context, subjectKey, propertyKey) as unknown as void);
   };
 }

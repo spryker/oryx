@@ -1,4 +1,4 @@
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { isClient } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { Directive, directive } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';

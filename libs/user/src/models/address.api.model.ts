@@ -1,4 +1,4 @@
-import { JsonApiModel } from '@spryker-oryx/typescript-utils';
+import { JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiAddressModel {
   export interface Address {

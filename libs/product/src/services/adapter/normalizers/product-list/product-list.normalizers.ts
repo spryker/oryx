@@ -1,10 +1,10 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
+import { camelize } from '@spryker-oryx/core/utilities';
 import {
   ApiProductModel,
   ConcreteProductsNormalizers,
   ProductList,
 } from '@spryker-oryx/product';
-import { camelize } from '@spryker-oryx/typescript-utils';
 import { map, Observable } from 'rxjs';
 import { DeserializedProductList } from './model';
 

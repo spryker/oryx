@@ -1,5 +1,5 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
-import { camelize } from '@spryker-oryx/typescript-utils';
+import { camelize } from '@spryker-oryx/core/utilities';
 import { map, Observable } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { ImagesNormalizers } from '../images';

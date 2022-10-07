@@ -4,7 +4,7 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { hydratable } from '@spryker-oryx/typescript-utils';
+import { hydratable } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { combineLatest } from 'rxjs';

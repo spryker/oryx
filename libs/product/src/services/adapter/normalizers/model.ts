@@ -1,4 +1,4 @@
-import { CamelCase } from '@spryker-oryx/typescript-utils';
+import { CamelCase } from '@spryker-oryx/core/utilities';
 import { ApiProductModel } from '../../../models';
 
 export type DeserializedProductIncludes = {

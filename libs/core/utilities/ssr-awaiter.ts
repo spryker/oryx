@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/injector';
-import { isPromise } from '@spryker-oryx/typescript-utils';
+import { isPromise } from '@spryker-oryx/utilities';
 import { defer, from, Observable, tap } from 'rxjs';
 
 export const ssrAwaiter = (

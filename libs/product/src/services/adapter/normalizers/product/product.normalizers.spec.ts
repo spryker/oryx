@@ -1,4 +1,4 @@
-import { camelize } from '@spryker-oryx/typescript-utils';
+import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { ImagesNormalizers } from '../images';

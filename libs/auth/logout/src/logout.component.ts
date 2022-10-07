@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
-import { hydratable } from '@spryker-oryx/typescript-utils';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';
 import { LogoutOptions } from './logout.model';

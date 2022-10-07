@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
-import { hydratable, isClient } from '@spryker-oryx/typescript-utils';
+import { hydratable, isClient } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

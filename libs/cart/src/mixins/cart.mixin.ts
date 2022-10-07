@@ -2,7 +2,7 @@ import {
   ComponentMixin,
   ContentComponentProperties,
 } from '@spryker-oryx/experience';
-import { Type } from '@spryker-oryx/typescript-utils';
+import { Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
 export const CartComponentMixin = <T>(): Type<

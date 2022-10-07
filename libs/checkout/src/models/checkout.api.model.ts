@@ -1,4 +1,4 @@
-import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
+import { Include, JsonApiModel } from '@spryker-oryx/utilities';
 import { CheckoutData } from './checkout.model';
 
 export module ApiCheckoutModel {

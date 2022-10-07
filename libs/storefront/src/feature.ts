@@ -1,5 +1,5 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { isClient } from '@spryker-oryx/typescript-utils';
+import { isClient } from '@spryker-oryx/utilities';
 import * as components from './components';
 import { StorefrontPlugin } from './plugins';
 import { routerProviders } from './router';

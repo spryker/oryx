@@ -5,7 +5,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { routes, StorefrontRouter } from '@spryker-oryx/storefront';
-import { hydratable, isClient } from '@spryker-oryx/typescript-utils';
+import { hydratable, isClient } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { take, tap } from 'rxjs';
 import { styles } from './storefront.styles';

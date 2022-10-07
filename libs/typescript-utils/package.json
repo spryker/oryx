@@ -11,14 +11,5 @@
   "typings": "./src/index.d.ts",
   "publishConfig": {
     "access": "public"
-  },
-  "watch": {
-    "test": {
-      "extensions": "spec.ts",
-      "quiet": false,
-      "patterns": [
-        "./"
-      ]
-    }
   }
 }

@@ -1,4 +1,4 @@
-import { isClient, isPromise } from '@spryker-oryx/typescript-utils';
+import { isClient, isPromise } from '@spryker-oryx/utilities';
 import { noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';

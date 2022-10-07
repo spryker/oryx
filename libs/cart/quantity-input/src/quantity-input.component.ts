@@ -1,5 +1,5 @@
-import { hydratable } from '@spryker-oryx/typescript-utils';
 import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

@@ -1,4 +1,4 @@
-import { Include, JsonApiModel } from '@spryker-oryx/typescript-utils';
+import { Include, JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiProductModel {
   export interface Attributes {

@@ -1,4 +1,4 @@
-import { CamelCase } from '@spryker-oryx/typescript-utils';
+import { CamelCase } from '@spryker-oryx/core/utilities';
 import { ApiCartModel } from '../../../models';
 
 export type DeserializedCartIncludes = {

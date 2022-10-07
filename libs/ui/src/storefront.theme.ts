@@ -1,5 +1,6 @@
 import { Theme } from '@spryker-oryx/core';
 import { theme } from '../actions/button/src/styles/themes/storefront.styles';
+import { default as cart } from './cart';
 
 export const uiStorefrontTheme: Theme = {
   components: {
@@ -18,6 +19,6 @@ export const uiStorefrontTheme: Theme = {
       ),
   },
   icons: {
-    cart: () => import('./cart').then((s) => s.default),
+    cart,
   },
 };

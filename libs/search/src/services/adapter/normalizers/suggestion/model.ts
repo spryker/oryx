@@ -1,8 +1,8 @@
+import { CamelCase } from '@spryker-oryx/core/utilities';
 import {
   ApiProductModel,
   DeserializedProductIncludes,
 } from '@spryker-oryx/product';
-import { CamelCase } from '@spryker-oryx/typescript-utils';
 import { ApiSuggestionModel } from '../../../../models';
 
 export type DeserializedSuggestion = ApiSuggestionModel.Attributes &

@@ -2,7 +2,7 @@ import { CartComponentMixin, CartEntry, CartService } from '@spryker-oryx/cart';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { hydratable } from '@spryker-oryx/typescript-utils';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';

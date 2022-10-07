@@ -1,5 +1,5 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
-import { Type } from '@spryker-oryx/typescript-utils';
+import { Type } from '@spryker-oryx/utilities';
 
 export interface ObservableShadow {
   whenShadowAttached(): Promise<ShadowRoot>;

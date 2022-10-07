@@ -1,4 +1,4 @@
-import { Type } from '@spryker-oryx/typescript-utils';
+import { Type } from '@spryker-oryx/utilities';
 import { Injector } from './injector';
 
 let _currentInjector: undefined | Injector;

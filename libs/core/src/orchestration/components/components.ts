@@ -1,5 +1,5 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { HOOKS_KEY, isDefined, Type } from '@spryker-oryx/typescript-utils';
+import { HOOKS_KEY, isDefined, Type } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 import { App, AppPlugin } from '../app';
 import { ThemeData, ThemeImpl, ThemePlugin, ThemeStrategies } from '../theme';

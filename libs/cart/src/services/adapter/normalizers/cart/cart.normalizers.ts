@@ -1,5 +1,5 @@
 import { Transformer } from '@spryker-oryx/core';
-import { camelize } from '@spryker-oryx/typescript-utils';
+import { camelize } from '@spryker-oryx/core/utilities';
 import { ApiCartModel, Cart } from '../../../../models';
 import { DeserializedCart } from './model';
 

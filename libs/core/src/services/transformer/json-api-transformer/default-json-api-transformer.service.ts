@@ -10,7 +10,7 @@ import {
   SerializerType,
 } from '../transformer.service';
 import { JsonAPITransformerService } from './json-api-transformer.service';
-import { JsonApiPayload } from '@spryker-oryx/typescript-utils';
+import { JsonApiPayload } from '@spryker-oryx/utilities';
 
 /**
  * Deserializes json response. Combines relationships, includes into one data (transforms include key e.g. 'include-example' into camelCase e.g 'includeExample').

@@ -3,7 +3,7 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-import { isClient, Type } from '@spryker-oryx/typescript-utils';
+import { isClient, Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
 const DEFER_HYDRATION = Symbol('deferHydration');

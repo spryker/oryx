@@ -1,5 +1,5 @@
 import { InjectorOptions, Provider } from '@spryker-oryx/injector';
-import { Type } from '@spryker-oryx/typescript-utils';
+import { Type } from '@spryker-oryx/utilities';
 import { ComponentsInfo, ComponentsPluginOptions } from '../components';
 import { Theme } from '../theme';
 
