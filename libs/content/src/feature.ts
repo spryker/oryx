@@ -1,9 +1,9 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { bannerComponent } from '../banner/src/component';
-import { contentLinkComponent } from '../link/src/link.def';
+import * as components from './components';
+export * from './components';
 
-export { contentLinkComponent };
+export const contentComponents = Object.values(components);
 
 export const contentFeature: AppFeature = {
-  components: [bannerComponent, contentLinkComponent],
+  components: contentComponents,
 };

@@ -1,8 +1,11 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { searchBoxComponent } from '../box/src/component';
+import * as components from './components';
 import { searchProviders } from './services';
+export * from './components';
+
+export const searchComponents = Object.values(components);
 
 export const searchFeature: AppFeature = {
   providers: searchProviders,
-  components: [searchBoxComponent],
+  components: searchComponents,
 };

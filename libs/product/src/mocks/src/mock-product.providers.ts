@@ -1,9 +1,22 @@
 import { Provider } from '@spryker-oryx/injector';
-import { ProductListAdapter, ProductService } from '@spryker-oryx/product';
+import {
+  DefaultProductAdapter,
+  DefaultProductListPageService,
+  DefaultProductListService,
+  ProductAdapter,
+  ProductListAdapter,
+  ProductListPageService,
+  ProductListService,
+  ProductService,
+} from '@spryker-oryx/product';
 import { MockProductService } from './mock-product.service';
 import { MockProductListAdapter } from './product-list';
 
 export const mockProductProviders: Provider[] = [
+  {
+    provide: ProductAdapter,
+    useClass: DefaultProductAdapter,
+  },
   {
     provide: ProductService,
     useClass: MockProductService,
@@ -11,5 +24,13 @@ export const mockProductProviders: Provider[] = [
   {
     provide: ProductListAdapter,
     useClass: MockProductListAdapter,
+  },
+  {
+    provide: ProductListService,
+    useClass: DefaultProductListService,
+  },
+  {
+    provide: ProductListPageService,
+    useClass: DefaultProductListPageService,
   },
 ];
