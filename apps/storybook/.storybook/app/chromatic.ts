@@ -10,11 +10,13 @@ const noTransitionField = css`
   :host([floatLabel][has-prefix]:not([prefixicon='search']))
     slot[name='label'] {
     inset-inline-start: 75px;
+    max-width: 170px;
   }
 
   :host([floatLabel][has-prefix]:not([prefixicon='search']):is(:focus-within, [has-value]))
     slot[name='label'] {
     inset-inline-start: 65px;
+    max-width: 165px;
   }
 `;
 
