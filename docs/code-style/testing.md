@@ -12,6 +12,7 @@ describe('when something happens', () => {
   beforeEach(() => {
     // setup of group tests
   });
+
   it('should expect a certain behaviour', () => {
     // test implementation
   ));
@@ -68,13 +69,17 @@ describe('ServiceToTest', () => {
 
     service = testInjector.inject(ServiceAToken);
   });
+
+  afterEach(() => {
+    destroyInjector();
+  });
 });
 ```
 
 ### Mocks
 
 For mocking use native vitest api.
-Service methods can be mocked via `vi.fn()`. We can get methods via DI and test mocked methods. Mocked methods _should not_ store any logic. Methods should be mocked with expected result by test case. Methods should be tested if it call with correct parameters (or just called, or called times which we needed) and/or pass data further to other methods.
+Service methods can be mocked via `vi.fn()`. We can get methods via DI and test mocked methods. Mocked methods _should not_ store any logic. Methods should be mocked with expected result by test case. Methods should be tested if it call with correct parameters (or just called, or called times which we needed) and/or pass data further to other methods. Don't forget to clean or reset your mocks in `afterEach` mocks.
 
 <b>Wrong</b>
 
@@ -119,6 +124,12 @@ describe('ServiceToTest', () => {
     });
 
     service = testInjector.inject(ServiceAToken);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    // or
+    vi.resetAllMocks();
   });
 
   it('test case', () => {
