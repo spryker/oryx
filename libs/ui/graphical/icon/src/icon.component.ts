@@ -1,4 +1,4 @@
-import { IconHookToken } from '@spryker-oryx/utilities';
+import { hook, IconHookToken } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -11,6 +11,7 @@ const DEFAULT_SPRITE = '/assets/icons.svg';
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 
+  @hook(IconHookToken)
   static renderIcon: IconHookToken = (
     type?: string,
     spriteUrl = ''

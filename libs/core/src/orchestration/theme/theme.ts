@@ -94,16 +94,20 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   async getIcon(icon?: string): Promise<string | void> {
-    const iconImpl = this.icons?.[icon as keyof typeof this.icons];
+    const iconImpl = this.getIconTemplate(icon);
 
     if (!iconImpl) {
       return;
     }
 
-    return await this.loadThemeImplFn(iconImpl);
+    return await this.loadThemeImplFn<string>(iconImpl);
   }
 
-  protected loadThemeImplFn<T>(impl?: ThemeImpl): T | Promise<T> {
+  getIconTemplate(icon?: string): ThemeImpl<string> | void {
+    return this.icons?.[icon as keyof typeof this.icons];
+  }
+
+  protected loadThemeImplFn<T>(impl?: ThemeImpl<T>): T | Promise<T> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (impl as any)();
