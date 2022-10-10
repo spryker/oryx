@@ -64,7 +64,11 @@ export class RenderSuggestionController {
       },
       {
         title: options.categoriesTitle || 'In categories',
-        options: suggestion.categories,
+        options: suggestion.categories.map(({ name, url }) => ({
+          name,
+          url: url?.substring(url.lastIndexOf('/') + 1),
+          params: { q: url?.substring(url.lastIndexOf('/') + 1) },
+        })) as SuggestionResource[],
         type: SemanticLinkType.Category,
       },
       {

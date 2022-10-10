@@ -1,8 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Product, ProductPrice } from '@spryker-oryx/product';
 import { Suggestion, SuggestionResource } from '@spryker-oryx/search';
 import { mockSearchProviders } from '@spryker-oryx/search/mocks';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -12,6 +14,12 @@ const resource: SuggestionResource = {
   name: 'test',
   url: 'test',
 };
+
+const mockCategoryNames = [
+  'category-name1',
+  'category-name2',
+  'category-name1232',
+];
 
 const price: ProductPrice = {
   value: 10,
@@ -51,6 +59,17 @@ const suggestion: Suggestion = {
 const completionOnly: Suggestion = {
   completion: [resource.url ?? ''],
   categories: [],
+  cmsPages: [],
+  products: [],
+};
+
+const categoriesOnly: Suggestion = {
+  completion: [],
+  categories: [
+    { name: 'test1', url: `test/ua/${mockCategoryNames[0]}` },
+    { name: 'test2', url: `test/ua/uk/${mockCategoryNames[1]}` },
+    { name: 'test3', url: `test/ua/test/name/${mockCategoryNames[2]}` },
+  ],
   cmsPages: [],
   products: [],
 };
@@ -152,6 +171,37 @@ describe('RenderSuggestionController', () => {
           'section:nth-child(1) > ul'
         );
         expect(sections.length).toBe(1);
+      });
+    });
+  });
+  describe('when suggestion provided category list', () => {
+    beforeAll(async () => {
+      element = await fixture(html`
+        <fake-container .suggestion=${categoriesOnly}></fake-container>
+      `);
+    });
+
+    it('should render list of links', () => {
+      const links = element.renderRoot.querySelectorAll(
+        'section:nth-child(1) > ul content-link'
+      );
+      expect(links.length).toBe(3);
+    });
+
+    it('should render list of links with correct url', () => {
+      const links = element.renderRoot.querySelectorAll(
+        'section:nth-child(1) > ul content-link'
+      );
+      Array.from(links).forEach((link, index) => {
+        expect((link as ContentLinkComponent).options?.id).toBe(
+          mockCategoryNames[index]
+        );
+        expect((link as ContentLinkComponent).options?.params?.q).toBe(
+          mockCategoryNames[index]
+        );
+        expect((link as ContentLinkComponent).options?.type).toBe(
+          SemanticLinkType.Category
+        );
       });
     });
   });

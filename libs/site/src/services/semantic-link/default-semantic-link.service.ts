@@ -19,7 +19,11 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
     [SemanticLinkType.Product]: (link: SemanticLink): string =>
       `/product/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.Category]: (link: SemanticLink): string =>
-      `/category/${link.id}`,
+      `/category/${link.id}${
+        link.params
+          ? `?${encodeURIComponent(this.getUrlParams(link.params))}`
+          : ''
+      }`,
   };
 
   get(link: SemanticLink): Observable<string | undefined> {
