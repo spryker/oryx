@@ -19,7 +19,7 @@ export const baseLayoutStyles = css`
     }
 
     :host([class*='-layout-']) > * {
-      width: calc(100% - (var(--oryx-layout-margin, 0) * 2));
+      width: calc(100% - (var(--oryx-layout-margin, 0px) * 2));
       height: calc(
         var(--oryx-layout-height, 100%) - (var(--oryx-layout-margin, 0px) * 2)
       );
