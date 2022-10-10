@@ -95,7 +95,6 @@ export const tabsStyles = css`
 
   slot[name='panels'] {
     display: flex;
-    padding-block-start: 20px;
   }
 
   slot[name='panels']::slotted(*:not([selected])) {
