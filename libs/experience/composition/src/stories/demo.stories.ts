@@ -12,11 +12,12 @@ export default {
   args: {
     columnCount: 4,
     layout: 'grid',
-    elementHeight: '50px',
     elementWidth: '50%',
+    elementHeight: '50px',
     span: 1,
     padding: '0px',
-    borderWidth: '0px',
+    margin: '0px',
+    border: '',
   },
   argTypes: {
     layout: {
@@ -55,7 +56,8 @@ class FakeLayout extends LitElement {
   @property() elementCount = 8;
   @property() span = 1;
   @property() padding = '0px';
-  @property() borderWidth = '0px';
+  @property() margin = '0px';
+  @property() border = 'solid #000 0px';
   @property() elementHeight = '50px';
   @property() elementWidth = '50%';
 
@@ -65,7 +67,13 @@ class FakeLayout extends LitElement {
         (i) =>
           html`<div
             style=${i === 0
-              ? `--oryx-layout-span:${this.span};flex: 0 0 ${this.elementWidth};padding: ${this.padding};border-width: ${this.borderWidth}`
+              ? `
+              flex: 0 0 ${this.elementWidth};
+              border: ${this.border};
+              --oryx-layout-span:${this.span};
+              --oryx-layout-padding: ${this.padding};
+              --oryx-layout-margin: ${this.margin};
+              `
               : ''}
           >
             <div class="content">${i + 1}</div>
@@ -82,7 +90,8 @@ interface Props {
   elementWidth: string;
   span: number;
   padding: string;
-  borderWidth: string;
+  margin: string;
+  border: string;
 }
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
@@ -96,7 +105,8 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         .elementWidth=${props.elementWidth}
         .span=${props.span}
         .padding=${props.padding}
-        .borderWidth=${props.borderWidth}
+        .margin=${props.margin}
+        .border=${props.border}
         style="--oryx-layout-item-count:${props.columnCount}"
         class="xs-layout-${props.layout}"
       >

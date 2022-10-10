@@ -118,8 +118,8 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add('--oryx-layout-gap', data.gap);
     }
 
-    add('padding', data.padding);
-    add('margin', data.margin);
+    add('--oryx-layout-margin', data.margin);
+    add('--oryx-layout-padding', data.padding);
     add('border', data.border);
     add('border-radius', data.radius);
     add('background', data.background);

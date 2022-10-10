@@ -18,10 +18,12 @@ const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
         --oryx-layout-item-width,
         calc(
           (100% / var(--oryx-layout-item-count, 1) * var(--oryx-layout-span, 1)) -
-            calc(
+            (
               var(--oryx-layout-gap, 0px) *
-                (var(--oryx-layout-item-count, 1) - 1)
-            ) / (var(--oryx-layout-item-count, 1) * var(--oryx-layout-span, 1))
+                (var(--oryx-layout-item-count, 1) - 1) /
+                (var(--oryx-layout-item-count, 1) * var(--oryx-layout-span, 1)) +
+                var(--oryx-layout-margin, 0px) * 2
+            )
         )
       );
   }

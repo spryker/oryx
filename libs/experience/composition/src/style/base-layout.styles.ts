@@ -7,14 +7,22 @@ export const baseLayoutStyles = css`
       flex-direction: column;
       gap: var(--oryx-layout-gap);
       align-items: flex-start;
-      box-sizing: border-box;
-      min-width: 0;
       width: 100%;
     }
 
+    :host,
     :host([class*='-layout-']) > * {
-      height: var(--oryx-layout-height, 0%);
       box-sizing: border-box;
+      padding: var(--oryx-layout-padding, 0);
+      margin: var(--oryx-layout-margin, 0);
+      min-width: 0;
+    }
+
+    :host([class*='-layout-']) > * {
+      width: calc(100% - (var(--oryx-layout-margin, 0) * 2));
+      height: calc(
+        var(--oryx-layout-height, 100%) - (var(--oryx-layout-margin, 0px) * 2)
+      );
     }
 
     @media (min-width: 768px) {

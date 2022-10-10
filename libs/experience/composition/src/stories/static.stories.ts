@@ -32,7 +32,8 @@ class FakeStaticLayout extends LitElement {
       }
 
       div:nth-child(2):not(.content) {
-        padding: 30px;
+        --oryx-layout-padding: 30px;
+        --oryx-layout-margin: 30px;
         border: solid 5px var(--oryx-color-ink);
       }
     `,
