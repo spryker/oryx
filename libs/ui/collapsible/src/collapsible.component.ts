@@ -25,7 +25,7 @@ export class CollapsibleComponent
       <details ?open=${this.open}>
         <summary tabindex=${this.isInline ? -1 : 0}>
           <slot name="header">${this.header}</slot>
-          <nav>${this.renderToggleControl()}</nav>
+          ${this.renderToggleControl()}
           <slot name="aside"></slot>
         </summary>
         <slot part="content"></slot>

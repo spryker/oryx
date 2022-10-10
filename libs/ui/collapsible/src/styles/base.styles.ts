@@ -31,13 +31,13 @@ export const collapsibleBaseStyle = css`
     transition-property: transform;
   }
 
-  nav {
+  :is(oryx-icon-button, oryx-button) {
     display: flex;
     align-items: center;
     color: var(--oryx-color-brand);
   }
 
-  :host(:not(${inlineSelector})) nav {
+  :host(:not(${inlineSelector})) :is(oryx-icon-button, oryx-button) {
     margin-inline-start: auto;
 
     /* we do not like to leverage standard UI of icon-button on the block appearance */
@@ -54,7 +54,7 @@ export const collapsibleBaseStyle = css`
     pointer-events: none;
   }
 
-  :host(${inlineSelector}) nav {
+  :host(${inlineSelector}) :is(oryx-icon-button, oryx-button) {
     pointer-events: all;
   }
 

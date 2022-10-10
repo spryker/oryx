@@ -3,7 +3,7 @@ import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
 const inlineAppearance = css`
-  :host(${inlineSelector}) nav {
+  :host(${inlineSelector}) :is(oryx-icon-button, oryx-button) {
     transition-duration: 0.6s;
     transition-property: transform;
   }
