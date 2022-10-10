@@ -9,7 +9,7 @@ export const CartsNormalizers = 'FES.CartsNormalizers';
 export function cartsNormalizer(
   data: DeserializedCart[],
   transformer: TransformerService
-): Observable<Cart[]> {
+): Observable<Cart[] | null> {
   return combineLatest(
     data.map((cart) => transformer.transform(cart, CartNormalizers))
   );

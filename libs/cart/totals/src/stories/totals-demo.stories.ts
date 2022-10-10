@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { CartTotalsComponentAttributes } from '../totals.model';
+import { CartTotalsComponentOptions } from '../totals.model';
 
 export default {
   title: `${storybookPrefix}/Cart totals`,
@@ -24,14 +24,14 @@ export default {
     hideDiscounts: false,
     hideDelivery: false,
     hideExpense: false,
-  } as CartTotalsComponentAttributes,
+  } as CartTotalsComponentOptions,
   argTypes: {
     deliveryMessage: { control: { type: 'text' } },
   },
 } as unknown as Meta;
 
-const Template: Story<CartTotalsComponentAttributes> = (
-  options: CartTotalsComponentAttributes
+const Template: Story<CartTotalsComponentOptions> = (
+  options: CartTotalsComponentOptions
 ): TemplateResult => {
   return html`<cart-totals .options=${options}></cart-totals>`;
 };

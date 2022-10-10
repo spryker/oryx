@@ -1,8 +1,16 @@
-import { CartQualifier, CartService } from '@spryker-oryx/cart';
+import { CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/injector';
+import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
+import { LitElement } from 'lit';
 import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
-import { Cart, CartDiscount, CartTotals, PriceMode } from '../models';
+import {
+  Cart,
+  CartComponentAttributes,
+  CartDiscount,
+  CartTotals,
+  PriceMode,
+} from '../models';
 export interface FormattedDiscount extends Omit<CartDiscount, 'amount'> {
   amount: string;
 }
@@ -17,43 +25,49 @@ export interface FormattedCartTotals {
 }
 
 export class CartController {
+  protected observe: ObserveController<LitElement & CartComponentAttributes>;
   protected cartService = resolve(CartService);
   protected pricingService = resolve(PricingService);
+
+  constructor(protected host: LitElement & CartComponentAttributes) {
+    this.observe = new ObserveController(host);
+  }
 
   /**
    * Returns the cumulated quantities of all cart entries.
    */
-  getTotalQuantity(data?: CartQualifier): Observable<number | null> {
-    return this.cartService
-      .getCart(data)
-      .pipe(map((cart) => this.cumulateQuantity(cart)));
+  getTotalQuantity(): Observable<number | null> {
+    return this.observe.get('cartId').pipe(
+      switchMap((cartId) => this.cartService.getCart({ cartId })),
+      map((cart) => this.cumulateQuantity(cart))
+    );
   }
 
-  getTotals(data?: CartQualifier): Observable<FormattedCartTotals | null> {
-    return this.cartService.getCart(data).pipe(
-      filter(<T extends Cart>(cart: T | null): cart is T => cart !== null),
-      switchMap((cart) => {
-        const itemsQuantity = this.cumulateQuantity(cart);
-        return itemsQuantity
-          ? combineLatest([
-              this.formatTotals(cart),
-              this.formatDiscounts(cart),
-              of({
-                itemsQuantity,
-                priceMode: cart.priceMode,
-              }),
-            ])
-          : of([]);
-      }),
-      map(([calculations, discounts, details]) => {
-        return !calculations
-          ? null
-          : {
-              calculations,
-              ...(discounts && { discounts }),
-              ...details,
-            };
-      })
+  getTotals(): Observable<FormattedCartTotals | null> {
+    return this.observe.get('cartId').pipe(
+      switchMap((cartId) => this.cartService.getCart({ cartId })),
+      switchMap((cart) =>
+        cart?.products
+          ? of(cart).pipe(
+              switchMap(() =>
+                combineLatest([
+                  this.formatTotals(cart),
+                  this.formatDiscounts(cart),
+                  of({
+                    itemsQuantity: this.cumulateQuantity(cart),
+                    priceMode: cart.priceMode,
+                  }),
+                ]).pipe(
+                  map(([calculations, discounts, details]) => ({
+                    calculations,
+                    ...(discounts && { discounts }),
+                    ...details,
+                  }))
+                )
+              )
+            )
+          : of(null)
+      )
     );
   }
 

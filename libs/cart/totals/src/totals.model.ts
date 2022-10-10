@@ -1,4 +1,4 @@
-export interface CartTotalsComponentAttributes {
+export interface CartTotalsComponentOptions {
   /**
    * Indicates whether to render the subtotals.
    */

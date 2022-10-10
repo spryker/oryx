@@ -13,7 +13,7 @@ export class MiniCartComponent extends CartComponentMixin<MiniCartOptions>() {
   static styles = styles;
 
   protected contentController = new ContentController(this);
-  protected cartController = new CartController();
+  protected cartController = new CartController(this);
 
   protected maxVisibleQuantity = 99;
 

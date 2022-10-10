@@ -16,7 +16,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { CartTotalsComponent } from './totals.component';
 import { cartTotalsComponent } from './totals.def';
-import { CartTotalsComponentAttributes } from './totals.model';
+import { CartTotalsComponentOptions } from './totals.model';
 
 useComponent([cartTotalsComponent]);
 
@@ -84,7 +84,7 @@ describe('Cart totals component', () => {
 
   describe('options', () => {
     const renderCartTotals = (
-      options: CartTotalsComponentAttributes = {}
+      options: CartTotalsComponentOptions = {}
     ): void => {
       beforeEach(async () => {
         element = await fixture(

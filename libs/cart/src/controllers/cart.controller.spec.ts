@@ -1,8 +1,17 @@
 import { Cart, CartController, CartService } from '@spryker-oryx/cart';
 import { mockCartTotals } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
+import { LitElement } from 'lit';
 import { of, take } from 'rxjs';
+import { SpyInstance } from 'vitest';
+
+const mockThis = {} as LitElement;
+
+const mockObserve = {
+  get: vi.fn().mockReturnValue(of(null)),
+};
 
 class MockPricingService {
   format = vi.fn();
@@ -12,6 +21,11 @@ class MockCartService implements Partial<CartService> {
   getCart = vi.fn();
   getTotals = vi.fn();
 }
+
+vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
+(litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue(
+  mockObserve
+);
 
 describe('Cart controller', () => {
   let service: MockCartService;
@@ -48,7 +62,7 @@ describe('Cart controller', () => {
         service.getCart.mockReturnValue(of(null));
       });
       it('should return null', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotalQuantity()
           .subscribe((val) => expect(val).toBeNull());
       });
@@ -59,7 +73,7 @@ describe('Cart controller', () => {
         service.getCart.mockReturnValue(of({}));
       });
       it('should return null', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotalQuantity()
           .subscribe((val) => expect(val).toBeNull());
       });
@@ -70,7 +84,7 @@ describe('Cart controller', () => {
         service.getCart.mockReturnValue(of({ products: [] }));
       });
       it('should return 0', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotalQuantity()
           .subscribe((val) => expect(val).toBe(0));
       });
@@ -90,7 +104,7 @@ describe('Cart controller', () => {
         );
       });
       it('should cumulate the quantities', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotalQuantity()
           .subscribe((val) => expect(val).toBe(11));
       });
@@ -114,7 +128,7 @@ describe('Cart controller', () => {
         service.getTotals.mockReturnValue(of(mockCartTotals));
       });
       it('should format the priceToPay', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotals()
           .pipe(take(1))
           .subscribe((totals) => {
@@ -129,7 +143,7 @@ describe('Cart controller', () => {
         service.getTotals.mockReturnValue(of({ expenseTotal: 0, taxTotal: 0 }));
       });
       it('should return null', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotals()
           .pipe(take(1))
           .subscribe((totals) => {
@@ -152,7 +166,7 @@ describe('Cart controller', () => {
       });
 
       it('should format the discounted amount', () => {
-        new CartController()
+        new CartController(mockThis)
           .getTotals()
           .pipe(take(1))
           .subscribe((totals) => {
@@ -172,7 +186,7 @@ describe('Cart controller', () => {
       service.getTotals.mockReturnValue(of(mockCartTotals));
       pricingService.format.mockReturnValue(of('whatever'));
 
-      new CartController().getTotals().subscribe(() => {
+      new CartController(mockThis).getTotals().subscribe(() => {
         expect(pricingService.format).toHaveBeenCalledTimes(1);
         expect(pricingService.format).toHaveBeenCalledWith(-100);
       });

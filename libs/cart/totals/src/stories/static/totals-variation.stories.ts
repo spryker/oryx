@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { CartTotalsComponentAttributes } from '../../totals.model';
+import { CartTotalsComponentOptions } from '../../totals.model';
 
 export default {
   title: `${storybookPrefix}/Cart totals/Static`,
@@ -20,8 +20,8 @@ export default {
   ],
 } as unknown as Meta;
 
-const Template: Story<CartTotalsComponentAttributes> = (
-  options: CartTotalsComponentAttributes
+const Template: Story<CartTotalsComponentOptions> = (
+  options: CartTotalsComponentOptions
 ): TemplateResult => {
   return html`
     <h3>Subtotal</h3>
@@ -60,6 +60,12 @@ const Template: Story<CartTotalsComponentAttributes> = (
       <cart-totals
         .options=${{ ...options, hideTaxMessage: true }}
       ></cart-totals>
+    </div>
+
+    <h3>Tax message based on a cart PriceMode (Gross/Net)</h3>
+    <div class="row">
+      <cart-totals .options=${options}></cart-totals>
+      <cart-totals .cartId=${'net'} .options=${{ ...options }}></cart-totals>
     </div>
 
     <style>

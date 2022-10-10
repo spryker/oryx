@@ -10,15 +10,14 @@ import {
 } from '../../src/controllers/cart.controller';
 import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 import { PriceMode } from '../../src/models';
-import { CartTotalsComponentAttributes } from './totals.model';
+import { CartTotalsComponentOptions } from './totals.model';
 import { styles } from './totals.styles';
-export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentAttributes>() {
+export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentOptions>() {
   static styles = styles;
 
-  protected cartTotals$ = combineLatest([
-    new CartController().getTotals(),
-    new ContentController(this).getOptions(),
-  ]);
+  protected options$ = new ContentController(this).getOptions();
+  protected totals$ = new CartController(this).getTotals();
+  protected cartTotals$ = combineLatest([this.totals$, this.options$]);
 
   protected override render(): TemplateResult {
     return html`
@@ -41,7 +40,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderSubtotal(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
     return !options.hideSubtotal
@@ -49,7 +48,10 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
           'subtotal',
           html`
             Subtotal
-            <span>(${totals.itemsQuantity} items)</span>
+            <span
+              >(${totals.itemsQuantity}
+              item${totals.itemsQuantity === 1 ? '' : 's'})</span
+            >
           `,
           String(totals.calculations?.subtotal)
         )
@@ -57,7 +59,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderDiscounts(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
     return html`
@@ -82,7 +84,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderExpense(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
     return !options.hideExpense && totals.calculations.expenseTotal
@@ -95,7 +97,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderTax(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
     return !options.hideTaxAmount
@@ -104,7 +106,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderDelivery(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     totals: FormattedCartTotals
   ): TemplateResult {
@@ -127,7 +129,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentA
   }
 
   protected renderSummary(
-    options: CartTotalsComponentAttributes,
+    options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
     return this.renderSection(

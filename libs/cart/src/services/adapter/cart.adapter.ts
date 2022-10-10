@@ -28,7 +28,7 @@ export interface GuestUserHeaders {
 export type UserHeaders = AuthHeaders;
 
 export interface CartAdapter {
-  getAll: () => Observable<Cart[]>;
+  getAll: () => Observable<Cart[] | null>;
   get: (data: GetCartProps) => Observable<Cart>;
   addEntry: (data: AddCartEntityProps) => Observable<Cart>;
   deleteEntry: (data: DeleteCartEntityProps) => Observable<unknown>;

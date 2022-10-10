@@ -24,7 +24,7 @@ export const mockCartResponse = {
     isDefault: false,
     totals: mockCartTotals,
     discounts: mockDiscounts,
-    priceMode: PriceMode.NetMode,
+    priceMode: PriceMode.GrossMode,
   },
   relationships: {
     items: {
@@ -71,7 +71,7 @@ export const mockEntryInclude = {
   },
 };
 
-export const mockNormalizedEntry = {
+export const mockNormalizedCartEntry = {
   id: mockEntryInclude.id,
   ...mockEntryInclude.attributes,
 };
@@ -83,13 +83,13 @@ export const mockEmptyCart = {
 export const mockNormalizedCart = {
   id: mockCartResponse.id,
   ...mockCartResponse.attributes,
-  products: [mockNormalizedEntry],
+  products: [mockNormalizedCartEntry],
 };
 
 export const mockNormalizedDefaultCart = {
   id: mockCartDefaultResponse.id,
   ...mockCartDefaultResponse.attributes,
-  products: [mockNormalizedEntry],
+  products: [mockNormalizedCartEntry],
 };
 
 export const mockNormalizedCartWithoutProducts = {
@@ -110,11 +110,14 @@ export const mockNormalizedCartWithSingleProducts = {
 export const mockNormalizedCartWithMultipleProducts = {
   ...mockCartDefaultResponse.attributes,
   id: 'multiple',
+  products: [mockNormalizedCartEntry],
 };
 
-export const mockNormalizedCartEntry = {
-  id: mockEntryInclude.id,
-  ...mockEntryInclude.attributes,
+export const mockNormalizedCartInNetMode = {
+  ...mockCartResponse.attributes,
+  id: 'net',
+  priceMode: PriceMode.NetMode,
+  products: [mockNormalizedCartEntry],
 };
 
 export const mockGetCartsResponse = {

@@ -58,12 +58,12 @@ export class DefaultCartService implements CartService {
     this.subscription.add(loadCartsSubs);
   }
 
-  protected loadCarts(): Observable<Cart[]> {
+  protected loadCarts(): Observable<void> {
     return this.adapter.getAll().pipe(
-      tap((carts) => {
+      map((carts) => {
         this.carts.clear();
 
-        if (!carts?.length) {
+        if (carts === null) {
           this.activeCartId$.next(null);
 
           return;
@@ -101,7 +101,6 @@ export class DefaultCartService implements CartService {
   // remove() {}
 
   getCart(data?: CartQualifier): Observable<Cart | null> {
-    this.loadCarts();
     if (data?.cartId && this.carts.has(data.cartId)) {
       return this.carts.get(data.cartId)!.value$;
     }

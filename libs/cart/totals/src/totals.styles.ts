@@ -38,6 +38,7 @@ export const styles = css`
 
   small.tax-message {
     font-size: var(--oryx-font-size-medium);
+    font-weight: 500;
     display: block;
   }
 

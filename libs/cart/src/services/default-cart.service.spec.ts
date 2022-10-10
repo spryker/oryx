@@ -45,7 +45,7 @@ class MockIdentityService implements Partial<IdentityService> {
 }
 
 class MockCartAdapter implements Partial<CartAdapter> {
-  getAll = vi.fn().mockReturnValue(of([]));
+  getAll = vi.fn().mockReturnValue(of(null));
   get = vi.fn().mockReturnValue(of({}));
   addEntry = vi.fn().mockReturnValue(of({}));
   deleteEntry = vi.fn().mockReturnValue(of(null));
@@ -54,9 +54,7 @@ class MockCartAdapter implements Partial<CartAdapter> {
 
 describe('DefaultCartService', () => {
   let service: CartService;
-  let authService: MockAuthService;
   let adapter: MockCartAdapter;
-  let identity: MockIdentityService;
 
   const cartCallback = vi.fn();
   const statusCallback = vi.fn();
@@ -85,12 +83,6 @@ describe('DefaultCartService', () => {
 
     service = testInjector.inject(CartService);
     adapter = testInjector.inject(CartAdapter) as MockCartAdapter;
-    authService = testInjector.inject(
-      AuthService
-    ) as unknown as MockAuthService;
-    identity = testInjector.inject(
-      IdentityService
-    ) as unknown as MockIdentityService;
   });
 
   afterEach(() => {

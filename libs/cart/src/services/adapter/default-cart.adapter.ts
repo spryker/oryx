@@ -21,7 +21,7 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService)
   ) {}
 
-  getAll(): Observable<Cart[]> {
+  getAll(): Observable<Cart[] | null> {
     return combineLatest([
       this.identity.get(),
 
