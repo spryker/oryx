@@ -73,11 +73,19 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
   }
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
-    switchMap(
-      ([uid, route]) =>
+    switchMap(([uid, route], index) => {
+      /**
+       * Provides ability to rerender components for the same route pattern.
+       */
+      if (index > 0) {
+        this.isHydrated = true;
+      }
+
+      return (
         this.experienceService?.getComponent({ uid, route }) ||
         of({} as Component)
-    ),
+      );
+    }),
     map((component: Component) => component?.components ?? [])
   );
 
