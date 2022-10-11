@@ -1,11 +1,15 @@
 import { Breakpoint } from '@spryker-oryx/experience';
 import { css, CSSResult, unsafeCSS } from 'lit';
 
+/**
+ * We'll force the height to be 0% in case of a sticky layout
+ * since stickiness will otherwise stop working.
+ */
 const stickyLayout = (breakpoint: Breakpoint): CSSResult => css`
   .${unsafeCSS(breakpoint)}-sticky {
     position: sticky;
     top: 0px;
-    height: 0%;
+    height: 0% !important;
   }
 `;
 

@@ -11,12 +11,27 @@ import { css } from 'lit';
  * - overflowing of carousel items in the jumbotron space
  */
 export const containerLayoutStyles = css`
-  :is(.container, .xs-container, .md-container, .lg-container):not(:is(.xs-jumbotron, .md-jumbotron, .lg-jumbotron)) {
+  :host([class*='-container']:not([class*='-jumbotron'])) {
     margin: auto;
     max-width: min(100%, var(--oryx-container-width));
   }
 
-  :is(.container, .xs-container, .md-container, .lg-container):is(.xs-jumbotron, .md-jumbotron, .lg-jumbotron) {
+  :host([class*='-container'][class*='-has-margin']:not([class*='-jumbotron'])) {
+    margin: var(--oryx-layout-margin, 0px)
+      calc(
+        (100% - min(var(--oryx-container-width), 100%)) / 2 +
+          (2 * var(--oryx-layout-margin, 0px))
+      );
+  }
+
+  :host([class*='-container'][class*='-jumbotron'][class*='-has-margin']) {
+    padding-inline: calc(
+      ((100% - var(--oryx-container-width)) / 2) +
+        (2 * var(--oryx-layout-margin, 0px))
+    );
+  }
+
+  :host([class*='-container'][class*='-jumbotron']) {
     padding-inline: calc((100% - var(--oryx-container-width)) / 2);
   }
 `;

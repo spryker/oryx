@@ -34,6 +34,26 @@ describe('DefaultLayoutBuilder', () => {
     });
   };
 
+  const expectStyleRuleWithUnit = (
+    key: string,
+    value: string,
+    expectedRule: string
+  ): void => {
+    describe(`when the ${key} with a value without a unit is provided`, () => {
+      beforeEach(() => populate({ [key]: value }));
+      it('should add px', () => {
+        expect(styles).toContain(`${expectedRule}:${value}px`);
+      });
+    });
+
+    describe(`when an empty string value is provided`, () => {
+      beforeEach(() => populate({ [key]: '' }));
+      it('should not create the rule', () => {
+        expect(styles).toBeUndefined();
+      });
+    });
+  };
+
   beforeEach(() => {
     const testInjector = new Injector([
       {
@@ -55,16 +75,37 @@ describe('DefaultLayoutBuilder', () => {
 
   describe('styles', () => {
     expectStyleRule('gap', '10px', 'gap:10px;');
-    expectStyleRule('margin', '10px', 'margin:10px;');
-    expectStyleRule('padding', '10px', 'padding:10px;');
-    expectStyleRule('border', 'solid red 10px', 'border:solid red 10px;');
-    expectStyleRule('radius', '10px', 'border-radius:10px;');
-    expectStyleRule('background', 'red', 'background:red;');
-    expectStyleRule('top', '10px', 'top:10px;');
-    expectStyleRule('bottom', '10px', 'bottom:10px;');
-    expectStyleRule('width', '50%', 'width:50%;flex:0 0 50%');
+
+    expectStyleRule('margin', '10px', '--oryx-layout-margin:10px;');
+    expectStyleRuleWithUnit('margin', '10', '--oryx-layout-margin');
+
+    expectStyleRule('padding', '10px', '--oryx-layout-padding:10px;');
+    expectStyleRuleWithUnit('padding', '10', '--oryx-layout-padding');
+
     expectStyleRule('height', '50%', '--oryx-layout-height:50%');
+    expectStyleRuleWithUnit('height', '10', '--oryx-layout-height');
+
+    expectStyleRule('border', 'solid red 10px', 'border:solid red 10px;');
+
+    expectStyleRule('radius', '10px', 'border-radius:10px;');
+    expectStyleRuleWithUnit('radius', '10', 'radius');
+
+    expectStyleRule('top', '10px', 'top:10px;');
+    expectStyleRuleWithUnit('top', '10', 'top');
+
+    expectStyleRule('bottom', '10px', 'bottom:10px;');
+    expectStyleRuleWithUnit('bottom', '10', 'bottom');
+
+    expectStyleRule(
+      'width',
+      '50%',
+      '--oryx-layout-item-width:50%;flex:0 0 50%'
+    );
+    expectStyleRuleWithUnit('width', '10', '--oryx-layout-item-width');
+
     expectStyleRule('span', '4', '--oryx-layout-span:4');
+
+    expectStyleRule('background', 'red', 'background:red;');
   });
 
   describe('classes', () => {

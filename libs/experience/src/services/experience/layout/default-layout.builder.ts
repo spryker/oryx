@@ -97,6 +97,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add('layout-grid', ruleSet.layout === CompositionLayout.Grid);
     add('sticky', ruleSet.position === 'sticky');
 
+    add('has-margin', !!ruleSet.margin);
+    add('has-padding', !!ruleSet.padding);
+
     return classes;
   }
 
@@ -118,17 +121,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add('--oryx-layout-gap', data.gap);
     }
 
-    add('--oryx-layout-margin', data.margin);
-    add('--oryx-layout-padding', data.padding);
-    add('border', data.border);
-    add('border-radius', data.radius);
-    add('background', data.background);
-    add('top', data.top);
-    add('bottom', data.bottom);
-
-    add('--oryx-layout-height', data.height);
-    // add('height', data.height);
-
     if (data.columnCount) {
       add('--oryx-layout-item-count', data.columnCount.toString());
     }
@@ -137,12 +129,49 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add('--oryx-layout-span', data.span.toString());
     }
 
-    if (data.width) {
+    add('align-items', data.align);
+
+    add('--oryx-layout-margin', this.getRuleValue(data.margin));
+    add('--oryx-layout-padding', this.getRuleValue(data.padding));
+    add('--oryx-layout-height', this.getRuleValue(data.height));
+
+    add('top', this.getRuleValue(data.top));
+    add('bottom', this.getRuleValue(data.bottom));
+    add('border-radius', this.getRuleValue(data.radius));
+    add('border', data.border);
+    add('background', data.background);
+
+    if (this.hasValue(data.width)) {
       // width is explicitly set to accommodate flex box systems
-      add('--oryx-layout-item-width', data.width);
-      add('flex', `0 0 ${data.width}`);
+      add('--oryx-layout-item-width', this.getRuleValue(data.width));
+      add('flex', `0 0 ${this.getRuleValue(data.width)}`);
     }
 
     return styles;
+  }
+
+  /**
+   * Validates the given value and adds a `px` unit if no
+   * unit was given.
+   *
+   * Returns undefined when there's no value provided.
+   */
+  protected getRuleValue(value?: string): string | undefined {
+    if (!this.hasValue(value)) {
+      return undefined;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!isNaN(+value!)) {
+      // default to pixels if no unit is provided
+      value += 'px';
+    }
+    return value;
+  }
+
+  /**
+   * Indicates whether the given value is valid.
+   */
+  protected hasValue(value?: string): boolean {
+    return !!value && value !== '';
   }
 }

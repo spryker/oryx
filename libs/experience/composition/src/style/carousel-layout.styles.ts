@@ -9,6 +9,7 @@ const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    align-items: stretch;
   }
 
   :host(.${unsafeCSS(breakpoint)}-layout-carousel) > * {

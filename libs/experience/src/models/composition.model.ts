@@ -58,6 +58,15 @@ export interface StyleProperties {
   background?: string;
 
   /**
+   * Aligns the layout items over the layout axis. For column, grid and carousel layouts,
+   * this means that the items are aligned over the vertical axis.
+   *
+   * The alignment comes into play when the component has a full background or if it contains
+   * an image that takes advantage of the full height.
+   */
+  align?: LayoutAlign;
+
+  /**
    * Indicates the height of the composition.
    *
    * The technical implementation of the height depends on the chosen layout.
@@ -71,5 +80,10 @@ export interface StyleProperties {
   width?: string;
 
   justify?: string;
-  alignVertically?: string;
+}
+
+export const enum LayoutAlign {
+  Start = 'start',
+  Stretch = 'stretch',
+  End = 'end',
 }

@@ -7,7 +7,6 @@ const columnLayout = (breakpoint: Breakpoint): CSSResult => css`
     flex-wrap: nowrap;
     align-items: flex-start;
     flex-direction: row;
-    align-items: stretch;
   }
 `;
 
