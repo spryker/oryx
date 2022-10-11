@@ -14,12 +14,12 @@ export const tabsStyles = css`
     cursor: pointer;
   }
 
-  :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-color-neutral-lighter);
+  slot:not([name])::-webkit-scrollbar {
+    display: none;
   }
 
-  :host::-webkit-scrollbar {
-    display: none;
+  :host([shadow]) slot:not([name]) {
+    box-shadow: 0 4px 8px var(--oryx-color-neutral-lighter);
   }
 
   input[type='range'] {
