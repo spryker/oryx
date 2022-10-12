@@ -69,6 +69,9 @@ const standardSubscribe = (
  *  @subscribe()
  *  prop = from([1, 2, 3, 4]).pipe(// implementation //);
  * }
+ *
+ * NOTE: This decorator should be used only with LitElement (or mixing) and will not work properly, when used inside other classes
+ * like controllers or services.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function subscribe(): any {
