@@ -7,22 +7,10 @@ import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
 import {
   Cart,
   CartComponentAttributes,
-  CartDiscount,
-  CartTotals,
-  PriceMode,
+  CartTotalCalculations,
+  FormattedCartTotals,
+  FormattedDiscount,
 } from '../models';
-export interface FormattedDiscount extends Omit<CartDiscount, 'amount'> {
-  amount: string;
-}
-
-export interface FormattedCartTotals {
-  calculations: {
-    [key in keyof CartTotals]: string;
-  };
-  priceMode: PriceMode;
-  itemsQuantity: number | null;
-  discounts?: FormattedDiscount[];
-}
 
 export class CartController {
   protected observe: ObserveController<LitElement & CartComponentAttributes>;
@@ -104,29 +92,27 @@ export class CartController {
    * formatting requires a lookup on the locale and currency, which is why this API is
    * observable based.
    */
-  protected formatTotals(
-    cart: Cart
-  ): Observable<FormattedCartTotals['calculations']> {
+  protected formatTotals(cart: Cart): Observable<CartTotalCalculations> {
     return of(cart).pipe(
       switchMap((cart) =>
-        Object.entries(cart.totals ?? {}).reduce(
-          (acc$, [priceType, price = 0]) => {
-            if (priceType === 'discountTotal') {
-              price = -price;
-            }
-            return acc$.pipe(
-              switchMap((acc) =>
-                this.pricingService.format(price).pipe(
-                  map((formattedPrice) => ({
-                    ...acc,
-                    [priceType]: formattedPrice as string,
-                  }))
-                )
+        Object.entries(cart.totals ?? {}).reduce((acc$, [priceType, price]) => {
+          if (!price) {
+            return of({});
+          }
+          if (priceType === 'discountTotal') {
+            price = -price;
+          }
+          return acc$.pipe(
+            switchMap((acc) =>
+              this.pricingService.format(price).pipe(
+                map((formattedPrice) => ({
+                  ...acc,
+                  [priceType]: formattedPrice as string,
+                }))
               )
-            );
-          },
-          of({} as FormattedCartTotals['calculations'])
-        )
+            )
+          );
+        }, of({}))
       )
     );
   }

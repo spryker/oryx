@@ -30,7 +30,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       'discount (collapsed)'
     )}
     ${renderRow({ hideTaxAmount: true }, 'tax', 'tax amount')}
-    ${renderRow({ hideTaxMessage: true }, 'tax', 'tax message')}
+    ${renderRow({ hideTaxMessage: true }, 'net', 'tax message')}
     ${renderRow({ hideExpense: true }, 'expense')}
     ${renderRow({ hideDelivery: true }, 'gross', 'delivery')}
 

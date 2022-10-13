@@ -56,10 +56,15 @@ describe('Cart controller', () => {
     vi.clearAllMocks();
   });
 
+  const setupMockedData = (data: Cart | null): void => {
+    service.getCart.mockReturnValue(of(data));
+    service.getTotals.mockReturnValue(of(mockBaseCart.totals));
+  };
+
   describe('getTotalItemsQuantity(', () => {
     describe('when there is no cart', () => {
       beforeEach(async () => {
-        service.getCart.mockReturnValue(of(null));
+        setupMockedData(null);
       });
       it('should return null', () => {
         new CartController(mockThis)
@@ -70,7 +75,7 @@ describe('Cart controller', () => {
 
     describe('when there is a cart without products', () => {
       beforeEach(async () => {
-        service.getCart.mockReturnValue(of({}));
+        setupMockedData({} as Cart);
       });
       it('should return null', () => {
         new CartController(mockThis)
@@ -81,7 +86,7 @@ describe('Cart controller', () => {
 
     describe('when there are no products in the cart', () => {
       beforeEach(async () => {
-        service.getCart.mockReturnValue(of({ products: [] }));
+        setupMockedData({ products: [] } as unknown as Cart);
       });
       it('should return 0', () => {
         new CartController(mockThis)
@@ -92,16 +97,14 @@ describe('Cart controller', () => {
 
     describe('when there are multiple products', () => {
       beforeEach(async () => {
-        service.getCart.mockReturnValue(
-          of({
-            products: [
-              { quantity: 2 },
-              { quantity: 5 },
-              { quantity: 3 },
-              { quantity: 1 },
-            ],
-          })
-        );
+        setupMockedData({
+          products: [
+            { quantity: 2 },
+            { quantity: 5 },
+            { quantity: 3 },
+            { quantity: 1 },
+          ],
+        } as unknown as Cart);
       });
       it('should cumulate the quantities', () => {
         new CartController(mockThis)
@@ -117,30 +120,9 @@ describe('Cart controller', () => {
       pricingService.format.mockReturnValue(of(mockFormattedPrice));
     });
 
-    describe('when there is a valid cart', () => {
-      beforeEach(() => {
-        service.getCart.mockReturnValue(
-          of({
-            totals: { priceToPay: 5 },
-            products: [{ sku: '123', quantity: 1 }],
-          } as Cart)
-        );
-        service.getTotals.mockReturnValue(of(mockBaseCart.totals));
-      });
-      it('should format the priceToPay', () => {
-        new CartController(mockThis)
-          .getTotals()
-          .pipe(take(1))
-          .subscribe((totals) => {
-            expect(totals?.calculations.priceToPay).toBe(mockFormattedPrice);
-          });
-      });
-    });
-
     describe('when there are no products in the cart', () => {
       beforeEach(() => {
-        service.getCart.mockReturnValue(of({} as Cart));
-        service.getTotals.mockReturnValue(of({ expenseTotal: 0, taxTotal: 0 }));
+        setupMockedData({ totals: { expenseTotal: 0, taxTotal: 0 } } as Cart);
       });
       it('should return null', () => {
         new CartController(mockThis)
@@ -152,43 +134,217 @@ describe('Cart controller', () => {
       });
     });
 
-    describe('when there are discounts', () => {
-      beforeEach(() => {
-        service.getCart.mockReturnValue(
-          of({
+    describe('priceToPay', () => {
+      describe('when a priceToPay is provided', () => {
+        beforeEach(() => {
+          setupMockedData({
             totals: { priceToPay: 5 },
             products: [{ sku: '123', quantity: 1 }],
-            discounts: [{ amount: 5, code: 'bar' }],
-          } as Cart)
-        );
-        service.getTotals.mockReturnValue(of(mockBaseCart.totals));
-        pricingService.format.mockReturnValue(of(mockFormattedPrice));
-      });
-
-      it('should format the discounted amount', () => {
-        new CartController(mockThis)
-          .getTotals()
-          .pipe(take(1))
-          .subscribe((totals) => {
-            expect(pricingService.format).toHaveBeenCalledWith(-5);
-            expect(totals?.discounts?.[0].amount).toBe(mockFormattedPrice);
-          });
+          } as Cart);
+        });
+        it('should format the priceToPay amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).toHaveBeenCalledWith(5);
+              expect(totals?.calculations.priceToPay).toBe(mockFormattedPrice);
+            });
+        });
       });
     });
 
-    it('should return negative price for discount', () => {
-      service.getCart.mockReturnValue(
-        of({
-          totals: { discountTotal: 100 },
-          products: [{ quantity: 1 }],
-        } as Cart)
-      );
-      service.getTotals.mockReturnValue(of(mockBaseCart.totals));
-      pricingService.format.mockReturnValue(of('whatever'));
+    describe('subtotal', () => {
+      describe('when a subtotal is provided', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { subtotal: 5 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
 
-      new CartController(mockThis).getTotals().subscribe(() => {
-        expect(pricingService.format).toHaveBeenCalledTimes(1);
-        expect(pricingService.format).toHaveBeenCalledWith(-100);
+        it('should format the subtotal amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).toHaveBeenCalledWith(5);
+              expect(totals?.calculations.subtotal).toBe(mockFormattedPrice);
+            });
+        });
+      });
+
+      describe('when the subtotal is 0', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { taxTotal: 0 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should not populate the subtotal amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).not.toHaveBeenCalled();
+              expect(totals?.calculations.subtotal).toBeUndefined();
+            });
+        });
+      });
+    });
+
+    describe('discounts', () => {
+      describe('when there are discounts', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { priceToPay: 5 },
+            products: [{ sku: '123', quantity: 1 }],
+            discounts: [{ amount: 5, code: 'bar' }],
+          } as Cart);
+        });
+
+        it('should format the discount amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).toHaveBeenCalledWith(-5);
+              expect(totals?.discounts?.[0].amount).toBe(mockFormattedPrice);
+            });
+        });
+
+        it('should return negative price for discount', () => {
+          setupMockedData({
+            totals: { discountTotal: 100 },
+            products: [{ quantity: 1 }],
+          } as Cart);
+
+          new CartController(mockThis).getTotals().subscribe(() => {
+            expect(pricingService.format).toHaveBeenCalledTimes(1);
+            expect(pricingService.format).toHaveBeenCalledWith(-100);
+          });
+        });
+      });
+
+      describe('when there are no discounts', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: {},
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should not populate discounts', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).not.toHaveBeenCalled();
+              expect(totals?.discounts?.length).toBe(0);
+            });
+        });
+      });
+
+      describe('when the discount is 0', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { discountTotal: 0 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should not populate discounts', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).not.toHaveBeenCalled();
+              expect(totals?.discounts?.length).toBe(0);
+            });
+        });
+      });
+    });
+
+    describe('expense', () => {
+      describe('when an expense is provided', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { expenseTotal: 5 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should format the expense amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).toHaveBeenCalledWith(5);
+              expect(totals?.calculations.expenseTotal).toBe(
+                mockFormattedPrice
+              );
+            });
+        });
+      });
+
+      describe('when the expense is 0', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { expenseTotal: 0 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should not populate the expense', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).not.toHaveBeenCalled();
+              expect(totals?.calculations.expenseTotal).toBeUndefined();
+            });
+        });
+      });
+    });
+
+    describe('tax', () => {
+      describe('when an tax is provided', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { taxTotal: 5 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should format the tax amount', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).toHaveBeenCalledWith(5);
+              expect(totals?.calculations.taxTotal).toBe(mockFormattedPrice);
+            });
+        });
+      });
+
+      describe('when the tax is 0', () => {
+        beforeEach(() => {
+          setupMockedData({
+            totals: { taxTotal: 0 },
+            products: [{ sku: '123', quantity: 1 }],
+          } as Cart);
+        });
+
+        it('should not populate the tax', () => {
+          new CartController(mockThis)
+            .getTotals()
+            .pipe(take(1))
+            .subscribe((totals) => {
+              expect(pricingService.format).not.toHaveBeenCalled();
+              expect(totals?.calculations.taxTotal).toBeUndefined();
+            });
+        });
       });
     });
   });

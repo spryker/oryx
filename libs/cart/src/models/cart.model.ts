@@ -70,6 +70,21 @@ export interface CartTotals {
   taxTotal?: number;
 }
 
+export type CartTotalCalculations = {
+  [key in keyof CartTotals]?: string;
+};
+
+export interface FormattedCartTotals {
+  calculations: CartTotalCalculations;
+  priceMode: PriceMode;
+  itemsQuantity: number | null;
+  discounts?: FormattedDiscount[];
+}
+
+export interface FormattedDiscount extends Omit<CartDiscount, 'amount'> {
+  amount: string;
+}
+
 export interface CartCalculations {
   unitPrice?: number;
   sumPrice?: number;

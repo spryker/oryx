@@ -109,7 +109,7 @@ export const mockEmptyCart: Partial<Cart> = {
 
 export const mockNetCart: Cart = {
   ...mockBaseCart,
-  id: 'net', // TODO: rename
+  id: 'net',
   priceMode: PriceMode.NetMode,
 };
 

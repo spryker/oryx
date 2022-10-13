@@ -4,12 +4,9 @@ import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
-import {
-  CartController,
-  FormattedCartTotals,
-} from '../../src/controllers/cart.controller';
+import { CartController } from '../../src/controllers/cart.controller';
 import { CartComponentMixin } from '../../src/mixins/cart.mixin';
-import { PriceMode } from '../../src/models';
+import { FormattedCartTotals, PriceMode } from '../../src/models';
 import { CartTotalsComponentOptions } from './totals.model';
 import { styles } from './totals.styles';
 export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentOptions>() {
