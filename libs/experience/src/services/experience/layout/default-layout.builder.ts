@@ -141,7 +141,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add('border', data.border);
     add('background', data.background);
 
-    if (this.hasValue(data.width)) {
+    if (data.width) {
       // width is explicitly set to accommodate flex box systems
       add('--oryx-layout-item-width', this.getRuleValue(data.width));
       add('flex', `0 0 ${this.getRuleValue(data.width)}`);
@@ -156,22 +156,15 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
    *
    * Returns undefined when there's no value provided.
    */
+
   protected getRuleValue(value?: string): string | undefined {
-    if (!this.hasValue(value)) {
-      return undefined;
+    if (!value) {
+      return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    if (!isNaN(+value!)) {
-      // default to pixels if no unit is provided
+
+    if (!isNaN(+value)) {
       value += 'px';
     }
     return value;
-  }
-
-  /**
-   * Indicates whether the given value is valid.
-   */
-  protected hasValue(value?: string): boolean {
-    return !!value && value !== '';
   }
 }

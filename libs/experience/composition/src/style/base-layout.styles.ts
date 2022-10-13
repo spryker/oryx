@@ -11,6 +11,7 @@ export const baseLayoutStyles = css`
       align-items: flex-start;
       margin: var(--oryx-layout-margin, 0);
       padding: var(--oryx-layout-padding, 0);
+      width: 100%;
     }
 
     :host,
