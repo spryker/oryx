@@ -140,11 +140,7 @@ describe('ProductPriceComponent', () => {
           );
         });
         it('should render the original price', () => {
-          expect(
-            element.shadowRoot
-              ?.querySelector('.original')
-              ?.textContent?.includes('€10.95')
-          ).toBe(true);
+          expect(element).toContainElement('[part="original"]');
         });
       });
 
@@ -169,7 +165,7 @@ describe('ProductPriceComponent', () => {
           );
         });
         it('should render the original price', () => {
-          expect(element.shadowRoot?.querySelector('.original')).not.toBeNull();
+          expect(element).toContainElement('[part="original"]');
         });
       });
     });

@@ -164,12 +164,8 @@ describe('ProductMediaComponent', () => {
           await elementUpdated(element);
         });
 
-        it('should not render the picture', async () => {
-          expect(element).not.toContainElement('picture');
-        });
-
-        it('should set fallback attribute', async () => {
-          expect(element.hasAttribute('fallback')).toBe(true);
+        it('should render the fallback', async () => {
+          expect(element).toContainElement('[part="fallback"]');
         });
       });
 
@@ -185,12 +181,8 @@ describe('ProductMediaComponent', () => {
           await elementUpdated(element);
         });
 
-        it('should not render the picture', async () => {
-          expect(element).not.toContainElement('picture');
-        });
-
-        it('should set fallback attribute', async () => {
-          expect(element.hasAttribute('fallback')).toBe(true);
+        it('should render the fallback', async () => {
+          expect(element).toContainElement('[part="fallback"]');
         });
       });
 

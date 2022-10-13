@@ -24,16 +24,27 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
     return html` ${asyncValue(
       combineLatest([this.options$, this.product$]),
       ([options, product]) =>
-        this.renderTitle(this.renderContent(product, options.link), options)
+        this.renderTitle(this.renderContent(product, options), options)
     )}`;
+  }
+
+  protected renderInnerText(
+    product: Product | null,
+    truncateAfter = 0
+  ): TemplateResult {
+    return html`<oryx-text .truncateAfter=${truncateAfter}
+      >${product?.name}</oryx-text
+    >`;
   }
 
   protected renderContent(
     product: Product | null,
-    renderLink = false
+    options: ProductTitleOptions
   ): TemplateResult {
-    if (!renderLink) {
-      return html`${product?.name}`;
+    const textContent = this.renderInnerText(product, options?.truncateAfter);
+
+    if (!options?.link) {
+      return textContent;
     }
 
     return html`
@@ -43,7 +54,7 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
           id: product?.sku,
         }}"
       >
-        ${product?.name}
+        ${textContent}
       </content-link>
     `;
   }
@@ -61,8 +72,6 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
     title: TemplateResult,
     options: ProductTitleOptions
   ): TemplateResult {
-    this.toggleAttribute?.('single-line', !!options.singleLine);
-
     switch (options.tag) {
       case 'h1':
         return html`<h1>${title}</h1>`;

@@ -8,13 +8,13 @@ export const ProductPriceStyles = css`
     color: var(--oryx-color-warning);
   }
 
-  .original {
+  [part='original'] {
     position: relative;
     color: var(--oryx-color-neutral-darker);
     font-size: 0.8em;
   }
 
-  .original::before {
+  [part='original']::before {
     content: '';
     position: absolute;
     top: 50%;

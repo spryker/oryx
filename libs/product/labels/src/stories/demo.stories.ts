@@ -21,7 +21,7 @@ const Template: Story<ProductLabelsAttributes> = ({
   excluded,
 }: ProductLabelsAttributes): TemplateResult => {
   return html`<product-labels
-    sku="2"
+    sku="1"
     .options=${{ included, excluded }}
   ></product-labels>`;
 };

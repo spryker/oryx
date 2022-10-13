@@ -9,8 +9,6 @@ import { mockProductProviders } from '../../src/mocks';
 import { ProductLabelsComponent } from './label.component';
 import { productLabelsComponent } from './label.def';
 
-const mockSku = '1';
-
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});
 }
@@ -38,40 +36,31 @@ describe('ProductLabelsComponent', () => {
     destroyInjector();
   });
 
-  describe('when the product has 1 label', () => {
+  describe('when the product has no labels', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<product-labels sku="${mockSku}" .options=${{}}></product-labels>`
-      );
+      element = await fixture(html`<product-labels sku="3"></product-labels>`);
     });
 
-    it('passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible();
-    });
-
-    it('should render 1 chip element', () => {
-      const chips = element.renderRoot.querySelectorAll('oryx-chip');
-      expect(chips.length).toBe(1);
+    it('should not render chip elements', () => {
+      expect(element).not.toContainElement('oryx-chip');
     });
   });
 
-  describe('when the product has 2 labels', () => {
+  describe('when the product has labels', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<product-labels sku="2" .options=${{}}></product-labels>`
-      );
+      element = await fixture(html`<product-labels sku="1"></product-labels>`);
     });
 
-    it('should render 2 chip element', () => {
+    it('should render 2 chip elements', () => {
       const chips = element.renderRoot.querySelectorAll('oryx-chip');
       expect(chips.length).toBe(2);
     });
 
-    describe('but when NEW labels are excluded', () => {
+    describe('and NEW labels are excluded', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<product-labels
-            sku="2"
+            sku="1"
             .options=${{ excluded: 'new' }}
           ></product-labels>`
         );
@@ -84,11 +73,11 @@ describe('ProductLabelsComponent', () => {
       });
     });
 
-    describe('but when SALE labels are included', () => {
+    describe('and SALE labels are included', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<product-labels
-            sku="2"
+            sku="1"
             .options=${{ included: 'SALE' }}
           ></product-labels>`
         );

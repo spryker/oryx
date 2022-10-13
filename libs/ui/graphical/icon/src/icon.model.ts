@@ -169,6 +169,7 @@ export enum MiscIcons {
   Top = 'top',
   Trash = 'trash',
   Visible = 'visible',
+  Wishlist = 'wishlist',
 }
 
 export enum FilterIcons {

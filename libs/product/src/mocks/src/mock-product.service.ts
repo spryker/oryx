@@ -68,7 +68,7 @@ export class MockProductService implements Partial<ProductService> {
         brand: 'Brand',
         color: 'Color',
       },
-      labels: [newLabel],
+      labels: [newLabel, saleLabel],
     },
     {
       sku: '2',
@@ -100,7 +100,7 @@ export class MockProductService implements Partial<ProductService> {
         brand: 'Brand',
         color: 'Color',
       },
-      labels: [newLabel, saleLabel],
+      labels: [newLabel],
     },
     {
       sku: '3',

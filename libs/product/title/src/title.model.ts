@@ -9,11 +9,9 @@ export interface ProductTitleOptions {
   tag?: string;
 
   /**
-   * Forces the title to not leave a single line. This can be helpful for
-   * layouts with not to much space, i.e. in a carousel, typeahead search
-   * or shopping cart entry.
+   * Indicates whether the text should truncate after a number of lines.
    */
-  singleLine?: boolean;
+  truncateAfter?: number;
 
   /**
    * Indicates whether to generate a link to the Product Detail Page.

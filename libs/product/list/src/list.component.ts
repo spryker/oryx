@@ -1,20 +1,20 @@
 import { ContentController } from '@spryker-oryx/experience';
+import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
-import { Product, ProductComponentMixin } from '@spryker-oryx/product';
-import { html, TemplateResult } from 'lit';
-import { switchMap } from 'rxjs';
-
-import { layoutStyles } from '@spryker-oryx/experience/composition';
 import {
+  Product,
+  ProductComponentMixin,
   ProductListPageService,
   ProductListService,
 } from '@spryker-oryx/product';
-import { map } from 'rxjs';
+import { html, TemplateResult } from 'lit';
+import { map, switchMap } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
+import { ProductListStyles } from './list.styles';
 
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
-  static styles = layoutStyles;
+  static styles = [layoutStyles, ProductListStyles];
 
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);

@@ -10,7 +10,7 @@ export default {
   args: {
     sku: MockProductService.mockProducts[0].sku,
     tag: '',
-    singleLine: false,
+    truncateAfter: 0,
     link: false,
   },
   argTypes: {

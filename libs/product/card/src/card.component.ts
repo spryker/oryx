@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import {
   asyncValue,
+  observe,
   ObserveController,
   subscribe,
 } from '@spryker-oryx/lit-rxjs';
@@ -11,19 +12,50 @@ import {
   ProductController,
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { isFocusable } from '@spryker-oryx/typescript-utils';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, filter, tap } from 'rxjs';
+import { property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { BehaviorSubject, combineLatest, filter, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
   static styles = ProductCardStyles;
 
+  @property({ type: Boolean, reflect: true, attribute: 'hide-title' })
+  protected hideTitle = false;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-price' })
+  protected hidePrice = false;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-rating' })
+  protected hideRating = false;
+
+  @property({ type: Boolean, reflect: true })
+  protected active = false;
+
+  @observe()
+  protected active$ = new BehaviorSubject(this.active);
+
   protected observe = new ObserveController<ProductCardComponent>(this);
   protected context = new ContextController(this);
-  protected options$ = new ContentController(this).getOptions();
+  protected options$ = new ContentController(this).getOptions().pipe(
+    tap((options) => {
+      // We have an issue during ssr that don't allow us
+      // to use methods of the class
+      // ie this.toggleAttribute('hide-title', !!options.hideTitle);
+      // Issue happens because component is not defined when code is called
+
+      // this solution uses lit-properties and should be replaced by more
+      // convenient in the future
+      this.hideTitle = !!options.hideTitle;
+      this.hidePrice = !!options.hidePrice;
+      this.hideRating = !!options.hideRating;
+    })
+  );
   protected product$ = new ProductController(this).getProduct();
+
+  protected card$ = combineLatest([this.product$, this.options$, this.active$]);
 
   @subscribe()
   protected sku$ = combineLatest([
@@ -37,64 +69,98 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     )
   );
 
-  protected clickHandler(e: Event): void {
-    const target = e.target as HTMLElement;
-
-    if (isFocusable(target)) {
-      e.stopPropagation();
+  protected preventPropagating(e: MouseEvent, preventDefault = false): void {
+    if (preventDefault) {
+      e.preventDefault();
     }
+    e.stopPropagation();
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.product$, (product) =>
+    return html`${asyncValue(this.card$, ([product, options, active]) =>
       product
         ? html`
             <content-link
-              @click=${this.clickHandler}
               .options="${{
                 type: SemanticLinkType.Product,
                 id: product.sku,
               }}"
+              @mouseenter=${(): void => {
+                this.active = true;
+              }}
+              @mouseleave=${(): void => {
+                this.active = false;
+              }}
+              @focus=${(): void => {
+                this.active = true;
+              }}
+              @blur=${(): void => {
+                this.active = false;
+              }}
             >
-              <product-labels></product-labels>
+              <div>
+                ${when(
+                  !options?.hideLabels,
+                  () => html`<product-labels></product-labels>`
+                )}
+                ${when(
+                  !options?.hideFavorites,
+                  () => html`
+                    <oryx-icon-button>
+                      <button
+                        tabindex="-1"
+                        aria-label="add-to-favorites"
+                        @click=${(e: MouseEvent): void =>
+                          this.preventPropagating(e, true)}
+                      >
+                        <oryx-icon type="wishlist"></oryx-icon>
+                      </button>
+                    </oryx-icon-button>
+                  `
+                )}
 
-              <div class="image">
-                <product-images
-                  .options="${{ hideNavigation: true }}"
-                ></product-images>
+                <product-media></product-media>
               </div>
-              <div class="info">
-                <div class="info-row">
-                  <div class="info-col grow1">
+
+              <section>
+                ${when(
+                  !options?.hideTitle,
+                  () => html`
                     <product-title
-                      .options="${{ singleLine: true }}"
-                    ></product-title>
-                  </div>
-                </div>
-                <div class="info-row">
-                  <div class="info-col">
-                    <product-price></product-price>
-                  </div>
-                  <div class="info-col">
-                    <product-average-rating></product-average-rating>
-                  </div>
-                </div>
-                <div class="info-row">
-                  <div class="info-col grow1">
-                    <oryx-button type="primary" outline size="medium">
-                      <button focusable="false" class="action">View</button>
-                    </oryx-button>
-                  </div>
-                  <div class="info-col">
-                    <add-to-cart
-                      focusable
                       .options="${{
-                        hideQuantityInput: true,
+                        truncateAfter: !active
+                          ? options.truncateTitleAfter ?? 1
+                          : 0,
+                        link: false,
                       }}"
-                    ></add-to-cart>
-                  </div>
+                    ></product-title>
+                  `
+                )}
+
+                <div>
+                  ${when(
+                    !options?.hidePrice,
+                    () => html`<product-price></product-price>`
+                  )}
+                  ${when(
+                    !options?.hideRating,
+                    () => html`
+                      <product-average-rating
+                        .options=${{ size: 'small' }}
+                      ></product-average-rating>
+                    `
+                  )}
+
+                  <add-to-cart
+                    tabindex="-1"
+                    .options="${{
+                      outlined: true,
+                      hideQuantityInput: true,
+                    }}"
+                    @click=${this.preventPropagating}
+                  ></add-to-cart>
                 </div>
-              </div>
+              </section>
             </content-link>
           `
         : html``

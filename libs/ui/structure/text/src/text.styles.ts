@@ -19,7 +19,7 @@ export const textStyles = css`
     content: ' ';
   }
 
-  .box {
+  :host([requires-truncate]) .box {
     overflow: hidden;
   }
 

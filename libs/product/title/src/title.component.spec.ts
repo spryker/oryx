@@ -6,6 +6,7 @@ import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
+import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { ProductTitleComponent } from './title.component';
@@ -99,6 +100,47 @@ describe('ProductTitleComponent', () => {
     });
   });
 
+  describe('truncateAfter option', () => {
+    it('should render oryx-text inside', () => {
+      expect(element).toContainElement('oryx-text');
+    });
+
+    describe('when option is not specified', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<product-title sku="${mockSku}"></product-title>`
+        );
+      });
+
+      it('should set default value to 0', () => {
+        const textElement = element.renderRoot.querySelector(
+          'oryx-text'
+        ) as TextComponent;
+        expect(textElement?.truncateAfter).toBe(0);
+      });
+    });
+
+    describe('when option is specified', () => {
+      const truncateAfter = 1;
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<product-title
+            sku="${mockSku}"
+            .options=${{ truncateAfter }}
+          ></product-title>`
+        );
+      });
+
+      it('should pass the value to the oryx-text', () => {
+        const textElement = element.renderRoot.querySelector(
+          'oryx-text'
+        ) as TextComponent;
+        expect(textElement?.truncateAfter).toBe(truncateAfter);
+      });
+    });
+  });
+
   describe('tags', () => {
     expectContentInTag('h1');
     expectContentInTag('h2');
@@ -107,23 +149,15 @@ describe('ProductTitleComponent', () => {
     expectContentInTag('h5');
     expectContentInTag('h6');
 
-    describe('it should not render a tag', () => {
+    describe('when tag option is not specified', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-title sku="${mockSku}" .options=${{}}></product-title>`
+          html`<product-title sku="${mockSku}"></product-title>`
         );
       });
-      it(`should not render a tag`, () => {
-        expect(
-          element?.shadowRoot?.querySelectorAll('*:not(style)').length
-        ).toBe(0);
-      });
-
-      it('should render product title as plain text', () => {
-        const product = MockProductService.mockProducts.find(
-          (data) => data.sku === mockSku
-        );
-        expect(element?.shadowRoot?.textContent).toContain(product?.name);
+      it(`should not wrap the oryx-text to the header element`, () => {
+        const textElement = element.renderRoot.querySelector('oryx-text');
+        expect(textElement?.parentElement).toBe(null);
       });
     });
   });

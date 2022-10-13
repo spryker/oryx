@@ -13,7 +13,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         html`
           <product-title
             sku="1"
-            .options=${{ tag: 'h' + (i + 1), singleLine: true }}
+            .options=${{ tag: 'h' + (i + 1), truncateAfter: 1 }}
           ></product-title>
         `
     )}

@@ -9,4 +9,9 @@ export interface AddToCartOptions {
    * Defines if the submit button should be disabled (e.i. when product is unavailable)
    */
   disabled: boolean;
+
+  /**
+   * Defines if the submit button should have outlined appearance by default
+   */
+  outlined: boolean;
 }

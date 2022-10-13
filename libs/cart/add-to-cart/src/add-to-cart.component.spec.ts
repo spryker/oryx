@@ -13,7 +13,6 @@ import {
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { wait } from '@spryker-oryx/typescript-utils';
-import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { html } from 'lit';
 import { delay, map, of } from 'rxjs';
 import { AddToCartComponent } from './add-to-cart.component';
@@ -129,10 +128,8 @@ describe('AddToCartComponent', () => {
         const button = element.renderRoot.querySelector('button');
         await nextFrame();
         expect(oryxButton?.hasAttribute('loading')).toBe(false);
-        expect(oryxButton?.hasAttribute('outline')).toBe(true);
         expect(button?.hasAttribute('inert')).toBe(true);
         await wait(800);
-        expect(oryxButton?.hasAttribute('outline')).toBe(false);
         expect(button?.hasAttribute('inert')).toBe(false);
       });
     });
@@ -178,10 +175,8 @@ describe('AddToCartComponent', () => {
         const button = element.renderRoot.querySelector('button');
         await nextFrame();
         expect(oryxButton?.hasAttribute('loading')).toBe(false);
-        expect(oryxButton?.hasAttribute('outline')).toBe(true);
         expect(button?.hasAttribute('inert')).toBe(true);
         await wait(800);
-        expect(oryxButton?.hasAttribute('outline')).toBe(false);
         expect(button?.hasAttribute('inert')).toBe(false);
       });
     });
@@ -220,6 +215,20 @@ describe('AddToCartComponent', () => {
 
     it('should render quantity controls', () => {
       expect(element).toContainElement('oryx-button');
+    });
+  });
+
+  describe('when "outlined" option is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<add-to-cart sku="1" .options=${{ outlined: true }}></add-to-cart>`
+      );
+    });
+
+    it('should set "outline" attribute to the button', async () => {
+      const button = element.renderRoot.querySelector('oryx-button');
+
+      expect(button?.hasAttribute('outline')).toBe(true);
     });
   });
 
@@ -281,17 +290,15 @@ describe('AddToCartComponent', () => {
     });
 
     it('should interrupt loading', async () => {
-      const button = element.renderRoot.querySelector(
-        'oryx-button'
-      ) as ButtonComponent;
+      const button = element.renderRoot.querySelector('oryx-button');
 
       submit();
 
-      expect(button.hasAttribute('loading')).toBe(true);
+      expect(button?.hasAttribute('loading')).toBe(true);
 
       await nextFrame();
 
-      expect(button.hasAttribute('loading')).toBe(false);
+      expect(button?.hasAttribute('loading')).toBe(false);
     });
   });
 });

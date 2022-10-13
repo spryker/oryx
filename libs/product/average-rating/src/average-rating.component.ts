@@ -18,20 +18,23 @@ export class ProductAverageRatingComponent extends ProductComponentMixin<Product
     map(([product, options]) => {
       const reviewCount = options?.hideReviewCount
         ? undefined
-        : product?.reviewCount;
+        : product?.reviewCount ?? 0;
+
       return {
         rating: product?.averageRating,
         reviewCount,
+        size: options?.size,
       };
     })
   );
 
   protected override render(): TemplateResult {
     return html`
-      ${asyncValue(this.rating$, ({ rating, reviewCount }) => {
+      ${asyncValue(this.rating$, ({ rating, reviewCount, size }) => {
         return html`
           <oryx-rating
             readonly
+            .size=${size}
             .value=${rating}
             .reviewCount=${reviewCount}
           ></oryx-rating>

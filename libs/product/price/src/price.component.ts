@@ -41,7 +41,7 @@ export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOpt
           ${defaultPrice}
           ${when(
             originalPrice,
-            () => html`<span class="original">${originalPrice}</span>`
+            () => html`<span part="original">${originalPrice}</span>`
           )}
         `
       )}

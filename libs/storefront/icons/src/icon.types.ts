@@ -13,4 +13,5 @@ export enum StorefrontIconTypes {
   InputError = 'inputError',
   Trash = 'trash',
   Info = 'info',
+  Wishlist = 'wishlist',
 }
