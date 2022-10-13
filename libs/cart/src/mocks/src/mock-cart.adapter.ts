@@ -12,19 +12,25 @@ import {
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
 import {
-  mockNormalizedCartEntry,
-  mockNormalizedCartInNetMode,
-  mockNormalizedCartWithMultipleProducts,
-  mockNormalizedCartWithSingleProducts,
-  mockNormalizedDefaultCartWithoutProducts,
+  mockCartEntry,
+  mockCartWithDiscount,
+  mockCartWithExpense,
+  mockCartWithMultipleProducts,
+  mockCartWithTax,
+  mockDefaultCart,
+  mockEmptyCart,
+  mockNetCart,
 } from './mock-cart';
 
 export class MockCartAdapter implements Partial<CartAdapter> {
   private carts: Cart[] = [
-    mockNormalizedDefaultCartWithoutProducts,
-    mockNormalizedCartWithSingleProducts,
-    mockNormalizedCartWithMultipleProducts,
-    mockNormalizedCartInNetMode,
+    mockDefaultCart,
+    mockNetCart,
+    mockEmptyCart as Cart,
+    mockCartWithExpense,
+    mockCartWithDiscount,
+    mockCartWithTax,
+    mockCartWithMultipleProducts,
   ];
 
   private responseDelay = 300;
@@ -82,7 +88,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
       });
     } else {
       products.push({
-        ...mockNormalizedCartEntry,
+        ...mockCartEntry,
         sku: data.attributes.sku,
         groupKey: data.attributes.sku,
         quantity: data.attributes.quantity,

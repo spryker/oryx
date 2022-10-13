@@ -1,5 +1,5 @@
 import { Cart, CartController, CartService } from '@spryker-oryx/cart';
-import { mockCartTotals } from '@spryker-oryx/cart/mocks';
+import { mockBaseCart } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
@@ -125,7 +125,7 @@ describe('Cart controller', () => {
             products: [{ sku: '123', quantity: 1 }],
           } as Cart)
         );
-        service.getTotals.mockReturnValue(of(mockCartTotals));
+        service.getTotals.mockReturnValue(of(mockBaseCart.totals));
       });
       it('should format the priceToPay', () => {
         new CartController(mockThis)
@@ -161,7 +161,7 @@ describe('Cart controller', () => {
             discounts: [{ amount: 5, code: 'bar' }],
           } as Cart)
         );
-        service.getTotals.mockReturnValue(of(mockCartTotals));
+        service.getTotals.mockReturnValue(of(mockBaseCart.totals));
         pricingService.format.mockReturnValue(of(mockFormattedPrice));
       });
 
@@ -183,7 +183,7 @@ describe('Cart controller', () => {
           products: [{ quantity: 1 }],
         } as Cart)
       );
-      service.getTotals.mockReturnValue(of(mockCartTotals));
+      service.getTotals.mockReturnValue(of(mockBaseCart.totals));
       pricingService.format.mockReturnValue(of('whatever'));
 
       new CartController(mockThis).getTotals().subscribe(() => {

@@ -187,9 +187,8 @@ export class DefaultCartService implements CartService {
           )
       ),
       tap((cart) => {
-        const cachedCart = this.carts.get(cart.id)!;
-
-        cachedCart.value$.next(cart);
+        const cachedCart = this.carts.get(cart.id);
+        cachedCart?.value$.next(cart);
       }),
       catchError((error: HttpErrorResponse) => {
         this.updateError(error, cartId);

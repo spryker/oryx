@@ -1,5 +1,3 @@
-import { CartService } from '@spryker-oryx/cart';
-import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -7,18 +5,8 @@ import { CartTotalsComponentOptions } from '../totals.model';
 
 export default {
   title: `${storybookPrefix}/Cart totals`,
-  loaders: [
-    (): void => {
-      const cartService = resolve(CartService);
-      cartService.getCart().subscribe((cart) => {
-        if (cart && !cart.products?.length) {
-          cartService.addEntry({ sku: '1', quantity: 1 }).subscribe();
-          cartService.addEntry({ sku: '2', quantity: 3 }).subscribe();
-        }
-      });
-    },
-  ],
   args: {
+    hideSubtotal: false,
     hideTaxAmount: false,
     hideTaxMessage: false,
     hideDiscounts: false,

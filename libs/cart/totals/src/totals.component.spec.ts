@@ -1,9 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
-  mockCartTotals,
+  mockBaseCart,
+  mockCartWithDiscount,
+  mockCartWithExpense,
+  mockCartWithTax,
   mockEmptyCart,
-  mockNormalizedCart,
 } from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import {
@@ -63,8 +65,8 @@ describe('Cart totals component', () => {
   });
 
   it('passes the a11y audit', async () => {
-    service.getTotals.mockReturnValue(of(mockCartTotals));
-    service.getCart.mockReturnValue(of(mockNormalizedCart));
+    service.getCart.mockReturnValue(of(mockBaseCart));
+    service.getTotals.mockReturnValue(of(mockBaseCart.totals));
     element = await fixture(html`<cart-totals></cart-totals>`);
 
     await expect(element).shadowDom.to.be.accessible();
@@ -94,23 +96,25 @@ describe('Cart totals component', () => {
     };
 
     beforeEach(() => {
-      service.getTotals.mockReturnValue(of(mockCartTotals));
-      service.getCart.mockReturnValue(of(mockNormalizedCart));
+      service.getCart.mockReturnValue(of(mockBaseCart));
+      service.getTotals.mockReturnValue(of(mockBaseCart.totals));
     });
 
     describe('subtotal', () => {
       describe('when hideSubtotal is not set', () => {
         renderCartTotals();
-        it('should render the subtotal', () => {
+        it('should render the subtotal by default', () => {
           expect(element).toContainElement('.subtotal');
         });
       });
+
       describe('when hideSubtotal is false', () => {
         renderCartTotals({ hideSubtotal: false });
         it('should render the subtotal', () => {
           expect(element).toContainElement('.subtotal');
         });
       });
+
       describe('when hideSubtotal is true', () => {
         renderCartTotals({ hideSubtotal: true });
         it('should not render the subtotal', () => {
@@ -120,103 +124,177 @@ describe('Cart totals component', () => {
     });
 
     describe('discount', () => {
-      describe('when hideDiscount is not set', () => {
+      describe('when there is no discount', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockBaseCart));
+          service.getTotals.mockReturnValue(of(mockBaseCart.totals));
+        });
+
         renderCartTotals();
-        it('should render the discounts', () => {
-          expect(element).toContainElement('.discounts');
+
+        it('should not render the discount', () => {
+          expect(element).not.toContainElement('.discount');
         });
       });
-      describe('when hideDiscounts is false', () => {
-        renderCartTotals({ hideDiscounts: false });
-        it('should render the discounts', () => {
-          expect(element).toContainElement('.discounts');
+
+      describe('when there is discount', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockCartWithDiscount));
+          service.getTotals.mockReturnValue(of(mockCartWithDiscount.totals));
         });
-      });
-      describe('when hideDiscounts is true', () => {
-        renderCartTotals({ hideDiscounts: true });
-        it('should not render the discounts', () => {
-          expect(element).not.toContainElement('.discounts');
+
+        describe('when hideDiscount is not set', () => {
+          renderCartTotals();
+          it('should render the discounts by default', () => {
+            expect(element).toContainElement('.discounts');
+          });
         });
-      });
-      describe('when collapseDiscounts is not set', () => {
-        renderCartTotals();
-        it('should set the discounts collapsible to open', () => {
-          const d = element.renderRoot.querySelector('.discounts');
-          expect(d?.hasAttribute('open')).toBe(true);
+
+        describe('when hideDiscounts is false', () => {
+          renderCartTotals({ hideDiscounts: false });
+          it('should render the discounts', () => {
+            expect(element).toContainElement('.discounts');
+          });
         });
-      });
-      describe('when collapseDiscounts is false', () => {
-        renderCartTotals({ collapseDiscounts: false });
-        it('should set the discounts collapsible to open', () => {
-          const d = element.renderRoot.querySelector('.discounts');
-          expect(d?.hasAttribute('open')).toBe(true);
+
+        describe('when hideDiscounts is true', () => {
+          renderCartTotals({ hideDiscounts: true });
+          it('should not render the discounts', () => {
+            expect(element).not.toContainElement('.discounts');
+          });
         });
-      });
-      describe('when collapseDiscounts is true', () => {
-        renderCartTotals({ collapseDiscounts: true });
-        it('should set the discounts collapsible to closed', () => {
-          const d = element.renderRoot.querySelector('.discounts');
-          expect(d?.hasAttribute('open')).toBe(false);
+
+        describe('when collapseDiscounts is not set', () => {
+          renderCartTotals();
+          it('should expand the discounts by default', () => {
+            const collapsible = element.renderRoot.querySelector('.discounts');
+            expect(collapsible?.hasAttribute('open')).toBe(true);
+          });
+        });
+
+        describe('when collapseDiscounts is false', () => {
+          renderCartTotals({ collapseDiscounts: false });
+          it('should expand the discounts', () => {
+            const collapsible = element.renderRoot.querySelector('.discounts');
+            expect(collapsible?.hasAttribute('open')).toBe(true);
+          });
+        });
+
+        describe('when collapseDiscounts is true', () => {
+          renderCartTotals({ collapseDiscounts: true });
+          it('should collapse the discounts', () => {
+            const collapsible = element.renderRoot.querySelector('.discounts');
+            expect(collapsible?.hasAttribute('open')).toBe(false);
+          });
         });
       });
     });
 
     describe('expense', () => {
-      describe('when hideExpense is not set', () => {
+      describe('when there is no expense value', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockBaseCart));
+          service.getTotals.mockReturnValue(of(mockBaseCart.totals));
+        });
+
         renderCartTotals();
-        it('should render the expense', () => {
-          expect(element).toContainElement('.expense');
-        });
-      });
-      describe('when hideExpense is false', () => {
-        renderCartTotals({ hideExpense: false });
-        it('should render the expense', () => {
-          expect(element).toContainElement('.expense');
-        });
-      });
-      describe('when hideExpense is true', () => {
-        renderCartTotals({ hideExpense: true });
+
         it('should not render the expense', () => {
           expect(element).not.toContainElement('.expense');
+        });
+      });
+
+      describe('when there is expense value', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockCartWithExpense));
+          service.getTotals.mockReturnValue(of(mockCartWithExpense.totals));
+        });
+
+        renderCartTotals();
+
+        describe('when hideExpense is not set', () => {
+          it('should render the expense by default', () => {
+            expect(element).toContainElement('.expense');
+          });
+        });
+
+        describe('when hideExpense is false', () => {
+          renderCartTotals({ hideExpense: false });
+          it('should render the expense', () => {
+            expect(element).toContainElement('.expense');
+          });
+        });
+
+        describe('when hideExpense is true', () => {
+          renderCartTotals({ hideExpense: true });
+          it('should not render the expense', () => {
+            expect(element).not.toContainElement('.expense');
+          });
         });
       });
     });
 
     describe('tax', () => {
-      describe('when hideTaxAmount is not set', () => {
+      describe('when there is no tax value', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockBaseCart));
+          service.getTotals.mockReturnValue(of(mockBaseCart.totals));
+        });
+
         renderCartTotals();
-        it('should render the tax amount', () => {
-          expect(element).toContainElement('.tax');
-        });
-      });
-      describe('when hideTaxAmount is false', () => {
-        renderCartTotals({ hideTaxAmount: false });
-        it('should render the tax amount', () => {
-          expect(element).toContainElement('.tax');
-        });
-      });
-      describe('when hideTaxAmount is true', () => {
-        renderCartTotals({ hideTaxAmount: true });
+
         it('should not render the tax amount', () => {
           expect(element).not.toContainElement('.tax');
         });
       });
-      describe('when hideTaxMessage is not set', () => {
+
+      describe('when there is tax value', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockCartWithTax));
+          service.getTotals.mockReturnValue(of(mockCartWithTax.totals));
+        });
+
         renderCartTotals();
-        it('should render the tax message', () => {
-          expect(element).toContainElement('.tax-message');
+
+        describe('and hideTaxAmount is not set', () => {
+          it('should render the tax amount by default', () => {
+            expect(element).toContainElement('.tax');
+          });
         });
-      });
-      describe('when hideTaxMessage is false', () => {
-        renderCartTotals({ hideTaxMessage: false });
-        it('should render the tax message', () => {
-          expect(element).toContainElement('.tax-message');
+
+        describe('and hideTaxAmount is false', () => {
+          renderCartTotals({ hideTaxAmount: false });
+          it('should render the tax amount', () => {
+            expect(element).toContainElement('.tax');
+          });
         });
-      });
-      describe('when hideTaxMessage is true', () => {
-        renderCartTotals({ hideTaxMessage: true });
-        it('should not render the tax message', () => {
-          expect(element).not.toContainElement('.tax-message');
+
+        describe('and hideTaxAmount is true', () => {
+          renderCartTotals({ hideTaxAmount: true });
+          it('should not render the tax amount', () => {
+            expect(element).not.toContainElement('.tax');
+          });
+        });
+
+        describe('and hideTaxMessage is not set', () => {
+          renderCartTotals();
+          it('should render the tax message by default', () => {
+            expect(element).toContainElement('.tax-message');
+          });
+        });
+
+        describe('and hideTaxMessage is false', () => {
+          renderCartTotals({ hideTaxMessage: false });
+          it('should render the tax message', () => {
+            expect(element).toContainElement('.tax-message');
+          });
+        });
+
+        describe('and hideTaxMessage is true', () => {
+          renderCartTotals({ hideTaxMessage: true });
+          it('should not render the tax message', () => {
+            expect(element).not.toContainElement('.tax-message');
+          });
         });
       });
     });
@@ -224,16 +302,18 @@ describe('Cart totals component', () => {
     describe('delivery', () => {
       describe('when hideDelivery is not set', () => {
         renderCartTotals();
-        it('should render the delivery', () => {
+        it('should render the delivery by default', () => {
           expect(element).toContainElement('.delivery');
         });
       });
+
       describe('when hideDelivery is false', () => {
         renderCartTotals({ hideDelivery: false });
         it('should render the delivery', () => {
           expect(element).toContainElement('.delivery');
         });
       });
+
       describe('when hideDelivery is true', () => {
         renderCartTotals({ hideDelivery: true });
         it('should not render the delivery', () => {

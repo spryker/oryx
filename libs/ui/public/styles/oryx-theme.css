@@ -99,6 +99,7 @@
   /* space */
   --oryx-space: 5px;
   --oryx-space-2: calc(var(--oryx-space) * 2);
+  --oryx-space-3: calc(var(--oryx-space) * 3);
   --oryx-space-4: calc(var(--oryx-space) * 4);
 
   /* icon */

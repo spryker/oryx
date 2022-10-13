@@ -1,8 +1,5 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import {
-  mockGetCartResponse,
-  mockGetCartsResponse,
-} from '@spryker-oryx/cart/mocks';
+import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
@@ -83,7 +80,7 @@ describe('DefaultCartAdapter', () => {
     service = testInjector.inject(CartAdapter);
     http = testInjector.inject(HttpService) as HttpTestService;
     identity = testInjector.inject(IdentityService) as MockIdentityService;
-    http.flush(mockGetCartResponse);
+    http.flush(mockGetCartsResponse);
   });
 
   afterEach(() => {

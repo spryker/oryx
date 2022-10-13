@@ -15,9 +15,10 @@ import { styles } from './totals.styles';
 export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentOptions>() {
   static styles = styles;
 
-  protected options$ = new ContentController(this).getOptions();
-  protected totals$ = new CartController(this).getTotals();
-  protected cartTotals$ = combineLatest([this.totals$, this.options$]);
+  protected cartTotals$ = combineLatest([
+    new CartController(this).getTotals(),
+    new ContentController(this).getOptions(),
+  ]);
 
   protected override render(): TemplateResult {
     return html`
@@ -87,7 +88,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
-    return !options.hideExpense && totals.calculations.expenseTotal
+    return totals.calculations.expenseTotal && !options.hideExpense
       ? this.renderSection(
           'expense',
           'Expense',
@@ -100,7 +101,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
-    return !options.hideTaxAmount
+    return totals.calculations.taxTotal && !options.hideTaxAmount
       ? this.renderSection('tax', 'Tax', String(totals.calculations.taxTotal))
       : html``;
   }

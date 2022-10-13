@@ -1,131 +1,152 @@
-import { PriceMode } from '@spryker-oryx/cart';
+import {
+  ApiCartModel,
+  Cart,
+  CartDiscount,
+  CartEntry,
+  CartTotals,
+  PriceMode,
+} from '@spryker-oryx/cart';
 
-export const mockDiscounts = [
-  {
-    displayName: '€5 every tuesday and wednesday for buying 5 items',
-    amount: 12075,
+export const mockCartEntry: CartEntry = {
+  sku: '1',
+  groupKey: 'groupKey',
+  abstractSku: 'abstractSku',
+  quantity: 1,
+  calculations: {
+    unitPrice: 100,
+    sumPrice: 200,
+    sumPriceToPayAggregation: 200,
   },
-];
+};
 
-export const mockCartTotals = {
-  expenseTotal: 1000,
-  discountTotal: 12075,
+export const mockCartEntry2: CartEntry = {
+  sku: '2',
+  groupKey: 'groupKey',
+  abstractSku: 'abstractSku',
+  quantity: 1,
+  calculations: {
+    unitPrice: 595,
+    sumPrice: 595,
+    sumPriceToPayAggregation: 595,
+  },
+};
+
+export const mockCartEntry3: CartEntry = {
+  sku: '3',
+  groupKey: 'groupKey',
+  abstractSku: 'abstractSku',
+  quantity: 7,
+  calculations: {
+    unitPrice: 195,
+    sumPrice: 1365,
+    sumPriceToPayAggregation: 1365,
+  },
+};
+
+const mockFullCartTotals: CartTotals = {
+  subtotal: 161942,
+  grandTotal: 149867,
+  priceToPay: 150867,
   taxTotal: 6386,
+  discountTotal: 12075,
+  expenseTotal: 1000,
+};
+
+const mockCartTotals: CartTotals = {
   subtotal: 161942,
   grandTotal: 149867,
   priceToPay: 150867,
 };
 
-export const mockCartResponse = {
-  type: 'carts',
+const mockCartTotalsWithTax: CartTotals = {
+  ...mockCartTotals,
+  taxTotal: 6386,
+};
+
+const mockCartTotalsWithDiscount: CartTotals = {
+  ...mockCartTotals,
+  discountTotal: 12075,
+};
+
+const mockCartTotalsWithExpense: CartTotals = {
+  ...mockCartTotals,
+  expenseTotal: 1000,
+};
+
+const mockDiscounts: CartDiscount[] = [
+  {
+    displayName: '€5 every tuesday and wednesday for buying 5 items',
+    amount: 12075,
+  },
+];
+/**
+ * The base cart is in gross mode and contains a single product.
+ */
+export const mockBaseCart: Cart = {
   id: 'cart',
-  attributes: {
-    name: 'Shopping cart',
-    isDefault: false,
-    totals: mockCartTotals,
-    discounts: mockDiscounts,
-    priceMode: PriceMode.GrossMode,
-  },
-  relationships: {
-    items: {
-      data: [
-        {
-          type: 'items',
-          id: 'entry',
-        },
-      ],
-    },
-  },
+  name: 'Shopping cart',
+  isDefault: false,
+  totals: mockCartTotals,
+  priceMode: PriceMode.GrossMode,
+  products: [mockCartEntry],
 };
 
-export const mockCartDefaultResponse = {
-  type: 'carts',
+export const mockDefaultCart: Cart = {
   id: 'default',
-  attributes: {
-    name: 'Shopping cart',
-    isDefault: true,
-    totals: mockCartTotals,
-    discounts: mockDiscounts,
-    priceMode: PriceMode.GrossMode,
-  },
-  relationships: {
-    items: {
-      data: [
-        {
-          type: 'items',
-          id: 'entry',
-        },
-      ],
-    },
-  },
+  name: 'Shopping cart',
+  isDefault: true,
+  totals: mockFullCartTotals,
+  priceMode: PriceMode.GrossMode,
+  products: [mockCartEntry],
+  discounts: mockDiscounts,
 };
 
-export const mockEntryInclude = {
-  type: 'items',
-  id: 'entry',
-  attributes: {
-    sku: 'sku',
-    groupKey: 'groupKey',
-    abstractSku: 'abstractSku',
-    quantity: 1,
-  },
+// TODO: the Cart model doesn't fit empty carts, either the model is wrong or
+// the logic inside cart totals is expecting the wrong data
+export const mockEmptyCart: Partial<Cart> = {
+  id: 'empty',
 };
 
-export const mockNormalizedCartEntry = {
-  id: mockEntryInclude.id,
-  ...mockEntryInclude.attributes,
-};
-
-export const mockEmptyCart = {
-  id: mockCartResponse.id,
-};
-
-export const mockNormalizedCart = {
-  id: mockCartResponse.id,
-  ...mockCartResponse.attributes,
-  products: [mockNormalizedCartEntry],
-};
-
-export const mockNormalizedDefaultCart = {
-  id: mockCartDefaultResponse.id,
-  ...mockCartDefaultResponse.attributes,
-  products: [mockNormalizedCartEntry],
-};
-
-export const mockNormalizedCartWithoutProducts = {
-  id: mockCartResponse.id,
-  ...mockCartResponse.attributes,
-};
-
-export const mockNormalizedDefaultCartWithoutProducts = {
-  id: mockCartDefaultResponse.id,
-  ...mockCartDefaultResponse.attributes,
-};
-
-export const mockNormalizedCartWithSingleProducts = {
-  ...mockCartDefaultResponse.attributes,
-  id: 'single',
-};
-
-export const mockNormalizedCartWithMultipleProducts = {
-  ...mockCartDefaultResponse.attributes,
-  id: 'multiple',
-  products: [mockNormalizedCartEntry],
-};
-
-export const mockNormalizedCartInNetMode = {
-  ...mockCartResponse.attributes,
-  id: 'net',
+export const mockNetCart: Cart = {
+  ...mockBaseCart,
+  id: 'net', // TODO: rename
   priceMode: PriceMode.NetMode,
-  products: [mockNormalizedCartEntry],
 };
 
-export const mockGetCartsResponse = {
-  data: [mockCartResponse, mockCartDefaultResponse],
-  included: [mockEntryInclude],
+export const mockCartWithTax: Cart = {
+  ...mockBaseCart,
+  id: 'tax',
+  totals: mockCartTotalsWithTax,
 };
 
-export const mockGetCartResponse = {
-  data: mockCartResponse,
-  included: [mockEntryInclude],
+export const mockCartWithExpense: Cart = {
+  ...mockBaseCart,
+  id: 'expense',
+  totals: mockCartTotalsWithExpense,
+};
+
+export const mockCartWithDiscount: Cart = {
+  ...mockBaseCart,
+  id: 'discount',
+  totals: mockCartTotalsWithDiscount,
+  discounts: mockDiscounts,
+};
+
+export const mockCartWithMultipleProducts: Cart = {
+  ...mockBaseCart,
+  id: 'multiple',
+  products: [mockCartEntry, mockCartEntry2, mockCartEntry3],
+};
+
+export const mockGetCartsResponse: ApiCartModel.Response = {
+  data: {
+    attributes: mockBaseCart,
+  },
+  included: [
+    {
+      type: ApiCartModel.Includes.Items,
+      id: 'entry',
+      attributes: mockCartEntry,
+    },
+  ],
 };

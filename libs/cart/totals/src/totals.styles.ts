@@ -19,6 +19,7 @@ export const styles = css`
   }
 
   :host > dl:last-child {
+    margin-top: var(--oryx-space-2);
     padding-top: var(--oryx-space-3);
     padding-bottom: var(--oryx-space-4);
     border-top: solid 1px var(--oryx-color-neutral-light);
