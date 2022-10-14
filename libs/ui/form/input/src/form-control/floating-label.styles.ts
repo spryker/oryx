@@ -2,8 +2,6 @@ import { css } from 'lit';
 
 export const floatingLabelStyles = css`
   :host([floatLabel]) {
-    --float-label-start-gap: 0;
-
     position: relative;
   }
 
@@ -19,8 +17,8 @@ export const floatingLabelStyles = css`
     color: var(--oryx-color-neutral-dark);
     position: absolute;
     top: 13px;
-    inset-inline-start: calc(var(--float-label-start-gap) + 13px);
-    max-width: calc(100% - 26px - var(--float-label-start-gap));
+    inset-inline-start: calc(var(--float-label-start-gap, 0px) + 13px);
+    max-width: calc(100% - 26px - var(--float-label-start-gap, 0px));
     z-index: 1;
     transition: 100ms;
     /* stylelint-disable-next-line */
@@ -54,8 +52,8 @@ export const floatingLabelStyles = css`
 
   :host([floatLabel][has-prefix]:is(:focus-within, [has-value]))
     slot[name='label'] {
-    inset-inline-start: calc(var(--float-label-start-gap) + 7px);
-    max-width: calc(100% - 30px - calc(var(--float-label-start-gap)));
+    inset-inline-start: calc(var(--float-label-start-gap, 0px) + 7px);
+    max-width: calc(100% - 30px - calc(var(--float-label-start-gap, 0px)));
   }
 
   :host([floatLabel][has-value][disabled]) slot[name='label'] {

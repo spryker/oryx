@@ -1,0 +1,90 @@
+{
+  "id": "DE",
+  "name": "Germany",
+  "data": {
+    "options": [
+      {
+        "id": "salutation",
+        "label": "Salutation",
+        "type": "select",
+        "options": [
+          {
+            "value": "mr",
+            "text": "Mr"
+          },
+          {
+            "value": "ms",
+            "text": "Ms"
+          },
+          {
+            "value": "dr",
+            "text": "Dr"
+          }
+        ]
+      },
+      {
+        "id": "firstName",
+        "title": "First Name",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "lastName",
+        "title": "Last Name",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "company",
+        "title": "Company",
+        "label": "",
+        "type": "input",
+        "required": false
+      },
+      {
+        "id": "address1",
+        "title": "Street and House number",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "address2",
+        "title": "Apt, suite, unit, building, floor, etc.",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "zipcode",
+        "title": "PLZ",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "city",
+        "title": "City",
+        "label": "",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "email",
+        "title": "Email",
+        "label": "",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "title": "Phone",
+        "label": "",
+        "type": "tel",
+        "required": false
+      }
+    ]
+  }
+}

@@ -4,6 +4,7 @@ import { contentFeature } from '@spryker-oryx/content';
 import { app } from '@spryker-oryx/core';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';
 import { mockExperienceFeature } from '@spryker-oryx/experience/mocks';
+import { formFeature } from '@spryker-oryx/form';
 import { launchpadUiFeature } from '@spryker-oryx/launchpad-ui';
 import { mockProductFeature } from '@spryker-oryx/product/mocks';
 import { mockSearchFeature } from '@spryker-oryx/search/mocks';
@@ -27,6 +28,7 @@ app()
   })
   .withFeature(mockExperienceFeature)
   .withFeature(uiFeature)
+  .withFeature(formFeature)
   .withFeature(mockCoreFeature)
   .withFeature(mockCartFeature)
   .withFeature(contentFeature)
