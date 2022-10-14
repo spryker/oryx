@@ -1,6 +1,7 @@
 import { ContentController } from '@spryker-oryx/experience';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
@@ -9,6 +10,8 @@ import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 import { FormattedCartTotals, PriceMode } from '../../src/models';
 import { CartTotalsComponentOptions } from './totals.model';
 import { styles } from './totals.styles';
+
+@hydratable('window:load')
 export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentOptions>() {
   static styles = styles;
 
