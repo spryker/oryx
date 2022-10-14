@@ -1,15 +1,15 @@
-## Generics
+# Generics
 
 There are 2 types of generics which should be named differently.
 
-### Single non-semantic generics
+## Single non-semantic generics
 
 A single generic that is used in a container without a special semantic meaning.
 For example: `Promise<T>`, `Array<T>`, etc.
 
 For this cases a simple `T` naming of generic is sufficient.
 
-### Generics with semantic meaning
+## Generics with semantic meaning
 
 One or more generics that have a semantic meaning inside of their type.
 For example: `Transformer<Output, Input>`.
