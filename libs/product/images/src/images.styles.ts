@@ -31,7 +31,8 @@ export const styles = css`
   section {
     order: 1;
     height: var(--preview-height, 300px);
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     display: flex;
