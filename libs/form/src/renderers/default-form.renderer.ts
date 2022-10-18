@@ -260,14 +260,13 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${this.buildRequiredLabel(field.label, field.required)}
         class=${this.getClassMap(field)}
         floatLabel
-        .allowEmptyValue=${true}
       >
         <select
           .name=${field.id}
-          .value=${value}
           ?disabled=${field.disabled}
           ?required=${field.required}
         >
+          <option></option>
           ${field.options?.map((option) => {
             const text =
               (option as FormFieldOption)?.text ??

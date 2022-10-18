@@ -2,12 +2,10 @@ import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { FilterStrategyType } from '../../../../search/typeahead';
-import { SelectOptions } from '../select.model';
 import { SelectFilterController } from './select-filter.controller';
 
 @customElement('fake-select')
-class FakeComponent extends LitElement implements SelectOptions {
-  @property({ type: Boolean }) allowEmptyValue?: boolean;
+class FakeComponent extends LitElement {
   @property({ type: Boolean }) isEmpty?: boolean;
   @property({ type: Boolean }) filterSelect?: boolean;
   @property() filterStrategy?: FilterStrategyType;

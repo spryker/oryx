@@ -2,7 +2,6 @@ import { TypeaheadOptions } from '@spryker-oryx/ui/typeahead';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { getControl } from '../../../utilities';
-import { SelectOptions } from '../select.model';
 
 export class SelectFilterController implements ReactiveController {
   private initialized = false;
@@ -81,7 +80,7 @@ export class SelectFilterController implements ReactiveController {
     ) as HTMLInputElement;
   }
 
-  constructor(protected host: SelectOptions & LitElement & TypeaheadOptions) {
+  constructor(protected host: LitElement & TypeaheadOptions) {
     this.host.addController(this);
 
     this.onUpdate = this.onUpdate.bind(this);

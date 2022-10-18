@@ -16,9 +16,10 @@ const Template: Story<unknown> = (): TemplateResult => {
 
   return html`
     ${sideBySide(html`
-      <oryx-select ?allowEmptyValue=${true} has-label>
+      <oryx-select has-label>
         <span slot="label">Selected Value: <span></span></span>
         <select @change=${logValue}>
+          <option></option>
           ${keyValueSelectOptions.map(
             (option) =>
               html`<option value=${option.key}>${option.value}</option>`

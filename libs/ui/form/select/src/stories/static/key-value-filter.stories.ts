@@ -18,14 +18,16 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     ${sideBySide(html`
       <oryx-select
-        ?allowEmptyValue=${true}
         has-label
         filterStrategy=${FilterStrategyType.START_OF_WORD}
         contenteditable="false"
       >
         <span slot="label">Selected Value: <span></span></span>
-        <select @change=${logValue}>
-          <option value hidden>select something from the list</option>
+        <select
+          @change=${logValue}
+          placeholder="select something from the list"
+        >
+          <option></option>
           ${keyValueSelectOptions.map(
             (option) =>
               html`<option value=${option.key}>${option.value}</option>`

@@ -5,15 +5,19 @@ import { ComponentTypeDataFields } from '../models';
 
 export interface FormRenderer {
   formatFormData(form: HTMLFormElement): unknown;
+
   formatFormControl(control: HTMLInputElement | HTMLSelectElement): unknown;
+
   buildForm(
     data: ComponentTypeDataFields[],
     values?: Record<string, string | boolean>
   ): TemplateResult[];
+
   buildField(
-    fild: ComponentTypeDataFields,
+    field: ComponentTypeDataFields,
     value?: string | boolean
   ): TemplateResult;
+
   getClassMap(
     params: ComponentTypeDataFields
   ): DirectiveResult<typeof ClassMapDirective>;

@@ -25,7 +25,6 @@ interface SelectInputVariantOptions extends VariantOptions {
   disabled?: boolean;
   withoutOptions?: boolean;
   isLoading?: boolean;
-  allowEmptyValue?: boolean;
   withPlaceholder?: boolean;
 }
 
@@ -85,6 +84,14 @@ const closedSelectInputVariants: SelectInputVariant[] = [
   },
   {
     categoryX: CategoryX.EMPTY,
+    categoryY: CategoryY.CLOSED,
+    options: {
+      label: standardLabel,
+      allowEmptyValue: true,
+    },
+  },
+  {
+    categoryX: CategoryX.INPUT_BASED,
     categoryY: CategoryY.CLOSED,
     options: {
       label: standardLabel,
@@ -172,7 +179,6 @@ const Template: Story<unknown> = (): TemplateResult => {
             }) => html`
               <div class="${categoryY === CategoryY.OPENED ? 'opened' : ''}">
                 <oryx-select
-                  ?allowEmptyValue=${allowEmptyValue}
                   ?has-label=${!floatLabel}
                   ?floatLabel=${floatLabel}
                   ?isLoading=${isLoading}
@@ -186,12 +192,17 @@ const Template: Story<unknown> = (): TemplateResult => {
                     categoryX === CategoryX.INPUT_BASED,
                     () => html`
                       <input placeholder="Select something from the list" />
+                      ${when(
+                        allowEmptyValue,
+                        () => html`<oryx-option hidden></oryx-option>`
+                      )}
                       ${selectOptions.map(
                         (option) => html`<oryx-option>${option}</oryx-option>`
                       )}
                     `,
                     () => html`
                       <select required ?disabled=${disabled}>
+                        ${when(allowEmptyValue, () => html`<option></option>`)}
                         ${when(
                           withPlaceholder,
                           () =>

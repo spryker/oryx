@@ -16,11 +16,12 @@ import { FormFieldRenderer } from './renderer';
 
 import { componentDef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { selectComponent } from '@spryker-oryx/ui';
 import {
   inputListComponent,
   InputListComponent,
 } from '@spryker-oryx/ui/input-list';
-import { selectComponent, SelectComponent } from '@spryker-oryx/ui/select';
+import { SelectComponent } from '@spryker-oryx/ui/select';
 import { toggleComponent, ToggleComponent } from '@spryker-oryx/ui/toggle';
 import { toggleIconComponent } from '@spryker-oryx/ui/toggle-icon';
 import { LitElement, TemplateResult } from 'lit';

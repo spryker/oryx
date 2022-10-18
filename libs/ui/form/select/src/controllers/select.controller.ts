@@ -1,7 +1,6 @@
 import { LitElement, ReactiveController } from 'lit';
 import { TypeaheadOptions } from '../../../../search/typeahead';
 import { getControl } from '../../../utilities';
-import { SelectOptions } from '../select.model';
 
 /**
  * Whenever a select element is projected in the default slot, this controller
@@ -35,21 +34,6 @@ export class SelectController implements ReactiveController {
   }
 
   protected reflectSelect(element: HTMLSelectElement): void {
-    if (this.host.allowEmptyValue) {
-      const firstOption = Array.from(element.options)?.[0];
-      if (firstOption && firstOption.value !== '') {
-        const emptyOption = document.createElement('option');
-        emptyOption.hidden = true;
-        // when an other option is selected, we do not force the selection of the
-        // newly created empty option
-        if (firstOption.selected) {
-          emptyOption.selected = true;
-          element.value = '';
-        }
-        element.insertBefore(emptyOption, firstOption);
-      }
-    }
-
     const options = Array.from(element.options)
       .filter((option) => option.value !== '')
       .map((nativeOption: HTMLOptionElement) => {
@@ -113,7 +97,7 @@ export class SelectController implements ReactiveController {
     this.mutationObserver?.disconnect();
   }
 
-  constructor(protected host: SelectOptions & LitElement & TypeaheadOptions) {
+  constructor(protected host: LitElement & TypeaheadOptions) {
     this.host.addController(this);
   }
 }

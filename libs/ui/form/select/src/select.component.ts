@@ -17,13 +17,12 @@ import {
 } from '../../../search/typeahead';
 import { getControl } from '../../utilities/getControl';
 import { SelectController, SelectFilterController } from './controllers';
-import { SelectOptions } from './select.model';
 import { selectFilterStyles, selectStyles } from './styles';
 import { selectFloatingLabelStyles } from './styles/select-floating-label.styles';
 
 export class SelectComponent
   extends LitElement
-  implements ErrorOptions, SearchOptions, TypeaheadOptions, SelectOptions
+  implements ErrorOptions, SearchOptions, TypeaheadOptions
 {
   static styles = [
     selectStyles,
@@ -39,7 +38,6 @@ export class SelectComponent
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
-  @property({ type: Boolean }) allowEmptyValue?: boolean;
   @property() label?: string;
   @property() errorMessage?: string;
   @property() prefixIcon?: string;
@@ -60,7 +58,9 @@ export class SelectComponent
    */
   setValue(value: string): void {
     const control = getControl(this);
-    if (control.value === value) return;
+    if (control.value === value) {
+      return;
+    }
     control.value = value;
     control.dispatchEvent(
       new Event('change', { bubbles: true, composed: true })
@@ -86,13 +86,19 @@ export class SelectComponent
   }
 
   protected updated(): void {
-    this.clearIconPosition =
-      getControl(this) instanceof HTMLInputElement || this.allowEmptyValue
-        ? ClearIconPosition.SUFFIX
-        : ClearIconPosition.NONE;
+    this.clearIconPosition = this.allowEmptyValue
+      ? ClearIconPosition.SUFFIX
+      : ClearIconPosition.NONE;
   }
 
   protected renderPrefix(): TemplateResult {
     return html`${this.searchController.renderPrefix()}${this.selectFilterController.render()}`;
+  }
+
+  protected get allowEmptyValue(): boolean {
+    const control = getControl<HTMLInputElement | HTMLSelectElement>(this);
+    return (
+      control instanceof HTMLInputElement || control.options?.[0]?.value === ''
+    );
   }
 }

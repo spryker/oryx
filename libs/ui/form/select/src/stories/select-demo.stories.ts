@@ -16,17 +16,12 @@ import {
   TypeaheadOptions,
 } from '../../../../search/typeahead';
 import { branches, states } from '../../../../utilities/storybook';
-import { SelectOptions } from '../select.model';
 
 export default {
   title: `${storybookPrefix}/Form/Select`,
 } as Meta;
 
-interface Props
-  extends SelectOptions,
-    TypeaheadOptions,
-    SearchOptions,
-    AffixOptions {
+interface Props extends TypeaheadOptions, SearchOptions, AffixOptions {
   searchIcon?: string;
   maxHeight?: string;
   dataSet?: 'branches' | 'states';
@@ -70,7 +65,6 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       <oryx-select
         ?floatLabel=${props.floatLabel}
         label="Select with options"
-        ?allowEmptyValue=${props.allowEmptyValue}
         clearIconAppearance=${props.clearIconAppearance}
         filterStrategy=${props.filterStrategy}
         ?prefixFill=${props.prefixFill}
@@ -130,7 +124,6 @@ SelectDemo.parameters = {
 
 SelectDemo.args = {
   maxHeight: '300px',
-  allowEmptyValue: true,
   clearIcon: IconTypes.Remove,
   clearIconAppearance: ClearIconAppearance.HOVER,
   prefixFill: false,
@@ -139,10 +132,6 @@ SelectDemo.args = {
 };
 
 SelectDemo.argTypes = {
-  allowEmptyValue: {
-    control: { type: 'boolean' },
-    table: { category: 'Select only' },
-  },
   maxHeight: {
     control: { type: 'text' },
     table: { category: 'Layout' },

@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const optionStyles = css`
+  :host([hidden]) {
+    display: none;
+  }
+
   :host {
     display: flex;
     align-items: center;

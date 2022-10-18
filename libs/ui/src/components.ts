@@ -11,7 +11,7 @@ export * from '../form/input-list/src/component';
 export * from '../form/input/src/component';
 export * from '../form/password/src/component';
 export * from '../form/radio/src/component';
-export * from '../form/select/src/component';
+export * from '../form/select/src/select.def';
 export * from '../form/tag/src/component';
 export * from '../graphical/chip/src/chip.def';
 export * from '../graphical/icon/src/component';

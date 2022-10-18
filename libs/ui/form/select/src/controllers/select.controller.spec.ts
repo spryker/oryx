@@ -4,12 +4,10 @@ import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { getControl } from '../../../utilities';
-import { SelectOptions } from '../select.model';
 import { SelectController } from './select.controller';
 
 @customElement('fake-typeahead')
-class FakeComponent extends LitElement implements SelectOptions {
-  @property({ type: Boolean }) allowEmptyValue?: boolean;
+class FakeComponent extends LitElement {
   @property({ type: Boolean }) isEmpty?: boolean;
   protected selectController = new SelectController(this);
 
@@ -51,98 +49,6 @@ describe('SelectController', () => {
 
       it('should make the control readonly', () => {
         expect(getControl(element).hasAttribute('readonly')).toBe(false);
-      });
-    });
-  });
-
-  describe('allow empty value', () => {
-    describe('when allowEmptyValue is undefined', () => {
-      describe('and no selected option is provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`
-              <fake-typeahead>
-                <select>
-                  <option>first</option>
-                  <option>second</option>
-                  <option>third</option>
-                </select>
-              </fake-typeahead>
-            `
-          );
-        });
-        it('should default to the first value', () => {
-          expect(getControl(element).value).toBe('first');
-        });
-      });
-
-      describe('and selected option is provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`
-              <fake-typeahead>
-                <select>
-                  <option>first</option>
-                  <option selected>second</option>
-                  <option>third</option>
-                </select>
-              </fake-typeahead>
-            `
-          );
-        });
-        it('should default to the selected value', () => {
-          expect(getControl(element).value).toBe('second');
-        });
-      });
-    });
-
-    describe('when allowEmptyValue is true', () => {
-      describe('and no selected option is provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`
-              <fake-typeahead allowEmptyValue>
-                <select>
-                  <option>first</option>
-                  <option>second</option>
-                  <option>third</option>
-                </select>
-              </fake-typeahead>
-            `
-          );
-        });
-        it('should have an empty (first) option', () => {
-          expect(
-            (getControl(element) as HTMLSelectElement)?.options?.[0].value
-          ).toBe('');
-        });
-        it('should have a select with no value', () => {
-          expect(getControl(element).value).toBe('');
-        });
-      });
-
-      describe('and a selected option is provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`
-              <fake-typeahead allowEmptyValue>
-                <select>
-                  <option>first</option>
-                  <option selected>second</option>
-                  <option>third</option>
-                </select>
-              </fake-typeahead>
-            `
-          );
-        });
-        it('should have an empty (first) option', () => {
-          const firstOption = (getControl(element) as HTMLSelectElement)
-            ?.options?.[0];
-          expect(firstOption.value).toBe('');
-        });
-        it('should have a select with the selected value', () => {
-          expect(getControl(element).value).toBe('second');
-        });
       });
     });
   });

@@ -7,8 +7,8 @@ import {
   SearchIconPosition,
 } from '../../../search/searchbox';
 import { getControl } from '../../utilities/getControl';
-import { selectComponent } from './component';
 import { SelectComponent } from './select.component';
+import { selectComponent } from './select.def';
 
 describe('SelectComponent', () => {
   let element: SelectComponent;
@@ -18,25 +18,54 @@ describe('SelectComponent', () => {
   });
 
   describe('when the value is set', () => {
-    const callback = vi.fn();
+    describe('and the value is new', () => {
+      const callback = vi.fn();
 
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-select>
-          <select @change=${callback}>
-            <option value="foo"></option>
-            <option value="bar"></option>
-          </select>
-        </oryx-select>`
-      );
-      element.setValue('bar');
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-select>
+            <select @change=${callback}>
+              <option value="foo"></option>
+              <option value="bar"></option>
+            </select>
+          </oryx-select>`
+        );
+        element.setValue('bar');
+      });
+
+      it('should set the value of the underlying select', () => {
+        const select = element.querySelector('select');
+        expect(select?.value).toBe('bar');
+      });
+
+      it('should dispatch a change event', () => {
+        expect(callback).toHaveBeenCalled();
+      });
     });
-    it('should set the value of the underlying select', () => {
-      const select = element.querySelector('select');
-      expect(select?.value).toBe('bar');
-    });
-    it('should dispatch a change event', () => {
-      expect(callback).toHaveBeenCalled();
+
+    describe('and the value will not new', () => {
+      const callback = vi.fn();
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-select>
+            <select @change=${callback}>
+              <option value="foo"></option>
+              <option value="bar"></option>
+            </select>
+          </oryx-select>`
+        );
+        element.setValue('foo');
+      });
+
+      it('should not keep the value of the underlying select', () => {
+        const select = element.querySelector('select');
+        expect(select?.value).toBe('foo');
+      });
+
+      it('should dispatch a change event', () => {
+        expect(callback).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -105,8 +134,11 @@ describe('SelectComponent', () => {
     describe('when created with an <input /> control with empty values allowed', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select ?allowEmptyValue=${true} label="some label">
+          html`<oryx-select label="some label">
             <input />
+            <oryx-option hidden></oryx-option>
+            <oryx-option>first</oryx-option>
+            <oryx-option>second</oryx-option>
           </oryx-select>`
         );
       });
