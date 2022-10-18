@@ -51,7 +51,7 @@ export const textStyles = css`
   }
 
   /* stylelint-disable-next-line */
-  @media not all and (min-resolution: 0.001dpcm) {
+  @media (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) and (stroke-color: transparent) {
       :host([truncate][initialised]) .text {
         /* this won't function on safari */
