@@ -3,6 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
   ComponentTypeDataFields,
@@ -48,9 +49,17 @@ export class DefaultFormRenderer implements FormRenderer {
 
   buildForm(
     data: ComponentTypeDataFields[],
-    values?: Record<string, string | boolean>
-  ): TemplateResult[] {
-    return data?.map((field) => this.buildField(field, values?.[field.id]));
+    values?: Record<string, string | boolean>,
+    keyFn: (field: ComponentTypeDataFields) => string = (
+      field: ComponentTypeDataFields
+    ): string => field.id
+  ): TemplateResult {
+    return html`${repeat(
+      data,
+      keyFn,
+      (field: ComponentTypeDataFields): TemplateResult =>
+        html`${this.buildField(field, values?.[field.id])}`
+    )}`;
   }
 
   buildField(

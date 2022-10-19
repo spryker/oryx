@@ -8,10 +8,18 @@ export interface FormRenderer {
 
   formatFormControl(control: HTMLInputElement | HTMLSelectElement): unknown;
 
+  /**
+   *
+   * @param data list of fields to render
+   * @param values values of fields
+   * @param keyFn method that returns unique key for each field to perform re-rendering process
+   *
+   */
   buildForm(
     data: ComponentTypeDataFields[],
-    values?: Record<string, string | boolean>
-  ): TemplateResult[];
+    values?: Record<string, string | boolean>,
+    keyFn?: (field: ComponentTypeDataFields) => string
+  ): TemplateResult;
 
   buildField(
     field: ComponentTypeDataFields,
