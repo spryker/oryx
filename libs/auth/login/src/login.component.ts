@@ -47,11 +47,20 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
   protected auth$ = this.authTrigger$.pipe(
     tap(() => this.loading$.next(true)),
     switchMap((user) =>
-      this.authService.login({
-        username: user.email,
-        password: user.password,
-        remember: user.rememberme,
-      })
+      this.authService
+        .login({
+          username: user.email,
+          password: user.password,
+          remember: user.rememberme,
+        })
+        .pipe(
+          catchError((e) => {
+            this.success$.next(false);
+            this.loading$.next(false);
+
+            return EMPTY;
+          })
+        )
     ),
     withLatestFrom(this.options$),
     switchMap(([success, options]) => {
@@ -73,11 +82,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
         })
       );
     }),
-    catchError(() => {
-      this.success$.next(false);
 
-      return EMPTY;
-    }),
     tap({
       next: () => this.success$.next(true),
       complete: () => this.loading$.next(false),

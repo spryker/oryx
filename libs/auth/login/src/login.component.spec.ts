@@ -27,7 +27,7 @@ class MockRouterService implements Partial<RouterService> {
   previousRoute = vi.fn();
 }
 
-describe('Auth Login', () => {
+describe('AuthLoginComponent', () => {
   let element: AuthLoginComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
@@ -65,24 +65,24 @@ describe('Auth Login', () => {
     destroyInjector();
   });
 
-  describe('default component', () => {
+  describe('when component is rendered', () => {
     beforeEach(async () => {
       element = await fixture(html`<auth-login></auth-login>`);
     });
 
-    it('is defined', () => {
+    it('should have a defined web component', () => {
       expect(element).toBeInstanceOf(AuthLoginComponent);
     });
 
-    it('passes the a11y audit', async () => {
+    it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('renders inputs', () => {
+    it('should render an oryx-input in the light dom', () => {
       expect(element?.shadowRoot?.querySelector('oryx-input')).toBeDefined();
     });
 
-    it('renders click password strategy by default', () => {
+    it('should have the CLICK strategy for password visibility', () => {
       expect(
         (
           element?.shadowRoot?.querySelector(
@@ -92,24 +92,21 @@ describe('Auth Login', () => {
       ).toBe('CLICK');
     });
 
-    it('renders no remember me checkbox by default', () => {
+    it('should not have a remember me checkbox', () => {
       expect(element?.shadowRoot?.querySelector('oryx-checkbox')).toBeNull();
     });
   });
 
-  describe('options', () => {
+  describe('when password visibility strategy is set to HOVER', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<auth-login
-          .options="${{
-            strategy: PasswordVisibilityStrategy.HOVER,
-            remember: true,
-          }}"
+          .options="${{ strategy: PasswordVisibilityStrategy.HOVER }}"
         ></auth-login>`
       );
     });
 
-    it('renders hover password strategy', () => {
+    it('should have the HOVER strategy for password visibility', () => {
       expect(
         (
           element?.shadowRoot?.querySelector(
@@ -118,21 +115,33 @@ describe('Auth Login', () => {
         ).strategy
       ).toBe('HOVER');
     });
-    it('renders remember me checkbox', () => {
+  });
+
+  describe('when the remember property is set to true', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<auth-login .options="${{ remember: true }}"></auth-login>`
+      );
+    });
+
+    it('should have a checkbox for remember me', () => {
       expect(element?.shadowRoot?.querySelector('oryx-checkbox')).toBeDefined();
     });
   });
 
-  describe('login', () => {
+  describe('when login button is clicked', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<auth-login
           .options="${{
-            strategy: PasswordVisibilityStrategy.HOVER,
             showRememberMe: true,
           }}"
         ></auth-login>`
       );
+
+      setupLogin();
+      authService.login.mockReturnValue(of(true));
+      routerService.previousRoute.mockReturnValue(of(null));
     });
 
     const setupLogin = (): void => {
@@ -157,11 +166,7 @@ describe('Auth Login', () => {
       return element.shadowRoot?.querySelector('oryx-notification') ?? null;
     };
 
-    it('should call authService on login and disable login button', async () => {
-      setupLogin();
-      authService.login.mockReturnValue(of(true));
-      routerService.previousRoute.mockReturnValue(of(null));
-
+    it('should call authService and disable login button', async () => {
       const mutation = vi.fn();
 
       const observer = new MutationObserver(mutation);
@@ -184,70 +189,75 @@ describe('Auth Login', () => {
       expect(mutation).toHaveBeenCalled();
     });
 
-    it('should redirect to home page when there is no browsing history', async () => {
-      setupLogin();
-      authService.login.mockReturnValue(of(true));
-      routerService.previousRoute.mockReturnValue(of(null));
+    describe('when login succeeds', () => {
+      describe('and there is no browsing history', () => {
+        it('should redirect to home page', async () => {
+          await submit();
+          expect(routerService.navigate).toHaveBeenCalledWith('/');
+        });
+      });
 
-      await submit();
+      describe('when remember me is checked', () => {
+        it('should remember login when checked', async () => {
+          const rememberMe = element.shadowRoot?.querySelector(
+            'input[name="rememberme"]'
+          ) as HTMLInputElement;
+          rememberMe.click();
+          await submit();
+          expect(authService.login).toHaveBeenCalledWith({
+            password: 'password',
+            username: 'email',
+            remember: true,
+          });
+        });
+      });
 
-      expect(routerService.navigate).toHaveBeenCalledWith('/');
-    });
+      describe('when redirect url is not specified', () => {
+        it('should redirect to the last page', async () => {
+          routerService.previousRoute.mockReturnValue(of('/previous'));
+          await submit();
+          expect(routerService.navigate).toHaveBeenCalledWith('/previous');
+        });
+      });
 
-    it('should remember login when checked', async () => {
-      authService.login.mockReturnValue(of(true));
-      routerService.previousRoute.mockReturnValue(of(null));
-      setupLogin();
-      const rememberMe = element.shadowRoot?.querySelector(
-        'input[name="rememberme"]'
-      ) as HTMLInputElement;
-      rememberMe.click();
-      await submit();
-      expect(authService.login).toHaveBeenCalledWith({
-        password: 'password',
-        username: 'email',
-        remember: true,
+      describe('when redirect url is specified', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<auth-login
+              .options="${{
+                strategy: PasswordVisibilityStrategy.HOVER,
+                showRememberMe: true,
+                url: '/contact',
+              }}"
+            ></auth-login>`
+          );
+        });
+
+        it('should redirect to the specified url', async () => {
+          await submit();
+          expect(routerService.navigate).toHaveBeenCalledWith('/contact');
+        });
       });
     });
 
-    it('should show error when login fails', async () => {
-      authService.login.mockReturnValue(throwError(() => new Error('Error')));
-      setupLogin();
+    describe('when login fails', () => {
+      beforeEach(() => {
+        authService.login.mockReturnValue(throwError(() => new Error('Error')));
+        setupLogin();
+      });
 
-      expect(notification()).toBeNull();
+      it('should show error', async () => {
+        expect(notification()).toBeNull();
+        await submit();
+        expect(notification()).not.toBeNull();
+      });
 
-      await submit();
-
-      expect(notification()).not.toBeNull();
-    });
-
-    it('should redirect to the last page when successfully logging in without redirect url specified', async () => {
-      authService.login.mockReturnValue(of(true));
-      routerService.previousRoute.mockReturnValue(of('/previous'));
-      setupLogin();
-
-      await submit();
-
-      expect(routerService.navigate).toHaveBeenCalledWith('/previous');
-    });
-
-    it('should redirect to a specified url when logging in successfully', async () => {
-      element = await fixture(
-        html`<auth-login
-          .options="${{
-            strategy: PasswordVisibilityStrategy.HOVER,
-            showRememberMe: true,
-            url: '/contact',
-          }}"
-        ></auth-login>`
-      );
-
-      authService.login.mockReturnValue(of(true));
-      setupLogin();
-
-      await submit();
-
-      expect(routerService.navigate).toHaveBeenCalledWith('/contact');
+      describe('and when a subsequent login happens', () => {
+        it('should attempt to login again', async () => {
+          await submit();
+          expect(authService.login).toHaveBeenCalled();
+        });
+      });
     });
   });
 });
