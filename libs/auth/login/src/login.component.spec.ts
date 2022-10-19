@@ -253,9 +253,12 @@ describe('AuthLoginComponent', () => {
       });
 
       describe('and when a subsequent login happens', () => {
-        it('should attempt to login again', async () => {
+        beforeEach(async () => {
           await submit();
-          expect(authService.login).toHaveBeenCalled();
+          await submit();
+        });
+        it('should attempt to login again', async () => {
+          expect(authService.login).toHaveBeenCalledTimes(2);
         });
       });
     });
