@@ -4,6 +4,6 @@ export const labelStyles = css`
   :host {
     display: flex;
     gap: var(--oryx-space);
-    padding: var(--oryx-space);
+    margin: var(--oryx-space);
   }
 `;
