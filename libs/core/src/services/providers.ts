@@ -1,5 +1,6 @@
 import { Provider } from '@spryker-oryx/injector';
 import { ContextService, DefaultContextService } from './context';
+import { DefaultErrorService, ErrorService } from './error';
 import { DefaultHttpService, HttpService } from './http';
 import { DefaultStorageService, StorageService } from './storage';
 import {
@@ -29,5 +30,9 @@ export const coreProviders: Provider[] = [
   {
     provide: StorageService,
     useClass: DefaultStorageService,
+  },
+  {
+    provide: ErrorService,
+    useClass: DefaultErrorService,
   },
 ];
