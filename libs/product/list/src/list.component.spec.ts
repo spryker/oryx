@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import {
   ProductListPageService,
@@ -54,6 +55,10 @@ class MockProductListPageService implements Partial<ProductListPageService> {
   get = vi.fn();
 }
 
+class MockRouterService implements Partial<RouterService> {
+  currentQuery = () => of({});
+}
+
 describe('ProductListComponent', () => {
   let element: ProductListComponent;
   let mockProductListService: MockProductListService;
@@ -74,6 +79,10 @@ describe('ProductListComponent', () => {
         {
           provide: ProductListPageService,
           useClass: MockProductListPageService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
         },
       ],
     });

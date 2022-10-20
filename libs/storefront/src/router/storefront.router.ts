@@ -1,6 +1,6 @@
 import { RouteConfig, Router } from '@lit-labs/router';
 import { SSRAwaiterService } from '@spryker-oryx/core';
-import { RouterService } from '@spryker-oryx/experience';
+import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { isClient, PatchableLitElement } from '@spryker-oryx/utilities';
 import { html, ReactiveControllerHost, TemplateResult } from 'lit';
@@ -16,6 +16,7 @@ export class StorefrontRouter extends Router {
 
   // window.location.pathname alternative to private _currentRoute is updated too early
   protected currentPath?: string;
+  protected urlSearchParams?: RouteParams;
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
@@ -43,6 +44,15 @@ export class StorefrontRouter extends Router {
 
   async _goto(pathname: string): Promise<void> {
     this.currentPath = window.location?.pathname;
+    this.urlSearchParams = Array.from(
+      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
+    ).reduce(
+      (result, [key, value]) => ({
+        ...result,
+        [key]: value,
+      }),
+      {}
+    );
     // As part of the lazy hydration strategy, everything should not be hydrated by default
     // If the host component is SSR rendered, hydrating it wipes everything
     // So none of the previously SSRed sub components will remain
@@ -61,12 +71,9 @@ export class StorefrontRouter extends Router {
     const oldPath = this.currentPath;
     const oldParams = JSON.stringify(this.params);
     await this._goto(pathname);
-    if (
-      (oldPath && oldPath !== this.currentPath) ||
-      JSON.stringify(this.params) !== oldParams
-    ) {
-      this.routerService.go(pathname);
-    }
+    this.routerService.go(pathname, {
+      queryParams: this.urlSearchParams,
+    });
   }
 
   override outlet(): TemplateResult {

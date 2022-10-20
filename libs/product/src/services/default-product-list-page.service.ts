@@ -3,10 +3,12 @@ import { inject } from '@spryker-oryx/injector';
 import {
   ProductList,
   ProductListPageService,
+  ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
 import { NullableGeneric } from '@spryker-oryx/typescript-utils';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export class DefaultProductListPageService implements ProductListPageService {
   constructor(
@@ -15,6 +17,12 @@ export class DefaultProductListPageService implements ProductListPageService {
   ) {}
 
   get(): Observable<NullableGeneric<ProductList>> {
-    return this.productListService.get(this.routerService.getUrlParams());
+    return this.routerService
+      .currentQuery()
+      .pipe(
+        switchMap((params) =>
+          this.productListService.get(params as ProductListQualifier)
+        )
+      );
   }
 }

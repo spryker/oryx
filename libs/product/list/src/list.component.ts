@@ -1,4 +1,4 @@
-import { ContentController } from '@spryker-oryx/experience';
+import { ContentController, RouterService } from '@spryker-oryx/experience';
 import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -17,6 +17,7 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
   static styles = [layoutStyles, ProductListStyles];
 
   protected productListService = resolve(ProductListService);
+  protected routerService = resolve(RouterService);
   protected productListPageService = resolve(ProductListPageService);
   protected options$ = new ContentController(this).getOptions();
   protected products$ = this.options$.pipe(
@@ -31,7 +32,8 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
 
   protected renderProducts(products: Product[]): TemplateResult {
     return html`${products.map(
-      (p) => html`<product-card data-sku=${p.sku}></product-card>`
+      // Temporary solution for SSR to work
+      (p) => html`<product-card data-sku=${p.sku} .sku=${p.sku}></product-card>`
     )}`;
   }
 

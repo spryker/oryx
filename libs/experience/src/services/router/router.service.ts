@@ -11,20 +11,24 @@ export interface RouterEvent {
   route: string;
 }
 
+export interface NavigationExtras {
+  queryParams?: RouteParams;
+}
+
 export interface RouteParams {
   [key: string]: string | undefined;
 }
 
 export interface RouterService {
-  go(route: string): void;
+  go(route: string, extras?: NavigationExtras): void;
   back(): void;
   previousRoute(): Observable<string | null>;
   navigate(route: string): void;
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   currentRoute(): Observable<string>;
   currentParams(): Observable<RouteParams>;
+  currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
-  getUrlParams(): RouteParams;
 }
 
 declare global {

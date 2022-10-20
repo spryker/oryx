@@ -1,5 +1,6 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import {
+  NavigationExtras,
   RouteParams,
   RouterEvent,
   RouterEventType,
@@ -22,13 +23,22 @@ const PREVIOUS_PAGE = 'previousPage';
 export class StorefrontRouterService implements RouterService {
   private router$ = new BehaviorSubject(window.location.pathname);
   private params$ = new ReplaySubject<RouteParams>(1);
+  private urlSearchParams$ = new BehaviorSubject<RouteParams>({});
   private routerEvents$: Subject<RouterEvent> = new Subject();
   private storedRoute$ = new BehaviorSubject('');
 
   protected storageService = inject(StorageService);
 
-  go(route: string): void {
+  go(route: string, extras?: NavigationExtras): void {
+    if (
+      this.router$.value === route &&
+      this.urlSearchParams$.value === extras?.queryParams
+    ) {
+      return;
+    }
+
     this.router$.next(route);
+    this.urlSearchParams$.next(extras?.queryParams ?? {});
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
   }
 
@@ -47,18 +57,6 @@ export class StorefrontRouterService implements RouterService {
 
   previousRoute(): Observable<string | null> {
     return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
-  }
-
-  getUrlParams(): RouteParams {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(decodeURIComponent(queryString));
-    return Array.from(urlParams.entries()).reduce(
-      (result, [key, value]) => ({
-        ...result,
-        [key]: value,
-      }),
-      {}
-    );
   }
 
   currentRoute(): Observable<string> {
@@ -84,6 +82,10 @@ export class StorefrontRouterService implements RouterService {
 
   acceptParams(params: RouteParams): void {
     this.params$.next(params);
+  }
+
+  currentQuery(): Observable<RouteParams | undefined> {
+    return this.urlSearchParams$.asObservable();
   }
 
   protected storeRoute(value: string): void {
