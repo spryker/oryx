@@ -88,11 +88,6 @@ describe('ProductMediaComponent', () => {
         expect(img?.hasAttribute('loading')).toBe(false);
         expect(source?.getAttribute('media')).toContain('(min-width: 400px)');
       });
-
-      it('should set "fetched" attribute', async () => {
-        await elementUpdated(element);
-        expect(element.hasAttribute('fetched')).toBe(true);
-      });
     });
 
     describe('when hdSrc is null', () => {

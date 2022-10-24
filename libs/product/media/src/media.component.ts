@@ -7,7 +7,6 @@ import {
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Loading, ProductMediaComponentOptions } from './media.model';
@@ -16,11 +15,6 @@ import { styles } from './media.styles';
 @hydratable('mouseover')
 export class ProductMediaComponent extends ProductComponentMixin<ProductMediaComponentOptions>() {
   static styles = styles;
-
-  @property({ type: Boolean, reflect: true })
-  protected fallback = false;
-  @property({ type: Boolean, reflect: true })
-  protected fetched = false;
 
   protected product$ = new ProductController(this).getProduct();
   protected options$ = new ContentController(this).getOptions();
@@ -63,11 +57,7 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaCom
       })
     );
 
-  protected onLoad(): void {
-    this.fetched = true;
-  }
-
-  protected onError(options: ProductMediaComponentOptions): void {
+  protected onError(e: Event, options: ProductMediaComponentOptions): void {
     const { src, hdSrc, breakpoint } = options;
 
     //define which resource is invalid
@@ -104,8 +94,7 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaCom
               src=${src}
               alt=${ifDefined(alt)}
               loading=${ifDefined(loading)}
-              @load=${this.onLoad}
-              @error=${(): void => this.onError(options)}
+              @error=${(e: Event): void => this.onError(e, options)}
             />
           </picture>
         `;

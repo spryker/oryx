@@ -7,10 +7,6 @@ export const styles = css`
     line-height: 0;
   }
 
-  :host(:not([fetched])) picture {
-    visibility: hidden;
-  }
-
   [part='fallback'] {
     color: var(--oryx-color-neutral-dark);
     margin: auto;
