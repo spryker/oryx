@@ -14,21 +14,16 @@ import { ProductPriceStyles } from './price.styles';
 export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOptions>() {
   static styles = ProductPriceStyles;
 
-  protected productController = new ProductController(this);
-
   protected pricingService = resolve(PricingService);
 
   protected options$ = new ContentController(this).getOptions();
-  protected price$ = combineLatest([
-    this.options$,
-    this.productController.getProduct(),
-  ]).pipe(
-    switchMap(([options, product]) =>
+  protected product$ = new ProductController(this).getProduct();
+  protected price$ = this.product$.pipe(
+    switchMap((product) =>
       combineLatest([
         this.pricingService.format(product?.price?.defaultPrice),
-        this.pricingService.format(
-          !options?.hideOriginal ? product?.price?.originalPrice : undefined
-        ),
+        this.pricingService.format(product?.price?.originalPrice),
+        this.options$,
       ])
     )
   );
@@ -37,10 +32,12 @@ export class ProductPriceComponent extends ProductComponentMixin<ProductPriceOpt
     return html`
       ${asyncValue(
         this.price$,
-        ([defaultPrice, originalPrice]) => html`
-          ${defaultPrice}
+        ([defaultPrice, originalPrice, options]) => html`
+          <span part=${`default${!originalPrice ? ' default-original' : ''}`}
+            >${defaultPrice}</span
+          >
           ${when(
-            originalPrice,
+            originalPrice && !options?.hideOriginal,
             () => html`<span part="original">${originalPrice}</span>`
           )}
         `

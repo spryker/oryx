@@ -108,16 +108,18 @@ describe('ProductPriceComponent', () => {
         vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
           of({ price: { defaultPrice: mockEur } })
         );
+
+        element = await fixture(
+          html`<product-price sku="123"></product-price>`
+        );
       });
-      describe('and the experience is configured to not hide original price', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<product-price sku="123"></product-price>`
-          );
-        });
-        it('should not render the original price', () => {
-          expect(element.shadowRoot?.querySelector('.original')).toBeNull();
-        });
+
+      it(`should render default-original part`, () => {
+        expect(element).toContainElement('[part*="default-original"]');
+      });
+
+      it('should not render the original', () => {
+        expect(element).not.toContainElement('[part="original"]');
       });
     });
 
@@ -131,17 +133,19 @@ describe('ProductPriceComponent', () => {
             },
           })
         );
+
+        element = await fixture(
+          html`<product-price sku="123"></product-price>`
+        );
       });
 
-      describe('and the experience is configured to not hide original price', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<product-price sku="123"></product-price>`
-          );
-        });
-        it('should render the original price', () => {
-          expect(element).toContainElement('[part="original"]');
-        });
+      it(`should not render default-original part`, () => {
+        expect(element).not.toContainElement('[part*="default-original"]');
+      });
+
+      it('should render the parts', () => {
+        expect(element).toContainElement('[part="default"]');
+        expect(element).toContainElement('[part="original"]');
       });
 
       describe('and the experience is configured to hide original price', () => {
@@ -153,19 +157,8 @@ describe('ProductPriceComponent', () => {
             ></product-price>`
           );
         });
-        it('should not render the original price', () => {
-          expect(element.shadowRoot?.querySelector('.original')).toBeNull();
-        });
-      });
-
-      describe('and the experience is not configured', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<product-price sku="123"></product-price>`
-          );
-        });
-        it('should render the original price', () => {
-          expect(element).toContainElement('[part="original"]');
+        it('should not render the original', () => {
+          expect(element).not.toContainElement('[part="original"]');
         });
       });
     });

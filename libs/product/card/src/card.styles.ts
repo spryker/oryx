@@ -156,6 +156,10 @@ export const ProductCardStyles = css`
     align-items: center;
   }
 
+  product-price::part(default-original) {
+    color: var(--oryx-color-ink);
+  }
+
   product-price::part(original) {
     font-size: 12px;
     line-height: 18px;
