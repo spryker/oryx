@@ -1,16 +1,6 @@
 import { AppPluginAfterApply, AppPluginBeforeApply } from '@spryker-oryx/core';
 import { App, AppPlugin } from '../app';
-
-export type ExecFn = (app?: App) => void | Promise<void>;
-
-export enum ExecPluginRuntime {
-  beforeApply,
-  afterApply,
-}
-
-export interface ExecPluginOptions {
-  run: ExecPluginRuntime;
-}
+import { ExecFn, ExecPluginOptions, ExecPluginRuntime } from './exec.model';
 
 export const ExecPluginName = 'core$exec';
 

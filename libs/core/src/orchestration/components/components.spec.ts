@@ -2,12 +2,8 @@ import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
 import { App } from '../app';
-import {
-  ComponentDef,
-  componentDef,
-  ComponentsPlugin,
-  ComponentsPluginName,
-} from './components';
+import { ComponentsPlugin, ComponentsPluginName } from './components';
+import { ComponentDef, componentDef } from './components.model';
 
 const enum Tags {
   Root = 'mock-root-component',

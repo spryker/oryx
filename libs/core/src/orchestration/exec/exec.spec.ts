@@ -1,5 +1,6 @@
 import { App } from '../app';
-import { ExecPlugin, ExecPluginName, ExecPluginRuntime } from './exec';
+import { ExecPlugin, ExecPluginName } from './exec';
+import { ExecPluginRuntime } from './exec.model';
 
 const mockFn = vi.fn();
 const mockApp = 'mockApp' as unknown as App;

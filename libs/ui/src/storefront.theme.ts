@@ -20,4 +20,6 @@ export const uiStorefrontTheme: Theme = {
   icons: {
     cart: () => import('./cart').then((s) => s.default),
   },
+  designTokens: () => import('./styles/design-tokens').then((s) => s.default),
+  globalStyles: () => import('./styles/global.styles').then((s) => s.default),
 };

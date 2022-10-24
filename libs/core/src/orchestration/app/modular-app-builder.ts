@@ -12,7 +12,7 @@ import {
   AppBuilderWithModules,
   AppFeature,
   ModularAppBuilderOptions,
-} from './model';
+} from './app.model';
 
 /**
  * Creates application with additional modular methods.

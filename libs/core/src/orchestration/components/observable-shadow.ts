@@ -1,13 +1,6 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/utilities';
-
-export interface ObservableShadow {
-  whenShadowAttached(): Promise<ShadowRoot>;
-}
-
-export interface ObservableShadowElement
-  extends HTMLElement,
-    ObservableShadow {}
+import { ObservableShadow } from './components.model';
 
 /**
  * Used for observing shadow DOM content.

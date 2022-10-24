@@ -1,6 +1,6 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/utilities';
-import { App, AppPlugin } from './model';
+import { App, AppPlugin } from './app.model';
 
 /**
  * Indicates when application is ready. Registers plugins.

@@ -6,7 +6,7 @@ import {
   Builder,
   isAppPluginAfterApply,
   isAppPluginBeforeApply,
-} from './model';
+} from './app.model';
 
 /**
  * Creates application. Plugins can be added with chaining.

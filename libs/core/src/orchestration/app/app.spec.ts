@@ -1,5 +1,5 @@
 import { SimpleApp } from './app';
-import { AppPlugin } from './model';
+import { AppPlugin } from './app.model';
 
 const mockPluginName = 'mockPluginName';
 const mockBPluginName = 'mockBPluginName';

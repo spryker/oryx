@@ -1,7 +1,11 @@
 import { SpyInstance } from 'vitest';
 import { SimpleApp } from './app';
 import { SimpleAppBuilder } from './app-builder';
-import { AppPlugin, AppPluginAfterApply, AppPluginBeforeApply } from './model';
+import {
+  AppPlugin,
+  AppPluginAfterApply,
+  AppPluginBeforeApply,
+} from './app.model';
 
 const mockPlugin: AppPlugin & AppPluginBeforeApply & AppPluginAfterApply = {
   getName: () => 'getName',

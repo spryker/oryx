@@ -3,31 +3,28 @@ import { CSSResult, unsafeCSS } from 'lit';
 import { iconHook } from '../../hooks';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentsPlugin } from '../components';
-
-export const enum ThemeStrategies {
-  Replace = 'replace',
-  ReplaceAll = 'replace-all',
-}
-
-export type ThemeStyles = CSSResult | CSSResult[] | string;
-
-export interface ThemeData {
-  styles: ThemeStyles;
-  strategy?: ThemeStrategies;
-}
-
-export type ThemeImpl<T = ThemeData> = T | (() => Promise<T>);
-
-export type Theme = {
-  components: Record<string, ThemeImpl>;
-  icons?: Record<string, ThemeImpl<string>>;
-};
+import {
+  DesignToken,
+  Theme,
+  ThemeData,
+  ThemeImpl,
+  ThemeMediaQueries,
+  ThemeStyles,
+  ThemeToken,
+} from './theme.model';
 
 export const ThemePluginName = 'core$theme';
 
+/**
+ * Resolves components styles from theme options.
+ * Adds design tokens and global styles to the root component of into body inside style tag.
+ * Resolves icons from theme options.
+ * Changes static method by token {@link IconHookToken} for custom core implementation.
+ */
 export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   protected app?: App;
   protected icons = {};
+  protected cssVarPrefix = '--oryx';
 
   constructor(protected themes: Theme[]) {}
 
@@ -39,8 +36,15 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     this.app = app;
   }
 
-  apply(): void {
-    ///
+  async apply(): Promise<void> {
+    const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
+
+    if (typeof componentPlugin?.options.root === 'string' && document.body) {
+      const styles = document.createElement('style');
+      const streamStyles = await this.setStyles(':root:not([no-dark-mode])');
+      styles.innerHTML = streamStyles.styles as string;
+      document.body.prepend(styles);
+    }
   }
 
   transformer(theme: ThemeStyles): CSSResult[] {
@@ -88,6 +92,10 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
       implementations.push(this.loadThemeImplFn(componentTheme));
     }
 
+    if (componentPlugin?.rootSelector === name) {
+      implementations.unshift(this.setStyles());
+    }
+
     const themes = await Promise.all(implementations);
 
     return themes.length ? themes : null;
@@ -105,6 +113,100 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
   getIconTemplate(icon?: string): ThemeImpl<string> | void {
     return this.icons?.[icon as keyof typeof this.icons];
+  }
+
+  protected async setStyles(selector = ':host'): Promise<ThemeData> {
+    let stream = '';
+    const replaced: (Theme | Record<'tokens', DesignToken>)[] = [
+      ...this.themes,
+    ];
+    const isTokens = (
+      arg: Theme | Record<'tokens', DesignToken>
+    ): arg is Record<'tokens', DesignToken> =>
+      arg['tokens' as keyof typeof arg];
+    const generateCssVarKey = (
+      currentKey: string,
+      parentKey?: string
+    ): string => (parentKey ? `${parentKey}-${currentKey}` : currentKey);
+    // TODO; should be common mechanism for media queries generation
+    const mediaQueryMapper: Record<
+      keyof ThemeMediaQueries,
+      Record<string, string>
+    > = {
+      mode: {
+        dark: 'prefers-color-scheme: dark',
+      },
+    };
+
+    for (let i = 0; i < replaced.length; i++) {
+      const theme = replaced[i];
+
+      if (!isTokens(theme)) {
+        const { designTokens, globalStyles } = theme;
+        const [styles = '', tokensArr = []] = await Promise.all([
+          this.loadThemeImplFn(globalStyles),
+          this.loadThemeImplFn(designTokens),
+        ]);
+
+        stream += `${styles}`;
+
+        for (let i = 0; i < tokensArr.length; i++) {
+          replaced.push({ tokens: tokensArr[i] });
+        }
+
+        continue;
+      }
+
+      const { tokens } = theme;
+      let start = '';
+      let end = '}';
+
+      if (tokens?.mediaQuery) {
+        start += '@media ';
+        end += '}';
+
+        for (const key in tokens.mediaQuery) {
+          start += `(${
+            mediaQueryMapper[key as keyof ThemeMediaQueries]?.[
+              tokens.mediaQuery[key as keyof ThemeMediaQueries] as string
+            ]
+          }) {`;
+        }
+
+        delete tokens.mediaQuery;
+      }
+
+      start += `${selector} {`;
+      const tokensArr: [string, string | ThemeToken, string?][] =
+        Object.entries(tokens);
+
+      for (let i = 0; i < tokensArr.length; i++) {
+        const [key, token, parentKey] = tokensArr[i];
+
+        if (typeof token === 'string') {
+          start += `${this.cssVarPrefix}-${generateCssVarKey(
+            key,
+            parentKey
+          )}: ${token};`;
+
+          continue;
+        }
+
+        for (const subKey in token) {
+          tokensArr.push([
+            subKey,
+            token[subKey],
+            generateCssVarKey(key, parentKey),
+          ]);
+        }
+      }
+
+      stream += `${start}${end}`;
+    }
+
+    return {
+      styles: stream,
+    };
   }
 
   protected loadThemeImplFn<T>(impl?: ThemeImpl<T>): T | Promise<T> {

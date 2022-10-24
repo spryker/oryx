@@ -100,10 +100,6 @@
   --oryx-modal-background-color: rgb(0 0 0 / 50%);
 }
 
-::placeholder {
-  color: var(--oryx-color-placeholder);
-}
-
 @media (max-width: 767px) {
   :root {
     --oryx-font-size-base: 16px;

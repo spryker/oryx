@@ -1,82 +1,32 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
 import { HOOKS_KEY, isDefined, Type } from '@spryker-oryx/utilities';
-import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 import { App, AppPlugin } from '../app';
-import { ThemeData, ThemeImpl, ThemePlugin, ThemeStrategies } from '../theme';
+import { ThemeData, ThemePlugin, ThemeStrategies } from '../theme';
+import {
+  ComponentDef,
+  ComponentDefImpl,
+  ComponentImplMeta,
+  ComponentImplStrategy,
+  ComponentInfo,
+  ComponentProps,
+  ComponentsInfo,
+  ComponentsPluginOptions,
+  ComponentStatic,
+  ComponentType,
+  ObservableShadowElement,
+} from './components.model';
 import {
   isObservableShadowElement,
   observableShadow,
-  ObservableShadowElement,
 } from './observable-shadow';
-
-export type ComponentInfo = ComponentDef | ComponentDefFn;
-
-export type ComponentsInfo = (ComponentInfo | ComponentInfo[])[];
-
-export interface ComponentDef {
-  readonly name: string;
-  readonly impl: ComponentDefImpl;
-  readonly theme?: ThemeImpl;
-}
-
-export type ComponentDefFn = () => ComponentDef;
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Component extends HTMLElement {}
-export interface ComponentProps {
-  [HOOKS_KEY]?: Record<string, string>;
-}
-
-export type ComponentType = Type<Component> & ComponentProps;
-
-export interface ComponentStatic {
-  styles?: CSSResult[];
-  elementStyles?: CSSResultOrNative[];
-  finalized?: boolean;
-  finalizeStyles?(styles?: CSSResultGroup): CSSResultOrNative[];
-}
-
-export type ComponentDefImpl =
-  | ComponentType
-  | (() => Promise<ComponentType>)
-  | ComponentImplStrategy;
-
-export interface ComponentImplMeta {
-  readonly foundInDom?: boolean;
-  readonly programmaticLoad?: boolean;
-}
-
-export interface ComponentImplStrategy {
-  load(
-    def: ComponentDef,
-    meta: ComponentImplMeta
-  ): Promise<ComponentType | undefined>;
-}
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface HooksTokenMap {}
-}
-
-export interface ComponentsPluginOptions {
-  root: ComponentInfo | string;
-  elementOptions?: ElementDefinitionOptions;
-  logger?: Pick<Console, 'warn'>;
-  preload?: boolean;
-  [HOOKS_KEY]?: HooksTokenMap;
-}
-
-export function componentDef(def: ComponentDef) {
-  return <T = ComponentDef>(overrides?: Partial<T>): ComponentDef => ({
-    ...def,
-    ...overrides,
-  });
-}
 
 export const ComponentsPluginName = 'core$components';
 
 /**
- *  Registers, loads and defines components. Observes nodes (including shadowDOM)
+ *  Registers, loads and defines components. Observes nodes (including shadowDOM).
+ *  Defines components in lazy-load and preload modes, depends on options {@link ComponentsPluginOptions}.
+ *  Redefines component static method by {@link HOOKS_KEY}.
+ *  Applies theme styles for component definition.
  */
 export class ComponentsPlugin implements AppPlugin {
   protected theme?: ThemePlugin;
@@ -98,6 +48,7 @@ export class ComponentsPlugin implements AppPlugin {
   protected readonly implMetaProgrammatic: ComponentImplMeta = {
     programmaticLoad: true,
   };
+  rootSelector = '';
 
   constructor(
     componentsInfo: ComponentsInfo,
@@ -113,22 +64,22 @@ export class ComponentsPlugin implements AppPlugin {
   async apply(app: App): Promise<void> {
     this.theme = app.findPlugin(ThemePlugin);
 
+    this.rootSelector =
+      typeof this.options.root === 'string'
+        ? this.options.root
+        : this.processDef(this.options.root).name;
+
     if (this.options.preload) {
       await this.preloadComponents();
 
       return;
     }
 
-    const rootSelector =
-      typeof this.options.root === 'string'
-        ? this.options.root
-        : this.processDef(this.options.root).name;
-
-    const rootElement = document.querySelector?.(rootSelector);
+    const rootElement = document.querySelector?.(this.rootSelector);
 
     if (!rootElement) {
       throw new ComponentsPluginError(
-        `Cannot find root element by selector '${rootSelector}'!`
+        `Cannot find root element by selector '${this.rootSelector}'!`
       );
     }
 
