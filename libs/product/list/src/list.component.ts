@@ -32,8 +32,7 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
 
   protected renderProducts(products: Product[]): TemplateResult {
     return html`${products.map(
-      // Temporary solution for SSR to work
-      (p) => html`<product-card data-sku=${p.sku} .sku=${p.sku}></product-card>`
+      (p) => html`<product-card .sku=${p.sku}></product-card>`
     )}`;
   }
 

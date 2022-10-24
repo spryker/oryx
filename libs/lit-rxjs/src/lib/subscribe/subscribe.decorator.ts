@@ -19,6 +19,7 @@ function controllerCreation(target: TargetDecorator): void {
 const legacySubscribe = (context: TargetDecorator, name: string): void => {
   const constructor = context.constructor as typeof LitElement;
   const internalKey = Symbol(name);
+  const willUpdate = context['willUpdate'];
 
   Object.defineProperty(context, name, {
     get: function (this: TargetDecorator) {
@@ -36,6 +37,11 @@ const legacySubscribe = (context: TargetDecorator, name: string): void => {
     },
     configurable: true,
   });
+
+  context['willUpdate'] = function (props): void {
+    (this[SUBSCRIBE_CONTROLLER] as SubscribeController).hostConnected();
+    willUpdate.call(this, props);
+  };
 
   constructor.addInitializer((instance: ReactiveElement) => {
     controllerCreation(instance as TargetDecorator);
