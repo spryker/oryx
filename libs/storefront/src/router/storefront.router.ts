@@ -25,7 +25,6 @@ export class StorefrontRouter extends Router {
     super(host, routes);
     this.host = host;
     this.ssrRendered = !!(isClient() && host.shadowRoot);
-
     this.routerService
       .currentRoute()
       .pipe(
@@ -44,14 +43,8 @@ export class StorefrontRouter extends Router {
 
   async _goto(pathname: string): Promise<void> {
     this.currentPath = window.location?.pathname;
-    this.urlSearchParams = Array.from(
+    this.urlSearchParams = Object.fromEntries(
       new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
-    ).reduce(
-      (result, [key, value]) => ({
-        ...result,
-        [key]: value,
-      }),
-      {}
     );
     // As part of the lazy hydration strategy, everything should not be hydrated by default
     // If the host component is SSR rendered, hydrating it wipes everything
@@ -68,8 +61,6 @@ export class StorefrontRouter extends Router {
   }
 
   override async goto(pathname: string): Promise<void> {
-    const oldPath = this.currentPath;
-    const oldParams = JSON.stringify(this.params);
     await this._goto(pathname);
     this.routerService.go(pathname, {
       queryParams: this.urlSearchParams,

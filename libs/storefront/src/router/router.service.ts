@@ -23,7 +23,11 @@ const PREVIOUS_PAGE = 'previousPage';
 export class StorefrontRouterService implements RouterService {
   private router$ = new BehaviorSubject(window.location.pathname);
   private params$ = new ReplaySubject<RouteParams>(1);
-  private urlSearchParams$ = new BehaviorSubject<RouteParams>({});
+  private urlSearchParams$ = new BehaviorSubject<RouteParams>(
+    Object.fromEntries(
+      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
+    )
+  );
   private routerEvents$: Subject<RouterEvent> = new Subject();
   private storedRoute$ = new BehaviorSubject('');
 
@@ -32,7 +36,8 @@ export class StorefrontRouterService implements RouterService {
   go(route: string, extras?: NavigationExtras): void {
     if (
       this.router$.value === route &&
-      this.urlSearchParams$.value === extras?.queryParams
+      JSON.stringify(this.urlSearchParams$.value) ===
+        JSON.stringify(extras?.queryParams ?? {})
     ) {
       return;
     }
