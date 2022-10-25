@@ -10,7 +10,7 @@ const components: { [key: string]: boolean } = {};
 /**
  * Directive is used to inline javascript snippet with Server Side Rendered component.
  * Because of obvious overhead, it's intended to efficiently fix component rendering in order
- * to provde correct UI for not hydrated component but also to minimize UI changes and LCP metric.
+ * to provide correct UI for not hydrated component but also to minimize UI changes and LCP metric.
  *
  * - dryFunction: code intended to fix SSR markup. At runtime, it will receive element instance and will
  *   be invoked for every element

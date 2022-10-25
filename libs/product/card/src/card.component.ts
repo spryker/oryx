@@ -2,7 +2,6 @@ import { ContextController } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import {
   asyncValue,
-  observe,
   ObserveController,
   subscribe,
 } from '@spryker-oryx/lit-rxjs';
@@ -16,7 +15,7 @@ import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, combineLatest, filter, tap } from 'rxjs';
+import { combineLatest, filter, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
@@ -30,12 +29,6 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
   protected hidePrice = false;
   @property({ type: Boolean, reflect: true, attribute: 'hide-rating' })
   protected hideRating = false;
-
-  @property({ type: Boolean, reflect: true })
-  protected active = false;
-
-  @observe()
-  protected active$ = new BehaviorSubject(this.active);
 
   protected observe = new ObserveController<ProductCardComponent>(this);
   protected context = new ContextController(this);
@@ -55,7 +48,16 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
   );
   protected product$ = new ProductController(this).getProduct();
 
-  protected card$ = combineLatest([this.product$, this.options$, this.active$]);
+  protected card$ = combineLatest([this.product$, this.options$]).pipe(
+    tap(([product, options]) => {
+      if (options && 'truncateTitleAfter' in options) {
+        this.style?.setProperty(
+          '--oryx-product-card-title-line-clamp',
+          String(options.truncateTitleAfter)
+        );
+      }
+    })
+  );
 
   @subscribe()
   protected sku$ = combineLatest([
@@ -77,7 +79,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.card$, ([product, options, active]) =>
+    return html`${asyncValue(this.card$, ([product, options]) =>
       product
         ? html`
             <content-link
@@ -85,18 +87,6 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                 type: SemanticLinkType.Product,
                 id: product.sku,
               }}"
-              @mouseenter=${(): void => {
-                this.active = true;
-              }}
-              @mouseleave=${(): void => {
-                this.active = false;
-              }}
-              @focus=${(): void => {
-                this.active = true;
-              }}
-              @blur=${(): void => {
-                this.active = false;
-              }}
             >
               <div>
                 ${when(
@@ -127,12 +117,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                   !options?.hideTitle,
                   () => html`
                     <product-title
-                      .options="${{
-                        truncateAfter: !active
-                          ? options.truncateTitleAfter ?? 1
-                          : 0,
-                        link: false,
-                      }}"
+                      .options="${{ link: false }}"
                     ></product-title>
                   `
                 )}

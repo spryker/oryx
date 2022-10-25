@@ -1,11 +1,10 @@
 // organize-imports-ignore
-import { fixture, html } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import './ponyfill';
+import { wait } from '@spryker-oryx/typescript-utils';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { textComponent } from './component';
+import { textComponent } from './text.def';
 import { TextComponent } from './text.component';
-
-useComponent(textComponent);
 
 const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
@@ -38,8 +37,8 @@ describe('TextComponent', () => {
     expect(el).toBeInstanceOf(TextComponent);
   });
 
-  describe('truncateAfter', () => {
-    describe('when truncateAfter is not defined', () => {
+  describe('text truncation', () => {
+    describe('when --line-clamp css variable is not set', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-text>
@@ -48,86 +47,102 @@ describe('TextComponent', () => {
           </oryx-text>`
         );
       });
-      it('should not be truncated', () => {
-        expect(element?.hasAttribute('truncate')).toBe(false);
-      });
-      it('should not have a line-clamp variable', () => {
-        expect(element?.style.getPropertyValue('--line-clamp')).toBe('');
-      });
-      it('should not have a toggle button', () => {
-        expect(
-          element?.shadowRoot?.querySelector('slot[name="toggle"]')
-        ).toBeNull();
+      it('should not set attributes', () => {
+        expect(element.hasAttribute('truncation')).toBe(false);
+        expect(element.hasAttribute('truncated')).toBe(false);
       });
     });
 
-    describe('when truncateAfter is larger then 0', () => {
+    describe('when --line-clamp css variable is set', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-text truncateAfter="3">
+          html`<oryx-text .style="${`--line-clamp: 2`}">
             <p>${text}</p>
             <p>${text}</p>
           </oryx-text>`
         );
+
+        //simulate resize
+        const textEl = element?.shadowRoot?.querySelector('div') as HTMLElement;
+
+        // JSDOM doesn't support layout
+        vi.spyOn(textEl, 'clientHeight', 'get').mockImplementation(() => 24);
+        vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 100);
+
+        await wait(101);
       });
-      it('should be truncated', async () => {
-        expect(element?.hasAttribute('truncate')).toBe(true);
+      it('should set attributes', async () => {
+        expect(element.hasAttribute('truncation')).toBe(true);
+        expect(element.hasAttribute('truncated')).toBe(true);
       });
-      it('should have a line-clamp variable', () => {
-        expect(element?.style.getPropertyValue('--line-clamp')).toBe('3');
+      it('should set --lines-count', () => {
+        expect(element.style.cssText).toContain('--lines-count');
+      });
+
+      describe('when --line-clamp css variable is removed', () => {
+        beforeEach(async () => {
+          element.style.removeProperty('--line-clamp');
+
+          //simulate resize
+          const textEl = element?.shadowRoot?.querySelector(
+            'div'
+          ) as HTMLElement;
+
+          // JSDOM doesn't support layout
+          vi.spyOn(textEl, 'clientHeight', 'get').mockImplementation(() => 20);
+          vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 80);
+
+          await wait(101);
+        });
+
+        it('should remove truncation attribute', async () => {
+          expect(element.hasAttribute('truncation')).toBe(false);
+        });
       });
     });
   });
 
-  describe('toggle', () => {
-    describe('when showToggle is not specified', () => {
+  describe('toggling', () => {
+    describe('when hideToggle is not specified', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-text></oryx-text>`);
       });
-      it('should not render a toggle button slot', () => {
-        expect(
-          element?.shadowRoot?.querySelector('slot[name="toggle"]')
-        ).toBeNull();
+
+      it('should render a toggle button slot', () => {
+        expect(element).toContainElement('slot[name="toggle"]');
       });
     });
 
     describe('when showToggle is specified', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-text showToggle></oryx-text>`);
+        element = await fixture(html`<oryx-text hideToggle></oryx-text>`);
       });
-      it('should render the toggle button slot', () => {
-        expect(
-          element?.shadowRoot?.querySelector('slot[name="toggle"]')
-        ).toBeDefined();
+
+      it('should render a toggle button slot', () => {
+        expect(element).not.toContainElement('slot[name="toggle"]');
       });
     });
 
-    describe('when text is truncated', () => {
+    describe('when click on toggle button', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-text truncateAfter="3" showToggle>
+          html`<oryx-text .style="${`--line-clamp: 2`}">
             <p>${text}</p>
             <p>${text}</p>
           </oryx-text>`
         );
-        const textEl = element?.shadowRoot?.querySelector(
-          '.text'
-        ) as HTMLElement;
 
-        // JSDOM doesn't support layout
-        vi.spyOn(textEl, 'clientHeight', 'get').mockImplementation(() => 90);
-        vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 100);
+        element.shadowRoot
+          ?.querySelector('button')
+          ?.dispatchEvent(new Event('click'));
       });
 
-      describe('and the toggle button is clicked', () => {
-        beforeEach(async () => {
-          element.shadowRoot
-            ?.querySelector('button')
-            ?.dispatchEvent(new Event('click'));
-        });
-        it('should collapse', () => {
-          expect(element.hasAttribute('truncate')).toBe(false);
-        });
+      it('should collapse the text', () => {
+        expect(element.hasAttribute('truncated')).toBe(false);
+      });
+
+      it('should set initialized attr', () => {
+        expect(element.hasAttribute('initialized')).toBe(true);
       });
     });
   });

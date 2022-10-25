@@ -1,18 +1,22 @@
 export interface TextProperties {
   /**
-   * Indicates whether the text should truncate after a number of lines.
+   * Indicates whether a read more link should be hidden.
    */
-  truncateAfter?: number;
+  hideToggle: boolean;
 
   /**
-   * Indicates whether a read more link should be shown rendered.
+   * Indicates that the full text is truncated.
+   * Requires setting the '--line-clamp' css variable to control
+   * the amount of truncated lines
+   *
+   * @default true
    */
-  showToggle: boolean;
+  truncated: boolean;
 
   /**
-   * Indicates that the full text is expanded.
+   * Indicates that the text is expanded by default
    *
    * @default false
    */
-  expanded: boolean;
+  defaultExpanded?: boolean;
 }

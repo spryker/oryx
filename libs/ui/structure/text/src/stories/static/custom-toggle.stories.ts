@@ -26,7 +26,13 @@ const Template: Story<unknown> = (): TemplateResult => {
     document.querySelector('oryx-text')?.toggleAttribute('expanded');
   };
   return html`
-    <oryx-text truncateAfter="3" concatenate>${text}</oryx-text>
+    <style>
+      oryx-text {
+        --line-clamp: 3;
+      }
+    </style>
+
+    <oryx-text hideToggle>${text}</oryx-text>
     <button @click=${toggle}>toggle</button>
   `;
 };

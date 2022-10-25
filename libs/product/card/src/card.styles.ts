@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const ProductCardStyles = css`
   :host {
+    --line-clamp: var(--oryx-product-card-title-line-clamp, 1);
+
     transition: all var(--oryx-transition-time);
     background-color: var(--oryx-color-canvas);
     min-height: calc(
@@ -15,12 +17,14 @@ export const ProductCardStyles = css`
     border: var(--oryx-border-thin) solid var(--oryx-color-neutral-dark);
   }
 
-  :host([active]) {
+  :host(:is(:hover, :focus-within)) {
+    --line-clamp: 0;
+
     z-index: 1;
     box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color-2);
   }
 
-  :host([active]) product-title {
+  :host(:is(:hover, :focus-within)) product-title {
     white-space: normal;
   }
 

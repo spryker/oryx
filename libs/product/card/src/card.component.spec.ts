@@ -5,7 +5,6 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductContext } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
-import { ProductTitleComponent } from '@spryker-oryx/product/title';
 import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -39,12 +38,6 @@ describe('ProductCardComponent', () => {
     destroyInjector();
     vi.clearAllMocks();
   });
-
-  const getTitle = (): ProductTitleComponent => {
-    return element.shadowRoot?.querySelector(
-      'product-title'
-    ) as ProductTitleComponent;
-  };
 
   const dispatchLinkEvent = (eventType: string): void => {
     element.shadowRoot
@@ -108,59 +101,9 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('when card is not active', () => {
-    describe('and it`s hovered', () => {
-      beforeEach(() => {
-        dispatchLinkEvent('mouseenter');
-      });
-
-      it('should set "active" attr', () => {
-        expect(element.hasAttribute('active')).toBe(true);
-      });
-    });
-
-    describe('and it`s focused', () => {
-      beforeEach(() => {
-        dispatchLinkEvent('focus');
-      });
-
-      it('should set "active" attr', () => {
-        expect(element.hasAttribute('active')).toBe(true);
-      });
-    });
-  });
-
-  describe('when card is active', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<product-card uid="1" active></product-card>`
-      );
-    });
-
-    describe('and it lost hover', () => {
-      beforeEach(() => {
-        dispatchLinkEvent('mouseleave');
-      });
-
-      it('should remove "active" attr', () => {
-        expect(element.hasAttribute('active')).toBe(false);
-      });
-    });
-
-    describe('and it lost focus', () => {
-      beforeEach(() => {
-        dispatchLinkEvent('blur');
-      });
-
-      it('should remove "active" attr', () => {
-        expect(element.hasAttribute('active')).toBe(false);
-      });
-    });
-  });
-
   describe('title truncation', () => {
-    it('should set default value when option is not provided', () => {
-      expect(getTitle().options?.truncateAfter).toBe(1);
+    it('should not set --line-clamp when option is not provided', () => {
+      expect(element.style.getPropertyValue('--line-clamp')).toBe('');
     });
 
     describe('when option is provided', () => {
@@ -174,20 +117,14 @@ describe('ProductCardComponent', () => {
         `);
       });
 
-      it('should pass the value to the product-title', async () => {
-        expect(getTitle().options?.truncateAfter).toBe(truncateTitleAfter);
-      });
-    });
-
-    describe('when card is active', () => {
-      beforeEach(async () => {
-        element = await fixture(html`
-          <product-card uid="1" active></product-card>
-        `);
-      });
-
-      it('should pass 0 to product-title', () => {
-        expect(getTitle().options?.truncateAfter).toBe(0);
+      it('should set the --line-clamp css property', async () => {
+        expect(
+          Number(
+            element.style.getPropertyValue(
+              '--oryx-product-card-title-line-clamp'
+            )
+          )
+        ).toBe(truncateTitleAfter);
       });
     });
   });
@@ -348,6 +285,31 @@ describe('ProductCardComponent', () => {
         handler?.dispatchEvent(clickEvent);
         expect(expectation).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('when no product', () => {
+    beforeEach(async () => {
+      destroyInjector();
+
+      const mockContext = {
+        get: vi.fn().mockReturnValue(of('test')),
+        provide: vi.fn(),
+      };
+      vi.spyOn(core, 'ContextController') as SpyInstance;
+      (core.ContextController as unknown as SpyInstance).mockReturnValue(
+        mockContext
+      );
+
+      createInjector({
+        providers: [...mockProductProviders, ...siteProviders],
+      });
+
+      element = await fixture(html` <product-card></product-card> `);
+    });
+
+    it('should not render the content', () => {
+      expect(element).not.toContainElement('content-link');
     });
   });
 });

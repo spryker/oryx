@@ -26,21 +26,27 @@ const Template: Story<unknown> = (): TemplateResult => {
         <h4>Product card</h4>
         <product-card sku="1"></product-card>
       </li>
-      <li>
-        <h4>Active/Hovered</h4>
-        <product-card sku="1" active></product-card>
+      <li class="pseudo-hover">
+        <h4>Focused/Hovered</h4>
+        <product-card sku="1"></product-card>
       </li>
       <li>
         <h4>With zero rating</h4>
-        <product-card sku="5" active></product-card>
+        <product-card sku="5"></product-card>
       </li>
       <li>
         <h4>With lengthy title</h4>
-        <product-card sku="6"></product-card>
+        <product-card
+          .options=${{ truncateTitleAfter: 1 }}
+          sku="6"
+        ></product-card>
       </li>
-      <li>
+      <li class="pseudo-hover">
         <h4>With lengthy title hovered</h4>
-        <product-card sku="6" active></product-card>
+        <product-card
+          sku="6"
+          .options=${{ truncateTitleAfter: 1 }}
+        ></product-card>
       </li>
       <li>
         <h4>Without labels</h4>

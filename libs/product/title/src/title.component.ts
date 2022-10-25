@@ -28,20 +28,13 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
     )}`;
   }
 
-  protected renderInnerText(
-    product: Product | null,
-    truncateAfter = 0
-  ): TemplateResult {
-    return html`<oryx-text .truncateAfter=${truncateAfter}
-      >${product?.name}</oryx-text
-    >`;
-  }
-
   protected renderContent(
     product: Product | null,
     options: ProductTitleOptions
   ): TemplateResult {
-    const textContent = this.renderInnerText(product, options?.truncateAfter);
+    const textContent = html`<oryx-text hideToggle
+      >${product?.name}</oryx-text
+    >`;
 
     if (!options?.link) {
       return textContent;
@@ -53,9 +46,8 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
           type: SemanticLinkType.Product,
           id: product?.sku,
         }}"
+        >${textContent}</content-link
       >
-        ${textContent}
-      </content-link>
     `;
   }
 

@@ -8,11 +8,11 @@ import { hydratable } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
-import { ProductDescriptionContent } from './model';
+import { ProductDescriptionOptions } from './model';
 import { convertLineFeedsToHTML } from './utils';
 
 @hydratable(['mouseover', 'window:resize'])
-export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionContent>() {
+export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionOptions>() {
   protected options$ = new ContentController(this).getOptions();
   protected product$ = new ProductController(this).getProduct();
 
@@ -21,9 +21,9 @@ export class ProductDescriptionComponent extends ProductComponentMixin<ProductDe
       ${asyncValue(
         this.options$,
         (options) => html`<oryx-text
-          .truncateAfter=${options.truncateAfter ?? 0}
-          .showToggle=${!!options.showToggle}
-          .expanded=${!!options.expanded}
+          .style=${`--line-clamp: ${options.truncateAfter ?? 0}`}
+          .hideToggle=${!!options.hideToggle}
+          .defaultExpanded=${!!options.defaultExpanded}
         >
           ${asyncValue(
             this.product$,

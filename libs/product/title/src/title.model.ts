@@ -9,11 +9,6 @@ export interface ProductTitleOptions {
   tag?: string;
 
   /**
-   * Indicates whether the text should truncate after a number of lines.
-   */
-  truncateAfter?: number;
-
-  /**
    * Indicates whether to generate a link to the Product Detail Page.
    */
   link?: boolean;

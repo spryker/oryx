@@ -29,10 +29,21 @@ export default {
   },
 } as unknown as Meta;
 
-type Props = ProductTitleOptions & ProductComponentProperties;
+type Props = ProductTitleOptions &
+  ProductComponentProperties & {
+    truncateAfter: number;
+  };
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  return html`<product-title .sku=${props.sku} .options=${props} />`;
+  const { sku, truncateAfter, ...options } = props;
+  return html`
+    <style>
+      product-title {
+        --line-clamp: ${truncateAfter};
+      }
+    </style>
+    <product-title .sku=${sku} .options=${options}></product-title>
+  `;
 };
 
 export const TitleDemo = Template.bind({});

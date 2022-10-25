@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const textStyles = css`
   :host {
+    --_text-line-clamp: var(--line-clamp, 0);
+
     display: flex;
     flex-direction: column;
   }
@@ -11,41 +13,46 @@ export const textStyles = css`
     transition: margin-bottom 0.8s cubic-bezier(0, 1, 0, 1);
   }
 
-  :host([truncate]) ::slotted(p) {
-    display: inline;
-  }
-
-  :host([truncate]) ::slotted(p)::after {
-    content: ' ';
-  }
-
-  :host([requires-truncate]) .box {
+  :host([truncation]) div {
     overflow: hidden;
   }
 
-  :host([truncate]) .box {
-    max-height: calc(var(--line-clamp) * var(--oryx-line-height, 24px));
+  :host([truncation][truncated]) ::slotted(p) {
+    display: inline;
+  }
+
+  :host([truncation][truncated]) ::slotted(p)::after {
+    content: ' ';
+  }
+
+  :host([truncation][truncated]) div {
+    max-height: calc(var(--_text-line-clamp) * var(--oryx-line-height, 24px));
     transition: max-height var(--oryx-transition-time) cubic-bezier(0, 1, 0, 1);
   }
 
-  :host(:not([truncate])) .box {
-    max-height: 100rem;
-    transition: max-height var(--oryx-transition-time)
-      cubic-bezier(0.9, 0, 0.8, 0.2);
+  :host(:not([truncated])) div {
+    max-height: calc(
+      var(--lines-count, 100rem) * var(--oryx-line-height, 24px)
+    );
+    transition: max-height var(--oryx-transition-time) ease-out;
   }
 
-  :host([truncate]) .text {
+  slot:not([name]) {
+    display: block;
+  }
+
+  :host([truncated]) slot:not([name]) {
     /* stylelint-disable-next-line */
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: var(--line-clamp);
-    line-clamp: var(--line-clamp);
+    -webkit-line-clamp: var(--_text-line-clamp);
+    line-clamp: var(--_text-line-clamp);
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
-  :host([truncate][initialised]) .text {
-    animation: close 0.1s linear 0.1s forwards;
+  :host([initialized][truncated]) slot:not([name]) {
+    animation: close 0.1s ease 0.1s forwards;
     -webkit-line-clamp: initial;
     line-clamp: initial;
   }
@@ -53,15 +60,15 @@ export const textStyles = css`
   /* stylelint-disable-next-line */
   @media (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-      :host([truncate][initialised]) .text {
+      :host([initialized][truncated]) slot:not([name]) {
         /* this won't function on safari */
-        -webkit-line-clamp: var(--line-clamp);
+        -webkit-line-clamp: var(--_text-line-clamp);
       }
     }
   }
 
-  :host(:not([truncate])) {
-    animation: open 0.1s linear 0s forwards;
+  :host(:not([truncated])) {
+    animation: open 0.1s ease 0s forwards;
   }
 
   oryx-icon-button {
@@ -72,7 +79,7 @@ export const textStyles = css`
     color: var(--oryx-color-brand);
   }
 
-  :host(:not([truncate])) oryx-icon-button {
+  :host(:not([truncated])) oryx-icon-button {
     transform: rotate(180deg);
   }
 
@@ -84,14 +91,14 @@ export const textStyles = css`
     }
   }
 
-  :host(:not([requires-truncate])) slot[name='toggle'] {
+  :host(:not([truncation])) slot[name='toggle'] {
     display: none;
   }
 
   @keyframes open {
     from {
-      line-clamp: var(--line-clamp, 1);
-      -webkit-line-clamp: var(--line-clamp, 1);
+      line-clamp: var(--_text-line-clamp);
+      -webkit-line-clamp: var(--_text-line-clamp);
     }
     to {
       line-clamp: initial;
@@ -105,8 +112,8 @@ export const textStyles = css`
       -webkit-line-clamp: initial;
     }
     to {
-      line-clamp: var(--line-clamp, 1);
-      -webkit-line-clamp: var(--line-clamp, 1);
+      line-clamp: var(--_text-line-clamp);
+      -webkit-line-clamp: var(--_text-line-clamp);
     }
   }
 `;

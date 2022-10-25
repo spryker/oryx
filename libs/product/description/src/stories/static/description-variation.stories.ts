@@ -12,14 +12,14 @@ const Template: Story<unknown> = (): TemplateResult => {
       <p>Collapsed</p>
       <product-description
         sku="1"
-        .options=${{ truncateAfter: 2, expanded: false, showToggle: true }}
+        .options=${{ truncateAfter: 2 }}
       ></product-description>
     </div>
     <div class="variation-description">
       <p>Expanded</p>
       <product-description
         sku="1"
-        .options=${{ truncateAfter: 2, expanded: true, showToggle: true }}
+        .options=${{ truncateAfter: 2, defaultExpanded: true }}
       ></product-description>
     </div>
     <div class="variation-description">

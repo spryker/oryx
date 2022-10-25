@@ -34,5 +34,5 @@ export * from '../overlays/popover/src/component';
 export * from '../search/searchbox/src/component';
 export * from '../search/typeahead/src/component';
 export * from '../structure/headline/src/component';
-export * from '../structure/text/src/component';
+export * from '../structure/text/src/text.def';
 export * from '../structure/tile/src/component';

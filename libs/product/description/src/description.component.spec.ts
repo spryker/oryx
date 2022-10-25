@@ -4,12 +4,15 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
-import { ProductDescriptionContent } from '../index';
 import { productDescriptionComponent } from './component';
 import { ProductDescriptionComponent } from './description.component';
 
 describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;
+
+  const getText = (): TextComponent => {
+    return element.shadowRoot?.querySelector('oryx-text') as TextComponent;
+  };
 
   beforeAll(async () => {
     await useComponent(productDescriptionComponent);
@@ -40,15 +43,17 @@ describe('ProductDescriptionComponent', () => {
     const oneLineBreak = `with one
     line break`;
 
+    const options = {
+      truncateAfter: 3,
+      defaultExpanded: true,
+      hideToggle: true,
+    };
+
     beforeEach(async () => {
       element = await fixture(
         html` <product-description
           .product=${{ description: oneLineBreak }}
-          .options=${{
-            truncateAfter: 3,
-            showToggle: true,
-            expanded: true,
-          } as ProductDescriptionContent}
+          .options=${options}
         ></product-description>`
       );
     });
@@ -59,15 +64,28 @@ describe('ProductDescriptionComponent', () => {
       );
     });
 
-    it('should slot configure the oryx-text component', () => {
+    it('should pass the options to the oryx-text', () => {
       expect(
-        (element.shadowRoot?.querySelector('oryx-text') as TextComponent)
-          ?.expanded
-      ).toBe(true);
-      expect(
-        (element.shadowRoot?.querySelector('oryx-text') as TextComponent)
-          ?.showToggle
-      ).toBe(true);
+        Number(getComputedStyle(getText()).getPropertyValue('--line-clamp'))
+      ).toBe(options.truncateAfter);
+      expect(getText().hideToggle).toBe(options.hideToggle);
+      expect(getText().defaultExpanded).toBe(options.defaultExpanded);
+    });
+  });
+
+  describe('when truncateAfter option is not specified', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html` <product-description
+          .product=${{ description: 'test' }}
+        ></product-description>`
+      );
+    });
+
+    it('should set the default value', () => {
+      expect(getComputedStyle(getText()).getPropertyValue('--line-clamp')).toBe(
+        '0'
+      );
     });
   });
 });

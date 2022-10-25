@@ -1,7 +1,8 @@
 import { prehydrate } from '@spryker-oryx/core';
 import { throttle } from '@spryker-oryx/typescript-utils';
-import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { truncateFix } from './prehydrate';
@@ -11,26 +12,42 @@ import { textStyles } from './text.styles';
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
-  @property({ type: Number, reflect: true }) truncateAfter = 0;
-  @property({ type: Boolean, reflect: true }) showToggle = false;
-  @property({ type: Boolean, reflect: true }) expanded = false;
+  protected resizeObserver?: ResizeObserver;
+
+  @property({ type: Boolean })
+  hideToggle = false;
+  @property({ type: Boolean, reflect: true })
+  truncated = false;
+  @property({ type: Boolean })
+  defaultExpanded?: boolean;
+
+  @property({ type: Boolean, reflect: true })
+  truncation = false;
 
   @property() readMoreLabel = 'Read more';
 
-  protected updated(args: PropertyValueMap<TextProperties>): void {
-    if (args.has('truncateAfter') || args.has('expanded')) {
-      this.setup();
-    }
+  disconnectedCallback(): void {
+    this.resizeObserver?.disconnect();
+
+    super.disconnectedCallback();
+  }
+
+  protected containerRef = createRef();
+  protected get container(): HTMLElement {
+    return this.containerRef?.value as HTMLElement;
+  }
+
+  protected get shouldBeTruncated(): boolean {
+    return !!Number(getComputedStyle(this).getPropertyValue('--line-clamp'));
   }
 
   protected override render(): TemplateResult {
-    return html` <div class="box">
-        <div class="text">
-          <slot @slotchange=${this.setup.bind(this)}></slot>
-        </div>
+    return html`
+      <div ${ref(this.containerRef)}>
+        <slot @slotchange=${this.setup.bind(this)}></slot>
       </div>
       ${when(
-        this.showToggle,
+        !this.hideToggle,
         () => html` <slot name="toggle">
           <oryx-icon-button size="small">
             <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
@@ -39,53 +56,48 @@ export class TextComponent extends LitElement implements TextProperties {
           </oryx-icon-button>
         </slot>`
       )}
-      ${prehydrate(truncateFix, 'oryx-text')}`;
+      ${prehydrate(truncateFix, 'oryx-text')}
+    `;
   }
 
   protected setup(): void {
-    this.removeAttribute('requires-truncate');
-    this.style.setProperty(
-      '--line-clamp',
-      this.truncateAfter > 0 ? this.truncateAfter.toString() : ''
-    );
-    this.toggleAttribute('truncate', this.truncateAfter > 0 && !this.expanded);
+    if (!this.shouldBeTruncated) {
+      return;
+    }
 
-    const observer = new ResizeObserver(throttle(() => this.onResize(), 100));
-    observer.observe(this.textElement);
+    this.truncation = true;
+    this.truncated = !this.defaultExpanded;
+
+    this.resizeObserver = new ResizeObserver(
+      throttle(() => this.onResize(), 100)
+    );
+    this.resizeObserver.observe(this.container);
   }
 
   protected onResize(): void {
-    this.toggleAttribute(
-      'requires-truncate',
-      this.isClamped() ||
-        (this.expanded &&
-          !!this.truncateAfter &&
-          this.calcLinesCount(this.textElement) > this.truncateAfter)
+    if (!this.shouldBeTruncated) {
+      this.truncation = false;
+    }
+
+    const linesCount = this.calcLinesCount(
+      this.container.children[0] as HTMLElement
     );
+
+    this.style.setProperty('--lines-count', String(linesCount));
   }
 
   protected toggle(): void {
-    this.toggleAttribute('truncate', !this.isClamped());
-    this.expanded = !this.hasAttribute('truncate');
+    this.toggleAttribute('initialized', true);
 
-    // our CSS transition requires an initial flag after first toggle
-    this.toggleAttribute('initialised', true);
-  }
-
-  protected isClamped(): boolean {
-    return this.textElement.scrollHeight > this.textElement.clientHeight;
+    this.truncated = !this.truncated;
   }
 
   protected calcLinesCount(element: HTMLElement): number {
     const lineHeight = element.style.lineHeight;
     const factor = 1000;
-    element.style.lineHeight = factor + 'px';
+    element.style.lineHeight = `${factor}px`;
     const height = element.getBoundingClientRect().height;
     element.style.lineHeight = lineHeight;
     return Math.floor(height / factor);
-  }
-
-  protected get textElement(): HTMLElement {
-    return this.shadowRoot?.querySelector('div.text') as HTMLElement;
   }
 }
