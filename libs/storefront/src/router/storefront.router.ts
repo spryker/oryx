@@ -1,5 +1,5 @@
 import { RouteConfig, Router } from '@lit-labs/router';
-import { SSRAwaiterService } from '@spryker-oryx/core';
+import { SSRAwaiterService, SsrOptions } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { isClient, PatchableLitElement } from '@spryker-oryx/utilities';
@@ -10,6 +10,7 @@ export class StorefrontRouter extends Router {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
+  protected ssrOptions = resolve(SsrOptions, {} as SsrOptions);
   protected ssrRendered = false;
   // TODO - @lit-labs/router does not expose _host. If they do, we will prefer it over this.
   protected readonly host: ReactiveControllerHost & HTMLElement;
@@ -24,7 +25,8 @@ export class StorefrontRouter extends Router {
   ) {
     super(host, routes);
     this.host = host;
-    this.ssrRendered = !!(isClient() && host.shadowRoot);
+    this.ssrRendered =
+      isClient() && !!host.shadowRoot && !this.ssrOptions.initialNavigation;
     this.routerService
       .currentRoute()
       .pipe(

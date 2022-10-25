@@ -1,3 +1,4 @@
+import { SsrOptions } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
 import {
   BreakpointService,
@@ -36,5 +37,11 @@ export const experiencePreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,
+  },
+  {
+    provide: SsrOptions,
+    useValue: {
+      initialNavigation: true,
+    },
   },
 ];
