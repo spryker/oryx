@@ -1,12 +1,8 @@
-import {
-  defineConfig,
-  loadEnv,
-  splitVendorChunkPlugin,
-  SSROptions,
-} from 'vite';
+import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { adjustUrlVariable } from '../../tools/utils/adjustUrlVariable';
 
 declare module 'vite' {
   interface UserConfig {
@@ -27,18 +23,7 @@ const esbuild =
 export default defineConfig((config) => {
   const env = loadEnv(config.mode, process.cwd(), '');
 
-  const mockServerUrl = env.FES_CONTENT_BACKEND_URL;
-  const adjustedMockServerUrl = env.REVIEW_ID
-    ? mockServerUrl.slice(0, 8) +
-      `deploy-preview-${env.REVIEW_ID}--` +
-      mockServerUrl.slice(8)
-    : mockServerUrl;
-
-  console.log('adjustedMockServerUrl: ', adjustedMockServerUrl);
-
-  process.env = Object.assign(process.env, env, {
-    FES_CONTENT_BACKEND_URL: adjustedMockServerUrl,
-  });
+  adjustUrlVariable(env, 'FES_CONTENT_BACKEND_URL');
 
   return {
     esbuild,
