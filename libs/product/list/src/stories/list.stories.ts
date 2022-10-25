@@ -14,16 +14,23 @@ export default {
 const Template: Story<ProductListQualifier> = (
   props: ProductListQualifier
 ): TemplateResult => {
+  /*
+    ToDo: product list doesn't have default layout.
+    To show it in a grid view was added 'xs-container xs-layout-grid'.
+    Remove them after product list will have default layout
+  */
+
   return html`
     <style>
       product-list {
-        display: flex;
-        max-width: 100%;
-        overflow: scroll;
+        --oryx-layout-gap: 10px;
       }
     </style>
 
-    <product-list .options=${props}></product-list>
+    <product-list
+      .options=${props}
+      class="xs-container xs-layout-grid"
+    ></product-list>
   `;
 };
 
