@@ -84,7 +84,7 @@ export class SelectController implements ReactiveController {
   protected observeSelect(): void {
     this.mutationObserver?.disconnect();
     this.mutationObserver = new MutationObserver(() => {
-      this.initSelect();
+      this.host.requestUpdate();
     });
     this.mutationObserver.observe(getControl(this.host), {
       childList: true,
