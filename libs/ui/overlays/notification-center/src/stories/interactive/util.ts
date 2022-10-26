@@ -6,7 +6,7 @@ import {
 } from '../../index';
 import { generateNotification } from '../util';
 
-export const open = (strategy: NotificationStrategy = {}): void =>
+export const open = (strategy: NotificationStrategy = {}): string =>
   new NotificationService().getCenter().open(generateNotification(strategy));
 export const getNotification = (
   center: NotificationCenterComponent,

@@ -32,11 +32,17 @@ export class NotificationCenterComponent extends LitElement {
     return this.registryController.registry;
   }
 
-  open(strategy: NotificationStrategy): void {
+  open(strategy: NotificationStrategy): string {
     this.registryController.registry = [
       ...this.registryController.registry,
       strategy,
     ];
+
+    return this.registry[this.registry.length - 1].key!;
+  }
+
+  close(key: string): void {
+    this.registryController.handleNotificationClose(key);
   }
 
   protected renderNotification(registry: NotificationRegistry): TemplateResult {

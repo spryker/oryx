@@ -18,13 +18,15 @@ const service = new NotificationService();
 const Template: Story<Props> = ({
   position = Positions.TOP_END,
 }: Props): TemplateResult => {
-  const pushSticky = (): void =>
+  const pushSticky = (): void => {
     service
       .getCenter('#parent-with-sticky', position)
       .open(generateRandomNotification());
+  };
 
-  const pushStatic = (): void =>
+  const pushStatic = (): void => {
     service.getCenter('#parent-with-static').open(generateRandomNotification());
+  };
 
   return html`
     <style>
