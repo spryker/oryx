@@ -1,6 +1,6 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { Observable, of, ReplaySubject, switchMap, take } from 'rxjs';
+import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CONTENT_BACKEND_URL } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
@@ -57,19 +57,21 @@ export class DefaultExperienceService implements ExperienceService {
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
-
     this.http
       .get<Component[]>(componentsUrl)
       .pipe(
-        map((component) => {
-          const componentId = component[0].id!;
+        tap((components) => {
+          if (!components || !components.length) {
+            return;
+          }
+          const component = components[0];
+          const componentId = component.id;
           this.dataRoutes[route].next(componentId);
           if (!this.dataComponent[componentId]) {
             this.dataComponent[componentId] = new ReplaySubject<Component>(1);
           }
-          this.dataComponent[componentId].next(component[0]);
-          this.processComponent(component[0]);
-          return component[0];
+          this.dataComponent[componentId].next(component);
+          this.processComponent(component);
         })
       )
       .subscribe();
