@@ -22,6 +22,7 @@ export class DefaultProductAdapter implements ProductAdapter {
     include = [
       ApiProductModel.Includes.ConcreteProductImageSets,
       ApiProductModel.Includes.ConcreteProductPrices,
+      ApiProductModel.Includes.ConcreteProductAvailabilities,
       ApiProductModel.Includes.Labels,
       ...(include ?? []),
     ].filter((type, index, arr) => arr.indexOf(type) === index);

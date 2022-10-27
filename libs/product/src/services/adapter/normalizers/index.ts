@@ -1,3 +1,4 @@
+export * from './availability';
 export * from './concrete-products';
 export * from './images';
 export * from './model';

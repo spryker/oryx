@@ -1,4 +1,5 @@
 import { CartEntry } from '@spryker-oryx/cart';
+import { ProductAvailability } from '@spryker-oryx/product';
 import { Icons } from '@spryker-oryx/ui/icon';
 
 export interface CartEntryProperties {
@@ -59,6 +60,7 @@ export enum RemoveByQuantity {
 export interface CartEntryCompositionOptions extends CartEntryOptions {
   showOptions?: boolean;
   confirmationRequired?: boolean;
+  availability?: ProductAvailability;
 }
 
 export interface CartEntryPrice {

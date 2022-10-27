@@ -1,5 +1,6 @@
 import { CamelCase } from '@spryker-oryx/core/utilities';
 import { ApiProductModel } from '../../../models';
+import { DeserializedAvailability } from './availability';
 
 export type DeserializedProductIncludes = {
   [P in ApiProductModel.Includes as `${CamelCase<P>}`]?: P extends ApiProductModel.Includes.ConcreteProductImageSets
@@ -8,6 +9,8 @@ export type DeserializedProductIncludes = {
     ? ApiProductModel.Prices[]
     : P extends ApiProductModel.Includes.AbstractProducts
     ? ApiProductModel.Abstract[]
+    : P extends ApiProductModel.Includes.ConcreteProductAvailabilities
+    ? DeserializedAvailability[]
     : P extends ApiProductModel.Includes.ConcreteProducts
     ? (ApiProductModel.Concrete &
         Pick<

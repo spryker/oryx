@@ -279,8 +279,8 @@ describe('Quantity input', () => {
       element = await fixture(
         html` <quantity-input
           min=${1}
-          value=${1}
-          max=${2}
+          value=${2}
+          max=${3}
           @oryx.quantity=${callback}
         ></quantity-input>`
       );
@@ -292,25 +292,27 @@ describe('Quantity input', () => {
         dispatchChangeEvent();
       });
 
-      it('should not dispatch the quantity event', () => {
+      it('should not dispatch the quantity event and set value to the last', () => {
         expect(callback).not.toHaveBeenCalled();
+        expect(getInput().value).toBe('2');
       });
     });
 
     describe('and value is greater then max', () => {
       beforeEach(() => {
-        getInput().value = '3';
+        getInput().value = '4';
         dispatchChangeEvent();
       });
 
-      it('should not dispatch the quantity event', () => {
+      it('should not dispatch the quantity event and set value to the last', () => {
         expect(callback).not.toHaveBeenCalled();
+        expect(getInput().value).toBe('2');
       });
     });
 
     describe('and input`s value equals to the property`s value', () => {
       beforeEach(() => {
-        getInput().value = '1';
+        getInput().value = '2';
         dispatchChangeEvent();
       });
 

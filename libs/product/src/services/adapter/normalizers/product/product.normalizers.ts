@@ -2,6 +2,7 @@ import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { map, Observable } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
+import { AvailabilityNormalizers } from '../availability/availability.normalizers';
 import { ImagesNormalizers } from '../images';
 import { ProductLabelsNormalizers } from '../labels/labels.normalizer';
 import { PriceNormalizers } from '../price';
@@ -68,11 +69,26 @@ export function productImagesNormalizer(
     .pipe(map((images) => ({ images })));
 }
 
+export function productAvailabilityNormalizer(
+  data: DeserializedProduct,
+  transformer: TransformerService
+): Observable<Partial<Product>> {
+  const stockKey = camelize(
+    ApiProductModel.Includes.ConcreteProductAvailabilities
+  );
+  const { [stockKey]: availability } = data;
+
+  return transformer
+    .transform(availability?.[0], AvailabilityNormalizers)
+    .pipe(map((availability) => ({ availability })));
+}
+
 export const productNormalizers = [
   productAttributeNormalizer,
   productPriceNormalizer,
   productImagesNormalizer,
   productLabelsNormalizer,
+  productAvailabilityNormalizer,
 ];
 
 declare global {

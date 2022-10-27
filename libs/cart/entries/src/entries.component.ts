@@ -2,9 +2,10 @@ import { CartComponentMixin, CartEntry, CartService } from '@spryker-oryx/cart';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
+import { ProductService } from '@spryker-oryx/product';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
 
@@ -13,6 +14,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
   static styles = styles;
 
   protected cartService = resolve(CartService);
+  protected productService = resolve(ProductService);
   protected contentController = new ContentController(this);
 
   protected options$ = this.contentController.getOptions();
@@ -23,6 +25,25 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
   protected entries$ = this.options$.pipe(
     switchMap(({ cartId }) =>
       this.cartService.getEntries({ cartId }).pipe(
+        switchMap(
+          (entries) =>
+            entries?.reduce(
+              (acc$, entry) =>
+                acc$.pipe(
+                  switchMap((acc) =>
+                    this.productService
+                      .get({ sku: entry.sku })
+                      .pipe(
+                        map((product) => [
+                          ...acc,
+                          { ...entry, availability: product?.availability },
+                        ])
+                      )
+                  )
+                ),
+              of([] as CartEntry[])
+            ) ?? of([])
+        ),
         tap(() => {
           this.loading$.next(false);
           this.currentlyUpdated$.next(null);

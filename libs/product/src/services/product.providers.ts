@@ -1,4 +1,6 @@
 import {
+  availabilityNormalizers,
+  AvailabilityNormalizers,
   ConcreteProductsNormalizers,
   concreteProductsNormalizers,
   DefaultProductAdapter,
@@ -53,6 +55,10 @@ export const productProviders: Provider[] = [
   {
     provide: PriceNormalizers,
     useValue: priceNormalizers,
+  },
+  {
+    provide: AvailabilityNormalizers,
+    useValue: availabilityNormalizers,
   },
   {
     provide: ProductLabelsNormalizers,

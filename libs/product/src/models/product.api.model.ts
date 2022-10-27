@@ -75,17 +75,25 @@ export module ApiProductModel {
     currencyIsoCode?: string;
   }
 
+  export interface ProductAvailability {
+    isNeverOutOfStock: boolean;
+    availability: boolean;
+    quantity: string;
+  }
+
   export const enum Includes {
     ConcreteProductImageSets = 'concrete-product-image-sets',
     ConcreteProductPrices = 'concrete-product-prices',
     AbstractProducts = 'abstract-products',
     ConcreteProducts = 'concrete-products',
     Labels = 'product-labels',
+    ConcreteProductAvailabilities = 'concrete-product-availabilities',
   }
 
   export type ResponseIncludes =
     | Include<Includes.ConcreteProductImageSets, ImageSets>
     | Include<Includes.ConcreteProductPrices, Prices>
+    | Include<Includes.ConcreteProductAvailabilities, ProductAvailability>
     | Include<Includes.Labels, ProductLabels>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;

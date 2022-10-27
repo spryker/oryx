@@ -9,6 +9,7 @@ export interface Product {
   price?: ProductPrices;
   images?: ProductImage[];
   labels?: ProductLabel[];
+  availability?: ProductAvailability;
 }
 
 export interface ProductLabel {
@@ -57,4 +58,10 @@ export interface ProductOption {
   sku?: string;
   optionName?: string;
   price?: number;
+}
+
+export interface ProductAvailability {
+  isNeverOutOfStock: boolean;
+  availability: boolean;
+  quantity: number;
 }

@@ -20,6 +20,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
   protected updated(): void {
     //align quantity and input's value
     if (
+      !this.options?.updating &&
       !this.options?.confirmationRequired &&
       this.quantityInputRef.value?.value !== this.options?.quantity
     ) {
@@ -66,6 +67,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
           <quantity-input
             ${ref(this.quantityInputRef)}
             min=${!this.options?.removeByQuantity ? 1 : 0}
+            max=${this.options?.availability?.quantity ?? Infinity}
             .value=${this.options?.quantity}
             ?disabled=${this.disabled || this.options?.disabled}
             decrease-icon=${ifDefined(this.getDecreaseIcon())}

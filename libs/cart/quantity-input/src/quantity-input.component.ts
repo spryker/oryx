@@ -4,7 +4,7 @@ import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
-import { QUANTITY_EVENT } from './quantity-input.model';
+import { QUANTITY_EVENT, VALIDATION_EVENT } from './quantity-input.model';
 import { styles } from './quantity-input.styles';
 
 @hydratable(['click', 'focusin'])
@@ -33,7 +33,19 @@ export class QuantityInputComponent extends LitElement {
 
   validate(): boolean {
     const input = this.shadowRoot?.querySelector('input') as HTMLInputElement;
-    return input.reportValidity();
+    const isValid = input.reportValidity();
+
+    this.dispatchEvent(
+      new CustomEvent(VALIDATION_EVENT, {
+        bubbles: true,
+        composed: true,
+        detail: {
+          isValid,
+        },
+      })
+    );
+
+    return isValid;
   }
 
   protected willUpdate(
@@ -51,20 +63,32 @@ export class QuantityInputComponent extends LitElement {
 
   protected updateQuantity(): void {
     const quantity = Number(this.inputRef.value?.value);
+    const updateInputValue = (value: number): void => {
+      if (this.inputRef.value) {
+        this.inputRef.value.value = String(value);
+      }
+
+      if (this.value !== value) {
+        this.value = value;
+
+        this.dispatchQuantityEvent(value);
+      }
+
+      this.validate();
+    };
 
     if (
       quantity < this.min ||
-      (this.max !== undefined && quantity > this.max) ||
-      quantity === this.value
+      (this.max !== undefined && quantity > this.max)
     ) {
-      if (this.inputRef.value) {
-        this.inputRef.value.value = String(this.value);
-      }
+      updateInputValue(this.value);
       return;
     }
 
-    this.value = quantity;
+    updateInputValue(quantity);
+  }
 
+  protected dispatchQuantityEvent(quantity: number): void {
     this.dispatchEvent(
       new CustomEvent(QUANTITY_EVENT, {
         bubbles: true,
