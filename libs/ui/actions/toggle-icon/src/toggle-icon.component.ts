@@ -41,8 +41,11 @@ export class ToggleIconComponent extends LitElement {
 
   protected updateSiblings(input: HTMLInputElement): void {
     const siblings = Array.from(
-      document.querySelectorAll(`[name=${input.getAttribute('name')}]`)
+      (this.getRootNode() as HTMLElement).querySelectorAll(
+        `[name=${input.getAttribute('name')}]`
+      )
     ).filter((sibling) => sibling !== input);
+
     siblings.forEach((sibling) =>
       sibling.dispatchEvent(
         new CustomEvent('input', {
