@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
+import { Currency } from '../../models';
 
 export interface CurrencyService {
-  getAll(): Observable<string[]>;
+  getAll(): Observable<Currency[]>;
   get(): Observable<string>;
   set(value: string): void;
 }

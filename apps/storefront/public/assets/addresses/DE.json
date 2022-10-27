@@ -7,6 +7,7 @@
         "id": "salutation",
         "label": "Salutation",
         "type": "select",
+        "width": 100,
         "options": [
           {
             "value": "mr",
@@ -40,6 +41,7 @@
         "id": "company",
         "title": "Company",
         "label": "",
+        "width": 100,
         "type": "input",
         "required": false
       },
@@ -47,6 +49,7 @@
         "id": "address1",
         "title": "Street and House number",
         "label": "",
+        "width": 100,
         "type": "input",
         "required": true
       },
@@ -54,6 +57,7 @@
         "id": "address2",
         "title": "Apt, suite, unit, building, floor, etc.",
         "label": "",
+        "width": 100,
         "type": "input",
         "required": true
       },
@@ -75,6 +79,7 @@
         "id": "email",
         "title": "Email",
         "label": "",
+        "width": 100,
         "type": "email",
         "required": true
       },
@@ -82,6 +87,7 @@
         "id": "phone",
         "title": "Phone",
         "label": "",
+        "width": 100,
         "type": "tel",
         "required": false
       }

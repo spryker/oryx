@@ -1,11 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import {
-  CurrencyService,
-  DefaultCurrencyService,
-  DefaultLocaleService,
-  LocaleService,
-} from '@spryker-oryx/site';
-import { Observable } from 'rxjs';
+import { CurrencyService, LocaleService } from '@spryker-oryx/site';
+import { Observable, of } from 'rxjs';
 import { DefaultPricingService } from './default-pricing.service';
 import { Price, PricingService } from './pricing.service';
 
@@ -19,21 +14,28 @@ const mockUSD: Price = {
   value: 1195,
 };
 
+class MockLocaleService implements Partial<LocaleService> {
+  get = vi.fn();
+}
+
+class MockCurrencyService implements Partial<CurrencyService> {
+  get = vi.fn().mockReturnValue(of('EUR'));
+}
+
 describe('DefaultPricingService', () => {
   let service: PricingService;
-  let mockLocaleService: LocaleService;
-  let mockCurrencyService: CurrencyService;
+  let localeService: MockLocaleService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
           provide: LocaleService,
-          useClass: DefaultLocaleService,
+          useClass: MockLocaleService,
         },
         {
           provide: CurrencyService,
-          useClass: DefaultCurrencyService,
+          useClass: MockCurrencyService,
         },
         {
           provide: PricingService,
@@ -42,9 +44,12 @@ describe('DefaultPricingService', () => {
       ],
     });
 
-    mockLocaleService = testInjector.inject(LocaleService);
-    mockCurrencyService = testInjector.inject(CurrencyService);
+    localeService = testInjector.inject(
+      LocaleService
+    ) as unknown as MockLocaleService;
     service = testInjector.inject(PricingService);
+
+    localeService.get.mockReturnValue(of('de-DE'));
   });
 
   afterEach(() => {
@@ -58,7 +63,7 @@ describe('DefaultPricingService', () => {
   ): void => {
     describe(`when the locale is ${locale}`, () => {
       beforeEach(async () => {
-        mockLocaleService.set(locale);
+        localeService.get.mockReturnValue(of(locale));
       });
       it(`should return a formatted price: (${formatted})`, () => {
         const cb = vi.fn();
@@ -73,11 +78,6 @@ describe('DefaultPricingService', () => {
   });
 
   describe('format', () => {
-    beforeEach(async () => {
-      mockLocaleService.set('de-DE');
-      mockCurrencyService.set('EUR');
-    });
-
     it('should return an observable', () => {
       expect(service.format(0)).toBeInstanceOf(Observable);
     });

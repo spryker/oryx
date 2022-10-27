@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
-import { LocaleService, siteProviders } from '@spryker-oryx/site';
+import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { productPriceComponent } from './component';
@@ -26,10 +26,14 @@ const mockEur = {
   isNet: true,
 };
 
+class MockPricingService implements Partial<PricingService> {
+  format = vi.fn();
+}
+
 describe('ProductPriceComponent', () => {
   let element: ProductPriceComponent;
-  let mockLocaleService: LocaleService;
   let mockProductService: ProductService;
+  let mockPricingService: MockPricingService;
 
   beforeAll(async () => {
     await useComponent(productPriceComponent);
@@ -38,8 +42,11 @@ describe('ProductPriceComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
-        ...siteProviders,
         ...mockProductProviders,
+        {
+          provide: PricingService,
+          useClass: MockPricingService,
+        },
         {
           provide: ExperienceService,
           useClass: MockExperienceService,
@@ -47,8 +54,12 @@ describe('ProductPriceComponent', () => {
       ],
     });
 
-    mockLocaleService = getInjector().inject(LocaleService);
     mockProductService = getInjector().inject(ProductService);
+    mockPricingService = getInjector().inject(
+      PricingService
+    ) as MockPricingService;
+
+    mockPricingService.format.mockReturnValue(of('mock'));
   });
 
   afterEach(() => {
@@ -66,12 +77,9 @@ describe('ProductPriceComponent', () => {
   });
 
   describe('default price', () => {
-    beforeEach(async () => {
-      mockLocaleService.set('en-EN');
-    });
-
     describe('and default price is provided', () => {
       beforeEach(async () => {
+        mockPricingService.format.mockReturnValue(of('€10.95'));
         vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
           of({ price: { defaultPrice: mockEur } })
         );
@@ -99,15 +107,12 @@ describe('ProductPriceComponent', () => {
   });
 
   describe('original price', () => {
-    beforeEach(() => {
-      mockLocaleService.set('en-EN');
-    });
-
     describe('when there is no original price available', () => {
       beforeEach(async () => {
         vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
           of({ price: { defaultPrice: mockEur } })
         );
+        mockPricingService.format.mockReturnValue(of(null));
 
         element = await fixture(
           html`<product-price sku="123"></product-price>`

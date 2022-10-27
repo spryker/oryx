@@ -30,7 +30,7 @@ export default defineConfig((config) => {
     ssr: {
       noExternal: true,
     },
-    envPrefix: ['FES', 'SCOS'],
+    envPrefix: ['FES', 'SCOS', 'STORE'],
     plugins: [
       checker({
         typescript: {

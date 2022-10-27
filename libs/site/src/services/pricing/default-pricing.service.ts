@@ -12,7 +12,9 @@ export class DefaultPricingService implements PricingService {
       this.currencyService.get(),
       this.localeService.get(),
     ]).pipe(
-      map(([currency, locale]) => this.formatPrice(price, currency, locale))
+      map(([currency, locale]) =>
+        this.formatPrice(price, currency, locale.replace('_', '-'))
+      )
     );
   }
 

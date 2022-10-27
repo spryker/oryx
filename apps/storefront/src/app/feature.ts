@@ -13,6 +13,10 @@ export const appFeature: AppFeature = {
       useValue: import.meta.env.SCOS_BASE_URL || '',
     },
     {
+      provide: 'STORE',
+      useValue: import.meta.env.STORE || '',
+    },
+    {
       provide: COMPONENT_MAPPING,
       useValue: componentsMapping,
     },

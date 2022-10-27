@@ -1,10 +1,15 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { siteProviders } from '@spryker-oryx/site';
+import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
+import { of } from 'rxjs';
 import { cartEntryPriceComponent } from './component';
 import { CartEntryPriceComponent } from './price.component';
+
+class MockPricingService implements Partial<PricingService> {
+  format = vi.fn().mockReturnValue(of('10,00'));
+}
 
 describe('CartEntryPriceComponent', () => {
   let element: CartEntryPriceComponent;
@@ -16,7 +21,12 @@ describe('CartEntryPriceComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: siteProviders,
+      providers: [
+        {
+          provide: PricingService,
+          useClass: MockPricingService,
+        },
+      ],
     });
 
     element = await fixture(html`

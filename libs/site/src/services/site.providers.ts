@@ -7,15 +7,34 @@ import {
   DefaultLocaleService,
   DefaultPricingService,
   DefaultSemanticLinkService,
+  DefaultStoreAdapter,
   LocaleService,
   PricingService,
   SemanticLinkService,
+  StoreAdapter,
+  StoreNormalizers,
+  storeNormalizers,
 } from './index';
+
+import { DefaultStoreService, StoreService } from './store';
 
 export const siteProviders: Provider[] = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
+  },
+  {
+    provide: StoreService,
+    useClass: DefaultStoreService,
+  },
+
+  {
+    provide: StoreAdapter,
+    useClass: DefaultStoreAdapter,
+  },
+  {
+    provide: StoreNormalizers,
+    useValue: storeNormalizers,
   },
   {
     provide: CountryService,

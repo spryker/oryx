@@ -34,7 +34,7 @@ export default defineConfig((config) => {
     ssr: {
       external: ['@lit-labs', 'rxjs'],
     },
-    envPrefix: ['FES', 'SCOS'],
+    envPrefix: ['FES', 'SCOS', 'STORE'],
     plugins: [
       splitVendorChunkPlugin(),
       checker({

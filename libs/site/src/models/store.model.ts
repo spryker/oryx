@@ -21,3 +21,22 @@ export interface Country {
   postalCodeRegex: string;
   regions?: Array<unknown>;
 }
+
+export interface Currency {
+  name: string;
+  code: string;
+}
+
+export interface Locale {
+  name: string;
+  code: string;
+}
+
+export interface Store {
+  id: string;
+  countries: Country[];
+  currencies: Currency[];
+  defaultCurrency: string;
+  locales: Locale[];
+  timeZone: string;
+}

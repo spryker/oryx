@@ -15,7 +15,8 @@ class MockFormRenderer implements Partial<FormRenderer> {
 }
 
 class MockCountryService {
-  get = vi.fn().mockReturnValue(
+  get = vi.fn().mockReturnValue(of({ iso2Code: 'DE', name: 'Germany' }));
+  getAll = vi.fn().mockReturnValue(
     of([
       {
         iso2Code: 'DE',
@@ -104,5 +105,26 @@ describe('AddressFormComponent', () => {
     );
     expect(options?.length).toBe(2);
     expect((options?.[0] as HTMLInputElement).value).toBe('DE');
+  });
+
+  describe('address form with country attribute', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-address-form country="US"></oryx-address-form>`
+      );
+    });
+
+    it('should display the correct country in the country select', () => {
+      const selected: HTMLOptionElement | null | undefined =
+        element.shadowRoot?.querySelector(
+          'select[name="country"] option[selected]'
+        );
+
+      expect(selected?.value).toBe('US');
+    });
+
+    it('should load the form for the specified country', () => {
+      expect(formService.getForm).toHaveBeenCalledWith({ country: 'US' });
+    });
   });
 });

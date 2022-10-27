@@ -2,7 +2,7 @@
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/injector';
 import { isPromise } from '@spryker-oryx/utilities';
-import { defer, from, Observable, tap } from 'rxjs';
+import { defer, finalize, from, Observable, tap } from 'rxjs';
 
 export const ssrAwaiter = (
   object: Observable<any> | Promise<any>
@@ -25,12 +25,6 @@ export const ssrAwaiter = (
       setTimeout(resolveFn, 0);
     };
 
-    return observable.pipe(
-      tap({
-        next: tapFn,
-        error: tapFn,
-        complete: tapFn,
-      })
-    );
+    return observable.pipe(tap(tapFn), finalize(tapFn));
   });
 };

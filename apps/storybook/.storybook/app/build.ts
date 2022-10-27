@@ -8,9 +8,9 @@ import { formFeature } from '@spryker-oryx/form';
 import { launchpadUiFeature } from '@spryker-oryx/launchpad-ui';
 import { mockProductFeature } from '@spryker-oryx/product/mocks';
 import { mockSearchFeature } from '@spryker-oryx/search/mocks';
-import { siteFeature } from '@spryker-oryx/site';
+import { mockSiteFeature } from '@spryker-oryx/site/mocks';
 import { uiFeature } from '@spryker-oryx/ui';
-import { userFeature } from '@spryker-oryx/user';
+import { mockUserFeature } from '@spryker-oryx/user/mocks';
 import { chromaticTheme } from './chromatic';
 import { StorybookPlugin } from './plugin';
 import { theme } from './theme';
@@ -34,8 +34,8 @@ app()
   .withFeature(contentFeature)
   .withFeature(mockProductFeature)
   .withFeature(mockSearchFeature)
-  .withFeature(siteFeature)
-  .withFeature(userFeature)
+  .withFeature(mockSiteFeature)
+  .withFeature(mockUserFeature)
   .withFeature(launchpadUiFeature)
   .withFeature(mockAuthFeature)
   .withTheme([...theme.list[themeKey], chromaticTheme])

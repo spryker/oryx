@@ -4,7 +4,9 @@ import { Country } from '../../models';
 export const CountryService = 'FES.CountryService';
 
 export interface CountryService {
-  get(): Observable<Country[]>;
+  getAll(): Observable<Country[]>;
+  get(): Observable<Country | null>;
+  set(value: string): void;
 }
 
 declare global {

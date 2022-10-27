@@ -1,7 +1,13 @@
 import { Injector } from '@spryker-oryx/injector';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { mockStore } from '../../mocks';
+import { StoreService } from '../store';
 import { CurrencyService } from './currency.service';
 import { DefaultCurrencyService } from './default-currency.service';
+
+class MockStoreService implements Partial<StoreService> {
+  get = vi.fn().mockReturnValue(of(mockStore));
+}
 
 describe('DefaultCurrencyService', () => {
   let service: CurrencyService;
@@ -12,6 +18,10 @@ describe('DefaultCurrencyService', () => {
       {
         provide: CurrencyService,
         useClass: DefaultCurrencyService,
+      },
+      {
+        provide: StoreService,
+        useClass: MockStoreService,
       },
     ]);
 
@@ -37,7 +47,7 @@ describe('DefaultCurrencyService', () => {
     it('should return an observable with all available currencies', () => {
       const cb = vi.fn();
       service.getAll().subscribe(cb);
-      expect(cb).toHaveBeenCalledWith(['USD', 'EUR']);
+      expect(cb).toHaveBeenCalledWith(mockStore.currencies);
     });
 
     it('should set currency', () => {
