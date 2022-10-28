@@ -1,7 +1,11 @@
 import { Breakpoint } from '@spryker-oryx/experience';
 import { css, CSSResult, unsafeCSS } from 'lit';
 
-const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
+/**
+ * Provides carousel layout for compositions or components by adding a scrollable
+ * element that contains child elements that are divided by item count (`--oryx-layout-item-count`).
+ */
+export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
   :host(.${unsafeCSS(breakpoint)}-layout-carousel) {
     display: flex;
     flex-direction: row;
@@ -27,23 +31,5 @@ const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
             )
         )
       );
-  }
-`;
-
-/**
- * Provides carousel layout for compositions or components by adding a scrollable
- * element that contains child elements that are divided by item count (`--oryx-layout-item-count`).
- */
-export const carouselLayoutStyles = css`
-  @layer layout {
-    ${carouselLayout(Breakpoint.Xs)}
-
-    @media (min-width: 768px) {
-      ${carouselLayout(Breakpoint.Md)}
-    }
-
-    @media (min-width: 1024px) {
-      ${carouselLayout(Breakpoint.Lg)}
-    }
   }
 `;

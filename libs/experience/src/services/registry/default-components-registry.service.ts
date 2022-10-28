@@ -40,7 +40,7 @@ export class DefaultComponentsRegistryService
       ? component.template(uid, styleClasses)
       : html`<${unsafeStatic(
           component.tag ?? type
-        )} uid=${uid} style=${styleClasses} class=${styleClasses}></${unsafeStatic(
+        )} uid=${uid} class=${styleClasses}></${unsafeStatic(
           component.tag ?? type
         )}>`;
   }

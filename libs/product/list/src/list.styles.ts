@@ -6,7 +6,19 @@ export const ProductListStyles = css`
     scroll-padding-inline: 4px;
   }
 
-  :host([class*='layout-carousel']) product-card {
-    margin-bottom: 12px;
+  @media (max-width: 767px) {
+    :host(.xs-layout-carousel) {
+      padding-bottom: 12px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    :host(.md-layout-carousel) {
+      padding-bottom: 12px;
+    }
+  }
+
+  :host(.xl-layout-carousel) {
+    padding-bottom: 12px;
   }
 `;
