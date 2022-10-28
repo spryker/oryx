@@ -95,15 +95,14 @@ describe('DefaultAddressService', () => {
         trigger$
           .pipe(switchMap(() => service.getAddresses()))
           .subscribe(callback);
-
         trigger$.next('');
 
-        expect(callback).toHaveBeenNthCalledWith(1, mockNormalizedAddresses);
+        expect(callback).toHaveBeenNthCalledWith(2, mockNormalizedAddresses);
 
         trigger$.next('');
 
         expect(adapter.getAll).toHaveBeenCalledTimes(1);
-        expect(callback).toHaveBeenNthCalledWith(2, mockNormalizedAddresses);
+        expect(callback).toHaveBeenNthCalledWith(3, mockNormalizedAddresses);
       });
     });
   });
@@ -134,12 +133,12 @@ describe('DefaultAddressService', () => {
 
         trigger$.next('');
 
-        expect(callback).toHaveBeenNthCalledWith(1, mockCurrentAddress);
+        expect(callback).toHaveBeenNthCalledWith(2, mockCurrentAddress);
 
         trigger$.next('');
 
         expect(adapter.getAll).toHaveBeenCalledTimes(1);
-        expect(callback).toHaveBeenNthCalledWith(2, mockCurrentAddress);
+        expect(callback).toHaveBeenNthCalledWith(3, mockCurrentAddress);
       });
     });
   });

@@ -7,14 +7,14 @@ export class ServerStorageService implements StorageService {
   }
 
   set(): Observable<void> {
-    return of();
+    return of(undefined);
   }
 
   remove(): Observable<void> {
-    return of();
+    return of(undefined);
   }
 
   clear(): Observable<void> {
-    return of();
+    return of(undefined);
   }
 }

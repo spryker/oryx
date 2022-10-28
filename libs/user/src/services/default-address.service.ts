@@ -2,6 +2,7 @@ import { IdentityService } from '@spryker-oryx/auth';
 import { inject } from '@spryker-oryx/injector';
 import {
   BehaviorSubject,
+  combineLatest,
   map,
   Observable,
   of,
@@ -19,7 +20,7 @@ export class DefaultAddressService implements AddressService {
   protected addresses$ = new BehaviorSubject<Address[] | null>(null);
   protected currentAddress$ = new BehaviorSubject<Address | null>(null);
   protected subscription = new Subscription();
-  protected userChanged = true;
+  protected userChanged$ = new BehaviorSubject(true);
 
   constructor(
     protected adapter = inject(AddressAdapter),
@@ -27,9 +28,9 @@ export class DefaultAddressService implements AddressService {
   ) {}
 
   getCurrentAddress(): Observable<Address | null> {
-    return this.currentAddress$.pipe(
-      switchMap((address) => {
-        if (this.userChanged) {
+    return combineLatest([this.userChanged$, this.currentAddress$]).pipe(
+      switchMap(([userChanged, address]) => {
+        if (userChanged) {
           return this.loadAddresses().pipe(map((addresses) => address));
         }
         return of(address);
@@ -38,9 +39,9 @@ export class DefaultAddressService implements AddressService {
   }
 
   getAddresses(): Observable<Address[] | null> {
-    return this.addresses$.pipe(
-      switchMap((addresses) => {
-        if (this.userChanged) {
+    return combineLatest([this.userChanged$, this.addresses$]).pipe(
+      switchMap(([userChanged, addresses]) => {
+        if (userChanged) {
           return this.loadAddresses();
         }
         return of(addresses);
@@ -73,7 +74,7 @@ export class DefaultAddressService implements AddressService {
   protected initSubscriptions(): void {
     // TODO - authService.isAuthenticated() still has race condition weirdness
     // using identity.get() for now
-    this.userChanged = false;
+    this.userChanged$.next(false);
     const loadAddressesSubs = this.identity
       .get()
       .pipe(
@@ -84,7 +85,7 @@ export class DefaultAddressService implements AddressService {
         }),
         take(1),
         tap(() => {
-          this.userChanged = true;
+          this.userChanged$.next(true);
         })
       )
       .subscribe();
