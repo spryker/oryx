@@ -4,5 +4,6 @@
     "types": ["vitest/globals"],
     "noEmit": true
   },
-  "files": ["setupTests.ts"]
+  "files": ["setupTests.ts"],
+  "include": ["**/*.spec.ts"]
 }
