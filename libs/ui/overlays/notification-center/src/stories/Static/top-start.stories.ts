@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
+import { storybookDefaultViewports } from '@spryker-oryx/ui/utilities';
 import { NotificationService, Positions } from '../../index';
 import { generateNotification, removeAllMountedCenters } from '../util';
 
@@ -36,3 +37,12 @@ const Template: Story = (): TemplateResult => {
 };
 
 export const TopStart = Template.bind({});
+
+TopStart.parameters = {
+  chromatic: {
+    viewports: [
+      storybookDefaultViewports.mobile.min,
+      storybookDefaultViewports.desktop.min,
+    ],
+  },
+};

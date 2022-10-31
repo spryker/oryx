@@ -39,11 +39,25 @@ export const notificationCenterBaseStyles = css`
     inset-inline-end: 30px;
   }
 
+  @media (max-width: 530px) {
+    :host([position='${unsafeCSS(Positions.TOP_END)}']),
+    :host([position='${unsafeCSS(Positions.TOP_START)}']),
+    :host([position='${unsafeCSS(Positions.BOTTOM_START)}']),
+    :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) {
+      max-width: calc(100% - 60px);
+    }
+  }
+
   :host > * {
     margin-bottom: 10px;
     opacity: 0;
     transition-property: opacity;
     transition-duration: var(--oryx-transition-time-long);
+  }
+
+  :host([position='${unsafeCSS(Positions.BOTTOM_START)}']) :last-child,
+  :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) :last-child {
+    margin-bottom: 0;
   }
 
   :host > [visible] {
