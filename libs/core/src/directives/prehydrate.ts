@@ -1,5 +1,4 @@
-import { isClient } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { isServer, LitElement } from 'lit';
 import { Directive, directive } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
@@ -21,7 +20,7 @@ class PrehydrateDirective extends Directive {
     dryFunction: (host: LitElement) => void | Promise<void>,
     tag: string
   ): unknown {
-    if (isClient()) {
+    if (!isServer) {
       return html``;
     }
     if (components[tag]) {

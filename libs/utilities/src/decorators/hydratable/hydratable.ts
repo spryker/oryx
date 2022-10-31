@@ -3,8 +3,8 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-import { isClient, Type } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { Type } from '@spryker-oryx/utilities';
+import { isServer, LitElement } from 'lit';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
@@ -56,7 +56,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
     constructor(...args: any[]) {
       super();
       this.setAttribute('hydratable', mode ?? '');
-      if (isClient() && this.shadowRoot) {
+      if (!isServer && this.shadowRoot) {
         this[DEFER_HYDRATION] = true;
         return;
       }

@@ -2,8 +2,8 @@ import { RouteConfig, Router } from '@lit-labs/router';
 import { SSRAwaiterService, SsrOptions } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { isClient, PatchableLitElement } from '@spryker-oryx/utilities';
-import { html, ReactiveControllerHost, TemplateResult } from 'lit';
+import { PatchableLitElement } from '@spryker-oryx/utilities';
+import { html, isServer, ReactiveControllerHost, TemplateResult } from 'lit';
 import { identity, skip, tap } from 'rxjs';
 
 export class StorefrontRouter extends Router {
@@ -26,7 +26,7 @@ export class StorefrontRouter extends Router {
     super(host, routes);
     this.host = host;
     this.ssrRendered =
-      isClient() && !!host.shadowRoot && !this.ssrOptions.initialNavigation;
+      !isServer && !!host.shadowRoot && !this.ssrOptions.initialNavigation;
     this.routerService
       .currentRoute()
       .pipe(

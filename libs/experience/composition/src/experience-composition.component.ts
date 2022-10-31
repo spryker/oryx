@@ -8,8 +8,8 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
-import { hydratable, isClient } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { hydratable } from '@spryker-oryx/utilities';
+import { html, isServer, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -68,7 +68,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
 
   protected shouldRenderChildren(): boolean {
     return (
-      !!this.renderRoot && !this.isEmpty() && isClient() && !this.isHydrated
+      !!this.renderRoot && !this.isEmpty() && !isServer && !this.isHydrated
     );
   }
 

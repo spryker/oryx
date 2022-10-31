@@ -5,8 +5,8 @@ import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { ProductContext } from '@spryker-oryx/product';
 import { routes, StorefrontRouter } from '@spryker-oryx/storefront';
-import { hydratable, isClient } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { hydratable } from '@spryker-oryx/utilities';
+import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { take, tap } from 'rxjs';
 import { styles } from './storefront.styles';
 
@@ -26,7 +26,7 @@ export class StorefrontComponent extends LitElement {
 
   constructor() {
     super();
-    if (!isClient()) {
+    if (isServer) {
       // Workaround to properly set SKU context on the SSR
       this.route$.pipe(take(1)).subscribe();
     }

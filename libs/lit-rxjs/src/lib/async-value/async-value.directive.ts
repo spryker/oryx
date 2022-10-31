@@ -1,5 +1,5 @@
-import { isClient, isPromise } from '@spryker-oryx/utilities';
-import { noChange, TemplateResult } from 'lit';
+import { isPromise } from '@spryker-oryx/utilities';
+import { isServer, noChange, TemplateResult } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';
 import { isObservable, Observable, Subscription } from 'rxjs';
@@ -41,7 +41,7 @@ export class AsyncValueDirective extends AsyncDirective {
     super(partInfo);
     // In the case of SSR rendering, we'd like to not render the fallback, and the markup should just be hydrated.
     // The async directive does not directly have access to the component except through the constructor, so we do the check here.
-    this.ssrRendered = !!partInfo.options?.host?.shadowRoot && isClient();
+    this.ssrRendered = !!partInfo.options?.host?.shadowRoot && !isServer;
   }
 
   render(
