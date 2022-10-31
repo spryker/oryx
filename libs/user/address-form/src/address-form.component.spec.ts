@@ -108,8 +108,6 @@ describe('AddressFormComponent', () => {
     addressService = testInjector.inject(
       AddressService
     ) as unknown as MockAddressService;
-
-    element = await fixture(html`<oryx-address-form></oryx-address-form>`);
   });
 
   afterEach(() => {
@@ -117,21 +115,39 @@ describe('AddressFormComponent', () => {
     vi.clearAllMocks();
   });
 
-  it('is defined', () => {
-    expect(element).toBeInstanceOf(AddressFormComponent);
+  describe('when the address form is rendered', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+    });
+
+    it('is defined', () => {
+      expect(element).toBeInstanceOf(AddressFormComponent);
+    });
+
+    it('should load json form', () => {
+      expect(formService.getForm).toHaveBeenCalledWith({ country: 'DE' });
+      expect(renderer.buildForm).toHaveBeenCalledWith(mockForm.data.options);
+    });
+
+    it('should have options for available countries', () => {
+      const options = element.shadowRoot?.querySelectorAll(
+        'select[name="country"] option'
+      );
+      expect(options?.length).toBe(2);
+      expect((options?.[0] as HTMLInputElement).value).toBe('DE');
+    });
   });
 
-  it('should load json form', () => {
-    expect(formService.getForm).toHaveBeenCalledWith({ country: 'DE' });
-    expect(renderer.buildForm).toHaveBeenCalledWith(mockForm.data.options);
-  });
-
-  it('should have options for available countries', () => {
-    const options = element.shadowRoot?.querySelectorAll(
-      'select[name="country"] option'
-    );
-    expect(options?.length).toBe(2);
-    expect((options?.[0] as HTMLInputElement).value).toBe('DE');
+  describe('when the selected country does not exist', () => {
+    beforeEach(async () => {
+      formService.getForm.mockReturnValue(of(null));
+      element = await fixture(
+        html`<oryx-address-form country="US"></oryx-address-form>`
+      );
+    });
+    it('should not render a form', () => {
+      expect(renderer.buildForm).not.toHaveBeenCalled();
+    });
   });
 
   describe('when only one country is available', () => {

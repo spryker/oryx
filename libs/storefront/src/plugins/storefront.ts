@@ -2,6 +2,7 @@ import {
   AppPlugin,
   AppPluginAfterApply,
   AppPluginBeforeApply,
+  ErrorService,
 } from '@spryker-oryx/core';
 import { RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
@@ -34,6 +35,8 @@ export class StorefrontPlugin
   }
 
   apply(): void | Promise<void> {
+    // TODO - remove when we have app initializers
+    resolve(ErrorService).initialize();
     if (!document.body.querySelector(storefrontComponent().name)?.shadowRoot) {
       resolve(RouterService).go(window.location.pathname);
     }

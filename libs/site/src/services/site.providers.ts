@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
 import {
   CountryService,
@@ -11,6 +12,7 @@ import {
   LocaleService,
   PricingService,
   SemanticLinkService,
+  SiteErrorHandler,
   StoreAdapter,
   StoreNormalizers,
   storeNormalizers,
@@ -51,5 +53,9 @@ export const siteProviders: Provider[] = [
   {
     provide: PricingService,
     useClass: DefaultPricingService,
+  },
+  {
+    provide: ErrorHandler,
+    useClass: SiteErrorHandler,
   },
 ];

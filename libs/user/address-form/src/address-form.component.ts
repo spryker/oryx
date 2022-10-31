@@ -77,9 +77,8 @@ export class AddressFormComponent extends LitElement {
               </select>
             </oryx-select>`
           : html``}
-        ${asyncValue(
-          this.form$,
-          (form) => html` ${this.fieldRenderer.buildForm(form)}`
+        ${asyncValue(this.form$, (form) =>
+          form ? this.fieldRenderer.buildForm(form) : html``
         )}
         <oryx-button>
           <button type="submit">Submit</button>

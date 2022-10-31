@@ -1,3 +1,4 @@
+import { ErrorService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { AddressForm } from '../../address-form';
@@ -17,6 +18,10 @@ class MockAddressFormAdapter implements Partial<AddressFormAdapter> {
   get = vi.fn().mockReturnValue(of(mockForm));
 }
 
+class MockErrorService implements Partial<ErrorService> {
+  dispatchError = vi.fn();
+}
+
 describe('DefaultAddressFormService', () => {
   let service: DefaultAddressFormService;
   let adapter: MockAddressFormAdapter;
@@ -31,6 +36,10 @@ describe('DefaultAddressFormService', () => {
         {
           provide: AddressFormAdapter,
           useClass: MockAddressFormAdapter,
+        },
+        {
+          provide: ErrorService,
+          useClass: MockErrorService,
         },
       ],
     });

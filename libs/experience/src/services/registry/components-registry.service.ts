@@ -1,4 +1,4 @@
-import { LitElement, TemplateResult } from 'lit';
+import { TemplateResult } from 'lit';
 
 export const ComponentsRegistryService = 'FES.ComponentsRegistry';
 
@@ -8,7 +8,7 @@ export interface ComponentsRegistryService {
     uid: string,
     layoutClasses?: string
   ): TemplateResult | undefined;
-  hydrateOnDemand(element: LitElement): Promise<void>;
+  hydrateOnDemand(element: HTMLElement): Promise<void>;
 }
 
 declare global {

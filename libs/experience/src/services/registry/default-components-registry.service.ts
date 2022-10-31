@@ -1,7 +1,7 @@
 import { AppRef, ComponentsPlugin } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { HYDRATE_ON_DEMAND } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult } from 'lit';
+import { TemplateResult } from 'lit';
 import { html, unsafeStatic } from 'lit/static-html.js';
 import { COMPONENT_MAPPING } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
@@ -45,7 +45,7 @@ export class DefaultComponentsRegistryService
         )}>`;
   }
 
-  async hydrateOnDemand(element: LitElement): Promise<void> {
+  async hydrateOnDemand(element: HTMLElement): Promise<void> {
     if (!element.hasAttribute('hydratable')) {
       return;
     }

@@ -32,6 +32,10 @@ export class DefaultErrorService implements ErrorService {
     );
   }
 
+  dispatchError(event: ErrorEvent | PromiseRejectionEvent): void {
+    this.element.dispatchEvent(event);
+  }
+
   protected handle = (event: ErrorEvent | PromiseRejectionEvent): void => {
     this.handler?.handle(event);
   };

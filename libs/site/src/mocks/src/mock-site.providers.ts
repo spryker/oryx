@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
 import {
   CountryService,
@@ -10,6 +11,7 @@ import {
   LocaleService,
   PricingService,
   SemanticLinkService,
+  SiteErrorHandler,
   StoreService,
 } from '@spryker-oryx/site';
 import { MockStoreService } from './mock-store.service';
@@ -38,5 +40,9 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
+  },
+  {
+    provide: ErrorHandler,
+    useClass: SiteErrorHandler,
   },
 ];

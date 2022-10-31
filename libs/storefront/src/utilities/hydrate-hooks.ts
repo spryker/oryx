@@ -14,11 +14,11 @@ declare global {
 
 export function treewalk(
   selector: string,
-  rootNode = document.body as LitElement
-): LitElement[] {
-  const arr: LitElement[] = [];
+  rootNode = document.body as HTMLElement
+): HTMLElement[] {
+  const arr: HTMLElement[] = [];
 
-  const traverser = (node: LitElement): void => {
+  const traverser = (node: HTMLElement): void => {
     // 1. decline all nodes that are not elements
     if (node.nodeType !== Node.ELEMENT_NODE) {
       return;
@@ -30,7 +30,7 @@ export function treewalk(
     }
 
     // 3. loop through the children
-    const children = node.children as unknown as LitElement[];
+    const children = node.children as unknown as HTMLElement[];
     if (children.length) {
       for (const child of children) {
         traverser(child);
@@ -40,7 +40,7 @@ export function treewalk(
     // 4. check for shadow DOM, and loop through it's children
     const shadowRoot = node.shadowRoot;
     if (shadowRoot) {
-      const shadowChildren = shadowRoot.children as unknown as LitElement[];
+      const shadowChildren = shadowRoot.children as unknown as HTMLElement[];
       for (const shadowChild of shadowChildren) {
         traverser(shadowChild);
       }
@@ -64,7 +64,7 @@ export function initHydrateHooks(): void {
     for (let i = 0; i < modes.length; i++) {
       const parts = modes[i].split(':');
       const mode = parts[parts.length - 1];
-      let target: LitElement | typeof window = el;
+      let target: HTMLElement | typeof window = el;
       if (parts.length > 1) {
         target = parts[0] === 'window' ? window : el;
       }

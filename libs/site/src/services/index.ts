@@ -1,6 +1,7 @@
 export * from './adapter';
 export * from './country';
 export * from './currency';
+export * from './error-handling';
 export * from './locale';
 export * from './pricing';
 export * from './semantic-link';
