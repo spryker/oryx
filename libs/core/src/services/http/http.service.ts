@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { RequestOptions } from './model';
+import { RequestOptions } from './http.model';
 
 export const HttpService = 'FES.HttpService';
 

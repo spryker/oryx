@@ -22,13 +22,6 @@ const mockUser = {
   token: { accessToken: 'token' },
 };
 
-const mockRequestHeaders = {
-  Authorization: 'Authorization',
-};
-
-const mockAnonymousRequestHeaders = {
-  'X-Anonymous-Customer-Unique-Id': mockAnonymousUser.id,
-};
 const mockTransformer = {
   do: vi.fn().mockReturnValue(() => of(null)),
   transform: vi.fn(),
@@ -36,7 +29,6 @@ const mockTransformer = {
 
 class MockIdentityService implements Partial<IdentityService> {
   get = vi.fn().mockReturnValue(of(mockAnonymousUser));
-  getHeaders = vi.fn().mockReturnValue(of(mockAnonymousRequestHeaders));
 }
 
 describe('DefaultCartAdapter', () => {
@@ -103,21 +95,11 @@ describe('DefaultCartAdapter', () => {
 
         expect(http.url).toBe(`${mockApiUrl}/guest-carts${requestIncludes()}`);
       });
-
-      it('should provide headers', () => {
-        service.getAll().subscribe();
-
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
     });
 
     describe('loggedIn user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should build url', async () => {
@@ -126,12 +108,6 @@ describe('DefaultCartAdapter', () => {
         expect(http.url).toBe(
           `${mockApiUrl}/customers/${mockUser.id}/carts${requestIncludes(true)}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.getAll().subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
     });
 
@@ -172,21 +148,11 @@ describe('DefaultCartAdapter', () => {
           }${requestIncludes()}`
         );
       });
-
-      it('should provide headers', () => {
-        service.get(mockGuestGetCartQualifier).subscribe();
-
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
     });
 
     describe('loggedIn user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should build url', () => {
@@ -197,12 +163,6 @@ describe('DefaultCartAdapter', () => {
             true
           )}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.get(mockGetCartQualifier).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
     });
 
@@ -248,15 +208,6 @@ describe('DefaultCartAdapter', () => {
         );
       });
 
-      it('should provide headers', () => {
-        service.addEntry(mockGuestAddEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
-
       it('should provide body', () => {
         service.addEntry(mockGuestAddEntryQualifier).subscribe();
 
@@ -272,7 +223,6 @@ describe('DefaultCartAdapter', () => {
     describe('loggedIn user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should build url', () => {
@@ -283,12 +233,6 @@ describe('DefaultCartAdapter', () => {
             mockAddEntryQualifier.cartId
           }/items${requestIncludes(true)}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.addEntry(mockAddEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
 
       it('should provide body', () => {
@@ -348,15 +292,6 @@ describe('DefaultCartAdapter', () => {
         );
       });
 
-      it('should provide headers', () => {
-        service.updateEntry(mockGuestUpdateEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
-
       it('should provide body', () => {
         service.updateEntry(mockGuestUpdateEntryQualifier).subscribe();
 
@@ -372,7 +307,6 @@ describe('DefaultCartAdapter', () => {
     describe('loggedIn user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should build url', () => {
@@ -383,12 +317,6 @@ describe('DefaultCartAdapter', () => {
             mockUpdateEntryQualifier.groupKey
           }${requestIncludes(true)}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.updateEntry(mockUpdateEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
 
       it('should provide body', () => {
@@ -447,21 +375,11 @@ describe('DefaultCartAdapter', () => {
           }${requestIncludes()}`
         );
       });
-
-      it('should provide headers', () => {
-        service.deleteEntry(mockGuestDeleteEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
     });
 
     describe('loggedIn user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should build url', () => {
@@ -472,12 +390,6 @@ describe('DefaultCartAdapter', () => {
             mockDeleteEntryQualifier.groupKey
           }${requestIncludes(true)}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.deleteEntry(mockDeleteEntryQualifier).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
     });
 

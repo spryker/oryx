@@ -30,23 +30,18 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
   protected post(
     props: GetCheckoutDataProps | UpdateCheckoutDataProps
   ): Observable<CheckoutData> {
-    return this.transformer.serialize(props, CheckoutSerializers).pipe(
-      switchMap((data) =>
-        this.identity.getHeaders().pipe(
-          switchMap((headers) =>
-            this.http
-              .post<ApiCheckoutModel.Response>(
-                this.generateUrl(props.include),
-                data,
-                {
-                  headers,
-                }
-              )
-              .pipe(this.transformer.do(CheckoutNormalizers))
-          )
+    return this.transformer
+      .serialize(props, CheckoutSerializers)
+      .pipe(
+        switchMap((data) =>
+          this.http
+            .post<ApiCheckoutModel.Response>(
+              this.generateUrl(props.include),
+              data
+            )
+            .pipe(this.transformer.do(CheckoutNormalizers))
         )
-      )
-    );
+      );
   }
 
   protected generateUrl(include?: ApiCheckoutModel.Includes[]): string {

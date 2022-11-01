@@ -6,7 +6,7 @@ import {
   StorageType,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { combineLatest, map, Observable, of, switchMap, take } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { Address } from '../../models';
 import { AddressAdapter, AddressRequestProps } from './address.adapter';
 import { AddressesNormalizers, AddressNormalizers } from './normalizers';
@@ -40,32 +40,22 @@ export class DefaultAddressAdapter implements AddressAdapter {
             );
         }
 
-        return this.identityService.getHeaders().pipe(
-          switchMap((headers) => {
-            return this.httpService
-              .get(`${this.SCOS_BASE_URL}/customers/${identity.id}/addresses`, {
-                headers,
-              })
-              .pipe(this.transformer.do(AddressesNormalizers));
-          })
-        );
+        return this.httpService
+          .get(`${this.SCOS_BASE_URL}/customers/${identity.id}/addresses`)
+          .pipe(this.transformer.do(AddressesNormalizers));
       })
     );
   }
 
   add(data: Address): Observable<Address> {
-    return this.modify(data, ({ payload, headers, identity }) =>
-      this.httpService.post(this.generateUrl(identity.id), payload, {
-        headers,
-      })
+    return this.modify(data, ({ payload, identity }) =>
+      this.httpService.post(this.generateUrl(identity.id), payload)
     );
   }
 
   update(data: Address): Observable<Address> {
-    return this.modify(data, ({ payload, headers, identity }) =>
-      this.httpService.patch(this.generateUrl(identity.id, data.id), payload, {
-        headers,
-      })
+    return this.modify(data, ({ payload, identity }) =>
+      this.httpService.patch(this.generateUrl(identity.id, data.id), payload)
     );
   }
 
@@ -88,13 +78,9 @@ export class DefaultAddressAdapter implements AddressAdapter {
           return of(data);
         }
 
-        return combineLatest(
-          // TODO - replace with real serializer from json api transformer service when it's there
-          this.transformer.serialize(data, AddressSerializers),
-          this.identityService.getHeaders()
-        ).pipe(
-          switchMap(([serializedData, headers]) => {
-            return request({ payload: serializedData, headers, identity }).pipe(
+        return this.transformer.serialize(data, AddressSerializers).pipe(
+          switchMap((serializedData) => {
+            return request({ payload: serializedData, identity }).pipe(
               this.transformer.do(AddressNormalizers)
             );
           })

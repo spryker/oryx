@@ -1,37 +1,42 @@
+import { inject } from '@spryker-oryx/injector';
 import { Observable, of, switchMap } from 'rxjs';
-import { fromFetch } from 'rxjs/fetch';
+import { HttpHandler } from './handler';
+import {
+  HttpErrorResponse,
+  HttpErrorValues,
+  RequestOptions,
+  ResponseKeys,
+} from './http.model';
 import { HttpService } from './http.service';
-import { HttpErrorResponse, RequestOptions } from './model';
+
+const jsonRegex = /(?=.*application)(?=.*json)/;
+const htmlRegex = /(?=.*text)(?=.*html)/;
 
 export class DefaultHttpService implements HttpService {
-  request<T = unknown>(
-    url: string,
-    options?: RequestOptions<T>
-  ): Observable<T> {
-    return fromFetch(url, {
-      ...options,
-    }).pipe(
+  constructor(protected handler = inject(HttpHandler)) {}
+
+  request<T = unknown>(url: string, options?: RequestOptions<T>): any {
+    return this.handler.handle(url, options ?? {}).pipe(
       switchMap((response) => {
         if (!response.ok) {
-          const { headers, ok, redirected, status, statusText, type, url } =
-            response;
-          const error = new Error(
-            `${status} ${statusText}`
-          ) as HttpErrorResponse;
-
-          error.name = 'FES.HttpErrorResponse';
-          error.headers = headers;
-          error.ok = ok;
-          error.redirected = redirected;
-          error.status = status;
-          error.statusText = statusText;
-          error.type = type;
-          error.url = url;
-
-          throw error;
+          this.throwError(response);
         }
 
-        return options?.parser?.(response) ?? response.json();
+        if (options?.parser) {
+          options?.parser?.(response);
+        }
+
+        const contentType = response.headers.get('content-type') ?? '';
+
+        if (jsonRegex.test(contentType)) {
+          return response.json();
+        }
+
+        if (htmlRegex.test(contentType)) {
+          return response.text();
+        }
+
+        return of(null);
       })
     );
   }
@@ -48,15 +53,9 @@ export class DefaultHttpService implements HttpService {
     body: unknown,
     options?: RequestOptions<T>
   ): Observable<T> {
-    const headers = {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    };
-
     return this.request(url, {
       ...options,
       body: JSON.stringify(body),
-      headers,
       method: 'POST',
     });
   }
@@ -66,30 +65,30 @@ export class DefaultHttpService implements HttpService {
     body: unknown,
     options?: RequestOptions<T>
   ): Observable<T> {
-    const headers = {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    };
-
     return this.request(url, {
       ...options,
       body: JSON.stringify(body),
-      headers,
       method: 'PATCH',
     });
   }
 
   delete<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
-    const headers = {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    };
-
     return this.request(url, {
-      parser: () => of(null as unknown as T),
       ...options,
-      headers,
       method: 'DELETE',
     });
+  }
+
+  protected throwError(response: Response): never {
+    const error = new Error(
+      `${response.status} ${response.statusText}`
+    ) as HttpErrorResponse;
+
+    for (const field of Object.values(ResponseKeys)) {
+      (error as Record<typeof field, HttpErrorValues[typeof field]>)[field] =
+        response[field];
+    }
+
+    throw error;
   }
 }

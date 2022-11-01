@@ -1,3 +1,7 @@
+export interface HttpHeaders {
+  [key: string]: string | undefined;
+}
+
 export interface Relationship {
   id: string;
   type: string;

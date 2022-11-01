@@ -1,4 +1,3 @@
-import { AuthHeaders } from '@spryker-oryx/auth';
 import { Observable } from 'rxjs';
 import { Cart, CartEntryAttributesQualifier } from '../../models';
 
@@ -21,11 +20,6 @@ export interface DeleteCartEntityProps {
   cartId: string;
   groupKey: string;
 }
-
-export interface GuestUserHeaders {
-  'X-Anonymous-Customer-Unique-Id': string;
-}
-export type UserHeaders = AuthHeaders;
 
 export interface CartAdapter {
   getAll: () => Observable<Cart[] | null>;

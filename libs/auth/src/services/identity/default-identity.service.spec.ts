@@ -1,7 +1,6 @@
 import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
-import { HeaderTypes } from '../../models';
 import { AccessTokenService } from '../access-token';
 import { DefaultIdentityService } from './default-identity.service';
 import { IdentityService } from './identity.service';
@@ -108,40 +107,6 @@ describe('DefaultIdentityService', () => {
         token: mockToken,
         anonymous: false,
         id: mockUserId,
-      });
-    });
-  });
-
-  describe('getHeaders', () => {
-    it('should return an observable', () => {
-      expect(service.getHeaders()).toBeInstanceOf(Observable);
-    });
-
-    it('should return an observable with anonymous user headers', () => {
-      mockAccessToken.get.mockReturnValue(of(null));
-      mockStorage.get.mockReturnValue(of(mockAnonymous));
-      setupInjector();
-
-      const callback = vi.fn();
-
-      service.getHeaders().subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith({
-        [HeaderTypes.AnonymousCustomerUniqueId]: mockAnonymous,
-      });
-    });
-
-    it('should return an observable with user headers', () => {
-      mockAccessToken.get.mockReturnValue(of(mockToken));
-      mockStorage.remove.mockReturnValue(of());
-      setupInjector();
-
-      const callback = vi.fn();
-
-      service.getHeaders().subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith({
-        [HeaderTypes.Authorization]: `${mockToken.tokenType} ${mockToken.accessToken}`,
       });
     });
   });

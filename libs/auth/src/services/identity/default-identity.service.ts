@@ -9,13 +9,7 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import {
-  AccessToken,
-  AuthHeaders,
-  HeaderTypes,
-  Identity,
-  JWTTokenPayload,
-} from '../../models';
+import { AccessToken, Identity, JWTTokenPayload } from '../../models';
 import { generateID, parseToken } from '../../utils';
 import { AccessTokenService } from '../access-token';
 import { IdentityService } from './identity.service';
@@ -37,25 +31,8 @@ export class DefaultIdentityService implements IdentityService {
     shareReplay(1)
   );
 
-  protected headers$: Observable<AuthHeaders> = this.identity$.pipe(
-    map(
-      (identity) =>
-        (!identity.anonymous && identity.token
-          ? {
-              [HeaderTypes.Authorization]: `${identity.token.tokenType} ${identity.token.accessToken}`,
-            }
-          : {
-              [HeaderTypes.AnonymousCustomerUniqueId]: identity.id,
-            }) as AuthHeaders
-    )
-  );
-
   get(): Observable<Identity> {
     return this.identity$;
-  }
-
-  getHeaders(): Observable<AuthHeaders> {
-    return this.headers$;
   }
 
   protected getFromToken(token: AccessToken): Observable<Identity> {

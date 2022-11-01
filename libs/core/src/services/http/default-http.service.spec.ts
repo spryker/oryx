@@ -1,35 +1,48 @@
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
-import { fromFetch } from 'rxjs/fetch';
-import { SpyInstance } from 'vitest';
 import { DefaultHttpService } from './default-http.service';
+import { HttpHandler } from './handler';
 import { HttpService } from './http.service';
 
-vi.mock('rxjs/fetch', () => ({
-  fromFetch: vi.fn().mockReturnValue(of({ ok: true })),
-}));
-
-const mockUrl = 'mockUrl';
-const mockHeaders = {
-  custom: 'custom',
-};
+const mockUrl = 'https://mockUrl';
 const mockOptions = {
   keepalive: true,
-  headers: mockHeaders,
+  headers: {
+    custom: 'custom',
+  },
 };
 const mockBody = {
   test: 'test',
 };
 
+class MockHttpHandler implements HttpHandler {
+  handle = vi.fn().mockReturnValue(of({ ok: true }));
+}
+
 describe('DefaultHttpService', () => {
   let service: HttpService;
+  let httpHandler: MockHttpHandler;
 
   beforeEach(() => {
-    service = new DefaultHttpService();
-    (fromFetch as unknown as SpyInstance).mockReturnValue(of({ ok: true }));
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: HttpService,
+          useClass: DefaultHttpService,
+        },
+        {
+          provide: HttpHandler,
+          useClass: MockHttpHandler,
+        },
+      ],
+    });
+    service = testInjector.inject(HttpService);
+    httpHandler = testInjector.inject(HttpHandler) as MockHttpHandler;
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    destroyInjector();
   });
 
   it('request should throw an error', () =>
@@ -42,66 +55,47 @@ describe('DefaultHttpService', () => {
       });
     }));
 
-  it('request method should call `fromFetch` with proper parameters', () => {
+  it('request method should call `HttpHandler.handle` with proper parameters', () => {
     service.request(mockUrl, mockOptions);
 
-    expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
-      ...mockOptions,
-      headers: mockHeaders,
-    });
+    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, mockOptions);
   });
 
-  it('get method should call `fromFetch` with proper parameters', () => {
+  it('get method should call `HttpHandler.handle` with proper parameters', () => {
     service.get(mockUrl, mockOptions);
 
-    expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
+    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
       ...mockOptions,
       method: 'GET',
-      headers: mockHeaders,
     });
   });
 
-  it('post method should call `fromFetch` with proper parameters', () => {
+  it('post method should call `HttpHandler.handle` with proper parameters', () => {
     service.post(mockUrl, mockBody, mockOptions);
 
-    expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
+    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
       ...mockOptions,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...mockHeaders,
-      },
       body: JSON.stringify(mockBody),
     });
   });
 
-  it('patch method should call `fromFetch` with proper parameters', () => {
+  it('patch method should call `HttpHandler.handle` with proper parameters', () => {
     service.patch(mockUrl, mockBody, mockOptions);
 
-    expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
+    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
       ...mockOptions,
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        ...mockHeaders,
-      },
       body: JSON.stringify(mockBody),
     });
   });
 
-  it('delete method should call `fromFetch` with proper parameters', () => {
+  it('delete method should call `HttpHandler.handle` with proper parameters', () => {
     service.delete(mockUrl, mockOptions);
 
-    expect(fromFetch).toHaveBeenCalledWith(
-      mockUrl,
-      expect.objectContaining({
-        ...mockOptions,
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          ...mockHeaders,
-        },
-      })
-    );
+    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
+      ...mockOptions,
+      method: 'DELETE',
+    });
   });
 });

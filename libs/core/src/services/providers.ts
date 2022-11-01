@@ -1,7 +1,12 @@
 import { Provider } from '@spryker-oryx/injector';
 import { ContextService, DefaultContextService } from './context';
 import { DefaultErrorService, ErrorService } from './error';
-import { DefaultHttpService, HttpService } from './http';
+import {
+  DefaultHttpHandler,
+  DefaultHttpService,
+  HttpHandler,
+  HttpService,
+} from './http';
 import { DefaultStorageService, StorageService } from './storage';
 import {
   DefaultJsonAPITransformerService,
@@ -11,6 +16,10 @@ import {
 } from './transformer';
 
 export const coreProviders: Provider[] = [
+  {
+    provide: HttpHandler,
+    useClass: DefaultHttpHandler,
+  },
   {
     provide: HttpService,
     useClass: DefaultHttpService,

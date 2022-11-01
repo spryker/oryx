@@ -2,7 +2,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { combineLatest, Observable, switchMap, take } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import { ApiCartModel, Cart } from '../../models';
 import {
   AddCartEntityProps,
@@ -22,13 +22,9 @@ export class DefaultCartAdapter implements CartAdapter {
   ) {}
 
   getAll(): Observable<Cart[] | null> {
-    return combineLatest([
-      this.identity.get(),
-
-      this.identity.getHeaders(),
-    ]).pipe(
+    return this.identity.get().pipe(
       take(1),
-      switchMap(([identity, headers]) => {
+      switchMap((identity) => {
         const url = this.generateUrl(
           !identity.anonymous
             ? `${ApiCartModel.UrlParts.Customers}/${identity.id}/${ApiCartModel.UrlParts.Carts}`
@@ -37,19 +33,16 @@ export class DefaultCartAdapter implements CartAdapter {
         );
 
         return this.http
-          .get<ApiCartModel.ResponseList>(url, { headers })
+          .get<ApiCartModel.ResponseList>(url)
           .pipe(this.transformer.do(CartsNormalizers));
       })
     );
   }
 
   get(data: GetCartProps): Observable<Cart> {
-    return combineLatest([
-      this.identity.get(),
-      this.identity.getHeaders(),
-    ]).pipe(
+    return this.identity.get().pipe(
       take(1),
-      switchMap(([identity, headers]) => {
+      switchMap((identity) => {
         const url = this.generateUrl(
           `${
             !identity.anonymous
@@ -60,19 +53,16 @@ export class DefaultCartAdapter implements CartAdapter {
         );
 
         return this.http
-          .get<ApiCartModel.Response>(url, { headers })
+          .get<ApiCartModel.Response>(url)
           .pipe(this.transformer.do(CartNormalizers));
       })
     );
   }
 
   addEntry(data: AddCartEntityProps): Observable<Cart> {
-    return combineLatest([
-      this.identity.get(),
-      this.identity.getHeaders(),
-    ]).pipe(
+    return this.identity.get().pipe(
       take(1),
-      switchMap(([identity, headers]) => {
+      switchMap((identity) => {
         const url = data.cartId
           ? this.generateUrl(
               !identity.anonymous
@@ -95,19 +85,16 @@ export class DefaultCartAdapter implements CartAdapter {
         };
 
         return this.http
-          .post<ApiCartModel.Response>(url, body, { headers })
+          .post<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizers));
       })
     );
   }
 
   updateEntry(data: UpdateCartEntityProps): Observable<Cart> {
-    return combineLatest([
-      this.identity.get(),
-      this.identity.getHeaders(),
-    ]).pipe(
+    return this.identity.get().pipe(
       take(1),
-      switchMap(([identity, headers]) => {
+      switchMap((identity) => {
         const url = this.generateUrl(
           !identity.anonymous
             ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
@@ -124,19 +111,16 @@ export class DefaultCartAdapter implements CartAdapter {
         };
 
         return this.http
-          .patch<ApiCartModel.Response>(url, body, { headers })
+          .patch<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizers));
       })
     );
   }
 
   deleteEntry(data: DeleteCartEntityProps): Observable<unknown> {
-    return combineLatest([
-      this.identity.get(),
-      this.identity.getHeaders(),
-    ]).pipe(
+    return this.identity.get().pipe(
       take(1),
-      switchMap(([identity, headers]) => {
+      switchMap((identity) => {
         const url = this.generateUrl(
           !identity.anonymous
             ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
@@ -144,7 +128,7 @@ export class DefaultCartAdapter implements CartAdapter {
           identity.anonymous
         );
 
-        return this.http.delete(url, { headers });
+        return this.http.delete(url);
       })
     );
   }

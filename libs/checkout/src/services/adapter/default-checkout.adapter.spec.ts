@@ -27,19 +27,10 @@ const mockUser = {
   token: { accessToken: 'token' },
 };
 
-const mockRequestHeaders = {
-  Authorization: 'Authorization',
-};
-
 const mockAnonymousUser = { id: 'anonymousUserId', anonymous: true };
-
-const mockAnonymousRequestHeaders = {
-  'X-Anonymous-Customer-Unique-Id': mockAnonymousUser.id,
-};
 
 class MockIdentityService implements Partial<IdentityService> {
   get = vi.fn().mockReturnValue(of(mockAnonymousUser));
-  getHeaders = vi.fn().mockReturnValue(of(mockAnonymousRequestHeaders));
 }
 
 describe('DefaultCheckoutService', () => {
@@ -120,23 +111,6 @@ describe('DefaultCheckoutService', () => {
       });
     });
 
-    it('should provide headers for guest users', () => {
-      service.get(mockGetCheckoutDataQualifier).subscribe(() => {
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
-    });
-
-    it('should provide headers for logged in users', () => {
-      identity.get.mockReturnValue(of(mockUser));
-      identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
-      service.get(mockGetCheckoutDataQualifier).subscribe(() => {
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
-      });
-    });
-
     it('should call transformer with proper normalizer', () => {
       http.flush(mockGetShipmentResponse);
       service.get(mockGetCheckoutDataQualifier).subscribe();
@@ -174,23 +148,6 @@ describe('DefaultCheckoutService', () => {
     it('should build url', () => {
       service.update(mockUpdateQualifier).subscribe(() => {
         expect(http.url).toBe(`${mockApiUrl}/checkout-data?include=shipments`);
-      });
-    });
-
-    it('should provide headers for guest users', () => {
-      service.update(mockUpdateQualifier).subscribe(() => {
-        expect(http.options).toHaveProperty(
-          'headers',
-          mockAnonymousRequestHeaders
-        );
-      });
-    });
-
-    it('should provide headers for logged in users', () => {
-      identity.get.mockReturnValue(of(mockUser));
-      identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
-      service.update(mockUpdateQualifier).subscribe(() => {
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
     });
 

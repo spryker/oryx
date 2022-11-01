@@ -31,14 +31,6 @@ const mockUser = {
   token: { accessToken: 'token' },
 };
 
-const mockAnonymousRequestHeaders = {
-  'X-Anonymous-Customer-Unique-Id': mockAnonymousUser.id,
-};
-
-const mockRequestHeaders = {
-  Authorization: 'Authorization',
-};
-
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
   set = vi.fn();
@@ -53,7 +45,6 @@ const mockTransformer = {
 
 class MockIdentityService implements Partial<IdentityService> {
   get = vi.fn().mockReturnValue(of(mockAnonymousUser));
-  getHeaders = vi.fn().mockReturnValue(of(mockAnonymousRequestHeaders));
 }
 
 describe('DefaultAddressAdapter', () => {
@@ -145,7 +136,6 @@ describe('DefaultAddressAdapter', () => {
     describe('logged in user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       it('should not call storage', () => {
@@ -160,12 +150,6 @@ describe('DefaultAddressAdapter', () => {
         expect(http.url).toBe(
           `${mockApiUrl}/customers/${mockUser.id}/addresses`
         );
-      });
-
-      it('should provide headers', () => {
-        service.getAll().subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
 
       it('should call transformer data with data from response', () => {
@@ -228,7 +212,6 @@ describe('DefaultAddressAdapter', () => {
     describe('logged in user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       const mockSerializedAddressProps = {
@@ -250,12 +233,6 @@ describe('DefaultAddressAdapter', () => {
         expect(http.url).toBe(
           `${mockApiUrl}/customers/${mockUser.id}/addresses`
         );
-      });
-
-      it('should provide headers', () => {
-        service.add(mockCurrentAddress).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
 
       it('should provide body', () => {
@@ -316,7 +293,6 @@ describe('DefaultAddressAdapter', () => {
     describe('logged in user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        identity.getHeaders.mockReturnValue(of(mockRequestHeaders));
       });
 
       const mockSerializedAddressProps = {
@@ -332,12 +308,6 @@ describe('DefaultAddressAdapter', () => {
         expect(http.url).toBe(
           `${mockApiUrl}/customers/${mockUser.id}/addresses/${mockCurrentAddressResponse.id}`
         );
-      });
-
-      it('should provide headers', () => {
-        service.update(mockCurrentAddress).subscribe();
-
-        expect(http.options).toHaveProperty('headers', mockRequestHeaders);
       });
 
       it('should provide body', () => {

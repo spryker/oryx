@@ -1,11 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": [
-    "**/*.ts",
-    "../../libs/core/src/services/transformer/json-api-transformer/json-api.shim.ts"
-  ]
+  "include": ["**/*.ts"]
 }
