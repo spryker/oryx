@@ -4,7 +4,7 @@ import {
   RequestOptions,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import { AuthHeaderTypes, Identity } from '../../models';
 import { IdentityService } from './identity.service';
 
@@ -44,13 +44,12 @@ export function identityInterceptor(): HttpInterceptor {
       options: RequestOptions,
       handle: HttpHandlerFn
     ): Observable<Response> => {
-      return identity
-        .get()
-        .pipe(
-          switchMap((identity) =>
-            handle(url, optionsWithHeaders(identity, options))
-          )
-        );
+      return identity.get().pipe(
+        take(1),
+        switchMap((identity) =>
+          handle(url, optionsWithHeaders(identity, options))
+        )
+      );
     },
   };
 }
