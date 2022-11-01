@@ -16,11 +16,16 @@ export type ComponentDefFn = () => ComponentDef;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Component extends HTMLElement {}
+
 export interface ComponentProps {
   [HOOKS_KEY]?: Record<string, string>;
 }
 
 export type ComponentType = Type<Component> & ComponentProps;
+
+export type ObservableType = Type<ObservableShadowElement> &
+  ComponentProps &
+  ComponentStatic;
 
 export interface ComponentStatic {
   styles?: CSSResult[];

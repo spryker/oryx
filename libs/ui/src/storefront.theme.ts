@@ -2,6 +2,14 @@ import { Theme } from '@spryker-oryx/core';
 import { theme } from '../actions/button/src/styles/themes/storefront.styles';
 
 export const uiStorefrontTheme: Theme = {
+  breakpoints: {
+    lg: {
+      min: 1024,
+    },
+    md: {
+      min: 768,
+    },
+  },
   components: {
     'oryx-button': theme,
     'oryx-icon-button': () =>

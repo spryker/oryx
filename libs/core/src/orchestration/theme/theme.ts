@@ -1,4 +1,9 @@
-import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
+import {
+  getPropByPath,
+  HOOKS_KEY,
+  IconHookToken,
+  isPromise,
+} from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import { iconHook } from '../../hooks';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
@@ -6,12 +11,27 @@ import { ComponentsPlugin } from '../components';
 import {
   DesignToken,
   Theme,
+  ThemeBreakpoints,
   ThemeData,
   ThemeImpl,
   ThemeMediaQueries,
   ThemeStyles,
+  ThemeStylesObj,
   ThemeToken,
 } from './theme.model';
+
+interface ThemeMappedToken {
+  tokens: DesignToken;
+}
+
+const enum DesignTokenGlobal {
+  Global = 'global',
+}
+
+interface DesignTokenMapper {
+  [DesignTokenGlobal.Global]?: Record<string, string>;
+  [key: string]: Record<string, string> | undefined;
+}
 
 export const ThemePluginName = 'core$theme';
 
@@ -25,8 +45,23 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   protected app?: App;
   protected icons = {};
   protected cssVarPrefix = '--oryx';
+  protected breakpoints: ThemeBreakpoints = {};
+  protected mediaMapper: Record<
+    keyof ThemeMediaQueries,
+    Record<string, string>
+  > = {
+    mode: {
+      dark: 'prefers-color-scheme: dark',
+    },
+    screen: {
+      min: 'min-width',
+      max: 'max-width',
+    },
+  };
 
-  constructor(protected themes: Theme[]) {}
+  constructor(protected themes: Theme[]) {
+    this.propertiesCollector(themes);
+  }
 
   getName(): string {
     return ThemePluginName;
@@ -47,12 +82,12 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     }
   }
 
-  transformer(theme: ThemeStyles): CSSResult[] {
-    if (typeof theme === 'string') {
-      return [unsafeCSS(theme)];
+  normalizeStyles(styles: ThemeStyles | ThemeStylesObj): CSSResult[] {
+    if (this.isThemeStyles(styles)) {
+      return this.normalizer(styles);
     }
 
-    return Array.isArray(theme) ? theme : [theme];
+    return this.generateBreakpoints(styles);
   }
 
   async resolve(
@@ -65,13 +100,6 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
     for (const theme of this.themes) {
       const component = theme.components[name];
-
-      if (theme.icons) {
-        this.icons = {
-          ...this.icons,
-          ...theme.icons,
-        };
-      }
 
       if (theme.icons && !isIconExtended) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -115,68 +143,56 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return this.icons?.[icon as keyof typeof this.icons];
   }
 
-  protected async setStyles(selector = ':host'): Promise<ThemeData> {
+  protected async setStyles(root = ':host'): Promise<ThemeData> {
     let stream = '';
-    const replaced: (Theme | Record<'tokens', DesignToken>)[] = [
-      ...this.themes,
-    ];
-    const isTokens = (
-      arg: Theme | Record<'tokens', DesignToken>
-    ): arg is Record<'tokens', DesignToken> =>
-      arg['tokens' as keyof typeof arg];
+    const designTokensMapper: DesignTokenMapper = {};
+    const replaced: (Theme | ThemeMappedToken)[] = [...this.themes];
+    const isTokens = (arg: Theme | ThemeMappedToken): arg is ThemeMappedToken =>
+      !!(arg as ThemeMappedToken).tokens;
     const generateCssVarKey = (
       currentKey: string,
       parentKey?: string
     ): string => (parentKey ? `${parentKey}-${currentKey}` : currentKey);
-    // TODO; should be common mechanism for media queries generation
-    const mediaQueryMapper: Record<
-      keyof ThemeMediaQueries,
-      Record<string, string>
-    > = {
-      mode: {
-        dark: 'prefers-color-scheme: dark',
-      },
-    };
+    const breakpointsOrder = Object.keys(this.breakpoints);
 
     for (let i = 0; i < replaced.length; i++) {
       const theme = replaced[i];
 
       if (!isTokens(theme)) {
         const { designTokens, globalStyles } = theme;
-        const [styles = '', tokensArr = []] = await Promise.all([
+        const [styles, tokensArr = []] = await Promise.all([
           this.loadThemeImplFn(globalStyles),
           this.loadThemeImplFn(designTokens),
         ]);
 
-        stream += `${styles}`;
+        stream += styles ? `${styles(root)}` : '';
+        tokensArr.sort(
+          (a, b) =>
+            breakpointsOrder.indexOf(a.media?.screen ?? '') -
+            breakpointsOrder.indexOf(b.media?.screen ?? '')
+        );
 
         for (let i = 0; i < tokensArr.length; i++) {
-          replaced.push({ tokens: tokensArr[i] });
+          replaced.push({ tokens: { ...tokensArr[i] } });
         }
 
         continue;
       }
 
       const { tokens } = theme;
-      let start = '';
-      let end = '}';
+      let tokenMedia = DesignTokenGlobal.Global as string;
 
-      if (tokens?.mediaQuery) {
-        start += '@media ';
-        end += '}';
-
-        for (const key in tokens.mediaQuery) {
-          start += `(${
-            mediaQueryMapper[key as keyof ThemeMediaQueries]?.[
-              tokens.mediaQuery[key as keyof ThemeMediaQueries] as string
-            ]
-          }) {`;
+      if (tokens?.media) {
+        for (const key in tokens.media) {
+          tokenMedia = `${key}.${tokens.media[key as keyof ThemeMediaQueries]}`;
         }
-
-        delete tokens.mediaQuery;
+        delete tokens.media;
       }
 
-      start += `${selector} {`;
+      designTokensMapper[tokenMedia] = {
+        ...designTokensMapper[tokenMedia],
+      };
+
       const tokensArr: [string, string | ThemeToken, string?][] =
         Object.entries(tokens);
 
@@ -184,10 +200,13 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
         const [key, token, parentKey] = tokensArr[i];
 
         if (typeof token === 'string') {
-          start += `${this.cssVarPrefix}-${generateCssVarKey(
+          const tokenKey = `${this.cssVarPrefix}-${generateCssVarKey(
             key,
             parentKey
-          )}: ${token};`;
+          )}`;
+
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          designTokensMapper[tokenMedia]![tokenKey] = token;
 
           continue;
         }
@@ -200,6 +219,23 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
           ]);
         }
       }
+    }
+
+    for (const media in designTokensMapper) {
+      const tokensList = designTokensMapper[media];
+      let start = '';
+      let end = '}';
+
+      if (media !== DesignTokenGlobal.Global) {
+        end += '}';
+        start += this.generateMedia(media);
+      }
+
+      start += ` ${root} {`;
+
+      for (const key in tokensList) {
+        start += `${key}: ${tokensList[key]};`;
+      }
 
       stream += `${start}${end}`;
     }
@@ -209,10 +245,100 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     };
   }
 
+  protected generateBreakpoints(styles: ThemeStylesObj): CSSResult[] {
+    let stylesStream = '';
+
+    for (const breakpoint in this.breakpoints) {
+      const stylesByBP = styles[breakpoint as keyof ThemeStylesObj];
+
+      if (!stylesByBP) {
+        continue;
+      }
+
+      const themeStyles = this.normalizer(stylesByBP).reduce(
+        (acc, style) => `${acc} ${style.toString()}`,
+        ''
+      );
+
+      stylesStream += `${this.generateMedia(
+        `screen.${breakpoint}`
+      )}${themeStyles}}`;
+    }
+
+    return [unsafeCSS(stylesStream)];
+  }
+
+  protected propertiesCollector(themes: Theme[]): void {
+    for (const { breakpoints, icons } of themes) {
+      const sortableBP = Object.fromEntries(
+        Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
+      );
+
+      this.breakpoints = {
+        ...this.breakpoints,
+        ...sortableBP,
+      };
+
+      this.icons = {
+        ...this.icons,
+        ...icons,
+      };
+    }
+  }
+
+  protected isThemeStyles(
+    styles: ThemeStyles | ThemeStylesObj
+  ): styles is ThemeStyles {
+    return (
+      typeof styles === 'string' ||
+      styles instanceof CSSResult ||
+      Array.isArray(styles)
+    );
+  }
+
+  protected normalizer(theme: ThemeStyles): CSSResult[] {
+    if (typeof theme === 'string') {
+      return [unsafeCSS(theme)];
+    }
+
+    return Array.isArray(theme) ? theme : [theme];
+  }
+
+  /**
+   * Interpolates value from {@link mediaMapper} by value path.
+   * Value path should be separated by a dot. (e.g. `mode.dark`)
+   */
+  protected generateMedia(value: string): string {
+    const path = value.split('.');
+    const isScreen = path[0] === 'screen';
+    const mediaKey = getPropByPath(
+      this.mediaMapper,
+      isScreen ? 'screen' : value
+    );
+    const media = (expression: string): string => ` @media ${expression} {`;
+
+    if (isScreen && this.breakpoints) {
+      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
+      let expression = dimension?.min
+        ? `(${mediaKey.min}: ${dimension?.min}px)`
+        : '';
+      expression += dimension?.min && dimension?.max ? ' and ' : '';
+      expression += dimension?.max
+        ? `(${mediaKey.max}: ${dimension?.max}px)`
+        : '';
+
+      return media(expression);
+    }
+
+    return media(`(${mediaKey})`);
+  }
+
   protected loadThemeImplFn<T>(impl?: ThemeImpl<T>): T | Promise<T> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (impl as any)();
+      const value = (impl as any)();
+
+      return (isPromise(value) ? value : impl) as T;
     } catch {
       return impl as unknown as T;
     }

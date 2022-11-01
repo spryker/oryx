@@ -28,11 +28,18 @@ const tokens: DesignToken[] = [
     'one-line': '140px',
   },
   {
-    mediaQuery: {
+    media: {
+      screen: 'lg',
+    },
+    color: {
+      'one-line': '200px',
+    },
+  },
+  {
+    media: {
       mode: 'dark',
     },
     color: {
-      brand: 'red',
       brand2: {
         100: '#17c497',
         200: '#17b997',
@@ -41,6 +48,15 @@ const tokens: DesignToken[] = [
         500: '#17b476',
       },
       ink: '#ffffff',
+    },
+  },
+
+  {
+    media: {
+      screen: 'md',
+    },
+    color: {
+      'one-line': '180px',
     },
   },
 ];

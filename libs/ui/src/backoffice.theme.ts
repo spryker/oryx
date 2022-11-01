@@ -1,6 +1,14 @@
 import { Theme } from '@spryker-oryx/core';
 
 export const uiBackofficeTheme: Theme = {
+  breakpoints: {
+    md: {
+      min: 768,
+    },
+    lg: {
+      min: 1024,
+    },
+  },
   components: {
     'oryx-button': () =>
       import('../actions/button/src/styles/themes/backoffice.styles').then(

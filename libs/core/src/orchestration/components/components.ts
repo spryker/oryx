@@ -1,5 +1,5 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { HOOKS_KEY, isDefined, Type } from '@spryker-oryx/utilities';
+import { HOOKS_KEY, isDefined } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import { ThemeData, ThemePlugin, ThemeStrategies } from '../theme';
 import {
@@ -8,17 +8,23 @@ import {
   ComponentImplMeta,
   ComponentImplStrategy,
   ComponentInfo,
-  ComponentProps,
   ComponentsInfo,
   ComponentsPluginOptions,
   ComponentStatic,
   ComponentType,
   ObservableShadowElement,
+  ObservableType,
 } from './components.model';
 import {
   isObservableShadowElement,
   observableShadow,
 } from './observable-shadow';
+
+interface ComponentMap {
+  observableType: ObservableType;
+  componentType: ComponentType & ComponentStatic;
+  themes?: ThemeData[] | null;
+}
 
 export const ComponentsPluginName = 'core$components';
 
@@ -29,25 +35,18 @@ export const ComponentsPluginName = 'core$components';
  *  Applies theme styles for component definition.
  */
 export class ComponentsPlugin implements AppPlugin {
-  protected theme?: ThemePlugin;
   protected readonly componentDefMap = new Map<string, ComponentDef>();
-
   protected readonly logger = this.options?.logger ?? console;
-
-  protected readonly componentMap = new Map<
-    string,
-    Type<ObservableShadowElement> & ComponentProps
-  >();
-
+  protected readonly componentMap = new Map<string, ComponentMap>();
   protected readonly observer = new MutationObserver(
     this.handleMutations.bind(this)
   );
-
   protected readonly implMetaPreload: ComponentImplMeta = {};
   protected readonly implMetaInDom: ComponentImplMeta = { foundInDom: true };
   protected readonly implMetaProgrammatic: ComponentImplMeta = {
     programmaticLoad: true,
   };
+  protected theme?: ThemePlugin;
   rootSelector = '';
 
   constructor(
@@ -159,11 +158,7 @@ export class ComponentsPlugin implements AppPlugin {
       )
     );
 
-    preloaded
-      .filter(isDefined)
-      .map(({ def, componentType }) =>
-        this.useComponent(def.name, componentType)
-      );
+    preloaded.filter(isDefined).map((def) => this.useComponent(def.name));
   }
 
   protected async tryLoadAndDefineComponent(
@@ -183,24 +178,22 @@ export class ComponentsPlugin implements AppPlugin {
     meta: ComponentImplMeta
   ): Promise<ComponentType | undefined> {
     const def = this.findComponentDefBy(name);
-    const componentType = await this.loadComponentDef(def, meta);
+    const observableType = await this.loadComponentDef(def, meta);
 
     // If component not yet loaded - skip definition
-    if (!componentType) {
+    if (!observableType) {
       return;
     }
 
-    this.useComponent(name, componentType, true);
+    this.useComponent(name, true);
 
-    return componentType;
+    return observableType;
   }
 
-  protected useComponent(
-    name: string,
-    componentType: ComponentType,
-    noWarn = false
-  ): void {
+  protected useComponent(name: string, noWarn = false): void {
     const existingType = customElements.get(name);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { observableType, componentType } = this.componentMap.get(name)!;
 
     if (existingType) {
       if (!noWarn) {
@@ -208,10 +201,26 @@ export class ComponentsPlugin implements AppPlugin {
           `Component '${name}' already defined as '${existingType.name}', skipping definition of '${componentType.name}'!`
         );
       }
+
       return;
     }
 
-    customElements.define(name, componentType, this.options.elementOptions);
+    if (componentType[HOOKS_KEY] && this.options[HOOKS_KEY]) {
+      for (const [token, methodName] of Object.entries(
+        componentType[HOOKS_KEY]
+      )) {
+        const newHook = this.options[HOOKS_KEY][token as keyof HooksTokenMap];
+
+        if (methodName && newHook) {
+          componentType[
+            methodName as keyof Omit<ComponentType, 'length' | 'name'>
+          ] = newHook;
+        }
+      }
+    }
+
+    this.applyThemes(name);
+    customElements.define(name, observableType, this.options.elementOptions);
   }
 
   /**
@@ -220,32 +229,23 @@ export class ComponentsPlugin implements AppPlugin {
   protected async maybeLoadComponentImplStrategy(
     def: ComponentDef,
     meta: ComponentImplMeta
-  ): Promise<
-    | {
-        def: ComponentDef;
-        componentType: Type<ObservableShadowElement> & ComponentProps;
-      }
-    | undefined
-  > {
+  ): Promise<ComponentDef | undefined> {
     if (!isComponentImplStrategy(def.impl) && !this.options.preload) {
       return;
     }
 
-    const componentType = await this.loadComponentDef(def, meta);
+    const componentDef = await this.loadComponentDef(def, meta);
 
-    if (componentType) {
-      return { def, componentType };
-    }
-
-    return;
+    return componentDef ? def : undefined;
   }
 
   protected async loadComponentDef(
     def: ComponentDef,
     meta: ComponentImplMeta
-  ): Promise<(Type<ObservableShadowElement> & ComponentProps) | undefined> {
+  ): Promise<ComponentType | undefined> {
     if (this.componentMap.has(def.name)) {
-      return this.componentMap.get(def.name);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.componentMap.get(def.name)!.observableType;
     }
 
     const [componentType, themes] = await Promise.all([
@@ -257,65 +257,56 @@ export class ComponentsPlugin implements AppPlugin {
       return;
     }
 
-    if (componentType[HOOKS_KEY] && this.options[HOOKS_KEY]) {
-      for (const [token, methodName] of Object.entries(
-        componentType[HOOKS_KEY]
-      )) {
-        const newHook = this.options[HOOKS_KEY][token as keyof HooksTokenMap];
-
-        if (methodName) {
-          componentType[
-            methodName as keyof Omit<ComponentType, 'length' | 'name'>
-          ] = newHook;
-        }
-      }
-    }
-
-    this.applyThemes(componentType, themes);
-
     const observableType = observableShadow(componentType);
 
-    this.componentMap.set(def.name, observableType);
+    this.componentMap.set(def.name, { observableType, themes, componentType });
 
     return observableType;
   }
 
-  protected applyThemes(
-    component: ComponentType & ComponentStatic,
-    themes?: ThemeData[] | null
-  ): void {
+  protected applyThemes(name: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { componentType, themes } = this.componentMap.get(name)!;
+
     if (!themes) {
       return;
     }
 
-    const base = component.styles ?? [];
+    const base = componentType.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
     let innerTheme = [...bases];
 
     for (const theme of themes) {
-      if (theme.strategy === ThemeStrategies.ReplaceAll) {
+      const { styles, strategy } = theme;
+
+      if (strategy === ThemeStrategies.ReplaceAll) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        innerTheme = this.theme!.transformer(theme.styles);
+        innerTheme = this.theme!.normalizeStyles(styles);
 
         continue;
       }
 
-      if (theme.strategy === ThemeStrategies.Replace) {
+      if (strategy === ThemeStrategies.Replace) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        innerTheme = [...bases, ...this.theme!.transformer(theme.styles)];
+        innerTheme = [...bases, ...this.theme!.normalizeStyles(styles)];
 
         continue;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      innerTheme = [...innerTheme, ...this.theme!.transformer(theme.styles)];
+      innerTheme = [
+        ...innerTheme,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ...this.theme!.normalizeStyles(styles),
+      ];
     }
 
-    component.styles = innerTheme;
+    componentType.styles = innerTheme;
 
     // eslint-disable-next-line no-prototype-builtins
-    if (component.hasOwnProperty('finalized')) {
-      component.elementStyles = component.finalizeStyles?.(component.styles);
+    if (componentType.hasOwnProperty('finalized')) {
+      componentType.elementStyles = componentType.finalizeStyles?.(
+        componentType.styles
+      );
     }
   }
 

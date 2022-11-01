@@ -1,5 +1,5 @@
-export default `
-  :host {
+export default (root: string): string => `
+  ${root} {
     font-family: var(--oryx-font);
     font-size: var(--oryx-font-size-base);
     font-weight: var(--oryx-font-weight-medium);
