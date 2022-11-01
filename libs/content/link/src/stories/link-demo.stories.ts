@@ -3,13 +3,13 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { LinkOptions, LinkType } from '../link.model';
+import { ContentLinkOptions, LinkType } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
 } as unknown as Meta;
 
-const Template: Story<LinkOptions> = (options): TemplateResult => {
+const Template: Story<ContentLinkOptions> = (options): TemplateResult => {
   return html`<content-link .options="${options}"></content-link>`;
 };
 
@@ -23,6 +23,7 @@ LinkDemo.args = {
   icon: undefined,
   noopener: false,
   nofollow: false,
+  button: false,
 };
 
 LinkDemo.argTypes = {

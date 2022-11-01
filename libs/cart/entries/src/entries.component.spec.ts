@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
+import { CartEntryComponent } from '@spryker-oryx/cart/entry';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { ProductService } from '@spryker-oryx/product';
@@ -10,6 +11,7 @@ import { cartEntriesComponent } from './component';
 import { CartEntriesComponent } from './entries.component';
 
 class MockCartService {
+  isLoading = of(false);
   getEntries = vi.fn().mockReturnValue(of(null));
   updateEntry = vi.fn().mockReturnValue(of(null));
   deleteEntry = vi.fn().mockReturnValue(of(null));
@@ -51,7 +53,18 @@ describe('CartEntriesComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('Empty cart state', () => {
+  describe('when cart is not ready', () => {
+    beforeEach(async () => {
+      service.getEntries = vi.fn().mockReturnValue(of(null));
+      element = await fixture(html`<cart-entries></cart-entries>`);
+    });
+
+    it('should render nothing', () => {
+      expect(element.children.length).toBe(0);
+    });
+  });
+
+  describe('when cart is empty', () => {
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([]));
       element = await fixture(html`<cart-entries></cart-entries>`);
@@ -62,8 +75,8 @@ describe('CartEntriesComponent', () => {
     });
   });
 
-  describe('with entries', () => {
-    let entryElement: HTMLElement | null;
+  describe('when cart contains entries', () => {
+    let entryElement: CartEntryComponent | null;
 
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([entry]));
@@ -89,6 +102,22 @@ describe('CartEntriesComponent', () => {
 
       expect(service.deleteEntry).toHaveBeenCalledWith({
         groupKey: entry.groupKey,
+      });
+    });
+
+    describe('and cart is loading', () => {
+      beforeEach(async () => {
+        service.isLoading = of(true);
+        element = await fixture(html`<cart-entries></cart-entries>`);
+        entryElement = element.renderRoot.querySelector('cart-entry');
+      });
+
+      it('should set inert attribute on entry', () => {
+        expect(entryElement?.hasAttribute('inert')).toBe(true);
+      });
+
+      it('should pass disabled option', () => {
+        expect(entryElement?.options?.disabled).toBe(true);
       });
     });
   });

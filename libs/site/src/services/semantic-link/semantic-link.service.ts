@@ -6,11 +6,12 @@ export interface SemanticLink {
   params?: Record<string, string>;
 }
 
-export const enum SemanticLinkType {
+export enum SemanticLinkType {
   ProductList = 'search',
   Page = 'page',
   Product = 'product',
   Category = 'category',
+  Checkout = 'checkout',
 }
 
 export interface SemanticLinkService {

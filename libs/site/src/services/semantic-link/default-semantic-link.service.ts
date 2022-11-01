@@ -24,6 +24,7 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
           ? `?${encodeURIComponent(this.getUrlParams(link.params))}`
           : ''
       }`,
+    [SemanticLinkType.Checkout]: (): string => '/checkout',
   };
 
   get(link: SemanticLink): Observable<string | undefined> {

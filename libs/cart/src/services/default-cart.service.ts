@@ -3,6 +3,7 @@ import { IdentityService } from '@spryker-oryx/auth';
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import {
+  BehaviorSubject,
   catchError,
   map,
   mapTo,
@@ -27,6 +28,7 @@ import { CartAdapter } from './adapter/cart.adapter';
 import { CartService, STATE } from './cart.service';
 
 export class DefaultCartService implements CartService {
+  protected loading$ = new BehaviorSubject(false);
   protected isAuthenticatedCached$ = new ReplaySubject<boolean>();
   protected carts = new Map<string, STATE>();
   protected subscription = new Subscription();
@@ -50,9 +52,14 @@ export class DefaultCartService implements CartService {
   }
 
   protected initSubscriptions(): void {
+    this.loading$.next(true);
+
     const loadCartsSubs = this.identity
       .get()
-      .pipe(switchMap(() => this.loadCarts()))
+      .pipe(
+        switchMap(() => this.loadCarts()),
+        tap(() => this.loading$.next(false))
+      )
       .subscribe();
 
     this.subscription.add(loadCartsSubs);
@@ -80,6 +87,10 @@ export class DefaultCartService implements CartService {
     );
   }
 
+  get isLoading(): Observable<boolean> {
+    return this.loading$;
+  }
+
   load(): Observable<null> {
     return this.identity.get().pipe(
       take(1),
@@ -90,6 +101,8 @@ export class DefaultCartService implements CartService {
 
   onDestroy(): void {
     this.subscription.unsubscribe();
+    this.loading$.next(false);
+    this.loading$.complete();
   }
 
   // ToDo: implement such methods for multi-cart behavior
@@ -133,6 +146,8 @@ export class DefaultCartService implements CartService {
   }
 
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
+    this.loading$.next(true);
+
     this.load();
     return this.activeCartId$.pipe(
       take(1),
@@ -155,6 +170,8 @@ export class DefaultCartService implements CartService {
         if (isNoCarts) {
           this.activeCartId$.next(cart.id);
         }
+
+        this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
         this.updateError(error, cartId);
@@ -169,6 +186,8 @@ export class DefaultCartService implements CartService {
     cartId,
     groupKey,
   }: DeleteCartEntryQualifier): Observable<null> {
+    this.loading$.next(true);
+
     this.load();
     return this.activeCartId$.pipe(
       take(1),
@@ -189,6 +208,8 @@ export class DefaultCartService implements CartService {
       tap((cart) => {
         const cachedCart = this.carts.get(cart.id);
         cachedCart?.value$.next(cart);
+
+        this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
         this.updateError(error, cartId);
@@ -204,6 +225,8 @@ export class DefaultCartService implements CartService {
     groupKey,
     ...attributes
   }: UpdateCartEntryQualifier): Observable<null> {
+    this.loading$.next(true);
+
     this.load();
     return this.activeCartId$.pipe(
       take(1),
@@ -218,6 +241,8 @@ export class DefaultCartService implements CartService {
         const cachedCart = this.carts.get(cart.id)!;
 
         cachedCart.value$.next(cart);
+
+        this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
         this.updateError(error, cartId);

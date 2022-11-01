@@ -19,8 +19,9 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
 
   protected options$ = this.contentController.getOptions();
 
-  protected loading$ = new BehaviorSubject(true);
   protected currentlyUpdated$ = new BehaviorSubject<string | null>(null);
+
+  protected loading$ = this.cartService.isLoading;
 
   protected entries$ = this.options$.pipe(
     switchMap(({ cartId }) =>
@@ -45,7 +46,6 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
             ) ?? of([])
         ),
         tap(() => {
-          this.loading$.next(false);
           this.currentlyUpdated$.next(null);
         })
       )
@@ -69,13 +69,11 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
   protected updateQuantity(e: CustomEvent, { groupKey, sku }: CartEntry): void {
     const quantity = e.detail.quantity;
 
-    this.loading$.next(true);
     this.currentlyUpdated$.next(groupKey);
     this.cartService.updateEntry({ groupKey, sku, quantity }).subscribe();
   }
 
   protected removeEntry({ groupKey }: CartEntry): void {
-    this.loading$.next(true);
     this.cartService.deleteEntry({ groupKey }).subscribe();
   }
 
