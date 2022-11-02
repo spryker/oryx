@@ -102,7 +102,7 @@ export class RegistryController implements ReactiveController {
         this.registry.find(
           ({ key }) => key === targetKey
         ) as NotificationRegistry
-      ).visible
+      )?.visible
     );
   }
 
