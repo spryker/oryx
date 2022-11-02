@@ -20,7 +20,7 @@ export class CheckoutLinkComponent extends ComponentMixin() {
     .getEntries()
     .pipe(map((entries) => !entries?.length));
 
-  protected loading$ = this.cartService.isLoading;
+  protected loading$ = this.cartService.getLoadingState();
 
   protected data$ = combineLatest([this.isEmptyCart$, this.loading$]);
 

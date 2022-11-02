@@ -87,7 +87,7 @@ export class DefaultCartService implements CartService {
     );
   }
 
-  get isLoading(): Observable<boolean> {
+  getLoadingState(): Observable<boolean> {
     return this.loading$;
   }
 

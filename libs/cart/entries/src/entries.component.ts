@@ -21,7 +21,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
 
   protected currentlyUpdated$ = new BehaviorSubject<string | null>(null);
 
-  protected loading$ = this.cartService.isLoading;
+  protected loading$ = this.cartService.getLoadingState();
 
   protected entries$ = this.options$.pipe(
     switchMap(({ cartId }) =>

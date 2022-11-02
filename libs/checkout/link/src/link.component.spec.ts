@@ -11,7 +11,7 @@ import { checkoutLinkComponent } from './link.def';
 
 class MockCartService implements Partial<CartService> {
   getEntries = vi.fn();
-  isLoading = of(false);
+  getLoadingState = vi.fn().mockReturnValue(of(false));
 }
 
 class mockPricingService {
@@ -75,7 +75,7 @@ describe('CheckoutLinkComponent', () => {
 
   describe('when cart is loading', () => {
     beforeEach(async () => {
-      service.isLoading = of(true);
+      service.getLoadingState.mockReturnValue(of(true));
       service.getEntries.mockReturnValue(of([{}]));
       element = await fixture(html` <checkout-link uid="1"></checkout-link>`);
     });

@@ -11,7 +11,7 @@ import { CartEntriesComponent } from './entries.component';
 import { cartEntriesComponent } from './entries.def';
 
 class MockCartService {
-  isLoading = of(false);
+  getLoadingState = vi.fn().mockReturnValue(of(false));
   getEntries = vi.fn().mockReturnValue(of(null));
   updateEntry = vi.fn().mockReturnValue(of(null));
   deleteEntry = vi.fn().mockReturnValue(of(null));
@@ -107,7 +107,7 @@ describe('CartEntriesComponent', () => {
 
     describe('and cart is loading', () => {
       beforeEach(async () => {
-        service.isLoading = of(true);
+        service.getLoadingState.mockReturnValue(of(true));
         element = await fixture(html`<cart-entries></cart-entries>`);
         entryElement = element.renderRoot.querySelector('cart-entry');
       });
