@@ -1,43 +1,86 @@
-import { ApiProductModel } from '../../../../models';
+import { ProductMedia } from '@spryker-oryx/product';
 import { imagesNormalizer } from './images.normalizers';
 
-const mockGlueImageSets: ApiProductModel.ImageSets = {
-  imageSets: [
+const set1 = {
+  name: 'name',
+  images: [
     {
-      name: 'name',
-      images: [
-        {
-          externalUrlLarge: 'externalUrlLarge',
-          externalUrlSmall: 'externalUrlSmall',
-        },
-        {
-          externalUrlLarge: 'externalUrlLarge1',
-          externalUrlSmall: 'externalUrlSmall1',
-        },
-      ],
-    },
-    {
-      name: 'name',
-      images: [
-        {
-          externalUrlLarge: 'externalUrlLarge3',
-          externalUrlSmall: 'externalUrlSmall3',
-        },
-        {
-          externalUrlLarge: 'externalUrlLarge14',
-          externalUrlSmall: 'externalUrlSmall14',
-        },
-      ],
+      externalUrlSmall: 'set1/small-1.jpg',
+      externalUrlLarge: 'set1/large-1.jpg',
     },
   ],
 };
-describe('Images Normalizer', () => {
-  it('should transform ApiProductModel.ImageSets into ProductImage[]', () => {
-    const mockResult = [
-      ...mockGlueImageSets.imageSets[0].images,
-      ...mockGlueImageSets.imageSets[1].images,
-    ];
-    const normalized = imagesNormalizer(mockGlueImageSets);
-    expect(normalized).toEqual(mockResult);
+
+const set2 = {
+  name: 'name',
+  images: [
+    {
+      externalUrlSmall: 'set2/small-1.jpg',
+      externalUrlLarge: 'set2/large-1.jpg',
+    },
+    {
+      externalUrlSmall: 'set2/small-2.jpg',
+      externalUrlLarge: 'set2/large-2.jpg',
+    },
+  ],
+};
+
+const duplicate = 'set3/image-1.jpg';
+const set3 = {
+  name: 'set with duplicates',
+  images: [
+    {
+      externalUrlSmall: duplicate,
+      externalUrlLarge: duplicate,
+    },
+  ],
+};
+
+describe('imagesNormalizer', () => {
+  let normalized: ProductMedia[];
+
+  describe('when the source contains a small and large image', () => {
+    beforeEach(() => {
+      normalized = imagesNormalizer({ imageSets: [set1] });
+    });
+
+    it('should fill the sm and lg fields', () => {
+      expect(normalized[0].sm).toBe('set1/small-1.jpg');
+      expect(normalized[0].lg).toBe('set1/large-1.jpg');
+    });
+
+    it('should not fill xs, md and xl', () => {
+      expect(normalized[0].xs).toBeUndefined();
+      expect(normalized[0].md).toBeUndefined();
+      expect(normalized[0].xl).toBeUndefined();
+    });
+
+    describe('and while we still support deprecated', () => {
+      it('should expose externalUrlSmall and externalUrlLarge', () => {
+        expect(normalized[0].externalUrlSmall).toBe('set1/small-1.jpg');
+        expect(normalized[0].externalUrlLarge).toBe('set1/large-1.jpg');
+      });
+    });
+  });
+
+  describe('when the source has multiple image sets', () => {
+    beforeEach(() => {
+      normalized = imagesNormalizer({ imageSets: [set1, set2] });
+    });
+
+    it('should normalise all images in a single array', () => {
+      expect(normalized.length).toBe(3);
+    });
+  });
+
+  describe('when the large image url is identical with the small', () => {
+    beforeEach(() => {
+      normalized = imagesNormalizer({ imageSets: [set3] });
+    });
+
+    it('should not expose the large url', () => {
+      expect(normalized[0].sm).toBe(duplicate);
+      expect(normalized[0].lg).toBeUndefined();
+    });
   });
 });

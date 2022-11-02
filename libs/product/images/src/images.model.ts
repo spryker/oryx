@@ -1,15 +1,3 @@
-export interface ProductImagesSet {
-  /**
-   * Image that is used to display preview
-   */
-  externalUrlLarge: string;
-
-  /**
-   * Image that is used to display thumbnail
-   */
-  externalUrlSmall: string;
-}
-
 export interface ProductImagesComponentOptions {
   /**
    * Preview layout

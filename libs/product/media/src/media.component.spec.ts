@@ -1,201 +1,316 @@
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import {
+  ImageSource,
+  ProductImageService,
+  ProductMediaContainerSize,
+  Size,
+} from '@spryker-oryx/product';
 import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import { productMediaComponent } from './component';
 import { ProductMediaComponent } from './media.component';
+import { productMediaComponent } from './media.def';
+import { LoadingStrategy } from './media.model';
+
+class MockProductImageService implements Partial<ProductImageService> {
+  resolveSources = vi.fn();
+}
 
 describe('ProductMediaComponent', () => {
-  const defaultWindowWidth = window.innerWidth;
   let element: ProductMediaComponent;
-
-  const getImg = (): HTMLImageElement | null =>
-    element.renderRoot.querySelector('img');
-
-  const setWindowWidth = (innerWidth = defaultWindowWidth): void => {
-    window.innerWidth = innerWidth;
-    window.dispatchEvent(new Event('resize'));
-  };
+  let service: MockProductImageService;
 
   beforeAll(async () => {
     await useComponent(productMediaComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
-      providers: mockProductProviders,
+    const testInjector = createInjector({
+      providers: [
+        ...mockProductProviders,
+        {
+          provide: ProductImageService,
+          useClass: MockProductImageService,
+        },
+      ],
     });
-    element = await fixture(html`<product-media sku="1"></product-media>`);
+    service = testInjector.inject(
+      ProductImageService
+    ) as MockProductImageService;
   });
 
   afterEach(() => {
     destroyInjector();
-    setWindowWidth();
   });
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
-  });
+  describe('when an image is resolved', () => {
+    beforeEach(async () => {
+      service.resolveSources.mockReturnValue([
+        {
+          url: 'img.jpg',
+          size: Size.Md,
+        },
+      ]);
+      element = await fixture(html`<product-media sku="1"></product-media>`);
+    });
 
-  it('should render product first images', () => {
-    const expectationSmall =
-      MockProductService?.mockProducts?.[0]?.images?.[0]?.externalUrlSmall;
-    const expectationLarge =
-      MockProductService?.mockProducts?.[0]?.images?.[0]?.externalUrlLarge;
-    const img = element?.shadowRoot?.querySelector('img');
-    const source = element?.shadowRoot?.querySelector('source');
+    it('should pass the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
 
-    expect(img?.src).toBe(expectationSmall);
-    expect(source?.srcset).toBe(expectationLarge);
-  });
+    it('should render the img element', () => {
+      expect(element).toContainElement('img');
+    });
 
-  it('should render product name as alt', () => {
-    const expectation = MockProductService?.mockProducts?.[0]?.name;
-    const img = element?.shadowRoot?.querySelector('img');
-    expect(img?.alt).toBe(expectation);
-  });
+    it('should not render a srcset attribute', () => {
+      expect(element).not.toContainElement('img[srcset]');
+    });
 
-  describe('when options provided', () => {
-    describe('with valid data', () => {
-      const src =
-        MockProductService?.mockProducts?.[0]?.images?.[0]?.externalUrlLarge;
-      const options = {
-        src,
-        hdSrc: src,
-        alt: 'test',
-        breakpoint: 400,
-        loading: undefined,
-      };
+    it('should not render the fallback icon', () => {
+      expect(element).not.toContainElement('oryx-icon');
+    });
 
+    describe('and when an error event is dispatched on the image', () => {
       beforeEach(async () => {
-        element = await fixture(html`
-          <product-media sku="1" .options=${options}></product-media>
-        `);
-
-        getImg()?.dispatchEvent(new Event('load'));
+        const img = element.shadowRoot?.querySelector('img');
+        img?.dispatchEvent(new Event('error', { bubbles: true }));
       });
 
-      it('should render content correctly', () => {
-        const img = element.renderRoot.querySelector('img');
-        const source = element.renderRoot.querySelector('source');
+      it('should render the fallback icon', () => {
+        expect(element).toContainElement('oryx-icon');
+      });
 
-        expect(img?.src).toBe(options.src);
-        expect(img?.alt).toBe(options.alt);
-        expect(img?.hasAttribute('loading')).toBe(false);
-        expect(source?.getAttribute('media')).toContain('(min-width: 400px)');
+      it('should not render the img element', () => {
+        expect(element).not.toContainElement('img');
+      });
+    });
+  });
+
+  describe('when there are 2 images resolved', () => {
+    describe('and the higher quality has no density factor', () => {
+      beforeEach(async () => {
+        service.resolveSources.mockReturnValue([
+          {
+            url: 'a.jpg',
+            size: Size.Md,
+          },
+          {
+            url: 'b.jpg',
+            size: Size.Lg,
+          },
+        ] as ImageSource[]);
+        element = await fixture(html`<product-media sku="1"></product-media>`);
+      });
+
+      it('should not render a srcset', () => {
+        expect(element).not.toContainElement('img[srcset]');
       });
     });
 
-    describe('when hdSrc is null', () => {
-      const options = {
-        hdSrc: null,
-      };
-
+    describe('and the higher quality has a density factor', () => {
       beforeEach(async () => {
-        element = await fixture(html`
-          <product-media sku="1" .options=${options}></product-media>
-        `);
+        service.resolveSources.mockReturnValue([
+          {
+            url: 'a.jpg',
+            size: Size.Md,
+          },
+          {
+            url: 'b.jpg',
+            size: Size.Lg,
+            context: {
+              density: 2,
+            },
+          },
+        ] as ImageSource[]);
+        element = await fixture(html`<product-media sku="1"></product-media>`);
       });
 
-      it('should not render hd version', () => {
-        expect(element).not.toContainElement('source');
+      it('should pass the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible();
+      });
+
+      it('should render the img element', () => {
+        const img = element.shadowRoot?.querySelector('img');
+        expect(img?.src).toContain('a.jpg');
+      });
+
+      it('should render a srcset with the density', () => {
+        expect(element).toContainElement('img[srcset="b.jpg 2x"]');
+      });
+
+      it('should not render the fallback icon', () => {
+        expect(element).not.toContainElement('oryx-icon');
+      });
+    });
+  });
+
+  describe('when there are no images resolved', () => {
+    beforeEach(async () => {
+      service.resolveSources.mockReturnValue([]);
+      element = await fixture(html`<product-media sku="1"></product-media>`);
+    });
+
+    it('should pass the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
+
+    it('should not render the img element', () => {
+      expect(element).not.toContainElement('img');
+    });
+
+    it('should render the fallback icon', () => {
+      expect(element).toContainElement('oryx-icon');
+    });
+  });
+
+  describe('properties', () => {
+    beforeEach(() => {
+      service.resolveSources.mockReturnValue([
+        { url: 'img.jpg', size: Size.Md },
+      ]);
+    });
+
+    describe('format', () => {
+      const mockProduct = MockProductService.mockProducts.find(
+        (p) => p.sku === '1'
+      );
+      const image = mockProduct?.images?.[0];
+
+      describe('when no format is requested', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<product-media sku="1"></product-media>`
+          );
+        });
+
+        it('should request images for the Gallery format', () => {
+          expect(service.resolveSources).toHaveBeenCalledWith(
+            image,
+            ProductMediaContainerSize.Detail
+          );
+        });
+      });
+
+      describe('when a format is requested', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<product-media
+              sku="1"
+              .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
+            ></product-media>`
+          );
+        });
+
+        it('should request images for the Thumbnail format', () => {
+          expect(service.resolveSources).toHaveBeenCalledWith(
+            image,
+            ProductMediaContainerSize.Thumbnail
+          );
+        });
       });
     });
 
-    describe('with invalid data', () => {
-      describe('when src is wrong', () => {
-        const options = { src: '/src', hdSrc: '/hdSrc' };
+    describe('mediaIndex', () => {
+      const mockProduct = MockProductService.mockProducts.find(
+        (p) => p.sku === '3'
+      );
+      describe('when no mediaIndex is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`
-            <product-media sku="1" .options=${options}></product-media>
-          `);
-
-          setWindowWidth(400);
-
-          getImg()?.dispatchEvent(new Event('error'));
-
-          await elementUpdated(element);
+          element = await fixture(
+            html`<product-media sku="3"></product-media>`
+          );
         });
 
-        it('should replace src by hdSrc', () => {
-          expect(getImg()?.src).toContain(options.hdSrc);
-        });
-
-        it('should not render the source', () => {
-          expect(element).not.toContainElement('source');
+        it('should get the 1st image', () => {
+          const image = mockProduct?.images?.[0];
+          expect(service.resolveSources).toHaveBeenCalledWith(
+            image,
+            ProductMediaContainerSize.Detail
+          );
         });
       });
 
-      describe('when hdSrc is wrong', () => {
+      describe('when mediaIndex = 1', () => {
         beforeEach(async () => {
-          element = await fixture(html`
-            <product-media sku="1"></product-media>
-          `);
-
-          getImg()?.dispatchEvent(new Event('error'));
-
-          await elementUpdated(element);
+          element = await fixture(
+            html`<product-media
+              sku="3"
+              .options=${{ mediaIndex: 1 }}
+            ></product-media>`
+          );
         });
 
-        it('should not render the source', () => {
-          expect(element).not.toContainElement('source');
+        it('should get the 2nd image', () => {
+          const mockProduct = MockProductService.mockProducts.find(
+            (p) => p.sku === '3'
+          );
+          const image = mockProduct?.images?.[1];
+          expect(service.resolveSources).toHaveBeenCalledWith(
+            image,
+            ProductMediaContainerSize.Detail
+          );
+        });
+      });
+    });
+
+    describe('alt', () => {
+      describe('when alt option is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<product-media sku="1"></product-media>`
+          );
+        });
+
+        it('should reflect the product name on the alt attribute', () => {
+          expect(element).toContainElement('img[alt="Sample product"]');
         });
       });
 
-      describe('when product images are not specified', () => {
+      describe('when a custom alt property is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`
-            <product-media sku="without-images"></product-media>
-          `);
-
-          setWindowWidth(400);
-
-          getImg()?.dispatchEvent(new Event('error'));
-
-          await elementUpdated(element);
+          element = await fixture(
+            html`<product-media
+              sku="1"
+              .options=${{ alt: 'custom-alt' }}
+            ></product-media>`
+          );
         });
 
-        it('should render the fallback', async () => {
-          expect(element).toContainElement('[part="fallback"]');
+        it('should reflect the alt property on the alt attribute', () => {
+          expect(element).toContainElement('img[alt="custom-alt"]');
+        });
+      });
+    });
+
+    describe('loading', () => {
+      describe('when no loading strategy is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<product-media sku="1"></product-media>`
+          );
+        });
+
+        it('should lazy load the image', () => {
+          expect(element).toContainElement('img[loading="lazy"]');
         });
       });
 
-      describe('when src and hdSrc are invalid options', () => {
-        const options = { src: 'test', hdSrc: null };
+      describe('when eager loading strategy is provided', () => {
         beforeEach(async () => {
-          element = await fixture(html`
-            <product-media sku="1" .options=${options}></product-media>
-          `);
-
-          getImg()?.dispatchEvent(new Event('error'));
-
-          await elementUpdated(element);
+          element = await fixture(
+            html`<product-media
+              sku="1"
+              .options=${{ loading: LoadingStrategy.Eager }}
+            ></product-media>`
+          );
         });
 
-        it('should render the fallback', async () => {
-          expect(element).toContainElement('[part="fallback"]');
-        });
-      });
-
-      describe('when alt is wrong', () => {
-        const options = {
-          alt: undefined,
-        };
-
-        beforeEach(async () => {
-          element = await fixture(html`
-            <product-media sku="1" .options=${options}></product-media>
-          `);
-        });
-
-        it('should not set alt attribute', () => {
-          const img = element.renderRoot.querySelector('img');
-
-          expect(img?.hasAttribute('alt')).toBe(false);
+        it('should lazy load the image', () => {
+          expect(element).toContainElement('img[loading="eager"]');
         });
       });
     });

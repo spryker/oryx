@@ -1,44 +1,47 @@
-export const enum Loading {
-  Lazy = 'lazy',
-  Auto = 'auto',
+import { ProductMediaContainerSize } from '@spryker-oryx/product';
+
+export const enum LoadingStrategy {
+  /**
+   * Used to fetch a resource immediately.
+   */
   Eager = 'eager',
+  /**
+   * Used to fetch a resource when the element is in the viewport.
+   */
+  Lazy = 'lazy',
 }
 
-export interface ProductMediaComponentOptions {
-  /**
-   * Preview image src
-   *
-   * By default selects first 'externalUrlSmall' image of the product
-   */
-  src?: string | null;
+export interface ResponsiveImage {
+  src?: string;
+  alt?: string;
+  srcset?: string;
+  loading?: string;
+}
+
+export interface ProductMediaOptions {
+  containerSize?: ProductMediaContainerSize;
 
   /**
-   * Src for the high definition version of image.
-   * Can accept url or null to not render it.
+   * Defines the index of the product media from the set of images.
+   * If not provided, the first image will be resolved.
    *
-   * By default selects first 'externalUrlLarge' image of the product
+   * @default 0
    */
-  hdSrc?: string | null;
+  mediaIndex?: number;
 
   /**
-   * Breakpoint that define min-width of the screen
-   * when high resolution version should be rendered.
-   *
-   * @default 768
-   */
-  breakpoint?: number;
-
-  /**
-   * The alt tags for the image media.
-   *
-   * @default the product name
+   * The alt text is added to the img element, it is import for SEO and
+   * accessibility. When the property is not provided, the product name
+   * will be used for the alt `attribute`.
    */
   alt?: string;
 
   /**
-   * Preview image loading
+   * The loading strategy is applied to the img element. The lazy loading
+   * strategy drives a boosted performance in most cases as it will start
+   * loading images only when they're in the viewport.
    *
-   * @default 'lazy'
+   * @default LoadingStrategy.Lazy
    */
-  loading?: Loading;
+  loading: LoadingStrategy;
 }

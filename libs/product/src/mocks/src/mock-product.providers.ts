@@ -1,12 +1,16 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
   DefaultProductAdapter,
+  DefaultProductImageService,
   DefaultProductListPageService,
   DefaultProductListService,
   ProductAdapter,
+  ProductImageService,
   ProductListAdapter,
   ProductListPageService,
   ProductListService,
+  productMediaConfig,
+  ProductMediaConfig,
   ProductService,
 } from '@spryker-oryx/product';
 import { MockProductService } from './mock-product.service';
@@ -32,5 +36,13 @@ export const mockProductProviders: Provider[] = [
   {
     provide: ProductListPageService,
     useClass: DefaultProductListPageService,
+  },
+  {
+    provide: ProductImageService,
+    useClass: DefaultProductImageService,
+  },
+  {
+    provide: ProductMediaConfig,
+    useValue: productMediaConfig,
   },
 ];

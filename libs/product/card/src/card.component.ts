@@ -9,6 +9,7 @@ import {
   ProductComponentMixin,
   ProductContext,
   ProductController,
+  ProductMediaContainerSize,
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
@@ -109,7 +110,11 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                   `
                 )}
 
-                <product-media></product-media>
+                <product-media
+                  .options=${{
+                    containerSize: ProductMediaContainerSize.Thumbnail,
+                  }}
+                ></product-media>
               </div>
 
               <section>

@@ -7,22 +7,38 @@ import {
 } from '@spryker-oryx/product';
 import { Observable, of } from 'rxjs';
 
+const img1 = {
+  sm: 'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+  lg: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+};
+const img2 = {
+  sm: 'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+  lg: 'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+};
+
+const img3 = {
+  sm: 'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+  lg: 'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+};
+
 const images = [
   {
-    externalUrlSmall:
-      'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
-    externalUrlLarge: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+    ...img1,
+    xl: img1.lg,
+    externalUrlLarge: img1.lg,
+    externalUrlSmall: img1.sm,
   },
   {
-    externalUrlSmall:
-      'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
-    externalUrlLarge:
-      'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+    ...img2,
+    xl: img2.lg,
+    externalUrlLarge: img2.lg,
+    externalUrlSmall: img2.sm,
   },
   {
-    externalUrlSmall:
-      'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
-    externalUrlLarge: 'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+    ...img3,
+    xl: img3.lg,
+    externalUrlLarge: img3.lg,
+    externalUrlSmall: img3.sm,
   },
 ];
 
@@ -258,38 +274,6 @@ export class MockProductService implements Partial<ProductService> {
         },
       },
       images: [],
-    },
-    {
-      sku: 'without-small-image',
-      name: 'Sample product without small image',
-      description:
-        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
-      price: {
-        defaultPrice: {
-          value: 1879,
-          isNet: true,
-          currency: 'EUR',
-        },
-      },
-      images: [
-        { externalUrlLarge: images[0].externalUrlLarge, externalUrlSmall: '' },
-      ],
-    },
-    {
-      sku: 'without-large-image',
-      name: 'Sample product without large image',
-      description:
-        'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.',
-      price: {
-        defaultPrice: {
-          value: 1879,
-          isNet: true,
-          currency: 'EUR',
-        },
-      },
-      images: [
-        { externalUrlSmall: images[0].externalUrlSmall, externalUrlLarge: '' },
-      ],
     },
   ];
 

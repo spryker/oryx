@@ -1,7 +1,10 @@
 import { ContextController } from '@spryker-oryx/core';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
-import { ProductContext } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMediaContainerSize,
+} from '@spryker-oryx/product';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -125,7 +128,11 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
           ${when(
             !hidePreview,
             () => html`
-              <product-media .options=${{ hdSrc: null }}></product-media>
+              <product-media
+                .options=${{
+                  containerSize: ProductMediaContainerSize.Thumbnail,
+                }}
+              ></product-media>
             `
           )}
 

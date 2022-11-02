@@ -1,104 +1,100 @@
 import { ContentController } from '@spryker-oryx/experience';
+import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
+  ImageSource,
   ProductComponentMixin,
   ProductController,
+  ProductImageService,
+  ProductMediaContainerSize,
 } from '@spryker-oryx/product';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { Loading, ProductMediaComponentOptions } from './media.model';
+import {
+  LoadingStrategy,
+  ProductMediaOptions,
+  ResponsiveImage,
+} from './media.model';
 import { styles } from './media.styles';
 
 @hydratable('mouseover')
-export class ProductMediaComponent extends ProductComponentMixin<ProductMediaComponentOptions>() {
+export class ProductMediaComponent extends ProductComponentMixin<ProductMediaOptions>() {
   static styles = styles;
 
   protected product$ = new ProductController(this).getProduct();
   protected options$ = new ContentController(this).getOptions();
+  protected invalid$ = new BehaviorSubject(false);
 
-  protected invalidResources$ = new BehaviorSubject<string[]>([]);
+  protected imageService = resolve(ProductImageService);
 
-  protected getValidResource(
-    resources: (string | undefined | null)[],
-    invalidResources: string[]
-  ): string | undefined | null {
-    return resources.find(
-      (resource) => !!resource && !invalidResources.includes(resource)
-    );
-  }
+  protected productMedia$: Observable<ResponsiveImage> = combineLatest([
+    this.options$,
+    this.product$,
+    this.invalid$,
+  ]).pipe(
+    map(([options, product, invalid]) => {
+      if (invalid) {
+        return {};
+      }
 
-  protected productMedia$: Observable<ProductMediaComponentOptions> =
-    combineLatest([this.options$, this.product$, this.invalidResources$]).pipe(
-      map(([options, product, invalidResources]) => {
-        const { externalUrlSmall, externalUrlLarge } =
-          product?.images?.[0] ?? {};
+      const image = product?.images?.[options?.mediaIndex ?? 0];
+      const sources = this.imageService.resolveSources(
+        image,
+        options?.containerSize ?? ProductMediaContainerSize.Detail
+      );
 
-        let src = 'src' in options ? options.src : externalUrlSmall;
-        let hdSrc = 'hdSrc' in options ? options.hdSrc : externalUrlLarge;
-
-        if (invalidResources.length || !src) {
-          src = this.getValidResource([src, hdSrc], invalidResources);
-          hdSrc = undefined;
-        }
-
-        const alt = product?.name;
-
-        return {
-          alt,
-          loading: Loading.Lazy,
-          breakpoint: 768,
-          ...options,
-          src,
-          hdSrc,
-        };
-      })
-    );
-
-  protected onError(e: Event, options: ProductMediaComponentOptions): void {
-    const { src, hdSrc, breakpoint } = options;
-
-    //define which resource is invalid
-    const invalidResource =
-      hdSrc && breakpoint && window.innerWidth >= breakpoint ? hdSrc : src;
-
-    this.invalidResources$.next([
-      ...this.invalidResources$.getValue(),
-      invalidResource as string,
-    ]);
-  }
+      return {
+        src: sources?.[0]?.url,
+        alt: options?.alt || product?.name,
+        srcset: this.getSrcSet(sources),
+        loading: options?.loading ?? LoadingStrategy.Lazy,
+      };
+    })
+  );
 
   protected override render(): TemplateResult {
     return html` ${asyncValue(
       this.productMedia$,
-      (options: ProductMediaComponentOptions): TemplateResult => {
-        const { src, hdSrc, alt, loading, breakpoint } = options;
+      (image: ResponsiveImage): TemplateResult => {
+        const { src, srcset, alt, loading } = image;
 
         if (!src) {
           return html`<oryx-icon type="image" part="fallback"></oryx-icon>`;
         }
 
         return html`
-          <picture>
-            ${when(
-              !!hdSrc,
-              () =>
-                html`<source
-                  media="(min-width: ${breakpoint}px)"
-                  srcset=${hdSrc}
-                />`
-            )}
-            <img
-              src=${src}
-              alt=${ifDefined(alt)}
-              loading=${ifDefined(loading)}
-              @error=${(e: Event): void => this.onError(e, options)}
-            />
-          </picture>
+          <img
+            src=${src}
+            srcset=${ifDefined(srcset)}
+            .alt=${alt}
+            loading=${ifDefined(loading)}
+            @error=${this.onError}
+          />
         `;
       }
     )}`;
+  }
+
+  protected getSrcSet(sources: ImageSource[]): string | undefined {
+    if (sources.length < 2) {
+      return;
+    }
+
+    return (
+      sources
+        .map((source): string | undefined =>
+          source.context?.density
+            ? `${source.url} ${source.context?.density}x`
+            : undefined
+        )
+        .filter((s) => s)
+        .join(',') || undefined
+    );
+  }
+
+  protected onError(): void {
+    this.invalid$.next(true);
   }
 }

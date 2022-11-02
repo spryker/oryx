@@ -6,6 +6,6 @@ export * from '../id/src/component';
 export * from '../images/src/component';
 export * from '../labels/src/label.def';
 export * from '../list/src/component';
-export * from '../media/src/component';
+export * from '../media/src/media.def';
 export * from '../price/src/component';
 export * from '../title/src/title.def';

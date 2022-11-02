@@ -95,4 +95,24 @@ declare global {
   namespace jest {
     interface Matchers<R, T = {}> extends CustomMatchers<R> {}
   }
+
+  // TODO: remove when es2023 lib for ts will be released https://github.com/microsoft/TypeScript/issues/48829
+  interface Array<T> {
+    findLast(
+      predicate: (value: T, index: number, obj: T[]) => unknown,
+      thisArg?: any
+    ): T | undefined;
+    findLastIndex(
+      predicate: (value: T, index: number, obj: T[]) => unknown,
+      thisArg?: any
+    ): number;
+  }
 }
+
+// TODO: remove when NODE will be changed to 18
+Array.prototype.findLast = function (cb): any {
+  return this.reverse().find(cb);
+};
+Array.prototype.findLastIndex = function (cb): number {
+  return this.reverse().findIndex(cb);
+};

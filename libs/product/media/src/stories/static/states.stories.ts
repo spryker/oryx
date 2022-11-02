@@ -10,28 +10,25 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
+    <h3>First image</h3>
+    <product-media sku="1"/></product-media>
+
+    <h3>Second image</h3>
+    <product-media sku="1" .options=${{ mediaIndex: 1 }} /></product-media>
+    
+    <h3>Third image</h3>
+    <product-media sku="1" .options=${{ mediaIndex: 2 }} /></product-media>
+    
+    <h3>4th (non existing) image</h3>
+    <product-media sku="1" .options=${{ mediaIndex: 3 }} /></product-media>
+
     <style>
       product-media {
         display: block;
         width: 300px;
-        height: 300px;
+        margin-bottom: 10px;
       }
     </style>
-
-    <p>Images</p>
-    <product-media sku="1"/></product-media>
-
-    <p>Missed large</p>
-    <product-media sku="1" .options=${{ hdSrc: null }} /></product-media>
-
-    <p>Missed small</p>
-    <product-media sku="1" .options=${{ src: null }} /></product-media>
-
-    <p>Fallback image</p>
-    <product-media sku="1" .options=${{
-      src: null,
-      hdSrc: null,
-    }} /></product-media>
   `;
 };
 

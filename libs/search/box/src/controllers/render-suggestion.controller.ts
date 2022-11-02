@@ -1,4 +1,4 @@
-import { Product } from '@spryker-oryx/product';
+import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
@@ -92,7 +92,10 @@ export class RenderSuggestionController {
         }}"
         close-popover
       >
-        <product-media .product=${product}></product-media>
+        <product-media
+          .product=${product}
+          .options=${{ container: ProductMediaContainerSize.Thumbnail }}
+        ></product-media>
         <product-title .product=${product}></product-title>
         <product-price .product=${product}></product-price>
       </content-link>

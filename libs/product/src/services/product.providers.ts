@@ -27,6 +27,12 @@ import {
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
+import { DefaultProductImageService } from './images';
+import { ProductImageService } from './images/product-image.service';
+import {
+  productMediaConfig,
+  ProductMediaConfig,
+} from './images/product-media.config';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
@@ -79,5 +85,13 @@ export const productProviders: Provider[] = [
   {
     provide: ConcreteProductsNormalizers,
     useValue: concreteProductsNormalizers,
+  },
+  {
+    provide: ProductImageService,
+    useClass: DefaultProductImageService,
+  },
+  {
+    provide: ProductMediaConfig,
+    useValue: productMediaConfig,
   },
 ];

@@ -14,7 +14,6 @@ import {
   ProductImagesComponentSettings,
   ProductImagesNavigationDisplay,
   ProductImagesScrollBehavior,
-  ProductImagesSet,
 } from './images.model';
 import { styles } from './images.styles';
 
@@ -150,7 +149,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
             () => html`
               <fieldset class="nav">
                 ${images.map(
-                  (image: ProductImagesSet, i: number) => html`
+                  (image, i: number) => html`
                     <label class="nav-item">
                       <input
                         value="${i}"
