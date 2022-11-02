@@ -11,10 +11,10 @@ import { IconComponent } from '@spryker-oryx/ui/icon';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { cartEntryComponent } from './component';
 import { CartEntryOptionsComponent } from './components';
 import { CartEntryContentComponent } from './components/content';
 import { CartEntryComponent } from './entry.component';
+import { cartEntryComponent } from './entry.def';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('mockSku')),
@@ -317,6 +317,19 @@ describe('CartEntryComponent', () => {
           ).toBe(false);
         });
       });
+    });
+  });
+
+  describe('when the entry is readonly', () => {
+    beforeEach(async () => {
+      element = await fixture(html` <cart-entry
+        .options=${{ ...options, readonly: true }}
+      ></cart-entry>`);
+    });
+
+    it('should not render confirmation part', () => {
+      expect(element).not.toContainElement('oryx-icon-button');
+      expect(element).not.toContainElement('cart-entry-confirmation');
     });
   });
 });

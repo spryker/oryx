@@ -56,6 +56,18 @@ export const cartEntryContentStyles = css`
     margin-bottom: var(--oryx-space-2);
   }
 
+  .readonly-quantity {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .readonly-quantity :first-child {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--oryx-color-neutral-darker);
+  }
+
   @media (min-width: 1025px) {
     section {
       flex-direction: row;
@@ -68,6 +80,10 @@ export const cartEntryContentStyles = css`
 
     .col:last-child {
       margin-inline-start: 13px;
+    }
+
+    .readonly-quantity {
+      flex-basis: 50%;
     }
   }
 

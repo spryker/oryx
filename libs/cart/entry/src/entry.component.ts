@@ -90,34 +90,36 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
       const hasOptions = !!selectedProductOptions?.length;
 
       return html`
-        ${asyncValue(
-          this.confirmation$,
-          ({ confirmationRequired, entry }) =>
-            html`${when(
-              confirmationRequired,
-              () => html`
-                <cart-entry-confirmation
-                  .options=${entry}
-                  @remove=${(): void =>
+        ${asyncValue(this.confirmation$, ({ confirmationRequired, entry }) => {
+          if (entry.readonly) {
+            return html``;
+          }
+
+          return html`${when(
+            confirmationRequired,
+            () => html`
+              <cart-entry-confirmation
+                .options=${entry}
+                @remove=${(): void =>
+                  this.onRemove(entry.silentRemove || confirmationRequired)}
+                @cancel=${this.onCancelRemoving}
+              ></cart-entry-confirmation>
+            `,
+            () => html`
+              <oryx-icon-button>
+                <button
+                  @click=${(): void =>
                     this.onRemove(entry.silentRemove || confirmationRequired)}
-                  @cancel=${this.onCancelRemoving}
-                ></cart-entry-confirmation>
-              `,
-              () => html`
-                <oryx-icon-button>
-                  <button
-                    @click=${(): void =>
-                      this.onRemove(entry.silentRemove || confirmationRequired)}
-                    aria-label="remove"
-                  >
-                    <oryx-icon
-                      .type=${entry.removeButtonIcon ?? 'close'}
-                    ></oryx-icon>
-                  </button>
-                </oryx-icon-button>
-              `
-            )} `
-        )}
+                  aria-label="remove"
+                >
+                  <oryx-icon
+                    .type=${entry.removeButtonIcon ?? 'close'}
+                  ></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            `
+          )}`;
+        })}
 
         <div class="entry">
           ${when(

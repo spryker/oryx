@@ -110,6 +110,9 @@ const Template: Story<unknown> = (): TemplateResult => {
     <cart-entry
       .options=${createEntry({ removeByQuantity: RemoveByQuantity.ShowBin })}
     ></cart-entry>
+
+    <p>Readonly</p>
+    <cart-entry .options=${createEntry({ readonly: true })}></cart-entry>
   `;
 };
 

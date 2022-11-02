@@ -7,8 +7,8 @@ import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { cartEntriesComponent } from './component';
 import { CartEntriesComponent } from './entries.component';
+import { cartEntriesComponent } from './entries.def';
 
 class MockCartService {
   isLoading = of(false);

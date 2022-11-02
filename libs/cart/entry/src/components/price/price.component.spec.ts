@@ -4,8 +4,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { cartEntryPriceComponent } from './component';
 import { CartEntryPriceComponent } from './price.component';
+import { cartEntryPriceComponent } from './price.def';
 
 class MockPricingService implements Partial<PricingService> {
   format = vi.fn().mockReturnValue(of('10,00'));

@@ -43,6 +43,11 @@ export interface CartEntryOptions extends CartEntry {
    * Indicates that entry is updating
    */
   updating?: boolean;
+
+  /**
+   * Makes the entry readonly that prevents any interaction with it
+   */
+  readonly?: boolean;
 }
 
 export enum RemoveByQuantity {

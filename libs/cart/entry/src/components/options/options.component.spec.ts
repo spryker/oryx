@@ -3,8 +3,8 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
-import { cartEntryOptionsComponent } from './component';
 import { CartEntryOptionsComponent } from './options.component';
+import { cartEntryOptionsComponent } from './options.def';
 
 describe('CartEntryOptionsComponent', () => {
   const callback = vi.fn();

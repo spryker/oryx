@@ -100,6 +100,7 @@ Demo.args = {
   silentRemove: false,
   disabled: false,
   updating: false,
+  readonly: false,
 };
 
 Demo.argTypes = {

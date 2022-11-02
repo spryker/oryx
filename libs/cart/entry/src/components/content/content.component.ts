@@ -1,6 +1,7 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
@@ -22,6 +23,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
     if (
       !this.options?.updating &&
       !this.options?.confirmationRequired &&
+      this.quantityInputRef.value &&
       this.quantityInputRef.value?.value !== this.options?.quantity
     ) {
       (this.quantityInputRef.value as QuantityInputComponent).value = this
@@ -64,14 +66,25 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
         </div>
 
         <div class="col">
-          <quantity-input
-            ${ref(this.quantityInputRef)}
-            min=${!this.options?.removeByQuantity ? 1 : 0}
-            max=${this.options?.availability?.quantity ?? Infinity}
-            .value=${this.options?.quantity}
-            ?disabled=${this.disabled || this.options?.disabled}
-            decrease-icon=${ifDefined(this.getDecreaseIcon())}
-          ></quantity-input>
+          ${when(
+            !this.options?.readonly,
+            () => html`
+              <quantity-input
+                ${ref(this.quantityInputRef)}
+                min=${!this.options?.removeByQuantity ? 1 : 0}
+                max=${this.options?.availability?.quantity ?? Infinity}
+                .value=${this.options?.quantity}
+                ?disabled=${this.disabled || this.options?.disabled}
+                decrease-icon=${ifDefined(this.getDecreaseIcon())}
+              ></quantity-input>
+            `,
+            () => html`
+              <div class="readonly-quantity">
+                <span>Quantity</span>
+                <span>${this.options?.quantity}</span>
+              </div>
+            `
+          )}
 
           <cart-entry-price
             .price="${this.options?.calculations?.sumPrice}"

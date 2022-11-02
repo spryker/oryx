@@ -9,8 +9,8 @@ import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { RemoveByQuantity } from '../../entry.model';
 import { CartEntryPriceComponent } from '../price/price.component';
-import { cartEntryContentComponent } from './component';
 import { CartEntryContentComponent } from './content.component';
+import { cartEntryContentComponent } from './content.defs';
 
 describe('CartEntryContentComponent', () => {
   let element: CartEntryContentComponent;
@@ -115,6 +115,25 @@ describe('CartEntryContentComponent', () => {
       expect(getQuantityInputComponent()?.hasAttribute('decrease-icon')).toBe(
         true
       );
+    });
+  });
+
+  describe('when readonly is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<cart-entry-content
+        .options=${{
+          ...options,
+          readonly: true,
+        }}
+      ></cart-entry-content>`);
+    });
+
+    it('should not render quantity-input', async () => {
+      expect(element).not.toContainElement('quantity-input');
+    });
+
+    it('should render the readonly quantity', async () => {
+      expect(element).toContainElement('.readonly-quantity');
     });
   });
 });

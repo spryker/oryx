@@ -4,8 +4,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { CartEntryPriceComponent } from '../price/price.component';
-import { cartEntryTotalsComponent } from './component';
 import { CartEntryTotalsComponent } from './totals.component';
+import { cartEntryTotalsComponent } from './totals.def';
 
 describe('CartEntryTotalsComponent', () => {
   let element: CartEntryTotalsComponent;
