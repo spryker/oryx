@@ -33,46 +33,40 @@
       },
       {
         "id": "firstName",
-        "title": "First Name",
-        "label": "",
+        "label": "First Name",
         "type": "input",
         "required": true
       },
       {
         "id": "lastName",
-        "title": "Last Name",
-        "label": "",
+        "label": "Last Name",
         "type": "input",
         "required": true
       },
       {
         "id": "company",
-        "title": "Company",
-        "label": "",
+        "label": "Company",
         "type": "input",
         "required": false,
         "width": 100
       },
       {
         "id": "address1",
-        "title": "Street Address or P.O. box",
-        "label": "",
+        "label": "Street Address or P.O. box",
         "type": "input",
         "required": true,
         "width": 100
       },
       {
         "id": "address2",
-        "title": "Apt, suite, unit, building, floor, etc.",
-        "label": "",
+        "label": "Apt, suite, unit, building, floor, etc.",
         "type": "input",
         "required": true,
         "width": 100
       },
       {
         "id": "city",
-        "title": "City",
-        "label": "",
+        "label": "City",
         "type": "input",
         "required": true,
         "width": 100
@@ -98,23 +92,20 @@
       },
       {
         "id": "zipcode",
-        "title": "ZIP code",
-        "label": "",
+        "label": "ZIP code",
         "type": "input",
         "required": true
       },
       {
         "id": "email",
-        "title": "Email",
-        "label": "",
+        "label": "Email",
         "type": "email",
         "required": true,
         "width": 100
       },
       {
         "id": "phone",
-        "title": "Phone",
-        "label": "",
+        "label": "Phone",
         "type": "tel",
         "required": false,
         "width": 100
