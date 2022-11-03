@@ -68,6 +68,7 @@ export const formControlStyles = css`
 
   slot:not([name])::slotted(*:-webkit-autofill) {
     -webkit-text-fill-color: var(--oryx-color-ink);
+    box-shadow: 0 0 0 1000px var(--oryx-color-canvas) inset;
   }
 
   input,
