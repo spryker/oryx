@@ -1,1 +1,3 @@
+export * from '../guest/src/guest.def';
 export * from '../link/src/link.def';
+export * from '../login/src/login.def';

@@ -238,6 +238,21 @@ describe('AuthLoginComponent', () => {
           expect(routerService.navigate).toHaveBeenCalledWith('/contact');
         });
       });
+
+      describe('when redirect was disabled', () => {
+        it('should not redirect', async () => {
+          element = await fixture(
+            html`<auth-login
+              .options="${{
+                disableRedirect: true,
+              }}"
+            ></auth-login>`
+          );
+          await submit();
+
+          expect(routerService.navigate).not.toHaveBeenCalled();
+        });
+      });
     });
 
     describe('when login fails', () => {

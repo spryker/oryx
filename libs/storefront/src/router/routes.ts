@@ -31,6 +31,13 @@ export const routes: RouteConfig[] = [
     name: 'Page',
   },
   {
+    path: '/checkout',
+    render: (): TemplateResult => html`<experience-composition
+      route="/checkout"
+    ></experience-composition>`,
+    name: 'Checkout',
+  },
+  {
     path: '/*',
     render: (): TemplateResult =>
       html`<h1>Error 404</h1>

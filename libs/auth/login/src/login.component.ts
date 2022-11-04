@@ -68,6 +68,9 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
         this.success$.next(success);
         return of(undefined);
       }
+      if (options.disableRedirect) {
+        return of(undefined);
+      }
       if (options.url) {
         this.routerService.navigate(options.url);
         return of(undefined);
@@ -103,7 +106,9 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
   protected override render(): TemplateResult {
     return html`${asyncValue(this.data$, ([options, loading, success]) => {
       return html`<oryx-card>
-      <h1 slot="header">Access your account</h1>
+      <h1 slot="header">
+        ${options?.title ?? 'Access your account'}
+      </h1>
       ${
         success
           ? ''

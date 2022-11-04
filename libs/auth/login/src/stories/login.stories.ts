@@ -20,6 +20,9 @@ export default {
     showRememberMe: {
       type: 'boolean',
     },
+    disableRedirect: {
+      type: 'boolean',
+    },
     url: {
       type: 'string',
     },

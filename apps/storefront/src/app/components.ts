@@ -105,4 +105,18 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string, layoutClasses?: string) =>
       html`<checkout-link uid="${uid}" class=${layoutClasses}></checkout-link>`,
   },
+  ['checkout-guest']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<checkout-guest
+        uid="${uid}"
+        class=${layoutClasses}
+      ></checkout-guest>`,
+  },
+  ['checkout-login']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<checkout-login
+        uid="${uid}"
+        class=${layoutClasses}
+      ></checkout-login>`,
+  },
 };
