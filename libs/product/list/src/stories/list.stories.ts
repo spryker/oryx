@@ -36,6 +36,8 @@ const Template: Story<ProductListQualifier> = (
 
 export const ProductDemo = Template.bind({});
 
+const disabledCategory = 'Not Available in Storybook';
+
 ProductDemo.args = {
   q: '',
   page: 0,
@@ -57,5 +59,68 @@ ProductDemo.argTypes = {
   sort: {
     control: { type: 'select' },
     options: Object.values(SortParamNames),
+    table: {
+      category: disabledCategory,
+    },
+  },
+  page: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  q: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  maxPrice: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  minPrice: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  minRating: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  storageCapacity: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  brand: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  label: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  weight: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  color: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  category: {
+    table: {
+      category: disabledCategory,
+    },
+  },
+  currency: {
+    table: {
+      category: disabledCategory,
+    },
   },
 };
