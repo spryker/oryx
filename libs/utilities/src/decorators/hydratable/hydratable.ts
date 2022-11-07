@@ -55,7 +55,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     constructor(...args: any[]) {
       super();
-      this.setAttribute('hydratable', mode ?? '');
+      if (isServer) {
+        this.setAttribute('hydratable', mode ?? '');
+      }
       if (!isServer && this.shadowRoot) {
         this[DEFER_HYDRATION] = true;
         return;
