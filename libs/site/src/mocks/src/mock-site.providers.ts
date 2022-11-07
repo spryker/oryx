@@ -6,9 +6,11 @@ import {
   DefaultCountryService,
   DefaultCurrencyService,
   DefaultLocaleService,
+  DefaultNotificationService,
   DefaultPricingService,
   DefaultSemanticLinkService,
   LocaleService,
+  NotificationService,
   PricingService,
   SemanticLinkService,
   SiteErrorHandler,
@@ -40,6 +42,10 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: SemanticLinkService,
     useClass: DefaultSemanticLinkService,
+  },
+  {
+    provide: NotificationService,
+    useClass: DefaultNotificationService,
   },
   {
     provide: ErrorHandler,

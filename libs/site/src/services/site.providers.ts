@@ -6,10 +6,12 @@ import {
   DefaultCountryService,
   DefaultCurrencyService,
   DefaultLocaleService,
+  DefaultNotificationService,
   DefaultPricingService,
   DefaultSemanticLinkService,
   DefaultStoreAdapter,
   LocaleService,
+  NotificationService,
   PricingService,
   SemanticLinkService,
   SiteErrorHandler,
@@ -53,6 +55,10 @@ export const siteProviders: Provider[] = [
   {
     provide: PricingService,
     useClass: DefaultPricingService,
+  },
+  {
+    provide: NotificationService,
+    useClass: DefaultNotificationService,
   },
   {
     provide: ErrorHandler,

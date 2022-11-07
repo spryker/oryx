@@ -101,6 +101,13 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string, layoutClasses?: string) =>
       html`<cart-totals uid="${uid}" class=${layoutClasses}></cart-totals>`,
   },
+  ['site-notification-center']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<site-notification-center
+        uid="${uid}"
+        class=${layoutClasses}
+      ></site-notification-center>`,
+  },
   ['checkout-link']: {
     template: (uid: string, layoutClasses?: string) =>
       html`<checkout-link uid="${uid}" class=${layoutClasses}></checkout-link>`,

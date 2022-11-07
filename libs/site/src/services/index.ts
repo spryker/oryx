@@ -3,6 +3,7 @@ export * from './country';
 export * from './currency';
 export * from './error-handling';
 export * from './locale';
+export * from './notification';
 export * from './pricing';
 export * from './semantic-link';
 export * from './site.providers';
