@@ -45,13 +45,11 @@ ProductDemo.args = {
   minPrice: 1,
   minRating: 1,
   ipp: 0,
-  storageCapacity: '',
   brand: '',
   label: '',
   weight: '',
   color: '',
   category: '',
-  currency: '',
   sort: SortParamNames.None,
 };
 
@@ -62,6 +60,10 @@ ProductDemo.argTypes = {
     table: {
       category: disabledCategory,
     },
+  },
+  ipp: {
+    control: { type: 'select' },
+    options: [12, 24, 36],
   },
   page: {
     table: {
@@ -88,11 +90,6 @@ ProductDemo.argTypes = {
       category: disabledCategory,
     },
   },
-  storageCapacity: {
-    table: {
-      category: disabledCategory,
-    },
-  },
   brand: {
     table: {
       category: disabledCategory,
@@ -114,11 +111,6 @@ ProductDemo.argTypes = {
     },
   },
   category: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  currency: {
     table: {
       category: disabledCategory,
     },
