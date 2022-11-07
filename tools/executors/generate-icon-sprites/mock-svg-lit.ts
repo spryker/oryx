@@ -9,6 +9,7 @@ globalThis.customElements = {
 } as any;
 
 export class LitElement {}
+export class AsyncDirective {}
 export class Directive {}
 export function directive() {}
 export const TemplateResult = '';

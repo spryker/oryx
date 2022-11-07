@@ -5,7 +5,8 @@ import {
 import { Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Product, ProductComponentProperties } from '../models';
+import type { Product } from '../models';
+import { ProductComponentProperties } from '../models';
 
 export const ProductComponentMixin = <T>(): Type<
   LitElement & ContentComponentProperties<T> & ProductComponentProperties

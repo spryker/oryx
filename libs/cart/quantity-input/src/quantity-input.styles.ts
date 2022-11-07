@@ -21,7 +21,7 @@ export const styles = css`
     --oryx-border-radius: 0;
 
     border-color: #dce0e5;
-    width: 75px;
+    width: var(--oryx-cart-quantity-input-width, 75px);
   }
 
   input::-webkit-outer-spin-button,

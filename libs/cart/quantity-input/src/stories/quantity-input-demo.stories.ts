@@ -16,7 +16,7 @@ interface Props {
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
-    <quantity-input
+    <oryx-cart-quantity-input
       ?disabled=${props.disabled}
       min=${props.min}
       max=${props.max}
@@ -29,7 +29,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       }): void => {
         console.log('quantity', quantity);
       }}
-    ></quantity-input>
+    ></oryx-cart-quantity-input>
   `;
 };
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.svg = exports.when = exports.property = exports.css = exports.html = exports.TemplateResult = exports.directive = exports.Directive = exports.LitElement = void 0;
+exports.svg = exports.when = exports.property = exports.css = exports.html = exports.TemplateResult = exports.directive = exports.Directive = exports.AsyncDirective = exports.LitElement = void 0;
 globalThis.window = {};
 globalThis.document = {
     createTreeWalker: () => { },
@@ -14,6 +14,9 @@ globalThis.customElements = {
 class LitElement {
 }
 exports.LitElement = LitElement;
+class AsyncDirective {
+}
+exports.AsyncDirective = AsyncDirective;
 class Directive {
 }
 exports.Directive = Directive;

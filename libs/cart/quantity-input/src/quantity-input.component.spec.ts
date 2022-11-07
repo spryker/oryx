@@ -21,7 +21,7 @@ describe('Quantity input', () => {
     const min = 4;
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input min=${min}></quantity-input>`
+        html`<oryx-cart-quantity-input min=${min}></quantity-input>`
       );
     });
 
@@ -34,7 +34,7 @@ describe('Quantity input', () => {
     const max = 4;
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input max=${max}></quantity-input>`
+        html`<oryx-cart-quantity-input max=${max}></quantity-input>`
       );
     });
 
@@ -45,7 +45,9 @@ describe('Quantity input', () => {
 
   describe('when no properties are provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<quantity-input></quantity-input>`);
+      element = await fixture(
+        html`<oryx-cart-quantity-input></quantity-input>`
+      );
     });
 
     it('should set "1" as default minimum', () => {
@@ -56,7 +58,7 @@ describe('Quantity input', () => {
   describe('when value equals to minimum', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value="2" min="2"></quantity-input>`
+        html`<oryx-cart-quantity-input value="2" min="2"></quantity-input>`
       );
     });
 
@@ -75,7 +77,7 @@ describe('Quantity input', () => {
   describe('when value equals to maximum', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value="2" max="2"></quantity-input>`
+        html`<oryx-cart-quantity-input value="2" max="2"></quantity-input>`
       );
     });
 
@@ -98,7 +100,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input
+        html`<oryx-cart-quantity-input
           value=${value}
           min=${min}
           max=${max}
@@ -150,7 +152,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value=${value} min=${min}></quantity-input>`
+        html`<oryx-cart-quantity-input value=${value} min=${min}></quantity-input>`
       );
     });
 
@@ -185,7 +187,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value=${value} max=${max}></quantity-input>`
+        html`<oryx-cart-quantity-input value=${value} max=${max}></quantity-input>`
       );
     });
 
@@ -216,7 +218,9 @@ describe('Quantity input', () => {
 
   describe('when "disabled" property is passed', () => {
     beforeEach(async () => {
-      element = await fixture(html`<quantity-input disabled></quantity-input>`);
+      element = await fixture(
+        html`<oryx-cart-quantity-input disabled></quantity-input>`
+      );
     });
 
     it('should render "decrease" button with "disabled" attribute', () => {
@@ -241,7 +245,7 @@ describe('Quantity input', () => {
   describe('when property "value" is changed', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value=${1}></quantity-input>`
+        html`<oryx-cart-quantity-input value=${1}></quantity-input>`
       );
     });
 
@@ -261,7 +265,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<quantity-input value=${1} label=${label}></quantity-input>`
+        html`<oryx-cart-quantity-input value=${1} label=${label}></quantity-input>`
       );
     });
 
@@ -277,7 +281,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html` <quantity-input
+        html` <oryx-cart-quantity-input
           min=${1}
           value=${2}
           max=${3}
@@ -327,7 +331,7 @@ describe('Quantity input', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html` <quantity-input
+        html` <oryx-cart-quantity-input
           decrease-icon=${customIcon}
           increase-icon=${customIcon}
         ></quantity-input>`

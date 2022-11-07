@@ -84,7 +84,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
 
   protected isValidQuantity(): boolean {
     const quantityInput = this.shadowRoot?.querySelector(
-      'quantity-input'
+      'oryx-cart-quantity-input'
     ) as QuantityInputComponent;
     return quantityInput.validate();
   }
@@ -130,7 +130,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
               ${when(
                 !options?.hideQuantityInput,
                 () => html`
-                  <quantity-input
+                  <oryx-cart-quantity-input
                     value=${quantity}
                     ?disabled=${options?.disabled}
                     .max=${product?.availability?.quantity}

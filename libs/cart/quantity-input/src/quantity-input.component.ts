@@ -1,4 +1,5 @@
-import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
+import type { Icons } from '@spryker-oryx/ui/icon';
+import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';

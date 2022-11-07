@@ -29,7 +29,7 @@ describe('AddToCartComponent', () => {
 
   const getQuantityInput = (): QuantityInputComponent =>
     element.renderRoot.querySelector(
-      'quantity-input'
+      'oryx-cart-quantity-input'
     ) as QuantityInputComponent;
 
   const handleQuantity = async (quantity: number): Promise<void> => {
@@ -91,7 +91,9 @@ describe('AddToCartComponent', () => {
     });
 
     it('should make quantity input disabled', () => {
-      const input = element.renderRoot.querySelector('quantity-input');
+      const input = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      );
       expect(input?.hasAttribute('disabled')).toBe(true);
     });
   });
@@ -136,7 +138,7 @@ describe('AddToCartComponent', () => {
 
     it('should not render quantity controls', () => {
       const quantityControls = element.renderRoot.querySelector(
-        'quantity-input'
+        'oryx-cart-quantity-input'
       ) as QuantityInputComponent;
 
       expect(quantityControls).toBeNull();

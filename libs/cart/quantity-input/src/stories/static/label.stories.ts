@@ -10,13 +10,13 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <p>Without label</p>
-    <quantity-input min=${0} value=${1}></quantity-input>
+    <oryx-cart-quantity-input min=${0} value=${1}></quantity-input>
 
     <p>With label</p>
-    <quantity-input min=${0} value=${1} label="Quantity"></quantity-input>
+    <oryx-cart-quantity-input min=${0} value=${1} label="Quantity"></quantity-input>
 
     <p>Long text</p>
-    <quantity-input
+    <oryx-cart-quantity-input
       min=${0}
       value=${1}
       label="Long label text content for example"

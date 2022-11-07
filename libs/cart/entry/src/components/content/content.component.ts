@@ -69,7 +69,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
           ${when(
             !this.options?.readonly,
             () => html`
-              <quantity-input
+              <oryx-cart-quantity-input
                 ${ref(this.quantityInputRef)}
                 min=${!this.options?.removeByQuantity ? 1 : 0}
                 max=${this.options?.availability?.quantity ?? Infinity}

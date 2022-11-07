@@ -21,7 +21,7 @@ describe('CartEntryContentComponent', () => {
 
   const getQuantityInputComponent = (): QuantityInputComponent => {
     return element.renderRoot.querySelector(
-      'quantity-input'
+      'oryx-cart-quantity-input'
     ) as QuantityInputComponent;
   };
 
@@ -129,7 +129,7 @@ describe('CartEntryContentComponent', () => {
     });
 
     it('should not render quantity-input', async () => {
-      expect(element).not.toContainElement('quantity-input');
+      expect(element).not.toContainElement('oryx-cart-quantity-input');
     });
 
     it('should render the readonly quantity', async () => {
