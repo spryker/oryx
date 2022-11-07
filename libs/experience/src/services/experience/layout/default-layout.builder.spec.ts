@@ -1,4 +1,6 @@
+import { App, AppRef, Theme, ThemePlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/injector';
+import { Size } from '@spryker-oryx/utilities';
 import {
   CompositionLayout,
   CompositionProperties,
@@ -7,6 +9,25 @@ import {
 import { BreakpointService } from './breakpoint.service';
 import { DefaultBreakpointService } from './default-breakpoint.service';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+
+const mockTheme: Theme = {
+  breakpoints: {
+    [Size.Sm]: {
+      min: 0,
+    },
+    [Size.Md]: {
+      min: 768,
+    },
+    [Size.Lg]: {
+      min: 1024,
+    },
+  },
+  components: {},
+};
+
+class MockApp implements Partial<App> {
+  findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
+}
 
 describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
@@ -56,6 +77,10 @@ describe('DefaultLayoutBuilder', () => {
 
   beforeEach(() => {
     const testInjector = new Injector([
+      {
+        provide: AppRef,
+        useClass: MockApp,
+      },
       {
         provide: 'LayoutBuilder',
         useClass: DefaultLayoutBuilder,

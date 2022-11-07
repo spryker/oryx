@@ -10,13 +10,15 @@ import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentsPlugin } from '../components';
 import {
   DesignToken,
+  LazyLoadable,
   Theme,
   ThemeBreakpoints,
   ThemeData,
-  ThemeImpl,
+  ThemeDefaultMedia,
   ThemeMediaQueries,
   ThemeStyles,
-  ThemeStylesObj,
+  ThemeStylesCollection,
+  ThemeStylesWithMedia,
   ThemeToken,
 } from './theme.model';
 
@@ -42,18 +44,19 @@ export const ThemePluginName = 'core$theme';
  * Changes static method by token {@link IconHookToken} for custom core implementation.
  */
 export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
+  protected breakpoints: ThemeBreakpoints = {};
+  protected breakpointsOrder: string[] = [];
   protected app?: App;
   protected icons = {};
   protected cssVarPrefix = '--oryx';
-  protected breakpoints: ThemeBreakpoints = {};
   protected mediaMapper: Record<
     keyof ThemeMediaQueries,
     Record<string, string>
   > = {
-    mode: {
+    [ThemeDefaultMedia.Mode]: {
       dark: 'prefers-color-scheme: dark',
     },
-    screen: {
+    [ThemeDefaultMedia.Screen]: {
       min: 'min-width',
       max: 'max-width',
     },
@@ -82,17 +85,17 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     }
   }
 
-  normalizeStyles(styles: ThemeStyles | ThemeStylesObj): CSSResult[] {
-    if (this.isThemeStyles(styles)) {
-      return this.normalizer(styles);
+  normalizeStyles(styles: ThemeStyles | ThemeStylesCollection[]): CSSResult[] {
+    if (this.isThemeCollection(styles)) {
+      return this.generateBreakpoints(styles);
     }
 
-    return this.generateBreakpoints(styles);
+    return this.normalizer(styles);
   }
 
   async resolve(
     name: string,
-    componentTheme?: ThemeImpl
+    componentTheme?: LazyLoadable<ThemeData>
   ): Promise<ThemeData[] | null> {
     const implementations: (ThemeData | Promise<ThemeData>)[] = [];
     const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
@@ -139,8 +142,42 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return await this.loadThemeImplFn<string>(iconImpl);
   }
 
-  getIconTemplate(icon?: string): ThemeImpl<string> | void {
+  getIconTemplate(icon?: string): LazyLoadable<string> | void {
     return this.icons?.[icon as keyof typeof this.icons];
+  }
+
+  getBreakpoints(): ThemeBreakpoints {
+    return this.breakpoints;
+  }
+
+  /**
+   * Interpolates value from {@link mediaMapper} by value path.
+   * Value path should be separated by a dot. (e.g. `mode.dark`)
+   */
+  generateMedia(value: string): string {
+    const path = value.split('.');
+    const isScreen = path[0] === ThemeDefaultMedia.Screen;
+    const mediaKey = getPropByPath(
+      this.mediaMapper,
+      isScreen ? ThemeDefaultMedia.Screen : value
+    );
+    const media = (expression: string): string => `@media ${expression}`;
+
+    if (isScreen && this.breakpoints) {
+      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
+      let expression = dimension?.min?.toString()
+        ? `(${mediaKey.min}: ${dimension?.min}px)`
+        : '';
+      expression +=
+        dimension?.min?.toString() && dimension?.max?.toString() ? ' and ' : '';
+      expression += dimension?.max?.toString()
+        ? `(${mediaKey.max}: ${dimension?.max}px)`
+        : '';
+
+      return media(expression);
+    }
+
+    return media(`(${mediaKey})`);
   }
 
   protected async setStyles(root = ':host'): Promise<ThemeData> {
@@ -153,7 +190,6 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
       currentKey: string,
       parentKey?: string
     ): string => (parentKey ? `${parentKey}-${currentKey}` : currentKey);
-    const breakpointsOrder = Object.keys(this.breakpoints);
 
     for (let i = 0; i < replaced.length; i++) {
       const theme = replaced[i];
@@ -166,11 +202,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
         ]);
 
         stream += styles ? `${styles(root)}` : '';
-        tokensArr.sort(
-          (a, b) =>
-            breakpointsOrder.indexOf(a.media?.screen ?? '') -
-            breakpointsOrder.indexOf(b.media?.screen ?? '')
-        );
+        this.sortByBreakpoints(tokensArr);
 
         for (let i = 0; i < tokensArr.length; i++) {
           replaced.push({ tokens: { ...tokensArr[i] } });
@@ -228,7 +260,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
       if (media !== DesignTokenGlobal.Global) {
         end += '}';
-        start += this.generateMedia(media);
+        start += ` ${this.generateMedia(media)} {`;
       }
 
       start += ` ${root} {`;
@@ -245,24 +277,31 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     };
   }
 
-  protected generateBreakpoints(styles: ThemeStylesObj): CSSResult[] {
+  protected generateBreakpoints(styles: ThemeStylesCollection[]): CSSResult[] {
     let stylesStream = '';
-
-    for (const breakpoint in this.breakpoints) {
-      const stylesByBP = styles[breakpoint as keyof ThemeStylesObj];
-
-      if (!stylesByBP) {
-        continue;
-      }
-
-      const themeStyles = this.normalizer(stylesByBP).reduce(
+    this.sortByBreakpoints(styles);
+    const stringifiedStyles = (styles: ThemeStyles): string =>
+      this.normalizer(styles).reduce(
         (acc, style) => `${acc} ${style.toString()}`,
         ''
       );
 
-      stylesStream += `${this.generateMedia(
-        `screen.${breakpoint}`
-      )}${themeStyles}}`;
+    for (const style of styles) {
+      if (!this.isMediaStyles(style)) {
+        stylesStream += ` ${stringifiedStyles(style)}`;
+
+        continue;
+      }
+
+      let media = '';
+
+      for (const key in style.media) {
+        media = `${key}.${style.media[key as keyof ThemeMediaQueries]}`;
+      }
+
+      stylesStream += ` ${this.generateMedia(media)} {${stringifiedStyles(
+        style.styles
+      )}}`;
     }
 
     return [unsafeCSS(stylesStream)];
@@ -284,15 +323,33 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
         ...icons,
       };
     }
+
+    this.breakpointsOrder = Object.keys(this.breakpoints);
   }
 
-  protected isThemeStyles(
-    styles: ThemeStyles | ThemeStylesObj
-  ): styles is ThemeStyles {
-    return (
-      typeof styles === 'string' ||
-      styles instanceof CSSResult ||
-      Array.isArray(styles)
+  protected isThemeCollection(
+    styles: ThemeStyles | ThemeStylesCollection[]
+  ): styles is ThemeStylesCollection[] {
+    return Array.isArray(styles) && styles.some(this.isMediaStyles);
+  }
+
+  protected isMediaStyles(
+    styles: ThemeStylesWithMedia | CSSResult | string
+  ): styles is ThemeStylesWithMedia {
+    return !(styles instanceof CSSResult) && typeof styles !== 'string';
+  }
+
+  protected sortByBreakpoints(
+    styles: DesignToken[] | ThemeStylesCollection[]
+  ): void {
+    styles.sort(
+      (a, b) =>
+        this.breakpointsOrder.indexOf(
+          (a as { media?: ThemeMediaQueries }).media?.screen ?? ''
+        ) -
+        this.breakpointsOrder.indexOf(
+          (b as { media?: ThemeMediaQueries }).media?.screen ?? ''
+        )
     );
   }
 
@@ -304,36 +361,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return Array.isArray(theme) ? theme : [theme];
   }
 
-  /**
-   * Interpolates value from {@link mediaMapper} by value path.
-   * Value path should be separated by a dot. (e.g. `mode.dark`)
-   */
-  protected generateMedia(value: string): string {
-    const path = value.split('.');
-    const isScreen = path[0] === 'screen';
-    const mediaKey = getPropByPath(
-      this.mediaMapper,
-      isScreen ? 'screen' : value
-    );
-    const media = (expression: string): string => ` @media ${expression} {`;
-
-    if (isScreen && this.breakpoints) {
-      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
-      let expression = dimension?.min
-        ? `(${mediaKey.min}: ${dimension?.min}px)`
-        : '';
-      expression += dimension?.min && dimension?.max ? ' and ' : '';
-      expression += dimension?.max
-        ? `(${mediaKey.max}: ${dimension?.max}px)`
-        : '';
-
-      return media(expression);
-    }
-
-    return media(`(${mediaKey})`);
-  }
-
-  protected loadThemeImplFn<T>(impl?: ThemeImpl<T>): T | Promise<T> {
+  protected loadThemeImplFn<T>(impl?: LazyLoadable<T>): T | Promise<T> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const value = (impl as any)();

@@ -1,7 +1,12 @@
-import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
+import { HOOKS_KEY, IconHookToken, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';
-import { Theme, ThemeData, ThemeStrategies } from './theme.model';
+import {
+  Theme,
+  ThemeData,
+  ThemeDefaultMedia,
+  ThemeStrategies,
+} from './theme.model';
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
@@ -175,7 +180,7 @@ describe('ThemePlugin', () => {
 
   describe('when design tokens and global styles have been set', () => {
     const mockATokensTheme: Theme = {
-      globalStyles: () => Promise.resolve(() => 'globalA'),
+      globalStyles: () => Promise.resolve((root: string) => 'globalA'),
       designTokens: [
         {
           color: {
@@ -263,10 +268,10 @@ describe('ThemePlugin', () => {
   describe('when breakpoints has been set', () => {
     const mockABreakpointsTheme: Theme = {
       breakpoints: {
-        lg: {
+        [Size.Lg]: {
           min: 600,
         },
-        xs: {
+        [Size.Sm]: {
           min: 200,
           max: 400,
         },
@@ -277,10 +282,20 @@ describe('ThemePlugin', () => {
 
     describe('normalizeStyles', () => {
       it('should return array of CSSResult instances with styles with breakpoints', () => {
-        const result = plugin.normalizeStyles({
-          xs: 'a',
-          lg: [css`k`, css`l`],
-        });
+        const result = plugin.normalizeStyles([
+          {
+            media: {
+              [ThemeDefaultMedia.Screen]: Size.Sm,
+            },
+            styles: 'a',
+          },
+          {
+            media: {
+              [ThemeDefaultMedia.Screen]: Size.Lg,
+            },
+            styles: [css`k`, css`l`],
+          },
+        ]);
         const styles = result[0]
           .toString()
           .trim()

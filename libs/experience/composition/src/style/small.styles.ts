@@ -1,4 +1,4 @@
-import { Breakpoint } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 import { carouselLayout } from './carousel-layout.styles';
 import { columnLayout } from './column-layout.styles';
@@ -7,9 +7,9 @@ import { stickyLayout } from './sticky-layout.styles';
 
 export const smallLayoutStyles = css`
   @layer layout {
-    ${stickyLayout(Breakpoint.Xs)}
-    ${columnLayout(Breakpoint.Xs)}
-    ${gridLayout(Breakpoint.Xs)}
-    ${carouselLayout(Breakpoint.Xs)}
+    ${stickyLayout(Size.Sm)}
+    ${columnLayout(Size.Sm)}
+    ${gridLayout(Size.Sm)}
+    ${carouselLayout(Size.Sm)}
   }
 `;

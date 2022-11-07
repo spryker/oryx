@@ -1,4 +1,5 @@
 import { DesignToken } from '@spryker-oryx/core';
+import { Size } from '@spryker-oryx/utilities';
 
 const tokens: DesignToken[] = [
   {
@@ -29,7 +30,7 @@ const tokens: DesignToken[] = [
   },
   {
     media: {
-      screen: 'lg',
+      screen: Size.Lg,
     },
     color: {
       'one-line': '200px',
@@ -53,7 +54,7 @@ const tokens: DesignToken[] = [
 
   {
     media: {
-      screen: 'md',
+      screen: Size.Md,
     },
     color: {
       'one-line': '180px',

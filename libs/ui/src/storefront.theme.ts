@@ -1,13 +1,17 @@
 import { Theme } from '@spryker-oryx/core';
+import { Size } from '@spryker-oryx/utilities';
 import { theme } from '../actions/button/src/styles/themes/storefront.styles';
 
 export const uiStorefrontTheme: Theme = {
   breakpoints: {
-    lg: {
-      min: 1024,
+    [Size.Sm]: {
+      min: 0,
     },
-    md: {
+    [Size.Md]: {
       min: 768,
+    },
+    [Size.Lg]: {
+      min: 1024,
     },
   },
   components: {

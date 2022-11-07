@@ -1,18 +1,18 @@
+import { ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/injector';
 import {
-  BreakpointService,
-  Component,
+  Breakpoint,
   CompositionLayout,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
-} from '@spryker-oryx/experience';
-import { inject } from '@spryker-oryx/injector';
-import { CSSResult } from 'lit';
-import { Breakpoint } from './constants';
+} from '../../../models';
+import { Component } from '../models';
+import { BreakpointService } from './breakpoint.service';
 import { LayoutBuilder } from './layout.builder';
 
 type BreakpointStyles = {
-  [B in Breakpoint]?: CSSResult | CSSResult[] | string;
+  [B in keyof ThemeBreakpoints]?: ThemeStyles;
 };
 
 export class DefaultLayoutBuilder implements LayoutBuilder {

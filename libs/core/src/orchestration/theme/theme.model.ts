@@ -1,3 +1,5 @@
+import { ScreenSize } from '@spryker-oryx/core/utilities';
+import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 
 export const enum ThemeStrategies {
@@ -7,32 +9,35 @@ export const enum ThemeStrategies {
 
 export type ThemeStyles = CSSResult | CSSResult[] | string;
 
-export interface ThemeBreakpointsSizes {
-  min?: number;
-  max?: number;
+export const enum ThemeDefaultMedia {
+  Screen = 'screen',
+  Mode = 'mode',
 }
 
 export interface ThemeBreakpoints {
-  xs?: ThemeBreakpointsSizes;
-  md?: ThemeBreakpointsSizes;
-  lg?: ThemeBreakpointsSizes;
+  [Size.Sm]?: ScreenSize;
+  [Size.Md]?: ScreenSize;
+  [Size.Lg]?: ScreenSize;
 }
 
 export interface ThemeMediaQueries {
-  mode?: 'dark';
-  screen?: keyof ThemeBreakpoints;
+  [ThemeDefaultMedia.Mode]?: 'dark';
+  [ThemeDefaultMedia.Screen]?: keyof ThemeBreakpoints;
 }
 
-export type ThemeStylesObj = {
-  [T in keyof ThemeBreakpoints]?: ThemeStyles;
-};
+export interface ThemeStylesWithMedia {
+  media: ThemeMediaQueries;
+  styles: ThemeStyles;
+}
+
+export type ThemeStylesCollection = CSSResult | string | ThemeStylesWithMedia;
 
 export interface ThemeData {
-  styles: ThemeStylesObj | ThemeStyles;
+  styles: ThemeStylesCollection[] | ThemeStyles;
   strategy?: ThemeStrategies;
 }
 
-export type ThemeImpl<T = ThemeData> = T | (() => Promise<T>);
+export type LazyLoadable<T> = T | (() => Promise<T>);
 
 export type ThemeColors = {
   100?: string;
@@ -51,10 +56,15 @@ export type DesignToken = ThemeToken & {
   color?: Record<string, string | ThemeColors>;
 };
 
+export type ThemeComponents = Record<string, LazyLoadable<ThemeData>>;
+export type ThemeIcons = Record<string, LazyLoadable<string>>;
+export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
+export type ThemeGlobalStyles = LazyLoadable<(root: string) => string>;
+
 export interface Theme {
   breakpoints?: ThemeBreakpoints;
-  components: Record<string, ThemeImpl>;
-  icons?: Record<string, ThemeImpl<string>>;
-  designTokens?: ThemeImpl<DesignToken[]>;
-  globalStyles?: ThemeImpl<(root: string) => string>;
+  components: ThemeComponents;
+  icons?: ThemeIcons;
+  designTokens?: ThemeDesignTokens;
+  globalStyles?: ThemeGlobalStyles;
 }
