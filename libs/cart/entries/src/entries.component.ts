@@ -123,7 +123,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
       return html``;
     }
 
-    const count = entries.length;
+    const count = entries.reduce((acc, { quantity }) => quantity + acc, 0);
 
     return html`
       <oryx-chip>${count} ${count === 1 ? 'item' : 'items'}</oryx-chip>
