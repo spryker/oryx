@@ -70,7 +70,7 @@ class FakeEntriesComponent extends LitElement {
     return html` <cart-entry
       .options=${{ ...this.props, ...this.entry }}
       @oryx.remove=${(): void => console.log('remove')}
-      @oryx.quantity=${(e: CustomEvent): void =>
+      @oryx.update=${(e: CustomEvent): void =>
         this.updateEntry(e.detail.quantity)}
     ></cart-entry>`;
   }

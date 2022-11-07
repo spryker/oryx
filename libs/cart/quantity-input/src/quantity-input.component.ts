@@ -4,7 +4,7 @@ import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
-import { QUANTITY_EVENT, VALIDATION_EVENT } from './quantity-input.model';
+import { UPDATE_EVENT, VALIDATION_EVENT } from './quantity-input.model';
 import { styles } from './quantity-input.styles';
 
 @hydratable(['click', 'focusin'])
@@ -90,7 +90,7 @@ export class QuantityInputComponent extends LitElement {
 
   protected dispatchQuantityEvent(quantity: number): void {
     this.dispatchEvent(
-      new CustomEvent(QUANTITY_EVENT, {
+      new CustomEvent(UPDATE_EVENT, {
         bubbles: true,
         composed: true,
         detail: {

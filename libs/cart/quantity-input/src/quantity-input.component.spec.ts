@@ -281,7 +281,7 @@ describe('Quantity input', () => {
           min=${1}
           value=${2}
           max=${3}
-          @oryx.quantity=${callback}
+          @oryx.update=${callback}
         ></quantity-input>`
       );
     });

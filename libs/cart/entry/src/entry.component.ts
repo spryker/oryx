@@ -140,7 +140,7 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
             <cart-entry-content
               .options=${entry}
               ?disabled=${asyncValue(this.triggerConfirmationRequired$)}
-              @oryx.quantity=${(e: CustomEvent): void =>
+              @oryx.update=${(e: CustomEvent): void =>
                 this.onQuantityChange(e, !!silentRemove)}
             ></cart-entry-content>
 

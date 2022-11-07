@@ -135,7 +135,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                     ?disabled=${options?.disabled}
                     .max=${product?.availability?.quantity}
                     @oryx.validation=${this.onValidation}
-                    @oryx.quantity=${this.setQuantity}
+                    @oryx.update=${this.setQuantity}
                   ></quantity-input>
                 `
               )}

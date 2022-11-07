@@ -12,7 +12,7 @@ import { cartEntriesComponent } from './entries.def';
 
 class MockCartService {
   getLoadingState = vi.fn().mockReturnValue(of(false));
-  getEntries = vi.fn().mockReturnValue(of(null));
+  getEntries = vi.fn().mockReturnValue(of([]));
   updateEntry = vi.fn().mockReturnValue(of(null));
   deleteEntry = vi.fn().mockReturnValue(of(null));
 }
@@ -53,17 +53,6 @@ describe('CartEntriesComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('when cart is not ready', () => {
-    beforeEach(async () => {
-      service.getEntries = vi.fn().mockReturnValue(of(null));
-      element = await fixture(html`<cart-entries></cart-entries>`);
-    });
-
-    it('should render nothing', () => {
-      expect(element.children.length).toBe(0);
-    });
-  });
-
   describe('when cart is empty', () => {
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([]));
@@ -91,7 +80,7 @@ describe('CartEntriesComponent', () => {
     it('should emit update when quantity is changed', () => {
       const quantity = 2;
       entryElement?.dispatchEvent(
-        new CustomEvent('oryx.quantity', { detail: { quantity } })
+        new CustomEvent('oryx.update', { detail: { quantity } })
       );
 
       expect(service.updateEntry).toHaveBeenCalledWith({ ...entry, quantity });
@@ -118,6 +107,67 @@ describe('CartEntriesComponent', () => {
 
       it('should pass disabled option', () => {
         expect(entryElement?.options?.disabled).toBe(true);
+      });
+    });
+  });
+
+  describe('when entries is collapsible', () => {
+    beforeEach(async () => {
+      service.getEntries = vi.fn().mockReturnValue(of([entry]));
+      element = await fixture(html`
+        <cart-entries .options=${{ collapsible: true }}></cart-entries>
+      `);
+    });
+
+    it('should render collapsible component', () => {
+      expect(element).toContainElement('oryx-collapsible');
+    });
+
+    it('should render the chip with correct label', () => {
+      const chip = element.renderRoot.querySelector('oryx-chip');
+      expect(chip).not.toBe(null);
+      expect(chip?.textContent).toContain('1 item');
+    });
+
+    describe('and expanded by default', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <cart-entries
+            .options=${{ collapsible: true, expanded: true }}
+          ></cart-entries>
+        `);
+      });
+
+      it('should render collapsible component expanded', () => {
+        expect(element).toContainElement('oryx-collapsible[open]');
+      });
+    });
+
+    describe('and items count is hidden', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <cart-entries
+            .options=${{ collapsible: true, hideItemsCount: true }}
+          ></cart-entries>
+        `);
+      });
+
+      it('should not render the chip', () => {
+        expect(element).not.toContainElement('oryx-chip');
+      });
+    });
+
+    describe('and multiple entries are in the cart', () => {
+      beforeEach(async () => {
+        service.getEntries = vi.fn().mockReturnValue(of([entry, entry, entry]));
+        element = await fixture(html`
+          <cart-entries .options=${{ collapsible: true }}></cart-entries>
+        `);
+      });
+
+      it('should render the chip with correct label', () => {
+        const chip = element.renderRoot.querySelector('oryx-chip');
+        expect(chip?.textContent).toContain('3 items');
       });
     });
   });

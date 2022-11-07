@@ -7,6 +7,9 @@ export default {
   title: `${storybookPrefix}/Entries`,
   args: {
     readonly: false,
+    collapsible: false,
+    expanded: false,
+    hideItemsCount: false,
   },
 } as Meta;
 

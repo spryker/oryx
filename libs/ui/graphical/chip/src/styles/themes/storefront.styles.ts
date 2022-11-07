@@ -8,6 +8,7 @@ export const chipStorefrontUI: ThemeData = {
       :host {
         border-radius: 38px;
         color: var(--oryx-color-canvas);
+        background-color: var(--oryx-chip-background-color, #71747c);
       }
 
       :host([appearance='${unsafeCSS(ChipAppearance.Info)}']) {

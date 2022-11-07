@@ -40,7 +40,7 @@ describe('AddToCartComponent', () => {
     await elementUpdated(input);
 
     input.dispatchEvent(
-      new CustomEvent('oryx.quantity', { detail: { quantity } })
+      new CustomEvent('oryx.update', { detail: { quantity } })
     );
   };
 

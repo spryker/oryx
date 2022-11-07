@@ -127,8 +127,8 @@
     --oryx-color-brand: #17b497;
     --oryx-color-brand-dark: #a0e1d5;
     --oryx-color-brand-darker: #f1f8f7;
-    --oryx-chip-color: #efeeee;
-    --oryx-chip-background-color: #71747c;
+    --oryx-chip-color: #71747c;
+    --oryx-chip-background-color: var(--oryx-color-ink);
     --oryx-chip-success-color: #f1f8f7;
     --oryx-chip-success-background-color: #138671;
     --oryx-chip-inactive-color: #f8f8f8;

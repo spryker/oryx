@@ -166,7 +166,7 @@ describe('CartEntryComponent', () => {
       ></cart-entry>`);
 
       getPart('cart-entry-content')?.dispatchEvent(
-        new CustomEvent('oryx.quantity', { detail: { quantity: 2 } })
+        new CustomEvent('oryx.update', { detail: { quantity: 2 } })
       );
     });
 
@@ -184,7 +184,7 @@ describe('CartEntryComponent', () => {
         ></cart-entry>`);
 
         getPart('cart-entry-content')?.dispatchEvent(
-          new CustomEvent('oryx.quantity', { detail: { quantity: 0 } })
+          new CustomEvent('oryx.update', { detail: { quantity: 0 } })
         );
       });
 
@@ -210,7 +210,7 @@ describe('CartEntryComponent', () => {
           ></cart-entry>`);
 
           getPart('cart-entry-content')?.dispatchEvent(
-            new CustomEvent('oryx.quantity', { detail: { quantity: 0 } })
+            new CustomEvent('oryx.update', { detail: { quantity: 0 } })
           );
         });
 

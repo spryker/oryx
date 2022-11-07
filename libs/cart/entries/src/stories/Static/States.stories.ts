@@ -17,6 +17,39 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <h3>Multiple entries</h3>
     <cart-entries .options=${{ cartId: 'multiple' }}></cart-entries>
+
+    <h3>Readonly</h3>
+    <cart-entries
+      .options=${{ cartId: 'multiple', readonly: true }}
+    ></cart-entries>
+
+    <h3>Collapsible</h3>
+    <cart-entries .options=${{ collapsible: true }}></cart-entries>
+
+    <h3>Expanded with single entry</h3>
+    <cart-entries
+      .options=${{ collapsible: true, expanded: true }}
+    ></cart-entries>
+
+    <h3>Expanded with multiple entries</h3>
+    <cart-entries
+      .options=${{ cartId: 'multiple', collapsible: true, expanded: true }}
+    ></cart-entries>
+
+    <h3>Expanded with readonly</h3>
+    <cart-entries
+      .options=${{
+        cartId: 'multiple',
+        collapsible: true,
+        readonly: true,
+        expanded: true,
+      }}
+    ></cart-entries>
+
+    <h3>Hide items count</h3>
+    <cart-entries
+      .options=${{ collapsible: true, hideItemsCount: true }}
+    ></cart-entries>
   `;
 };
 

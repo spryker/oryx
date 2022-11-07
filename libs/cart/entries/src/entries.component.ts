@@ -9,6 +9,13 @@ import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
 
+interface EntriesData {
+  entries: CartEntry[];
+  loading: boolean;
+  currentlyUpdated: string | null;
+  options: Partial<CartEntriesOptions>;
+}
+
 @hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>() {
   static styles = styles;
@@ -66,14 +73,14 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
     }))
   );
 
-  protected updateQuantity(e: CustomEvent, { groupKey, sku }: CartEntry): void {
+  protected onUpdate(e: CustomEvent, { groupKey, sku }: CartEntry): void {
     const quantity = e.detail.quantity;
 
     this.currentlyUpdated$.next(groupKey);
     this.cartService.updateEntry({ groupKey, sku, quantity }).subscribe();
   }
 
-  protected removeEntry({ groupKey }: CartEntry): void {
+  protected onRemove({ groupKey }: CartEntry): void {
     this.cartService.deleteEntry({ groupKey }).subscribe();
   }
 
@@ -89,37 +96,71 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
     `;
   }
 
+  protected renderEntries(entriesData: EntriesData): TemplateResult {
+    const { entries, loading, currentlyUpdated, options } = entriesData;
+
+    return html`${entries.map(
+      (entry) => html`
+        <cart-entry
+          ?inert=${loading}
+          .options=${{
+            ...options,
+            ...entry,
+            disabled: loading,
+            updating: entry.groupKey === currentlyUpdated,
+          }}
+          @oryx.update=${(e: CustomEvent): void => this.onUpdate(e, entry)}
+          @oryx.remove=${(): void => this.onRemove(entry)}
+        ></cart-entry>
+      `
+    )}`;
+  }
+
+  protected renderItemsCount(entriesData: EntriesData): TemplateResult {
+    const { options, entries } = entriesData;
+
+    if (options.hideItemsCount) {
+      return html``;
+    }
+
+    const count = entries.length;
+
+    return html`
+      <oryx-chip>${count} ${count === 1 ? 'item' : 'items'}</oryx-chip>
+    `;
+  }
+
+  protected renderCollapsibleContainer(
+    entriesData: EntriesData
+  ): TemplateResult {
+    const { options } = entriesData;
+
+    return html`
+      <oryx-collapsible ?open=${options.expanded}>
+        <span slot="header">
+          Products in the order ${this.renderItemsCount(entriesData)}
+        </span>
+
+        ${this.renderEntries(entriesData)}
+      </oryx-collapsible>
+    `;
+  }
+
   protected override render(): TemplateResult {
     return html`
-      ${asyncValue(
-        this.entriesData$,
-        ({ entries, loading, currentlyUpdated, options }) => {
-          if (!entries) {
-            return html``;
-          }
+      ${asyncValue(this.entriesData$, (entriesData) => {
+        const { entries, options } = entriesData;
 
-          if (!entries.length) {
-            return this.renderEmpty();
-          }
-
-          return html`${entries.map(
-            (entry) => html`
-              <cart-entry
-                ?inert=${loading}
-                .options=${{
-                  ...options,
-                  ...entry,
-                  disabled: loading,
-                  updating: entry.groupKey === currentlyUpdated,
-                }}
-                @oryx.quantity=${(e: CustomEvent): void =>
-                  this.updateQuantity(e, entry)}
-                @oryx.remove=${(): void => this.removeEntry(entry)}
-              ></cart-entry>
-            `
-          )}`;
+        if (!entries.length) {
+          return this.renderEmpty();
         }
-      )}
+
+        if (options?.collapsible) {
+          return this.renderCollapsibleContainer(entriesData);
+        }
+
+        return this.renderEntries(entriesData);
+      })}
     `;
   }
 }
