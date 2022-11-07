@@ -82,8 +82,8 @@ export class DefaultProductListService implements ProductListService {
 
     const data = this.products.get(key) as ProductListData;
     this.adapter.get(qualifier).subscribe({
-      next: (product) => {
-        data.value.next(product);
+      next: (productList) => {
+        data.value.next(productList);
         data.error.next(null);
       },
       error: (error: HttpErrorResponse) => {

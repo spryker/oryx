@@ -23,6 +23,45 @@ export const enum ProductLabelAppearance {
 }
 export interface ProductList {
   products: Product[];
+  facets?: Facet[];
+}
+
+export interface Facet {
+  name: string;
+  parameter: string;
+  multiValued?: boolean;
+  values: FacetValue[] | RangeFacetValue;
+}
+
+export interface RangeFacetValue {
+  min: number;
+  max: number;
+  selected?: RangeFacetValue;
+}
+
+export interface FacetValue {
+  /**
+   * The facet value that is used to filter the list
+   */
+  value: string | number;
+
+  /**
+   * The localised name that is rendered in the UI.
+   */
+  name?: string;
+
+  /**
+   * The number of documents that will be returned when this list is filtered
+   * with this facet.
+   */
+  count: number;
+
+  /**
+   * Indicates whether this value is selected.
+   */
+  selected?: boolean;
+
+  children?: FacetValue[];
 }
 
 /**

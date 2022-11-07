@@ -1,5 +1,6 @@
 import { CamelCase } from '@spryker-oryx/core/utilities';
 import { ApiProductModel } from '../../../models';
+import { ApiProductListModel } from '../../../models/product-list.api.model';
 import { DeserializedAvailability } from './availability';
 
 export type DeserializedProductIncludes = {
@@ -17,5 +18,17 @@ export type DeserializedProductIncludes = {
           DeserializedProductIncludes,
           CamelCase<ApiProductModel.Includes.AbstractProducts>
         >)[]
+    : never;
+};
+
+export type DeserializedProductListIncludes = {
+  [P in ApiProductListModel.Includes as `${CamelCase<P>}`]?: P extends ApiProductListModel.Includes.AbstractProducts
+    ? ApiProductModel.Abstract[]
+    : P extends ApiProductListModel.Includes.RangeFacets
+    ? ApiProductListModel.RangeFacet[]
+    : P extends ApiProductListModel.Includes.ValueFacets
+    ? ApiProductListModel.ValueFacet[]
+    : P extends ApiProductListModel.Includes.CategoryTreeFilter
+    ? ApiProductListModel.TreeFacet[]
     : never;
 };
