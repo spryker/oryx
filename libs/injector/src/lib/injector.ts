@@ -7,6 +7,7 @@ import {
 } from './provider';
 
 export const INJECTOR = 'FES.Injector';
+export const MultiToken = '*';
 
 declare global {
   export interface InjectionTokensContractMap {
@@ -14,29 +15,35 @@ declare global {
   }
 }
 
-function isValueProvider(provider: Provider): provider is ValueProvider {
-  return (provider as ValueProvider).useValue !== undefined;
+function isValueProvider(provider?: Provider): provider is ValueProvider {
+  return (provider as ValueProvider)?.useValue !== undefined;
 }
 
-function isClassProvider(provider: Provider): provider is ClassProvider {
-  return (provider as ClassProvider).useClass !== undefined;
+function isClassProvider(provider?: Provider): provider is ClassProvider {
+  return (provider as ClassProvider)?.useClass !== undefined;
 }
 
-function isFactoryProvider(provider: Provider): provider is FactoryProvider {
-  return (provider as FactoryProvider).useFactory !== undefined;
+function isFactoryProvider(provider?: Provider): provider is FactoryProvider {
+  return (provider as FactoryProvider)?.useFactory !== undefined;
+}
+
+interface ProviderMap {
+  provider?: Provider;
+  instance?: any;
 }
 
 /**
  * Injector container
  */
 export class Injector {
-  private providers: Map<any, { provider: Provider; instance?: any }>;
+  private providers = new Map<any, ProviderMap | undefined>();
   private _locked = false;
+  private multiCounter = 0;
 
-  constructor(providers?: Provider[], protected parent?: Injector) {
-    this.providers = new Map(
-      providers?.map((provider) => [provider.provide, { provider }])
-    );
+  constructor(providers: Provider[] = [], protected parent?: Injector) {
+    for (const provider of providers) {
+      this.provide(provider);
+    }
   }
 
   /**
@@ -52,7 +59,11 @@ export class Injector {
     if (this._locked) {
       throw new Error(`Providing is only possible before the first injection!`);
     }
-    this.providers.set(provider.provide, { provider });
+
+    const token = this.isMultiProvider(provider.provide)
+      ? `${provider.provide}ϴ${this.multiCounter++}`
+      : provider.provide;
+    this.providers.set(token, { provider });
   }
 
   /**
@@ -78,7 +89,11 @@ export class Injector {
 
     this._locked = true;
 
-    if (!this.providers.has(token)) {
+    if (!this.providers.has(token) && this.isMultiProvider(token)) {
+      this.setupMultiProvider(token);
+    }
+
+    if (!this.providers.get(token)) {
       // no local provider
       if (this.parent) {
         return this.parent.inject(token, defaultInstance);
@@ -94,12 +109,12 @@ export class Injector {
   }
 
   destroy(): void {
-    this.providers.forEach(({ instance }) => {
-      instance?.onDestroy?.();
+    this.providers.forEach((provider) => {
+      provider?.instance?.onDestroy?.();
     });
   }
 
-  private getInstance(token: any): any {
+  protected getInstance(token: any): any {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const providerInstance = this.providers.get(token)!;
 
@@ -123,5 +138,22 @@ export class Injector {
     }
 
     return providerInstance.instance;
+  }
+
+  protected setupMultiProvider(token: string): void {
+    const instance = [...this.providers.keys()]
+      .filter((key) => typeof key === 'string' && key.startsWith(token))
+      .map((key) => this.getInstance(key));
+
+    if (instance.length) {
+      this.providers.set(token, { instance });
+    } else {
+      // no providers for multi token, thus no multi provider in this injector
+      this.providers.set(token, undefined);
+    }
+  }
+
+  protected isMultiProvider(token: any): boolean {
+    return typeof token === 'string' && token.endsWith(MultiToken);
   }
 }

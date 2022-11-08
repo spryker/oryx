@@ -3,18 +3,31 @@ import {
   HttpInterceptor,
   RequestOptions,
 } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/injector';
+import { inject } from '@spryker-oryx/injector';
 import { Observable, switchMap, take } from 'rxjs';
 import { AuthHeaderTypes, Identity } from '../../models';
 import { IdentityService } from './identity.service';
 
-export function identityInterceptor(): HttpInterceptor {
-  const identity = resolve(IdentityService);
+export class DefaultIdentityInterceptor implements HttpInterceptor {
+  constructor(protected identity = inject(IdentityService)) {}
 
-  const optionsWithHeaders = (
+  intercept(
+    url: string,
+    options: RequestOptions,
+    handle: HttpHandlerFn
+  ): Observable<Response> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) =>
+        handle(url, this.optionsWithHeaders(identity, options))
+      )
+    );
+  }
+
+  protected optionsWithHeaders(
     identity: Identity,
     options: RequestOptions
-  ): RequestOptions => {
+  ): RequestOptions {
     if (!identity.anonymous && identity.token) {
       delete options.headers?.[
         AuthHeaderTypes.AnonymousCustomerUniqueId as unknown as keyof typeof options.headers
@@ -36,20 +49,5 @@ export function identityInterceptor(): HttpInterceptor {
     }
 
     return options;
-  };
-
-  return {
-    intercept: (
-      url: string,
-      options: RequestOptions,
-      handle: HttpHandlerFn
-    ): Observable<Response> => {
-      return identity.get().pipe(
-        take(1),
-        switchMap((identity) =>
-          handle(url, optionsWithHeaders(identity, options))
-        )
-      );
-    },
-  };
+  }
 }

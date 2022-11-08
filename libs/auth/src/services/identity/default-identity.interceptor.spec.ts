@@ -2,8 +2,8 @@ import { HttpInterceptor } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { AuthHeaderTypes } from '../../models';
-import { identityInterceptor } from './identity.interceptor';
-import { IdentityService } from './identity.service';
+import { DefaultIdentityInterceptor } from './default-identity.interceptor';
+import { IdentityInterceptor, IdentityService } from './identity.service';
 
 class MockIdentityService implements Partial<IdentityService> {
   get = vi.fn();
@@ -14,7 +14,7 @@ const mockHandleResult = 'mockHandleResult';
 const mockHandle = vi.fn();
 const callback = vi.fn();
 
-describe('Identity Interceptor', () => {
+describe('DefaultIdentityInterceptor', () => {
   let interceptor: HttpInterceptor;
   let identity: MockIdentityService;
 
@@ -22,8 +22,8 @@ describe('Identity Interceptor', () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: 'INTERCEPTOR',
-          useValue: identityInterceptor,
+          provide: IdentityInterceptor,
+          useClass: DefaultIdentityInterceptor,
         },
         {
           provide: IdentityService,
@@ -33,7 +33,7 @@ describe('Identity Interceptor', () => {
     });
 
     identity = testInjector.inject(IdentityService) as MockIdentityService;
-    interceptor = testInjector.inject('INTERCEPTOR')();
+    interceptor = testInjector.inject(IdentityInterceptor);
     mockHandle.mockReturnValue(of(mockHandleResult));
   });
 

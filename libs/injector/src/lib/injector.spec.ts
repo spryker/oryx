@@ -1,5 +1,5 @@
 import { inject } from './inject';
-import { INJECTOR, Injector } from './injector';
+import { INJECTOR, Injector, MultiToken } from './injector';
 
 const mockDestroy = vi.fn();
 
@@ -8,10 +8,10 @@ class MockImplementation {
 }
 class DependencyImplementation {}
 class ServiceWithDestroy {
-  onDestroy() {
-    mockDestroy();
-  }
+  onDestroy = mockDestroy;
 }
+class MockMultiA {}
+class MockMultiB {}
 
 describe('Injector', () => {
   let injector: Injector;
@@ -92,6 +92,68 @@ describe('Injector', () => {
 
       const service = injector.inject('myFactory');
       expect(service).toEqual('testFactory with test');
+    });
+  });
+
+  describe('multi token', () => {
+    beforeEach(() => {
+      injector.provide({
+        provide: `multi${MultiToken}`,
+        useClass: MockMultiA,
+      });
+      injector.provide({
+        provide: `multi${MultiToken}`,
+        useValue: 'valueA',
+      });
+      injector.provide({
+        provide: `service${MultiToken}a`,
+        useClass: MockMultiA,
+      });
+      injector.provide({
+        provide: `service${MultiToken}b`,
+        useClass: MockMultiB,
+      });
+      injector.provide({
+        provide: `factory${MultiToken}a`,
+        useFactory: () => 'factoryA',
+      });
+      injector.provide({
+        provide: `factory${MultiToken}b`,
+        useFactory: () => 'factoryB',
+      });
+      injector.provide({
+        provide: `value${MultiToken}a`,
+        useValue: 'valueA',
+      });
+      injector.provide({
+        provide: `value${MultiToken}b`,
+        useValue: 'valueB',
+      });
+    });
+
+    it('should provide multi providers', () => {
+      const result = injector.inject(`multi${MultiToken}`);
+
+      expect(result[0]).toBeInstanceOf(MockMultiA);
+      expect(result[1]).toBe('valueA');
+    });
+
+    it('should provide array of class instances', () => {
+      const result = injector.inject(`service${MultiToken}`);
+      expect(result[0]).toBeInstanceOf(MockMultiA);
+      expect(result[1]).toBeInstanceOf(MockMultiB);
+    });
+
+    it('should provide array of factories results', () => {
+      const result = injector.inject(`factory${MultiToken}`);
+      expect(result[0]).toBe('factoryA');
+      expect(result[1]).toBe('factoryB');
+    });
+
+    it('should provide array values', () => {
+      const result = injector.inject(`value${MultiToken}`);
+      expect(result[0]).toBe('valueA');
+      expect(result[1]).toBe('valueB');
     });
   });
 });

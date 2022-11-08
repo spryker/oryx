@@ -1,4 +1,3 @@
-import { HttpInterceptors } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
 import { AccessTokenService, DefaultAccessTokenService } from './access-token';
 import {
@@ -10,8 +9,9 @@ import {
   tokenNormalizers,
 } from './auth';
 import {
+  DefaultIdentityInterceptor,
   DefaultIdentityService,
-  identityInterceptor,
+  IdentityInterceptor,
   IdentityService,
 } from './identity';
 
@@ -31,7 +31,7 @@ export const authProviders: Provider[] = [
     useClass: DefaultIdentityService,
   },
   {
-    provide: HttpInterceptors,
-    useValue: [identityInterceptor],
+    provide: IdentityInterceptor,
+    useClass: DefaultIdentityInterceptor,
   },
 ];

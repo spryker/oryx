@@ -22,60 +22,54 @@ vi.mock('rxjs/fetch', () => ({
   fromFetch: vi.fn(),
 }));
 
-export function interceptorA(): HttpInterceptor {
-  return {
-    intercept: (
-      url: string,
-      options: RequestOptions,
-      handle: HttpHandlerFn
-    ): Observable<Response> => {
-      options = {
-        ...options,
+export class InterceptorA implements HttpInterceptor {
+  intercept(
+    url: string,
+    options: RequestOptions,
+    handle: HttpHandlerFn
+  ): Observable<Response> {
+    options = {
+      ...options,
+      a: 'a',
+    } as RequestOptions;
+
+    return handle(url, options).pipe(
+      map((res) => ({
+        ...res,
         a: 'a',
-      } as RequestOptions;
-
-      return handle(url, options).pipe(
-        map((res) => ({
-          ...res,
-          a: 'a',
-        }))
-      );
-    },
-  };
+      }))
+    );
+  }
 }
 
-export function interceptorB(): HttpInterceptor {
-  return {
-    intercept: (
-      url: string,
-      options: RequestOptions,
-      handle: HttpHandlerFn
-    ): Observable<Response> => {
-      return handle(url, options).pipe(
-        map((res) => ({
-          ...res,
-          b: 'b',
-        }))
-      );
-    },
-  };
+export class InterceptorB implements HttpInterceptor {
+  intercept(
+    url: string,
+    options: RequestOptions,
+    handle: HttpHandlerFn
+  ): Observable<Response> {
+    return handle(url, options).pipe(
+      map((res) => ({
+        ...res,
+        b: 'b',
+      }))
+    );
+  }
 }
 
-export function interceptorC(): HttpInterceptor {
-  return {
-    intercept: (
-      url: string,
-      options: RequestOptions,
-      handle: HttpHandlerFn
-    ): Observable<Response> => {
-      options = {
-        ...options,
-        c: 'c',
-      } as RequestOptions;
+export class InterceptorC implements HttpInterceptor {
+  intercept(
+    url: string,
+    options: RequestOptions,
+    handle: HttpHandlerFn
+  ): Observable<Response> {
+    options = {
+      ...options,
+      c: 'c',
+    } as RequestOptions;
 
-      return handle(url, options);
-    },
-  };
+    return handle(url, options);
+  }
 }
 
 describe('DefaultHttpHandler', () => {
@@ -122,8 +116,16 @@ describe('DefaultHttpHandler', () => {
             useClass: DefaultHttpHandler,
           },
           {
-            provide: HttpInterceptors,
-            useValue: [interceptorA, interceptorB, interceptorC],
+            provide: `${HttpInterceptors}A`,
+            useClass: InterceptorA,
+          },
+          {
+            provide: `${HttpInterceptors}B`,
+            useClass: InterceptorB,
+          },
+          {
+            provide: `${HttpInterceptors}C`,
+            useClass: InterceptorC,
           },
         ],
       });

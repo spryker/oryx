@@ -1,4 +1,4 @@
-import { inject } from '@spryker-oryx/injector';
+import { inject, INJECTOR } from '@spryker-oryx/injector';
 import { Observable } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { RequestOptions } from '../http.model';
@@ -18,17 +18,19 @@ type ChainedInterceptorsFn = (
 export class DefaultHttpHandler implements HttpHandler {
   private chain: ChainedInterceptorsFn | null = null;
 
-  constructor(protected interceptors = inject(HttpInterceptors, null)) {}
+  constructor(protected injector = inject(INJECTOR)) {}
 
   handle(
     initialUrl: string,
     initialOptions: RequestOptions
   ): Observable<Response> {
-    if (!this.interceptors) {
-      return fromFetch(initialUrl, initialOptions);
-    }
-
     if (this.chain === null) {
+      const interceptors = this.injector.inject(HttpInterceptors, null);
+
+      if (!interceptors) {
+        return fromFetch(initialUrl, initialOptions);
+      }
+
       const initialFn = (
         url: string,
         options: RequestOptions,
@@ -38,22 +40,20 @@ export class DefaultHttpHandler implements HttpHandler {
       };
       const reducer = (
         chainFn: ChainedInterceptorsFn,
-        interceptor: HttpInterceptor | (() => HttpInterceptor)
+        interceptor: HttpInterceptor
       ) => {
         return (
           url: string,
           options: RequestOptions,
           handle: HttpHandlerFn
         ): Observable<Response> => {
-          return (
-            typeof interceptor === 'function' ? interceptor() : interceptor
-          ).intercept(url, options, (url, options) =>
+          return interceptor.intercept(url, options, (url, options) =>
             chainFn(url, options, handle)
           );
         };
       };
 
-      this.chain = this.interceptors.reduceRight(reducer, initialFn);
+      this.chain = interceptors.reduceRight(reducer, initialFn);
     }
 
     return this.chain(initialUrl, initialOptions, (url, options) =>
