@@ -31,7 +31,7 @@ export default {
 } as Meta;
 
 const emitMessage = (option: NotificationStrategy): void => {
-  resolve(NotificationService).set(option);
+  resolve(NotificationService).push(option);
 };
 
 const Template: Story<SiteNotificationCenterOptions> = (

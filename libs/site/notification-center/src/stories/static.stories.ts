@@ -22,7 +22,7 @@ const Template: Story = (): TemplateResult => {
     .forEach((element) => element.remove());
 
   setTimeout(() => {
-    notificationService.set({
+    notificationService.push({
       content: 'Info',
       subtext: '1 Message',
       type: Types.INFO,
