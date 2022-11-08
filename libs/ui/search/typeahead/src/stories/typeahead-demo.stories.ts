@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/ui/icon';
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import { SearchEvent, SearchOptions } from '@spryker-oryx/ui/searchbox';

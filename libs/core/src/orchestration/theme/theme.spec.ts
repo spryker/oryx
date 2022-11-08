@@ -164,18 +164,6 @@ describe('ThemePlugin', () => {
         expect(iconC).toBeUndefined();
       });
     });
-
-    describe('getIconTemplate', () => {
-      it('should return icon template', async () => {
-        await plugin.resolve('a');
-        const iconA = await plugin.getIconTemplate('a');
-        expect(iconA).toBe('a');
-        const iconB = await plugin.getIconTemplate('b');
-        expect(iconB).toBe(mockBIconTheme.icons?.b);
-        const iconC = await plugin.getIconTemplate('c');
-        expect(iconC).toBeUndefined();
-      });
-    });
   });
 
   describe('when design tokens and global styles have been set', () => {

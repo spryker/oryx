@@ -1,4 +1,5 @@
 import { Theme } from '@spryker-oryx/core';
+import { storefrontIcons } from '@spryker-oryx/theme/icons';
 import { Size } from '@spryker-oryx/utilities';
 import { theme } from '../actions/button/src/styles/themes/storefront.styles';
 
@@ -29,9 +30,7 @@ export const uiStorefrontTheme: Theme = {
         (b) => b.chipStorefrontUI
       ),
   },
-  icons: {
-    cart: () => import('./cart').then((s) => s.default),
-  },
+  icons: storefrontIcons,
   designTokens: () => import('./styles/design-tokens').then((s) => s.default),
   globalStyles: () => import('./styles/global.styles').then((s) => s.default),
 };

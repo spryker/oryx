@@ -7,9 +7,9 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
@@ -152,8 +152,8 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                 >
                   <oryx-icon
                     type=${showSuccessButton
-                      ? MiscIcons.Mark
-                      : MiscIcons.CartAdd}
+                      ? IconTypes.Mark
+                      : IconTypes.CartAdd}
                     size=${Size.large}
                   ></oryx-icon>
                   ${showSuccessButton ? '' : 'Add to Cart'}

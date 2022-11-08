@@ -7,11 +7,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "exports": {
-    "icons": {
-      "default": "./graphical/icon/src/icons/index.js",
-      "types": "./graphical/icon/src/icons/index.d.ts"
-    }
   }
 }

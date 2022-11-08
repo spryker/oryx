@@ -12,12 +12,21 @@ import { mockSearchFeature } from '@spryker-oryx/search/mocks';
 import { mockSiteFeature } from '@spryker-oryx/site/mocks';
 import { uiFeature } from '@spryker-oryx/ui';
 import { mockUserFeature } from '@spryker-oryx/user/mocks';
-import { chromaticTheme } from './chromatic';
+import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
+import isChromatic from 'chromatic/isChromatic';
+import {
+  chromaticIconHook,
+  chromaticTheme,
+  ThemeChromaticPlugin,
+} from './chromatic';
 import { StorybookPlugin } from './plugin';
 import { theme } from './theme';
 import { getActiveTheme } from './utils';
 
 const themeKey = (getActiveTheme() ?? theme.default) as keyof typeof theme.list;
+const themes = [...theme.list[themeKey], chromaticTheme];
+// TODO: Drop chromatic folder (except styles) when chromatic issue will be fixed.
+const themeProps = isChromatic() ? new ThemeChromaticPlugin(themes) : themes;
 
 app()
   .with(new StorybookPlugin())
@@ -25,6 +34,13 @@ app()
     components: {
       root: 'body',
       preload: true,
+      ...(isChromatic()
+        ? {
+            [HOOKS_KEY]: {
+              [IconHookToken]: chromaticIconHook,
+            },
+          }
+        : {}),
     },
   })
   .withFeature(mockExperienceFeature)
@@ -40,6 +56,6 @@ app()
   .withFeature(mockUserFeature)
   .withFeature(launchpadUiFeature)
   .withFeature(mockAuthFeature)
-  .withTheme([...theme.list[themeKey], chromaticTheme])
+  [isChromatic() ? 'with' : 'withTheme'](themeProps as any)
   .create()
   .catch(console.error);

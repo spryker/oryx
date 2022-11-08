@@ -17,17 +17,6 @@
         "lintFilePatterns": ["libs/storefront/**/*.ts"]
       }
     },
-    "sprites": {
-      "executor": "./tools/executors/generate-icon-sprites:svg",
-      "options": {
-        "iconSets": [
-          {
-            "input": "icons/index.ts",
-            "output": "public/assets/icons.svg"
-          }
-        ]
-      }
-    },
     "paths": {
       "executor": "./tools/executors/components-library:paths",
       "options": {

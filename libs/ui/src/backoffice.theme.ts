@@ -1,4 +1,5 @@
 import { Theme } from '@spryker-oryx/core';
+import { backofficeIcons } from '@spryker-oryx/theme/icons';
 
 export const uiBackofficeTheme: Theme = {
   breakpoints: {
@@ -23,7 +24,5 @@ export const uiBackofficeTheme: Theme = {
         (b) => b.chipBackofficeUI
       ),
   },
-  icons: {
-    cart: () => import('./cart').then((s) => s.default),
-  },
+  icons: backofficeIcons,
 };

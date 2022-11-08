@@ -23,17 +23,6 @@
         "exclude": ["public"]
       }
     },
-    "sprites": {
-      "executor": "./tools/executors/generate-icon-sprites:svg",
-      "options": {
-        "iconSets": [
-          {
-            "input": "graphical/icon/src/icons/index.ts",
-            "output": "public/assets/icons.svg"
-          }
-        ]
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
@@ -46,40 +35,6 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/ui/**/*.css", "libs/ui/**/*.styles.ts"]
-      }
-    },
-    "storybook": {
-      "executor": "@nrwl/storybook:storybook",
-      "options": {
-        "uiFramework": "@storybook/web-components",
-        "port": 4400,
-        "config": {
-          "configFolder": "libs/ui/.storybook"
-        },
-        "staticDir": ["libs/ui/public"]
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "build-storybook": {
-      "executor": "@nrwl/storybook:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/storybook/ui",
-        "uiFramework": "@storybook/web-components",
-        "config": {
-          "configFolder": "libs/ui/.storybook"
-        },
-        "staticDir": ["libs/ui/public"],
-        "styles": ["libs/ui/public/styles/oryx-theme.css"]
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
       }
     },
     "test": {

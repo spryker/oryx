@@ -1,8 +1,8 @@
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
-import { IconTypes } from '../../../graphical/icon';
 import { CardType } from '../card.model';
 
 export default { title: `${storybookPrefix}/Structure/Card` } as Meta;

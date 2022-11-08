@@ -12,19 +12,17 @@ export const iconHook: IconHookToken = (
 ): TemplateResult => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const themePlugin = resolve(AppRef).findPlugin(ThemePlugin)!;
-  const fallback = svg`
-    <svg viewBox="0 0 24 24">
-      <use href="${spriteUrl}" />
-    </svg>
-  `;
-
-  if (!themePlugin.getIconTemplate(type)) {
-    return fallback;
-  }
-
   const icon$ = ssrAwaiter(themePlugin.getIcon(type));
 
   return html`
-    ${asyncValue(icon$, (res) => (res ? html`${unsafeHTML(res)}` : fallback))}
+    ${asyncValue(icon$, (res) =>
+      res
+        ? html`${unsafeHTML(`<svg viewBox="0 0 24 24">${res}</svg>`)}`
+        : svg`
+            <svg viewBox="0 0 24 24">
+              <use href="${spriteUrl}" />
+            </svg>
+          `
+    )}
   `;
 };

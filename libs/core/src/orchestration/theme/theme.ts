@@ -15,6 +15,7 @@ import {
   ThemeBreakpoints,
   ThemeData,
   ThemeDefaultMedia,
+  ThemeIcons,
   ThemeMediaQueries,
   ThemeStyles,
   ThemeStylesCollection,
@@ -72,6 +73,10 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
   beforeApply(app: App): void | Promise<void> {
     this.app = app;
+  }
+
+  getIconsList(): ThemeIcons {
+    return this.icons;
   }
 
   async apply(): Promise<void> {
@@ -133,7 +138,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   async getIcon(icon?: string): Promise<string | void> {
-    const iconImpl = this.getIconTemplate(icon);
+    const iconImpl = this.icons?.[icon as keyof typeof this.icons];
 
     if (!iconImpl) {
       return;

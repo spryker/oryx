@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/ui/icon';
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { Meta, Story } from '@storybook/web-components';

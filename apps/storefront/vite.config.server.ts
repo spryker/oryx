@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { adjustUrlVariable } from '../../tools/utils/adjustUrlVariable';
 
@@ -38,14 +37,6 @@ export default defineConfig((config) => {
         },
       }),
       tsconfigPaths({ root: '../../' }),
-      viteStaticCopy({
-        targets: [
-          {
-            src: '../../libs/storefront/public/assets/icons.svg',
-            dest: './assets',
-          },
-        ],
-      }),
     ],
   };
 });

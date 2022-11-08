@@ -1,4 +1,5 @@
-import { Icons, MiscIcons } from '@spryker-oryx/ui/icon';
+import { IconTypes } from '@spryker-oryx/theme/icons';
+import { Icons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -8,7 +9,7 @@ import { styles } from './spinner.styles';
 export class SpinnerComponent extends LitElement implements SpinnerProperties {
   static styles = [styles];
 
-  @property() icon: Icons | string = MiscIcons.Loader;
+  @property() icon: Icons | string = IconTypes.Loader;
   @property() size = Size.medium;
   @property({ reflect: true }) rotation = SpinnerRotation.ClockWise;
 

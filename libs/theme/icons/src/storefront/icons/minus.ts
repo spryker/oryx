@@ -1,0 +1,3 @@
+export default `
+  <path d="M3 10H9.74556H14.2899H21V14H14.2899H9.74556H3V10Z" />
+`;

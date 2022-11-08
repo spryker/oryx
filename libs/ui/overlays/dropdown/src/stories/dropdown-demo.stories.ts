@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/ui/icon';
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';

@@ -1,5 +1,5 @@
+import { IconTypes } from '@spryker-oryx/theme/icons';
 import type { Icons } from '@spryker-oryx/ui/icon';
-import { MiscIcons } from '@spryker-oryx/ui/icon';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -108,7 +108,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || this.value <= this.min}
         @click=${this.decrease}
       >
-        <oryx-icon type=${this.decreaseIcon ?? MiscIcons.Minus}></oryx-icon>
+        <oryx-icon type=${this.decreaseIcon ?? IconTypes.Minus}></oryx-icon>
       </button>
       <oryx-input label=${ifDefined(this.label)}>
         <input
@@ -130,7 +130,7 @@ export class QuantityInputComponent extends LitElement {
         ?disabled=${this.disabled || !!(this.max && this.value >= this.max)}
         @click=${this.increase}
       >
-        <oryx-icon type=${this.increaseIcon ?? MiscIcons.Add}></oryx-icon>
+        <oryx-icon type=${this.increaseIcon ?? IconTypes.Add}></oryx-icon>
       </button>
     `;
   }

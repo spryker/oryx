@@ -1,6 +1,8 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { logo } from './components';
+import * as components from './components';
+
+const launchpadUiComponents = Object.values(components);
 
 export const launchpadUiFeature: AppFeature = {
-  components: [logo],
+  components: launchpadUiComponents,
 };
