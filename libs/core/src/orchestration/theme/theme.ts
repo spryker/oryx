@@ -45,7 +45,7 @@ export const ThemePluginName = 'core$theme';
  * Changes static method by token {@link IconHookToken} for custom core implementation.
  */
 export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
-  protected breakpoints: ThemeBreakpoints = {};
+  protected breakpoints: Partial<ThemeBreakpoints> = {};
   protected breakpointsOrder: string[] = [];
   protected app?: App;
   protected icons = {};
@@ -107,7 +107,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     const isIconExtended = componentPlugin?.options[HOOKS_KEY]?.[IconHookToken];
 
     for (const theme of this.themes) {
-      const component = theme.components[name];
+      const component = theme.components?.[name];
 
       if (theme.icons && !isIconExtended) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -152,7 +152,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   getBreakpoints(): ThemeBreakpoints {
-    return this.breakpoints;
+    return this.breakpoints as ThemeBreakpoints;
   }
 
   /**
@@ -200,13 +200,13 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
       const theme = replaced[i];
 
       if (!isTokens(theme)) {
-        const { designTokens, globalStyles } = theme;
-        const [styles, tokensArr = []] = await Promise.all([
-          this.loadThemeImplFn(globalStyles),
-          this.loadThemeImplFn(designTokens),
-        ]);
+        const { designTokens } = theme;
+        const tokensArr = await this.loadThemeImplFn(designTokens);
 
-        stream += styles ? `${styles(root)}` : '';
+        if (!tokensArr) {
+          continue;
+        }
+
         this.sortByBreakpoints(tokensArr);
 
         for (let i = 0; i < tokensArr.length; i++) {

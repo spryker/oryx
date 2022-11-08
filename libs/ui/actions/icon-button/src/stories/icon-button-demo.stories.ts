@@ -1,4 +1,5 @@
-import { IconTypes } from '@spryker-oryx/theme/icons';
+import { AppRef, ThemePlugin } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/injector';
 import { IconProperties } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -6,6 +7,11 @@ import { storybookPrefix } from '../../../../.constants';
 import { Size } from '../../../../utilities';
 
 export default { title: `${storybookPrefix}/Actions/Icon Button` } as Meta;
+
+const icons = Object.keys(
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList()
+);
 
 interface Props extends IconProperties {
   color: string;
@@ -41,7 +47,7 @@ IconButtonDemo.argTypes = {
     control: { type: 'boolean' },
   },
   type: {
-    options: Object.values(IconTypes),
+    options: Object.values(icons),
     control: { type: 'select' },
   },
   color: {
@@ -51,6 +57,6 @@ IconButtonDemo.argTypes = {
 
 IconButtonDemo.args = {
   disabled: false,
-  type: IconTypes.Rocket,
+  type: icons[0],
   size: Size.medium,
 };

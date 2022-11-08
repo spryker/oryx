@@ -1,3 +1,5 @@
+import { AppRef, ThemePlugin } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -37,6 +39,11 @@ const variations = [
 const sizes = ['large', 'medium', 'small'];
 
 const Template: Story = (): TemplateResult => {
+  const icon = Object.keys(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList()
+  )[0];
+
   return html`
     <div class="row header">
       <div class="col variant"></div>
@@ -65,7 +72,7 @@ const Template: Story = (): TemplateResult => {
                     ?disabled=${isDisabled}
                     class="${state} ${lightDomState}"
                   >
-                    <oryx-icon type="rocket"></oryx-icon>
+                    <oryx-icon type=${icon}></oryx-icon>
                   </button>
                 </oryx-icon-button>
               </div>
@@ -92,7 +99,7 @@ const Template: Story = (): TemplateResult => {
                     class="${state} ${lightDomState}"
                     ?disabled=${isDisabled}
                   >
-                    <oryx-icon type="rocket"></oryx-icon>
+                    <oryx-icon type=${icon}></oryx-icon>
                   </span>
                 </oryx-icon-button>
               </div>
@@ -118,7 +125,7 @@ const Template: Story = (): TemplateResult => {
                 <oryx-icon-button size="${size}">
                   <oryx-icon
                     class="${state} ${lightDomState}"
-                    type="rocket"
+                    type=${icon}
                     ?disabled=${isDisabled}
                   ></oryx-icon>
                 </oryx-icon-button>

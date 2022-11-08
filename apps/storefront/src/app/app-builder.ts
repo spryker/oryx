@@ -12,7 +12,8 @@ import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { storefrontFeature } from '@spryker-oryx/storefront';
-import { uiFeature, uiStorefrontTheme } from '@spryker-oryx/ui';
+import { storefrontTheme } from '@spryker-oryx/theme';
+import { uiFeature, uiStorefrontComponents } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import 'urlpattern-polyfill';
 import { appFeature } from './feature';
@@ -37,4 +38,9 @@ export const appBuilder = app()
   .withFeature(appFeature)
   .withFeature(userFeature)
   .withFeature(authFeature)
-  .withTheme([uiStorefrontTheme]);
+  .withTheme([
+    {
+      ...storefrontTheme,
+      components: uiStorefrontComponents,
+    },
+  ]);

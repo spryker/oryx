@@ -51,9 +51,11 @@ export interface ThemeToken {
   [key: string]: ThemeToken | string;
 }
 
+export type ColorDesignTokens = Record<string, string | ThemeColors>;
+
 export type DesignToken = ThemeToken & {
   media?: ThemeMediaQueries;
-  color?: Record<string, string | ThemeColors>;
+  color?: ColorDesignTokens;
 };
 
 export type ThemeComponents = Record<string, LazyLoadable<ThemeData>>;
@@ -63,8 +65,7 @@ export type ThemeGlobalStyles = LazyLoadable<(root: string) => string>;
 
 export interface Theme {
   breakpoints?: ThemeBreakpoints;
-  components: ThemeComponents;
+  components?: ThemeComponents;
   icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
-  globalStyles?: ThemeGlobalStyles;
 }

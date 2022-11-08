@@ -166,9 +166,8 @@ describe('ThemePlugin', () => {
     });
   });
 
-  describe('when design tokens and global styles have been set', () => {
+  describe('when design tokens have been set', () => {
     const mockATokensTheme: Theme = {
-      globalStyles: () => Promise.resolve((root: string) => 'globalA'),
       designTokens: [
         {
           color: {
@@ -194,7 +193,6 @@ describe('ThemePlugin', () => {
       ...mockATheme,
     };
     const mockBTokensTheme: Theme = {
-      globalStyles: () => 'globalB',
       designTokens: [
         {
           long: {
@@ -211,7 +209,7 @@ describe('ThemePlugin', () => {
       ...mockBTheme,
     };
     const expectedStyles = (selector = ':host'): string =>
-      `globalAglobalB ${selector} {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { ${selector} {--oryx-color-red: red1;}}`;
+      ` ${selector} {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { ${selector} {--oryx-color-red: red1;}}`;
     const plugin = new ThemePlugin([mockATokensTheme, mockBTokensTheme]);
 
     beforeEach(() => {
@@ -237,7 +235,7 @@ describe('ThemePlugin', () => {
     });
 
     describe('apply', () => {
-      it('should add parsed design tokens and global styles to the document.body if components plugin root options is string', async () => {
+      it('should add parsed design tokens to the document.body if components plugin root options is string', async () => {
         const mockComponentPlugin = {
           options: {
             root: 'root',
@@ -248,7 +246,7 @@ describe('ThemePlugin', () => {
         const styles = document.body
           .querySelector('style')
           ?.textContent?.trim();
-        expect(styles).toBe(expectedStyles(':root:not([no-dark-mode])'));
+        expect(styles).toBe(expectedStyles(':root:not([no-dark-mode])').trim());
       });
     });
   });
