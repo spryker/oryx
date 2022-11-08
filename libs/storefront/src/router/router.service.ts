@@ -24,9 +24,7 @@ export class StorefrontRouterService implements RouterService {
   private router$ = new BehaviorSubject(window.location.pathname);
   private params$ = new ReplaySubject<RouteParams>(1);
   private urlSearchParams$ = new BehaviorSubject<RouteParams>(
-    Object.fromEntries(
-      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
-    )
+    this.getURLSearchParams()
   );
   private routerEvents$: Subject<RouterEvent> = new Subject();
   private storedRoute$ = new BehaviorSubject('');
@@ -43,7 +41,9 @@ export class StorefrontRouterService implements RouterService {
     }
 
     this.router$.next(route);
-    this.urlSearchParams$.next(extras?.queryParams ?? {});
+    this.urlSearchParams$.next(
+      extras?.queryParams ?? this.getURLSearchParams() ?? {}
+    );
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
   }
 
@@ -96,5 +96,11 @@ export class StorefrontRouterService implements RouterService {
   protected storeRoute(value: string): void {
     this.storageService.set(CURRENT_PAGE, value, StorageType.SESSION);
     this.storedRoute$.next(value);
+  }
+
+  protected getURLSearchParams(): { [k: string]: string } {
+    return Object.fromEntries(
+      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
+    );
   }
 }
