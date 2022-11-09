@@ -1,5 +1,8 @@
-import { Theme } from '@spryker-oryx/core';
-import isChromatic from 'chromatic/isChromatic';
+import {
+  inputComponent,
+  selectComponent,
+  spinnerComponent,
+} from '@spryker-oryx/ui';
 import { css } from 'lit';
 
 const noTransitionField = css`
@@ -20,25 +23,43 @@ const noTransitionField = css`
   }
 `;
 
-export const chromaticTheme: Theme = isChromatic()
-  ? {
-      components: {
-        'oryx-spinner': {
-          styles: [
-            css`
-              oryx-icon,
-              ::slotted(oryx-icon) {
-                animation-iteration-count: 0;
-              }
-            `,
-          ],
-        },
-        'oryx-input': {
-          styles: [noTransitionField],
-        },
-        'oryx-select': {
-          styles: [noTransitionField],
+export const chromaticStyledComponents = [
+  spinnerComponent({
+    themes: [
+      ...(spinnerComponent().themes ?? []),
+      {
+        name: 'chromatic',
+        styles: {
+          styles: css`
+            oryx-icon,
+            ::slotted(oryx-icon) {
+              animation-iteration-count: 0;
+            }
+          `,
         },
       },
-    }
-  : { components: {} };
+    ],
+  }),
+  inputComponent({
+    themes: [
+      ...(inputComponent().themes ?? []),
+      {
+        name: 'chromatic',
+        styles: {
+          styles: noTransitionField,
+        },
+      },
+    ],
+  }),
+  selectComponent({
+    themes: [
+      ...(selectComponent().themes ?? []),
+      {
+        name: 'chromatic',
+        styles: {
+          styles: noTransitionField,
+        },
+      },
+    ],
+  }),
+];

@@ -11,6 +11,7 @@ import { DefaultBreakpointService } from './default-breakpoint.service';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 
 const mockTheme: Theme = {
+  name: 'name',
   breakpoints: {
     [Size.Sm]: {
       min: 0,
@@ -22,7 +23,6 @@ const mockTheme: Theme = {
       min: 1024,
     },
   },
-  components: {},
 };
 
 class MockApp implements Partial<App> {

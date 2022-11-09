@@ -16,7 +16,7 @@ import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
 import isChromatic from 'chromatic/isChromatic';
 import {
   chromaticIconHook,
-  chromaticTheme,
+  chromaticStyledComponents,
   ThemeChromaticPlugin,
 } from './chromatic';
 import { StorybookPlugin } from './plugin';
@@ -24,7 +24,7 @@ import { theme } from './theme';
 import { getActiveTheme } from './utils';
 
 const themeKey = (getActiveTheme() ?? theme.default) as keyof typeof theme.list;
-const themes = [...theme.list[themeKey], chromaticTheme];
+const themes = [...theme.list[themeKey], { name: 'chromatic' }];
 // TODO: Drop chromatic folder (except styles) when chromatic issue will be fixed.
 const themeProps = isChromatic() ? new ThemeChromaticPlugin(themes) : themes;
 
@@ -56,6 +56,7 @@ app()
   .withFeature(mockUserFeature)
   .withFeature(launchpadUiFeature)
   .withFeature(mockAuthFeature)
+  .withComponents(isChromatic() ? chromaticStyledComponents : [])
   [isChromatic() ? 'with' : 'withTheme'](themeProps as any)
   .create()
   .catch(console.error);

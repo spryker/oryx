@@ -64,6 +64,7 @@ export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
 export type ThemeGlobalStyles = LazyLoadable<(root: string) => string>;
 
 export interface Theme {
+  name: string;
   breakpoints?: ThemeBreakpoints;
   components?: ThemeComponents;
   icons?: ThemeIcons;

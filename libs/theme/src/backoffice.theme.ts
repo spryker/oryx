@@ -3,6 +3,7 @@ import { defaultBreakpoints } from '@spryker-oryx/theme/breakpoints';
 import { backofficeIcons } from '@spryker-oryx/theme/icons';
 
 export const backofficeTheme: Theme = {
+  name: 'backoffice',
   breakpoints: defaultBreakpoints,
   icons: backofficeIcons,
   designTokens: () =>

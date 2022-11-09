@@ -6,10 +6,15 @@ export type ComponentInfo = ComponentDef | ComponentDefFn;
 
 export type ComponentsInfo = (ComponentInfo | ComponentInfo[])[];
 
+export interface ComponentTheme {
+  name: string;
+  styles: LazyLoadable<ThemeData>;
+}
+
 export interface ComponentDef {
   readonly name: string;
   readonly impl: ComponentDefImpl;
-  readonly theme?: LazyLoadable<ThemeData>;
+  readonly themes?: ComponentTheme[];
 }
 
 export type ComponentDefFn = () => ComponentDef;

@@ -7,7 +7,7 @@ import {
 import { CSSResult, unsafeCSS } from 'lit';
 import { iconHook } from '../../hooks';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
-import { ComponentsPlugin } from '../components';
+import { ComponentsPlugin, ComponentTheme } from '../components';
 import {
   DesignToken,
   LazyLoadable,
@@ -48,7 +48,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   protected breakpoints: Partial<ThemeBreakpoints> = {};
   protected breakpointsOrder: string[] = [];
   protected app?: App;
-  protected icons = {};
+  protected icons = Object.create(null);
   protected cssVarPrefix = '--oryx';
   protected mediaMapper: Record<
     keyof ThemeMediaQueries,
@@ -80,9 +80,18 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   async apply(): Promise<void> {
-    const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+    const componentOptions = this.app?.findPlugin(ComponentsPlugin)!.options!;
+    const isIconExtended = componentOptions[HOOKS_KEY]?.[IconHookToken];
 
-    if (typeof componentPlugin?.options.root === 'string' && document.body) {
+    if (Object.keys(this.icons).length && !isIconExtended) {
+      componentOptions[HOOKS_KEY] = {
+        ...(componentOptions[HOOKS_KEY] ?? {}),
+        [IconHookToken]: iconHook,
+      };
+    }
+
+    if (typeof componentOptions.root === 'string' && document.body) {
       const styles = document.createElement('style');
       const streamStyles = await this.setStyles(':root:not([no-dark-mode])');
       styles.innerHTML = streamStyles.styles as string;
@@ -100,32 +109,21 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
   async resolve(
     name: string,
-    componentTheme?: LazyLoadable<ThemeData>
+    componentThemes: ComponentTheme[] = []
   ): Promise<ThemeData[] | null> {
     const implementations: (ThemeData | Promise<ThemeData>)[] = [];
     const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
-    const isIconExtended = componentPlugin?.options[HOOKS_KEY]?.[IconHookToken];
 
-    for (const theme of this.themes) {
-      const component = theme.components?.[name];
-
-      if (theme.icons && !isIconExtended) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        componentPlugin!.options[HOOKS_KEY] = {
-          ...(componentPlugin?.options[HOOKS_KEY] ?? {}),
-          [IconHookToken]: iconHook,
-        };
-      }
+    for (const componentTheme of componentThemes) {
+      const component = this.themes.find(
+        (theme) => componentTheme.name === theme.name
+      );
 
       if (!component) {
         continue;
       }
 
-      implementations.push(this.loadThemeImplFn(component));
-    }
-
-    if (componentTheme) {
-      implementations.push(this.loadThemeImplFn(componentTheme));
+      implementations.push(this.loadThemeImplFn(componentTheme.styles));
     }
 
     if (componentPlugin?.rootSelector === name) {

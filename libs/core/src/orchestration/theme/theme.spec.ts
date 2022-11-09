@@ -10,32 +10,11 @@ import {
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
-  components: {
-    a: {
-      styles: stylesMocker('a'),
-    },
-    b: (): Promise<ThemeData> =>
-      Promise.resolve({
-        styles: stylesMocker('b'),
-      }),
-  },
+  name: 'b',
 };
 
 const mockBTheme: Theme = {
-  components: {
-    a: {
-      styles: stylesMocker('aA'),
-    },
-    b: (): Promise<ThemeData> =>
-      Promise.resolve({
-        styles: stylesMocker('bB'),
-        strategy: ThemeStrategies.ReplaceAll,
-      }),
-  },
-};
-
-const mockComponentTheme = {
-  styles: stylesMocker('c'),
+  name: 'a',
 };
 
 const mockComponentPlugin = {
@@ -65,19 +44,49 @@ describe('ThemePlugin', () => {
   });
 
   describe('resolve', () => {
-    it('should resolve theme data by tag name', async () => {
+    it('should resolve theme data by themeName', async () => {
       const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
-      const themeData = await plugin.resolve('a');
+      const themeData = await plugin.resolve('a', [
+        {
+          name: 'a',
+          styles: {
+            styles: stylesMocker('a'),
+          },
+        },
+        {
+          name: 'a',
+          styles: {
+            styles: stylesMocker('aA'),
+          },
+        },
+      ]);
+      console.log(themeData);
+
       expect(themeData).toEqual(expected);
     });
 
-    it('should resolve theme data by tag name with additional theme implementation', async () => {
+    it('should resolve theme lazyloadable data by themeName', async () => {
       const expected = [
         { styles: ['b'] },
         { styles: ['bB'], strategy: 'replace-all' },
-        { styles: ['c'] },
       ];
-      const themeData = await plugin.resolve('b', mockComponentTheme);
+      const themeData = await plugin.resolve('b', [
+        {
+          name: 'b',
+          styles: (): Promise<ThemeData> =>
+            Promise.resolve({
+              styles: stylesMocker('b'),
+            }),
+        },
+        {
+          name: 'b',
+          styles: (): Promise<ThemeData> =>
+            Promise.resolve({
+              styles: stylesMocker('bB'),
+              strategy: ThemeStrategies.ReplaceAll,
+            }),
+        },
+      ]);
       expect(themeData).toEqual(expected);
     });
   });
@@ -126,9 +135,9 @@ describe('ThemePlugin', () => {
       plugin.beforeApply(mockApp);
     });
 
-    describe('resolve', () => {
+    describe('apply', () => {
       it('should not override IconHookToken for ComponentsPlugin if its defined', async () => {
-        await plugin.resolve('a');
+        await plugin.apply();
         expect(mockComponentPlugin.options[HOOKS_KEY][IconHookToken]).toBe(
           'IconHookToken'
         );
@@ -143,7 +152,7 @@ describe('ThemePlugin', () => {
           },
         };
         mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
-        await plugin.resolve('a');
+        await plugin.apply();
         expect(mockComponentPlugin.options[HOOKS_KEY].anotherToken).toBe(
           'anotherToken'
         );
@@ -155,7 +164,7 @@ describe('ThemePlugin', () => {
 
     describe('getIcon', () => {
       it('should resolve icon by name', async () => {
-        await plugin.resolve('a');
+        await plugin.apply();
         const iconA = await plugin.getIcon('a');
         expect(iconA).toBe('a');
         const iconB = await plugin.getIcon('b');
@@ -228,7 +237,20 @@ describe('ThemePlugin', () => {
           { styles: ['aA'] },
         ];
         mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
-        const themeData = await plugin.resolve('a');
+        const themeData = await plugin.resolve('a', [
+          {
+            name: 'a',
+            styles: {
+              styles: stylesMocker('a'),
+            },
+          },
+          {
+            name: 'a',
+            styles: {
+              styles: stylesMocker('aA'),
+            },
+          },
+        ]);
 
         expect(themeData).toEqual(expected);
       });
