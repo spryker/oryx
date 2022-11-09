@@ -3,7 +3,7 @@ export * from '../average-rating/src/average-rating.defs';
 export * from '../card/src/card.def';
 export * from '../description/src/component';
 export * from '../id/src/component';
-export * from '../images/src/component';
+export * from '../images/src/images.def';
 export * from '../labels/src/label.def';
 export * from '../list/src/component';
 export * from '../media/src/media.def';

@@ -36,8 +36,8 @@ const product: Product = {
   },
   images: [
     {
-      externalUrlLarge: 'test',
-      externalUrlSmall: 'test',
+      xs: 'test',
+      lg: 'test',
     },
   ],
 };

@@ -45,10 +45,8 @@ const createProducts = (completion: string[]): Product[] => {
     sku: String(i),
     images: [
       {
-        externalUrlSmall:
-          'https://images.icecat.biz/img/gallery_mediums/29801891_9454.jpg',
-        externalUrlLarge:
-          'https://images.icecat.biz/img/gallery/29801891_9454.jpg',
+        sm: 'https://images.icecat.biz/img/gallery_mediums/29801891_9454.jpg',
+        lg: 'https://images.icecat.biz/img/gallery/29801891_9454.jpg',
       },
     ],
   }));

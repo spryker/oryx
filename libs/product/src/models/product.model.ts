@@ -65,8 +65,7 @@ export interface FacetValue {
 }
 
 /**
- * TODO: drop `externalUrlSmall` and `externalUrlLarge` and move to
- * utility package as it's a generic reusable Size.
+ * TODO: move size to utility package as it's a generic reusable Size.
  *
  * Product media are typically provided in different sizes, so that an
  * optimised experience can be created for each product image usage and
@@ -90,15 +89,6 @@ export const enum Size {
   Md = 'md',
   Lg = 'lg',
   Xl = 'xl',
-
-  /**
-   * @deprecated we use Sm going forward
-   */
-  externalUrlSmall = 'externalUrlSmall',
-  /**
-   * @deprecated we use Lg going forward
-   */
-  externalUrlLarge = 'externalUrlLarge',
 }
 
 export type ProductMedia = {

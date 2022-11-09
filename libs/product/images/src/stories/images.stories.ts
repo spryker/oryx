@@ -5,18 +5,103 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import {
   ProductImagesComponentOptions,
+  ProductImagesMainLayout,
   ProductImagesNavigationAlignment,
   ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout,
+  ProductImagesNavigationMouseEvent,
   ProductImagesNavigationPosition,
-  ProductImagesPreviewLayout,
 } from '../images.model';
 
 export default {
   title: `${storybookPrefix}/Images`,
+  args: {
+    sku: MockProductService.mockProducts[0].sku,
+  },
+  argTypes: {
+    sku: {
+      control: { type: 'select' },
+      options: [
+        ...MockProductService.mockProducts.map((p) => p.sku),
+        'not-found',
+      ],
+      table: { category: 'product' },
+    },
+    previewLayout: {
+      options: [
+        ProductImagesMainLayout.Carousel,
+        ProductImagesMainLayout.Toggle,
+        ProductImagesMainLayout.None,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Preview' },
+    },
+    mainImageWidth: {
+      control: { type: 'text' },
+      table: { category: 'Preview' },
+    },
+    mainImageHeight: {
+      control: { type: 'text' },
+      table: { category: 'Preview' },
+    },
+    navigationDisplay: {
+      options: [
+        ProductImagesNavigationDisplay.Inline,
+        ProductImagesNavigationDisplay.Floating,
+        ProductImagesNavigationDisplay.None,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Navigation' },
+    },
+    navigationLayout: {
+      options: [
+        ProductImagesNavigationLayout.Carousel,
+        ProductImagesNavigationLayout.Grid,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Navigation' },
+    },
+    navigationPosition: {
+      options: [
+        ProductImagesNavigationPosition.Top,
+        ProductImagesNavigationPosition.Bottom,
+        ProductImagesNavigationPosition.Start,
+        ProductImagesNavigationPosition.End,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Navigation' },
+    },
+    navigationAlignment: {
+      options: [
+        ProductImagesNavigationAlignment.Start,
+        ProductImagesNavigationAlignment.Center,
+        ProductImagesNavigationAlignment.End,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Navigation' },
+    },
+    navigationMouseEvent: {
+      options: [
+        ProductImagesNavigationMouseEvent.Click,
+        ProductImagesNavigationMouseEvent.Mouseover,
+      ],
+      control: { type: 'select' },
+      table: { category: 'Navigation' },
+    },
+    thumbWidth: {
+      control: { type: 'text' },
+      table: { category: 'Navigation' },
+    },
+    thumbHeight: {
+      control: { type: 'text' },
+      table: { category: 'Navigation' },
+    },
+    gridItemsPerColumn: {
+      control: { type: 'number' },
+      table: { category: 'Navigation' },
+    },
+  },
 } as unknown as Meta;
-
-type Props = ProductImagesComponentOptions & ProductComponentProperties;
 
 const el = document.querySelector('html');
 let oldVal = el?.getAttribute('dir');
@@ -34,53 +119,10 @@ observer.observe(el as HTMLHtmlElement, {
   attributeFilter: ['dir'],
 });
 
-const Template: Story<Props> = (options): TemplateResult => {
+const Template: Story<
+  ProductImagesComponentOptions & ProductComponentProperties
+> = (options): TemplateResult => {
   return html`<product-images .sku=${options.sku} .options=${options} />`;
 };
 
 export const ImagesDemo = Template.bind({});
-
-ImagesDemo.args = {
-  sku: MockProductService.mockProducts[0].sku,
-  previewLayout: ProductImagesPreviewLayout.CAROUSEL,
-  navigationPosition: ProductImagesNavigationPosition.BELOW,
-  navigationLayout: ProductImagesNavigationLayout.CAROUSEL,
-  navigationDisplay: ProductImagesNavigationDisplay.INLINE,
-  navigationAlignment: ProductImagesNavigationAlignment.CENTER,
-};
-
-ImagesDemo.argTypes = {
-  sku: {
-    control: { type: 'select' },
-    options: [
-      ...MockProductService.mockProducts.map((p) => p.sku),
-      'not-found',
-    ],
-    table: { category: 'product' },
-  },
-  previewLayout: {
-    options: Object.values(ProductImagesPreviewLayout),
-    control: { type: 'select' },
-    table: { category: 'Preview' },
-  },
-  navigationPosition: {
-    options: Object.values(ProductImagesNavigationPosition),
-    control: { type: 'select' },
-    table: { category: 'Navigation' },
-  },
-  navigationLayout: {
-    options: Object.values(ProductImagesNavigationLayout),
-    control: { type: 'select' },
-    table: { category: 'Navigation' },
-  },
-  navigationDisplay: {
-    options: Object.values(ProductImagesNavigationDisplay),
-    control: { type: 'select' },
-    table: { category: 'Navigation' },
-  },
-  navigationAlignment: {
-    options: Object.values(ProductImagesNavigationAlignment),
-    control: { type: 'select' },
-    table: { category: 'Navigation' },
-  },
-};

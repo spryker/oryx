@@ -54,13 +54,6 @@ describe('imagesNormalizer', () => {
       expect(normalized[0].md).toBeUndefined();
       expect(normalized[0].xl).toBeUndefined();
     });
-
-    describe('and while we still support deprecated', () => {
-      it('should expose externalUrlSmall and externalUrlLarge', () => {
-        expect(normalized[0].externalUrlSmall).toBe('set1/small-1.jpg');
-        expect(normalized[0].externalUrlLarge).toBe('set1/large-1.jpg');
-      });
-    });
   });
 
   describe('when the source has multiple image sets', () => {

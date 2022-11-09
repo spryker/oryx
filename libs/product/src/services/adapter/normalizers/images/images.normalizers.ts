@@ -22,10 +22,6 @@ export function imagesNormalizer(
             sources[Size.Lg] = externalUrlLarge;
           }
 
-          // we'll keep this till we start using the media component on PDP
-          sources.externalUrlLarge = externalUrlLarge;
-          sources.externalUrlSmall = externalUrlSmall;
-
           return sources;
         }),
       ],

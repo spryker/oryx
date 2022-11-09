@@ -121,7 +121,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '3',
       name: 'Sample product no. 3',
-      images: [...images, ...images, ...images, ...images, ...images],
+      images: [...images, ...images, ...images],
       averageRating: undefined,
       reviewCount: 0,
 
@@ -260,6 +260,13 @@ export class MockProductService implements Partial<ProductService> {
         SampleAttribute:
           'Sample attribute lengthy name, Sample attribute lengthy name, Sample attribute lengthy name.',
       },
+    },
+
+    {
+      sku: 'single-image',
+      name: 'Sample product with one image',
+      description: 'Lorem ipsum dolor sit amet.',
+      images: [images[0]],
     },
     {
       sku: 'without-images',
