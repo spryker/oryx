@@ -15,8 +15,15 @@ const htmlRegex = /(?=.*text)(?=.*html)/;
 export class DefaultHttpService implements HttpService {
   constructor(protected handler = inject(HttpHandler)) {}
 
-  request<T = unknown>(url: string, options?: RequestOptions<T>): any {
-    return this.handler.handle(url, options ?? {}).pipe(
+  request<T = unknown>(url: string, options: RequestOptions<T> = {}): any {
+    if (!(options.headers as Record<string, string>)?.['Content-Type']) {
+      options.headers = {
+        ...(options.headers ?? {}),
+        'Content-Type': 'application/json',
+      };
+    }
+
+    return this.handler.handle(url, options).pipe(
       switchMap((response) => {
         if (!response.ok) {
           this.throwError(response);
