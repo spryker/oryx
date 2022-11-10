@@ -63,7 +63,7 @@ export interface ProductImagesComponentOptions {
    * The height of the image is important to ensure that the layout
    * has a minimum height.
    *
-   * @default 300
+   * @default `300px`
    */
   mainImageHeight?: number;
 
@@ -72,20 +72,26 @@ export interface ProductImagesComponentOptions {
    *
    * The width is used in the layout as well as reflected on the
    * actual img element to avoid layout shifts.
+   *
+   * There is no default applied, so that images will take the full available width.
    */
   mainImageWidth?: number;
 
   /**
    * The height of the navigation thumbnail can be provided in pixels.
+   * The default value for the thumbnails use a CSS function to use the minimum
+   * of 80px or 8vw (8% of the viewport width).
    *
-   * @default 60
+   * @default min(8vw, 80px)
    */
   thumbHeight?: number;
 
   /**
    * The width of the navigation thumbnail can be provided in pixels.
+   * The default value for the thumbnail height will be driven by the
+   * thumbnail height.
    *
-   * @default`thumbHeight` or `60` if no value is available
+   * @default copies the `thumbHeight`
    */
   thumbWidth?: number;
 

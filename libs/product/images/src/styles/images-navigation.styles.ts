@@ -157,10 +157,17 @@ export const navigationStyles = css`
     scroll-snap-align: start;
     height: ${thumbHeight};
     width: ${thumbWidth};
-    flex: 0 0 ${thumbHeight};
     padding: 10px;
     box-sizing: border-box;
     background-color: var(--oryx-color-canvas);
+  }
+
+  slot${isPosStartOrEnd} .nav label {
+    flex: 0 0 ${thumbHeight};
+  }
+
+  slot:not(${isPosStartOrEnd}) .nav label {
+    flex: 0 0 ${thumbWidth};
   }
 
   .nav input {

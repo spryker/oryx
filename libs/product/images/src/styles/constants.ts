@@ -21,5 +21,5 @@ export const isNavAlignCenter = unsafeCSS(`[nav-align='${PINA.Center}']`);
 export const isNavAlignEnd = unsafeCSS(`[nav-align='${PINA.End}']`);
 
 export const mainHeight = css`var(--product-images-main-height, 300px)`;
-export const thumbWidth = css`var(--product-images-thumb-width, var(--product-images-thumb-height, 80px))`;
-export const thumbHeight = css`var(--product-images-thumb-height, var(--product-images-thumb-width, 80px))`;
+export const thumbWidth = css`var(--product-images-thumb-width, var(--product-images-thumb-height, min(8vw, 80px)))`;
+export const thumbHeight = css`var(--product-images-thumb-height, var(--product-images-thumb-width, min(8vw, 80px)))`;
