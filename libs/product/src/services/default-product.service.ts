@@ -4,7 +4,7 @@ import { inject } from '@spryker-oryx/injector';
 import { NullableGeneric } from '@spryker-oryx/typescript-utils';
 import { distinctUntilChanged, Observable, ReplaySubject } from 'rxjs';
 import { Product, ProductQualifier } from '../models';
-import { ProductAdapter } from './adapter';
+import { ProductAdapter } from './adapter/product.adapter';
 import { ProductService } from './product.service';
 
 export interface ProductData {

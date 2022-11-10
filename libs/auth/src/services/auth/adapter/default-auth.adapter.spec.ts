@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { AuthAdapter } from './auth.adapter';
 import { DefaultAuthAdapter } from './default-auth.adapter';
-import { TokenNormalizers } from './normalizers';
+import { TokenNormalizer } from './normalizers';
 
 const mockLoginQualifier = {
   username: 'mockUserName',
@@ -81,7 +81,7 @@ describe('DefaultAuthAdapter', () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizers);
+      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizer);
     });
   });
 
@@ -101,7 +101,7 @@ describe('DefaultAuthAdapter', () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizers);
+      expect(transformer.do).toHaveBeenCalledWith(TokenNormalizer);
     });
   });
 });

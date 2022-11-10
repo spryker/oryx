@@ -1,29 +1,25 @@
 import {
-  availabilityNormalizers,
-  AvailabilityNormalizers,
-  ConcreteProductsNormalizers,
-  concreteProductsNormalizers,
+  availabilityNormalizer,
+  AvailabilityNormalizer,
+  ConcreteProductsNormalizer,
+  concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductListAdapter,
-  imagesNormalizers,
-  ImagesNormalizers,
-  priceNormalizers,
-  PriceNormalizers,
+  ImagesNormalizer,
+  imagesNormalizer,
+  PriceNormalizer,
+  priceNormalizer,
   ProductAdapter,
   ProductListAdapter,
-  productNormalizers,
-  ProductNormalizers,
+  productNormalizer,
 } from './adapter';
 import {
-  productLabelsNormalizers,
-  ProductLabelsNormalizers,
+  productLabelNormalizer,
+  ProductLabelsNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
 
 import { Provider } from '@spryker-oryx/injector';
-import {
-  productListNormalizers,
-  ProductListNormalizers,
-} from './adapter/normalizers/product-list';
+import { productListNormalizer } from './adapter/normalizers/product-list';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
@@ -59,32 +55,24 @@ export const productProviders: Provider[] = [
     useClass: DefaultProductListPageService,
   },
   {
-    provide: PriceNormalizers,
-    useValue: priceNormalizers,
+    provide: PriceNormalizer,
+    useValue: priceNormalizer,
   },
   {
-    provide: AvailabilityNormalizers,
-    useValue: availabilityNormalizers,
+    provide: AvailabilityNormalizer,
+    useValue: availabilityNormalizer,
   },
   {
-    provide: ProductLabelsNormalizers,
-    useValue: productLabelsNormalizers,
+    provide: ProductLabelsNormalizer,
+    useValue: productLabelNormalizer,
   },
   {
-    provide: ImagesNormalizers,
-    useValue: imagesNormalizers,
+    provide: ImagesNormalizer,
+    useValue: imagesNormalizer,
   },
   {
-    provide: ProductNormalizers,
-    useValue: productNormalizers,
-  },
-  {
-    provide: ProductListNormalizers,
-    useValue: productListNormalizers,
-  },
-  {
-    provide: ConcreteProductsNormalizers,
-    useValue: concreteProductsNormalizers,
+    provide: ConcreteProductsNormalizer,
+    useValue: concreteProductsNormalizer,
   },
   {
     provide: ProductImageService,
@@ -94,4 +82,6 @@ export const productProviders: Provider[] = [
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
   },
+  ...productNormalizer,
+  ...productListNormalizer,
 ];

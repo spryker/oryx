@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { SuggestionQualifier } from '../../models';
 import { DefaultSuggestionAdapter } from './default-suggestion.adapter';
-import { SuggestionNormalizers } from './normalizers';
+import { SuggestionNormalizer } from './normalizers';
 import { SuggestionAdapter } from './suggestion.adapter';
 
 const mockApiUrl = 'mockApiUrl';
@@ -85,7 +85,7 @@ describe('DefaultSuggestionAdapter', () => {
     it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();
 
-      expect(mockTransformer.do).toHaveBeenCalledWith(SuggestionNormalizers);
+      expect(mockTransformer.do).toHaveBeenCalledWith(SuggestionNormalizer);
     });
 
     it('should return transformed data', () => {

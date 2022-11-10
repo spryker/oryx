@@ -5,8 +5,7 @@ import {
   AuthService,
   DefaultAuthAdapter,
   DefaultAuthService,
-  TokenNormalizers,
-  tokenNormalizers,
+  tokenNormalizer,
 } from './auth';
 import {
   DefaultIdentityInterceptor,
@@ -25,7 +24,6 @@ export const authProviders: Provider[] = [
     useClass: DefaultAuthService,
   },
   { provide: AuthAdapter, useClass: DefaultAuthAdapter },
-  { provide: TokenNormalizers, useValue: tokenNormalizers },
   {
     provide: IdentityService,
     useClass: DefaultIdentityService,
@@ -34,4 +32,5 @@ export const authProviders: Provider[] = [
     provide: IdentityInterceptor,
     useClass: DefaultIdentityInterceptor,
   },
+  ...tokenNormalizer,
 ];

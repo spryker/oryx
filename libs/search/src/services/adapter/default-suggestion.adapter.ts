@@ -6,7 +6,7 @@ import {
   Suggestion,
   SuggestionQualifier,
 } from '../../models';
-import { SuggestionNormalizers } from './normalizers';
+import { SuggestionNormalizer } from './normalizers';
 import { SuggestionAdapter } from './suggestion.adapter';
 
 export class DefaultSuggestionAdapter implements SuggestionAdapter {
@@ -27,6 +27,6 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
       .get<ApiSuggestionModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=abstract-products,concrete-products,concrete-product-image-sets,concrete-product-prices`
       )
-      .pipe(this.transformer.do(SuggestionNormalizers));
+      .pipe(this.transformer.do(SuggestionNormalizer));
   }
 }

@@ -5,7 +5,7 @@ import {
   ProductLabelAppearance,
 } from '../../../../models';
 
-export const ProductLabelsNormalizers = 'FES.ProductLabelsNormalizers';
+export const ProductLabelsNormalizer = 'FES.ProductLabelsNormalizer*';
 
 export function productLabelNormalizer(
   data: ApiProductModel.ProductLabel[]
@@ -28,10 +28,8 @@ export function productLabelNormalizer(
   );
 }
 
-export const productLabelsNormalizers = [productLabelNormalizer];
-
 declare global {
   interface InjectionTokensContractMap {
-    [ProductLabelsNormalizers]: Transformer<ProductLabel[]>[];
+    [ProductLabelsNormalizer]: Transformer<ProductLabel[]>[];
   }
 }

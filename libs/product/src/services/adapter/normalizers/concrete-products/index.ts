@@ -1,2 +1,2 @@
-export * from './concrete-products.normalizers';
+export * from './concrete-products.normalizer';
 export * from './model';

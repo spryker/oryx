@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { ApiCartModel } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';
-import { CartNormalizers, CartsNormalizers } from './normalizers';
+import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
@@ -115,7 +115,7 @@ describe('DefaultCartAdapter', () => {
       it('should call transformer with proper normalizer', () => {
         service.getAll().subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(CartsNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartsNormalizer);
       });
 
       it('should return transformed data', () => {
@@ -170,7 +170,7 @@ describe('DefaultCartAdapter', () => {
       it('should call transformer data with proper normalizer', () => {
         service.get(mockGuestGetCartQualifier).subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizer);
       });
 
       it('should return transformed data', () => {
@@ -251,7 +251,7 @@ describe('DefaultCartAdapter', () => {
       it('should call transformer with proper normalizer', () => {
         service.addEntry(mockGuestAddEntryQualifier).subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizer);
       });
 
       it('should return transformed data', () => {
@@ -335,7 +335,7 @@ describe('DefaultCartAdapter', () => {
       it('should call transformer with proper normalizer', () => {
         service.addEntry(mockUpdateEntryQualifier).subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(CartNormalizer);
       });
 
       it('should return transformed data', () => {

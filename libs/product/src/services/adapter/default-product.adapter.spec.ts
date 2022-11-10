@@ -3,7 +3,7 @@ import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
 import { DefaultProductAdapter } from './default-product.adapter';
-import { ProductNormalizers } from './normalizers';
+import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 const mockApiUrl = 'mockApiUrl';
@@ -105,7 +105,7 @@ describe('DefaultProductService', () => {
     it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();
 
-      expect(mockTransformer.do).toHaveBeenCalledWith(ProductNormalizers);
+      expect(mockTransformer.do).toHaveBeenCalledWith(ProductNormalizer);
     });
 
     it('should return transformed data', () => {

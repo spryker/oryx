@@ -1,1 +1,1 @@
-export * from './shipments.normalizers';
+export * from './shipments.normalizer';

@@ -1,10 +1,8 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
   CartAdapter,
-  cartNormalizers,
-  CartNormalizers,
-  cartsNormalizers,
-  CartsNormalizers,
+  cartNormalizer,
+  cartsNormalizer,
   DefaultCartAdapter,
 } from './adapter';
 import { CartService } from './cart.service';
@@ -19,12 +17,6 @@ export const cartProviders: Provider[] = [
     provide: CartService,
     useClass: DefaultCartService,
   },
-  {
-    provide: CartNormalizers,
-    useValue: cartNormalizers,
-  },
-  {
-    provide: CartsNormalizers,
-    useValue: cartsNormalizers,
-  },
+  ...cartNormalizer,
+  ...cartsNormalizer,
 ];

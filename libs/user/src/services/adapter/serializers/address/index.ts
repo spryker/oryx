@@ -1,1 +1,1 @@
-export * from './address.serializers';
+export * from './address.serializer';

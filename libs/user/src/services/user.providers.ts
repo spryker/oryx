@@ -1,17 +1,13 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
   AddressAdapter,
+  addressesNormalizer,
   AddressFormAdapter,
+  addressNormalizer,
+  addressSerializers,
   DefaultAddressAdapter,
   DefaultAddressFormAdapter,
 } from './adapter';
-import {
-  addressesNormalizers,
-  AddressesNormalizers,
-  addressNormalizers,
-  AddressNormalizers,
-} from './adapter/normalizers';
-import { addressSerializers, AddressSerializers } from './adapter/serializers';
 import { AddressFormService } from './address-form.service';
 import { AddressService } from './address.service';
 import { DefaultAddressFormService } from './default-address-form.service';
@@ -34,16 +30,7 @@ export const userProviders: Provider[] = [
     provide: AddressFormService,
     useClass: DefaultAddressFormService,
   },
-  {
-    provide: AddressesNormalizers,
-    useValue: addressesNormalizers,
-  },
-  {
-    provide: AddressNormalizers,
-    useValue: addressNormalizers,
-  },
-  {
-    provide: AddressSerializers,
-    useValue: addressSerializers,
-  },
+  ...addressesNormalizer,
+  ...addressNormalizer,
+  ...addressSerializers,
 ];

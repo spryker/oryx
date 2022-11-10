@@ -16,8 +16,7 @@ import {
   SemanticLinkService,
   SiteErrorHandler,
   StoreAdapter,
-  StoreNormalizers,
-  storeNormalizers,
+  storeNormalizer,
 } from './index';
 
 import { DefaultStoreService, StoreService } from './store';
@@ -35,10 +34,6 @@ export const siteProviders: Provider[] = [
   {
     provide: StoreAdapter,
     useClass: DefaultStoreAdapter,
-  },
-  {
-    provide: StoreNormalizers,
-    useValue: storeNormalizers,
   },
   {
     provide: CountryService,
@@ -64,4 +59,5 @@ export const siteProviders: Provider[] = [
     provide: ErrorHandler,
     useClass: SiteErrorHandler,
   },
+  ...storeNormalizer,
 ];

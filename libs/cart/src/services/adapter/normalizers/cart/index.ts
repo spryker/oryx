@@ -1,3 +1,3 @@
-export * from './cart.normalizers';
-export * from './carts.normalizers';
+export * from './cart.normalizer';
+export * from './carts.normalizer';
 export * from './model';

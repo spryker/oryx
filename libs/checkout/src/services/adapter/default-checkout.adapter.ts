@@ -8,8 +8,8 @@ import {
   GetCheckoutDataProps,
   UpdateCheckoutDataProps,
 } from './checkout.adapter';
-import { CheckoutNormalizers } from './normalizers';
-import { CheckoutSerializers } from './serializers';
+import { CheckoutNormalizer } from './normalizers';
+import { CheckoutSerializer } from './serializers';
 
 export class DefaultCheckoutAdapter implements CheckoutAdapter {
   constructor(
@@ -31,7 +31,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     props: GetCheckoutDataProps | UpdateCheckoutDataProps
   ): Observable<CheckoutData> {
     return this.transformer
-      .serialize(props, CheckoutSerializers)
+      .serialize(props, CheckoutSerializer)
       .pipe(
         switchMap((data) =>
           this.http
@@ -39,7 +39,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
               this.generateUrl(props.include),
               data
             )
-            .pipe(this.transformer.do(CheckoutNormalizers))
+            .pipe(this.transformer.do(CheckoutNormalizer))
         )
       );
   }

@@ -1,1 +1,1 @@
-export * from './store.normalizers';
+export * from './store.normalizer';

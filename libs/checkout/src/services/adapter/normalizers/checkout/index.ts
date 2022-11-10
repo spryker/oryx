@@ -1,2 +1,2 @@
-export * from './checkout.normalizers';
+export * from './checkout.normalizer';
 export * from './model';

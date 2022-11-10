@@ -9,8 +9,8 @@ import { inject } from '@spryker-oryx/injector';
 import { map, Observable, of, switchMap, take } from 'rxjs';
 import { Address } from '../../models';
 import { AddressAdapter, AddressRequestProps } from './address.adapter';
-import { AddressesNormalizers, AddressNormalizers } from './normalizers';
-import { AddressSerializers } from './serializers';
+import { AddressesNormalizer, AddressNormalizer } from './normalizers';
+import { AddressSerializer } from './serializers';
 
 export class DefaultAddressAdapter implements AddressAdapter {
   protected CURRENT_ADDRESS = 'address';
@@ -42,7 +42,7 @@ export class DefaultAddressAdapter implements AddressAdapter {
 
         return this.httpService
           .get(`${this.SCOS_BASE_URL}/customers/${identity.id}/addresses`)
-          .pipe(this.transformer.do(AddressesNormalizers));
+          .pipe(this.transformer.do(AddressesNormalizer));
       })
     );
   }
@@ -78,10 +78,10 @@ export class DefaultAddressAdapter implements AddressAdapter {
           return of(data);
         }
 
-        return this.transformer.serialize(data, AddressSerializers).pipe(
+        return this.transformer.serialize(data, AddressSerializer).pipe(
           switchMap((serializedData) => {
             return request({ payload: serializedData, identity }).pipe(
-              this.transformer.do(AddressNormalizers)
+              this.transformer.do(AddressNormalizer)
             );
           })
         );

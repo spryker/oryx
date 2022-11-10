@@ -1,1 +1,1 @@
-export * from './checkout.serializers';
+export * from './checkout.serializer';

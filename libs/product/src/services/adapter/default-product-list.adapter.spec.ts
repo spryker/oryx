@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/product';
 import { of } from 'rxjs';
 import { ProductListQualifier } from '../../models/product-list-qualifier';
-import { ProductListNormalizers } from './normalizers/product-list';
+import { ProductListNormalizer } from './normalizers/product-list';
 
 const mockApiUrl = 'mockApiUrl';
 const mockProducts = {
@@ -84,7 +84,7 @@ describe('DefaultProductCategoryAdapter', () => {
     it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();
 
-      expect(mockTransformer.do).toHaveBeenCalledWith(ProductListNormalizers);
+      expect(mockTransformer.do).toHaveBeenCalledWith(ProductListNormalizer);
     });
 
     it('should return transformed data', () => {

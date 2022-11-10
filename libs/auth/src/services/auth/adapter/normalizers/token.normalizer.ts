@@ -1,10 +1,11 @@
 import { Transformer } from '@spryker-oryx/core';
+import { Provider } from '@spryker-oryx/injector';
 import { toMilliseconds } from '@spryker-oryx/typescript-utils';
 import { AccessToken } from '../../../../models';
 
-export const TokenNormalizers = 'FES.TokenNormalizers';
+export const TokenNormalizer = 'FES.TokenNormalizer*';
 
-export function tokenNormalizer(source: any): AccessToken {
+export function tokenAttributesNormalizer(source: any): AccessToken {
   const token: AccessToken = {
     accessToken: source.access_token,
   };
@@ -25,10 +26,15 @@ export function tokenNormalizer(source: any): AccessToken {
   return token;
 }
 
-export const tokenNormalizers = [tokenNormalizer];
+export const tokenNormalizer: Provider[] = [
+  {
+    provide: TokenNormalizer,
+    useValue: tokenAttributesNormalizer,
+  },
+];
 
 declare global {
   interface InjectionTokensContractMap {
-    [TokenNormalizers]: Transformer<AccessToken>[];
+    [TokenNormalizer]: Transformer<AccessToken>[];
   }
 }

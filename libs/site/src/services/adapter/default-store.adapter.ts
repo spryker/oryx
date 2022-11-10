@@ -2,7 +2,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable } from 'rxjs';
 import { Store } from '../../models';
-import { StoreNormalizers } from './normalizers';
+import { StoreNormalizer } from './normalizers';
 import { StoreAdapter } from './store.adapter';
 
 export class DefaultStoreAdapter implements StoreAdapter {
@@ -15,6 +15,6 @@ export class DefaultStoreAdapter implements StoreAdapter {
   get(): Observable<Store[]> {
     return this.httpService
       .get(`${this.SCOS_BASE_URL}/stores`)
-      .pipe(this.transformer.do(StoreNormalizers));
+      .pipe(this.transformer.do(StoreNormalizer));
   }
 }

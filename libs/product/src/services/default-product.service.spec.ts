@@ -1,4 +1,4 @@
-import { Injector } from '@spryker-oryx/injector';
+import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of, switchMap } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductQualifier } from '../models';
@@ -19,22 +19,27 @@ class MockProductAdapter implements Partial<ProductAdapter> {
 describe('DefaultProductService', () => {
   let service: ProductService;
   let adapter: ProductAdapter;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = new Injector([
-      {
-        provide: ProductService,
-        useClass: DefaultProductService,
-      },
-      {
-        provide: ProductAdapter,
-        useClass: MockProductAdapter,
-      },
-    ]);
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: ProductService,
+          useClass: DefaultProductService,
+        },
+        {
+          provide: ProductAdapter,
+          useClass: MockProductAdapter,
+        },
+      ],
+    });
 
     service = testInjector.inject(ProductService);
     adapter = testInjector.inject(ProductAdapter);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('should be provided', () => {

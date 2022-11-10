@@ -21,7 +21,7 @@ const mockLabel3: ApiProductModel.ProductLabel = {
   position: 3,
 };
 
-describe('productLabelNormalizer', () => {
+describe('productLabelsNormalizer', () => {
   let normalized: ProductLabel[];
 
   describe('appearance', () => {

@@ -2,8 +2,7 @@ import { Provider } from '@spryker-oryx/injector';
 import {
   DefaultSuggestionAdapter,
   SuggestionAdapter,
-  SuggestionNormalizers,
-  suggestionNormalizers,
+  suggestionNormalizer,
 } from './adapter';
 import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
@@ -16,8 +15,5 @@ export const searchProviders: Provider[] = [
     provide: SuggestionService,
     useClass: DefaultSuggestionService,
   },
-  {
-    provide: SuggestionNormalizers,
-    useValue: suggestionNormalizers,
-  },
+  ...suggestionNormalizer,
 ];

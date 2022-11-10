@@ -1,1 +1,1 @@
-export * from './addresses.normalizers';
+export * from './addresses.normalizer';

@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/product';
 import { Observable } from 'rxjs';
 import { ProductListQualifier } from '../../models/product-list-qualifier';
-import { ProductListNormalizers } from './normalizers/product-list';
+import { ProductListNormalizer } from './normalizers/product-list';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
   protected queryEndpoint = 'catalog-search';
@@ -54,6 +54,6 @@ export class DefaultProductListAdapter implements ProductListAdapter {
           ApiProductModel.Includes.ConcreteProducts
         }`
       )
-      .pipe(this.transformer.do(ProductListNormalizers));
+      .pipe(this.transformer.do(ProductListNormalizer));
   }
 }

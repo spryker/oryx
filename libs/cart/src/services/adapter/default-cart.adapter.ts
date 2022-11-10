@@ -11,7 +11,7 @@ import {
   GetCartProps,
   UpdateCartEntityProps,
 } from './cart.adapter';
-import { CartNormalizers, CartsNormalizers } from './normalizers';
+import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
   constructor(
@@ -34,7 +34,7 @@ export class DefaultCartAdapter implements CartAdapter {
 
         return this.http
           .get<ApiCartModel.ResponseList>(url)
-          .pipe(this.transformer.do(CartsNormalizers));
+          .pipe(this.transformer.do(CartsNormalizer));
       })
     );
   }
@@ -54,7 +54,7 @@ export class DefaultCartAdapter implements CartAdapter {
 
         return this.http
           .get<ApiCartModel.Response>(url)
-          .pipe(this.transformer.do(CartNormalizers));
+          .pipe(this.transformer.do(CartNormalizer));
       })
     );
   }
@@ -86,7 +86,7 @@ export class DefaultCartAdapter implements CartAdapter {
 
         return this.http
           .post<ApiCartModel.Response>(url, body)
-          .pipe(this.transformer.do(CartNormalizers));
+          .pipe(this.transformer.do(CartNormalizer));
       })
     );
   }
@@ -112,7 +112,7 @@ export class DefaultCartAdapter implements CartAdapter {
 
         return this.http
           .patch<ApiCartModel.Response>(url, body)
-          .pipe(this.transformer.do(CartNormalizers));
+          .pipe(this.transformer.do(CartNormalizer));
       })
     );
   }

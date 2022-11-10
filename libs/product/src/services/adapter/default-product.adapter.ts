@@ -2,7 +2,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable } from 'rxjs';
 import { ApiProductModel, Product, ProductQualifier } from '../../models';
-import { ProductNormalizers } from './normalizers';
+import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
 
 export class DefaultProductAdapter implements ProductAdapter {
@@ -33,6 +33,6 @@ export class DefaultProductAdapter implements ProductAdapter {
           include ? '?include=' : ''
         }${include?.join(',') || ''}`
       )
-      .pipe(this.transformer.do(ProductNormalizers));
+      .pipe(this.transformer.do(ProductNormalizer));
   }
 }

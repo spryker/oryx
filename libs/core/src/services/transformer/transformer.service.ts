@@ -3,13 +3,17 @@ import { Observable, ObservedValueOf } from 'rxjs';
 export const TransformerService = 'FES.TransformerService';
 
 export type TransformerType<T> = T extends keyof InjectionTokensContractMap
-  ? InjectionTokensContractMap[T] extends Transformer<infer I>[]
+  ? InjectionTokensContractMap[T] extends
+      | Transformer<infer I>[]
+      | Transformer<infer I>
     ? I
     : unknown
   : T;
 
 export type SerializerType<T> = T extends keyof InjectionTokensContractMap
-  ? InjectionTokensContractMap[T] extends Serializer<infer I>[]
+  ? InjectionTokensContractMap[T] extends
+      | Serializer<infer I>[]
+      | Serializer<infer I>
     ? I
     : unknown
   : T;

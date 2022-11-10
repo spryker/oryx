@@ -16,7 +16,7 @@ import {
 import { of } from 'rxjs';
 import { AddressAdapter } from './address.adapter';
 import { DefaultAddressAdapter } from './default-address.adapter';
-import { AddressesNormalizers, AddressNormalizers } from './normalizers';
+import { AddressesNormalizer, AddressNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
@@ -156,7 +156,7 @@ describe('DefaultAddressAdapter', () => {
         http.flush(mockGetAddressesResponse);
         service.getAll().subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(AddressesNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(AddressesNormalizer);
       });
 
       it('should return transformed data', () => {
@@ -248,7 +248,7 @@ describe('DefaultAddressAdapter', () => {
         http.flush(mockCurrentAddressResponse);
         service.add(mockCurrentAddress).subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(AddressNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(AddressNormalizer);
       });
 
       it('should return transformed data', () => {
@@ -323,7 +323,7 @@ describe('DefaultAddressAdapter', () => {
         http.flush(mockCurrentAddressResponse);
         service.update(mockCurrentAddress).subscribe();
 
-        expect(mockTransformer.do).toHaveBeenCalledWith(AddressNormalizers);
+        expect(mockTransformer.do).toHaveBeenCalledWith(AddressNormalizer);
       });
 
       it('should return transformed data', () => {

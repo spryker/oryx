@@ -3,7 +3,7 @@ import { inject } from '@spryker-oryx/injector';
 import { Observable } from 'rxjs';
 import { AccessToken } from '../../../models';
 import { AuthAdapter, AuthenticateQualifier } from './auth.adapter';
-import { TokenNormalizers } from './normalizers/token.normalizer';
+import { TokenNormalizer } from './normalizers/token.normalizer';
 
 export class DefaultAuthAdapter implements AuthAdapter {
   protected HTTP_HEADERS = {
@@ -31,7 +31,7 @@ export class DefaultAuthAdapter implements AuthAdapter {
         method: 'POST',
         headers: this.HTTP_HEADERS,
       })
-      .pipe(this.transformer.do(TokenNormalizers));
+      .pipe(this.transformer.do(TokenNormalizer));
   }
 
   refresh(token: AccessToken): Observable<AccessToken> {
