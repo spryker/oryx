@@ -9,6 +9,10 @@
   ],
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
+  "peerDependencies": {
+    "@spryker-oryx/typescript-utils": "*",
+    "lit": "^2.1.0"
+  },
   "publishConfig": {
     "access": "public"
   }

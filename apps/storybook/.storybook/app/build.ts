@@ -6,6 +6,7 @@ import { app } from '@spryker-oryx/core';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';
 import { mockExperienceFeature } from '@spryker-oryx/experience/mocks';
 import { formFeature } from '@spryker-oryx/form';
+import { I18nFeature } from '@spryker-oryx/i18n';
 import { launchpadUiFeature } from '@spryker-oryx/launchpad-ui';
 import { mockProductFeature } from '@spryker-oryx/product/mocks';
 import { mockSearchFeature } from '@spryker-oryx/search/mocks';
@@ -58,5 +59,6 @@ app()
   .withFeature(mockAuthFeature)
   .withComponents(isChromatic() ? chromaticStyledComponents : [])
   [isChromatic() ? 'with' : 'withTheme'](themeProps as any)
+  .withFeature(new I18nFeature())
   .create()
   .catch(console.error);

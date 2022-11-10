@@ -1,8 +1,8 @@
 {
-  "name": "@spryker-oryx/lit-rxjs",
+  "name": "@spryker-oryx/i18n",
   "type": "module",
   "version": "0.1.0-next.0",
-  "description": "Rxjs utilities for lit-element library",
+  "description": "Internationalization capabilities for Oryx",
   "author": "Spryker",
   "license": "MIT",
   "files": [
@@ -10,10 +10,14 @@
   ],
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
+  "dependencies": {
+    "globalize": "^1.7.0"
+  },
   "peerDependencies": {
-    "@spryker-oryx/typescript-utils": "~0.0.1",
-    "@spryker-oryx/utilities": "*",
     "@spryker-oryx/injector": "*",
+    "@spryker-oryx/lit-rxjs": "*",
+    "@spryker-oryx/utilities": "*",
+    "cldr-data": "^36.0.1",
     "lit": "^2.1.0",
     "rxjs": "~7.4.0"
   },

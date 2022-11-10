@@ -30,6 +30,14 @@ module.exports = {
       new TsconfigPathsPlugin({ extensions: config.resolve.extensions }),
     ];
 
+    // A hack needed for webpack to fix resolution of CLDR package
+    // See https://github.com/globalizejs/globalize/issues/603
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      cldr$: 'cldrjs',
+      cldr: 'cldrjs/dist/cldr',
+    };
+
     return config;
   },
 };

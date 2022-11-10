@@ -8,6 +8,7 @@ import {
   experiencePreviewFeature,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
+import { I18nFeature } from '@spryker-oryx/i18n';
 import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
@@ -38,4 +39,5 @@ export const appBuilder = app()
   .withFeature(appFeature)
   .withFeature(userFeature)
   .withFeature(authFeature)
+  .withFeature(new I18nFeature())
   .withTheme(storefrontTheme);

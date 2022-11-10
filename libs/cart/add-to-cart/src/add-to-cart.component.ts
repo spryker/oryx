@@ -12,6 +12,7 @@ import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { hydratable } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities/i18n';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -156,7 +157,7 @@ export class AddToCartComponent extends ProductComponentMixin<AddToCartOptions>(
                       : IconTypes.CartAdd}
                     size=${Size.large}
                   ></oryx-icon>
-                  ${showSuccessButton ? '' : 'Add to Cart'}
+                  ${showSuccessButton ? '' : i18n('cart.add-to-cart')}
                 </button>
               </oryx-button>
             </form>
