@@ -2,15 +2,16 @@
 
 ### Describe
 
-Use `describe` for creating a block that groups together several related tests. For each scenario, we will write a `when` case, and the have one or many expected cases.
-When a scenario is extended, it can be completed with `and`.
-If the condition requires a setup block this is added in the `beforeEach` block.
-Each `describe` block, `it` test case, `beforeEach, afterEach, beforeAll, afterAll` should have empty line in between.
+Use `describe` for creating a block that groups together several related tests. For each scenario, we will write a `when` case that might have have one or multiple expected cases. When the scenario has alternative cases, it can be completed with `and`.
+
+If a condition requires preconditions, a setup block is added in the `beforeEach` block. `beforeEach` is preferable for setting up of group tests, however, if there's only 1 small precondition it is fine to skip the `beforeEach` block.
+
+Every code block inside `describe`, such as `beforeEach`, `it`, `afterEach`, should be separated by an empty line.
 
 ```ts
 describe('when something happens', () => {
   beforeEach(() => {
-    // setup of group tests
+    // setup preconditions
   });
 
   it('should expect a certain behaviour', () => {
@@ -19,19 +20,19 @@ describe('when something happens', () => {
 
   describe('and another event/state is true', () => {
     beforeEach(() => {
-      // additional setup if needed
+      // setup preconditions
     });
 
-    it('should expect a certain behaviour', () => {
+    it('should expect another behaviour', () => {
       // test implementation
     ));
-  })
-})
+  });
+});
 ```
 
 ### Component(s) initialization
 
-For defining web component use `useComponent` from `@spryker-oryx/core/utilities` package which gets component definition or array of definitions as parameter. To define it for all tests call `useComponent` in `beforeAll` hook.
+Web components must be defined before they can be used in tests. The `utilities` package provides a the `useComponent` function to define one or multiple components. The `beforeAll` hook can be used to define a component for all test cases.
 
 ```ts
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -47,7 +48,9 @@ describe('ComponentForTesting', () => {
 
 ### Dependency injection
 
-For creating injector and provides dependencies in it use `createInjector` from `@spryker-oryx/injector` which gets providers as parameter. Define it in `beforeEach` method. `createInjector` should be together with `destroyInjector` which should be called in `afterEach` hook. For using injected service you can get it from `createInjector` via `inject` method.
+Unit test must be setup with injected classes, functions or data. The `createInjector` is a convenient function that can be used to provide an implementation for an injection token.
+
+The `createInjector` should be use in conjunction with the `destroyInjector`, so that the provided classes are _destroyed_ after the test is finished. The injected services can be referenced by the token using the `inject` method.
 
 ```ts
 describe('ServiceToTest', () => {
