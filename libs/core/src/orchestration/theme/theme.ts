@@ -93,7 +93,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
     if (typeof componentOptions.root === 'string' && document.body) {
       const styles = document.createElement('style');
-      const streamStyles = await this.setStyles(':root:not([no-dark-mode])');
+      const streamStyles = await this.setStyles(':root');
       styles.innerHTML = streamStyles.styles as string;
       document.body.prepend(styles);
     }

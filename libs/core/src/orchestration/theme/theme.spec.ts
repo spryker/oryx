@@ -268,7 +268,7 @@ describe('ThemePlugin', () => {
         const styles = document.body
           .querySelector('style')
           ?.textContent?.trim();
-        expect(styles).toBe(expectedStyles(':root:not([no-dark-mode])').trim());
+        expect(styles).toBe(expectedStyles(':root').trim());
       });
     });
   });

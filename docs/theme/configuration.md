@@ -87,7 +87,7 @@ const theme: Theme = {
 
 ### Design Tokens
 
-Creates css variables by design token system. It allows use lazy loaded function which return `DesignToken[]` or plain `DesignToken[]`. Tokens will be applied to the root (`:host {...}`) component if defined root component is `LitComponent` or will prepend `styles` tag to the `body` with stylesheet (`:root:not([no-dark-mode]) {...}`);
+Creates css variables by design token system. It allows use lazy loaded function which return `DesignToken[]` or plain `DesignToken[]`. Tokens will be applied to the root (`:host {...}`) component if defined root component is `LitComponent` or will prepend `styles` tag to the `body` with stylesheet (`:root {...}`);
 
 ```ts
 const theme: Theme = {
