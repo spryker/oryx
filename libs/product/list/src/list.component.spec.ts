@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import {
   ProductListPageService,
@@ -9,54 +8,12 @@ import {
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { ProductListQualifier } from '../../src/models/product-list-qualifier';
+import { MockProductListService } from '../../src/mocks/src/product-list/mock-product-list.service';
 import { productListComponent } from './component';
 import { ProductListComponent } from './list.component';
 
-class MockProductListService implements Partial<ProductListService> {
-  protected readonly productListSearchParams: Array<
-    keyof ProductListQualifier
-  > = [
-    'q',
-    'page',
-    'maxPrice',
-    'minPrice',
-    'minRating',
-    'ipp',
-    'brand',
-    'label',
-    'weight',
-    'color',
-    'category',
-    'sort',
-  ];
-
-  get = vi.fn();
-  getSearchParams = (
-    qualifier: ProductListQualifier
-  ): Record<string, string> => {
-    return this.productListSearchParams.reduce(
-      (
-        params: Record<string | number, string>,
-        key: keyof ProductListQualifier
-      ) => {
-        if (qualifier[key]) {
-          params[key] = qualifier[key] as string;
-        }
-
-        return params;
-      },
-      {}
-    );
-  };
-}
-
 class MockProductListPageService implements Partial<ProductListPageService> {
   get = vi.fn();
-}
-
-class MockRouterService implements Partial<RouterService> {
-  currentQuery = () => of({});
 }
 
 describe('ProductListComponent', () => {
@@ -80,10 +37,6 @@ describe('ProductListComponent', () => {
           provide: ProductListPageService,
           useClass: MockProductListPageService,
         },
-        {
-          provide: RouterService,
-          useClass: MockRouterService,
-        },
       ],
     });
 
@@ -95,7 +48,8 @@ describe('ProductListComponent', () => {
       ProductListPageService
     ) as unknown as MockProductListPageService;
 
-    mockProductListService.get.mockReturnValue(of([]));
+    vi.spyOn(mockProductListService, 'get');
+
     element = await fixture(
       html`<product-list .options="${{ q: 'sony' }}"></product-list>`
     );

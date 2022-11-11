@@ -4,6 +4,8 @@ import {
   SuggestionAdapter,
   suggestionNormalizer,
 } from './adapter';
+import { DefaultFacetListService } from './default-facet-list.service';
+import { FacetListService } from './facet-list.service';
 import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
 export const searchProviders: Provider[] = [
@@ -14,6 +16,10 @@ export const searchProviders: Provider[] = [
   {
     provide: SuggestionService,
     useClass: DefaultSuggestionService,
+  },
+  {
+    provide: FacetListService,
+    useClass: DefaultFacetListService,
   },
   ...suggestionNormalizer,
 ];

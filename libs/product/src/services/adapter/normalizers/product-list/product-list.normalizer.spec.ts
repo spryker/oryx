@@ -80,7 +80,7 @@ describe('Product Catalog Normalizers', () => {
       });
   });
 
-  it('should return normalized product facets', () => {
+  it('should return normalized product facet-navigation', () => {
     mockTransformer.transform.mockReturnValue(of(mockFacets));
     productFacetsNormalizer([
       {

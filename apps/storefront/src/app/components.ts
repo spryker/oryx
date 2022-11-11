@@ -81,6 +81,13 @@ export const componentsMapping: ComponentsMapping = {
     template: (uid: string, layoutClasses?: string) =>
       html`<product-list uid="${uid}" class=${layoutClasses}></product-list>`,
   },
+  ['search-facet-navigation']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<search-facet-navigation
+        uid="${uid}"
+        class=${layoutClasses}
+      ></search-facet-navigation>`,
+  },
   ['auth-login']: {
     template: (uid: string, layoutClasses?: string) =>
       html`<auth-login uid="${uid}" class=${layoutClasses}></auth-login>`,

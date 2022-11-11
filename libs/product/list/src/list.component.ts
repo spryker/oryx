@@ -1,4 +1,4 @@
-import { ContentController, RouterService } from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
 import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
@@ -17,7 +17,6 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
   static styles = [layoutStyles, ProductListStyles];
 
   protected productListService = resolve(ProductListService);
-  protected routerService = resolve(RouterService);
   protected productListPageService = resolve(ProductListPageService);
   protected options$ = new ContentController(this).getOptions();
   protected products$ = this.options$.pipe(
