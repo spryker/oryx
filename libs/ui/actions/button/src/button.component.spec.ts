@@ -2,8 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { Size } from '../../../utilities';
 import { ButtonComponent } from './button.component';
+import { buttonComponent } from './button.def';
 import { ButtonType } from './button.model';
-import { buttonComponent } from './component';
 
 describe('ButtonComponent', () => {
   let element: ButtonComponent;
@@ -17,9 +17,21 @@ describe('ButtonComponent', () => {
     expect(el).toBeInstanceOf(ButtonComponent);
   });
 
-  describe('button type', () => {
+  describe('when the element is created', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-button><button>text</button></oryx-button>`
+      );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
+  });
+
+  describe('type', () => {
     Object.values(ButtonType).forEach((type) => {
-      describe(`when type is "${type}"`, () => {
+      describe(`when the type is set to ${type}`, () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-button type="${type}" size="small"></oryx-button>`
@@ -33,12 +45,12 @@ describe('ButtonComponent', () => {
     });
   });
 
-  describe('button size', () => {
+  describe('size', () => {
     Object.values(Size).forEach((size) => {
-      describe(`when size is "${size}"`, () => {
+      describe(`when the size is set to ${size}`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-button type="primary" size="${size}"></oryx-button>`
+            html`<oryx-button size="${size}"></oryx-button>`
           );
         });
 
@@ -49,76 +61,105 @@ describe('ButtonComponent', () => {
     });
   });
 
-  describe('when button is disabled', () => {
-    it('should reflect the disabled attribute on the host element', async () => {
-      element = await fixture(
-        html`<oryx-button><button disabled></button></oryx-button>`
-      );
-      expect(element.querySelector('button')?.hasAttribute('disabled')).toBe(
-        true
-      );
-      expect(
-        element.querySelector('button')?.setAttribute('disabled', 'disabled')
-      );
-    });
-
-    it('should not have the disabled attribute after it is removed', async () => {
-      element = await fixture(
-        html`<oryx-button><button></button></oryx-button>`
-      );
-      element.querySelector('button')?.removeAttribute('disabled');
-      expect(element.querySelector('button')?.hasAttribute('disabled')).toBe(
-        false
-      );
-    });
-
-    describe('loading button', () => {
-      describe('when the isLoading flag is not set', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-button><button></button></oryx-button>`
-          );
-        });
-
-        it('should not have a loading spinner', () => {
-          expect(element.querySelector('oryx-icon[type=loader]')).toBeNull();
-        });
-
-        it('should not have inert attribute on slot', () => {
-          expect(
-            element.renderRoot.querySelector('slot')?.hasAttribute('inert')
-          ).toBe(false);
-        });
+  describe('loading', () => {
+    describe('when the loading property is not set', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-button><button></button></oryx-button>`
+        );
       });
 
-      describe('when the isLoading flag is set', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-button loading><button></button></oryx-button>`
-          );
+      it('should not reflect the loading attribute on the node', () => {
+        expect(element?.hasAttribute('loading')).toBe(false);
+      });
+
+      it('should not have inert attribute on slot', () => {
+        expect(element).not.toContainElement('slot[inert]');
+      });
+    });
+
+    describe('when the loading property is set to true', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-button .loading=${true}><button></button></oryx-button>`
+        );
+      });
+
+      it('should  reflect the loading attribute on the node', () => {
+        expect(element?.hasAttribute('loading')).toBe(true);
+      });
+
+      it('should have inert attribute on slot', () => {
+        expect(element).toContainElement('slot[inert]');
+      });
+    });
+  });
+
+  describe('confirmed', () => {
+    describe('when the confirmed property is true', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-button .confirmed=${true}></oryx-button>`
+        );
+      });
+
+      it('should reflect the property in the DOM', () => {
+        expect(element.hasAttribute('confirmed')).toBe(true);
+      });
+
+      describe('and the property is set to false afterwards', () => {
+        beforeEach(() => {
+          element.confirmed = false;
         });
 
-        it('should have inert attribute on slot', () => {
-          expect(
-            element.renderRoot.querySelector('slot')?.hasAttribute('inert')
-          ).toBe(true);
+        it('should reflect the property in the DOM', () => {
+          expect(element.hasAttribute('confirmed')).toBe(false);
+        });
+      });
+    });
+
+    describe('when the confirmed property is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-button></oryx-button>`);
+      });
+
+      it('should not reflect the property in the DOM', () => {
+        expect(element.hasAttribute('confirmed')).toBe(false);
+      });
+
+      describe('and the property is set to true afterwards', () => {
+        beforeEach(() => {
+          element.confirmed = true;
+        });
+
+        it('should reflect the property in the DOM', () => {
+          expect(element.hasAttribute('confirmed')).toBe(true);
         });
       });
     });
   });
 
-  describe('button with custom icon set through the slot', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-button type="primary" size="large">
-          <oryx-icon slot="icon" size="large" type="close"></oryx-icon>
-          Button
-        </oryx-button>`
-      );
+  describe('outline', () => {
+    describe(`when the outline is set to true`, () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-button ?outline=${true}></oryx-button>`
+        );
+      });
+
+      it('should reflect the outline attribute on the node', () => {
+        expect(element?.hasAttribute('outline')).toBe(true);
+      });
     });
 
-    it('should render icon', () => {
-      expect(element?.querySelector('oryx-icon[type=close]')).not.toBeNull();
+    describe(`when the outline is not set`, () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-button></oryx-button>`);
+      });
+
+      it('should not reflect the outline attribute on the node', () => {
+        expect(element?.hasAttribute('outline')).toBe(false);
+      });
     });
   });
 });

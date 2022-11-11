@@ -1,4 +1,4 @@
-export * from '../actions/button/src/component';
+export * from '../actions/button/src/button.def';
 export * from '../actions/icon-button/src/icon-button.def';
 export * from '../actions/link/src/link.def';
 export * from '../actions/toggle-icon/src/component';

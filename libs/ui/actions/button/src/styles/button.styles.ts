@@ -163,29 +163,25 @@ export const buttonStyles = css`
 
   ::slotted([disabled]) {
     --oryx-icon-color: var(--oryx-color-neutral-dark);
-
-    position: relative;
-    pointer-events: none;
-
     --_color-text: var(--oryx-color-neutral-dark);
     --_color-accent: var(--oryx-color-neutral-light);
-  }
 
-  :host([loading]),
-  :host([loading][outline]) {
-    --oryx-icon-color: transparent;
-  }
-
-  :host([loading]) ::slotted(*) {
     position: relative;
     pointer-events: none;
-    background-color: var(--oryx-color-brand-lighter);
+  }
+
+  :host(:is([loading], [confirmed])) ::slotted(*) {
+    --oryx-icon-color: transparent;
+
+    position: relative;
+    pointer-events: none;
+    background-color: var(--oryx-color-canvas);
     border-color: var(--oryx-color-brand-light);
     color: transparent;
     user-select: none;
   }
 
-  :host([loading]) ::slotted(*)::before {
+  :host(:is([loading], [confirmed])) ::slotted(*)::before {
     content: '';
     position: absolute;
     width: 100%;
@@ -193,7 +189,14 @@ export const buttonStyles = css`
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 16px;
+  }
+
+  :host([loading]) ::slotted(*)::before {
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2317b497"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
+  }
+
+  :host([confirmed]) ::slotted(*)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2317b497'%3E%3Cpath d='M20.4357 8.37056L10.6396 18.4215C10.2624 18.8065 9.77177 19 9.27917 19C8.78657 19 8.29398 18.8065 7.91876 18.4215L3.56427 13.9538C2.81191 13.1838 2.81191 11.9341 3.56427 11.1622C4.31664 10.3902 5.53274 10.3902 6.2851 11.1622L9.27917 14.2341L17.7149 5.57895C18.4673 4.80702 19.6834 4.80702 20.4357 5.57895C21.1881 6.35089 21.1881 7.59863 20.4357 8.37056Z'/%3E%3C/svg%3E");
   }
 
   :host([loading][type='text']) ::slotted(*) {
