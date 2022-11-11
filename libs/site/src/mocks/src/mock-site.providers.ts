@@ -8,10 +8,12 @@ import {
   DefaultLocaleService,
   DefaultNotificationService,
   DefaultPricingService,
+  DefaultSalutationService,
   DefaultSemanticLinkService,
   LocaleService,
   NotificationService,
   PricingService,
+  SalutationService,
   SemanticLinkService,
   SiteErrorHandler,
   StoreService,
@@ -19,6 +21,10 @@ import {
 import { MockStoreService } from './mock-store.service';
 
 export const mockSiteProviders: Provider[] = [
+  {
+    provide: SalutationService,
+    useClass: DefaultSalutationService,
+  },
   {
     provide: StoreService,
     useClass: MockStoreService,

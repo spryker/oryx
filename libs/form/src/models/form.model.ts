@@ -3,6 +3,7 @@ export interface ComponentTypeDataFields {
   type: string;
   title?: string;
   label?: string;
+  floatLabel?: boolean;
   required?: boolean;
   options?: FormFieldOption[];
   attributes?: { [key: string]: string | number };

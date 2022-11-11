@@ -38,7 +38,8 @@ export const selectStyles = css`
     --oryx-icon-size: var(--oryx-icon-size-medium);
   }
 
-  ::slotted(select:invalid) {
+  ::slotted(select:invalid),
+  :host(:not([has-value])) ::slotted(select) {
     color: var(--oryx-color-placeholder);
   }
 `;

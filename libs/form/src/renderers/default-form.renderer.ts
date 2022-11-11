@@ -121,7 +121,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return html`
       <oryx-input
         .label=${this.buildRequiredLabel(field.label, field.required)}
-        floatLabel
+        floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
         <input
@@ -143,7 +143,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return html`
       <oryx-input
         .label=${this.buildRequiredLabel(field.label, field.required)}
-        floatLabel
+        floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
         <input
@@ -182,7 +182,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return html`
       <oryx-input
         .label=${this.buildRequiredLabel(field.label, field.required)}
-        floatLabel
+        floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
         <textarea
@@ -268,7 +268,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-select
         .label=${this.buildRequiredLabel(field.label, field.required)}
         class=${this.getClassMap(field)}
-        floatLabel
+        floatLabel=${ifDefined(field.floatLabel)}
       >
         <select
           .name=${field.id}

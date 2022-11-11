@@ -8,11 +8,13 @@ import {
   DefaultLocaleService,
   DefaultNotificationService,
   DefaultPricingService,
+  DefaultSalutationService,
   DefaultSemanticLinkService,
   DefaultStoreAdapter,
   LocaleService,
   NotificationService,
   PricingService,
+  SalutationService,
   SemanticLinkService,
   SiteErrorHandler,
   StoreAdapter,
@@ -58,6 +60,10 @@ export const siteProviders: Provider[] = [
   {
     provide: ErrorHandler,
     useClass: SiteErrorHandler,
+  },
+  {
+    provide: SalutationService,
+    useClass: DefaultSalutationService,
   },
   ...storeNormalizer,
 ];
