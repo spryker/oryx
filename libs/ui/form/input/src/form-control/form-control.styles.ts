@@ -22,7 +22,7 @@ export const formControlStyles = css`
     color: var(--oryx-color-ink);
     font-weight: 400;
     font-size: 12px;
-    text-transform: uppercase;
+    text-transform: var(--oryx-form-label-transform);
     position: relative;
     top: -4px;
     line-height: 20px;

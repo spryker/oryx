@@ -78,4 +78,9 @@ export const tokens: ThemeToken = {
       color: 'rgb(0 0 0 / 50%)',
     },
   },
+  form: {
+    label: {
+      transform: 'uppercase',
+    },
+  },
 };
