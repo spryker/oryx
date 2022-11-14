@@ -69,7 +69,10 @@ export class TextComponent extends LitElement implements TextProperties {
     this.truncated = !this.defaultExpanded;
 
     this.resizeObserver = new ResizeObserver(
-      throttle(() => this.onResize(), 100)
+      throttle(
+        () => window.requestAnimationFrame(this.onResize.bind(this)),
+        100
+      )
     );
     this.resizeObserver.observe(this.container);
   }

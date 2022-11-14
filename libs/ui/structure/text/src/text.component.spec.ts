@@ -1,5 +1,10 @@
 // organize-imports-ignore
-import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import {
+  nextFrame,
+  elementUpdated,
+  fixture,
+  html,
+} from '@open-wc/testing-helpers';
 import './ponyfill';
 import { wait } from '@spryker-oryx/typescript-utils';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -70,6 +75,7 @@ describe('TextComponent', () => {
         vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 100);
 
         await wait(101);
+        await nextFrame();
       });
       it('should set attributes', async () => {
         expect(element.hasAttribute('truncation')).toBe(true);
@@ -93,6 +99,7 @@ describe('TextComponent', () => {
           vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 80);
 
           await wait(101);
+          await nextFrame();
         });
 
         it('should remove truncation attribute', async () => {
