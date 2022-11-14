@@ -1,5 +1,6 @@
 import { HOOKS_KEY, IconHookToken, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
+import { ComponentDef } from '../components';
 import { ThemePlugin, ThemePluginName } from './theme';
 import {
   Theme,
@@ -46,21 +47,23 @@ describe('ThemePlugin', () => {
   describe('resolve', () => {
     it('should resolve theme data by themeName', async () => {
       const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
-      const themeData = await plugin.resolve('a', [
-        {
-          name: 'a',
-          styles: {
-            styles: stylesMocker('a'),
+      const themeData = await plugin.resolve({
+        name: 'a',
+        themes: [
+          {
+            name: 'a',
+            styles: {
+              styles: stylesMocker('a'),
+            },
           },
-        },
-        {
-          name: 'a',
-          styles: {
-            styles: stylesMocker('aA'),
+          {
+            name: 'a',
+            styles: {
+              styles: stylesMocker('aA'),
+            },
           },
-        },
-      ]);
-      console.log(themeData);
+        ],
+      } as ComponentDef);
 
       expect(themeData).toEqual(expected);
     });
@@ -70,23 +73,26 @@ describe('ThemePlugin', () => {
         { styles: ['b'] },
         { styles: ['bB'], strategy: 'replace-all' },
       ];
-      const themeData = await plugin.resolve('b', [
-        {
-          name: 'b',
-          styles: (): Promise<ThemeData> =>
-            Promise.resolve({
-              styles: stylesMocker('b'),
-            }),
-        },
-        {
-          name: 'b',
-          styles: (): Promise<ThemeData> =>
-            Promise.resolve({
-              styles: stylesMocker('bB'),
-              strategy: ThemeStrategies.ReplaceAll,
-            }),
-        },
-      ]);
+      const themeData = await plugin.resolve({
+        name: 'b',
+        themes: [
+          {
+            name: 'b',
+            styles: (): Promise<ThemeData> =>
+              Promise.resolve({
+                styles: stylesMocker('b'),
+              }),
+          },
+          {
+            name: 'b',
+            styles: (): Promise<ThemeData> =>
+              Promise.resolve({
+                styles: stylesMocker('bB'),
+                strategy: ThemeStrategies.ReplaceAll,
+              }),
+          },
+        ],
+      } as ComponentDef);
       expect(themeData).toEqual(expected);
     });
   });
@@ -237,20 +243,23 @@ describe('ThemePlugin', () => {
           { styles: ['aA'] },
         ];
         mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
-        const themeData = await plugin.resolve('a', [
-          {
-            name: 'a',
-            styles: {
-              styles: stylesMocker('a'),
+        const themeData = await plugin.resolve({
+          name: 'a',
+          themes: [
+            {
+              name: 'a',
+              styles: {
+                styles: stylesMocker('a'),
+              },
             },
-          },
-          {
-            name: 'a',
-            styles: {
-              styles: stylesMocker('aA'),
+            {
+              name: 'a',
+              styles: {
+                styles: stylesMocker('aA'),
+              },
             },
-          },
-        ]);
+          ],
+        } as ComponentDef);
 
         expect(themeData).toEqual(expected);
       });

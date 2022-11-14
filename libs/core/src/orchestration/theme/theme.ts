@@ -7,7 +7,7 @@ import {
 import { CSSResult, unsafeCSS } from 'lit';
 import { iconHook } from '../../hooks';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
-import { ComponentsPlugin, ComponentTheme } from '../components';
+import { ComponentDef, ComponentsPlugin } from '../components';
 import {
   DesignToken,
   LazyLoadable,
@@ -107,11 +107,15 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return this.normalizer(styles);
   }
 
-  async resolve(
-    name: string,
-    componentThemes: ComponentTheme[] = []
-  ): Promise<ThemeData[] | null> {
-    const implementations: (ThemeData | Promise<ThemeData>)[] = [];
+  async resolve(componentDef: ComponentDef): Promise<ThemeData[] | null> {
+    const { name, themes: componentThemes = [], screenStyles } = componentDef;
+    const implementations: (ThemeData | Promise<ThemeData>)[] = screenStyles
+      ? [
+          {
+            styles: screenStyles,
+          },
+        ]
+      : [];
     const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
 
     for (const componentTheme of componentThemes) {

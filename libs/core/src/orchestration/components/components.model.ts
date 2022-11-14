@@ -1,6 +1,6 @@
 import { HOOKS_KEY, Type } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
-import { LazyLoadable, ThemeData } from '../theme';
+import { LazyLoadable, ThemeData, ThemeStylesCollection } from '../theme';
 
 export type ComponentInfo = ComponentDef | ComponentDefFn;
 
@@ -15,6 +15,7 @@ export interface ComponentDef {
   readonly name: string;
   readonly impl: ComponentDefImpl;
   readonly themes?: ComponentTheme[];
+  readonly screenStyles?: ThemeStylesCollection[];
 }
 
 export type ComponentDefFn = () => ComponentDef;

@@ -1,6 +1,7 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
 import { html, LitElement, TemplateResult } from 'lit';
+import { SpyInstance } from 'vitest';
 import { App } from '../app';
 import { ComponentsPlugin, ComponentsPluginName } from './components';
 import { ComponentDef, componentDef } from './components.model';
@@ -45,6 +46,12 @@ const mockApp = {
 
 describe('ComponentsPlugin', () => {
   beforeEach(() => {
+    (mockApp.findPlugin as unknown as SpyInstance).mockReturnValue({
+      resolve: vi.fn(),
+    });
+  });
+
+  afterEach(() => {
     vi.resetAllMocks();
   });
 
@@ -178,6 +185,7 @@ describe('ComponentsPlugin', () => {
       const plugin = new ComponentsPlugin([createComponentDef(Tags.D)], {
         root: createComponentDef(Tags.D),
       });
+      await plugin.apply(mockApp);
       expect(element).not.toBeInstanceOf(components[Tags.D]);
       await plugin.loadComponent(Tags.D);
       await nextFrame();

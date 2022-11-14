@@ -1,3 +1,5 @@
+import { ThemeDefaultMedia, ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { Size } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const cartEntryConfirmationStyles = css`
@@ -16,16 +18,25 @@ export const cartEntryConfirmationStyles = css`
   oryx-notification > :not(:last-child) {
     margin-bottom: var(--oryx-space-2);
   }
+`;
 
-  @media (min-width: 769px) {
-    oryx-notification {
-      flex-direction: row;
-      align-items: center;
-    }
+export const cartEntryConfirmationMdStyles = css`
+  oryx-notification {
+    flex-direction: row;
+    align-items: center;
+  }
 
-    oryx-notification > :not(:last-child) {
-      padding-inline-end: var(--oryx-space-4);
-      margin-bottom: 0;
-    }
+  oryx-notification > :not(:last-child) {
+    padding-inline-end: var(--oryx-space-4);
+    margin-bottom: 0;
   }
 `;
+
+export const cartEntryConfirmationScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: {
+      [ThemeDefaultMedia.Screen]: Size.Md,
+    },
+    styles: cartEntryConfirmationMdStyles,
+  },
+];

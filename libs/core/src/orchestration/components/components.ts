@@ -46,7 +46,7 @@ export class ComponentsPlugin implements AppPlugin {
   protected readonly implMetaProgrammatic: ComponentImplMeta = {
     programmaticLoad: true,
   };
-  protected theme?: ThemePlugin;
+  protected theme!: ThemePlugin;
   rootSelector = '';
 
   constructor(
@@ -61,7 +61,8 @@ export class ComponentsPlugin implements AppPlugin {
   }
 
   async apply(app: App): Promise<void> {
-    this.theme = app.findPlugin(ThemePlugin);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.theme = app.findPlugin(ThemePlugin)!;
 
     this.rootSelector =
       typeof this.options.root === 'string'
@@ -250,7 +251,7 @@ export class ComponentsPlugin implements AppPlugin {
 
     const [componentType, themes] = await Promise.all([
       this.loadComponentImpl(def, meta),
-      this.theme?.resolve(def.name, def.themes),
+      this.theme.resolve(def),
     ]);
 
     if (!componentType) {
@@ -280,24 +281,18 @@ export class ComponentsPlugin implements AppPlugin {
       const { styles, strategy } = theme;
 
       if (strategy === ThemeStrategies.ReplaceAll) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        innerTheme = this.theme!.normalizeStyles(styles);
+        innerTheme = this.theme.normalizeStyles(styles);
 
         continue;
       }
 
       if (strategy === ThemeStrategies.Replace) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        innerTheme = [...bases, ...this.theme!.normalizeStyles(styles)];
+        innerTheme = [...bases, ...this.theme.normalizeStyles(styles)];
 
         continue;
       }
 
-      innerTheme = [
-        ...innerTheme,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ...this.theme!.normalizeStyles(styles),
-      ];
+      innerTheme = [...innerTheme, ...this.theme.normalizeStyles(styles)];
     }
 
     componentType.styles = innerTheme;
