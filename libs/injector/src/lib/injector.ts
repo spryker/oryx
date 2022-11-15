@@ -7,7 +7,6 @@ import {
 } from './provider';
 
 export const INJECTOR = 'FES.Injector';
-export const MultiToken = '*';
 
 declare global {
   export interface InjectionTokensContractMap {
@@ -154,6 +153,6 @@ export class Injector {
   }
 
   protected isMultiProvider(token: any): boolean {
-    return typeof token === 'string' && token.endsWith(MultiToken);
+    return typeof token === 'string' && token.endsWith('*');
   }
 }

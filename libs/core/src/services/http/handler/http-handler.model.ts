@@ -1,8 +1,7 @@
-import { MultiToken } from '@spryker-oryx/injector';
 import { Observable } from 'rxjs';
 import { RequestOptions } from '../http.model';
 
-export const HttpInterceptors = `FES.HttpInterceptors${MultiToken}` as const;
+export const HttpInterceptor = 'FES.HttpInterceptor*';
 export const HttpHandler = 'FES.HttpHandler';
 
 export type HttpHandlerFn = (
@@ -24,7 +23,7 @@ export interface HttpInterceptor {
 
 declare global {
   interface InjectionTokensContractMap {
-    [HttpInterceptors]: HttpInterceptor[];
+    [HttpInterceptor]: HttpInterceptor[];
     [HttpHandler]: HttpHandler;
   }
 }

@@ -8,7 +8,6 @@ import {
   HttpHandler,
   HttpHandlerFn,
   HttpInterceptor,
-  HttpInterceptors,
 } from './http-handler.model';
 
 const mockFromFetchResult = {
@@ -116,15 +115,15 @@ describe('DefaultHttpHandler', () => {
             useClass: DefaultHttpHandler,
           },
           {
-            provide: `${HttpInterceptors}A`,
+            provide: `${HttpInterceptor}A`,
             useClass: InterceptorA,
           },
           {
-            provide: `${HttpInterceptors}B`,
+            provide: `${HttpInterceptor}B`,
             useClass: InterceptorB,
           },
           {
-            provide: `${HttpInterceptors}C`,
+            provide: `${HttpInterceptor}C`,
             useClass: InterceptorC,
           },
         ],

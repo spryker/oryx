@@ -1,5 +1,5 @@
 import { inject } from './inject';
-import { INJECTOR, Injector, MultiToken } from './injector';
+import { INJECTOR, Injector } from './injector';
 
 const mockDestroy = vi.fn();
 
@@ -98,60 +98,60 @@ describe('Injector', () => {
   describe('multi token', () => {
     beforeEach(() => {
       injector.provide({
-        provide: `multi${MultiToken}`,
+        provide: `multi*`,
         useClass: MockMultiA,
       });
       injector.provide({
-        provide: `multi${MultiToken}`,
+        provide: `multi*`,
         useValue: 'valueA',
       });
       injector.provide({
-        provide: `service${MultiToken}a`,
+        provide: `service*a`,
         useClass: MockMultiA,
       });
       injector.provide({
-        provide: `service${MultiToken}b`,
+        provide: `service*b`,
         useClass: MockMultiB,
       });
       injector.provide({
-        provide: `factory${MultiToken}a`,
+        provide: `factory*a`,
         useFactory: () => 'factoryA',
       });
       injector.provide({
-        provide: `factory${MultiToken}b`,
+        provide: `factory*b`,
         useFactory: () => 'factoryB',
       });
       injector.provide({
-        provide: `value${MultiToken}a`,
+        provide: `value*a`,
         useValue: 'valueA',
       });
       injector.provide({
-        provide: `value${MultiToken}b`,
+        provide: `value*b`,
         useValue: 'valueB',
       });
     });
 
     it('should provide multi providers', () => {
-      const result = injector.inject(`multi${MultiToken}`);
+      const result = injector.inject(`multi*`);
 
       expect(result[0]).toBeInstanceOf(MockMultiA);
       expect(result[1]).toBe('valueA');
     });
 
     it('should provide array of class instances', () => {
-      const result = injector.inject(`service${MultiToken}`);
+      const result = injector.inject(`service*`);
       expect(result[0]).toBeInstanceOf(MockMultiA);
       expect(result[1]).toBeInstanceOf(MockMultiB);
     });
 
     it('should provide array of factories results', () => {
-      const result = injector.inject(`factory${MultiToken}`);
+      const result = injector.inject(`factory*`);
       expect(result[0]).toBe('factoryA');
       expect(result[1]).toBe('factoryB');
     });
 
     it('should provide array values', () => {
-      const result = injector.inject(`value${MultiToken}`);
+      const result = injector.inject(`value*`);
       expect(result[0]).toBe('valueA');
       expect(result[1]).toBe('valueB');
     });

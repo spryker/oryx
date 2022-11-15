@@ -6,7 +6,6 @@ import {
   HttpHandler,
   HttpHandlerFn,
   HttpInterceptor,
-  HttpInterceptors,
 } from './http-handler.model';
 
 type ChainedInterceptorsFn = (
@@ -25,7 +24,7 @@ export class DefaultHttpHandler implements HttpHandler {
     initialOptions: RequestOptions
   ): Observable<Response> {
     if (this.chain === null) {
-      const interceptors = this.injector.inject(HttpInterceptors, null);
+      const interceptors = this.injector.inject(HttpInterceptor, null);
 
       if (!interceptors) {
         return fromFetch(initialUrl, initialOptions);
