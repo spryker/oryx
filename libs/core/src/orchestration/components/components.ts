@@ -1,7 +1,13 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
 import { HOOKS_KEY, isDefined } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
-import { ThemeData, ThemePlugin, ThemeStrategies } from '../theme';
+import {
+  ThemeData,
+  ThemePlugin,
+  ThemeStrategies,
+  ThemeStylesCollection,
+  ThemeStylesheets,
+} from '../theme';
 import {
   ComponentDef,
   ComponentDefImpl,
@@ -23,7 +29,7 @@ import {
 interface ComponentMap {
   observableType: ObservableType;
   componentType: ComponentType & ComponentStatic;
-  themes?: ThemeData[] | null;
+  themes?: (ThemeData | ThemeStylesheets)[] | null;
 }
 
 export const ComponentsPluginName = 'core$components';
@@ -275,9 +281,20 @@ export class ComponentsPlugin implements AppPlugin {
 
     const base = componentType.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
-    let innerTheme = [...bases];
+    const isThemeData = (
+      theme: ThemeData | ThemeStylesheets
+    ): theme is ThemeData => !!(theme as ThemeData).styles;
+    const stylesheet = themes
+      .filter((theme) => !isThemeData(theme))
+      .flat() as ThemeStylesCollection[];
+
+    let innerTheme = [...bases, ...this.theme.normalizeStyles(stylesheet)];
 
     for (const theme of themes) {
+      if (!isThemeData(theme)) {
+        continue;
+      }
+
       const { styles, strategy } = theme;
 
       if (strategy === ThemeStrategies.ReplaceAll) {

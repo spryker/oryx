@@ -1,9 +1,11 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
 const secondary = unsafeCSS(TabsAppearance.Secondary);
 
-export const tabsStyles = css`
+export const baseStyles = css`
   slot:not([name]) {
     display: flex;
     flex: 1 0 auto;
@@ -50,14 +52,8 @@ export const tabsStyles = css`
   :host([appearance='${secondary}']) ::slotted(oryx-tab) {
     color: var(--oryx-color-ink);
     background: var(--oryx-color-neutral-lighter);
-    border-block-start: 2px solid transparent;
+    border-block-start: 4px solid transparent;
     border-bottom: none;
-  }
-
-  @media (max-width: 767px) {
-    :host([appearance='${secondary}']) ::slotted(oryx-tab) {
-      border-width: 4px;
-    }
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab:hover) {
@@ -101,3 +97,16 @@ export const tabsStyles = css`
     display: none;
   }
 `;
+
+const mediumScreen = css`
+  :host([appearance='${secondary}']) ::slotted(oryx-tab) {
+    border-width: 2px;
+  }
+`;
+
+export const screenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

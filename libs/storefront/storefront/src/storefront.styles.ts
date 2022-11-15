@@ -12,13 +12,6 @@ export const styles = css`
     background-color: var(--oryx-color-canvas);
   }
 
-  @media (max-width: 767px) {
-    :host {
-      --oryx-font-size-base: 16px;
-      --oryx-font-weight-medium: 600;
-    }
-  }
-
   ::placeholder {
     color: var(--oryx-color-placeholder);
   }

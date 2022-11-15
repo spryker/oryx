@@ -1,6 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const floatingLabelStyles = css`
+export const floatingLabelBaseStyles = css`
   :host([floatLabel]) {
     position: relative;
   }
@@ -16,7 +18,7 @@ export const floatingLabelStyles = css`
     line-height: 16px;
     color: var(--oryx-color-neutral-dark);
     position: absolute;
-    top: 13px;
+    top: 17px;
     inset-inline-start: calc(var(--float-label-start-gap, 0px) + 13px);
     max-width: calc(100% - 26px - var(--float-label-start-gap, 0px));
     z-index: 1;
@@ -59,10 +61,17 @@ export const floatingLabelStyles = css`
   :host([floatLabel][has-value][disabled]) slot[name='label'] {
     --_label-background-color: var(--oryx-color-neutral-lighter);
   }
+`;
 
-  @media (max-width: 767px) {
-    :host([floatLabel]) slot[name='label'] {
-      top: 17px;
-    }
+const mediumScreen = css`
+  :host([floatLabel]) slot[name='label'] {
+    top: 13px;
   }
 `;
+
+export const floatingLabelScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

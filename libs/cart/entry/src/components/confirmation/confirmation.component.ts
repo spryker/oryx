@@ -1,8 +1,8 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { cartEntryConfirmationStyles } from './confirmation.styles';
+import { confirmationBaseStyles } from './confirmation.styles';
 
 export class CartEntryConfirmationComponent extends LitElement {
-  static styles = cartEntryConfirmationStyles;
+  static styles = confirmationBaseStyles;
 
   protected onRemove(): void {
     this.dispatchEvent(new CustomEvent('remove'));

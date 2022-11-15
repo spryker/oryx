@@ -1,6 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const cartEntryOptionsStyles = css`
+export const optionsBaseStyles = css`
   :host {
     display: block;
   }
@@ -41,14 +43,21 @@ export const cartEntryOptionsStyles = css`
   li span {
     margin-inline-end: var(--oryx-space);
   }
+`;
 
-  @media (min-width: 769px) {
-    :host {
-      margin-inline-end: calc(-1 * var(--oryx-space-4));
-    }
+const mediumScreen = css`
+  :host {
+    margin-inline-end: calc(-1 * var(--oryx-space-4));
+  }
 
-    ul {
-      padding-inline-end: var(--oryx-space-4);
-    }
+  ul {
+    padding-inline-end: var(--oryx-space-4);
   }
 `;
+
+export const optionsScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

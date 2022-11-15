@@ -1,6 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { screenStyles as inputScreenStyles } from '@spryker-oryx/ui/input';
 import { css } from 'lit';
 
-export const passwordInputStyles = css`
+export const baseStyles = css`
   slot[name='suffix'] > oryx-icon {
     margin-inline-end: 0;
   }
@@ -30,3 +32,5 @@ export const passwordInputStyles = css`
     opacity: 0;
   }
 `;
+
+export const screenStyles: ThemeStylesWithMedia[] = [...inputScreenStyles];

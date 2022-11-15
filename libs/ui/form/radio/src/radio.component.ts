@@ -1,10 +1,10 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ErrorController, ErrorOptions, errorStyles } from '../../input';
-import { styles } from './radio.styles';
+import { baseStyles } from './radio.styles';
 
 export class RadioComponent extends LitElement implements ErrorOptions {
-  static styles = [styles, errorStyles];
+  static styles = [baseStyles, errorStyles];
 
   protected errorController = new ErrorController(this);
 

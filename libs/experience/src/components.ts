@@ -1,1 +1,1 @@
-export * from '../composition/src/component';
+export * from '../composition/src/composition.def';

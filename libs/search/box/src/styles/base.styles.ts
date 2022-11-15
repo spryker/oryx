@@ -1,6 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const baseSearchboxStyles = css`
+export const baseStyles = css`
   oryx-typeahead {
     --oryx-popover-maxheight: 480px;
     --oryx-border-radius: 2px;
@@ -117,32 +119,38 @@ export const baseSearchboxStyles = css`
     top: 5px;
     inset-inline-start: 5px;
   }
+`;
 
-  /* TODO: make alignments with required screen width for mobile */
-  @media (min-width: 769px) {
-    :host([stretched]) {
-      --oryx-popover-width: auto;
-    }
+const mediumScreen = css`
+  :host([stretched]) {
+    --oryx-popover-width: auto;
+  }
 
-    oryx-typeahead {
-      --oryx-popover-distance: 48px;
-    }
+  oryx-typeahead {
+    --oryx-popover-distance: 48px;
+  }
 
-    oryx-icon-button[slot='suffix'] {
-      display: none;
-    }
+  oryx-icon-button[slot='suffix'] {
+    display: none;
+  }
 
-    :host([stretched]) [slot='option'] > * {
-      min-width: 530px;
-      display: flex;
-    }
+  :host([stretched]) [slot='option'] > * {
+    min-width: 530px;
+    display: flex;
+  }
 
-    section {
-      flex: 1 1 auto;
-    }
+  section {
+    flex: 1 1 auto;
+  }
 
-    section:first-child:not(:only-child) {
-      padding-bottom: 20px;
-    }
+  section:first-child:not(:only-child) {
+    padding-bottom: 20px;
   }
 `;
+
+export const screenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

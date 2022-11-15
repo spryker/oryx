@@ -9,10 +9,10 @@ import {
   CartEntryCompositionOptions,
   RemoveByQuantity,
 } from '../../entry.model';
-import { cartEntryContentStyles } from './content.styles';
+import { contentBaseStyles } from './content.styles';
 
 export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositionOptions>() {
-  static styles = cartEntryContentStyles;
+  static styles = contentBaseStyles;
 
   @property({ type: Boolean }) disabled?: boolean;
 

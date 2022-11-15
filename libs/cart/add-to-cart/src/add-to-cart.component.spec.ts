@@ -1,9 +1,6 @@
 import { elementUpdated, fixture, nextFrame } from '@open-wc/testing-helpers';
-import { CartService } from '@spryker-oryx/cart';
-import {
-  quantityInputComponent,
-  QuantityInputComponent,
-} from '@spryker-oryx/cart/quantity-input';
+import { CartService, quantityInputComponent } from '@spryker-oryx/cart';
+import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import {
   createInjector,

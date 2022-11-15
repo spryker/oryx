@@ -1,3 +1,5 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { lgScreen, mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
 export const baseLayoutStyles = css`
@@ -37,17 +39,28 @@ export const baseLayoutStyles = css`
         var(--oryx-layout-height, 100%) - (var(--oryx-layout-margin, 0px) * 2)
       );
     }
-
-    @media (min-width: 768px) {
-      :host {
-        --oryx-layout-item-count: 2;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      :host {
-        --oryx-layout-item-count: 4;
-      }
-    }
   }
 `;
+
+export const layoutMediumScreen = css`
+  :host {
+    --oryx-layout-item-count: 2;
+  }
+`;
+
+export const layoutLargeScreen = css`
+  :host {
+    --oryx-layout-item-count: 4;
+  }
+`;
+
+export const baseLayoutScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: layoutMediumScreen,
+  },
+  {
+    media: lgScreen,
+    css: layoutLargeScreen,
+  },
+];

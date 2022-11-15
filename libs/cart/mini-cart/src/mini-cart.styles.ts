@@ -64,6 +64,7 @@ export const styles = css`
     font-weight: 600;
   }
 
+  /* TODO: refactor with theme BP's */
   @media (max-width: 375px) {
     a {
       display: inline-flex;

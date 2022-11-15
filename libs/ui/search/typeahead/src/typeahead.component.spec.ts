@@ -5,8 +5,8 @@ import {
   a11yConfig,
   queryAssignedElements,
 } from '@spryker-oryx/typescript-utils';
-import { typeheadComponent } from './component';
 import { TypeaheadComponent } from './typeahead.component';
+import { typeheadComponent } from './typeahead.def';
 
 describe('TypeaheadComponent', () => {
   let element: TypeaheadComponent;

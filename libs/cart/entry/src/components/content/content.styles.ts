@@ -1,6 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { lgScreen, mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const cartEntryContentStyles = css`
+export const contentBaseStyles = css`
   product-title {
     font-size: 16px;
     line-height: 24px;
@@ -67,35 +69,46 @@ export const cartEntryContentStyles = css`
     line-height: 16px;
     color: var(--oryx-color-neutral-darker);
   }
+`;
 
-  @media (min-width: 1025px) {
-    section {
-      flex-direction: row;
-    }
-
-    .col:first-child {
-      margin-bottom: 0;
-      margin-inline-end: 13px;
-    }
-
-    .col:last-child {
-      margin-inline-start: 13px;
-    }
-
-    .readonly-quantity {
-      flex-basis: 50%;
-    }
+const mediumScreen = css`
+  h3 {
+    font-size: 14px;
+    line-height: inherit;
+    padding-inline-end: calc(var(--oryx-space-2) * 3);
   }
 
-  @media (min-width: 769px) {
-    h3 {
-      font-size: 14px;
-      line-height: inherit;
-      padding-inline-end: calc(var(--oryx-space-2) * 3);
-    }
-
-    .seller {
-      margin-bottom: var(--oryx-space-2);
-    }
+  .seller {
+    margin-bottom: var(--oryx-space-2);
   }
 `;
+
+const largeScreen = css`
+  section {
+    flex-direction: row;
+  }
+
+  .col:first-child {
+    margin-bottom: 0;
+    margin-inline-end: 13px;
+  }
+
+  .col:last-child {
+    margin-inline-start: 13px;
+  }
+
+  .readonly-quantity {
+    flex-basis: 50%;
+  }
+`;
+
+export const contentScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+  {
+    media: lgScreen,
+    css: largeScreen,
+  },
+];

@@ -1,36 +1,27 @@
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
-import { ErrorOptions, FormControlController } from '../../../form/input';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchboxController,
   SearchIconPosition,
   SearchOptions,
-} from '../../../search/searchbox';
-import { SearchboxComponent } from '../../../search/searchbox/src/searchbox.component';
+} from '@spryker-oryx/ui/searchbox';
 import {
   FilterStrategyType,
   TypeaheadController,
   TypeaheadOptions,
-  typeaheadStyles,
-} from '../../../search/typeahead';
+} from '@spryker-oryx/ui/typeahead';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ErrorOptions, FormControlController } from '../../../form/input';
 import { getControl } from '../../utilities/getControl';
 import { SelectController, SelectFilterController } from './controllers';
-import { selectFilterStyles, selectStyles } from './styles';
-import { selectFloatingLabelStyles } from './styles/select-floating-label.styles';
+import { baseStyles } from './styles';
 
 export class SelectComponent
   extends LitElement
   implements ErrorOptions, SearchOptions, TypeaheadOptions
 {
-  static styles = [
-    selectStyles,
-    selectFilterStyles,
-    typeaheadStyles,
-    ...SearchboxComponent.styles,
-    selectFloatingLabelStyles,
-  ];
+  static styles = baseStyles;
 
   @property({ type: Boolean }) filter?: boolean;
   @property() filterStrategy?: FilterStrategyType;

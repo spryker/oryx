@@ -1,7 +1,8 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { lgScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
-import { breakpoints } from '../../../../.constants';
 
-export const formControlStyles = css`
+export const formControlBaseStyles = css`
   :host {
     display: flex;
     flex-direction: column;
@@ -72,8 +73,12 @@ export const formControlStyles = css`
   }
 
   input,
+  slot:not([name])::slotted(*) {
+    height: 44px;
+  }
+
+  input,
   ::slotted(input) {
-    height: 38px;
     box-sizing: border-box;
     text-overflow: ellipsis;
   }
@@ -109,11 +114,18 @@ export const formControlStyles = css`
   [hasErrorContent] {
     margin-block-start: 7px;
   }
+`;
 
-  @media (max-width: ${breakpoints.tablet}px) {
-    input,
-    slot:not([name])::slotted(*) {
-      height: 44px;
-    }
+const largeScreen = css`
+  input,
+  slot:not([name])::slotted(*) {
+    height: 38px;
   }
 `;
+
+export const formControlScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: lgScreen,
+    css: largeScreen,
+  },
+];

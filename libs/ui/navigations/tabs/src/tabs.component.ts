@@ -3,10 +3,10 @@ import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { TabComponent } from '../../tab/src';
 import { TabsAppearance, TabsProperties } from './tabs.model';
-import { tabsStyles } from './tabs.styles';
+import { baseStyles } from './tabs.styles';
 
 export class TabsComponent extends LitElement implements TabsProperties {
-  static styles = tabsStyles;
+  static styles = baseStyles;
 
   @property({ type: Number }) activeTabIndex = 0;
   @property({ type: String, reflect: true }) appearance =

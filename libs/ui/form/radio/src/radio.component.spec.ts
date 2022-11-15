@@ -2,8 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { ErrorMessageComponent } from '../../../error-message';
-import { radioComponent } from './component';
 import { RadioComponent } from './radio.component';
+import { radioComponent } from './radio.def';
 
 describe('RadioComponent', () => {
   let element: RadioComponent;

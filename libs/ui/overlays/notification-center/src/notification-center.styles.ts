@@ -39,6 +39,7 @@ export const notificationCenterBaseStyles = css`
     inset-inline-end: 30px;
   }
 
+  /* TODO: refactor with theme BP's */
   @media (max-width: 530px) {
     :host([position='${unsafeCSS(Positions.TOP_END)}']),
     :host([position='${unsafeCSS(Positions.TOP_START)}']),

@@ -1,4 +1,11 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import {
+  baseStyles as typeaheadBaseStyles,
+  screenStyles as typeaheadScreenStyles,
+} from '@spryker-oryx/ui/typeahead';
 import { css } from 'lit';
+import { selectFilterStyles } from './select-filter.styles';
+import { selectFloatingLabelStyles } from './select-floating-label.styles';
 
 export const selectStyles = css`
   :host {
@@ -43,3 +50,12 @@ export const selectStyles = css`
     color: var(--oryx-color-placeholder);
   }
 `;
+
+export const baseStyles = [
+  selectStyles,
+  selectFilterStyles,
+  typeaheadBaseStyles,
+  selectFloatingLabelStyles,
+];
+
+export const screenStyles: ThemeStylesWithMedia[] = [...typeaheadScreenStyles];

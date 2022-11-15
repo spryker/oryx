@@ -1,3 +1,5 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
 export const searchboxStyles = css`
@@ -60,12 +62,18 @@ export const searchboxStyles = css`
   .product product-title {
     margin-bottom: 4px;
   }
+`;
 
-  /* TODO: make alignments with required screen width for mobile */
-  @media (min-width: 769px) {
-    input {
-      padding-block: 9px;
-      height: 42px;
-    }
+export const searchboxMediumScreen = css`
+  input {
+    padding-block: 9px;
+    height: 42px;
   }
 `;
+
+export const searchboxScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: searchboxMediumScreen,
+  },
+];

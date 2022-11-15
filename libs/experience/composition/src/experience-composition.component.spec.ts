@@ -10,7 +10,7 @@ import {
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
-import { experienceCompositionComponent } from './component';
+import { experienceCompositionComponent } from './composition.def';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const BASE_COMPONENTS = [

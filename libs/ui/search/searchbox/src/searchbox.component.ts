@@ -2,7 +2,6 @@ import {
   AffixOptions,
   FormControlController,
   FormControlOptions,
-  inputStyles,
 } from '@spryker-oryx/ui/input';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -13,13 +12,13 @@ import {
   SearchIconPosition,
   SearchOptions,
 } from './searchbox.model';
-import { searchboxStyles } from './searchbox.styles';
+import { baseStyles } from './searchbox.styles';
 
 export class SearchboxComponent
   extends LitElement
   implements SearchOptions, FormControlOptions, AffixOptions
 {
-  static override styles = [...inputStyles, searchboxStyles];
+  static override styles = baseStyles;
 
   @property() label?: string;
   @property() errorMessage?: string;

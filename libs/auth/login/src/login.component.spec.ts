@@ -3,9 +3,9 @@ import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { passwordInputComponent } from '@spryker-oryx/ui';
 import {
   PasswordInputComponent,
-  passwordInputComponent,
   PasswordVisibilityStrategy,
 } from '@spryker-oryx/ui/password';
 import { html } from 'lit';

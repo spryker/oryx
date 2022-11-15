@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
-import { quantityInputComponent } from './component';
 import { QuantityInputComponent } from './quantity-input.component';
+import { quantityInputComponent } from './quantity-input.def';
 
 describe('Quantity input', () => {
   let element: QuantityInputComponent;

@@ -25,7 +25,7 @@ import { theme } from './theme';
 import { getActiveTheme } from './utils';
 
 const themeKey = (getActiveTheme() ?? theme.default) as keyof typeof theme.list;
-const themes = [...theme.list[themeKey], { name: 'chromatic' }];
+const themes = [...theme.list[themeKey]];
 // TODO: Drop chromatic folder (except styles) when chromatic issue will be fixed.
 const themeProps = isChromatic() ? new ThemeChromaticPlugin(themes) : themes;
 

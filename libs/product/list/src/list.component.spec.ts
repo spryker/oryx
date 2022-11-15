@@ -5,12 +5,14 @@ import {
   ProductListPageService,
   ProductListService,
 } from '@spryker-oryx/product';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import {
+  MockProductListService,
+  mockProductProviders,
+} from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MockProductListService } from '../../src/mocks/src/product-list/mock-product-list.service';
-import { productListComponent } from './component';
 import { ProductListComponent } from './list.component';
+import { productListComponent } from './list.def';
 
 class MockProductListPageService implements Partial<ProductListPageService> {
   get = vi.fn();

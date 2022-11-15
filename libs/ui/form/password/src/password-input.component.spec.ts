@@ -4,8 +4,8 @@ import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { TemplateResult } from 'lit';
 import { getControl } from '../../utilities/getControl';
-import { passwordInputComponent } from './component';
 import { PasswordInputComponent } from './password-input.component';
+import { passwordInputComponent } from './password-input.def';
 import { PasswordVisibilityStrategy } from './password-input.model';
 
 describe('PasswordComponent', () => {

@@ -1,23 +1,22 @@
-import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import {
   AffixOptions,
   ErrorOptions,
   FormControlController,
   FormControlOptions,
-} from '../../../form/input';
+} from '@spryker-oryx/ui/input';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchboxController,
   SearchIconPosition,
   SearchOptions,
-} from '../../searchbox';
-import { SearchboxComponent } from '../../searchbox/src/searchbox.component';
+} from '@spryker-oryx/ui/searchbox';
+import { hydratable } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
-import { typeaheadStyles } from './typeahead.styles';
+import { baseStyles } from './typeahead.styles';
 
 @hydratable('focusin')
 export class TypeaheadComponent
@@ -29,7 +28,7 @@ export class TypeaheadComponent
     FormControlOptions,
     SearchOptions
 {
-  static styles = [typeaheadStyles, ...SearchboxComponent.styles];
+  static styles = baseStyles;
 
   @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;

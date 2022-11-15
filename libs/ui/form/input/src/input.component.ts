@@ -1,23 +1,15 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { AffixController, AffixOptions, affixStyles } from './affix';
-import { ErrorOptions, errorStyles } from './error';
+import { AffixController, AffixOptions } from './affix';
+import { ErrorOptions } from './error';
 import { FormControlController, FormControlOptions } from './form-control';
-import { floatingLabelStyles } from './form-control/floating-label.styles';
-import { formControlStyles } from './form-control/form-control.styles';
-
-export const inputStyles = [
-  formControlStyles,
-  floatingLabelStyles,
-  errorStyles,
-  affixStyles,
-];
+import { baseStyles } from './input.styles';
 
 export class InputComponent
   extends LitElement
   implements FormControlOptions, AffixOptions, ErrorOptions
 {
-  static styles = inputStyles;
+  static styles = baseStyles;
 
   @property({ type: Boolean, reflect: true }) floatLabel?: boolean;
   @property() label?: string;

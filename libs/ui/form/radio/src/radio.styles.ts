@@ -1,13 +1,11 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const styles = css`
-  @media (max-width: 767px) {
-    :host {
-      --oryx-radio-size: 24px;
-    }
-  }
-
+export const baseStyles = css`
   :host {
+    --oryx-radio-size: 24px;
+
     display: block;
   }
 
@@ -94,3 +92,16 @@ export const styles = css`
     font-weight: 400;
   }
 `;
+
+const mediumScreen = css`
+  :host {
+    --oryx-radio-size: 18px;
+  }
+`;
+
+export const screenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

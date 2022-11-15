@@ -2,10 +2,10 @@ import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { CartEntryCompositionOptions } from '../../entry.model';
-import { cartEntryOptionsStyles } from './options.styles';
+import { optionsBaseStyles } from './options.styles';
 
 export class CartEntryOptionsComponent extends ComponentMixin<CartEntryCompositionOptions>() {
-  static styles = cartEntryOptionsStyles;
+  static styles = optionsBaseStyles;
 
   @property({ type: Boolean, attribute: 'show-options' })
   showOptions?: boolean;

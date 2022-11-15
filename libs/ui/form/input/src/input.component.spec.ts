@@ -1,8 +1,8 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig } from '@spryker-oryx/typescript-utils';
-import { inputComponent } from './component';
 import { InputComponent } from './input.component';
+import { inputComponent } from './input.def';
 
 describe('InputComponent', () => {
   let element: InputComponent;

@@ -45,20 +45,37 @@ describe('ThemePlugin', () => {
   });
 
   describe('resolve', () => {
+    it('should resolve common styles', async () => {
+      const expected = [['a'], ['aA']];
+      const themeData = await plugin.resolve({
+        name: 'a',
+        stylesheets: [
+          {
+            rules: stylesMocker('a'),
+          },
+          {
+            rules: stylesMocker('aA'),
+          },
+        ],
+      } as ComponentDef);
+
+      expect(themeData).toEqual(expected);
+    });
+
     it('should resolve theme data by themeName', async () => {
       const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
       const themeData = await plugin.resolve({
         name: 'a',
-        themes: [
+        stylesheets: [
           {
-            name: 'a',
-            styles: {
+            theme: 'a',
+            rules: {
               styles: stylesMocker('a'),
             },
           },
           {
-            name: 'a',
-            styles: {
+            theme: 'a',
+            rules: {
               styles: stylesMocker('aA'),
             },
           },
@@ -75,17 +92,17 @@ describe('ThemePlugin', () => {
       ];
       const themeData = await plugin.resolve({
         name: 'b',
-        themes: [
+        stylesheets: [
           {
-            name: 'b',
-            styles: (): Promise<ThemeData> =>
+            theme: 'b',
+            rules: (): Promise<ThemeData> =>
               Promise.resolve({
                 styles: stylesMocker('b'),
               }),
           },
           {
-            name: 'b',
-            styles: (): Promise<ThemeData> =>
+            theme: 'b',
+            rules: (): Promise<ThemeData> =>
               Promise.resolve({
                 styles: stylesMocker('bB'),
                 strategy: ThemeStrategies.ReplaceAll,
@@ -245,16 +262,16 @@ describe('ThemePlugin', () => {
         mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
         const themeData = await plugin.resolve({
           name: 'a',
-          themes: [
+          stylesheets: [
             {
-              name: 'a',
-              styles: {
+              theme: 'a',
+              rules: {
                 styles: stylesMocker('a'),
               },
             },
             {
-              name: 'a',
-              styles: {
+              theme: 'a',
+              rules: {
                 styles: stylesMocker('aA'),
               },
             },
@@ -304,13 +321,13 @@ describe('ThemePlugin', () => {
             media: {
               [ThemeDefaultMedia.Screen]: Size.Sm,
             },
-            styles: 'a',
+            css: 'a',
           },
           {
             media: {
               [ThemeDefaultMedia.Screen]: Size.Lg,
             },
-            styles: [css`k`, css`l`],
+            css: [css`k`, css`l`],
           },
         ]);
         const styles = result[0]

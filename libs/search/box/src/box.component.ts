@@ -32,14 +32,14 @@ import {
   RenderSuggestionController,
   ScrollingAreaController,
 } from './controllers';
-import { baseSearchboxStyles, searchboxStyles } from './styles';
+import { baseStyles, searchboxStyles } from './styles';
 
 @hydratable('focusin')
 export class SearchBoxComponent
   extends ComponentMixin<SearchBoxOptions>()
   implements SearchBoxProperties
 {
-  static styles = [baseSearchboxStyles, searchboxStyles];
+  static styles = [baseStyles, searchboxStyles];
 
   private defaultOptions: SearchBoxOptions = {
     minChars: 2,

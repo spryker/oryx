@@ -1,10 +1,10 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { TabProperties } from './tab.model';
-import { tabStyles } from './tab.styles';
+import { baseStyles } from './tab.styles';
 
 export class TabComponent extends LitElement implements TabProperties {
-  static styles = tabStyles;
+  static styles = baseStyles;
 
   @property() for?: string;
   @property({ type: Boolean, reflect: true }) selected = false;

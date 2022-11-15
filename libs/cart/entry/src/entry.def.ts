@@ -8,4 +8,9 @@ export { cartEntryTotalsComponent } from './components/totals/totals.def';
 export const cartEntryComponent = componentDef({
   name: 'cart-entry',
   impl: () => import('./entry.component').then((m) => m.CartEntryComponent),
+  stylesheets: [
+    {
+      rules: () => import('./styles').then((m) => m.screenStyles),
+    },
+  ],
 });

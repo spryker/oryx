@@ -11,10 +11,10 @@ import {
 import { html, TemplateResult } from 'lit';
 import { map, switchMap } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';
-import { ProductListStyles } from './list.styles';
+import { baseStyles } from './list.styles';
 
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
-  static styles = [layoutStyles, ProductListStyles];
+  static styles = [layoutStyles, baseStyles];
 
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);

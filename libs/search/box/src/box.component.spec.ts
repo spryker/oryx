@@ -3,12 +3,12 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { mockSearchProviders } from '@spryker-oryx/search/mocks';
-import { typeheadComponent } from '@spryker-oryx/ui/typeahead';
+import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
+import { searchBoxComponent } from './box.def';
 import { SearchBoxOptions } from './box.model';
-import { searchBoxComponent } from './component';
 
 const mockedOptions: SearchBoxOptions = {
   placeholder: 'placeholder',

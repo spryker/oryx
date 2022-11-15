@@ -1,8 +1,8 @@
-import { ThemeDefaultMedia, ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { Size } from '@spryker-oryx/utilities';
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const cartEntryConfirmationStyles = css`
+export const confirmationBaseStyles = css`
   oryx-notification {
     margin-inline: var(--oryx-space-4);
     margin-block-start: var(--oryx-space-4);
@@ -20,7 +20,7 @@ export const cartEntryConfirmationStyles = css`
   }
 `;
 
-export const cartEntryConfirmationMdStyles = css`
+const mediumScreen = css`
   oryx-notification {
     flex-direction: row;
     align-items: center;
@@ -32,11 +32,9 @@ export const cartEntryConfirmationMdStyles = css`
   }
 `;
 
-export const cartEntryConfirmationScreenStyles: ThemeStylesWithMedia[] = [
+export const confirmationScreenStyles: ThemeStylesWithMedia[] = [
   {
-    media: {
-      [ThemeDefaultMedia.Screen]: Size.Md,
-    },
-    styles: cartEntryConfirmationMdStyles,
+    media: mdScreen,
+    css: mediumScreen,
   },
 ];

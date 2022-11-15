@@ -4,7 +4,7 @@ import {
   CheckboxComponent,
   checkboxComponent,
 } from '@spryker-oryx/ui/checkbox';
-import { inputComponent, InputComponent } from '@spryker-oryx/ui/input';
+import { InputComponent } from '@spryker-oryx/ui/input';
 import {
   ComponentTypeDataFields,
   FormFieldOption,
@@ -16,7 +16,7 @@ import { FormFieldRenderer } from './renderer';
 
 import { componentDef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { selectComponent } from '@spryker-oryx/ui';
+import { inputComponent, selectComponent } from '@spryker-oryx/ui';
 import {
   inputListComponent,
   InputListComponent,
@@ -253,7 +253,10 @@ describe('DefaultFormRenderer', () => {
     });
 
     describe('input', () => {
-      useComponent(inputComponent);
+      beforeAll(async () => {
+        await useComponent(inputComponent);
+      });
+
       describe('when a legacy input field is built', () => {
         beforeEach(async () => {
           await setup('input', 'value');
@@ -425,7 +428,10 @@ describe('DefaultFormRenderer', () => {
     });
 
     describe('when a boolean type is requested', () => {
-      useComponent(checkboxComponent);
+      beforeAll(async () => {
+        await useComponent(checkboxComponent);
+      });
+
       beforeEach(async () => {
         await setup(FormFieldType.BOOLEAN, true);
       });
@@ -457,10 +463,15 @@ describe('DefaultFormRenderer', () => {
 
     describe('when a custom field type is requested', () => {
       const mockField = { type: 'mock', id: 'field-id', label: 'mock' };
-      useComponent(mockFieldComponent);
+
+      beforeAll(async () => {
+        await useComponent(mockFieldComponent);
+      });
+
       beforeEach(async () => {
         element = await fixture(service.buildField(mockField, ''));
       });
+
       expectComponentType(MockFieldComponent);
       it('should call the mock field renderer', () => {
         expect(renderer.render).toHaveBeenCalledWith(mockField, '');
@@ -472,8 +483,10 @@ describe('DefaultFormRenderer', () => {
     });
 
     describe('when a toggle field is built', () => {
-      useComponent(inputListComponent);
-      useComponent(toggleComponent);
+      beforeAll(async () => {
+        await useComponent([inputListComponent, toggleComponent]);
+      });
+
       beforeEach(async () => {
         await setup(FormFieldType.TOGGLE);
       });
@@ -504,7 +517,9 @@ describe('DefaultFormRenderer', () => {
     });
 
     describe('when a toggle icon field is built', () => {
-      useComponent(toggleIconComponent);
+      beforeAll(async () => {
+        await useComponent(toggleIconComponent);
+      });
       const options = [{ value: 'a' }, { value: 'b' }, { value: 'c' }];
       beforeEach(async () => {
         await setup(FormFieldType.TOGGLE_BUTTON, 'b', options);
@@ -570,7 +585,10 @@ describe('DefaultFormRenderer', () => {
     });
 
     describe('when a select field is built', () => {
-      useComponent(selectComponent);
+      beforeAll(async () => {
+        await useComponent(selectComponent);
+      });
+
       describe('when a value is provided', () => {
         const options = [{ value: 'a' }, { value: 'b' }, { value: 'c' }];
         beforeEach(async () => {

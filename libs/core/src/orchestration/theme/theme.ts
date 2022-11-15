@@ -19,6 +19,7 @@ import {
   ThemeMediaQueries,
   ThemeStyles,
   ThemeStylesCollection,
+  ThemeStylesheets,
   ThemeStylesWithMedia,
   ThemeToken,
 } from './theme.model';
@@ -107,27 +108,29 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return this.normalizer(styles);
   }
 
-  async resolve(componentDef: ComponentDef): Promise<ThemeData[] | null> {
-    const { name, themes: componentThemes = [], screenStyles } = componentDef;
-    const implementations: (ThemeData | Promise<ThemeData>)[] = screenStyles
-      ? [
-          {
-            styles: screenStyles,
-          },
-        ]
-      : [];
+  async resolve(
+    componentDef: ComponentDef
+  ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
+    const { name, stylesheets = [] } = componentDef;
+    const implementations = [];
     const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
 
-    for (const componentTheme of componentThemes) {
+    for (const styles of stylesheets) {
+      if (!styles.theme) {
+        implementations.push(this.loadThemeImplFn(styles.rules));
+
+        continue;
+      }
+
       const component = this.themes.find(
-        (theme) => componentTheme.name === theme.name
+        (theme) => styles?.theme === theme.name
       );
 
       if (!component) {
         continue;
       }
 
-      implementations.push(this.loadThemeImplFn(componentTheme.styles));
+      implementations.push(this.loadThemeImplFn(styles.rules));
     }
 
     if (componentPlugin?.rootSelector === name) {
@@ -307,7 +310,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
       }
 
       stylesStream += ` ${this.generateMedia(media)} {${stringifiedStyles(
-        style.styles
+        style.css
       )}}`;
     }
 

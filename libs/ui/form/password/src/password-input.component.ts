@@ -1,21 +1,21 @@
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import {
   AffixController,
   AffixOptions,
+  baseStyles as inputBaseStyles,
   FormControlController,
   FormControlOptions,
-  inputStyles,
-} from '../../../form/input';
+} from '@spryker-oryx/ui/input';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { getControl } from '../../utilities/getControl';
 import { PasswordVisibilityStrategy } from './password-input.model';
-import { passwordInputStyles } from './password-input.styles';
+import { baseStyles } from './password-input.styles';
 
 export class PasswordInputComponent
   extends LitElement
   implements FormControlOptions, AffixOptions
 {
-  static styles = [...inputStyles, passwordInputStyles];
+  static styles = [...inputBaseStyles, baseStyles];
 
   @property() label?: string;
   @property() errorMessage?: string;

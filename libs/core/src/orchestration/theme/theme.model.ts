@@ -27,13 +27,15 @@ export interface ThemeMediaQueries {
 
 export interface ThemeStylesWithMedia {
   media: ThemeMediaQueries;
-  styles: ThemeStyles;
+  css: ThemeStyles;
 }
 
 export type ThemeStylesCollection = CSSResult | string | ThemeStylesWithMedia;
 
+export type ThemeStylesheets = ThemeStyles | ThemeStylesCollection[];
+
 export interface ThemeData {
-  styles: ThemeStylesCollection[] | ThemeStyles;
+  styles: ThemeStylesheets;
   strategy?: ThemeStrategies;
 }
 

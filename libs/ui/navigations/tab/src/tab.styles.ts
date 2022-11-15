@@ -1,12 +1,14 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/theme/breakpoints';
 import { css } from 'lit';
 
-export const tabStyles = css`
+export const baseStyles = css`
   :host {
     display: flex;
     flex: 1 0 auto;
     min-height: 46px;
     min-width: 90px;
-    border-block-end: 2px solid var(--oryx-color-neutral-light);
+    border-block-end: 4px solid var(--oryx-color-neutral-light);
     color: var(--oryx-color-neutral-dark);
     background: none;
     line-height: var(--oryx-line-height-base);
@@ -17,12 +19,6 @@ export const tabStyles = css`
     white-space: nowrap;
     margin: 0;
     gap: 4px;
-  }
-
-  @media (max-width: 767px) {
-    :host {
-      border-width: 4px;
-    }
   }
 
   :host(:not([selected]):hover) {
@@ -51,3 +47,16 @@ export const tabStyles = css`
     color: var(--oryx-color-error);
   }
 `;
+
+const mediumScreen = css`
+  :host {
+    border-width: 2px;
+  }
+`;
+
+export const screenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

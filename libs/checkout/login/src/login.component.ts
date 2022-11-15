@@ -13,6 +13,7 @@ import { CheckoutLoginOptions } from './login.model';
 @hydratable('window:load')
 export class CheckoutLoginComponent extends CheckoutComponentMixin<CheckoutLoginOptions>() {
   static styles = layoutStyles;
+
   protected data$ = combineLatest([
     resolve(AuthService).isAuthenticated(),
     new ContentController(this).getOptions(),
