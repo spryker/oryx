@@ -26,7 +26,7 @@ export class AsyncValueDirective extends AsyncDirective {
   fallback?: () => TemplateResult;
   ssrRendered = false;
 
-  content: Array<unknown> = [noChange];
+  content: Array<unknown> = [null];
 
   setValue(value: unknown): void {
     try {
@@ -58,7 +58,7 @@ export class AsyncValueDirective extends AsyncDirective {
       this.render(object, template, fallback);
     }
 
-    return this.content.length ? this.content : noChange;
+    return isServer && this.content.length ? this.content : noChange;
   }
 
   async disconnected(): Promise<void> {
