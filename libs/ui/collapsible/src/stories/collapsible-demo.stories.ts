@@ -11,7 +11,7 @@ export default {
   title: `${storybookPrefix}/Structure/Collapsible`,
   args: {
     appearance: CollapsibleAppearance.Block,
-    toggleAppearance: CollapsibleToggleControlType.IconButton,
+    toggleControlType: CollapsibleToggleControlType.IconButton,
     header: 'header',
   },
   argTypes: {
@@ -19,10 +19,11 @@ export default {
       options: [CollapsibleAppearance.Block, CollapsibleAppearance.Inline],
       control: { type: 'select' },
     },
-    toggleAppearance: {
+    toggleControlType: {
       options: [
         CollapsibleToggleControlType.IconButton,
         CollapsibleToggleControlType.TextButton,
+        CollapsibleToggleControlType.None,
       ],
       control: { type: 'select' },
     },
@@ -39,7 +40,7 @@ const Template: Story<CollapsibleProps> = (
     <oryx-collapsible
       ?open=${props.open}
       .appearance=${props.appearance}
-      .toggleAppearance=${props.toggleControlType}
+      .toggleControlType=${props.toggleControlType}
       .header=${props.header}
     >
       Content with <button>accessible</button> elements.
