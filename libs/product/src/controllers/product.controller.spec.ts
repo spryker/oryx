@@ -2,7 +2,7 @@ import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductContext } from '../models';
 import { ProductService } from '../services';
@@ -31,6 +31,8 @@ const mockProduct = {
   product: 'product',
 };
 
+const callback = vi.fn();
+
 describe('ProductController', () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -55,13 +57,12 @@ describe('ProductController', () => {
       productService = testInjector.inject(ProductService);
     });
 
+    // Real example first initialization
     it('should expose the product based on the context', () => {
       const mockObserveReturn = 'mockObserveReturn';
-      mockObserve.get.mockImplementation((key) =>
-        key !== 'product' ? mockObserveReturn : of(null)
-      );
+      mockObserve.get.mockReturnValueOnce(of(null)); // this.observe.get('product') emission
+      mockObserve.get.mockReturnValue(mockObserveReturn); // this.observe.get('sku') emission
       const productController = new ProductController(mockThis, mockInclude);
-      const callback = vi.fn();
       productController.getProduct().subscribe(callback);
 
       expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'product');
@@ -82,12 +83,31 @@ describe('ProductController', () => {
       const productController = new ProductController(
         mockWithProduct as unknown as LitElement
       );
-      const callback = vi.fn();
       productController.getProduct().subscribe(callback);
 
       expect(mockObserve.get).toHaveBeenCalledWith('product');
       expect(mockContext.get).not.toHaveBeenCalled();
       expect(callback).toHaveBeenCalledWith((mockWithProduct as any).product);
+    });
+
+    // Real example PDP navigation between different products
+    describe('when ContextController has multiple emission by `ProductContext.SKU`', () => {
+      it('should expose the null and product based on the context on the second emission', async () => {
+        const mockObserveReturn = 'mockObserveReturn';
+        const skuTrigger = new BehaviorSubject(mockSku);
+        mockObserve.get.mockReturnValueOnce(of(null)); // this.observe.get('product') emission
+        mockObserve.get.mockReturnValue(mockObserveReturn); // this.observe.get('sku') emission
+        mockContext.get.mockReturnValue(skuTrigger);
+        const productController = new ProductController(mockThis, mockInclude);
+
+        productController.getProduct().subscribe(callback);
+        skuTrigger.next(mockSku); // second ContextController emission
+
+        expect(callback).toHaveBeenCalledTimes(3);
+        expect(callback).toHaveBeenNthCalledWith(1, mockProduct);
+        expect(callback).toHaveBeenNthCalledWith(2, null);
+        expect(callback).toHaveBeenNthCalledWith(3, mockProduct);
+      });
     });
   });
 
@@ -95,7 +115,6 @@ describe('ProductController', () => {
     it('should not expose product data', () => {
       mockObserve.get.mockReturnValue(of(null));
       const productController = new ProductController(mockThis);
-      const callback = vi.fn();
       productController.getProduct().subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(null);

@@ -2,7 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { LitElement } from 'lit';
-import { Observable, of, switchMap } from 'rxjs';
+import { identity, Observable, of, startWith, switchMap } from 'rxjs';
 import { Product, ProductComponentProperties, ProductContext } from '../models';
 import { ProductService } from '../services';
 
@@ -34,14 +34,15 @@ export class ProductController {
         return this.context
           .get(ProductContext.SKU, this.observe.get('sku'))
           .pipe(
-            switchMap((sku) => {
+            switchMap((sku, index) => {
               if (!sku) {
                 return of(null);
               }
 
               return (
-                this.productService?.get({ sku, include: this.include }) ??
-                of(null)
+                this.productService
+                  ?.get({ sku, include: this.include })
+                  .pipe(index ? startWith(null) : identity) ?? of(null)
               );
             })
           );
