@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/theme/icons';
+import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';

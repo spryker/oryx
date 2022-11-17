@@ -2,7 +2,7 @@ import {
   backofficeNgTheme,
   backofficeTheme,
   storefrontTheme,
-} from '@spryker-oryx/theme';
+} from '@spryker-oryx/themes';
 
 export const theme = {
   default: 'backoffice',

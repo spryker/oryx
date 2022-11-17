@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { lgScreen } from '@spryker-oryx/theme/breakpoints';
+import { lgScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const formControlBaseStyles = css`

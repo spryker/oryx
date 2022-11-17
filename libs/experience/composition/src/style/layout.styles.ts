@@ -1,6 +1,6 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import { Breakpoint } from '@spryker-oryx/experience';
-import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/theme/breakpoints';
+import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { baseLayoutScreenStyles, baseLayoutStyles } from './base-layout.styles';

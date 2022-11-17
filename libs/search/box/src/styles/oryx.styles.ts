@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/theme/breakpoints';
+import { mdScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const searchboxStyles = css`

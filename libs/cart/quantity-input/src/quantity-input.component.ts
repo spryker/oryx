@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/theme/icons';
+import { IconTypes } from '@spryker-oryx/themes/icons';
 import type { Icons } from '@spryker-oryx/ui/icon';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';

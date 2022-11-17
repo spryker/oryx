@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/theme/src",
+  "sourceRoot": "libs/themes/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -10,7 +10,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/theme/**/*.ts"]
+        "lintFilePatterns": ["libs/themes/**/*.ts"]
       }
     },
     "paths": {

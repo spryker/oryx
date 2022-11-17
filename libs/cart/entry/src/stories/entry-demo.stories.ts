@@ -1,5 +1,5 @@
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { IconTypes } from '@spryker-oryx/theme/icons';
+import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

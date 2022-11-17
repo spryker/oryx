@@ -1,4 +1,4 @@
-# theme
+# themes
 
 The theme library contains a number of themes that can be used to style Oryx experiences. A theme exists of styles and icons.
 

@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/theme/breakpoints';
+import { mdScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 

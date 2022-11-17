@@ -7,7 +7,7 @@ import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
-import { IconTypes } from '@spryker-oryx/theme/icons';
+import { IconTypes } from '@spryker-oryx/themes/icons';
 import { wait } from '@spryker-oryx/typescript-utils';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { Size } from '@spryker-oryx/ui/utilities';
