@@ -1,5 +1,0 @@
-{
-  "extension": [".js", ".ts"],
-  "include": ["src/**/*.js", "src/**/*.ts"],
-  "exclude": ["src/**/*.spec.js", "src/**/*.spec.ts"]
-}

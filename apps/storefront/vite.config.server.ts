@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { adjustUrlVariable } from '../../tools/utils/adjustUrlVariable';
 
@@ -18,13 +19,13 @@ export default defineConfig((config) => {
     build: {
       target: 'esnext',
       lib: {
-        entry: 'src/entry-server.ts',
+        entry: 'server/entry.ts',
         formats: ['iife'],
         name: 'storefront',
       },
       emptyOutDir: true,
       outDir: '../../dist/apps/storefront/server',
-      ssr: 'src/entry-server.ts',
+      ssr: 'server/entry.ts',
     },
     ssr: {
       noExternal: true,
@@ -37,6 +38,18 @@ export default defineConfig((config) => {
         },
       }),
       tsconfigPaths({ root: '../../' }),
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'netlify.toml',
+            dest: '../client',
+          },
+          {
+            src: 'functions/*',
+            dest: '../functions',
+          },
+        ],
+      }),
     ],
   };
 });

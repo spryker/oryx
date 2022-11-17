@@ -1,10 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ],
   "compilerOptions": {
     "noEmit": true,
     "target": "ESNext",

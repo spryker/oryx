@@ -1,17 +1,31 @@
 import express from 'express';
-import * as fs from 'fs';
-import * as path from 'path';
+import { readFileSync } from 'fs';
+import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
-import { serverContext } from './context.js';
+import { serverContext } from '../functions/ssr/context.js';
 
-const isProd = process.env.NODE_ENV === 'production';
+const config = {
+  isProd: process.env.NODE_ENV === 'production',
+  __dirname: dirname(fileURLToPath(import.meta.url)),
+  prod: {
+    root: '../../dist/apps/storefront/client/',
+    entry: '../../dist/apps/storefront/server/entry.js',
+  },
+  dev: {
+    root: '../',
+    entry: '/server/entry.ts',
+  },
+  component: '<storefront-component></storefront-component>',
+};
 
-async function createServer() {
+export async function createServer(config) {
   const app = express();
+  const { isProd, prod, dev, component, __dirname } = config;
+  const root = isProd ? prod.root : dev.root;
 
   const vite = await createViteServer({
-    root: isProd ? '../../dist/apps/storefront/client/' : './',
+    root: resolve(__dirname, root),
     server: {
       middlewareMode: true,
     },
@@ -30,28 +44,22 @@ async function createServer() {
     );
 
     try {
-      let template = fs.readFileSync(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          `${isProd ? '../../dist/apps/storefront/client/' : './'}index.html`
-        ),
+      let template = readFileSync(
+        resolve(__dirname, `${root}index.html`),
         'utf-8'
       );
       let render;
       if (isProd) {
         render = serverContext({
-          base: '../../dist/apps/storefront/server/entry-server.js',
+          base: prod.entry,
         });
       } else {
         template = await vite.transformIndexHtml(url, template);
-        ({ render } = await vite.ssrLoadModule('/src/entry-server.dev.ts'));
+        ({ render } = await vite.ssrLoadModule(dev.entry));
       }
       const appHtml = await render({ route: originalUrl });
 
-      const html = template.replace(
-        `<storefront-component></storefront-component>`,
-        appHtml
-      );
+      const html = template.replace(component, appHtml);
       res.status(200).end(html);
     } catch (e) {
       // If an error is caught, let Vite fix the stracktrace so it maps back to
@@ -67,4 +75,4 @@ async function createServer() {
   });
 }
 
-createServer();
+createServer(config);

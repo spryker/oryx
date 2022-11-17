@@ -14,8 +14,7 @@
     "start-ssr-prod": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "npm run dev:ssr",
-        "envFile": "apps/storefront/prod.env",
+        "command": "NODE_ENV=production npm run dev:ssr",
         "cwd": "apps/storefront"
       }
     },
@@ -50,11 +49,7 @@
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "commands": [
-          "tools/patches/patch.sh",
-          "nx run storefront:build-ssr",
-          "npm run storefront-lambda"
-        ],
+        "commands": ["tools/patches/patch.sh", "nx build-ssr storefront"],
         "parallel": false
       }
     },

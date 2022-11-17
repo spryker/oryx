@@ -1,12 +1,13 @@
 import { getWindow } from '@lit-labs/ssr/lib/dom-shim.js';
-import * as fs from 'fs';
+import '@lit-labs/ssr/lib/render-with-global-dom-shim.js';
+import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import * as vm from 'vm';
+import { createContext, Script } from 'vm';
 
 export const serverContext = (options = {}) => {
-  const server = options.base ? options.base : '../../server/entry-server.js';
+  const server = options.base ? options.base : '../../server/entry.js';
   const url = options.url ? options.url : import.meta.url;
   const base = dirname(fileURLToPath(url));
   const window = getWindow({
@@ -21,13 +22,10 @@ export const serverContext = (options = {}) => {
   window.URL = URL;
   window.exports = {};
   window.setTimeout = setTimeout;
-  const script = new vm.Script(`${fs.readFileSync(
-    resolve(base, server),
-    'utf8'
-  )};
-        (() =>
-        storefront.render
-      )();`);
-  vm.createContext(window);
+  const script = new Script(`
+    ${readFileSync(resolve(base, server), 'utf8')};
+    (() => storefront.render)();
+  `);
+  createContext(window);
   return script.runInContext(window);
 };

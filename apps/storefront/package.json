@@ -7,7 +7,7 @@
     "dev": "vite -c vite.config.dev.ts",
     "preview": "vite preview",
     "build": "vite build",
-    "dev:ssr": "node --experimental-vm-modules server",
+    "dev:ssr": "node --experimental-vm-modules server/server",
     "build:server": "vite build -c vite.config.server.ts",
     "build:ssr": "npm run build && npm run build:server"
   }
