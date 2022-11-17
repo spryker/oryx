@@ -1,7 +1,6 @@
 # theme
 
-This library was generated with [Nx](https://nx.dev).
+The theme library contains a number of themes that can be used to style Oryx experiences. A theme exists of styles and icons.
 
-## Running unit tests
-
-Run `nx test theme` to execute the unit tests via [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+A standard theme can be selected for the application experience and further enhanced in the application logic.
+The theme configuration is build by design tokens and icon configurations.

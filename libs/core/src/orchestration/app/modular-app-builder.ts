@@ -48,23 +48,27 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withFeature(feature: AppFeature): AppBuilderWithModules {
-    if (feature.providers) {
-      this.withProviders(feature.providers);
-    }
+  withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules {
+    const features = Array.isArray(feature) ? feature : [feature];
 
-    if (feature.components) {
-      this.withComponents(feature.components);
-    }
+    for (const feat of features) {
+      if (feat.providers) {
+        this.withProviders(feat.providers);
+      }
 
-    if (feature.options) {
-      this.withOptions(feature.options);
-    }
+      if (feat.components) {
+        this.withComponents(feat.components);
+      }
 
-    if (feature.plugins) {
-      feature.plugins.forEach((plugin) => {
-        this.with(plugin);
-      });
+      if (feat.options) {
+        this.withOptions(feat.options);
+      }
+
+      if (feat.plugins) {
+        feat.plugins.forEach((plugin) => {
+          this.with(plugin);
+        });
+      }
     }
 
     return this;

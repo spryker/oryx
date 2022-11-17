@@ -1,5 +1,5 @@
 // organize-imports-ignore
-import { app } from './app/app.server';
+import { appBuilder } from './app';
 import { getInjector } from '@spryker-oryx/injector';
 import { RouterService } from '@spryker-oryx/experience';
 import { App, SSRAwaiterService, ContextService } from '@spryker-oryx/core';
@@ -21,7 +21,7 @@ export const renderComponent = async (
 
 export const render = async (element): Promise<string> => {
   if (!orchestrator) {
-    orchestrator = await app;
+    orchestrator = await appBuilder;
   }
   window.location = element.route;
   const routerService = getInjector().inject(RouterService);

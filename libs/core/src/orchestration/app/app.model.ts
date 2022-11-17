@@ -43,7 +43,7 @@ export interface AppBuilderWithModules
   extends AppBuilder<AppBuilderWithModules> {
   withComponents(components: ComponentsInfo): AppBuilderWithModules;
   withProviders(providers: Provider[]): AppBuilderWithModules;
-  withFeature(feature: AppFeature): AppBuilderWithModules;
+  withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules;
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
 }
