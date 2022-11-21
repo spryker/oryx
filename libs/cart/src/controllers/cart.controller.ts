@@ -1,7 +1,7 @@
 import { CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/injector';
-import { ObserveController } from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
+import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
 import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
 import {

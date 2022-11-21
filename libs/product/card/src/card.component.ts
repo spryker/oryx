@@ -1,11 +1,6 @@
 import { ContextController } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import {
-  asyncValue,
-  ObserveController,
-  subscribe,
-} from '@spryker-oryx/lit-rxjs';
-import {
   ProductComponentMixin,
   ProductContext,
   ProductController,
@@ -13,6 +8,11 @@ import {
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
+import {
+  asyncValue,
+  ObserveController,
+  subscribe,
+} from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';

@@ -1,6 +1,6 @@
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import * as litRxjs from '@spryker-oryx/lit-rxjs';
+import * as litRxjs from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { SpyInstance } from 'vitest';

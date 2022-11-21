@@ -1,6 +1,5 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { NotificationService as SiteNotificationService } from '@spryker-oryx/site';
 import {
   NotificationCenterComponent,
@@ -8,6 +7,7 @@ import {
   NotificationStrategy,
 } from '@spryker-oryx/ui/notification-center';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { filter, tap } from 'rxjs';

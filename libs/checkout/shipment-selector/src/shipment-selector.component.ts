@@ -4,10 +4,10 @@ import {
 } from '@spryker-oryx/checkout';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { LocaleService, PricingService } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';

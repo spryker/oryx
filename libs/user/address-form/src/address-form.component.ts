@@ -1,9 +1,9 @@
 import { FormRenderer, formStyles } from '@spryker-oryx/form';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { CountryService } from '@spryker-oryx/site';
 import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';

@@ -1,6 +1,10 @@
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, observe, subscribe } from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
+import {
+  asyncValue,
+  observe,
+  subscribe,
+} from '@spryker-oryx/utilities/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, switchMap } from 'rxjs';

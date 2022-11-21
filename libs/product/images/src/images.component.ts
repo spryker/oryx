@@ -1,5 +1,4 @@
 import { ContentController } from '@spryker-oryx/experience';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   ProductComponentMixin,
   ProductController,
@@ -7,6 +6,7 @@ import {
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

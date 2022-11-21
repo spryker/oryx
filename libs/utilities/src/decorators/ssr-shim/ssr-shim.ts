@@ -2,11 +2,8 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-import {
-  PatchableLitElement,
-  ssrStyleShim,
-  Type,
-} from '@spryker-oryx/utilities';
+import { Type } from '@spryker-oryx/injector';
+import { PatchableLitElement, ssrStyleShim } from '@spryker-oryx/utilities';
 import { isServer, LitElement } from 'lit';
 
 export const ssrShim =

@@ -1,13 +1,13 @@
 import { ContentController } from '@spryker-oryx/experience';
 import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   Product,
   ProductComponentMixin,
   ProductListPageService,
   ProductListService,
 } from '@spryker-oryx/product';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { map, switchMap } from 'rxjs';
 import { ProductListQualifier } from '../../src/models/product-list-qualifier';

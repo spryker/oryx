@@ -1,5 +1,5 @@
 import { PreviewExperienceService } from '@spryker-oryx/experience';
-import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { filter, merge, tap } from 'rxjs';

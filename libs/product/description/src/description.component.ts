@@ -1,10 +1,10 @@
 import { ContentController } from '@spryker-oryx/experience';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   ProductComponentMixin,
   ProductController,
 } from '@spryker-oryx/product';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';

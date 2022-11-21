@@ -15,7 +15,6 @@
   },
   "peerDependencies": {
     "@spryker-oryx/injector": "*",
-    "@spryker-oryx/lit-rxjs": "*",
     "@spryker-oryx/utilities": "*",
     "cldr-data": "^36.0.1",
     "lit": "^2.1.0",

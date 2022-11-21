@@ -1,7 +1,7 @@
 import { CartComponentMixin, CartController } from '@spryker-oryx/cart';
 import { ContentController } from '@spryker-oryx/experience';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';

@@ -1,4 +1,4 @@
-import { Type } from '@spryker-oryx/utilities';
+import { Type } from './type';
 
 export type Provider<T = any> =
   | ClassProvider<T>

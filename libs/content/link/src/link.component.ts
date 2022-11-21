@@ -1,7 +1,7 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { SemanticLinkService } from '@spryker-oryx/site';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';

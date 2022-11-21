@@ -1,8 +1,8 @@
 import { Cart, CartController, CartService } from '@spryker-oryx/cart';
 import { mockBaseCart } from '@spryker-oryx/cart/mocks';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import * as litRxjs from '@spryker-oryx/lit-rxjs';
 import { PricingService } from '@spryker-oryx/site';
+import * as litRxjs from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
 import { of, take } from 'rxjs';
 import { SpyInstance } from 'vitest';

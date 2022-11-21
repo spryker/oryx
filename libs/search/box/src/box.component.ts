@@ -1,9 +1,9 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import '@spryker-oryx/ui/typeahead';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';

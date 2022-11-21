@@ -1,9 +1,9 @@
 import { CartService } from '@spryker-oryx/cart';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 import { styles } from './link.styles';

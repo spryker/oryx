@@ -1,6 +1,6 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
-import { ObserveController } from '@spryker-oryx/lit-rxjs';
+import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
 import { identity, Observable, of, startWith, switchMap } from 'rxjs';
 import { Product, ProductComponentProperties, ProductContext } from '../models';

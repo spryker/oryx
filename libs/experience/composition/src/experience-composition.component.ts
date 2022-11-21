@@ -7,8 +7,8 @@ import {
   LayoutBuilder,
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, observe } from '@spryker-oryx/lit-rxjs';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, isServer, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

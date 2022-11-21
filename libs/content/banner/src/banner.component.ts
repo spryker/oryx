@@ -1,6 +1,6 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';

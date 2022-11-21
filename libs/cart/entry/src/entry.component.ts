@@ -1,11 +1,11 @@
 import { QuantityEventDetail } from '@spryker-oryx/cart/quantity-input';
 import { ContextController } from '@spryker-oryx/core';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
-import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {

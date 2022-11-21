@@ -1,5 +1,5 @@
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { I18nInjectable } from '@spryker-oryx/utilities/i18n';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { DirectiveResult } from 'lit/directive.js';
 import { I18nService } from './i18n.service';
 

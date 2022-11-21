@@ -1,4 +1,5 @@
-import { HOOKS_KEY, Type } from '@spryker-oryx/utilities';
+import { Type } from '@spryker-oryx/injector';
+import { HOOKS_KEY } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 import { LazyLoadable, ThemeData, ThemeStylesheets } from '../theme';
 

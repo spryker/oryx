@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/injector';
-import { ObserveController } from '@spryker-oryx/lit-rxjs';
+import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { ContentComponentProperties } from '../models';

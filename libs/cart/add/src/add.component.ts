@@ -5,7 +5,6 @@ import {
 } from '@spryker-oryx/cart/quantity-input';
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
 import {
   Product,
   ProductComponentMixin,
@@ -16,6 +15,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { Size } from '@spryker-oryx/ui/utilities';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {

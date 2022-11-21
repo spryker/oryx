@@ -1,8 +1,8 @@
 import { CheckoutComponentMixin } from '@spryker-oryx/checkout';
 import { ContentController, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { subscribe } from '@spryker-oryx/lit-rxjs';
 import { hydratable } from '@spryker-oryx/utilities';
+import { subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { Subject, switchMap, take, tap } from 'rxjs';
 import { CheckoutGuestOptions, GUEST_SUBMIT_EVENT } from './guest.model';

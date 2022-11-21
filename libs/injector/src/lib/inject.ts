@@ -1,5 +1,5 @@
-import { Type } from '@spryker-oryx/utilities';
 import { Injector } from './injector';
+import { Type } from './type';
 
 let _currentInjector: undefined | Injector;
 

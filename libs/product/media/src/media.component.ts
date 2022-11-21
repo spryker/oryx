@@ -1,6 +1,5 @@
 import { ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   ImageSource,
   ProductComponentMixin,
@@ -9,6 +8,7 @@ import {
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
 import { hydratable } from '@spryker-oryx/utilities';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';

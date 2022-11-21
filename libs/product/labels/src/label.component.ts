@@ -1,10 +1,10 @@
 import { ContentController } from '@spryker-oryx/experience';
-import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import {
   ProductComponentMixin,
   ProductController,
   ProductLabel,
 } from '@spryker-oryx/product';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { combineLatest, map } from 'rxjs';
