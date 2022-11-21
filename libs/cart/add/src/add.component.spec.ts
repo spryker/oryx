@@ -119,75 +119,102 @@ describe('CartAddComponent', () => {
   });
 
   describe('submit', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
-    });
-
-    describe('when the submit event is received from the quantity component', () => {
-      beforeEach(() => {
-        const input = element.shadowRoot?.querySelector(
-          'oryx-cart-quantity-input'
-        );
-        input?.dispatchEvent(
-          new CustomEvent<QuantityEventDetail>('submit', {
-            detail: { quantity: 5 },
-          })
-        );
+    describe('when the quantity input is used', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
       });
 
-      it('should add to cart', () => {
-        expect(service.addEntry).toHaveBeenCalledWith({
-          sku: '1',
-          quantity: 5,
+      describe('when the submit event is received from the quantity component', () => {
+        beforeEach(() => {
+          const input = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          input?.dispatchEvent(
+            new CustomEvent<QuantityEventDetail>('submit', {
+              detail: { quantity: 5 },
+            })
+          );
         });
-      });
-    });
 
-    describe('when the item is added to cart', () => {
-      beforeEach(() => {
-        const button = element.shadowRoot?.querySelector('button');
-        button?.click();
-      });
-
-      it('should call "addEntry" cart service method', () => {
-        expect(service.addEntry).toHaveBeenCalledWith({
-          sku: '1',
-          quantity: 1,
+        it('should add to cart', () => {
+          expect(service.addEntry).toHaveBeenCalledWith({
+            sku: '1',
+            quantity: 5,
+          });
         });
       });
 
-      it('should have the button in disabled state', () => {
-        expect(element).toContainElement('button[disabled]');
-      });
-
-      it('should have the oryx-button in loading state', () => {
-        expect(element).toContainElement('oryx-button[loading]');
-      });
-
-      describe('and after the item is added', () => {
-        beforeEach(async () => {
-          await nextFrame();
+      describe('when the item is added to cart', () => {
+        beforeEach(() => {
+          const button = element.shadowRoot?.querySelector('button');
+          button?.click();
         });
 
-        it('should no longer have the button in disabled state', () => {
+        it('should call "addEntry" cart service method', () => {
+          expect(service.addEntry).toHaveBeenCalledWith({
+            sku: '1',
+            quantity: 1,
+          });
+        });
+
+        it('should have the button in disabled state', () => {
           expect(element).toContainElement('button[disabled]');
         });
 
-        it('should no longer have the oryx-button in loading state', () => {
-          expect(element).toContainElement('oryx-button:not([loading])');
+        it('should have the oryx-button in loading state', () => {
+          expect(element).toContainElement('oryx-button[loading]');
         });
 
-        it('should have the oryx-button in confirmed state', () => {
-          expect(element).toContainElement('oryx-button[confirmed]');
-        });
-
-        describe('and when 800ms passed', () => {
+        describe('and after the item is added', () => {
           beforeEach(async () => {
-            await wait(800);
+            await nextFrame();
           });
 
-          it('should no longer have the oryx-button in confirmed state', () => {
-            expect(element).toContainElement('oryx-button:not([confirmed])');
+          it('should no longer have the button in disabled state', () => {
+            expect(element).toContainElement('button[disabled]');
+          });
+
+          it('should no longer have the oryx-button in loading state', () => {
+            expect(element).toContainElement('oryx-button:not([loading])');
+          });
+
+          it('should have the oryx-button in confirmed state', () => {
+            expect(element).toContainElement('oryx-button[confirmed]');
+          });
+
+          describe('and when 800ms passed', () => {
+            beforeEach(async () => {
+              await wait(800);
+            });
+
+            it('should no longer have the oryx-button in confirmed state', () => {
+              expect(element).toContainElement('oryx-button:not([confirmed])');
+            });
+          });
+        });
+      });
+    });
+
+    describe('when the quantity input is not used', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-add
+            sku="1"
+            .options=${{ hideQuantityInput: true }}
+          ></oryx-cart-add>`
+        );
+      });
+
+      describe('and when the item is added to cart', () => {
+        beforeEach(() => {
+          const button = element.shadowRoot?.querySelector('button');
+          button?.click();
+        });
+
+        it('should call "addEntry" cart service method', () => {
+          expect(service.addEntry).toHaveBeenCalledWith({
+            sku: '1',
+            quantity: 1,
           });
         });
       });
@@ -233,7 +260,6 @@ describe('CartAddComponent', () => {
 
     it('should set "outline" attribute to the button', async () => {
       const button = element.renderRoot.querySelector('oryx-button');
-
       expect(button?.hasAttribute('outline')).toBe(true);
     });
   });
