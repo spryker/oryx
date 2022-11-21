@@ -3,16 +3,24 @@ export interface CheckoutData {
   paymentProviders?: unknown[];
   selectedShipmentMethods?: unknown[];
   shipments?: Shipment[];
-  shipmentMethods?: Record<string, ShipmentMethod[]>;
+  carriers?: Carrier[];
+  shipment?: {
+    idShipmentMethod: number;
+  };
+}
+
+export interface Carrier {
+  name?: string;
+  shipmentMethods: ShipmentMethod[];
 }
 
 export interface ShipmentMethod {
-  deliveryTime?: number | null;
+  deliveryTime: number | null;
   carrierName: string;
   currencyIsoCode: string;
   name: string;
   price: number;
-  id: number;
+  id: number | string;
 }
 
 export interface Address {
@@ -38,6 +46,15 @@ export interface Shipment {
   selectedShipmentMethod?: ShipmentMethod;
   idShipmentMethod?: number;
   shippingAddress: Address;
-  shipmentMethods?: Record<string, ShipmentMethod[]>;
+  carriers?: Carrier[];
   id?: string;
 }
+
+export const defaultSelectedShipmentMethod = {
+  deliveryTime: null,
+  carrierName: '',
+  currencyIsoCode: '',
+  name: '',
+  price: 0,
+  id: 0,
+};

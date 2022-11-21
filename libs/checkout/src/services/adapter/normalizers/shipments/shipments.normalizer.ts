@@ -11,8 +11,7 @@ export function shipmentsNormalizer(data: DeserializedCheckout): Shipment[] {
   }
 
   const shipmentsKey = camelize(ApiCheckoutModel.Includes.Shipments);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const shipments = data[shipmentsKey]!;
+  const shipments = data[shipmentsKey] ?? [];
 
   return shipments.map((shipment) => {
     const methods: Record<string, ShipmentMethod[]> = {};
@@ -25,7 +24,14 @@ export function shipmentsNormalizer(data: DeserializedCheckout): Shipment[] {
       }
     }
 
-    return { ...shipment, shipmentMethods: methods };
+    delete shipment.shipmentMethods;
+
+    return {
+      ...shipment,
+      carriers: Object.keys(methods).map((carrier) => {
+        return { name: carrier, shipmentMethods: methods[carrier] };
+      }),
+    };
   });
 }
 

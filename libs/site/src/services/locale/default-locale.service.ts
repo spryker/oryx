@@ -29,4 +29,12 @@ export class DefaultLocaleService implements LocaleService {
   set(value: string): void {
     this.active$.next(value);
   }
+
+  formatDate(stamp: string | number): Observable<string> {
+    return this.get().pipe(
+      map((locale) =>
+        Intl.DateTimeFormat(locale.replace('_', '-')).format(new Date(stamp))
+      )
+    );
+  }
 }

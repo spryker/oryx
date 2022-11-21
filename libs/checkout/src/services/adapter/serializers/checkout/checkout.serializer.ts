@@ -1,6 +1,11 @@
 import { Serializer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
-import { ApiCheckoutModel } from '../../../../models';
+import {
+  ApiCheckoutModel,
+  Carrier,
+  defaultSelectedShipmentMethod,
+  ShipmentMethod,
+} from '../../../../models';
 import {
   GetCheckoutDataProps,
   UpdateCheckoutDataProps,
@@ -11,10 +16,31 @@ export const CheckoutSerializer = 'FES.CheckoutSerializers*';
 export function checkoutAttributesSerializer(
   data: UpdateCheckoutDataProps | GetCheckoutDataProps
 ): Partial<ApiCheckoutModel.Payload> {
+  const attributes = { ...(data as UpdateCheckoutDataProps).attributes };
+  const shipmentMethods =
+    attributes?.carriers?.reduce(
+      (acc: ShipmentMethod[], carrier: Carrier) => [
+        ...acc,
+        ...carrier.shipmentMethods,
+      ],
+      []
+    ) ?? [];
+
+  delete attributes.carriers;
+  const shipments = attributes?.shipments?.map((shipment) => {
+    return {
+      ...shipment,
+      selectedShipmentMethod:
+        shipment.selectedShipmentMethod ?? defaultSelectedShipmentMethod,
+    };
+  });
+
   return {
     attributes: {
       idCart: data.idCart,
-      ...(data as UpdateCheckoutDataProps).attributes,
+      ...attributes,
+      shipments,
+      shipmentMethods,
     },
     type: 'checkout-data',
   };

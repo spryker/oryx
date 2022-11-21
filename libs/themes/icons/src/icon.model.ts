@@ -95,4 +95,5 @@ export enum IconTypes {
   FreshCategory = 'freshCategory',
   ChillerCategory = 'chillerCategory',
   AmbientCategory = 'ambientCategory',
+  Carrier = 'carrier',
 }

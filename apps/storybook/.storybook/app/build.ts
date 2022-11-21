@@ -1,6 +1,6 @@
 import { mockAuthFeature } from '@spryker-oryx/auth/mocks';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
-import { checkoutFeature } from '@spryker-oryx/checkout';
+import { mockCheckoutFeature } from '@spryker-oryx/checkout/mocks';
 import { contentFeature } from '@spryker-oryx/content';
 import { appBuilder } from '@spryker-oryx/core';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';
@@ -49,7 +49,7 @@ appBuilder()
   .withFeature(formFeature)
   .withFeature(mockCoreFeature)
   .withFeature(mockCartFeature)
-  .withFeature(checkoutFeature)
+  .withFeature(mockCheckoutFeature)
   .withFeature(contentFeature)
   .withFeature(mockProductFeature)
   .withFeature(mockSearchFeature)

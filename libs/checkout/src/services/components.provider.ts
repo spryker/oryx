@@ -27,5 +27,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></checkout-login>`,
     },
+    ['checkout-shipment-selector']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<checkout-shipment-selector
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></checkout-shipment-selector>`,
+    },
   },
 };

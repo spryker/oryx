@@ -60,4 +60,15 @@ describe('DefaultLocaleService', () => {
       expect(cb).toHaveBeenCalledWith(mock);
     });
   });
+
+  describe('when formatting a date', () => {
+    it('should return a locale formatted date', () => {
+      const date = Date.now();
+      const cb = vi.fn();
+      service.formatDate(date).subscribe(cb);
+      expect(cb).toHaveBeenCalledWith(
+        Intl.DateTimeFormat('de-DE').format(date)
+      );
+    });
+  });
 });

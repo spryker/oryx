@@ -1,11 +1,19 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/injector';
-import { BehaviorSubject, Observable, of, switchMap, take, tap } from 'rxjs';
-import { ApiCheckoutModel, CheckoutData, Shipment } from '../models';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
+import { ApiCheckoutModel, Carrier, CheckoutData, Shipment } from '../models';
 import { CheckoutAdapter } from './adapter';
-import { CheckoutService } from './checkout.service';
+import { CheckoutShipmentService } from './checkout-shipment.service';
 
-export class DefaultCheckoutService implements CheckoutService {
+export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   private includeShipments = [
     ApiCheckoutModel.Includes.Shipments,
     ApiCheckoutModel.Includes.ShipmentMethods,
@@ -17,7 +25,7 @@ export class DefaultCheckoutService implements CheckoutService {
 
   protected shipments$ = new BehaviorSubject<Shipment[] | null>(null);
 
-  getShipments(): Observable<Shipment[] | null> {
+  getShipment(): Observable<Shipment | null> {
     return this.cartService
       .getCart()
       .pipe(
@@ -35,7 +43,18 @@ export class DefaultCheckoutService implements CheckoutService {
           this.handleShipmentData(data);
         })
       )
-      .pipe(switchMap(() => this.shipments$));
+      .pipe(
+        switchMap(() => this.shipments$),
+        map((shipments) => (shipments ? shipments[0] : null))
+      );
+  }
+
+  getCarriers(): Observable<Carrier[]> {
+    return this.getShipment().pipe(
+      map((shipment) => {
+        return shipment?.carriers ?? [];
+      })
+    );
   }
 
   protected handleShipmentData(data: CheckoutData | null): void {
@@ -47,32 +66,38 @@ export class DefaultCheckoutService implements CheckoutService {
     }
   }
 
-  setShipmentMethod(
-    method: number,
-    shipment: Shipment
-  ): Observable<Shipment[] | null> {
+  getSelectedShipmentMethod(): Observable<number> {
+    return this.getShipment().pipe(
+      map((shipment) => {
+        return shipment?.selectedShipmentMethod?.id
+          ? Number(shipment.selectedShipmentMethod.id)
+          : 0;
+      })
+    );
+  }
+
+  setShipmentMethod(method: number): Observable<void> {
     return this.cartService.getCart().pipe(
       switchMap((cart) => {
-        if (!cart || !shipment) {
+        if (!cart) {
           return of(null);
         }
-        const attributes = { ...shipment };
-
-        delete attributes.id;
-        delete attributes.selectedShipmentMethod;
-        attributes.idShipmentMethod = method;
 
         return this.adapter.update({
           idCart: cart.id,
           include: this.includeShipments,
           attributes: {
-            shipments: [attributes],
+            shipment: {
+              idShipmentMethod: method,
+            },
           },
         });
       }),
       switchMap((result) => {
-        this.handleShipmentData(result ?? null);
-        return this.shipments$;
+        if (result?.shipments && result.shipments?.length > 0) {
+          this.handleShipmentData(result);
+        }
+        return of(undefined);
       })
     );
   }

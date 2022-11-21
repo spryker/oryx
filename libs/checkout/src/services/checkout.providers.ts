@@ -5,9 +5,9 @@ import {
   shipmentsNormalizer,
 } from './adapter/normalizers';
 import { checkoutSerializer } from './adapter/serializers';
-import { CheckoutService } from './checkout.service';
+import { CheckoutShipmentService } from './checkout-shipment.service';
 import { componentsProvider } from './components.provider';
-import { DefaultCheckoutService } from './default-checkout.service';
+import { DefaultCheckoutShipmentService } from './default-checkout-shipment.service';
 
 export const checkoutProviders = [
   componentsProvider,
@@ -16,8 +16,8 @@ export const checkoutProviders = [
     useClass: DefaultCheckoutAdapter,
   },
   {
-    provide: CheckoutService,
-    useClass: DefaultCheckoutService,
+    provide: CheckoutShipmentService,
+    useClass: DefaultCheckoutShipmentService,
   },
   {
     provide: ShipmentsNormalizer,

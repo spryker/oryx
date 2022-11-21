@@ -72,10 +72,13 @@ const mockCheckoutData: DeserializedCheckout = {
 const mockNormalizedShipment: Shipment[] = [
   {
     ...mockBaseShipment,
-    shipmentMethods: {
-      'mock carrier': [mockShipmentMethods[0], mockShipmentMethods[1]],
-      'mock carrier 2': [mockShipmentMethods[2]],
-    },
+    carriers: [
+      {
+        name: 'mock carrier',
+        shipmentMethods: [mockShipmentMethods[0], mockShipmentMethods[1]],
+      },
+      { name: 'mock carrier 2', shipmentMethods: [mockShipmentMethods[2]] },
+    ],
   },
 ];
 

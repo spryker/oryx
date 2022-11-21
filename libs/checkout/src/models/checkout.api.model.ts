@@ -1,5 +1,4 @@
 import { Include, JsonApiModel } from '@spryker-oryx/utilities';
-import { CheckoutData } from './checkout.model';
 
 export module ApiCheckoutModel {
   export interface Attributes {
@@ -15,7 +14,7 @@ export module ApiCheckoutModel {
     carrierName: string;
     currencyIsoCode: string;
     deliveryTime: number | null;
-    id: number;
+    id: number | string;
     name: string;
     price: number;
     taxRate?: string;
@@ -23,7 +22,17 @@ export module ApiCheckoutModel {
 
   export interface Payload {
     type: 'checkout-data';
-    attributes?: { idCart: string } & CheckoutData;
+    attributes?: {
+      idCart: string;
+      addresses?: unknown[];
+      paymentProviders?: unknown[];
+      selectedShipmentMethods?: unknown[];
+      shipments?: Shipment[];
+      shipmentMethods?: ShipmentMethod[];
+      shipment?: {
+        idShipmentMethod: number;
+      };
+    };
   }
 
   export interface Address {
