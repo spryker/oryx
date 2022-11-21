@@ -1,4 +1,6 @@
-export const mockAddressBase = {
+import { Address } from '../../models';
+
+export const mockAddressBase: Address = {
   salutation: 'Mr',
   firstName: 'Spencor',
   lastName: 'Hopkin',
@@ -9,18 +11,18 @@ export const mockAddressBase = {
   city: 'Berlin',
   country: 'Germany',
   iso2Code: 'DE',
-  company: null,
+  company: 'company',
   phone: '22111-3-4-5',
   isDefaultShipping: false,
-  isDefaultBilling: false,
+  isDefaultBilling: true,
 };
 
-export const mockAddress = {
+export const mockAddress: Address = {
   ...mockAddressBase,
   id: 'addressid',
 };
 
-export const mockCurrentAddressBase = {
+export const mockCurrentAddressBase: Address = {
   salutation: 'Ms',
   firstName: 'abc',
   lastName: 'mock',
@@ -31,15 +33,37 @@ export const mockCurrentAddressBase = {
   city: 'Berlin',
   country: 'Germany',
   iso2Code: 'DE',
-  company: null,
+  company: 'company',
   phone: '22111-3-4-5',
   isDefaultShipping: true,
-  isDefaultBilling: true,
+  isDefaultBilling: false,
 };
 
-export const mockCurrentAddress = {
+export const mockCurrentAddress: Address = {
   ...mockCurrentAddressBase,
   id: 'currentaddressid',
+};
+
+export const mockAddressSecondaryBase: Address = {
+  salutation: 'Mr',
+  firstName: 'Spencor',
+  lastName: 'Hopkin',
+  address1: 'Second, 3, 112',
+  address2: 'address2',
+  address3: 'address3',
+  zipCode: '12312',
+  city: 'Berlin',
+  country: 'Germany',
+  iso2Code: 'DE',
+  company: 'company',
+  phone: '22111-3-4-5',
+  isDefaultShipping: false,
+  isDefaultBilling: false,
+};
+
+export const mockAddressSecondary: Address = {
+  ...mockAddressSecondaryBase,
+  id: 'secondary_id',
 };
 
 export const mockAddressResponse = {
@@ -56,9 +80,24 @@ export const mockCurrentAddressResponse = {
   attributes: mockCurrentAddressBase,
 };
 
+export const mockAddressSecondaryResponse = {
+  type: 'addresses',
+  id: mockAddressSecondary.id,
+  links: 'secondary_link',
+  attributes: mockAddressSecondaryBase,
+};
+
 export const mockGetAddressesResponse = {
-  data: [mockAddressResponse, mockCurrentAddressResponse],
+  data: [
+    mockAddressResponse,
+    mockCurrentAddressResponse,
+    mockAddressSecondaryResponse,
+  ],
   links: 'addresseslink',
 };
 
-export const mockNormalizedAddresses = [mockCurrentAddress, mockAddress];
+export const mockNormalizedAddresses = [
+  mockCurrentAddress,
+  mockAddress,
+  mockAddressSecondary,
+];

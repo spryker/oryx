@@ -13,8 +13,8 @@ export module ApiAddressModel {
     firstName: string | null;
     lastName: string | null;
     idCompanyBusinessUnitAddress?: string | null;
-    isDefaultShipping: boolean | null;
-    isDefaultBilling: boolean | null;
+    isDefaultShipping: boolean;
+    isDefaultBilling: boolean;
     iso2Code: string | null;
     phone?: string | null;
     salutation: string | null;
@@ -25,7 +25,7 @@ export module ApiAddressModel {
     type: 'addresses';
     id?: string;
     links?: unknown;
-    attributes: Address;
+    attributes: Partial<Address>;
   }
 
   export type ResponseList = JsonApiModel<Address, unknown, Array<unknown>>;

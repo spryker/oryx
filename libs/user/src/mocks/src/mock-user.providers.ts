@@ -1,18 +1,20 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
   AddressAdapter,
+  addressesNormalizer,
   AddressFormService,
+  addressNormalizer,
   addressSerializers,
   AddressService,
   DefaultAddressAdapter,
-  DefaultAddressService,
 } from '@spryker-oryx/user';
 import { MockAddressFormService } from './mock-address-form.service';
+import { MockAddressService } from './mock-address.service';
 
 export const mockUserProviders: Provider[] = [
   {
     provide: AddressService,
-    useClass: DefaultAddressService,
+    useClass: MockAddressService,
   },
   {
     provide: AddressAdapter,
@@ -22,5 +24,7 @@ export const mockUserProviders: Provider[] = [
     provide: AddressFormService,
     useClass: MockAddressFormService,
   },
+  ...addressNormalizer,
+  ...addressesNormalizer,
   ...addressSerializers,
 ];

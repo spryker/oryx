@@ -174,4 +174,11 @@ export const componentsMapping: ComponentsMapping = {
         class=${ifDefined(layoutClasses)}
       ></checkout-login>`,
   },
+  ['address-list']: {
+    template: (uid: string, layoutClasses?: string) =>
+      html`<oryx-address-list
+        uid="${uid}"
+        class=${ifDefined(layoutClasses)}
+      ></oryx-address-list>`,
+  },
 };

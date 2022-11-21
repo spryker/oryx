@@ -8,13 +8,19 @@ export const AddressNormalizer = 'FES.AddressNormalizer*';
 export function addressAttributesNormalizer(
   data: DeserializedAddress
 ): Address {
-  return data;
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      ...(value !== null && { [key]: value }),
+    }),
+    {}
+  );
 }
 
 export const addressNormalizer: Provider[] = [
   {
-    useValue: AddressNormalizer,
-    provide: addressAttributesNormalizer,
+    provide: AddressNormalizer,
+    useValue: addressAttributesNormalizer,
   },
 ];
 
