@@ -37,6 +37,11 @@ export class DefaultErrorService implements ErrorService {
   }
 
   protected handle = (event: ErrorEvent | PromiseRejectionEvent): void => {
-    this.handler?.handle(event);
+    const error =
+      event instanceof PromiseRejectionEvent ? event.reason : event.error;
+
+    // Check is done when this listener is attached
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.handler!.handle(error);
   };
 }

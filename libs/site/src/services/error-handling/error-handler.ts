@@ -6,11 +6,9 @@ import { NotificationService } from '../notification';
 export class SiteErrorHandler implements ErrorHandler {
   constructor(protected notificationService = inject(NotificationService)) {}
 
-  handle(event: ErrorEvent | PromiseRejectionEvent): void {
+  handle(error: unknown): void {
     const message =
-      ((event as ErrorEvent).error?.message ?? '') +
-        ((event as ErrorEvent).message ?? '') +
-        ((event as PromiseRejectionEvent).reason ?? '') || '';
+      (typeof error === 'object' && (error as any)?.message) ?? String(error);
 
     this.notificationService.push({
       type: Types.ERROR,

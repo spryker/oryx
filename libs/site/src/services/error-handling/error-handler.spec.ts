@@ -40,15 +40,30 @@ describe('SiteErrorHandler', () => {
     expect(handler).toBeInstanceOf(SiteErrorHandler);
   });
 
-  describe('when an error event is fired', () => {
-    it('should call notification service', async () => {
-      const event = new ErrorEvent('error', { message: 'ERROR' });
-      handler.handle(event);
+  describe('when an error object is handled', () => {
+    it('should call notification service with error message', async () => {
+      const error = { message: 'ERROR' };
+
+      handler.handle(error);
 
       expect(notificationService.push).toHaveBeenCalledWith({
         type: Types.ERROR,
         content: 'Error',
         subtext: 'ERROR',
+      });
+    });
+  });
+
+  describe('when an error value is handled', () => {
+    it('should call notification service with stringified object', async () => {
+      const error = { notAnError: true };
+
+      handler.handle(error);
+
+      expect(notificationService.push).toHaveBeenCalledWith({
+        type: Types.ERROR,
+        content: 'Error',
+        subtext: '[object Object]',
       });
     });
   });

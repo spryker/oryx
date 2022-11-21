@@ -27,63 +27,75 @@ describe('DefaultHttpService', () => {
     service = new DefaultErrorService(mockWindow as any, testErrorHandler);
   });
 
-  it('should add event "error" listener', () => {
-    service.initialize();
-    expect(mockWindow.addEventListener).toHaveBeenCalledWith(
-      'error',
-      expect.any(Function)
-    );
-  });
-
-  it('should add event "unhandledrejection" listener', () => {
-    service.initialize();
-    expect(mockWindow.addEventListener).toHaveBeenCalledWith(
-      'unhandledrejection',
-      expect.any(Function)
-    );
-  });
-
-  it('should trigger "error" listener', () => {
-    service.initialize();
-
-    const errorCallback = mockWindow.addEventListener.mock.calls[0][1];
-    const mockError = {};
-    errorCallback(mockError);
-
-    expect(testErrorHandler.handle).toHaveBeenCalledWith(mockError);
-  });
-
-  it('should trigger "unhandledrejection" listener', () => {
-    service.initialize();
-
-    const errorCallback = mockWindow.addEventListener.mock.calls[1][1];
-    const mockError = {};
-    errorCallback(mockError);
-
-    expect(testErrorHandler.handle).toHaveBeenCalledWith(mockError);
-  });
-
-  it('should remove "error" listener', () => {
-    service.initialize();
+  afterEach(() => {
     service.onDestroy();
-
-    const errorCallback = mockWindow.addEventListener.mock.calls[0][1];
-
-    expect(mockWindow.removeEventListener).toHaveBeenCalledWith(
-      'error',
-      errorCallback
-    );
   });
 
-  it('should remove "unhandledrejection" listener', () => {
-    service.initialize();
-    service.onDestroy();
+  describe('when initialized', () => {
+    beforeEach(() => {
+      service.initialize();
+    });
 
-    const errorCallback = mockWindow.addEventListener.mock.calls[1][1];
+    it('should add event "error" listener', () => {
+      expect(mockWindow.addEventListener).toHaveBeenCalledWith(
+        'error',
+        expect.any(Function)
+      );
+    });
 
-    expect(mockWindow.removeEventListener).toHaveBeenCalledWith(
-      'unhandledrejection',
-      errorCallback
-    );
+    it('should add event "unhandledrejection" listener', () => {
+      expect(mockWindow.addEventListener).toHaveBeenCalledWith(
+        'unhandledrejection',
+        expect.any(Function)
+      );
+    });
+
+    it('should handle "error" event', () => {
+      const errorCallback = mockWindow.addEventListener.mock.calls[0][1];
+      const mockError = { mockError: true };
+      const mockEvent = new ErrorEvent('error', { error: mockError });
+
+      errorCallback(mockEvent);
+
+      expect(testErrorHandler.handle).toHaveBeenCalledWith(mockError);
+    });
+
+    it('should handle "unhandledrejection" event', () => {
+      const errorCallback = mockWindow.addEventListener.mock.calls[1][1];
+      const mockError = { mockError: true };
+      const mockEvent = new PromiseRejectionEvent('unhandledrejection', {
+        promise: new Promise(() => void 0),
+        reason: mockError,
+      });
+
+      errorCallback(mockEvent);
+
+      expect(testErrorHandler.handle).toHaveBeenCalledWith(mockError);
+    });
+  });
+
+  describe('when destroyed', () => {
+    beforeEach(() => {
+      service.initialize();
+      service.onDestroy();
+    });
+
+    it('should remove "error" listener', () => {
+      const errorCallback = mockWindow.addEventListener.mock.calls[0][1];
+
+      expect(mockWindow.removeEventListener).toHaveBeenCalledWith(
+        'error',
+        errorCallback
+      );
+    });
+
+    it('should remove "unhandledrejection" listener', () => {
+      const errorCallback = mockWindow.addEventListener.mock.calls[1][1];
+
+      expect(mockWindow.removeEventListener).toHaveBeenCalledWith(
+        'unhandledrejection',
+        errorCallback
+      );
+    });
   });
 });

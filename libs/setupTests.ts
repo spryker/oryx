@@ -116,3 +116,21 @@ Array.prototype.findLast = function (cb): any {
 Array.prototype.findLastIndex = function (cb): number {
   return this.reverse().findIndex(cb);
 };
+
+// TODO: Remove custom mock of PromiseRejectionEvent once it's added by jsdom
+// See https://github.com/jsdom/jsdom/issues/2401
+window.PromiseRejectionEvent = class PromiseRejectionEvent extends Event {
+  constructor(type: string, options: PromiseRejectionEventInit) {
+    super(type, options);
+
+    Object.defineProperty(this, 'promise', {
+      value: options.promise,
+      enumerable: true,
+    });
+
+    Object.defineProperty(this, 'reason', {
+      value: options.reason,
+      enumerable: true,
+    });
+  }
+} as any;

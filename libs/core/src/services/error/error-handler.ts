@@ -1,5 +1,5 @@
 export interface ErrorHandler {
-  handle(event: ErrorEvent | PromiseRejectionEvent): void;
+  handle(error: unknown): void;
 }
 
 export const ErrorHandler = 'FES.ErrorHandler';
