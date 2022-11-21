@@ -31,6 +31,10 @@ export const floatingLabelBaseStyles = css`
     );
   }
 
+  :host(oryx-select[floatLabel]) slot[name='label'] {
+    max-width: calc(100% - 54px - var(--float-label-start-gap, 0px));
+  }
+
   :host([floatLabel]) slot:not([name])::slotted(*)::placeholder,
   :host([floatLabel]) slot:not([name])::slotted(select:invalid) {
     opacity: 0;
