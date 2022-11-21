@@ -1,137 +1,191 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import type { Icons } from '@spryker-oryx/ui/icon';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { i18n } from '@spryker-oryx/utilities/i18n';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
-import { UPDATE_EVENT, VALIDATION_EVENT } from './quantity-input.model';
+import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  QuantityEventDetail,
+  QuantityInputAttributes,
+  SUBMIT_EVENT,
+  UPDATE_EVENT,
+} from './quantity-input.model';
 import { styles } from './quantity-input.styles';
 
-@hydratable(['click', 'focusin'])
-export class QuantityInputComponent extends LitElement {
+/**
+ * The quantity input component provides controls to conveniently increase and
+ * decrease the quantity. The component is typically used to change the quantity
+ * of a cart item, but it can be used in any context.
+ *
+ * The html min, max and step attribute are used on the input component, so that
+ * the quantity stays in the appropriate boundaries and increases with the right step.
+ *
+ * The quantity control dispatches an update or submit event. The submit event will be
+ * dispatched when the Enter key is dispatched, To submit on each change even, the
+ * `submitOnChange` property can be set.
+ */
+@hydratable(['window:load'])
+export class QuantityInputComponent
+  extends LitElement
+  implements QuantityInputAttributes
+{
   static styles = styles;
 
-  @property({ type: Boolean }) disabled = false;
   @property({ type: Number }) min = 1;
+  @property({ type: Number }) value?: number;
   @property({ type: Number }) max?: number;
-  @property({ type: Number }) value = this.min;
-  @property({ type: String }) label?: string;
-  @property({ attribute: 'decrease-icon' }) decreaseIcon?: Icons;
-  @property({ attribute: 'increase-icon' }) increaseIcon?: Icons;
+  @property({ type: Number }) step = 1;
+  @property({ type: Boolean }) submitOnChange = false;
+  @property({ type: Boolean }) disabled = false;
 
-  protected inputRef: Ref<HTMLInputElement> = createRef();
-
-  protected increase(): void {
-    this.inputRef.value?.stepUp();
-    this.updateQuantity();
-  }
-
-  protected decrease(): void {
-    this.inputRef.value?.stepDown();
-    this.updateQuantity();
-  }
-
-  validate(): boolean {
-    const input = this.shadowRoot?.querySelector('input') as HTMLInputElement;
-    const isValid = input.reportValidity();
-
-    this.dispatchEvent(
-      new CustomEvent(VALIDATION_EVENT, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          isValid,
-        },
-      })
-    );
-
-    return isValid;
-  }
-
-  protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
-  ): void {
-    //align input's value with property 'value'
-    if (
-      _changedProperties.has('value') &&
-      this.inputRef.value &&
-      this.value !== +this.inputRef.value.value
-    ) {
-      this.inputRef.value.value = String(this.value);
-    }
-  }
-
-  protected updateQuantity(): void {
-    const quantity = Number(this.inputRef.value?.value);
-    const updateInputValue = (value: number): void => {
-      if (this.inputRef.value) {
-        this.inputRef.value.value = String(value);
-      }
-
-      if (this.value !== value) {
-        this.value = value;
-
-        this.dispatchQuantityEvent(value);
-      }
-
-      this.validate();
-    };
-
-    if (
-      quantity < this.min ||
-      (this.max !== undefined && quantity > this.max)
-    ) {
-      updateInputValue(this.value);
-      return;
-    }
-
-    updateInputValue(quantity);
-  }
-
-  protected dispatchQuantityEvent(quantity: number): void {
-    this.dispatchEvent(
-      new CustomEvent(UPDATE_EVENT, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          quantity,
-        },
-      })
-    );
-  }
+  protected inputRef = createRef<HTMLInputElement>();
 
   protected override render(): TemplateResult {
     return html`
       <button
-        aria-label="decrease"
-        ?disabled=${this.disabled || this.value <= this.min}
         @click=${this.decrease}
+        aria-label=${i18n('cart.quantity.decrease')}
+        tabindex="-1"
+        ?disabled=${this.isMinDisabled()}
+        part="decrease"
       >
-        <oryx-icon type=${this.decreaseIcon ?? IconTypes.Minus}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Decrease}></oryx-icon>
       </button>
-      <oryx-input label=${ifDefined(this.label)}>
+      <oryx-input>
         <input
-          aria-label="quantity-input"
-          type="number"
           ${ref(this.inputRef)}
-          value=${this.value}
-          min=${this.min}
+          aria-label=${i18n('cart.quantity')}
+          type="number"
+          value=${this.getValue()}
+          min=${ifDefined(this.min)}
           max=${ifDefined(this.max)}
-          step="1"
+          step=${this.step}
           required
-          @input=${this.validate}
-          @change=${this.updateQuantity}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled ||
+          (this.max !== undefined && this.max === 0)}
+          @input=${this.onInput}
+          @change=${this.onChange}
+          @keydown=${this.onKeydown}
+          @focus=${this.onFocus}
         />
       </oryx-input>
       <button
-        aria-label="increase"
-        ?disabled=${this.disabled || !!(this.max && this.value >= this.max)}
         @click=${this.increase}
+        aria-label=${i18n('cart.quantity.increase')}
+        tabindex="-1"
+        ?disabled=${this.isMaxDisabled()}
+        part="increase"
       >
-        <oryx-icon type=${this.increaseIcon ?? IconTypes.Add}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Increase}></oryx-icon>
       </button>
     `;
+  }
+
+  protected getValue(): string {
+    return this.value?.toString() ?? this.min?.toString() ?? '1';
+  }
+
+  protected onFocus(): void {
+    this.input.reportValidity();
+  }
+
+  protected isMinDisabled(): boolean {
+    return (
+      this.disabled || (this.value !== undefined && this.value <= this.min)
+    );
+  }
+
+  protected isMaxDisabled(): boolean {
+    return (
+      this.disabled ||
+      (this.value !== undefined &&
+        this.max !== undefined &&
+        this.value >= this.max)
+    );
+  }
+
+  /**
+   * Increases the input value by a single step
+   * and triggers the change event.
+   *
+   * The step is configurable.
+   */
+  protected increase(): void {
+    this.input.stepUp();
+    this.onChange();
+  }
+
+  /**
+   * Decreases the input value by a single step
+   * and triggers the change event.
+   *
+   * The step is configurable.
+   */
+  protected decrease(): void {
+    this.input.stepDown();
+    this.onChange();
+  }
+
+  /**
+   * Updates the value.
+   *
+   * Triggers validity reporting so that native browser validation appears.
+   */
+  protected onInput(e: InputEvent): void {
+    this.updateValue((e.target as HTMLInputElement).value);
+    this.dispatch(UPDATE_EVENT);
+  }
+
+  /**
+   * Dispatches an update event
+   */
+  protected onChange(): void {
+    this.updateValue();
+    if (this.submitOnChange && this.input.validity.valid) {
+      this.dispatch(SUBMIT_EVENT);
+    } else {
+      this.dispatch(UPDATE_EVENT);
+    }
+  }
+
+  protected updateValue(value?: string): void {
+    this.value = Number(value ?? this.input.value);
+    this.input.reportValidity();
+  }
+
+  /**
+   * Dispatches a submit event when the Enter key is triggered
+   * and the input is valid.
+   *
+   * When the input is invalid, we'll trigger a report on the validity
+   * so that the user understands why the input is not submitted.
+   */
+  protected onKeydown(ev: KeyboardEvent): void {
+    if (ev.key !== 'Enter') {
+      return;
+    }
+    if (this.input.validity.valid) {
+      this.dispatch(SUBMIT_EVENT);
+    } else {
+      this.input.reportValidity();
+    }
+  }
+
+  protected dispatch<T extends QuantityEventDetail>(
+    eventName: typeof UPDATE_EVENT | typeof SUBMIT_EVENT
+  ): void {
+    const detail = { quantity: Number(this.input.value) } as T;
+    if (!this.input.validity.valid) {
+      detail.isInvalid = true;
+    }
+    this.dispatchEvent(
+      new CustomEvent<T>(eventName, { detail, bubbles: true, composed: true })
+    );
+  }
+
+  protected get input(): HTMLInputElement {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.inputRef.value!;
   }
 }

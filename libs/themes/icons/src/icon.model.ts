@@ -8,6 +8,8 @@ export enum IconTypes {
   Dropdown = 'dropdown',
   Expand = 'expand',
   Image = 'image',
+  Decrease = 'decrease',
+  Increase = 'increase',
   Info = 'info',
   InputError = 'inputError',
   Mark = 'mark',

@@ -156,7 +156,7 @@ describe('CartEntryComponent', () => {
     });
   });
 
-  describe('when quantity is changed', () => {
+  describe('when quantity is submitted', () => {
     const callback = vi.fn();
 
     beforeEach(async () => {
@@ -166,7 +166,7 @@ describe('CartEntryComponent', () => {
       ></cart-entry>`);
 
       getPart('cart-entry-content')?.dispatchEvent(
-        new CustomEvent('oryx.update', { detail: { quantity: 2 } })
+        new CustomEvent('submit', { detail: { quantity: 2 } })
       );
     });
 
@@ -174,7 +174,7 @@ describe('CartEntryComponent', () => {
       expect(callback).not.toHaveBeenCalled();
     });
 
-    describe('and quantity is equal 0', () => {
+    describe('and quantity equals to 0', () => {
       const callback = vi.fn();
 
       beforeEach(async () => {
@@ -184,16 +184,12 @@ describe('CartEntryComponent', () => {
         ></cart-entry>`);
 
         getPart('cart-entry-content')?.dispatchEvent(
-          new CustomEvent('oryx.update', { detail: { quantity: 0 } })
+          new CustomEvent('submit', { detail: { quantity: 0 } })
         );
       });
 
       it('should set "disabled" attribute', () => {
-        expect(
-          getPart<CartEntryContentComponent>('cart-entry-content').hasAttribute(
-            'disabled'
-          )
-        ).toBe(true);
+        expect(element).toContainElement('cart-entry-content[disabled]');
       });
 
       it('should not dispatch @oryx.remove event', () => {
@@ -210,7 +206,7 @@ describe('CartEntryComponent', () => {
           ></cart-entry>`);
 
           getPart('cart-entry-content')?.dispatchEvent(
-            new CustomEvent('oryx.update', { detail: { quantity: 0 } })
+            new CustomEvent('submit', { detail: { quantity: 0 } })
           );
         });
 

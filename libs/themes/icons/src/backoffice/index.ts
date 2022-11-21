@@ -111,4 +111,9 @@ export const backofficeIcons: ThemeIcons = {
   [IconTypes.Popular]: () => import('./icons/popular').then((s) => s.default),
   [IconTypes.SilverPartner]: () =>
     import('./icons/silver-partner').then((s) => s.default),
+
+  /** Alias to minus */
+  [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
+  /** Alias to add */
+  [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
 };

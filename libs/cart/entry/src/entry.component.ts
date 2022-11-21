@@ -1,3 +1,4 @@
+import { QuantityEventDetail } from '@spryker-oryx/cart/quantity-input';
 import { ContextController } from '@spryker-oryx/core';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/lit-rxjs';
@@ -59,7 +60,10 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
     );
   }
 
-  protected onQuantityChange(e: CustomEvent, isInstant: boolean): void {
+  protected onQuantityChange(
+    e: CustomEvent<QuantityEventDetail>,
+    isInstant: boolean
+  ): void {
     if (e.detail.quantity === 0) {
       e.stopPropagation();
 
@@ -140,7 +144,7 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
             <cart-entry-content
               .options=${entry}
               ?disabled=${asyncValue(this.triggerConfirmationRequired$)}
-              @oryx.update=${(e: CustomEvent): void =>
+              @submit=${(e: CustomEvent): void =>
                 this.onQuantityChange(e, !!silentRemove)}
             ></cart-entry-content>
 

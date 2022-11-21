@@ -3,6 +3,7 @@ import { IconTypes } from '../icon.model';
 
 export const storefrontIcons: ThemeIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
+  [IconTypes.Increase]: () => import('./icons/minus').then((s) => s.default),
   [IconTypes.CartAdd]: () => import('./icons/cart-add').then((s) => s.default),
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
@@ -24,4 +25,9 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Invisible]: () =>
     import('./icons/invisible').then((s) => s.default),
   [IconTypes.Wishlist]: () => import('./icons/wishlist').then((s) => s.default),
+
+  /** Alias to minus */
+  [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
+  /** Alias to add */
+  [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
 };

@@ -55,7 +55,7 @@ describe('ProductCardComponent', () => {
     expect(element).toContainElement('product-title');
     expect(element).toContainElement('product-price');
     expect(element).toContainElement('product-average-rating');
-    expect(element).toContainElement('add-to-cart');
+    expect(element).toContainElement('oryx-cart-add');
     expect(element).toContainElement('product-labels');
 
     //TODO: replace by favorites component
@@ -229,13 +229,13 @@ describe('ProductCardComponent', () => {
       beforeEach(async () => {
         element = await fixture(html` <product-card uid="1"></product-card> `);
 
-        handler = element.shadowRoot?.querySelector('add-to-cart');
+        handler = element.shadowRoot?.querySelector('oryx-cart-add');
       });
 
-      it('should not prevent the event', () => {
+      it('should prevent the event', () => {
         const expectation = vi.spyOn(clickEvent, 'preventDefault');
         handler?.dispatchEvent(clickEvent);
-        expect(expectation).not.toHaveBeenCalled();
+        expect(expectation).toHaveBeenCalled();
       });
 
       it('should stop the propagation of the event', () => {

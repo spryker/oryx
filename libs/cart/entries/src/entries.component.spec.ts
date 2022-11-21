@@ -77,10 +77,10 @@ describe('CartEntriesComponent', () => {
       expect(element).toContainElement('cart-entry');
     });
 
-    it('should emit update when quantity is changed', () => {
+    it('should emit update when quantity is submitted', () => {
       const quantity = 2;
       entryElement?.dispatchEvent(
-        new CustomEvent('oryx.update', { detail: { quantity } })
+        new CustomEvent('submit', { detail: { quantity } })
       );
 
       expect(service.updateEntry).toHaveBeenCalledWith({ ...entry, quantity });

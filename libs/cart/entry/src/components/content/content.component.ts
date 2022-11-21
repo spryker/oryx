@@ -76,7 +76,8 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
                 .value=${this.options?.quantity}
                 ?disabled=${this.disabled || this.options?.disabled}
                 decrease-icon=${ifDefined(this.getDecreaseIcon())}
-              ></quantity-input>
+                submitOnChange
+              ></oryx-cart-quantity-input>
             `,
             () => html`
               <div class="readonly-quantity">

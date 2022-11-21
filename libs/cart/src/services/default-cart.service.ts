@@ -174,8 +174,8 @@ export class DefaultCartService implements CartService {
         this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
+        this.loading$.next(false);
         this.updateError(error, cartId);
-
         throw error;
       }),
       mapTo(null)
@@ -212,8 +212,8 @@ export class DefaultCartService implements CartService {
         this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
+        this.loading$.next(false);
         this.updateError(error, cartId);
-
         throw error;
       }),
       mapTo(null)
@@ -245,8 +245,8 @@ export class DefaultCartService implements CartService {
         this.loading$.next(false);
       }),
       catchError((error: HttpErrorResponse) => {
+        this.loading$.next(false);
         this.updateError(error, cartId);
-
         throw error;
       }),
       mapTo(null)

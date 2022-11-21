@@ -118,12 +118,12 @@ export const componentsMapping: ComponentsMapping = {
         class=${ifDefined(layoutClasses)}
       ></auth-login>`,
   },
-  ['add-to-cart']: {
+  ['cart-add']: {
     template: (uid: string, layoutClasses?: string) =>
-      html`<add-to-cart
+      html`<oryx-cart-add
         uid="${uid}"
         class=${ifDefined(layoutClasses)}
-      ></add-to-cart>`,
+      ></oryx-cart-add>`,
   },
   ['search-box']: {
     template: (uid: string, layoutClasses?: string) =>

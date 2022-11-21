@@ -72,10 +72,8 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     )
   );
 
-  protected preventPropagating(e: MouseEvent, preventDefault = false): void {
-    if (preventDefault) {
-      e.preventDefault();
-    }
+  protected preventPropagating(e: MouseEvent): void {
+    e.preventDefault();
     e.stopPropagation();
   }
 
@@ -101,8 +99,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                       <button
                         tabindex="-1"
                         aria-label="add-to-favorites"
-                        @click=${(e: MouseEvent): void =>
-                          this.preventPropagating(e, true)}
+                        @click=${this.preventPropagating}
                       >
                         <oryx-icon type="wishlist"></oryx-icon>
                       </button>
@@ -141,14 +138,14 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                     `
                   )}
 
-                  <add-to-cart
+                  <oryx-cart-add
                     tabindex="-1"
                     .options="${{
                       outlined: true,
                       hideQuantityInput: true,
                     }}"
                     @click=${this.preventPropagating}
-                  ></add-to-cart>
+                  ></oryx-cart-add>
                 </div>
               </section>
             </content-link>

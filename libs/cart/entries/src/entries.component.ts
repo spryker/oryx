@@ -74,10 +74,10 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
   );
 
   protected onUpdate(e: CustomEvent, { groupKey, sku }: CartEntry): void {
-    const quantity = e.detail.quantity;
-
     this.currentlyUpdated$.next(groupKey);
-    this.cartService.updateEntry({ groupKey, sku, quantity }).subscribe();
+    this.cartService
+      .updateEntry({ groupKey, sku, quantity: e.detail.quantity })
+      .subscribe();
   }
 
   protected onRemove({ groupKey }: CartEntry): void {
@@ -109,7 +109,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
             disabled: loading,
             updating: entry.groupKey === currentlyUpdated,
           }}
-          @oryx.update=${(e: CustomEvent): void => this.onUpdate(e, entry)}
+          @submit=${(e: CustomEvent): void => this.onUpdate(e, entry)}
           @oryx.remove=${(): void => this.onRemove(entry)}
         ></cart-entry>
       `
