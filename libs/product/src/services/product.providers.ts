@@ -20,6 +20,7 @@ import {
 
 import { Provider } from '@spryker-oryx/injector';
 import { productListNormalizer } from './adapter/normalizers/product-list';
+import { componentsProvider } from './components.provider';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
@@ -34,6 +35,7 @@ import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
 
 export const productProviders: Provider[] = [
+  componentsProvider,
   {
     provide: ProductAdapter,
     useClass: DefaultProductAdapter,

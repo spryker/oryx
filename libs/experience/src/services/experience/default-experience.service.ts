@@ -2,7 +2,7 @@ import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { CONTENT_BACKEND_URL } from '../experience-tokens';
+import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
 
@@ -13,7 +13,7 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataOptions: Record<string, ReplaySubject<any>> = {};
 
   constructor(
-    protected contentBackendUrl = inject(CONTENT_BACKEND_URL),
+    protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService)
   ) {}
 

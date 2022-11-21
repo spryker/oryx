@@ -1,18 +1,16 @@
-import { builder } from '@netlify/functions';
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
 
-const storefrontHandler = async (event, context) => {
+export const storefrontHandler = async (event, context) => {
   try {
     const originalUrl = new URL(event.rawUrl);
-
     // esbuild on netlify does not properly transform import.meta because it is not using esnext settings
     const url = 'file:///var/task/dist/apps/storefront/functions/ssr/index.js';
-    const basepath = dirname(fileURLToPath(url));
-    const template = fs.readFileSync(
-      resolve(basepath, '../../client/index.html'),
+    const basePath = dirname(fileURLToPath(url));
+    const template = readFileSync(
+      resolve(basePath, '../../client/index.html'),
       'utf8'
     );
     const render = serverContext({
@@ -39,7 +37,3 @@ const storefrontHandler = async (event, context) => {
     };
   }
 };
-
-const handler = builder(storefrontHandler);
-
-export { handler };

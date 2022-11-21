@@ -11,7 +11,8 @@ declare module 'vite' {
 }
 
 export default defineConfig((config) => {
-  const env = loadEnv(config.mode, process.cwd(), '');
+  const envDir = process.cwd();
+  const env = loadEnv(config.mode, envDir, '');
 
   adjustUrlVariable(env, 'FES_CONTENT_BACKEND_URL');
 
@@ -19,13 +20,13 @@ export default defineConfig((config) => {
     build: {
       target: 'esnext',
       lib: {
-        entry: 'server/entry.ts',
+        entry: 'server/render.ts',
         formats: ['iife'],
         name: 'storefront',
       },
       emptyOutDir: true,
       outDir: '../../dist/apps/storefront/server',
-      ssr: 'server/entry.ts',
+      ssr: 'server/render.ts',
     },
     ssr: {
       noExternal: true,
@@ -41,12 +42,21 @@ export default defineConfig((config) => {
       viteStaticCopy({
         targets: [
           {
-            src: 'netlify.toml',
+            src: '../../libs/storefront/server/src/hosting/netlify.toml',
             dest: '../client',
           },
           {
-            src: 'functions/*',
-            dest: '../functions',
+            src: '../../libs/storefront/server/src/hosting/context.js',
+            dest: '../functions/ssr',
+          },
+          {
+            src: '../../libs/storefront/server/src/hosting/handler.lambda.js',
+            dest: '../functions/ssr',
+          },
+          {
+            src: '../../libs/storefront/server/src/hosting/handler.netlify.js',
+            dest: '../functions/ssr',
+            rename: 'index.js',
           },
         ],
       }),

@@ -2,7 +2,7 @@ import { mockAuthFeature } from '@spryker-oryx/auth/mocks';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
-import { app } from '@spryker-oryx/core';
+import { appBuilder } from '@spryker-oryx/core';
 import { mockCoreFeature } from '@spryker-oryx/core/mocks';
 import { mockExperienceFeature } from '@spryker-oryx/experience/mocks';
 import { formFeature } from '@spryker-oryx/form';
@@ -29,7 +29,7 @@ const themes = [...theme.list[themeKey]];
 // TODO: Drop chromatic folder (except styles) when chromatic issue will be fixed.
 const themeProps = isChromatic() ? new ThemeChromaticPlugin(themes) : themes;
 
-app()
+appBuilder()
   .with(new StorybookPlugin())
   .withOptions({
     components: {

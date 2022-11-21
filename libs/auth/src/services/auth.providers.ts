@@ -7,6 +7,7 @@ import {
   DefaultAuthService,
   tokenNormalizer,
 } from './auth';
+import { componentsProvider } from './components.provider';
 import {
   DefaultIdentityInterceptor,
   DefaultIdentityService,
@@ -15,6 +16,7 @@ import {
 } from './identity';
 
 export const authProviders: Provider[] = [
+  componentsProvider,
   {
     provide: AccessTokenService,
     useClass: DefaultAccessTokenService,

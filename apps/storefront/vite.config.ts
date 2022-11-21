@@ -20,19 +20,23 @@ const esbuild =
     : {};
 
 export default defineConfig((config) => {
-  const env = loadEnv(config.mode, process.cwd(), '');
+  const envDir = process.cwd();
+  const env = loadEnv(config.mode, envDir, '');
 
   adjustUrlVariable(env, 'FES_CONTENT_BACKEND_URL');
 
   return {
     esbuild,
+    root: './src',
     build: {
-      outDir: '../../dist/apps/storefront/client',
+      outDir: '../../../dist/apps/storefront/client',
       emptyOutDir: true,
     },
     ssr: {
       external: ['@lit-labs', 'rxjs'],
     },
+    envDir: '../',
+    publicDir: '../../../libs/presets/public',
     envPrefix: ['FES', 'SCOS', 'STORE'],
     plugins: [
       splitVendorChunkPlugin(),
@@ -41,7 +45,7 @@ export default defineConfig((config) => {
           tsconfigPath: 'tsconfig.app.json',
         },
       }),
-      tsconfigPaths({ root: '../../' }),
+      tsconfigPaths({ root: '../../../' }),
     ],
   };
 });

@@ -10,10 +10,12 @@ import {
 } from './adapter';
 import { AddressFormService } from './address-form.service';
 import { AddressService } from './address.service';
+import { componentsProvider } from './components.provider';
 import { DefaultAddressFormService } from './default-address-form.service';
 import { DefaultAddressService } from './default-address.service';
 
 export const userProviders: Provider[] = [
+  componentsProvider,
   {
     provide: AddressService,
     useClass: DefaultAddressService,

@@ -4,7 +4,18 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "./tools/executors/components-library:build"
+      "executor": "./tools/executors/components-library:build",
+      "options": {
+        "assets": [
+          "*.md",
+          {
+            "input": "public",
+            "glob": "**/*",
+            "output": "/public/"
+          }
+        ],
+        "exclude": ["public"]
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

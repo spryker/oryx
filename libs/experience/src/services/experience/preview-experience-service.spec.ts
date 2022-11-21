@@ -2,7 +2,7 @@ import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { Injector } from '@spryker-oryx/injector';
 import { NEVER, of } from 'rxjs';
-import { CONTENT_BACKEND_URL } from '../experience-tokens';
+import { ContentBackendUrl } from '../experience-tokens';
 import { RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
 import {
@@ -31,8 +31,8 @@ const providers = [
     useClass: PreviewExperienceService,
   },
   {
-    provide: CONTENT_BACKEND_URL,
-    useValue: CONTENT_BACKEND_URL,
+    provide: ContentBackendUrl,
+    useValue: ContentBackendUrl,
   },
   {
     provide: HttpService,

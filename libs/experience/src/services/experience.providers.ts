@@ -1,5 +1,6 @@
 import { SsrOptions } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
+import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
   DefaultBreakpointService,
@@ -9,12 +10,18 @@ import {
   LayoutBuilder,
   PreviewExperienceService,
 } from './experience';
+import { ContentBackendUrl } from './experience-tokens';
 import {
   ComponentsRegistryService,
   DefaultComponentsRegistryService,
 } from './registry';
 
 export const experienceProviders: Provider[] = [
+  componentsProvider,
+  {
+    provide: ContentBackendUrl,
+    useValue: import.meta.env?.FES_CONTENT_BACKEND_URL || '',
+  },
   {
     provide: ExperienceService,
     useClass: DefaultExperienceService,

@@ -22,6 +22,14 @@ import { MockStoreService } from './mock-store.service';
 
 export const mockSiteProviders: Provider[] = [
   {
+    provide: 'SCOS_BASE_URL',
+    useValue: '',
+  },
+  {
+    provide: 'STORE',
+    useValue: '',
+  },
+  {
     provide: SalutationService,
     useClass: DefaultSalutationService,
   },

@@ -3,28 +3,28 @@ import { inject } from '@spryker-oryx/injector';
 import { HYDRATE_ON_DEMAND } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html, unsafeStatic } from 'lit/static-html.js';
-import { COMPONENT_MAPPING } from '../experience-tokens';
+import { ComponentMapping } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
-
-export interface RegistryComponents {
-  [wildcard: string]: boolean;
-}
 
 export class DefaultComponentsRegistryService
   implements ComponentsRegistryService
 {
-  protected resolvedComponents: RegistryComponents = {};
-
   protected readonly componentsPlugin =
     this.appRef.requirePlugin(ComponentsPlugin);
+  protected componentMapping?: ComponentMapping;
 
   constructor(
-    protected registeredComponents = inject(COMPONENT_MAPPING),
+    registeredComponents = inject(ComponentMapping),
     protected readonly appRef = inject(AppRef)
-  ) {}
+  ) {
+    this.componentMapping = registeredComponents.reduce(
+      (acc, components) => ({ ...acc, ...components }),
+      {}
+    );
+  }
 
   resolveTag(type: string): string {
-    return this.registeredComponents[type]?.tag ?? type;
+    return this.componentMapping?.[type]?.tag ?? type;
   }
 
   resolveTemplate(
@@ -32,10 +32,12 @@ export class DefaultComponentsRegistryService
     uid: string,
     styleClasses?: string
   ): TemplateResult | undefined {
-    const component = this.registeredComponents[type];
+    const component = this.componentMapping?.[type];
+
     if (!component) {
       return undefined;
     }
+
     return component.template
       ? component.template(uid, styleClasses)
       : html`<${unsafeStatic(

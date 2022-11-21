@@ -18,7 +18,6 @@ import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
-import { appFeature } from './feature';
 
 const isPreview = new URLSearchParams(new URL(window.location.href).search).has(
   'ebPreview'
@@ -37,7 +36,6 @@ export const b2cFeatures = [
   searchFeature,
   siteFeature,
   storefrontFeature,
-  appFeature,
   userFeature,
   authFeature,
   new I18nFeature(),

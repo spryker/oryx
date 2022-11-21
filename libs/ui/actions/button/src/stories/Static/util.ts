@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { when } from 'lit-html/directives/when.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import { Size } from '../../../../../utilities';
 
 export const buttonTypes = (

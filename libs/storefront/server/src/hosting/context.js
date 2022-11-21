@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
 
 export const serverContext = (options = {}) => {
-  const server = options.base ? options.base : '../../server/entry.js';
+  const server = options.base ? options.base : '../../server/render.js';
   const url = options.url ? options.url : import.meta.url;
   const base = dirname(fileURLToPath(url));
   const window = getWindow({

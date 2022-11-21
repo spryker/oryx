@@ -1,8 +1,8 @@
 import { ModularAppBuilder } from './app';
-import { app } from './orchestration';
+import { appBuilder } from './orchestration';
 
 describe('app', () => {
   it('should return instance of ModularAppBuilder', () => {
-    expect(app()).toBeInstanceOf(ModularAppBuilder);
+    expect(appBuilder()).toBeInstanceOf(ModularAppBuilder);
   });
 });
