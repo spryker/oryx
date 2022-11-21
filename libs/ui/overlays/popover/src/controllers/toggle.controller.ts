@@ -1,8 +1,8 @@
-import { isFocusable } from '@spryker-oryx/typescript-utils';
 import {
   isSafari,
   nonFocusableOnClickInSafari,
 } from '@spryker-oryx/ui/utilities';
+import { isFocusable } from '@spryker-oryx/utilities/typescript';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
 import { PopoverComponent } from '../popover.component';

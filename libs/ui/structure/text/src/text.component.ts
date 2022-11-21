@@ -1,5 +1,5 @@
 import { prehydrate } from '@spryker-oryx/core';
-import { throttle } from '@spryker-oryx/typescript-utils';
+import { throttle } from '@spryker-oryx/utilities/typescript';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';

@@ -1,4 +1,4 @@
-import { queryAssignedElements } from '@spryker-oryx/typescript-utils';
+import { queryAssignedElements } from '@spryker-oryx/utilities/typescript';
 import { LitElement, ReactiveController } from 'lit';
 
 const focusableSelectors = [

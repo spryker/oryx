@@ -1,4 +1,4 @@
-import { isFocusable } from '@spryker-oryx/typescript-utils';
+import { isFocusable } from '@spryker-oryx/utilities/typescript';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { getControl } from '../../../utilities/getControl';
 import { ErrorController } from '../error/error.controller';

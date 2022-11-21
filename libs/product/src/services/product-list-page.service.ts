@@ -1,4 +1,4 @@
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable } from 'rxjs';
 import { ProductList } from '../models';
 

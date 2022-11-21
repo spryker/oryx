@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { a11yConfig } from '@spryker-oryx/utilities/typescript';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SelectedController } from './selected.controller';

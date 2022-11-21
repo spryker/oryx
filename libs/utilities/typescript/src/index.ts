@@ -1,4 +1,4 @@
-export * from './a11y';
+export * from './lib/a11y';
 export * as AjaxClient from './lib/ajax';
 export * from './lib/converters';
 export * from './lib/extract-str-props';

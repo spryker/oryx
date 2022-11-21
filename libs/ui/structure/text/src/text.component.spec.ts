@@ -6,7 +6,7 @@ import {
   html,
 } from '@open-wc/testing-helpers';
 import './ponyfill';
-import { wait } from '@spryker-oryx/typescript-utils';
+import { wait } from '@spryker-oryx/utilities/typescript';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { textComponent } from './text.def';
 import { TextComponent } from './text.component';

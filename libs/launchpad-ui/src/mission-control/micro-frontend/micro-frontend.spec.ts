@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { removeElement } from '@spryker-oryx/testing';
-import { AjaxClient, wait } from '@spryker-oryx/typescript-utils';
+import { AjaxClient, wait } from '@spryker-oryx/utilities/typescript';
 import { html } from 'lit';
 import { SpyInstance } from 'vitest';
 import { microFrontendComponent } from './index';

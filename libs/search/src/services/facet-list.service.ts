@@ -1,5 +1,5 @@
 import { Facet } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable } from 'rxjs';
 
 export interface FacetListService {

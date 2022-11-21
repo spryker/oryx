@@ -3,7 +3,7 @@ import {
   ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable, of } from 'rxjs';
 
 export class MockProductListService implements Partial<ProductListService> {

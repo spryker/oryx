@@ -1,5 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { a11yConfig } from '@spryker-oryx/utilities/typescript';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ErrorMessageComponent } from '../../../../error-message/index';

@@ -1,5 +1,5 @@
-import { ExtractStrProps } from '@spryker-oryx/typescript-utils';
 import { Injectable } from '@spryker-oryx/utilities';
+import { ExtractStrProps } from '@spryker-oryx/utilities/typescript';
 import { DirectiveResult } from 'lit/directive.js';
 import { DefaultI18nInjectable } from './i18n-default.injectable';
 

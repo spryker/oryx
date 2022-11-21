@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { a11yConfig } from '@spryker-oryx/utilities/typescript';
 import { html } from 'lit';
 import { optionComponent } from './component';
 import { OptionComponent } from './option.component';

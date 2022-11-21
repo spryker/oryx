@@ -49,7 +49,7 @@ vi.mock('../../utils', () => ({
   canRenew: (): boolean => utils.canRenew(),
 }));
 
-vi.mock('@spryker-oryx/typescript-utils', () => ({
+vi.mock('@spryker-oryx/utilities/typescript', () => ({
   toMilliseconds: (): number => mockToMilliseconds,
 }));
 

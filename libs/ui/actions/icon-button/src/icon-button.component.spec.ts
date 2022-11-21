@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import { queryFirstAssigned } from '@spryker-oryx/utilities/typescript';
 import { IconButtonComponent } from './icon-button.component';
 import { iconButtonComponent } from './icon-button.def';
 

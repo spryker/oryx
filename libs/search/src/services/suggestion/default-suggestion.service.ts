@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable, ReplaySubject } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter';

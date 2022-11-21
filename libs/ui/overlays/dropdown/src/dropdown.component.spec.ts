@@ -1,9 +1,9 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/typescript-utils';
 import { IconButtonComponent } from '@spryker-oryx/ui/icon-button';
 import { PopoverComponent } from '@spryker-oryx/ui/popover';
 import { Size } from '@spryker-oryx/ui/utilities';
+import { a11yConfig } from '@spryker-oryx/utilities/typescript';
 import { dropdownComponent } from './component';
 import { DropdownComponent } from './dropdown.component';
 

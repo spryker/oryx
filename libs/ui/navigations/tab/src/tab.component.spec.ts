@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/typescript-utils';
+import { a11yConfig } from '@spryker-oryx/utilities/typescript';
 import { TabComponent } from './tab.component';
 import { tabComponent } from './tab.def';
 

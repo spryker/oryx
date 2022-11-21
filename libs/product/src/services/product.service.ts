@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@spryker-oryx/core';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable } from 'rxjs';
 import { Product, ProductQualifier } from '../models';
 

@@ -5,7 +5,7 @@ import {
   ProductListAdapter,
   ProductListService,
 } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable, ReplaySubject } from 'rxjs';
 import { ProductListQualifier } from '../models/product-list-qualifier';
 

@@ -3,7 +3,7 @@ import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
 import { asyncValue } from '@spryker-oryx/lit-rxjs';
 import { Facet, FacetValue, RangeFacetValue } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { FacetListService } from '../../src/services/facet-list.service';

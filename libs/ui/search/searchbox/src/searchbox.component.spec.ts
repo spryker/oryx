@@ -1,7 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import {
+  a11yConfig,
+  queryFirstAssigned,
+} from '@spryker-oryx/utilities/typescript';
 import { SearchboxComponent } from './searchbox.component';
 import { searchboxComponent } from './searchbox.def';
 import {

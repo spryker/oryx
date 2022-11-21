@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { a11yConfig } from '../a11y';
+import { a11yConfig } from './a11y';
 import {
   queryAssignedElements,
   queryFirstAssigned,

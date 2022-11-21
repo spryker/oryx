@@ -1,4 +1,4 @@
-import { wait } from '@spryker-oryx/typescript-utils';
+import { wait } from '@spryker-oryx/utilities/typescript';
 import { expect } from '@storybook/jest';
 import { fireEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';

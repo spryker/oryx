@@ -11,7 +11,6 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "peerDependencies": {
-    "@spryker-oryx/typescript-utils": "~0.0.1",
     "@spryker-oryx/utilities": "*",
     "@spryker-oryx/injector": "*",
     "lit": "^2.1.0",

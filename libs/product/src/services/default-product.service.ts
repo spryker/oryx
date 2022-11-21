@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import { NullableGeneric } from '@spryker-oryx/typescript-utils';
+import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { distinctUntilChanged, Observable, ReplaySubject } from 'rxjs';
 import { Product, ProductQualifier } from '../models';
 import { ProductAdapter } from './adapter/product.adapter';

@@ -1,14 +1,14 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import {
-  a11yConfig,
-  queryAssignedElements,
-  queryFirstAssigned,
-} from '@spryker-oryx/typescript-utils';
-import {
   PageNavigationItemComponent,
   pageNavigationItemComponent,
 } from '@spryker-oryx/ui/page-navigation-item';
+import {
+  a11yConfig,
+  queryAssignedElements,
+  queryFirstAssigned,
+} from '@spryker-oryx/utilities/typescript';
 import { TemplateResult } from 'lit';
 import { pageNavigationComponent } from './component';
 import { PageNavigationComponent } from './page-navigation.component';

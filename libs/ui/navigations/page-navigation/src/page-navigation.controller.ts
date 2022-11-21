@@ -1,7 +1,7 @@
 import {
   queryAssignedElements,
   throttle,
-} from '@spryker-oryx/typescript-utils';
+} from '@spryker-oryx/utilities/typescript';
 import { LitElement, ReactiveController } from 'lit';
 import { PageNavigationItemComponent } from '../../page-navigation-item';
 import { PageNavigationProperties } from './page-navigation.model';

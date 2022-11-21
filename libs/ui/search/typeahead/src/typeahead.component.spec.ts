@@ -4,7 +4,7 @@ import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import {
   a11yConfig,
   queryAssignedElements,
-} from '@spryker-oryx/typescript-utils';
+} from '@spryker-oryx/utilities/typescript';
 import { TypeaheadComponent } from './typeahead.component';
 import { typeheadComponent } from './typeahead.def';
 

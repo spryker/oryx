@@ -1,6 +1,9 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/typescript-utils';
+import {
+  a11yConfig,
+  queryFirstAssigned,
+} from '@spryker-oryx/utilities/typescript';
 import { pageNavigationItemComponent } from './component';
 import { PageNavigationItemComponent } from './page-navigation-item.component';
 

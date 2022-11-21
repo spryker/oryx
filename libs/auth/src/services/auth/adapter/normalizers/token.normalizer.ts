@@ -1,6 +1,6 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
-import { toMilliseconds } from '@spryker-oryx/typescript-utils';
+import { toMilliseconds } from '@spryker-oryx/utilities/typescript';
 import { AccessToken } from '../../../../models';
 
 export const TokenNormalizer = 'FES.TokenNormalizer*';
