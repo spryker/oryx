@@ -29,4 +29,8 @@ export const backofficeNgIcons: ThemeIcons = {
     import('./icons/ambient-category').then((s) => s.default),
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
+  /** Alias to minus */
+  [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
+  /** Alias to add */
+  [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
 };
