@@ -1,13 +1,10 @@
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
-import {
-  ProductList,
-  ProductListAdapter,
-  ProductListService,
-} from '@spryker-oryx/product';
 import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable, ReplaySubject } from 'rxjs';
-import { ProductListQualifier } from '../models/product-list-qualifier';
+import { ProductList, ProductListQualifier } from '../models';
+import { ProductListAdapter } from './adapter';
+import { ProductListService } from './product-list.service';
 
 export interface ProductListData {
   value: ReplaySubject<NullableGeneric<ProductList>>;

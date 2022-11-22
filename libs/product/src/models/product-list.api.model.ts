@@ -1,4 +1,4 @@
-import { Product } from '@spryker-oryx/product';
+import { Product } from './product.model';
 
 export module ApiProductListModel {
   export interface ProductList {

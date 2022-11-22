@@ -1,6 +1,5 @@
-import { ConcreteProductsNormalizer } from '@spryker-oryx/product';
-import { of } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { of, take } from 'rxjs';
+import { ConcreteProductsNormalizer } from '../concrete-products';
 import { DeserializedProductList } from './model';
 import {
   concreteProductNormalizer,

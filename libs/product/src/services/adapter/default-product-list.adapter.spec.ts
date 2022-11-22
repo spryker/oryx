@@ -1,13 +1,11 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import {
-  DefaultProductListAdapter,
-  ProductListAdapter,
-} from '@spryker-oryx/product';
 import { of } from 'rxjs';
-import { ProductListQualifier } from '../../models/product-list-qualifier';
+import { ProductListQualifier } from '../../models';
+import { DefaultProductListAdapter } from './default-product-list.adapter';
 import { ProductListNormalizer } from './normalizers/product-list';
+import { ProductListAdapter } from './product-list.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 const mockProducts = {

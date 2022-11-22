@@ -2,7 +2,7 @@ import {
   ImageSource,
   ProductMedia,
   ProductMediaContainerSize,
-} from '@spryker-oryx/product';
+} from '../../models';
 
 /**
  * The `ProductImageService` resolves the best image source(s) for the given

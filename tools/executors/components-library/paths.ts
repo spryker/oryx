@@ -38,7 +38,9 @@ export default async function componentsLibraryPathsExecutor(
 
   if (packageJson.exports) {
     for (const key in packageJson.exports) {
-      tsConfig.compilerOptions.paths[`${packageJson.name}/${key}`] = [
+      tsConfig.compilerOptions.paths[
+        `${packageJson.name}/${key.replace('./', '')}`
+      ] = [
         join(
           options.cwd,
           packageJson.exports[key].default.replace(/.js$/, '.ts')

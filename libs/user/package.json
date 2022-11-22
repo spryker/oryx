@@ -11,7 +11,7 @@
     "access": "public"
   },
   "exports": {
-    "mocks": {
+    "./mocks": {
       "default": "./src/mocks/index.js",
       "types": "./src/mocks/index.d.ts"
     }

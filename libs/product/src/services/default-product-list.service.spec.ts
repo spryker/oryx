@@ -1,12 +1,10 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import {
-  DefaultProductListService,
-  ProductListAdapter,
-  ProductListService,
-} from '@spryker-oryx/product';
 import { Observable, of, switchMap } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ProductListQualifier } from '../models/product-list-qualifier';
+import { ProductListQualifier } from '../models';
+import { ProductListAdapter } from './adapter';
+import { DefaultProductListService } from './default-product-list.service';
+import { ProductListService } from './product-list.service';
 
 const mockList = [{ name: 'test1' }, { name: 'test2' }];
 

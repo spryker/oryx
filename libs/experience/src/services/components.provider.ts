@@ -1,7 +1,7 @@
-import { ComponentMapping } from '@spryker-oryx/experience';
 import { Provider } from '@spryker-oryx/injector';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ComponentMapping } from './experience-tokens';
 
 export const componentsProvider: Provider = {
   provide: ComponentMapping,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ProductNormalizer } from '@spryker-oryx/product';
 import { of, take } from 'rxjs';
+import { ProductNormalizer } from '../product';
 import { concreteProductsNormalizer } from './concrete-products.normalizer';
 import { DeserializedAbstract } from './model';
 

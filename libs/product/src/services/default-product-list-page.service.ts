@@ -1,14 +1,10 @@
 import { RouterService } from '@spryker-oryx/experience';
 import { inject } from '@spryker-oryx/injector';
-import {
-  ProductList,
-  ProductListPageService,
-  ProductListQualifier,
-  ProductListService,
-} from '@spryker-oryx/product';
 import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, switchMap } from 'rxjs';
+import { ProductList, ProductListQualifier } from '../models';
+import { ProductListPageService } from './product-list-page.service';
+import { ProductListService } from './product-list.service';
 
 export class DefaultProductListPageService implements ProductListPageService {
   constructor(

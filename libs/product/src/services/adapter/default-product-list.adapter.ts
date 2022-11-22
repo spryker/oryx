@@ -1,13 +1,13 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
+import { Observable } from 'rxjs';
 import {
   ApiProductModel,
   ProductList,
-  ProductListAdapter,
-} from '@spryker-oryx/product';
-import { Observable } from 'rxjs';
-import { ProductListQualifier } from '../../models/product-list-qualifier';
+  ProductListQualifier,
+} from '../../models';
 import { ProductListNormalizer } from './normalizers/product-list';
+import { ProductListAdapter } from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
   protected queryEndpoint = 'catalog-search';

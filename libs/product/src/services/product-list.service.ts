@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { Observable } from 'rxjs';
-import { ProductList } from '../models';
-import { ProductListQualifier } from '../models/product-list-qualifier';
+import { ProductList, ProductListQualifier } from '../models';
 
 export interface ProductListService {
   get(

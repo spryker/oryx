@@ -39,6 +39,7 @@ async function cypressViteExecutor(options, context) {
             port: vitePort,
         },
         plugins: [
+            // @ts-ignore
             istanbul({
                 cwd: path.resolve(context.root, ...viteRoot.split('/')),
                 include: ['**/*.js', '**/*.ts'],
