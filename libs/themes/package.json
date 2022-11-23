@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/themes",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "type": "module",
   "license": "MIT",
@@ -11,5 +11,9 @@
   "typings": "./src/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/utilities": "*"
   }
 }

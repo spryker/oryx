@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/core",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "type": "module",
   "description": "Core functionality for FES",
   "author": "Spryker",
@@ -11,10 +11,16 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "rxjs": "~7.4.0"
+    "abort-controller": "^3.0.0",
+    "node-fetch": "^3.2.10",
+    "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
-    "@spryker-oryx/injector": "~0.0.1"
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/injector": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   },
   "publishConfig": {
     "access": "public"

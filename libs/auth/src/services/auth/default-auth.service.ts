@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@spryker-oryx/injector';
 import {
   catchError,
@@ -26,7 +25,7 @@ export class DefaultAuthService implements AuthService {
       tap((token) =>
         this.accessToken.set({ token, persist: qualifier.remember })
       ),
-      catchError((e: HttpErrorResponse) =>
+      catchError((e) =>
         this.logout().pipe(
           switchMap(() => throwError(() => new Error(`${e.name} ${e.status}`)))
         )

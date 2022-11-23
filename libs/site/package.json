@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/site",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "type": "module",
   "files": [
     "**/*"
@@ -13,5 +13,15 @@
       "default": "./src/mocks/index.js",
       "types": "./src/mocks/index.d.ts"
     }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/ui": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   }
 }

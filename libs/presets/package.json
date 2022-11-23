@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/presets",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "type": "module",
   "license": "MIT",
@@ -11,5 +11,26 @@
   "typings": "./src/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/checkout": "*",
+    "@spryker-oryx/cart": "*",
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/content": "*",
+    "@spryker-oryx/i18n": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/form": "*",
+    "@spryker-oryx/search": "*",
+    "@spryker-oryx/user": "*",
+    "@spryker-oryx/storefront": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/injector": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "urlpattern-polyfill": "^4.0.3"
   }
 }

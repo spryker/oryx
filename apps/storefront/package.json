@@ -1,6 +1,6 @@
 {
   "name": "fes-storefront",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,5 +10,14 @@
     "dev:ssr": "node --experimental-vm-modules server/server",
     "build:server": "vite build -c vite.config.server.ts",
     "build:ssr": "npm run build && npm run build:server"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/presets": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/storefront": "*"
+  },
+  "devDependencies": {
+    "vite": "^3.0.9"
   }
 }

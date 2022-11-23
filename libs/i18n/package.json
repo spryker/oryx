@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/i18n",
   "type": "module",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "description": "Internationalization capabilities for Oryx",
   "author": "Spryker",
   "license": "MIT",
@@ -15,10 +15,13 @@
   },
   "peerDependencies": {
     "@spryker-oryx/injector": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/core": "*",
     "@spryker-oryx/utilities": "*",
     "cldr-data": "^36.0.1",
-    "lit": "^2.1.0",
-    "rxjs": "~7.4.0"
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   },
   "publishConfig": {
     "access": "public"

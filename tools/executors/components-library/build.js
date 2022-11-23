@@ -35,7 +35,7 @@ async function componentsLibraryBuildExecutor(baseOptions, context) {
     }, context);
     (0, utils_1.libDirsNormalizer)(options, (dir) => {
         const { name: dirName, path: dirPath } = dir;
-        const dirKey = dirName === 'src' ? '.' : dirName;
+        const dirKey = dirName === 'src' ? '.' : `./${dirName}`;
         packageJson.exports[dirKey] = {
             default: `./${dirPath}/index.js`,
             types: `./${dirPath}/index.d.ts`,

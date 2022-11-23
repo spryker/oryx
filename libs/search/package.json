@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/search",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "type": "module",
   "files": [
     "**/*"
@@ -13,5 +13,16 @@
       "default": "./src/mocks/index.js",
       "types": "./src/mocks/index.d.ts"
     }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/content": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/utilities": "*"
   }
 }

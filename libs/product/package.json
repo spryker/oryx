@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/product",
   "type": "module",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "license": "MIT",
   "files": [
@@ -17,5 +17,18 @@
       "default": "./src/mocks/index.js",
       "types": "./src/mocks/index.d.ts"
     }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/content": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/injector": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   }
 }

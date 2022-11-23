@@ -73,7 +73,7 @@ export default async function componentsLibraryBuildExecutor(
 
   libDirsNormalizer(options, (dir: DirData) => {
     const { name: dirName, path: dirPath } = dir;
-    const dirKey = dirName === 'src' ? '.' : dirName;
+    const dirKey = dirName === 'src' ? '.' : `./${dirName}`;
 
     packageJson.exports[dirKey] = {
       default: `./${dirPath}/index.js`,

@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "type": "module",
   "author": "Spryker",
   "license": "MIT",
@@ -15,5 +15,14 @@
       "default": "./src/mocks/index.js",
       "types": "./src/mocks/index.d.ts"
     }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/core": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   }
 }

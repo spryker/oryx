@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/content",
-  "version": "0.1.0-next.0",
+  "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "type": "module",
   "license": "MIT",
@@ -9,5 +9,15 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/site": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   }
 }
