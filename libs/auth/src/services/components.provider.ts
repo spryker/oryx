@@ -13,5 +13,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></auth-login>`,
     },
+    ['auth-logout']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<auth-logout
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></auth-logout>`,
+    },
   },
 };

@@ -27,5 +27,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></cart-totals>`,
     },
+    ['mini-cart']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<mini-cart
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></mini-cart>`,
+    },
   },
 };

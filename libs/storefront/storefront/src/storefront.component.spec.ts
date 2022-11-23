@@ -72,18 +72,18 @@ describe('InputComponent', () => {
   it('should render `experience-composition` tag', () => {
     const element = getElement();
     const experienceComposition = element.shadowRoot?.querySelector(
-      'experience-composition'
+      'experience-composition[route]'
     );
 
     expect(element).toBeInstanceOf(StorefrontComponent);
     expect(experienceComposition).toBeTruthy();
   });
 
-  it('should render `experience-composition` with `route` attributes passed from the `route` property', async () => {
+  it('should render `experience-composition` with `route` attributes passed from the `route` property', async (done) => {
     const mockRout = '/contact';
     const element = getElement();
     const experienceComposition = element.shadowRoot?.querySelector(
-      'experience-composition'
+      'experience-composition[route]'
     );
 
     expect(experienceComposition?.getAttribute('route')).toBe('/');
@@ -94,7 +94,7 @@ describe('InputComponent', () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const updatedExperienceComposition = getShadowElementBySelector(
         getElement(),
-        'experience-composition'
+        'experience-composition[route]'
       );
       expect(updatedExperienceComposition?.getAttribute('route')).toBe(
         mockRout

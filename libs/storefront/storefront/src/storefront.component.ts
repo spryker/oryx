@@ -1,4 +1,3 @@
-import { LinkType } from '@spryker-oryx/content/link';
 import { ContextController } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
@@ -32,36 +31,13 @@ export class StorefrontComponent extends LitElement {
     }
   }
 
-  renderNav(): TemplateResult {
-    return html`
-      <div>
-        <content-link
-          class="link"
-          .options="${{ type: LinkType.RawUrl, id: '/', label: 'Home Page' }}"
-          >Home</content-link
-        >
-        <content-link
-          class="link"
-          .options="${{
-            type: LinkType.RawUrl,
-            id: '/contact',
-            label: 'Contact Page',
-          }}"
-          >Contact</content-link
-        >
-      </div>
-      <nav>
-        <search-box .options="{{cmsCount: 0}}"></search-box>
-        <auth-logout .options="${{ customRedirect: 'contact' }}"></auth-logout>
-        <mini-cart></mini-cart>
-      </nav>
-    `;
-  }
-
   override render(): TemplateResult {
     return html` ${asyncValue(
       this.route$,
-      () => html`<div>${this.renderNav()} ${this._routes.outlet()}</div>`
+      () =>
+        html`<experience-composition uid="header"></experience-composition>
+          ${this._routes.outlet()}
+          <experience-composition uid="footer"></experience-composition>`
     )}`;
   }
 }
