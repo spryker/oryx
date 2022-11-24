@@ -3,10 +3,23 @@ import { toCSS, toJSON } from 'css-convert-json';
 import { LitElement } from 'lit';
 
 export const ssrStyleShim = (litClass: Type<LitElement>) => {
+  litClass.prototype.toggleAttribute = function (
+    property: string,
+    force?: boolean
+  ): boolean {
+    if (force === undefined ? this.hasAttribute(property) : !force) {
+      this.removeAttribute(property);
+      return false;
+    }
+    this.setAttribute(property, '');
+    return true;
+  };
+
   Object.defineProperty(litClass.prototype, '_styles', {
     value: {},
     writable: true,
   });
+
   Object.defineProperty(litClass.prototype, 'style', {
     get() {
       return {
