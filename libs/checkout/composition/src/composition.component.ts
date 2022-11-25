@@ -5,7 +5,7 @@ import {
   CheckoutOrchestrationService,
   Validity,
 } from '@spryker-oryx/checkout';
-import { ComponentMixin } from '@spryker-oryx/experience';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
@@ -13,15 +13,18 @@ import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { combineLatest, map } from 'rxjs';
+import { CheckoutCompositionOptions } from './composition.model';
 import { styles } from './composition.styles';
 
 @hydratable('window:load')
-export class CheckoutCompositionComponent extends ComponentMixin() {
+export class CheckoutCompositionComponent extends ComponentMixin<CheckoutCompositionOptions>() {
   static styles = styles;
 
   protected checkoutDataService = resolve(CheckoutDataService);
 
   protected orchestrationService = resolve(CheckoutOrchestrationService);
+
+  protected options$ = new ContentController(this).getOptions();
 
   protected isEmptyCart$ = resolve(CartService).isEmpty();
 
@@ -51,6 +54,7 @@ export class CheckoutCompositionComponent extends ComponentMixin() {
     this.isAuthenticated$,
     this.isGuestCheckout$,
     this.deliveryCompleted$,
+    this.options$,
     this.testData$,
   ]);
 
@@ -91,6 +95,7 @@ export class CheckoutCompositionComponent extends ComponentMixin() {
           isAuthenticated,
           isGuestCheckout,
           deliveryCompleted,
+          options,
           testData,
         ]) => {
           if (isEmptyCart) {
@@ -103,6 +108,7 @@ export class CheckoutCompositionComponent extends ComponentMixin() {
                 @oryx.guest-submit=${(): void => {
                   this.checkoutDataService.setIsGuestCheckout();
                 }}
+                .options=${{ disableGuest: options.disableGuest }}
               ></checkout-login>
             `;
           }

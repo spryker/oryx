@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Address } from '../../models';
 import { AddressService } from '../../services';
 import { mockNormalizedAddresses } from './mock-address';
@@ -14,7 +14,8 @@ export enum MockAddressType {
 }
 
 export class MockAddressService implements Partial<AddressService> {
-  protected type = MockAddressType.Two;
+  protected type$ = new BehaviorSubject(MockAddressType.Two);
+  protected currentAddress$ = new BehaviorSubject<Address | null>(null);
 
   protected setAsNoDefaults(addresses: Address[]): Address[] {
     return addresses.map((address) => ({
@@ -23,41 +24,44 @@ export class MockAddressService implements Partial<AddressService> {
       isDefaultShipping: false,
     }));
   }
-  protected mockAddresses: Address[] | null = null;
+
+  changeMockCurrentAddress(address: Address): void {
+    this.currentAddress$.next(address);
+  }
 
   changeMockAddressType(type: MockAddressType): void {
-    this.type = type;
+    this.type$.next(type);
+  }
+
+  getCurrentAddress(): Observable<Address | null> {
+    return this.currentAddress$;
   }
 
   getAddresses(): Observable<Address[] | null> {
-    switch (this.type) {
-      case MockAddressType.One:
-        this.mockAddresses = [...mockNormalizedAddresses].slice(0, 1);
-        break;
-      case MockAddressType.OneWithoutDefaults:
-        this.mockAddresses = this.setAsNoDefaults(
-          [...mockNormalizedAddresses].slice(0, 1)
-        );
-        break;
-      case MockAddressType.Two:
-        this.mockAddresses = [...mockNormalizedAddresses].slice(0, 2);
-        break;
-      case MockAddressType.TwoWithoutDefaults:
-        this.mockAddresses = this.setAsNoDefaults(
-          [...mockNormalizedAddresses].slice(0, 2)
-        );
-        break;
-      case MockAddressType.Three:
-        this.mockAddresses = [...mockNormalizedAddresses];
-        break;
-      case MockAddressType.ThreeWithoutDefaults:
-        this.mockAddresses = this.setAsNoDefaults([...mockNormalizedAddresses]);
-        break;
-      case MockAddressType.Zero:
-      default:
-        this.mockAddresses = null;
-    }
-
-    return of(this.mockAddresses);
+    return this.type$.pipe(
+      map((type) => {
+        switch (type) {
+          case MockAddressType.One:
+            return [...mockNormalizedAddresses].slice(0, 1);
+          case MockAddressType.OneWithoutDefaults:
+            return this.setAsNoDefaults(
+              [...mockNormalizedAddresses].slice(0, 1)
+            );
+          case MockAddressType.Two:
+            return [...mockNormalizedAddresses].slice(0, 2);
+          case MockAddressType.TwoWithoutDefaults:
+            return this.setAsNoDefaults(
+              [...mockNormalizedAddresses].slice(0, 2)
+            );
+          case MockAddressType.Three:
+            return [...mockNormalizedAddresses];
+          case MockAddressType.ThreeWithoutDefaults:
+            return this.setAsNoDefaults([...mockNormalizedAddresses]);
+          case MockAddressType.Zero:
+          default:
+            return null;
+        }
+      })
+    );
   }
 }
