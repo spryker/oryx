@@ -24,6 +24,7 @@ export class FormControlController implements ReactiveController {
   }
 
   hostDisconnected(): void {
+    this.removeValidationListeners();
     this.host.removeEventListener('mousedown', this.mouseDownHandler);
     this.controlAttrObserver?.disconnect();
   }
@@ -69,6 +70,25 @@ export class FormControlController implements ReactiveController {
     this.detectAutofill();
     this.toggleHasValueAttribute();
     this.adjustDisabledState();
+    this.addValidationListeners();
+  }
+
+  protected setHasErrorAttr(): void {
+    this.host.toggleAttribute('hasError', true);
+  }
+
+  protected removeHasErrorAttr(): void {
+    this.host.toggleAttribute('hasError', false);
+  }
+
+  protected addValidationListeners(): void {
+    this.control?.addEventListener('invalid', this.setHasErrorAttr);
+    this.control?.addEventListener('input', this.removeHasErrorAttr);
+  }
+
+  protected removeValidationListeners(): void {
+    this.control?.removeEventListener('invalid', this.setHasErrorAttr);
+    this.control?.removeEventListener('input', this.removeHasErrorAttr);
   }
 
   protected detectAutofill(): void {
@@ -133,5 +153,7 @@ export class FormControlController implements ReactiveController {
     this.visibleFocusController = new VisibleFocusController(this.host);
     this.errorController = new ErrorController(this.host);
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
+    this.setHasErrorAttr = this.setHasErrorAttr.bind(this);
+    this.removeHasErrorAttr = this.removeHasErrorAttr.bind(this);
   }
 }

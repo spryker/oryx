@@ -50,6 +50,14 @@ export interface Shipment {
   id?: string;
 }
 
+export interface ContactDetails {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+}
+
+export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
+
 export const defaultSelectedShipmentMethod = {
   deliveryTime: null,
   carrierName: '',

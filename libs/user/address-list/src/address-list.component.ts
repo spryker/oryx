@@ -133,7 +133,7 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
                         name="address"
                         type="radio"
                         value="${isDefined(address.id) ? address.id : ''}"
-                        .checked=${isSelected}
+                        ?checked=${isSelected}
                         @change=${this.onChange}
                       />`
                     )}

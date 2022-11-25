@@ -25,6 +25,7 @@ export interface CartService {
   updateEntry(data: UpdateCartEntryQualifier): Observable<null>;
   deleteEntry(data: DeleteCartEntryQualifier): Observable<null>;
   getLoadingState(): Observable<boolean>;
+  isEmpty(data?: CartQualifier): Observable<boolean>;
 }
 
 export const CartService = 'FES.CartService';

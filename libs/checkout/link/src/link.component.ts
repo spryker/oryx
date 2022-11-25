@@ -5,7 +5,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { styles } from './link.styles';
 
 @hydratable(['window:load'])
@@ -16,13 +16,10 @@ export class CheckoutLinkComponent extends ComponentMixin() {
 
   protected cartService = resolve(CartService);
 
-  protected isEmptyCart$ = this.cartService
-    .getEntries()
-    .pipe(map((entries) => !entries?.length));
-
-  protected loading$ = this.cartService.getLoadingState();
-
-  protected data$ = combineLatest([this.isEmptyCart$, this.loading$]);
+  protected data$ = combineLatest([
+    this.cartService.isEmpty(),
+    this.cartService.getLoadingState(),
+  ]);
 
   protected override render(): TemplateResult {
     return html`

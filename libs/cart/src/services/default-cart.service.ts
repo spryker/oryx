@@ -145,6 +145,10 @@ export class DefaultCartService implements CartService {
     return cart$.pipe(map((cart) => cart?.products ?? []));
   }
 
+  isEmpty(data?: CartQualifier): Observable<boolean> {
+    return this.getEntries(data).pipe(map((entries) => !entries?.length));
+  }
+
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 

@@ -10,7 +10,7 @@ import { CheckoutLinkComponent } from './link.component';
 import { checkoutLinkComponent } from './link.def';
 
 class MockCartService implements Partial<CartService> {
-  getEntries = vi.fn();
+  isEmpty = vi.fn();
   getLoadingState = vi.fn().mockReturnValue(of(false));
 }
 
@@ -49,7 +49,7 @@ describe('CheckoutLinkComponent', () => {
 
   describe('when cart is empty', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([]));
+      service.isEmpty.mockReturnValue(of(true));
       element = await fixture(html`<checkout-link uid="1"></checkout-link>`);
     });
 
@@ -60,7 +60,7 @@ describe('CheckoutLinkComponent', () => {
 
   describe('when cart is not empty', () => {
     beforeEach(async () => {
-      service.getEntries.mockReturnValue(of([{}]));
+      service.isEmpty.mockReturnValue(of(false));
       element = await fixture(html`<checkout-link uid="1"></checkout-link>`);
     });
 
@@ -76,7 +76,7 @@ describe('CheckoutLinkComponent', () => {
   describe('when cart is loading', () => {
     beforeEach(async () => {
       service.getLoadingState.mockReturnValue(of(true));
-      service.getEntries.mockReturnValue(of([{}]));
+      service.isEmpty.mockReturnValue(of(false));
       element = await fixture(html` <checkout-link uid="1"></checkout-link>`);
     });
 

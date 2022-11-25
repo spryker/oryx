@@ -1,16 +1,20 @@
-import { FormRenderer, formStyles } from '@spryker-oryx/form';
+import {
+  FormComponentMixin,
+  FormRenderer,
+  formStyles,
+} from '@spryker-oryx/form';
 import { resolve } from '@spryker-oryx/injector';
 import { CountryService } from '@spryker-oryx/site';
 import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { styles } from './address-form.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class AddressFormComponent extends LitElement {
+export class AddressFormComponent extends FormComponentMixin() {
   static styles = [styles, formStyles];
 
   @property() country?: string;
@@ -57,34 +61,34 @@ export class AddressFormComponent extends LitElement {
   );
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.data$, ([countries, currentCountry]) => {
-      return html`<form>
-        ${countries.length > 1
-          ? html`<oryx-select class="w100" label="Country *">
-              <select
-                name="country"
-                .value=${currentCountry}
-                @change=${this.onCountryChange}
-              >
-                ${countries.map((country) => {
-                  return html`<option
-                    value=${country.iso2Code}
-                    ?selected=${country.iso2Code === currentCountry}
-                  >
-                    ${country.name}
-                  </option>`;
-                })}
-              </select>
-            </oryx-select>`
-          : html``}
-        ${asyncValue(this.form$, (form) =>
-          form ? this.fieldRenderer.buildForm(form) : html``
-        )}
-        <oryx-button>
-          <button type="submit">Submit</button>
-        </oryx-button>
-      </form>`;
-    })}`;
+    return html`<form>
+      ${asyncValue(
+        this.data$,
+        ([countries, currentCountry]) => html`
+          ${countries.length > 1
+            ? html`<oryx-select class="w100" label="Country *">
+                <select
+                  name="country"
+                  .value=${currentCountry}
+                  @change=${this.onCountryChange}
+                >
+                  ${countries.map((country) => {
+                    return html`<option
+                      value=${country.iso2Code}
+                      ?selected=${country.iso2Code === currentCountry}
+                    >
+                      ${country.name}
+                    </option>`;
+                  })}
+                </select>
+              </oryx-select>`
+            : html``}
+        `
+      )}
+      ${asyncValue(this.form$, (form) =>
+        form ? this.fieldRenderer.buildForm(form) : html``
+      )}
+    </form>`;
   }
 
   protected onCountryChange(e: Event): void {
