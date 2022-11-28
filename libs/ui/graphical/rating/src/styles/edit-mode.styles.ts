@@ -1,5 +1,8 @@
 import { css } from 'lit';
 
+// Note: the pseudo states in storybook are actual destroying some of the
+// :not selectors, which destroys the UX in the following case:
+//   - when you hover over a selected rating, the stars in between won't get highlighted
 export const ratingEditModeStyles = css`
   :host(:not([readonly])) input {
     position: absolute;
@@ -22,7 +25,7 @@ export const ratingEditModeStyles = css`
 
   input:hover:not(:checked) + slot,
   input:hover:not(:checked) + ::slotted(*) {
-    color: var(--oryx-rating-color-hover, #e4a41c);
+    color: var(--oryx-rating-color-hover, var(--oryx-color-secondary-400));
   }
 
   fieldset input:valid:hover + slot ~ slot[has-char],

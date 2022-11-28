@@ -64,7 +64,7 @@ export const styles = css`
 
   [slot='aside'],
   oryx-collapsible dd {
-    color: var(--oryx-color-highlight);
+    color: var(--oryx-color-highlight-300);
   }
 
   dl,

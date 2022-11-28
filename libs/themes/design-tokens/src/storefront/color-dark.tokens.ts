@@ -1,17 +1,28 @@
 import { ColorDesignTokens } from '@spryker-oryx/core';
+import { colorPalette, reverse } from '../color-palette';
+import { color } from './color.tokens';
 
 export const darkColor: ColorDesignTokens = {
-  canvas: '#333',
   ink: '#fff',
-  'neutral-light': '#d4d5d7',
-  'neutral-lighter': '#333333',
-  'neutral-lightest': '#121212',
-  'neutral-dark': '#b2b2b2',
-  'neutral-darker': '#dbdbdb',
-  'neutral-darkest': '#f5f5f5',
-  'brand-lighter': '#225e52',
-  'brand-light': '#138671',
-  brand: '#17b497',
-  'brand-dark': '#a0e1d5',
-  'brand-darker': '#f1f8f7',
+
+  canvas: {
+    100: '#000000',
+    200: '#0a0a0a',
+    300: '#181511',
+    400: '#231f1a',
+    500: '#242424',
+  },
+  neutral: reverse(color.neutral),
+
+  primary: reverse(color.primary),
+
+  highlight: reverse(color.highlight),
+
+  success: reverse(color.success),
+  warning: reverse(color.warning),
+  error: reverse(color.error),
+  info: reverse(color.info),
+
+  focus: reverse(color.focus),
+  placeholder: colorPalette.gray[200],
 };

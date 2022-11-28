@@ -13,7 +13,7 @@ export const ratingReadonlyStyles = css`
   }
 
   :host([readonly]) input {
-    background-color: var(--oryx-color-neutral);
+    background-color: var(--oryx-color-canvas-500);
   }
 
   :host([readonly]:not([size='small'])) input {

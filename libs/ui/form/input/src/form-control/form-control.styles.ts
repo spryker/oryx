@@ -6,7 +6,7 @@ export const formControlBaseStyles = css`
   :host {
     display: flex;
     flex-direction: column;
-    border-color: var(--oryx-color-neutral-light);
+    border-color: var(--oryx-color-canvas-400);
   }
 
   label {
@@ -53,7 +53,7 @@ export const formControlBaseStyles = css`
 
   :host(:not([hasError])) .control:hover,
   :host(:not([hasError])) .control:focus-within {
-    border-color: var(--oryx-color-neutral);
+    border-color: var(--oryx-color-neutral-100);
   }
 
   :host(:not([hasError])) .control:focus-within {

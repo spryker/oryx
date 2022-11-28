@@ -6,20 +6,41 @@ export const chipStorefrontUI: ThemeData = {
   styles: [
     css`
       :host {
+        --bg: var(--oryx-color-neutral-300);
+
         border-radius: 38px;
         color: var(--oryx-color-canvas);
-        background-color: var(--oryx-chip-background-color, #71747c);
       }
 
-      :host([appearance='${unsafeCSS(ChipAppearance.Info)}']) {
-        background-color: var(--oryx-chip-info-background-color, #1ebea0);
+      :host([appearance='${unsafeCSS(ChipAppearance.Offline)}']),
+      :host([appearance='${unsafeCSS(ChipAppearance.Inactive)}']) {
+        --bg: var(--oryx-color-neutral-300);
+      }
+
+      :host([appearance='${unsafeCSS(ChipAppearance.Success)}']),
+      :host([appearance='${unsafeCSS(ChipAppearance.Online)}']),
+      :host([appearance='${unsafeCSS(ChipAppearance.Active)}']) {
+        --bg: var(--oryx-color-success-300);
+      }
+
+      :host([appearance='${unsafeCSS(ChipAppearance.Low)}']) {
+        --bg: var(--oryx-chip-low-color, #cd8814);
+      }
+
+      :host([appearance='${unsafeCSS(ChipAppearance.Warning)}']) {
+        --bg: var(--oryx-color-warning-300);
       }
 
       :host([appearance='${unsafeCSS(ChipAppearance.Highlight)}']) {
-        background-color: var(
-          --oryx-chip-highlight-background-color,
-          var(--oryx-color-highlight)
-        );
+        --bg: var(--oryx-color-highlight-300);
+      }
+
+      :host([appearance='${unsafeCSS(ChipAppearance.Info)}']) {
+        --bg: var(--oryx-color-info-300);
+      }
+
+      :host([appearance='${unsafeCSS(ChipAppearance.Error)}']) {
+        --bg: var(--oryx-color-error-300);
       }
     `,
   ],

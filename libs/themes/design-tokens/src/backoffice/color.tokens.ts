@@ -1,33 +1,22 @@
 import { ColorDesignTokens } from '@spryker-oryx/core';
+import { colorPalette } from '../color-palette';
 
 export const color: ColorDesignTokens = {
-  canvas: '#fff',
   ink: '#121212',
-  neutral: '#d4d5d7',
-  'neutral-light': '#efeeee',
-  'neutral-lighter': '#f8f8f8',
-  'neutral-dark': '#9ea1a7',
-  'neutral-darker': '#71747c',
-  'neutral-greyblue': '#e7eaee',
-  'neutral-greyblue-darker': '#b7bec9',
-  'neutral-grey-lighter': '#f5f5f5',
-  'neutral-grey-darker': '#121212',
-  brand: '#17b497',
-  'brand-light': '#a0e1d5',
-  'brand-lighter': '#f1f8f7',
-  'brand-dark': '#138671',
-  'brand-darker': '#225e52',
-  highlight: '#f2392e',
-  info: '#2480f2',
-  success: '#17b497',
-  warning: '#ff6800',
-  error: '#f2392e',
-  'error-dark': '#c72712',
-  accent: '#2480f2',
-  'accent-light': '#eaf1fa',
-  'accent-dark': '#2261af',
-  'orange-light': '#fef0e6',
-  'pink-light': '#f9f2f1',
-  placeholder: 'var(--oryx-color-neutral-dark)',
-  focus: 'var(--oryx-color-brand)',
+
+  canvas: colorPalette.white,
+  neutral: colorPalette.gray,
+
+  primary: colorPalette.green,
+  secondary: colorPalette.yellow,
+
+  highlight: colorPalette.red,
+
+  success: colorPalette.green,
+  warning: colorPalette.orange,
+  error: colorPalette.red,
+  info: colorPalette.blue,
+
+  focus: colorPalette.green[300],
+  placeholder: colorPalette.gray[300],
 };

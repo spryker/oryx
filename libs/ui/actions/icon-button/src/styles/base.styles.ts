@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const iconButtonBaseStyles = css`
   :host {
-    color: var(--oryx-icon-button-color, var(--oryx-color-neutral-dark));
+    color: var(--oryx-icon-button-color, var(--oryx-color-neutral-300));
     display: inline-block;
   }
 

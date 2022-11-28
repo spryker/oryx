@@ -14,7 +14,8 @@ export const ProductCardStyles = css`
         )
     );
     box-sizing: border-box;
-    border: var(--oryx-border-thin) solid var(--oryx-color-neutral-dark);
+    border: var(--oryx-border-thin) solid var(--oryx-color-canvas-200);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color-2);
   }
 
   :host(:is(:hover, :focus-within)) {
@@ -22,6 +23,7 @@ export const ProductCardStyles = css`
 
     z-index: 1;
     box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color-2);
+    border-color: var(--oryx-color-canvas-500);
   }
 
   :host(:is(:hover, :focus-within)) product-title {

@@ -5,7 +5,7 @@ export const ProductPriceStyles = css`
     display: flex;
     gap: 10px;
     align-items: baseline;
-    color: var(--oryx-color-warning);
+    color: var(--oryx-color-highlight-300);
   }
 
   [part='original'] {
@@ -20,7 +20,7 @@ export const ProductPriceStyles = css`
     top: 50%;
     margin-inline-start: -5%;
     width: 110%;
-    border-top: 1.5px solid var(--oryx-color-warning);
+    border-top: 1.5px solid var(--oryx-color-highlight-300);
     transform: rotate(-10deg);
   }
 `;

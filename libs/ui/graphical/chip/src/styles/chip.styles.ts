@@ -8,8 +8,8 @@ export const chipBaseStyle = css`
     flex-grow: 0;
     flex-shrink: 0;
     height: 24px;
-    color: var(--oryx-chip-color, #71747c);
-    background-color: var(--oryx-chip-background-color, #efeeee);
+    color: var(--c, var(--oryx-color-neutral-300));
+    background-color: var(--bg, var(--oryx-color-canvas-300));
   }
 
   slot {
