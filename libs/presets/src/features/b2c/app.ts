@@ -1,3 +1,4 @@
+import { applicationFeature } from '@spryker-oryx/application';
 import { authFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
@@ -13,7 +14,6 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
-import { storefrontFeature } from '@spryker-oryx/storefront';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
@@ -35,7 +35,7 @@ export const b2cFeatures = [
   productFeature,
   searchFeature,
   siteFeature,
-  storefrontFeature,
+  applicationFeature,
   userFeature,
   authFeature,
   new I18nFeature(),

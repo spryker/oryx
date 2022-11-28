@@ -10,11 +10,8 @@ import {
 import { siteProviders } from '@spryker-oryx/site';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import 'urlpattern-polyfill';
-import { storefrontComponent } from './component';
-import { StorefrontComponent } from './storefront.component';
-
-useComponent(storefrontComponent);
+import { RootAppComponent } from './root-app.component';
+import { rootAppComponent } from './root-app.def';
 
 class MockRouterService implements Partial<RouterService> {
   private router$ = new BehaviorSubject('');
@@ -34,8 +31,13 @@ class MockRouterService implements Partial<RouterService> {
   }
 }
 
-describe('InputComponent', () => {
+describe('RootAppComponent', () => {
   let routerService: MockRouterService;
+
+  beforeAll(async () => {
+    await useComponent(rootAppComponent);
+  });
+
   beforeEach(async () => {
     createInjector({
       providers: [
@@ -57,16 +59,16 @@ describe('InputComponent', () => {
     ) as unknown as MockRouterService;
     routerService.go('/');
 
-    document.body.innerHTML = '<storefront-component></storefront-component>';
+    document.body.innerHTML = '<root-app></root-app>';
   });
 
   afterEach(() => {
     destroyInjector();
   });
 
-  const getElement = (): StorefrontComponent => {
+  const getElement = (): RootAppComponent => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return document.body.querySelector('storefront-component')!;
+    return document.body.querySelector('root-app')!;
   };
 
   it('should render `experience-composition` tag', () => {
@@ -75,7 +77,7 @@ describe('InputComponent', () => {
       'experience-composition[route]'
     );
 
-    expect(element).toBeInstanceOf(StorefrontComponent);
+    expect(element).toBeInstanceOf(RootAppComponent);
     expect(experienceComposition).toBeTruthy();
   });
 
@@ -90,8 +92,7 @@ describe('InputComponent', () => {
 
     routerService.go(mockRout);
 
-    routerService.currentParams().subscribe((value) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    routerService.currentParams().subscribe(() => {
       const updatedExperienceComposition = getShadowElementBySelector(
         getElement(),
         'experience-composition[route]'

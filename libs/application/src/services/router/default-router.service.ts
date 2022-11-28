@@ -20,7 +20,7 @@ import { filter } from 'rxjs/operators';
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
 
-export class StorefrontRouterService implements RouterService {
+export class DefaultRouterService implements RouterService {
   private router$ = new BehaviorSubject(window.location.pathname);
   private params$ = new ReplaySubject<RouteParams>(1);
   private urlSearchParams$ = new BehaviorSubject<RouteParams>(

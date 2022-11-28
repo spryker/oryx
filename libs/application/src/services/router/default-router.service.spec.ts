@@ -2,15 +2,15 @@ import { StorageService, StorageType } from '@spryker-oryx/core';
 import { RouterEventType, RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { of } from 'rxjs';
-import { StorefrontRouterService } from './router.service';
+import { DefaultRouterService } from './default-router.service';
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
   set = vi.fn();
 }
 
-describe('StorefrontRouterService', () => {
-  let service: StorefrontRouterService;
+describe('DefaultRouterService', () => {
+  let service: DefaultRouterService;
   let storageService: MockStorageService;
 
   beforeEach(() => {
@@ -22,14 +22,14 @@ describe('StorefrontRouterService', () => {
         },
         {
           provide: RouterService,
-          useClass: StorefrontRouterService,
+          useClass: DefaultRouterService,
         },
       ],
     });
 
     service = testInjector.inject(
       RouterService
-    ) as unknown as StorefrontRouterService;
+    ) as unknown as DefaultRouterService;
     storageService = testInjector.inject(
       StorageService
     ) as unknown as MockStorageService;
@@ -40,7 +40,7 @@ describe('StorefrontRouterService', () => {
   });
 
   it('should provide a service', () => {
-    expect(service).toBeInstanceOf(StorefrontRouterService);
+    expect(service).toBeInstanceOf(DefaultRouterService);
   });
 
   it('should provide the current route', () => {

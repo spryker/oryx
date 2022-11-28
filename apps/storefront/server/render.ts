@@ -9,7 +9,7 @@ export const render = (
   renderApp(
     {
       ...config,
-      element: html`<storefront-component></storefront-component>`,
+      element: html`<root-app></root-app>`,
     },
     app,
     litRender

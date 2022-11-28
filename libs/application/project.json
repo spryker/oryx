@@ -1,7 +1,7 @@
 {
   "projectType": "library",
-  "root": "libs/storefront",
-  "sourceRoot": "libs/storefront/src",
+  "root": "libs/application",
+  "sourceRoot": "libs/application/src",
   "prefix": "fes",
   "targets": {
     "build": {
@@ -14,7 +14,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/storefront/**/*.ts"]
+        "lintFilePatterns": ["libs/application/**/*.ts"]
       }
     },
     "paths": {

@@ -17,10 +17,7 @@ export const storefrontHandler = async (event, context) => {
       url,
     });
     const appHtml = await render({ route: originalUrl });
-    const html = template.replace(
-      `<storefront-component></storefront-component>`,
-      appHtml
-    );
+    const html = template.replace(`<root-app></root-app>`, appHtml);
     return {
       statusCode: 200,
       headers: {

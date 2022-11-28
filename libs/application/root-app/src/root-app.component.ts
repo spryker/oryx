@@ -1,19 +1,19 @@
+import { DefaultRouter, routes } from '@spryker-oryx/application';
 import { ContextController } from '@spryker-oryx/core';
 import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { ProductContext } from '@spryker-oryx/product';
-import { routes, StorefrontRouter } from '@spryker-oryx/storefront';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { take, tap } from 'rxjs';
-import { styles } from './storefront.styles';
+import { styles } from './root-app.styles';
 
 @hydratable()
-export class StorefrontComponent extends LitElement {
+export class RootAppComponent extends LitElement {
   protected context = new ContextController(this);
   protected routerService = resolve(RouterService);
-  private _routes = new StorefrontRouter(this, routes);
+  private _routes = new DefaultRouter(this, routes);
 
   static styles = styles;
 

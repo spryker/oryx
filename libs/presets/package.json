@@ -26,7 +26,7 @@
     "@spryker-oryx/form": "*",
     "@spryker-oryx/search": "*",
     "@spryker-oryx/user": "*",
-    "@spryker-oryx/storefront": "*",
+    "@spryker-oryx/application": "*",
     "@spryker-oryx/themes": "*",
     "@spryker-oryx/injector": "*",
     "lit": "^2.4.0",

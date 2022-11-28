@@ -6,7 +6,7 @@ import { PatchableLitElement } from '@spryker-oryx/utilities';
 import { html, isServer, ReactiveControllerHost, TemplateResult } from 'lit';
 import { identity, skip, tap } from 'rxjs';
 
-export class StorefrontRouter extends Router {
+export class DefaultRouter extends Router {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);

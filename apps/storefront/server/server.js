@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { createServer } from '../../../libs/storefront/server/src/server.js';
+import { createServer } from '../../../libs/application/server/src/server.js';
 
 const config = {
   isProd: process.env.NODE_ENV === 'production',
@@ -15,7 +15,7 @@ const config = {
     entry: './server/render.ts',
     index: './src',
   },
-  component: '<storefront-component></storefront-component>',
+  component: '<root-app></root-app>',
 };
 
 createServer(config);

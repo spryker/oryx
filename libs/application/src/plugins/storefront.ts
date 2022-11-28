@@ -1,7 +1,9 @@
 import {
+  App,
   AppPlugin,
   AppPluginAfterApply,
   AppPluginBeforeApply,
+  ComponentsPlugin,
   ErrorService,
 } from '@spryker-oryx/core';
 import { RouterService } from '@spryker-oryx/experience';
@@ -9,18 +11,23 @@ import { resolve } from '@spryker-oryx/injector';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
-import { storefrontComponent } from '../../storefront/src/component';
-import { initHydrateHooks } from '../utilities';
+import { initHydrateHooks } from './hydrate-hooks';
 
 declare global {
-  function litElementHydrateSupport(param: { LitElement: unknown }): void;
+  function litElementHydrateSupport(param: {
+    LitElement: typeof LitElement;
+  }): void;
 }
 
-export class StorefrontPlugin
+export const RootPluginName = 'application$root';
+
+export class RootPlugin
   implements AppPlugin, AppPluginBeforeApply, AppPluginAfterApply
 {
+  protected rootSelector = '';
+
   getName(): string {
-    return 'storefront';
+    return RootPluginName;
   }
 
   beforeApply(): void | Promise<void> {
@@ -34,15 +41,19 @@ export class StorefrontPlugin
     globalThis.litElementHydrateSupport?.({ LitElement });
   }
 
-  apply(): void | Promise<void> {
+  apply(app: App): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.rootSelector = app.findPlugin(ComponentsPlugin)!.rootSelector;
+
     // TODO - remove when we have app initializers
     resolve(ErrorService).initialize();
-    if (!document.body.querySelector(storefrontComponent().name)?.shadowRoot) {
+
+    if (!document.querySelector(this.rootSelector)?.shadowRoot) {
       resolve(RouterService).go(window.location.pathname);
     }
   }
 
   afterApply(): void | Promise<void> {
-    initHydrateHooks();
+    initHydrateHooks(this.rootSelector);
   }
 }

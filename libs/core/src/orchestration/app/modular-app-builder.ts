@@ -65,9 +65,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       }
 
       if (feat.plugins) {
-        feat.plugins.forEach((plugin) => {
-          this.with(plugin);
-        });
+        feat.plugins.forEach((plugin) => this.with(plugin));
       }
     }
 
@@ -80,18 +78,18 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   }
 
   async create(): Promise<App> {
-    if (this.themes.length) {
-      this.plugins.push(new ThemePlugin(this.themes));
-    }
-
     if (this.providers.length) {
-      this.plugins.push(
+      this.plugins.unshift(
         new InjectionPlugin(this.providers, this.options?.injector)
       );
     }
 
+    if (this.themes.length) {
+      this.plugins.unshift(new ThemePlugin(this.themes));
+    }
+
     if (this.componentsInfo.length) {
-      this.plugins.push(
+      this.plugins.unshift(
         new ComponentsPlugin(
           this.componentsInfo,
           this.options?.components as ComponentsPluginOptions

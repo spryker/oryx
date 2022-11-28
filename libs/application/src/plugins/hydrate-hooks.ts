@@ -52,7 +52,7 @@ export function treewalk(
   return arr;
 }
 
-export function initHydrateHooks(): void {
+export function initHydrateHooks(rootSelector: string): void {
   const registryService = resolve(ComponentsRegistryService);
 
   //TODO - remove this when we no longer need manual hydrate on demand
@@ -72,6 +72,7 @@ export function initHydrateHooks(): void {
     }
   });
 
-  const storefront = document.body.querySelector('storefront-component');
-  registryService.hydrateOnDemand(storefront as LitElement);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const root = document.body.querySelector<LitElement>(rootSelector)!;
+  registryService.hydrateOnDemand(root);
 }
