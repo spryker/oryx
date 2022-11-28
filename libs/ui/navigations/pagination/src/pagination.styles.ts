@@ -32,9 +32,9 @@ export const paginationStyles = css`
 
   ::slotted(*),
   a {
-    border: 1px solid var(--oryx-color-neutral-light);
+    border: 1px solid var(--oryx-color-canvas-500);
     border-radius: var(--oryx-border-radius-small);
-    background: var(--oryx-color-canvas);
+    background: var(--oryx-color-canvas-100);
     transition: var(--oryx-transition-time);
     overflow: hidden;
     white-space: nowrap;
@@ -53,19 +53,19 @@ export const paginationStyles = css`
   }
 
   ::slotted(*) {
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 
   ::slotted(*[disabled]) {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
   }
 
   a {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
   }
 
   a[disabled] {
-    color: var(--oryx-color-neutral);
+    color: var(--oryx-color-neutral-200);
   }
 
   slot[name='truncated'] * {
@@ -119,7 +119,7 @@ export const paginationStyles = css`
   ::slotted(*:hover),
   a:not([truncated]):hover {
     transition: var(--oryx-transition-time);
-    border-color: var(--oryx-color-neutral);
+    border-color: var(--oryx-color-neutral-200);
   }
 
   ::slotted(*[active]),
@@ -127,7 +127,7 @@ export const paginationStyles = css`
   ::slotted(*:focus-visible),
   a:not([truncated]):active,
   a:not([truncated]):focus-visible {
-    border-color: var(--oryx-color-brand);
+    border-color: var(--oryx-color-primary-300);
   }
 
   ::slotted(*[active]),
@@ -139,18 +139,18 @@ export const paginationStyles = css`
   ::slotted(*[active]),
   ::slotted(*:active),
   a:not([truncated]):active {
-    color: var(--oryx-color-canvas);
-    background: var(--oryx-color-brand);
+    color: var(--oryx-color-canvas-100);
+    background: var(--oryx-color-primary-300);
   }
 
   ::slotted(*:focus-visible),
   *:focus-visible {
-    box-shadow: 0 0 3px var(--oryx-color-brand);
+    box-shadow: 0 0 3px var(--oryx-color-primary-300);
   }
 
   ::slotted(*[disabled]),
   a[disabled] {
-    background-color: var(--oryx-color-neutral-lighter);
+    background-color: var(--oryx-color-canvas-200);
   }
 
   slot[name='previous'] oryx-icon {

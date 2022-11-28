@@ -76,7 +76,7 @@ export const textStyles = css`
     align-self: center;
     margin: 10px 0;
     transition: transform var(--oryx-transition-time-long) ease-in-out;
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
   }
 
   :host(:not([truncated])) oryx-icon-button {

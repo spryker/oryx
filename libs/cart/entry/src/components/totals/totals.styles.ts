@@ -5,7 +5,7 @@ export const cartEntryTotalsStyles = css`
     display: flex;
     justify-content: flex-end;
     padding: 7px var(--oryx-space-4);
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
   }
 
   cart-entry-price::part(price) {

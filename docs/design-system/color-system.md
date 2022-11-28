@@ -6,7 +6,7 @@ The color system allows to change colors globally. The components do not define 
 
 The main entities in the color system are:
 
-- **Color groups**: named colors, for example the _brand_ color group
+- **Color groups**: named colors, for example the _primary_ color group
 - **color shades**: each color group can provide colors in different shades
 - **Color modes**: dark versus light mode
 - **Color palettes**: predefined colors that are used inside predefined themes
@@ -17,8 +17,8 @@ The framework supports 10 different color groups. The color grouping helps both 
 
 | Color group | Description                                                                                                                                                                                                                                                                                                                                                  |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Brand       | The primary color accent which is often related to the corporate or brand identity. This color is also used for call-to-action buttons.                                                                                                                                                                                                                      |
-| Accent      | The accent color can add subtle differences in the UI next to the brand color. The brand is the main color used to add color, where as the accent color is used rarely to add little accents int the UI                                                                                                                                                      |
+| Primary     | The primary color accent which is often related to the corporate or brand identity. This color is also used for call-to-action buttons.                                                                                                                                                                                                                      |
+| Secondary   | The secondary color is used to add subtle differences in the UI next to the primary color. The secondary color is used sporadically to add little accents.                                                                                                                                                                                                   |
 | Canvas      | Canvas colors are typically used to fill the real estate of components, e.g. the background or border color of an element. Some sort of gray is often being used for canvas colors. The lightest canvas color is typically the global background of a page. Canvas colors are not being used in the design system, the design system will only use neutrals. |
 | Neutral     | Similarly to canvas color group, neutral colors are used to build the real estate of a component. The neutrals are mainly in use for the design system.                                                                                                                                                                                                      |
 | Highlight   | The highlight color is used to highlight very specific parts in the UI. It is a variation of the accent, but used for very specific actions, such as a price discount                                                                                                                                                                                        |
@@ -27,11 +27,11 @@ The framework supports 10 different color groups. The color grouping helps both 
 | Warning     | The warning color is used to indicate the warning state of a component. This is typically yellow or orange.                                                                                                                                                                                                                                                  |
 | Error       | The error color is used to indicate an error state of a component. This is typically red.                                                                                                                                                                                                                                                                    |
 
-Brand, neutral, canvas and ink are the colors that are mostly being used. The state color groups (info, warning, error, success and highlight) are rarely being used.
+Primary, neutral, canvas and ink are the colors that are mostly being used. The state color groups (info, warning, error, success and highlight) are rarely being used.
 
 ## Color shades
 
-Each color group supports five shades. The shades are numbered from 100 to 500, where 300 is the base color. The base brand color is named `oryx-color-base-300`.
+Each color group supports five shades. The shades are numbered from 100 to 500, where 300 is the base color. The base primary color is named `oryx-color-primary-300`.
 
 Shades names, such as "light" or "lighter" are avoided to not ensure that the system work in both dark and light mode.
 
@@ -73,14 +73,14 @@ The color palette contains the following 10 colors:
 
 ### Using color design tokens in CSS
 
-An example if the usage of design tokens in CSS is given below. In this example, the button background color is setup with the brand color for the default state. When the user hovers over the button, the 400 color shade is used.
+An example if the usage of design tokens in CSS is given below. In this example, the button background color is setup with the primary color for the default state. When the user hovers over the button, the 400 color shade is used.
 
 ```css
 button {
-  background-color: var(--oryx-color-brand-300);
+  background-color: var(--oryx-color-primary-300);
 }
 button:hover {
-  background-color: var(--oryx-color-brand-400);
+  background-color: var(--oryx-color-primary-400);
 }
 ```
 
@@ -88,7 +88,7 @@ button:hover {
 
 The color system is configured by themes. You can use predefined themes from the theme package and amend the theme in your application setup, or build your own theme.
 
-An example of color configuration is shown below. This configuration uses an existing theme (`storefrontTheme`) and changes the base brand color for both light and dark mode.
+An example of color configuration is shown below. This configuration uses an existing theme (`storefrontTheme`) and changes the base primary color for both light and dark mode.
 
 ```ts
 import { storefrontTheme } from '@spryker-oryx/themes';
@@ -102,7 +102,7 @@ export const app = appBuilder()
       designTokens: [
         {
           color: {
-            brand: {
+            primary: {
                 300: 'hotpink'
             }
           },
@@ -112,7 +112,7 @@ export const app = appBuilder()
             mode: 'dark',
           },
           color: {
-            brand: {
+            primary: {
                 300: 'deeppink'
             }
           },

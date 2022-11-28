@@ -159,7 +159,7 @@ export const navigationStyles = css`
     width: ${thumbWidth};
     padding: 10px;
     box-sizing: border-box;
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
   }
 
   slot${isPosStartOrEnd} .nav label {
@@ -186,11 +186,11 @@ export const navigationStyles = css`
   .nav input:focus:focus-visible,
   .nav input:checked,
   .nav input:hover {
-    border: solid var(--oryx-border-thin) var(--oryx-color-neutral-darker);
+    border: solid var(--oryx-border-thin) var(--oryx-color-neutral-400);
   }
 
   .nav input:hover:not(:checked) {
-    border-color: var(--oryx-color-neutral);
+    border-color: var(--oryx-color-neutral-200);
   }
 
   .nav input:focus:focus-visible {

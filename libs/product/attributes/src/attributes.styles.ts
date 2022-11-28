@@ -22,7 +22,7 @@ export const ProductAttributeStyles = css`
 
   li > div {
     margin: 0;
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     font-size: 14px;
   }
 

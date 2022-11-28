@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const navigationStyles = css`
   :host {
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
     display: flex;
     flex-direction: column;
@@ -36,9 +36,9 @@ export const navigationStyles = css`
     aspect-ratio: 1/1;
     border-radius: 100%;
     border: none;
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
     padding: 0;
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
     display: flex;
     align-items: center;
@@ -51,8 +51,8 @@ export const navigationStyles = css`
   }
 
   button:hover {
-    background-color: var(--oryx-color-brand);
-    color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-primary-300);
+    color: var(--oryx-color-canvas-100);
   }
 
   :host([collapsed]) button oryx-icon {

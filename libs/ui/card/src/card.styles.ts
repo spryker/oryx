@@ -19,13 +19,13 @@ export const styles = css`
   }
 
   :host(:not([type='secondary'])) {
-    --background-color: var(--oryx-color-canvas);
+    --background-color: var(--oryx-color-canvas-100);
 
     box-shadow: 0 1px 3px var(--oryx-elevation-color);
   }
 
   :host([type='secondary']) {
-    --background-color: var(--oryx-color-neutral-lighter);
+    --background-color: var(--oryx-color-canvas-200);
   }
 
   :host(:not([type='secondary'])) slot[name='header'] {
@@ -66,7 +66,7 @@ export const styles = css`
     display: flex;
     align-items: center;
     gap: 8px;
-    border-bottom: 1px solid var(--oryx-color-neutral);
+    border-bottom: 1px solid var(--oryx-color-neutral-200);
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -74,7 +74,7 @@ export const styles = css`
   }
 
   slot[name='header']::slotted(oryx-icon) {
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 
   slot[name='header'] h5,

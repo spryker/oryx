@@ -57,7 +57,7 @@ export const notificationStyles = css`
   }
 
   :host([type='${unsafeCSS(Types.ERROR)}']) {
-    --_notification-main-color: var(--oryx-color-error);
+    --_notification-main-color: var(--oryx-color-error-300);
   }
 
   :host([floating]) {
@@ -65,11 +65,11 @@ export const notificationStyles = css`
   }
 
   :host([scheme='${unsafeCSS(Schemes.LIGHT)}']) {
-    background: var(--oryx-color-canvas);
+    background: var(--oryx-color-canvas-100);
   }
 
   :host([scheme='${unsafeCSS(Schemes.DARK)}']) {
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
   }
 
   slot[name='icon'] {
@@ -88,6 +88,6 @@ export const notificationStyles = css`
   }
 
   slot[name='subtext'] {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
   }
 `;

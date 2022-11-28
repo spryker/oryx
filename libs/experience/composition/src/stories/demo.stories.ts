@@ -39,12 +39,12 @@ class FakeLayout extends LitElement {
         justify-content: center;
       }
       div.content {
-        background-color: var(--oryx-color-neutral-lighter);
+        background-color: var(--oryx-color-canvas-200);
         width: 100%;
         height: 100%;
       }
       div[style*='span'] > div.content {
-        background-color: var(--oryx-color-brand);
+        background-color: var(--oryx-color-primary-300);
       }
 
       div:nth-child(3):not(.content) {

@@ -6,7 +6,7 @@ export const styles = css`
     padding: 8px;
     border-radius: 4px;
     outline: none;
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
     font-size: 12px;
     text-transform: uppercase;
     text-decoration: none;
@@ -16,22 +16,22 @@ export const styles = css`
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    border: 2px solid var(--oryx-color-neutral-lighter);
+    border: 2px solid var(--oryx-color-canvas-200);
   }
 
   a:hover {
-    background: var(--oryx-color-neutral-greyblue);
-    border-color: var(--oryx-color-neutral-greyblue);
+    background: var(--oryx-color-canvas-300);
+    border-color: var(--oryx-color-canvas-300);
   }
 
   a:active {
-    background: var(--oryx-color-neutral-greyblue);
-    border-color: var(--oryx-color-neutral-greyblue-darker);
+    background: var(--oryx-color-canvas-300);
+    border-color: var(--oryx-color-canvas-300);
   }
 
   a:focus-visible {
-    border-color: var(--oryx-color-brand-dark);
-    box-shadow: 0 0 3px var(--oryx-color-brand-dark);
+    border-color: var(--oryx-color-primary-400);
+    box-shadow: 0 0 3px var(--oryx-color-primary-400);
   }
 
   oryx-icon {
@@ -48,8 +48,8 @@ export const styles = css`
 
   .badge {
     border-radius: 2px;
-    background: var(--oryx-color-brand-dark);
-    color: var(--oryx-color-canvas);
+    background: var(--oryx-color-primary-400);
+    color: var(--oryx-color-canvas-100);
     position: absolute;
     inset-inline-end: 6px;
     top: 6px;

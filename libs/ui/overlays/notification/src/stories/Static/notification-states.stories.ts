@@ -55,7 +55,7 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
         gap: 20px;
       }
       section {
-        flex: 0 0 50%;
+        flex: 50%;
       }
 
       .custom {

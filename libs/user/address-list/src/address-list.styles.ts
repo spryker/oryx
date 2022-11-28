@@ -36,7 +36,7 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     padding: 50px;
-    background: var(--oryx-color-neutral-darkest, #f5f5f5);
+    background: var(--oryx-color-neutral-300, #f5f5f5);
     color: #1c1b1f;
   }
 

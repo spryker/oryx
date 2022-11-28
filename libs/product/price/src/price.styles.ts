@@ -10,7 +10,7 @@ export const ProductPriceStyles = css`
 
   [part='original'] {
     position: relative;
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
     font-size: 0.8em;
   }
 

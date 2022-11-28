@@ -15,11 +15,11 @@ export const optionsBaseStyles = css`
     display: flex;
     align-items: center;
     padding-block: var(--oryx-space-2);
-    border-block-start: 2px solid var(--oryx-color-neutral-greyblue);
+    border-block-start: 2px solid var(--oryx-color-canvas-300);
   }
 
   oryx-button {
-    --_color-text: var(--oryx-color-brand);
+    --_color-text: var(--oryx-color-primary-300);
 
     margin-inline-start: var(--oryx-space-2);
   }

@@ -6,7 +6,7 @@ export const linkStyles = css`
 
     display: inline-flex;
     align-items: center;
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
   }
 
   oryx-icon,
@@ -31,24 +31,24 @@ export const linkStyles = css`
 
   :host([disabled]) {
     pointer-events: none;
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
   }
 
   :host(:hover:not([disabled])) {
-    color: var(--oryx-color-brand-dark);
+    color: var(--oryx-color-primary-400);
   }
 
   :host(:not([disabled])) ::slotted(a:active),
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    background-color: var(--oryx-color-neutral-lighter);
+    background-color: var(--oryx-color-canvas-200);
   }
 
   :host(:not([disabled])) ::slotted(a:active) {
-    border: solid 1px var(--oryx-color-canvas);
+    border: solid 1px var(--oryx-color-canvas-100);
   }
 
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    box-shadow: 0 0 3px var(--oryx-color-brand);
+    box-shadow: 0 0 3px var(--oryx-color-primary-300);
   }
 
   /* additional space at the start whenever an icon is available */
@@ -58,7 +58,7 @@ export const linkStyles = css`
   }
 
   :host([linktype='external']:not([disabled])) {
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 
   :host([linktype='external']:hover) {

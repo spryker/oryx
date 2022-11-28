@@ -6,7 +6,7 @@ export const previewStyles = css`
   }
   .eb-preview-focus:before {
     content: '';
-    outline: 4px solid var(--oryx-color-brand);
+    outline: 4px solid var(--oryx-color-primary-300);
     outline-offset: -4px;
     position: absolute;
     width: 100%;
@@ -25,7 +25,7 @@ export const previewStyles = css`
     font-weight: 500;
     font-family: 'Montserrat';
     padding: 2px 5px;
-    background-color: var(--oryx-color-brand);
+    background-color: var(--oryx-color-primary-300);
     z-index: var(--oryx-overlay-z-index, 3);
   }
 `;

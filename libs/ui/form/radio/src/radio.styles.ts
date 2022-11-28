@@ -27,14 +27,14 @@ export const baseStyles = css`
     margin: 3px 0;
     padding: 2px;
     border: solid 2px currentColor;
-    color: var(--oryx-color-neutral);
+    color: var(--oryx-color-neutral-200);
   }
 
   ::slotted(input:checked) {
     background-clip: content-box;
     /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
   }
 
   ::slotted(:not(input)) {
@@ -55,7 +55,7 @@ export const baseStyles = css`
   }
 
   ::slotted(input:hover) {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
   }
 
   ::slotted(input:focus-visible) {
@@ -65,24 +65,24 @@ export const baseStyles = css`
   }
 
   :host([hasError]) ::slotted(input:focus-visible) {
-    border-color: var(--oryx-color-error);
+    border-color: var(--oryx-color-error-300);
   }
 
   ::slotted(input:disabled),
   ::slotted(input:checked:disabled) {
-    background-color: var(--oryx-color-neutral-lighter);
-    color: var(--oryx-color-neutral-dark);
-    border-color: var(--oryx-color-neutral-light);
+    background-color: var(--oryx-color-canvas-200);
+    color: var(--oryx-color-neutral-300);
+    border-color: var(--oryx-color-canvas-500);
     pointer-events: none;
   }
 
   ::slotted(input:checked:hover) {
-    color: var(--oryx-color-brand-dark);
+    color: var(--oryx-color-primary-400);
   }
 
   :host([hasError]) ::slotted(input),
   :host([hasError]) ::slotted(input:checked) {
-    border-color: var(--oryx-color-error);
+    border-color: var(--oryx-color-error-300);
   }
 
   [hasErrorContent] {

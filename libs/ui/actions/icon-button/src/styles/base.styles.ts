@@ -23,29 +23,29 @@ export const iconButtonBaseStyles = css`
   }
 
   ::slotted(:hover:not([disabled])) {
-    border-color: var(--oryx-color-neutral);
-    background: var(--oryx-color-neutral-lighter);
+    border-color: var(--oryx-color-neutral-200);
+    background: var(--oryx-color-canvas-200);
   }
 
   ::slotted(:focus-visible:not(:active):not([disabled])) {
-    border-color: var(--oryx-color-canvas);
+    border-color: var(--oryx-color-canvas-100);
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
 
   ::slotted(:focus-visible:hover:not(:active):not([disabled])) {
-    border-color: var(--oryx-color-neutral-lighter);
+    border-color: var(--oryx-color-canvas-200);
   }
 
   ::slotted(:active:not([disabled])) {
-    border-color: var(--oryx-color-neutral-dark);
-    background: var(--oryx-color-neutral-lighter);
+    border-color: var(--oryx-color-neutral-300);
+    background: var(--oryx-color-canvas-200);
   }
 
   ::slotted([disabled]) {
     cursor: default;
-    color: var(--oryx-color-neutral);
-    border-color: var(--oryx-color-neutral-light);
-    background: var(--oryx-color-neutral-lighter);
+    color: var(--oryx-color-neutral-200);
+    border-color: var(--oryx-color-canvas-500);
+    background: var(--oryx-color-canvas-200);
   }
 
   :host([size='small']) ::slotted(*) {

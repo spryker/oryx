@@ -24,7 +24,7 @@ export const optionStyles = css`
     --oryx-icon-size: var(--oryx-icon-size-small);
 
     display: none;
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
     margin-inline-start: auto;
   }
 
@@ -34,20 +34,20 @@ export const optionStyles = css`
 
   :host(:hover),
   :host([highlight]) {
-    background-color: var(--oryx-color-neutral-lighter);
+    background-color: var(--oryx-color-canvas-200);
   }
 
   :host([selected]) {
-    background-color: var(--oryx-color-brand-lighter);
+    background-color: var(--oryx-color-primary-100);
   }
 
   :host(:not([selected]):active) {
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
   }
 
   :host(:active) {
-    border-color: var(--oryx-color-brand);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-color-brand);
+    border-color: var(--oryx-color-primary-300);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-primary-300);
     transition: box-shadow, border;
     transition-duration: var(--oryx-transition-time);
   }
@@ -66,7 +66,7 @@ export const optionStyles = css`
   ::slotted(mark),
   mark {
     background-color: transparent;
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
     display: inline;
   }
 `;

@@ -20,7 +20,7 @@ const inlineAppearance = css`
 const blockAppearance = css`
   :host(${blockSelector}) {
     border-radius: var(--oryx-border-radius-small);
-    border: solid 1px var(--oryx-color-neutral-light);
+    border: solid 1px var(--oryx-color-canvas-500);
     position: relative;
   }
 
@@ -37,7 +37,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:active) {
-    border-color: var(--oryx-color-brand-dark);
+    border-color: var(--oryx-color-primary-400);
   }
 
   :host(${blockSelector}) summary {

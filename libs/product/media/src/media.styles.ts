@@ -8,11 +8,11 @@ export const styles = css`
   }
 
   [part='fallback'] {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     margin: auto;
     width: 100%;
     height: 100%;
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
   }
 
   picture {

@@ -96,21 +96,21 @@ export class CartController {
     return of(cart).pipe(
       switchMap((cart) =>
         Object.entries(cart.totals ?? {}).reduce((acc$, [priceType, price]) => {
-          if (!price) {
-            return of({});
-          }
-          if (priceType === 'discountTotal') {
-            price = -price;
-          }
           return acc$.pipe(
-            switchMap((acc) =>
-              this.pricingService.format(price).pipe(
+            switchMap((acc) => {
+              if (!price) {
+                return of({ ...acc });
+              }
+              if (priceType === 'discountTotal') {
+                price = -price;
+              }
+              return this.pricingService.format(price).pipe(
                 map((formattedPrice) => ({
                   ...acc,
                   [priceType]: formattedPrice as string,
                 }))
-              )
-            )
+              );
+            })
           );
         }, of({}))
       )

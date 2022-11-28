@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const navigationItemStyles = css`
   :host {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     display: flex;
     box-sizing: border-box;
     padding: 16px 17px;
@@ -28,13 +28,13 @@ export const navigationItemStyles = css`
   }
 
   :host([active]:not([active='false'])) {
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
     pointer-events: none;
   }
 
   :host([active]:not([active='false']))::before {
     content: '';
-    background-color: var(--oryx-color-brand);
+    background-color: var(--oryx-color-primary-300);
     position: absolute;
     inset-inline-start: 0;
     height: 36px;

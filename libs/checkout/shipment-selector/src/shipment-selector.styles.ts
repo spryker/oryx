@@ -37,7 +37,7 @@ export const styles = css`
   .delivery {
     flex-basis: 100%;
     font-weight: 600;
-    color: var(--oryx-color-neutral);
+    color: var(--oryx-color-neutral-200);
     margin-inline-start: calc(var(--oryx-radio-size, 18px) + 8px);
   }
 `;

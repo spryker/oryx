@@ -26,18 +26,18 @@ export const contentBaseStyles = css`
 
   .seller,
   product-id {
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 
   .seller :last-child {
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
     margin-inline-start: var(--oryx-space-2);
   }
 
   cart-entry-price oryx-icon {
     --oryx-icon-size: 11px;
 
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
     margin-inline-end: 3.5px;
   }
 
@@ -67,7 +67,7 @@ export const contentBaseStyles = css`
   .readonly-quantity :first-child {
     font-size: 12px;
     line-height: 16px;
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 `;
 

@@ -5,7 +5,7 @@ export const styles = css`
     text-align: start;
     margin-block-end: 10px;
     text-decoration: none;
-    border: 1px solid var(--oryx-color-neutral-light);
+    border: 1px solid var(--oryx-color-canvas-500);
     border-radius: 9px;
     position: relative;
     display: block;
@@ -21,7 +21,7 @@ export const styles = css`
     border-radius: 50%;
     width: 8px;
     height: 8px;
-    background: var(--oryx-color-neutral-light);
+    background: var(--oryx-color-canvas-500);
     position: absolute;
     inset-block-start: 17px;
     inset-inline-start: 20px;
@@ -40,17 +40,17 @@ export const styles = css`
   }
 
   slot[name='content'] {
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
     text-transform: none;
     font-size: 14px;
   }
 
   :host([active]) h3::before {
-    background: var(--oryx-color-brand);
+    background: var(--oryx-color-primary-300);
   }
 
   :host([active]) h3 {
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
   }
 
   :host(:hover) {
@@ -59,7 +59,7 @@ export const styles = css`
 
   :host(:focus-visible) {
     outline: none;
-    border: 1px solid var(--oryx-color-brand);
-    box-shadow: 0 0 3px var(--oryx-color-brand);
+    border: 1px solid var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px var(--oryx-color-primary-300);
   }
 `;

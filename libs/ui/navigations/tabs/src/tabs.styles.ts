@@ -21,7 +21,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-color-neutral-lighter);
+    box-shadow: 0 4px 8px var(--oryx-color-canvas-200);
   }
 
   input[type='range'] {
@@ -51,7 +51,7 @@ export const baseStyles = css`
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab) {
     color: var(--oryx-color-ink);
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
     border-block-start: 4px solid transparent;
     border-bottom: none;
   }
@@ -59,33 +59,33 @@ export const baseStyles = css`
   :host([appearance='${secondary}']) ::slotted(oryx-tab:hover) {
     color: var(--oryx-color-ink);
     background: none;
-    border-color: var(--oryx-color-neutral-darker);
+    border-color: var(--oryx-color-neutral-400);
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[selected]) {
-    color: var(--oryx-color-brand);
+    color: var(--oryx-color-primary-300);
     background: none;
-    border-color: var(--oryx-color-brand);
+    border-color: var(--oryx-color-primary-300);
     border-bottom: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]) {
-    color: var(--oryx-color-error);
-    background: var(--oryx-color-neutral-lighter);
+    color: var(--oryx-color-error-300);
+    background: var(--oryx-color-canvas-200);
     border-color: transparent;
     border-bottom: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]:hover) {
-    color: var(--oryx-color-error);
+    color: var(--oryx-color-error-300);
     background: none;
-    border-color: var(--oryx-color-neutral-darker);
+    border-color: var(--oryx-color-neutral-400);
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error][selected]) {
-    color: var(--oryx-color-error);
+    color: var(--oryx-color-error-300);
     background: none;
-    border-color: var(--oryx-color-error);
+    border-color: var(--oryx-color-error-300);
     border-bottom: none;
   }
 

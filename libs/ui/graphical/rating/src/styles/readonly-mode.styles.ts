@@ -35,7 +35,7 @@ export const ratingReadonlyStyles = css`
   }
 
   .review-count {
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     line-height: var(--oryx-rating-size);
     font-size: 1rem;
   }

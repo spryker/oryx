@@ -16,7 +16,7 @@ export const floatingLabelBaseStyles = css`
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    color: var(--oryx-color-neutral-dark);
+    color: var(--oryx-color-neutral-300);
     position: absolute;
     top: 17px;
     inset-inline-start: calc(var(--float-label-start-gap, 0px) + 13px);
@@ -46,9 +46,9 @@ export const floatingLabelBaseStyles = css`
   }
 
   :host([floatLabel]:is(:focus-within, [has-value])) slot[name='label'] {
-    --_label-background-color: var(--oryx-color-canvas);
+    --_label-background-color: var(--oryx-color-canvas-100);
 
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
     font-size: 12px;
     padding: 3px 8px;
     top: -10px;
@@ -63,7 +63,7 @@ export const floatingLabelBaseStyles = css`
   }
 
   :host([floatLabel][has-value][disabled]) slot[name='label'] {
-    --_label-background-color: var(--oryx-color-neutral-lighter);
+    --_label-background-color: var(--oryx-color-canvas-200);
   }
 `;
 

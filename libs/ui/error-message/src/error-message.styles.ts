@@ -8,7 +8,7 @@ export const errorStyles = css`
     display: flex;
     gap: 5px;
     align-items: center;
-    color: var(--oryx-color-error);
+    color: var(--oryx-color-error-300);
     font-size: 12px;
   }
 `;

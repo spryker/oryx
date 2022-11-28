@@ -13,7 +13,7 @@ export const cartEntryPriceStyles = css`
     font-size: 12px;
     line-height: 16px;
     margin-inline-end: 2px;
-    color: var(--oryx-color-neutral-darker);
+    color: var(--oryx-color-neutral-400);
   }
 
   span {
@@ -29,7 +29,7 @@ export const cartEntryPriceStyles = css`
     width: 100%;
     height: 100%;
     border-radius: var(--oryx-border-radius-small);
-    background: var(--oryx-color-neutral-light);
+    background: var(--oryx-color-canvas-500);
   }
 
   :host([loading]) span::before {

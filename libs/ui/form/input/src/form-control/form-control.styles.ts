@@ -38,8 +38,8 @@ export const formControlBaseStyles = css`
     border-color: inherit;
     border-radius: var(--oryx-border-radius);
     transition: all var(--oryx-transition-time);
-    color: var(--oryx-color-neutral-dark);
-    background-color: var(--oryx-color-canvas);
+    color: var(--oryx-color-neutral-300);
+    background-color: var(--oryx-color-canvas-100);
   }
 
   :host([disabled]) {
@@ -48,7 +48,7 @@ export const formControlBaseStyles = css`
 
   :host([disabled]) .control {
     border-radius: var(--oryx-border-radius);
-    background-color: var(--oryx-color-neutral-lighter);
+    background-color: var(--oryx-color-canvas-200);
   }
 
   :host(:not([hasError])) .control:hover,
@@ -63,13 +63,13 @@ export const formControlBaseStyles = css`
 
   /* visible focus effect */
   :host([visible-focus]:not([hasError])) .control:focus-within {
-    box-shadow: var(--oryx-elevation-0) var(--oryx-color-brand);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-primary-300);
     transition-property: box-shadow, border;
   }
 
   slot:not([name])::slotted(*:-webkit-autofill) {
     -webkit-text-fill-color: var(--oryx-color-ink);
-    box-shadow: 0 0 0 1000px var(--oryx-color-canvas) inset;
+    box-shadow: 0 0 0 1000px var(--oryx-color-canvas-100) inset;
   }
 
   input,
@@ -101,8 +101,8 @@ export const formControlBaseStyles = css`
 
   ::slotted(input[disabled]),
   ::slotted(textarea[disabled]) {
-    color: var(--oryx-color-neutral-darker);
-    background-color: var(--oryx-color-neutral-lighter);
+    color: var(--oryx-color-neutral-400);
+    background-color: var(--oryx-color-canvas-200);
   }
 
   textarea,

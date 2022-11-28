@@ -4,7 +4,7 @@ export const styles = css`
   :host {
     --oryx-icon-size-small: 15px;
 
-    background-color: var(--oryx-color-neutral-lightest);
+    background-color: var(--oryx-color-canvas-200);
     border-radius: var(--oryx-border-radius-small);
     font-size: var(--oryx-font-size-medium);
     line-height: 1.5;
@@ -22,7 +22,7 @@ export const styles = css`
     margin-top: var(--oryx-space-2);
     padding-top: var(--oryx-space-3);
     padding-bottom: var(--oryx-space-4);
-    border-top: solid 1px var(--oryx-color-neutral-light);
+    border-top: solid 1px var(--oryx-color-canvas-500);
     font-weight: 600;
   }
 
@@ -34,7 +34,7 @@ export const styles = css`
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(--oryx-color-neutral);
+    color: var(--oryx-color-neutral-200);
   }
 
   small.tax-message {

@@ -20,7 +20,7 @@ export const ratingEditModeStyles = css`
   fieldset:not(:hover) input:invalid + ::slotted(*),
   fieldset :is(input:hover, :not(:hover) input:checked) + slot ~ slot,
   fieldset :is(input:hover, :not(:hover) input:checked) + slot ~ ::slotted(*) {
-    color: var(--oryx-rating-color-inactive, var(--oryx-color-neutral));
+    color: var(--oryx-rating-color-inactive, var(--oryx-color-neutral-200));
   }
 
   input:hover:not(:checked) + slot,

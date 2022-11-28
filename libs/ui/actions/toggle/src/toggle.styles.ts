@@ -6,7 +6,7 @@ export const styles = css`
   }
 
   :host([hasError]) ::slotted(input) {
-    border-color: var(--oryx-color-error);
+    border-color: var(--oryx-color-error-300);
   }
 
   ::slotted(:not(input)) {
@@ -50,7 +50,7 @@ export const styles = css`
     min-width: 40px;
     height: 20px;
     margin: 0;
-    background: var(--oryx-color-neutral-dark);
+    background: var(--oryx-color-neutral-300);
     border-radius: 24px;
     border: 1px solid transparent;
     outline: none;
@@ -69,7 +69,7 @@ export const styles = css`
     inset-inline-start: 0;
     width: 16px;
     height: 16px;
-    background: var(--oryx-color-canvas);
+    background: var(--oryx-color-canvas-100);
     border-radius: 50%;
     transition: var(--oryx-transition-time);
   }
@@ -85,7 +85,7 @@ export const styles = css`
   ::slotted(input:hover),
   ::slotted(input:active),
   ::slotted(input:focus-visible) {
-    background: var(--oryx-color-neutral-darker);
+    background: var(--oryx-color-neutral-400);
   }
 
   input:checked:hover,
@@ -94,27 +94,27 @@ export const styles = css`
   ::slotted(input:checked:hover),
   ::slotted(input:checked:active),
   ::slotted(input:checked:focus-visible) {
-    background: var(--oryx-color-brand-dark);
+    background: var(--oryx-color-primary-400);
   }
 
   input:focus-visible,
   input:checked:focus-visible,
   ::slotted(input:focus-visible),
   ::slotted(input:checked:focus-visible) {
-    border-color: var(--oryx-color-canvas);
+    border-color: var(--oryx-color-canvas-100);
     box-shadow: 0 0 3px var(--oryx-color-focus);
   }
 
   input:checked,
   ::slotted(input:checked) {
-    background: var(--oryx-color-brand);
+    background: var(--oryx-color-primary-300);
   }
 
   input:disabled,
   input:checked:disabled,
   ::slotted(input:disabled),
   ::slotted(input:checked:disabled) {
-    background: var(--oryx-color-neutral-light);
+    background: var(--oryx-color-canvas-500);
   }
 
   [hasErrorContent] {

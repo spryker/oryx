@@ -5,7 +5,7 @@ export const ProductCardStyles = css`
     --line-clamp: var(--oryx-product-card-title-line-clamp, 1);
 
     transition: all var(--oryx-transition-time);
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
     min-height: calc(
       408px -
         calc(
@@ -107,7 +107,7 @@ export const ProductCardStyles = css`
 
   button {
     padding: 6px;
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
   }
 
   oryx-icon {
@@ -136,7 +136,7 @@ export const ProductCardStyles = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
     padding-inline: 16px;
     padding-block: 12px 16px;
     min-height: calc(

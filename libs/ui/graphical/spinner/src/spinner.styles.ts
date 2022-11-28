@@ -8,7 +8,7 @@ export const styles = css`
     display: flex;
     aspect-ratio: 1 / 1;
     justify-content: center;
-    color: var(--oryx-color-brand, inherit);
+    color: var(--oryx-color-primary-300, inherit);
   }
 
   oryx-icon,

@@ -9,7 +9,7 @@ export const chipStorefrontUI: ThemeData = {
         --bg: var(--oryx-color-neutral-300);
 
         border-radius: 38px;
-        color: var(--oryx-color-canvas);
+        color: var(--oryx-color-canvas-100);
       }
 
       :host([appearance='${unsafeCSS(ChipAppearance.Offline)}']),

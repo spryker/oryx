@@ -7,7 +7,7 @@ export const navigationStyles = css`
     flex-direction: column;
     height: 100%;
     width: 250px;
-    background-color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-canvas-100);
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
     transition: all var(--oryx-transition-time);
   }
@@ -54,16 +54,16 @@ export const navigationStyles = css`
     bottom: 30px;
     border-radius: 100%;
     border: none;
-    background-color: var(--oryx-color-canvas);
-    color: var(--oryx-color-neutral-dark);
+    background-color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-300);
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
     transition: inherit;
     cursor: pointer;
   }
 
   button:hover {
-    background-color: var(--oryx-color-brand);
-    color: var(--oryx-color-canvas);
+    background-color: var(--oryx-color-primary-300);
+    color: var(--oryx-color-canvas-100);
   }
 
   :host([collapsed]) button oryx-icon {

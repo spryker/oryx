@@ -19,7 +19,7 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     padding: var(--oryx-space-4);
-    background: var(--oryx-color-neutral-lighter);
+    background: var(--oryx-color-canvas-200);
   }
 
   section p {
