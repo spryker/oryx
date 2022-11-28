@@ -1,12 +1,13 @@
 import {
   generateVariantsMatrix,
   storybookDefaultViewports,
+  variantsGroupTemplate,
 } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { QuantityInputComponent } from '../../quantity-input.component';
-import { CategoryY, getInputVariants } from './common';
+import { CategoryY, getInputVariants, groups } from './common';
 
 export default {
   title: `${storybookPrefix}/Quantity input/Static`,
@@ -65,12 +66,15 @@ const Template: Story = (): TemplateResult => {
   };
 
   return html`
-    ${generateVariantsMatrix(
-      Object.values(CategoryY).reduce(
-        (result, v) => [...result, ...getInputVariants(v)] as any,
-        []
-      ) as any,
-      ({ categoryY, options: { isDisabled, className } }) => html`
+    ${groups.map((group, index) =>
+      variantsGroupTemplate(
+        () =>
+          generateVariantsMatrix(
+            Object.values(CategoryY).reduce(
+              (result, v) => [...result, ...getInputVariants(v)] as any,
+              []
+            ) as any,
+            ({ categoryY, options: { isDisabled, className } }) => html`
         <oryx-cart-quantity-input
           data-selector=${getSelector(
             categoryY as CategoryY,
@@ -78,10 +82,14 @@ const Template: Story = (): TemplateResult => {
           )}
           data-state=${className as string}
           data-disabled=${isDisabled as boolean}
-          min=${0}
-          value=${1}
+          min=${group.options.min}
+          max=${group.options.max}
+          value=${group.options.value}
         ></quantity-input>
       `
+          ),
+        { title: group.title, addSeparator: index < groups.length - 1 }
+      )
     )}
   `;
 };

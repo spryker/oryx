@@ -22,8 +22,11 @@ export const styles = css`
   oryx-input {
     --oryx-border-radius: 0;
 
-    border-color: #dce0e5;
     width: var(--oryx-cart-quantity-input-width, 75px);
+  }
+
+  oryx-input:not([hasError]) {
+    border-color: var(--oryx-cart-quantity-input-button-border-color);
   }
 
   input::-webkit-outer-spin-button,
@@ -48,30 +51,34 @@ export const styles = css`
     align-items: center;
     padding: 10px;
     cursor: pointer;
-    background: #f5f5f5;
-    color: #121212;
-    border: 2px solid #dce0e5;
+    background: var(--oryx-cart-quantity-input-button-background-color);
+    color: var(--oryx-cart-quantity-input-button-color);
+    border: 2px solid var(--oryx-cart-quantity-input-button-border-color);
     outline: none;
     border-radius: 2px;
     margin: 0;
   }
 
   button[disabled] {
-    color: #b2b2b2;
+    color: var(--oryx-cart-quantity-input-button-disabled-color);
     cursor: default;
     pointer-events: none;
   }
 
   button:hover {
-    background: #e7eaee;
-    border-color: #dce0e5;
+    background: var(--oryx-cart-quantity-input-button-hover-background-color);
+    border-color: var(--oryx-cart-quantity-input-button-border-color);
   }
 
   button:active,
   oryx-input:hover,
   oryx-input:active {
-    border-color: #b7bec9;
     z-index: 1;
+  }
+
+  oryx-input:not([hasError]):hover,
+  oryx-input:not([hasError]):active {
+    border-color: var(--oryx-cart-quantity-input-input-border-color);
   }
 
   button:focus-visible {

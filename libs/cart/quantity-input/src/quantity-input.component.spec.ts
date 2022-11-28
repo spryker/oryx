@@ -198,6 +198,21 @@ describe('QuantityInputComponent', () => {
       it('should have a step of 0.1', () => {
         expect(element).toContainElement(`input[step='0.1']`);
       });
+
+      describe('and value is not match the step', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-cart-quantity-input
+              step="0.1"
+              value="0.01"
+            ></oryx-cart-quantity-input>`
+          );
+        });
+
+        it('should set "hasError" attribute on oryx-input', () => {
+          expect(element).toContainElement(`oryx-input[hasError]`);
+        });
+      });
     });
   });
 
@@ -207,6 +222,10 @@ describe('QuantityInputComponent', () => {
         element = await fixture(
           html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
         );
+      });
+
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
       });
 
       it('should set "1" as default minimum', () => {
@@ -221,6 +240,10 @@ describe('QuantityInputComponent', () => {
         );
       });
 
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
+      });
+
       it('should provide the min value to the input', () => {
         expect(element).toContainElement(`input[min='4']`);
       });
@@ -233,6 +256,10 @@ describe('QuantityInputComponent', () => {
               value="8"
             ></oryx-cart-quantity-input>`
           );
+        });
+
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
         });
 
         it('should not disable the "decrease" button', () => {
@@ -265,6 +292,10 @@ describe('QuantityInputComponent', () => {
           );
         });
 
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
+        });
+
         it('should disable the "decrease" button', () => {
           expect(element).toContainElement(`button[part='decrease'][disabled]`);
         });
@@ -280,6 +311,10 @@ describe('QuantityInputComponent', () => {
           );
         });
 
+        it('should set the "hasError" attribute to oryx-input', () => {
+          expect(element).toContainElement(`oryx-input[hasError]`);
+        });
+
         describe('and "increase" button is clicked', () => {
           beforeEach(() => {
             const button = element.renderRoot.querySelector(
@@ -290,6 +325,10 @@ describe('QuantityInputComponent', () => {
 
           it('should set the value to minimum', () => {
             expect(getInput().value).toBe('4');
+          });
+
+          it('should not exist "hasError" attribute on oryx-input', () => {
+            expect(element).not.toContainElement(`oryx-input[hasError]`);
           });
         });
       });
@@ -307,9 +346,17 @@ describe('QuantityInputComponent', () => {
       it('should use the value to set the default value', () => {
         expect(getInput().value).toBe('3');
       });
+
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
+      });
     });
 
     describe('when no value is given', () => {
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
+      });
+
       describe('and no min value is given', () => {
         beforeEach(async () => {
           element = await fixture(
@@ -319,6 +366,10 @@ describe('QuantityInputComponent', () => {
 
         it('should have a default value of 1', () => {
           expect(getInput().value).toBe('1');
+        });
+
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
         });
       });
 
@@ -331,6 +382,10 @@ describe('QuantityInputComponent', () => {
 
         it('should use the min value as the default value', () => {
           expect(getInput().value).toBe('5');
+        });
+
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
         });
       });
     });
@@ -348,6 +403,10 @@ describe('QuantityInputComponent', () => {
 
       it('should pass validation', () => {
         expect(getInput().validity.valid).toBe(true);
+      });
+
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
       });
 
       it('should have an enabled "decrease" button', () => {
@@ -419,6 +478,10 @@ describe('QuantityInputComponent', () => {
         );
       });
 
+      it('should not exist "hasError" attribute on oryx-input', () => {
+        expect(element).not.toContainElement(`oryx-input[hasError]`);
+      });
+
       it('should provide it to input', () => {
         expect(element).toContainElement(`input[max='4']`);
       });
@@ -431,6 +494,10 @@ describe('QuantityInputComponent', () => {
               value="1"
             ></oryx-cart-quantity-input>`
           );
+        });
+
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
         });
 
         it('should not disable the "increase" button', () => {
@@ -450,6 +517,10 @@ describe('QuantityInputComponent', () => {
           it('should increase the value ', () => {
             expect(getInput().value).toBe('2');
           });
+
+          it('should not exist "hasError" attribute on oryx-input', () => {
+            expect(element).not.toContainElement(`oryx-input[hasError]`);
+          });
         });
       });
 
@@ -463,6 +534,10 @@ describe('QuantityInputComponent', () => {
           );
         });
 
+        it('should not exist "hasError" attribute on oryx-input', () => {
+          expect(element).not.toContainElement(`oryx-input[hasError]`);
+        });
+
         it('should disable the "increase" button', () => {
           expect(element).toContainElement(`button[part='increase'][disabled]`);
         });
@@ -471,6 +546,11 @@ describe('QuantityInputComponent', () => {
       describe('and the value is larger than the maximum', () => {
         beforeEach(async () => {
           getInput().value = '7';
+          getInput().dispatchEvent(new InputEvent('input', { bubbles: true }));
+        });
+
+        it('should set "hasError" attribute on oryx-input', () => {
+          expect(element).toContainElement(`oryx-input[hasError]`);
         });
 
         describe('and "decrease" button is clicked', () => {
@@ -483,6 +563,10 @@ describe('QuantityInputComponent', () => {
 
           it('should set the value to maximum', () => {
             expect(getInput().value).toBe('4');
+          });
+
+          it('should not exist "hasError" attribute on oryx-input', () => {
+            expect(element).not.toContainElement(`oryx-input[hasError]`);
           });
         });
       });
@@ -535,6 +619,23 @@ describe('QuantityInputComponent', () => {
 
     it('should disable the "increase" button', () => {
       expect(element).toContainElement(`button[part='increase'][disabled]`);
+    });
+  });
+
+  describe('when the value changes to invalid', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-cart-quantity-input
+          max="3"
+          value="2"
+        ></oryx-cart-quantity-input>`
+      );
+      getInput().value = '4';
+      getInput().dispatchEvent(new InputEvent('input', { bubbles: true }));
+    });
+
+    it('should set "hasError" attribute on oryx-input', () => {
+      expect(element).toContainElement(`oryx-input[hasError]`);
     });
   });
 });

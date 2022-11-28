@@ -38,6 +38,7 @@ export class QuantityInputComponent
   @property({ type: Number }) step = 1;
   @property({ type: Boolean }) submitOnChange = false;
   @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) hasError = false;
 
   protected inputRef = createRef<HTMLInputElement>();
 
@@ -52,7 +53,7 @@ export class QuantityInputComponent
       >
         <oryx-icon .type=${IconTypes.Decrease}></oryx-icon>
       </button>
-      <oryx-input>
+      <oryx-input ?hasError=${this.hasError}>
         <input
           ${ref(this.inputRef)}
           aria-label=${i18n('cart.quantity')}
@@ -82,12 +83,16 @@ export class QuantityInputComponent
     `;
   }
 
+  firstUpdated(): void {
+    this.checkValidity();
+  }
+
   protected getValue(): string {
     return this.value?.toString() ?? this.min?.toString() ?? '1';
   }
 
   protected onFocus(): void {
-    this.input.reportValidity();
+    this.checkValidity();
   }
 
   protected isMinDisabled(): boolean {
@@ -151,7 +156,11 @@ export class QuantityInputComponent
 
   protected updateValue(value?: string): void {
     this.value = Number(value ?? this.input.value);
-    this.input.reportValidity();
+    this.checkValidity();
+  }
+
+  protected checkValidity(): void {
+    this.hasError = !this.input.reportValidity();
   }
 
   /**
@@ -168,7 +177,7 @@ export class QuantityInputComponent
     if (this.input.validity.valid) {
       this.dispatch(SUBMIT_EVENT);
     } else {
-      this.input.reportValidity();
+      this.checkValidity();
     }
   }
 

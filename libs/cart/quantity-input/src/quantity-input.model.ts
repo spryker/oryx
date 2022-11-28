@@ -40,6 +40,13 @@ export interface QuantityInputAttributes {
    * @default false
    */
   disabled?: boolean;
+
+  /**
+   * Indicates that the input value is invalid.
+   *
+   * @default false
+   */
+  hasError?: boolean;
 }
 
 export interface QuantityEventDetail {

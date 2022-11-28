@@ -2,6 +2,7 @@ import {
   extendVariants,
   Variant,
   VariantOptions,
+  VariantsGroup,
 } from '@spryker-oryx/ui/utilities';
 
 export const enum CategoryX {
@@ -21,7 +22,7 @@ export interface InputVariant extends Variant {
   options: QuantityInputVariantOptions;
 }
 
-export const enum CategoryY {
+export enum CategoryY {
   Decrease = 'decrease',
   Input = 'input',
   Increase = 'increase',
@@ -69,6 +70,29 @@ export const baseInputVariants: InputVariant[] = [
     categoryY: '',
     options: {
       isDisabled: true,
+    },
+  },
+];
+
+export const groups: VariantsGroup<{
+  min: number;
+  max: number;
+  value: number;
+}>[] = [
+  {
+    title: 'Default',
+    options: {
+      min: 0,
+      max: 2,
+      value: 1,
+    },
+  },
+  {
+    title: 'Error',
+    options: {
+      min: 0,
+      max: 2,
+      value: 3,
     },
   },
 ];
