@@ -28,7 +28,7 @@ export type I18nContext = Record<string, unknown>;
 export type InferI18nContext<T extends string | readonly string[]> =
   (T extends string
     ? // Extract context from single token
-      { [K in ExtractStrProps<T, '{', '}'>]: unknown }
+      { [K in ExtractStrProps<T, '<', '>'>]: unknown }
     : // Extract context from array of tokens
-      { [K in keyof T as ExtractStrProps<T[K] & string, '{', '}'>]: unknown }) &
+      { [K in keyof T as ExtractStrProps<T[K] & string, '<', '>'>]: unknown }) &
     I18nContext;

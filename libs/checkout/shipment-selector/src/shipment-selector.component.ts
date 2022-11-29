@@ -50,7 +50,7 @@ export class CheckoutShipmentSelectorComponent extends ComponentMixin() {
             html`${asyncValue(
               this.localeService.formatDate(method.deliveryTime!),
               (date) => html`<small class="delivery"
-                >${i18n('checkout.delivered-at-{date}', { date })}
+                >${i18n('checkout.delivered-at-<date>', { date })}
               </small>`
             )}`
         )}
