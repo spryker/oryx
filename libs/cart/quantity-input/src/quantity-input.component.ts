@@ -83,6 +83,10 @@ export class QuantityInputComponent
     `;
   }
 
+  focus(): void {
+    this.input?.focus();
+  }
+
   firstUpdated(): void {
     this.checkValidity();
   }
