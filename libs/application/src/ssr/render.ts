@@ -1,10 +1,11 @@
 // organize-imports-ignore
 import { App, ContextService, SSRAwaiterService } from '@spryker-oryx/core';
 import { getInjector } from '@spryker-oryx/injector';
-import { ServerContextService } from '../services';
 import { TemplateResult } from 'lit';
-import fetch from 'node-fetch';
-import 'abort-controller/polyfill';
+import { ServerContextService } from '@spryker-oryx/core/server';
+import { RouterService } from '@spryker-oryx/experience';
+import { render as litRender } from '@lit-labs/ssr';
+import 'abort-controller/polyfill.js';
 
 export interface RenderAppConfig {
   route: Location;
@@ -12,17 +13,18 @@ export interface RenderAppConfig {
 }
 
 let orchestrator: App | void;
+
 export const renderApp = async (
   config: RenderAppConfig,
-  app: Promise<App>,
-  litRender: (value: unknown) => IterableIterator<string>
+  app: Promise<App>
 ): Promise<string> => {
   if (!orchestrator) {
     orchestrator = await app;
   }
+
   window.location = config.route;
-  // TODO: change to `RouterService` token when fix circular dependency
-  const routerService = getInjector().inject('FES.RouterService');
+
+  const routerService = getInjector().inject(RouterService);
   const awaiter = getInjector().inject(SSRAwaiterService);
   const context = getInjector().inject(ContextService) as ServerContextService;
   const ssrResult = litRender(config.element);

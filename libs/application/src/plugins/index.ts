@@ -1,1 +1,1 @@
-export * from './storefront';
+export * from './root';

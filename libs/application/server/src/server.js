@@ -11,6 +11,7 @@ export async function createServer(config) {
     [isProd ? 'prod' : 'dev']: { root, entry, index },
     component,
     __dirname,
+    namespace,
   } = config;
   const rootPath = resolve(__dirname, root);
   const indexPath = join(rootPath, index);
@@ -42,7 +43,7 @@ export async function createServer(config) {
         ? indexFile
         : await vite.transformIndexHtml(url, indexFile);
       const render = isProd
-        ? serverContext({ base: entryPath })
+        ? serverContext({ base: entryPath, namespace })
         : (await vite.ssrLoadModule(entryPath)).render;
       const appHtml = await render({ route: originalUrl });
       const html = template.replace(component, appHtml);

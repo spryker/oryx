@@ -1,60 +1,52 @@
-import { defineConfig, loadEnv } from 'vite';
-import checker from 'vite-plugin-checker';
+import { join } from 'path';
+import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { adjustUrlVariable } from '../../tools/utils/adjustUrlVariable';
-
-declare module 'vite' {
-  interface UserConfig {
-    ssr?: SSROptions;
-  }
-}
+import { adjustEnv } from '../../tools/utils/adjustUrlVariable';
+import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig((config) => {
-  const envDir = process.cwd();
-  const env = loadEnv(config.mode, envDir, '');
-
-  adjustUrlVariable(env, 'FES_CONTENT_BACKEND_URL');
+  adjustEnv(config);
 
   return {
+    root: viteConfig.index,
+    envDir: viteConfig.root,
+    envPrefix: viteConfig.envPrefix,
     build: {
       target: 'esnext',
       lib: {
-        entry: 'server/render.ts',
+        entry: join(viteConfig.root, viteConfig.ssr.root, viteConfig.ssr.entry),
         formats: ['iife'],
-        name: 'storefront',
+        name: viteConfig.ssr.namespace,
       },
       emptyOutDir: true,
-      outDir: '../../dist/apps/storefront/server',
-      ssr: 'server/render.ts',
+      outDir: join(
+        viteConfig.monorepoRoot,
+        viteConfig.build.outDirRoot,
+        viteConfig.build.ssr
+      ),
+      ssr: viteConfig.ssr.entry,
     },
     ssr: {
       noExternal: true,
     },
-    envPrefix: ['FES', 'SCOS', 'STORE'],
     plugins: [
-      checker({
-        typescript: {
-          tsconfigPath: 'tsconfig.app.json',
-        },
-      }),
-      tsconfigPaths({ root: '../../' }),
+      ...viteConfig.plugins(),
       viteStaticCopy({
         targets: [
           {
-            src: '../../libs/application/server/src/hosting/netlify.toml',
+            src: '../../../libs/application/server/src/hosting/netlify.toml',
             dest: '../client',
           },
           {
-            src: '../../libs/application/server/src/hosting/context.js',
+            src: '../../../libs/application/server/src/hosting/context.js',
             dest: '../functions/ssr',
           },
           {
-            src: '../../libs/application/server/src/hosting/handler.lambda.js',
+            src: '../../../libs/application/server/src/hosting/handler.lambda.js',
             dest: '../functions/ssr',
           },
           {
-            src: '../../libs/application/server/src/hosting/handler.netlify.js',
+            src: '../../../libs/application/server/src/hosting/handler.netlify.js',
             dest: '../functions/ssr',
             rename: 'index.js',
           },

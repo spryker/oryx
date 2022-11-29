@@ -5,7 +5,8 @@
   "dependencies": {
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "^2.2.3",
-    "@webcomponents/template-shadowroot": "^0.1.0"
+    "@webcomponents/template-shadowroot": "^0.1.0",
+    "abort-controller": "^3.0.0"
   },
   "peerDependencies": {
     "@spryker-oryx/injector": "*",

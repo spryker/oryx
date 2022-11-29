@@ -1,14 +1,19 @@
-import { getWindow } from '@lit-labs/ssr/lib/dom-shim.js';
-import '@lit-labs/ssr/lib/render-with-global-dom-shim.js';
+import {
+  getWindow,
+  installWindowOnGlobal,
+} from '@lit-labs/ssr/lib/dom-shim.js';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
 
-export const serverContext = (options = {}) => {
-  const server = options.base ? options.base : '../../server/render.js';
-  const url = options.url ? options.url : import.meta.url;
+installWindowOnGlobal();
+
+export const serverContext = (options) => {
+  const server = options.base ?? '../../server/render.js';
+  const url = options.url ?? import.meta.url;
+  const namespace = options.namespace ?? 'storefront';
   const base = dirname(fileURLToPath(url));
   const window = getWindow({
     includeJSBuiltIns: true,
@@ -24,7 +29,7 @@ export const serverContext = (options = {}) => {
   window.setTimeout = setTimeout;
   const script = new Script(`
     ${readFileSync(resolve(base, server), 'utf8')};
-    (() => storefront.render)();
+    (() => ${namespace}.render)();
   `);
   createContext(window);
   return script.runInContext(window);

@@ -1,21 +1,26 @@
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { createServer } from '../../../libs/application/server/src/server.js';
+import { viteConfig } from '../vite.config.common.js';
 
 const config = {
   isProd: process.env.NODE_ENV === 'production',
   __dirname: dirname(fileURLToPath(import.meta.url)),
   prod: {
-    root: '../../../dist/apps/storefront',
-    entry: './server/render.js',
-    index: './client',
+    root: join(viteConfig.monorepoRoot, viteConfig.build.outDirRoot),
+    entry: join(
+      viteConfig.build.ssr,
+      viteConfig.ssr.entry.replace('.ts', '.js')
+    ),
+    index: viteConfig.build.index,
   },
   dev: {
-    root: '../',
-    entry: './server/render.ts',
-    index: './src',
+    root: viteConfig.root,
+    entry: join(viteConfig.ssr.root, viteConfig.ssr.entry),
+    index: viteConfig.index,
   },
   component: '<root-app></root-app>',
+  namespace: viteConfig.ssr.namespace,
 };
 
 createServer(config);

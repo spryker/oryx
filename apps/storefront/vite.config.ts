@@ -1,51 +1,32 @@
-import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
-import checker from 'vite-plugin-checker';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { adjustUrlVariable } from '../../tools/utils/adjustUrlVariable';
-
-declare module 'vite' {
-  interface UserConfig {
-    ssr?: SSROptions;
-  }
-}
-
-const esbuild =
-  process.env.NODE_ENV === 'production'
-    ? {
-        mangleProps: /_\$needsHydration/,
-        mangleCache: {
-          _$needsHydration: '_$AG',
-        },
-      }
-    : {};
+import { join } from 'path';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { adjustEnv } from '../../tools/utils/adjustUrlVariable';
+import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig((config) => {
-  const envDir = process.cwd();
-  const env = loadEnv(config.mode, envDir, '');
-
-  adjustUrlVariable(env, 'FES_CONTENT_BACKEND_URL');
+  adjustEnv(config);
 
   return {
-    esbuild,
-    root: './src',
+    ...(process.env.NODE_ENV === 'production'
+      ? {
+          mangleProps: /_\$needsHydration/,
+          mangleCache: {
+            _$needsHydration: '_$AG',
+          },
+        }
+      : {}),
+    root: viteConfig.index,
+    envDir: viteConfig.root,
+    envPrefix: viteConfig.envPrefix,
     build: {
-      outDir: '../../../dist/apps/storefront/client',
+      outDir: join(
+        viteConfig.monorepoRoot,
+        viteConfig.build.outDirRoot,
+        viteConfig.build.index
+      ),
       emptyOutDir: true,
     },
-    ssr: {
-      external: ['@lit-labs', 'rxjs'],
-    },
-    envDir: '../',
     publicDir: '../../../libs/presets/public',
-    envPrefix: ['FES', 'SCOS', 'STORE'],
-    plugins: [
-      splitVendorChunkPlugin(),
-      checker({
-        typescript: {
-          tsconfigPath: 'tsconfig.app.json',
-        },
-      }),
-      tsconfigPaths({ root: '../../../' }),
-    ],
+    plugins: [...viteConfig.plugins(), splitVendorChunkPlugin()],
   };
 });
