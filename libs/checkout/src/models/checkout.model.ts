@@ -2,6 +2,8 @@ export interface CheckoutData {
   addresses?: unknown[];
   paymentProviders?: unknown[];
   selectedShipmentMethods?: unknown[];
+  selectedPaymentMethods?: unknown[];
+  paymentMethods?: PaymentMethod[];
   shipments?: Shipment[];
   carriers?: Carrier[];
   shipment?: {
@@ -12,6 +14,16 @@ export interface CheckoutData {
 export interface Carrier {
   name?: string;
   shipmentMethods: ShipmentMethod[];
+}
+
+export interface PaymentMethod {
+  name: string;
+  provider: string;
+  priority?: number;
+  /*
+   * An array of attributes required by the given method to effectuate a purchase. The exact attribute list depends on the specific provider.
+   */
+  requiredRequestData: string[];
 }
 
 export interface ShipmentMethod {

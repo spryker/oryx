@@ -4,6 +4,8 @@ import { ApiCheckoutModel } from '../../../models';
 export type DeserializedCheckoutIncludes = {
   [P in ApiCheckoutModel.Includes as `${CamelCase<P>}`]?: P extends ApiCheckoutModel.Includes.ShipmentMethods
     ? ApiCheckoutModel.ShipmentMethod[]
+    : P extends ApiCheckoutModel.Includes.PaymentMethods
+    ? ApiCheckoutModel.PaymentMethod[]
     : P extends ApiCheckoutModel.Includes.Shipments
     ? (ApiCheckoutModel.Shipment &
         Pick<

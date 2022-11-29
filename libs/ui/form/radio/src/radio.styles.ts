@@ -11,8 +11,9 @@ export const baseStyles = css`
 
   label {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    column-gap: 8px;
     position: relative;
     outline: 0;
     color: var(--oryx-color-inc);
@@ -90,6 +91,17 @@ export const baseStyles = css`
     margin-inline-start: 1px;
     font-size: 0.85em;
     font-weight: 400;
+  }
+
+  slot[name='subtext'] {
+    display: block;
+    margin-inline-start: 26px;
+    flex: 0 0 100%;
+  }
+
+  slot[name='subtext']::slotted(small) {
+    font-weight: 600;
+    color: var(--oryx-color-neutral-200);
   }
 `;
 

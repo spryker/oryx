@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const tileStyles = css`
   ::slotted(*) {
     display: block;
-    padding: 20px;
+    padding: var(--oryx-tile-padding, 20px);
     outline: none;
     border: var(--oryx-border-thin) solid var(--oryx-color-canvas-500);
     box-sizing: border-box;

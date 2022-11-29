@@ -37,7 +37,7 @@ export function checkoutAttributesSerializer(
 
   return {
     attributes: {
-      idCart: data.idCart,
+      idCart: data.cartId,
       ...attributes,
       shipments,
       shipmentMethods,

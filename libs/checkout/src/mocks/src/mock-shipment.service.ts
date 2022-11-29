@@ -9,7 +9,7 @@ import {
   mockShipmentAttributes,
 } from './mock-checkout';
 
-export enum ProviderType {
+export enum ShipmentProviderType {
   Multiple = 'all',
   SingleProvider = 'single-provider',
   SingleProviderMultipleMethods = 'single-provider-multiple-methods',
@@ -17,7 +17,7 @@ export enum ProviderType {
 }
 
 export class MockShipmentService implements Partial<CheckoutShipmentService> {
-  protected type = ProviderType.Multiple;
+  protected type = ShipmentProviderType.Multiple;
   static mockShipment: Shipment = {
     items: [],
     requestedDeliveryDate: null,
@@ -25,12 +25,12 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
     carriers: mockFilteredShipmentMethods,
   };
 
-  changeProviderType(value: ProviderType) {
+  changeProviderType(value: ShipmentProviderType) {
     this.type = value;
   }
   getShipment(): Observable<Shipment | null> {
     switch (this.type) {
-      case ProviderType.SingleProviderMultipleMethods:
+      case ShipmentProviderType.SingleProviderMultipleMethods:
         MockShipmentService.mockShipment.carriers = [
           {
             name: 'Mock Dummy Carrier',
@@ -38,7 +38,7 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
           },
         ];
         break;
-      case ProviderType.SingleProvider:
+      case ShipmentProviderType.SingleProvider:
         MockShipmentService.mockShipment.carriers = [
           {
             name: 'Mock Dummy Carrier',
@@ -48,10 +48,10 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
           },
         ];
         break;
-      case ProviderType.NoProvider:
+      case ShipmentProviderType.NoProvider:
         MockShipmentService.mockShipment.carriers = undefined;
         break;
-      case ProviderType.Multiple:
+      case ShipmentProviderType.Multiple:
       default:
         MockShipmentService.mockShipment.carriers = mockFilteredShipmentMethods;
     }

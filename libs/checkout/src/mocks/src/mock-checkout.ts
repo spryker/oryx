@@ -127,6 +127,75 @@ export const mockDeliveryTimeShipmentMethod = [
   },
 ];
 
+export const mockPaymentMethods = [
+  {
+    paymentMethodName: 'Invoice',
+    paymentProviderName: 'DummyPayment',
+    priority: 1,
+    requiredRequestData: [
+      'paymentMethod',
+      'paymentProvider',
+      'dummyPaymentInvoice.dateOfBirth',
+    ],
+    id: '1',
+  },
+  {
+    paymentMethodName: 'Stripe',
+    paymentProviderName: 'mockProvider',
+    priority: 1,
+    requiredRequestData: [
+      'paymentMethod',
+      'paymentProvider',
+      'dummyPaymentInvoice.dateOfBirth',
+    ],
+    id: '3',
+  },
+  {
+    paymentMethodName: 'Paypal',
+    paymentProviderName: 'mockProvider',
+    priority: 2,
+    requiredRequestData: [
+      'paymentMethod',
+      'paymentProvider',
+      'dummyPaymentInvoice.dateOfBirth',
+    ],
+    id: '4',
+  },
+  {
+    paymentMethodName: 'Credit Card',
+    paymentProviderName: 'DummyPayment',
+    priority: 2,
+    requiredRequestData: [
+      'paymentMethod',
+      'paymentProvider',
+      'dummyPaymentCreditCard.cardType',
+      'dummyPaymentCreditCard.cardNumber',
+      'dummyPaymentCreditCard.nameOnCard',
+      'dummyPaymentCreditCard.cardExpiresMonth',
+      'dummyPaymentCreditCard.cardExpiresYear',
+      'dummyPaymentCreditCard.cardSecurityCode',
+    ],
+    id: '2',
+  },
+];
+
+export const mockNormalizedPaymentMethods = mockPaymentMethods
+  .map((payment) => {
+    const { paymentMethodName, paymentProviderName, ...paymentData } = payment;
+    return {
+      ...paymentData,
+      name: paymentMethodName,
+      provider: paymentProviderName,
+    };
+  })
+  .sort((a, b) =>
+    a.provider.toLowerCase() < b.provider.toLowerCase()
+      ? -1
+      : a.provider.toLowerCase() > b.provider.toLowerCase()
+      ? 1
+      : 0
+  );
+
 export const mockNormalizedShipmentAttributes = {
   ...mockShipmentAttributes,
   carriers: mockFilteredShipmentMethods,
@@ -134,9 +203,11 @@ export const mockNormalizedShipmentAttributes = {
 
 export const mockNormalizedCheckoutData = {
   shipments: [mockNormalizedShipmentAttributes],
+  paymentMethods: mockNormalizedPaymentMethods,
 };
 
 export const mockNormalizedUpdatedCheckoutData = {
   shipments: [{ ...mockShipmentAttributes, ...mockSelectedShipmentMethod }],
+  paymentMethods: mockNormalizedPaymentMethods,
   carriers: mockFilteredShipmentMethods,
 };

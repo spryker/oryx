@@ -34,6 +34,13 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></checkout-shipment-selector>`,
     },
+    ['oryx-checkout-payment-selector']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-checkout-payment-selector
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-checkout-payment-selector>`,
+    },
     ['oryx-checkout-composition']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<oryx-checkout-composition

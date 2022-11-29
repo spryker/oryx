@@ -35,7 +35,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
             return of({});
           }
           return this.adapter.get({
-            idCart: cart.id,
+            cartId: cart.id,
             include: this.includeShipments,
           });
         }),
@@ -84,7 +84,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
         }
 
         return this.adapter.update({
-          idCart: cart.id,
+          cartId: cart.id,
           include: this.includeShipments,
           attributes: {
             shipment: {

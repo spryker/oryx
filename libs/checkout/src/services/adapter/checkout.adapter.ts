@@ -2,12 +2,12 @@ import { Observable } from 'rxjs';
 import { ApiCheckoutModel, CheckoutData } from '../../models';
 
 export interface GetCheckoutDataProps {
-  idCart: string;
+  cartId: string;
   include?: ApiCheckoutModel.Includes[];
 }
 
 export interface UpdateCheckoutDataProps {
-  idCart: string;
+  cartId: string;
   include?: ApiCheckoutModel.Includes[];
   attributes: CheckoutData;
 }

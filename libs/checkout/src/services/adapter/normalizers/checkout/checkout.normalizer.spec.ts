@@ -1,7 +1,10 @@
+import { mockPaymentMethods } from '@spryker-oryx/checkout/mocks';
 import { of, take } from 'rxjs';
+import { PaymentsNormalizer } from '../payments';
 import { ShipmentsNormalizer } from '../shipments';
 import {
   checkoutAttributesNormalizer,
+  checkoutPaymentsNormalizer,
   checkoutShipmentsNormalizer,
 } from './checkout.normalizer';
 import { DeserializedCheckout } from './model';
@@ -12,6 +15,7 @@ const mockDeserializedCheckout = {
   paymentProviders: [],
   selectedPaymentMethods: [],
   selectedShipmentMethods: [],
+  paymentMethods: mockPaymentMethods,
   shipmentMethods: [],
   shipments: [
     {
@@ -79,6 +83,7 @@ describe('Checkout Normalizers', () => {
         addresses: [],
         paymentProviders: [],
         selectedShipmentMethods: [],
+        selectedPaymentMethods: [],
       };
 
       const normalized = checkoutAttributesNormalizer(mockDeserializedCheckout);
@@ -100,6 +105,25 @@ describe('Checkout Normalizers', () => {
           expect(mockTransformer.transform).toHaveBeenLastCalledWith(
             mockDeserializedCheckout,
             ShipmentsNormalizer
+          );
+        });
+    });
+  });
+
+  describe('When payment methods are included', () => {
+    it('should call payments transformer', () => {
+      mockTransformer.transform.mockReturnValue(
+        of(mockDeserializedCheckout.paymentMethods)
+      );
+      checkoutPaymentsNormalizer(mockDeserializedCheckout, mockTransformer)
+        .pipe(take(1))
+        .subscribe((normalized) => {
+          expect(normalized).toEqual({
+            paymentMethods: mockPaymentMethods,
+          });
+          expect(mockTransformer.transform).toHaveBeenLastCalledWith(
+            mockDeserializedCheckout,
+            PaymentsNormalizer
           );
         });
     });

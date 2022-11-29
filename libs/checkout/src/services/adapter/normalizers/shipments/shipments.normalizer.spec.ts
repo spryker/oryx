@@ -66,6 +66,7 @@ const mockCheckoutData: DeserializedCheckout = {
   paymentProviders: [],
   shipmentMethods: [],
   selectedShipmentMethods: [],
+  selectedPaymentMethods: [],
   shipments: [{ ...mockBaseShipment, shipmentMethods: mockShipmentMethods }],
 };
 

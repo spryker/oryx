@@ -1,4 +1,4 @@
-import { ProviderType } from '@spryker-oryx/checkout/mocks';
+import { ShipmentProviderType } from '@spryker-oryx/checkout/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -9,7 +9,7 @@ export default {
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return renderSelector(ProviderType.NoProvider);
+  return renderSelector(ShipmentProviderType.NoProvider);
 };
 
 export const NoProviders = Template.bind({});

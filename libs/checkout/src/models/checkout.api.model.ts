@@ -8,6 +8,15 @@ export module ApiCheckoutModel {
     paymentProviders: unknown[];
     shipmentMethods: unknown[];
     selectedShipmentMethods: unknown[];
+    selectedPaymentMethods: unknown[];
+  }
+
+  export interface PaymentMethod {
+    id: string;
+    paymentMethodName: string;
+    paymentProviderName: string;
+    priority?: number;
+    requiredRequestData: string[];
   }
 
   export interface ShipmentMethod {
@@ -27,6 +36,7 @@ export module ApiCheckoutModel {
       addresses?: unknown[];
       paymentProviders?: unknown[];
       selectedShipmentMethods?: unknown[];
+      selectedPaymentMethods?: unknown[];
       shipments?: Shipment[];
       shipmentMethods?: ShipmentMethod[];
       shipment?: {
@@ -65,12 +75,14 @@ export module ApiCheckoutModel {
     Shipments = 'shipments',
     ShipmentMethods = 'shipment-methods',
     Addresses = 'addresses',
+    PaymentMethods = 'payment-methods',
   }
 
   export type ResponseIncludes =
     | Include<Includes.Shipments, Shipment>
     | Include<Includes.ShipmentMethods, ShipmentMethod>
-    | Include<Includes.Addresses, Address>;
+    | Include<Includes.Addresses, Address>
+    | Include<Includes.PaymentMethods, PaymentMethod>;
 
   export type Response = JsonApiModel<Attributes, ResponseIncludes[]>;
 }

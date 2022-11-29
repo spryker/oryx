@@ -5,5 +5,8 @@ import { DeserializedCheckoutIncludes } from '../model';
 export type DeserializedCheckout = ApiCheckoutModel.Attributes &
   Pick<
     DeserializedCheckoutIncludes,
-    CamelCase<ApiCheckoutModel.Includes.Shipments>
+    CamelCase<
+      | ApiCheckoutModel.Includes.Shipments
+      | ApiCheckoutModel.Includes.PaymentMethods
+    >
   >;

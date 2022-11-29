@@ -13,7 +13,7 @@ import { DefaultCheckoutAdapter } from './default-checkout.adapter';
 import { CheckoutNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
-const idCart = 'mockid';
+const cartId = 'mockid';
 
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
@@ -83,7 +83,7 @@ describe('DefaultCheckoutService', () => {
 
   describe('get should send `post` request', () => {
     const mockGetCheckoutDataQualifier = {
-      idCart,
+      cartId,
       include: [ApiCheckoutModel.Includes.Shipments],
     };
 
@@ -91,7 +91,7 @@ describe('DefaultCheckoutService', () => {
       data: {
         type: 'checkout-data',
         attributes: {
-          idCart: mockGetCheckoutDataQualifier.idCart,
+          cartId: mockGetCheckoutDataQualifier.cartId,
         },
       },
     };
@@ -128,7 +128,7 @@ describe('DefaultCheckoutService', () => {
 
   describe('update should send `post` request', () => {
     const mockUpdateQualifier: UpdateCheckoutDataProps = {
-      idCart,
+      cartId,
       include: [ApiCheckoutModel.Includes.Shipments],
       attributes: {
         shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
@@ -139,7 +139,7 @@ describe('DefaultCheckoutService', () => {
       data: {
         type: 'checkout-data',
         attributes: {
-          idCart,
+          cartId,
           shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
         },
       },

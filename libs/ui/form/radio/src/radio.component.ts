@@ -13,8 +13,9 @@ export class RadioComponent extends LitElement implements ErrorOptions {
 
   protected render(): TemplateResult {
     return html`
-      <label>
+      <label part="label">
         <slot></slot>
+        <slot name="subtext"></slot>
       </label>
       ${this.errorController.render()}
     `;

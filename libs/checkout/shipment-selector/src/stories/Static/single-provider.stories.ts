@@ -1,4 +1,4 @@
-import { ProviderType } from '@spryker-oryx/checkout/mocks';
+import { ShipmentProviderType } from '@spryker-oryx/checkout/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -9,7 +9,7 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`${renderSelector(ProviderType.SingleProvider)}`;
+  return html`${renderSelector(ShipmentProviderType.SingleProvider)}`;
 };
 
 export const SingleProviderSingleMethod = Template.bind({});

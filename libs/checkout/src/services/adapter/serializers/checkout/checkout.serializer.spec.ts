@@ -30,7 +30,7 @@ const mockShipment = {
 };
 const mockUpdateCheckoutDataProps = {
   user: { anonymousUserId: 'mockid' },
-  idCart: 'mockcart',
+  cartId: 'mockcart',
   attributes: {
     shipments: [mockShipment],
   },
@@ -38,7 +38,7 @@ const mockUpdateCheckoutDataProps = {
 
 const mockCarrierMethodCheckoutDataProps = {
   user: { anonymousUserId: 'mockid' },
-  idCart: 'mockcart',
+  cartId: 'mockcart',
   attributes: {
     shipments: [mockShipment],
     carriers: mockFilteredShipmentMethods,
@@ -50,7 +50,7 @@ describe('Checkout Serializers', () => {
     it('should transform UpdateCheckoutDataProps into Payload', () => {
       const mockResult = {
         attributes: {
-          idCart: mockUpdateCheckoutDataProps.idCart,
+          idCart: mockUpdateCheckoutDataProps.cartId,
           ...mockUpdateCheckoutDataProps.attributes,
           shipmentMethods: [],
           shipments: [
@@ -72,7 +72,7 @@ describe('Checkout Serializers', () => {
       it('should transform carriers to shipmentMethods', () => {
         const mockResult = {
           attributes: {
-            idCart: mockUpdateCheckoutDataProps.idCart,
+            idCart: mockUpdateCheckoutDataProps.cartId,
             ...mockUpdateCheckoutDataProps.attributes,
             shipmentMethods: mockSerializedShipmentMethods,
             shipments: [
