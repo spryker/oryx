@@ -29,6 +29,8 @@ export interface RouterService {
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
+  getUrl(route: string, extras?: NavigationExtras): string;
+  activatedRouter(): Observable<{ route: string; extras?: NavigationExtras }>;
 }
 
 declare global {

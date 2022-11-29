@@ -83,10 +83,7 @@ describe('DefaultLinkService', () => {
           const link: SemanticLink = {
             type: SemanticLinkType.Category,
             id: 'laptops',
-            params: {
-              param1: '1',
-              param2: 'test',
-            },
+            params: { param1: '1', param2: '2' },
           };
           callback = vi.fn();
           service.get(link).subscribe(callback);
@@ -94,7 +91,7 @@ describe('DefaultLinkService', () => {
 
         it('should resolve link to category page with encoded params', () => {
           expect(callback).toHaveBeenCalledWith(
-            '/category/laptops?param1%3D1%26param2%3Dtest'
+            '/category/laptops?param1=1&param2=2'
           );
         });
       });
@@ -132,19 +129,14 @@ describe('DefaultLinkService', () => {
         beforeEach(() => {
           const link: SemanticLink = {
             type: SemanticLinkType.ProductList,
-            params: {
-              param1: '1',
-              param2: 'test',
-            },
+            params: { param1: '1', param2: '2' },
           };
           callback = vi.fn();
           service.get(link).subscribe(callback);
         });
 
         it('should resolve link to search with encoded params', () => {
-          expect(callback).toHaveBeenCalledWith(
-            '/search?param1%3D1%26param2%3Dtest'
-          );
+          expect(callback).toHaveBeenCalledWith('/search?param1=1&param2=2');
         });
       });
 

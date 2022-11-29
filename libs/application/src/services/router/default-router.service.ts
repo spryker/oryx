@@ -9,6 +9,7 @@ import {
 import { inject } from '@spryker-oryx/injector';
 import {
   BehaviorSubject,
+  combineLatest,
   map,
   Observable,
   ReplaySubject,
@@ -91,6 +92,38 @@ export class DefaultRouterService implements RouterService {
 
   currentQuery(): Observable<RouteParams | undefined> {
     return this.urlSearchParams$.asObservable();
+  }
+
+  getUrl(route?: string, extras?: NavigationExtras): string {
+    const queryParams = this.createUrlParams(extras?.queryParams);
+    return `${route}${queryParams ? `?${queryParams}` : ''}`;
+  }
+
+  activatedRouter() {
+    return combineLatest([this.currentRoute(), this.currentQuery()]).pipe(
+      map(([route, queryParams]) => {
+        return {
+          route,
+          extras: {
+            queryParams,
+          },
+        };
+      })
+    );
+  }
+
+  protected createUrlParams(params?: {
+    [x: string]: string | undefined;
+  }): URLSearchParams | undefined {
+    if (!params) {
+      return;
+    }
+
+    const encodedParams = Object.fromEntries(
+      Object.entries(params).map(([k, v]) => [k, encodeURIComponent(v ?? '')])
+    );
+
+    return new URLSearchParams(encodedParams);
   }
 
   protected storeRoute(value: string): void {

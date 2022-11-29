@@ -11,7 +11,7 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
     [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
       `/search${
         link.params
-          ? `?${encodeURIComponent(this.getUrlParams(link.params))}`
+          ? `?${this.getUrlParams(link.params)}`
           : encodeURIComponent(link.id ?? '')
       }`,
     [SemanticLinkType.Page]: (link: SemanticLink): string =>
@@ -20,9 +20,7 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       `/product/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.Category]: (link: SemanticLink): string =>
       `/category/${link.id}${
-        link.params
-          ? `?${encodeURIComponent(this.getUrlParams(link.params))}`
-          : ''
+        link.params ? `?${this.getUrlParams(link.params)}` : ''
       }`,
     [SemanticLinkType.Checkout]: (): string => '/checkout',
   };
@@ -35,6 +33,10 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
   }
 
   private getUrlParams(params: Record<string, string>): string {
-    return new URLSearchParams(params).toString();
+    const encodedParams = Object.fromEntries(
+      Object.entries(params).map(([k, v]) => [k, encodeURIComponent(v)])
+    );
+
+    return new URLSearchParams(encodedParams).toString();
   }
 }

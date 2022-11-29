@@ -31,7 +31,7 @@ export function productFacetsNormalizer(
       | ApiProductListModel.RangeFacet
     )[]
   ): Facet[] => {
-    return facetList.map((facet) => {
+    return facetList.reduce((normalizedFacetList: Facet[], facet) => {
       const { config, localizedName } = facet;
 
       const facetValue = Object.prototype.hasOwnProperty.call(facet, 'values')
@@ -49,36 +49,64 @@ export function productFacetsNormalizer(
             };
           })();
 
-      return {
-        name: localizedName,
-        parameter: config.parameterName,
-        count: facet.docCount,
-        values: Array.isArray(facetValue)
-          ? facetValue.map((value: { value: number; docCount: number }) => {
-              return {
+      const facetValues = Array.isArray(facetValue)
+        ? facetValue.reduce(
+            (
+              facetList: FacetValue[],
+              value: { value: number; docCount: number }
+            ) => {
+              if (!value.docCount) {
+                return facetList;
+              }
+
+              const parsedFacedValue = {
                 value: value.value,
                 selected:
                   (facet as ApiProductListModel.ValueFacet).activeValue ===
                   String(value.value),
                 count: value.docCount,
               };
-            })
-          : facetValue,
-      };
-    });
+
+              return [...facetList, parsedFacedValue];
+            },
+            []
+          )
+        : facetValue;
+
+      if (Array.isArray(facetValues) ? facetValues.length : facetValues) {
+        const normalizedFacet = {
+          name: localizedName,
+          parameter: config.parameterName,
+          count: facet.docCount,
+          values: facetValues,
+        };
+
+        return [...normalizedFacetList, normalizedFacet];
+      }
+
+      return normalizedFacetList;
+    }, []);
   };
 
   const parseCategoryTree = (
     categoryTree: ApiProductListModel.TreeFacet[],
     valuesList: FacetValue[]
   ): FacetValue[] => {
-    return categoryTree.map((treeItem) => ({
-      ...valuesList.find((valueList) => valueList.value === treeItem.nodeId)!,
-      name: treeItem.name,
-      children: treeItem.children?.length
-        ? parseCategoryTree(treeItem.children, valuesList)
-        : [],
-    }));
+    return categoryTree.reduce((treeList: FacetValue[], treeItem) => {
+      if (!treeItem.docCount) {
+        return treeList;
+      }
+
+      const parsedTree = {
+        ...valuesList.find((valueList) => valueList.value === treeItem.nodeId)!,
+        name: treeItem.name,
+        children: treeItem.children?.length
+          ? parseCategoryTree(treeItem.children, valuesList)
+          : [],
+      };
+
+      return [...treeList, parsedTree];
+    }, []);
   };
 
   const normalizedValueFacets = normalize(data[0].valueFacets!);
