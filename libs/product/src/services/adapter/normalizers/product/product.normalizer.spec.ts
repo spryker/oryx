@@ -1,12 +1,12 @@
 import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
-import { ImagesNormalizer } from '../images';
+import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 import {
   productAttributeNormalizer,
-  productImagesNormalizer,
+  productMediaSetNormalizer,
   productPriceNormalizer,
 } from './product.normalizer';
 
@@ -19,7 +19,7 @@ const mockTokensData = {
       currency: 'EUR',
     },
   },
-  [ImagesNormalizer]: [
+  [ProductMediaSetNormalizer]: [
     {
       externalUrlLarge: 'externalUrlLarge',
       externalUrlSmall: 'externalUrlSmall',
@@ -125,18 +125,20 @@ describe('Product Normalizers', () => {
   });
 
   describe('Product Images Normalizers', () => {
-    it('should call image transformer', () => {
-      productImagesNormalizer(mockDeserializedProduct, mockTransformer)
-        .pipe(take(1))
-        .subscribe((normalized) => {
-          expect(normalized).toEqual({
-            images: mockTokensData[ImagesNormalizer],
+    it('should call image transformer', () =>
+      new Promise<void>((done) => {
+        productMediaSetNormalizer(mockDeserializedProduct, mockTransformer)
+          .pipe(take(1))
+          .subscribe((normalized) => {
+            expect(normalized).toEqual({
+              mediaSet: mockTokensData[ProductMediaSetNormalizer],
+            });
+            expect(mockTransformer.transform).toHaveBeenCalledWith(
+              mockDeserializedProduct.concreteProductImageSets?.[0].imageSets,
+              ProductMediaSetNormalizer
+            );
+            done();
           });
-          expect(mockTransformer.transform).toHaveBeenCalledWith(
-            mockDeserializedProduct.concreteProductImageSets?.[0],
-            ImagesNormalizer
-          );
-        });
-    });
+      }));
   });
 });

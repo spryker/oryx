@@ -2,6 +2,7 @@ import {
   Product,
   ProductLabel,
   ProductLabelAppearance,
+  ProductMediaSet,
   ProductQualifier,
   ProductService,
 } from '@spryker-oryx/product';
@@ -42,6 +43,13 @@ const images = [
   },
 ];
 
+const mediaSet: ProductMediaSet[] = [
+  {
+    name: 'default',
+    media: images,
+  },
+];
+
 const newLabel: ProductLabel = {
   name: 'New',
   appearance: ProductLabelAppearance.Highlight,
@@ -57,7 +65,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '1',
       name: 'Sample product',
-      images,
+      mediaSet,
       description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum..`,
@@ -89,7 +97,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '2',
       name: 'Second sample product',
-      images: [],
+      mediaSet: [],
       description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
@@ -121,7 +129,12 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '3',
       name: 'Sample product no. 3',
-      images: [...images, ...images, ...images],
+      mediaSet: [
+        {
+          name: 'default',
+          media: [...images, ...images, ...images],
+        },
+      ],
       averageRating: undefined,
       reviewCount: 0,
 
@@ -152,7 +165,7 @@ export class MockProductService implements Partial<ProductService> {
       },
       averageRating: 1,
       reviewCount: undefined,
-      images,
+      mediaSet,
 
       attributes: {
         brand: 'Brand4',
@@ -179,7 +192,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images,
+      mediaSet,
       attributes: {
         brand: 'Brand5',
         color: 'color5',
@@ -205,7 +218,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images,
+      mediaSet,
     },
     {
       sku: '7',
@@ -223,7 +236,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images,
+      mediaSet,
       attributes: {
         brand: 'Brand7',
         color: 'color7',
@@ -249,7 +262,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images,
+      mediaSet,
       attributes: {
         brand: 'Brand8',
         SampleAttribute:
@@ -266,7 +279,12 @@ export class MockProductService implements Partial<ProductService> {
       sku: 'single-image',
       name: 'Sample product with one image',
       description: 'Lorem ipsum dolor sit amet.',
-      images: [images[0]],
+      mediaSet: [
+        {
+          name: 'default',
+          media: [images[0]],
+        },
+      ],
     },
     {
       sku: 'without-images',
@@ -280,7 +298,7 @@ export class MockProductService implements Partial<ProductService> {
           currency: 'EUR',
         },
       },
-      images: [],
+      mediaSet: [],
     },
   ];
 

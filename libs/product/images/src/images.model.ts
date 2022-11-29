@@ -1,4 +1,6 @@
 export interface ProductImagesComponentOptions {
+  mediaSet?: string;
+
   /**
    * The main image shows a single image at the time. The images
    * can be shown in a scrollable carousel or toggled one at the time.

@@ -7,7 +7,7 @@ export interface Product {
   name?: string;
   description?: string;
   price?: ProductPrices;
-  images?: ProductMedia[];
+  mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
 }
@@ -90,6 +90,11 @@ export const enum Size {
   Lg = 'lg',
   Xl = 'xl',
 }
+
+export type ProductMediaSet = {
+  name?: string;
+  media: ProductMedia[];
+};
 
 export type ProductMedia = {
   [key in Size]?: string;

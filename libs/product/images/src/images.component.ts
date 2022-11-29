@@ -1,5 +1,6 @@
 import { ContentController } from '@spryker-oryx/experience';
 import {
+  Product,
   ProductComponentMixin,
   ProductController,
   ProductMedia,
@@ -10,7 +11,7 @@ import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
 import {
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
@@ -25,10 +26,9 @@ import { styles } from './styles';
 export class ProductImagesComponent extends ProductComponentMixin<ProductImagesComponentOptions>() {
   static styles = styles;
 
-  protected images$ = new ProductController(this).getProduct().pipe(
-    map((product) => product?.images ?? []),
-    (product) => this.reset(product)
-  );
+  protected product$ = new ProductController(this)
+    .getProduct()
+    .pipe((product) => this.reset(product));
 
   protected options$ = new ContentController(this)
     .getOptions()
@@ -39,15 +39,27 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
   protected override render(): TemplateResult {
     return html`
       ${asyncValue(
-        combineLatest([this.images$, this.options$, this.active$]),
-        ([images, options, active]) =>
-          this.wrap(
+        combineLatest([this.product$, this.options$, this.active$]),
+        ([product, options, active]) => {
+          const media = this.resolveImages(product, options);
+          return this.wrap(
             options,
-            this.renderMain(options, images, active),
-            this.renderNavigation(options, images, active)
-          )
+            this.renderMain(options, media, active),
+            this.renderNavigation(options, media, active)
+          );
+        }
       )}
     `;
+  }
+
+  protected resolveImages(
+    product: Product | null,
+    options: Partial<ProductImagesComponentOptions>
+  ): ProductMedia[] {
+    const set = !options.mediaSet
+      ? product?.mediaSet?.[0]
+      : product?.mediaSet?.find((set) => set.name === options.mediaSet);
+    return set?.media ?? [];
   }
 
   /**

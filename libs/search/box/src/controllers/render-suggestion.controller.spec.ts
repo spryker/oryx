@@ -34,10 +34,14 @@ const product: Product = {
     defaultPrice: price,
     originalPrice: price,
   },
-  images: [
+  mediaSet: [
     {
-      xs: 'test',
-      lg: 'test',
+      media: [
+        {
+          xs: 'test',
+          lg: 'test',
+        },
+      ],
     },
   ],
 };

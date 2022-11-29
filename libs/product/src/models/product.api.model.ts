@@ -34,10 +34,11 @@ export module ApiProductModel {
   }
 
   export interface ImageSets {
-    imageSets: {
-      name: string;
-      images: Image[];
-    }[];
+    imageSets: ImageSet[];
+  }
+  export interface ImageSet {
+    name: string;
+    images: Image[];
   }
 
   export interface Price {

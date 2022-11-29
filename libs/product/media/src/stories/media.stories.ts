@@ -2,10 +2,11 @@ import {
   ProductComponentProperties,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
+import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { LoadingStrategy, ProductMediaOptions } from '../media.model';
+import { ProductMediaOptions } from '../media.model';
 
 export default {
   title: `${storybookPrefix}/Media`,

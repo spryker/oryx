@@ -5,12 +5,14 @@ import {
   concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductListAdapter,
-  ImagesNormalizer,
-  imagesNormalizer,
+  mediaNormalizer,
+  mediaSetNormalizer,
   PriceNormalizer,
   priceNormalizer,
   ProductAdapter,
   ProductListAdapter,
+  ProductMediaNormalizer,
+  ProductMediaSetNormalizer,
   productNormalizer,
 } from './adapter';
 import {
@@ -69,8 +71,12 @@ export const productProviders: Provider[] = [
     useValue: productLabelNormalizer,
   },
   {
-    provide: ImagesNormalizer,
-    useValue: imagesNormalizer,
+    provide: ProductMediaSetNormalizer,
+    useValue: mediaSetNormalizer,
+  },
+  {
+    provide: ProductMediaNormalizer,
+    useValue: mediaNormalizer,
   },
   {
     provide: ConcreteProductsNormalizer,

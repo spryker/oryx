@@ -15,6 +15,7 @@ export * from '../form/select/src/select.def';
 export * from '../form/tag/src/component';
 export * from '../graphical/chip/src/chip.def';
 export * from '../graphical/icon/src/component';
+export * from '../graphical/image/src/image.def';
 export * from '../graphical/rating/src/component';
 export * from '../graphical/spinner/src/component';
 export * from '../navigations/navigation-item/src/component';

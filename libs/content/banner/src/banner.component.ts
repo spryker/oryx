@@ -24,7 +24,7 @@ export class BannerComponent extends ComponentMixin<
   override render(): TemplateResult {
     return html`${asyncValue(this.data$, ([content, options]) => {
       const contents = html`
-        <img src=${ifDefined(content?.image)} alt=${ifDefined(options.alt)} />
+        <oryx-image .src=${content?.image} .alt=${options.alt}></oryx-image>
         <div class="overlay">
           ${when(
             content?.title,

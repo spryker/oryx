@@ -4,8 +4,8 @@ import { Provider } from '@spryker-oryx/injector';
 import { map, Observable } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
-import { ImagesNormalizer } from '../images';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
+import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -59,16 +59,15 @@ export function productLabelsNormalizer(
     .pipe(map((labels) => ({ labels })));
 }
 
-export function productImagesNormalizer(
+export function productMediaSetNormalizer(
   data: DeserializedProduct,
   transformer: TransformerService
 ): Observable<Partial<Product>> {
   const imageKey = camelize(ApiProductModel.Includes.ConcreteProductImageSets);
   const { [imageKey]: images } = data;
-
   return transformer
-    .transform(images?.[0], ImagesNormalizer)
-    .pipe(map((images) => ({ images })));
+    .transform(images?.[0].imageSets, ProductMediaSetNormalizer)
+    .pipe(map((sets) => ({ mediaSet: sets })));
 }
 
 export function productAvailabilityNormalizer(
@@ -79,7 +78,6 @@ export function productAvailabilityNormalizer(
     ApiProductModel.Includes.ConcreteProductAvailabilities
   );
   const { [stockKey]: availability } = data;
-
   return transformer
     .transform(availability?.[0], AvailabilityNormalizer)
     .pipe(map((availability) => ({ availability })));
@@ -96,7 +94,7 @@ export const productNormalizer: Provider[] = [
   },
   {
     provide: ProductNormalizer,
-    useValue: productImagesNormalizer,
+    useValue: productMediaSetNormalizer,
   },
   {
     provide: ProductNormalizer,

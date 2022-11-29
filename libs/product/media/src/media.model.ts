@@ -1,15 +1,5 @@
 import { ProductMediaContainerSize } from '@spryker-oryx/product';
-
-export const enum LoadingStrategy {
-  /**
-   * Used to fetch a resource immediately.
-   */
-  Eager = 'eager',
-  /**
-   * Used to fetch a resource when the element is in the viewport.
-   */
-  Lazy = 'lazy',
-}
+import { LoadingStrategy } from '@spryker-oryx/ui/image';
 
 export interface ResponsiveImage {
   src?: string;
@@ -20,6 +10,8 @@ export interface ResponsiveImage {
 
 export interface ProductMediaOptions {
   containerSize?: ProductMediaContainerSize;
+
+  mediaSet?: string;
 
   /**
    * Defines the index of the product media from the set of images.
