@@ -29,7 +29,7 @@ export const tileStyles = css`
 
   :host([selected]) ::slotted(*) {
     border-width: 2px;
-    padding: 19px;
+    padding: calc(var(--oryx-tile-padding, 20px) - 1px);
     border: var(--oryx-border-thick) solid var(--oryx-color-primary-300);
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
   }

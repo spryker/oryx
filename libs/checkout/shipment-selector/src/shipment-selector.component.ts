@@ -10,7 +10,7 @@ import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { styles } from './shipment-selector.styles';
 
 @hydratable('window:load')
@@ -22,6 +22,7 @@ export class CheckoutShipmentSelectorComponent extends ComponentMixin() {
   protected localeService = resolve(LocaleService);
 
   protected carriers$ = this.shipmentService.getCarriers();
+  protected currentMethod$ = new BehaviorSubject<string | number | null>(null);
   protected selectedShipmentMethod$ =
     this.shipmentService.getSelectedShipmentMethod();
 
@@ -29,39 +30,46 @@ export class CheckoutShipmentSelectorComponent extends ComponentMixin() {
     method: ShipmentMethod,
     selected = false
   ): TemplateResult {
-    return html`<oryx-tile
-      ><div class="content">
+    return html`<oryx-tile ?selected="${selected}">
+      <div class="content">
         <oryx-radio>
           <input
             name="shipment-method"
             type="radio"
             ?checked="${selected}"
-          />${method.name}</oryx-radio
-        >
-        <span class="price"
-          >${asyncValue(
+            @change="${() => {
+              this.currentMethod$.next(method.id);
+            }}"
+          />${method.name}
+        </oryx-radio>
+        <span class="price">
+          ${asyncValue(
             this.priceService.format(method.price),
             (price) => html`${price}`
-          )}</span
-        >
+          )}
+        </span>
         ${when(
           method.deliveryTime,
           () =>
             html`${asyncValue(
               this.localeService.formatDate(method.deliveryTime!),
-              (date) => html`<small class="delivery"
-                >${i18n('checkout.delivered-at-<date>', { date })}
+              (date) => html`<small class="delivery">
+                ${i18n('checkout.delivered-at-<date>', { date })}
               </small>`
             )}`
         )}
-      </div></oryx-tile
-    >`;
+      </div>
+    </oryx-tile>`;
   }
 
   protected override render(): TemplateResult {
     return html`${asyncValue(
-      combineLatest([this.carriers$, this.selectedShipmentMethod$]),
-      ([carriers, selectedShipmentMethod]) => {
+      combineLatest([
+        this.carriers$,
+        this.selectedShipmentMethod$,
+        this.currentMethod$,
+      ]),
+      ([carriers, selectedShipmentMethod, currentMethod]) => {
         if (!carriers?.length) {
           return html`<oryx-icon type="carrier"></oryx-icon>
             <div class="no-methods">
@@ -76,7 +84,9 @@ export class CheckoutShipmentSelectorComponent extends ComponentMixin() {
           ${carrier.shipmentMethods.map((item, j) =>
             this.renderMethod(
               item,
-              selectedShipmentMethod === 0
+              currentMethod
+                ? currentMethod === item.id
+                : selectedShipmentMethod === 0
                 ? i === 0 && j === 0
                 : selectedShipmentMethod == item.id
             )
