@@ -1,3 +1,4 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/injector';
 import { I18nContext, InferI18nContext } from '@spryker-oryx/utilities/i18n';
 import { isObservable, Observable, of, shareReplay } from 'rxjs';
@@ -11,9 +12,11 @@ export class DefaultI18nService implements I18nService {
     T extends string | readonly string[],
     Ctx extends I18nContext = InferI18nContext<T>
   >(token: T, context?: Ctx | Observable<Ctx>): Observable<string> {
-    return this.processor
-      .interpolate(token, this.normalizeContext(context))
-      .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    return ssrAwaiter(
+      this.processor
+        .interpolate(token, this.normalizeContext(context))
+        .pipe(shareReplay({ refCount: true, bufferSize: 1 }))
+    );
   }
 
   protected normalizeContext(
