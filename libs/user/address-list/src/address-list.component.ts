@@ -22,7 +22,7 @@ import {
 } from './address-list.model';
 import { styles } from './address-list.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable('window:load')
 export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
   static styles = styles;
 
