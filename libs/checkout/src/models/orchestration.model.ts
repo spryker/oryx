@@ -8,7 +8,7 @@ export enum Validity {
   Valid = 'valid',
 }
 
-export enum CheckoutSteps {
+export enum CheckoutStepType {
   Delivery = 'delivery',
   Shipping = 'shipping',
   Payment = 'payment',
@@ -19,8 +19,5 @@ export type ValidityReport = {
   validity: Validity | undefined;
 };
 
-export const checkoutStepsConfig = [
-  CheckoutSteps.Delivery,
-  CheckoutSteps.Shipping,
-  CheckoutSteps.Payment,
-];
+// TODO: it will be more complex in the future
+export type CheckoutConfiguration = string[];

@@ -3,7 +3,6 @@ import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
   CheckoutOrchestrationService,
-  Validity,
 } from '@spryker-oryx/checkout';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
@@ -12,7 +11,7 @@ import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { CheckoutCompositionOptions } from './composition.model';
 import { styles } from './composition.styles';
 
@@ -34,28 +33,11 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   @subscribe()
   protected steps$ = this.orchestrationService.getValidity();
 
-  protected deliveryCompleted$ = this.steps$.pipe(
-    map((steps) => {
-      return !!(
-        steps.find((step) => step.id === 'delivery')?.validity ===
-        Validity.Valid
-      );
-    })
-  );
-
-  //just for preview. Need to drop after implementation of additional steps
-  protected testData$ = combineLatest([
-    this.checkoutDataService.getContactDetails(),
-    this.checkoutDataService.getAddressDetails(),
-  ]);
-
   protected checkout$ = combineLatest([
     this.isEmptyCart$,
     this.isAuthenticated$,
     this.isGuestCheckout$,
-    this.deliveryCompleted$,
     this.options$,
-    this.testData$,
   ]);
 
   protected renderGuestCheckoutHeading(): TemplateResult {
@@ -77,63 +59,32 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   }
 
   protected override render(): TemplateResult {
-    return html` <!-- TODO: just for demonstration -->
-      ${asyncValue(
-        this.steps$,
-        (steps) => html`
-          <ul>
-            ${steps.map(
-              ({ id, validity }) => html` <li>${id}: ${validity}</li> `
-            )}
-          </ul>
-        `
-      )}
-      ${asyncValue(
-        this.checkout$,
-        ([
-          isEmptyCart,
-          isAuthenticated,
-          isGuestCheckout,
-          deliveryCompleted,
-          options,
-          testData,
-        ]) => {
-          if (isEmptyCart) {
-            return html``;
-          }
+    return html` ${asyncValue(
+      this.checkout$,
+      ([isEmptyCart, isAuthenticated, isGuestCheckout, options]) => {
+        if (isEmptyCart) {
+          return html``;
+        }
 
-          if (!(isAuthenticated || isGuestCheckout)) {
-            return html`
-              <checkout-login
-                @oryx.guest-submit=${(): void => {
-                  this.checkoutDataService.setIsGuestCheckout();
-                }}
-                .options=${{ disableGuest: options.disableGuest }}
-              ></checkout-login>
-            `;
-          }
-
+        if (!(isAuthenticated || isGuestCheckout)) {
           return html`
-            ${when(
-              isGuestCheckout,
-              () => html`${this.renderGuestCheckoutHeading()}`
-            )}
-            ${when(
-              deliveryCompleted,
-              () => html`
-                <h3>2. Shipping</h3>
-                <p style="word-break: break-all;">
-                  ${JSON.stringify(testData[0])}
-                </p>
-
-                <p style="word-break: break-all;">
-                  ${JSON.stringify(testData[1])}
-                </p>
-              `,
-              () => html` <checkout-delivery></checkout-delivery> `
-            )}
+            <checkout-login
+              @oryx.guest-submit=${(): void => {
+                this.checkoutDataService.setIsGuestCheckout();
+              }}
+              .options=${{ disableGuest: options.disableGuest }}
+            ></checkout-login>
           `;
         }
-      )}`;
+
+        return html`
+          ${when(
+            isGuestCheckout,
+            () => html`${this.renderGuestCheckoutHeading()}`
+          )}
+          <checkout-delivery></checkout-delivery>
+        `;
+      }
+    )}`;
   }
 }

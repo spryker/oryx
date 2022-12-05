@@ -2,7 +2,7 @@ import { AuthService } from '@spryker-oryx/auth';
 import {
   CheckoutForm,
   CheckoutOrchestrationService,
-  CheckoutSteps,
+  CheckoutStepType,
   CheckoutTrigger,
 } from '@spryker-oryx/checkout';
 import { ComponentMixin } from '@spryker-oryx/experience';
@@ -23,7 +23,7 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
 
   @subscribe()
   protected submitTrigger$ = this.orchestrationService
-    .getTrigger(CheckoutSteps.Delivery)
+    .getTrigger(CheckoutStepType.Delivery)
     .pipe(
       tap((trigger) => {
         console.log(trigger);
@@ -53,7 +53,7 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
       }
     }
 
-    this.orchestrationService.report(CheckoutSteps.Delivery, isValid);
+    this.orchestrationService.report(CheckoutStepType.Delivery, isValid);
   }
 
   protected report(): void {
@@ -81,7 +81,7 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
         <oryx-button>
           <button
             @click=${(): void =>
-              this.orchestrationService.submit(CheckoutSteps.Delivery)}
+              this.orchestrationService.submit(CheckoutStepType.Delivery)}
           >
             ${i18n('checkout.use-this-address')}
           </button>

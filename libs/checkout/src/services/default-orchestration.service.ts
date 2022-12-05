@@ -8,24 +8,30 @@ import {
   tap,
 } from 'rxjs';
 import {
-  CheckoutSteps,
-  checkoutStepsConfig,
+  CheckoutConfiguration,
+  CheckoutStepType,
   CheckoutTrigger,
   Validity,
   ValidityReport,
 } from '../models';
 import { CheckoutOrchestrationService } from './orchestration.service';
 
-interface Step {
-  id: CheckoutSteps;
+interface StepData {
   trigger$: Subject<CheckoutTrigger | null>;
   validity$: BehaviorSubject<Validity>;
 }
 
+const defaultCheckoutSteps = [
+  CheckoutStepType.Delivery,
+  CheckoutStepType.Shipping,
+  CheckoutStepType.Payment,
+];
+
 export class DefaultCheckoutOrchestrationService
   implements CheckoutOrchestrationService
 {
-  protected steps = this.generateConfig(checkoutStepsConfig);
+  protected checkoutSteps = defaultCheckoutSteps;
+  protected stepsData: Map<string, StepData> = new Map();
 
   protected validityTrigger$ = new BehaviorSubject(null);
   protected validity$ = this.validityTrigger$.pipe(
@@ -40,23 +46,27 @@ export class DefaultCheckoutOrchestrationService
     })
   );
 
+  constructor(protected config: CheckoutConfiguration = defaultCheckoutSteps) {
+    this.initCheckoutData(config);
+  }
+
   getValidity(): Observable<ValidityReport[]> {
     return this.validity$;
   }
 
   getTrigger(step: string): Observable<CheckoutTrigger | null> {
-    return this.getStep(step).trigger$;
+    return this.stepsData.get(step)!.trigger$;
   }
 
   report(step: string, isValid = true): void {
-    const currentStep = this.getStep(step);
+    const currentStep = this.stepsData.get(step)!;
     currentStep.trigger$.next(null);
     currentStep.validity$.next(isValid ? Validity.Valid : Validity.Invalid);
     this.validityTrigger$.next(null);
   }
 
   submit(step?: string): void {
-    for (const { id } of this.steps) {
+    for (const id of this.stepsData.keys()) {
       if (!step || step === id) {
         this.initCheck(id);
       }
@@ -64,34 +74,28 @@ export class DefaultCheckoutOrchestrationService
   }
 
   protected initCheck(step: string): void {
-    this.getStep(step).trigger$.next(CheckoutTrigger.Check);
+    this.stepsData.get(step)!.trigger$.next(CheckoutTrigger.Check);
   }
 
   protected initReport(step: string): void {
-    this.getStep(step).trigger$.next(CheckoutTrigger.Report);
-  }
-
-  protected getStep(step: string): Step {
-    return this.steps.find(({ id }) => id === step) as Step;
+    this.stepsData.get(step)!.trigger$.next(CheckoutTrigger.Report);
   }
 
   protected collectValidity(): Observable<ValidityReport[]> {
-    const validityStates = this.steps.map(({ validity$ }) => validity$);
-    return combineLatest(validityStates).pipe(
-      map((validities) =>
-        validities.map((validity, i) => ({
-          id: this.steps[i].id,
-          validity,
-        }))
-      )
+    const validityStates = [...this.stepsData.entries()].map(([id, step]) =>
+      step.validity$.pipe(map((validity) => ({ id, validity })))
     );
+    return combineLatest(validityStates);
   }
 
-  protected generateConfig(steps: CheckoutSteps[]): Step[] {
-    return steps.map((id) => ({
-      id,
-      trigger$: new Subject(),
-      validity$: new BehaviorSubject<Validity>(Validity.Invalid),
-    }));
+  protected initCheckoutData(
+    steps: CheckoutConfiguration = this.checkoutSteps
+  ): void {
+    for (const step of steps) {
+      this.stepsData.set(step, {
+        trigger$: new Subject(),
+        validity$: new BehaviorSubject<Validity>(Validity.Invalid),
+      });
+    }
   }
 }

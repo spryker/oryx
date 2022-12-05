@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
-import { CheckoutSteps, CheckoutTrigger, ValidityReport } from '../models';
+import { CheckoutStepType, CheckoutTrigger, ValidityReport } from '../models';
 
 export interface CheckoutOrchestrationService {
-  getTrigger(step: CheckoutSteps): Observable<CheckoutTrigger | null>;
+  getTrigger(step: CheckoutStepType): Observable<CheckoutTrigger | null>;
   getValidity(): Observable<ValidityReport[]>;
-  report(step: CheckoutSteps, isValid: boolean): void;
-  submit(step?: CheckoutSteps): void;
+  report(step: CheckoutStepType, isValid: boolean): void;
+  submit(step?: CheckoutStepType): void;
 }
 
 export const CheckoutOrchestrationService = 'FES.CheckoutOrchestrationService';
