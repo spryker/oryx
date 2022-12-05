@@ -110,7 +110,7 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
 
         if (!addresses || !addresses.length) {
           return html` <slot name="empty">
-            <oryx-icon type="carrier" size="large"></oryx-icon>
+            <oryx-icon type="location" size="large"></oryx-icon>
             ${i18n('user.address.no-addresses')}
           </slot>`;
         }

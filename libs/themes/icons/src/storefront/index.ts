@@ -26,6 +26,7 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Invisible]: () =>
     import('./icons/invisible').then((s) => s.default),
   [IconTypes.Wishlist]: () => import('./icons/wishlist').then((s) => s.default),
+  [IconTypes.Location]: () => import('./icons/location').then((s) => s.default),
 
   /** Alias to minus */
   [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
