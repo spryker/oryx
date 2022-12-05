@@ -37,8 +37,8 @@ async function componentsLibraryBuildExecutor(baseOptions, context) {
         const { name: dirName, path: dirPath } = dir;
         const dirKey = dirName === 'src' ? '.' : `./${dirName}`;
         packageJson.exports[dirKey] = {
-            default: `./${dirPath}/index.js`,
             types: `./${dirPath}/index.d.ts`,
+            default: `./${dirPath}/index.js`,
         };
     });
     (0, devkit_1.writeJsonFile)((0, path_1.join)(options.outputPath, 'package.json'), packageJson);

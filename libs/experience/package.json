@@ -12,8 +12,8 @@
   },
   "exports": {
     "./mocks": {
-      "default": "./src/mocks/index.js",
-      "types": "./src/mocks/index.d.ts"
+      "types": "./src/mocks/index.d.ts",
+      "default": "./src/mocks/index.js"
     }
   },
   "peerDependencies": {

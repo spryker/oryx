@@ -23,11 +23,14 @@ rmSync(`${packsDir}`, { recursive: true, force: true });
 console.log(`${scriptLoggingPrefix} Creating ${packsDir} folder.`);
 execSync(`mkdir -p ${packsDir}`, consoleOutputSettings);
 
-// console.log(`${scriptLoggingPrefix} Clearing npm cache.`);
-// execSync('npm cache clean --force', consoleOutputSettings);
+console.log(`${scriptLoggingPrefix} Clearing npm cache.`);
+execSync('npm cache clean --force', consoleOutputSettings);
 
 console.log(`${scriptLoggingPrefix} Building libraries.`);
-execSync('nx run-many --target=build --all --exclude storybook,launchpad,storefront,picking-app --parallel=5', consoleOutputSettings);
+execSync('nx run-many --target=build --all --exclude storybook,launchpad,storefront,picking-app --parallel=5 --skip-nx-cache', consoleOutputSettings);
+
+execSync(`node tools/post-build/add-js-extension.js`, consoleOutputSettings);
+console.log(`${scriptLoggingPrefix} Fixing js extension.`);
 
 const libDirs = getDirectories(libDistPath);
 
@@ -53,20 +56,15 @@ tarballs.forEach(tar => {
   copyFileSync(tar, `${currentDir}/${packsDir}/${tarballFileName}`);
   rmSync(tar);
 
-  execSync(`npm unpublish @spryker-oryx/${packageName} ${customRegistry} --force`, consoleOutputSettings);
-  console.log(`${scriptLoggingPrefix} Publishing ${packageName} package.`);
-  execSync(`npm publish ${tarDir} ${customRegistry}`, consoleOutputSettings);
-
-
-  // try {
-  //   console.log(`${scriptLoggingPrefix} Publishing ${packageName} package.`);
-  //   execSync(`npm publish ${tarDir} ${customRegistry}`, consoleOutputSettings);
-  // } catch(e) {
-  //   console.log(`${scriptLoggingPrefix} Something went wrong, have to unpublish ${packsDir} package.`);
-  //   execSync(`npm unpublish @spryker-oryx/${packageName} ${customRegistry} --force`, consoleOutputSettings);
-  //   console.log(`${scriptLoggingPrefix} Publishing ${packageName} package.`);
-  //   execSync(`npm publish ${tarDir} ${customRegistry}`, consoleOutputSettings);
-  // }
+  try {
+    console.log(`${scriptLoggingPrefix} Publishing ${packageName} package.`);
+    execSync(`npm publish ${tarDir} ${customRegistry}`, consoleOutputSettings);
+  } catch(e) {
+    console.log(`${scriptLoggingPrefix} Something went wrong, have to unpublish ${packsDir} package.`);
+    execSync(`npm unpublish @spryker-oryx/${packageName} ${customRegistry} --force`, consoleOutputSettings);
+    console.log(`${scriptLoggingPrefix} Publishing ${packageName} package.`);
+    execSync(`npm publish ${tarDir} ${customRegistry}`, consoleOutputSettings);
+  }
 });
 
 console.log(`${scriptLoggingPrefix} Removing ${packsDir} folder.`);

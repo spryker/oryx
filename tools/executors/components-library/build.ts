@@ -76,8 +76,8 @@ export default async function componentsLibraryBuildExecutor(
     const dirKey = dirName === 'src' ? '.' : `./${dirName}`;
 
     packageJson.exports[dirKey] = {
-      default: `./${dirPath}/index.js`,
       types: `./${dirPath}/index.d.ts`,
+      default: `./${dirPath}/index.js`,
     };
   });
 
