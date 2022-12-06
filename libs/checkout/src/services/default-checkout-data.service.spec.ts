@@ -1,3 +1,4 @@
+import { mockNormalizedShipmentAttributes } from '@spryker-oryx/checkout/mocks';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
@@ -145,6 +146,27 @@ describe('DefaultCheckoutDataService', () => {
 
       it('should set the address details', () => {
         expect(cb).toHaveBeenCalledWith(details);
+      });
+    });
+  });
+
+  describe('when getShipmentDetails is called', () => {
+    it('should return an observable', () => {
+      expect(service.getShipmentDetails()).toBeInstanceOf(Observable);
+    });
+  });
+
+  describe('when setShipmentDetails is called', () => {
+    const cb = vi.fn();
+
+    describe('when value is set', () => {
+      beforeEach(() => {
+        service.setShipmentDetails(mockNormalizedShipmentAttributes);
+        service.getShipmentDetails().subscribe(cb);
+      });
+
+      it('should set the shipment details', () => {
+        expect(cb).toHaveBeenCalledWith(mockNormalizedShipmentAttributes);
       });
     });
   });

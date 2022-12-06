@@ -11,6 +11,7 @@ import {
 } from 'rxjs';
 import { ApiCheckoutModel, Carrier, CheckoutData, Shipment } from '../models';
 import { CheckoutAdapter } from './adapter';
+import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutShipmentService } from './checkout-shipment.service';
 
 export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
@@ -20,7 +21,8 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   ];
   constructor(
     protected cartService = inject(CartService),
-    protected adapter = inject(CheckoutAdapter)
+    protected adapter = inject(CheckoutAdapter),
+    protected dataService = inject(CheckoutDataService)
   ) {}
 
   protected shipments$ = new BehaviorSubject<Shipment[] | null>(null);
@@ -77,28 +79,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   }
 
   setShipmentMethod(method: number): Observable<void> {
-    return this.cartService.getCart().pipe(
-      switchMap((cart) => {
-        if (!cart) {
-          return of(null);
-        }
-
-        return this.adapter.update({
-          cartId: cart.id,
-          include: this.includeShipments,
-          attributes: {
-            shipment: {
-              idShipmentMethod: method,
-            },
-          },
-        });
-      }),
-      switchMap((result) => {
-        if (result?.shipments && result.shipments?.length > 0) {
-          this.handleShipmentData(result);
-        }
-        return of(undefined);
-      })
-    );
+    this.dataService.setShipmentDetails({ idShipmentMethod: method });
+    return of(undefined);
   }
 }

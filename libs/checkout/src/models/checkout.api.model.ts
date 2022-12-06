@@ -65,10 +65,10 @@ export module ApiCheckoutModel {
   }
 
   export interface Shipment {
-    items: string[];
-    requestedDeliveryDate: string | null;
-    selectedShipmentMethod: ShipmentMethod;
-    shippingAddress: Address;
+    items?: string[];
+    requestedDeliveryDate?: string | null;
+    selectedShipmentMethod?: ShipmentMethod;
+    shippingAddress?: Address;
   }
 
   export enum Includes {

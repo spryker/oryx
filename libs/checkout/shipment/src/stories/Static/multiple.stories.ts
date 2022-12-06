@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../../../.constants';
 import { renderSelector } from '../helper';
 
 export default {
-  title: `${storybookPrefix}/Shipment Selector/Static`,
+  title: `${storybookPrefix}/Shipment/Static`,
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {

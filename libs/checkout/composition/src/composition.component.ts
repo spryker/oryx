@@ -3,6 +3,7 @@ import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
   CheckoutOrchestrationService,
+  CheckoutStepType,
 } from '@spryker-oryx/checkout';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
@@ -58,8 +59,32 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     `;
   }
 
+  protected renderStep(step: CheckoutStepType): TemplateResult {
+    switch (step) {
+      case CheckoutStepType.Shipping:
+        return html`<checkout-shipment></checkout-shipment>`;
+      default:
+        return html``;
+    }
+  }
+
   protected override render(): TemplateResult {
     return html` ${asyncValue(
+      this.steps$,
+      (steps) => html`
+        ${steps.map(({ id, validity }, index) => {
+          return html`
+            <oryx-card>
+              <h2 slot="header">${index + 1}. ${id}</h2>
+              <slot name="content"
+                >${this.renderStep(id as CheckoutStepType)}</slot
+              >
+            </oryx-card>
+          `;
+        })}
+      `
+    )}
+    ${asyncValue(
       this.checkout$,
       ([isEmptyCart, isAuthenticated, isGuestCheckout, options]) => {
         if (isEmptyCart) {

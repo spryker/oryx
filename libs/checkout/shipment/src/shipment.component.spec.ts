@@ -1,5 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CheckoutShipmentService } from '@spryker-oryx/checkout';
+import {
+  CheckoutOrchestrationService,
+  CheckoutShipmentService,
+} from '@spryker-oryx/checkout';
 import {
   mockDeliveryTimeShipmentMethod,
   mockFilteredShipmentMethods,
@@ -10,8 +13,8 @@ import { LocaleService, PricingService } from '@spryker-oryx/site';
 import { radioComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { CheckoutShipmentSelectorComponent } from './shipment-selector.component';
-import { checkoutShipmentSelectorComponent } from './shipment-selector.def';
+import { CheckoutShipmentComponent } from './shipment.component';
+import { checkoutShipmentComponent } from './shipment.def';
 
 class MockShipmentService implements Partial<CheckoutShipmentService> {
   getCarriers = vi.fn().mockReturnValue(of(null));
@@ -26,13 +29,24 @@ class MockLocaleService implements Partial<LocaleService> {
   formatDate = vi.fn().mockReturnValue(of('mockdate'));
 }
 
+class MockOrchestrationService
+  implements Partial<CheckoutOrchestrationService>
+{
+  report = vi.fn();
+  getTrigger = vi.fn().mockReturnValue(of(''));
+}
+
 describe('Checkout Shipment Selector component', () => {
-  let element: CheckoutShipmentSelectorComponent;
+  let element: CheckoutShipmentComponent;
   let shipmentService: MockShipmentService;
   let localeService: MockLocaleService;
 
+  const getElement = async () => {
+    element = await fixture(html`<checkout-shipment></checkout-shipment>`);
+  };
+
   beforeAll(async () => {
-    await useComponent([checkoutShipmentSelectorComponent, radioComponent]);
+    await useComponent([checkoutShipmentComponent, radioComponent]);
   });
 
   beforeEach(() => {
@@ -49,6 +63,10 @@ describe('Checkout Shipment Selector component', () => {
         {
           provide: LocaleService,
           useClass: MockLocaleService,
+        },
+        {
+          provide: CheckoutOrchestrationService,
+          useClass: MockOrchestrationService,
         },
       ],
     });
@@ -67,28 +85,22 @@ describe('Checkout Shipment Selector component', () => {
   });
 
   it('is defined', async () => {
-    element = await fixture(
-      html`<checkout-shipment-selector></checkout-shipment-selector>`
-    );
-    expect(element).toBeInstanceOf(CheckoutShipmentSelectorComponent);
+    await getElement();
+    expect(element).toBeInstanceOf(CheckoutShipmentComponent);
   });
 
   it('passes the a11y audit', async () => {
     shipmentService.getCarriers.mockReturnValue(
       of(mockFilteredShipmentMethods)
     );
-    element = await fixture(
-      html`<checkout-shipment-selector></checkout-shipment-selector>`
-    );
+    await getElement();
 
     await expect(element).shadowDom.to.be.accessible();
   });
 
   describe('when there are no shipment methods available', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<checkout-shipment-selector></checkout-shipment-selector>`
-      );
+      await getElement();
     });
 
     it('should not render any tiles', () => {
@@ -102,9 +114,7 @@ describe('Checkout Shipment Selector component', () => {
       shipmentService.getCarriers.mockReturnValue(
         of(mockFilteredShipmentMethods)
       );
-      element = await fixture(
-        html`<checkout-shipment-selector></checkout-shipment-selector>`
-      );
+      await getElement();
     });
 
     it('should render oryx-tile', () => {
@@ -124,9 +134,7 @@ describe('Checkout Shipment Selector component', () => {
         shipmentService.getCarriers.mockReturnValue(
           of(mockDeliveryTimeShipmentMethod)
         );
-        element = await fixture(
-          html`<checkout-shipment-selector></checkout-shipment-selector>`
-        );
+        await getElement();
       });
 
       it('should format the delivery time', () => {
@@ -139,9 +147,7 @@ describe('Checkout Shipment Selector component', () => {
     describe('when a shipment method is already selected', () => {
       beforeEach(async () => {
         shipmentService.getSelectedShipmentMethod.mockReturnValue(of(2));
-        element = await fixture(
-          html`<checkout-shipment-selector></checkout-shipment-selector`
-        );
+        await getElement();
       });
 
       it('should select the corresponding radio button', () => {

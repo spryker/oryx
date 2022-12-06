@@ -35,3 +35,9 @@ export const LoginDemo = Template.bind({});
 LoginDemo.args = {
   disableGuest: false,
 };
+
+LoginDemo.parameters = {
+  chromatic: {
+    delay: 300,
+  },
+};

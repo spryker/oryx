@@ -53,11 +53,11 @@ export interface Address {
 }
 
 export interface Shipment {
-  items: string[];
-  requestedDeliveryDate: string | null;
+  items?: string[];
+  requestedDeliveryDate?: string | null;
   selectedShipmentMethod?: ShipmentMethod;
   idShipmentMethod?: number;
-  shippingAddress: Address;
+  shippingAddress?: Address;
   carriers?: Carrier[];
   id?: string;
 }

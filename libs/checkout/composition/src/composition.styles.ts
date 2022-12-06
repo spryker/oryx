@@ -14,4 +14,8 @@ export const styles = css`
     line-height: 30px;
     font-weight: 500;
   }
+
+  oryx-card {
+    margin: 15px 0;
+  }
 `;

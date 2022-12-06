@@ -11,5 +11,5 @@ export const renderSelector = (type: ShipmentProviderType): TemplateResult => {
     CheckoutShipmentService
   ) as unknown as MockShipmentService;
   shipmentService.changeProviderType(type);
-  return html`<checkout-shipment-selector></checkout-shipment-selector>`;
+  return html`<checkout-shipment></checkout-shipment>`;
 };

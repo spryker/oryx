@@ -5,6 +5,8 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    --oryx-tile-padding: 0;
   }
 
   .no-methods {
@@ -24,6 +26,10 @@ export const styles = css`
     flex: 1;
   }
 
+  oryx-radio::part(label) {
+    padding: 20px;
+  }
+
   .content {
     display: flex;
     flex-wrap: wrap;
@@ -32,6 +38,8 @@ export const styles = css`
   .price {
     font-weight: 600;
     font-size: var(--oryx-font-size-medium);
+    flex: 1;
+    text-align: end;
   }
 
   .delivery {

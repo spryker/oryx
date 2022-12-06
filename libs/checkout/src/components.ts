@@ -6,4 +6,4 @@ export * from '../guest/src/guest.def';
 export * from '../link/src/link.def';
 export * from '../login/src/login.def';
 export * from '../payment-selector/src/payment-selector.def';
-export * from '../shipment-selector/src/shipment-selector.def';
+export * from '../shipment/src/shipment.def';

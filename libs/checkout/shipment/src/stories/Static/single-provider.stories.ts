@@ -1,15 +1,15 @@
 import { ShipmentProviderType } from '@spryker-oryx/checkout/mocks';
 import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { renderSelector } from '../helper';
 
 export default {
-  title: `${storybookPrefix}/Shipment Selector/Static`,
-} as unknown as Meta;
+  title: `${storybookPrefix}/Shipment/Static`,
+} as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return renderSelector(ShipmentProviderType.NoProvider);
+  return html`${renderSelector(ShipmentProviderType.SingleProvider)}`;
 };
 
-export const NoProviders = Template.bind({});
+export const SingleProviderSingleMethod = Template.bind({});

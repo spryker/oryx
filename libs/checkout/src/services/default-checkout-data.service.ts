@@ -1,7 +1,12 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { Address, ContactDetails, guestCheckoutStorageKey } from '../models';
+import {
+  Address,
+  ContactDetails,
+  guestCheckoutStorageKey,
+  Shipment,
+} from '../models';
 import { CheckoutDataService } from './checkout-data.service';
 
 export class DefaultCheckoutDataService implements CheckoutDataService {
@@ -12,6 +17,7 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   protected isGuestCheckout$ = new ReplaySubject<boolean>();
   protected contactDetails$ = new BehaviorSubject<ContactDetails | null>(null);
   protected addressDetails$ = new BehaviorSubject<Address | null>(null);
+  protected shipmentDetails$ = new BehaviorSubject<Shipment | null>(null);
 
   isGuestCheckout(): Observable<boolean> {
     return this.isGuestCheckout$;
@@ -53,6 +59,14 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
 
   setAddressDetails(addressDetails: Address | null): void {
     this.addressDetails$.next(addressDetails);
+  }
+
+  getShipmentDetails(): Observable<Shipment | null> {
+    return this.shipmentDetails$;
+  }
+
+  setShipmentDetails(shipmentDetails: Shipment | null): void {
+    this.shipmentDetails$.next(shipmentDetails);
   }
 
   protected getPersistedData(): void {

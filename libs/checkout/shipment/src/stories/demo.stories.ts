@@ -5,11 +5,11 @@ import { storybookPrefix } from '../../../.constants';
 import { renderSelector } from './helper';
 
 export default {
-  title: `${storybookPrefix}/Shipment Selector`,
+  title: `${storybookPrefix}/Shipment`,
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {
   return renderSelector(ShipmentProviderType.Multiple);
 };
 
-export const ShipmentSelectorDemo = Template.bind({});
+export const ShipmentDemo = Template.bind({});

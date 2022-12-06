@@ -9,6 +9,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
 import { Shipment } from '../models';
 import { CheckoutAdapter } from './adapter';
+import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutShipmentService } from './checkout-shipment.service';
 import { DefaultCheckoutShipmentService } from './default-checkout-shipment.service';
 
@@ -23,11 +24,16 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
   update = vi.fn().mockReturnValue(of(mockNormalizedUpdatedCheckoutData));
 }
 
+class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  setShipmentDetails = vi.fn();
+}
+
 describe('DefaultCheckoutService', () => {
   let service: CheckoutShipmentService;
   let cart: MockCartService;
   let adapter: MockCheckoutAdapter;
   let shipment$: Observable<Shipment | null>;
+  let dataService: MockCheckoutDataService;
   const callback = vi.fn();
   const shipmentsCallback = vi.fn();
   beforeEach(() => {
@@ -45,6 +51,10 @@ describe('DefaultCheckoutService', () => {
           provide: CheckoutShipmentService,
           useClass: DefaultCheckoutShipmentService,
         },
+        {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
       ],
     });
 
@@ -53,6 +63,9 @@ describe('DefaultCheckoutService', () => {
     adapter = testInjector.inject(
       CheckoutAdapter
     ) as unknown as MockCheckoutAdapter;
+    dataService = testInjector.inject(
+      CheckoutDataService
+    ) as unknown as MockCheckoutDataService;
 
     cart.getCart.mockReturnValue(of({ id: mockCartId }));
   });
@@ -128,16 +141,12 @@ describe('DefaultCheckoutService', () => {
       expect(service.setShipmentMethod(1)).toBeInstanceOf(Observable);
     });
 
-    it('should update selected shipment method', () => {
-      shipment$ = service.getShipment();
+    it('should call CheckoutDataService setShipmentDetails', () => {
+      service.setShipmentMethod(1).subscribe();
 
-      shipment$.subscribe(shipmentsCallback);
-      service.setShipmentMethod(1).subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith(undefined);
-      expect(shipmentsCallback).toHaveBeenCalledWith(
-        mockNormalizedUpdatedCheckoutData.shipments[0]
-      );
+      expect(dataService.setShipmentDetails).toHaveBeenCalledWith({
+        idShipmentMethod: 1,
+      });
     });
   });
 });
