@@ -35,9 +35,9 @@ export const floatingLabelBaseStyles = css`
     max-width: calc(100% - 54px - var(--float-label-start-gap, 0px));
   }
 
-  :host([floatLabel]) slot:not([name])::slotted(*)::placeholder,
-  :host([floatLabel]) slot:not([name])::slotted(select:invalid) {
-    opacity: 0;
+  :host([floatLabel]),
+  :host([floatLabel]) ::slotted(select:invalid) {
+    --oryx-color-placeholder: transparent;
   }
 
   :host([floatLabel]) slot[name='label'],
