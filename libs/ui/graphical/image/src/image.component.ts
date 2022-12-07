@@ -25,6 +25,16 @@ export class ImageComponent extends LitElement {
   }
 
   protected renderImage(): TemplateResult {
+    //render() sometimes gets called before receiving correct data
+    if (!this.src && this.renderRoot) {
+      const element = this.renderRoot.querySelector('img');
+      if (element && this.src !== element?.src) {
+        this.src = element.src;
+        this.srcset = element.srcset;
+        this.alt = element.alt;
+      }
+    }
+
     if (!this.src) return this.renderFallback();
 
     return html`
