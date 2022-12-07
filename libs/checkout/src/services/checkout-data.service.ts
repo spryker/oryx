@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Address, ContactDetails, Shipment } from '../models';
+import { Address, ContactDetails, PaymentMethod, Shipment } from '../models';
 
 export interface CheckoutDataService {
   isGuestCheckout(): Observable<boolean>;
@@ -13,6 +13,9 @@ export interface CheckoutDataService {
 
   getShipmentDetails(): Observable<Shipment | null>;
   setShipmentDetails(data: Shipment | null): void;
+
+  getPaymentDetails(): Observable<PaymentMethod | null>;
+  setPaymentDetails(data: PaymentMethod | null): void;
 }
 
 export const CheckoutDataService = 'FES.CheckoutDataService';

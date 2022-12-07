@@ -63,6 +63,8 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     switch (step) {
       case CheckoutStepType.Shipping:
         return html`<checkout-shipment></checkout-shipment>`;
+      case CheckoutStepType.Payment:
+        return html`<checkout-payment></checkout-payment>`;
       default:
         return html``;
     }

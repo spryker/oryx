@@ -5,6 +5,7 @@ import {
   Address,
   ContactDetails,
   guestCheckoutStorageKey,
+  PaymentMethod,
   Shipment,
 } from '../models';
 import { CheckoutDataService } from './checkout-data.service';
@@ -18,6 +19,7 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   protected contactDetails$ = new BehaviorSubject<ContactDetails | null>(null);
   protected addressDetails$ = new BehaviorSubject<Address | null>(null);
   protected shipmentDetails$ = new BehaviorSubject<Shipment | null>(null);
+  protected paymentDetails$ = new BehaviorSubject<PaymentMethod | null>(null);
 
   isGuestCheckout(): Observable<boolean> {
     return this.isGuestCheckout$;
@@ -67,6 +69,14 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
 
   setShipmentDetails(shipmentDetails: Shipment | null): void {
     this.shipmentDetails$.next(shipmentDetails);
+  }
+
+  getPaymentDetails(): Observable<PaymentMethod | null> {
+    return this.paymentDetails$;
+  }
+
+  setPaymentDetails(paymentDetails: PaymentMethod | null): void {
+    this.paymentDetails$.next(paymentDetails);
   }
 
   protected getPersistedData(): void {

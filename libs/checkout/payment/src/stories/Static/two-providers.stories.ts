@@ -5,11 +5,11 @@ import { storybookPrefix } from '../../../../.constants';
 import { renderSelector } from '../helper';
 
 export default {
-  title: `${storybookPrefix}/Payment Selector/Static`,
+  title: `${storybookPrefix}/Payment/Static`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`${renderSelector(PaymentProviderType.NoProvider)}`;
+  return html`${renderSelector(PaymentProviderType.TwoProviders)}`;
 };
 
-export const NoProvidersMethod = Template.bind({});
+export const TwoProvidersMethod = Template.bind({});

@@ -1,20 +1,55 @@
-import { CheckoutPaymentService, PaymentMethod } from '@spryker-oryx/checkout';
+import {
+  CheckoutOrchestrationService,
+  CheckoutPaymentService,
+  CheckoutStepType,
+  CheckoutTrigger,
+  PaymentMethod,
+} from '@spryker-oryx/checkout';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
-import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
+import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { styles } from './payment-selector.styles';
+import { BehaviorSubject, combineLatest, tap } from 'rxjs';
+import { styles } from './payment.styles';
 
 @hydratable('window:load')
-export class CheckoutPaymentSelectorComponent extends ComponentMixin() {
+export class CheckoutPaymentComponent extends ComponentMixin() {
   static styles = styles;
 
   protected service = resolve(CheckoutPaymentService);
+  protected orchestrationService = resolve(CheckoutOrchestrationService);
+
   protected methods$ = this.service.getMethods();
   protected currentMethod$ = new BehaviorSubject<string | null>(null);
+
+  @subscribe()
+  protected submitTrigger$ = this.orchestrationService
+    .getTrigger(CheckoutStepType.Payment)
+    .pipe(
+      tap((trigger) => {
+        if (trigger === CheckoutTrigger.Check) {
+          this.orchestrationService.report(
+            CheckoutStepType.Payment,
+            this.submit()
+          );
+        }
+      })
+    );
+
+  submit(): boolean {
+    const selected = this.renderRoot.querySelector(
+      'input[checked]'
+    ) as HTMLInputElement;
+
+    if (selected) {
+      this.service.setPaymentMethod(selected.value);
+      return true;
+    }
+
+    return false;
+  }
 
   protected override render(): TemplateResult {
     return html`${asyncValue(
@@ -43,6 +78,7 @@ export class CheckoutPaymentSelectorComponent extends ComponentMixin() {
           ?checked="${selected}"
           @change="${() => {
             this.currentMethod$.next(method.name);
+            this.orchestrationService.report(CheckoutStepType.Payment, true);
           }}"
         />
         ${method.name}

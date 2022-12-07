@@ -7,6 +7,7 @@ import {
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
+import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutPaymentService } from './checkout-payment.service';
 import { DefaultCheckoutPaymentService } from './default-checkout-payment.service';
 
@@ -17,6 +18,10 @@ class MockCartService implements Partial<CartService> {
 class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
   get = vi.fn().mockReturnValue(of(mockNormalizedCheckoutData));
   update = vi.fn().mockReturnValue(of(mockNormalizedUpdatedCheckoutData));
+}
+
+class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  setPaymentDetails = vi.fn();
 }
 
 describe('DefaultCheckoutPaymentService', () => {
@@ -38,6 +43,10 @@ describe('DefaultCheckoutPaymentService', () => {
         {
           provide: CheckoutPaymentService,
           useClass: DefaultCheckoutPaymentService,
+        },
+        {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
         },
       ],
     });
