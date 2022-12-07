@@ -40,7 +40,7 @@ export const routes: RouteConfig[] = [
   {
     path: '/*',
     render: (): TemplateResult =>
-      html`<h1>Error 404</h1>
+      html`<oryx-heading><h1>Error 404</h1></oryx-heading>
         <p>Page not found</p>`,
     name: '404',
   },

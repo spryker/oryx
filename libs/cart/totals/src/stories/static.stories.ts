@@ -38,6 +38,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       .row {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 10px;
       }
       h3 {
         grid-row: 1;

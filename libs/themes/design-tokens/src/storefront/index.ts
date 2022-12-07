@@ -4,11 +4,17 @@ import { darkColor } from './color-dark.tokens';
 import { color } from './color.tokens';
 import { darkTokens } from './other-dark';
 import { tokens } from './other.tokens';
+import {
+  typographyMediumTokens,
+  typographySmallTokens,
+  typographyTokens,
+} from './typography.tokens';
 
 export const storefrontTokens: DesignToken[] = [
   {
     color,
     ...tokens,
+    ...typographyTokens,
   },
   {
     media: {
@@ -21,26 +27,12 @@ export const storefrontTokens: DesignToken[] = [
     media: {
       screen: Size.Sm,
     },
-    font: {
-      weight: {
-        medium: '600',
-      },
-      size: {
-        base: '16px',
-      },
-    },
+    ...typographySmallTokens,
   },
   {
     media: {
       screen: Size.Md,
     },
-    font: {
-      weight: {
-        medium: '500',
-      },
-      size: {
-        base: '14px',
-      },
-    },
+    ...typographyMediumTokens,
   },
 ];

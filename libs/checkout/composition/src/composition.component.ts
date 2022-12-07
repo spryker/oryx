@@ -14,11 +14,11 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { combineLatest } from 'rxjs';
 import { CheckoutCompositionOptions } from './composition.model';
-import { styles } from './composition.styles';
+import { compositionStyles } from './composition.styles';
 
 @hydratable('window:load')
 export class CheckoutCompositionComponent extends ComponentMixin<CheckoutCompositionOptions>() {
-  static styles = styles;
+  static styles = compositionStyles;
 
   protected checkoutDataService = resolve(CheckoutDataService);
 
@@ -43,9 +43,8 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
 
   protected renderGuestCheckoutHeading(): TemplateResult {
     return html`
-      <header>
-        <h1>${i18n('checkout.guest-checkout')}</h1>
-
+      <oryx-heading>
+        <h3>${i18n('checkout.guest-checkout')}</h3>
         <oryx-button type="text">
           <button
             @click=${(): void => {
@@ -55,7 +54,7 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
             ${i18n('checkout.checkout-as-register')}
           </button>
         </oryx-button>
-      </header>
+      </oryx-heading>
     `;
   }
 

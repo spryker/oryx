@@ -1,8 +1,10 @@
 import { ContentController } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { hydratable } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
 import { CartController } from '../../src/controllers/cart.controller';
@@ -28,13 +30,17 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         }
 
         return html`
-          <h4>Summary</h4>
-          ${this.renderSubtotal(options, totals)}
-          ${this.renderDiscounts(options, totals)}
-          ${this.renderExpense(options, totals)}
-          ${this.renderTax(options, totals)}
-          ${this.renderDelivery(options, totals)}
-          ${this.renderSummary(options, totals)}
+          <oryx-heading md-mimic="h4">
+            <h2>${i18n('cart.totals.summary')}</h2>
+          </oryx-heading>
+          <section>
+            ${this.renderSubtotal(options, totals)}
+            ${this.renderDiscounts(options, totals)}
+            ${this.renderExpense(options, totals)}
+            ${this.renderTax(options, totals)}
+            ${this.renderDelivery(options, totals)}
+            ${this.renderSummary(options, totals)}
+          </section>
         `;
       })}
     `;
@@ -47,13 +53,11 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     return !options.hideSubtotal
       ? this.renderSection(
           'subtotal',
-          html`
-            Subtotal
-            <span
-              >(${totals.itemsQuantity}
-              item${totals.itemsQuantity === 1 ? '' : 's'})</span
-            >
-          `,
+          html`${i18n('cart.totals.subtotal')}<span class="items">
+              ${i18n('cart.totals.<count>-items', {
+                count: totals.itemsQuantity,
+              })}
+            </span>`,
           String(totals.calculations?.subtotal)
         )
       : html``;
@@ -70,14 +74,25 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           <oryx-collapsible
             class="discounts"
             appearance="${CollapsibleAppearance.Inline}"
-            header="Discounts"
             ?open=${!options.collapseDiscounts}
           >
-            <span slot="aside">${totals.calculations.discountTotal}</span>
+            <oryx-heading slot="header" md-mimic="h6">
+              <h3>${i18n('cart.totals.discount')}</h3>
+            </oryx-heading>
 
-            ${totals?.discounts?.map(({ displayName, amount }) =>
-              this.renderSection('discount', displayName, amount)
-            )}
+            <oryx-heading slot="aside" md-mimic="h6" mimic="h3">
+              ${totals.calculations.discountTotal}
+            </oryx-heading>
+
+            <ul>
+              ${totals?.discounts?.map(
+                ({ displayName, amount }) =>
+                  html`<li>
+                    <span>${displayName}</span>
+                    <span>${amount}</span>
+                  </li>`
+              )}
+            </ul>
           </oryx-collapsible>
         `
       )}
@@ -91,7 +106,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     return totals.calculations.expenseTotal && !options.hideExpense
       ? this.renderSection(
           'expense',
-          'Expense',
+          html`${i18n('cart.totals.expense')}`,
           String(totals.calculations.expenseTotal)
         )
       : html``;
@@ -115,12 +130,12 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
       ? html``
       : this.renderSection(
           'delivery',
-          'Delivery',
+          html`${i18n('cart.totals.delivery')}`,
           html`
             <small class="delivery-message">
-              ${options?.deliveryMessage ?? ''}
+              ${ifDefined(options?.deliveryMessage)}
               <oryx-icon-button size="small">
-                <a href="#" title="Click here to read about delivery options">
+                <a href="#" title=${i18n('cart.totals.delivery-message')}>
                   <oryx-icon type="info"></oryx-icon>
                 </a>
               </oryx-icon-button>
@@ -135,15 +150,15 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
   ): TemplateResult {
     return this.renderSection(
       'summary',
-      'Total',
+      html`${i18n('cart.totals.total')}`,
       html` ${totals.calculations.priceToPay}
       ${when(
         !options.hideTaxMessage,
         () =>
           html`<small class="tax-message">
             ${totals.priceMode === PriceMode.GrossMode
-              ? 'incl. tax'
-              : 'excl. tax'}
+              ? i18n('cart.totals.tax-included')
+              : i18n('cart.totals.tax-excluded')}
           </small>`
       )}`
     );
@@ -152,13 +167,13 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
   protected renderSection(
     type: string,
     title: string | TemplateResult,
-    content: string | TemplateResult
+    value: string | TemplateResult
   ): TemplateResult {
     return html`
-      <dl class=${type}>
-        <dt>${title}</dt>
-        <dd>${content}</dd>
-      </dl>
+      <oryx-heading md-mimic="h6" mimic="h3" class=${type}>
+        <h3>${title}</h3>
+        <span>${value}</span>
+      </oryx-heading>
     `;
   }
 }

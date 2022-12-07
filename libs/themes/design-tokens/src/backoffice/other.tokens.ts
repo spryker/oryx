@@ -1,32 +1,11 @@
 import { ThemeToken } from '@spryker-oryx/core';
 
 export const tokens: ThemeToken = {
-  font: '"Montserrat", sans-serif',
-  'font-size': {
-    caption: '12px',
-    base: '14px',
-    h1: '30px',
-    h2: '26px',
-    h3: '20px',
-    h4: '18px',
-    h5: '16px',
-    h6: '16px',
-  },
   line: {
     height: {
       base: '24px',
       caption: '26px',
-      h1: '40px',
-      h2: '38px',
-      h3: '28px',
-      h4: '26px',
-      h5: '22px',
-      h6: '22px',
     },
-  },
-  'font-weight': {
-    medium: '500',
-    semibold: '600',
   },
   box: {
     shadow: {

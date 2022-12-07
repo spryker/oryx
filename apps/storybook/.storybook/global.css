@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 :root {
-  font-family: var(--oryx-font);
-  font-size: var(--oryx-font-size-base);
-  font-weight: var(--oryx-font-weight-medium);
+  font-family: var(--oryx-typography-font-face);
+  font-size: var(--oryx-typography-font-size);
+  font-weight: var(--oryx-typography-font-weight);
   letter-spacing: 0.005em;
   color: var(--oryx-color-ink);
   background-color: var(--oryx-color-canvas-100);

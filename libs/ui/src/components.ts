@@ -34,6 +34,6 @@ export * from '../overlays/notification/src/component';
 export * from '../overlays/popover/src/component';
 export * from '../search/searchbox/src/searchbox.def';
 export * from '../search/typeahead/src/typeahead.def';
-export * from '../structure/headline/src/component';
+export * from '../structure/heading/src/heading.def';
 export * from '../structure/text/src/text.def';
 export * from '../structure/tile/src/component';

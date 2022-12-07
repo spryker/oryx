@@ -10,7 +10,6 @@ export default {
   args: {
     sku: MockProductService.mockProducts[0].sku,
     tag: '',
-    truncateAfter: 0,
     link: false,
   },
   argTypes: {
@@ -23,26 +22,20 @@ export default {
       table: { category: 'product' },
     },
     tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
       control: { type: 'select' },
     },
+    maxLines: {
+      control: { type: 'number' },
+    },
   },
-} as unknown as Meta;
+} as Meta;
 
-type Props = ProductTitleOptions &
-  ProductComponentProperties & {
-    truncateAfter: number;
-  };
+type Props = ProductTitleOptions & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  const { sku, truncateAfter, ...options } = props;
   return html`
-    <style>
-      product-title {
-        --line-clamp: ${truncateAfter};
-      }
-    </style>
-    <product-title .sku=${sku} .options=${options}></product-title>
+    <product-title .sku=${props.sku} .options=${props}></product-title>
   `;
 };
 

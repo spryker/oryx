@@ -3,38 +3,61 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     --oryx-icon-size-small: 15px;
-
-    background-color: var(--oryx-color-canvas-200);
-    border-radius: var(--oryx-border-radius-small);
-    font-size: var(--oryx-font-size-medium);
-    line-height: 1.5;
   }
 
-  h4 {
-    padding-top: var(--oryx-space-4);
+  h2 {
+    margin-bottom: var(--oryx-space-4);
   }
 
-  :host > * {
+  h2,
+  section > * {
     padding-inline: var(--oryx-space-4);
   }
 
-  :host > dl:last-child {
-    margin-top: var(--oryx-space-2);
-    padding-top: var(--oryx-space-3);
-    padding-bottom: var(--oryx-space-4);
-    border-top: solid 1px var(--oryx-color-canvas-500);
-    font-weight: 600;
+  section {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--oryx-space-4);
+    background-color: var(--oryx-color-canvas-200);
+    padding-block: var(--oryx-space-4);
+    border-radius: var(--oryx-border-radius-small);
   }
 
-  :host > dl:last-child dd {
-    font-size: var(--oryx-font-size-large);
+  section > oryx-heading {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  section > oryx-heading > span {
+    text-align: end;
+  }
+
+  .items {
+    margin-inline: 10px;
+    color: var(--oryx-color-neutral-300);
+  }
+
+  .items::before {
+    content: '(';
+    margin-inline-end: -2px;
+  }
+
+  .items::after {
+    content: ')';
+    margin-inline-start: -2px;
+  }
+
+  .summary,
+  .summary + oryx-heading {
+    padding-top: var(--oryx-space-2);
+    border-top: solid 1px var(--oryx-color-canvas-500);
   }
 
   small {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-300);
   }
 
   small.tax-message {
@@ -43,40 +66,23 @@ export const styles = css`
     display: block;
   }
 
-  h4,
-  dl,
-  dt,
-  dd,
-  p {
+  ul {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    row-gap: var(--oryx-space-2);
+    list-style: none;
+    padding: var(--oryx-space-2) 0 0 0;
+    color: var(--oryx-color-neutral-300);
     margin: 0;
   }
 
-  dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: var(--oryx-space-2);
+  li {
+    display: contents;
   }
 
-  dd {
-    justify-self: end;
-    text-align: end;
-  }
-
-  [slot='aside'],
-  oryx-collapsible dd {
+  .discounts oryx-heading[slot='aside'],
+  .discounts span:last-child {
     color: var(--oryx-color-highlight-300);
-  }
-
-  dl,
-  oryx-collapsible {
-    margin-top: var(--oryx-space-4);
-  }
-
-  oryx-collapsible :is(dt, dd) {
-    font-size: 1rem;
-  }
-
-  oryx-collapsible dl {
-    margin-top: var(--oryx-space-2);
+    white-space: nowrap;
   }
 `;

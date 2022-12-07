@@ -2,6 +2,7 @@ import { CheckoutComponentMixin } from '@spryker-oryx/checkout';
 import { ContentController, RouterService } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities/i18n';
 import { subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { Subject, switchMap, take, tap } from 'rxjs';
@@ -40,9 +41,7 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin<CheckoutGuest
   }
 
   protected override render(): TemplateResult {
-    return html`<oryx-card>
-      <h2 slot="header">Guest checkout</h2>
-
+    return html`<oryx-card .header=${i18n('checkout.guest-checkout')}>
       <slot name="content">
         You can checkout without creating an account. You will have a chance to
         create an account later.

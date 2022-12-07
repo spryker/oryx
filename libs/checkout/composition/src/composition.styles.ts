@@ -1,21 +1,9 @@
 import { css } from 'lit';
 
-export const styles = css`
-  header {
+export const compositionStyles = css`
+  oryx-heading {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-block-end: var(--oryx-space-4);
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 22px;
-    line-height: 30px;
-    font-weight: 500;
-  }
-
-  oryx-card {
-    margin: 15px 0;
+    align-items: center;
   }
 `;

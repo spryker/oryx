@@ -8,6 +8,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { combineLatest } from 'rxjs';
 import { ProductTitleOptions } from './title.model';
@@ -24,60 +25,25 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
     return html` ${asyncValue(
       combineLatest([this.options$, this.product$]),
       ([options, product]) =>
-        this.renderTitle(this.renderContent(product, options), options)
+        html`<oryx-heading .tag=${options.tag} .maxLines=${options.maxLines}>
+          ${when(
+            !options?.link,
+            () => html`${product?.name}`,
+            () => this.renderLink(product)
+          )}
+        </oryx-heading>`
     )}`;
   }
 
-  protected renderContent(
-    product: Product | null,
-    options: ProductTitleOptions
-  ): TemplateResult {
-    const textContent = html`<oryx-text hideToggle
-      >${product?.name}</oryx-text
-    >`;
-
-    if (!options?.link) {
-      return textContent;
-    }
-
+  protected renderLink(product: Product | null): TemplateResult {
     return html`
       <content-link
         .options="${{
           type: SemanticLinkType.Product,
           id: product?.sku,
         }}"
-        >${textContent}</content-link
+        >${product?.name}</content-link
       >
     `;
-  }
-
-  /**
-   * Generates the TAG (h1 - h6) based on the options.
-   *
-   * When there's no tag provided, a plain text node is created.   *
-   *
-   * We'd prefer using `unsafeStatic` directive, however, there's a SSR related issue
-   * that blocks us from using this: https://github.com/lit/lit/issues/2246.
-   *
-   */
-  protected renderTitle(
-    title: TemplateResult,
-    options: ProductTitleOptions
-  ): TemplateResult {
-    switch (options.tag) {
-      case 'h1':
-        return html`<h1>${title}</h1>`;
-      case 'h2':
-        return html`<h2>${title}</h2>`;
-      case 'h3':
-        return html`<h3>${title}</h3>`;
-      case 'h4':
-        return html`<h4>${title}</h4>`;
-      case 'h5':
-        return html`<h5>${title}</h5>`;
-      case 'h6':
-        return html`<h6>${title}</h6>`;
-    }
-    return title;
   }
 }

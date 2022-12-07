@@ -6,6 +6,7 @@ import {
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { FormComponentInterface } from '@spryker-oryx/form';
 import { resolve } from '@spryker-oryx/injector';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { AddressService } from '@spryker-oryx/user';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
@@ -61,7 +62,9 @@ export class CheckoutAddressComponent
     return html`${asyncValue(this.addresses$, (addresses) => {
       if (!addresses?.length) {
         return html`
-          <p>${i18n('checkout.address-details')}</p>
+          <oryx-heading .tag=${HeadingTag.Subtitle}>
+            ${i18n('checkout.address-details')}
+          </oryx-heading>
           <oryx-address-form ${ref(this.formRef)}></oryx-address-form>
         `;
       }

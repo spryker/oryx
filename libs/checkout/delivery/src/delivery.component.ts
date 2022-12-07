@@ -68,7 +68,9 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
     return html`${asyncValue(
       this.isAuthenticated$,
       (isAuthenticated) => html`
-        <h3>${i18n('checkout.delivery-details')}</h3>
+        <oryx-heading>
+          <h5>${i18n('checkout.delivery-details')}</h5>
+        </oryx-heading>
 
         <section>
           ${when(

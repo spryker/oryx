@@ -16,12 +16,6 @@ export const styles = css`
     --oryx-icon-size: 40px;
   }
 
-  h3 {
-    line-height: 24px;
-    margin: 0;
-    font-size: var(--oryx-font-size-medium);
-  }
-
   oryx-radio {
     flex: 1;
   }

@@ -115,7 +115,8 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
           : html`${carriers.map(
               (carrier, i) => html`${when(
                 carriers.length > 1,
-                () => html`<h3>${carrier.name}</h3>`
+                () =>
+                  html`<oryx-heading><h5>${carrier.name}</h5></oryx-heading>`
               )}
               ${carrier.shipmentMethods.map((item, j) =>
                 this.renderMethod(

@@ -30,7 +30,11 @@ export class BannerComponent extends ComponentMixin<
             content?.title,
             () => html`<h1 aria-label="title">${content?.title}</h1>`
           )}
-          ${when(content?.content, () => html`<h2>${content?.content}</h2>`)}
+          ${when(
+            content?.content,
+            () =>
+              html`<oryx-heading><h2>${content?.content}</h2></oryx-heading>`
+          )}
         </div>
       `;
       return html` ${when(

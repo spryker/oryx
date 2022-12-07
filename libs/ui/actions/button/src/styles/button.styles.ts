@@ -1,3 +1,5 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const buttonStyles = css`
@@ -239,3 +241,28 @@ export const buttonStyles = css`
     border-color: #f9d3ce;
   }
 `;
+
+const smallScreen = css`
+  :host {
+    font-size: 1.143em;
+    font-weight: 600;
+  }
+`;
+
+const mediumScreen = css`
+  :host {
+    font-size: 1em;
+    font-weight: var(--oryx-typography-font-weight);
+  }
+`;
+
+export const buttonScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: smScreen,
+    css: smallScreen,
+  },
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];
