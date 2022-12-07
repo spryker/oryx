@@ -75,7 +75,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
                 max=${this.options?.availability?.quantity ?? Infinity}
                 .value=${this.options?.quantity}
                 ?disabled=${this.disabled || this.options?.disabled}
-                decrease-icon=${ifDefined(this.getDecreaseIcon())}
+                decreaseIcon=${ifDefined(this.getDecreaseIcon())}
                 submitOnChange
               ></oryx-cart-quantity-input>
             `,

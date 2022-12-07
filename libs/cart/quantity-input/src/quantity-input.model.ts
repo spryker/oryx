@@ -47,6 +47,20 @@ export interface QuantityInputAttributes {
    * @default false
    */
   hasError?: boolean;
+
+  /**
+   * The icon type used to render the decrease button icon.
+   *
+   * @default IconTypes.Decrease
+   */
+  decreaseIcon?: string;
+
+  /**
+   * The icon type used to render the increase button icon.
+   *
+   * @default IconTypes.Increase
+   */
+  increaseIcon?: string;
 }
 
 export interface QuantityEventDetail {

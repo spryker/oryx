@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { destroyInjector } from '@spryker-oryx/injector';
+import { iconComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { QuantityInputComponent } from './quantity-input.component';
 import { quantityInputComponent } from './quantity-input.def';
@@ -13,7 +14,7 @@ describe('QuantityInputComponent', () => {
   };
 
   beforeAll(async () => {
-    await useComponent(quantityInputComponent);
+    await useComponent([quantityInputComponent, iconComponent]);
   });
 
   afterEach(() => {
@@ -636,6 +637,68 @@ describe('QuantityInputComponent', () => {
 
     it('should set "hasError" attribute on oryx-input', () => {
       expect(element).toContainElement(`oryx-input[hasError]`);
+    });
+  });
+
+  describe('icons', () => {
+    describe('when the decrease icon is not specified', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+        );
+      });
+
+      it('should default to "decrease" type', () => {
+        expect(element).toContainElement(
+          'button[part="decrease"] oryx-icon[type="decrease"]'
+        );
+      });
+    });
+
+    describe('when the decrease icon is specified', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-quantity-input
+            .decreaseIcon=${'decreaseIconType'}
+          ></oryx-cart-quantity-input>`
+        );
+      });
+
+      it('should render the icon with the given type', () => {
+        expect(element).toContainElement(
+          'button[part="decrease"] oryx-icon[type="decreaseIconType"]'
+        );
+      });
+    });
+
+    describe('when the increase icon is not specified', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+        );
+      });
+
+      it('should default to "increase" type', () => {
+        expect(element).toContainElement(
+          'button[part="increase"] oryx-icon[type="increase"]'
+        );
+      });
+    });
+
+    describe('when the increase icon is specified', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-quantity-input
+            .increaseIcon=${'increaseIconType'}
+          ></oryx-cart-quantity-input>`
+        );
+      });
+
+      it('should render the icon with the given type', () => {
+        expect(element).toContainElement(
+          'button[part="increase"] oryx-icon[type="increaseIconType"]'
+        );
+      });
     });
   });
 });

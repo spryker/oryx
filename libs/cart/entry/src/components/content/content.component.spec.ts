@@ -106,11 +106,13 @@ describe('CartEntryContentComponent', () => {
         }}
       ></cart-entry-content>`);
     });
+
     it('should set min value to 0', async () => {
       expect(getQuantityInputComponent()?.min).toBe(0);
     });
-    it('should set "decrease-icon" attribute', async () => {
-      expect(getQuantityInputComponent()?.hasAttribute('decrease-icon')).toBe(
+
+    it('should set "decreaseIcon" attribute', async () => {
+      expect(getQuantityInputComponent()?.hasAttribute('decreaseIcon')).toBe(
         true
       );
     });

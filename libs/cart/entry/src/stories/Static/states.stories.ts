@@ -86,7 +86,7 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <p>Custom remove button</p>
     <cart-entry
-      .options=${createEntry({ removeButtonIcon: 'trash' })}
+      .options=${createEntry({ removeButtonIcon: 'trash' as any })}
     ></cart-entry>
 
     <p>With confirmation</p>
@@ -108,7 +108,10 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <p>Allow zero quantity with bin</p>
     <cart-entry
-      .options=${createEntry({ removeByQuantity: RemoveByQuantity.ShowBin })}
+      .options=${createEntry({
+        removeByQuantity: RemoveByQuantity.ShowBin,
+        quantity: 1,
+      })}
     ></cart-entry>
 
     <p>Readonly</p>

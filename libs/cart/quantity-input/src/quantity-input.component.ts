@@ -39,6 +39,8 @@ export class QuantityInputComponent
   @property({ type: Boolean }) submitOnChange = false;
   @property({ type: Boolean }) disabled = false;
   @property({ type: Boolean }) hasError = false;
+  @property() decreaseIcon = IconTypes.Decrease;
+  @property() increaseIcon = IconTypes.Increase;
 
   protected inputRef = createRef<HTMLInputElement>();
 
@@ -51,7 +53,7 @@ export class QuantityInputComponent
         ?disabled=${this.isMinDisabled()}
         part="decrease"
       >
-        <oryx-icon .type=${IconTypes.Decrease}></oryx-icon>
+        <oryx-icon .type=${this.decreaseIcon}></oryx-icon>
       </button>
       <oryx-input ?hasError=${this.hasError}>
         <input
@@ -78,7 +80,7 @@ export class QuantityInputComponent
         ?disabled=${this.isMaxDisabled()}
         part="increase"
       >
-        <oryx-icon .type=${IconTypes.Increase}></oryx-icon>
+        <oryx-icon .type=${this.increaseIcon}></oryx-icon>
       </button>
     `;
   }
