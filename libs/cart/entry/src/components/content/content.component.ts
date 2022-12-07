@@ -3,7 +3,6 @@ import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import {
   CartEntryCompositionOptions,
@@ -75,7 +74,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
                 max=${this.options?.availability?.quantity ?? Infinity}
                 .value=${this.options?.quantity}
                 ?disabled=${this.disabled || this.options?.disabled}
-                decreaseIcon=${ifDefined(this.getDecreaseIcon())}
+                .decreaseIcon=${this.getDecreaseIcon()}
                 submitOnChange
               ></oryx-cart-quantity-input>
             `,

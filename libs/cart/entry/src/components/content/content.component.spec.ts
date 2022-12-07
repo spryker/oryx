@@ -85,36 +85,63 @@ describe('CartEntryContentComponent', () => {
       element = await fixture(html`<cart-entry-content
         .options=${{ ...options }}
       ></cart-entry-content>`);
-
       (getQuantityInputComponent() as QuantityInputComponent).value = 4;
-    });
-    it('should update quantity input`s value', async () => {
       element.requestUpdate();
       await elementUpdated(element);
+    });
 
+    it('should update quantity input`s value', async () => {
       expect(getQuantityInputComponent()?.value).toBe(options.quantity);
     });
   });
 
-  describe('when removeByQuantity is provided', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<cart-entry-content
-        .options=${{
-          ...options,
-          quantity: 1,
-          removeByQuantity: RemoveByQuantity.ShowBin,
-        }}
-      ></cart-entry-content>`);
+  describe('removeByQuantity', () => {
+    describe('when removeByQuantity is not set', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<cart-entry-content
+          .options=${{ ...options, quantity: 1 }}
+        ></cart-entry-content>`);
+      });
+
+      it('should set min value to 1', () => {
+        expect(getQuantityInputComponent()?.min).toBe(1);
+      });
     });
 
-    it('should set min value to 0', async () => {
-      expect(getQuantityInputComponent()?.min).toBe(0);
+    describe('when removeByQuantity is set to "allowZero"', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<cart-entry-content
+          .options=${{
+            ...options,
+            quantity: 1,
+            removeByQuantity: RemoveByQuantity.AllowZero,
+          }}
+        ></cart-entry-content>`);
+      });
+
+      it('should set min value to 0', () => {
+        expect(getQuantityInputComponent()?.min).toBe(0);
+      });
     });
 
-    it('should set "decreaseIcon" attribute', async () => {
-      expect(getQuantityInputComponent()?.hasAttribute('decreaseIcon')).toBe(
-        true
-      );
+    describe('when removeByQuantity is set to "showBin"', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<cart-entry-content
+          .options=${{
+            ...options,
+            quantity: 1,
+            removeByQuantity: RemoveByQuantity.ShowBin,
+          }}
+        ></cart-entry-content>`);
+      });
+
+      it('should set min value to 0', () => {
+        expect(getQuantityInputComponent()?.min).toBe(0);
+      });
+
+      it('should use the trash icon for decreaseIcon', async () => {
+        expect(getQuantityInputComponent().decreaseIcon).toEqual('trash');
+      });
     });
   });
 
