@@ -32,21 +32,6 @@ export const styles = css`
     text-align: end;
   }
 
-  .items {
-    margin-inline: 10px;
-    color: var(--oryx-color-neutral-300);
-  }
-
-  .items::before {
-    content: '(';
-    margin-inline-end: -2px;
-  }
-
-  .items::after {
-    content: ')';
-    margin-inline-start: -2px;
-  }
-
   .summary,
   .summary + oryx-heading {
     padding-top: var(--oryx-space-2);
@@ -54,16 +39,11 @@ export const styles = css`
   }
 
   small {
+    font-size: inherit;
     display: flex;
     align-items: center;
     gap: 6px;
     color: var(--oryx-color-neutral-300);
-  }
-
-  small.tax-message {
-    font-size: var(--oryx-font-size-medium);
-    font-weight: 500;
-    display: block;
   }
 
   ul {
@@ -71,7 +51,6 @@ export const styles = css`
     grid-template-columns: 1fr max-content;
     row-gap: var(--oryx-space-2);
     list-style: none;
-    padding: var(--oryx-space-2) 0 0 0;
     color: var(--oryx-color-neutral-300);
     margin: 0;
   }
@@ -80,7 +59,16 @@ export const styles = css`
     display: contents;
   }
 
-  .discounts oryx-heading[slot='aside'],
+  oryx-collapsible > ul {
+    padding: var(--oryx-space-2) 0 0 0;
+  }
+
+  :not(oryx-collapsible) > ul {
+    margin-top: -10px;
+    padding-inline: var(--oryx-space-4);
+  }
+
+  .discount oryx-heading[slot='aside'],
   .discounts span:last-child {
     color: var(--oryx-color-highlight-300);
     white-space: nowrap;

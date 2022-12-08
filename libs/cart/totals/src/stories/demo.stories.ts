@@ -10,6 +10,8 @@ export default {
     hideTaxAmount: false,
     hideTaxMessage: false,
     hideDiscounts: false,
+    collapsibleDiscounts: true,
+    collapseDiscounts: false,
     hideDelivery: false,
     hideExpense: false,
   } as CartTotalsComponentOptions,

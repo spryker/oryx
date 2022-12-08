@@ -4,6 +4,7 @@ import {
   mockBaseCart,
   mockCartWithDiscount,
   mockCartWithExpense,
+  mockCartWithoutDiscountRows,
   mockCartWithTax,
   mockEmptyCart,
 } from '@spryker-oryx/cart/mocks';
@@ -18,7 +19,10 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { CartTotalsComponent } from './totals.component';
 import { cartTotalsComponent } from './totals.def';
-import { CartTotalsComponentOptions } from './totals.model';
+import {
+  CartTotalsComponentOptions,
+  DiscountRowsAppearance,
+} from './totals.model';
 
 useComponent([cartTotalsComponent]);
 
@@ -137,54 +141,109 @@ describe('Cart totals component', () => {
         });
       });
 
-      describe('when there is discount', () => {
+      describe('when there are no discount rows', () => {
+        beforeEach(() => {
+          service.getCart.mockReturnValue(of(mockCartWithoutDiscountRows));
+          service.getTotals.mockReturnValue(
+            of(mockCartWithoutDiscountRows.totals)
+          );
+        });
+
+        renderCartTotals();
+
+        it('should render the discounts by default', () => {
+          expect(element).toContainElement('.discounts');
+        });
+
+        it('should not render discounts rows', () => {
+          expect(element).not.toContainElement('ul.discounts');
+        });
+      });
+
+      describe('when there are discounts', () => {
         beforeEach(() => {
           service.getCart.mockReturnValue(of(mockCartWithDiscount));
           service.getTotals.mockReturnValue(of(mockCartWithDiscount.totals));
         });
 
-        describe('when hideDiscount is not set', () => {
-          renderCartTotals();
-          it('should render the discounts by default', () => {
-            expect(element).toContainElement('.discounts');
+        describe('hideDiscount', () => {
+          describe('when hideDiscount is not set', () => {
+            renderCartTotals();
+            it('should render the discounts by default', () => {
+              expect(element).toContainElement('.discounts');
+            });
+          });
+
+          describe('when hideDiscounts is false', () => {
+            renderCartTotals({ hideDiscounts: false });
+            it('should render the discounts', () => {
+              expect(element).toContainElement('.discounts');
+            });
+          });
+
+          describe('when hideDiscounts is true', () => {
+            renderCartTotals({ hideDiscounts: true });
+            it('should not render the discounts', () => {
+              expect(element).not.toContainElement('.discounts');
+            });
           });
         });
 
-        describe('when hideDiscounts is false', () => {
-          renderCartTotals({ hideDiscounts: false });
-          it('should render the discounts', () => {
-            expect(element).toContainElement('.discounts');
-          });
-        });
+        describe('discountRowsAppearance', () => {
+          describe('when discountRowsAppearance is not set', () => {
+            renderCartTotals();
 
-        describe('when hideDiscounts is true', () => {
-          renderCartTotals({ hideDiscounts: true });
-          it('should not render the discounts', () => {
-            expect(element).not.toContainElement('.discounts');
+            it('should expand the discounts by default', () => {
+              expect(element).toContainElement('oryx-collapsible[open]');
+            });
           });
-        });
 
-        describe('when collapseDiscounts is not set', () => {
-          renderCartTotals();
-          it('should expand the discounts by default', () => {
-            const collapsible = element.renderRoot.querySelector('.discounts');
-            expect(collapsible?.hasAttribute('open')).toBe(true);
+          describe('when discountRowsAppearance is None', () => {
+            renderCartTotals({
+              discountRowsAppearance: DiscountRowsAppearance.None,
+            });
+
+            it('should not render discounts rows', () => {
+              expect(element).not.toContainElement('ul.discounts');
+            });
           });
-        });
 
-        describe('when collapseDiscounts is false', () => {
-          renderCartTotals({ collapseDiscounts: false });
-          it('should expand the discounts', () => {
-            const collapsible = element.renderRoot.querySelector('.discounts');
-            expect(collapsible?.hasAttribute('open')).toBe(true);
+          describe('when discountRowsAppearance is Inline', () => {
+            renderCartTotals({
+              discountRowsAppearance: DiscountRowsAppearance.Inline,
+            });
+
+            it('should render discounts rows', () => {
+              expect(element).toContainElement('ul.discounts');
+            });
           });
-        });
 
-        describe('when collapseDiscounts is true', () => {
-          renderCartTotals({ collapseDiscounts: true });
-          it('should collapse the discounts', () => {
-            const collapsible = element.renderRoot.querySelector('.discounts');
-            expect(collapsible?.hasAttribute('open')).toBe(false);
+          describe('when discountRowsAppearance is Collapsed', () => {
+            renderCartTotals({
+              discountRowsAppearance: DiscountRowsAppearance.Collapsed,
+            });
+
+            it('should collapse discounts rows', () => {
+              expect(element).toContainElement('oryx-collapsible:not([open])');
+            });
+
+            it('should render discounts rows', () => {
+              expect(element).toContainElement('ul.discounts');
+            });
+          });
+
+          describe('when discountRowsAppearance is Expanded', () => {
+            renderCartTotals({
+              discountRowsAppearance: DiscountRowsAppearance.Expanded,
+            });
+
+            it('should expand discounts rows', () => {
+              expect(element).toContainElement('oryx-collapsible[open]');
+            });
+
+            it('should render discounts rows', () => {
+              expect(element).toContainElement('ul.discounts');
+            });
           });
         });
       });

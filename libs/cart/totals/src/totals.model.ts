@@ -24,12 +24,9 @@ export interface CartTotalsComponentOptions {
   hideDiscounts?: boolean;
 
   /**
-   * Indicates whether to collapse the discount details. This will only be applied
-   * when the hideDiscount is set to `false`.
-   *
-   * @default false
+   * @default DiscountRowsAppearance.Inline
    */
-  collapseDiscounts?: boolean;
+  discountRowsAppearance?: DiscountRowsAppearance;
 
   /**
    * Indicate whether to render the delivery.
@@ -49,4 +46,28 @@ export interface CartTotalsComponentOptions {
    * Provides a static message next to the delivery link.
    */
   deliveryMessage?: string;
+}
+
+export const enum DiscountRowsAppearance {
+  /**
+   * Indicates to not render discount rows at all.
+   */
+  None = 'none',
+
+  /**
+   * Indicates whether to render discount rows inline.
+   */
+  Inline = 'inline',
+
+  /**
+   * Indicates whether to use a collapsible UI for the discount rows and
+   * have the rows collapsed by default.
+   */
+  Collapsed = 'collapsed',
+
+  /**
+   * Indicates whether to use a collapsible UI for the discount rows and
+   * have the rows expanded by default.
+   */
+  Expanded = 'expanded',
 }

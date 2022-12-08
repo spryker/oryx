@@ -10,7 +10,10 @@ import { combineLatest } from 'rxjs';
 import { CartController } from '../../src/controllers/cart.controller';
 import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 import { FormattedCartTotals, PriceMode } from '../../src/models';
-import { CartTotalsComponentOptions } from './totals.model';
+import {
+  CartTotalsComponentOptions,
+  DiscountRowsAppearance,
+} from './totals.model';
 import { styles } from './totals.styles';
 
 @hydratable('window:load')
@@ -53,11 +56,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     return !options.hideSubtotal
       ? this.renderSection(
           'subtotal',
-          html`${i18n('cart.totals.subtotal')}<span class="items">
-              ${i18n('cart.totals.<count>-items', {
-                count: totals.itemsQuantity,
-              })}
-            </span>`,
+          html`${i18n('cart.totals.subtotal')}`,
           String(totals.calculations?.subtotal)
         )
       : html``;
@@ -67,36 +66,50 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     options: CartTotalsComponentOptions,
     totals: FormattedCartTotals
   ): TemplateResult {
-    return html`
-      ${when(
-        !options.hideDiscounts && totals.calculations.discountTotal,
-        () => html`
-          <oryx-collapsible
-            class="discounts"
-            appearance="${CollapsibleAppearance.Inline}"
-            ?open=${!options.collapseDiscounts}
-          >
-            <oryx-heading slot="header" md-mimic="h6">
-              <h3>${i18n('cart.totals.discount')}</h3>
-            </oryx-heading>
+    if (options.hideDiscounts || !totals.calculations.discountTotal) {
+      return html``;
+    }
+    const heading = this.renderSection(
+      'discounts',
+      html`${i18n('cart.totals.discount')}`,
+      String(totals.calculations.discountTotal)
+    );
 
-            <oryx-heading slot="aside" md-mimic="h6" mimic="h3">
-              ${totals.calculations.discountTotal}
-            </oryx-heading>
+    if (
+      options.discountRowsAppearance === DiscountRowsAppearance.None ||
+      !totals.discounts?.length
+    ) {
+      return heading;
+    }
 
-            <ul>
-              ${totals?.discounts?.map(
-                ({ displayName, amount }) =>
-                  html`<li>
-                    <span>${displayName}</span>
-                    <span>${amount}</span>
-                  </li>`
-              )}
-            </ul>
-          </oryx-collapsible>
-        `
+    const rows = html`<ul class="discounts">
+      ${totals.discounts?.map(
+        ({ displayName, amount }) =>
+          html`<li>
+            <span>${displayName}</span>
+            <span>${amount}</span>
+          </li>`
       )}
-    `;
+    </ul>`;
+
+    if (options.discountRowsAppearance === DiscountRowsAppearance.Inline) {
+      return html`${heading}${rows}`;
+    }
+
+    return html`<oryx-collapsible
+      class="discount"
+      appearance="${CollapsibleAppearance.Inline}"
+      ?open=${options.discountRowsAppearance !==
+      DiscountRowsAppearance.Collapsed}
+    >
+      <oryx-heading slot="header" md-mimic="h6">
+        <h3>${i18n('cart.totals.discount')}</h3>
+      </oryx-heading>
+      <oryx-heading slot="aside" md-mimic="h6" mimic="h3">
+        ${totals.calculations.discountTotal}
+      </oryx-heading>
+      ${rows}
+    </oryx-collapsible>`;
   }
 
   protected renderExpense(
