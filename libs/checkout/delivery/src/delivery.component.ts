@@ -26,8 +26,6 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
     .getTrigger(CheckoutStepType.Delivery)
     .pipe(
       tap((trigger) => {
-        console.log(trigger);
-
         if (trigger === CheckoutTrigger.Check) {
           this.checkAndSubmit();
         }
@@ -65,30 +63,31 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(
-      this.isAuthenticated$,
-      (isAuthenticated) => html`
-        <oryx-heading>
-          <h5>${i18n('checkout.delivery-details')}</h5>
-        </oryx-heading>
+    return html`
+      <oryx-heading>
+        <h5>${i18n('checkout.delivery-details')}</h5>
+      </oryx-heading>
 
-        <section>
-          ${when(
-            !isAuthenticated,
-            () => html`<checkout-contact></checkout-contact>`
-          )}
-          <checkout-address></checkout-address>
-        </section>
+      <section>
+        ${asyncValue(
+          this.isAuthenticated$,
+          (isAuthenticated) =>
+            html` ${when(
+              !isAuthenticated,
+              () => html`<checkout-contact></checkout-contact>`
+            )}`
+        )}
+        <checkout-address></checkout-address>
+      </section>
 
-        <oryx-button>
-          <button
-            @click=${(): void =>
-              this.orchestrationService.submit(CheckoutStepType.Delivery)}
-          >
-            ${i18n('checkout.use-this-address')}
-          </button>
-        </oryx-button>
-      `
-    )}`;
+      <oryx-button>
+        <button
+          @click=${(): void =>
+            this.orchestrationService.submit(CheckoutStepType.Delivery)}
+        >
+          ${i18n('checkout.use-this-address')}
+        </button>
+      </oryx-button>
+    `;
   }
 }

@@ -29,9 +29,9 @@ export class CheckoutContactComponent
     if (!form?.checkValidity()) {
       if (report) {
         form?.reportValidity();
-      } else {
-        this.checkoutDataService.setAddressDetails(null);
       }
+
+      this.checkoutDataService.setContactDetails(null);
 
       return false;
     }

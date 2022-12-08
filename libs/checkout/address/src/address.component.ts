@@ -11,7 +11,6 @@ import { AddressService } from '@spryker-oryx/user';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
 export class CheckoutAddressComponent
@@ -21,7 +20,6 @@ export class CheckoutAddressComponent
   protected checkoutDataService = resolve(CheckoutDataService);
   protected addressService = resolve(AddressService);
 
-  @state()
   protected selectedAddress: Address | null = null;
 
   protected addresses$ = this.addressService.getAddresses();
@@ -38,9 +36,9 @@ export class CheckoutAddressComponent
     if (!form?.checkValidity() && !this.selectedAddress) {
       if (report) {
         form?.reportValidity();
-      } else {
-        this.checkoutDataService.setAddressDetails(null);
       }
+
+      this.checkoutDataService.setAddressDetails(null);
 
       return false;
     }

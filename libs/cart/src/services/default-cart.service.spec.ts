@@ -574,4 +574,38 @@ describe('DefaultCartService', () => {
       });
     });
   });
+
+  describe('isEmpty', () => {
+    describe('when cart is empty', () => {
+      beforeEach(() => {
+        service.isEmpty().subscribe(statusCallback);
+      });
+
+      it('should return true', () => {
+        expect(statusCallback).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe('when cart contains products', () => {
+      beforeEach(() => {
+        adapter.getAll.mockReturnValue(of([mockDefaultCart]));
+        service.load().subscribe();
+        service.isEmpty().subscribe(statusCallback);
+      });
+
+      it('should return false', () => {
+        expect(statusCallback).toHaveBeenCalledWith(false);
+      });
+    });
+  });
+
+  describe('getLoadingState', () => {
+    beforeEach(() => {
+      service.getLoadingState().subscribe(statusCallback);
+    });
+
+    it('should return current state', () => {
+      expect(statusCallback).toHaveBeenCalledWith(false);
+    });
+  });
 });

@@ -201,4 +201,30 @@ describe('FormControlController', () => {
       });
     });
   });
+
+  describe('when input is invalid', () => {
+    let control: HTMLInputElement;
+
+    beforeEach(async () => {
+      element = await fixture(html`<fake-input><input /></fake-input>`);
+
+      control = element.querySelector('input') as HTMLInputElement;
+
+      control.dispatchEvent(new Event('invalid'));
+    });
+
+    it('should set "hasError" attribute', () => {
+      expect(element.hasAttribute('hasError')).toBe(true);
+    });
+
+    describe('and input value changes', () => {
+      beforeEach(async () => {
+        control.dispatchEvent(new InputEvent('input'));
+      });
+
+      it('should remove "hasError" attribute', () => {
+        expect(element.hasAttribute('hasError')).toBe(false);
+      });
+    });
+  });
 });
