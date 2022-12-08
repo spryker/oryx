@@ -1,5 +1,6 @@
 import { inject } from '@spryker-oryx/injector';
 import {
+  BehaviorSubject,
   EMPTY,
   filter,
   fromEvent,
@@ -161,4 +162,9 @@ export class PreviewExperienceService extends DefaultExperienceService {
   getInteractionData(): Observable<any> {
     return this.interactionDataEvent$;
   }
+
+  /**
+   * Temporary flag for storing the information about header/footer editing
+   */
+  public headerEdit$ = new BehaviorSubject<boolean>(false);
 }

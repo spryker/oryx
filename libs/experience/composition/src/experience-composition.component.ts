@@ -10,7 +10,7 @@ import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, isServer, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
@@ -20,9 +20,6 @@ import { layoutStyles } from './style';
 @hydratable()
 export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
   static styles = layoutStyles;
-
-  @state()
-  protected components?: Array<Component>;
 
   @property()
   uid = '';
