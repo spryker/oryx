@@ -17,7 +17,6 @@ export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
   }
 
   :host(.${unsafeCSS(breakpoint)}-layout-carousel) > * {
-    scroll-snap-align: start;
     flex: 0 0
       var(
         --oryx-layout-item-width,
@@ -31,5 +30,9 @@ export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
             )
         )
       );
+  }
+
+  :host(.${unsafeCSS(breakpoint)}-layout-carousel) > :defined {
+    scroll-snap-align: start;
   }
 `;
