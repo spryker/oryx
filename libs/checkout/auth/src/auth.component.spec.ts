@@ -1,24 +1,30 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { AuthLoginComponent } from '@spryker-oryx/auth/login';
+import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { CheckoutGuestComponent } from '@spryker-oryx/checkout/guest';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { CheckoutLoginComponent } from './login.component';
-import { checkoutLoginComponent } from './login.def';
+import { CheckoutAuthComponent } from './auth.component';
+import { checkoutAuthComponent } from './auth.def';
 
 class MockAuthService implements Partial<AuthService> {
   isAuthenticated = vi.fn().mockReturnValue(of(false));
 }
 
-describe('Checkout Login', () => {
-  let element: CheckoutLoginComponent;
+class MockDataService implements Partial<CheckoutDataService> {
+  setIsGuestCheckout = vi.fn();
+  isGuestCheckout = vi.fn().mockReturnValue(of(false));
+}
+
+describe('Checkout Auth', () => {
+  let element: CheckoutAuthComponent;
   let service: MockAuthService;
 
   beforeAll(async () => {
-    await useComponent(checkoutLoginComponent);
+    await useComponent(checkoutAuthComponent);
   });
 
   beforeEach(() => {
@@ -27,6 +33,10 @@ describe('Checkout Login', () => {
         {
           provide: AuthService,
           useClass: MockAuthService,
+        },
+        {
+          provide: CheckoutDataService,
+          useClass: MockDataService,
         },
       ],
     });
@@ -40,7 +50,7 @@ describe('Checkout Login', () => {
   });
 
   it('passes the a11y audit', async () => {
-    element = await fixture(html`<checkout-login uid="1"></checkout-login>`);
+    element = await fixture(html`<checkout-auth uid="1"></checkout-auth>`);
 
     await expect(element).shadowDom.to.be.accessible();
   });
@@ -48,7 +58,7 @@ describe('Checkout Login', () => {
   it('should not render children if isAuthenticated is true', async () => {
     service.isAuthenticated.mockReturnValue(of(true));
 
-    element = await fixture(html`<checkout-login uid="1"></checkout-login>`);
+    element = await fixture(html`<checkout-auth uid="1"></checkout-auth>`);
     const guestCheckoutComponent =
       element.renderRoot.querySelector('checkout-guest');
     const authLoginComponent = element.renderRoot.querySelector('auth-login');
@@ -67,10 +77,10 @@ describe('Checkout Login', () => {
 
     it('should split options between checkout-guest and auth-login components', async () => {
       element = await fixture(
-        html`<checkout-login
+        html`<checkout-auth
           uid="1"
           .options=${{ ...mockGuestOptions, ...mockLoginOptions }}
-        ></checkout-login>`
+        ></checkout-auth>`
       );
       const guestCheckoutComponent =
         element.renderRoot.querySelector('checkout-guest');

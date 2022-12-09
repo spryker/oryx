@@ -31,7 +31,7 @@ export class DefaultCheckoutOrchestrationService
   implements CheckoutOrchestrationService
 {
   protected checkoutSteps = defaultCheckoutSteps;
-  protected stepsData: Map<string, StepData> = new Map();
+  protected stepsData: Map<CheckoutStepType, StepData> = new Map();
 
   protected validityTrigger$ = new BehaviorSubject(null);
   protected validity$ = this.validityTrigger$.pipe(
@@ -54,11 +54,11 @@ export class DefaultCheckoutOrchestrationService
     return this.validity$;
   }
 
-  getTrigger(step: string): Observable<CheckoutTrigger | null> {
+  getTrigger(step: CheckoutStepType): Observable<CheckoutTrigger | null> {
     return this.stepsData.get(step)!.trigger$;
   }
 
-  report(step: string, isValid = true): void {
+  report(step: CheckoutStepType, isValid = true): void {
     const currentStep = this.stepsData.get(step)!;
     currentStep.trigger$.next(null);
     currentStep.validity$.next(isValid ? Validity.Valid : Validity.Invalid);
@@ -73,11 +73,11 @@ export class DefaultCheckoutOrchestrationService
     }
   }
 
-  protected initCheck(step: string): void {
+  protected initCheck(step: CheckoutStepType): void {
     this.stepsData.get(step)!.trigger$.next(CheckoutTrigger.Check);
   }
 
-  protected initReport(step: string): void {
+  protected initReport(step: CheckoutStepType): void {
     this.stepsData.get(step)!.trigger$.next(CheckoutTrigger.Report);
   }
 

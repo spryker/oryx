@@ -15,9 +15,9 @@ export enum CheckoutStepType {
 }
 
 export type ValidityReport = {
-  id: string;
+  id: CheckoutStepType;
   validity: Validity | undefined;
 };
 
 // TODO: it will be more complex in the future
-export type CheckoutConfiguration = string[];
+export type CheckoutConfiguration = CheckoutStepType[];

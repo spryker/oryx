@@ -20,12 +20,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></checkout-guest>`,
     },
-    ['checkout-login']: {
+    ['checkout-auth']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<checkout-login
+        html`<checkout-auth
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></checkout-login>`,
+        ></checkout-auth>`,
     },
     ['checkout-shipment']: {
       template: (uid: string, layoutClasses?: string) =>

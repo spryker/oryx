@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { CheckoutLoginOptions } from '../login.model';
+import { CheckoutAuthOptions } from '../auth.model';
 
 export default {
-  title: `${storybookPrefix}/Login`,
+  title: `${storybookPrefix}/Auth`,
   argTypes: {
     guestUrl: {
       type: 'string',
@@ -18,25 +18,25 @@ export default {
   },
 } as unknown as Meta;
 
-const Template: Story<CheckoutLoginOptions> = (props): TemplateResult => {
+const Template: Story<CheckoutAuthOptions> = (props): TemplateResult => {
   return html`
     <style>
-      checkout-login {
+      checkout-auth {
         --oryx-layout-gap: 30px;
         align-items: stretch;
       }
     </style>
-    <checkout-login .options=${props}></checkout-login>
+    <checkout-auth .options=${props}></checkout-auth>
   `;
 };
 
-export const LoginDemo = Template.bind({});
+export const AuthDemo = Template.bind({});
 
-LoginDemo.args = {
+AuthDemo.args = {
   disableGuest: false,
 };
 
-LoginDemo.parameters = {
+AuthDemo.parameters = {
   chromatic: {
     delay: 300,
   },

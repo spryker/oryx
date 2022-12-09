@@ -1,8 +1,8 @@
 import { componentDef } from '@spryker-oryx/core';
 
-export const checkoutLoginComponent = componentDef({
-  name: 'checkout-login',
-  impl: () => import('./login.component').then((m) => m.CheckoutLoginComponent),
+export const checkoutAuthComponent = componentDef({
+  name: 'checkout-auth',
+  impl: () => import('./auth.component').then((m) => m.CheckoutAuthComponent),
   stylesheets: [
     {
       rules: () =>

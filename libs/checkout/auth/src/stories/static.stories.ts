@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Login/Static`,
+  title: `${storybookPrefix}/Auth/Static`,
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {
@@ -17,7 +17,7 @@ const Template: Story = (): TemplateResult => {
       h3 {
         grid-row: 1;
       }
-      checkout-login {
+      checkout-auth {
         --oryx-layout-gap: 30px;
         align-items: stretch;
       }
@@ -25,11 +25,11 @@ const Template: Story = (): TemplateResult => {
 
     <div class="row">
       <h3>With guest</h3>
-      <checkout-login></checkout-login>
+      <checkout-auth></checkout-auth>
       <h3>Without guest</h3>
-      <checkout-login .options=${{ disableGuest: true }}></checkout-login>
+      <checkout-auth .options=${{ disableGuest: true }}></checkout-auth>
     </div>
   `;
 };
 
-export const LoginVariation = Template.bind({});
+export const AuthVariation = Template.bind({});
