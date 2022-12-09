@@ -29,8 +29,8 @@ export class DefaultHttpService implements HttpService {
           this.throwError(response);
         }
 
-        if (options?.parser) {
-          options?.parser?.(response);
+        if (options.parser) {
+          return options.parser(response);
         }
 
         const contentType = response.headers.get('content-type') ?? '';

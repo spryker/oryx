@@ -98,4 +98,16 @@ describe('DefaultHttpService', () => {
       method: 'DELETE',
     });
   });
+
+  it('should return result from custom parser', () => {
+    const parser = vi.fn().mockReturnValue(of('parser'));
+    const request = { ok: true, body: 'handleResult' };
+    const callback = vi.fn();
+
+    httpHandler.handle.mockReturnValue(of(request));
+    service.request(mockUrl, { parser }).subscribe(callback);
+
+    expect(parser).toHaveBeenCalledWith(request);
+    expect(callback).toHaveBeenCalledWith('parser');
+  });
 });
