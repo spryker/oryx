@@ -1,6 +1,6 @@
 export * from './directives';
 export * from './feature';
-export * from './hooks';
+export * from './injectables';
 export * from './orchestration';
 export * from './services';
 export * from './tokens';

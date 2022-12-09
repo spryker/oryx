@@ -13,13 +13,8 @@ import { mockSearchFeature } from '@spryker-oryx/search/mocks';
 import { mockSiteFeature } from '@spryker-oryx/site/mocks';
 import { uiFeature } from '@spryker-oryx/ui';
 import { mockUserFeature } from '@spryker-oryx/user/mocks';
-import { HOOKS_KEY, IconHookToken } from '@spryker-oryx/utilities';
 import isChromatic from 'chromatic/isChromatic';
-import {
-  chromaticIconHook,
-  chromaticStyledComponents,
-  ThemeChromaticPlugin,
-} from './chromatic';
+import { chromaticStyledComponents, ThemeChromaticPlugin } from './chromatic';
 import { StorybookPlugin } from './plugin';
 import { theme } from './theme';
 import { getActiveTheme } from './utils';
@@ -35,13 +30,6 @@ appBuilder()
     components: {
       root: 'body',
       preload: true,
-      ...(isChromatic()
-        ? {
-            [HOOKS_KEY]: {
-              [IconHookToken]: chromaticIconHook,
-            },
-          }
-        : {}),
     },
   })
   .withFeature(mockExperienceFeature)

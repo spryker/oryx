@@ -1,5 +1,5 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { HOOKS_KEY, isDefined } from '@spryker-oryx/utilities';
+import { isDefined } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import {
   ThemeData,
@@ -37,7 +37,6 @@ export const ComponentsPluginName = 'core$components';
 /**
  *  Registers, loads and defines components. Observes nodes (including shadowDOM).
  *  Defines components in lazy-load and preload modes, depends on options {@link ComponentsPluginOptions}.
- *  Redefines component static method by {@link HOOKS_KEY}.
  *  Applies theme styles for component definition.
  */
 export class ComponentsPlugin implements AppPlugin {
@@ -210,20 +209,6 @@ export class ComponentsPlugin implements AppPlugin {
       }
 
       return;
-    }
-
-    if (componentType[HOOKS_KEY] && this.options[HOOKS_KEY]) {
-      for (const [token, methodName] of Object.entries(
-        componentType[HOOKS_KEY]
-      )) {
-        const newHook = this.options[HOOKS_KEY][token as keyof HooksTokenMap];
-
-        if (methodName && newHook) {
-          componentType[
-            methodName as keyof Omit<ComponentType, 'length' | 'name'>
-          ] = newHook;
-        }
-      }
     }
 
     this.applyThemes(name);

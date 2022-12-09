@@ -1,4 +1,4 @@
-import { HOOKS_KEY, IconHookToken, Size } from '@spryker-oryx/utilities';
+import { Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ComponentDef } from '../components';
 import { ThemePlugin, ThemePluginName } from './theme';
@@ -19,11 +19,7 @@ const mockBTheme: Theme = {
 };
 
 const mockComponentPlugin = {
-  options: {
-    [HOOKS_KEY]: {
-      [IconHookToken]: 'IconHookToken',
-    } as Record<string, string>,
-  },
+  options: {},
 };
 
 const mockApp = {
@@ -156,33 +152,6 @@ describe('ThemePlugin', () => {
 
     beforeEach(() => {
       plugin.beforeApply(mockApp);
-    });
-
-    describe('apply', () => {
-      it('should not override IconHookToken for ComponentsPlugin if its defined', async () => {
-        await plugin.apply();
-        expect(mockComponentPlugin.options[HOOKS_KEY][IconHookToken]).toBe(
-          'IconHookToken'
-        );
-      });
-
-      it('should define IconHookToken for ComponentsPlugin if its not defined', async () => {
-        const mockComponentPlugin = {
-          options: {
-            [HOOKS_KEY]: {
-              anotherToken: 'anotherToken',
-            } as Record<string, string>,
-          },
-        };
-        mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
-        await plugin.apply();
-        expect(mockComponentPlugin.options[HOOKS_KEY].anotherToken).toBe(
-          'anotherToken'
-        );
-        expect(
-          typeof mockComponentPlugin.options[HOOKS_KEY][IconHookToken]
-        ).toBe('function');
-      });
     });
 
     describe('getIcon', () => {

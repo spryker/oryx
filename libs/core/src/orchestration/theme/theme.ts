@@ -1,11 +1,10 @@
 import {
   getPropByPath,
-  HOOKS_KEY,
-  IconHookToken,
+  iconInjectable,
   isPromise,
 } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
-import { iconHook } from '../../hooks';
+import { ThemeIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import {
@@ -42,8 +41,9 @@ export const ThemePluginName = 'core$theme';
 /**
  * Resolves components styles from theme options.
  * Adds design tokens and global styles to the root component of into body inside style tag.
+ * Changes rendering of {@link iconInjectable} for custom core implementation.
  * Resolves icons from theme options.
- * Changes static method by token {@link IconHookToken} for custom core implementation.
+ * Resolves breakpoints for all themes.
  */
 export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   protected breakpoints: Partial<ThemeBreakpoints> = {};
@@ -83,13 +83,9 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   async apply(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
     const componentOptions = this.app?.findPlugin(ComponentsPlugin)!.options!;
-    const isIconExtended = componentOptions[HOOKS_KEY]?.[IconHookToken];
 
-    if (Object.keys(this.icons).length && !isIconExtended) {
-      componentOptions[HOOKS_KEY] = {
-        ...(componentOptions[HOOKS_KEY] ?? {}),
-        [IconHookToken]: iconHook,
-      };
+    if (Object.keys(this.icons).length) {
+      iconInjectable.inject(new ThemeIconInjectable());
     }
 
     if (typeof componentOptions.root === 'string' && document.body) {

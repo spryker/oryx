@@ -1,4 +1,4 @@
-import { hook, IconHookToken } from '@spryker-oryx/utilities';
+import { iconInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -11,15 +11,9 @@ const DEFAULT_SPRITE = '/assets/icons.svg';
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 
-  @hook(IconHookToken)
-  static renderIcon: IconHookToken = (
-    type?: string,
-    spriteUrl = ''
-  ): TemplateResult => html`
-    <svg viewBox="0 0 24 24">
-      <use href="${spriteUrl}" />
-    </svg>
-  `;
+  constructor(protected renderIcon = iconInjectable.get()) {
+    super();
+  }
 
   @property({ reflect: true }) type?: Icons | string;
   @property({ reflect: true }) size?: Size;
@@ -29,7 +23,7 @@ export class IconComponent extends LitElement implements IconProperties {
     return html`
       <slot>
         ${when(this.type, () =>
-          IconComponent.renderIcon(this.type as string, this.spriteUrl)
+          this.renderIcon.render(this.type as string, this.spriteUrl)
         )}
       </slot>
     `;

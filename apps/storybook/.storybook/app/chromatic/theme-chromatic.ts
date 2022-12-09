@@ -1,4 +1,6 @@
 import { Theme, ThemePlugin } from '@spryker-oryx/core';
+import { iconInjectable } from '@spryker-oryx/utilities';
+import { ChromaticIconInjectable } from './icon-chromatic.injectable';
 
 export class ThemeChromaticPlugin extends ThemePlugin {
   constructor(theme: Theme[]) {
@@ -19,7 +21,8 @@ export class ThemeChromaticPlugin extends ThemePlugin {
     });
   }
 
-  getIconTemplate(icon?: string): string {
-    return this.icons?.[icon as keyof typeof this.icons];
+  async apply(): Promise<void> {
+    super.apply();
+    iconInjectable.inject(new ChromaticIconInjectable());
   }
 }

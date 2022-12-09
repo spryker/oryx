@@ -1,5 +1,4 @@
 import { Type } from '@spryker-oryx/injector';
-import { HOOKS_KEY } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 import { LazyLoadable, ThemeData, ThemeStylesheets } from '../theme';
 
@@ -23,15 +22,9 @@ export type ComponentDefFn = () => ComponentDef;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Component extends HTMLElement {}
 
-export interface ComponentProps {
-  [HOOKS_KEY]?: Record<string, string>;
-}
+export type ComponentType = Type<Component>;
 
-export type ComponentType = Type<Component> & ComponentProps;
-
-export type ObservableType = Type<ObservableShadowElement> &
-  ComponentProps &
-  ComponentStatic;
+export type ObservableType = Type<ObservableShadowElement> & ComponentStatic;
 
 export interface ComponentStatic {
   styles?: CSSResult[];
@@ -67,7 +60,6 @@ export interface ComponentsPluginOptions {
   elementOptions?: ElementDefinitionOptions;
   logger?: Pick<Console, 'warn'>;
   preload?: boolean;
-  [HOOKS_KEY]?: HooksTokenMap;
 }
 
 export function componentDef(def: ComponentDef) {
