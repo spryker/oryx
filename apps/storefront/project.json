@@ -4,20 +4,6 @@
   "sourceRoot": "apps/storefront/src",
   "tags": [],
   "targets": {
-    "ssr": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run dev:ssr",
-        "cwd": "apps/storefront"
-      }
-    },
-    "start-ssr-prod": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "NODE_ENV=production npm run dev:ssr",
-        "cwd": "apps/storefront"
-      }
-    },
     "serve": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
@@ -25,17 +11,29 @@
         "cwd": "apps/storefront"
       }
     },
-    "serve-testing": {
+    "serve-ssr": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "npm run dev -- --mode testing",
+        "command": "npm run dev:ssr",
         "cwd": "apps/storefront"
+      }
+    },
+    "serve-prod": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx build-client storefront",
+          "nx build-ssr storefront",
+          "npm run dev:ssr --omit=dev"
+        ],
+        "cwd": "apps/storefront",
+        "parallel": false
       }
     },
     "build-client": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "npm run build",
+        "command": "npm run build:client",
         "cwd": "apps/storefront"
       }
     },
@@ -46,17 +44,17 @@
         "cwd": "apps/storefront"
       }
     },
+    "build-netlify": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build:netlify",
+        "cwd": "apps/storefront"
+      }
+    },
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "commands": ["nx build-ssr storefront"],
-        "parallel": false
-      }
-    },
-    "build-testing": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run build -- --mode testing",
+        "command": "npm run build",
         "cwd": "apps/storefront"
       }
     },

@@ -1,11 +1,10 @@
 import { fixtureCleanup } from '@open-wc/testing-helpers';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { LitElement } from 'lit';
-import fetch from 'node-fetch';
+
 const { getComputedStyle } = window;
 
 window.getComputedStyle = (elt): CSSStyleDeclaration => getComputedStyle(elt);
-window.fetch = fetch as any;
 
 const querySlottedElements = (
   type: keyof HTMLElementTagNameMap,
@@ -108,14 +107,6 @@ declare global {
     ): number;
   }
 }
-
-// TODO: remove when NODE will be changed to 18
-Array.prototype.findLast = function (cb): any {
-  return this.reverse().find(cb);
-};
-Array.prototype.findLastIndex = function (cb): number {
-  return this.reverse().findIndex(cb);
-};
 
 // TODO: Remove custom mock of PromiseRejectionEvent once it's added by jsdom
 // See https://github.com/jsdom/jsdom/issues/2401

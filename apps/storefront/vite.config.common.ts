@@ -1,3 +1,4 @@
+import { Plugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -18,7 +19,7 @@ export const viteConfig = {
     index: './client',
     ssr: './server',
   },
-  plugins: () => [
+  plugins: (): Plugin[] => [
     checker({
       typescript: {
         tsconfigPath: 'tsconfig.app.json',

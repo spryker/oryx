@@ -1,7 +1,8 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { createServer } from '../../../libs/application/server/src/server.js';
-import { viteConfig } from '../vite.config.common.js';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { createServer } from '../../../libs/application/server';
+import { viteConfig } from '../vite.config.common';
 
 const config = {
   isProd: process.env.NODE_ENV === 'production',
@@ -23,4 +24,4 @@ const config = {
   namespace: viteConfig.ssr.namespace,
 };
 
-createServer(config);
+createServer(config).run();

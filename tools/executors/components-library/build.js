@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const devkit_1 = require("@nrwl/devkit");
+const copy_assets_handler_1 = require("@nrwl/js/src/utils/copy-assets-handler");
 const run_commands_impl_1 = require("@nrwl/workspace/src/executors/run-commands/run-commands.impl");
 const fs_1 = require("fs");
 const path_1 = require("path");
@@ -9,16 +10,6 @@ const normalizeOptions = (options) => {
     options = { ...options };
     options.outputPath = (0, path_1.join)(options.outputPath, options.cwd);
     options.main = (0, path_1.join)(options.cwd, options.main);
-    if (options.assets.length) {
-        for (let i = 0; i < options.assets.length; i++) {
-            const asset = options.assets[i];
-            if (typeof asset === 'string') {
-                options.assets[i] = (0, path_1.join)(options.cwd, asset);
-                continue;
-            }
-            asset.input = (0, path_1.join)(options.cwd, asset.input);
-        }
-    }
     return options;
 };
 async function componentsLibraryBuildExecutor(baseOptions, context) {
@@ -33,6 +24,15 @@ async function componentsLibraryBuildExecutor(baseOptions, context) {
         cwd: projectRoot,
         __unparsed__: [],
     }, context);
+    if (options.assets) {
+        const assetHandler = new copy_assets_handler_1.CopyAssetsHandler({
+            projectDir: projectRoot,
+            rootDir: options.cwd,
+            outputDir: options.outputPath,
+            assets: options.assets,
+        });
+        await assetHandler.processAllAssetsOnce();
+    }
     (0, utils_1.libDirsNormalizer)(options, (dir) => {
         const { name: dirName, path: dirPath } = dir;
         const dirKey = dirName === 'src' ? '.' : `./${dirName}`;

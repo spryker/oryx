@@ -1,5 +1,5 @@
-import { SsrOptions } from '@spryker-oryx/core';
-import { Provider } from '@spryker-oryx/injector';
+import { AppEnvironment, SsrOptions } from '@spryker-oryx/core';
+import { inject, Provider } from '@spryker-oryx/injector';
 import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
@@ -16,11 +16,19 @@ import {
   DefaultComponentsRegistryService,
 } from './registry';
 
+declare global {
+  interface AppEnvironment {
+    readonly FES_CONTENT_BACKEND_URL?: string;
+  }
+}
+
 export const experienceProviders: Provider[] = [
   componentsProvider,
   {
     provide: ContentBackendUrl,
-    useValue: import.meta.env?.FES_CONTENT_BACKEND_URL || '',
+    useFactory: () =>
+      inject(AppEnvironment, { FES_CONTENT_BACKEND_URL: '' })
+        .FES_CONTENT_BACKEND_URL,
   },
   {
     provide: ExperienceService,

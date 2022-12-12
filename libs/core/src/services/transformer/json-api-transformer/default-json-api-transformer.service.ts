@@ -2,7 +2,7 @@
 import './json-api.shim';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/injector';
-import { Deserializer } from 'jsonapi-serializer';
+import jsonapi from 'jsonapi-serializer';
 import { map, Observable, switchMap } from 'rxjs';
 import {
   InheritTransformerResult,
@@ -18,7 +18,7 @@ import { JsonApiPayload } from '@spryker-oryx/utilities';
 export class DefaultJsonAPITransformerService
   implements JsonAPITransformerService
 {
-  protected deserializer = new Deserializer({
+  protected deserializer = new jsonapi.Deserializer({
     keyForAttribute: 'camelCase',
   });
 

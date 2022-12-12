@@ -18,7 +18,7 @@ async function vitestExecutor(options, context) {
     }
     // TODO: workaround to avoid transpiling of dynamic import
     const { startVitest } = await Function("return import ('vitest/node')")();
-    const result = await startVitest([], {
+    const result = await startVitest('test', [], {
         ...options,
         root: projectRoot,
     });

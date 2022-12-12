@@ -1,5 +1,5 @@
-import { ErrorHandler } from '@spryker-oryx/core';
-import { Provider } from '@spryker-oryx/injector';
+import { AppEnvironment, ErrorHandler } from '@spryker-oryx/core';
+import { inject, Provider } from '@spryker-oryx/injector';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { componentsProvider } from './components.provider';
 import { CountryService, DefaultCountryService } from './country';
@@ -19,13 +19,9 @@ import {
 import { DefaultStoreService, StoreService } from './store';
 
 declare global {
-  interface ImportMetaEnv {
-    readonly SCOS_BASE_URL: string;
-    readonly STORE: string;
-  }
-
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
+  interface AppEnvironment {
+    readonly SCOS_BASE_URL?: string;
+    readonly STORE?: string;
   }
 }
 
@@ -33,11 +29,12 @@ export const siteProviders: Provider[] = [
   componentsProvider,
   {
     provide: 'SCOS_BASE_URL',
-    useValue: import.meta.env?.SCOS_BASE_URL || '',
+    useFactory: () =>
+      inject(AppEnvironment, { SCOS_BASE_URL: '' }).SCOS_BASE_URL,
   },
   {
     provide: 'STORE',
-    useValue: import.meta.env?.STORE || '',
+    useFactory: () => inject(AppEnvironment, { STORE: '' }).STORE,
   },
   {
     provide: SemanticLinkService,

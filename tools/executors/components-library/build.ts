@@ -4,7 +4,9 @@ import {
   readJsonFile,
   writeJsonFile,
 } from '@nrwl/devkit';
+import { CopyAssetsHandler } from '@nrwl/js/src/utils/copy-assets-handler';
 import runCommands from '@nrwl/workspace/src/executors/run-commands/run-commands.impl';
+import { AssetGlob } from '@nrwl/workspace/src/utilities/assets';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
 import { DirData, libDirsNormalizer, LibOptions } from './utils';
@@ -14,12 +16,7 @@ export interface ComponentsLibraryBuildExecutorOptions extends LibOptions {
   main: string;
   outputPath: string;
   exclude: string[];
-  assets: (
-    | {
-        input: string;
-      }
-    | string
-  )[];
+  assets: (string | AssetGlob)[];
 }
 
 const normalizeOptions = (
@@ -29,20 +26,6 @@ const normalizeOptions = (
 
   options.outputPath = join(options.outputPath, options.cwd);
   options.main = join(options.cwd, options.main);
-
-  if (options.assets.length) {
-    for (let i = 0; i < options.assets.length; i++) {
-      const asset = options.assets[i];
-
-      if (typeof asset === 'string') {
-        options.assets[i] = join(options.cwd, asset);
-
-        continue;
-      }
-
-      asset.input = join(options.cwd, asset.input);
-    }
-  }
 
   return options;
 };
@@ -70,6 +53,17 @@ export default async function componentsLibraryBuildExecutor(
     },
     context
   );
+
+  if (options.assets) {
+    const assetHandler = new CopyAssetsHandler({
+      projectDir: projectRoot,
+      rootDir: options.cwd,
+      outputDir: options.outputPath,
+      assets: options.assets,
+    });
+
+    await assetHandler.processAllAssetsOnce();
+  }
 
   libDirsNormalizer(options, (dir: DirData) => {
     const { name: dirName, path: dirPath } = dir;

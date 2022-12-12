@@ -82,7 +82,7 @@ function replace(filePath, outFilePath, options) {
 
       if (resolvedPath) {
         console.log('\t', importPath, resolvedPath);
-        return `${action}('${resolvedPath}')`;
+        return `${action} '${resolvedPath}'`;
       }
 
       return found;

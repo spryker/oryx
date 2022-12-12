@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
-import { Deserializer } from 'jsonapi-serializer';
+import * as jsonapi from 'jsonapi-serializer';
 import { of, take } from 'rxjs';
 import { TransformerService } from '../transformer.service';
 import { DefaultJsonAPITransformerService } from './default-json-api-transformer.service';
@@ -10,9 +10,11 @@ const mockInputData = { mockInputData: 'mockInputData' };
 const mockDeserialize = vi.fn().mockReturnValue(mockData);
 
 vi.mock('jsonapi-serializer', () => ({
-  Deserializer: vi
-    .fn()
-    .mockImplementation(() => ({ deserialize: mockDeserialize })),
+  default: {
+    Deserializer: vi
+      .fn()
+      .mockImplementation(() => ({ deserialize: mockDeserialize })),
+  },
 }));
 
 vi.mock('@spryker-oryx/core/utilities', () => ({
@@ -59,7 +61,7 @@ describe('DefaultJsonAPITransformerService', () => {
         )
         .pipe(take(1))
         .subscribe();
-      expect(Deserializer).toHaveBeenCalledWith({
+      expect((jsonapi as any).default.Deserializer).toHaveBeenCalledWith({
         keyForAttribute: 'camelCase',
       });
       expect(mockDeserialize).toHaveBeenCalledWith(mockInputData);
@@ -67,7 +69,7 @@ describe('DefaultJsonAPITransformerService', () => {
         mockInputData,
         'mockATransformer' as keyof InjectionTokensContractMap
       );
-      expect(Deserializer).toHaveBeenCalledTimes(1);
+      expect((jsonapi as any).default.Deserializer).toHaveBeenCalledTimes(1);
     });
 
     it('should call injected TransformerService.transform with deserialized data and return transformed data', () => {

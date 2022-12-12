@@ -7,14 +7,6 @@ export default defineConfig((config) => {
   adjustEnv(config);
 
   return {
-    ...(process.env.NODE_ENV === 'production'
-      ? {
-          mangleProps: /_\$needsHydration/,
-          mangleCache: {
-            _$needsHydration: '_$AG',
-          },
-        }
-      : {}),
     root: viteConfig.index,
     envDir: viteConfig.root,
     envPrefix: viteConfig.envPrefix,

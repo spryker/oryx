@@ -10,27 +10,33 @@ import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
 
-export const serverContext = (options) => {
-  const server = options.base ?? '../../server/render.js';
-  const url = options.url ?? import.meta.url;
-  const namespace = options.namespace ?? 'storefront';
-  const base = dirname(fileURLToPath(url));
+interface ContextOptions {
+  entry: string;
+  namespace?: string;
+  root?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const serverContext = (options: ContextOptions): any => {
+  const { entry, root = import.meta.url, namespace = 'storefront' } = options;
+  const basePath = dirname(fileURLToPath(root));
   const window = getWindow({
     includeJSBuiltIns: true,
     props: {
-      require: createRequire(url),
+      require: createRequire(root),
       Event,
       process,
+      exports: {},
     },
   });
-  window.URLSearchParams = URLSearchParams;
-  window.URL = URL;
-  window.exports = {};
   window.setTimeout = setTimeout;
+
   const script = new Script(`
-    ${readFileSync(resolve(base, server), 'utf8')};
+    ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
+
   createContext(window);
+
   return script.runInContext(window);
 };

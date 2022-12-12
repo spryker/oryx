@@ -5,4 +5,5 @@ import { storefrontTheme } from '@spryker-oryx/themes';
 export const app = appBuilder()
   .withFeature(b2cFeatures)
   .withTheme(storefrontTheme)
+  .withEnvironment(import.meta.env)
   .create();

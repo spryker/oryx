@@ -10,6 +10,7 @@ import { SimpleAppBuilder } from './app-builder';
 import {
   App,
   AppBuilderWithModules,
+  AppEnvironment,
   AppFeature,
   ModularAppBuilderOptions,
 } from './app.model';
@@ -74,6 +75,11 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
 
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules {
     this.themes.push(...(Array.isArray(theme) ? theme : [theme]));
+    return this;
+  }
+
+  withEnvironment(env: AppEnvironment): AppBuilderWithModules {
+    this.withProviders([{ provide: AppEnvironment, useValue: env }]);
     return this;
   }
 

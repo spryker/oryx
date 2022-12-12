@@ -7,13 +7,11 @@ export type GlobalizeCldrImporter = () => object;
 
 /** @internal */
 export class GlobalizeService {
-  static MinimalCldrImportets: readonly GlobalizeCldrImporter[] = [
+  static MinimalCldrImporters: readonly GlobalizeCldrImporter[] = [
     /* eslint-disable @typescript-eslint/explicit-function-return-type */
-    () =>
-      import('cldr-data/supplemental/likelySubtags.json').then(
-        (m) => m.default
-      ),
-    () => import('cldr-data/supplemental/plurals.json').then((m) => m.default),
+    // TODO: fix to import json files from node_modules when vite 4 will be released
+    () => import('./importers/likely-subtags').then((m) => m.default),
+    () => import('./importers/plurals').then((m) => m.default),
     /* eslint-enable @typescript-eslint/explicit-function-return-type */
   ];
 
@@ -21,7 +19,7 @@ export class GlobalizeService {
   protected globalizeCaches: Record<string, Globalize> = Object.create(null);
 
   constructor(
-    protected cldrImporters = [...GlobalizeService.MinimalCldrImportets]
+    protected cldrImporters = [...GlobalizeService.MinimalCldrImporters]
   ) {}
 
   addCldrImporter(cldrImporet: GlobalizeCldrImporter): void {

@@ -11,6 +11,7 @@ const currentDir = process.cwd();
 const libDistPath = `${currentDir}/dist/libs`;
 const packsDir = `packages`;
 const scriptLoggingPrefix = 'Generate packages:';
+const apps = 'experience-builder,storybook,launchpad,storefront,picking-app'
 
 const getDirectories = source =>
   readdirSync(source, { withFileTypes: true })
@@ -27,7 +28,7 @@ console.log(`${scriptLoggingPrefix} Clearing npm cache.`);
 execSync('npm cache clean --force', consoleOutputSettings);
 
 console.log(`${scriptLoggingPrefix} Building libraries.`);
-execSync('nx run-many --target=build --all --exclude storybook,launchpad,storefront,picking-app --parallel=5 --skip-nx-cache', consoleOutputSettings);
+execSync(`nx run-many --target=build --all --exclude ${apps} --parallel=5 --skip-nx-cache`, consoleOutputSettings);
 
 execSync(`node tools/post-build/add-js-extension.js`, consoleOutputSettings);
 console.log(`${scriptLoggingPrefix} Fixing js extension.`);

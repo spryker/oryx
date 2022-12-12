@@ -2,11 +2,15 @@
   "name": "@spryker-oryx/application",
   "version": "1.0.0-alpha.0",
   "type": "module",
+  "scripts": {
+    "postinstall": "patches/patch.sh"
+  },
   "dependencies": {
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "^2.2.3",
     "@webcomponents/template-shadowroot": "^0.1.0",
-    "abort-controller": "^3.0.0"
+    "abort-controller": "^3.0.0",
+    "express": "^4.17.1"
   },
   "peerDependencies": {
     "@spryker-oryx/injector": "*",

@@ -4,12 +4,8 @@ export const ComponentMapping = 'FES.ComponentMapping*';
 export const ContentBackendUrl = 'FES.ContentBackendUrl';
 
 declare global {
-  interface ImportMetaEnv {
-    readonly FES_CONTENT_BACKEND_URL: string;
-  }
-
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
+  interface Environment {
+    readonly FES_CONTENT_BACKEND_URL?: string;
   }
 }
 
