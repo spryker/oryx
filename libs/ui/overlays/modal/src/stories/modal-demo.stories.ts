@@ -25,6 +25,10 @@ interface Props {
   secondModalDisableCloseOnEscape?: boolean;
 }
 
+const generateContent = (times: number): TemplateResult => html`
+  ${[...Array(times).keys()].map((i) => html` <p>${i}</p> `)}
+`;
+
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <script>
@@ -48,6 +52,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     </script>
 
     <button id="openFirstModalBtn">Open first modal</button>
+    ${generateContent(20)}
 
     <oryx-modal
       ?disableCloseOnEscape=${props.firstModalDisableCloseOnEscape}
@@ -132,5 +137,11 @@ ModalDemo.argTypes = {
   secondModalContent: {
     table: { category: 'Second modal' },
     control: { type: 'text' },
+  },
+};
+
+ModalDemo.parameters = {
+  chromatic: {
+    disableSnapshot: true,
   },
 };

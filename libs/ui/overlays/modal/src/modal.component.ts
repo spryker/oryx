@@ -2,12 +2,11 @@ import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DialogElement } from '../../overlay.model';
 import { fullscreenModalStyles } from './fullscreen-modal.styles';
-import { ModalProperties } from './modal.model';
+import { CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
 
 export class ModalComponent extends LitElement implements ModalProperties {
   backdropTargetTag = 'dialog';
-  private readonly closeEvent = 'oryx.close';
   static styles = [styles, fullscreenModalStyles];
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
@@ -40,7 +39,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   protected emitCloseEvent(): void {
     this.dispatchEvent(
-      new CustomEvent(this.closeEvent, {
+      new CustomEvent(CLOSE_EVENT, {
         bubbles: true,
         composed: true,
       })
