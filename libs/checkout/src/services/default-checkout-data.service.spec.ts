@@ -1,8 +1,17 @@
-import { mockNormalizedShipmentAttributes } from '@spryker-oryx/checkout/mocks';
+import {
+  mockNormalizedPaymentMethods,
+  mockNormalizedShipmentAttributes,
+} from '@spryker-oryx/checkout/mocks';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import { Observable, of } from 'rxjs';
-import { guestCheckoutStorageKey } from '../models';
+import {
+  addressCheckoutStorageKey,
+  contactCheckoutStorageKey,
+  guestCheckoutStorageKey,
+  paymentCheckoutStorageKey,
+  shipmentCheckoutStorageKey,
+} from '../models';
 import { CheckoutDataService } from './checkout-data.service';
 import { DefaultCheckoutDataService } from './default-checkout-data.service';
 
@@ -46,6 +55,22 @@ describe('DefaultCheckoutDataService', () => {
   it('should get persisted data', () => {
     expect(storage.get).toHaveBeenCalledWith(
       guestCheckoutStorageKey,
+      StorageType.SESSION
+    );
+    expect(storage.get).toHaveBeenCalledWith(
+      shipmentCheckoutStorageKey,
+      StorageType.SESSION
+    );
+    expect(storage.get).toHaveBeenCalledWith(
+      paymentCheckoutStorageKey,
+      StorageType.SESSION
+    );
+    expect(storage.get).toHaveBeenCalledWith(
+      contactCheckoutStorageKey,
+      StorageType.SESSION
+    );
+    expect(storage.get).toHaveBeenCalledWith(
+      addressCheckoutStorageKey,
       StorageType.SESSION
     );
   });
@@ -114,6 +139,14 @@ describe('DefaultCheckoutDataService', () => {
       it('should set the contact details', () => {
         expect(cb).toHaveBeenCalledWith(details);
       });
+
+      it('should store contact details in session storage', () => {
+        expect(storage.set).toHaveBeenCalledWith(
+          contactCheckoutStorageKey,
+          details,
+          StorageType.SESSION
+        );
+      });
     });
   });
 
@@ -147,6 +180,14 @@ describe('DefaultCheckoutDataService', () => {
       it('should set the address details', () => {
         expect(cb).toHaveBeenCalledWith(details);
       });
+
+      it('should store address details in session storage', () => {
+        expect(storage.set).toHaveBeenCalledWith(
+          addressCheckoutStorageKey,
+          details,
+          StorageType.SESSION
+        );
+      });
     });
   });
 
@@ -167,6 +208,43 @@ describe('DefaultCheckoutDataService', () => {
 
       it('should set the shipment details', () => {
         expect(cb).toHaveBeenCalledWith(mockNormalizedShipmentAttributes);
+      });
+
+      it('should store shipment details in session storage', () => {
+        expect(storage.set).toHaveBeenCalledWith(
+          shipmentCheckoutStorageKey,
+          mockNormalizedShipmentAttributes,
+          StorageType.SESSION
+        );
+      });
+    });
+  });
+
+  describe('when getPaymentDetails is called', () => {
+    it('should return an observable', () => {
+      expect(service.getPaymentDetails()).toBeInstanceOf(Observable);
+    });
+  });
+
+  describe('when setPaymentDetails is called', () => {
+    const cb = vi.fn();
+
+    describe('when value is set', () => {
+      beforeEach(() => {
+        service.setPaymentDetails(mockNormalizedPaymentMethods[0]);
+        service.getPaymentDetails().subscribe(cb);
+      });
+
+      it('should set the payment details', () => {
+        expect(cb).toHaveBeenCalledWith(mockNormalizedPaymentMethods[0]);
+      });
+
+      it('should store payment details in session storage', () => {
+        expect(storage.set).toHaveBeenCalledWith(
+          paymentCheckoutStorageKey,
+          mockNormalizedPaymentMethods[0],
+          StorageType.SESSION
+        );
       });
     });
   });

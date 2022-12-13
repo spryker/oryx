@@ -35,11 +35,9 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
     .getTrigger(CheckoutStepType.Shipping)
     .pipe(
       tap((trigger) => {
+        const valid = this.submit();
         if (trigger === CheckoutTrigger.Check) {
-          this.orchestrationService.report(
-            CheckoutStepType.Shipping,
-            this.submit()
-          );
+          this.orchestrationService.report(CheckoutStepType.Shipping, valid);
         }
       })
     );

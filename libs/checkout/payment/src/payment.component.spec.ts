@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
+  CheckoutDataService,
   CheckoutOrchestrationService,
   CheckoutPaymentService,
 } from '@spryker-oryx/checkout';
@@ -24,6 +25,10 @@ class MockOrchestrationService
   getTrigger = vi.fn().mockReturnValue(of(''));
 }
 
+class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  getPaymentDetails = vi.fn().mockReturnValue(of(null));
+}
+
 describe('Checkout Payment Selector component', () => {
   let element: CheckoutPaymentComponent;
   let paymentService: MockPaymentService;
@@ -46,6 +51,10 @@ describe('Checkout Payment Selector component', () => {
         {
           provide: CheckoutOrchestrationService,
           useClass: MockOrchestrationService,
+        },
+        {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
         },
       ],
     });

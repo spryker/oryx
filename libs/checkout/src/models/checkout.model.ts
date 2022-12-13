@@ -17,6 +17,7 @@ export interface Carrier {
 }
 
 export interface PaymentMethod {
+  id: string;
   name: string;
   provider: string;
   priority?: number;
@@ -69,6 +70,10 @@ export interface ContactDetails {
 }
 
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
+export const shipmentCheckoutStorageKey = 'shipmentCheckout.storageKey';
+export const paymentCheckoutStorageKey = 'paymentCheckout.storageKey';
+export const contactCheckoutStorageKey = 'contactCheckout.storageKey';
+export const addressCheckoutStorageKey = 'addressCheckout.storageKey';
 
 export const defaultSelectedShipmentMethod = {
   deliveryTime: null,

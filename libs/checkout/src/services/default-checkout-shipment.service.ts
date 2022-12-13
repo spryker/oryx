@@ -69,12 +69,19 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   }
 
   getSelectedShipmentMethod(): Observable<number> {
-    return this.getShipment().pipe(
-      map((shipment) => {
-        return shipment?.selectedShipmentMethod?.id
-          ? Number(shipment.selectedShipmentMethod.id)
-          : 0;
-      })
+    return this.dataService.getShipmentDetails().pipe(
+      map((details) => details?.idShipmentMethod),
+      switchMap((id) =>
+        id
+          ? of(id)
+          : this.getShipment().pipe(
+              map((shipment) => {
+                return shipment?.selectedShipmentMethod?.id
+                  ? Number(shipment.selectedShipmentMethod.id)
+                  : 0;
+              })
+            )
+      )
     );
   }
 

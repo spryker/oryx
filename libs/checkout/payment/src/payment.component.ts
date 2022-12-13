@@ -1,4 +1,5 @@
 import {
+  CheckoutDataService,
   CheckoutOrchestrationService,
   CheckoutPaymentService,
   CheckoutStepType,
@@ -11,7 +12,7 @@ import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
@@ -20,20 +21,22 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
 
   protected service = resolve(CheckoutPaymentService);
   protected orchestrationService = resolve(CheckoutOrchestrationService);
+  protected dataService = resolve(CheckoutDataService);
 
   protected methods$ = this.service.getMethods();
   protected currentMethod$ = new BehaviorSubject<string | null>(null);
+  protected selectedPaymentMethod$ = this.dataService
+    .getPaymentDetails()
+    .pipe(map((method) => method?.id));
 
   @subscribe()
   protected submitTrigger$ = this.orchestrationService
     .getTrigger(CheckoutStepType.Payment)
     .pipe(
       tap((trigger) => {
+        const valid = this.submit();
         if (trigger === CheckoutTrigger.Check) {
-          this.orchestrationService.report(
-            CheckoutStepType.Payment,
-            this.submit()
-          );
+          this.orchestrationService.report(CheckoutStepType.Payment, valid);
         }
       })
     );
@@ -53,13 +56,21 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
 
   protected override render(): TemplateResult {
     return html`${asyncValue(
-      combineLatest([this.methods$, this.currentMethod$]),
-      ([methods, currentMethod]) =>
+      combineLatest([
+        this.methods$,
+        this.selectedPaymentMethod$,
+        this.currentMethod$,
+      ]),
+      ([methods, selectedPaymentMethod, currentMethod]) =>
         methods?.length
           ? html`${methods.map((method, i) =>
               this.renderMethod(
                 method,
-                currentMethod ? currentMethod === method.name : i === 0
+                currentMethod
+                  ? currentMethod === method.id
+                  : !selectedPaymentMethod
+                  ? i === 0
+                  : selectedPaymentMethod === method.id
               )
             )}`
           : this.renderEmpty()
@@ -76,8 +87,9 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
           name="payment-method"
           type="radio"
           ?checked="${selected}"
+          .value="${method.id}"
           @change="${() => {
-            this.currentMethod$.next(method.name);
+            this.currentMethod$.next(method.id);
             this.orchestrationService.report(CheckoutStepType.Payment, true);
           }}"
         />
