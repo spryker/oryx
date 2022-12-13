@@ -1,13 +1,13 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { mdScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, CSSResult, CSSResultGroup, unsafeCSS } from 'lit';
 
 const unsafe = (value: string): CSSResult => unsafeCSS(value);
 /**
  * Generates the CSS selectors and rules for the given tag to plain heading selectors
- * as well as mimicked headings. The style rules depend on CSS variables for the size,
- * weight and line-height. To have a more efficient setup, we use internal css variables
- * to accommodate styles in the various headings:
+ * as well as mimic headings with an appearance. The style rules depend on CSS variables
+ * for the size, weight and line-height. To have a more efficient setup, we use internal
+ * css variables to accommodate styles in the various headings:
  *
  * ```css
  * h1 {
@@ -25,11 +25,11 @@ const headingStyle = (
 ): CSSResultGroup => {
   const selector = unsafe(tag);
   return css`
-    :host(:not(:is([mimic], [sm-mimic], [md-mimic])))
+    :host(:not(:is([appearance], [md-appearance])))
       ${selector},
-      :host(:not(:is([mimic], [sm-mimic], [md-mimic])))
+      :host(:not(:is([appearance], [md-appearance])))
       ::slotted(${selector}),
-    :host([mimic='${selector}']) {
+    :host([appearance='${selector}']) {
       font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
       line-height: var(
         --oryx-typography-${selector}-line,
@@ -48,7 +48,8 @@ const headingStyleForMedium = (
 ): CSSResultGroup => {
   const selector = unsafe(tag);
   return css`
-    :host([md-mimic='${selector}']) {
+    ${headingStyle(tag, size, lineHeight, weight)}
+    :host([md-appearance='${selector}']) {
       font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
       line-height: var(
         --oryx-typography-${selector}-line,
@@ -67,7 +68,10 @@ const headingStyleForSmall = (
 ): CSSResultGroup => {
   const selector = unsafe(tag);
   return css`
-    :host([md-mimic]) ${selector}, :host([md-mimic]) ::slotted(${selector}) {
+    :host([md-appearance])
+      ${selector},
+      :host([md-appearance])
+      ::slotted(${selector}) {
       font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
       line-height: var(
         --oryx-typography-${selector}-line,
@@ -88,8 +92,8 @@ const headingStyleForSmall = (
 export const headlineStyles = css`
   :is(h1, h2, h3, h4, h5, h6, .subtitle),
   ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)),
-  :is([mimic], [sm-mimic], [md-mimic]) *,
-  :is([mimic], [sm-mimic], [md-mimic]) ::slotted(*) {
+  :is([appearance], [md-appearance]) *,
+  :is([appearance], [md-appearance]) ::slotted(*) {
     margin-block: 0;
     max-height: calc(var(--_lh) * var(--max-lines));
     /* stylelint-disable-next-line */
@@ -99,8 +103,8 @@ export const headlineStyles = css`
     -webkit-box-orient: vertical;
   }
 
-  :host([mimic]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
-  :host([mimic]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
+  :host([appearance]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
+  :host([appearance]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     font-size: inherit;
     line-height: inherit;
     font-weight: inherit;
@@ -108,7 +112,7 @@ export const headlineStyles = css`
 
   .subtitle,
   ::slotted(.subtitle),
-  :host([mimic='subtitle']) {
+  :host([appearance='subtitle']) {
     text-transform: uppercase;
   }
 
@@ -121,29 +125,19 @@ export const headlineStyles = css`
   ${headingStyle('.subtitle', `0.857em`, `1.333em`)}
 `;
 
-const smallScreen = css`
-  ${headingStyleForSmall('h1', `1.571em`, `1.364em`)}
-  ${headingStyleForSmall('h2', `1.286em`, `1.444em`, 700)}
-  ${headingStyleForSmall('h3', `1.143em`, `1.375em`)}
-  ${headingStyleForSmall('h4', `1em`, `1.571em`)}
-  ${headingStyleForSmall('h5', `1em`, `1.571em`, 700)}
-  ${headingStyleForSmall('h6', `0.857em`, `1.333em`)}
-  ${headingStyleForSmall('.subtitle', `0.857em`, `1.333em`)}
-`;
-
 const mediumScreen = css`
-  :host([md-mimic]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
-  :host([md-mimic]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
+  :host([md-appearance]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
+  :host([md-appearance]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     font-size: inherit;
     line-height: inherit;
     font-weight: inherit;
   }
 
-  :host([md-mimic='subtitle']) {
+  :host([md-appearance='subtitle']) {
     text-transform: uppercase;
   }
 
-  :host(:not([md-mimic='subtitle'])) {
+  :host(:not([md-appearance='subtitle'])) {
     text-transform: initial;
   }
 
@@ -165,10 +159,6 @@ const mediumScreen = css`
  * Each definition can be controlled with a CSS variable.
  */
 export const headlineScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
   {
     media: mdScreen,
     css: mediumScreen,

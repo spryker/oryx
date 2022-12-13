@@ -18,34 +18,34 @@ export const Template: Story = (): TemplateResult => {
       })}
     </div>
 
-    <h2>Mimic heading</h2>
-    <div class="mimic">
+    <h2>Appearance heading</h2>
+    <div class="appearance">
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
           <oryx-heading>${el}</oryx-heading>
-          <oryx-heading mimic="h1">${el}</oryx-heading>
-          <oryx-heading mimic="h2">${el}</oryx-heading>
-          <oryx-heading mimic="h3">${el}</oryx-heading>
-          <oryx-heading mimic="h4">${el}</oryx-heading>
-          <oryx-heading mimic="h5">${el}</oryx-heading>
-          <oryx-heading mimic="h6">${el}</oryx-heading>
+          <oryx-heading appearance="h1">${el}</oryx-heading>
+          <oryx-heading appearance="h2">${el}</oryx-heading>
+          <oryx-heading appearance="h3">${el}</oryx-heading>
+          <oryx-heading appearance="h4">${el}</oryx-heading>
+          <oryx-heading appearance="h5">${el}</oryx-heading>
+          <oryx-heading appearance="h6">${el}</oryx-heading>
         `;
       })}
     </div>
 
-    <h2>Mimic heading (medium and larger)</h2>
-    <div class="mimic">
+    <h2>Appearance heading (medium and larger)</h2>
+    <div class="appearance">
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
           <oryx-heading>${el}</oryx-heading>
-          <oryx-heading md-mimic="h1">${el}</oryx-heading>
-          <oryx-heading md-mimic="h2">${el}</oryx-heading>
-          <oryx-heading md-mimic="h3">${el}</oryx-heading>
-          <oryx-heading md-mimic="h4">${el}</oryx-heading>
-          <oryx-heading md-mimic="h5">${el}</oryx-heading>
-          <oryx-heading md-mimic="h6">${el}</oryx-heading>
+          <oryx-heading md-appearance="h1">${el}</oryx-heading>
+          <oryx-heading md-appearance="h2">${el}</oryx-heading>
+          <oryx-heading md-appearance="h3">${el}</oryx-heading>
+          <oryx-heading md-appearance="h4">${el}</oryx-heading>
+          <oryx-heading md-appearance="h5">${el}</oryx-heading>
+          <oryx-heading md-appearance="h6">${el}</oryx-heading>
         `;
       })}
     </div>
@@ -59,34 +59,34 @@ export const Template: Story = (): TemplateResult => {
 
     <h1>Shadow DOM</h1>
 
-    <h2>Mimic heading</h2>
-    <div class="mimic">
+    <h2>Appearance heading</h2>
+    <div class="appearance">
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
         (tag) =>
           html`
             <oryx-heading tag=${tag}>${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h1">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h2">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h3">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h4">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h5">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} mimic="h6">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h1">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h2">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h3">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h4">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h5">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} appearance="h6">${tag}</oryx-heading>
           `
       )}
     </div>
 
-    <h2>Mimic heading (medium and larger)</h2>
-    <div class="mimic">
+    <h2>Appearance heading (medium and larger)</h2>
+    <div class="appearance">
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
         (tag) =>
           html`
             <oryx-heading tag=${tag}>${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h1">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h2">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h3">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h4">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h5">${tag}</oryx-heading>
-            <oryx-heading tag=${tag} md-mimic="h6">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h1">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h2">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h3">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h4">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h5">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} md-appearance="h6">${tag}</oryx-heading>
           `
       )}
     </div>
@@ -122,13 +122,13 @@ export const Template: Story = (): TemplateResult => {
         align-items: start;
       }
 
-      .mimic {
+      .appearance {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         grid-auto-flow: row;
       }
 
-      .mimic oryx-heading {
+      .appearance oryx-heading {
         display: flex;
         align-items: center;
       }

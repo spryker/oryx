@@ -7,8 +7,9 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headlineStyles;
 
   @property() tag?: HeadingTag;
-  @property({ reflect: true }) mimic?: string;
-  @property({ reflect: true, attribute: 'md-mimic' }) mdMimic?: string;
+  @property({ reflect: true }) appearance?: string;
+  @property({ reflect: true, attribute: 'md-appearance' })
+  mdAppearance?: string;
   @property() set maxLines(value: number) {
     if (value > 0) {
       this.style.setProperty('--max-lines', String(value));

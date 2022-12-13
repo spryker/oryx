@@ -33,7 +33,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         }
 
         return html`
-          <oryx-heading md-mimic="h4">
+          <oryx-heading md-appearance="h4">
             <h2>${i18n('cart.totals.summary')}</h2>
           </oryx-heading>
           <section>
@@ -102,10 +102,10 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
       ?open=${options.discountRowsAppearance !==
       DiscountRowsAppearance.Collapsed}
     >
-      <oryx-heading slot="header" md-mimic="h6">
+      <oryx-heading slot="header" md-appearance="h6">
         <h3>${i18n('cart.totals.discount')}</h3>
       </oryx-heading>
-      <oryx-heading slot="aside" md-mimic="h6" mimic="h3">
+      <oryx-heading slot="aside" md-appearance="h6" appearance="h3">
         ${totals.calculations.discountTotal}
       </oryx-heading>
       ${rows}
@@ -183,7 +183,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     value: string | TemplateResult
   ): TemplateResult {
     return html`
-      <oryx-heading md-mimic="h6" mimic="h3" class=${type}>
+      <oryx-heading md-appearance="h6" appearance="h3" class=${type}>
         <h3>${title}</h3>
         <span>${value}</span>
       </oryx-heading>

@@ -23,17 +23,18 @@ export interface HeadingAttributes {
    *
    * The following example renders visually as an h3, while the semantic element is an `h1`.
    * ```html
-   * <oryx-heading mimic="h3">
+   * <oryx-heading appearance="h3">
    *   <h1>Heading text</h1>
    * </oryx-heading>
    * ```
    */
-  mimic?: string;
+  appearance?: string;
 
   /**
-   * Similar to the generic _mimic_ behaviour you can mimic a certain style for medium (and larger) screen size.
+   * Similar to the generic _appearance_ behaviour you can mimic a certain style for medium (and larger)
+   * screen size.
    */
-  mdMimic?: string;
+  mdAppearance?: string;
 }
 
 /**

@@ -16,11 +16,11 @@ export default {
     maxLines: {
       control: { type: 'number' },
     },
-    mimic: {
+    appearance: {
       options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
       control: { type: 'select' },
     },
-    mdMimic: {
+    mdAppearance: {
       options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
       control: { type: 'select' },
     },
@@ -32,8 +32,8 @@ const Template: Story<HeadingAttributes> = (
 ): TemplateResult => {
   return html`<oryx-heading
     .tag=${props.tag}
-    .mimic=${props.mimic}
-    .mdMimic=${props.mdMimic}
+    .appearance=${props.appearance}
+    .mdAppearance=${props.mdAppearance}
     .maxLines=${props.maxLines}
   >
     Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy
