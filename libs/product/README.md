@@ -1,7 +1,9 @@
-# Product Library
+# Oryx Product package
 
-This library was generated with [Nx](https://nx.dev).
+Provides product features for an Oryx based application that are typically used to build a product detail page experience.
 
-## Running unit tests
+The product component can also be used in other features, e.g. a product image component will be reused in a cart-entry component.
 
-Run `nx test product` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+## Installation
+
+`npm install @spryker-oryx/product`

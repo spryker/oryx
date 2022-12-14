@@ -2,6 +2,7 @@
   "name": "@spryker-oryx/site",
   "version": "1.0.0-alpha.0",
   "type": "module",
+  "description": "Global website features for Oryx applications",
   "files": [
     "**/*"
   ],
@@ -15,13 +16,13 @@
     }
   },
   "peerDependencies": {
-    "@spryker-oryx/experience": "*",
     "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
     "@spryker-oryx/injector": "*",
-    "@spryker-oryx/utilities": "*",
     "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   }
 }

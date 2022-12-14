@@ -1,6 +1,6 @@
-## FES Storefront
+## Oryx Storefront
 
-Initial FES Storefront implementation.
+Composable Storefront boilerplate. This code is used by developers and the CI to test the storefront.
 
 ## Quickstart
 

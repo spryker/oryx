@@ -1,7 +1,7 @@
-# Auth Library
+# Oryx Auth package
 
-This library provides functionality for user authentication·.
+Provides functionality and components for user authentication.
 
-## Running unit tests
+## Installation
 
-Run `nx test auth` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+`npm install @spryker-oryx/auth`

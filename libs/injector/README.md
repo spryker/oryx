@@ -1,7 +1,7 @@
-# @spryker-oryx/injector
+# Oryx Injector package
 
-This library was generated with [Nx](https://nx.dev).
+Provides dependency injection to Oryx applications.
 
-## Running unit tests
+## Installation
 
-Run `nx test injector` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+`npm install @spryker-oryx/injector`

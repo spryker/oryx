@@ -1,7 +1,9 @@
-# experience
+# Oryx Experience package
 
-This library was generated with [Nx](https://nx.dev).
+Provides experience related functionality to Oryx applications.
 
-## Running unit tests
+The main functionality is provided by the composition component, a component that renders a list of components and their layout based on data.
 
-Run `nx test experience` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+## Installation
+
+`npm install @spryker-oryx/experience`

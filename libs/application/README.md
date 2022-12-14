@@ -1,7 +1,15 @@
-# application
+# Oryx Application package
 
-This library was generated with [Nx](https://nx.dev).
+Provides the basic infrastructure to Oryx application, such as SSR and routing.
 
-## Running unit tests
+Contains a standard `oryx-app` component that is used in the standard boilerplate application:
 
-Run `nx test application` to execute the unit tests.
+```html
+<body>
+  <oryx-app></oryx-app>
+</body>
+```
+
+## Installation
+
+`npm install @spryker-oryx/application`

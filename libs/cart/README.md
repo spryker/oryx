@@ -1,7 +1,7 @@
-# Cart Library
+# Oryx Cart package
 
-This library was generated with [Nx](https://nx.dev).
+Provides shopping cart features for an Oryx based application.
 
-## Running unit tests
+## Installation
 
-Run `nx test cart` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+`npm install @spryker-oryx/cart`

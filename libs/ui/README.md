@@ -1,13 +1,9 @@
-# components
+# Oryx UI package
 
-This library was generated with [Nx](https://nx.dev).
+Provides design system components to Oryx applications.
 
-The component package provides reusable UI components that are used to build Spryker experiences. Components are build as web components so that they can be reused cross UI frameworks.
+The UI components are the lowest level components that are used in Oryx applications.
 
-## Style linting
+## Installation
 
-Run `nx stylelint components` to lint styles.
-
-## Sprite generation
-
-Run `nx run ui:sprites` to generation new icons sprite
+`npm install @spryker-oryx/ui`

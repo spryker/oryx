@@ -1,9 +1,7 @@
-# Core
+# Oryx Core package
 
-This library provides core functionality for FES.
+Provides core services and utilities to Oryx applications.
 
-This library was generated with [Nx](https://nx.dev).
+## Installation
 
-## Running unit tests
-
-Run `nx test core` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+`npm install @spryker-oryx/core`

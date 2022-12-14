@@ -2,6 +2,7 @@
   "name": "@spryker-oryx/application",
   "version": "1.0.0-alpha.0",
   "type": "module",
+  "description": "Basic infrastructure for Oryx applications",
   "scripts": {
     "postinstall": "patches/patch.sh"
   },
@@ -13,14 +14,14 @@
     "express": "^4.17.1"
   },
   "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
     "@spryker-oryx/injector": "*",
     "@spryker-oryx/ui": "*",
-    "@spryker-oryx/core": "*",
     "@spryker-oryx/utilities": "*",
-    "@spryker-oryx/experience": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6",
-    "urlpattern-polyfill": "~4.0.3"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0",
+    "urlpattern-polyfill": "^4.0.0"
   }
 }

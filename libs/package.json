@@ -4,7 +4,6 @@
   "description": "",
   "private": true,
   "author": "",
-  "license": "MIT",
   "scripts": {
     "prerelease": "npm run pack",
     "release": "lerna publish --yes",
@@ -12,7 +11,6 @@
     "release-tag": "npm run release -- --conventional-prerelease --dist-tag $RELEASE_TAG --preid $RELEASE_TAG",
     "release-branch": "node ../tools/release/release.js",
     "pack": "run-s pack:*",
-    "pack:files": "node ../tools/utils/multi-copy.js LICENSE '../dist/libs/*'",
     "prepack:libs": "npm run clean:dist",
     "pack:libs": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/pack-lib.js",
     "postversion": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/update-lib.js",

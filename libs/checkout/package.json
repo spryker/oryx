@@ -2,8 +2,8 @@
   "name": "@spryker-oryx/checkout",
   "type": "module",
   "version": "1.0.0-alpha.0",
+  "description": "Checkout features Oryx applications",
   "author": "Spryker",
-  "license": "MIT",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "publishConfig": {
@@ -16,17 +16,17 @@
     }
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/ui": "*",
-    "@spryker-oryx/experience": "*",
-    "@spryker-oryx/utilities": "*",
-    "@spryker-oryx/injector": "*",
-    "@spryker-oryx/site": "*",
     "@spryker-oryx/auth": "*",
     "@spryker-oryx/cart": "*",
     "@spryker-oryx/content": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   }
 }

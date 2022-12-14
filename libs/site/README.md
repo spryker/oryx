@@ -1,3 +1,7 @@
-# @spryker-oryx/site
+# Oryx Site package
 
-The library contains components and services that are using to build the global site experience.
+Provides global features to Oryx applications that are used to build the global site experience.
+
+## Installation
+
+`npm install @spryker-oryx/site`

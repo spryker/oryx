@@ -2,8 +2,8 @@
   "name": "@spryker-oryx/cart",
   "type": "module",
   "version": "1.0.0-alpha.0",
+  "description": "Shopping cart features for Oryx applications",
   "author": "Spryker",
-  "license": "MIT",
   "files": [
     "**/*"
   ],
@@ -19,17 +19,17 @@
     }
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/ui": "*",
-    "@spryker-oryx/experience": "*",
-    "@spryker-oryx/utilities": "*",
-    "@spryker-oryx/product": "*",
-    "@spryker-oryx/injector": "*",
-    "@spryker-oryx/site": "*",
     "@spryker-oryx/auth": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/site": "*",
     "@spryker-oryx/themes": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   }
 }

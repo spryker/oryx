@@ -2,6 +2,7 @@
   "name": "fes-storefront",
   "version": "1.0.0-alpha.0",
   "private": true,
+  "description": "Composable Storefront boilerplate application",
   "type": "module",
   "scripts": {
     "dev": "vite -c vite.config.dev.ts",

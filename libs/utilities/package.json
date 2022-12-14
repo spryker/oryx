@@ -2,8 +2,8 @@
   "name": "@spryker-oryx/utilities",
   "version": "1.0.0-alpha.0",
   "author": "Spryker",
+  "description": "Utilities for Oryx applications",
   "type": "module",
-  "license": "MIT",
   "files": [
     "**/*"
   ],
@@ -15,8 +15,8 @@
   "peerDependencies": {
     "@spryker-oryx/injector": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   },
   "publishConfig": {
     "access": "public"

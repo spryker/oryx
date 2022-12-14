@@ -2,9 +2,8 @@
   "name": "@spryker-oryx/core",
   "version": "1.0.0-alpha.0",
   "type": "module",
-  "description": "Core functionality for FES",
+  "description": "Core features for Oryx applications",
   "author": "Spryker",
-  "license": "MIT",
   "files": [
     "**/*"
   ],
@@ -14,11 +13,11 @@
     "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
-    "@spryker-oryx/utilities": "*",
     "@spryker-oryx/injector": "*",
+    "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   },
   "publishConfig": {
     "access": "public"
