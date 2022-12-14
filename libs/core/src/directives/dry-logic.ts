@@ -1,6 +1,9 @@
 import { LitElement } from 'lit';
 
-export const dryLogic = () => {
+export const dryLogic = (): ((
+  tag: string,
+  fn?: (host: LitElement) => void | Promise<void>
+) => void) => {
   let lastNode: Element | null = document.body;
   const scriptFns: { [tag: string]: any } = {};
 
@@ -38,7 +41,7 @@ export const dryLogic = () => {
     }
   }
 
-  return (tag: string, fn?: (host: LitElement) => void | Promise<void>) => {
+  return (tag, fn) => {
     if (fn) {
       scriptFns[tag] = fn;
     }

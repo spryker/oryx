@@ -34,11 +34,9 @@ export class DefaultI18nInjectable implements I18nInjectable {
     // Reset regex global state between calls
     this.tokenPropRegex.lastIndex = 0;
 
-    /* eslint-disable @typescript-eslint/explicit-function-return-type */
     const replacePropValue = context
       ? (prop: string) => String(context[prop])
       : () => '';
-    /* eslint-enable @typescript-eslint/explicit-function-return-type */
 
     return (
       lastPart

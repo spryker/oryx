@@ -7,12 +7,10 @@ export type GlobalizeCldrImporter = () => object;
 
 /** @internal */
 export class GlobalizeService {
-  static MinimalCldrImporters: readonly GlobalizeCldrImporter[] = [
-    /* eslint-disable @typescript-eslint/explicit-function-return-type */
+  private static MinimalCldrImporters: readonly GlobalizeCldrImporter[] = [
     // TODO: fix to import json files from node_modules when vite 4 will be released
     () => import('./importers/likely-subtags').then((m) => m.default),
     () => import('./importers/plurals').then((m) => m.default),
-    /* eslint-enable @typescript-eslint/explicit-function-return-type */
   ];
 
   protected loadStatus?: Promise<object[]>;
@@ -22,8 +20,8 @@ export class GlobalizeService {
     protected cldrImporters = [...GlobalizeService.MinimalCldrImporters]
   ) {}
 
-  addCldrImporter(cldrImporet: GlobalizeCldrImporter): void {
-    this.cldrImporters.push(cldrImporet);
+  addCldrImporter(cldrImporter: GlobalizeCldrImporter): void {
+    this.cldrImporters.push(cldrImporter);
     this.resetLoadStatus();
   }
 

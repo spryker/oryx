@@ -2,7 +2,7 @@ import { Type } from '@spryker-oryx/injector';
 import { toCSS, toJSON } from 'css-convert-json';
 import { LitElement } from 'lit';
 
-export const ssrStyleShim = (litClass: Type<LitElement>) => {
+export const ssrStyleShim = (litClass: Type<LitElement>): void => {
   litClass.prototype.toggleAttribute = function (
     property: string,
     force?: boolean

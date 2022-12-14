@@ -99,7 +99,10 @@ export class DefaultRouterService implements RouterService {
     return `${route}${queryParams ? `?${queryParams}` : ''}`;
   }
 
-  activatedRouter() {
+  activatedRouter(): Observable<{
+    route: string;
+    extras: { queryParams: RouteParams | undefined };
+  }> {
     return combineLatest([this.currentRoute(), this.currentQuery()]).pipe(
       map(([route, queryParams]) => {
         return {
