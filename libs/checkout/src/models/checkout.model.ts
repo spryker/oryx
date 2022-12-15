@@ -11,6 +11,18 @@ export interface CheckoutData {
   };
 }
 
+export interface Checkout {
+  customer: ContactDetails;
+  cartId: string;
+  billingAddress: Address;
+  shippingAddress?: Address;
+  shipments?: Shipment[];
+  shipment?: {
+    idShipmentMethod: 0;
+  };
+  payments?: PaymentMethod[];
+}
+
 export interface Carrier {
   name?: string;
   shipmentMethods: ShipmentMethod[];
@@ -24,7 +36,7 @@ export interface PaymentMethod {
   /*
    * An array of attributes required by the given method to effectuate a purchase. The exact attribute list depends on the specific provider.
    */
-  requiredRequestData: string[];
+  requiredRequestData?: string[];
 }
 
 export interface ShipmentMethod {
@@ -67,6 +79,7 @@ export interface ContactDetails {
   firstName?: string;
   lastName?: string;
   email: string;
+  salutation?: string;
 }
 
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';

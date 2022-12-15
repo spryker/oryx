@@ -6,10 +6,11 @@ import { ApiCheckoutModel, CheckoutData } from '../../models';
 import {
   CheckoutAdapter,
   GetCheckoutDataProps,
+  PostCheckoutProps,
   UpdateCheckoutDataProps,
 } from './checkout.adapter';
 import { CheckoutNormalizer } from './normalizers';
-import { CheckoutSerializer } from './serializers';
+import { CheckoutDataSerializer, CheckoutSerializer } from './serializers';
 
 export class DefaultCheckoutAdapter implements CheckoutAdapter {
   constructor(
@@ -27,11 +28,26 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     return this.post(props);
   }
 
+  placeOrder(props: PostCheckoutProps): Observable<CheckoutData> {
+    return this.transformer
+      .serialize(props, CheckoutSerializer)
+      .pipe(
+        switchMap((data) =>
+          this.http
+            .post<ApiCheckoutModel.Response>(
+              `${this.SCOS_BASE_URL}/checkout`,
+              data
+            )
+            .pipe(this.transformer.do(CheckoutNormalizer))
+        )
+      );
+  }
+
   protected post(
     props: GetCheckoutDataProps | UpdateCheckoutDataProps
   ): Observable<CheckoutData> {
     return this.transformer
-      .serialize(props, CheckoutSerializer)
+      .serialize(props, CheckoutDataSerializer)
       .pipe(
         switchMap((data) =>
           this.http

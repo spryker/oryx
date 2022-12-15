@@ -1,6 +1,9 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import {
+  mockCheckout,
   mockGetShipmentResponse,
+  mockPlaceOrderResponse,
+  mockPostCheckoutProps,
   mockShipmentAttributes,
 } from '@spryker-oryx/checkout/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
@@ -171,6 +174,36 @@ describe('DefaultCheckoutService', () => {
       mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
       service.update(mockUpdateQualifier).subscribe(callback);
+
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
+    });
+  });
+
+  describe('when placing an order', () => {
+    it('should build url', () => {
+      service.placeOrder(mockPostCheckoutProps).subscribe(() => {
+        expect(http.url).toBe(`${mockApiUrl}/checkout`);
+      });
+    });
+
+    it('should provide body', () => {
+      mockTransformer.serialize.mockReturnValue(of(mockCheckout));
+      service.placeOrder(mockPostCheckoutProps).subscribe(() => {
+        expect(http.body).toEqual(mockCheckout);
+      });
+    });
+
+    it('should call transformer with proper normalizer', () => {
+      http.flush(mockPlaceOrderResponse);
+      service.placeOrder(mockPostCheckoutProps).subscribe();
+
+      expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizer);
+    });
+
+    it('should return transformed data', () => {
+      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
+
+      service.placeOrder(mockPostCheckoutProps).subscribe(callback);
 
       expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });

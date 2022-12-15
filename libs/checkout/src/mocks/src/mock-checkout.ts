@@ -94,6 +94,67 @@ export const mockGetShipmentResponse = {
   ],
 };
 
+export const mockPlaceOrderResponse = {
+  data: {
+    type: 'checkout',
+    id: 'mock',
+    attributes: {
+      orderReference: '123',
+      redirectUrl: 'url',
+      isExternalRedirect: true,
+    },
+    links: {
+      self: 'https://glue.de.faas-suite-prod.cloud.spryker.toys:80/checkout',
+    },
+    relationships: {
+      orders: {
+        data: [
+          {
+            id: 'mock',
+            type: 'order',
+          },
+        ],
+      },
+    },
+  },
+  links: {
+    self: 'https://glue.de.faas-suite-prod.cloud.spryker.toys:80/checkout',
+  },
+  included: [
+    {
+      type: 'order',
+      id: 'mock',
+      attributes: {
+        createdAt: '123',
+        totals: {
+          expenseTotal: 0,
+          discountTotal: 0,
+          taxTotal: 0,
+          subtotal: 0,
+          grandTotal: 0,
+          canceledTotal: 0,
+          remunerationTotal: 0,
+        },
+        currencyIsoCode: 'EUR',
+        priceMode: 'GROSS_MODE',
+      },
+      links: {
+        self: 'https://glue.de.faas-suite-prod.cloud.spryker.toys:80/checkout',
+      },
+      relationships: {
+        'order-shipments': {
+          data: [
+            {
+              id: 'mock',
+              type: 'order',
+            },
+          ],
+        },
+      },
+    },
+  ],
+};
+
 export const mockFilteredShipmentMethods = [
   {
     name: 'Mock Dummy Carrier',
@@ -178,6 +239,40 @@ export const mockPaymentMethods = [
     id: '2',
   },
 ];
+
+const mockCustomer = {
+  email: 'mock',
+  salutation: 'Mr',
+  firstName: 'first',
+  lastName: 'last',
+};
+
+export const mockPostCheckoutProps = {
+  attributes: {
+    cartId: 'mockcart',
+    payments: [{ provider: 'mockProvider', name: 'mock', id: '1' }],
+    shipments: [mockShipmentAttributes],
+    customer: mockCustomer,
+    billingAddress: mockShipmentAttributes.shippingAddress,
+  },
+};
+
+export const mockCheckout = {
+  type: 'checkout',
+  attributes: {
+    idCart: 'mockcart',
+    payments: [
+      {
+        id: '1',
+        paymentProviderName: 'mockProvider',
+        paymentMethodName: 'mock',
+      },
+    ],
+    shipments: [mockShipmentAttributes],
+    customer: mockCustomer,
+    billingAddress: mockShipmentAttributes.shippingAddress,
+  },
+};
 
 export const mockNormalizedPaymentMethods = mockPaymentMethods
   .map((payment) => {

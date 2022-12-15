@@ -6,7 +6,10 @@ import {
   ShipmentsNormalizer,
   shipmentsNormalizer,
 } from './adapter/normalizers';
-import { checkoutSerializer } from './adapter/serializers';
+import {
+  checkoutDataSerializer,
+  checkoutSerializer,
+} from './adapter/serializers';
 import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutPaymentService } from './checkout-payment.service';
 import { CheckoutShipmentService } from './checkout-shipment.service';
@@ -47,6 +50,7 @@ export const checkoutProviders = [
     provide: CheckoutOrchestrationService,
     useClass: DefaultCheckoutOrchestrationService,
   },
+  ...checkoutDataSerializer,
   ...checkoutSerializer,
   ...checkoutNormalizer,
 ];

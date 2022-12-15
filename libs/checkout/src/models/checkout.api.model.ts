@@ -16,7 +16,7 @@ export module ApiCheckoutModel {
     paymentMethodName: string;
     paymentProviderName: string;
     priority?: number;
-    requiredRequestData: string[];
+    requiredRequestData?: string[];
   }
 
   export interface ShipmentMethod {
@@ -29,7 +29,7 @@ export module ApiCheckoutModel {
     taxRate?: string;
   }
 
-  export interface Payload {
+  export interface CheckoutDataPayload {
     type: 'checkout-data';
     attributes?: {
       idCart: string;
@@ -42,6 +42,21 @@ export module ApiCheckoutModel {
       shipment?: {
         idShipmentMethod: number;
       };
+    };
+  }
+
+  export interface CheckoutPayload {
+    type: 'checkout';
+    attributes: {
+      customer?: unknown;
+      idCart: string;
+      billingAddress?: Address;
+      shippingAddress?: Address;
+      shipments?: Shipment[];
+      shipment?: {
+        idShipmentMethod: 0;
+      };
+      payments?: PaymentMethod[];
     };
   }
 

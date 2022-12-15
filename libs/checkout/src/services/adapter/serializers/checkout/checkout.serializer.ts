@@ -1,48 +1,32 @@
 import { Serializer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/injector';
-import {
-  ApiCheckoutModel,
-  Carrier,
-  defaultSelectedShipmentMethod,
-  ShipmentMethod,
-} from '../../../../models';
-import {
-  GetCheckoutDataProps,
-  UpdateCheckoutDataProps,
-} from '../../checkout.adapter';
+import { ApiCheckoutModel } from '../../../../models';
+import { PostCheckoutProps } from '../../checkout.adapter';
 
 export const CheckoutSerializer = 'FES.CheckoutSerializers*';
 
 export function checkoutAttributesSerializer(
-  data: UpdateCheckoutDataProps | GetCheckoutDataProps
-): Partial<ApiCheckoutModel.Payload> {
-  const attributes = { ...(data as UpdateCheckoutDataProps).attributes };
-  const shipmentMethods =
-    attributes?.carriers?.reduce(
-      (acc: ShipmentMethod[], carrier: Carrier) => [
-        ...acc,
-        ...carrier.shipmentMethods,
-      ],
-      []
-    ) ?? [];
+  data: PostCheckoutProps
+): Partial<ApiCheckoutModel.CheckoutPayload> {
+  const { cartId, payments, ...attributeData } = data.attributes;
 
-  delete attributes.carriers;
-  const shipments = attributes?.shipments?.map((shipment) => {
+  const serializedPayments = payments?.map((payment) => {
+    const { name, provider, ...paymentData } = payment;
     return {
-      ...shipment,
-      selectedShipmentMethod:
-        shipment.selectedShipmentMethod ?? defaultSelectedShipmentMethod,
+      ...paymentData,
+      paymentMethodName: name,
+      paymentProviderName: provider,
     };
   });
 
   return {
+    ...data,
+    type: 'checkout',
     attributes: {
-      idCart: data.cartId,
-      ...attributes,
-      shipments,
-      shipmentMethods,
+      ...attributeData,
+      idCart: cartId,
+      payments: serializedPayments,
     },
-    type: 'checkout-data',
   };
 }
 
@@ -55,8 +39,6 @@ export const checkoutSerializer: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [CheckoutSerializer]: Serializer<
-      UpdateCheckoutDataProps | GetCheckoutDataProps
-    >[];
+    [CheckoutSerializer]: Serializer<PostCheckoutProps>[];
   }
 }
