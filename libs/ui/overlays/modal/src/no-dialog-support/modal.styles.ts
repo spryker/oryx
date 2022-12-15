@@ -20,29 +20,6 @@ export const NDSStyles = css`
   }
 
   dialog {
-    overscroll-behavior: none;
-    padding: 0;
-    border: none;
     margin: 0 auto;
-    background: transparent;
-    min-width: var(--oryx-modal-min-width);
-    max-width: calc(100% - 60px);
-  }
-
-  oryx-card {
-    max-height: calc(100vh - 60px);
-    display: flex;
-    flex-direction: column;
-  }
-
-  oryx-card::part(body) {
-    overflow: auto;
-  }
-
-  div[slot='footer'] {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
   }
 `;

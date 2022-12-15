@@ -9,7 +9,9 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <oryx-card type="secondary">
-      <h5 slot="header">header</h5>
+      <oryx-heading slot="header">
+        <h5>header</h5>
+      </oryx-heading>
       <div>content slot</div>
       <div slot="footer">footer slot</div>
     </oryx-card>

@@ -1,3 +1,4 @@
+import { OverlaysDecorator } from '@spryker-oryx/ui/utilities';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
@@ -9,6 +10,7 @@ import { getModal } from './common';
 
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Interactive`,
+  decorators: [OverlaysDecorator()],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

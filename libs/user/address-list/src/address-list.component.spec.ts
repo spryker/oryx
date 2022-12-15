@@ -59,17 +59,8 @@ describe('AddressFormComponent', () => {
     expect(emptySlot).not.toBe(null);
   });
 
-  describe('options', () => {
-    it('should be with controls and not selectable by defaults', async () => {
-      element = await fixture(html`<oryx-address-list></oryx-address-list>`);
-      const radio = element.renderRoot.querySelector('input[type="radio"]');
-      const controls = element.renderRoot.querySelector('.controls');
-
-      expect(radio).toBeNull();
-      expect(controls).not.toBeNull();
-    });
-
-    it('should enable selecting when selectable option is true', async () => {
+  describe('when "selectable" option is provided', () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-address-list
           .options=${{
@@ -77,60 +68,109 @@ describe('AddressFormComponent', () => {
           }}
         ></oryx-address-list>`
       );
-      const radio = element.renderRoot.querySelector('input[type="radio"]');
-
-      expect(radio).not.toBeNull();
     });
 
-    it('should disable controls when editable option is false', async () => {
-      element = await fixture(
-        html`<oryx-address-list
-          .options=${{ editable: false }}
-        ></oryx-address-list>`
-      );
-      const controls = element.renderRoot.querySelector('.controls');
-
-      expect(controls).toBeNull();
+    it('should render radio button', async () => {
+      expect(element).toContainElement('input[type="radio"]');
     });
   });
 
-  describe('events', () => {
-    it('should not emit address change event if no addresses', async () => {
-      service.getAddresses.mockReturnValue(of(null));
-      const callback = vi.fn();
+  describe('when "editable" option is provided', () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-address-list
-          @oryx.address-change=${callback}
+          .options=${{
+            editable: true,
+          }}
+        ></oryx-address-list>`
+      );
+    });
+
+    it('should render controls', async () => {
+      expect(element).toContainElement('.controls');
+    });
+  });
+
+  describe('when addresses are not provided', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      service.getAddresses.mockReturnValue(of(null));
+      element = await fixture(
+        html`<oryx-address-list
+          @oryx.select=${callback}
           .options=${{ selectable: true }}
         ></oryx-address-list>`
       );
+    });
 
+    it('should not emit select event', () => {
       expect(callback).not.toHaveBeenCalled();
     });
+  });
 
-    it('should emit address change event for default address', async () => {
-      const callback = vi.fn();
+  describe('when addresses are provided', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-address-list
-          @oryx.address-change=${callback}
+          @oryx.select=${callback}
           .options=${{ selectable: true }}
         ></oryx-address-list>`
       );
-
-      expect(callback).toHaveBeenCalled();
     });
 
-    it('should emit address change event with selected address', async () => {
-      const callback = (e: CustomEvent): void => {
-        expect(e.detail).toHaveProperty('address');
-      };
+    it('should not emit select event', () => {
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { address: expect.any(Object) } })
+      );
+    });
+  });
 
+  describe('when edit button is clicked', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-address-list
-          @oryx.address-change=${callback}
-          .options=${{ selectable: true }}
+          @oryx.edit=${callback}
+          .options=${{ editable: true }}
         ></oryx-address-list>`
       );
+
+      (
+        element.renderRoot.querySelector(
+          'oryx-button:nth-child(1) > button'
+        ) as HTMLButtonElement
+      )?.click();
+    });
+
+    it('should emit edit event', () => {
+      expect(callback).toHaveBeenCalled();
+    });
+  });
+
+  describe('when remove button is clicked', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-address-list
+          @oryx.remove=${callback}
+          .options=${{ editable: true }}
+        ></oryx-address-list>`
+      );
+
+      (
+        element.renderRoot.querySelector(
+          'oryx-button:nth-child(2) > button'
+        ) as HTMLButtonElement
+      )?.click();
+    });
+
+    it('should emit remove event', () => {
+      expect(callback).toHaveBeenCalled();
     });
   });
 });

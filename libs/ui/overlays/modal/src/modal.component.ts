@@ -1,4 +1,6 @@
+import { Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { DialogElement } from '../../overlay.model';
 import { fullscreenModalStyles } from './fullscreen-modal.styles';
@@ -12,8 +14,10 @@ export class ModalComponent extends LitElement implements ModalProperties {
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
   @property({ type: Boolean, reflect: true }) fullscreen?: boolean;
   @property() header?: string;
-  @property({ type: Boolean }) disableCloseOnEscape?: boolean;
-  @property({ type: Boolean }) disableCloseOnBackdrop?: boolean;
+  @property({ type: Boolean }) preventCloseWithEscape?: boolean;
+  @property({ type: Boolean }) preventCloseWithBackdrop?: boolean;
+  @property({ type: Boolean }) withoutCloseButton?: boolean;
+  @property({ type: Boolean }) withoutFooter?: boolean;
 
   requestUpdate(name: PropertyKey, oldValue?: unknown): void {
     if (name === 'isOpen' && this.isOpen !== oldValue) {
@@ -57,7 +61,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   protected backdropClickHandler(e: MouseEvent): void {
     e.stopPropagation();
-    if (this.disableCloseOnBackdrop) {
+    if (this.preventCloseWithBackdrop) {
       return;
     }
 
@@ -71,7 +75,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (!this.disableCloseOnEscape) {
+    if (!this.preventCloseWithEscape) {
       this.close();
     }
   }
@@ -87,20 +91,50 @@ export class ModalComponent extends LitElement implements ModalProperties {
         @cancel=${(e: Event): void => this.cancelEventHandler(e)}
         @close=${this.close}
       >
-        <form method="dialog">
-          <oryx-card>
-            <slot name="header" slot="header"> ${this.header} </slot>
-            <slot></slot>
-            <div slot="footer">
+        <form method="dialog">${this.renderBody()}</form>
+      </dialog>
+    `;
+  }
+
+  protected renderBody(): TemplateResult {
+    return html`
+      <oryx-card>
+        <header slot="header">
+          <slot name="header">
+            <oryx-heading>
+              <h5>${this.header}</h5>
+            </oryx-heading>
+          </slot>
+
+          ${when(
+            !this.withoutCloseButton,
+            () => html`
+              <oryx-icon-button size=${Size.small}>
+                <button value="cancel" aria-label="close modal">
+                  <slot name="close-icon">
+                    <oryx-icon type="close"></oryx-icon>
+                  </slot>
+                </button>
+              </oryx-icon-button>
+            `
+          )}
+        </header>
+
+        <slot></slot>
+
+        ${when(
+          !this.withoutFooter,
+          () => html`
+            <footer slot="footer">
               <slot name="footer">
                 <oryx-button type="secondary" outline size="small">
                   <button value="cancel">Cancel</button>
                 </oryx-button>
               </slot>
-            </div>
-          </oryx-card>
-        </form>
-      </dialog>
+            </footer>
+          `
+        )}
+      </oryx-card>
     `;
   }
 }

@@ -6,8 +6,11 @@ import {
 } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
+import { DirectiveResult } from 'lit-html/directive';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -31,6 +34,8 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
   protected contentController = new ContentController(this);
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
+
+  @property() heading?: DirectiveResult | string;
 
   protected options$ = this.contentController.getOptions();
   protected success$ = new BehaviorSubject(true);
@@ -104,37 +109,59 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.data$, ([options, loading, success]) => {
-      return html`<oryx-card>
-      <h1 slot="header">
-        ${options?.title ?? 'Access your account'}
-      </h1>
-      ${
-        success
-          ? ''
-          : html`<oryx-notification type="error">
-              The email or/and password entered is not valid. Please try again.
-            </oryx-notification>`
-      }
-      <form @submit=${this.handleLogin} method="post">
-        <oryx-input label="Email *" ?haserror="${!success}"><input type="email" name="email" placeholder="Email" required/></oryx-input>
-        <oryx-password-input ?haserror="${!success}" label="Password *" strategy="${ifDefined(
-        options.strategy
-      )}"/><input type="password" name="password" placeholder="Password" required/></oryx-password-input>
-        <div class="options">
+    return html`<oryx-card>
+      <oryx-heading slot="header" appearance="h5">
+        <h1>
           ${when(
-            options.showRememberMe,
-            () => html` <oryx-checkbox>
-              <input type="checkbox" name="rememberme" />
-              Remember me
-            </oryx-checkbox>`,
-            () => html`<span></span>`
+            this.heading,
+            () => html`${this.heading}`,
+            () => html`${i18n('user.login.access-your-account')}`
           )}
-          <oryx-link><a href="#">Forgot Password?</a></oryx-link>
-        </div>
-        <oryx-button size="small"><button type="submit" ?disabled=${loading}>Login</button></oryx-button>
-      </form>
+        </h1>
+      </oryx-heading>
+
+      ${asyncValue(
+        this.data$,
+        ([options, loading, success]) => html`
+          ${
+            success
+              ? ''
+              : html`<oryx-notification type="error">
+                  ${i18n('the-email-or/and-password-entered-is-not-valid')}
+                </oryx-notification>`
+          }
+          <form @submit=${this.handleLogin} method="post">
+            <oryx-input label="${i18n(
+              'email'
+            )} *" ?haserror="${!success}"><input type="email" name="email" placeholder="${i18n(
+          'email'
+        )}" required/></oryx-input>
+            <oryx-password-input ?haserror="${!success}" label="${i18n(
+          'password'
+        )} *" strategy="${ifDefined(
+          options.strategy
+        )}"/><input type="password" name="password" placeholder="${i18n(
+          'password'
+        )}" required/></oryx-password-input>
+            <div class="options">
+              ${when(
+                options.showRememberMe,
+                () => html` <oryx-checkbox>
+                  <input type="checkbox" name="rememberme" />
+                  ${i18n('user.login.remember-me')}
+                </oryx-checkbox>`,
+                () => html`<span></span>`
+              )}
+              <oryx-link><a href="#">${i18n(
+                'user.login.forgot-password?'
+              )}</a></oryx-link>
+            </div>
+            <oryx-button size="small"><button type="submit" ?disabled=${loading}>${i18n(
+          'user.login.login'
+        )}</button></oryx-button>
+          </form>
+        `
+      )}
     </oryx-card>`;
-    })}`;
   }
 }

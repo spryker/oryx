@@ -1,15 +1,19 @@
+import { OverlaysDecorator } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
-export default { title: `${storybookPrefix}/Overlays/Modal/Static` } as Meta;
+export default {
+  title: `${storybookPrefix}/Overlays/Modal/Static`,
+  decorators: [OverlaysDecorator()],
+} as Meta;
 
 const Template: Story = (): TemplateResult => {
   return html`
     <oryx-modal
       open
-      disableCloseOnEscape
-      disableCloseOnBackdrop
+      preventCloseWithEscape
+      preventCloseWithBackdrop
       header="First modal header"
     >
       <p>
@@ -28,8 +32,8 @@ const Template: Story = (): TemplateResult => {
       </p>
       <oryx-modal
         open
-        disableCloseOnEscape
-        disableCloseOnBackdrop
+        preventCloseWithEscape
+        preventCloseWithBackdrop
         header="Second modal header"
       >
         <p>

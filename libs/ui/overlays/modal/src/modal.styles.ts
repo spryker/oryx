@@ -20,11 +20,20 @@ export const styles = css`
     background: rgba(0 0 0 / 50%);
   }
 
-  div[slot='footer'] {
+  header,
+  footer {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
     gap: 10px;
+  }
+
+  header {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer {
+    justify-content: flex-end;
   }
 
   oryx-card::part(body) {

@@ -24,7 +24,13 @@ const Template: Story<CardProperties> = (
         props.icon,
         () => html`<oryx-icon .type=${props.icon} slot="header"></oryx-icon>`
       )}
-      <h1 slot="header">${props.header}</h1>
+      ${when(
+        props.header,
+        () => html` <oryx-heading slot="header">
+          <h5>${props.header}</h5>
+        </oryx-heading>`
+      )}
+
       <div>${props.body}</div>
       ${when(
         props.footer,

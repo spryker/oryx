@@ -109,7 +109,7 @@ describe('NDS Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnBackdrop></oryx-modal>`
+        html`<oryx-modal preventCloseWithBackdrop></oryx-modal>`
       );
       element.open();
     });
@@ -139,7 +139,7 @@ describe('NDS Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnEscape></oryx-modal>`
+        html`<oryx-modal preventCloseWithEscape></oryx-modal>`
       );
       element.open();
     });

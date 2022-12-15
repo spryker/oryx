@@ -10,13 +10,7 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <oryx-modal
-      open
-      fullscreen
-      preventCloseWithEscape
-      preventCloseWithBackdrop
-      header="Title"
-    >
+    <oryx-modal open withoutCloseButton header="Without close button">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
@@ -25,4 +19,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const FullscreenModal = Template.bind({});
+export const WithoutCloseButton = Template.bind({});

@@ -64,8 +64,8 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
     return html`${asyncValue(
       this.options$,
       (options) => html`<auth-login
+        .heading=${i18n('checkout.authentication.login')}
         .options="${{
-          title: i18n('checkout.authentication.login'),
           disableRedirect: true,
           showRememberMe: true,
           ...(options.loginUrl && { url: options.loginUrl }),

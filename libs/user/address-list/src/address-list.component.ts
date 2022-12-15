@@ -18,7 +18,9 @@ import {
 import {
   AddressListOptions,
   AddressType,
-  ADDRESS_CHANGE_EVENT,
+  EDIT_EVENT,
+  REMOVE_EVENT,
+  SELECT_EVENT,
 } from './address-list.model';
 import { styles } from './address-list.styles';
 
@@ -32,15 +34,7 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
   protected handle$ = this.selectedAddress$.pipe(
     tap((address) => {
       if (address) {
-        this.dispatchEvent(
-          new CustomEvent(ADDRESS_CHANGE_EVENT, {
-            bubbles: true,
-            composed: true,
-            detail: {
-              address,
-            },
-          })
-        );
+        this.emitEvent(SELECT_EVENT, address);
       }
     }),
     distinctUntilChanged()
@@ -102,6 +96,16 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
       .subscribe();
   }
 
+  protected emitEvent(event: string, address: Address): void {
+    this.dispatchEvent(
+      new CustomEvent(event, {
+        bubbles: true,
+        composed: true,
+        detail: { address },
+      })
+    );
+  }
+
   protected override render(): TemplateResult {
     return html`${asyncValue(
       this.data$,
@@ -148,13 +152,27 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
                   )}
                 </div>
                 ${when(
-                  editable ?? true,
+                  editable,
                   () =>
                     html`<div
                       class="controls ${selectable ? 'selectable' : ''}"
                     >
                       <oryx-button type="text">
-                        <button>${i18n('user.address.edit')}</button>
+                        <button
+                          @click=${(): void =>
+                            this.emitEvent(EDIT_EVENT, address)}
+                        >
+                          ${i18n('user.address.edit')}
+                        </button>
+                      </oryx-button>
+
+                      <oryx-button type="text">
+                        <button
+                          @click=${(): void =>
+                            this.emitEvent(REMOVE_EVENT, address)}
+                        >
+                          ${i18n('user.address.remove')}
+                        </button>
                       </oryx-button>
                     </div>`
                 )}

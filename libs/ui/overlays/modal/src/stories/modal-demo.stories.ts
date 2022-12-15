@@ -6,6 +6,8 @@ import { storybookPrefix } from '../../../../.constants';
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
 
 interface Props {
+  withoutCloseButton: boolean;
+
   firstModalFullscreen?: boolean;
   secondModalFullscreen?: boolean;
 
@@ -18,11 +20,11 @@ interface Props {
   firstModalType?: CardType;
   secondModalType?: CardType;
 
-  firstModalDisableCloseOnBackdrop?: boolean;
-  secondModalDisableCloseOnBackdrop?: boolean;
+  firstModalpreventCloseWithBackdrop?: boolean;
+  secondModalpreventCloseWithBackdrop?: boolean;
 
-  firstModalDisableCloseOnEscape?: boolean;
-  secondModalDisableCloseOnEscape?: boolean;
+  firstModalpreventCloseWithEscape?: boolean;
+  secondModalpreventCloseWithEscape?: boolean;
 }
 
 const generateContent = (times: number): TemplateResult => html`
@@ -55,8 +57,9 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     ${generateContent(20)}
 
     <oryx-modal
-      ?disableCloseOnEscape=${props.firstModalDisableCloseOnEscape}
-      ?disableCloseOnBackdrop=${props.firstModalDisableCloseOnBackdrop}
+      ?withoutCloseButton=${props.withoutCloseButton}
+      ?preventCloseWithEscape=${props.firstModalpreventCloseWithEscape}
+      ?preventCloseWithBackdrop=${props.firstModalpreventCloseWithBackdrop}
       ?fullscreen=${props.firstModalFullscreen}
       header=${props.firstModalHeader}
       type=${props.firstModalType}
@@ -67,8 +70,9 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         <button id="openSecondModalBtn">Open second modal</button>
 
         <oryx-modal
-          ?disableCloseOnEscape=${props.secondModalDisableCloseOnEscape}
-          ?disableCloseOnBackdrop=${props.secondModalDisableCloseOnBackdrop}
+          ?withoutCloseButton=${props.withoutCloseButton}
+          ?preventCloseWithEscape=${props.secondModalpreventCloseWithEscape}
+          ?preventCloseWithBackdrop=${props.secondModalpreventCloseWithBackdrop}
           ?fullscreen=${props.secondModalFullscreen}
           header=${props.secondModalHeader}
           type=${props.secondModalType}
@@ -83,12 +87,13 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 export const ModalDemo = Template.bind({});
 
 ModalDemo.args = {
+  withoutCloseButton: false,
   firstModalFullscreen: false,
   secondModalFullscreen: false,
-  firstModalDisableCloseOnBackdrop: false,
-  secondModalDisableCloseOnBackdrop: false,
-  firstModalDisableCloseOnEscape: false,
-  secondModalDisableCloseOnEscape: false,
+  firstModalpreventCloseWithBackdrop: false,
+  secondModalpreventCloseWithBackdrop: false,
+  firstModalpreventCloseWithEscape: false,
+  secondModalpreventCloseWithEscape: false,
   firstModalHeader: 'First modal header',
   secondModalHeader: 'Second modal header',
   firstModalContent:
@@ -106,19 +111,19 @@ ModalDemo.argTypes = {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },
-  firstModalDisableCloseOnBackdrop: {
+  firstModalpreventCloseWithBackdrop: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },
   },
-  secondModalDisableCloseOnBackdrop: {
+  secondModalpreventCloseWithBackdrop: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },
-  firstModalDisableCloseOnEscape: {
+  firstModalpreventCloseWithEscape: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },
   },
-  secondModalDisableCloseOnEscape: {
+  secondModalpreventCloseWithEscape: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },

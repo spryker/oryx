@@ -70,7 +70,7 @@ export class CheckoutAddressComponent
       return html`
         <oryx-address-list
           .options=${{ selectable: true }}
-          @oryx.address-change=${(e: CustomEvent): void =>
+          @oryx.select=${(e: CustomEvent): void =>
             this.handleAddressFromList(e)}
         ></oryx-address-list>
       `;

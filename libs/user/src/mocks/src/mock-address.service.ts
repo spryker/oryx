@@ -11,6 +11,7 @@ export enum MockAddressType {
   TwoWithoutDefaults = 'two-without-defaults',
   Three = 'three',
   ThreeWithoutDefaults = 'three-without-defaults',
+  LongList = 'long-list',
 }
 
 export class MockAddressService implements Partial<AddressService> {
@@ -57,6 +58,13 @@ export class MockAddressService implements Partial<AddressService> {
             return [...mockNormalizedAddresses];
           case MockAddressType.ThreeWithoutDefaults:
             return this.setAsNoDefaults([...mockNormalizedAddresses]);
+          case MockAddressType.LongList:
+            return [
+              ...mockNormalizedAddresses,
+              ...this.setAsNoDefaults([...mockNormalizedAddresses]),
+              ...this.setAsNoDefaults([...mockNormalizedAddresses]),
+              ...this.setAsNoDefaults([...mockNormalizedAddresses]),
+            ];
           case MockAddressType.Zero:
           default:
             return null;

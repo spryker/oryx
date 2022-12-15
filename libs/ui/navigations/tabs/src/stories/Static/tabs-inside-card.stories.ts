@@ -14,9 +14,7 @@ interface Props {
 
 const Template: Story<Props> = (): TemplateResult => {
   return html`
-    <oryx-card>
-      <h3 slot="header">Primary tabs</h3>
-
+    <oryx-card header="Primary tabs">
       <oryx-tabs appearance="primary">
         <oryx-tab>Tab 1</oryx-tab>
         <oryx-tab>Tab 2</oryx-tab>
@@ -32,9 +30,7 @@ const Template: Story<Props> = (): TemplateResult => {
       </oryx-tabs>
     </oryx-card>
 
-    <oryx-card>
-      <h3 slot="header">Secondary tabs</h3>
-
+    <oryx-card header="Secondary tabs">
       <oryx-tabs appearance="secondary">
         <oryx-tab>Tab 1</oryx-tab>
         <oryx-tab>Tab 2</oryx-tab>

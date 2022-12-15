@@ -1,11 +1,10 @@
 import { html, TemplateResult } from 'lit';
-import { fullscreenModalStyles } from '../fullscreen-modal.styles';
 import { ModalComponent } from '../modal.component';
 import { NDSStyles } from './modal.styles';
 
 export class NDSModalComponent extends ModalComponent {
   override backdropTargetTag = this.tagName.toLowerCase();
-  static styles = [NDSStyles, fullscreenModalStyles];
+  static styles = [...ModalComponent.styles, NDSStyles];
 
   protected override setDialogState(): void {
     if (this.isOpen) {
@@ -19,7 +18,7 @@ export class NDSModalComponent extends ModalComponent {
   protected keyDownHandler = (e: KeyboardEvent): void => {
     e.preventDefault();
 
-    if (e.key === 'Escape' && !this.disableCloseOnEscape) {
+    if (e.key === 'Escape' && !this.preventCloseWithEscape) {
       this.close();
     }
   };
@@ -36,24 +35,7 @@ export class NDSModalComponent extends ModalComponent {
 
   protected override render(): TemplateResult {
     return html`
-      <dialog role="dialog" aria-modal="true">
-        <oryx-card>
-          <slot name="header" slot="header"> ${this.header} </slot>
-          <slot></slot>
-          <div slot="footer">
-            <slot name="footer">
-              <oryx-button
-                type="secondary"
-                outline
-                size="small"
-                @click=${this.close}
-              >
-                <button value="cancel">Cancel</button>
-              </oryx-button>
-            </slot>
-          </div>
-        </oryx-card>
-      </dialog>
+      <dialog role="dialog" aria-modal="true">${this.renderBody()}</dialog>
     `;
   }
 }

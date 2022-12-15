@@ -74,7 +74,8 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
           (isAuthenticated) =>
             html` ${when(
               !isAuthenticated,
-              () => html`<checkout-contact></checkout-contact>`
+              () => html`<checkout-contact></checkout-contact>`,
+              () => html`<oryx-user-address-modal></oryx-user-address-modal>`
             )}`
         )}
         <checkout-address></checkout-address>

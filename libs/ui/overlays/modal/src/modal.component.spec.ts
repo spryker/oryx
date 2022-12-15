@@ -54,7 +54,7 @@ describe('Modal', () => {
 
     describe('and the "cancel" event is triggered', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-modal></oryx-modal>`);
+        element = await fixture(html`<oryx-modal header="test"></oryx-modal>`);
         element.open();
         const event = new Event('cancel', {
           bubbles: true,
@@ -70,7 +70,9 @@ describe('Modal', () => {
 
     describe('when the dialog backdrop is clicked', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-modal open></oryx-modal>`);
+        element = await fixture(
+          html`<oryx-modal open header="test"></oryx-modal>`
+        );
       });
 
       it('should close the modal', () => {
@@ -88,7 +90,7 @@ describe('Modal', () => {
 
   describe('when the "open()" method is called', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal></oryx-modal>`);
+      element = await fixture(html`<oryx-modal header="test"></oryx-modal>`);
       element.open();
     });
 
@@ -109,7 +111,9 @@ describe('Modal', () => {
 
   describe('when the "open" attribute is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal open></oryx-modal>`);
+      element = await fixture(
+        html`<oryx-modal open header="test"></oryx-modal>`
+      );
     });
 
     it('should pass the a11y audit', async () => {
@@ -126,7 +130,7 @@ describe('Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnBackdrop></oryx-modal>`
+        html`<oryx-modal preventCloseWithBackdrop header="test"></oryx-modal>`
       );
       element.open();
     });
@@ -156,7 +160,7 @@ describe('Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal disableCloseOnEscape></oryx-modal>`
+        html`<oryx-modal preventCloseWithEscape header="test"></oryx-modal>`
       );
       element.open();
     });
@@ -212,6 +216,28 @@ describe('Modal', () => {
         'oryx-card slot[name=header]'
       );
       expect(headerSlot?.textContent).toContain(headerText);
+    });
+  });
+
+  describe('when close button is hidden', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-modal withoutCloseButton></oryx-modal>`
+      );
+    });
+
+    it('should not render close button in the header', () => {
+      expect(element).not.toContainElement('header > oryx-icon-button');
+    });
+  });
+
+  describe('when footer is hidden', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-modal withoutFooter></oryx-modal>`);
+    });
+
+    it('should not render the footer', () => {
+      expect(element).not.toContainElement('footer');
     });
   });
 
