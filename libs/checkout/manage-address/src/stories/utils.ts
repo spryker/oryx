@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/injector';
 import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { LitElement } from 'lit';
-import { AddressModal } from '../address-modal.model';
 
 export type BehaviorType = 'with-address' | 'long-list';
 
@@ -20,17 +19,15 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
   }
 };
 
+const getManageAddressElement = (): LitElement =>
+  document.querySelector('oryx-checkout-manage-address') as LitElement;
+
 export const open = (): void =>
-  (
-    document.querySelector('oryx-user-address-modal') as AddressModal &
-      LitElement
-  )?.open();
+  getManageAddressElement()?.renderRoot.querySelector('button')?.click();
 
 export const asyncOpen = (): void => {
   const loop = setTimeout(() => {
-    if (
-      document.querySelector('oryx-user-address-modal')?.matches(':defined')
-    ) {
+    if (getManageAddressElement()?.matches(':defined')) {
       open();
       clearInterval(loop);
     }

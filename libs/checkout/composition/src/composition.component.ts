@@ -52,6 +52,27 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     }
   }
 
+  protected renderHeading(
+    index: number,
+    step: CheckoutStepType
+  ): TemplateResult {
+    const heading = html` <oryx-heading slot="header">
+      <h5>${index + 1}. ${step}</h5>
+    </oryx-heading>`;
+
+    switch (step) {
+      case CheckoutStepType.Delivery:
+        return html`
+          ${heading}
+          <oryx-checkout-manage-address
+            slot="header"
+          ></oryx-checkout-manage-address>
+        `;
+      default:
+        return heading;
+    }
+  }
+
   protected override render(): TemplateResult {
     return html` ${asyncValue(
       this.checkout$,
@@ -72,7 +93,7 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
                   ${steps.map(({ id, validity }, index) => {
                     return html`
                       <oryx-card>
-                        <h2 slot="header">${index + 1}. ${id}</h2>
+                        ${this.renderHeading(index, id)}
                         <slot name="content"> ${this.renderStep(id)} </slot>
                       </oryx-card>
                     `;

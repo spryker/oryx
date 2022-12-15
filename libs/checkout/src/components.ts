@@ -5,5 +5,6 @@ export * from '../contact/src/contact.def';
 export * from '../delivery/src/delivery.def';
 export * from '../guest/src/guest.def';
 export * from '../link/src/link.def';
+export * from '../manage-address/src/manage-address.def';
 export * from '../payment/src/payment.def';
 export * from '../shipment/src/shipment.def';

@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../../../.constants';
 import { asyncOpen, BehaviorType, toggleBehavior } from '../utils';
 
 export default {
-  title: `${storybookPrefix}/Address Modal/Static`,
+  title: `${storybookPrefix}/Manage Address/Static`,
   decorators: [OverlaysDecorator()],
 } as unknown as Meta;
 
@@ -17,7 +17,14 @@ const Template: Story<Props> = (props): TemplateResult => {
   toggleBehavior(props.behavior);
   asyncOpen();
 
-  return html` <oryx-user-address-modal></oryx-user-address-modal> `;
+  return html`
+    <style>
+      oryx-checkout-manage-address {
+        display: inline-flex;
+      }
+    </style>
+    <oryx-checkout-manage-address></oryx-checkout-manage-address>
+  `;
 };
 
 export const WithoutAddress = Template.bind({});

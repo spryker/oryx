@@ -188,7 +188,7 @@ describe('CheckoutAddressComponent', () => {
         addressService.getAddresses = vi.fn().mockReturnValue(of([{}]));
         element = await fixture(html`<checkout-address></checkout-address>`);
         element.renderRoot.querySelector('oryx-address-list')?.dispatchEvent(
-          new CustomEvent('oryx.edit', {
+          new CustomEvent('oryx.select', {
             detail: { address: formData },
           })
         );

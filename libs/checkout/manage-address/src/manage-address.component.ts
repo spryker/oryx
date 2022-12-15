@@ -1,29 +1,26 @@
-import { ComponentMixin } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/ui/utilities';
 import { AddressBookState } from '@spryker-oryx/user/address-book';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
-import { AddressModal, AddressModalConfig } from './address-modal.model';
+import { AddressModalConfig } from './manage-address.model';
 
 @hydratable(['mouseover', 'focusin'])
-export class AddressModalComponent
-  extends ComponentMixin()
-  implements AddressModal
-{
+export class ManageAddressComponent extends LitElement {
   protected config: AddressModalConfig = {
     [AddressBookState.List]: {
-      header: i18n('user.address.addresses'),
+      header: i18n('checkout.address.addresses'),
     },
     [AddressBookState.Add]: {
-      header: i18n('user.address.add-address'),
+      header: i18n('checkout.address.add-address'),
     },
     [AddressBookState.Edit]: {
-      header: i18n('user.address.edit-address'),
+      header: i18n('checkout.address.edit-address'),
     },
     [AddressBookState.Remove]: {
-      header: i18n('user.address.remove-address'),
+      header: i18n('checkout.address.remove-address'),
     },
   };
 
@@ -38,10 +35,6 @@ export class AddressModalComponent
     }))
   );
 
-  open(): void {
-    this.open$.next(true);
-  }
-
   protected onClose(): void {
     this.state$.next(AddressBookState.List);
     this.open$.next(false);
@@ -51,10 +44,22 @@ export class AddressModalComponent
     this.state$.next(e.detail.state);
   }
 
+  protected showModal(): void {
+    this.open$.next(true);
+  }
+
   protected override render(): TemplateResult {
-    return html` ${asyncValue(this.modalData$, ({ state, open, header }) => {
-      return html`
-        <oryx-modal
+    return html`
+      <oryx-button outline size=${Size.small}>
+        <button @click=${(): void => this.showModal()}>
+          <oryx-icon type="edit"></oryx-icon>
+          ${i18n('checkout.address.manage-address')}
+        </button>
+      </oryx-button>
+
+      ${asyncValue(
+        this.modalData$,
+        ({ state, open, header }) => html` <oryx-modal
           ?open=${open}
           preventCloseWithEscape
           preventCloseWithBackdrop
@@ -67,8 +72,8 @@ export class AddressModalComponent
             @oryx.change-state=${(e: CustomEvent): void =>
               this.onStateChange(e)}
           ></oryx-user-address-book>
-        </oryx-modal>
-      `;
-    })}`;
+        </oryx-modal>`
+      )}
+    `;
   }
 }

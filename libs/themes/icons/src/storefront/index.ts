@@ -11,6 +11,7 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Collapse]: () => import('./icons/collapse').then((s) => s.default),
   [IconTypes.DropUp]: () => import('./icons/drop-up').then((s) => s.default),
   [IconTypes.Dropdown]: () => import('./icons/dropdown').then((s) => s.default),
+  [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
   [IconTypes.Expand]: () => import('./icons/expand').then((s) => s.default),
   [IconTypes.Image]: () => import('./icons/image').then((s) => s.default),
   [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),

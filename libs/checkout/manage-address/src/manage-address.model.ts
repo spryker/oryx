@@ -6,7 +6,3 @@ export type AddressModalConfig = {
     header: string | DirectiveResult;
   };
 };
-
-export interface AddressModal {
-  open(): void;
-}
