@@ -6,7 +6,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ThemeChromaticPlugin } from './theme-chromatic';
 
 export class ChromaticIconInjectable implements IconInjectable {
-  render(type?: string, spriteUrl?: string): TemplateResult {
+  render(type: string): TemplateResult {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const themePlugin = resolve(AppRef).findPlugin(ThemeChromaticPlugin)!;
 

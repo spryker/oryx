@@ -14,8 +14,8 @@ import {
 export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
   protected readonly plugins: AppPlugin[] = [];
 
-  with(plugin: AppPlugin): Builder<T> {
-    this.plugins.push(plugin);
+  with(plugin: AppPlugin | AppPlugin[]): Builder<T> {
+    this.plugins.push(...(Array.isArray(plugin) ? plugin : [plugin]));
     return this as unknown as Builder<T>;
   }
 

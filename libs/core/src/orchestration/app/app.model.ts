@@ -1,6 +1,6 @@
 import { InjectorOptions, Provider, Type } from '@spryker-oryx/injector';
 import { ComponentsInfo, ComponentsPluginOptions } from '../components';
-import { Theme } from '../theme';
+import { Resources, Theme } from '../theme';
 
 export const AppRef = 'FES.AppRef';
 export const AppEnvironment = 'FES.Environment';
@@ -33,6 +33,7 @@ export interface AppFeature {
   components?: ComponentsInfo;
   options?: ModularAppBuilderOptions;
   plugins?: AppPlugin[];
+  resources?: Resources;
 }
 
 export interface App {
@@ -45,7 +46,7 @@ export interface App {
 }
 
 export interface AppBuilder<T = ''> {
-  with(plugin: AppPlugin): Builder<T>;
+  with(plugin: AppPlugin | AppPlugin[]): Builder<T>;
   create(): Promise<App>;
 }
 
@@ -59,6 +60,7 @@ export interface AppBuilderWithModules
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
   withEnvironment(env: AppEnvironment): AppBuilderWithModules;
+  withResources(resources: Resources): AppBuilderWithModules;
 }
 
 export interface AppPlugin {

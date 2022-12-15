@@ -25,4 +25,8 @@ export class ThemeChromaticPlugin extends ThemePlugin {
     super.apply();
     iconInjectable.inject(new ChromaticIconInjectable());
   }
+
+  getIconTemplate(icon: string): string | undefined {
+    return this.icons[icon] as string;
+  }
 }

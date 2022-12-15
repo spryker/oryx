@@ -1,15 +1,19 @@
+import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   getPropByPath,
   iconInjectable,
-  isPromise,
+  resourceInjectable,
 } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
-import { ThemeIconInjectable } from '../../injectables';
+import {
+  DefaultIconInjectable,
+  DefaultResourceInjectable,
+} from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import {
   DesignToken,
-  LazyLoadable,
+  Resources,
   Theme,
   ThemeBreakpoints,
   ThemeData,
@@ -48,8 +52,7 @@ export const ThemePluginName = 'core$theme';
 export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   protected breakpoints: Partial<ThemeBreakpoints> = {};
   protected breakpointsOrder: string[] = [];
-  protected app?: App;
-  protected icons = Object.create(null);
+  protected icons: ThemeIcons = {};
   protected cssVarPrefix = '--oryx';
   protected mediaMapper: Record<
     keyof ThemeMediaQueries,
@@ -63,8 +66,9 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
       max: 'max-width',
     },
   };
+  protected app?: App;
 
-  constructor(protected themes: Theme[]) {
+  constructor(protected themes: Theme[], protected resources?: Resources) {
     this.propertiesCollector(themes);
   }
 
@@ -72,12 +76,24 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     return ThemePluginName;
   }
 
-  beforeApply(app: App): void | Promise<void> {
-    this.app = app;
+  getIcons(): ThemeIcons {
+    return this.icons;
   }
 
-  getIconsList(): ThemeIcons {
-    return this.icons;
+  getResources(): Resources | undefined {
+    return this.resources;
+  }
+
+  getBreakpoints(): ThemeBreakpoints {
+    return this.breakpoints as ThemeBreakpoints;
+  }
+
+  getIcon(icon: string): string | Promise<string> {
+    return resolveLazyLoadable(this.icons[icon]);
+  }
+
+  beforeApply(app: App): void | Promise<void> {
+    this.app = app;
   }
 
   async apply(): Promise<void> {
@@ -85,7 +101,11 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     const componentOptions = this.app?.findPlugin(ComponentsPlugin)!.options!;
 
     if (Object.keys(this.icons).length) {
-      iconInjectable.inject(new ThemeIconInjectable());
+      iconInjectable.inject(new DefaultIconInjectable());
+    }
+
+    if (this.resources) {
+      resourceInjectable.inject(new DefaultResourceInjectable());
     }
 
     if (typeof componentOptions.root === 'string' && document.body) {
@@ -113,7 +133,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
     for (const styles of stylesheets) {
       if (!styles.theme) {
-        implementations.push(this.loadThemeImplFn(styles.rules));
+        implementations.push(resolveLazyLoadable(styles.rules));
 
         continue;
       }
@@ -126,7 +146,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
         continue;
       }
 
-      implementations.push(this.loadThemeImplFn(styles.rules));
+      implementations.push(resolveLazyLoadable(styles.rules));
     }
 
     if (componentPlugin?.rootSelector === name) {
@@ -136,24 +156,6 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     const themes = await Promise.all(implementations);
 
     return themes.length ? themes : null;
-  }
-
-  async getIcon(icon?: string): Promise<string | void> {
-    const iconImpl = this.icons?.[icon as keyof typeof this.icons];
-
-    if (!iconImpl) {
-      return;
-    }
-
-    return await this.loadThemeImplFn<string>(iconImpl);
-  }
-
-  getIconTemplate(icon?: string): LazyLoadable<string> | void {
-    return this.icons?.[icon as keyof typeof this.icons];
-  }
-
-  getBreakpoints(): ThemeBreakpoints {
-    return this.breakpoints as ThemeBreakpoints;
   }
 
   /**
@@ -202,7 +204,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
       if (!isTokens(theme)) {
         const { designTokens } = theme;
-        const tokensArr = await this.loadThemeImplFn(designTokens);
+        const tokensArr = await resolveLazyLoadable(designTokens);
 
         if (!tokensArr) {
           continue;
@@ -365,16 +367,5 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
     }
 
     return Array.isArray(theme) ? theme : [theme];
-  }
-
-  protected loadThemeImplFn<T>(impl?: LazyLoadable<T>): T | Promise<T> {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const value = (impl as any)();
-
-      return (isPromise(value) ? value : impl) as T;
-    } catch {
-      return impl as unknown as T;
-    }
   }
 }

@@ -4,9 +4,9 @@ import { inject, resolve } from '@spryker-oryx/injector';
 import { isPromise } from '@spryker-oryx/utilities';
 import { defer, finalize, from, Observable, tap } from 'rxjs';
 
-export const ssrAwaiter = (
-  object: Observable<any> | Promise<any>
-): Observable<any> => {
+export const ssrAwaiter = <T>(
+  object: Observable<T> | Promise<T>
+): Observable<T> => {
   const observable = isPromise(object) ? from(object) : object;
   let ssrAwaiter: SSRAwaiterService | null = null;
 

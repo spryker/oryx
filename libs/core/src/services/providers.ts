@@ -7,6 +7,7 @@ import {
   HttpHandler,
   HttpService,
 } from './http';
+import { DefaultResourceService, ResourceService } from './resources';
 import { DefaultStorageService, StorageService } from './storage';
 import {
   DefaultJsonAPITransformerService,
@@ -43,5 +44,9 @@ export const coreProviders: Provider[] = [
   {
     provide: ErrorService,
     useClass: DefaultErrorService,
+  },
+  {
+    provide: ResourceService,
+    useClass: DefaultResourceService,
   },
 ];

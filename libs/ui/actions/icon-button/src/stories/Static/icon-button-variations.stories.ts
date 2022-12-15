@@ -41,7 +41,7 @@ const sizes = ['large', 'medium', 'small'];
 const Template: Story = (): TemplateResult => {
   const icon = Object.keys(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList()
+    resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
   )[0];
 
   return html`

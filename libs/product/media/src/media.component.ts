@@ -13,6 +13,7 @@ import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, map, Observable } from 'rxjs';
 import { ProductMediaOptions, ResponsiveImage } from './media.model';
 
@@ -25,9 +26,9 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaOpt
       this.productMedia$,
       (image: ResponsiveImage): TemplateResult => {
         return html`<oryx-image
-          .src=${image.src}
-          .srcset=${image.srcset}
-          .alt=${image.alt}
+          src=${ifDefined(image.src)}
+          srcset=${ifDefined(image.srcset)}
+          alt=${ifDefined(image.srcset)}
           .loading=${image.loading ?? LoadingStrategy.Lazy}
         ></oryx-image>`;
       }

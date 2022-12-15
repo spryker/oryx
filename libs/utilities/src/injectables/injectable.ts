@@ -45,7 +45,7 @@ export class Injectable<T> {
   ) {
     this.key = Symbol.for(key);
 
-    if (defaultValue) {
+    if (defaultValue !== undefined) {
       this.inject(defaultValue);
     }
   }

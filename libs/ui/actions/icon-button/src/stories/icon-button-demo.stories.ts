@@ -10,7 +10,7 @@ export default { title: `${storybookPrefix}/Actions/Icon Button` } as Meta;
 
 const icons = Object.keys(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList()
+  resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
 );
 
 interface Props extends IconProperties {

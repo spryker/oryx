@@ -5,7 +5,7 @@ import {
   ComponentsPluginOptions,
 } from '../components';
 import { InjectionPlugin } from '../injection';
-import { Theme, ThemePlugin } from '../theme';
+import { Resources, Theme, ThemePlugin } from '../theme';
 import { SimpleAppBuilder } from './app-builder';
 import {
   App,
@@ -23,6 +23,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   protected providers: Provider[] = [];
   protected options?: ModularAppBuilderOptions;
   protected themes: Theme[] = [];
+  protected resources?: Resources;
 
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
     this.options = {
@@ -66,7 +67,11 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       }
 
       if (feat.plugins) {
-        feat.plugins.forEach((plugin) => this.with(plugin));
+        this.with(feat.plugins);
+      }
+
+      if (feat.resources) {
+        this.withResources(feat.resources);
       }
     }
 
@@ -83,6 +88,16 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
+  withResources(resources: Resources): AppBuilderWithModules {
+    this.resources = {
+      graphics: {
+        ...(this.resources?.graphics ?? {}),
+        ...(resources.graphics ?? {}),
+      },
+    };
+    return this;
+  }
+
   async create(): Promise<App> {
     if (this.providers.length) {
       this.plugins.unshift(
@@ -91,7 +106,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     }
 
     if (this.themes.length) {
-      this.plugins.unshift(new ThemePlugin(this.themes));
+      this.plugins.unshift(new ThemePlugin(this.themes, this.resources));
     }
 
     if (this.componentsInfo.length) {

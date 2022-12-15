@@ -2,6 +2,7 @@
 import './json-api.shim';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/injector';
+// Add full import because of issue with naming exports from cjs.
 import jsonapi from 'jsonapi-serializer';
 import { map, Observable, switchMap } from 'rxjs';
 import {

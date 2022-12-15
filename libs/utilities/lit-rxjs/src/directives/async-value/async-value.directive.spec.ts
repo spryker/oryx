@@ -7,8 +7,8 @@ import { BehaviorSubject, of, Subject, Subscription } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
+import { AsyncValueStrategy } from './async-value.model';
 import { asyncValue, AsyncValueDirective } from './index';
-import { AsyncValueStrategy } from './types';
 
 const mockObservableSubsription = new Subscription();
 

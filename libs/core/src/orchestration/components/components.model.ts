@@ -1,6 +1,7 @@
+import { LazyLoadable } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/injector';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
-import { LazyLoadable, ThemeData, ThemeStylesheets } from '../theme';
+import { ThemeData, ThemeStylesheets } from '../theme';
 
 export type ComponentInfo = ComponentDef | ComponentDefFn;
 
@@ -34,8 +35,7 @@ export interface ComponentStatic {
 }
 
 export type ComponentDefImpl =
-  | ComponentType
-  | (() => Promise<ComponentType>)
+  | LazyLoadable<ComponentType>
   | ComponentImplStrategy;
 
 export interface ComponentImplMeta {

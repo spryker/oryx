@@ -1,15 +1,24 @@
+import { resourceInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LoadingStrategy } from './image.model';
+import { ImageComponentAttributes, LoadingStrategy } from './image.model';
 import { styles } from './image.styles';
 
-export class ImageComponent extends LitElement {
+export class ImageComponent
+  extends LitElement
+  implements ImageComponentAttributes
+{
   static styles = styles;
+
+  constructor(protected graphicResolver = resourceInjectable.get()) {
+    super();
+  }
 
   @property() src?: string;
   @property() srcset?: string;
   @property() alt?: string;
+  @property() resource?: string;
   @property() loading?: LoadingStrategy;
 
   @state() failed?: string;
@@ -25,21 +34,23 @@ export class ImageComponent extends LitElement {
   }
 
   protected renderImage(): TemplateResult {
-    //render() sometimes gets called before receiving correct data
-    if (!this.src && this.renderRoot) {
-      const element = this.renderRoot.querySelector('img');
-      if (element && this.src !== element?.src) {
-        this.src = element.src;
-        this.srcset = element.srcset;
-        this.alt = element.alt;
+    if (this.resource) {
+      const source = this.graphicResolver?.getSource(this.resource);
+
+      if (source) {
+        return html`${source}`;
       }
     }
 
-    if (!this.src) return this.renderFallback();
+    const src = this.resource
+      ? this.graphicResolver?.getUrl(this.resource)
+      : this.src;
+
+    if (!src) return this.renderFallback();
 
     return html`
       <img
-        src=${ifDefined(this.src)}
+        src=${src}
         srcset=${ifDefined(this.srcset)}
         alt=${ifDefined(this.alt)}
         loading=${ifDefined(this.loading)}

@@ -1,4 +1,7 @@
-import { isNodeElement } from '@spryker-oryx/core/utilities';
+import {
+  isNodeElement,
+  resolveLazyLoadable,
+} from '@spryker-oryx/core/utilities';
 import { isDefined } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import {
@@ -311,25 +314,12 @@ export class ComponentsPlugin implements AppPlugin {
     def: ComponentDef,
     meta: ComponentImplMeta
   ): Promise<ComponentType | undefined> {
-    const impl = def.impl;
+    const { impl } = def;
 
     if (isComponentImplStrategy(impl)) {
       return await impl.load(def, meta);
     } else {
-      return await this.loadComponentImplFn(impl);
-    }
-  }
-
-  protected loadComponentImplFn(
-    impl: ComponentType | (() => Promise<ComponentType>)
-  ): ComponentType | Promise<ComponentType> {
-    try {
-      // Try to call as a function
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (impl as any)();
-    } catch {
-      // Otherwise use as a type
-      return impl as ComponentType;
+      return await resolveLazyLoadable(impl);
     }
   }
 

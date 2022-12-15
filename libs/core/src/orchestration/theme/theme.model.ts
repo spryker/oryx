@@ -1,4 +1,4 @@
-import { ScreenSize } from '@spryker-oryx/core/utilities';
+import { LazyLoadable, ScreenSize } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 
@@ -39,8 +39,6 @@ export interface ThemeData {
   strategy?: ThemeStrategies;
 }
 
-export type LazyLoadable<T> = T | (() => Promise<T>);
-
 export type ThemeColors = {
   100?: string;
   200?: string;
@@ -70,4 +68,16 @@ export interface Theme {
   breakpoints?: ThemeBreakpoints;
   icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
+}
+
+export interface Graphic {
+  type?: string;
+  url?: string;
+  source?: LazyLoadable<string>;
+}
+
+export type ResourceGraphic = Record<string, Graphic>;
+
+export interface Resources {
+  graphics?: ResourceGraphic;
 }

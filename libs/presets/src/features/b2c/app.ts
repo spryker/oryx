@@ -3,7 +3,7 @@ import { authFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
-import { coreFeature } from '@spryker-oryx/core';
+import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
   experienceFeature,
@@ -23,7 +23,16 @@ const isPreview = new URLSearchParams(new URL(window.location.href).search).has(
   'ebPreview'
 );
 
-export const b2cFeatures = [
+const b2cResources: Resources = {
+  graphics: {
+    logo: {
+      source: () =>
+        import('../../resources/graphics/full-logo').then((m) => m.default),
+    },
+  },
+};
+
+export const b2cFeatures: AppFeature[] = [
   uiFeature,
   coreFeature,
   cartFeature,
@@ -40,4 +49,7 @@ export const b2cFeatures = [
   authFeature,
   new I18nFeature(),
   isServer ? { providers: coreServerProviders } : {},
+  {
+    resources: b2cResources,
+  },
 ];

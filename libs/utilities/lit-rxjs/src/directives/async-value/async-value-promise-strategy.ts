@@ -1,4 +1,4 @@
-import { AsyncValueStrategy } from './types';
+import { AsyncValueStrategy } from './async-value.model';
 
 export class AsyncValuePromiseStrategy implements AsyncValueStrategy {
   createSubscription<T = unknown>(

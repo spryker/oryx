@@ -9,7 +9,7 @@ export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 const Template: Story<unknown> = (): TemplateResult => {
   const icon = Object.keys(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList()
+    resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
   )[0];
 
   return html`

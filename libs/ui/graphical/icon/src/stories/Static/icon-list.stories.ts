@@ -8,7 +8,7 @@ export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const iconsList = resolve(AppRef).findPlugin(ThemePlugin)!.getIconsList();
+  const iconsList = resolve(AppRef).findPlugin(ThemePlugin)!.getIcons();
 
   return html`
     <div class="icon-set">

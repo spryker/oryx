@@ -5,7 +5,7 @@ import { directive, DirectiveResult, PartInfo } from 'lit/directive.js';
 import { isObservable, Observable, Subscription } from 'rxjs';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
 import { AsyncValuePromiseStrategy } from './async-value-promise-strategy';
-import { AsyncValueStrategy } from './types';
+import { AsyncValueStrategy } from './async-value.model';
 
 interface PartInfoRoot {
   options?: {
@@ -149,6 +149,6 @@ export class AsyncValueDirective extends AsyncDirective {
  */
 export const asyncValue = directive(AsyncValueDirective) as <T>(
   object: Promise<T> | Observable<T> | null | undefined,
-  template?: (value: T) => TemplateResult,
-  fallback?: () => TemplateResult
+  template?: (value: T) => unknown,
+  fallback?: () => unknown
 ) => DirectiveResult<typeof AsyncValueDirective>;
