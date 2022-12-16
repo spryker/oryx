@@ -55,4 +55,20 @@ describe('DefaultFacetListService', () => {
       expect(pageListService.get).toHaveBeenCalled();
     });
   });
+
+  describe('getFacet', () => {
+    beforeEach(() => {
+      service.get = vi.fn().mockReturnValue(of([]));
+    });
+
+    it('should return an observable', () => {
+      expect(service.getFacet({ name: 'mock' })).toBeInstanceOf(Observable);
+    });
+
+    it('should call mock product list page', () => {
+      service.getFacet({ name: 'mock' }).subscribe(vi.fn());
+
+      expect(service.get).toHaveBeenCalled();
+    });
+  });
 });

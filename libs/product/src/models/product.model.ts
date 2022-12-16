@@ -29,8 +29,10 @@ export interface ProductList {
 export interface Facet {
   name: string;
   parameter: string;
-  multiValued?: boolean;
   values: FacetValue[] | RangeFacetValue;
+  selectedValues?: (string | number)[];
+  valuesTreeLength?: number;
+  multiValued?: boolean;
 }
 
 export interface RangeFacetValue {

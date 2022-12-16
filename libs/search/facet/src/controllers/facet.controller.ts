@@ -1,0 +1,218 @@
+import { resolve } from '@spryker-oryx/injector';
+import { Facet, FacetValue } from '@spryker-oryx/product';
+import { FacetListService } from '@spryker-oryx/search';
+import {
+  FACET_CLEAR_EVENT,
+  FACET_SEARCH_EVENT,
+  FACET_TOGGLE_EVENT,
+  SearchFacet,
+  ShowFacet,
+} from '@spryker-oryx/search/facet-value-navigation';
+import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
+import { LitElement, ReactiveController } from 'lit';
+import {
+  BehaviorSubject,
+  combineLatest,
+  iif,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
+import {
+  FacetComponentAttributes,
+  FacetSelect,
+  FACET_SELECT_EVENT,
+  SingleMultiFacet,
+} from '../facet.model';
+
+export class FacetController implements ReactiveController {
+  protected observe: ObserveController<LitElement & FacetComponentAttributes>;
+  protected facetListService = resolve(FacetListService);
+  protected facet$: Observable<Facet | null>;
+  protected showAll$ = new BehaviorSubject(false);
+  protected searchedValue$ = new BehaviorSubject('');
+
+  constructor(protected host: LitElement & FacetComponentAttributes) {
+    this.host.addController(this);
+    this.observe = new ObserveController(host);
+    this.facet$ = this.observe.get('name').pipe(
+      switchMap((name) =>
+        name
+          ? (this.facetListService.getFacet({
+              name,
+            }) as Observable<SingleMultiFacet>)
+          : of(null)
+      )
+    );
+
+    this.onSearch = this.onSearch.bind(this);
+    this.onToggle = this.onToggle.bind(this);
+    this.onClear = this.onClear.bind(this);
+  }
+
+  hostConnected(): void {
+    this.host.addEventListener(FACET_SEARCH_EVENT, this.onSearch);
+    this.host.addEventListener(FACET_TOGGLE_EVENT, this.onToggle);
+    this.host.addEventListener(FACET_CLEAR_EVENT, this.onClear);
+  }
+
+  hostDisconnected(): void {
+    this.host.removeEventListener(FACET_SEARCH_EVENT, this.onSearch);
+    this.host.removeEventListener(FACET_TOGGLE_EVENT, this.onToggle);
+    this.host.removeEventListener(FACET_CLEAR_EVENT, this.onClear);
+  }
+
+  /**
+   * Returns modified data based on searching and cutting by renderLimit.
+   */
+  getFacet(): Observable<SingleMultiFacet | null> {
+    return this.facet$.pipe(
+      mergeMap((facet) =>
+        iif(
+          () => facet !== null && Array.isArray(facet.values),
+          of(facet as SingleMultiFacet).pipe(
+            switchMap((facet) =>
+              this.searchedValue$.pipe(
+                map((searchedValue) =>
+                  this.filterFacetValues(facet, searchedValue)
+                )
+              )
+            ),
+            switchMap((facet) =>
+              combineLatest([
+                this.observe.get('renderLimit'),
+                this.showAll$,
+              ]).pipe(
+                map(([limit, showAll]) =>
+                  this.cutByRenderLimit(facet, showAll ? Infinity : limit)
+                )
+              )
+            )
+          ),
+          of(null)
+        )
+      )
+    );
+  }
+
+  /**
+   * Returns an array with all selected facet values
+   */
+  getSelectedValues(): Observable<FacetValue[]> {
+    return this.getFacet().pipe(
+      map((facet) =>
+        facet && Array.isArray(facet.selectedValues)
+          ? facet.selectedValues.map(
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              (selVal) => facet.values.find((val) => val.name === selVal)!
+            )
+          : ([] as FacetValue[])
+      )
+    );
+  }
+
+  /**
+   * Dispatch selected facet values
+   */
+  dispatchSelectEvent(
+    parameter: string,
+    values: (string | number)[] = []
+  ): void {
+    this.host.dispatchEvent(
+      new CustomEvent<FacetSelect>(FACET_SELECT_EVENT, {
+        bubbles: true,
+        composed: true,
+        detail: {
+          parameter,
+          values,
+        },
+      })
+    );
+  }
+
+  // ToDo: This is temporary filtering implementation.
+  protected filterFacetValues(
+    facet: SingleMultiFacet,
+    searchedValue: string
+  ): SingleMultiFacet {
+    if (!searchedValue || !facet?.values?.length) {
+      return facet as SingleMultiFacet;
+    }
+
+    let filteredValueLength = 0;
+
+    const reducer = (result: FacetValue[], value: FacetValue): FacetValue[] => {
+      const name = String(value.name ?? value.value);
+      const isIncludes = name
+        .trim()
+        ?.toLowerCase()
+        .includes(searchedValue.trim().toLowerCase());
+
+      if (isIncludes) {
+        filteredValueLength++;
+        result.push({ ...value });
+
+        return result;
+      }
+
+      if (Array.isArray(value.children)) {
+        const children = value.children.reduce(reducer, []);
+
+        if (children.length) {
+          filteredValueLength += children.length;
+
+          result.push({ ...value, children });
+        }
+      }
+
+      return result;
+    };
+
+    const values = facet.values?.reduce(reducer, []);
+
+    return {
+      ...facet,
+      filteredValueLength,
+      values,
+    };
+  }
+
+  protected cutByRenderLimit(
+    facet: SingleMultiFacet,
+    renderLimit = Infinity
+  ): SingleMultiFacet {
+    if (facet.values.length < renderLimit) {
+      return facet;
+    }
+
+    return {
+      ...facet,
+      ...(renderLimit && {
+        values: [...facet.values].splice(0, renderLimit),
+      }),
+    };
+  }
+
+  protected onToggle(e: Event): void {
+    this.showAll$.next((e as CustomEvent<ShowFacet>).detail.isShowed);
+  }
+
+  protected onSearch(e: Event): void {
+    this.searchedValue$.next((e as CustomEvent<SearchFacet>).detail.value);
+  }
+
+  protected onClear(): void {
+    this.getFacet()
+      .pipe(
+        take(1),
+        tap((facet) => {
+          this.dispatchSelectEvent(facet?.parameter ?? '');
+        })
+      )
+      .subscribe();
+  }
+}

@@ -197,10 +197,10 @@ describe('SearchFacetNavigationComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should render collapsible element for every mock facet', () => {
-    expect(element.renderRoot.querySelectorAll('oryx-collapsible').length).toBe(
-      6
-    );
+  it('should render oryx-facet element for every mock facet', () => {
+    expect(
+      element.renderRoot.querySelectorAll('oryx-search-facet').length
+    ).toBe(6);
   });
 
   describe('when "valueRenderLimit" is provided', () => {
@@ -213,11 +213,11 @@ describe('SearchFacetNavigationComponent', () => {
     });
 
     it('should render the specified amount in the option', () => {
-      expect(
-        element.renderRoot
-          .querySelectorAll('oryx-collapsible')[1]
-          .getElementsByTagName('li').length
-      ).toBe(3);
+      const facet = <Element & { renderLimit: number }>(
+        element.renderRoot.querySelectorAll('oryx-search-facet')[1]
+      );
+
+      expect(facet.renderLimit).toBe(3);
     });
   });
 
@@ -232,15 +232,15 @@ describe('SearchFacetNavigationComponent', () => {
 
     it('should expand collapsible items with specified amount in the option', () => {
       expect(
-        element.renderRoot
-          .querySelectorAll('oryx-collapsible')[0]
-          .hasAttribute('open')
-      ).toBeTruthy();
+        (<Element & { open: boolean }>(
+          element.renderRoot.querySelectorAll('oryx-search-facet')[0]
+        )).open
+      ).toBe(true);
       expect(
-        element.renderRoot
-          .querySelectorAll('oryx-collapsible')[1]
-          .hasAttribute('open')
-      ).toBeFalsy();
+        (<Element & { open: boolean }>(
+          element.renderRoot.querySelectorAll('oryx-search-facet')[1]
+        )).open
+      ).not.toBe(true);
     });
   });
 
@@ -269,9 +269,9 @@ describe('SearchFacetNavigationComponent', () => {
 
     it('should render the default amount in the option', () => {
       expect(
-        element.renderRoot
-          .querySelectorAll('oryx-collapsible')[1]
-          .getElementsByTagName('li').length
+        (<Element & { renderLimit: number }>(
+          element.renderRoot.querySelectorAll('oryx-search-facet')[1]
+        )).renderLimit
       ).toBe(5);
     });
   });

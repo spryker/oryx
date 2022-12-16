@@ -34,8 +34,30 @@ export function productFacetsNormalizer(
     return facetList.reduce((normalizedFacetList: Facet[], facet) => {
       const { config, localizedName } = facet;
 
-      const facetValue = Object.prototype.hasOwnProperty.call(facet, 'values')
-        ? (facet as unknown as ApiProductListModel.ValueFacet).values
+      const facetValues = Object.prototype.hasOwnProperty.call(facet, 'values')
+        ? (() =>
+            (facet as unknown as ApiProductListModel.ValueFacet).values.reduce(
+              (
+                facetList: FacetValue[],
+                value: { value: number; docCount: number }
+              ) => {
+                if (!value.docCount) {
+                  return facetList;
+                }
+
+                const parsedFacedValue = {
+                  value: value.value,
+                  selected:
+                    (facet as ApiProductListModel.ValueFacet).activeValue
+                      ?.split(',')
+                      ?.includes(String(value.value)) ?? false,
+                  count: value.docCount,
+                };
+
+                return [...facetList, parsedFacedValue];
+              },
+              []
+            ))()
         : (() => {
             const rangeFacet =
               facet as unknown as ApiProductListModel.RangeFacet;
@@ -49,36 +71,22 @@ export function productFacetsNormalizer(
             };
           })();
 
-      const facetValues = Array.isArray(facetValue)
-        ? facetValue.reduce(
-            (
-              facetList: FacetValue[],
-              value: { value: number; docCount: number }
-            ) => {
-              if (!value.docCount) {
-                return facetList;
-              }
+      const isValuesArray = Array.isArray(facetValues);
 
-              const parsedFacedValue = {
-                value: value.value,
-                selected:
-                  (facet as ApiProductListModel.ValueFacet).activeValue ===
-                  String(value.value),
-                count: value.docCount,
-              };
-
-              return [...facetList, parsedFacedValue];
-            },
-            []
-          )
-        : facetValue;
-
-      if (Array.isArray(facetValues) ? facetValues.length : facetValues) {
+      if (isValuesArray ? facetValues.length : facetValues) {
         const normalizedFacet = {
           name: localizedName,
           parameter: config.parameterName,
-          count: facet.docCount,
           values: facetValues,
+          ...((facet as ApiProductListModel.ValueFacet).activeValue && {
+            selectedValues: (
+              facet as ApiProductListModel.ValueFacet
+            ).activeValue?.split(','),
+          }),
+          ...(config.isMultiValued && { multiValued: config.isMultiValued }),
+          ...(isValuesArray && {
+            valuesTreeLength: facetValues.length,
+          }),
         };
 
         return [...normalizedFacetList, normalizedFacet];
@@ -89,24 +97,41 @@ export function productFacetsNormalizer(
   };
 
   const parseCategoryTree = (
-    categoryTree: ApiProductListModel.TreeFacet[],
-    valuesList: FacetValue[]
-  ): FacetValue[] => {
-    return categoryTree.reduce((treeList: FacetValue[], treeItem) => {
-      if (!treeItem.docCount) {
-        return treeList;
-      }
+    category: ApiProductListModel.TreeFacet[],
+    values: FacetValue[]
+  ): {
+    values: FacetValue[];
+    valuesTreeLength: number;
+  } => {
+    let valuesTreeLength = 0;
 
-      const parsedTree = {
-        ...valuesList.find((valueList) => valueList.value === treeItem.nodeId)!,
-        name: treeItem.name,
-        children: treeItem.children?.length
-          ? parseCategoryTree(treeItem.children, valuesList)
-          : [],
-      };
+    const parse = (
+      categoryTree: ApiProductListModel.TreeFacet[],
+      valuesList: FacetValue[]
+    ): FacetValue[] =>
+      categoryTree.reduce((treeList: FacetValue[], treeItem) => {
+        if (!treeItem.docCount) {
+          return treeList;
+        }
 
-      return [...treeList, parsedTree];
-    }, []);
+        valuesTreeLength += 1;
+
+        const parsedTree = {
+          ...valuesList.find(
+            (valueList) => valueList.value === treeItem.nodeId
+          )!,
+          name: treeItem.name,
+          children: treeItem.children?.length
+            ? parse(treeItem.children, valuesList)
+            : [],
+        };
+
+        return [...treeList, parsedTree];
+      }, []);
+
+    const parsedValues = parse(category, values);
+
+    return { values: parsedValues, valuesTreeLength };
   };
 
   const normalizedValueFacets = normalize(data[0].valueFacets!);
@@ -114,16 +139,14 @@ export function productFacetsNormalizer(
     normalizedValueFacets.findIndex((facet) => facet.parameter === 'category'),
     1
   );
-  const { name, parameter, values } = categoryFacet;
 
   return of({
     facets: [
       {
-        name,
-        parameter,
-        values: parseCategoryTree(
+        ...categoryFacet,
+        ...parseCategoryTree(
           data[0].categoryTreeFilter!,
-          values as FacetValue[]
+          categoryFacet.values as FacetValue[]
         ),
       },
       ...normalizedValueFacets,

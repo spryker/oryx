@@ -95,6 +95,8 @@ describe('Product Catalog Normalizers', () => {
             {
               name: 'Categories',
               parameter: 'category',
+              selectedValues: ['10'],
+              valuesTreeLength: 2,
               values: [
                 {
                   value: 9,
@@ -116,7 +118,6 @@ describe('Product Catalog Normalizers', () => {
             {
               parameter: 'price',
               name: 'Price range',
-              count: 2,
               values: {
                 max: 36660,
                 min: 175,

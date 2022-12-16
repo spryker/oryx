@@ -7,6 +7,7 @@ import {
 import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { resolve } from '@spryker-oryx/injector';
 import { Facet, FacetValue, RangeFacetValue } from '@spryker-oryx/product';
+import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { NullableGeneric } from '@spryker-oryx/utilities/typescript';
 import { html, TemplateResult } from 'lit';
@@ -45,6 +46,11 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
     this.routerService.activatedRouter(),
   ]);
 
+  protected applyFilters(e: CustomEvent<FacetSelect>): void {
+    // ToDo: apply selected facet values to the route
+    console.log(e);
+  }
+
   protected renderFacets(
     facets: Facet[],
     options: FacetsOptions,
@@ -59,31 +65,28 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
             ? facetVisibilityChange.isShowAll
             : false,
       });
-
       return html`
-        <oryx-collapsible
-          ?open=${index < options.expandedItemsCount!}
-          .appearance="inline"
-          .toggleAppearance="iconButton"
-          .header=${facet.name}
-        >
-          ${when(
-            Array.isArray(facet.values),
-            () => html`
-              ${this.renderFacetValues(
-                facet.values as FacetValue[],
-                facet.parameter,
-                options.valueRenderLimit!,
-                activatedRouter
-              )}
-              ${this.renderShowHideAllButtons(
-                facet.parameter,
-                this.getFacetValueLength(facet.values as FacetValue[])
-              )}
-            `,
-            () => this.renderRangeValue(facet.values as RangeFacetValue)
-          )}
-        </oryx-collapsible>
+        ${when(
+          Array.isArray(facet.values),
+          () => html`
+            <oryx-search-facet
+              @oryx.select=${this.applyFilters}
+              .name=${facet.name}
+              .renderLimit=${options.valueRenderLimit}
+              .open=${index < (options.expandedItemsCount ?? 0)}
+              .multi=${facet.multiValued}
+            >
+            </oryx-search-facet>
+          `,
+          () => html`<oryx-collapsible
+            ?open=${index < options.expandedItemsCount!}
+            .appearance="inline"
+            .toggleAppearance="iconButton"
+            .header=${facet.name}
+          >
+            ${this.renderRangeValue(facet.values as RangeFacetValue)}
+          </oryx-collapsible>`
+        )}
       `;
     })}`;
   }
@@ -104,7 +107,6 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
           ) {
             return;
           }
-
           this.renderedFacetElements.set(parameter, {
             renderedItemsCount:
               this.renderedFacetElements?.get(parameter)!.renderedItemsCount +
