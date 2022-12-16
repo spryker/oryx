@@ -1,5 +1,5 @@
-import { AppEnvironment, ErrorHandler } from '@spryker-oryx/core';
-import { inject, Provider } from '@spryker-oryx/injector';
+import { ErrorHandler, injectEnv } from '@spryker-oryx/core';
+import { Provider } from '@spryker-oryx/injector';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { componentsProvider } from './components.provider';
 import { CountryService, DefaultCountryService } from './country';
@@ -29,12 +29,11 @@ export const siteProviders: Provider[] = [
   componentsProvider,
   {
     provide: 'SCOS_BASE_URL',
-    useFactory: () =>
-      inject(AppEnvironment, { SCOS_BASE_URL: '' }).SCOS_BASE_URL,
+    useFactory: () => injectEnv('SCOS_BASE_URL', ''),
   },
   {
     provide: 'STORE',
-    useFactory: () => inject(AppEnvironment, { STORE: '' }).STORE,
+    useFactory: () => injectEnv('STORE', ''),
   },
   {
     provide: SemanticLinkService,

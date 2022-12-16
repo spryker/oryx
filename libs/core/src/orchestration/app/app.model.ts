@@ -3,23 +3,10 @@ import { ComponentsInfo, ComponentsPluginOptions } from '../components';
 import { Resources, Theme } from '../theme';
 
 export const AppRef = 'FES.AppRef';
-export const AppEnvironment = 'FES.Environment';
 
 declare global {
   interface InjectionTokensContractMap {
     [AppRef]: App;
-    [AppEnvironment]: AppEnvironment;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface ImportMetaEnv extends AppEnvironment {}
-
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-  }
-
-  interface AppEnvironment {
-    [key: string]: string | undefined;
   }
 }
 

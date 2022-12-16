@@ -1,5 +1,5 @@
-import { AppEnvironment, SsrOptions } from '@spryker-oryx/core';
-import { inject, Provider } from '@spryker-oryx/injector';
+import { injectEnv, SsrOptions } from '@spryker-oryx/core';
+import { Provider } from '@spryker-oryx/injector';
 import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
@@ -26,9 +26,7 @@ export const experienceProviders: Provider[] = [
   componentsProvider,
   {
     provide: ContentBackendUrl,
-    useFactory: () =>
-      inject(AppEnvironment, { FES_CONTENT_BACKEND_URL: '' })
-        .FES_CONTENT_BACKEND_URL,
+    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
   },
   {
     provide: ExperienceService,

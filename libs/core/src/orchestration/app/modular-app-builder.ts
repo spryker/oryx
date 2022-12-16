@@ -7,10 +7,10 @@ import {
 import { InjectionPlugin } from '../injection';
 import { Resources, Theme, ThemePlugin } from '../theme';
 import { SimpleAppBuilder } from './app-builder';
+import { AppEnvironment } from './app-env';
 import {
   App,
   AppBuilderWithModules,
-  AppEnvironment,
   AppFeature,
   ModularAppBuilderOptions,
 } from './app.model';
