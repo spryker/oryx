@@ -13,11 +13,14 @@ export interface RouterEvent {
 
 export interface NavigationExtras {
   queryParams?: RouteParams;
+  queryParamsHandling?: QueryParamsHandling;
 }
 
 export interface RouteParams {
-  [key: string]: string | undefined;
+  [key: string]: string | string[] | undefined;
 }
+
+export type QueryParamsHandling = 'merge' | '';
 
 export interface RouterService {
   go(route: string, extras?: NavigationExtras): void;
@@ -29,8 +32,7 @@ export interface RouterService {
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
-  getUrl(route: string, extras?: NavigationExtras): string;
-  activatedRouter(): Observable<{ route: string; extras?: NavigationExtras }>;
+  getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
 }
 
 declare global {

@@ -1,4 +1,5 @@
 import { Provider } from '@spryker-oryx/injector';
+import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
   SuggestionAdapter,
@@ -23,5 +24,6 @@ export const searchProviders: Provider[] = [
     provide: FacetListService,
     useClass: DefaultFacetListService,
   },
+  ...facetProviders,
   ...suggestionNormalizer,
 ];

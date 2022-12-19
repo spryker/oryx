@@ -1,10 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { NavigationExtras, RouterService } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/experience';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { Facet } from '@spryker-oryx/product';
+import { FacetSelect } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
+import {
+  DefaultFacetComponentRegistryService,
+  FacetMappingOptions,
+  FacetParams,
+  FacetValueRenderer,
+} from '../../src/renderers';
+import { FacetComponentRegistryService } from '../../src/renderers/facet-component-registry.service';
 import { FacetListService } from '../../src/services/facet-list.service';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
 import { facetsComponent } from './facet-navigation.def';
@@ -137,26 +146,7 @@ class MockFacetListService implements Partial<FacetListService> {
 class MockRouterService implements Partial<RouterService> {
   currentQuery = vi.fn().mockReturnValue(of({}));
   currentRoute = vi.fn().mockReturnValue(of({}));
-  activatedRouter = vi.fn().mockReturnValue(of({}));
-
-  getUrl(route: string, extras?: NavigationExtras): string {
-    const queryParams = this.createUrlParams(extras?.queryParams);
-    return `${route}${queryParams ? `?${queryParams}` : ''}`;
-  }
-
-  createUrlParams(params?: {
-    [x: string]: string | undefined;
-  }): URLSearchParams | undefined {
-    if (!params) {
-      return;
-    }
-
-    const encodedParams = Object.fromEntries(
-      Object.entries(params).map(([k, v]) => [k, encodeURIComponent(v ?? '')])
-    );
-
-    return new URLSearchParams(encodedParams);
-  }
+  getUrl = vi.fn().mockReturnValue(of(''));
 }
 
 describe('SearchFacetNavigationComponent', () => {
@@ -176,6 +166,33 @@ describe('SearchFacetNavigationComponent', () => {
         {
           provide: RouterService,
           useClass: MockRouterService,
+        },
+        {
+          provide: FacetComponentRegistryService,
+          useClass: DefaultFacetComponentRegistryService,
+        },
+        {
+          provide: FacetValueRenderer,
+          useValue: {
+            [`${FacetParams.Default}`]: {
+              template: (
+                facet: Facet,
+                options: FacetMappingOptions,
+                selectListener: (e: CustomEvent<FacetSelect>) => void
+              ) => {
+                return html`
+                  <oryx-search-facet
+                    @oryx.select=${selectListener}
+                    .name=${facet.name}
+                    .renderLimit=${options.renderLimit}
+                    .open=${options.open}
+                    .multi=${facet.multiValued}
+                  >
+                  </oryx-search-facet>
+                `;
+              },
+            },
+          },
         },
       ],
     });

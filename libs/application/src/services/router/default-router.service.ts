@@ -16,7 +16,7 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
@@ -94,39 +94,37 @@ export class DefaultRouterService implements RouterService {
     return this.urlSearchParams$.asObservable();
   }
 
-  getUrl(route?: string, extras?: NavigationExtras): string {
-    const queryParams = this.createUrlParams(extras?.queryParams);
-    return `${route}${queryParams ? `?${queryParams}` : ''}`;
-  }
-
-  activatedRouter(): Observable<{
-    route: string;
-    extras: { queryParams: RouteParams | undefined };
-  }> {
+  getUrl(route?: string, extras?: NavigationExtras): Observable<string> {
     return combineLatest([this.currentRoute(), this.currentQuery()]).pipe(
-      map(([route, queryParams]) => {
-        return {
-          route,
-          extras: {
-            queryParams,
-          },
-        };
+      take(1),
+      map(([activeRoute, activeQueryParams]) => {
+        const parsedParams = this.createUrlParams(
+          extras?.queryParamsHandling === 'merge'
+            ? { ...activeQueryParams, ...(extras.queryParams ?? {}) }
+            : extras?.queryParams
+        );
+
+        return `${(route || activeRoute).split('?')[0]}${
+          parsedParams ? `?${parsedParams}` : ''
+        }`;
       })
     );
   }
 
   protected createUrlParams(params?: {
-    [x: string]: string | undefined;
-  }): URLSearchParams | undefined {
+    [x: string]: string | string[] | undefined;
+  }): string | undefined {
     if (!params) {
       return;
     }
 
-    const encodedParams = Object.fromEntries(
-      Object.entries(params).map(([k, v]) => [k, encodeURIComponent(v ?? '')])
-    );
+    return Object.entries(params).reduce((params, [k, v]) => {
+      const encodedValue = Array.isArray(v)
+        ? v.map((val) => encodeURIComponent(val)).join(',')
+        : encodeURIComponent(v ?? '');
 
-    return new URLSearchParams(encodedParams);
+      return encodedValue ? `${params}&${k}=${encodedValue}` : params;
+    }, '');
   }
 
   protected storeRoute(value: string): void {

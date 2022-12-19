@@ -34,8 +34,17 @@ export class DefaultProductListAdapter implements ProductListAdapter {
             const param = qualifier[qualifierKey];
 
             if (param) {
+              const paramList = String(param).split(',');
+
               params.push(
-                `${this.alias[qualifierKey] ?? qualifierKey}=${param}`
+                paramList.length > 1
+                  ? paramList
+                      .map(
+                        (plv) =>
+                          `${this.alias[qualifierKey] ?? qualifierKey}[]=${plv}`
+                      )
+                      .join('&')
+                  : `${this.alias[qualifierKey] ?? qualifierKey}=${param}`
               );
             }
 

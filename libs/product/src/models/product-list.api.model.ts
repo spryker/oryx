@@ -16,12 +16,12 @@ export module ApiProductListModel {
   }
 
   export interface ValueFacet {
-    activeValue: string | null;
+    activeValue: string | string[] | null;
     config: FacetConfig;
     docCount: number | null;
     localizedName: string;
     name: string;
-    values: { value: number; docCount: number }[];
+    values: { value: number | string; docCount: number }[];
   }
 
   export interface RangeFacet {

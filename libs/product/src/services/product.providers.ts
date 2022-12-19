@@ -5,12 +5,19 @@ import {
   concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductListAdapter,
+  facetCategoryNormalizer,
+  FacetCategoryNormalizer,
+  FacetNormalizer,
+  FacetRangeNormalizer,
+  facetsNormalizer,
+  facetsRangeNormalizer,
   mediaNormalizer,
   mediaSetNormalizer,
   PriceNormalizer,
   priceNormalizer,
   ProductAdapter,
   ProductListAdapter,
+  productListNormalizer,
   ProductMediaNormalizer,
   ProductMediaSetNormalizer,
   productNormalizer,
@@ -21,7 +28,6 @@ import {
 } from './adapter/normalizers/labels/labels.normalizer';
 
 import { Provider } from '@spryker-oryx/injector';
-import { productListNormalizer } from './adapter/normalizers/product-list';
 import { componentsProvider } from './components.provider';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
@@ -61,6 +67,18 @@ export const productProviders: Provider[] = [
   {
     provide: PriceNormalizer,
     useValue: priceNormalizer,
+  },
+  {
+    provide: FacetNormalizer,
+    useValue: facetsNormalizer,
+  },
+  {
+    provide: FacetRangeNormalizer,
+    useValue: facetsRangeNormalizer,
+  },
+  {
+    provide: FacetCategoryNormalizer,
+    useValue: facetCategoryNormalizer,
   },
   {
     provide: AvailabilityNormalizer,

@@ -5,12 +5,12 @@ import {
   Product,
   ProductComponentMixin,
   ProductListPageService,
+  ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { map, switchMap } from 'rxjs';
-import { ProductListQualifier } from '../../src/models/product-list-qualifier';
 import { baseStyles } from './list.styles';
 
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {

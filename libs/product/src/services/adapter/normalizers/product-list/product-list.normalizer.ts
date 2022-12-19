@@ -1,10 +1,13 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/injector';
-import { map, Observable, of } from 'rxjs';
-import { Facet, FacetValue, ProductList } from '../../../../models';
+import { combineLatest, map, Observable } from 'rxjs';
+import { ProductList } from '../../../../models';
 import { ApiProductListModel } from '../../../../models/product-list.api.model';
 import { ConcreteProductsNormalizer } from '../concrete-products';
+import { FacetNormalizer } from '../facet';
+import { FacetCategoryNormalizer } from '../facet-category';
+import { FacetRangeNormalizer } from '../facet-range';
 import { DeserializedProductListIncludes } from '../model';
 import { DeserializedProductList } from './model';
 
@@ -22,137 +25,30 @@ export function concreteProductNormalizer(
     .pipe(map((products) => ({ products })));
 }
 
-export function productFacetsNormalizer(
-  data: [DeserializedProductList]
+export function productFacetNormalizer(
+  data: [DeserializedProductList],
+  transformer: TransformerService
 ): Observable<Partial<ProductList>> {
-  const normalize = (
-    facetList: (
-      | ApiProductListModel.ValueFacet
-      | ApiProductListModel.RangeFacet
-    )[]
-  ): Facet[] => {
-    return facetList.reduce((normalizedFacetList: Facet[], facet) => {
-      const { config, localizedName } = facet;
-
-      const facetValues = Object.prototype.hasOwnProperty.call(facet, 'values')
-        ? (() =>
-            (facet as unknown as ApiProductListModel.ValueFacet).values.reduce(
-              (
-                facetList: FacetValue[],
-                value: { value: number; docCount: number }
-              ) => {
-                if (!value.docCount) {
-                  return facetList;
-                }
-
-                const parsedFacedValue = {
-                  value: value.value,
-                  selected:
-                    (facet as ApiProductListModel.ValueFacet).activeValue
-                      ?.split(',')
-                      ?.includes(String(value.value)) ?? false,
-                  count: value.docCount,
-                };
-
-                return [...facetList, parsedFacedValue];
-              },
-              []
-            ))()
-        : (() => {
-            const rangeFacet =
-              facet as unknown as ApiProductListModel.RangeFacet;
-            return {
-              min: rangeFacet.min,
-              max: rangeFacet.max,
-              selected: {
-                max: rangeFacet.activeMax,
-                min: rangeFacet.activeMin,
-              },
-            };
-          })();
-
-      const isValuesArray = Array.isArray(facetValues);
-
-      if (isValuesArray ? facetValues.length : facetValues) {
-        const normalizedFacet = {
-          name: localizedName,
-          parameter: config.parameterName,
-          values: facetValues,
-          ...((facet as ApiProductListModel.ValueFacet).activeValue && {
-            selectedValues: (
-              facet as ApiProductListModel.ValueFacet
-            ).activeValue?.split(','),
-          }),
-          ...(config.isMultiValued && { multiValued: config.isMultiValued }),
-          ...(isValuesArray && {
-            valuesTreeLength: facetValues.length,
-          }),
-        };
-
-        return [...normalizedFacetList, normalizedFacet];
-      }
-
-      return normalizedFacetList;
-    }, []);
-  };
-
-  const parseCategoryTree = (
-    category: ApiProductListModel.TreeFacet[],
-    values: FacetValue[]
-  ): {
-    values: FacetValue[];
-    valuesTreeLength: number;
-  } => {
-    let valuesTreeLength = 0;
-
-    const parse = (
-      categoryTree: ApiProductListModel.TreeFacet[],
-      valuesList: FacetValue[]
-    ): FacetValue[] =>
-      categoryTree.reduce((treeList: FacetValue[], treeItem) => {
-        if (!treeItem.docCount) {
-          return treeList;
-        }
-
-        valuesTreeLength += 1;
-
-        const parsedTree = {
-          ...valuesList.find(
-            (valueList) => valueList.value === treeItem.nodeId
-          )!,
-          name: treeItem.name,
-          children: treeItem.children?.length
-            ? parse(treeItem.children, valuesList)
-            : [],
-        };
-
-        return [...treeList, parsedTree];
-      }, []);
-
-    const parsedValues = parse(category, values);
-
-    return { values: parsedValues, valuesTreeLength };
-  };
-
-  const normalizedValueFacets = normalize(data[0].valueFacets!);
-  const [categoryFacet] = normalizedValueFacets.splice(
-    normalizedValueFacets.findIndex((facet) => facet.parameter === 'category'),
+  const categoryFacet = data[0].valueFacets!.splice(
+    data[0].valueFacets!.findIndex((v) => v.name === 'category'),
     1
   );
 
-  return of({
-    facets: [
+  return combineLatest([
+    transformer.transform(
       {
-        ...categoryFacet,
-        ...parseCategoryTree(
-          data[0].categoryTreeFilter!,
-          categoryFacet.values as FacetValue[]
-        ),
+        categoryFacet: categoryFacet[0],
+        categoryTreeFilter: data[0].categoryTreeFilter,
       },
-      ...normalizedValueFacets,
-      ...normalize(data[0].rangeFacets!),
-    ],
-  });
+      FacetCategoryNormalizer
+    ),
+    transformer.transform(data[0].valueFacets, FacetNormalizer),
+    transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
+  ]).pipe(
+    map(([categoryFacet, facetValues, rangeValues]) => {
+      return { facets: [categoryFacet, ...facetValues, ...rangeValues] };
+    })
+  );
 }
 
 export const productListNormalizer: Provider[] = [
@@ -162,7 +58,7 @@ export const productListNormalizer: Provider[] = [
   },
   {
     provide: ProductListNormalizer,
-    useValue: productFacetsNormalizer,
+    useValue: productFacetNormalizer,
   },
 ];
 
