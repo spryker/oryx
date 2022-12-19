@@ -3,11 +3,13 @@ import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
   CheckoutOrchestrationService,
+  CheckoutStep,
   CheckoutStepType,
 } from '@spryker-oryx/checkout';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { hydratable } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
@@ -57,7 +59,14 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     step: CheckoutStepType
   ): TemplateResult {
     const heading = html` <oryx-heading slot="header">
-      <h5>${index + 1}. ${step}</h5>
+      <h5>
+        ${index + 1}.
+        ${asyncValue(
+          this.orchestrationService.getStep(step),
+          (step: Required<CheckoutStep> | null) =>
+            step ? html`${i18n(step.label)}` : html``
+        )}
+      </h5>
     </oryx-heading>`;
 
     switch (step) {

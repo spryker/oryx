@@ -3,18 +3,20 @@ import {
   combineLatest,
   map,
   Observable,
+  of,
   Subject,
   switchMap,
   tap,
 } from 'rxjs';
 import {
   CheckoutConfiguration,
+  CheckoutStep,
   CheckoutStepType,
   CheckoutTrigger,
   Validity,
   ValidityReport,
 } from '../models';
-import { CheckoutOrchestrationService } from './orchestration.service';
+import { CheckoutOrchestrationService } from './checkout-orchestration.service';
 
 interface StepData {
   trigger$: Subject<CheckoutTrigger | null>;
@@ -22,15 +24,23 @@ interface StepData {
 }
 
 const defaultCheckoutSteps = [
-  CheckoutStepType.Delivery,
-  CheckoutStepType.Shipping,
-  CheckoutStepType.Payment,
+  {
+    id: CheckoutStepType.Delivery,
+    label: 'checkout.delivery',
+  },
+  {
+    id: CheckoutStepType.Shipping,
+    label: 'checkout.shipping',
+  },
+  {
+    id: CheckoutStepType.Payment,
+    label: 'checkout.payment',
+  },
 ];
 
 export class DefaultCheckoutOrchestrationService
   implements CheckoutOrchestrationService
 {
-  protected checkoutSteps = defaultCheckoutSteps;
   protected stepsData: Map<CheckoutStepType, StepData> = new Map();
 
   protected validityTrigger$ = new BehaviorSubject(null);
@@ -46,8 +56,8 @@ export class DefaultCheckoutOrchestrationService
     })
   );
 
-  constructor(protected config: CheckoutConfiguration = defaultCheckoutSteps) {
-    this.initCheckoutData(config);
+  constructor(protected checkoutSteps = defaultCheckoutSteps) {
+    this.initCheckoutData(this.checkoutSteps);
   }
 
   getValidity(): Observable<ValidityReport[]> {
@@ -56,6 +66,11 @@ export class DefaultCheckoutOrchestrationService
 
   getTrigger(step: CheckoutStepType): Observable<CheckoutTrigger | null> {
     return this.stepsData.get(step)!.trigger$;
+  }
+
+  getStep(step: CheckoutStepType): Observable<Required<CheckoutStep> | null> {
+    const { id, label } = this.checkoutSteps.find((s) => s.id === step) ?? {};
+    return of(id ? { id, label: label ?? id } : null);
   }
 
   report(step: CheckoutStepType, isValid = true): void {
@@ -88,11 +103,9 @@ export class DefaultCheckoutOrchestrationService
     return combineLatest(validityStates);
   }
 
-  protected initCheckoutData(
-    steps: CheckoutConfiguration = this.checkoutSteps
-  ): void {
+  protected initCheckoutData(steps: CheckoutConfiguration): void {
     for (const step of steps) {
-      this.stepsData.set(step, {
+      this.stepsData.set(step.id, {
         trigger$: new Subject(),
         validity$: new BehaviorSubject<Validity>(Validity.Invalid),
       });
