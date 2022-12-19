@@ -32,17 +32,8 @@
         "staticDir": ["libs/ui/public"]
       }
     },
-    "generate-dep-tree": {
-      "executor": "./tools/executors/generate-dependency-tree:generate-dep-tree",
-      "options": {
-        "project": "storybook"
-      }
-    },
-    "check-dep-tree": {
-      "executor": "./tools/executors/check-dependency-tree:check-dep-tree",
-      "options": {
-        "project": "storybook"
-      }
+    "deps": {
+      "executor": "./tools/executors/dependency-tree:deps"
     },
     "visual-regression-pr": {
       "executor": "@nrwl/workspace:run-commands",

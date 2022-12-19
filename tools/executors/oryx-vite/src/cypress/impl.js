@@ -64,10 +64,8 @@ async function cypressViteExecutor(options, context) {
 }
 exports.default = cypressViteExecutor;
 class ViteServer {
-    server;
-    config;
-    isDevServer = false;
     constructor(config = {}, isDevServer = false) {
+        this.isDevServer = false;
         this.server = undefined;
         this.config = config;
         this.isDevServer = isDevServer;

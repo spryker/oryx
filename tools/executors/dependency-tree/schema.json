@@ -3,9 +3,10 @@
   "type": "object",
   "cli": "nx",
   "properties": {
-    "project": {
-      "type": "string",
-      "description": "Project which to check the dependencies for"
+    "update": {
+      "type": "boolean",
+      "description": "Flag for updating mode",
+      "default": false
     }
   }
 }

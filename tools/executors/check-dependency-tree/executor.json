@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "check-dep-tree": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
-      "description": "Runs `check-dep-tree` (to test executors out)."
-    }
-  }
-}
