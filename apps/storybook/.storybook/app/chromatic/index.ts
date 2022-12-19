@@ -1,3 +1,3 @@
-export * from './icon-chromatic.injectable';
+export * from './injectables';
+export * from './plugins';
 export * from './styles';
-export * from './theme-chromatic';

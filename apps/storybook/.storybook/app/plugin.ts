@@ -1,8 +1,8 @@
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { addons } from '@storybook/addons';
 import { SET_CURRENT_STORY } from '@storybook/core-events';
-import { theme } from './theme';
-import { SET_STORYBOOK_THEME } from './utils';
+import { resource, theme } from './data';
+import { SET_STORYBOOK_RESOURCE, SET_STORYBOOK_THEME } from './utils';
 // @ts-ignore
 import { initializeRTL } from 'storybook-addon-rtl';
 
@@ -18,6 +18,7 @@ export class StorybookPlugin implements AppPlugin {
 
     initializeRTL();
     addons.getChannel().emit(SET_STORYBOOK_THEME, theme);
+    addons.getChannel().emit(SET_STORYBOOK_RESOURCE, resource);
     addons.getChannel().on(SET_CURRENT_STORY, this.reloadInjector);
   }
 

@@ -4,10 +4,8 @@ import { removeElement } from '@spryker-oryx/testing';
 import { AjaxClient, wait } from '@spryker-oryx/utilities/typescript';
 import { html } from 'lit';
 import { SpyInstance } from 'vitest';
-import { microFrontendComponent } from './index';
 import { MicroFrontendComponent } from './micro-frontend';
-
-useComponent(microFrontendComponent);
+import { microFrontendComponent } from './micro-frontend.def';
 
 const host = 'https://my-microfrontend.com';
 
@@ -22,6 +20,10 @@ describe('micro-frontend', () => {
 
   let element: MicroFrontendComponent;
   let getSpy: SpyInstance;
+
+  beforeAll(async () => {
+    await useComponent(microFrontendComponent);
+  });
 
   beforeEach(() => {
     getSpy = vi.spyOn(AjaxClient, 'get');

@@ -1,7 +1,7 @@
+import { addLink, addScript } from '@spryker-oryx/launchpad-ui';
 import { AjaxClient } from '@spryker-oryx/utilities/typescript';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { addLink, addScript } from '../index';
 
 export interface EntryPoint {
   file: string;

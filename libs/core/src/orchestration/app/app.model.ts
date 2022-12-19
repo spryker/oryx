@@ -1,6 +1,7 @@
 import { InjectorOptions, Provider, Type } from '@spryker-oryx/injector';
 import { ComponentsInfo, ComponentsPluginOptions } from '../components';
-import { Resources, Theme } from '../theme';
+import { Resources } from '../resources';
+import { Theme } from '../theme';
 
 export const AppRef = 'FES.AppRef';
 

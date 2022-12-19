@@ -5,7 +5,8 @@ import {
   ComponentsPluginOptions,
 } from '../components';
 import { InjectionPlugin } from '../injection';
-import { Resources, Theme, ThemePlugin } from '../theme';
+import { ResourcePlugin, Resources } from '../resources';
+import { Theme, ThemePlugin } from '../theme';
 import { SimpleAppBuilder } from './app-builder';
 import { AppEnvironment } from './app-env';
 import {
@@ -22,7 +23,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   protected componentsInfo: ComponentsInfo = [];
   protected providers: Provider[] = [];
   protected options?: ModularAppBuilderOptions;
-  protected themes: Theme[] = [];
+  protected themes?: Theme[];
   protected resources?: Resources;
 
   withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
@@ -52,26 +53,18 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
 
   withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules {
     const features = Array.isArray(feature) ? feature : [feature];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const featureMapper: Record<string, (...args: any) => unknown> = {
+      providers: this.withProviders.bind(this),
+      components: this.withComponents.bind(this),
+      options: this.withOptions.bind(this),
+      plugins: this.with.bind(this),
+      resources: this.withResources.bind(this),
+    };
 
     for (const feat of features) {
-      if (feat.providers) {
-        this.withProviders(feat.providers);
-      }
-
-      if (feat.components) {
-        this.withComponents(feat.components);
-      }
-
-      if (feat.options) {
-        this.withOptions(feat.options);
-      }
-
-      if (feat.plugins) {
-        this.with(feat.plugins);
-      }
-
-      if (feat.resources) {
-        this.withResources(feat.resources);
+      for (const [key, value] of Object.entries(feat)) {
+        featureMapper[key](value);
       }
     }
 
@@ -79,7 +72,10 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   }
 
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules {
-    this.themes.push(...(Array.isArray(theme) ? theme : [theme]));
+    this.themes = [
+      ...(this.themes ?? []),
+      ...(Array.isArray(theme) ? theme : [theme]),
+    ];
     return this;
   }
 
@@ -105,8 +101,12 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       );
     }
 
-    if (this.themes.length) {
-      this.plugins.unshift(new ThemePlugin(this.themes, this.resources));
+    if (this.resources) {
+      this.plugins.unshift(new ResourcePlugin(this.resources));
+    }
+
+    if (this.themes) {
+      this.plugins.unshift(new ThemePlugin(this.themes));
     }
 
     if (this.componentsInfo.length) {

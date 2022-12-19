@@ -4,8 +4,7 @@ import { isPromise, ResourceInjectable } from '@spryker-oryx/utilities';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { DirectiveResult } from 'lit-html/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { Graphic } from '../orchestration';
-import { ResourceService } from '../services';
+import { AppRef, Graphic, ResourcePlugin } from '../orchestration';
 
 export class DefaultResourceInjectable implements ResourceInjectable {
   getUrl(token: string): DirectiveResult | undefined {
@@ -20,8 +19,8 @@ export class DefaultResourceInjectable implements ResourceInjectable {
     token: string,
     key: keyof Graphic
   ): DirectiveResult | undefined {
-    const resourcesService = resolve(ResourceService);
-    const value = resourcesService.getGraphicValue(token, key);
+    const resourcesPlugin = resolve(AppRef).findPlugin(ResourcePlugin);
+    const value = resourcesPlugin?.getGraphicValue(token, key);
     const render = (v: string): DirectiveResult | string =>
       key === 'source' ? unsafeHTML(v) : v;
 

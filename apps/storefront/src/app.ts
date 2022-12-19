@@ -1,9 +1,8 @@
 import { appBuilder } from '@spryker-oryx/core';
-import { b2cFeatures } from '@spryker-oryx/presets';
-import { storefrontTheme } from '@spryker-oryx/themes';
+import { b2cFeatures, b2cTheme } from '@spryker-oryx/presets';
 
 export const app = appBuilder()
   .withFeature(b2cFeatures)
-  .withTheme(storefrontTheme)
+  .withTheme(b2cTheme)
   .withEnvironment(import.meta.env)
   .create();

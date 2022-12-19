@@ -71,7 +71,9 @@ export class GlobalizeService {
       return this.globalizeCaches[localeId];
     }
 
-    return (this.globalizeCaches[localeId] = Globalize(localeId));
+    return (this.globalizeCaches[localeId] = (
+      Globalize as unknown as Globalize.Static
+    )(localeId));
   }
 
   protected async init(): Promise<void> {

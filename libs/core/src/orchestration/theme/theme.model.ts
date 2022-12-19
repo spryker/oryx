@@ -69,15 +69,3 @@ export interface Theme {
   icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
 }
-
-export interface Graphic {
-  type?: string;
-  url?: string;
-  source?: LazyLoadable<string>;
-}
-
-export type ResourceGraphic = Record<string, Graphic>;
-
-export interface Resources {
-  graphics?: ResourceGraphic;
-}

@@ -18,7 +18,7 @@ export const navigationStyles = css`
     overflow: hidden;
   }
 
-  svg {
+  oryx-image[resource='logo'] {
     fill: var(--oryx-color-ink);
     margin: 15px;
     width: 120px;
@@ -30,15 +30,15 @@ export const navigationStyles = css`
     align-items: stretch;
   }
 
-  :host([collapsed]) svg {
+  :host([collapsed]) oryx-image[resource='logo'] {
     margin-inline-start: 35px;
   }
 
-  .letter-logo {
-    transition: inherit;
+  oryx-image[resource='logo']::part(wordmark) {
+    transition: opacity var(--oryx-transition-time);
   }
 
-  :host([collapsed]) .letter-logo {
+  :host([collapsed]) oryx-image[resource='logo']::part(wordmark) {
     opacity: 0;
   }
 

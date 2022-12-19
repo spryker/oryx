@@ -245,7 +245,7 @@ export class ComponentsPlugin implements AppPlugin {
 
     const [componentType, themes] = await Promise.all([
       this.loadComponentImpl(def, meta),
-      this.theme.resolve(def),
+      this.theme?.resolve(def),
     ]);
 
     if (!componentType) {

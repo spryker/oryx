@@ -14,21 +14,20 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 import { productFeature } from '@spryker-oryx/product';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
+import { storefrontTheme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
+import { resourceGraphics } from '../../resources';
 
 const isPreview = new URLSearchParams(new URL(window.location.href).search).has(
   'ebPreview'
 );
 
-const b2cResources: Resources = {
+export const b2cResources: Resources = {
   graphics: {
-    logo: {
-      source: () =>
-        import('../../resources/graphics/full-logo').then((m) => m.default),
-    },
+    ...resourceGraphics,
   },
 };
 
@@ -53,3 +52,5 @@ export const b2cFeatures: AppFeature[] = [
     resources: b2cResources,
   },
 ];
+
+export const b2cTheme = { ...storefrontTheme };

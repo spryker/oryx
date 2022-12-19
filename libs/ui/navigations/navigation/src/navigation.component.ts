@@ -19,10 +19,7 @@ export class NavigationComponent extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <svg viewBox="0 0 121 50">
-        <use href="assets/full-logo.svg#logo" />
-        <use href="assets/full-logo.svg#text" class="letter-logo" />
-      </svg>
+      <oryx-image resource="logo"></oryx-image>
       <slot></slot>
       <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
         <oryx-icon type="back" size="medium"></oryx-icon>

@@ -1,19 +1,11 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import {
-  getPropByPath,
-  iconInjectable,
-  resourceInjectable,
-} from '@spryker-oryx/utilities';
+import { getPropByPath, iconInjectable } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
-import {
-  DefaultIconInjectable,
-  DefaultResourceInjectable,
-} from '../../injectables';
+import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import {
   DesignToken,
-  Resources,
   Theme,
   ThemeBreakpoints,
   ThemeData,
@@ -68,7 +60,7 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   };
   protected app?: App;
 
-  constructor(protected themes: Theme[], protected resources?: Resources) {
+  constructor(protected themes: Theme[] = []) {
     this.propertiesCollector(themes);
   }
 
@@ -78,10 +70,6 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
 
   getIcons(): ThemeIcons {
     return this.icons;
-  }
-
-  getResources(): Resources | undefined {
-    return this.resources;
   }
 
   getBreakpoints(): ThemeBreakpoints {
@@ -99,14 +87,6 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
   async apply(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
     const componentOptions = this.app?.findPlugin(ComponentsPlugin)!.options!;
-
-    if (Object.keys(this.icons).length) {
-      iconInjectable.inject(new DefaultIconInjectable());
-    }
-
-    if (this.resources) {
-      resourceInjectable.inject(new DefaultResourceInjectable());
-    }
 
     if (typeof componentOptions.root === 'string' && document.body) {
       const styles = document.createElement('style');
@@ -330,6 +310,10 @@ export class ThemePlugin implements AppPlugin, AppPluginBeforeApply {
         ...this.icons,
         ...icons,
       };
+    }
+
+    if (Object.keys(this.icons).length) {
+      iconInjectable.inject(new DefaultIconInjectable());
     }
 
     this.breakpointsOrder = Object.keys(this.breakpoints);
