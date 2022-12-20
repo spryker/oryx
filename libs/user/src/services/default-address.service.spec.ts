@@ -107,6 +107,48 @@ describe('DefaultAddressService', () => {
     });
   });
 
+  describe('getAddress', () => {
+    it('should return an observable', () => {
+      expect(service.getAddresses()).toBeInstanceOf(Observable);
+    });
+
+    describe('when address list is empty', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        adapter.getAll.mockReturnValue(of([]));
+      });
+
+      it('should return null', () => {
+        service.getAddress('test').subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('when address id is wrong', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
+      });
+
+      it('should return null', () => {
+        service.getAddress('test').subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('when address id is correct', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
+      });
+
+      it('should return null', () => {
+        service.getAddress(mockCurrentAddress.id as string).subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
+      });
+    });
+  });
+
   describe('getCurrentAddress', () => {
     it('should return an observable', () => {
       expect(service.getCurrentAddress()).toBeInstanceOf(Observable);

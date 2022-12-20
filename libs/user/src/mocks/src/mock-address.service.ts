@@ -7,9 +7,11 @@ export enum MockAddressType {
   Zero = 'zero',
   One = 'one',
   OneWithoutDefaults = 'one-without-defaults',
+  OneWithDefaults = 'one-with-defaults',
   Two = 'two',
   TwoWithoutDefaults = 'two-without-defaults',
   Three = 'three',
+  ThreeWithDefaults = 'three-with-defaults',
   ThreeWithoutDefaults = 'three-without-defaults',
   LongList = 'long-list',
 }
@@ -26,6 +28,14 @@ export class MockAddressService implements Partial<AddressService> {
     }));
   }
 
+  protected setDefaults(addresses: Address[]): Address[] {
+    return addresses.map((address, index) => ({
+      ...address,
+      isDefaultBilling: !index,
+      isDefaultShipping: !index,
+    }));
+  }
+
   changeMockCurrentAddress(address: Address): void {
     this.currentAddress$.next(address);
   }
@@ -38,12 +48,20 @@ export class MockAddressService implements Partial<AddressService> {
     return this.currentAddress$;
   }
 
+  getAddress(addressId: string): Observable<Address | null> {
+    return this.getAddresses().pipe(
+      map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
+    );
+  }
+
   getAddresses(): Observable<Address[] | null> {
     return this.type$.pipe(
       map((type) => {
         switch (type) {
           case MockAddressType.One:
             return [...mockNormalizedAddresses].slice(0, 1);
+          case MockAddressType.OneWithDefaults:
+            return this.setDefaults([...mockNormalizedAddresses].slice(0, 1));
           case MockAddressType.OneWithoutDefaults:
             return this.setAsNoDefaults(
               [...mockNormalizedAddresses].slice(0, 1)
@@ -56,6 +74,8 @@ export class MockAddressService implements Partial<AddressService> {
             );
           case MockAddressType.Three:
             return [...mockNormalizedAddresses];
+          case MockAddressType.ThreeWithDefaults:
+            return this.setDefaults([...mockNormalizedAddresses]);
           case MockAddressType.ThreeWithoutDefaults:
             return this.setAsNoDefaults([...mockNormalizedAddresses]);
           case MockAddressType.LongList:

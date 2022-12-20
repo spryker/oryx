@@ -9,7 +9,7 @@ export default {
 } as unknown as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html` ${renderSelector(MockAddressType.One)} `;
+  return html` ${renderSelector(MockAddressType.OneWithDefaults)} `;
 };
 
 export const Single = Template.bind({});

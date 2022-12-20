@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { HttpTestService } from '@spryker-oryx/core/testing';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { FormRenderer } from '@spryker-oryx/form';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
@@ -67,7 +66,6 @@ class MockAddressFormService implements Partial<AddressFormService> {
 
 describe('AddressFormComponent', () => {
   let element: AddressFormComponent;
-  let http: HttpTestService;
   let renderer: MockFormRenderer;
   let formService: MockAddressFormService;
   let countryService: MockCountryService;

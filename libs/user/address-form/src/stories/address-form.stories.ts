@@ -10,7 +10,7 @@ interface Props {
   country: string;
 }
 
-const Template: Story = (props): TemplateResult => {
+const Template: Story<Props> = (props): TemplateResult => {
   return html`<oryx-address-form
     .country="${props.country}"
   ></oryx-address-form>`;

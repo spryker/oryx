@@ -31,10 +31,16 @@ export class DefaultAddressService implements AddressService {
     return combineLatest([this.userChanged$, this.currentAddress$]).pipe(
       switchMap(([userChanged, address]) => {
         if (userChanged) {
-          return this.loadAddresses().pipe(map((addresses) => address));
+          return this.loadAddresses().pipe(map(() => address));
         }
         return of(address);
       })
+    );
+  }
+
+  getAddress(addressId: string): Observable<Address | null> {
+    return this.getAddresses().pipe(
+      map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
     );
   }
 

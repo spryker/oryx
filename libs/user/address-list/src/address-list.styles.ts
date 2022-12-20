@@ -8,25 +8,12 @@ export const styles = css`
     gap: 10px;
   }
 
-  .details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+  oryx-address-list-item {
+    padding: 0;
   }
 
-  .controls {
-    display: flex;
-    width: 100%;
-    margin: 0 -3px;
-  }
-
-  .controls.selectable {
-    padding-inline-start: 27px;
-  }
-
-  .controls > * {
-    margin-inline-end: 10px;
+  :not([selected]) oryx-address-list-item {
+    border: var(--oryx-border-thick) solid transparent;
   }
 
   slot[name='empty'] {

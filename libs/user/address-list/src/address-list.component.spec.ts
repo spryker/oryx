@@ -1,23 +1,19 @@
-import { fixture } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { TileComponent } from '@spryker-oryx/ui/tile';
 import { AddressService } from '@spryker-oryx/user';
-import {
-  mockAddressBase,
-  mockCurrentAddressBase,
-} from '@spryker-oryx/user/mocks';
+import { mockAddress, mockCurrentAddress } from '@spryker-oryx/user/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { AddressListComponent } from './address-list.component';
 import { addressListComponent } from './address-list.def';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi
-    .fn()
-    .mockReturnValue(of([mockCurrentAddressBase, mockAddressBase]));
+  getAddresses = vi.fn().mockReturnValue(of([mockCurrentAddress, mockAddress]));
 }
 
-describe('AddressFormComponent', () => {
+describe('AddressListComponent', () => {
   let element: AddressListComponent;
   let service: MockAddressService;
 
@@ -38,6 +34,8 @@ describe('AddressFormComponent', () => {
     service = testInjector.inject(
       AddressService
     ) as unknown as MockAddressService;
+
+    element = await fixture(html`<oryx-address-list></oryx-address-list>`);
   });
 
   afterEach(() => {
@@ -46,17 +44,18 @@ describe('AddressFormComponent', () => {
   });
 
   it('passes the a11y audit', async () => {
-    element = await fixture(html`<oryx-address-list></oryx-address-list>`);
-
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should render empty slot if no addresses', async () => {
-    service.getAddresses.mockReturnValue(of(null));
-    element = await fixture(html`<oryx-address-list></oryx-address-list>`);
-    const emptySlot = element.renderRoot.querySelector('slot[name="empty"]');
+  describe('when has not addresses', () => {
+    beforeEach(async () => {
+      service.getAddresses.mockReturnValue(of(null));
+      element = await fixture(html`<oryx-address-list></oryx-address-list>`);
+    });
 
-    expect(emptySlot).not.toBe(null);
+    it('should render empty slot', async () => {
+      expect(element).toContainElement('slot[name="empty"]');
+    });
   });
 
   describe('when "selectable" option is provided', () => {
@@ -75,40 +74,6 @@ describe('AddressFormComponent', () => {
     });
   });
 
-  describe('when "editable" option is provided', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-address-list
-          .options=${{
-            editable: true,
-          }}
-        ></oryx-address-list>`
-      );
-    });
-
-    it('should render controls', async () => {
-      expect(element).toContainElement('.controls');
-    });
-  });
-
-  describe('when addresses are not provided', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      service.getAddresses.mockReturnValue(of(null));
-      element = await fixture(
-        html`<oryx-address-list
-          @oryx.select=${callback}
-          .options=${{ selectable: true }}
-        ></oryx-address-list>`
-      );
-    });
-
-    it('should not emit select event', () => {
-      expect(callback).not.toHaveBeenCalled();
-    });
-  });
-
   describe('when addresses are provided', () => {
     const callback = vi.fn();
 
@@ -121,56 +86,33 @@ describe('AddressFormComponent', () => {
       );
     });
 
-    it('should not emit select event', () => {
+    it('should emit select event', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { address: expect.any(Object) } })
       );
     });
-  });
 
-  describe('when edit button is clicked', () => {
-    const callback = vi.fn();
+    describe('and selected address was changed', () => {
+      beforeEach(async () => {
+        (
+          element.renderRoot.querySelector(
+            'oryx-tile:nth-child(2) input'
+          ) as HTMLInputElement
+        ).dispatchEvent(new InputEvent('change'));
 
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-address-list
-          @oryx.edit=${callback}
-          .options=${{ editable: true }}
-        ></oryx-address-list>`
-      );
+        element.requestUpdate();
+        await elementUpdated(element);
+      });
 
-      (
-        element.renderRoot.querySelector(
-          'oryx-button:nth-child(1) > button'
-        ) as HTMLButtonElement
-      )?.click();
-    });
-
-    it('should emit edit event', () => {
-      expect(callback).toHaveBeenCalled();
-    });
-  });
-
-  describe('when remove button is clicked', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-address-list
-          @oryx.remove=${callback}
-          .options=${{ editable: true }}
-        ></oryx-address-list>`
-      );
-
-      (
-        element.renderRoot.querySelector(
-          'oryx-button:nth-child(2) > button'
-        ) as HTMLButtonElement
-      )?.click();
-    });
-
-    it('should emit remove event', () => {
-      expect(callback).toHaveBeenCalled();
+      it('should select the second address', () => {
+        expect(
+          (
+            element.renderRoot.querySelector(
+              'oryx-tile:nth-child(2)'
+            ) as TileComponent
+          ).hasAttribute('selected')
+        ).toBe(true);
+      });
     });
   });
 });

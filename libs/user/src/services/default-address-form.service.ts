@@ -14,7 +14,7 @@ export class DefaultAddressFormService implements AddressFormService {
 
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm | null> {
     return this.adapter.get(qualifier).pipe(
-      catchError((e) => {
+      catchError(() => {
         //TODO - still under consideration
         /*
         if (e.status !== 404) {

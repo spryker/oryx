@@ -45,7 +45,7 @@ export class AddressBookComponent extends ComponentMixin() {
 
   protected renderListState(): TemplateResult {
     return html`
-      <oryx-button>
+      <oryx-button outline>
         <button @click=${(): void => this.changeState(AddressBookState.Add)}>
           <oryx-icon type="add"></oryx-icon>
           ${i18n('user.address.add-address')}

@@ -1,31 +1,25 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
-import { Address, AddressService, formatAddress } from '@spryker-oryx/user';
-import { hydratable, isDefined } from '@spryker-oryx/utilities';
+import { Address, AddressService } from '@spryker-oryx/user';
+import { AddressListItemOptions } from '@spryker-oryx/user/address-list-item';
+import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { when } from 'lit/directives/when.js';
 import {
   combineLatest,
   distinctUntilChanged,
   map,
   ReplaySubject,
-  take,
   tap,
 } from 'rxjs';
-import {
-  AddressListOptions,
-  AddressType,
-  EDIT_EVENT,
-  REMOVE_EVENT,
-  SELECT_EVENT,
-} from './address-list.model';
+import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
 @hydratable('window:load')
-export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
+export class AddressListComponent extends ComponentMixin<AddressListItemOptions>() {
   static styles = styles;
 
   protected selectedAddress$ = new ReplaySubject<Address | null>(1);
@@ -34,7 +28,13 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
   protected handle$ = this.selectedAddress$.pipe(
     tap((address) => {
       if (address) {
-        this.emitEvent(SELECT_EVENT, address);
+        this.dispatchEvent(
+          new CustomEvent(SELECT_EVENT, {
+            bubbles: true,
+            composed: true,
+            detail: { address },
+          })
+        );
       }
     }),
     distinctUntilChanged()
@@ -52,12 +52,22 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
       }
 
       const defaultAddress = addresses?.find((address) =>
-        this.isDefault(address, options?.defaultType)
+        this.isDefault(address, options)
       );
 
       this.selectedAddress$.next(defaultAddress ?? addresses?.[0] ?? null);
     })
   );
+
+  protected isDefault(
+    address: Address,
+    options: AddressListItemOptions
+  ): boolean {
+    return (
+      !!(options.defaultShipping && address?.isDefaultShipping) ||
+      !!(options.defaultBilling && address?.isDefaultBilling)
+    );
+  }
 
   protected data$ = combineLatest([
     this.addresses$,
@@ -66,117 +76,55 @@ export class AddressListComponent extends ComponentMixin<AddressListOptions>() {
     map(
       ([addresses, selectedAddress]): [
         Address[] | null,
-        Partial<AddressListOptions>,
+        Partial<AddressListItemOptions>,
         Address | null
       ] => [...addresses, selectedAddress]
     )
   );
 
-  protected isDefault(
-    address: Address,
-    type: AddressType = AddressType.Shipping
-  ): boolean {
-    return type === AddressType.Shipping
-      ? address?.isDefaultShipping ?? false
-      : address?.isDefaultBilling ?? false;
+  protected onChange(address: Address): void {
+    this.selectedAddress$.next(address);
   }
 
-  protected onChange(e: Event): void {
-    const radio = e.target as HTMLInputElement;
-
-    this.addresses$
-      .pipe(
-        take(1),
-        tap(([addresses]) => {
-          this.selectedAddress$.next(
-            addresses?.find((address) => address.id === radio.value) ?? null
-          );
-        })
-      )
-      .subscribe();
-  }
-
-  protected emitEvent(event: string, address: Address): void {
-    this.dispatchEvent(
-      new CustomEvent(event, {
-        bubbles: true,
-        composed: true,
-        detail: { address },
-      })
-    );
+  protected renderEmptyMessage(): TemplateResult {
+    return html` <slot name="empty">
+      <oryx-icon type="location" size="large"></oryx-icon>
+      ${i18n('user.address.no-addresses')}
+    </slot>`;
   }
 
   protected override render(): TemplateResult {
     return html`${asyncValue(
       this.data$,
       ([addresses, options, selectedAddress]) => {
-        const { selectable, editable, defaultType } = options;
-
         if (!addresses || !addresses.length) {
-          return html` <slot name="empty">
-            <oryx-icon type="location" size="large"></oryx-icon>
-            ${i18n('user.address.no-addresses')}
-          </slot>`;
+          return this.renderEmptyMessage();
         }
 
         return html`${repeat(
           addresses,
           (address) => address.id,
           (address) => {
-            const isSelected = selectable
-              ? selectedAddress?.id === address.id
-              : false;
+            const selected = !!(
+              options.selectable && selectedAddress?.id === address.id
+            );
 
-            return html`<oryx-tile .selected=${isSelected}>
-              <div>
-                <div class="details">
-                  <oryx-radio>
-                    ${when(
-                      selectable,
-                      () => html`<input
-                        name="address"
-                        type="radio"
-                        value="${isDefined(address.id) ? address.id : ''}"
-                        ?checked=${isSelected}
-                        @change=${this.onChange}
-                      />`
-                    )}
-                    ${formatAddress(address)}
-                  </oryx-radio>
-                  ${when(
-                    this.isDefault(address, defaultType),
-                    () =>
-                      html`<oryx-chip
-                        >${i18n('user.address.default')}</oryx-chip
-                      >`
-                  )}
-                </div>
+            return html`<oryx-tile ?selected=${selected}>
+              <oryx-address-list-item
+                .addressId=${address.id}
+                .options=${options}
+              >
                 ${when(
-                  editable,
-                  () =>
-                    html`<div
-                      class="controls ${selectable ? 'selectable' : ''}"
-                    >
-                      <oryx-button type="text">
-                        <button
-                          @click=${(): void =>
-                            this.emitEvent(EDIT_EVENT, address)}
-                        >
-                          ${i18n('user.address.edit')}
-                        </button>
-                      </oryx-button>
-
-                      <oryx-button type="text">
-                        <button
-                          @click=${(): void =>
-                            this.emitEvent(REMOVE_EVENT, address)}
-                        >
-                          ${i18n('user.address.remove')}
-                        </button>
-                      </oryx-button>
-                    </div>`
+                  options.selectable,
+                  () => html`<input
+                    name="address"
+                    type="radio"
+                    value="${address.id as string}"
+                    ?checked=${selected}
+                    @change=${() => this.onChange(address)}
+                  />`
                 )}
-              </div>
+              </oryx-address-list-item>
             </oryx-tile>`;
           }
         )}`;
