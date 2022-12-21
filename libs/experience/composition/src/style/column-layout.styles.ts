@@ -1,5 +1,6 @@
 import { Breakpoint } from '@spryker-oryx/experience';
-import { css, CSSResult, unsafeCSS } from 'lit';
+import { css, CSSResult } from 'lit';
+import { selector } from './utils';
 
 /**
  * Allows to render composition items in a single column. Column items
@@ -9,8 +10,8 @@ import { css, CSSResult, unsafeCSS } from 'lit';
  * (by browser nature) to a `flex: auto`, which means that they are equally
  * divided over the horizontal axis.
  */
-export const columnLayout = (breakpoint: Breakpoint): CSSResult => css`
-  :host(.${unsafeCSS(breakpoint)}-layout-column) {
+export const columnLayout = (breakpoint?: Breakpoint): CSSResult => css`
+  :host(.${selector('layout-column', breakpoint)}) {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;

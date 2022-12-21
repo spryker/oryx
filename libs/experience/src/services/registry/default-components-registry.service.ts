@@ -9,8 +9,7 @@ import { ComponentsRegistryService } from './components-registry.service';
 export class DefaultComponentsRegistryService
   implements ComponentsRegistryService
 {
-  protected readonly componentsPlugin =
-    this.appRef.requirePlugin(ComponentsPlugin);
+  protected readonly componentsPlugin: ComponentsPlugin;
   protected componentMapping?: ComponentMapping;
 
   constructor(
@@ -21,6 +20,7 @@ export class DefaultComponentsRegistryService
       (acc, components) => ({ ...acc, ...components }),
       {}
     );
+    this.componentsPlugin = this.appRef.requirePlugin(ComponentsPlugin);
   }
 
   resolveTag(type: string): string {

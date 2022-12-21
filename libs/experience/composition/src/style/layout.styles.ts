@@ -19,12 +19,23 @@ const layoutStylesGenerator = (bp: Breakpoint): CSSResult => css`
   }
 `;
 
+const baseLayouts = css`
+  ${stickyLayout()}
+  ${columnLayout()}
+  ${gridLayout()}
+  ${carouselLayout()}
+`;
+
 /**
  * the ordering of styles is very important for their correct cascading
  * need to keep the order to prevent wrong priorities of styles,
  * especially for different sizes of the screens
  */
-export const layoutStyles = [baseLayoutStyles, containerLayoutStyles];
+export const layoutStyles = [
+  baseLayoutStyles,
+  baseLayouts,
+  containerLayoutStyles,
+];
 
 export const layoutScreenStyles: ThemeStylesWithMedia[] = [
   ...baseLayoutScreenStyles,

@@ -60,7 +60,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
      * To overcome this limitation need to check presence of any other elements
      * inside component, except for style elements
      */
-    return !this.renderRoot.querySelector(':not(style)');
+    return !this.renderRoot.querySelector(':not(:is(slot, style))');
   }
 
   protected shouldRenderChildren(): boolean {
@@ -96,6 +96,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
 
   protected override render(): TemplateResult {
     return html`
+      <slot></slot>
       ${asyncValue(
         this.components$,
         (components) =>

@@ -1,12 +1,13 @@
 import { Breakpoint } from '@spryker-oryx/experience';
-import { css, CSSResult, unsafeCSS } from 'lit';
+import { css, CSSResult } from 'lit';
+import { selector } from './utils';
 
 /**
  * Provides carousel layout for compositions or components by adding a scrollable
  * element that contains child elements that are divided by item count (`--oryx-layout-item-count`).
  */
-export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
-  :host(.${unsafeCSS(breakpoint)}-layout-carousel) {
+export const carouselLayout = (breakpoint?: Breakpoint): CSSResult => css`
+  :host(.${selector('layout-carousel', breakpoint)}) {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -16,7 +17,8 @@ export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
     align-items: stretch;
   }
 
-  :host(.${unsafeCSS(breakpoint)}-layout-carousel) > * {
+  :host(.${selector('layout-carousel', breakpoint)}) > *,
+  :host(.${selector('layout-carousel', breakpoint)}) ::slotted(*) {
     flex: 0 0
       var(
         --oryx-layout-item-width,
@@ -32,7 +34,8 @@ export const carouselLayout = (breakpoint: Breakpoint): CSSResult => css`
       );
   }
 
-  :host(.${unsafeCSS(breakpoint)}-layout-carousel) > :defined {
+  :host(.${selector('layout-carousel', breakpoint)}) > :defined,
+  :host(.${selector('layout-carousel', breakpoint)}) ::slotted(*) {
     scroll-snap-align: start;
   }
 `;
