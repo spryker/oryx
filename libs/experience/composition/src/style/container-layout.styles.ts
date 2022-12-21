@@ -13,7 +13,10 @@ import { css } from 'lit';
 export const containerLayoutStyles = css`
   :host([class*='-container']:not([class*='-jumbotron'])) {
     margin: auto;
-    max-width: min(100%, var(--oryx-container-width));
+    max-width: min(
+      calc(100% - (2 * var(--oryx-container-padding))),
+      var(--oryx-container-width)
+    );
   }
 
   :host([class*='-container'][class*='-has-margin']:not([class*='-jumbotron'])) {
@@ -32,6 +35,9 @@ export const containerLayoutStyles = css`
   }
 
   :host([class*='-container'][class*='-jumbotron']) {
-    padding-inline: calc((100% - var(--oryx-container-width)) / 2);
+    padding-inline: max(
+      var(--oryx-container-padding),
+      calc((100% - var(--oryx-container-width)) / 2)
+    );
   }
 `;

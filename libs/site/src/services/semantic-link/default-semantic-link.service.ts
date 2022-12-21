@@ -22,6 +22,7 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       `/category/${link.id}${
         link.params ? `?${this.getUrlParams(link.params)}` : ''
       }`,
+    [SemanticLinkType.Cart]: (): string => '/cart',
     [SemanticLinkType.Checkout]: (): string => '/checkout',
   };
 

@@ -5,8 +5,11 @@ import { css } from 'lit';
 
 export const baseStyles = css`
   :host {
-    padding-inline: 4px;
-    scroll-padding-inline: 4px;
+    --oryx-layout-gap: 10px;
+
+    padding-inline: 8px;
+    padding-block: 8px 16px;
+    scroll-padding-inline: 8px;
   }
 
   :host(.xl-layout-carousel) {

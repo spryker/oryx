@@ -9,28 +9,20 @@ export const styles = css`
     letter-spacing: 0.005em;
     color: var(--oryx-color-ink);
     background-color: var(--oryx-color-canvas-100);
+    min-height: 100vh;
   }
 
   ::placeholder {
     color: var(--oryx-color-placeholder);
   }
 
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  [uid='header'] {
+    /* required to ensure that sub elements in the header can become sticky; unclear why */
+    display: inline;
   }
 
-  nav .products {
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    flex: 1;
-    font-size: 0.8em;
-  }
-
-  nav .link {
-    margin: 0 12px;
-    color: var(--oryx-color-canvas-100, #ffffff);
+  outlet {
+    display: block;
+    padding-top: 30px;
   }
 `;

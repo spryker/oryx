@@ -82,10 +82,17 @@ export interface StyleProperties {
   width?: string;
 
   justify?: string;
+
+  /**
+   * Specifies the stack order of a component. This is useful in combination with sticky layouts,
+   * where the stacking order cannot be controlled by static css rules.
+   */
+  zIndex?: number;
 }
 
 export const enum LayoutAlign {
   Start = 'start',
   Stretch = 'stretch',
   End = 'end',
+  Center = 'center',
 }

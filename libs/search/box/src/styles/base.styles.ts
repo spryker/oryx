@@ -8,8 +8,6 @@ export const baseStyles = css`
     --oryx-border-radius: 2px;
     --oryx-popover-vertical-offset: 0;
     --oryx-popover-distance: 62px;
-
-    max-width: 400px;
   }
 
   [slot='option'] {

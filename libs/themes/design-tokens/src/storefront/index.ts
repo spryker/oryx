@@ -34,5 +34,16 @@ export const storefrontTokens: DesignToken[] = [
       screen: Size.Md,
     },
     ...typographyMediumTokens,
+    container: {
+      padding: '30px',
+    },
+  },
+  {
+    media: {
+      screen: Size.Lg,
+    },
+    container: {
+      padding: '50px',
+    },
   },
 ];

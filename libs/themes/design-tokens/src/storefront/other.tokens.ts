@@ -3,9 +3,10 @@ import { ThemeToken } from '@spryker-oryx/core';
 export const tokens: ThemeToken = {
   container: {
     width: '1340px',
+    padding: '10px',
   },
   layout: {
-    gap: '10px',
+    gap: '0px',
   },
   box: {
     shadow: {

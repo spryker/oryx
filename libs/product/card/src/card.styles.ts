@@ -21,7 +21,6 @@ export const ProductCardStyles = css`
   :host(:is(:hover, :focus-within)) {
     --line-clamp: 0;
 
-    z-index: 1;
     box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color-2);
     border-color: var(--oryx-color-canvas-500);
   }

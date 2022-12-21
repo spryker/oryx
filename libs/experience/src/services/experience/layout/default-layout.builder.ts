@@ -140,11 +140,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add('border-radius', this.getRuleValue(data.radius));
     add('border', data.border);
     add('background', data.background);
+    add('--oryx-layout-item-width', this.getRuleValue(data.width));
 
-    if (data.width) {
-      // width is explicitly set to accommodate flex box systems
-      add('--oryx-layout-item-width', this.getRuleValue(data.width));
-      add('flex', `0 0 ${this.getRuleValue(data.width)}`);
+    if (data.zIndex !== undefined) {
+      add('--oryx-z-index', data.zIndex.toString());
     }
 
     return styles;

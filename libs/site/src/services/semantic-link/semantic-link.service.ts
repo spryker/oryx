@@ -12,6 +12,7 @@ export enum SemanticLinkType {
   Product = 'product',
   Category = 'category',
   Checkout = 'checkout',
+  Cart = 'cart',
 }
 
 export interface SemanticLinkService {

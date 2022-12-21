@@ -43,6 +43,18 @@ export const mockCartEntry3: CartEntry = {
   },
 };
 
+export const mockCartEntry4: CartEntry = {
+  sku: '4',
+  groupKey: 'groupKey',
+  abstractSku: 'abstractSku',
+  quantity: 150,
+  calculations: {
+    unitPrice: 1,
+    sumPrice: 150,
+    sumPriceToPayAggregation: 150,
+  },
+};
+
 const mockFullCartTotals: CartTotals = {
   subtotal: 161942,
   grandTotal: 149867,
@@ -143,6 +155,12 @@ export const mockCartWithMultipleProducts: Cart = {
   ...mockBaseCart,
   id: 'multiple',
   products: [mockCartEntry, mockCartEntry2, mockCartEntry3],
+};
+
+export const mockCartLarge: Cart = {
+  ...mockBaseCart,
+  id: 'large',
+  products: [mockCartEntry, mockCartEntry2, mockCartEntry3, mockCartEntry4],
 };
 
 export const mockGetCartsResponse: ApiCartModel.Response = {

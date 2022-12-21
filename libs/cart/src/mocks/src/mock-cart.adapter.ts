@@ -13,6 +13,7 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
 import {
   mockCartEntry,
+  mockCartLarge,
   mockCartWithDiscount,
   mockCartWithExpense,
   mockCartWithMultipleProducts,
@@ -29,6 +30,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     mockEmptyCart as Cart,
     mockCartWithExpense,
     mockCartWithDiscount,
+    mockCartLarge,
     mockCartWithTax,
     mockCartWithMultipleProducts,
   ];

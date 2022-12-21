@@ -19,12 +19,11 @@ export const baseLayoutStyles = css`
     :host,
     :host([class*='-layout-']) > * {
       box-sizing: border-box;
-      min-width: 0;
       height: auto;
     }
 
     :host([class*='-layout-']) > * {
-      width: 100%;
+      flex-basis: var(--oryx-layout-item-width);
       height: var(--oryx-layout-height, 100%);
     }
 
@@ -34,7 +33,6 @@ export const baseLayoutStyles = css`
 
     :host([class*='-layout-']) > *[class*='has-margin'] {
       margin: var(--oryx-layout-margin, 0);
-      width: calc(100% - (var(--oryx-layout-margin, 0px) * 2));
       height: calc(
         var(--oryx-layout-height, 100%) - (var(--oryx-layout-margin, 0px) * 2)
       );

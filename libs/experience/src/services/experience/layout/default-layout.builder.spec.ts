@@ -49,7 +49,7 @@ describe('DefaultLayoutBuilder', () => {
     });
     describe(`when the ${key} is not configured`, () => {
       beforeEach(() => populate({}));
-      it('should generate the rule', () => {
+      it('should not generate the rule', () => {
         expect(styles).toBeUndefined();
       });
     });
@@ -121,14 +121,11 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule('bottom', '10px', 'bottom:10px;');
     expectStyleRuleWithUnit('bottom', '10', 'bottom');
 
-    expectStyleRule(
-      'width',
-      '50%',
-      '--oryx-layout-item-width:50%;flex:0 0 50%'
-    );
+    expectStyleRule('width', '50%', '--oryx-layout-item-width:50%');
     expectStyleRuleWithUnit('width', '10', '--oryx-layout-item-width');
 
     expectStyleRule('span', '4', '--oryx-layout-span:4');
+    expectStyleRule('zIndex', '3', '--oryx-z-index:3');
 
     expectStyleRule('background', 'red', 'background:red;');
   });

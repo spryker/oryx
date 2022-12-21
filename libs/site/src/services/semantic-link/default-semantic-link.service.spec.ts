@@ -97,6 +97,20 @@ describe('DefaultLinkService', () => {
       });
     });
 
+    describe('when type equal "SemanticLinkType.Cart"', () => {
+      beforeEach(() => {
+        const link: SemanticLink = {
+          type: SemanticLinkType.Cart,
+        };
+        callback = vi.fn();
+        service.get(link).subscribe(callback);
+      });
+
+      it('should resolve link to cart page', () => {
+        expect(callback).toHaveBeenCalledWith('/cart');
+      });
+    });
+
     describe('when type equal "SemanticLinkType.Checkout"', () => {
       beforeEach(() => {
         const link: SemanticLink = {

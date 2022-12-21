@@ -70,7 +70,6 @@ export class DefaultRouter extends Router {
   }
 
   override outlet(): TemplateResult {
-    const result = html`<outlet>${super.outlet()}</outlet>`;
-    return result;
+    return html`<outlet>${super.outlet()}</outlet>`;
   }
 }

@@ -1,9 +1,9 @@
 import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui/utilities';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface MiniCartVariant extends Variant {
   options: {
-    quantity: number;
     className?: string;
   };
 }
@@ -21,21 +21,6 @@ enum CategoryX {
   FOCUSED = 'Focused',
   ACTIVE = 'Active',
 }
-
-const getQuantity = (categoryY: CategoryY): number => {
-  switch (categoryY) {
-    case CategoryY.ZERO:
-      return 0;
-    case CategoryY.ONE:
-      return 5;
-    case CategoryY.TWO:
-      return 56;
-    case CategoryY.THREE:
-      return 156;
-    default:
-      return 0;
-  }
-};
 
 const getPseudoClass = (categoryX: CategoryX): string => {
   switch (categoryX) {
@@ -60,7 +45,6 @@ export const generateVariants = (): MiniCartVariant[] => {
         categoryX,
         options: {
           className: getPseudoClass(categoryX),
-          quantity: getQuantity(categoryY),
         },
       });
     });
@@ -69,14 +53,20 @@ export const generateVariants = (): MiniCartVariant[] => {
   return result;
 };
 
-export const getTemplate = (): TemplateResult => html`
-  ${generateVariantsMatrix(
-    generateVariants(),
-    ({ options: { quantity, className } }) => html`
-      <div class=${className}>
-        <mini-cart .options=${{ quantity }}></mini-cart>
-      </div>
-    `,
-    { hideYAxisName: true }
+export const getTemplate = (ids: string[] = []): TemplateResult => html`
+  ${ids.map(
+    (id) => html`<h3>${id}</h3>
+      ${generateVariantsMatrix(
+        generateVariants(),
+        ({ options: { className } }) => html`
+          <div class=${ifDefined(className)}>
+            <oryx-cart-summary
+              cartId=${id}
+              .options=${{ maxVisibleQuantity: 99 }}
+            ></oryx-cart-summary>
+          </div>
+        `,
+        { hideYAxisName: true }
+      )} `
   )}
 `;
