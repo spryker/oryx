@@ -1,4 +1,5 @@
 import { inject } from '@spryker-oryx/injector';
+import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   EMPTY,
@@ -7,54 +8,90 @@ import {
   map,
   Observable,
   ReplaySubject,
-  share,
+  shareReplay,
+  tap,
 } from 'rxjs';
 import { RouterEvent, RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
+import { MediaExperienceService } from './media-experience-service';
 import { Component } from './models';
+import { sendPostMessage } from './utilities';
 
 export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
-interface ExperiencePreviewEvent extends MessageEvent {
-  data: {
-    type?: string;
-    structure?: any;
-    content?: any;
-    interaction?: any;
-    options?: any;
-    route?: any;
+interface ExperiencePreviewData {
+  type?: string;
+  structure?: {
+    id: string;
+    type: string;
+    components: Component[];
   };
+  content?: any;
+  interaction?: any;
+  options?: any;
+  route?: any;
 }
+export type ExperiencePreviewEvent = MessageEvent<ExperiencePreviewData>;
 
 export class PreviewExperienceService extends DefaultExperienceService {
-  constructor(protected routerService = inject(RouterService)) {
+  constructor(
+    protected routerService = inject(RouterService),
+    protected mediaEbService = inject(MediaExperienceService)
+  ) {
     super();
 
-    this.structureDataEvent$.subscribe(
-      (structure: { id: string; type: string; components: Component[] }) => {
-        if (!this.dataComponent[structure.id]) {
-          this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
-        }
+    this.structureDataEvent$.subscribe();
+    this.contentDataEvent$.subscribe();
+    this.optionsDataEvent$.subscribe();
+    this.routeDataEvent$.subscribe();
 
-        this.dataComponent[structure.id].next(structure);
+    this.routerService
+      .getEvents(RouterEventType.NavigationEnd)
+      .subscribe((event: RouterEvent) => {
+        this.routeChangeHandler(event.route);
+      });
 
-        if (Array.isArray(structure.components)) {
-          structure.components.forEach((item: Component) => {
-            if (item.id) {
-              if (!this.dataComponent[item.id]) {
-                this.dataComponent[item.id] = new ReplaySubject<Component>(1);
-              }
+    this.mediaEbService.initialize();
+  }
 
-              this.dataComponent[item.id].next(item);
-            }
-          });
-          this.processComponent(structure);
-        }
+  protected experiencePreviewEvent$ =
+    typeof window !== 'undefined'
+      ? fromEvent<ExperiencePreviewEvent>(window, 'message').pipe(
+          filter((e) => e.data?.type === POST_MESSAGE_TYPE),
+          shareReplay({ bufferSize: 1, refCount: true })
+        )
+      : EMPTY;
+
+  protected structureDataEvent$ = this.experiencePreviewEvent$.pipe(
+    map((data) => data.data?.structure),
+    filter(isDefined),
+    tap((structure) => {
+      if (!this.dataComponent[structure.id]) {
+        this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
       }
-    );
 
-    this.contentDataEvent$.subscribe((content) => {
+      this.dataComponent[structure.id].next(structure);
+
+      if (Array.isArray(structure.components)) {
+        structure.components.forEach((item: Component) => {
+          if (item.id) {
+            if (!this.dataComponent[item.id]) {
+              this.dataComponent[item.id] = new ReplaySubject<Component>(1);
+            }
+
+            this.dataComponent[item.id].next(item);
+          }
+        });
+        this.processComponent(structure);
+      }
+    })
+  );
+
+  protected contentDataEvent$ = this.experiencePreviewEvent$.pipe(
+    map((data) => data.data.content),
+    filter(isDefined),
+    tap((content) => {
       if (!content?.id) {
         return;
       }
@@ -63,9 +100,13 @@ export class PreviewExperienceService extends DefaultExperienceService {
         this.dataContent[content.id] = new ReplaySubject<any>(1);
       }
       this.dataContent[content.id].next(content);
-    });
+    })
+  );
 
-    this.optionsDataEvent$.subscribe((options) => {
+  protected optionsDataEvent$ = this.experiencePreviewEvent$.pipe(
+    map((data) => data.data.options),
+    filter(isDefined),
+    tap((options) => {
       if (!options?.id) {
         return;
       }
@@ -74,82 +115,44 @@ export class PreviewExperienceService extends DefaultExperienceService {
         this.dataOptions[options.id] = new ReplaySubject<any>(1);
       }
       this.dataOptions[options.id].next(options);
-    });
-
-    this.routeDataEvent$.subscribe((route) => {
-      this.routerService.go(route);
-    });
-
-    this.routerService
-      .getEvents(RouterEventType.NavigationEnd)
-      .subscribe((event: RouterEvent) => {
-        this.routeChangeHandler(event.route);
-      });
-  }
-
-  protected experiencePreviewEvent$ =
-    typeof window !== 'undefined'
-      ? fromEvent(window, 'message').pipe(
-          filter((e: any) => e.data?.type === POST_MESSAGE_TYPE),
-          share()
-        )
-      : EMPTY;
-
-  protected structureDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e) => e.data?.structure),
-    map((data) => data.data.structure)
-  );
-
-  protected contentDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e) => e.data?.content),
-    map((data) => data.data.content)
-  );
-
-  protected optionsDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e) => e.data?.options),
-    map((data) => data.data.options)
+    })
   );
 
   protected routeDataEvent$: Observable<string> =
     this.experiencePreviewEvent$.pipe(
-      filter((e) => e.data?.route),
-      map((data) => data.data.route)
+      map((data) => data.data.route),
+      filter(isDefined),
+      tap((route) => this.routerService.go(route))
     );
 
   protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(
-    filter((e) => e.data?.interaction),
-    map((data) => data.data.interaction)
+    map((data) => data.data.interaction),
+    filter(isDefined)
   );
 
-  protected sendPostMessage(message: unknown): void {
-    if (typeof window !== 'undefined' && window.parent) {
-      window.parent.postMessage(message, '*');
-    }
-  }
-
   reloadComponent(id: string): void {
-    this.sendPostMessage({
+    sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       structure: id,
     });
   }
 
   reloadContent(id: string): void {
-    this.sendPostMessage({
+    sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       content: id,
     });
   }
 
   reloadOptions(id: string): void {
-    this.sendPostMessage({
+    sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       options: id,
     });
   }
 
   routeChangeHandler(route: string): void {
-    this.sendPostMessage({
+    sendPostMessage({
       type: REQUEST_MESSAGE_TYPE,
       route,
     });

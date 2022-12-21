@@ -10,4 +10,5 @@ export interface BannerContent {
   subtitle?: string;
   content?: string;
   image?: string;
+  graphic?: string;
 }

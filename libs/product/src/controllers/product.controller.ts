@@ -2,7 +2,14 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/injector';
 import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
-import { identity, Observable, of, startWith, switchMap } from 'rxjs';
+import {
+  identity,
+  Observable,
+  of,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { Product, ProductComponentProperties, ProductContext } from '../models';
 import { ProductService } from '../services';
 
@@ -44,7 +51,8 @@ export class ProductController {
                   ?.get({ sku, include: this.include })
                   .pipe(index ? startWith(null) : identity) ?? of(null)
               );
-            })
+            }),
+            shareReplay({ refCount: true, bufferSize: 1 })
           );
       })
     );

@@ -6,8 +6,10 @@ import {
   DefaultBreakpointService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
+  DefaultMediaExperienceService,
   ExperienceService,
   LayoutBuilder,
+  MediaExperienceService,
   PreviewExperienceService,
 } from './experience';
 import { ContentBackendUrl } from './experience-tokens';
@@ -47,6 +49,10 @@ export const experienceProviders: Provider[] = [
 ];
 
 export const experiencePreviewProviders: Provider[] = [
+  {
+    provide: MediaExperienceService,
+    useClass: DefaultMediaExperienceService,
+  },
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,

@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/injector';
 import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
 import { LitElement } from 'lit';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { ContentComponentProperties } from '../models';
 import { ExperienceService } from '../services';
 
@@ -25,17 +25,16 @@ export class ContentController<T = unknown, K = unknown> {
         if (content !== undefined) {
           return of(content);
         }
-        return this.observe
-          .get('uid')
-          .pipe(
-            switchMap((uid) =>
-              uid && this.experienceContent
-                ? this.experienceContent
-                    .getContent<{ data: T }>({ uid })
-                    .pipe(map((component) => component?.data))
-                : of(undefined)
-            )
-          );
+        return this.observe.get('uid').pipe(
+          switchMap((uid) =>
+            uid && this.experienceContent
+              ? this.experienceContent
+                  .getContent<{ data: T }>({ uid })
+                  .pipe(map((component) => component?.data))
+              : of(undefined)
+          ),
+          shareReplay({ bufferSize: 1, refCount: true })
+        );
       })
     );
   }
@@ -46,17 +45,16 @@ export class ContentController<T = unknown, K = unknown> {
         if (options !== undefined) {
           return of(options);
         }
-        return this.observe
-          .get('uid')
-          .pipe(
-            switchMap((uid) =>
-              uid && this.experienceContent
-                ? this.experienceContent
-                    .getOptions<{ data: K }>({ uid })
-                    .pipe(map((component) => component?.data ?? {}))
-                : of({})
-            )
-          );
+        return this.observe.get('uid').pipe(
+          switchMap((uid) =>
+            uid && this.experienceContent
+              ? this.experienceContent
+                  .getOptions<{ data: K }>({ uid })
+                  .pipe(map((component) => component?.data ?? {}))
+              : of({})
+          ),
+          shareReplay({ bufferSize: 1, refCount: true })
+        );
       })
     );
   }

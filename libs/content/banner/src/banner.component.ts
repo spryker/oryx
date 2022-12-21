@@ -4,7 +4,7 @@ import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { BannerContent, BannerOptions } from './banner.model';
 import { styles } from './banner.styles';
 
@@ -16,7 +16,12 @@ export class BannerComponent extends ComponentMixin<
   static styles = styles;
 
   protected contentController = new ContentController(this);
-  protected content$ = this.contentController.getContent();
+  protected content$ = this.contentController.getContent().pipe(
+    map((content) => ({
+      ...(content ?? {}),
+      graphic: content?.graphic?.trim(),
+    }))
+  );
   protected options$ = this.contentController.getOptions();
 
   protected data$ = combineLatest([this.content$, this.options$]);
@@ -24,7 +29,11 @@ export class BannerComponent extends ComponentMixin<
   override render(): TemplateResult {
     return html`${asyncValue(this.data$, ([content, options]) => {
       const contents = html`
-        <oryx-image .src=${content?.image} .alt=${options.alt}></oryx-image>
+        <oryx-image
+          .resource=${content.graphic}
+          .src=${!content.graphic && content?.image}
+          .alt=${options.alt}
+        ></oryx-image>
         <div class="overlay">
           ${when(
             content?.title,
