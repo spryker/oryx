@@ -41,6 +41,7 @@ export class ProductTitleComponent extends ProductComponentMixin<ProductTitleOpt
         .options="${{
           type: SemanticLinkType.Product,
           id: product?.sku,
+          multiLine: true,
         }}"
         >${product?.name}</content-link
       >

@@ -38,7 +38,8 @@ export interface HeadingAttributes {
 }
 
 /**
- * The heading tag is used to generate the right DOM element inside the heading.
+ * The heading tag is used to generate a wrapping DOM element inside the heading to
+ * provide the right styles.
  */
 export const enum HeadingTag {
   H1 = 'h1',

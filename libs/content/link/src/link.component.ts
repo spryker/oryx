@@ -71,6 +71,7 @@ export class ContentLinkComponent extends ComponentMixin<ContentLinkOptions>() {
         part="wrapper"
         icon="${ifDefined(options.icon?.trim())}"
         ?disabled=${options?.disabled}
+        ?multiLine=${options.multiLine}
       >
         ${this.renderLink(link, options)}
       </oryx-link>`;

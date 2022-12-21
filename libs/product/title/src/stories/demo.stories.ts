@@ -2,8 +2,8 @@ import { ProductComponentProperties } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ProductTitleOptions } from '../../../../../dist/libs/product/title/src/title.model';
 import { storybookPrefix } from '../../../.constants';
-import { ProductTitleOptions } from '../title.model';
 
 export default {
   title: `${storybookPrefix}/Title`,
@@ -19,7 +19,7 @@ export default {
         ...MockProductService.mockProducts.map((p) => p.sku),
         'not-found',
       ],
-      table: { category: 'product' },
+      table: { category: 'demo' },
     },
     tag: {
       options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],

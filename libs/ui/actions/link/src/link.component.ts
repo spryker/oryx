@@ -11,6 +11,7 @@ export class LinkComponent extends LitElement {
   @property({ reflect: true }) linkType?: LinkTypes;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ reflect: true }) icon?: Icons | string;
+  @property({ reflect: true }) multiLine?: boolean;
 
   protected render(): TemplateResult {
     return html`

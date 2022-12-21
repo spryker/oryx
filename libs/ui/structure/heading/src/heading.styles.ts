@@ -60,28 +60,6 @@ const headingStyleForMedium = (
   `;
 };
 
-const headingStyleForSmall = (
-  tag: string,
-  size: string,
-  lineHeight: string,
-  weight = 600
-): CSSResultGroup => {
-  const selector = unsafe(tag);
-  return css`
-    :host([md-appearance])
-      ${selector},
-      :host([md-appearance])
-      ::slotted(${selector}) {
-      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
-      line-height: var(
-        --oryx-typography-${selector}-line,
-        ${unsafe(lineHeight)}
-      );
-      font-weight: var(--oryx-typography-${selector}-weight, ${weight});
-    }
-  `;
-};
-
 /**
  * Font size, weight and line can be configured by CSS variables in a theme. The variables are
  * not set by default.
@@ -90,10 +68,9 @@ const headingStyleForSmall = (
  * meant as a public API.
  */
 export const headlineStyles = css`
-  :is(h1, h2, h3, h4, h5, h6, .subtitle),
-  ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)),
-  :is([appearance], [md-appearance]) *,
-  :is([appearance], [md-appearance]) ::slotted(*) {
+  :host,
+  :not(slot),
+  ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     margin-block: 0;
     max-height: calc(var(--_lh) * var(--max-lines));
     /* stylelint-disable-next-line */
@@ -103,7 +80,7 @@ export const headlineStyles = css`
     -webkit-box-orient: vertical;
   }
 
-  :host([appearance]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
+  :host([appearance]) *,
   :host([appearance]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     font-size: inherit;
     line-height: inherit;
@@ -126,8 +103,9 @@ export const headlineStyles = css`
 `;
 
 const mediumScreen = css`
-  :host([md-appearance]) :is(h1, h2, h3, h4, h5, h6, .subtitle),
-  :host([md-appearance]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
+  :host([md-appearance]) *:not(slot),
+  :host([md-appearance])
+    ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle, span)) {
     font-size: inherit;
     line-height: inherit;
     font-weight: inherit;

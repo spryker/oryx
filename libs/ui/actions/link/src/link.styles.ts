@@ -19,14 +19,17 @@ export const linkStyles = css`
 
   ::slotted(a) {
     border-radius: var(--oryx-border-radius-large);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     padding: 4px 8px;
     text-decoration: none;
     outline: 0;
     border: solid 1px transparent;
     color: currentColor;
+  }
+
+  :host(:not([multiLine])) ::slotted(a) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :host([disabled]) {

@@ -66,8 +66,8 @@ describe('HeadingComponent', () => {
         expect(element).not.toContainElement('b.subtitle');
       });
 
-      it(`should render the heading text`, () => {
-        expect(element.textContent).contain('heading');
+      it(`should render a slot`, () => {
+        expect(element).toContainElement('slot');
       });
     });
   });
