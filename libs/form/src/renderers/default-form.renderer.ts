@@ -5,11 +5,7 @@ import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import {
-  ComponentTypeDataFields,
-  FormFieldOption,
-  FormFieldType,
-} from '../models';
+import { ComponentTypeDataFields, FormFieldType } from '../models';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
@@ -127,9 +123,10 @@ export class DefaultFormRenderer implements FormRenderer {
         <input
           .name=${field.id}
           .value=${value ?? ''}
+          placeholder=${ifDefined(field.placeholder)}
           minlength=${ifDefined(field.min)}
           maxlength=${ifDefined(field.max)}
-          .type=${field.attributes?.type ?? field.type ?? 'text'}
+          .type=${String(field.attributes?.type) ?? field.type ?? 'text'}
           ?required=${field.required}
         />
       </oryx-input>
@@ -149,6 +146,7 @@ export class DefaultFormRenderer implements FormRenderer {
         <input
           .name=${field.id}
           .value=${value ?? ''}
+          placeholder=${ifDefined(field.placeholder)}
           type="number"
           min=${ifDefined(field.min)}
           max=${ifDefined(field.max)}
@@ -188,6 +186,7 @@ export class DefaultFormRenderer implements FormRenderer {
         <textarea
           .name=${field.id}
           .value=${value ?? ''}
+          placeholder=${ifDefined(field.placeholder)}
           ?required=${field.required}
         ></textarea>
       </oryx-input>
@@ -244,13 +243,13 @@ export class DefaultFormRenderer implements FormRenderer {
             <oryx-toggle-icon>
               <input
                 type="radio"
-                .placeholder=${field.label}
+                placeholder=${ifDefined(field.label)}
                 .name=${field.id}
                 value=${option.value}
                 ?checked=${option.value === value}
                 ?required=${field.required}
               />
-              <oryx-icon type=${option.icon}></oryx-icon>
+              <oryx-icon type=${ifDefined(option.icon)}></oryx-icon>
               ${when(option.text, () => html`<span>${option.text}</span>`)}
               <span>${option.value}</span>
             </oryx-toggle-icon>
@@ -275,18 +274,22 @@ export class DefaultFormRenderer implements FormRenderer {
           ?disabled=${field.disabled}
           ?required=${field.required}
         >
-          <option></option>
-          ${field.options?.map((option) => {
-            const text =
-              (option as FormFieldOption)?.text ??
-              (option as FormFieldOption)?.value;
-            return html`<option
+          ${when(
+            field.placeholder || field.floatLabel,
+            () =>
+              html`<option value="" hidden>
+                ${field.placeholder ?? field.label}
+              </option>`,
+            () => html`<option></option>`
+          )}
+          ${field.options?.map(
+            (option) => html`<option
               value=${option.value}
               ?selected=${option.value === value}
             >
-              ${text}
-            </option>`;
-          })}
+              ${option?.text ?? option?.value}
+            </option>`
+          )}
         </select>
       </oryx-select>
     `;

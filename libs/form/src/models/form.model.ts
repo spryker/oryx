@@ -7,6 +7,7 @@ export interface ComponentTypeDataFields {
   required?: boolean;
   options?: FormFieldOption[];
   attributes?: { [key: string]: string | number };
+  placeholder?: string;
   max?: number;
   min?: number;
   /**
