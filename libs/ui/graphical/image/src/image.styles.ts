@@ -1,16 +1,16 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
-    --oryx-icon-size: 100px;
-  }
-
+  svg,
   ::slotted(svg) {
     height: 100%;
     width: 100%;
+    fill: currentColor;
   }
 
   [part='fallback'] {
+    --oryx-icon-size: 100px;
+
     color: var(--oryx-color-neutral-300);
     margin: auto;
     width: 100%;
