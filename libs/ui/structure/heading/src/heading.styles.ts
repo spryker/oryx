@@ -69,7 +69,7 @@ const headingStyleForMedium = (
  */
 export const headlineStyles = css`
   :host,
-  :not(slot),
+  :not(slot, style),
   ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     margin-block: 0;
     max-height: calc(var(--_lh) * var(--max-lines));
@@ -103,7 +103,7 @@ export const headlineStyles = css`
 `;
 
 const mediumScreen = css`
-  :host([md-appearance]) *:not(slot),
+  :host([md-appearance]) *:not(slot, style),
   :host([md-appearance])
     ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle, span)) {
     font-size: inherit;
