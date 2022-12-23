@@ -6,7 +6,7 @@ export interface FacetNormalizerValue {
   numFound?: number;
 }
 
-export const FacetNormalizer = 'FES.FacetNormalizer*';
+export const FacetNormalizer = 'oryx.FacetNormalizer*';
 
 export function facetsNormalizer(
   facetNormalizerValue: FacetNormalizerValue
@@ -69,7 +69,7 @@ export const parseFacetValue = (
         values: facetValues,
         selectedValues: selectedValue,
         valuesTreeLength: facetValues.length,
-        ...(config.isMultiValued && { multiValued: config.isMultiValued }),
+        multiValued: config.isMultiValued,
       }
     : null;
 };

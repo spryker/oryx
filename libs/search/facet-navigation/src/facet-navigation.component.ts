@@ -10,7 +10,7 @@ import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '../../src/renderers';
 import { FacetListService } from '../../src/services/facet-list.service';
 import { FacetsOptions } from './facet-navigation.model';
@@ -37,10 +37,41 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
   ]);
 
   protected applyFilters(e: CustomEvent<FacetSelect>): void {
+    const { name, value: selectedFacetValue } = e.detail;
+
+    this.facetListService
+      .get()
+      .pipe(take(1))
+      .subscribe((facets) => {
+        const facet = facets?.find((facet) => facet.name === name);
+        if (!facet) return;
+        if (!selectedFacetValue) {
+          this.facetNavigation(facet.parameter, []);
+          return;
+        }
+
+        const values = facet.multiValued
+          ? [
+              ...(facet.selectedValues ?? []),
+              ...(selectedFacetValue.selected
+                ? [selectedFacetValue.value]
+                : []),
+            ].filter(
+              (selectedValue) =>
+                !selectedFacetValue.selected ||
+                selectedValue !== selectedFacetValue.value
+            )
+          : [selectedFacetValue.value];
+
+        this.facetNavigation(facet.parameter, values as string[]);
+      });
+  }
+
+  protected facetNavigation(parameter: string, values: string[]): void {
     this.routerService
       .getUrl('', {
         queryParams: {
-          [e.detail.parameter.toLowerCase()]: e.detail.values as string[],
+          [parameter.toLowerCase()]: values,
         },
         queryParamsHandling: 'merge',
       })

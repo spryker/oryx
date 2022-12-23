@@ -4,7 +4,6 @@ import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
-import { filter, take, tap } from 'rxjs';
 import { FacetController } from './controllers';
 import { FacetComponentAttributes, SingleMultiFacet } from './facet.model';
 import { SingleFacetControlStyles } from './facet.styles';
@@ -40,31 +39,11 @@ export class SearchFacetComponent
   }
 
   protected onChange(e: InputEvent): void {
-    this.facetController
-      .getFacet()
-      .pipe(
-        take(1),
-        filter(<T>(facet: T | null): facet is T => facet !== null),
-        tap((facet) => {
-          const { value, type, checked, name } = e.target as HTMLInputElement;
-          let values: (string | number)[] = [];
-
-          if (type === 'radio') {
-            values = [value];
-          }
-
-          if (type === 'checkbox') {
-            values = checked
-              ? [...(facet.selectedValues ?? []), value]
-              : [...(facet.selectedValues ?? [])].filter(
-                  (selectedValue) => selectedValue !== value
-                );
-          }
-
-          this.facetController.dispatchSelectEvent(name, values);
-        })
-      )
-      .subscribe();
+    const { value, checked } = e.target as HTMLInputElement;
+    this.facetController.dispatchSelectEvent({
+      value,
+      selected: checked,
+    });
   }
 
   protected renderValueControl(

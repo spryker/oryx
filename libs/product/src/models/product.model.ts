@@ -48,15 +48,15 @@ export interface FacetValue {
   value: string | number;
 
   /**
-   * The localised name that is rendered in the UI.
-   */
-  name?: string;
-
-  /**
    * The number of documents that will be returned when this list is filtered
    * with this facet.
    */
   count: number;
+
+  /**
+   * The localised name that is rendered in the UI.
+   */
+  name?: string;
 
   /**
    * Indicates whether this value is selected.

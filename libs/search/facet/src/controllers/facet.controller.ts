@@ -19,8 +19,6 @@ import {
   Observable,
   of,
   switchMap,
-  take,
-  tap,
 } from 'rxjs';
 import {
   FacetComponentAttributes,
@@ -116,22 +114,19 @@ export class FacetController implements ReactiveController {
   }
 
   /**
-   * Dispatch selected facet values
+   * Dispatch the selected facet value.
    */
-  dispatchSelectEvent(
-    parameter: string,
-    values: (string | number)[] = []
-  ): void {
-    this.host.dispatchEvent(
-      new CustomEvent<FacetSelect>(FACET_SELECT_EVENT, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          parameter,
-          values,
-        },
-      })
-    );
+  dispatchSelectEvent(value?: Pick<FacetValue, 'value' | 'selected'>): void {
+    const name = this.host.name;
+    if (name) {
+      this.host.dispatchEvent(
+        new CustomEvent<FacetSelect>(FACET_SELECT_EVENT, {
+          detail: { name, value },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   // ToDo: This is temporary filtering implementation.
@@ -206,13 +201,6 @@ export class FacetController implements ReactiveController {
   }
 
   protected onClear(): void {
-    this.getFacet()
-      .pipe(
-        take(1),
-        tap((facet) => {
-          this.dispatchSelectEvent(facet?.parameter ?? '');
-        })
-      )
-      .subscribe();
+    this.dispatchSelectEvent();
   }
 }
