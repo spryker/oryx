@@ -1,13 +1,20 @@
 import { Transformer } from '@spryker-oryx/core';
 import { ApiProductListModel, Facet, FacetValue } from '../../../../models';
 
+export interface FacetNormalizerValue {
+  facetList: ApiProductListModel.ValueFacet[];
+  numFound?: number;
+}
+
 export const FacetNormalizer = 'FES.FacetNormalizer*';
 
 export function facetsNormalizer(
-  facetList: ApiProductListModel.ValueFacet[]
+  facetNormalizerValue: FacetNormalizerValue
 ): Facet[] {
+  const { facetList, numFound } = facetNormalizerValue;
+
   return facetList.reduce((normalizedFacetList: Facet[], facet) => {
-    const parsedValue = parseFacetValue(facet);
+    const parsedValue = parseFacetValue(facet, numFound);
 
     return parsedValue
       ? [...normalizedFacetList, parsedValue]
@@ -16,7 +23,8 @@ export function facetsNormalizer(
 }
 
 export const parseFacetValue = (
-  facet?: ApiProductListModel.ValueFacet
+  facet?: ApiProductListModel.ValueFacet,
+  numFound?: number
 ): Facet | null => {
   if (!facet) {
     return null;
@@ -30,18 +38,22 @@ export const parseFacetValue = (
         ? facet.activeValue
         : (facet.activeValue as string)?.split(',')
       : [];
+
   const facetValues = facet.values.reduce(
     (
       facetList: FacetValue[],
       value: { value: number | string; docCount: number }
     ) => {
-      if (!value.docCount) {
+      const selected =
+        (selectedValue ?? []).includes(String(value.value)) ?? false;
+
+      if (!value.docCount || (!selected && value.docCount === numFound)) {
         return facetList;
       }
 
       const parsedFacedValue = {
         value: value.value,
-        selected: (selectedValue ?? []).includes(String(value.value)) ?? false,
+        selected,
         count: value.docCount,
       };
 

@@ -30,5 +30,7 @@ export type DeserializedProductListIncludes = {
     ? ApiProductListModel.ValueFacet[]
     : P extends ApiProductListModel.Includes.CategoryTreeFilter
     ? ApiProductListModel.TreeFacet[]
+    : P extends ApiProductListModel.Includes.Pagination
+    ? ApiProductListModel.Pagination
     : never;
 };

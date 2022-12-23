@@ -42,7 +42,13 @@ export function productFacetNormalizer(
       },
       FacetCategoryNormalizer
     ),
-    transformer.transform(data[0].valueFacets, FacetNormalizer),
+    transformer.transform(
+      {
+        facetList: data[0].valueFacets,
+        numFound: data[0].pagination?.numFound,
+      },
+      FacetNormalizer
+    ),
     transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
   ]).pipe(
     map(([categoryFacet, facetValues, rangeValues]) => {

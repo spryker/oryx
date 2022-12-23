@@ -26,7 +26,7 @@ const mockFacets: ApiProductListModel.ValueFacet[] = [
 
 describe('Product Facet Normalizers', () => {
   it('should return normalized product facet-navigation', () => {
-    expect(facetsNormalizer(mockFacets)).toEqual([
+    expect(facetsNormalizer({ facetList: mockFacets })).toEqual([
       {
         name: 'Color',
         parameter: 'color',

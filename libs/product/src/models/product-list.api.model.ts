@@ -6,6 +6,7 @@ export module ApiProductListModel {
     valueFacets: ValueFacet[];
     rangeFacets: RangeFacet[];
     categoryTreeFilter: TreeFacet[];
+    pagination: Pagination;
   }
 
   export interface TreeFacet {
@@ -45,5 +46,21 @@ export module ApiProductListModel {
     ValueFacets = 'value-facets',
     RangeFacets = 'range-facets',
     CategoryTreeFilter = 'category-tree-filter',
+    Pagination = 'pagination',
+  }
+
+  export interface Pagination {
+    numFound: number;
+    currentPage: number;
+    maxPage: number;
+    currentItemsPerPage: number;
+    config: PaginationConfig;
+  }
+
+  export interface PaginationConfig {
+    parameterName: string;
+    itemsPerPageParameterName: string;
+    defaultItemsPerPage: number;
+    validItemsPerPageOptions: [12, 24, 36];
   }
 }
