@@ -20,7 +20,10 @@ export class HttpTestService implements HttpService {
     return defer(() => of(this.response));
   }
 
-  get<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
+  get<T = unknown>(
+    url: string,
+    options: RequestOptions<T> = {}
+  ): Observable<T> {
     return this.request(url, {
       ...options,
       method: 'GET',
@@ -30,7 +33,7 @@ export class HttpTestService implements HttpService {
   post<T = unknown>(
     url: string,
     body: unknown,
-    options?: RequestOptions<T>
+    options: RequestOptions<T> = {}
   ): Observable<T> {
     this.body = body;
 
@@ -43,7 +46,7 @@ export class HttpTestService implements HttpService {
   patch<T = unknown>(
     url: string,
     body: unknown,
-    options?: RequestOptions<T>
+    options: RequestOptions<T> = {}
   ): Observable<T> {
     this.body = body;
 
@@ -62,7 +65,10 @@ export class HttpTestService implements HttpService {
     this.url = undefined;
   }
 
-  delete<T = unknown>(url: string, options: RequestOptions<T>): Observable<T> {
+  delete<T = unknown>(
+    url: string,
+    options: RequestOptions<T> = {}
+  ): Observable<T> {
     return this.request(url, {
       ...options,
       method: 'DELETE',

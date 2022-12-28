@@ -12,6 +12,7 @@ export interface AddressAdapter {
   getAll: () => Observable<Address[]>;
   add: (data: Address) => Observable<Address>;
   update: (data: Address) => Observable<Address>;
+  delete: (data: Address) => Observable<Address>;
   clear: () => Observable<void>;
 }
 

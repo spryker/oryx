@@ -34,7 +34,7 @@ const mockUser = {
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
   set = vi.fn();
-  remove = vi.fn();
+  remove = vi.fn().mockReturnValue(of());
 }
 
 const mockTransformer = {
@@ -334,6 +334,46 @@ describe('DefaultAddressAdapter', () => {
         service.update(mockCurrentAddress).subscribe(callback);
 
         expect(callback).toHaveBeenCalledWith(mockTransformerData);
+      });
+    });
+  });
+
+  describe('delete', () => {
+    describe('when user is guest', () => {
+      beforeEach(() => {
+        service.delete(mockCurrentAddress).subscribe();
+      });
+
+      it('should clear the storage', () => {
+        expect(storage.remove).toHaveBeenCalledWith(
+          'address',
+          StorageType.SESSION
+        );
+      });
+    });
+
+    describe('when user is authorized', () => {
+      let mockHttpDelete: any;
+      const callback = vi.fn();
+
+      beforeEach(() => {
+        mockHttpDelete = vi.spyOn(http, 'delete');
+        identity.get.mockReturnValue(of(mockUser));
+        service.delete(mockCurrentAddress).subscribe(callback);
+      });
+
+      it('should build url', () => {
+        expect(http.url).toBe(
+          `${mockApiUrl}/customers/${mockUser.id}/addresses/${mockCurrentAddress.id}`
+        );
+      });
+
+      it('should call the api', () => {
+        expect(mockHttpDelete).toHaveBeenCalled();
+      });
+
+      it('should return deleted address', () => {
+        expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
       });
     });
   });

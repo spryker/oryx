@@ -1,4 +1,4 @@
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { Address } from '../../models';
 import { AddressService } from '../../services';
 import { mockNormalizedAddresses } from './mock-address';
@@ -91,5 +91,9 @@ export class MockAddressService implements Partial<AddressService> {
         }
       })
     );
+  }
+
+  removeAddress(address: Address): Observable<Address> {
+    return of(address);
   }
 }

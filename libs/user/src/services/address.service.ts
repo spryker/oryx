@@ -7,6 +7,7 @@ export interface AddressService {
   getAddresses(): Observable<Address[] | null>;
   addAddress(data: Address): Observable<unknown>;
   updateAddress(data: Address): Observable<unknown>;
+  deleteAddress(data: Address): Observable<Address>;
   clearCurrentAddress(): Observable<void>;
 }
 

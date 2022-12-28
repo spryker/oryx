@@ -1,6 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
 import {
+  mockAddress,
   mockCurrentAddress,
   mockNormalizedAddresses,
 } from '@spryker-oryx/user/mocks';
@@ -13,6 +14,7 @@ class MockAddressAdapter implements Partial<AddressAdapter> {
   getAll = vi.fn().mockReturnValue(of(mockNormalizedAddresses));
   update = vi.fn().mockReturnValue(of(mockCurrentAddress));
   add = vi.fn().mockReturnValue(of(mockCurrentAddress));
+  delete = vi.fn().mockReturnValue(of(mockCurrentAddress));
   clear = vi.fn().mockReturnValue(of(undefined));
 }
 
@@ -208,6 +210,40 @@ describe('DefaultAddressService', () => {
       service.updateAddress(mockCurrentAddress).subscribe(callback);
 
       expect(adapter.update).toHaveBeenCalledWith(mockCurrentAddress);
+    });
+  });
+
+  describe('deleteAddress', () => {
+    it('should return an observable', () => {
+      expect(service.deleteAddress(mockCurrentAddress)).toBeInstanceOf(
+        Observable
+      );
+    });
+
+    describe('when address list contains single address', () => {
+      beforeEach(() => {
+        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
+        service.deleteAddress(mockCurrentAddress).subscribe();
+        service.getAddresses().subscribe(callback);
+      });
+
+      it('should return null', () => {
+        expect(callback).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('when address list contains multiple addresses', () => {
+      beforeEach(() => {
+        adapter.getAll.mockReturnValue(of([mockCurrentAddress, mockAddress]));
+        service.deleteAddress(mockCurrentAddress).subscribe();
+        service.getAddresses().subscribe(callback);
+      });
+
+      it('should return a list of undeleted addresses', () => {
+        expect(callback).toHaveBeenCalledWith(
+          expect.not.arrayContaining([mockCurrentAddress])
+        );
+      });
     });
   });
 

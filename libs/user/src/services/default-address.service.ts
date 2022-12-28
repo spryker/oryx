@@ -3,6 +3,7 @@ import { inject } from '@spryker-oryx/injector';
 import {
   BehaviorSubject,
   combineLatest,
+  combineLatestWith,
   map,
   Observable,
   of,
@@ -65,6 +66,22 @@ export class DefaultAddressService implements AddressService {
     return this.adapter
       .update(data)
       .pipe(switchMap((address) => this.saveAddress(address)));
+  }
+
+  deleteAddress(data: Address): Observable<Address> {
+    return this.adapter.delete(data).pipe(
+      combineLatestWith(this.addresses$),
+      switchMap(([address, addresses]) => {
+        const filteredAddresses = addresses?.filter(
+          ({ id }) => id !== address.id
+        );
+        this.addresses$.next(
+          filteredAddresses?.length ? filteredAddresses : null
+        );
+
+        return of(address);
+      })
+    );
   }
 
   clearCurrentAddress(): Observable<void> {

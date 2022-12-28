@@ -41,7 +41,7 @@ export class DefaultAddressAdapter implements AddressAdapter {
         }
 
         return this.httpService
-          .get(`${this.SCOS_BASE_URL}/customers/${identity.id}/addresses`)
+          .get(this.generateUrl(identity.id))
           .pipe(this.transformer.do(AddressesNormalizer));
       })
     );
@@ -56,6 +56,18 @@ export class DefaultAddressAdapter implements AddressAdapter {
   update(data: Address): Observable<Address> {
     return this.modify(data, ({ payload, identity }) =>
       this.httpService.patch(this.generateUrl(identity.id, data.id), payload)
+    );
+  }
+
+  delete(data: Address): Observable<Address> {
+    return this.identityService.get().pipe(
+      take(1),
+      switchMap((identity: Identity) =>
+        (identity.anonymous
+          ? this.storage.remove(this.CURRENT_ADDRESS, StorageType.SESSION)
+          : this.httpService.delete(this.generateUrl(identity.id, data.id))
+        ).pipe(switchMap(() => of(data)))
+      )
     );
   }
 
