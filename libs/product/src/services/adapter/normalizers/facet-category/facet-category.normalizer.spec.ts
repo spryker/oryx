@@ -39,6 +39,7 @@ describe('Product Facet Normalizers', () => {
         categoryTreeFilter: mockCategoryTreeFilter,
       })
     ).toEqual({
+      multiValued: false,
       name: 'Categories',
       parameter: 'category',
       selectedValues: ['10'],

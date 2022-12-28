@@ -11,7 +11,7 @@ import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
-import { ImageComponent, LoadingStrategy } from '@spryker-oryx/ui/image';
+import { LoadingStrategy } from '@spryker-oryx/ui/image';
 
 import { html } from 'lit';
 import { ProductMediaComponent } from './media.component';
@@ -23,7 +23,6 @@ class MockProductImageService implements Partial<ProductImageService> {
 
 describe('ProductMediaComponent', () => {
   let element: ProductMediaComponent;
-  let image: ImageComponent | null | undefined;
   let service: MockProductImageService;
 
   beforeAll(async () => {
@@ -58,7 +57,6 @@ describe('ProductMediaComponent', () => {
         },
       ]);
       element = await fixture(html`<product-media sku="1"></product-media>`);
-      image = element.shadowRoot?.querySelector('oryx-image');
     });
 
     it('should pass the a11y audit', async () => {
@@ -66,11 +64,11 @@ describe('ProductMediaComponent', () => {
     });
 
     it('should render the oryx-image element with src', () => {
-      expect(image!.src).toBeDefined();
+      expect(element).toContainElement('oryx-image[src]');
     });
 
     it('should not render a srcset attribute', () => {
-      expect(image!.srcset).toBeUndefined();
+      expect(element).not.toContainElement('oryx-image[srcset]');
     });
   });
 
@@ -88,11 +86,10 @@ describe('ProductMediaComponent', () => {
           },
         ] as ImageSource[]);
         element = await fixture(html`<product-media sku="1"></product-media>`);
-        image = element.shadowRoot?.querySelector('oryx-image');
       });
 
       it('should not render a srcset', () => {
-        expect(image!.srcset).toBeUndefined();
+        expect(element).not.toContainElement('oryx-image[srcset]');
       });
     });
 
@@ -112,7 +109,6 @@ describe('ProductMediaComponent', () => {
           },
         ] as ImageSource[]);
         element = await fixture(html`<product-media sku="1"></product-media>`);
-        image = element.shadowRoot?.querySelector('oryx-image');
       });
 
       it('should pass the a11y audit', async () => {
@@ -120,11 +116,11 @@ describe('ProductMediaComponent', () => {
       });
 
       it('should render the img element', () => {
-        expect(image!.src).toBe(`a.jpg`);
+        expect(element).toContainElement('oryx-image[src="a.jpg"]');
       });
 
       it('should render a srcset with the density', () => {
-        expect(image!.srcset).toBe(`b.jpg 2x`);
+        expect(element).toContainElement('oryx-image[srcset="b.jpg 2x"]');
       });
     });
   });
@@ -133,7 +129,6 @@ describe('ProductMediaComponent', () => {
     beforeEach(async () => {
       service.resolveSources.mockReturnValue([]);
       element = await fixture(html`<product-media sku="1"></product-media>`);
-      image = element.shadowRoot?.querySelector('oryx-image');
     });
 
     it('should pass the a11y audit', async () => {
@@ -241,11 +236,10 @@ describe('ProductMediaComponent', () => {
           element = await fixture(
             html`<product-media sku="1"></product-media>`
           );
-          image = element.shadowRoot?.querySelector('oryx-image');
         });
 
         it('should reflect the product name on the alt attribute', () => {
-          expect(image!.alt).toBe('Sample product');
+          expect(element).toContainElement(`oryx-image[alt="Sample product"]`);
         });
       });
 
@@ -257,11 +251,10 @@ describe('ProductMediaComponent', () => {
               .options=${{ alt: 'custom-alt' }}
             ></product-media>`
           );
-          image = element.shadowRoot?.querySelector('oryx-image');
         });
 
         it('should reflect the alt property on the alt attribute', () => {
-          expect(image!.alt).toBe('custom-alt');
+          expect(element).toContainElement(`oryx-image[alt="custom-alt"]`);
         });
       });
     });
@@ -272,11 +265,10 @@ describe('ProductMediaComponent', () => {
           element = await fixture(
             html`<product-media sku="1"></product-media>`
           );
-          image = element.shadowRoot?.querySelector('oryx-image');
         });
 
         it('should lazy load the image', () => {
-          expect(image!.loading).toBe('lazy');
+          expect(element).toContainElement(`oryx-image[loading="lazy"]`);
         });
       });
 
@@ -288,11 +280,10 @@ describe('ProductMediaComponent', () => {
               .options=${{ loading: LoadingStrategy.Eager }}
             ></product-media>`
           );
-          image = element.shadowRoot?.querySelector('oryx-image');
         });
 
-        it('should lazy load the image', () => {
-          expect(image!.loading).toBe('eager');
+        it('should load the image immediately', () => {
+          expect(element).toContainElement(`oryx-image[loading="eager"]`);
         });
       });
     });

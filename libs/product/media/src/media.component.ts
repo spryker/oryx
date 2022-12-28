@@ -28,8 +28,8 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaOpt
         return html`<oryx-image
           src=${ifDefined(image.src)}
           srcset=${ifDefined(image.srcset)}
-          alt=${ifDefined(image.srcset)}
-          .loading=${image.loading ?? LoadingStrategy.Lazy}
+          alt=${ifDefined(image.alt)}
+          loading=${image.loading ?? LoadingStrategy.Lazy}
         ></oryx-image>`;
       }
     )}`;
