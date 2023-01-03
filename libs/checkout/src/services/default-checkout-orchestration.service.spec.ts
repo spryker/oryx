@@ -82,7 +82,7 @@ describe('DefaultCheckoutOrchestrationService', () => {
       const { label, id } =
         (await firstValueFrom(service.getStep(CheckoutStepType.Delivery))) ??
         {};
-      expect(label).toBe('checkout.delivery');
+      expect(label).toBe('checkout.<step>-delivery');
       expect(id).toBe(CheckoutStepType.Delivery);
     });
   });

@@ -7,6 +7,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { AddressListItemComponent } from './address-list-item.component';
 import { addressListItemComponent } from './address-list-item.def';
+import { AddressDefaults } from './address-list-item.model';
 
 class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
@@ -202,7 +203,7 @@ describe('AddressListItemComponent', () => {
     });
   });
 
-  describe('when item has not defaults', () => {
+  describe('when showing of default is not configured', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-address-list-item
@@ -216,14 +217,14 @@ describe('AddressListItemComponent', () => {
     });
   });
 
-  describe('when defaults are provided', () => {
+  describe('when configured showing of all defaults', () => {
     beforeEach(async () => {
       service.getAddress.mockReturnValue(of(addressWithDefaults(true, true)));
 
       element = await fixture(
         html`<oryx-address-list-item
           addressId="currentaddressid"
-          .options=${{ defaultShipping: true, defaultBilling: true }}
+          .options=${{ addressDefaults: AddressDefaults.All }}
         ></oryx-address-list-item>`
       );
     });
@@ -241,7 +242,7 @@ describe('AddressListItemComponent', () => {
         element = await fixture(
           html`<oryx-address-list-item
             addressId="currentaddressid"
-            .options=${{ defaultShipping: true, defaultBilling: true }}
+            .options=${{ addressDefaults: AddressDefaults.All }}
           ></oryx-address-list-item>`
         );
       });
@@ -258,7 +259,7 @@ describe('AddressListItemComponent', () => {
         element = await fixture(
           html`<oryx-address-list-item
             addressId="currentaddressid"
-            .options=${{ defaultShipping: true, defaultBilling: true }}
+            .options=${{ addressDefaults: AddressDefaults.All }}
           ></oryx-address-list-item>`
         );
       });

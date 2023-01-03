@@ -1,7 +1,7 @@
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { Address } from '../../models';
 import { AddressService } from '../../services';
-import { mockNormalizedAddresses } from './mock-address';
+import { mockNormalizedAddresses, uncompletedAddress } from './mock-address';
 
 export enum MockAddressType {
   Zero = 'zero',
@@ -14,6 +14,7 @@ export enum MockAddressType {
   ThreeWithDefaults = 'three-with-defaults',
   ThreeWithoutDefaults = 'three-without-defaults',
   LongList = 'long-list',
+  WithUncompleted = 'with-uncompleted',
 }
 
 export class MockAddressService implements Partial<AddressService> {
@@ -85,6 +86,8 @@ export class MockAddressService implements Partial<AddressService> {
               ...this.setAsNoDefaults([...mockNormalizedAddresses]),
               ...this.setAsNoDefaults([...mockNormalizedAddresses]),
             ];
+          case MockAddressType.WithUncompleted:
+            return [...mockNormalizedAddresses, uncompletedAddress];
           case MockAddressType.Zero:
           default:
             return null;

@@ -1,5 +1,22 @@
 import { Address } from '../../models';
 
+export const mocAddressUncompleted: Address = {
+  firstName: 'Spencor',
+  lastName: 'Hopkin',
+  address1: 'Third, 33, 11',
+  zipCode: '12312',
+  city: 'Berlin',
+  country: 'Germany',
+  iso2Code: 'DE',
+  isDefaultShipping: false,
+  isDefaultBilling: true,
+};
+
+export const uncompletedAddress: Address = {
+  ...mocAddressUncompleted,
+  id: 'uncompleted',
+};
+
 export const mockAddressBase: Address = {
   salutation: 'Mr',
   firstName: 'Spencor',

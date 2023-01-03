@@ -1,6 +1,11 @@
+export enum AddressDefaults {
+  All = 'all',
+  Billing = 'billing',
+  Shipping = 'shipping',
+}
+
 export interface AddressListItemOptions {
-  defaultShipping?: boolean;
-  defaultBilling?: boolean;
+  addressDefaults?: AddressDefaults;
   selectable?: boolean;
   editable?: boolean;
   removable?: boolean;

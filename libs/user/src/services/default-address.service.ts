@@ -71,6 +71,7 @@ export class DefaultAddressService implements AddressService {
   deleteAddress(data: Address): Observable<Address> {
     return this.adapter.delete(data).pipe(
       combineLatestWith(this.addresses$),
+      take(1),
       switchMap(([address, addresses]) => {
         const filteredAddresses = addresses?.filter(
           ({ id }) => id !== address.id

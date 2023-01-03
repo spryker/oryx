@@ -1,6 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
+import { AddressDefaults } from '../../address-list-item.model';
 import { renderSelector } from '../helper';
 
 export default {
@@ -15,11 +16,14 @@ const Template: Story = (): TemplateResult => {
     <h4>With controls</h4>
     ${renderSelector({ editable: true, removable: true })}
 
-    <h4>Single default</h4>
-    ${renderSelector({ defaultShipping: true })}
-
     <h4>With defaults</h4>
-    ${renderSelector({ defaultShipping: true, defaultBilling: true })}
+    ${renderSelector({ addressDefaults: AddressDefaults.All })}
+
+    <h4>Default billing</h4>
+    ${renderSelector({ addressDefaults: AddressDefaults.Billing })}
+
+    <h4>Default shipping</h4>
+    ${renderSelector({ addressDefaults: AddressDefaults.Shipping })}
   `;
 };
 

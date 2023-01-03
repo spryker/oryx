@@ -1,7 +1,10 @@
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { Address, AddressService } from '@spryker-oryx/user';
-import { AddressListItemOptions } from '@spryker-oryx/user/address-list-item';
+import {
+  AddressDefaults,
+  AddressListItemOptions,
+} from '@spryker-oryx/user/address-list-item';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities/lit-rxjs';
@@ -63,9 +66,15 @@ export class AddressListComponent extends ComponentMixin<AddressListItemOptions>
     address: Address,
     options: AddressListItemOptions
   ): boolean {
+    const isDefault = options.addressDefaults === AddressDefaults.All;
+    const isDefaultBilling =
+      isDefault || options.addressDefaults === AddressDefaults.Billing;
+    const isDefaultShipping =
+      isDefault || options.addressDefaults === AddressDefaults.Shipping;
+
     return (
-      !!(options.defaultShipping && address?.isDefaultShipping) ||
-      !!(options.defaultBilling && address?.isDefaultBilling)
+      !!(isDefaultShipping && address?.isDefaultShipping) ||
+      !!(isDefaultBilling && address?.isDefaultBilling)
     );
   }
 

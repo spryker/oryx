@@ -1,26 +1,29 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { AddressListItemAttributes } from '../address-list-item.model';
+import {
+  AddressDefaults,
+  AddressListItemOptions,
+} from '../address-list-item.model';
 import { renderSelector } from './helper';
 
 export default {
   title: `${storybookPrefix}/Address List Item`,
   args: {
-    defaultBilling: false,
-    defaultShipping: false,
+    addressDefaults: AddressDefaults.All,
     selectable: false,
     editable: true,
     removable: true,
   },
+  argTypes: {
+    addressDefaults: {
+      control: { type: 'select' },
+      options: Object.values(AddressDefaults),
+    },
+  },
 } as Meta;
 
-interface Props extends AddressListItemAttributes {
-  defaultBilling: boolean;
-  defaultShipping: boolean;
-}
-
-const Template: Story<Props> = (props): TemplateResult => {
+const Template: Story<AddressListItemOptions> = (props): TemplateResult => {
   return html`${renderSelector(props)}`;
 };
 

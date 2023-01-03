@@ -42,6 +42,7 @@ export const tokens: ThemeToken = {
   'space-2': 'calc(var(--oryx-space) * 2)',
   'space-3': 'calc(var(--oryx-space) * 3)',
   'space-4': 'calc(var(--oryx-space) * 4)',
+  'space-6': 'calc(var(--oryx-space) * 6)',
   icon: {
     size: {
       default: 'var(--oryx-icon-size-large)',

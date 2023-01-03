@@ -9,25 +9,16 @@ export const styles = css`
 
   section,
   oryx-radio::part(label) {
-    padding-inline: var(--oryx-space-4);
-    padding-block: var(--oryx-space-2);
+    padding: var(--oryx-space-2) var(--oryx-space-4);
   }
 
   section [slot='subtext'] {
     grid-column: 1;
     justify-self: start;
-    display: flex;
-    gap: 4px;
   }
 
-  section,
-  span {
+  oryx-user-address {
     line-height: 1.571em;
-  }
-
-  span {
-    white-space: normal;
-    flex: 1 0;
   }
 
   .controls {

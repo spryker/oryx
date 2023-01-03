@@ -1,6 +1,9 @@
 import { resolve } from '@spryker-oryx/injector';
 import { AddressService } from '@spryker-oryx/user';
-import { AddressListItemOptions } from '@spryker-oryx/user/address-list-item';
+import {
+  AddressDefaults,
+  AddressListItemOptions,
+} from '@spryker-oryx/user/address-list-item';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { html, TemplateResult } from 'lit';
 
@@ -14,8 +17,7 @@ export const renderSelector = (
   addressService.changeMockAddressType(type);
   return html`<oryx-address-list
     .options=${{
-      defaultShipping: true,
-      defaultBilling: true,
+      addressDefaults: AddressDefaults.All,
       selectable: false,
       editable: true,
       removable: true,

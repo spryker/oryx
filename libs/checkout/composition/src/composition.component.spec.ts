@@ -7,6 +7,7 @@ import {
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/injector';
+import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { CheckoutCompositionComponent } from './composition.component';
@@ -34,9 +35,14 @@ class MockAuthService implements Partial<AuthService> {
   isAuthenticated = vi.fn().mockReturnValue(of(false));
 }
 
+class MockAddressService implements Partial<AddressService> {
+  getAddresses = vi.fn().mockReturnValue(of(null));
+}
+
 describe('CheckoutCompositionComponent', () => {
   let element: CheckoutCompositionComponent;
   let cartService: MockCartService;
+  let addressService: MockAddressService;
 
   beforeAll(async () => {
     await useComponent(checkoutCompositionComponent);
@@ -48,6 +54,10 @@ describe('CheckoutCompositionComponent', () => {
         {
           provide: CartService,
           useClass: MockCartService,
+        },
+        {
+          provide: AddressService,
+          useClass: MockAddressService,
         },
         {
           provide: CheckoutDataService,
@@ -68,6 +78,10 @@ describe('CheckoutCompositionComponent', () => {
       CartService
     ) as unknown as MockCartService;
 
+    addressService = testInjector.inject(
+      AddressService
+    ) as unknown as MockAddressService;
+
     element = await fixture(
       html`<oryx-checkout-composition></oryx-checkout-composition>`
     );
@@ -81,15 +95,4 @@ describe('CheckoutCompositionComponent', () => {
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
   });
-
-  // describe('when cart is empty', () => {
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-checkout-composition></oryx-checkout-composition>`
-  //     );
-  //   });
-  //   it('should not render content', () => {
-  //     expect(element.renderRoot.children.length).toBe(0);
-  //   });
-  // });
 });

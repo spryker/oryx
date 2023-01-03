@@ -8,12 +8,13 @@ import {
 } from '@spryker-oryx/checkout';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
+import { AddressService } from '@spryker-oryx/user';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { CheckoutCompositionOptions } from './composition.model';
 import { compositionStyles } from './composition.styles';
 
@@ -30,6 +31,9 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   protected isEmptyCart$ = resolve(CartService).isEmpty();
 
   protected isAuthenticated$ = resolve(AuthService).isAuthenticated();
+  protected hasAddresses$ = resolve(AddressService)
+    .getAddresses()
+    .pipe(map((addresses) => !!addresses?.length));
   protected isGuestCheckout$ = this.checkoutDataService.isGuestCheckout();
 
   protected steps$ = this.orchestrationService.getValidity();
@@ -38,54 +42,20 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     this.isEmptyCart$,
     this.isAuthenticated$,
     this.isGuestCheckout$,
+    this.hasAddresses$,
     this.options$,
   ]);
-
-  protected renderStep(step: CheckoutStepType): TemplateResult {
-    switch (step) {
-      case CheckoutStepType.Delivery:
-        return html` <checkout-delivery></checkout-delivery>`;
-      case CheckoutStepType.Shipping:
-        return html`<checkout-shipment></checkout-shipment>`;
-      case CheckoutStepType.Payment:
-        return html`<checkout-payment></checkout-payment>`;
-      default:
-        return html``;
-    }
-  }
-
-  protected renderHeading(
-    index: number,
-    step: CheckoutStepType
-  ): TemplateResult {
-    const heading = html` <oryx-heading slot="header">
-      <h5>
-        ${index + 1}.
-        ${asyncValue(
-          this.orchestrationService.getStep(step),
-          (step: Required<CheckoutStep> | null) =>
-            step ? html`${i18n(step.label)}` : html``
-        )}
-      </h5>
-    </oryx-heading>`;
-
-    switch (step) {
-      case CheckoutStepType.Delivery:
-        return html`
-          ${heading}
-          <oryx-checkout-manage-address
-            slot="header"
-          ></oryx-checkout-manage-address>
-        `;
-      default:
-        return heading;
-    }
-  }
 
   protected override render(): TemplateResult {
     return html` ${asyncValue(
       this.checkout$,
-      ([isEmptyCart, isAuthenticated, isGuestCheckout, options]) => {
+      ([
+        isEmptyCart,
+        isAuthenticated,
+        isGuestCheckout,
+        hasAddresses,
+        options,
+      ]) => {
         if (isEmptyCart) {
           return html``;
         }
@@ -102,7 +72,12 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
                   ${steps.map(({ id, validity }, index) => {
                     return html`
                       <oryx-card>
-                        ${this.renderHeading(index, id)}
+                        ${this.renderHeading(
+                          index,
+                          id,
+                          isAuthenticated,
+                          hasAddresses
+                        )}
                         <slot name="content"> ${this.renderStep(id)} </slot>
                       </oryx-card>
                     `;
@@ -113,5 +88,46 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
         `;
       }
     )}`;
+  }
+
+  protected renderStep(step: CheckoutStepType): TemplateResult {
+    switch (step) {
+      case CheckoutStepType.Delivery:
+        return html` <checkout-delivery></checkout-delivery>`;
+      case CheckoutStepType.Shipping:
+        return html`<checkout-shipment></checkout-shipment>`;
+      case CheckoutStepType.Payment:
+        return html`<checkout-payment></checkout-payment>`;
+      default:
+        return html``;
+    }
+  }
+
+  protected renderHeading(
+    index: number,
+    step: CheckoutStepType,
+    isAuthenticated: boolean,
+    hasAddresses: boolean
+  ): TemplateResult {
+    return html`
+      <oryx-heading slot="header">
+        <h5>
+          ${asyncValue(
+            this.orchestrationService.getStep(step),
+            (step: Required<CheckoutStep> | null) =>
+              step
+                ? html`${i18n(step.label, { step: `${index + 1}.` })}`
+                : html``
+          )}
+        </h5>
+      </oryx-heading>
+
+      ${when(
+        step === CheckoutStepType.Delivery && isAuthenticated && hasAddresses,
+        () => html`<oryx-checkout-manage-address
+          slot="header"
+        ></oryx-checkout-manage-address>`
+      )}
+    `;
   }
 }

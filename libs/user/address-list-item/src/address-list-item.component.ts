@@ -1,20 +1,13 @@
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
-import { resolve } from '@spryker-oryx/injector';
-import { Address, AddressService, formatAddress } from '@spryker-oryx/user';
+import { ContentController } from '@spryker-oryx/experience';
+import { Address, AddressComponentMixin } from '@spryker-oryx/user';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
-import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
+import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { combineLatest } from 'rxjs';
 import {
-  BehaviorSubject,
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  switchMap,
-} from 'rxjs';
-import {
+  AddressDefaults,
   AddressListItemAttributes,
   AddressListItemOptions,
   EDIT_EVENT,
@@ -24,23 +17,10 @@ import { styles } from './address-list-item.styles';
 
 @hydratable('window:load')
 export class AddressListItemComponent
-  extends ComponentMixin<AddressListItemOptions>()
+  extends AddressComponentMixin<AddressListItemOptions>()
   implements AddressListItemAttributes
 {
   static styles = styles;
-
-  @property() addressId?: string;
-
-  @observe()
-  protected addressId$ = new BehaviorSubject(this.addressId);
-
-  protected address$ = this.addressId$.pipe(
-    distinctUntilChanged(),
-    filter((addressId) => !!addressId),
-    switchMap((addressId) =>
-      resolve(AddressService).getAddress(addressId as string)
-    )
-  );
 
   protected addressData$ = combineLatest([
     this.address$,
@@ -63,21 +43,17 @@ export class AddressListItemComponent
         return html``;
       }
 
+      const content = html`
+        <oryx-user-address .addressId=${address.id}></oryx-user-address>
+        ${this.renderActions(address, options)}
+        ${this.renderDefaults(address, options)}
+      `;
+
       if (options.selectable) {
-        return html` <oryx-radio>
-          <slot></slot>
-          <span>${formatAddress(address)}</span>
-          ${this.renderActions(address, options)}
-          ${this.renderDefaults(address, options)}
-        </oryx-radio>`;
+        return html` <oryx-radio><slot></slot>${content}</oryx-radio>`;
       }
 
-      return html`
-        <section>
-          ${formatAddress(address)} ${this.renderActions(address, options)}
-          ${this.renderDefaults(address, options)}
-        </section>
-      `;
+      return html`<section>${content}</section>`;
     })}`;
   }
 
@@ -119,33 +95,32 @@ export class AddressListItemComponent
     </div>`;
   }
 
-  protected renderChip(token: string): TemplateResult {
-    return html` <oryx-chip appearance="active">${i18n(token)}</oryx-chip>`;
-  }
-
   protected renderDefaults(
     address: Address,
     options: AddressListItemOptions
   ): TemplateResult {
-    const defaultBilling = options.defaultBilling && address.isDefaultBilling;
-    const defaultShipping =
-      options.defaultShipping && address.isDefaultShipping;
+    const showAll = options.addressDefaults === AddressDefaults.All;
+    const showBilling = options.addressDefaults === AddressDefaults.Billing;
+    const showShipping = options.addressDefaults === AddressDefaults.Shipping;
 
-    if (defaultBilling && defaultShipping) {
-      return html`<div slot="subtext">
-        ${this.renderChip('user.address.default-shipping')}
-        ${this.renderChip('user.address.default-billing')}
-      </div>`;
-    }
-    if (
-      (!defaultBilling && defaultShipping) ||
-      (defaultBilling && !defaultShipping)
-    ) {
-      return html`<div slot="subtext">
-        ${this.renderChip('user.address.default')}
-      </div>`;
-    } else {
+    const defaultBilling = address.isDefaultBilling && (showAll || showBilling);
+    const defaultShipping =
+      address.isDefaultShipping && (showAll || showShipping);
+
+    if (!defaultBilling && !defaultShipping) {
       return html``;
     }
+
+    const chip = (token: string) =>
+      html`<oryx-chip appearance="active">${i18n(token)}</oryx-chip>`;
+
+    return html`<div slot="subtext">
+      ${when(defaultShipping, () =>
+        chip(showAll ? 'user.address.default-shipping' : 'user.address.default')
+      )}
+      ${when(defaultBilling, () =>
+        chip(showAll ? 'user.address.default-billing' : 'user.address.default')
+      )}
+    </div>`;
   }
 }
