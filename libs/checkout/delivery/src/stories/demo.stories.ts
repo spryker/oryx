@@ -1,3 +1,4 @@
+import { BehaviorType, toggleBehavior } from '@spryker-oryx/checkout/mocks';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { subscribe } from '@spryker-oryx/utilities/lit-rxjs';
 import { Meta, Story } from '@storybook/web-components';
@@ -5,7 +6,6 @@ import { html, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { storybookPrefix } from '../../../.constants';
-import { BehaviorType, toggleBehavior } from './utils';
 
 export default {
   title: `${storybookPrefix}/Delivery`,

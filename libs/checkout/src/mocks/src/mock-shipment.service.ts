@@ -71,4 +71,8 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
       )
     );
   }
+
+  setShipmentMethod(): Observable<void> {
+    return of(undefined);
+  }
 }

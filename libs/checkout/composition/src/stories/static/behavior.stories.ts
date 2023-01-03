@@ -1,31 +1,32 @@
+import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { BehaviorType, toggleBehavior } from '@spryker-oryx/checkout/mocks';
+import { resolve } from '@spryker-oryx/injector';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-
-export default {
-  title: `${storybookPrefix}/Delivery/Static`,
-} as unknown as Meta;
 
 interface Props {
   behavior: BehaviorType;
 }
 
+export default {
+  title: `${storybookPrefix}/Composition/Static`,
+} as unknown as Meta;
+
 const Template: Story<Props> = (props): TemplateResult => {
+  const dataService = resolve(CheckoutDataService);
+  dataService.setIsGuestCheckout(props.behavior === 'guest');
   toggleBehavior(props.behavior);
-  return html` <checkout-delivery></checkout-delivery> `;
+  return html`<oryx-checkout-composition></oryx-checkout-composition>`;
 };
 
 export const Guest = Template.bind({});
 export const Authorized = Template.bind({});
-export const WithAddress = Template.bind({});
 
 Guest.args = {
   behavior: 'guest',
 };
+
 Authorized.args = {
-  behavior: 'no-address',
-};
-WithAddress.args = {
   behavior: 'with-address',
 };
