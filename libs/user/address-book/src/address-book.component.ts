@@ -1,6 +1,7 @@
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { resolve } from '@spryker-oryx/injector';
 import { Address, AddressService } from '@spryker-oryx/user';
+import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { hydratable } from '@spryker-oryx/utilities';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue, observe } from '@spryker-oryx/utilities/lit-rxjs';
@@ -85,7 +86,11 @@ export class AddressBookComponent extends ComponentMixin() {
       </oryx-button>
 
       <oryx-address-list
-        .options=${{ editable: true, removable: true }}
+        .options=${{
+          editable: true,
+          removable: true,
+          addressDefaults: AddressDefaults.All,
+        }}
         @oryx.edit=${(e: CustomEvent): void => this.onEdit(e.detail.address)}
         @oryx.remove=${(e: CustomEvent): void =>
           this.onRemove(e.detail.address)}

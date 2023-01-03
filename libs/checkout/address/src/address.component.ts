@@ -8,6 +8,7 @@ import { FormComponentInterface } from '@spryker-oryx/form';
 import { resolve } from '@spryker-oryx/injector';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { AddressService } from '@spryker-oryx/user';
+import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -69,7 +70,7 @@ export class CheckoutAddressComponent
 
       return html`
         <oryx-address-list
-          .options=${{ selectable: true }}
+          .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
           @oryx.select=${(e: CustomEvent): void =>
             this.handleAddressFromList(e)}
         ></oryx-address-list>

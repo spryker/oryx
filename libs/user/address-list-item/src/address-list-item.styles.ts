@@ -13,15 +13,17 @@ export const styles = css`
   }
 
   section [slot='subtext'] {
-    grid-column: 1;
+    grid-column: 1/3;
     justify-self: start;
   }
 
   oryx-user-address {
     line-height: 1.571em;
+    margin-inline-end: var(--oryx-space-2);
   }
 
   .controls {
+    align-self: flex-start;
     margin-inline-start: auto;
   }
 

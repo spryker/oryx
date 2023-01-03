@@ -35,9 +35,11 @@ export class AddressRemoveComponent extends AddressComponentMixin() {
         ></oryx-user-address>
         <section>
           <oryx-icon type="info" size=${Size.medium}></oryx-icon>
-          ${i18n(
-            'user.address.removing-this-address-will-not-remove-any-pending-orders-being-dispatched-to-this-address'
-          )}
+          <span>
+            ${i18n(
+              'user.address.removing-this-address-will-not-remove-any-pending-orders-being-dispatched-to-this-address'
+            )}
+          </span>
         </section>
         ${this.renderControls(address)}
       `;
@@ -46,7 +48,7 @@ export class AddressRemoveComponent extends AddressComponentMixin() {
 
   protected renderControls(address: Address): TemplateResult {
     return html`
-      <oryx-button outline>
+      <oryx-button outline type=${ButtonType.Secondary}>
         <button @click=${(): void => this.emitEvent(CANCEL_EVENT)}>
           ${i18n('user.address.cancel')}
         </button>
