@@ -58,7 +58,7 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
                 : []),
             ].filter(
               (selectedValue) =>
-                !selectedFacetValue.selected ||
+                selectedFacetValue.selected ||
                 selectedValue !== selectedFacetValue.value
             )
           : [selectedFacetValue.value];

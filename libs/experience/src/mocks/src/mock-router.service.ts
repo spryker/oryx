@@ -2,7 +2,7 @@ import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { Observable, ReplaySubject } from 'rxjs';
 
 export class MockRouterService implements Partial<RouterService> {
-  private params$ = new ReplaySubject<RouteParams>(1);
+  params$ = new ReplaySubject<RouteParams>(1);
 
   go(): void {
     //mock
@@ -14,7 +14,7 @@ export class MockRouterService implements Partial<RouterService> {
     //mock
   }
 
-  currentParams(): Observable<RouteParams> {
+  currentQuery(): Observable<RouteParams> {
     return this.params$;
   }
 

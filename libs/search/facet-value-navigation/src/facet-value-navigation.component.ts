@@ -3,15 +3,17 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property, state } from 'lit/decorators.js';
 import {
+  FacetValueNavigationComponentAttributes,
   FACET_CLEAR_EVENT,
-  FACET_SEARCH_EVENT,
   FACET_TOGGLE_EVENT,
-  SearchFacet,
   ShowFacet,
 } from './facet-value-navigation.model';
 import { FacetControlStyles } from './facet-value-navigation.styles';
 
-export class SearchFacetValueNavigationComponent extends LitElement {
+export class SearchFacetValueNavigationComponent
+  extends LitElement
+  implements FacetValueNavigationComponentAttributes
+{
   static styles = FacetControlStyles;
 
   @property() heading?: string;
@@ -22,18 +24,6 @@ export class SearchFacetValueNavigationComponent extends LitElement {
   @property({ type: Boolean }) open?: boolean;
 
   @state() protected _isShowed = false;
-
-  protected onSearch(e: InputEvent): void {
-    const { value } = e.target as HTMLInputElement;
-
-    this.dispatchEvent(
-      new CustomEvent<SearchFacet>(FACET_SEARCH_EVENT, {
-        bubbles: true,
-        composed: true,
-        detail: { value },
-      })
-    );
-  }
 
   protected onToggle(): void {
     this._isShowed = !this._isShowed;
@@ -82,10 +72,10 @@ export class SearchFacetValueNavigationComponent extends LitElement {
 
       ${when(
         this.enableSearch,
-        () => html`<oryx-input>
-          <oryx-icon type="search" size="medium"></oryx-icon>
-          <input type="text" @input=${this.onSearch} />
-        </oryx-input>`
+        () =>
+          html`<oryx-search>
+            <input placeholder="Search ${this?.heading?.toLowerCase() ?? ''}" />
+          </oryx-search>`
       )}
 
       <slot></slot>

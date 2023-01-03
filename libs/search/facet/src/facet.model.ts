@@ -1,7 +1,6 @@
 import { Facet, FacetValue } from '@spryker-oryx/product';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
-export const FACET_INPUT_CHANGE_EVENT = 'oryx.input-change';
 
 export interface FacetSelect {
   name: string;

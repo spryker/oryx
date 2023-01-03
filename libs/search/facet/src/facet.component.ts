@@ -1,60 +1,88 @@
 import { FacetValue } from '@spryker-oryx/product';
 import { i18n } from '@spryker-oryx/utilities/i18n';
 import { asyncValue } from '@spryker-oryx/utilities/lit-rxjs';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
+import { repeat } from 'lit-html/directives/repeat.js';
 import { when } from 'lit-html/directives/when.js';
-import { property } from 'lit/decorators.js';
-import { FacetController } from './controllers';
-import { FacetComponentAttributes, SingleMultiFacet } from './facet.model';
+import { SingleMultiFacet } from './facet.model';
 import { SingleFacetControlStyles } from './facet.styles';
 
-export class SearchFacetComponent
-  extends LitElement
-  implements FacetComponentAttributes
-{
+import { FacetComponentMixin } from '../../src/mixins/facet.mixin';
+
+export class SearchFacetComponent extends FacetComponentMixin() {
   static styles = SingleFacetControlStyles;
-
-  @property() name?: string;
-  @property({ type: Boolean }) open?: boolean;
-  @property({ type: Boolean }) multi = false;
-  @property({ type: Number }) renderLimit = 5;
-  @property({ type: Number }) minForSearch = 13;
-
-  protected facetController = new FacetController(this);
-  protected facet$ = this.facetController.getFacet();
-
-  protected isSearchable(facet: SingleMultiFacet): boolean {
-    return (facet.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
-  }
-
-  protected isFoldable(facet: SingleMultiFacet): boolean {
-    return (
-      (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >
-      (this.renderLimit ?? Infinity)
-    );
-  }
-
-  protected getValuesLength(facet: SingleMultiFacet): number {
-    return facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0;
-  }
 
   protected onChange(e: InputEvent): void {
     const { value, checked } = e.target as HTMLInputElement;
-    this.facetController.dispatchSelectEvent({
+    this.controller.dispatchSelectEvent({
       value,
       selected: checked,
     });
   }
 
+  protected override render(): TemplateResult {
+    return html`${asyncValue(this.facet$, ([facet, props]) => {
+      if (!facet) {
+        return html``;
+      }
+
+      const valuesLength =
+        facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0;
+
+      return html`<oryx-search-facet-value-navigation
+        ?open=${props.open}
+        ?enableToggle=${this.isFoldable(facet, props.renderLimit)}
+        ?enableSearch=${this.isSearchable(facet, props.minForSearch)}
+        .heading=${props.name}
+        .selectedLength=${facet.selectedValues?.length}
+        .valuesLength=${valuesLength}
+      >
+        ${when(
+          valuesLength,
+          () => this.renderValues(facet.values, facet.parameter, props.multi),
+          () => html`${i18n('search.facet.no-results-found')}`
+        )}
+      </oryx-search-facet-value-navigation>`;
+    })}`;
+  }
+
+  protected renderValues(
+    values: FacetValue[],
+    parameter: string,
+    multi = false
+  ): TemplateResult | undefined {
+    return html`<ul>
+      ${repeat(
+        values,
+        (facetValue) => facetValue.value,
+        (facetValue) => html`
+          <li>
+            ${this.renderValueControl(facetValue, parameter, multi)}
+            ${when(
+              facetValue.children?.length,
+              () =>
+                html`${this.renderValues(
+                  facetValue.children ?? [],
+                  parameter,
+                  multi
+                )}`
+            )}
+          </li>
+        `
+      )}
+    </ul>`;
+  }
+
   protected renderValueControl(
     facetValue: FacetValue,
-    parameter: string
+    parameter: string,
+    multi: boolean
   ): TemplateResult {
     const control = html`<input
-        type=${this.multi ? 'checkbox' : 'radio'}
+        type=${multi ? 'checkbox' : 'radio'}
         name=${parameter}
         value=${facetValue.value}
-        ?checked=${facetValue.selected}
+        .checked=${facetValue.selected}
         @change=${this.onChange}
         title=${facetValue.name ?? facetValue.value}
         aria-label=${facetValue.name ?? facetValue.value}
@@ -62,55 +90,22 @@ export class SearchFacetComponent
       ${facetValue.name ?? facetValue.value}
       <span class="counter">${facetValue.count}</span> `;
 
-    return this.multi
+    return multi
       ? html` <oryx-checkbox>${control}</oryx-checkbox> `
-      : html` <oryx-radio> ${control} </oryx-radio> `;
+      : html` <oryx-radio>${control}</oryx-radio> `;
   }
 
-  protected renderValues(
-    values: FacetValue[],
-    parameter: string
-  ): TemplateResult | undefined {
-    return html`${values.map(
-      (facetValue) => html`
-        <li>
-          ${this.renderValueControl(facetValue, parameter)}
-          ${when(
-            facetValue.children?.length,
-            () =>
-              html`<ul>
-                ${this.renderValues(facetValue.children ?? [], parameter)}
-              </ul>`
-          )}
-        </li>
-      `
-    )}`;
+  protected isSearchable(
+    facet: SingleMultiFacet,
+    minForSearch?: number
+  ): boolean {
+    return (facet.valuesTreeLength ?? 0) > (minForSearch ?? Infinity);
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.facet$, (facet) => {
-      if (!facet) {
-        return html``;
-      }
-
-      const valuesLength = this.getValuesLength(facet);
-
-      return html`<oryx-search-facet-value-navigation
-        ?open=${this.open}
-        ?enableToggle=${this.isFoldable(facet)}
-        ?enableSearch=${this.isSearchable(facet)}
-        .heading=${facet.name}
-        .selectedLength=${facet.selectedValues?.length}
-        .valuesLength=${valuesLength}
-      >
-        ${when(
-          valuesLength,
-          () => html`<ul>
-            ${this.renderValues(facet.values, facet.parameter)}
-          </ul>`,
-          () => html`${i18n('search.facet.no-results-found')}`
-        )}
-      </oryx-search-facet-value-navigation>`;
-    })}`;
+  protected isFoldable(facet: SingleMultiFacet, renderLimit?: number): boolean {
+    return (
+      (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >
+      (renderLimit ?? Infinity)
+    );
   }
 }

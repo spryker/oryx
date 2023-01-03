@@ -3,9 +3,7 @@ import { Facet, FacetValue } from '@spryker-oryx/product';
 import { FacetListService } from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
-  FACET_SEARCH_EVENT,
   FACET_TOGGLE_EVENT,
-  SearchFacet,
   ShowFacet,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { ObserveController } from '@spryker-oryx/utilities/lit-rxjs';
@@ -48,18 +46,21 @@ export class FacetController implements ReactiveController {
     );
 
     this.onSearch = this.onSearch.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
     this.onToggle = this.onToggle.bind(this);
     this.onClear = this.onClear.bind(this);
   }
 
   hostConnected(): void {
-    this.host.addEventListener(FACET_SEARCH_EVENT, this.onSearch);
+    this.host.addEventListener('oryx.search', this.onSearch);
+    this.host.addEventListener('change', this.onClearSearch);
     this.host.addEventListener(FACET_TOGGLE_EVENT, this.onToggle);
     this.host.addEventListener(FACET_CLEAR_EVENT, this.onClear);
   }
 
   hostDisconnected(): void {
-    this.host.removeEventListener(FACET_SEARCH_EVENT, this.onSearch);
+    this.host.removeEventListener('oryx.search', this.onSearch);
+    this.host.addEventListener('change', this.onClearSearch);
     this.host.removeEventListener(FACET_TOGGLE_EVENT, this.onToggle);
     this.host.removeEventListener(FACET_CLEAR_EVENT, this.onClear);
   }
@@ -197,7 +198,13 @@ export class FacetController implements ReactiveController {
   }
 
   protected onSearch(e: Event): void {
-    this.searchedValue$.next((e as CustomEvent<SearchFacet>).detail.value);
+    this.searchedValue$.next(
+      (e as CustomEvent<{ query: string }>).detail.query
+    );
+  }
+
+  protected onClearSearch(): void {
+    this.searchedValue$.next('');
   }
 
   protected onClear(): void {

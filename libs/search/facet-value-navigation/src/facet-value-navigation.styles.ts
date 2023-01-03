@@ -41,7 +41,7 @@ export const FacetControlStyles = css`
     padding-block: var(--block-padding);
   }
 
-  oryx-input {
+  oryx-search {
     margin-block-end: 15px;
   }
 `;

@@ -1,6 +1,8 @@
 import { Provider } from '@spryker-oryx/injector';
 import {
+  DefaultFacetListService,
   DefaultSuggestionAdapter,
+  FacetListService,
   SuggestionAdapter,
   SuggestionService,
 } from '@spryker-oryx/search';
@@ -14,5 +16,9 @@ export const mockSearchProviders: Provider[] = [
   {
     provide: SuggestionService,
     useClass: MockSuggestionService,
+  },
+  {
+    provide: FacetListService,
+    useClass: DefaultFacetListService,
   },
 ];

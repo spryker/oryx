@@ -3,6 +3,7 @@ import {
   ProductListAdapter,
   ProductListQualifier,
 } from '@spryker-oryx/product';
+import { generateFacet } from '@spryker-oryx/product/mocks';
 import { Observable, of } from 'rxjs';
 import { createProductListMock } from './mock-product-list.generator';
 
@@ -36,6 +37,17 @@ export class MockProductListAdapter implements ProductListAdapter {
   }
 
   get(qualifier: ProductListQualifier): Observable<ProductList> {
-    return of(createProductListMock(qualifier));
+    return of({
+      ...createProductListMock(qualifier),
+      facets: [
+        generateFacet('Brand', 'brand', 15, qualifier.brand?.split(',')),
+        generateFacet(
+          'Category',
+          'category',
+          10,
+          qualifier.category?.split(',')
+        ),
+      ],
+    });
   }
 }
