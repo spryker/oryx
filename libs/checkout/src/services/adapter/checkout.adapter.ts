@@ -1,5 +1,10 @@
 import { Observable } from 'rxjs';
-import { ApiCheckoutModel, Checkout, CheckoutData } from '../../models';
+import {
+  ApiCheckoutModel,
+  Checkout,
+  CheckoutData,
+  CheckoutResponse,
+} from '../../models';
 
 export interface GetCheckoutDataProps {
   cartId: string;
@@ -19,7 +24,7 @@ export interface PostCheckoutProps {
 export interface CheckoutAdapter {
   get: (data: GetCheckoutDataProps) => Observable<CheckoutData>;
   update: (data: UpdateCheckoutDataProps) => Observable<CheckoutData>;
-  placeOrder: (data: PostCheckoutProps) => Observable<CheckoutData>;
+  placeOrder: (data: PostCheckoutProps) => Observable<CheckoutResponse>;
 }
 
 export const CheckoutAdapter = 'FES.CheckoutAdapter';

@@ -7,4 +7,5 @@ export * from '../guest/src/guest.def';
 export * from '../link/src/link.def';
 export * from '../manage-address/src/manage-address.def';
 export * from '../payment/src/payment.def';
+export * from '../place-order/src/place-order.def';
 export * from '../shipment/src/shipment.def';

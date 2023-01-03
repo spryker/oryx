@@ -24,18 +24,18 @@ export const routes: RouteConfig[] = [
     name: 'Category test',
   },
   {
+    path: '/order/:id',
+    render: (): TemplateResult => html`<experience-composition
+      route="/order/:id"
+    ></experience-composition>`,
+    name: 'Order',
+  },
+  {
     path: '/:page',
     render: ({ page }): TemplateResult => html`<experience-composition
       route="/${page}"
     ></experience-composition>`,
     name: 'Page',
-  },
-  {
-    path: '/checkout',
-    render: (): TemplateResult => html`<experience-composition
-      route="/checkout"
-    ></experience-composition>`,
-    name: 'Checkout',
   },
   {
     path: '/*',

@@ -10,15 +10,15 @@
         "width": 100,
         "options": [
           {
-            "value": "mr",
+            "value": "Mr",
             "text": "Mr"
           },
           {
-            "value": "ms",
+            "value": "Ms",
             "text": "Ms"
           },
           {
-            "value": "dr",
+            "value": "Dr",
             "text": "Dr"
           }
         ]
@@ -57,7 +57,7 @@
         "required": true
       },
       {
-        "id": "zipcode",
+        "id": "zipCode",
         "label": "PLZ",
         "type": "input",
         "required": true

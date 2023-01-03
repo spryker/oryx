@@ -86,7 +86,17 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   }
 
   setShipmentMethod(method: number): Observable<void> {
-    this.dataService.setShipmentDetails({ idShipmentMethod: method });
+    this.getShipment()
+      .pipe(
+        take(1),
+        tap((shipment) => {
+          this.dataService.setShipmentDetails({
+            ...shipment,
+            idShipmentMethod: method,
+          });
+        })
+      )
+      .subscribe();
     return of(undefined);
   }
 }

@@ -10,23 +10,23 @@
         "width": 100,
         "options": [
           {
-            "value": "mr",
+            "value": "Mr",
             "text": "Mr"
           },
           {
-            "value": "mrs",
+            "value": "Nrs",
             "text": "Mrs"
           },
           {
-            "value": "miss",
+            "value": "Niss",
             "text": "Miss"
           },
           {
-            "value": "ms",
+            "value": "Ms",
             "text": "Ms"
           },
           {
-            "value": "dr",
+            "value": "Dr",
             "text": "Dr"
           }
         ]
@@ -91,7 +91,7 @@
         ]
       },
       {
-        "id": "zipcode",
+        "id": "zipCode",
         "label": "ZIP code",
         "type": "input",
         "required": true

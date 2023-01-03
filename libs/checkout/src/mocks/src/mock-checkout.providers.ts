@@ -2,11 +2,13 @@ import {
   CheckoutDataService,
   CheckoutOrchestrationService,
   CheckoutPaymentService,
+  CheckoutService,
   CheckoutShipmentService,
   DefaultCheckoutDataService,
   DefaultCheckoutOrchestrationService,
 } from '@spryker-oryx/checkout';
 import { Provider } from '@spryker-oryx/injector';
+import { MockCheckoutService } from './mock-checkout.service';
 import { MockPaymentService } from './mock-payment.service';
 import { MockShipmentService } from './mock-shipment.service';
 
@@ -26,5 +28,9 @@ export const mockCheckoutProviders: Provider[] = [
   {
     provide: CheckoutOrchestrationService,
     useClass: DefaultCheckoutOrchestrationService,
+  },
+  {
+    provide: CheckoutService,
+    useClass: MockCheckoutService,
   },
 ];

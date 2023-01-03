@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 import { ApiCheckoutModel } from '../../models';
 import { CheckoutAdapter, UpdateCheckoutDataProps } from './checkout.adapter';
 import { DefaultCheckoutAdapter } from './default-checkout.adapter';
-import { CheckoutNormalizer } from './normalizers';
+import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 const cartId = 'mockid';
@@ -197,7 +197,9 @@ describe('DefaultCheckoutService', () => {
       http.flush(mockPlaceOrderResponse);
       service.placeOrder(mockPostCheckoutProps).subscribe();
 
-      expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizer);
+      expect(mockTransformer.do).toHaveBeenCalledWith(
+        CheckoutResponseNormalizer
+      );
     });
 
     it('should return transformed data', () => {

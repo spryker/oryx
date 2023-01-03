@@ -2,14 +2,14 @@ import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/injector';
 import { Observable, switchMap } from 'rxjs';
-import { ApiCheckoutModel, CheckoutData } from '../../models';
+import { ApiCheckoutModel, CheckoutData, CheckoutResponse } from '../../models';
 import {
   CheckoutAdapter,
   GetCheckoutDataProps,
   PostCheckoutProps,
   UpdateCheckoutDataProps,
 } from './checkout.adapter';
-import { CheckoutNormalizer } from './normalizers';
+import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
 import { CheckoutDataSerializer, CheckoutSerializer } from './serializers';
 
 export class DefaultCheckoutAdapter implements CheckoutAdapter {
@@ -28,36 +28,30 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     return this.post(props);
   }
 
-  placeOrder(props: PostCheckoutProps): Observable<CheckoutData> {
-    return this.transformer
-      .serialize(props, CheckoutSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.Response>(
-              `${this.SCOS_BASE_URL}/checkout`,
-              data
-            )
-            .pipe(this.transformer.do(CheckoutNormalizer))
+  placeOrder(props: PostCheckoutProps): Observable<CheckoutResponse> {
+    return this.transformer.serialize(props, CheckoutSerializer).pipe(
+      switchMap((data) =>
+        this.http.post<ApiCheckoutModel.CheckoutResponse>(
+          `${this.SCOS_BASE_URL}/checkout`,
+          data
         )
-      );
+      ),
+      this.transformer.do(CheckoutResponseNormalizer)
+    );
   }
 
   protected post(
     props: GetCheckoutDataProps | UpdateCheckoutDataProps
   ): Observable<CheckoutData> {
-    return this.transformer
-      .serialize(props, CheckoutDataSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.Response>(
-              this.generateUrl(props.include),
-              data
-            )
-            .pipe(this.transformer.do(CheckoutNormalizer))
+    return this.transformer.serialize(props, CheckoutDataSerializer).pipe(
+      switchMap((data) =>
+        this.http.post<ApiCheckoutModel.CheckoutResponse>(
+          this.generateUrl(props.include),
+          data
         )
-      );
+      ),
+      this.transformer.do(CheckoutNormalizer)
+    );
   }
 
   protected generateUrl(include?: ApiCheckoutModel.Includes[]): string {

@@ -68,7 +68,7 @@ export class AddressFormComponent extends FormComponentMixin() {
           ${countries.length > 1
             ? html`<oryx-select class="w100" label="Country *">
                 <select
-                  name="country"
+                  name="iso2Code"
                   .value=${currentCountry}
                   @change=${this.onCountryChange}
                 >

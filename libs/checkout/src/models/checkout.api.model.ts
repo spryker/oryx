@@ -54,11 +54,22 @@ export module ApiCheckoutModel {
       shippingAddress?: Address;
       shipments?: Shipment[];
       shipment?: {
-        idShipmentMethod: 0;
+        idShipmentMethod: number;
       };
       payments?: PaymentMethod[];
     };
   }
+
+  export interface CheckoutResponseData {
+    type: 'checkout';
+    attributes: {
+      orderReference: string;
+      redirectUrl: string | null;
+      isExternalRedirect: string | null;
+    };
+  }
+
+  export type CheckoutResponse = JsonApiModel<CheckoutResponseData, []>;
 
   export interface Address {
     address1: string | null;

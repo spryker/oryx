@@ -29,7 +29,6 @@ import { CartService, STATE } from './cart.service';
 
 export class DefaultCartService implements CartService {
   protected loading$ = new BehaviorSubject(false);
-  protected isAuthenticatedCached$ = new ReplaySubject<boolean>();
   protected carts = new Map<string, STATE>();
   protected subscription = new Subscription();
   protected activeCartId$ = new ReplaySubject<string | null>(1);

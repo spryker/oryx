@@ -24,6 +24,8 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       }`,
     [SemanticLinkType.Cart]: (): string => '/cart',
     [SemanticLinkType.Checkout]: (): string => '/checkout',
+    [SemanticLinkType.Order]: (link: SemanticLink): string =>
+      `/order/${encodeURIComponent(link.id ?? '')}`,
   };
 
   get(link: SemanticLink): Observable<string | undefined> {

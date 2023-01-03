@@ -18,7 +18,7 @@ export interface Checkout {
   shippingAddress?: Address;
   shipments?: Shipment[];
   shipment?: {
-    idShipmentMethod: 0;
+    idShipmentMethod: number;
   };
   payments?: PaymentMethod[];
 }
@@ -80,6 +80,12 @@ export interface ContactDetails {
   lastName?: string;
   email: string;
   salutation?: string;
+}
+
+export interface CheckoutResponse {
+  orderReference: string;
+  redirectUrl?: string;
+  isExternalRedirect?: string;
 }
 
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
