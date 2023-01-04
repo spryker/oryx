@@ -13,10 +13,11 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
 import { CheckoutAuthOptions } from './auth.model';
+import { authStyles } from './auth.styles';
 
 @hydratable('window:load')
 export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOptions>() {
-  static styles = layoutStyles;
+  static styles = [authStyles, layoutStyles];
 
   protected checkoutDataService = resolve(CheckoutDataService);
 
