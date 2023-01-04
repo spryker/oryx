@@ -129,7 +129,7 @@ describe('AddressFormComponent', () => {
 
     it('should have options for available countries', () => {
       const options = element.shadowRoot?.querySelectorAll(
-        'select[name="country"] option'
+        'select[name="iso2Code"] option'
       );
       expect(options?.length).toBe(2);
       expect((options?.[0] as HTMLInputElement).value).toBe('DE');
@@ -155,7 +155,7 @@ describe('AddressFormComponent', () => {
     });
     it('should not display country select when only one country is available', () => {
       const select = element.shadowRoot?.querySelector(
-        'select[name="country"]'
+        'select[name="iso2Code"]'
       );
 
       expect(select).toBeNull();
@@ -172,7 +172,7 @@ describe('AddressFormComponent', () => {
     it('should display the correct country in the country select', () => {
       const selected: HTMLOptionElement | null | undefined =
         element.shadowRoot?.querySelector(
-          'select[name="country"] option[selected]'
+          'select[name="iso2Code"] option[selected]'
         );
 
       expect(selected?.value).toBe('US');
@@ -190,7 +190,7 @@ describe('AddressFormComponent', () => {
     it("should select the country from the user's saved address", () => {
       const selected: HTMLOptionElement | null | undefined =
         element.shadowRoot?.querySelector(
-          'select[name="country"] option[selected]'
+          'select[name="iso2Code"] option[selected]'
         );
       expect(addressService.getCurrentAddress).toHaveBeenCalled();
       expect(selected?.value).toBe('US');

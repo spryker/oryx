@@ -33,7 +33,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
   @observe()
   protected route$ = new BehaviorSubject<string>(this.route);
 
-  protected experienceService = resolve(ExperienceService, null);
+  protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected hasSSR = false;
@@ -60,7 +60,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
      * To overcome this limitation need to check presence of any other elements
      * inside component, except for style elements
      */
-    return !this.renderRoot.querySelector(':not(:is(slot, style))');
+    return !this.renderRoot.querySelector(':not(slot, style)');
   }
 
   protected shouldRenderChildren(): boolean {

@@ -18,12 +18,14 @@ async function vitestExecutor(options, context) {
     }
     // TODO: workaround to avoid transpiling of dynamic import
     const { startVitest } = await Function("return import ('vitest/node')")();
-    const result = await startVitest('test', [], {
+    await startVitest('test', [], {
         ...options,
         root: projectRoot,
     });
+
     if (!options.watch) {
-        return { success: result };
+        //Yeah, now it's generating process error code instead  
+        return { success: !process.exitCode };
     }
     return new Promise(() => { });
 }

@@ -1,6 +1,8 @@
+import { injectEnv } from '@spryker-oryx/core';
 import {
   BreakpointService,
   ComponentsRegistryService,
+  ContentBackendUrl,
   DefaultBreakpointService,
   DefaultComponentsRegistryService,
   DefaultExperienceService,
@@ -15,6 +17,10 @@ import { MockRouterService } from './mock-router.service';
 
 export const mockExperienceProviders: Provider[] = [
   componentsProvider,
+  {
+    provide: ContentBackendUrl,
+    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
+  },
   {
     provide: RouterService,
     useClass: MockRouterService,

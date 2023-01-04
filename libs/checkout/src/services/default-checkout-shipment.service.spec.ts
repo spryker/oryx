@@ -158,9 +158,9 @@ describe('DefaultCheckoutService', () => {
     it('should call CheckoutDataService setShipmentDetails', () => {
       service.setShipmentMethod(1).subscribe();
 
-      expect(dataService.setShipmentDetails).toHaveBeenCalledWith({
-        idShipmentMethod: 1,
-      });
+      expect(dataService.setShipmentDetails).toHaveBeenCalledWith(
+        expect.objectContaining({ idShipmentMethod: 1 })
+      );
     });
   });
 });

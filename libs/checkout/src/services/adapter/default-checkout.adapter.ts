@@ -29,29 +29,35 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
   }
 
   placeOrder(props: PostCheckoutProps): Observable<CheckoutResponse> {
-    return this.transformer.serialize(props, CheckoutSerializer).pipe(
-      switchMap((data) =>
-        this.http.post<ApiCheckoutModel.CheckoutResponse>(
-          `${this.SCOS_BASE_URL}/checkout`,
-          data
+    return this.transformer
+      .serialize(props, CheckoutSerializer)
+      .pipe(
+        switchMap((data) =>
+          this.http
+            .post<ApiCheckoutModel.CheckoutResponse>(
+              `${this.SCOS_BASE_URL}/checkout`,
+              data
+            )
+            .pipe(this.transformer.do(CheckoutResponseNormalizer))
         )
-      ),
-      this.transformer.do(CheckoutResponseNormalizer)
-    );
+      );
   }
 
   protected post(
     props: GetCheckoutDataProps | UpdateCheckoutDataProps
   ): Observable<CheckoutData> {
-    return this.transformer.serialize(props, CheckoutDataSerializer).pipe(
-      switchMap((data) =>
-        this.http.post<ApiCheckoutModel.CheckoutResponse>(
-          this.generateUrl(props.include),
-          data
+    return this.transformer
+      .serialize(props, CheckoutDataSerializer)
+      .pipe(
+        switchMap((data) =>
+          this.http
+            .post<ApiCheckoutModel.CheckoutResponse>(
+              this.generateUrl(props.include),
+              data
+            )
+            .pipe(this.transformer.do(CheckoutNormalizer))
         )
-      ),
-      this.transformer.do(CheckoutNormalizer)
-    );
+      );
   }
 
   protected generateUrl(include?: ApiCheckoutModel.Includes[]): string {
