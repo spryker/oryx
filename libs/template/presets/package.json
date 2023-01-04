@@ -1,0 +1,41 @@
+{
+  "name": "@spryker-oryx/presets",
+  "version": "1.0.0-alpha.0",
+  "author": "Spryker",
+  "description": "Presets for Oryx applications",
+  "nx": {
+    "tags": [
+      "layer:template"
+    ]
+  },
+  "type": "module",
+  "files": [
+    "**/*"
+  ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/application": "*",
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/cart": "*",
+    "@spryker-oryx/checkout": "*",
+    "@spryker-oryx/content": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/form": "*",
+    "@spryker-oryx/i18n": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/search": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/user": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.0",
+    "urlpattern-polyfill": "^4.0.0"
+  }
+}

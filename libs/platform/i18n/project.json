@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/platform/i18n/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/platform/i18n/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "passWithNoTests": true
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
+    }
+  },
+  "tags": []
+}

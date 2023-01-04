@@ -1,0 +1,37 @@
+{
+  "projectType": "library",
+  "root": "libs/template/application",
+  "sourceRoot": "libs/template/application/src",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build",
+      "options": {
+        "assets": [
+          {
+            "input": "patches",
+            "glob": "**/*",
+            "output": "/patches/"
+          }
+        ],
+        "exclude": ["patches"]
+      }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/template/application/**/*.ts"]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "options": {
+        "exclude": ["public"]
+      }
+    }
+  }
+}

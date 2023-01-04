@@ -1,0 +1,24 @@
+{
+  "name": "@spryker-oryx/ui",
+  "version": "1.0.0-alpha.0",
+  "type": "module",
+  "description": "Design System for Oryx applications",
+  "nx": {
+    "tags": [
+      "layer:base"
+    ]
+  },
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/themes": "*",
+    "@spryker-oryx/utilities": "*",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.0"
+  }
+}

@@ -7,9 +7,9 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['**/*.spec.ts'],
     setupFiles: [
-      '../setupTests.ts',
-      '../../tools/setup-files/user-agent.ts',
-      '../../tools/setup-files/focus-within.ts',
+      '../../setupTests.ts',
+      '../../../tools/setup-files/user-agent.ts',
+      '../../../tools/setup-files/focus-within.ts',
     ],
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
@@ -22,5 +22,5 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [tsconfigPaths({ root: '../../' })],
+  plugins: [tsconfigPaths({ root: '../../../' })],
 }) as UserConfig;

@@ -34,19 +34,19 @@ export default defineConfig((config) => {
       viteStaticCopy({
         targets: [
           {
-            src: '../../../libs/application/server/src/hosting/netlify.toml',
+            src: '../../../libs/template/application/server/src/hosting/netlify.toml',
             dest: '../client',
           },
           {
-            src: '../../../libs/application/server/src/hosting/context.js',
+            src: '../../../libs/template/application/server/src/hosting/context.js',
             dest: '../functions/ssr',
           },
           {
-            src: '../../../libs/application/server/src/hosting/handler.lambda.js',
+            src: '../../../libs/template/application/server/src/hosting/handler.lambda.js',
             dest: '../functions/ssr',
           },
           {
-            src: '../../../libs/application/server/src/hosting/handler.netlify.js',
+            src: '../../../libs/template/application/server/src/hosting/handler.netlify.js',
             dest: '../functions/ssr',
             rename: 'index.js',
           },

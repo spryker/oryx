@@ -1,7 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { createServer } from '../../../libs/application/server';
+import { createServer } from '../../../libs/template/application/server';
 import { viteConfig } from '../vite.config.common';
 
 const config = {

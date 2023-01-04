@@ -1,0 +1,33 @@
+{
+  "name": "@spryker-oryx/i18n",
+  "type": "module",
+  "version": "1.0.0-alpha.0",
+  "description": "Internationalization features for Oryx applications",
+  "nx": {
+    "tags": [
+      "lib:i18n"
+    ]
+  },
+  "author": "Spryker",
+  "files": [
+    "**/*"
+  ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "dependencies": {
+    "globalize": "^1.7.0"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/utilities": "*",
+    "cldr-data": "^36.0.1",
+    "lit": "^2.4.0",
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

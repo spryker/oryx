@@ -1,0 +1,35 @@
+{
+  "name": "@spryker-oryx/user",
+  "type": "module",
+  "version": "1.0.0-alpha.0",
+  "description": "User features for Oryx applications",
+  "nx": {
+    "tags": [
+      "layer:domain"
+    ]
+  },
+  "author": "Spryker",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./mocks": {
+      "types": "./src/mocks/index.d.ts",
+      "default": "./src/mocks/index.js"
+    }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/form": "*",
+    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/utilities": "*",
+    "lit": "^2.4.0",
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
+  }
+}

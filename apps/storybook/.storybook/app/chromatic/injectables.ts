@@ -4,7 +4,7 @@ import {
   Graphic,
   ResourcePlugin,
 } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/injector';
+import { resolve } from '@spryker-oryx/di';
 import { IconInjectable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit-html/directive.js';

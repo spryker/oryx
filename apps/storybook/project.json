@@ -12,7 +12,7 @@
         "config": {
           "configFolder": "apps/storybook/.storybook"
         },
-        "staticDir": ["libs/ui/public"]
+        "staticDir": ["libs/base/ui/public"]
       },
       "configurations": {
         "ci": {
@@ -29,7 +29,7 @@
           "configFolder": "apps/storybook/.storybook"
         },
         "outputPath": "dist/storybook/all",
-        "staticDir": ["libs/ui/public"]
+        "staticDir": ["libs/base/ui/public"]
       }
     },
     "deps": {
