@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
+import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
@@ -236,7 +237,10 @@ export class SearchBoxComponent
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-typeahead @oryx.typeahead=${this.onTypeahead}>
+      <oryx-typeahead
+        @oryx.typeahead=${this.onTypeahead}
+        .clearIconPosition=${ClearIconPosition.NONE}
+      >
         <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
         <input ${ref(this.inputRef)} placeholder="Search" />
         ${asyncValue(
