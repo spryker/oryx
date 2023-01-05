@@ -1,4 +1,4 @@
-import { ContextController } from '@spryker-oryx/core';
+import { ContextController, prehydrate } from '@spryker-oryx/core';
 import { ContentController } from '@spryker-oryx/experience';
 import {
   ProductComponentMixin,
@@ -19,6 +19,7 @@ import { when } from 'lit/directives/when.js';
 import { combineLatest, filter, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
+import { preventPropagatingFix } from './prehydrate';
 
 @hydratable(['mouseover', 'focusin'])
 export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
@@ -149,6 +150,7 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
                 </div>
               </section>
             </content-link>
+            ${prehydrate(preventPropagatingFix, 'product-card')}
           `
         : html``
     )}`;
