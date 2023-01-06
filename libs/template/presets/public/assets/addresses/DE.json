@@ -8,6 +8,7 @@
         "label": "Salutation",
         "type": "select",
         "width": 100,
+        "required": true,
         "options": [
           {
             "value": "Mr",
