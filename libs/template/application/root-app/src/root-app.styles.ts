@@ -10,15 +10,16 @@ export const styles = css`
     color: var(--oryx-color-ink);
     background-color: var(--oryx-color-canvas-100);
     min-height: 100vh;
+    box-sizing: border-box;
   }
 
   ::placeholder {
     color: var(--oryx-color-placeholder);
   }
 
-  [uid='header'] {
-    /* required to ensure that sub elements in the header can become sticky; unclear why */
-    display: inline;
+  [uid='header'],
+  [uid='footer'] {
+    display: contents;
   }
 
   outlet {
