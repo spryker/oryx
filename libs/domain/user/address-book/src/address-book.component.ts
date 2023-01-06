@@ -1,6 +1,5 @@
-import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
-import { Address, AddressService } from '@spryker-oryx/user';
+import { Address } from '@spryker-oryx/user';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { asyncValue, hydratable, i18n, observe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
@@ -13,8 +12,6 @@ import { styles } from './address-book.styles';
 @hydratable(['mouseover', 'focusin'])
 export class AddressBookComponent extends ComponentMixin() {
   static styles = styles;
-
-  protected addressService = resolve(AddressService);
 
   @property({ attribute: 'active-state' })
   activeState = AddressBookState.List;
@@ -30,17 +27,6 @@ export class AddressBookComponent extends ComponentMixin() {
     this.changeState(AddressBookState.Edit);
     // TODO: replace by logic
     console.log('edit', address);
-  }
-
-  protected onRemove(address: Address): void {
-    this.selectedAddressId$.next(address?.id ?? null);
-    this.changeState(AddressBookState.Remove);
-  }
-
-  protected onConfirmRemove(address: Address): void {
-    this.addressService.deleteAddress(address).subscribe(() => {
-      this.changeState(AddressBookState.List);
-    });
   }
 
   protected onCancel(): void {
@@ -67,9 +53,6 @@ export class AddressBookComponent extends ComponentMixin() {
           ${when(state === AddressBookState.List, () =>
             this.renderAddressList()
           )}
-          ${when(state === AddressBookState.Remove, () =>
-            this.renderRemove(addressId)
-          )}
         `
     )}`;
   }
@@ -90,20 +73,7 @@ export class AddressBookComponent extends ComponentMixin() {
           addressDefaults: AddressDefaults.All,
         }}
         @oryx.edit=${(e: CustomEvent): void => this.onEdit(e.detail.address)}
-        @oryx.remove=${(e: CustomEvent): void =>
-          this.onRemove(e.detail.address)}
       ></oryx-address-list>
-    `;
-  }
-
-  protected renderRemove(addressId: string | null): TemplateResult {
-    return html`
-      <oryx-user-address-remove
-        .addressId=${addressId}
-        @oryx.cancel=${(): void => this.onCancel()}
-        @oryx.confirm=${(e: CustomEvent): void =>
-          this.onConfirmRemove(e.detail.address)}
-      ></oryx-user-address-remove>
     `;
   }
 }

@@ -1,3 +1,5 @@
+import { ThemeStylesWithMedia } from '@spryker-oryx/core';
+import { mdScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const styles = css`
@@ -21,6 +23,10 @@ export const styles = css`
     flex-basis: 100%;
   }
 
+  oryx-button {
+    flex-basis: calc(50% - var(--oryx-space));
+  }
+
   oryx-button:last-child {
     margin-inline-start: var(--oryx-space-2);
   }
@@ -31,3 +37,16 @@ export const styles = css`
     --oryx-icon-color: var(--oryx-color-neutral-300);
   }
 `;
+
+const mediumScreen = css`
+  oryx-button {
+    flex-basis: auto;
+  }
+`;
+
+export const screenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: mdScreen,
+    css: mediumScreen,
+  },
+];

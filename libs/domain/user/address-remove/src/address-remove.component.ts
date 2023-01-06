@@ -27,10 +27,7 @@ export class AddressRemoveComponent extends AddressComponentMixin() {
       }
 
       return html`
-        <oryx-user-address
-          .addressId=${address.id}
-          .options=${{ multiline: true }}
-        ></oryx-user-address>
+        <oryx-user-address .addressId=${address.id}></oryx-user-address>
         <section>
           <oryx-icon type="info" size=${Size.medium}></oryx-icon>
           <span>

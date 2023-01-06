@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { storybookDefaultViewports } from '@spryker-oryx/ui/utilities';
 import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { Meta, Story } from '@storybook/web-components';
@@ -7,7 +8,7 @@ import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Address Remove`,
-} as unknown as Meta;
+} as Meta;
 
 const Template: Story = (): TemplateResult => {
   const addressService = resolve(
@@ -24,3 +25,13 @@ const Template: Story = (): TemplateResult => {
 };
 
 export const Demo = Template.bind({});
+
+Demo.parameters = {
+  chromatic: {
+    delay: 3000,
+    viewports: [
+      storybookDefaultViewports.mobile.min,
+      storybookDefaultViewports.desktop.min,
+    ],
+  },
+};

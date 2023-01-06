@@ -96,7 +96,7 @@ export class MockAddressService implements Partial<AddressService> {
     );
   }
 
-  removeAddress(address: Address): Observable<Address> {
+  deleteAddress(address: Address): Observable<Address> {
     return of(address);
   }
 }

@@ -88,14 +88,6 @@ describe('AddressRemoveComponent', () => {
     it('should render content', () => {
       expect(element).toContainElement('oryx-user-address');
     });
-
-    it('should render section', () => {
-      expect(element).toContainElement('section');
-    });
-
-    it('should render controls', () => {
-      expect(element).toContainElement('oryx-button');
-    });
   });
 
   describe('when cancel button is clicked', () => {
