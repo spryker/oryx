@@ -3,11 +3,6 @@
   "type": "module",
   "version": "1.0.0-alpha.0",
   "description": "Internationalization features for Oryx applications",
-  "nx": {
-    "tags": [
-      "lib:i18n"
-    ]
-  },
   "author": "Spryker",
   "files": [
     "**/*"

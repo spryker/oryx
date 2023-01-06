@@ -3,11 +3,6 @@
   "type": "module",
   "version": "1.0.0-alpha.0",
   "description": "Form features for Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:base"
-    ]
-  },
   "author": "Spryker",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",

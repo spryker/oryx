@@ -46,5 +46,6 @@
         ]
       }
     }
-  }
+  },
+  "tags": ["layer:domain"]
 }

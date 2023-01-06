@@ -1,6 +1,6 @@
 import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import {
@@ -22,7 +22,7 @@ export const facetProviders = [
           facet: Facet,
           options: FacetMappingOptions,
           selectListener: (e: CustomEvent<FacetSelect>) => void
-        ) => {
+        ): TemplateResult => {
           return html`
             <oryx-search-facet
               @oryx.select=${selectListener}

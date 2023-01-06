@@ -24,7 +24,7 @@ export const FacetControlStyles = css`
   }
 
   .counter {
-    padding-left: 10px;
+    padding-inline-start: 10px;
     display: block;
     color: #71747c;
   }

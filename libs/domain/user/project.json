@@ -46,5 +46,6 @@
     "paths": {
       "executor": "./tools/executors/components-library:paths"
     }
-  }
+  },
+  "tags": ["layer:domain"]
 }

@@ -47,5 +47,6 @@
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest"
     }
-  }
+  },
+  "tags": ["layer:domain", "lib:site"]
 }

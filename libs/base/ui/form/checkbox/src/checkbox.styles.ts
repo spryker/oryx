@@ -11,7 +11,7 @@ export const checkboxStyles = css`
   }
 
   label {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 8px;
     outline: 0;

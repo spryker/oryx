@@ -3,11 +3,6 @@
   "version": "1.0.0-alpha.0",
   "type": "module",
   "description": "Dependency injection for Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:base"
-    ]
-  },
   "author": "Spryker",
   "files": [
     "**/*"

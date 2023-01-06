@@ -3,12 +3,6 @@
   "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "description": "Themes for Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:template",
-      "lib:themes"
-    ]
-  },
   "type": "module",
   "files": [
     "**/*"

@@ -3,11 +3,6 @@
   "version": "1.0.0-alpha.0",
   "author": "Spryker",
   "description": "Utilities for Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:base"
-    ]
-  },
   "type": "module",
   "files": [
     "**/*"

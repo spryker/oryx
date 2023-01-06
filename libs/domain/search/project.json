@@ -15,7 +15,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/domain/site/**/*.ts"]
+        "lintFilePatterns": ["libs/domain/search/**/*.ts"]
       }
     },
     "storybook": {
@@ -24,9 +24,9 @@
         "uiFramework": "@storybook/web-components",
         "port": 4400,
         "config": {
-          "configFolder": "libs/domain/site/.storybook"
+          "configFolder": "libs/domain/search/.storybook"
         },
-        "staticDir": ["libs/domain/site/public"]
+        "staticDir": ["libs/domain/search/public"]
       },
       "configurations": {
         "ci": {
@@ -39,13 +39,14 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/domain/site/**/*.css",
-          "libs/domain/site/**/*.styles.ts"
+          "libs/domain/search/**/*.css",
+          "libs/domain/search/**/*.styles.ts"
         ]
       }
     },
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest"
     }
-  }
+  },
+  "tags": ["layer:domain"]
 }

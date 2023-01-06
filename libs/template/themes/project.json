@@ -28,5 +28,5 @@
       "executor": "./tools/executors/components-library:paths"
     }
   },
-  "tags": []
+  "tags": ["layer:template", "lib:themes"]
 }

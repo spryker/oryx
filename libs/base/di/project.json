@@ -17,5 +17,5 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     }
   },
-  "tags": []
+  "tags": ["layer:base"]
 }

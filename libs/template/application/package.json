@@ -3,11 +3,6 @@
   "version": "1.0.0-alpha.0",
   "type": "module",
   "description": "Basic infrastructure for Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:template"
-    ]
-  },
   "scripts": {
     "postinstall": "patches/patch.sh"
   },

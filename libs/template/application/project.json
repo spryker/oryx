@@ -33,5 +33,6 @@
         "exclude": ["public"]
       }
     }
-  }
+  },
+  "tags": ["layer:template"]
 }

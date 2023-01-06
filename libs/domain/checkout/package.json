@@ -3,11 +3,6 @@
   "type": "module",
   "version": "1.0.0-alpha.0",
   "description": "Checkout features Oryx applications",
-  "nx": {
-    "tags": [
-      "layer:domain"
-    ]
-  },
   "author": "Spryker",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
