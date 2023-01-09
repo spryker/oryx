@@ -126,7 +126,7 @@ export class DefaultFormRenderer implements FormRenderer {
           placeholder=${ifDefined(field.placeholder)}
           minlength=${ifDefined(field.min)}
           maxlength=${ifDefined(field.max)}
-          .type=${String(field.attributes?.type) ?? field.type ?? 'text'}
+          type=${ifDefined(field.attributes?.type ?? field.type)}
           ?required=${field.required}
         />
       </oryx-input>

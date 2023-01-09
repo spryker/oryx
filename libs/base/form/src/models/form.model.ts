@@ -1,12 +1,17 @@
+export interface DataFieldsAttributes {
+  type: string;
+  [key: string]: string | number;
+}
+
 export interface ComponentTypeDataFields {
   id: string;
-  type: string;
+  type?: string;
   title?: string;
   label?: string;
   floatLabel?: boolean;
   required?: boolean;
   options?: FormFieldOption[];
-  attributes?: { [key: string]: string | number };
+  attributes?: DataFieldsAttributes;
   placeholder?: string;
   max?: number;
   min?: number;
