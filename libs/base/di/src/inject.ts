@@ -30,13 +30,16 @@ export function setCurrentInjector(injector: Injector): () => void {
 
 export function inject<K extends keyof InjectionTokensContractMap>(
   token: K
-): InjectionTokensContractMap[K];
+): InferInjectType<K>;
 export function inject<K extends keyof InjectionTokensContractMap, L>(
   token: K,
   defaultValue?: L
-): InjectionTokensContractMap[K] | L;
-export function inject<K>(token: Type<K>, defaultValue?: K): K;
-export function inject<K, L>(token: Type<K>, defaultValue?: L): K | L;
+): InferInjectType<K> | L;
+export function inject<K>(token: K, defaultValue?: K): InferInjectType<K>;
+export function inject<K, L>(
+  token: K,
+  defaultValue?: L
+): InferInjectType<K> | L;
 export function inject<K = any>(token: string, defaultValue?: K): K;
 export function inject(token: any, defaultValue?: any): any {
   if (_currentInjector === undefined) {
@@ -53,3 +56,14 @@ export function inject(token: any, defaultValue?: any): any {
     throw error;
   }
 }
+
+export type InferInjectType<Token> =
+  Token extends keyof InjectionTokensContractMap
+    ? // Check if token is multi-provider
+      Token extends `${string}${typeof Injector['MultiProviderToken']}`
+      ? // Wrap multi-provider is array
+        InjectionTokensContractMap[Token][]
+      : InjectionTokensContractMap[Token]
+    : Token extends Type<infer T>
+    ? T
+    : any;

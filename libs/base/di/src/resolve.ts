@@ -1,24 +1,24 @@
 import { getInjector, InjectorContext } from './get-injector';
-import { Type } from './type';
+import { InferInjectType } from './inject';
 
 export function resolve<K extends keyof InjectionTokensContractMap>(
   token: K
-): InjectionTokensContractMap[K];
+): InferInjectType<K>;
 export function resolve<K extends keyof InjectionTokensContractMap, L>(
   token: K,
   defaultValue?: L,
   context?: InjectorContext
-): InjectionTokensContractMap[K] | L;
+): InferInjectType<K> | L;
 export function resolve<K>(
-  token: Type<K>,
+  token: K,
   defaultValue?: K,
   context?: InjectorContext
-): K;
+): InferInjectType<K>;
 export function resolve<K, L>(
-  token: Type<K>,
+  token: K,
   defaultValue?: L,
   context?: InjectorContext
-): K | L;
+): InferInjectType<K> | L;
 export function resolve<K = any>(
   token: string,
   defaultValue?: K,

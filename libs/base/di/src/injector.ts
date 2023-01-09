@@ -35,6 +35,8 @@ interface ProviderMap {
  * Injector container
  */
 export class Injector {
+  static readonly MultiProviderToken = '*';
+
   private providers = new Map<any, ProviderMap | undefined>();
   private _locked = false;
   private multiCounter = 0;
@@ -153,6 +155,8 @@ export class Injector {
   }
 
   protected isMultiProvider(token: any): boolean {
-    return typeof token === 'string' && token.endsWith('*');
+    return (
+      typeof token === 'string' && token.endsWith(Injector.MultiProviderToken)
+    );
   }
 }
