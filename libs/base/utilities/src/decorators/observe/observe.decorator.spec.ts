@@ -5,13 +5,14 @@ import { customElement, property } from 'lit/decorators.js';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { observe } from './observe.decorator';
 
-const mockProperty = 'mockProperty';
-const mockAnotherProperty = 'mockAnotherProperty';
+const mockPropertyA = 'mockPropertyA';
+const mockPropertyB = 'mockPropertyB';
 
 abstract class MockClass extends LitElement {
   abstract mock: string;
   anotherMock?: string;
   mock$?: Subject<string>;
+  mockArr$?: Subject<string[]>;
 }
 
 @customElement('mock-component')
@@ -35,62 +36,61 @@ export class MockComponentWithProperty extends MockClass {
   mock$ = new BehaviorSubject(this.anotherMock);
 }
 
+@customElement('mock-component-props-array')
+export class MockComponentPropsArray extends MockClass {
+  @property()
+  anotherMock = 'anotherMock';
+
+  @property()
+  mock = 'mock';
+
+  @observe(['mock', 'anotherMock'])
+  mockArr$ = new BehaviorSubject([this.mock, this.anotherMock]);
+}
+
 describe('observe decorator', () => {
   let element: MockClass;
 
   beforeEach(async () => {
     element = await fixture(
-      html`<mock-component mock="${mockProperty}"></mock-component>`
+      html`<mock-component mock="${mockPropertyA}"></mock-component>`
     );
   });
 
-  describe('observable is BehaviorSubject', () => {
-    beforeEach(() => {
-      element.mock$ = new BehaviorSubject(mockProperty);
-    });
-
-    it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = vi.fn();
-      element.mock$!.subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockProperty);
-      expect(element.mock$).toBeInstanceOf(BehaviorSubject);
-      element.mock = mockAnotherProperty;
-      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
-    });
+  it('should use ReplaySubject instance and emit updated value if passed observed property has been changed', () => {
+    const callback = vi.fn();
+    element.mock$!.subscribe(callback);
+    expect(callback).toHaveBeenCalledWith(mockPropertyA);
+    expect(element.mock$).toBeInstanceOf(ReplaySubject);
+    element.mock = mockPropertyB;
+    expect(callback).toHaveBeenNthCalledWith(2, mockPropertyB);
   });
 
-  describe('observable is ReplaySubject', () => {
-    it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = vi.fn();
-      element.mock$!.subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockProperty);
-      expect(element.mock$).toBeInstanceOf(ReplaySubject);
-      element.mock = mockAnotherProperty;
-      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
-    });
+  it('should use BehaviorSubject instance and emit updated value if passed observed property has been changed', () => {
+    element.mock$ = new BehaviorSubject(mockPropertyA);
+    const callback = vi.fn();
+    element.mock$!.subscribe(callback);
+    expect(callback).toHaveBeenCalledWith(mockPropertyA);
+    expect(element.mock$).toBeInstanceOf(BehaviorSubject);
+    element.mock = mockPropertyB;
+    expect(callback).toHaveBeenNthCalledWith(2, mockPropertyB);
   });
 
-  describe('observable is Subject', () => {
-    beforeEach(() => {
-      element.mock$ = new Subject();
-    });
-
-    it('should use created subject instance and emit updated value if passed observed property has been changed', () => {
-      const callback = vi.fn();
-      element.mock$!.subscribe(callback);
-
-      expect(callback).not.toHaveBeenCalled();
-      expect(element.mock$).toBeInstanceOf(Subject);
-      element.mock = mockAnotherProperty;
-      expect(callback).toHaveBeenNthCalledWith(1, mockAnotherProperty);
-    });
+  it('should use Subject instance and emit updated value if passed observed property has been changed', () => {
+    element.mock$ = new Subject();
+    const callback = vi.fn();
+    element.mock$!.subscribe(callback);
+    expect(callback).not.toHaveBeenCalled();
+    expect(element.mock$).toBeInstanceOf(Subject);
+    element.mock = mockPropertyB;
+    expect(callback).toHaveBeenNthCalledWith(1, mockPropertyB);
   });
 
-  describe('with property', () => {
+  describe('when observable is array of properties', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<mock-component-with-property
-          anotherMock="${mockProperty}"
+          anotherMock="${mockPropertyA}"
         ></mock-component-with-property>`
       );
     });
@@ -98,13 +98,40 @@ describe('observe decorator', () => {
     it('should observe for the required property', () => {
       const callback = vi.fn();
       element.mock$?.subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockProperty);
-      element.anotherMock = mockAnotherProperty;
-      expect(callback).toHaveBeenNthCalledWith(2, mockAnotherProperty);
+      expect(callback).toHaveBeenCalledWith(mockPropertyA);
+      element.anotherMock = mockPropertyB;
+      expect(callback).toHaveBeenNthCalledWith(2, mockPropertyB);
     });
   });
 
-  describe('errors', () => {
+  describe('when component with passed property', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<mock-component-props-array
+          mock="${mockPropertyA}"
+          anotherMock="${mockPropertyB}"
+        ></mock-component-props-array>`
+      );
+    });
+
+    it('should emit array of observed properties', () => {
+      const callback = vi.fn();
+      element.mockArr$?.subscribe(callback);
+      expect(callback).toHaveBeenCalledWith([mockPropertyA, mockPropertyB]);
+      element.anotherMock = mockPropertyA;
+      expect(callback).toHaveBeenNthCalledWith(2, [
+        mockPropertyA,
+        mockPropertyA,
+      ]);
+      element.mock = mockPropertyB;
+      expect(callback).toHaveBeenNthCalledWith(3, [
+        mockPropertyB,
+        mockPropertyA,
+      ]);
+    });
+  });
+
+  describe('when errors has been thrown', () => {
     it('should throw if value is not observable instance or undefined', async () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

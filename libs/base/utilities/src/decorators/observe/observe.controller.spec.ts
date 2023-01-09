@@ -9,6 +9,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { Observable } from 'rxjs';
 import { ObserveController } from './observe.controller';
 
+const mockAValue = 'mockAValue';
+const mockBValue = 'mockBValue';
+
 vi.mock('rxjs', async () => {
   const rxjs = (await vi.importActual('rxjs')) as Array<unknown>;
 
@@ -21,10 +24,10 @@ vi.mock('rxjs', async () => {
 @customElement('mock-component')
 class MockComponent extends LitElement {
   @property()
-  mockA = 'mockA';
+  mockA = mockAValue;
 
   @property()
-  mockB = 'mockB';
+  mockB = mockBValue;
 
   controller = new MockController(this);
 }
@@ -57,26 +60,12 @@ describe('ObserveController', () => {
       expect(subject$).toBeInstanceOf(Observable);
     });
 
-    // TODO: fix the test (also should be refactored as long as this test is doing different thing)
-    // it('should reuse created instance if it has been already created', () => {
-    //   const { observeController } = element.controller;
-    //   const subjectFirstA$ = observeController.get('mockA');
-    //   const subjectSecondA$ = observeController.get('mockA');
-    //   const subjectB$ = observeController.get('mockB');
-    //   expect(JSON.stringify(subjectFirstA$)).toEqual(
-    //     JSON.stringify(subjectSecondA$)
-    //   );
-    //   expect(JSON.stringify(subjectFirstA$)).not.toEqual(
-    //     JSON.stringify(subjectB$)
-    //   );
-    // });
-
     it('should emit property value', () => {
       const { observeController } = element.controller;
       const callback = vi.fn();
       const subjectA$ = observeController.get('mockA');
       subjectA$.subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(element.mockA);
+      expect(callback).toHaveBeenCalledWith(mockAValue);
     });
 
     it('should reemit if property value has been changed', async () => {
@@ -84,11 +73,11 @@ describe('ObserveController', () => {
       const callback = vi.fn();
       const subjectA$ = observeController.get('mockA');
       subjectA$.subscribe(callback);
-      expect(callback).toHaveBeenNthCalledWith(1, element.mockA);
+      expect(callback).toHaveBeenNthCalledWith(1, mockAValue);
       element.mockA = 'updateMockA';
       element.requestUpdate();
       await element.updateComplete;
-      expect(callback).toHaveBeenNthCalledWith(2, element.mockA);
+      expect(callback).toHaveBeenNthCalledWith(2, 'updateMockA');
     });
   });
 });

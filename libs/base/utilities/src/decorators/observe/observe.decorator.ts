@@ -2,6 +2,12 @@ import { ReactiveElement, UpdatingElement } from 'lit';
 import { Subject } from 'rxjs';
 import { DecoratorContext, TargetDecorator } from '../../model';
 
+interface DecoratorProps<T = TargetDecorator | ReactiveElement> {
+  context: T;
+  subjectKey: string;
+  property: string | string[];
+}
+
 const throwSubjectError = (subject$: unknown): void => {
   if (subject$ && !(subject$ as Record<string, unknown>).next) {
     throw `Invalid observe value: incorrect ${subject$} for observe decorator, please use rxjs subjects`;
@@ -21,24 +27,52 @@ const getReactiveDescriptor = (
   return ownDescriptor;
 };
 
-const legacyObserve = (
-  proto: TargetDecorator | ReactiveElement,
-  subjectKey: string,
-  propertyKey: string
-): void => {
-  const reactiveDescriptor = getReactiveDescriptor(proto, propertyKey);
-  const internalSubjectKey = Symbol(subjectKey);
+const createReactiveProperty = (
+  { context, subjectKey, property }: DecoratorProps,
+  isLegacy = true
+): symbol | string => {
+  const reactiveProps = Array.isArray(property) ? property : [property];
+  const internalSubjectKey = isLegacy ? Symbol(subjectKey) : subjectKey;
 
-  const propertyDescriptor = {
-    ...reactiveDescriptor,
-    set(this: Record<symbol, Subject<unknown>>, newValue: unknown): void {
-      reactiveDescriptor.set?.call(this, newValue);
+  for (const propertyKey of reactiveProps) {
+    const reactiveDescriptor = getReactiveDescriptor(context, propertyKey);
+    const propertyDescriptor = {
+      ...reactiveDescriptor,
+      set(
+        this: Record<symbol | string, Subject<unknown>>,
+        newValue: unknown
+      ): void {
+        const prevValue = this[propertyKey];
 
-      if (this[internalSubjectKey]) {
-        this[internalSubjectKey].next(newValue);
-      }
-    },
-  };
+        reactiveDescriptor.set?.call(this, newValue);
+
+        if (this[internalSubjectKey] && newValue !== prevValue) {
+          const value = Array.isArray(property)
+            ? property.map((key) =>
+                propertyKey === key ? newValue : this[key]
+              )
+            : newValue;
+          this[internalSubjectKey].next(value);
+        }
+      },
+    };
+
+    Object.defineProperty(context, propertyKey, propertyDescriptor);
+  }
+
+  return internalSubjectKey;
+};
+
+const legacyObserve = ({
+  context,
+  subjectKey,
+  property,
+}: DecoratorProps): void => {
+  const internalSubjectKey = createReactiveProperty({
+    context,
+    subjectKey,
+    property,
+  });
 
   const subjectDescriptor = {
     get(this: TargetDecorator): unknown {
@@ -59,15 +93,14 @@ const legacyObserve = (
     configurable: true,
   };
 
-  Object.defineProperty(proto, subjectKey, subjectDescriptor);
-  Object.defineProperty(proto, propertyKey, propertyDescriptor);
+  Object.defineProperty(context, subjectKey, subjectDescriptor);
 };
 
-const standardObserve = (
-  context: DecoratorContext,
-  subjectKey: string,
-  propertyKey: string
-): DecoratorContext => {
+const standardObserve = ({
+  context,
+  subjectKey,
+  property,
+}: DecoratorProps<DecoratorContext>): DecoratorContext => {
   return {
     ...context,
     initializer(this: TargetDecorator): Subject<unknown> {
@@ -75,26 +108,23 @@ const standardObserve = (
 
       throwSubjectError(subject$);
 
-      subject$.next(this[propertyKey]);
+      if (Array.isArray(property)) {
+        subject$.next(property.map((propertyKey) => this[propertyKey]));
+      } else {
+        subject$.next(this[property]);
+      }
 
       return subject$;
     },
     finisher(clazz: typeof UpdatingElement): void {
-      const proto = clazz.prototype;
-      const reactiveDescriptor = getReactiveDescriptor(proto, propertyKey);
-
-      const propertyDescriptor = {
-        ...reactiveDescriptor,
-        set(this: Record<string, Subject<unknown>>, newValue: unknown): void {
-          reactiveDescriptor.set?.call(this, newValue);
-
-          if (this[subjectKey]) {
-            this[subjectKey].next(newValue);
-          }
+      createReactiveProperty(
+        {
+          context: clazz.prototype,
+          subjectKey,
+          property,
         },
-      };
-
-      Object.defineProperty(proto, propertyKey, propertyDescriptor);
+        false
+      );
     },
   };
 };
@@ -125,7 +155,7 @@ const standardObserve = (
  * }
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function observe(property?: string): any {
+export function observe(property?: string | string[]): any {
   return (
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
@@ -140,7 +170,7 @@ export function observe(property?: string): any {
     const propertyKey = property ?? subjectKey.slice(0, -1);
 
     return isLegacy(context, name)
-      ? legacyObserve(context, subjectKey, propertyKey)
-      : (standardObserve(context, subjectKey, propertyKey) as unknown as void);
+      ? legacyObserve({ context, subjectKey, property: propertyKey })
+      : standardObserve({ context, subjectKey, property: propertyKey });
   };
 }

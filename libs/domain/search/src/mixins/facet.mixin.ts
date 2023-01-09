@@ -26,24 +26,14 @@ export const FacetComponentMixin = (): Type<
     @property({ type: Number }) renderLimit = 5;
     @property({ type: Number }) minForSearch = 13;
 
-    @observe()
-    protected name$ = new BehaviorSubject(this.name);
-    @observe()
-    protected open$ = new BehaviorSubject(this.open);
-    @observe()
-    protected multi$ = new BehaviorSubject(this.multi);
-    @observe()
-    protected renderLimit$ = new BehaviorSubject(this.renderLimit);
-    @observe()
-    protected minForSearch$ = new BehaviorSubject(this.minForSearch);
-
-    protected props$ = combineLatest([
-      this.name$,
-      this.open$,
-      this.multi$,
-      this.renderLimit$,
-      this.minForSearch$,
-    ]).pipe(
+    @observe(['name', 'open', 'multi', 'renderLimit', 'minForSearch'])
+    protected props$ = new BehaviorSubject([
+      this.name,
+      this.open,
+      this.multi,
+      this.renderLimit,
+      this.minForSearch,
+    ] as const).pipe(
       map(([name, open, multi, renderLimit, minForSearch]) => ({
         name,
         open,
