@@ -39,9 +39,9 @@ Domain packages provide components, services and adapters for a certain domain. 
 
 The platform layer contains the core packages, including `core` itself. They are providing the infrastructure to the whole system.
 
-### Utility packages
+### Base packages
 
-The utility layer contains packages that serve as utilities to all above layers. An important part of the utility layer is the design system package (UI).
+The base layer contains packages that serve as utilities to all above layers. An important part of the base layer is the design system package (UI).
 
 ## Packages
 
@@ -65,12 +65,25 @@ The utility layer contains packages that serve as utilities to all above layers.
 |              | I18n        | `@spryker-oryx/i18n`        |
 |              | Experience  | `@spryker-oryx/experience`  |
 | **Base**     |             |                             |
-|              | UI\*        | `@spryker-oryx/ui`          |
-|              | Form\*      | `@spryker-oryx/form`        |
+|              | UI          | `@spryker-oryx/ui`          |
+|              | Form        | `@spryker-oryx/form`        |
 |              | Utilities   | `@spryker-oryx/utilities`   |
-|              | Injector    | `@spryker-oryx/injector`    |
+|              | DI          | `@spryker-oryx/di`          |
 
-- We currently have dependencies from to core, but we will move it out soon. If this won't work, we move them into Platform.
+## Module boundaries
+
+NX has a lint rule that allows to enforce module boundaries by configuring tags and assigning them the each package.
+We configured our modules to have tags according to the layer. So for now there are following tags:
+
+- `type:app` - all the application inside `apps` folder
+- `layer:*` - packages inside `libs/*` folder (ex. `layer:base` or `layer:domain`)
+- `lib:*` - separate package, marked individually as exception to add some specific rule. For now it's used to aviod our own violations.
+
+To mark properly new library just add an appropriate layer tag to the `project.json`:
+
+```
+"tags": ["layer:base"]
+```
 
 ## Versioning
 
