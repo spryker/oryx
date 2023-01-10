@@ -12,6 +12,13 @@ export const chipComponent = componentDef({
         ),
     },
     {
+      theme: 'backoffice-ng',
+      rules: () =>
+        import('./styles/themes/backoffice.styles').then(
+          (m) => m.chipBackofficeUI
+        ),
+    },
+    {
       theme: 'storefront',
       rules: () =>
         import('./styles/themes/storefront.styles').then(
