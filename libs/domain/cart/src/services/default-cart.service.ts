@@ -2,6 +2,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { invokable } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   catchError,
@@ -91,10 +92,12 @@ export class DefaultCartService implements CartService {
   }
 
   load(): Observable<null> {
-    return this.identity.get().pipe(
-      take(1),
-      switchMap(() => this.loadCarts()),
-      mapTo(null)
+    return invokable(
+      this.identity.get().pipe(
+        take(1),
+        switchMap(() => this.loadCarts()),
+        mapTo(null)
+      )
     );
   }
 
@@ -151,37 +154,38 @@ export class DefaultCartService implements CartService {
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    this.load();
-    return this.activeCartId$.pipe(
-      take(1),
-      switchMap((activeId) =>
-        this.adapter.addEntry({
-          cartId: cartId ?? activeId!,
-          attributes,
-        })
-      ),
-      tap((cart) => {
-        const isNoCarts = this.carts.size === 0;
-        const cartData = this.carts.get(cart.id);
+    return invokable(
+      this.activeCartId$.pipe(
+        take(1),
+        switchMap((activeId) =>
+          this.adapter.addEntry({
+            cartId: cartId ?? activeId!,
+            attributes,
+          })
+        ),
+        tap((cart) => {
+          const isNoCarts = this.carts.size === 0;
+          const cartData = this.carts.get(cart.id);
 
-        if (!cartData) {
-          this.addCartToMap(cart);
-        } else {
-          cartData.value$.next(cart);
-        }
+          if (!cartData) {
+            this.addCartToMap(cart);
+          } else {
+            cartData.value$.next(cart);
+          }
 
-        if (isNoCarts) {
-          this.activeCartId$.next(cart.id);
-        }
+          if (isNoCarts) {
+            this.activeCartId$.next(cart.id);
+          }
 
-        this.loading$.next(false);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.loading$.next(false);
-        this.updateError(error, cartId);
-        throw error;
-      }),
-      mapTo(null)
+          this.loading$.next(false);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.loading$.next(false);
+          this.updateError(error, cartId);
+          throw error;
+        }),
+        mapTo(null)
+      )
     );
   }
 
@@ -191,35 +195,36 @@ export class DefaultCartService implements CartService {
   }: DeleteCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    this.load();
-    return this.activeCartId$.pipe(
-      take(1),
-      switchMap((activeId) =>
-        this.adapter
-          .deleteEntry({
-            cartId: cartId ?? activeId!,
-            groupKey,
-          })
-          .pipe(
-            switchMap(() =>
-              this.adapter.get({
-                cartId: cartId ?? activeId!,
-              })
+    return invokable(
+      this.activeCartId$.pipe(
+        take(1),
+        switchMap((activeId) =>
+          this.adapter
+            .deleteEntry({
+              cartId: cartId ?? activeId!,
+              groupKey,
+            })
+            .pipe(
+              switchMap(() =>
+                this.adapter.get({
+                  cartId: cartId ?? activeId!,
+                })
+              )
             )
-          )
-      ),
-      tap((cart) => {
-        const cachedCart = this.carts.get(cart.id);
-        cachedCart?.value$.next(cart);
+        ),
+        tap((cart) => {
+          const cachedCart = this.carts.get(cart.id);
+          cachedCart?.value$.next(cart);
 
-        this.loading$.next(false);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.loading$.next(false);
-        this.updateError(error, cartId);
-        throw error;
-      }),
-      mapTo(null)
+          this.loading$.next(false);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.loading$.next(false);
+          this.updateError(error, cartId);
+          throw error;
+        }),
+        mapTo(null)
+      )
     );
   }
 
@@ -230,29 +235,30 @@ export class DefaultCartService implements CartService {
   }: UpdateCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    this.load();
-    return this.activeCartId$.pipe(
-      take(1),
-      switchMap((activeId) =>
-        this.adapter.updateEntry({
-          groupKey,
-          cartId: cartId ?? activeId!,
-          attributes,
-        })
-      ),
-      tap((cart) => {
-        const cachedCart = this.carts.get(cart.id)!;
+    return invokable(
+      this.activeCartId$.pipe(
+        take(1),
+        switchMap((activeId) =>
+          this.adapter.updateEntry({
+            groupKey,
+            cartId: cartId ?? activeId!,
+            attributes,
+          })
+        ),
+        tap((cart) => {
+          const cachedCart = this.carts.get(cart.id)!;
 
-        cachedCart.value$.next(cart);
+          cachedCart.value$.next(cart);
 
-        this.loading$.next(false);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.loading$.next(false);
-        this.updateError(error, cartId);
-        throw error;
-      }),
-      mapTo(null)
+          this.loading$.next(false);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.loading$.next(false);
+          this.updateError(error, cartId);
+          throw error;
+        }),
+        mapTo(null)
+      )
     );
   }
 
@@ -261,7 +267,7 @@ export class DefaultCartService implements CartService {
       const id = cartId ?? activeCartId!;
       const cachedCart = this.carts.get(id)!;
 
-      cachedCart.error$.next(error);
+      cachedCart?.error$?.next(error);
     });
   }
 

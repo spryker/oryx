@@ -74,13 +74,15 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
 
   protected onUpdate(e: CustomEvent, { groupKey, sku }: CartEntry): void {
     this.currentlyUpdated$.next(groupKey);
-    this.cartService
-      .updateEntry({ groupKey, sku, quantity: e.detail.quantity })
-      .subscribe();
+    this.cartService.updateEntry({
+      groupKey,
+      sku,
+      quantity: e.detail.quantity,
+    });
   }
 
   protected onRemove({ groupKey }: CartEntry): void {
-    this.cartService.deleteEntry({ groupKey }).subscribe();
+    this.cartService.deleteEntry({ groupKey });
   }
 
   protected renderEmpty(): TemplateResult {

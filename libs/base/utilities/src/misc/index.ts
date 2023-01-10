@@ -3,6 +3,7 @@ export * as AjaxClient from './ajax';
 export * from './converters';
 export * from './extract-str-props';
 export * from './get-prop-by-path';
+export * from './invokable';
 export * from './query.util';
 export * from './random-string';
 export * from './throttle';
