@@ -1,4 +1,4 @@
-const { resolve, basename } = require('path');
+const { resolve, basename, parse, sep } = require('path');
 
 /**
  * @param {string=} cwd
@@ -40,9 +40,19 @@ function getPackageName(cwd = process.cwd()) {
   return basename(cwd);
 };
 
+/**
+ * Extract layer name from `cwd`
+ * @returns {string}
+ */
+function getLayerName(cwd = process.cwd()) {
+  const {dir} = parse(cwd);
+  return dir.split(sep).at(-1);
+};
+
 module.exports = {
   getConfig,
   getVersion,
   getTagPrefix,
   getPackageName,
+  getLayerName
 };

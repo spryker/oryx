@@ -1,11 +1,12 @@
 const path = require('path');
 const copyfiles = require('copyfiles');
-const { getPackageName } = require('./lerna');
+const { getPackageName, getLayerName } = require('./lerna');
 
 const libName = getPackageName();
+const libLayer = getLayerName();
 const root = path.resolve(__dirname, '../..');
 
-const sourceRoot = path.join(root, `dist/libs/${libName}`);
+const sourceRoot = path.join(root, `dist/libs/${libLayer}/${libName}`);
 const sourceRelative = path.relative(process.cwd(), sourceRoot);
 const sourceDepth = sourceRelative.split(path.sep).length;
 

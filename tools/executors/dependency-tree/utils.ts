@@ -4,14 +4,6 @@ import {
   ProjectGraphNode,
 } from '@nrwl/devkit';
 
-type Type = Exclude<ProjectGraphNode<any>['type'], 'npm'>;
-
-const TypeLocationMap: Record<Type, string> = {
-  app: 'apps',
-  lib: 'libs',
-  e2e: 'apps',
-};
-
 const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,
   project: string
@@ -37,7 +29,7 @@ const stringifyDependencies = (
   nodes: Record<string, ProjectGraphNode<any>>
 ): string =>
   dependencies
-    .map((item) => `${TypeLocationMap[nodes[item].type]}/${item}/*`)
+    .map((item) => `${nodes[item].data.root}/*`)
     .sort()
     .reduce((acc, item) => `${acc} ${item}`, '')
     .trim();

@@ -1,11 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDependencies = void 0;
-const TypeLocationMap = {
-    app: 'apps',
-    lib: 'libs',
-    e2e: 'apps',
-};
 const findDependencies = (dependencies, project) => {
     // filter out external dependencies
     const deps = dependencies[project]
@@ -19,7 +14,7 @@ const findDependencies = (dependencies, project) => {
     ];
 };
 const stringifyDependencies = (dependencies, nodes) => dependencies
-    .map((item) => `${TypeLocationMap[nodes[item].type]}/${item}/*`)
+    .map((item) => `${nodes[item].data.root}/*`)
     .sort()
     .reduce((acc, item) => `${acc} ${item}`, '')
     .trim();
