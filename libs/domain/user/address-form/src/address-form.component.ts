@@ -7,9 +7,10 @@ import {
 import { CountryService } from '@spryker-oryx/site';
 import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { asyncValue, hydratable, observe } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { styles } from './address-form.styles';
 
 @hydratable(['mouseover', 'focusin'])
@@ -22,6 +23,7 @@ export class AddressFormComponent extends FormComponentMixin() {
   protected countryService = resolve(CountryService);
   protected formService = resolve(AddressFormService);
   protected addressService = resolve(AddressService);
+  protected selectRef: Ref<LitElement & HTMLSelectElement> = createRef();
 
   @observe()
   protected country$ = new BehaviorSubject(this.country);
@@ -52,9 +54,14 @@ export class AddressFormComponent extends FormComponentMixin() {
   protected form$ = this.activeCountry$.pipe(
     switchMap((country) =>
       country
-        ? this.formService
-            .getForm({ country })
-            .pipe(map((form) => form?.data?.options))
+        ? this.formService.getForm({ country }).pipe(
+            tap((form) => {
+              this.selectRef.value?.setCustomValidity(
+                form ? '' : 'Address form for given country not available.'
+              );
+            }),
+            map((form) => form?.data?.options)
+          )
         : of([])
     )
   );
@@ -67,6 +74,7 @@ export class AddressFormComponent extends FormComponentMixin() {
           ${countries.length > 1
             ? html`<oryx-select class="w100" label="Country *">
                 <select
+                  ${ref(this.selectRef)}
                   name="iso2Code"
                   .value=${currentCountry}
                   @change=${this.onCountryChange}
