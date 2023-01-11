@@ -5,6 +5,7 @@ import {
   concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductListAdapter,
+  DefaultProductMediaNormalizer,
   facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
@@ -18,7 +19,6 @@ import {
   ProductAdapter,
   ProductListAdapter,
   productListNormalizer,
-  ProductMediaNormalizer,
   ProductMediaSetNormalizer,
   productNormalizer,
 } from './adapter';
@@ -93,7 +93,7 @@ export const productProviders: Provider[] = [
     useValue: mediaSetNormalizer,
   },
   {
-    provide: ProductMediaNormalizer,
+    provide: DefaultProductMediaNormalizer,
     useValue: mediaNormalizer,
   },
   {
