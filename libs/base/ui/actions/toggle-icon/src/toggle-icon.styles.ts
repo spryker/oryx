@@ -10,6 +10,7 @@ export const toggleIconStyles = css`
     justify-content: center;
     gap: 10px;
     border-radius: var(--oryx-border-radius-small);
+    z-index: 0;
   }
 
   :host([has-text]),
