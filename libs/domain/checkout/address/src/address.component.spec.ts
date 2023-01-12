@@ -14,7 +14,7 @@ class MockAddressService implements Partial<AddressService> {
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  setAddressDetails = vi.fn();
+  setAddress = vi.fn();
 }
 
 const setupFakeForm = (): void => {
@@ -104,7 +104,7 @@ describe('CheckoutAddressComponent', () => {
       });
 
       it('should clear address details', () => {
-        expect(dataService.setAddressDetails).toHaveBeenCalledWith(null);
+        expect(dataService.setAddress).toHaveBeenCalledWith(null);
       });
 
       it('should return falsy result', () => {
@@ -141,7 +141,7 @@ describe('CheckoutAddressComponent', () => {
       });
 
       it('should pass address details to the service', () => {
-        expect(dataService.setAddressDetails).toHaveBeenCalledWith({
+        expect(dataService.setAddress).toHaveBeenCalledWith({
           test: 'test',
         });
       });
@@ -172,7 +172,7 @@ describe('CheckoutAddressComponent', () => {
       });
 
       it('should clear address details', () => {
-        expect(dataService.setAddressDetails).toHaveBeenCalledWith(null);
+        expect(dataService.setAddress).toHaveBeenCalledWith(null);
       });
 
       it('should return falsy result', () => {
@@ -197,7 +197,7 @@ describe('CheckoutAddressComponent', () => {
       });
 
       it('should pass selected address to the service', () => {
-        expect(dataService.setAddressDetails).toHaveBeenCalledWith(formData);
+        expect(dataService.setAddress).toHaveBeenCalledWith(formData);
       });
 
       it('should return truthy result', () => {

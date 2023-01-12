@@ -25,8 +25,8 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  setShipmentDetails = vi.fn();
-  getShipmentDetails = vi.fn().mockReturnValue(of(null));
+  setShipment = vi.fn();
+  getShipment = vi.fn().mockReturnValue(of(null));
 }
 
 describe('DefaultCheckoutService', () => {
@@ -138,9 +138,7 @@ describe('DefaultCheckoutService', () => {
 
     describe('when shipment method is stored in session storage', () => {
       beforeEach(() => {
-        dataService.getShipmentDetails.mockReturnValue(
-          of({ idShipmentMethod: 4 })
-        );
+        dataService.getShipment.mockReturnValue(of({ idShipmentMethod: 4 }));
       });
 
       it('should return shipment method from storage', () => {
@@ -158,7 +156,7 @@ describe('DefaultCheckoutService', () => {
     it('should call CheckoutDataService setShipmentDetails', () => {
       service.setShipmentMethod(1).subscribe();
 
-      expect(dataService.setShipmentDetails).toHaveBeenCalledWith(
+      expect(dataService.setShipment).toHaveBeenCalledWith(
         expect.objectContaining({ idShipmentMethod: 1 })
       );
     });

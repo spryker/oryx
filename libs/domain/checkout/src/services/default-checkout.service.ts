@@ -4,6 +4,8 @@ import { RouterService } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import {
   combineLatest,
+  concat,
+  filter,
   map,
   Observable,
   of,
@@ -13,7 +15,12 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { Checkout, CheckoutResponse, Validity } from '../models';
+import {
+  Checkout,
+  CheckoutResponse,
+  ContactDetails,
+  Validity,
+} from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutOrchestrationService } from './checkout-orchestration.service';
@@ -78,13 +85,24 @@ export class DefaultCheckoutService implements CheckoutService {
     return result;
   }
 
+  protected getCustomer(): Observable<ContactDetails | null> {
+    return concat(
+      this.dataService.getCustomer().pipe(take(1), filter(Boolean)),
+      // TODO: Workaround for the case when customer is not set in the data service
+      // Proper implementation should get customer data from the UserService.
+      of({
+        email: 'temporary-email@temporary-workaround.com',
+      })
+    ).pipe(take(1));
+  }
+
   protected preparePayload(): Observable<Checkout> {
     return combineLatest([
       this.cartService.getCart().pipe(map((cart) => cart?.id)),
-      this.dataService.getContactDetails(),
-      this.dataService.getAddressDetails(),
-      this.dataService.getShipmentDetails(),
-      this.dataService.getPaymentDetails(),
+      this.getCustomer(),
+      this.dataService.getAddress(),
+      this.dataService.getShipment(),
+      this.dataService.getPayment(),
     ]).pipe(
       take(1),
       map(([cartId, customer, billingAddress, shipment, payment]) => {

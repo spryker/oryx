@@ -35,7 +35,7 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
         tap((methods) => {
           const payment = methods?.find((method) => method.id === id);
           if (payment) {
-            this.dataService.setPaymentDetails(payment);
+            this.dataService.setPayment(payment);
           }
         })
       )

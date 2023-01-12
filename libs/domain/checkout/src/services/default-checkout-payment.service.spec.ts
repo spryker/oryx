@@ -21,7 +21,7 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  setPaymentDetails = vi.fn();
+  setPayment = vi.fn();
 }
 
 describe('DefaultCheckoutPaymentService', () => {

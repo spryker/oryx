@@ -26,7 +26,7 @@ class MockOrchestrationService
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  getPaymentDetails = vi.fn().mockReturnValue(of(null));
+  getPayment = vi.fn().mockReturnValue(of(null));
 }
 
 describe('Checkout Payment Selector component', () => {

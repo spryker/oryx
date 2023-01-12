@@ -29,7 +29,7 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
   protected methods$ = this.service.getMethods();
   protected currentMethod$ = new BehaviorSubject<string | null>(null);
   protected selectedPaymentMethod$ = this.dataService
-    .getPaymentDetails()
+    .getPayment()
     .pipe(map((method) => method?.id));
 
   @subscribe()

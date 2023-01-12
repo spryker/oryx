@@ -85,12 +85,12 @@ describe('DefaultCheckoutDataService', () => {
     const cb = vi.fn();
 
     it('should return an observable', () => {
-      expect(service.setIsGuestCheckout()).toBeInstanceOf(Observable);
+      expect(service.setGuestCheckout()).toBeInstanceOf(Observable);
     });
 
     describe('when value is set', () => {
       beforeEach(() => {
-        service.setIsGuestCheckout(true).subscribe(cb);
+        service.setGuestCheckout(true).subscribe(cb);
       });
 
       it('should set the value', () => {
@@ -104,7 +104,7 @@ describe('DefaultCheckoutDataService', () => {
 
     describe('when value is removing', () => {
       beforeEach(() => {
-        service.setIsGuestCheckout(false).subscribe(cb);
+        service.setGuestCheckout(false).subscribe(cb);
       });
 
       it('should remove the value', () => {
@@ -122,7 +122,7 @@ describe('DefaultCheckoutDataService', () => {
 
   describe('getContactDetails', () => {
     it('should return an observable', () => {
-      expect(service.getContactDetails()).toBeInstanceOf(Observable);
+      expect(service.getCustomer()).toBeInstanceOf(Observable);
     });
   });
 
@@ -132,8 +132,8 @@ describe('DefaultCheckoutDataService', () => {
 
     describe('when value is set', () => {
       beforeEach(() => {
-        service.setContactDetails(details);
-        service.getContactDetails().subscribe(cb);
+        service.setCustomer(details);
+        service.getCustomer().subscribe(cb);
       });
 
       it('should set the contact details', () => {
@@ -152,7 +152,7 @@ describe('DefaultCheckoutDataService', () => {
 
   describe('getAddressDetails', () => {
     it('should return an observable', () => {
-      expect(service.getAddressDetails()).toBeInstanceOf(Observable);
+      expect(service.getAddress()).toBeInstanceOf(Observable);
     });
   });
 
@@ -173,8 +173,8 @@ describe('DefaultCheckoutDataService', () => {
 
     describe('when value is set', () => {
       beforeEach(() => {
-        service.setAddressDetails(details);
-        service.getAddressDetails().subscribe(cb);
+        service.setAddress(details);
+        service.getAddress().subscribe(cb);
       });
 
       it('should set the address details', () => {
@@ -193,7 +193,7 @@ describe('DefaultCheckoutDataService', () => {
 
   describe('when getShipmentDetails is called', () => {
     it('should return an observable', () => {
-      expect(service.getShipmentDetails()).toBeInstanceOf(Observable);
+      expect(service.getShipment()).toBeInstanceOf(Observable);
     });
   });
 
@@ -202,8 +202,8 @@ describe('DefaultCheckoutDataService', () => {
 
     describe('when value is set', () => {
       beforeEach(() => {
-        service.setShipmentDetails(mockNormalizedShipmentAttributes);
-        service.getShipmentDetails().subscribe(cb);
+        service.setShipment(mockNormalizedShipmentAttributes);
+        service.getShipment().subscribe(cb);
       });
 
       it('should set the shipment details', () => {
@@ -222,7 +222,7 @@ describe('DefaultCheckoutDataService', () => {
 
   describe('when getPaymentDetails is called', () => {
     it('should return an observable', () => {
-      expect(service.getPaymentDetails()).toBeInstanceOf(Observable);
+      expect(service.getPayment()).toBeInstanceOf(Observable);
     });
   });
 
@@ -231,8 +231,8 @@ describe('DefaultCheckoutDataService', () => {
 
     describe('when value is set', () => {
       beforeEach(() => {
-        service.setPaymentDetails(mockNormalizedPaymentMethods[0]);
-        service.getPaymentDetails().subscribe(cb);
+        service.setPayment(mockNormalizedPaymentMethods[0]);
+        service.getPayment().subscribe(cb);
       });
 
       it('should set the payment details', () => {

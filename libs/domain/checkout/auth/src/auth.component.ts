@@ -47,7 +47,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
               <oryx-button type="text">
                 <button
                   @click=${(): void => {
-                    this.checkoutDataService.setIsGuestCheckout(false);
+                    this.checkoutDataService.setGuestCheckout(false);
                   }}
                 >
                   ${i18n('checkout.checkout-as-register')}
@@ -81,7 +81,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
           !options.disableGuest,
           () => html`<checkout-guest
             @oryx.guest-submit=${() => {
-              this.checkoutDataService.setIsGuestCheckout();
+              this.checkoutDataService.setGuestCheckout();
             }}
             .options="${{
               ...(options.guestUrl && { url: options.guestUrl }),

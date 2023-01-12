@@ -8,7 +8,7 @@ import { CheckoutContactComponent } from './contact.component';
 import { checkoutContactComponent } from './contact.def';
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  setContactDetails = vi.fn();
+  setCustomer = vi.fn();
 }
 
 const setupFakeForm = (): void => {
@@ -79,7 +79,7 @@ describe('CheckoutContactComponent', () => {
     });
 
     it('should clear address details', () => {
-      expect(dataService.setContactDetails).toHaveBeenCalledWith(null);
+      expect(dataService.setCustomer).toHaveBeenCalledWith(null);
     });
 
     it('should return false', () => {
@@ -114,7 +114,7 @@ describe('CheckoutContactComponent', () => {
     });
 
     it('should pass address details to the service', () => {
-      expect(dataService.setContactDetails).toHaveBeenCalledWith({
+      expect(dataService.setCustomer).toHaveBeenCalledWith({
         test: 'test',
       });
     });

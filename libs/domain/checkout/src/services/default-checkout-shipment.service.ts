@@ -69,7 +69,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   }
 
   getSelectedShipmentMethod(): Observable<number> {
-    return this.dataService.getShipmentDetails().pipe(
+    return this.dataService.getShipment().pipe(
       map((details) => details?.idShipmentMethod),
       switchMap((id) =>
         id
@@ -90,7 +90,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
       .pipe(
         take(1),
         tap((shipment) => {
-          this.dataService.setShipmentDetails({
+          this.dataService.setShipment({
             ...shipment,
             idShipmentMethod: method,
           });

@@ -29,10 +29,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     return this.isGuestCheckout$;
   }
 
-  setIsGuestCheckout(state = true): Observable<unknown> {
-    this.isGuestCheckout$.next(state);
+  setGuestCheckout(isGuestCheckout = true): Observable<unknown> {
+    this.isGuestCheckout$.next(isGuestCheckout);
 
-    if (state) {
+    if (isGuestCheckout) {
       this.storage.set(
         guestCheckoutStorageKey,
         guestCheckoutStorageKey,
@@ -57,11 +57,11 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     this.storage.remove(addressCheckoutStorageKey, StorageType.SESSION);
   }
 
-  getContactDetails(): Observable<ContactDetails | null> {
+  getCustomer(): Observable<ContactDetails | null> {
     return this.contactDetails$;
   }
 
-  setContactDetails(contactDetails: ContactDetails | null): void {
+  setCustomer(contactDetails: ContactDetails | null): void {
     this.contactDetails$.next(contactDetails);
     this.storage.set(
       contactCheckoutStorageKey,
@@ -70,11 +70,11 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     );
   }
 
-  getAddressDetails(): Observable<Address | null> {
+  getAddress(): Observable<Address | null> {
     return this.addressDetails$;
   }
 
-  setAddressDetails(addressDetails: Address | null): void {
+  setAddress(addressDetails: Address | null): void {
     this.addressDetails$.next(addressDetails);
     this.storage.set(
       addressCheckoutStorageKey,
@@ -83,11 +83,11 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     );
   }
 
-  getShipmentDetails(): Observable<Shipment | null> {
+  getShipment(): Observable<Shipment | null> {
     return this.shipmentDetails$;
   }
 
-  setShipmentDetails(shipmentDetails: Shipment | null): void {
+  setShipment(shipmentDetails: Shipment | null): void {
     this.shipmentDetails$.next(shipmentDetails);
     this.storage.set(
       shipmentCheckoutStorageKey,
@@ -96,11 +96,11 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     );
   }
 
-  getPaymentDetails(): Observable<PaymentMethod | null> {
+  getPayment(): Observable<PaymentMethod | null> {
     return this.paymentDetails$;
   }
 
-  setPaymentDetails(paymentDetails: PaymentMethod | null): void {
+  setPayment(paymentDetails: PaymentMethod | null): void {
     this.paymentDetails$.next(paymentDetails);
     this.storage.set(
       paymentCheckoutStorageKey,

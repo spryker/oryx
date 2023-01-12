@@ -31,16 +31,14 @@ export class CheckoutContactComponent
         form?.reportValidity();
       }
 
-      this.checkoutDataService.setContactDetails(null);
+      this.checkoutDataService.setCustomer(null);
 
       return false;
     }
 
     const data = Object.fromEntries(new FormData(form).entries());
 
-    this.checkoutDataService.setContactDetails(
-      data as unknown as ContactDetails
-    );
+    this.checkoutDataService.setCustomer(data as unknown as ContactDetails);
 
     return true;
   }

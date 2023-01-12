@@ -22,7 +22,7 @@ interface Props {
 
 const Template: Story<Props> = (props): TemplateResult => {
   const dataService = resolve(CheckoutDataService);
-  dataService.setIsGuestCheckout(props.behavior === 'guest');
+  dataService.setGuestCheckout(props.behavior === 'guest');
   toggleBehavior(props.behavior);
   return html`<oryx-checkout-composition></oryx-checkout-composition>`;
 };

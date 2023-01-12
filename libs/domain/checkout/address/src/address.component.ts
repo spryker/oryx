@@ -38,7 +38,7 @@ export class CheckoutAddressComponent
         form?.reportValidity();
       }
 
-      this.checkoutDataService.setAddressDetails(null);
+      this.checkoutDataService.setAddress(null);
 
       return false;
     }
@@ -47,7 +47,7 @@ export class CheckoutAddressComponent
       ? Object.fromEntries(new FormData(form).entries())
       : this.selectedAddress;
 
-    this.checkoutDataService.setAddressDetails(data as unknown as Address);
+    this.checkoutDataService.setAddress(data as unknown as Address);
 
     return true;
   }
