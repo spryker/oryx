@@ -1,10 +1,5 @@
 {
   "name": "@spryker-oryx/storybook",
   "version": "0.0.1",
-  "private": true,
-  "nx": {
-    "tags": [
-      "type:app"
-    ]
-  }
+  "private": true
 }

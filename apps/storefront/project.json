@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/storefront/src",
-  "tags": [],
+  "tags": ["type:app"],
   "targets": {
     "serve": {
       "executor": "@nrwl/workspace:run-commands",

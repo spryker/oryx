@@ -45,7 +45,7 @@ libDirs.forEach(dir => {
 execSync(`cd ..`, consoleOutputSettings);
 
 const orgName = 'spryker-oryx';
-const packageVersion = '1.0.0';
+const packageVersion = '0.1.0';
 const tarballs = fastGlob.sync([`**/${orgName}*.tgz`]);
 const customRegistry = '--registry http://localhost:4873';
 

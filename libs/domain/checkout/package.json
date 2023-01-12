@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/checkout",
   "type": "module",
-  "version": "1.0.0-alpha.0",
+  "version": "0.1.0",
   "description": "Checkout features Oryx applications",
   "author": "Spryker",
   "main": "./src/index.js",

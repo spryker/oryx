@@ -48,6 +48,6 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["type:app"],
   "implicitDependencies": ["ui", "content", "launchpad-ui"]
 }
