@@ -701,4 +701,23 @@ describe('QuantityInputComponent', () => {
       });
     });
   });
+
+  describe('when label is provided', () => {
+    const label = 'TestLabel';
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-cart-quantity-input
+          value=${1}
+          label=${label}
+        ></oryx-cart-quantity-input>`
+      );
+    });
+
+    it('should pass the label to the oryx-input', () => {
+      expect(
+        element.renderRoot.querySelector('oryx-input')?.getAttribute('label')
+      ).toBe(label);
+    });
+  });
 });

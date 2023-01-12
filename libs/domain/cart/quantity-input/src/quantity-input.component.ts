@@ -31,6 +31,7 @@ export class QuantityInputComponent
 {
   static styles = styles;
 
+  @property() label?: string;
   @property({ type: Number }) min = 1;
   @property({ type: Number }) value?: number;
   @property({ type: Number }) max?: number;
@@ -54,7 +55,7 @@ export class QuantityInputComponent
       >
         <oryx-icon .type=${this.decreaseIcon ?? IconTypes.Decrease}></oryx-icon>
       </button>
-      <oryx-input ?hasError=${this.hasError}>
+      <oryx-input ?hasError=${this.hasError} label=${ifDefined(this.label)}>
         <input
           ${ref(this.inputRef)}
           aria-label=${i18n('cart.quantity')}

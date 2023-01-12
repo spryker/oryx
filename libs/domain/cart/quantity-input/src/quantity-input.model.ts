@@ -3,6 +3,11 @@ export const SUBMIT_EVENT = 'submit';
 
 export interface QuantityInputAttributes {
   /**
+   * Label above input
+   */
+  label?: string;
+
+  /**
    * The minimum quantity ensures that the user cannot input below the minimum
    * quantity.
    *

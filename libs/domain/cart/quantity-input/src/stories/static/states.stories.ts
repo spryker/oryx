@@ -75,18 +75,18 @@ const Template: Story = (): TemplateResult => {
               []
             ) as any,
             ({ categoryY, options: { isDisabled, className } }) => html`
-        <oryx-cart-quantity-input
-          data-selector=${getSelector(
-            categoryY as CategoryY,
-            isDisabled as boolean
-          )}
-          data-state=${className as string}
-          data-disabled=${isDisabled as boolean}
-          min=${group.options.min}
-          max=${group.options.max}
-          value=${group.options.value}
-        ></quantity-input>
-      `
+              <oryx-cart-quantity-input
+                data-selector=${getSelector(
+                  categoryY as CategoryY,
+                  isDisabled as boolean
+                )}
+                data-state=${className as string}
+                data-disabled=${isDisabled as boolean}
+                min=${group.options.min}
+                max=${group.options.max}
+                value=${group.options.value}
+              ></oryx-cart-quantity-input>
+            `
           ),
         { title: group.title, addSeparator: index < groups.length - 1 }
       )
