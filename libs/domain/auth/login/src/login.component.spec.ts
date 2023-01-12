@@ -3,6 +3,7 @@ import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
+import { I18nService } from '@spryker-oryx/i18n';
 import { passwordInputComponent } from '@spryker-oryx/ui';
 import {
   PasswordInputComponent,
@@ -25,6 +26,10 @@ class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
   navigate = vi.fn();
   previousRoute = vi.fn();
+}
+
+class MockI18NService implements Partial<I18nService> {
+  translate = vi.fn().mockReturnValue(of('text'));
 }
 
 describe('AuthLoginComponent', () => {
@@ -50,6 +55,10 @@ describe('AuthLoginComponent', () => {
         {
           provide: RouterService,
           useClass: MockRouterService,
+        },
+        {
+          provide: I18nService,
+          useClass: MockI18NService,
         },
       ],
     });

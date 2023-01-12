@@ -5,6 +5,7 @@ import {
   ContentController,
   RouterService,
 } from '@spryker-oryx/experience';
+import { I18nService } from '@spryker-oryx/i18n';
 import {
   asyncValue,
   hydratable,
@@ -12,8 +13,8 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { DirectiveResult } from 'lit-html/directive';
 import { property } from 'lit/decorators.js';
+import { DirectiveResult } from 'lit/directive';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -21,6 +22,7 @@ import {
   catchError,
   combineLatest,
   EMPTY,
+  Observable,
   of,
   ReplaySubject,
   switchMap,
@@ -37,6 +39,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
   protected contentController = new ContentController(this);
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
+  protected i18nService = resolve(I18nService);
 
   @property() heading?: DirectiveResult | string;
 
@@ -111,6 +114,11 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
     });
   }
 
+  // TODO: remove when `i18n` directive will be refactored
+  protected i18n(token: string): Observable<string> {
+    return this.i18nService.translate(token);
+  }
+
   protected override render(): TemplateResult {
     return html`<oryx-card>
       <oryx-heading slot="header" appearance="h5">
@@ -126,26 +134,42 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
       ${asyncValue(
         this.data$,
         ([options, loading, success]) => html`
-          ${
-            success
-              ? ''
-              : html`<oryx-notification type="error">
-                  ${i18n('the-email-or/and-password-entered-is-not-valid')}
-                </oryx-notification>`
-          }
+          ${success
+            ? ''
+            : html`<oryx-notification type="error">
+                ${i18n('the-email-or/and-password-entered-is-not-valid')}
+              </oryx-notification>`}
           <form @submit=${this.handleLogin} method="post">
-            <oryx-input label="${i18n(
-              'email'
-            )} *" ?haserror="${!success}"><input type="email" name="email" placeholder="${i18n(
-          'email'
-        )}" required/></oryx-input>
-            <oryx-password-input ?haserror="${!success}" label="${i18n(
-          'password'
-        )} *" strategy="${ifDefined(
-          options.strategy
-        )}"/><input type="password" name="password" placeholder="${i18n(
-          'password'
-        )}" required/></oryx-password-input>
+            ${asyncValue(
+              this.i18n('email'),
+              (text) => html`
+                <oryx-input label="${text} *" ?haserror="${!success}">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="${i18n(text)}"
+                    required
+                  />
+                </oryx-input>
+              `
+            )}
+            ${asyncValue(
+              this.i18n('password'),
+              (text) => html`
+                <oryx-password-input
+                  label="${text} *"
+                  ?haserror="${!success}"
+                  strategy="${ifDefined(options.strategy)}"
+                >
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="${i18n(text)}"
+                    required
+                  />
+                </oryx-password-input>
+              `
+            )}
             <div class="options">
               ${when(
                 options.showRememberMe,
@@ -155,13 +179,15 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
                 </oryx-checkbox>`,
                 () => html`<span></span>`
               )}
-              <oryx-link><a href="#">${i18n(
-                'user.login.forgot-password?'
-              )}</a></oryx-link>
+              <oryx-link>
+                <a href="#">${i18n('user.login.forgot-password?')}</a>
+              </oryx-link>
             </div>
-            <oryx-button size="small"><button type="submit" ?disabled=${loading}>${i18n(
-          'user.login.login'
-        )}</button></oryx-button>
+            <oryx-button size="small">
+              <button type="submit" ?disabled=${loading}>
+                ${i18n('user.login.login')}
+              </button>
+            </oryx-button>
           </form>
         `
       )}
