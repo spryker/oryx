@@ -2,7 +2,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpErrorResponse } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { invokable } from '@spryker-oryx/utilities';
+import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   catchError,
@@ -92,7 +92,7 @@ export class DefaultCartService implements CartService {
   }
 
   load(): Observable<null> {
-    return invokable(
+    return subscribeReplay(
       this.identity.get().pipe(
         take(1),
         switchMap(() => this.loadCarts()),
@@ -154,7 +154,7 @@ export class DefaultCartService implements CartService {
   addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    return invokable(
+    return subscribeReplay(
       this.activeCartId$.pipe(
         take(1),
         switchMap((activeId) =>
@@ -195,7 +195,7 @@ export class DefaultCartService implements CartService {
   }: DeleteCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    return invokable(
+    return subscribeReplay(
       this.activeCartId$.pipe(
         take(1),
         switchMap((activeId) =>
@@ -235,7 +235,7 @@ export class DefaultCartService implements CartService {
   }: UpdateCartEntryQualifier): Observable<null> {
     this.loading$.next(true);
 
-    return invokable(
+    return subscribeReplay(
       this.activeCartId$.pipe(
         take(1),
         switchMap((activeId) =>

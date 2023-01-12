@@ -2,6 +2,7 @@ import { CartService } from '@spryker-oryx/cart';
 import { inject, resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
   concat,
@@ -9,11 +10,11 @@ import {
   map,
   Observable,
   of,
-  ReplaySubject,
   shareReplay,
   switchMap,
   take,
   tap,
+  throwError,
 } from 'rxjs';
 import {
   Checkout,
@@ -51,38 +52,20 @@ export class DefaultCheckoutService implements CheckoutService {
   placeOrder(): Observable<CheckoutResponse> {
     this.orchestrationService.submit();
 
-    // TODO: Logic will be simplified with the introduction of Invokable utility
-    const result = new ReplaySubject<CheckoutResponse>(1);
-
-    this.canCheckout$
-      .pipe(
+    return subscribeReplay(
+      this.canCheckout$.pipe(
         take(1),
-        switchMap((canCheckout) => {
-          if (!canCheckout) {
-            result.complete();
-            return of(undefined);
-          }
-
-          return this.preparePayload().pipe(
-            switchMap((payload) =>
-              this.adapter.placeOrder({ attributes: payload })
-            ),
-            tap({
-              next: (response) => {
-                result.next(response);
-                result.complete();
-              },
-              error: (error) => {
-                result.error(error);
-              },
-            }),
-            switchMap((response) => this.postCheckout(response))
-          );
-        })
+        switchMap((canCheckout) =>
+          canCheckout
+            ? this.preparePayload()
+            : throwError(() => new Error('Cannot checkout'))
+        ),
+        switchMap((payload) =>
+          this.adapter.placeOrder({ attributes: payload })
+        ),
+        tap((response) => this.postCheckout(response))
       )
-      .subscribe();
-
-    return result;
+    );
   }
 
   protected getCustomer(): Observable<ContactDetails | null> {
@@ -133,10 +116,14 @@ export class DefaultCheckoutService implements CheckoutService {
   }
 
   protected postCheckout(response: CheckoutResponse): Observable<unknown> {
-    this.cartService.load().subscribe();
+    this.cartService.load();
 
-    return this.semanticLink
-      .get({ type: SemanticLinkType.Order, id: response.orderReference })
-      .pipe(tap((url: string | undefined) => url && this.router.navigate(url)));
+    return subscribeReplay(
+      this.semanticLink
+        .get({ type: SemanticLinkType.Order, id: response.orderReference })
+        .pipe(
+          tap((url: string | undefined) => url && this.router.navigate(url))
+        )
+    );
   }
 }

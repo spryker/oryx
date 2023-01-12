@@ -1,7 +1,7 @@
 import { BehaviorSubject, of } from 'rxjs';
-import { invokable } from './invokable';
+import { subscribeReplay } from './subscribe-replay';
 
-describe('Invokable', () => {
+describe('subscribeReplay', () => {
   const mockValue = 'mockValue';
   const callback = vi.fn().mockReturnValue(of(mockValue));
   const mockObs = new BehaviorSubject(false);
@@ -11,19 +11,19 @@ describe('Invokable', () => {
   });
 
   it('should invoke provided as argument observable', () => {
-    invokable(mockObs.pipe(callback)).subscribe();
+    subscribeReplay(mockObs.pipe(callback)).subscribe();
 
     expect(callback).toHaveBeenCalled();
   });
 
   it('should invoke provided as argument observable even if not subscribed on returned observable', () => {
-    invokable(mockObs.pipe(callback));
+    subscribeReplay(mockObs.pipe(callback));
 
     expect(callback).toHaveBeenCalled();
   });
 
   it('should return value of invoked observable', () => {
-    invokable(mockObs.pipe(callback)).subscribe((data) => {
+    subscribeReplay(mockObs.pipe(callback)).subscribe((data) => {
       expect(data).toBe(mockValue);
     });
   });
