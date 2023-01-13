@@ -6,9 +6,12 @@ import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { BehaviorSubject, combineLatest, map, Subject, tap } from 'rxjs';
 import { AddressModalConfig } from './manage-address.model';
+import { styles } from './manage-address.styles';
 
 @hydratable(['mouseover', 'focusin'])
 export class ManageAddressComponent extends LitElement {
+  static styles = styles;
+
   protected config: AddressModalConfig = {
     [AddressBookState.List]: {
       header: i18n('checkout.address.addresses'),
