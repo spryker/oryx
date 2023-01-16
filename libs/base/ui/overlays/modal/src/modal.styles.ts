@@ -38,5 +38,6 @@ export const styles = css`
 
   oryx-card::part(body) {
     overflow: auto;
+    display: flex;
   }
 `;
