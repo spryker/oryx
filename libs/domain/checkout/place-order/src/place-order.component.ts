@@ -2,10 +2,11 @@ import { AuthService } from '@spryker-oryx/auth';
 import { CheckoutDataService, CheckoutService } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
-import { asyncValue, i18n } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, map } from 'rxjs';
 
+@hydratable('window:load')
 export class CheckoutPlaceOrderComponent extends ComponentMixin() {
   protected checkout = resolve(CheckoutService);
 
