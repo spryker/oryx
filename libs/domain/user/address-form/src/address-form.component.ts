@@ -72,12 +72,13 @@ export class AddressFormComponent extends FormComponentMixin() {
         this.data$,
         ([countries, currentCountry]) => html`
           ${countries.length > 1
-            ? html`<oryx-select class="w100" label="Country *">
+            ? html`<oryx-select class="w100" label="Country">
                 <select
                   ${ref(this.selectRef)}
                   name="iso2Code"
                   .value=${currentCountry}
                   @change=${this.onCountryChange}
+                  required
                 >
                   ${countries.map((country) => {
                     return html`<option

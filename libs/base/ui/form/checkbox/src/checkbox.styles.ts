@@ -10,6 +10,13 @@ export const checkboxStyles = css`
     pointer-events: none;
   }
 
+  :host([required]) label::after {
+    content: '*';
+    color: var(--oryx-required-asterisk-color, currentColor);
+    inset-inline-start: -8px;
+    position: relative;
+  }
+
   label {
     display: flex;
     align-items: center;

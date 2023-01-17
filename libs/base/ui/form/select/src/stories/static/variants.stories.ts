@@ -9,6 +9,7 @@ import {
 } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
 import '../../index';
@@ -182,10 +183,11 @@ const Template: Story<unknown> = (): TemplateResult => {
                   ?has-label=${!floatLabel}
                   ?floatLabel=${floatLabel}
                   ?isLoading=${isLoading}
-                  label=${label}
+                  label=${ifDefined(label)}
                 >
                   ${when(
-                    categoryX === CategoryX.CUSTOM_LABEL,
+                    categoryX === CategoryX.CUSTOM_LABEL ||
+                      categoryX === CategoryX.TRUNCATED_LABEL,
                     () => html`<span slot="label">${label}</span>`
                   )}
                   ${when(

@@ -11,6 +11,7 @@ export class CheckboxComponent
 
   protected errorController = new ErrorController(this);
 
+  @property({ type: Boolean, reflect: true }) required?: boolean;
   @property({ type: Boolean, reflect: true }) intermediate?: boolean;
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;

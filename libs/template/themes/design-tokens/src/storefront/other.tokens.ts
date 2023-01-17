@@ -59,6 +59,11 @@ export const tokens: ThemeToken = {
       color: 'rgb(0 0 0 / 50%)',
     },
   },
+  required: {
+    asterisk: {
+      color: 'var(--oryx-color-primary-300)',
+    },
+  },
   cart: {
     'quantity-input': {
       button: {

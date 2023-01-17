@@ -143,7 +143,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
             ${asyncValue(
               this.i18n('email'),
               (text) => html`
-                <oryx-input label="${text} *" ?haserror="${!success}">
+                <oryx-input label="${text}" ?haserror="${!success}">
                   <input
                     type="email"
                     name="email"
@@ -157,7 +157,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
               this.i18n('password'),
               (text) => html`
                 <oryx-password-input
-                  label="${text} *"
+                  label="${text}"
                   ?haserror="${!success}"
                   strategy="${ifDefined(options.strategy)}"
                 >

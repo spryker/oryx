@@ -9,6 +9,21 @@ export const formControlBaseStyles = css`
     border-color: var(--oryx-color-canvas-400);
   }
 
+  :host([required]) slot[name='label'] {
+    padding-inline-end: 0.5em;
+    max-width: calc(100% - 0.5em);
+    width: auto;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  :host([required]) slot[name='label']::after {
+    content: '*';
+    color: var(--oryx-required-asterisk-color, currentColor);
+    position: absolute;
+    inset-inline-end: 0;
+  }
+
   label {
     border-color: inherit;
     cursor: pointer;

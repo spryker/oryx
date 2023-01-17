@@ -94,6 +94,10 @@ export const styles = css`
     width: 100%;
     text-transform: unset;
   }
+
+  oryx-input::part(label)::after {
+    content: '';
+  }
 `;
 
 const mediumScreen = css`

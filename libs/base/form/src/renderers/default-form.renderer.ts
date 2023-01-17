@@ -106,17 +106,13 @@ export class DefaultFormRenderer implements FormRenderer {
     return html``;
   }
 
-  protected buildRequiredLabel(label?: string, required?: boolean): string {
-    return `${label}${required ? ' *' : ''}`;
-  }
-
   protected buildTextField(
     field: ComponentTypeDataFields,
     value?: string
   ): TemplateResult {
     return html`
       <oryx-input
-        .label=${this.buildRequiredLabel(field.label, field.required)}
+        .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
@@ -139,7 +135,7 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-input
-        .label=${this.buildRequiredLabel(field.label, field.required)}
+        .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
@@ -161,14 +157,17 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string
   ): TemplateResult {
     return html`
-      <oryx-checkbox class=${this.getClassMap(field)}>
+      <oryx-checkbox
+        class=${this.getClassMap(field)}
+        .required=${field.required}
+      >
         <input
           type="checkbox"
           .name=${field.id}
           ?checked=${!!value}
           ?required=${field.required}
         />
-        ${this.buildRequiredLabel(field.label, field.required)}
+        ${field.label}
       </oryx-checkbox>
     `;
   }
@@ -179,7 +178,7 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-input
-        .label=${this.buildRequiredLabel(field.label, field.required)}
+        .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         class=${this.getClassMap(field)}
       >
@@ -198,10 +197,7 @@ export class DefaultFormRenderer implements FormRenderer {
     value: string
   ): TemplateResult {
     return html`
-      <oryx-input
-        .label=${this.buildRequiredLabel(field.label, field.required)}
-        class=${this.getClassMap(field)}
-      >
+      <oryx-input .label=${field.label} class=${this.getClassMap(field)}>
         <input
           type="color"
           .name=${field.id}
@@ -224,7 +220,7 @@ export class DefaultFormRenderer implements FormRenderer {
           ?checked=${!!value}
           ?required=${field.required}
         />
-        ${this.buildRequiredLabel(field.label, field.required)}
+        ${field.label}
       </oryx-toggle>
     `;
   }
@@ -234,10 +230,7 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string
   ): TemplateResult {
     return html`
-      <oryx-input-list
-        .heading=${this.buildRequiredLabel(field.label, field.required)}
-        class=${this.getClassMap(field)}
-      >
+      <oryx-input-list .heading=${field.label} class=${this.getClassMap(field)}>
         ${field.options?.map(
           (option) => html`
             <oryx-toggle-icon>
@@ -265,7 +258,7 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-select
-        .label=${this.buildRequiredLabel(field.label, field.required)}
+        .label=${field.label}
         class=${this.getClassMap(field)}
         floatLabel=${ifDefined(field.floatLabel)}
       >

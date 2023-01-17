@@ -69,8 +69,11 @@ export class FormControlController implements ReactiveController {
   protected handleSlotChange(): void {
     this.detectAutofill();
     this.toggleHasValueAttribute();
-    this.adjustDisabledState();
     this.addValidationListeners();
+    this.adjustAttributes();
+    this.registerListener({ attributes: this._attributes }, () =>
+      this.adjustAttributes()
+    );
   }
 
   protected setHasErrorAttr(): void {
@@ -116,14 +119,12 @@ export class FormControlController implements ReactiveController {
     this.host.toggleAttribute('has-value', !!this.control.value);
   }
 
-  protected adjustDisabledState(): void {
-    this.host.toggleAttribute('disabled', this.control.disabled);
-    this.registerListener({ attributes: ['disabled', 'readonly'] }, () => {
-      this.host.toggleAttribute('disabled', this.control.disabled);
-    });
+  protected adjustAttributes(): void {
+    this.host.toggleAttribute('disabled', !!this.control.disabled);
+    this.host.toggleAttribute('required', !!this.control.required);
   }
 
-  protected _attributes = ['disabled', 'readonly'];
+  protected _attributes = ['required', 'disabled', 'readonly'];
   protected _listeners: MutationCallback[] = [];
 
   protected registerListener(
