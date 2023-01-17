@@ -61,9 +61,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     return this.contactDetails$;
   }
 
-  setCustomer(contactDetails: ContactDetails | null): void {
+  setCustomer(contactDetails: ContactDetails | null): Observable<void> {
+    console.log('setCustomer', contactDetails);
     this.contactDetails$.next(contactDetails);
-    this.storage.set(
+    return this.storage.set(
       contactCheckoutStorageKey,
       contactDetails,
       StorageType.SESSION
@@ -74,9 +75,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     return this.addressDetails$;
   }
 
-  setAddress(addressDetails: Address | null): void {
+  setAddress(addressDetails: Address | null): Observable<void> {
+    console.log('setAddress', addressDetails);
     this.addressDetails$.next(addressDetails);
-    this.storage.set(
+    return this.storage.set(
       addressCheckoutStorageKey,
       addressDetails,
       StorageType.SESSION
@@ -87,9 +89,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     return this.shipmentDetails$;
   }
 
-  setShipment(shipmentDetails: Shipment | null): void {
+  setShipment(shipmentDetails: Shipment | null): Observable<void> {
+    console.log('setShipment', shipmentDetails);
     this.shipmentDetails$.next(shipmentDetails);
-    this.storage.set(
+    return this.storage.set(
       shipmentCheckoutStorageKey,
       shipmentDetails,
       StorageType.SESSION
@@ -100,9 +103,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     return this.paymentDetails$;
   }
 
-  setPayment(paymentDetails: PaymentMethod | null): void {
+  setPayment(paymentDetails: PaymentMethod | null): Observable<void> {
+    console.log('setPayment', paymentDetails);
     this.paymentDetails$.next(paymentDetails);
-    this.storage.set(
+    return this.storage.set(
       paymentCheckoutStorageKey,
       paymentDetails,
       StorageType.SESSION

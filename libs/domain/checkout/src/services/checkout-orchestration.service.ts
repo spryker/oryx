@@ -11,7 +11,7 @@ export interface CheckoutOrchestrationService {
   getValidity(): Observable<ValidityReport[]>;
   getStep(step: CheckoutStepType): Observable<Required<CheckoutStep> | null>;
   report(step: CheckoutStepType, isValid: boolean): void;
-  submit(step?: CheckoutStepType): void;
+  submit(step?: CheckoutStepType): Observable<ValidityReport[]>;
 }
 
 export const CheckoutOrchestrationService = 'FES.CheckoutOrchestrationService';

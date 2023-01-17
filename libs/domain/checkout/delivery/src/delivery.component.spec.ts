@@ -188,20 +188,4 @@ describe('CheckoutDeliveryComponent', () => {
       });
     });
   });
-
-  describe('when submit address button is clicked', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-
-      (
-        element.renderRoot.querySelector('button') as HTMLButtonElement
-      ).dispatchEvent(new MouseEvent('click'));
-    });
-
-    it('should perform submit with step name', () => {
-      expect(orchestrationService.submit).toHaveBeenCalledWith(
-        CheckoutStepType.Delivery
-      );
-    });
-  });
 });

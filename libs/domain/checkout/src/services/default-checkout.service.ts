@@ -50,11 +50,12 @@ export class DefaultCheckoutService implements CheckoutService {
   }
 
   placeOrder(): Observable<CheckoutResponse> {
-    this.orchestrationService.submit();
-
     return subscribeReplay(
-      this.canCheckout$.pipe(
-        take(1),
+      this.orchestrationService.submit().pipe(
+        map(
+          (validity) =>
+            !validity.some(({ validity }) => validity === Validity.Invalid)
+        ),
         switchMap((canCheckout) =>
           canCheckout
             ? this.preparePayload()

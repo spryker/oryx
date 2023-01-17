@@ -15,7 +15,15 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
@@ -36,25 +44,29 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
   protected submitTrigger$ = this.orchestrationService
     .getTrigger(CheckoutStepType.Payment)
     .pipe(
-      tap((trigger) => {
-        const valid = this.submit();
-        if (trigger === CheckoutTrigger.Check) {
-          this.orchestrationService.report(CheckoutStepType.Payment, valid);
-        }
+      switchMap((trigger) => {
+        return this.submit().pipe(
+          tap((valid) => {
+            if (trigger === CheckoutTrigger.Check) {
+              this.orchestrationService.report(CheckoutStepType.Payment, valid);
+            }
+          })
+        );
       })
     );
 
-  submit(): boolean {
+  submit(): Observable<boolean> {
     const selected = this.renderRoot.querySelector(
       'input[checked]'
     ) as HTMLInputElement;
 
     if (selected) {
-      this.service.setPaymentMethod(selected.value);
-      return true;
+      return this.service
+        .setPaymentMethod(selected.value)
+        .pipe(map(() => true));
     }
 
-    return false;
+    return of(false);
   }
 
   protected override render(): TemplateResult {

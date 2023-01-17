@@ -78,15 +78,6 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
         )}
         <checkout-address></checkout-address>
       </section>
-
-      <oryx-button>
-        <button
-          @click=${(): void =>
-            this.orchestrationService.submit(CheckoutStepType.Delivery)}
-        >
-          ${i18n('checkout.use-this-address')}
-        </button>
-      </oryx-button>
     `;
   }
 }

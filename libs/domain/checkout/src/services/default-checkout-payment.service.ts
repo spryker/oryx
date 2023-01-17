@@ -1,6 +1,7 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { subscribeReplay } from '@spryker-oryx/utilities';
+import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
 import { ApiCheckoutModel, PaymentMethod } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutDataService } from './checkout-data.service';
@@ -28,18 +29,17 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
     );
   }
 
-  setPaymentMethod(id: string): Observable<void> {
-    this.getMethods()
-      .pipe(
+  setPaymentMethod(id: string): Observable<unknown> {
+    return subscribeReplay(
+      this.getMethods().pipe(
         take(1),
-        tap((methods) => {
-          const payment = methods?.find((method) => method.id === id);
-          if (payment) {
-            this.dataService.setPayment(payment);
-          }
-        })
+        map((methods) => methods?.find((method) => method.id === id)),
+        switchMap((method) =>
+          method
+            ? this.dataService.setPayment(method)
+            : throwError(() => new Error('Payment method not found'))
+        )
       )
-      .subscribe();
-    return of(undefined);
+    );
   }
 }

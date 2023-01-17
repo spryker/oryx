@@ -16,7 +16,15 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, combineLatest, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { styles } from './shipment.styles';
 
 @hydratable('window:load')
@@ -37,25 +45,32 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
   protected submitTrigger$ = this.orchestrationService
     .getTrigger(CheckoutStepType.Shipping)
     .pipe(
-      tap((trigger) => {
-        const valid = this.submit();
-        if (trigger === CheckoutTrigger.Check) {
-          this.orchestrationService.report(CheckoutStepType.Shipping, valid);
-        }
+      switchMap((trigger) => {
+        return this.submit().pipe(
+          tap((valid) => {
+            if (trigger === CheckoutTrigger.Check) {
+              this.orchestrationService.report(
+                CheckoutStepType.Shipping,
+                valid
+              );
+            }
+          })
+        );
       })
     );
 
-  submit(): boolean {
+  submit(): Observable<boolean> {
     const selected = this.renderRoot.querySelector(
       'input[checked]'
     ) as HTMLInputElement;
 
     if (selected) {
-      this.shipmentService.setShipmentMethod(parseInt(selected.value));
-      return true;
+      return this.shipmentService
+        .setShipmentMethod(parseInt(selected.value))
+        .pipe(map(() => true));
     }
 
-    return false;
+    return of(false);
   }
 
   protected renderMethod(

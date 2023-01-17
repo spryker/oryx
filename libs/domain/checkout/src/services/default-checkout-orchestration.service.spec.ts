@@ -6,7 +6,7 @@ import {
   Validity,
 } from '@spryker-oryx/checkout';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { firstValueFrom, Observable, take } from 'rxjs';
+import { firstValueFrom, Observable, Subscription, take } from 'rxjs';
 
 describe('DefaultCheckoutOrchestrationService', () => {
   let service: CheckoutOrchestrationService;
@@ -46,12 +46,16 @@ describe('DefaultCheckoutOrchestrationService', () => {
 
     it('should emit on validity check', async () =>
       new Promise<void>((done) => {
+        // eslint-disable-next-line prefer-const
+        let subscription: Subscription | undefined;
+
         trigger.subscribe((value) => {
           expect(value).toBe(CheckoutTrigger.Report);
+          subscription?.unsubscribe();
           done();
         });
 
-        service.getValidity().pipe(take(1)).subscribe();
+        subscription = service.getValidity().pipe().subscribe();
       }));
 
     it('should emit on submit', async () =>
