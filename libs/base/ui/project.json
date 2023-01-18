@@ -44,5 +44,5 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     }
   },
-  "tags": ["layer:base"]
+  "tags": ["lib:ui"]
 }

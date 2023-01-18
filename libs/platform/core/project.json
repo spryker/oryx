@@ -20,5 +20,5 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     }
   },
-  "tags": ["layer:platform"]
+  "tags": ["layer:platform", "lib:core"]
 }
