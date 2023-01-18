@@ -39,7 +39,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         const styles = this.getLayoutStyles(rule);
         const breakpoint =
           rule.breakpoint ?? this.breakpointService.getSmallest();
-        add(component.id, breakpoint, styles);
+
+        if (breakpoint) {
+          add(component.id, breakpoint, styles);
+        }
       });
     });
 

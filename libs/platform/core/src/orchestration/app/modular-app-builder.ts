@@ -1,8 +1,8 @@
 import { Provider } from '@spryker-oryx/di';
 import {
   ComponentsInfo,
+  ComponentsOptions,
   ComponentsPlugin,
-  ComponentsPluginOptions,
 } from '../components';
 import { InjectionPlugin } from '../injection';
 import { ResourcePlugin, Resources } from '../resources';
@@ -113,7 +113,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       this.plugins.unshift(
         new ComponentsPlugin(
           this.componentsInfo,
-          this.options?.components as ComponentsPluginOptions
+          this.options?.components as ComponentsOptions
         )
       );
     }

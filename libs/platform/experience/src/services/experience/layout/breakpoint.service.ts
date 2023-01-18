@@ -5,8 +5,8 @@ export const BreakpointService = 'FES.BreakpointService';
 
 export interface BreakpointService {
   getBreakpoints(): ThemeBreakpoints;
-  getMediaQuery(breakpoint: Breakpoint): string | undefined;
-  getSmallest(): Breakpoint;
+  getMediaQuery(breakpoint: Breakpoint): string | void;
+  getSmallest(): Breakpoint | void;
 }
 
 declare global {

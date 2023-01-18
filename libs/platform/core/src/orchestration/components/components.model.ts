@@ -50,12 +50,7 @@ export interface ComponentImplStrategy {
   ): Promise<ComponentType | undefined>;
 }
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface HooksTokenMap {}
-}
-
-export interface ComponentsPluginOptions {
+export interface ComponentsOptions {
   root: ComponentInfo | string;
   elementOptions?: ElementDefinitionOptions;
   logger?: Pick<Console, 'warn'>;

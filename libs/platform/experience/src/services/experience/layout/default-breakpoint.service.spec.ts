@@ -54,7 +54,8 @@ describe('DefaultBreakpointService', () => {
   describe('getMediaQuery() ', () => {
     describe('when breakpoint is the smallest', () => {
       it('should not return a media query', () => {
-        const query = service.getMediaQuery(service.getSmallest());
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const query = service.getMediaQuery(service.getSmallest()!);
         expect(query).toBeUndefined();
       });
     });

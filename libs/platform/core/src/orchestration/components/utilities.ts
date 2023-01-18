@@ -1,18 +1,27 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/di';
-import { ObservableShadow } from './components.model';
+import {
+  ComponentDefImpl,
+  ComponentImplStrategy,
+  ObservableShadow,
+} from './components.model';
 
 /**
  * Used for observing shadow DOM content.
  */
 export function observableShadow<T extends Type<HTMLElement>>(
-  componentType: T
+  componentType: T,
+  name: string
 ): T & Type<ObservableShadow> {
   return class ObservableShadowElement
     extends componentType
     implements ObservableShadow
   {
     private _attachedShadow = new PromiseSubject<ShadowRoot>();
+
+    get tagName(): string {
+      return super.tagName ?? name.toUpperCase();
+    }
 
     whenShadowAttached(): Promise<ShadowRoot> {
       return this._attachedShadow.asPromise();
@@ -35,4 +44,16 @@ export function isObservableShadowElement<T extends HTMLElement>(
     typeof (element as unknown as ObservableShadow).whenShadowAttached ===
     'function'
   );
+}
+
+export class ComponentsPluginError extends Error {
+  constructor(msg: string) {
+    super(`ComponentsAppPlugin: ${msg}`);
+  }
+}
+
+export function isComponentImplStrategy(
+  impl: ComponentDefImpl
+): impl is ComponentImplStrategy {
+  return typeof impl === 'object';
 }

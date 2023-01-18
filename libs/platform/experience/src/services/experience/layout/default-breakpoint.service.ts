@@ -9,28 +9,27 @@ import { Breakpoint } from '../../../models';
 import { BreakpointService } from './breakpoint.service';
 
 export class DefaultBreakpointService implements BreakpointService {
-  protected themePlugin: ThemePlugin;
+  protected themePlugin?: ThemePlugin;
 
   constructor(protected app = inject(AppRef)) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.themePlugin = this.app.findPlugin(ThemePlugin)!;
+    this.themePlugin = this.app.findPlugin(ThemePlugin);
   }
 
-  getMediaQuery(breakpoint: Breakpoint): string | undefined {
+  getMediaQuery(breakpoint: Breakpoint): string | void {
     if (breakpoint === this.getSmallest()) {
       return;
     }
 
-    return this.themePlugin.generateMedia(
+    return this.themePlugin?.generateMedia(
       `${ThemeDefaultMedia.Screen}.${breakpoint}`
     );
   }
 
-  getSmallest(): Breakpoint {
+  getSmallest(): Breakpoint | void {
     return Object.keys(this.getBreakpoints())[0] as Breakpoint;
   }
 
   getBreakpoints(): ThemeBreakpoints {
-    return this.themePlugin.getBreakpoints();
+    return this.themePlugin?.getBreakpoints() ?? {};
   }
 }

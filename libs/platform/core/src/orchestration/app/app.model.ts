@@ -1,5 +1,5 @@
 import { InjectorOptions, Provider, Type } from '@spryker-oryx/di';
-import { ComponentsInfo, ComponentsPluginOptions } from '../components';
+import { ComponentsInfo, ComponentsOptions } from '../components';
 import { Resources } from '../resources';
 import { Theme } from '../theme';
 
@@ -13,7 +13,7 @@ declare global {
 
 export interface ModularAppBuilderOptions {
   injector?: Omit<InjectorOptions, 'providers'>;
-  components?: Partial<ComponentsPluginOptions>;
+  components?: Partial<ComponentsOptions>;
 }
 
 export interface AppFeature {
