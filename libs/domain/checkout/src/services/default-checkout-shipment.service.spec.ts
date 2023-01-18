@@ -25,7 +25,7 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  setShipment = vi.fn();
+  setShipment = vi.fn().mockReturnValue(of(null));
   getShipment = vi.fn().mockReturnValue(of(null));
 }
 

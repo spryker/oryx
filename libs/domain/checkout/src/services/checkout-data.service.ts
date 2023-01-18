@@ -16,6 +16,8 @@ export interface CheckoutDataService {
 
   getPayment(): Observable<PaymentMethod | null>;
   setPayment(data: PaymentMethod | null): Observable<unknown>;
+
+  reset(): void;
 }
 
 export const CheckoutDataService = 'FES.CheckoutDataService';

@@ -1,7 +1,9 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
+import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
+  catchError,
   map,
   Observable,
   of,
@@ -41,6 +43,8 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
             include: this.includeShipments,
           });
         }),
+        // in some cases, when cart is not yet created, we get 422 error from the backend
+        catchError(() => of(null)),
         tap((data) => {
           this.handleShipmentData(data);
         })
@@ -85,18 +89,17 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     );
   }
 
-  setShipmentMethod(method: number): Observable<void> {
-    this.getShipment()
-      .pipe(
+  setShipmentMethod(method: number): Observable<unknown> {
+    return subscribeReplay(
+      this.getShipment().pipe(
         take(1),
-        tap((shipment) => {
+        switchMap((shipment) =>
           this.dataService.setShipment({
             ...shipment,
             idShipmentMethod: method,
-          });
-        })
+          })
+        )
       )
-      .subscribe();
-    return of(undefined);
+    );
   }
 }

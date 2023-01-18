@@ -101,7 +101,7 @@ export class DefaultCheckoutOrchestrationService
         this.initCheck(id);
       }
     }
-    return this.validity$.pipe(
+    return this.collectValidity().pipe(
       filter((steps) =>
         steps.every(({ validity }) => validity !== Validity.Pending)
       ),

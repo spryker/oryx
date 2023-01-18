@@ -38,9 +38,8 @@ export class DefaultCheckoutService implements CheckoutService {
   ) {}
 
   protected canCheckout$ = this.orchestrationService.getValidity().pipe(
-    map(
-      (validity) =>
-        !validity.some(({ validity }) => validity === Validity.Invalid)
+    map((validity) =>
+      validity.every(({ validity }) => validity === Validity.Valid)
     ),
     shareReplay({ bufferSize: 1, refCount: true })
   );
@@ -52,9 +51,8 @@ export class DefaultCheckoutService implements CheckoutService {
   placeOrder(): Observable<CheckoutResponse> {
     return subscribeReplay(
       this.orchestrationService.submit().pipe(
-        map(
-          (validity) =>
-            !validity.some(({ validity }) => validity === Validity.Invalid)
+        map((validity) =>
+          validity.every(({ validity }) => validity === Validity.Valid)
         ),
         switchMap((canCheckout) =>
           canCheckout
@@ -118,6 +116,7 @@ export class DefaultCheckoutService implements CheckoutService {
 
   protected postCheckout(response: CheckoutResponse): Observable<unknown> {
     this.cartService.load();
+    this.dataService.reset();
 
     return subscribeReplay(
       this.semanticLink

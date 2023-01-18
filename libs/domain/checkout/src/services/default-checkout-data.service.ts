@@ -39,13 +39,13 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
         StorageType.SESSION
       );
     } else {
-      this.clearCheckoutData();
+      this.reset();
     }
 
     return this.isGuestCheckout$;
   }
 
-  protected clearCheckoutData(): void {
+  reset(): void {
     this.contactDetails$.next(null);
     this.addressDetails$.next(null);
     this.shipmentDetails$.next(null);
