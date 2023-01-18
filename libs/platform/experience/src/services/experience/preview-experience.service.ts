@@ -12,8 +12,8 @@ import {
   tap,
 } from 'rxjs';
 import { RouterEvent, RouterEventType, RouterService } from '../router';
+import { DataTransmitterService } from './data-transmitter.service';
 import { DefaultExperienceService } from './default-experience.service';
-import { MediaExperienceService } from './media-experience-service';
 import { Component } from './models';
 import { sendPostMessage } from './utilities';
 
@@ -37,7 +37,7 @@ export type ExperiencePreviewEvent = MessageEvent<ExperiencePreviewData>;
 export class PreviewExperienceService extends DefaultExperienceService {
   constructor(
     protected routerService = inject(RouterService),
-    protected mediaEbService = inject(MediaExperienceService)
+    protected dataTransmitterService = inject(DataTransmitterService)
   ) {
     super();
 
@@ -52,7 +52,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         this.routeChangeHandler(event.route);
       });
 
-    this.mediaEbService.initialize();
+    this.dataTransmitterService.initialize();
   }
 
   protected experiencePreviewEvent$ =

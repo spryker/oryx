@@ -5,8 +5,8 @@ import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ContentBackendUrl } from '../experience-tokens';
 import { RouterEventType, RouterService } from '../router';
+import { DataTransmitterService } from './data-transmitter.service';
 import { ExperienceService } from './experience.service';
-import { MediaExperienceService } from './media-experience-service';
 import {
   POST_MESSAGE_TYPE,
   PreviewExperienceService,
@@ -18,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
   getEvents = vi.fn().mockReturnValue(NEVER);
 }
 
-class MockMediaExperienceService implements MediaExperienceService {
+class MockDataTransmitterService implements DataTransmitterService {
   initialize = vi.fn();
 }
 
@@ -42,8 +42,8 @@ describe('ExperiencePreviewService', () => {
           useClass: HttpTestService,
         },
         {
-          provide: MediaExperienceService,
-          useClass: MockMediaExperienceService,
+          provide: DataTransmitterService,
+          useClass: MockDataTransmitterService,
         },
         {
           provide: RouterService,

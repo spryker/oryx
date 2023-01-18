@@ -9,7 +9,7 @@ import {
 export class DefaultFeatureFlagsService implements FeatureFlagsService {
   protected flags!: Flags;
 
-  constructor(protected flagsArr = inject(FeatureFlags)) {
+  constructor(protected flagsArr = inject(FeatureFlags, [{}])) {
     this.flags = flagsArr.reduce((acc, flags) => ({ ...acc, ...flags }), {});
   }
 

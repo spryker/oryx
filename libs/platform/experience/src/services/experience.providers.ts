@@ -3,13 +3,13 @@ import { Provider } from '@spryker-oryx/di';
 import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
+  DataTransmitterService,
   DefaultBreakpointService,
+  DefaultDataTransmitterService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
-  DefaultMediaExperienceService,
   ExperienceService,
   LayoutBuilder,
-  MediaExperienceService,
   PreviewExperienceService,
 } from './experience';
 import { ContentBackendUrl } from './experience-tokens';
@@ -50,8 +50,8 @@ export const experienceProviders: Provider[] = [
 
 export const experiencePreviewProviders: Provider[] = [
   {
-    provide: MediaExperienceService,
-    useClass: DefaultMediaExperienceService,
+    provide: DataTransmitterService,
+    useClass: DefaultDataTransmitterService,
   },
   {
     provide: ExperienceService,
