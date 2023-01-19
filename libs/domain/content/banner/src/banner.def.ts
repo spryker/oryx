@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { BannerOptions } from './banner.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-banner'?: BannerOptions;
   }
 }

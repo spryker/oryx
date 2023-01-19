@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductListQualifier } from '@spryker-oryx/product';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-list'?: ProductListQualifier;
   }
 }

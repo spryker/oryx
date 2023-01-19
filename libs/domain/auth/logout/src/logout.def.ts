@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { LogoutOptions } from './logout.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'auth-logout'?: LogoutOptions;
   }
 }

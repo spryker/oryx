@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { QuantityInputAttributes } from './quantity-input.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-cart-quantity-input'?: QuantityInputAttributes;
   }
 }

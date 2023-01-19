@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { CheckoutAuthOptions } from './auth.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'checkout-auth'?: CheckoutAuthOptions;
   }
 }

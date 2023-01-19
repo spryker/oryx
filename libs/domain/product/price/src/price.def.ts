@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductPriceOptions } from './price.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-price'?: ProductPriceOptions;
   }
 }

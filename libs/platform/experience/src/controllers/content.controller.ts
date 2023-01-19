@@ -1,4 +1,4 @@
-import { FeatureFlagsService } from '@spryker-oryx/core';
+import { FeatureOptionsService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -21,7 +21,7 @@ export class ContentController<T = unknown, K = unknown> {
   protected observe: ObserveController<
     LitElement & ContentComponentProperties<T, K>
   >;
-  protected flagsService = resolve(FeatureFlagsService, null);
+  protected optionsService = resolve(FeatureOptionsService, null);
 
   constructor(protected host: LitElement & ContentComponentProperties<T, K>) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
@@ -51,7 +51,7 @@ export class ContentController<T = unknown, K = unknown> {
   getOptions(): Observable<Partial<K>> {
     return this.observe.get('options').pipe(
       withLatestFrom(
-        this.flagsService?.getComponentFlags(this.host.tagName) ?? of({})
+        this.optionsService?.getComponentOptions(this.host.tagName) ?? of({})
       ),
       switchMap(([options, defaultOptions]) => {
         if (options !== undefined) {

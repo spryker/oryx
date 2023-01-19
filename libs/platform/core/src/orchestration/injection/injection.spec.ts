@@ -61,16 +61,6 @@ describe('InjectionPlugin', () => {
     });
   });
 
-  describe('provide', () => {
-    it('should call provide method from injector', () => {
-      const mockInjectorValue = { provide: vi.fn() };
-      mockInjector.createInjector.mockReturnValue(mockInjectorValue);
-      plugin.beforeApply('mockApp' as unknown as App);
-      plugin.provide(mockProviders[0]);
-      expect(mockInjectorValue.provide).toHaveBeenCalledWith(mockProviders[0]);
-    });
-  });
-
   describe('destroy', () => {
     it('should call destroyInjector', () => {
       plugin.destroy();

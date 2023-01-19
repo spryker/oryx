@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { FacetsOptions } from './facet-navigation.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'search-facet-navigation'?: FacetsOptions;
   }
 }

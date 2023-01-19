@@ -2,9 +2,9 @@ import { Provider } from '@spryker-oryx/di';
 import { ContextService, DefaultContextService } from './context';
 import { DefaultErrorService, ErrorService } from './error';
 import {
-  DefaultFeatureFlagsService,
-  FeatureFlagsService,
-} from './feature-flags';
+  DefaultFeatureOptionsService,
+  FeatureOptionsService,
+} from './feature-options';
 import {
   DefaultHttpHandler,
   DefaultHttpService,
@@ -49,7 +49,7 @@ export const coreProviders: Provider[] = [
     useClass: DefaultErrorService,
   },
   {
-    provide: FeatureFlagsService,
-    useClass: DefaultFeatureFlagsService,
+    provide: FeatureOptionsService,
+    useClass: DefaultFeatureOptionsService,
   },
 ];

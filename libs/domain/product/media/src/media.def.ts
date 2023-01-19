@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductMediaOptions } from './media.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-media'?: ProductMediaOptions;
   }
 }

@@ -33,10 +33,6 @@ export class InjectionPlugin implements AppPlugin, AppPluginBeforeApply {
     // Injector created in AppPluginBeforeApply
   }
 
-  provide(provider: Provider): void {
-    this.getInjector().provide(provider);
-  }
-
   getInjector(): Injector {
     // Injector is created before anyone can call this method
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

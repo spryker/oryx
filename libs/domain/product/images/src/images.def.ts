@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductImagesComponentOptions } from './images.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-images'?: ProductImagesComponentOptions;
   }
 }

@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { CheckoutGuestOptions } from './guest.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'checkout-guest'?: CheckoutGuestOptions;
   }
 }

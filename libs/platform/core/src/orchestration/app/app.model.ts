@@ -22,7 +22,7 @@ export interface AppFeature {
   options?: ModularAppBuilderOptions;
   plugins?: AppPlugin[];
   resources?: Resources;
-  flags?: Flags;
+  defaultOptions?: FeatureOptions;
 }
 
 export interface App {
@@ -50,7 +50,7 @@ export interface AppBuilderWithModules
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
   withEnvironment(env: AppEnvironment): AppBuilderWithModules;
   withResources(resources: Resources): AppBuilderWithModules;
-  withFeatureFlags(flags: Flags): AppBuilderWithModules;
+  withFeatureOptions(options: FeatureOptions): AppBuilderWithModules;
 }
 
 export interface AppPlugin {

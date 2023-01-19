@@ -1,7 +1,7 @@
 import {
   App,
   AppRef,
-  FeatureFlagsService,
+  FeatureOptionsService,
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
@@ -9,7 +9,7 @@ import { DataTransmitterService } from './data-transmitter.service';
 import {
   DataIds,
   DefaultDataTransmitterService,
-  REQUEST_FLAGS_MESSAGE_TYPE,
+  REQUEST_OPTIONS_MESSAGE_TYPE,
   REQUEST_RESOURCES_MESSAGE_TYPE,
 } from './default-data-transmitter.service';
 
@@ -17,8 +17,8 @@ class MockApp implements Partial<App> {
   findPlugin = vi.fn();
 }
 
-class MockFeatureFlagsService implements Partial<FeatureFlagsService> {
-  getFlags = vi.fn();
+class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
+  getOptions = vi.fn();
 }
 
 const getService = <T>(token: string) =>
@@ -39,8 +39,8 @@ describe('DataTransmitterService', () => {
           useClass: MockApp,
         },
         {
-          provide: FeatureFlagsService,
-          useClass: MockFeatureFlagsService,
+          provide: FeatureOptionsService,
+          useClass: MockFeatureOptionsService,
         },
       ],
     });
@@ -81,9 +81,9 @@ describe('DataTransmitterService', () => {
         expect(app.findPlugin).toHaveBeenCalledWith(ResourcePlugin);
       }));
 
-    it('should send `REQUEST_FLAGS_MESSAGE_TYPE` post message', async () =>
+    it('should send `REQUEST_OPTIONS_MESSAGE_TYPE` post message', async () =>
       await new Promise<void>((done) => {
-        const mockFlags = {
+        const mockOptions = {
           global: {
             a: 'a',
           },
@@ -91,16 +91,17 @@ describe('DataTransmitterService', () => {
             b: 'b',
           },
         };
-        const flagsService =
-          getService<MockFeatureFlagsService>(FeatureFlagsService);
-        flagsService.getFlags.mockReturnValue(mockFlags);
+        const optionsService = getService<MockFeatureOptionsService>(
+          FeatureOptionsService
+        );
+        optionsService.getOptions.mockReturnValue(mockOptions);
         service.initialize();
         window?.addEventListener('message', (e: MessageEvent) => {
           if (
-            e.data.type === REQUEST_FLAGS_MESSAGE_TYPE &&
-            e.data[DataIds.Flags]
+            e.data.type === REQUEST_OPTIONS_MESSAGE_TYPE &&
+            e.data[DataIds.Options]
           ) {
-            expect(e.data[DataIds.Flags]).toEqual(mockFlags);
+            expect(e.data[DataIds.Options]).toEqual(mockOptions);
             done();
           }
         });

@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductLabelsAttributes } from './label.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-labels'?: ProductLabelsAttributes;
   }
 }

@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { AddressOptions } from './address.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-user-address'?: AddressOptions;
   }
 }

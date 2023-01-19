@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { CartAddOptions } from './add.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-cart-add'?: CartAddOptions;
   }
 }

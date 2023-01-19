@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { CartTotalsComponentOptions } from './totals.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'cart-totals'?: CartTotalsComponentOptions;
   }
 }

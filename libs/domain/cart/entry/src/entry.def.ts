@@ -7,7 +7,7 @@ export { cartEntryPriceComponent } from './components/price/price.def';
 export { cartEntryTotalsComponent } from './components/totals/totals.def';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'cart-entry'?: CartEntryOptions;
   }
 }

@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductAverageRatingModel } from './average-rating.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-average-rating'?: ProductAverageRatingModel;
   }
 }

@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { LoginOptions } from './login.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'auth-login'?: LoginOptions;
   }
 }

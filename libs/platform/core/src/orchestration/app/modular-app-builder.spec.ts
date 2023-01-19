@@ -1,4 +1,4 @@
-import { FeatureFlags } from '../../services';
+import { FeatureOptions } from '../../services';
 import { ComponentsInfo, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
 import { Theme, ThemePlugin } from '../theme';
@@ -144,8 +144,8 @@ describe('ModularAppBuilder', () => {
     });
   });
 
-  describe('withFeatureFlags', () => {
-    const mockFlags: Flags = {
+  describe('withFeatureOptions', () => {
+    const mockOptions: FeatureOptions = {
       global: {
         test: 'test',
       },
@@ -158,15 +158,15 @@ describe('ModularAppBuilder', () => {
     };
 
     it('should return instance of itself', () => {
-      expect(modularAppBuilder.withFeatureFlags(mockFlags)).toBe(
+      expect(modularAppBuilder.withFeatureOptions(mockOptions)).toBe(
         modularAppBuilder
       );
     });
 
-    it('should add `FeatureFlags` to provider', async () => {
-      await modularAppBuilder.withFeatureFlags(mockFlags).create();
+    it('should add `FeatureOptions` to provider', async () => {
+      await modularAppBuilder.withFeatureOptions(mockOptions).create();
       expect(InjectionPlugin).toHaveBeenCalledWith(
-        [{ provide: FeatureFlags, useValue: mockFlags }],
+        [{ provide: FeatureOptions, useValue: mockOptions }],
         undefined
       );
       expect(mockApply).toHaveBeenCalled();

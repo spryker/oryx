@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { ProductAttributesComponentOptions } from './attributes.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'product-attributes'?: ProductAttributesComponentOptions;
   }
 }

@@ -1,5 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
-import { FeatureFlags } from '../../services';
+import { FeatureOptions } from '../../services';
 import {
   ComponentsInfo,
   ComponentsOptions,
@@ -61,7 +61,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       options: this.withOptions.bind(this),
       plugins: this.with.bind(this),
       resources: this.withResources.bind(this),
-      flags: this.withFeatureFlags.bind(this),
+      defaultOptions: this.withFeatureOptions.bind(this),
     };
 
     for (const feat of features) {
@@ -96,10 +96,10 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withFeatureFlags(flags: Flags): AppBuilderWithModules {
+  withFeatureOptions(options: FeatureOptions): AppBuilderWithModules {
     this.providers.push({
-      provide: FeatureFlags,
-      useValue: flags,
+      provide: FeatureOptions,
+      useValue: options,
     });
     return this;
   }

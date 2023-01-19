@@ -1,4 +1,4 @@
-import { FeatureFlagsService } from '@spryker-oryx/core';
+import { FeatureOptionsService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -30,8 +30,8 @@ class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();
 }
 
-class MockFeatureFlagsService implements Partial<FeatureFlagsService> {
-  getComponentFlags = vi.fn().mockReturnValue(of({}));
+class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
+  getComponentOptions = vi.fn().mockReturnValue(of({}));
 }
 
 const mockObserve = {
@@ -44,7 +44,7 @@ vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
 
 describe('ContentController', () => {
   let mockExperienceService: MockExperienceService;
-  let mockFeatureFlagsService: MockFeatureFlagsService;
+  let mockFeatureOptionsService: MockFeatureOptionsService;
 
   beforeEach(() => {
     createInjector({
@@ -54,8 +54,8 @@ describe('ContentController', () => {
           useClass: MockExperienceService,
         },
         {
-          provide: FeatureFlagsService,
-          useClass: MockFeatureFlagsService,
+          provide: FeatureOptionsService,
+          useClass: MockFeatureOptionsService,
         },
       ],
     });
@@ -63,9 +63,9 @@ describe('ContentController', () => {
     mockExperienceService = getInjector().inject(
       ExperienceService
     ) as unknown as MockExperienceService;
-    mockFeatureFlagsService = getInjector().inject(
-      FeatureFlagsService
-    ) as unknown as MockFeatureFlagsService;
+    mockFeatureOptionsService = getInjector().inject(
+      FeatureOptionsService
+    ) as unknown as MockFeatureOptionsService;
   });
 
   afterEach(() => {
@@ -120,9 +120,9 @@ describe('ContentController', () => {
       const contentController = new ContentController(mockElement);
       contentController.getOptions().subscribe(callback);
 
-      expect(mockFeatureFlagsService.getComponentFlags).toHaveBeenCalledWith(
-        mockElement.tagName
-      );
+      expect(
+        mockFeatureOptionsService.getComponentOptions
+      ).toHaveBeenCalledWith(mockElement.tagName);
       expect(mockObserve.get).toHaveBeenCalledWith('options');
       expect(callback).toHaveBeenCalledWith(mockObserveValue);
     });
@@ -162,7 +162,7 @@ describe('ContentController', () => {
       };
 
       beforeEach(() => {
-        mockFeatureFlagsService.getComponentFlags.mockReturnValue(
+        mockFeatureOptionsService.getComponentOptions.mockReturnValue(
           of(mockDefaultValue)
         );
       });

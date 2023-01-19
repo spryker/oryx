@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { AddressListItemOptions } from '@spryker-oryx/user/address-list-item';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-address-list'?: AddressListItemOptions;
   }
 }

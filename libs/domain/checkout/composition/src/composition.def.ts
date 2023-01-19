@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { CheckoutCompositionOptions } from './composition.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'oryx-checkout-composition'?: CheckoutCompositionOptions;
   }
 }

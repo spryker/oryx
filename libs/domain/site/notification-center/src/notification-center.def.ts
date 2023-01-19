@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'site-notification-center'?: SiteNotificationCenterOptions;
   }
 }

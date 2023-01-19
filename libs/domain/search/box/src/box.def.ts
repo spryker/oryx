@@ -2,7 +2,7 @@ import { componentDef } from '@spryker-oryx/core';
 import { SearchBoxOptions } from './box.model';
 
 declare global {
-  interface Flags {
+  interface FeatureOptions {
     'search-box'?: SearchBoxOptions;
   }
 }

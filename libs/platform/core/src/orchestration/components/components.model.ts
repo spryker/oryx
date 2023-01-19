@@ -16,6 +16,7 @@ export interface ComponentDef {
   readonly name: string;
   readonly impl: ComponentDefImpl;
   readonly stylesheets?: ComponentTheme[];
+  readonly options?: FeatureOptions[keyof FeatureOptions];
 }
 
 export type ComponentDefFn = () => ComponentDef;
