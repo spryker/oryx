@@ -3,18 +3,18 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
+import {
+  DefaultFacetComponentRegistryService,
+  FacetComponentRegistryService,
+  FacetListService,
+  FacetMappingOptions,
+  FacetParams,
+  FacetValueRenderer,
+} from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import {
-  DefaultFacetComponentRegistryService,
-  FacetMappingOptions,
-  FacetParams,
-  FacetValueRenderer,
-} from '../../src/renderers';
-import { FacetComponentRegistryService } from '../../src/renderers/facet-component-registry.service';
-import { FacetListService } from '../../src/services/facet-list.service';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
 import { facetsComponent } from './facet-navigation.def';
 
@@ -157,7 +157,7 @@ describe('SearchFacetNavigationComponent', () => {
   });
 
   beforeEach(async () => {
-    const testInjector = createInjector({
+    createInjector({
       providers: [
         {
           provide: FacetListService,

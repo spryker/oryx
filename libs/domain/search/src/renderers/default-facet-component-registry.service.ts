@@ -27,10 +27,9 @@ export class DefaultFacetComponentRegistryService
     options: FacetMappingOptions,
     selectListener: (e: CustomEvent<FacetSelect>) => void
   ): TemplateResult {
-    return this.facetComponentMap[FacetParams.Default].template(
-      facet,
-      options,
-      selectListener
-    );
+    return (
+      this.facetComponentMap[facet.parameter] ??
+      this.facetComponentMap[FacetParams.Default]
+    ).template(facet, options, selectListener);
   }
 }

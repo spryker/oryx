@@ -6,6 +6,7 @@ export const FacetValueRenderer = 'FES.FacetValueRenderer*';
 
 export enum FacetParams {
   Default = 'default',
+  Color = 'color',
 }
 
 export interface FacetMappingOptions {

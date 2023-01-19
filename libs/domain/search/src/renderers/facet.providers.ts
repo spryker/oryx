@@ -1,5 +1,9 @@
 import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
+import {
+  colorsMap,
+  FacetColorsMapping,
+} from '@spryker-oryx/search/facet-color';
 import { html, TemplateResult } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
@@ -35,6 +39,28 @@ export const facetProviders = [
           `;
         },
       },
+      [`${FacetParams.Color}`]: {
+        template: (
+          facet: Facet,
+          options: FacetMappingOptions,
+          selectListener: (e: CustomEvent<FacetSelect>) => void
+        ): TemplateResult => {
+          return html`
+            <oryx-search-color-facet
+              @oryx.select=${selectListener}
+              .name=${facet.name}
+              .renderLimit=${options.renderLimit}
+              .open=${true}
+              .multi=${facet.multiValued}
+            >
+            </oryx-search-color-facet>
+          `;
+        },
+      },
     },
+  },
+  {
+    provide: FacetColorsMapping,
+    useValue: colorsMap,
   },
 ];

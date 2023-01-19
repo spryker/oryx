@@ -18,6 +18,7 @@ export * from '../graphical/icon/src/component';
 export * from '../graphical/image/src/image.def';
 export * from '../graphical/rating/src/component';
 export * from '../graphical/spinner/src/component';
+export * from '../graphical/swatch/src/swatch.def';
 export * from '../navigations/navigation-item/src/component';
 export * from '../navigations/navigation/src/component';
 export * from '../navigations/page-navigation-item/src/component';

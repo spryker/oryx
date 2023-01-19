@@ -47,6 +47,7 @@ export class MockProductListAdapter implements ProductListAdapter {
           10,
           qualifier.category?.split(',')
         ),
+        generateFacet('Color', 'color', 6, qualifier.color?.split(',')),
       ],
     });
   }

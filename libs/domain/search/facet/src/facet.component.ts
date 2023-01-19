@@ -72,6 +72,10 @@ export class SearchFacetComponent extends FacetComponentMixin() {
     </ul>`;
   }
 
+  protected renderValueControlLabel(facetValue: FacetValue): TemplateResult {
+    return html`${facetValue.name ?? facetValue.value}`;
+  }
+
   protected renderValueControl(
     facetValue: FacetValue,
     parameter: string,
@@ -86,7 +90,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         title=${facetValue.name ?? facetValue.value}
         aria-label=${facetValue.name ?? facetValue.value}
       />
-      ${facetValue.name ?? facetValue.value}
+      ${this.renderValueControlLabel(facetValue)}
       <span class="counter">${facetValue.count}</span> `;
 
     return multi
