@@ -1,3 +1,4 @@
+import { FeatureFlags } from '../../services';
 import { ComponentsInfo, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
 import { Theme, ThemePlugin } from '../theme';
@@ -140,6 +141,35 @@ describe('ModularAppBuilder', () => {
     it('should add themes and pass them to the ThemePlugin', async () => {
       await modularAppBuilder.withTheme(mockTheme).create();
       expect(ThemePlugin).toHaveBeenCalledWith([mockTheme]);
+    });
+  });
+
+  describe('withFeatureFlags', () => {
+    const mockFlags: Flags = {
+      global: {
+        test: 'test',
+      },
+      a: {
+        a: 'a',
+      },
+      b: {
+        b: 'b',
+      },
+    };
+
+    it('should return instance of itself', () => {
+      expect(modularAppBuilder.withFeatureFlags(mockFlags)).toBe(
+        modularAppBuilder
+      );
+    });
+
+    it('should add `FeatureFlags` to provider', async () => {
+      await modularAppBuilder.withFeatureFlags(mockFlags).create();
+      expect(InjectionPlugin).toHaveBeenCalledWith(
+        [{ provide: FeatureFlags, useValue: mockFlags }],
+        undefined
+      );
+      expect(mockApply).toHaveBeenCalled();
     });
   });
 });

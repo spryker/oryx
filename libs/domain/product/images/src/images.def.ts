@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { ProductImagesComponentOptions } from './images.model';
+
+declare global {
+  interface Flags {
+    'product-images'?: ProductImagesComponentOptions;
+  }
+}
 
 export const productImagesComponent = componentDef({
   name: 'product-images',

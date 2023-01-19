@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { ProductAttributesComponentOptions } from './attributes.model';
+
+declare global {
+  interface Flags {
+    'product-attributes'?: ProductAttributesComponentOptions;
+  }
+}
 
 export const productAttributesComponent = componentDef({
   name: 'product-attributes',

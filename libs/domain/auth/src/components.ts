@@ -1,2 +1,2 @@
-export * from '../login/src/component';
-export * from '../logout/src/component';
+export * from '../login/src/login.def';
+export * from '../logout/src/logout.def';

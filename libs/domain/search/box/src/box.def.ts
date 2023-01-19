@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { SearchBoxOptions } from './box.model';
+
+declare global {
+  interface Flags {
+    'search-box'?: SearchBoxOptions;
+  }
+}
 
 export const searchBoxComponent = componentDef({
   name: 'search-box',

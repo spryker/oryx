@@ -5,8 +5,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService, RouterService } from '@spryker-oryx/experience';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import { authLogoutComponent } from './component';
 import { AuthLogoutComponent } from './logout.component';
+import { authLogoutComponent } from './logout.def';
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();

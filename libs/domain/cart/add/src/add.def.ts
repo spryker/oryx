@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { CartAddOptions } from './add.model';
+
+declare global {
+  interface Flags {
+    'oryx-cart-add'?: CartAddOptions;
+  }
+}
 
 export const addToCartComponent = componentDef({
   name: 'oryx-cart-add',

@@ -5,8 +5,8 @@ import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { productIdComponent } from './component';
 import { ProductIdComponent } from './id.component';
+import { productIdComponent } from './id.def';
 
 const mockSku = '1';
 

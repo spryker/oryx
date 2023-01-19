@@ -11,7 +11,7 @@ import { RatingComponent } from '@spryker-oryx/ui/rating';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { ProductAverageRatingComponent } from './average-rating.component';
-import { productAverageRatingComponent } from './average-rating.defs';
+import { productAverageRatingComponent } from './average-rating.def';
 
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});

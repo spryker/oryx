@@ -7,7 +7,7 @@ import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
-import { ProductDescriptionOptions } from './model';
+import { ProductDescriptionOptions } from './description.model';
 import { convertLineFeedsToHTML } from './utils';
 
 @hydratable(['mouseover', 'window:resize'])

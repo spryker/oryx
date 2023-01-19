@@ -1,4 +1,3 @@
-export * from './component';
 export * from './description.component';
-export * from './model';
+export * from './description.model';
 export * from './utils';

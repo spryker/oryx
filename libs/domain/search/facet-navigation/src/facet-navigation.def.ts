@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { FacetsOptions } from './facet-navigation.model';
+
+declare global {
+  interface Flags {
+    'search-facet-navigation'?: FacetsOptions;
+  }
+}
 
 export const facetsComponent = componentDef({
   name: 'search-facet-navigation',

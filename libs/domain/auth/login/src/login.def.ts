@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { LoginOptions } from './login.model';
+
+declare global {
+  interface Flags {
+    'auth-login'?: LoginOptions;
+  }
+}
 
 export const authLoginComponent = componentDef({
   name: 'auth-login',

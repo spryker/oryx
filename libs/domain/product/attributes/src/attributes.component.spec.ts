@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { ProductAttributesComponent } from './attributes.component';
-import { productAttributesComponent } from './component';
+import { productAttributesComponent } from './attributes.def';
 
 describe('Product attributes', () => {
   let element: ProductAttributesComponent;

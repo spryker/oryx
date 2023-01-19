@@ -11,8 +11,8 @@ import {
 } from '@spryker-oryx/ui/password';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
-import { authLoginComponent } from './component';
 import { AuthLoginComponent } from './login.component';
+import { authLoginComponent } from './login.def';
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();

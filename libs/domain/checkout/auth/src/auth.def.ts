@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { CheckoutAuthOptions } from './auth.model';
+
+declare global {
+  interface Flags {
+    'checkout-auth'?: CheckoutAuthOptions;
+  }
+}
 
 export const checkoutAuthComponent = componentDef({
   name: 'checkout-auth',

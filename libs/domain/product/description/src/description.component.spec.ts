@@ -4,8 +4,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
-import { productDescriptionComponent } from './component';
 import { ProductDescriptionComponent } from './description.component';
+import { productDescriptionComponent } from './description.def';
 
 describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;

@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { ProductCardComponentOptions } from './card.model';
+
+declare global {
+  interface Flags {
+    'product-card'?: ProductCardComponentOptions;
+  }
+}
 
 export const productCardComponent = componentDef({
   name: 'product-card',

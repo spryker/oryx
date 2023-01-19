@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { html } from 'lit';
 import { BannerComponent } from './banner.component';
-import { bannerComponent } from './component';
+import { bannerComponent } from './banner.def';
 
 class MockService {
   getContent(): Promise<any> {

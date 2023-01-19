@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { CheckoutCompositionOptions } from './composition.model';
+
+declare global {
+  interface Flags {
+    'oryx-checkout-composition'?: CheckoutCompositionOptions;
+  }
+}
 
 export const checkoutCompositionComponent = componentDef({
   name: 'oryx-checkout-composition',

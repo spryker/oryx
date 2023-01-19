@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { AddressListItemOptions } from '@spryker-oryx/user/address-list-item';
+
+declare global {
+  interface Flags {
+    'oryx-address-list'?: AddressListItemOptions;
+  }
+}
 
 export const addressListComponent = componentDef({
   name: 'oryx-address-list',

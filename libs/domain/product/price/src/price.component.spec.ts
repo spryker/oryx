@@ -7,8 +7,8 @@ import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { productPriceComponent } from './component';
 import { ProductPriceComponent } from './price.component';
+import { productPriceComponent } from './price.def';
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions(): Observable<any> {

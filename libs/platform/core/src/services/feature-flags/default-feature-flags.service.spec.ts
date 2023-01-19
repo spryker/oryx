@@ -4,7 +4,7 @@ import { FeatureFlags, FeatureFlagsService } from './feature-flags.service';
 
 const mockFlags = {
   global: {
-    global: 'global',
+    globalProp: 'global',
   },
   'comp-a': {
     a: 'a',
@@ -56,10 +56,7 @@ describe('DefaultFeatureFlagsService', () => {
     it('should return observable with flags by name from global injector', () => {
       const callback = vi.fn();
       service.getComponentFlags('COMP-A').subscribe(callback);
-      expect(callback).toHaveBeenCalledWith({
-        ...mockFlags.global,
-        ...mockFlags['comp-a'],
-      });
+      expect(callback).toHaveBeenCalledWith(mockFlags['comp-a']);
     });
 
     it('should return observable with flags by name from second flags object parameter', () => {
@@ -75,10 +72,7 @@ describe('DefaultFeatureFlagsService', () => {
           ...mockAddFlags,
         })
         .subscribe(callback);
-      expect(callback).toHaveBeenCalledWith({
-        ...mockFlags.global,
-        ...mockAddFlags['comp-c'],
-      });
+      expect(callback).toHaveBeenCalledWith(mockAddFlags['comp-c']);
     });
   });
 

@@ -1,4 +1,11 @@
 import { componentDef } from '@spryker-oryx/core';
+import { ContentLinkOptions } from './link.model';
+
+declare global {
+  interface Flags {
+    'content-link'?: ContentLinkOptions;
+  }
+}
 
 export const contentLinkComponent = componentDef({
   name: 'content-link',
