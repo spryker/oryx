@@ -4,7 +4,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 
 @hydratable('window:load')
 export class CheckoutPlaceOrderComponent extends ComponentMixin() {
@@ -21,8 +21,18 @@ export class CheckoutPlaceOrderComponent extends ComponentMixin() {
     )
   );
 
+  protected isBusy$ = new BehaviorSubject(false);
+
   submit(): void {
-    this.checkout.placeOrder();
+    this.isBusy$.next(true);
+    this.checkout.placeOrder().subscribe({
+      complete: () => {
+        this.isBusy$.next(false);
+      },
+      error: () => {
+        this.isBusy$.next(false);
+      },
+    });
   }
 
   protected override render(): TemplateResult {
@@ -33,8 +43,13 @@ export class CheckoutPlaceOrderComponent extends ComponentMixin() {
           return html``;
         }
 
-        return html`<oryx-button @click="${this.submit}">
-          <button>${i18n('checkout.place-order')}</button>
+        return html`<oryx-button
+          ?loading=${asyncValue(this.isBusy$)}
+          @click="${this.submit}"
+        >
+          <button ?inert=${asyncValue(this.isBusy$)}>
+            ${i18n('checkout.place-order')}
+          </button>
         </oryx-button>`;
       }
     )}`;
