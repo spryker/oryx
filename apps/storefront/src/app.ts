@@ -5,9 +5,4 @@ export const app = appBuilder()
   .withFeature(b2cFeatures)
   .withTheme(b2cTheme)
   .withEnvironment(import.meta.env)
-  .withFeatureOptions({
-    'content-link': {
-      text: 'override text link',
-    },
-  })
   .create();
