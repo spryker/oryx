@@ -2,18 +2,31 @@ import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
+  ComponentMixin,
   ComponentsRegistryService,
   CompositionProperties,
+  DataTransmitterService,
   ExperienceService,
   LayoutBuilder,
 } from '@spryker-oryx/experience';
-import { asyncValue, hydratable, observe } from '@spryker-oryx/utilities';
+import {
+  asyncValue,
+  hydratable,
+  observe,
+  subscribe,
+} from '@spryker-oryx/utilities';
 import { html, isServer, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
-import { ComponentMixin } from '../../src/mixins/component.mixin';
+import {
+  BehaviorSubject,
+  combineLatest,
+  EMPTY,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { layoutStyles } from './style';
 
 @hydratable()
@@ -33,6 +46,7 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
   protected route$ = new BehaviorSubject<string>(this.route);
 
   protected experienceService = resolve(ExperienceService);
+  protected transmitterService = resolve(DataTransmitterService, null);
   protected registryService = resolve(ComponentsRegistryService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected hasSSR = false;
@@ -44,6 +58,9 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
     super();
     this.hasSSR = !!this.renderRoot;
   }
+
+  @subscribe()
+  protected initializeEvent$ = this.transmitterService?.initialize() ?? EMPTY;
 
   protected isEmpty(): boolean {
     /**

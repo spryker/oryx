@@ -5,12 +5,13 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import { of } from 'rxjs';
 import { DataTransmitterService } from './data-transmitter.service';
 import {
   DataIds,
   DefaultDataTransmitterService,
+  REQUEST_GRAPHICS_MESSAGE_TYPE,
   REQUEST_OPTIONS_MESSAGE_TYPE,
-  REQUEST_RESOURCES_MESSAGE_TYPE,
 } from './default-data-transmitter.service';
 
 class MockApp implements Partial<App> {
@@ -18,15 +19,13 @@ class MockApp implements Partial<App> {
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
-  getOptions = vi.fn();
+  getOptions = vi.fn().mockReturnValue(of(null));
 }
 
 const getService = <T>(token: string) =>
   getInjector().inject(token) as unknown as T;
 
 describe('DataTransmitterService', () => {
-  let service: DataTransmitterService;
-
   beforeEach(() => {
     createInjector({
       providers: [
@@ -44,8 +43,6 @@ describe('DataTransmitterService', () => {
         },
       ],
     });
-
-    service = getInjector().inject(DataTransmitterService);
   });
 
   afterEach(() => {
@@ -63,13 +60,13 @@ describe('DataTransmitterService', () => {
           },
         };
         const app = getService<MockApp>(AppRef);
-        app.findPlugin.mockReturnValue({
+        getService<MockApp>(AppRef).findPlugin.mockReturnValue({
           getResources: () => mockResources,
         });
-        service.initialize();
+        getInjector().inject(DataTransmitterService).initialize().subscribe();
         window?.addEventListener('message', (e: MessageEvent) => {
           if (
-            e.data.type === REQUEST_RESOURCES_MESSAGE_TYPE &&
+            e.data.type === REQUEST_GRAPHICS_MESSAGE_TYPE &&
             e.data[DataIds.Graphics].length
           ) {
             expect(e.data[DataIds.Graphics]).toEqual(
@@ -94,8 +91,8 @@ describe('DataTransmitterService', () => {
         const optionsService = getService<MockFeatureOptionsService>(
           FeatureOptionsService
         );
-        optionsService.getOptions.mockReturnValue(mockOptions);
-        service.initialize();
+        optionsService.getOptions.mockReturnValue(of(mockOptions));
+        getInjector().inject(DataTransmitterService).initialize().subscribe();
         window?.addEventListener('message', (e: MessageEvent) => {
           if (
             e.data.type === REQUEST_OPTIONS_MESSAGE_TYPE &&

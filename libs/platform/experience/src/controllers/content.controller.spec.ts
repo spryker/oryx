@@ -31,7 +31,7 @@ class MockExperienceService implements Partial<ExperienceService> {
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
-  getComponentOptions = vi.fn().mockReturnValue(of({}));
+  getFeatureOptions = vi.fn().mockReturnValue(of({}));
 }
 
 const mockObserve = {
@@ -120,9 +120,9 @@ describe('ContentController', () => {
       const contentController = new ContentController(mockElement);
       contentController.getOptions().subscribe(callback);
 
-      expect(
-        mockFeatureOptionsService.getComponentOptions
-      ).toHaveBeenCalledWith(mockElement.tagName);
+      expect(mockFeatureOptionsService.getFeatureOptions).toHaveBeenCalledWith(
+        mockElement.tagName
+      );
       expect(mockObserve.get).toHaveBeenCalledWith('options');
       expect(callback).toHaveBeenCalledWith(mockObserveValue);
     });
@@ -162,7 +162,7 @@ describe('ContentController', () => {
       };
 
       beforeEach(() => {
-        mockFeatureOptionsService.getComponentOptions.mockReturnValue(
+        mockFeatureOptionsService.getFeatureOptions.mockReturnValue(
           of(mockDefaultValue)
         );
       });

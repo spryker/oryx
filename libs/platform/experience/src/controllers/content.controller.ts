@@ -51,7 +51,7 @@ export class ContentController<T = unknown, K = unknown> {
   getOptions(): Observable<Partial<K>> {
     return this.observe.get('options').pipe(
       withLatestFrom(
-        this.optionsService?.getComponentOptions(this.host.tagName) ?? of({})
+        this.optionsService?.getFeatureOptions(this.host.tagName) ?? of({})
       ),
       switchMap(([options, defaultOptions]) => {
         if (options !== undefined) {

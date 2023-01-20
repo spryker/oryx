@@ -1,6 +1,4 @@
-import { FeatureOptionsService } from '../../services';
 import { App, AppPlugin } from '../app';
-import { InjectionPlugin } from '../injection';
 import {
   ThemeData,
   ThemePlugin,
@@ -29,7 +27,6 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
     programmaticLoad: true,
   };
   protected theme?: ThemePlugin;
-  protected compDefOptions: FeatureOptions = {};
   rootSelector = '';
 
   constructor(
@@ -46,11 +43,6 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
 
   async apply(app: App): Promise<void> {
     this.theme = app.findPlugin(ThemePlugin);
-    app
-      .findPlugin(InjectionPlugin)
-      ?.getInjector?.()
-      .inject(FeatureOptionsService)
-      ?.mergeOptions(this.compDefOptions);
 
     this.rootSelector =
       typeof this.options.root === 'string'
@@ -79,10 +71,6 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
   registerComponents(componentsInfo: ComponentsInfo): void {
     componentsInfo.flat().forEach((info) => {
       const def = this.processDef(info);
-      if (def.options) {
-        this.compDefOptions ??= {};
-        this.compDefOptions[def.name] = def.options;
-      }
       this.componentDefMap.set(def.name, def);
     });
   }

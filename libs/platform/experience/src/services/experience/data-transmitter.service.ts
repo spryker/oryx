@@ -1,7 +1,9 @@
+import { Observable } from 'rxjs';
+
 export const DataTransmitterService = 'oryx.DataTransmitterService';
 
 export interface DataTransmitterService {
-  initialize(): void;
+  initialize(): Observable<unknown>;
 }
 
 declare global {

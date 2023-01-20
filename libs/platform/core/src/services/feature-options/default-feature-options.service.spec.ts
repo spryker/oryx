@@ -3,7 +3,6 @@ import { DefaultFeatureOptionsService } from './default-feature-options.service'
 import {
   FeatureOptions,
   FeatureOptionsService,
-  OptionsMergeStrategies,
 } from './feature-options.service';
 
 const mockOptions = {
@@ -53,53 +52,44 @@ describe('DefaultFeatureOptionsService', () => {
     expect(service).toBeInstanceOf(DefaultFeatureOptionsService);
   });
 
-  describe('getComponentOptions', () => {
+  describe('getFeatureOptions', () => {
     it('should return observable with options by name from injector', () => {
       const callback = vi.fn();
-      service.getComponentOptions('COMP-A').subscribe(callback);
+      service.getFeatureOptions('COMP-A').subscribe(callback);
       expect(callback).toHaveBeenCalledWith(mockOptions['comp-a']);
     });
   });
 
   describe('getOptions', () => {
     it('should return options object', () => {
-      expect(service.getOptions()).toEqual({
+      const callback = vi.fn();
+      service.getOptions().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith({
         ...mockOptions,
         ...mockNewOptions,
       });
     });
   });
 
-  describe('mergeOptions', () => {
+  describe('addDefaultOptions', () => {
     const mockMergeOptions = {
       'comp-g': {
         g: 'l',
       },
     };
 
-    it('should prepend options by default', () => {
-      expect(service.getOptions()).toEqual({
+    it('should prepend options', () => {
+      const callback = vi.fn();
+      service.getOptions().subscribe(callback);
+      expect(callback).toHaveBeenNthCalledWith(1, {
         ...mockOptions,
         ...mockNewOptions,
       });
-      service.mergeOptions(mockMergeOptions);
-      expect(service.getOptions()).toEqual({
+      service.addDefaultOptions(mockMergeOptions);
+      expect(callback).toHaveBeenNthCalledWith(2, {
         ...mockMergeOptions,
         ...mockOptions,
         ...mockNewOptions,
-      });
-    });
-
-    it('should append options with OptionsMergeStrategies.Append strategy', () => {
-      expect(service.getOptions()).toEqual({
-        ...mockOptions,
-        ...mockNewOptions,
-      });
-      service.mergeOptions(mockMergeOptions, OptionsMergeStrategies.Append);
-      expect(service.getOptions()).toEqual({
-        ...mockOptions,
-        ...mockNewOptions,
-        ...mockMergeOptions,
       });
     });
   });

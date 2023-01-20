@@ -10,20 +10,12 @@ declare global {
   }
 }
 
-export const enum OptionsMergeStrategies {
-  Prepend = 'prepend',
-  Append = 'append',
-}
-
 export interface FeatureOptionsService {
-  getComponentOptions(
+  getFeatureOptions(
     name: string
-  ): Observable<FeatureOptions[keyof FeatureOptions]>;
-  getOptions(): FeatureOptions;
-  mergeOptions(
-    options: FeatureOptions,
-    strategy?: OptionsMergeStrategies
-  ): void;
+  ): Observable<NonNullable<FeatureOptions[keyof FeatureOptions]>>;
+  getOptions(): Observable<FeatureOptions>;
+  addDefaultOptions(options: FeatureOptions): void;
 }
 
 declare global {

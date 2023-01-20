@@ -1,39 +1,44 @@
 import { inject } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { map, Observable, ReplaySubject, scan, shareReplay } from 'rxjs';
 import {
   FeatureOptions,
   FeatureOptionsService,
-  OptionsMergeStrategies,
 } from './feature-options.service';
 
 export class DefaultFeatureOptionsService implements FeatureOptionsService {
-  protected options!: FeatureOptions;
+  protected featureOptions$ = new ReplaySubject<FeatureOptions>(1);
+  protected options$ = this.featureOptions$.pipe(
+    scan((allOptions, newOptions) => {
+      for (const [key, value] of Object.entries(newOptions)) {
+        allOptions[key] ??= {};
+        allOptions[key] = {
+          ...(value ?? {}),
+          ...allOptions[key],
+        };
+      }
+
+      return allOptions;
+    }, {} as FeatureOptions),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
   constructor(protected optionsArr = inject(FeatureOptions, null)) {
-    this.options =
-      optionsArr?.reduce((acc, options) => ({ ...acc, ...options }), {}) ?? {};
+    this.featureOptions$.next(
+      optionsArr?.reduce((acc, options) => ({ ...acc, ...options }), {}) ?? {}
+    );
   }
 
-  getComponentOptions(
-    name: string
-  ): Observable<FeatureOptions[keyof FeatureOptions]> {
-    return of(this.options[name.toLowerCase()] ?? {});
+  getFeatureOptions(name: string): Observable<FeatureOptions> {
+    return this.options$.pipe(
+      map((options) => options[name.toLowerCase()] ?? {})
+    );
   }
 
-  getOptions(): FeatureOptions {
-    return this.options;
+  getOptions(): Observable<FeatureOptions> {
+    return this.options$;
   }
 
-  mergeOptions(
-    options: FeatureOptions,
-    strategy = OptionsMergeStrategies.Prepend
-  ): void {
-    for (const [key, value] of Object.entries(options)) {
-      this.options[key] = {
-        ...(strategy === OptionsMergeStrategies.Prepend && value),
-        ...this.options[key],
-        ...(strategy === OptionsMergeStrategies.Append && value),
-      };
-    }
+  addDefaultOptions(options: FeatureOptions): void {
+    this.featureOptions$.next(options);
   }
 }
