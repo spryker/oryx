@@ -1,10 +1,12 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import {
   mockNormalizedPaymentMethods,
   mockNormalizedShipmentAttributes,
 } from '@spryker-oryx/checkout/mocks';
 import { StorageService, StorageType } from '@spryker-oryx/core';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { BehaviorSubject, firstValueFrom, Observable, of } from 'rxjs';
+import { describe } from 'vitest';
 import {
   addressCheckoutStorageKey,
   contactCheckoutStorageKey,
@@ -21,16 +23,26 @@ class MockStorageService implements Partial<StorageService> {
   remove = vi.fn();
 }
 
+class MockIdenityService implements Partial<IdentityService> {
+  _identity = new BehaviorSubject<any>(undefined);
+  get = () => this._identity;
+}
+
 describe('DefaultCheckoutDataService', () => {
   let service: CheckoutDataService;
   let storage: StorageService;
+  let testInjector: Injector;
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    testInjector = createInjector({
       providers: [
         {
           provide: StorageService,
           useClass: MockStorageService,
+        },
+        {
+          provide: IdentityService,
+          useClass: MockIdenityService,
         },
         {
           provide: CheckoutDataService,
@@ -246,6 +258,27 @@ describe('DefaultCheckoutDataService', () => {
           StorageType.SESSION
         );
       });
+    });
+  });
+
+  describe('when identity changes', () => {
+    it('should reset the state', async () => {
+      const identityService = testInjector.inject(
+        IdentityService
+      ) as MockIdenityService;
+
+      service.setPayment(mockNormalizedPaymentMethods[0]);
+      service.setGuestCheckout();
+
+      expect(await firstValueFrom(service.isGuestCheckout())).toBeTruthy();
+      expect(await firstValueFrom(service.getPayment())).toEqual(
+        mockNormalizedPaymentMethods[0]
+      );
+
+      identityService._identity.next(undefined);
+
+      expect(await firstValueFrom(service.isGuestCheckout())).toBeFalsy();
+      expect(await firstValueFrom(service.getPayment())).toEqual(null);
     });
   });
 });

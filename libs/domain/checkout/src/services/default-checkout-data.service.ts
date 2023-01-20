@@ -1,6 +1,7 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, skip, Subscription, tap } from 'rxjs';
 import {
   Address,
   addressCheckoutStorageKey,
@@ -15,29 +16,42 @@ import {
 import { CheckoutDataService } from './checkout-data.service';
 
 export class DefaultCheckoutDataService implements CheckoutDataService {
-  constructor(protected storage = inject(StorageService)) {
-    this.getPersistedData();
-  }
-
-  protected isGuestCheckout$ = new ReplaySubject<boolean>();
+  protected isGuestCheckout$ = new BehaviorSubject<boolean>(false);
   protected contactDetails$ = new BehaviorSubject<ContactDetails | null>(null);
   protected addressDetails$ = new BehaviorSubject<Address | null>(null);
   protected shipmentDetails$ = new BehaviorSubject<Shipment | null>(null);
   protected paymentDetails$ = new BehaviorSubject<PaymentMethod | null>(null);
+
+  protected subscription?: Subscription;
+
+  constructor(
+    protected storage = inject(StorageService),
+    protected identity = inject(IdentityService)
+  ) {
+    this.init();
+  }
+
+  protected init(): void {
+    this.getPersistedData();
+
+    this.subscription = this.identity
+      .get()
+      .pipe(
+        skip(1),
+        // we want to reset checkout state every time user will change
+        tap(() => this.reset())
+      )
+      .subscribe();
+  }
 
   isGuestCheckout(): Observable<boolean> {
     return this.isGuestCheckout$;
   }
 
   setGuestCheckout(isGuestCheckout = true): Observable<unknown> {
-    this.isGuestCheckout$.next(isGuestCheckout);
-
     if (isGuestCheckout) {
-      this.storage.set(
-        guestCheckoutStorageKey,
-        guestCheckoutStorageKey,
-        StorageType.SESSION
-      );
+      this.isGuestCheckout$.next(true);
+      this.storage.set(guestCheckoutStorageKey, true, StorageType.SESSION);
     } else {
       this.reset();
     }
@@ -46,15 +60,17 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   reset(): void {
-    this.contactDetails$.next(null);
+    console.log('reset');
+    this.isGuestCheckout$.next(false);
     this.addressDetails$.next(null);
+    this.contactDetails$.next(null);
     this.shipmentDetails$.next(null);
     this.paymentDetails$.next(null);
     this.storage.remove(guestCheckoutStorageKey, StorageType.SESSION);
+    this.storage.remove(addressCheckoutStorageKey, StorageType.SESSION);
+    this.storage.remove(contactCheckoutStorageKey, StorageType.SESSION);
     this.storage.remove(shipmentCheckoutStorageKey, StorageType.SESSION);
     this.storage.remove(paymentCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(contactCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(addressCheckoutStorageKey, StorageType.SESSION);
   }
 
   getCustomer(): Observable<ContactDetails | null> {
@@ -62,7 +78,6 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   setCustomer(contactDetails: ContactDetails | null): Observable<void> {
-    console.log('setCustomer', contactDetails);
     this.contactDetails$.next(contactDetails);
     return this.storage.set(
       contactCheckoutStorageKey,
@@ -76,7 +91,6 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   setAddress(addressDetails: Address | null): Observable<void> {
-    console.log('setAddress', addressDetails);
     this.addressDetails$.next(addressDetails);
     return this.storage.set(
       addressCheckoutStorageKey,
@@ -90,7 +104,6 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   setShipment(shipmentDetails: Shipment | null): Observable<void> {
-    console.log('setShipment', shipmentDetails);
     this.shipmentDetails$.next(shipmentDetails);
     return this.storage.set(
       shipmentCheckoutStorageKey,
@@ -104,7 +117,6 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   setPayment(paymentDetails: PaymentMethod | null): Observable<void> {
-    console.log('setPayment', paymentDetails);
     this.paymentDetails$.next(paymentDetails);
     return this.storage.set(
       paymentCheckoutStorageKey,
@@ -134,5 +146,9 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     this.storage
       .get<Address | null>(addressCheckoutStorageKey, StorageType.SESSION)
       .subscribe((addressDetails) => this.addressDetails$.next(addressDetails));
+  }
+
+  onDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

@@ -1,7 +1,15 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { subscribeReplay } from '@spryker-oryx/utilities';
-import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 import { ApiCheckoutModel, PaymentMethod } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutDataService } from './checkout-data.service';
@@ -25,6 +33,8 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
               include: [ApiCheckoutModel.Includes.PaymentMethods],
             })
       ),
+      // in some cases, (when cart is not yet created or thresholds are not met), we get 422 error from the backend
+      catchError(() => of(null)),
       map((data) => data?.paymentMethods ?? null)
     );
   }
