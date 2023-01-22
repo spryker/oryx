@@ -1,12 +1,13 @@
 import { ThemeToken } from '@spryker-oryx/core';
 
 export const tokens: ThemeToken = {
-  container: {
-    width: '1340px',
-    padding: '10px',
-  },
   layout: {
-    gap: '0px',
+    container: {
+      width: '1340px',
+      padding: '50px',
+    },
+    cols: '12',
+    factor: '3',
   },
   box: {
     shadow: {

@@ -16,14 +16,4 @@ export const styles = css`
   ::placeholder {
     color: var(--oryx-color-placeholder);
   }
-
-  [uid='header'],
-  [uid='footer'] {
-    display: contents;
-  }
-
-  outlet {
-    display: block;
-    padding-top: 30px;
-  }
 `;

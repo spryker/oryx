@@ -2,7 +2,10 @@ import { AppFeature } from '@spryker-oryx/core';
 import * as components from './components';
 import { experiencePreviewProviders, experienceProviders } from './services';
 
-export const experienceComponents = [components.experienceCompositionComponent];
+export const experienceComponents = [
+  components.experienceCompositionComponent,
+  components.layoutComponent,
+];
 
 export const experienceFeature: AppFeature = {
   providers: experienceProviders,
@@ -11,5 +14,8 @@ export const experienceFeature: AppFeature = {
 
 export const experiencePreviewFeature: AppFeature = {
   providers: experiencePreviewProviders,
-  components: [components.experiencePreviewCompositionComponent],
+  components: [
+    components.experiencePreviewCompositionComponent,
+    components.layoutComponent,
+  ],
 };

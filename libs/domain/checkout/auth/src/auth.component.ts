@@ -5,7 +5,6 @@ import {
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentController } from '@spryker-oryx/experience';
-import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -15,7 +14,7 @@ import { authStyles } from './auth.styles';
 
 @hydratable('window:load')
 export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOptions>() {
-  static styles = [authStyles, layoutStyles];
+  static styles = [authStyles];
 
   protected checkoutDataService = resolve(CheckoutDataService);
 

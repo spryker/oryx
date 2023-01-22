@@ -12,15 +12,14 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { compositionStyles } from './composition.styles';
 import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
-
-import { layoutStyles } from './style';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
-  static override styles = [...layoutStyles, previewStyles];
+  static override styles = [compositionStyles, previewStyles];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService
@@ -128,19 +127,21 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       ${asyncValue(
         this.components$,
         (components) =>
-          html`${components
-            ? repeat(
-                components,
-                (component) => component.id,
-                (component) =>
-                  this.registryService.resolveTemplate(
-                    component.type,
-                    component.id,
-                    this.getLayoutClasses(component)
-                  )
-              )
-            : ``}
-          ${this.addInlineStyles(components)}`,
+          html`<oryx-layout .uid=${this.uid}>
+            ${components
+              ? repeat(
+                  components,
+                  (component) => component.id,
+                  (component) =>
+                    this.registryService.resolveTemplate(
+                      component.type,
+                      component.id,
+                      this.getLayoutClasses(component)
+                    )
+                )
+              : ``}
+            ${this.addInlineStyles(components)}
+          </oryx-layout>`,
         () => html`Loading...`
       )}
     `;

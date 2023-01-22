@@ -1,6 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentController } from '@spryker-oryx/experience';
-import { layoutStyles } from '@spryker-oryx/experience/composition';
+import { ContentController, StyleRuleSet } from '@spryker-oryx/experience';
 import {
   Product,
   ProductComponentMixin,
@@ -8,17 +7,30 @@ import {
   ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { asyncValue, ssrShim, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { map, switchMap } from 'rxjs';
+import { property } from 'lit/decorators.js';
+import { map, switchMap, tap } from 'rxjs';
 import { baseStyles } from './list.styles';
 
+@ssrShim('style')
 export class ProductListComponent extends ProductComponentMixin<ProductListQualifier>() {
-  static styles = [layoutStyles, baseStyles];
+  static styles = [baseStyles];
 
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
-  protected options$ = new ContentController(this).getOptions();
+
+  @property({ reflect: true, type: Boolean, attribute: 'has-layout' })
+  hasLayout?: boolean;
+
+  @subscribe()
+  protected options$ = new ContentController(this).getOptions().pipe(
+    tap((options) => {
+      this.hasLayout = !!(options as any as { rules: StyleRuleSet[] })
+        ?.rules?.[0]?.layout;
+    })
+  );
+
   protected products$ = this.options$.pipe(
     switchMap((options) => {
       const searchParams = this.productListService.getSearchParams(options);
@@ -42,8 +54,16 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
   }
 
   protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(this.products$, (products) => this.renderProducts(products))}
-    `;
+    return this.hasLayout
+      ? html`
+          <oryx-layout .uid=${this.uid}>
+            ${asyncValue(this.products$, (products) =>
+              this.renderProducts(products)
+            )}
+          </oryx-layout>
+        `
+      : html` ${asyncValue(this.products$, (products) =>
+          this.renderProducts(products)
+        )}`;
   }
 }

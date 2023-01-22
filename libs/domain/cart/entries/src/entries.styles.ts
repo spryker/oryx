@@ -5,7 +5,7 @@ export const styles = css`
   oryx-collapsible::part(content) {
     display: flex;
     flex-direction: column;
-    gap: var(--oryx-space-4);
+    row-gap: var(--oryx-space-4);
   }
 
   oryx-collapsible::part(content) {

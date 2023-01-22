@@ -4,17 +4,14 @@ export const styles = css`
   :host {
     display: flex;
     position: relative;
-    width: 100%;
     overflow: hidden;
     color: white;
+    width: var(--width, 100%);
+    height: var(--height, 100%);
   }
 
   a {
     color: white;
-  }
-
-  oryx-image {
-    width: 100%;
   }
 
   img {

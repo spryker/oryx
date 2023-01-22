@@ -4,7 +4,6 @@ import {
   ContentController,
   RouterService,
 } from '@spryker-oryx/experience';
-import { layoutStyles } from '@spryker-oryx/experience/composition';
 import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue } from '@spryker-oryx/utilities';
@@ -17,7 +16,7 @@ import { FacetsOptions } from './facet-navigation.model';
 import { facetNavigation } from './facet-navigation.styles';
 
 export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions>() {
-  static styles = [layoutStyles, facetNavigation];
+  static styles = [facetNavigation];
 
   private defaultOptions: FacetsOptions = {
     valueRenderLimit: 5,

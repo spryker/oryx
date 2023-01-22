@@ -27,11 +27,11 @@ import {
   of,
   switchMap,
 } from 'rxjs';
-import { layoutStyles } from './style';
+import { compositionStyles } from './composition.styles';
 
 @hydratable()
 export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
-  static styles = layoutStyles;
+  static styles = [compositionStyles];
 
   @property()
   uid = '';
@@ -119,18 +119,22 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
           this.shouldRenderChildren()
             ? html`${[...this.renderRoot.children]}`
             : components
-            ? html`${repeat(
-                components,
-                (component) => component.id,
-                (component) =>
-                  html`${this.registryService.resolveTemplate(
-                    component.type,
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    component.id!,
-                    this.getLayoutClasses(component)
-                  )} `
-              )}
-              ${this.addInlineStyles(components)}`
+            ? html`<oryx-layout .uid=${this.uid}>
+                ${repeat(
+                  components,
+                  (component) => component.id,
+                  (component) =>
+                    html`
+                      ${this.registryService.resolveTemplate(
+                        component.type,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        component.id!,
+                        this.getLayoutClasses(component)
+                      )}
+                    `
+                )}
+                ${this.addInlineStyles(components)}
+              </oryx-layout> `
             : html``,
         () => html`Loading...`
       )}
@@ -143,6 +147,8 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
    * The styles are unique to the component and are not reusable, hence it's
    * ok to render them inline. Rendering them inline will improve loading them
    * as additional resources, which would cause a layout shift.
+   *
+   * TODO: move to layout!
    */
   protected addInlineStyles(
     components: Component[] | undefined

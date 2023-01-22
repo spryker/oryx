@@ -23,7 +23,7 @@ export class CollapsibleComponent
   protected override render(): TemplateResult {
     return html`
       <details ?open=${this.open}>
-        <summary tabindex=${this.isInline ? -1 : 0}>
+        <summary tabindex=${this.isInline ? -1 : 0} part="heading">
           <slot name="header">${this.header}</slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>

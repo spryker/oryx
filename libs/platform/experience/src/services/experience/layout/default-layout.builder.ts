@@ -2,7 +2,6 @@ import { ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Breakpoint,
-  CompositionLayout,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
@@ -73,7 +72,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
-    const styles = this.getStyleProperties(data).join('');
+    const styles = this.getProperties(data).join(';');
     return styles === '' ? undefined : styles;
   }
 
@@ -93,80 +92,72 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (required) classes.push(`${breakpoint}-${className}`);
     };
 
-    add('container', ruleSet.container);
-    add('jumbotron', ruleSet.jumbotron);
-    add('layout-carousel', ruleSet.layout === CompositionLayout.Carousel);
-    add('layout-column', ruleSet.layout === CompositionLayout.Column);
-    add('layout-grid', ruleSet.layout === CompositionLayout.Grid);
-    add('sticky', ruleSet.position === 'sticky');
-
-    add('has-margin', !!ruleSet.margin);
-    add('has-padding', !!ruleSet.padding);
+    add('maxWidth', ruleSet.maxWidth);
+    add('sticky', ruleSet.sticky);
 
     return classes;
   }
 
-  /**
-   * Style properties are dynamically build and can be used for both
-   * compositions and components.
-   */
-  protected getStyleProperties(data?: StyleProperties): string[] {
-    const styles: string[] = [];
+  protected getProperties(data?: StyleProperties): string[] {
+    const rules: string[] = [];
+
     if (!data) {
-      return styles;
+      return rules;
     }
 
-    const add = (style: string, value?: string): void => {
-      if (value) styles.push(`${style}:${value};`);
+    const addUnit = (value: string | number | undefined, unit?: string) => {
+      return `${value}${unit ?? 'px'}`;
     };
 
-    if (data.gap) {
-      add('--oryx-layout-gap', data.gap);
+    const add = (
+      rule: string,
+      value: string | number | undefined,
+      options?: { omitUnit?: boolean; addEmpty?: boolean; unit?: string }
+    ) => {
+      if (!value) return;
+
+      if (!isNaN(Number(value))) {
+        if (!options?.omitUnit) {
+          value = addUnit(value, options?.unit);
+        } else if (value === 0 && !options?.addEmpty) {
+          value = '';
+        } else {
+          value = String(value);
+        }
+      }
+
+      // do not add empty values unless explicitly asked
+      if (!value && !options?.addEmpty) {
+        return;
+      }
+
+      rules.push(`${rule}: ${value}`);
+    };
+
+    add('--cols', data.columnCount, { omitUnit: true });
+    add('--span', data.span, { omitUnit: true });
+    add('--gap', data.gap);
+    add('margin-inline', data.marginInline);
+    add('margin-block', data.marginBlock);
+    add('--padding-inline', data.paddingInline);
+    add('padding-block', data.paddingBlock);
+    add('--top', data.top);
+    add('--width', data.width);
+    if (data.width) {
+      add('--flex', `0 0 min(100%, ${addUnit(data.width)})`);
     }
 
-    if (data.columnCount) {
-      add('--oryx-layout-item-count', data.columnCount.toString());
-    }
-
-    if (data.span) {
-      add('--oryx-layout-span', data.span.toString());
-    }
-
-    add('align-items', data.align);
-
-    add('--oryx-layout-margin', this.getRuleValue(data.margin));
-    add('--oryx-layout-padding', this.getRuleValue(data.padding));
-    add('--oryx-layout-height', this.getRuleValue(data.height));
-
-    add('top', this.getRuleValue(data.top));
-    add('bottom', this.getRuleValue(data.bottom));
-    add('border-radius', this.getRuleValue(data.radius));
+    add('--height', data.height);
     add('border', data.border);
+    add('border-radius', data.radius);
     add('background', data.background);
-    add('--oryx-layout-item-width', this.getRuleValue(data.width));
+    add('--z-index', data.zIndex, { omitUnit: true });
+    add('--grid-column', data.gridColumn, { omitUnit: true });
+    add('--grid-row', data.gridRow, { omitUnit: true });
+    add('--align-items', data.align);
+    add('--rotate', data.rotate, { unit: 'deg' });
+    add('overflow', data?.overflow);
 
-    if (data.zIndex !== undefined) {
-      add('--oryx-z-index', data.zIndex.toString());
-    }
-
-    return styles;
-  }
-
-  /**
-   * Validates the given value and adds a `px` unit if no
-   * unit was given.
-   *
-   * Returns undefined when there's no value provided.
-   */
-
-  protected getRuleValue(value?: string): string | undefined {
-    if (!value) {
-      return;
-    }
-
-    if (!isNaN(+value)) {
-      value += 'px';
-    }
-    return value;
+    return rules;
   }
 }

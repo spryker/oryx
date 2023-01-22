@@ -10,6 +10,8 @@ import {
   typographyTokens,
 } from './typography.tokens';
 
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
+
 export const backofficeTokens: DesignToken[] = [
   {
     color,
@@ -25,14 +27,22 @@ export const backofficeTokens: DesignToken[] = [
   },
   {
     media: {
+      screen: Size.Lg,
+    },
+    ...layoutTokens,
+  },
+  {
+    media: {
       screen: Size.Sm,
     },
     ...typographySmallTokens,
+    ...layoutSmTokens,
   },
   {
     media: {
       screen: Size.Md,
     },
     ...typographyMediumTokens,
+    ...layoutMdTokens,
   },
 ];
