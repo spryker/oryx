@@ -9,6 +9,7 @@ import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
 import { FacetRangeNormalizer } from '../facet-range';
 import { DeserializedProductListIncludes } from '../model';
+import { SortNormalizer } from '../sort';
 import { DeserializedProductList } from './model';
 
 export const ProductListNormalizer = 'FES.ProductListNormalizer*';
@@ -23,6 +24,18 @@ export function concreteProductNormalizer(
   return transformer
     .transform(products, ConcreteProductsNormalizer)
     .pipe(map((products) => ({ products })));
+}
+
+export function sortingNormalizer(
+  data: [DeserializedProductList],
+  transformer: TransformerService
+): Observable<Partial<ProductList>> {
+  const abstractKey = camelize(ApiProductListModel.Includes.Sort);
+  const { [abstractKey]: sort } = data[0];
+
+  return transformer
+    .transform(sort, SortNormalizer)
+    .pipe(map((sort) => ({ sort })));
 }
 
 export function productFacetNormalizer(
@@ -65,6 +78,10 @@ export const productListNormalizer: Provider[] = [
   {
     provide: ProductListNormalizer,
     useValue: productFacetNormalizer,
+  },
+  {
+    provide: ProductListNormalizer,
+    useValue: sortingNormalizer,
   },
 ];
 

@@ -9,4 +9,5 @@ export type DeserializedProductList = Pick<
   | CamelCase<ApiProductListModel.Includes.ValueFacets>
   | CamelCase<ApiProductListModel.Includes.CategoryTreeFilter>
   | CamelCase<ApiProductListModel.Includes.Pagination>
+  | CamelCase<ApiProductListModel.Includes.Sort>
 >;

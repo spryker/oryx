@@ -28,6 +28,7 @@ import {
 } from './adapter/normalizers/labels/labels.normalizer';
 
 import { Provider } from '@spryker-oryx/di';
+import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
 import { componentsProvider } from './components.provider';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
@@ -75,6 +76,10 @@ export const productProviders: Provider[] = [
   {
     provide: FacetRangeNormalizer,
     useValue: facetsRangeNormalizer,
+  },
+  {
+    provide: SortNormalizer,
+    useValue: sortNormalizer,
   },
   {
     provide: FacetCategoryNormalizer,

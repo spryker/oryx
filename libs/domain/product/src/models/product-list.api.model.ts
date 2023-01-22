@@ -47,6 +47,7 @@ export module ApiProductListModel {
     RangeFacets = 'range-facets',
     CategoryTreeFilter = 'category-tree-filter',
     Pagination = 'pagination',
+    Sort = 'sort',
   }
 
   export interface Pagination {
@@ -57,10 +58,25 @@ export module ApiProductListModel {
     config: PaginationConfig;
   }
 
+  export interface Sort {
+    sortParamNames: Array<SortParamOptions>;
+    sortParamLocalizedNames: { [key in SortParamOptions]?: string };
+    currentSortParam: string;
+    currentSortOrder: string;
+  }
+
   export interface PaginationConfig {
     parameterName: string;
     itemsPerPageParameterName: string;
     defaultItemsPerPage: number;
     validItemsPerPageOptions: [12, 24, 36];
   }
+
+  export type SortParamOptions =
+    | 'rating'
+    | 'name_asc'
+    | 'name_desc'
+    | 'price_asc'
+    | 'price_desc'
+    | 'popularity';
 }

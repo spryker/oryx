@@ -24,6 +24,18 @@ export const enum ProductLabelAppearance {
 export interface ProductList {
   products: Product[];
   facets?: Facet[];
+  sort?: ProductListSort;
+}
+
+export interface ProductListSort {
+  sortParam: string;
+  sortOrder: string;
+  sortValues: Array<SortValues>;
+}
+
+export interface SortValues {
+  sortKey: string;
+  sortName: string;
 }
 
 export interface Facet {

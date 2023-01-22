@@ -20,5 +20,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></search-facet-navigation>`,
     },
+    ['search-product-sort']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<search-product-sort
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></search-product-sort>`,
+    },
   },
 };
