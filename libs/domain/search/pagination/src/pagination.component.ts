@@ -15,7 +15,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest } from 'rxjs';
 import { PaginationOptions } from './pagination.model';
 
-@defaultOptions({ max: 5 })
+@defaultOptions({ max: 3, enableControls: true })
 export class PaginationComponent extends ComponentMixin<
   PaginationOptions & ProductListQualifier
 >() {
@@ -36,7 +36,7 @@ export class PaginationComponent extends ComponentMixin<
           <oryx-pagination
             max=${ifDefined(options.max)}
             current=${ifDefined(pagination?.currentPage)}
-            ?hideNavigation=${options.hideControls}
+            ?hideNavigation=${!options.enableControls}
           >
             ${[...Array(pagination?.maxPage || 1).keys()].map((i) =>
               this.renderAnchor(i + 1)

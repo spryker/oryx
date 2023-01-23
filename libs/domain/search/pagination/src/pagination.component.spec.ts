@@ -11,7 +11,7 @@ import { PaginationOptions } from './pagination.model';
 
 const options: PaginationOptions = {
   max: 4,
-  hideControls: true,
+  enableControls: false,
 };
 
 const mockPagination: Pagination = {

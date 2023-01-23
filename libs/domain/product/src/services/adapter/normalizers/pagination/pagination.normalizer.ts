@@ -8,7 +8,6 @@ export function paginationNormalizer(
 ): Pagination {
   const { maxPage, currentItemsPerPage, currentPage, numFound } = data;
 
-  console.log('maxPage', maxPage);
   return {
     itemsPerPage: currentItemsPerPage,
     currentPage,

@@ -20,7 +20,6 @@ export function paginationNormalizer(
 ): Observable<Partial<ProductList>> {
   const abstractKey = camelize(ApiProductListModel.Includes.Pagination);
   const { [abstractKey]: pagination } = data[0];
-  console.log('pagination', pagination);
 
   return transformer
     .transform(pagination, PaginationNormalizer)
