@@ -50,7 +50,7 @@ export const facetProviders = [
               @oryx.select=${selectListener}
               .name=${facet.name}
               .renderLimit=${options.renderLimit}
-              .open=${true}
+              .open=${options.open}
               .multi=${facet.multiValued}
             >
             </oryx-search-color-facet>
