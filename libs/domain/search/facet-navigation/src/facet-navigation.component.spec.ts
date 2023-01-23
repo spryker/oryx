@@ -14,7 +14,6 @@ import {
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
 import { facetsComponent } from './facet-navigation.def';
 

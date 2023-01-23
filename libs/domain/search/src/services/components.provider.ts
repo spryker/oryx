@@ -20,6 +20,13 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></search-facet-navigation>`,
     },
+    ['oryx-search-pagination']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-search-pagination
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-search-pagination>`,
+    },
     ['search-product-sort']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<search-product-sort

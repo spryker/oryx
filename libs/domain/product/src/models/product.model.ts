@@ -1,3 +1,28 @@
+/**
+ * Interface for pagination information.
+ */
+export interface Pagination {
+  /**
+   * The number of items per page.
+   */
+  itemsPerPage: number;
+
+  /**
+   * The current page number.
+   */
+  currentPage: number;
+
+  /**
+   * The maximum page number.
+   */
+  maxPage: number;
+
+  /**
+   * The total number of items found.
+   */
+  numFound: number;
+}
+
 export interface Product {
   sku?: string;
   attributeNames?: Record<string, string>;
@@ -24,6 +49,7 @@ export const enum ProductLabelAppearance {
 export interface ProductList {
   products: Product[];
   facets?: Facet[];
+  pagination?: Pagination;
   sort?: ProductListSort;
 }
 

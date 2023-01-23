@@ -1,4 +1,4 @@
-import { Injector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   ProductListPageService,
   ProductListService,
@@ -18,26 +18,31 @@ class MockProductListService implements Partial<ProductListService> {
 describe('DefaultFacetListService', () => {
   let service: FacetListService;
   let pageListService: ProductListPageService;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = new Injector([
-      {
-        provide: ProductListPageService,
-        useClass: MockProductListPageService,
-      },
-      {
-        provide: FacetListService,
-        useClass: DefaultFacetListService,
-      },
-      {
-        provide: ProductListService,
-        useClass: MockProductListService,
-      },
-    ]);
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: ProductListPageService,
+          useClass: MockProductListPageService,
+        },
+        {
+          provide: FacetListService,
+          useClass: DefaultFacetListService,
+        },
+        {
+          provide: ProductListService,
+          useClass: MockProductListService,
+        },
+      ],
+    });
 
     service = testInjector.inject(FacetListService);
     pageListService = testInjector.inject(ProductListPageService);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   it('should be provided', () => {
@@ -50,8 +55,7 @@ describe('DefaultFacetListService', () => {
     });
 
     it('should call mock product list page', () => {
-      const callback = vi.fn();
-      service.get().subscribe(callback);
+      service.get().subscribe();
       expect(pageListService.get).toHaveBeenCalled();
     });
   });

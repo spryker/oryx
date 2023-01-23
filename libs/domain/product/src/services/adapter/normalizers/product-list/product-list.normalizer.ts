@@ -2,17 +2,30 @@ import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
 import { combineLatest, map, Observable } from 'rxjs';
-import { ProductList } from '../../../../models';
-import { ApiProductListModel } from '../../../../models/product-list.api.model';
+import { ApiProductListModel, ProductList } from '../../../../models';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
 import { FacetRangeNormalizer } from '../facet-range';
 import { DeserializedProductListIncludes } from '../model';
+import { PaginationNormalizer } from '../pagination';
 import { SortNormalizer } from '../sort';
 import { DeserializedProductList } from './model';
 
 export const ProductListNormalizer = 'FES.ProductListNormalizer*';
+
+export function paginationNormalizer(
+  data: [DeserializedProductList],
+  transformer: TransformerService
+): Observable<Partial<ProductList>> {
+  const abstractKey = camelize(ApiProductListModel.Includes.Pagination);
+  const { [abstractKey]: pagination } = data[0];
+  console.log('pagination', pagination);
+
+  return transformer
+    .transform(pagination, PaginationNormalizer)
+    .pipe(map((pagination) => ({ pagination })));
+}
 
 export function concreteProductNormalizer(
   data: DeserializedProductListIncludes[],
@@ -65,12 +78,18 @@ export function productFacetNormalizer(
     transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
   ]).pipe(
     map(([categoryFacet, facetValues, rangeValues]) => {
-      return { facets: [categoryFacet, ...facetValues, ...rangeValues] };
+      return {
+        facets: [categoryFacet, ...facetValues, ...rangeValues],
+      };
     })
   );
 }
 
 export const productListNormalizer: Provider[] = [
+  {
+    provide: ProductListNormalizer,
+    useValue: paginationNormalizer,
+  },
   {
     provide: ProductListNormalizer,
     useValue: concreteProductNormalizer,
