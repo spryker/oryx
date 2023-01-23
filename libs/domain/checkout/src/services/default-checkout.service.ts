@@ -57,7 +57,12 @@ export class DefaultCheckoutService implements CheckoutService {
         switchMap((canCheckout) =>
           canCheckout
             ? this.preparePayload()
-            : throwError(() => new Error('Cannot checkout'))
+            : throwError(
+                () =>
+                  new Error(
+                    'Cannot checkout, check your cart value limits and validations'
+                  )
+              )
         ),
         switchMap((payload) =>
           this.adapter.placeOrder({ attributes: payload })

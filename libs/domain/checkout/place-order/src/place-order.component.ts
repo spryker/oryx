@@ -29,8 +29,9 @@ export class CheckoutPlaceOrderComponent extends ComponentMixin() {
       complete: () => {
         this.isBusy$.next(false);
       },
-      error: () => {
+      error: (error) => {
         this.isBusy$.next(false);
+        throw error;
       },
     });
   }
