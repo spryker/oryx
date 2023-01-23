@@ -60,7 +60,6 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
   }
 
   reset(): void {
-    console.log('reset');
     this.isGuestCheckout$.next(false);
     this.addressDetails$.next(null);
     this.contactDetails$.next(null);

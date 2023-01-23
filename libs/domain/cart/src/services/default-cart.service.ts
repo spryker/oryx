@@ -272,13 +272,12 @@ export class DefaultCartService implements CartService {
   }
 
   protected addCartToMap(cart: Cart): void {
-    const value$ = new ReplaySubject<Cart | null>(1);
-
-    this.carts.set(cart.id, {
-      value$,
-      error$: new ReplaySubject(1),
-    });
-
-    value$.next(cart);
+    if (!this.carts.has(cart.id)) {
+      this.carts.set(cart.id, {
+        value$: new ReplaySubject<Cart | null>(1),
+        error$: new ReplaySubject(1),
+      });
+    }
+    this.carts.get(cart.id)!.value$.next(cart);
   }
 }
