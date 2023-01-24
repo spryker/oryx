@@ -10,13 +10,13 @@ export default async function vitestExecutor(
   const projectRoot = joinPathFragments(context.root, projectDir);
 
   if (!options.typechekingOff) {
+    const path = options.tsconfigPath ? `-p ${options.tsconfigPath}` : '';
+
     await runCommands(
       {
-        command: `npx tsc ${
-          options.tsconfigPath ? '-p ' + options.tsconfigPath : ''
-        }`,
+        command: `npx tsc ${path}`,
         cwd: projectRoot,
-        // check this
+        // TODO: check this
         __unparsed__: [''],
       },
       context
@@ -27,6 +27,31 @@ export default async function vitestExecutor(
     delete options.coverage;
   }
 
+  // list of files that should be included
+  // by default
+  options.coverage.include ??= [`${projectDir}/**/*.ts`];
+
+  options.coverage.exclude ??= [];
+
+  // list of files that should be excluded
+  // as coverage is not important for them
+  options.coverage.exclude.push(
+    ...[
+      '**/vitest.config.ts',
+      '**/index.ts',
+      '**/.constants.ts',
+      '**/*.spec.ts',
+      '**/*.styles.ts',
+      '**/*.stories.ts',
+      '**/*.def.ts',
+      '**/*.model.ts',
+    ]
+  );
+
+  // Don't remove this log, it is used in Unit Tests coverage reports analysis
+  // We should be able to see which files are included in the analysis to not miss something
+  console.log('Unit tests run config: ', options);
+
   // TODO: workaround to avoid transpiling of dynamic import
   const { startVitest } = await Function("return import ('vitest/node')")();
 
@@ -36,7 +61,6 @@ export default async function vitestExecutor(
   });
 
   if (!options.watch) {
-    //Yeah, now it's generating process error code instead
     return { success: !process.exitCode };
   }
 

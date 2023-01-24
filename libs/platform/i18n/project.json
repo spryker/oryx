@@ -13,12 +13,6 @@
         "lintFilePatterns": ["libs/platform/i18n/**/*.ts"]
       }
     },
-    "test": {
-      "executor": "./tools/executors/oryx-vite:vitest",
-      "options": {
-        "passWithNoTests": true
-      }
-    },
     "paths": {
       "executor": "./tools/executors/components-library:paths"
     }

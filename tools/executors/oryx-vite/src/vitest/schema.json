@@ -25,6 +25,20 @@
           "type": "boolean",
           "description": "Enable coverage",
           "default": true
+        },
+        "all": {
+          "type": "boolean",
+          "description": "Adds all files coverage to the coverage report. See https://github.com/bcoe/c8#checking-for-full-source-coverage-using---all for details",
+          "default": true
+        },
+        "include": {
+          "type": "array",
+          "description": "Array of files to include. See https://github.com/bcoe/c8#checking-for-full-source-coverage-using---all for details"
+        },
+        "exclude": {
+          "type": "array",
+          "description": "Array of files to exclude. See https://github.com/bcoe/c8#checking-for-full-source-coverage-using---all for details",
+          "default": []
         }
       }
     }
