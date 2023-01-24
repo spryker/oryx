@@ -19,6 +19,7 @@ export const backofficeNgIcons: ThemeIcons = {
   [IconTypes.CheckMark]: () =>
     import('./icons/check-mark').then((s) => s.default),
   [IconTypes.Loader]: () => import('./icons/loader').then((s) => s.default),
+  [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
   [IconTypes.FreezerCategory]: () =>
     import('./icons/freezer-category').then((s) => s.default),
   [IconTypes.FreshCategory]: () =>
