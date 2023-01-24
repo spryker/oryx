@@ -21,7 +21,7 @@ import {
   EMPTY,
   Observable,
   of,
-  ReplaySubject,
+  Subject,
   switchMap,
   tap,
   withLatestFrom,
@@ -49,7 +49,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
     this.success$,
   ]);
 
-  protected authTrigger$ = new ReplaySubject<LoginParameters>(1);
+  protected authTrigger$ = new Subject<LoginParameters>();
 
   @subscribe()
   protected auth$ = this.authTrigger$.pipe(
@@ -93,7 +93,6 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
         })
       );
     }),
-
     tap({
       next: () => this.success$.next(true),
       complete: () => this.loading$.next(false),
