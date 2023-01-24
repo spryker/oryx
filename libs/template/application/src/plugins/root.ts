@@ -7,7 +7,7 @@ import {
   ErrorService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';

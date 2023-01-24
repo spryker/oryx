@@ -1,11 +1,8 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentController,
-  RouterService,
-} from '@spryker-oryx/experience';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
+import { RouterService } from '@spryker-oryx/router';
 import {
   asyncValue,
   hydratable,

@@ -1,13 +1,6 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  NavigationExtras,
-  RouteParams,
-  RouterEvent,
-  RouterEventType,
-  RouterService,
-} from '@spryker-oryx/experience';
-import {
   BehaviorSubject,
   combineLatest,
   map,
@@ -17,12 +10,19 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import {
+  NavigationExtras,
+  RouteParams,
+  RouterEvent,
+  RouterEventType,
+  RouterService,
+} from './router.service';
 
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
 
 export class DefaultRouterService implements RouterService {
-  private router$ = new BehaviorSubject(window.location.pathname);
+  private router$ = new BehaviorSubject(globalThis.location?.pathname ?? '/');
   private params$ = new ReplaySubject<RouteParams>(1);
   private urlSearchParams$ = new BehaviorSubject<RouteParams>(
     this.getURLSearchParams()
@@ -49,12 +49,12 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
-    window.history.pushState({}, '', route);
+    globalThis.history.pushState({}, '', route);
     this.go(route);
   }
 
   back(): void {
-    window.history.back();
+    globalThis.history.back();
   }
 
   getEvents(type: RouterEventType): Observable<RouterEvent> {
@@ -134,7 +134,9 @@ export class DefaultRouterService implements RouterService {
 
   protected getURLSearchParams(): { [k: string]: string } {
     return Object.fromEntries(
-      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
+      new URLSearchParams(
+        decodeURIComponent(globalThis.location?.search ?? '')
+      ).entries()
     );
   }
 }

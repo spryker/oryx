@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
+import { RouterService } from '@spryker-oryx/router';
 import {
   DefaultFacetComponentRegistryService,
   FacetComponentRegistryService,

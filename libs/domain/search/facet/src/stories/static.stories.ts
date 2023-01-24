@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/experience';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
+import { RouterService } from '@spryker-oryx/router';
 import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';

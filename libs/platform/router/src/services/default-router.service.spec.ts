@@ -1,8 +1,8 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterEventType, RouterService } from '@spryker-oryx/experience';
 import { of } from 'rxjs';
 import { DefaultRouterService } from './default-router.service';
+import { RouterEventType, RouterService } from './router.service';
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
@@ -52,9 +52,11 @@ describe('DefaultRouterService', () => {
   });
 
   it('should navigate back in history', () => {
-    vi.spyOn(window.history, 'back');
+    const historyBackSpy = vi.spyOn(globalThis.history, 'back');
+
     service.back();
-    expect(window.history.back).toHaveBeenCalled();
+
+    expect(historyBackSpy).toHaveBeenCalled();
   });
 
   it('should get events on navigation', () => {
@@ -67,7 +69,7 @@ describe('DefaultRouterService', () => {
   it('should store the current and previous routes when navigating', () => {
     service.go('/last');
 
-    service.currentRoute().subscribe((route) => {
+    service.currentRoute().subscribe(() => {
       expect(storageService.set).toHaveBeenCalledWith(
         'currentPage',
         '/last',

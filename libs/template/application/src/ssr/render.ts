@@ -3,7 +3,7 @@ import { App, ContextService, SSRAwaiterService } from '@spryker-oryx/core';
 import { getInjector } from '@spryker-oryx/di';
 import { TemplateResult } from 'lit';
 import { ServerContextService } from '@spryker-oryx/core/server';
-import { RouterService } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { render as litRender } from '@lit-labs/ssr';
 import 'abort-controller/polyfill.js';
 

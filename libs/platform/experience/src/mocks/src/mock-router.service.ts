@@ -1,4 +1,4 @@
-import { RouteParams, RouterService } from '@spryker-oryx/experience';
+import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { Observable, ReplaySubject } from 'rxjs';
 
 export class MockRouterService implements Partial<RouterService> {

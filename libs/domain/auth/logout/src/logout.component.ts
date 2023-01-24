@@ -1,10 +1,7 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentController,
-  RouterService,
-} from '@spryker-oryx/experience';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';

@@ -1,6 +1,6 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject, resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {

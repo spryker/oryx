@@ -8,10 +8,12 @@ import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
   experienceFeature,
   experiencePreviewFeature,
+  experienceRoutesFeature,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { productFeature } from '@spryker-oryx/product';
+import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { storefrontTheme } from '@spryker-oryx/themes';
@@ -34,11 +36,13 @@ export const b2cResources: Resources = {
 export const b2cFeatures: AppFeature[] = [
   uiFeature,
   coreFeature,
+  new RouterFeature(),
   cartFeature,
   checkoutFeature,
   contentFeature,
   formFeature,
   experienceFeature,
+  experienceRoutesFeature,
   isPreview ? experiencePreviewFeature : {},
   productFeature,
   searchFeature,

@@ -1,10 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentController,
-  RouterService,
-} from '@spryker-oryx/experience';
+import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
+import { RouterService } from '@spryker-oryx/router';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';

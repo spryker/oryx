@@ -1,6 +1,7 @@
 import { CheckoutComponentMixin } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ContentController, RouterService } from '@spryker-oryx/experience';
+import { ContentController } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { hydratable, i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { Subject, switchMap, take, tap } from 'rxjs';

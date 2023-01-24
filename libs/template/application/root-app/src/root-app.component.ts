@@ -1,8 +1,8 @@
-import { DefaultRouter, routes } from '@spryker-oryx/application';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { RouteParams, RouterService } from '@spryker-oryx/experience';
 import { ProductContext } from '@spryker-oryx/product';
+import { RouteParams, RouterService } from '@spryker-oryx/router';
+import { LitRouter } from '@spryker-oryx/router/lit';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { take, tap } from 'rxjs';
@@ -12,7 +12,7 @@ import { styles } from './root-app.styles';
 export class RootAppComponent extends LitElement {
   protected context = new ContextController(this);
   protected routerService = resolve(RouterService);
-  private _routes = new DefaultRouter(this, routes);
+  private _router = new LitRouter(this, []);
 
   static styles = styles;
 
@@ -35,7 +35,7 @@ export class RootAppComponent extends LitElement {
       this.route$,
       () =>
         html`<experience-composition uid="header"></experience-composition>
-          ${this._routes.outlet()}
+          ${this._router.outlet()}
           <experience-composition uid="footer"></experience-composition>`
     )}`;
   }

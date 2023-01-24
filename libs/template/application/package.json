@@ -17,11 +17,11 @@
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
     "@spryker-oryx/injector": "*",
+    "@spryker-oryx/router": "*",
     "@spryker-oryx/ui": "*",
     "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
-    "tslib": "^2.4.0",
-    "urlpattern-polyfill": "^4.0.0"
+    "tslib": "^2.4.0"
   }
 }

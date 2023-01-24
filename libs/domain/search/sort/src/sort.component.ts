@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/experience';
 import { ProductListSort } from '@spryker-oryx/product';
+import { RouterService } from '@spryker-oryx/router';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs/operators';

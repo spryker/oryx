@@ -2,7 +2,7 @@ import { RouteConfig } from '@lit-labs/router';
 import { html, TemplateResult } from 'lit';
 import 'urlpattern-polyfill';
 
-export const routes: RouteConfig[] = [
+export const defaultExperienceRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
     render: (): TemplateResult =>

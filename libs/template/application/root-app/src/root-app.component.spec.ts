@@ -2,11 +2,12 @@ import { mockCartProviders } from '@spryker-oryx/cart/mocks';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { RouteParams, RouterService } from '@spryker-oryx/experience';
+import { RouteParams, RouterService } from '@spryker-oryx/router';
+import { LitRouter } from '@spryker-oryx/router/lit';
 import { siteProviders } from '@spryker-oryx/site';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { html } from 'lit';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { RootAppComponent } from './root-app.component';
+import { SpyInstance } from 'vitest';
 import { rootAppComponent } from './root-app.def';
 
 class MockRouterService implements Partial<RouterService> {
@@ -29,6 +30,7 @@ class MockRouterService implements Partial<RouterService> {
 
 describe('RootAppComponent', () => {
   let routerService: MockRouterService;
+  let litRouterOutletSpy: SpyInstance;
 
   beforeAll(async () => {
     await useComponent(rootAppComponent);
@@ -55,47 +57,23 @@ describe('RootAppComponent', () => {
     ) as unknown as MockRouterService;
     routerService.go('/');
 
-    document.body.innerHTML = '<root-app></root-app>';
+    litRouterOutletSpy = vi
+      .spyOn(LitRouter.prototype, 'outlet')
+      .mockReturnValue(html`mock-lit-router-outlet`);
   });
 
   afterEach(() => {
     destroyInjector();
   });
 
-  const getElement = (): RootAppComponent => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return document.body.querySelector('root-app')!;
-  };
+  it('should render `LitRouter.outlet()`', async () => {
+    document.body.innerHTML = '<root-app></root-app>';
 
-  it('should render `experience-composition` tag', () => {
-    const element = getElement();
-    const experienceComposition = element.shadowRoot?.querySelector(
-      'experience-composition[route]'
-    );
+    await new Promise((res) => setTimeout(res));
 
-    expect(element).toBeInstanceOf(RootAppComponent);
-    expect(experienceComposition).toBeTruthy();
-  });
+    const rootApp = document.querySelector('root-app');
 
-  it('should render `experience-composition` with `route` attributes passed from the `route` property', async (done) => {
-    const mockRout = '/contact';
-    const element = getElement();
-    const experienceComposition = element.shadowRoot?.querySelector(
-      'experience-composition[route]'
-    );
-
-    expect(experienceComposition?.getAttribute('route')).toBe('/');
-
-    routerService.go(mockRout);
-
-    routerService.currentParams().subscribe(() => {
-      const updatedExperienceComposition = getShadowElementBySelector(
-        getElement(),
-        'experience-composition[route]'
-      );
-      expect(updatedExperienceComposition?.getAttribute('route')).toBe(
-        mockRout
-      );
-    });
+    expect(rootApp).toBeInstanceOf(HTMLElement);
+    expect(rootApp!.shadowRoot?.innerHTML).toContain('mock-lit-router-outlet');
   });
 });

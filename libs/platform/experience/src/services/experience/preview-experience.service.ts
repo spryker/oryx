@@ -1,4 +1,9 @@
 import { inject } from '@spryker-oryx/di';
+import {
+  RouterEvent,
+  RouterEventType,
+  RouterService,
+} from '@spryker-oryx/router';
 import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -11,7 +16,6 @@ import {
   shareReplay,
   tap,
 } from 'rxjs';
-import { RouterEvent, RouterEventType, RouterService } from '../router';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 import { sendPostMessage } from './utilities';

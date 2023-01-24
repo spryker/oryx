@@ -1,11 +1,11 @@
 import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ContentBackendUrl } from '../experience-tokens';
-import { RouterEventType, RouterService } from '../router';
-import { DataTransmitterService } from './data-transmitter/data-transmitter.service';
+import { DataTransmitterService } from './data-transmitter';
 import { ExperienceService } from './experience.service';
 import {
   POST_MESSAGE_TYPE,

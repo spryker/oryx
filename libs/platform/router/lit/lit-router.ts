@@ -1,12 +1,13 @@
 import { RouteConfig, Router } from '@lit-labs/router';
 import { SSRAwaiterService, SsrOptions } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { RouteParams, RouterService } from '@spryker-oryx/experience';
+import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { PatchableLitElement } from '@spryker-oryx/utilities';
 import { html, isServer, ReactiveControllerHost, TemplateResult } from 'lit';
 import { identity, skip, tap } from 'rxjs';
+import { LitRoutesRegistry } from './lit-routes-registry';
 
-export class DefaultRouter extends Router {
+export class LitRouter extends Router {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
@@ -21,8 +22,15 @@ export class DefaultRouter extends Router {
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
-    routes: Array<RouteConfig>
+    routes: RouteConfig[]
   ) {
+    routes = [
+      ...resolve(LitRoutesRegistry, [])
+        .map((registry) => registry.routes)
+        .flat(),
+      ...routes,
+    ];
+
     super(host, routes);
     this.host = host;
     this.ssrRendered =

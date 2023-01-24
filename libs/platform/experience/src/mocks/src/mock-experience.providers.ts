@@ -10,8 +10,8 @@ import {
   DefaultLayoutBuilder,
   ExperienceService,
   LayoutBuilder,
-  RouterService,
 } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { componentsProvider } from '../../services/components.provider';
 import { MockRouterService } from './mock-router.service';
 
