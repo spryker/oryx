@@ -45,60 +45,70 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   ]);
 
   protected override render(): TemplateResult {
-    return html` ${asyncValue(
-      this.checkout$,
-      ([
-        isEmptyCart,
-        isAuthenticated,
-        isGuestCheckout,
-        hasAddresses,
-        options,
-      ]) => {
-        if (isEmptyCart) {
-          return html``;
-        }
+    return html`
+      ${asyncValue(
+        this.checkout$,
+        ([
+          isEmptyCart,
+          isAuthenticated,
+          isGuestCheckout,
+          hasAddresses,
+          options,
+        ]) => {
+          if (isEmptyCart) {
+            return html``;
+          }
 
-        return html`
-          <checkout-auth .options=${{ disableGuest: options.disableGuest }}>
-          </checkout-auth>
-          ${when(
-            isAuthenticated || isGuestCheckout,
-            () =>
-              html`${asyncValue(
-                this.steps$,
-                (steps) => html`
-                  ${steps.map(({ id, validity }, index) => {
-                    return html`
-                      <oryx-card>
-                        ${this.renderHeading(
-                          index,
+          return html`
+            <checkout-auth .options=${{ disableGuest: options.disableGuest }}>
+            </checkout-auth>
+            ${when(
+              isAuthenticated || isGuestCheckout,
+              () =>
+                html`${asyncValue(
+                  this.steps$,
+                  (steps) => html`
+                    ${steps.map(({ id, validity }, index) => {
+                      return html`
+                        ${this.renderStep(
                           id,
-                          isAuthenticated,
-                          hasAddresses
+                          this.renderHeading(
+                            index,
+                            id,
+                            isAuthenticated,
+                            hasAddresses
+                          )
                         )}
-                        <slot name="content"> ${this.renderStep(id)} </slot>
-                      </oryx-card>
-                    `;
-                  })}
-                `
-              )}`
-          )}
-        `;
-      }
-    )}`;
+                      `;
+                    })}
+                  `
+                )}`
+            )}
+          `;
+        }
+      )}
+    `;
   }
 
-  protected renderStep(step: CheckoutStepType): TemplateResult {
+  protected renderStep(
+    step: CheckoutStepType,
+    heading: TemplateResult
+  ): TemplateResult {
+    let content: TemplateResult = html``;
+
     switch (step) {
       case CheckoutStepType.Delivery:
-        return html` <checkout-delivery></checkout-delivery>`;
+        content = html` <checkout-delivery></checkout-delivery>`;
+        break;
       case CheckoutStepType.Shipping:
-        return html`<checkout-shipment></checkout-shipment>`;
+        content = html`<checkout-shipment></checkout-shipment>`;
+        break;
       case CheckoutStepType.Payment:
-        return html`<checkout-payment></checkout-payment>`;
-      default:
-        return html``;
+        content = html`<checkout-payment></checkout-payment>`;
+        break;
     }
+
+    return html`<section>${heading} ${content}</section>`;
   }
 
   protected renderHeading(
@@ -118,14 +128,12 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
                 : html``
           )}
         </h5>
+        ${when(
+          step === CheckoutStepType.Delivery && isAuthenticated && hasAddresses,
+          () =>
+            html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
+        )}
       </oryx-heading>
-
-      ${when(
-        step === CheckoutStepType.Delivery && isAuthenticated && hasAddresses,
-        () => html`<oryx-checkout-manage-address
-          slot="header"
-        ></oryx-checkout-manage-address>`
-      )}
     `;
   }
 }

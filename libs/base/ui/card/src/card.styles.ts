@@ -2,10 +2,11 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    --oryx-card-border-radius: var(--oryx-border-radius);
-
     display: block;
-    border-radius: var(--oryx-card-border-radius);
+    border-radius: var(
+      --oryx-card-border-radius,
+      var(--oryx-border-radius-medium)
+    );
     color: var(--oryx-color-ink);
     background-color: var(--background-color);
   }

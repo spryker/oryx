@@ -6,8 +6,6 @@ import {
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { FormComponentInterface } from '@spryker-oryx/form';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
@@ -44,12 +42,6 @@ export class CheckoutContactComponent
   }
 
   protected override render(): TemplateResult {
-    return html`
-      <oryx-heading .tag=${HeadingTag.Subtitle}>
-        ${i18n('checkout.contact-details')}
-      </oryx-heading>
-
-      <user-contact-form ${ref(this.formRef)}></user-contact-form>
-    `;
+    return html` <user-contact-form ${ref(this.formRef)}></user-contact-form> `;
   }
 }

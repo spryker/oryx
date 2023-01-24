@@ -33,7 +33,7 @@ export const tokens: ThemeToken = {
     thick: '2px',
     radius: {
       small: '4px',
-      medium: '5px',
+      medium: '10px',
       large: '24px',
     },
   },

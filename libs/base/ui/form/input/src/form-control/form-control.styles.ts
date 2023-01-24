@@ -51,7 +51,10 @@ export const formControlBaseStyles = css`
     border-style: solid;
     border-width: 2px;
     border-color: inherit;
-    border-radius: var(--oryx-border-radius);
+    border-radius: var(
+      --oryx-form-control-border-radius,
+      var(--oryx-border-radius-medium)
+    );
     transition: all var(--oryx-transition-time);
     color: var(--oryx-color-neutral-300);
     background-color: var(--oryx-color-canvas-100);
@@ -62,7 +65,6 @@ export const formControlBaseStyles = css`
   }
 
   :host([disabled]) .control {
-    border-radius: var(--oryx-border-radius);
     background-color: var(--oryx-color-canvas-200);
   }
 
@@ -110,7 +112,10 @@ export const formControlBaseStyles = css`
     outline: none;
     font: inherit;
     color: var(--oryx-color-ink);
-    border-radius: var(--oryx-border-radius);
+    border-radius: var(
+      --oryx-form-control-border-radius,
+      var(--oryx-border-radius-medium)
+    );
     line-height: 24px;
   }
 

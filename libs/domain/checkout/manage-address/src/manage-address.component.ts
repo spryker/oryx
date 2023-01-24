@@ -69,10 +69,9 @@ export class ManageAddressComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-button outline size=${Size.small}>
+      <oryx-button type="text" size=${Size.small}>
         <button @click=${(): void => this.showModal()}>
-          <oryx-icon type="edit"></oryx-icon>
-          ${i18n('checkout.address.manage-address')}
+          ${i18n('checkout.address.change')}
         </button>
       </oryx-button>
 

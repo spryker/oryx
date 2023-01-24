@@ -26,7 +26,7 @@ export const buttonStyles = css`
     color: var(--_color-text);
     background-color: var(--_color-accent);
     border: var(--oryx-border-thin) solid var(--_color-accent);
-    border-radius: var(--oryx-border-radius);
+    border-radius: var(--oryx-border-radius-medium);
     cursor: pointer;
     transition: var(--oryx-transition-time);
     position: relative;

@@ -42,4 +42,8 @@ export const styles = css`
     color: var(--oryx-color-neutral-200);
     margin-inline-start: calc(var(--oryx-radio-size, 18px) + 8px);
   }
+
+  p {
+    margin: 0;
+  }
 `;

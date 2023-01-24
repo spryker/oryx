@@ -13,12 +13,33 @@ export const collapsibleBaseStyle = css`
     display: block;
   }
 
+  :host(${blockSelector}),
+  summary,
+  :host(${blockSelector}) summary:after {
+    border-radius: var(
+      --oryx-collapsible-border-radius,
+      var(--oryx-border-radius-small)
+    );
+  }
+
+  :host(${blockSelector}) details[open] summary {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
   summary {
     outline: none;
     display: flex;
     align-items: center;
     gap: 7px;
     cursor: pointer;
+  }
+
+  :host(${blockSelector}) summary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
 
   details[open] slot[name='expanded'],

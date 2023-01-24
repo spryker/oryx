@@ -31,15 +31,15 @@ interface StepData {
 const defaultCheckoutSteps = [
   {
     id: CheckoutStepType.Delivery,
-    label: 'checkout.<step>-delivery',
+    label: 'checkout.delivery-address',
   },
   {
     id: CheckoutStepType.Shipping,
-    label: 'checkout.<step>-shipping',
+    label: 'checkout.shipping',
   },
   {
     id: CheckoutStepType.Payment,
-    label: 'checkout.<step>-payment',
+    label: 'checkout.payment',
   },
 ];
 

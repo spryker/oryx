@@ -5,7 +5,6 @@ import { css } from 'lit';
 export const baseStyles = css`
   oryx-typeahead {
     --oryx-popover-maxheight: 480px;
-    --oryx-border-radius: 2px;
     --oryx-popover-vertical-offset: 0;
     --oryx-popover-distance: 62px;
   }

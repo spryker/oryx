@@ -8,7 +8,10 @@ export const tileStyles = css`
     border: var(--oryx-border-thin) solid var(--oryx-color-canvas-500);
     box-sizing: border-box;
     box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
-    border-radius: var(--oryx-border-radius-small);
+    border-radius: var(
+      --oryx-tile-border-radius,
+      var(--oryx-border-radius-small)
+    );
     background-color: var(--oryx-color-canvas-100);
     transition: var(--oryx-transition-time);
   }

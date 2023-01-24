@@ -10,4 +10,9 @@ export const styles = css`
     display: flex;
     width: min(100vw, calc(450px - 2 * var(--oryx-card-body-padding, 0px)));
   }
+
+  button {
+    /* TODO: remove as soon as our system supports cta text button  */
+    color: var(--oryx-color-primary-300);
+  }
 `;

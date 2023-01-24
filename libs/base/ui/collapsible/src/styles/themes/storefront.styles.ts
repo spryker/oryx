@@ -19,7 +19,6 @@ const inlineAppearance = css`
 
 const blockAppearance = css`
   :host(${blockSelector}) {
-    border-radius: var(--oryx-border-radius-small);
     border: solid 1px var(--oryx-color-canvas-500);
     position: relative;
   }
@@ -42,14 +41,6 @@ const blockAppearance = css`
 
   :host(${blockSelector}) summary {
     padding-block: 16px 13px;
-  }
-
-  :host(${blockSelector}) summary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: var(--oryx-border-radius-small);
   }
 
   /* 

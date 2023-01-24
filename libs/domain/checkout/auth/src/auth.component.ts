@@ -23,39 +23,43 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
   protected isGuest$ = this.checkoutDataService.isGuestCheckout();
 
   protected override render(): TemplateResult {
-    return html` ${this.renderHeading()}
-    ${asyncValue(
-      combineLatest([this.isAuthenticated$, this.isGuest$]),
-      ([isAuthenticated, isGuestCheckout]) =>
-        html`${when(
-          !(isAuthenticated || isGuestCheckout),
-          () => html`${this.renderAnonymousLogin()} ${this.renderLogin()}`
-        )}`
-    )}`;
+    return html`
+      ${this.renderHeading()}
+      ${asyncValue(
+        combineLatest([this.isAuthenticated$, this.isGuest$]),
+        ([isAuthenticated, isGuestCheckout]) =>
+          html`${when(
+            !(isAuthenticated || isGuestCheckout),
+            () => html`${this.renderAnonymousLogin()} ${this.renderLogin()}`
+          )}`
+      )}
+    `;
   }
 
   protected renderHeading(): TemplateResult {
-    return html`${asyncValue(
-      this.isGuest$,
-      (isGuestCheckout) =>
-        html` ${when(
-          isGuestCheckout,
-          () => html`
-            <oryx-heading>
-              <h3>${i18n('checkout.guest-checkout')}</h3>
-              <oryx-button type="text">
-                <button
-                  @click=${(): void => {
-                    this.checkoutDataService.setGuestCheckout(false);
-                  }}
-                >
-                  ${i18n('checkout.checkout-as-register')}
-                </button>
-              </oryx-button>
-            </oryx-heading>
-          `
-        )}`
-    )}`;
+    return html`
+      ${asyncValue(
+        this.isGuest$,
+        (isGuestCheckout) =>
+          html` ${when(
+            isGuestCheckout,
+            () => html`
+              <oryx-heading>
+                <h3>${i18n('checkout.guest-checkout')}</h3>
+                <oryx-button type="text">
+                  <button
+                    @click=${(): void => {
+                      this.checkoutDataService.setGuestCheckout(false);
+                    }}
+                  >
+                    ${i18n('checkout.checkout-as-register')}
+                  </button>
+                </oryx-button>
+              </oryx-heading>
+            `
+          )}`
+      )}
+    `;
   }
 
   protected renderLogin(): TemplateResult {

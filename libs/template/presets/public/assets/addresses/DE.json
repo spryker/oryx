@@ -28,13 +28,15 @@
         "id": "firstName",
         "label": "First Name",
         "type": "input",
-        "required": true
+        "required": true,
+        "width": 50
       },
       {
         "id": "lastName",
         "label": "Last Name",
         "type": "input",
-        "required": true
+        "required": true,
+        "width": 50
       },
       {
         "id": "company",

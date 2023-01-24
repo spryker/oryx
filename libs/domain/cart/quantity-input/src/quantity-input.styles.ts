@@ -20,7 +20,7 @@ export const styles = css`
   }
 
   oryx-input {
-    --oryx-border-radius: 0;
+    --oryx-form-control-border-radius: 0;
 
     width: var(--oryx-cart-quantity-input-width, 75px);
   }
@@ -55,7 +55,7 @@ export const styles = css`
     color: var(--oryx-cart-quantity-input-button-color);
     border: 2px solid var(--oryx-cart-quantity-input-button-border-color);
     outline: none;
-    border-radius: 2px;
+    border-radius: var(--oryx-border-radius-small);
     margin: 0;
   }
 

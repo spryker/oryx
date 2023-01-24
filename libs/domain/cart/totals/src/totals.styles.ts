@@ -20,7 +20,7 @@ export const styles = css`
     row-gap: var(--oryx-space-4);
     background-color: var(--oryx-color-canvas-200);
     padding-block: var(--oryx-space-4);
-    border-radius: var(--oryx-border-radius-small);
+    border-radius: var(--oryx-border-radius-medium);
   }
 
   section > oryx-heading {

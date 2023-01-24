@@ -6,7 +6,6 @@ const styles = [
   css`
     :host(${blockSelector}) {
       background: var(--oryx-color-canvas-200);
-      border-radius: var(--oryx-border-radius-small);
       position: relative;
     }
 
@@ -18,7 +17,6 @@ const styles = [
       padding-block: 9px;
       list-style: none;
       transition: background var(--oryx-transition-time);
-      border-radius: var(--oryx-border-radius-small);
       padding-inline: 20px 10px;
     }
 
@@ -31,21 +29,11 @@ const styles = [
     }
 
     :host(${blockSelector}) details[open] summary {
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
       border-bottom: 1px solid var(--oryx-color-canvas-500);
     }
 
     :host(${blockSelector}:hover) summary {
       background: var(--oryx-color-canvas-500);
-    }
-
-    :host(${blockSelector}) summary::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      border-radius: var(--oryx-border-radius-small);
     }
 
     /* 
