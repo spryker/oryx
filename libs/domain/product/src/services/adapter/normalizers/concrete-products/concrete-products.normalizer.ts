@@ -17,9 +17,13 @@ export function concreteProductsNormalizer(
 
   return combineLatest(
     data
-      .map((abstract) => abstract[concreteProductsKey])
-      .flat()
-      .map((concrete) => transformer.transform(concrete, ProductNormalizer))
+      .filter((abstract) => abstract[concreteProductsKey]?.length)
+      .map((abstract) =>
+        transformer.transform(
+          abstract[concreteProductsKey]?.[0],
+          ProductNormalizer
+        )
+      )
   );
 }
 
