@@ -17,6 +17,7 @@ import {
   map,
   of,
   switchMap,
+  take,
   tap,
 } from 'rxjs';
 import { styles } from './address-form.styles';
@@ -42,10 +43,12 @@ export class AddressFormComponent extends FormComponentMixin() {
       country
         ? of(country)
         : this.countryService.getAll().pipe(
+            take(1),
             switchMap((countries) =>
               countries.length === 1
                 ? of(countries[0].iso2Code)
                 : this.addressService.getCurrentAddress().pipe(
+                    take(1),
                     map((address) => {
                       return address?.iso2Code ?? countries[0].iso2Code;
                     })
