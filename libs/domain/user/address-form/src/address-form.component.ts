@@ -10,7 +10,15 @@ import { asyncValue, hydratable, observe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { styles } from './address-form.styles';
 
 @hydratable(['mouseover', 'focusin'])
@@ -29,6 +37,7 @@ export class AddressFormComponent extends FormComponentMixin() {
   protected country$ = new BehaviorSubject(this.country);
 
   protected activeCountry$ = this.country$.pipe(
+    distinctUntilChanged(),
     switchMap((country) =>
       country
         ? of(country)

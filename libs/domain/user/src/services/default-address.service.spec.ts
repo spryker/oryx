@@ -1,11 +1,10 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  mockAddress,
   mockCurrentAddress,
   mockNormalizedAddresses,
 } from '@spryker-oryx/user/mocks';
-import { Observable, of, Subject, switchMap } from 'rxjs';
+import { firstValueFrom, mergeMap, Observable, of, Subject } from 'rxjs';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
 import { DefaultAddressService } from './default-address.service';
@@ -15,7 +14,6 @@ class MockAddressAdapter implements Partial<AddressAdapter> {
   update = vi.fn().mockReturnValue(of(mockCurrentAddress));
   add = vi.fn().mockReturnValue(of(mockCurrentAddress));
   delete = vi.fn().mockReturnValue(of(mockCurrentAddress));
-  clear = vi.fn().mockReturnValue(of(undefined));
 }
 
 const callback = vi.fn();
@@ -91,20 +89,20 @@ describe('DefaultAddressService', () => {
         identity.get.mockReturnValue(of(mockUser));
       });
 
-      it('should get addresses for current user and be cached when called a second time', () => {
+      it('should get addresses for current user and be cached when subscribed a second time', () => {
         const trigger$ = new Subject();
 
         trigger$
-          .pipe(switchMap(() => service.getAddresses()))
+          .pipe(mergeMap(() => service.getAddresses()))
           .subscribe(callback);
         trigger$.next('');
 
-        expect(callback).toHaveBeenNthCalledWith(2, mockNormalizedAddresses);
+        expect(callback).toHaveBeenNthCalledWith(1, mockNormalizedAddresses);
 
         trigger$.next('');
 
         expect(adapter.getAll).toHaveBeenCalledTimes(1);
-        expect(callback).toHaveBeenNthCalledWith(3, mockNormalizedAddresses);
+        expect(callback).toHaveBeenNthCalledWith(2, mockNormalizedAddresses);
       });
     });
   });
@@ -156,11 +154,11 @@ describe('DefaultAddressService', () => {
       expect(service.getCurrentAddress()).toBeInstanceOf(Observable);
     });
 
-    it('should get no address for a guest user', () => {
+    it('should get no address for a guest user', async () => {
       adapter.getAll.mockReturnValue(of([]));
-      service.getCurrentAddress().subscribe(callback);
+      const result = await firstValueFrom(service.getCurrentAddress());
 
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(result).toEqual(null);
     });
 
     describe('logged in user', () => {
@@ -168,21 +166,21 @@ describe('DefaultAddressService', () => {
         identity.get.mockReturnValue(of(mockUser));
       });
 
-      it('should get addresses for current user and be cached when called a second time', () => {
+      it('should get addresses for current user and be cached when subscribed a second time', () => {
         const trigger$ = new Subject();
 
         trigger$
-          .pipe(switchMap(() => service.getCurrentAddress()))
+          .pipe(mergeMap(() => service.getCurrentAddress()))
           .subscribe(callback);
 
         trigger$.next('');
 
-        expect(callback).toHaveBeenNthCalledWith(2, mockCurrentAddress);
+        expect(callback).toHaveBeenNthCalledWith(1, mockCurrentAddress);
 
         trigger$.next('');
 
         expect(adapter.getAll).toHaveBeenCalledTimes(1);
-        expect(callback).toHaveBeenNthCalledWith(3, mockCurrentAddress);
+        expect(callback).toHaveBeenNthCalledWith(2, mockCurrentAddress);
       });
     });
   });
@@ -218,57 +216,6 @@ describe('DefaultAddressService', () => {
       expect(service.deleteAddress(mockCurrentAddress)).toBeInstanceOf(
         Observable
       );
-    });
-
-    describe('when address list contains single address', () => {
-      beforeEach(() => {
-        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
-        service.deleteAddress(mockCurrentAddress).subscribe();
-        service.getAddresses().subscribe(callback);
-      });
-
-      it('should return null', () => {
-        expect(callback).toHaveBeenCalledWith(null);
-      });
-    });
-
-    describe('when address list contains multiple addresses', () => {
-      beforeEach(() => {
-        adapter.getAll.mockReturnValue(of([mockCurrentAddress, mockAddress]));
-        service.deleteAddress(mockCurrentAddress).subscribe();
-        service.getAddresses().subscribe(callback);
-      });
-
-      it('should return a list of undeleted addresses', () => {
-        expect(callback).toHaveBeenCalledWith(
-          expect.not.arrayContaining([mockCurrentAddress])
-        );
-      });
-    });
-  });
-
-  describe('clearCurrentAddress', () => {
-    it('should return an observable', () => {
-      expect(service.clearCurrentAddress()).toBeInstanceOf(Observable);
-    });
-
-    it('should remove address', () => {
-      service.clearCurrentAddress();
-
-      expect(adapter.clear).toHaveBeenCalled();
-    });
-
-    it('getCurrentAddress should return no address', () => {
-      adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
-      service.addAddress(mockCurrentAddress).subscribe();
-      service.getCurrentAddress().subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
-
-      adapter.getAll.mockReturnValue(of([]));
-      service.clearCurrentAddress();
-
-      expect(callback).toHaveBeenCalledWith(null);
     });
   });
 });

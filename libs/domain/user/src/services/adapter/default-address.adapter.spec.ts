@@ -1,14 +1,8 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import {
-  HttpService,
-  JsonAPITransformerService,
-  StorageService,
-  StorageType,
-} from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  mockAddress,
   mockCurrentAddress,
   mockCurrentAddressResponse,
   mockGetAddressesResponse,
@@ -31,12 +25,6 @@ const mockUser = {
   token: { accessToken: 'token' },
 };
 
-class MockStorageService implements Partial<StorageService> {
-  get = vi.fn();
-  set = vi.fn();
-  remove = vi.fn().mockReturnValue(of());
-}
-
 const mockTransformer = {
   transform: vi.fn().mockReturnValue(of(null)),
   do: vi.fn().mockReturnValue(() => of(null)),
@@ -51,7 +39,6 @@ describe('DefaultAddressAdapter', () => {
   let service: AddressAdapter;
   let http: HttpTestService;
   let identity: MockIdentityService;
-  let storage: MockStorageService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -59,10 +46,6 @@ describe('DefaultAddressAdapter', () => {
         {
           provide: HttpService,
           useClass: HttpTestService,
-        },
-        {
-          provide: StorageService,
-          useClass: MockStorageService,
         },
         {
           provide: AddressAdapter,
@@ -86,9 +69,6 @@ describe('DefaultAddressAdapter', () => {
     service = testInjector.inject(AddressAdapter);
     http = testInjector.inject(HttpService) as HttpTestService;
     identity = testInjector.inject(IdentityService) as MockIdentityService;
-    storage = testInjector.inject(
-      StorageService
-    ) as unknown as MockStorageService;
   });
 
   afterEach(() => {
@@ -102,9 +82,6 @@ describe('DefaultAddressAdapter', () => {
 
   describe('getAll should send `get` request', () => {
     describe('guest user', () => {
-      beforeEach(() => {
-        storage.get.mockReturnValue(of(null));
-      });
       it('should not call the api', () => {
         service.getAll().subscribe();
 
@@ -118,30 +95,16 @@ describe('DefaultAddressAdapter', () => {
         expect(mockTransformer.transform).not.toHaveBeenCalled();
       });
 
-      it('should return empty array', () => {
-        const mockTransformerData = 'mockTransformerData';
+      it('should return empty array', async () => {
         const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
-
         service.getAll().subscribe(callback);
-
         expect(callback).toHaveBeenCalledWith([]);
-        expect(storage.get).toHaveBeenCalledWith(
-          'address',
-          StorageType.SESSION
-        );
       });
     });
 
     describe('logged in user', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-      });
-
-      it('should not call storage', () => {
-        service.getAll().subscribe();
-
-        expect(storage.get).not.toHaveBeenCalled();
       });
 
       it('should build url', () => {
@@ -186,27 +149,6 @@ describe('DefaultAddressAdapter', () => {
 
         expect(mockTransformer.transform).not.toHaveBeenCalled();
       });
-
-      it('should return the address with default billing and shipping enabled and save to storage', () => {
-        const mockTransformerData = 'mockTransformerData';
-        const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
-
-        service.add(mockAddress).subscribe(callback);
-
-        const expectedMockAddress = {
-          ...mockAddress,
-          isDefaultBilling: true,
-          isDefaultShipping: true,
-        };
-
-        expect(callback).toHaveBeenCalledWith(expectedMockAddress);
-        expect(storage.set).toHaveBeenCalledWith(
-          'address',
-          expectedMockAddress,
-          StorageType.SESSION
-        );
-      });
     });
 
     describe('logged in user', () => {
@@ -220,12 +162,6 @@ describe('DefaultAddressAdapter', () => {
           attributes: mockCurrentAddress,
         },
       };
-
-      it('should not call storage', () => {
-        service.add(mockCurrentAddress).subscribe();
-
-        expect(storage.set).not.toHaveBeenCalled();
-      });
 
       it('should build url', () => {
         service.add(mockCurrentAddress).subscribe();
@@ -278,16 +214,6 @@ describe('DefaultAddressAdapter', () => {
 
         expect(mockTransformer.transform).not.toHaveBeenCalled();
       });
-
-      it('should return the original address', () => {
-        const mockTransformerData = 'mockTransformerData';
-        const callback = vi.fn();
-        mockTransformer.transform.mockReturnValue(of(mockTransformerData));
-
-        service.update(mockCurrentAddress).subscribe(callback);
-
-        expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
-      });
     });
 
     describe('logged in user', () => {
@@ -339,19 +265,6 @@ describe('DefaultAddressAdapter', () => {
   });
 
   describe('delete', () => {
-    describe('when user is guest', () => {
-      beforeEach(() => {
-        service.delete(mockCurrentAddress).subscribe();
-      });
-
-      it('should clear the storage', () => {
-        expect(storage.remove).toHaveBeenCalledWith(
-          'address',
-          StorageType.SESSION
-        );
-      });
-    });
-
     describe('when user is authorized', () => {
       let mockHttpDelete: any;
       const callback = vi.fn();
@@ -370,10 +283,6 @@ describe('DefaultAddressAdapter', () => {
 
       it('should call the api', () => {
         expect(mockHttpDelete).toHaveBeenCalled();
-      });
-
-      it('should return deleted address', () => {
-        expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
       });
     });
   });

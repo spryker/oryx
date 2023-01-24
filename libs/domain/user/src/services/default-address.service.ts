@@ -2,26 +2,53 @@ import { IdentityService } from '@spryker-oryx/auth';
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
-  combineLatest,
-  combineLatestWith,
+  filter,
   map,
+  merge,
   Observable,
-  of,
+  shareReplay,
   skip,
+  Subject,
   Subscription,
   switchMap,
   take,
   tap,
+  using,
 } from 'rxjs';
 import { Address } from '../models';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
 
 export class DefaultAddressService implements AddressService {
-  protected addresses$ = new BehaviorSubject<Address[] | null>(null);
-  protected currentAddress$ = new BehaviorSubject<Address | null>(null);
-  protected subscription = new Subscription();
-  protected userChanged$ = new BehaviorSubject(true);
+  protected addressesState$ = new BehaviorSubject<Address[] | null>(null);
+  protected reloadAddress$ = new Subject();
+  protected resetSubscription?: Subscription;
+
+  protected addressesLoading$ = merge(
+    this.reloadAddress$,
+    this.addressesState$.pipe(filter((addresses) => addresses === null))
+  ).pipe(
+    switchMap(() => this.adapter.getAll()),
+    tap((addresses) => {
+      this.addressesState$.next(addresses?.length ? addresses : []);
+      // reset address state, when user will log in or log out
+      this.initReset();
+    })
+  );
+
+  protected addresses$ = using(
+    () => this.addressesLoading$.subscribe(),
+    () => this.addressesState$
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+  protected currentAddress$ = this.addresses$.pipe(
+    map(
+      (addresses) =>
+        addresses?.find(
+          (address) => address.isDefaultBilling || address.isDefaultShipping
+        ) ?? null
+    )
+  );
 
   constructor(
     protected adapter = inject(AddressAdapter),
@@ -29,14 +56,7 @@ export class DefaultAddressService implements AddressService {
   ) {}
 
   getCurrentAddress(): Observable<Address | null> {
-    return combineLatest([this.userChanged$, this.currentAddress$]).pipe(
-      switchMap(([userChanged, address]) => {
-        if (userChanged) {
-          return this.loadAddresses().pipe(map(() => address));
-        }
-        return of(address);
-      })
-    );
+    return this.currentAddress$;
   }
 
   getAddress(addressId: string): Observable<Address | null> {
@@ -46,101 +66,42 @@ export class DefaultAddressService implements AddressService {
   }
 
   getAddresses(): Observable<Address[] | null> {
-    return combineLatest([this.userChanged$, this.addresses$]).pipe(
-      switchMap(([userChanged, addresses]) => {
-        if (userChanged) {
-          return this.loadAddresses();
-        }
-        return of(addresses);
-      })
-    );
+    return this.addresses$;
   }
 
   addAddress(data: Address): Observable<unknown> {
     return this.adapter
       .add(data)
-      .pipe(switchMap((address) => this.saveAddress(address)));
+      .pipe(tap(() => this.reloadAddress$.next(true)));
   }
 
   updateAddress(data: Address): Observable<unknown> {
     return this.adapter
       .update(data)
-      .pipe(switchMap((address) => this.saveAddress(address)));
+      .pipe(tap(() => this.reloadAddress$.next(true)));
   }
 
-  deleteAddress(data: Address): Observable<Address> {
-    return this.adapter.delete(data).pipe(
-      combineLatestWith(this.addresses$),
-      take(1),
-      switchMap(([address, addresses]) => {
-        const filteredAddresses = addresses?.filter(
-          ({ id }) => id !== address.id
-        );
-        this.addresses$.next(
-          filteredAddresses?.length ? filteredAddresses : null
-        );
-
-        return of(address);
-      })
-    );
+  deleteAddress(data: Address): Observable<unknown> {
+    return this.adapter
+      .delete(data)
+      .pipe(tap(() => this.reloadAddress$.next(true)));
   }
 
-  clearCurrentAddress(): Observable<void> {
-    this.adapter.clear();
-    this.currentAddress$.next(null);
-    return of(undefined);
-  }
-
-  onDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  protected initSubscriptions(): void {
-    // TODO - authService.isAuthenticated() still has race condition weirdness
-    // using identity.get() for now
-    this.userChanged$.next(false);
-    const loadAddressesSubs = this.identity
+  protected initReset(): void {
+    this.resetSubscription = this.identity
       .get()
       .pipe(
         skip(1),
-        switchMap(() => {
-          this.clearCurrentAddress();
-          return of(null);
-        }),
         take(1),
         tap(() => {
-          this.userChanged$.next(true);
+          this.addressesState$.next(null);
+          this.resetSubscription = undefined;
         })
       )
       .subscribe();
-    this.subscription.add(loadAddressesSubs);
   }
 
-  protected loadAddresses(): Observable<Address[]> {
-    this.initSubscriptions();
-    return this.adapter.getAll().pipe(
-      switchMap((addresses) => {
-        this.addresses$.next(addresses);
-        if (!addresses || !addresses.length) {
-          return of([]);
-        }
-
-        for (let i = 0; i < addresses.length; i++) {
-          const address = addresses[i];
-          if (address.isDefaultBilling || address.isDefaultShipping) {
-            this.currentAddress$.next(address);
-            break;
-          }
-        }
-        return of(addresses);
-      })
-    );
-  }
-
-  protected saveAddress(address: Address): Observable<void> {
-    if (address.isDefaultBilling || address.isDefaultShipping) {
-      this.currentAddress$.next(address);
-    }
-    return of(undefined);
+  onDestroy(): void {
+    this.resetSubscription?.unsubscribe();
   }
 }

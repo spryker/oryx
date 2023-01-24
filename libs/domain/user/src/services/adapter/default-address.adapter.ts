@@ -1,25 +1,17 @@
 import { Identity, IdentityService } from '@spryker-oryx/auth';
-import {
-  HttpService,
-  JsonAPITransformerService,
-  StorageService,
-  StorageType,
-} from '@spryker-oryx/core';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 import { Address } from '../../models';
 import { AddressAdapter, AddressRequestProps } from './address.adapter';
 import { AddressesNormalizer, AddressNormalizer } from './normalizers';
 import { AddressSerializer } from './serializers';
 
 export class DefaultAddressAdapter implements AddressAdapter {
-  protected CURRENT_ADDRESS = 'address';
-
   constructor(
     protected identityService = inject(IdentityService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
     protected transformer = inject(JsonAPITransformerService),
-    protected storage = inject(StorageService),
     protected httpService = inject(HttpService)
   ) {}
 
@@ -28,16 +20,7 @@ export class DefaultAddressAdapter implements AddressAdapter {
       take(1),
       switchMap((identity: Identity) => {
         if (identity.anonymous) {
-          return this.storage
-            .get<Address | null>(this.CURRENT_ADDRESS, StorageType.SESSION)
-            .pipe(
-              map((address) => {
-                if (address) {
-                  return [address];
-                }
-                return [];
-              })
-            );
+          return of([]);
         }
 
         return this.httpService
@@ -59,21 +42,15 @@ export class DefaultAddressAdapter implements AddressAdapter {
     );
   }
 
-  delete(data: Address): Observable<Address> {
+  delete(data: Address): Observable<unknown> {
     return this.identityService.get().pipe(
       take(1),
       switchMap((identity: Identity) =>
-        (identity.anonymous
-          ? this.storage.remove(this.CURRENT_ADDRESS, StorageType.SESSION)
+        identity.anonymous
+          ? of(false)
           : this.httpService.delete(this.generateUrl(identity.id, data.id))
-        ).pipe(switchMap(() => of(data)))
       )
     );
-  }
-
-  clear(): Observable<void> {
-    this.storage.remove(this.CURRENT_ADDRESS, StorageType.SESSION);
-    return of(undefined);
   }
 
   protected modify(
@@ -83,13 +60,6 @@ export class DefaultAddressAdapter implements AddressAdapter {
     return this.identityService.get().pipe(
       take(1),
       switchMap((identity: Identity) => {
-        if (identity.anonymous) {
-          data.isDefaultBilling = true;
-          data.isDefaultShipping = true;
-          this.storage.set(this.CURRENT_ADDRESS, data, StorageType.SESSION);
-          return of(data);
-        }
-
         return this.transformer.serialize(data, AddressSerializer).pipe(
           switchMap((serializedData) => {
             return request({ payload: serializedData, identity }).pipe(
