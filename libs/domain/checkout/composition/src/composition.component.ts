@@ -20,8 +20,6 @@ import { compositionStyles } from './composition.styles';
 export class CheckoutCompositionComponent extends ComponentMixin<CheckoutCompositionOptions>() {
   static styles = compositionStyles;
 
-  protected checkoutDataService = resolve(CheckoutDataService);
-
   protected orchestrationService = resolve(CheckoutOrchestrationService);
 
   protected options$ = new ContentController(this).getOptions();
@@ -32,7 +30,7 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   protected hasAddresses$ = resolve(AddressService)
     .getAddresses()
     .pipe(map((addresses) => !!addresses?.length));
-  protected isGuestCheckout$ = this.checkoutDataService.isGuestCheckout();
+  protected isGuestCheckout$ = resolve(CheckoutDataService).isGuestCheckout();
 
   protected steps$ = this.orchestrationService.getValidity();
 
@@ -41,53 +39,43 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     this.isAuthenticated$,
     this.isGuestCheckout$,
     this.hasAddresses$,
+    this.steps$,
     this.options$,
   ]);
 
   protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(
-        this.checkout$,
-        ([
-          isEmptyCart,
-          isAuthenticated,
-          isGuestCheckout,
-          hasAddresses,
-          options,
-        ]) => {
-          if (isEmptyCart) {
-            return html``;
-          }
-
-          return html`
-            <checkout-auth .options=${{ disableGuest: options.disableGuest }}>
-            </checkout-auth>
-            ${when(
-              isAuthenticated || isGuestCheckout,
-              () =>
-                html`${asyncValue(
-                  this.steps$,
-                  (steps) => html`
-                    ${steps.map(({ id, validity }, index) => {
-                      return html`
-                        ${this.renderStep(
-                          id,
-                          this.renderHeading(
-                            index,
-                            id,
-                            isAuthenticated,
-                            hasAddresses
-                          )
-                        )}
-                      `;
-                    })}
-                  `
-                )}`
-            )}
-          `;
+    return html` ${asyncValue(
+      this.checkout$,
+      ([
+        isEmptyCart,
+        isAuthenticated,
+        isGuestCheckout,
+        hasAddresses,
+        steps,
+        options,
+      ]) => {
+        if (isEmptyCart) {
+          return html``;
         }
-      )}
-    `;
+
+        return html`
+          <checkout-auth .options=${{ disableGuest: options.disableGuest }}>
+          </checkout-auth>
+          ${when(
+            isAuthenticated || isGuestCheckout,
+            () =>
+              html`
+                ${steps.map(({ id, validity }, index) => {
+                  return html`${this.renderStep(
+                    id,
+                    this.renderHeading(index, id, isAuthenticated, hasAddresses)
+                  )}`;
+                })}
+              `
+          )}
+        `;
+      }
+    )}`;
   }
 
   protected renderStep(
