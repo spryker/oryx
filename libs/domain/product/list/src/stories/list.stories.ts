@@ -9,6 +9,9 @@ import {
 
 export default {
   title: `${storybookPrefix}/Product List`,
+  parameters: {
+    chromatic: { delay: 300 },
+  },
 } as unknown as Meta;
 
 const Template: Story<ProductListQualifier> = (

@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './card.def';
+import { ProductCardComponentOptions } from './card.model';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('1')),
@@ -31,19 +32,15 @@ describe('ProductCardComponent', () => {
       providers: [...mockProductProviders, ...siteProviders],
     });
 
-    element = await fixture(html`<product-card uid="1"></product-card>`);
+    element = await fixture(
+      html`<product-card sku="1" uid="1"></product-card>`
+    );
   });
 
   afterEach(() => {
     destroyInjector();
     vi.clearAllMocks();
   });
-
-  const dispatchLinkEvent = (eventType: string): void => {
-    element.shadowRoot
-      ?.querySelector('content-link')
-      ?.dispatchEvent(new Event(eventType));
-  };
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
@@ -101,43 +98,10 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('title truncation', () => {
-    it('should not set --line-clamp when option is not provided', () => {
-      expect(element.style.getPropertyValue('--line-clamp')).toBe('');
-    });
-
-    describe('when option is provided', () => {
-      const truncateTitleAfter = 3;
-      beforeEach(async () => {
-        element = await fixture(html`
-          <product-card
-            uid="1"
-            .options=${{ truncateTitleAfter }}
-          ></product-card>
-        `);
-      });
-
-      it('should set the --line-clamp css property', async () => {
-        expect(
-          Number(
-            element.style.getPropertyValue(
-              '--oryx-product-card-title-line-clamp'
-            )
-          )
-        ).toBe(truncateTitleAfter);
-      });
-    });
-  });
-
-  describe('when "hideTitle" option is provided', () => {
+  describe('when enableTitle = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
-          uid="1"
-          .options=${{
-            hideTitle: true,
-          }}
-        ></product-card>
+        <product-card uid="1" .options=${{ enableTitle: false }}></product-card>
       `);
     });
 
@@ -146,15 +110,57 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('when "hidePrice" option is provided', () => {
+  // TODO: find the reason why `element.style.getPropertyValue` is not available
+  describe('title truncation', () => {
+    it('should set default (1) --oryx-product-title-max-lines when option is not provided', () => {
+      expect(
+        Number(
+          (element.style as Record<string, any>)[
+            '--oryx-product-title-max-lines'
+          ]
+        )
+      ).toBe(1);
+    });
+
+    describe('when option is provided', () => {
+      const titleLineClamp = 3;
+      beforeEach(async () => {
+        element = await fixture(html`
+          <product-card
+            sku="1"
+            .options=${{ titleLineClamp } as ProductCardComponentOptions}
+          ></product-card>
+        `);
+      });
+
+      it('should set the --oryx-product-title-max-lines css property', async () => {
+        expect(
+          Number(
+            (element.style as Record<string, any>)[
+              '--oryx-product-title-max-lines'
+            ]
+          )
+        ).toBe(titleLineClamp);
+      });
+    });
+  });
+
+  describe('when enableMedia = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
-          uid="1"
-          .options=${{
-            hidePrice: true,
-          }}
-        ></product-card>
+        <product-card uid="1" .options=${{ enableMedia: false }}></product-card>
+      `);
+    });
+
+    it('should not render the product media', () => {
+      expect(element).not.toContainElement('product-media');
+    });
+  });
+
+  describe('when enablePrice = false', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <product-card uid="1" .options=${{ enablePrice: false }}></product-card>
       `);
     });
 
@@ -163,14 +169,12 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('when "hideRating" option is provided', () => {
+  describe('when enableRating = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <product-card
           uid="1"
-          .options=${{
-            hideRating: true,
-          }}
+          .options=${{ enableRating: false }}
         ></product-card>
       `);
     });
@@ -180,14 +184,12 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('when "hideLabels" option is provided', () => {
+  describe('when enableLabels = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <product-card
           uid="1"
-          .options=${{
-            hideLabels: true,
-          }}
+          .options=${{ enableLabels: false }}
         ></product-card>
       `);
     });
@@ -197,94 +199,33 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  describe('when "hideFavorites" option is provided', () => {
+  describe('when enableWishlist = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <product-card
           uid="1"
-          .options=${{
-            hideFavorites: true,
-          }}
+          .options=${{ enableWishlist: false }}
         ></product-card>
       `);
     });
 
-    it('should not render the favorites button', () => {
+    it('should not render the wishlist button', () => {
       expect(element).not.toContainElement('oryx-icon-button');
     });
   });
 
-  describe('click handling', () => {
-    let clickEvent: MouseEvent;
-    let handler: HTMLElement | null | undefined;
-
-    beforeEach(() => {
-      clickEvent = new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-      });
+  describe('when enableAddToCart = false', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <product-card
+          uid="1"
+          .options=${{ enableAddToCart: false }}
+        ></product-card>
+      `);
     });
 
-    describe('when click on the form', () => {
-      beforeEach(async () => {
-        element = await fixture(html` <product-card uid="1"></product-card> `);
-
-        handler = element.shadowRoot?.querySelector('oryx-cart-add');
-      });
-
-      it('should prevent the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'preventDefault');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).toHaveBeenCalled();
-      });
-
-      it('should stop the propagation of the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'stopPropagation');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).toHaveBeenCalled();
-      });
-    });
-
-    describe('when click on other focusable element', () => {
-      beforeEach(async () => {
-        element = await fixture(html` <product-card uid="1"></product-card> `);
-
-        handler = element.shadowRoot?.querySelector(
-          'oryx-icon-button > button'
-        );
-      });
-
-      it('should prevent the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'preventDefault');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).toHaveBeenCalled();
-      });
-
-      it('should stop the propagation of the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'stopPropagation');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).toHaveBeenCalled();
-      });
-    });
-
-    describe('when click on non-focusable content', () => {
-      beforeEach(async () => {
-        element = await fixture(html` <product-card uid="1"></product-card> `);
-
-        handler = element.shadowRoot?.querySelector('product-title');
-      });
-
-      it('should not prevent the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'preventDefault');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).not.toHaveBeenCalled();
-      });
-
-      it('should not stop the propagation of the event', () => {
-        const expectation = vi.spyOn(clickEvent, 'stopPropagation');
-        handler?.dispatchEvent(clickEvent);
-        expect(expectation).not.toHaveBeenCalled();
-      });
+    it('should not render the cart-add element', () => {
+      expect(element).not.toContainElement('oryx-cart-add');
     });
   });
 

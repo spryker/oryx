@@ -1,5 +1,5 @@
-import { ContextController, prehydrate } from '@spryker-oryx/core';
-import { ContentController } from '@spryker-oryx/experience';
+import { ContextController } from '@spryker-oryx/core';
+import { ContentController, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductComponentMixin,
   ProductContext,
@@ -11,55 +11,33 @@ import {
   asyncValue,
   hydratable,
   ObserveController,
+  ssrShim,
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { combineLatest, filter, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
-import { preventPropagatingFix } from './prehydrate';
 
+@defaultOptions({
+  enableTitle: true,
+  titleLineClamp: 1,
+  enableMedia: true,
+  enablePrice: true,
+  enableWishlist: true,
+  enableLabels: true,
+  enableRating: true,
+  enableAddToCart: true,
+})
+@ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
 export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
   static styles = ProductCardStyles;
 
-  @property({ type: Boolean, reflect: true, attribute: 'hide-title' })
-  protected hideTitle = false;
-  @property({ type: Boolean, reflect: true, attribute: 'hide-price' })
-  protected hidePrice = false;
-  @property({ type: Boolean, reflect: true, attribute: 'hide-rating' })
-  protected hideRating = false;
-
   protected observe = new ObserveController<ProductCardComponent>(this);
   protected context = new ContextController(this);
-  protected options$ = new ContentController(this).getOptions().pipe(
-    tap((options) => {
-      // We have an issue during ssr that don't allow us
-      // to use methods of the class
-      // ie this.toggleAttribute('hide-title', !!options.hideTitle);
-      // Issue happens because component is not defined when code is called
-
-      // this solution uses lit-properties and should be replaced by more
-      // convenient in the future
-      this.hideTitle = !!options.hideTitle;
-      this.hidePrice = !!options.hidePrice;
-      this.hideRating = !!options.hideRating;
-    })
-  );
   protected product$ = new ProductController(this).getProduct();
-
-  protected card$ = combineLatest([this.product$, this.options$]).pipe(
-    tap(([product, options]) => {
-      if (options && 'truncateTitleAfter' in options) {
-        this.style?.setProperty(
-          '--oryx-product-card-title-line-clamp',
-          String(options.truncateTitleAfter)
-        );
-      }
-    })
-  );
+  protected options$ = new ContentController(this).getOptions();
 
   @subscribe()
   protected sku$ = combineLatest([
@@ -68,91 +46,125 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     this.observe.get('sku'),
   ]).pipe(
     filter(([options, propSku]) => Boolean(options.sku ?? propSku)),
-    tap(([options, propSku]) =>
-      this.context.provide(ProductContext.SKU, options.sku ?? propSku)
-    )
+    tap(([options, propSku]) => {
+      this.context.provide(ProductContext.SKU, options.sku ?? propSku);
+      if (options.titleLineClamp) {
+        this.toggleAttribute('has-line-clamp', true);
+        this.style.setProperty(
+          '--oryx-product-title-max-lines',
+          options.titleLineClamp.toString()
+        );
+      }
+    })
   );
 
-  protected preventPropagating(e: MouseEvent): void {
-    e.preventDefault();
-    e.stopPropagation();
+  protected override render(): TemplateResult {
+    return html`${asyncValue(this.product$, (product) => {
+      if (!product) return html``;
+
+      return html`
+        <content-link
+          .options="${{
+            type: SemanticLinkType.Product,
+            id: product.sku,
+            multiLine: true,
+            label: product.name,
+          }}"
+        >
+          ${asyncValue(
+            this.options$,
+            (options) => html`
+              ${this.renderLabels(options)} ${this.renderWishlist(options)}
+              ${this.renderMedia(options)}
+              <div class="popover">${this.renderTitle(options)}</div>
+              ${this.renderRating(options)} ${this.renderPrice(options)}
+              ${this.renderAddToCart(options)}
+            `
+          )}
+        </content-link>
+      `;
+    })}`;
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.card$, ([product, options]) =>
-      product
-        ? html`
-            <content-link
-              .options="${{
-                type: SemanticLinkType.Product,
-                id: product.sku,
-              }}"
-            >
-              <div>
-                ${when(
-                  !options?.hideLabels,
-                  () => html`<product-labels></product-labels>`
-                )}
-                ${when(
-                  !options?.hideFavorites,
-                  () => html`
-                    <oryx-icon-button>
-                      <button
-                        tabindex="-1"
-                        aria-label="add-to-favorites"
-                        @click=${this.preventPropagating}
-                      >
-                        <oryx-icon type="wishlist"></oryx-icon>
-                      </button>
-                    </oryx-icon-button>
-                  `
-                )}
+  protected renderLabels(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableLabels) return;
 
-                <product-media
-                  .options=${{
-                    containerSize: ProductMediaContainerSize.Thumbnail,
-                  }}
-                ></product-media>
-              </div>
+    return html`<product-labels></product-labels>`;
+  }
 
-              <section>
-                ${when(
-                  !options?.hideTitle,
-                  () => html`
-                    <product-title
-                      .options="${{ link: false }}"
-                    ></product-title>
-                  `
-                )}
+  protected renderMedia(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableMedia) return;
 
-                <div>
-                  ${when(
-                    !options?.hidePrice,
-                    () => html`<product-price></product-price>`
-                  )}
-                  ${when(
-                    !options?.hideRating,
-                    () => html`
-                      <product-average-rating
-                        .options=${{ size: 'small' }}
-                      ></product-average-rating>
-                    `
-                  )}
+    return html`
+      <product-media
+        .options=${{
+          containerSize: ProductMediaContainerSize.Thumbnail,
+        }}
+      ></product-media>
+    `;
+  }
 
-                  <oryx-cart-add
-                    tabindex="-1"
-                    .options="${{
-                      outlined: true,
-                      hideQuantityInput: true,
-                    }}"
-                    @click=${this.preventPropagating}
-                  ></oryx-cart-add>
-                </div>
-              </section>
-            </content-link>
-            ${prehydrate(preventPropagatingFix, 'product-card')}
-          `
-        : html``
-    )}`;
+  protected renderWishlist(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableWishlist) return;
+
+    // TODO: move to wishlist component
+    return html`<div class="actions">
+      <oryx-icon-button>
+        <button
+          tabindex="-1"
+          aria-label="add-to-favorites"
+          @click=${(e: Event) => e.preventDefault()}
+        >
+          <oryx-icon type="wishlist"></oryx-icon>
+        </button>
+      </oryx-icon-button>
+    </div>`;
+  }
+
+  protected renderTitle(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableTitle) return;
+
+    return html`<product-title
+      .options="${{ tag: 'h3', link: false }}"
+    ></product-title>`;
+  }
+
+  protected renderRating(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableRating) return;
+
+    return html`<product-average-rating
+      .options=${{ size: 'small' }}
+    ></product-average-rating>`;
+  }
+
+  protected renderPrice(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enablePrice) return;
+
+    return html`<product-price></product-price>`;
+  }
+
+  protected renderAddToCart(
+    options: ProductCardComponentOptions
+  ): TemplateResult | void {
+    if (!options.enableAddToCart) return;
+    return html`<oryx-cart-add
+      tabindex="-1"
+      .options="${{
+        outlined: true,
+        hideQuantityInput: true,
+      }}"
+    ></oryx-cart-add>`;
   }
 }

@@ -1,25 +1,31 @@
 export interface ProductCardComponentOptions {
+  /** The product SKU is used to resolve the product. */
   sku?: string;
 
-  /**
-   * Indicates maximum amount of lines after truncation of title
-   *
-   * @default 1;
-   */
-  truncateTitleAfter?: number;
-
   /** Indicates whether the product title should be rendered  */
-  hideTitle?: boolean;
+  enableTitle?: boolean;
+
+  /**
+   * Indicates maximum amount of lines instantly visible. If there are more lines
+   * available, they'll be  truncated.
+   */
+  titleLineClamp?: number;
+
+  /** Indicates whether the product media (image) should be rendered  */
+  enableMedia?: boolean;
 
   /** Indicates whether the product price should be rendered  */
-  hidePrice?: boolean;
+  enablePrice?: boolean;
 
   /** Indicates whether the product rating should be rendered  */
-  hideRating?: boolean;
+  enableRating?: boolean;
 
   /** Indicates whether the product labels should be rendered  */
-  hideLabels?: boolean;
+  enableLabels?: boolean;
 
   /** Indicates whether the add to favorites button should be rendered  */
-  hideFavorites?: boolean;
+  enableWishlist?: boolean;
+
+  /** Indicates whether the add to cart should be rendered  */
+  enableAddToCart?: boolean;
 }

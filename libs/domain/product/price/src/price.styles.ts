@@ -4,23 +4,16 @@ export const ProductPriceStyles = css`
   :host {
     display: flex;
     gap: 10px;
-    align-items: baseline;
     color: var(--oryx-color-highlight-300);
+    font-size: 1.286em;
+    font-weight: 700;
+    line-height: 1.444em;
   }
 
   [part='original'] {
-    position: relative;
+    font-size: 0.666em;
+    font-weight: 500;
+    text-decoration: line-through;
     color: var(--oryx-color-neutral-400);
-    font-size: 0.8em;
-  }
-
-  [part='original']::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    margin-inline-start: -5%;
-    width: 110%;
-    border-top: 1.5px solid var(--oryx-color-highlight-300);
-    transform: rotate(-10deg);
   }
 `;

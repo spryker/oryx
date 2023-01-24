@@ -100,12 +100,9 @@ export const baseStyles = css`
   .product {
     position: relative;
     display: block;
-    padding-block: 5px;
     padding-inline: 65px 5px;
     text-decoration: none;
-    min-height: 60px;
     box-sizing: border-box;
-    margin-bottom: 5px;
   }
 
   product-media {

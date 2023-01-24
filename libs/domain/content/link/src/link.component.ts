@@ -6,8 +6,11 @@ import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { ContentLinkOptions, LinkType } from './link.model';
+import { styles } from './link.styles';
 
 export class ContentLinkComponent extends ComponentMixin<ContentLinkOptions>() {
+  static styles = styles;
+
   protected contentController = new ContentController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
   protected options$ = this.contentController.getOptions();
@@ -68,7 +71,6 @@ export class ContentLinkComponent extends ComponentMixin<ContentLinkOptions>() {
       }
 
       return html`<oryx-link
-        part="wrapper"
         icon="${ifDefined(options.icon?.trim())}"
         ?disabled=${options?.disabled}
         ?multiLine=${options.multiLine}

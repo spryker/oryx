@@ -173,6 +173,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
   }
 
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
+    e.preventDefault();
     this.triggerEntry$.next(
       (e as CustomEvent).detail?.quantity ??
         this.quantityInputRef.value?.value ??

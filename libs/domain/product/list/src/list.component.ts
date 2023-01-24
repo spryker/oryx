@@ -41,12 +41,6 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
     map((list) => list?.products ?? [])
   );
 
-  protected renderProducts(products: Product[]): TemplateResult {
-    return html`${products.map(
-      (p) => html`<product-card .sku=${p.sku}></product-card>`
-    )}`;
-  }
-
   protected hasOptions(options: ProductListQualifier): boolean {
     return Object.keys(options).some(
       (k) => !!options[k as keyof ProductListQualifier]
@@ -65,5 +59,11 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
       : html` ${asyncValue(this.products$, (products) =>
           this.renderProducts(products)
         )}`;
+  }
+
+  protected renderProducts(products: Product[]): TemplateResult {
+    return html`${products.map(
+      (p) => html`<product-card .sku=${p.sku}></product-card>`
+    )}`;
   }
 }

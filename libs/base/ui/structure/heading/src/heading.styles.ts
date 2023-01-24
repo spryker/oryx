@@ -6,15 +6,7 @@ const unsafe = (value: string): CSSResult => unsafeCSS(value);
 /**
  * Generates the CSS selectors and rules for the given tag to plain heading selectors
  * as well as mimic headings with an appearance. The style rules depend on CSS variables
- * for the size, weight and line-height. To have a more efficient setup, we use internal
- * css variables to accommodate styles in the various headings:
- *
- * ```css
- * h1 {
- *   --_fs: var(--oryx-typography-h1-size, 2rem);
- *   --_lh: var(--oryx-typography-h1-line, 1.2em);
- *   --_fw: var(--oryx-typography-h1-weight, 500);
- * }
+ * for the size, weight and line-height.
  * ```
  */
 const headingStyle = (
@@ -30,11 +22,12 @@ const headingStyle = (
       :host(:not(:is([appearance], [md-appearance])))
       ::slotted(${selector}),
     :host([appearance='${selector}']) {
-      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
-      line-height: var(
+      --_line-height: var(
         --oryx-typography-${selector}-line,
         ${unsafe(lineHeight)}
       );
+
+      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
       font-weight: var(--oryx-typography-${selector}-weight, ${weight});
     }
   `;
@@ -50,11 +43,12 @@ const headingStyleForMedium = (
   return css`
     ${headingStyle(tag, size, lineHeight, weight)}
     :host([md-appearance='${selector}']) {
-      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
-      line-height: var(
+      --_line-height: var(
         --oryx-typography-${selector}-line,
         ${unsafe(lineHeight)}
       );
+
+      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
       font-weight: var(--oryx-typography-${selector}-weight, ${weight});
     }
   `;
@@ -64,7 +58,7 @@ const headingStyleForMedium = (
  * Font size, weight and line can be configured by CSS variables in a theme. The variables are
  * not set by default.
  *
- * The variables are used in _internal_ variables ( `--_fs`, `--_fw` and `--_lh`), which are not
+ * The variables are used in _internal_ variables (  `--_fw` and `--_line-height`), which are not
  * meant as a public API.
  */
 export const headlineStyles = css`
@@ -72,7 +66,9 @@ export const headlineStyles = css`
   :not(slot, style),
   ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
     margin-block: 0;
-    max-height: calc(var(--_lh) * var(--max-lines));
+    line-height: var(--_line-height);
+    max-height: calc(var(--_line-height) * var(--max-lines));
+    transition: max-height 2s;
     /* stylelint-disable-next-line */
     display: -webkit-box;
     overflow: hidden;

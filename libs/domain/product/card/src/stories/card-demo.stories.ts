@@ -6,6 +6,36 @@ import { ProductCardComponentOptions } from '../card.model';
 
 export default {
   title: `${storybookPrefix}/Card`,
+  args: {
+    sku: MockProductService.mockProducts[0].sku,
+  },
+  argTypes: {
+    sku: {
+      control: { type: 'select' },
+      options: [
+        ...MockProductService.mockProducts.map((p) => p.sku),
+        'not-found',
+      ],
+    },
+    enableTitle: {
+      control: { type: 'boolean' },
+    },
+    titleLineClamp: {
+      control: { type: 'number' },
+    },
+    enablePrice: {
+      control: { type: 'boolean' },
+    },
+    enableRating: {
+      control: { type: 'boolean' },
+    },
+    enableLabels: {
+      control: { type: 'boolean' },
+    },
+    enableWishlist: {
+      control: { type: 'boolean' },
+    },
+  },
 } as unknown as Meta;
 
 const Template: Story<ProductCardComponentOptions> = ({
@@ -24,27 +54,3 @@ const Template: Story<ProductCardComponentOptions> = ({
 };
 
 export const CardDemo = Template.bind({});
-
-CardDemo.args = {
-  sku: MockProductService.mockProducts[0].sku,
-  truncateTitleAfter: 1,
-  hideTitle: false,
-  hidePrice: false,
-  hideRating: false,
-  hideLabels: false,
-  hideFavorites: false,
-};
-
-CardDemo.parameters = {
-  chromatic: { disableSnapshot: true },
-};
-
-CardDemo.argTypes = {
-  sku: {
-    control: { type: 'select' },
-    options: [
-      ...MockProductService.mockProducts.map((p) => p.sku),
-      'not-found',
-    ],
-  },
-};
