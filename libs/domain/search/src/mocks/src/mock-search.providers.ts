@@ -8,8 +8,10 @@ import {
   SuggestionService,
 } from '@spryker-oryx/search';
 import { FacetColorsMapping } from '@spryker-oryx/search/facet-color';
+import { SortingService } from '../../services/sorting.service';
 import { mockFacetColors } from './mock-facet-colors';
 import { MockProductListPageService } from './mock-pagiation.service';
+import { MockSortingService } from './sort/mock-sorting.service';
 import { MockSuggestionService } from './suggestion/mock-suggestion.service';
 
 export const mockSearchProviders: Provider[] = [
@@ -20,6 +22,10 @@ export const mockSearchProviders: Provider[] = [
   {
     provide: SuggestionService,
     useClass: MockSuggestionService,
+  },
+  {
+    provide: SortingService,
+    useClass: MockSortingService,
   },
   {
     provide: FacetListService,
