@@ -10,7 +10,7 @@ export interface SuggestionService {
   ): Observable<NullableGeneric<HttpErrorResponse>>;
 }
 
-export const SuggestionService = 'FES.SuggestionService';
+export const SuggestionService = 'oryx.SuggestionService';
 
 declare global {
   interface InjectionTokensContractMap {

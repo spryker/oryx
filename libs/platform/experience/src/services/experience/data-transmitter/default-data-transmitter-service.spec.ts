@@ -6,13 +6,9 @@ import {
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
+import { DataIds, MessageType } from './data-transmitter.model';
 import { DataTransmitterService } from './data-transmitter.service';
-import {
-  DataIds,
-  DefaultDataTransmitterService,
-  REQUEST_GRAPHICS_MESSAGE_TYPE,
-  REQUEST_OPTIONS_MESSAGE_TYPE,
-} from './default-data-transmitter.service';
+import { DefaultDataTransmitterService } from './default-data-transmitter.service';
 
 class MockApp implements Partial<App> {
   findPlugin = vi.fn();
@@ -50,7 +46,7 @@ describe('DataTransmitterService', () => {
   });
 
   describe('initialize', () => {
-    it('should send `REQUEST_RESOURCES_MESSAGE_TYPE` post message', async () =>
+    it('should send `MessageType.RequestGraphics` post message', async () =>
       await new Promise<void>((done) => {
         const mockResources = {
           graphics: {
@@ -66,7 +62,7 @@ describe('DataTransmitterService', () => {
         getInjector().inject(DataTransmitterService).initialize().subscribe();
         window?.addEventListener('message', (e: MessageEvent) => {
           if (
-            e.data.type === REQUEST_GRAPHICS_MESSAGE_TYPE &&
+            e.data.type === MessageType.RequestGraphics &&
             e.data[DataIds.Graphics].length
           ) {
             expect(e.data[DataIds.Graphics]).toEqual(
@@ -78,7 +74,7 @@ describe('DataTransmitterService', () => {
         expect(app.findPlugin).toHaveBeenCalledWith(ResourcePlugin);
       }));
 
-    it('should send `REQUEST_OPTIONS_MESSAGE_TYPE` post message', async () =>
+    it('should send `MessageType.RequestOptions` post message', async () =>
       await new Promise<void>((done) => {
         const mockOptions = {
           global: {
@@ -95,7 +91,7 @@ describe('DataTransmitterService', () => {
         getInjector().inject(DataTransmitterService).initialize().subscribe();
         window?.addEventListener('message', (e: MessageEvent) => {
           if (
-            e.data.type === REQUEST_OPTIONS_MESSAGE_TYPE &&
+            e.data.type === MessageType.RequestOptions &&
             e.data[DataIds.Options]
           ) {
             expect(e.data[DataIds.Options]).toEqual(mockOptions);

@@ -16,7 +16,7 @@ import {
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { combineLatest, filter, tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 import { preventPropagatingFix } from './prehydrate';
@@ -67,7 +67,6 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     // TODO: investigate issue observe decorator with mixin
     this.observe.get('sku'),
   ]).pipe(
-    filter(([options, propSku]) => Boolean(options.sku ?? propSku)),
     tap(([options, propSku]) =>
       this.context.provide(ProductContext.SKU, options.sku ?? propSku)
     )

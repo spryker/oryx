@@ -5,7 +5,7 @@ import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ContentBackendUrl } from '../experience-tokens';
 import { RouterEventType, RouterService } from '../router';
-import { DataTransmitterService } from './data-transmitter.service';
+import { DataTransmitterService } from './data-transmitter/data-transmitter.service';
 import { ExperienceService } from './experience.service';
 import {
   POST_MESSAGE_TYPE,
