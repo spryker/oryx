@@ -7,7 +7,9 @@ export const queryAssignedElements = (
 ): Element[] => {
   const { selector, slot } = options;
   const slotSelector = `slot${slot ? `[name=${slot}]` : ':not([name])'}`;
-  const slotEl = host.renderRoot?.querySelector<HTMLSlotElement>(slotSelector);
+  const slotEl = (
+    host.renderRoot ?? host.shadowRoot
+  )?.querySelector<HTMLSlotElement>(slotSelector);
   const elements = slotEl?.assignedElements(options);
   if (selector && elements) {
     return elements.filter((node) => node.matches(selector));
