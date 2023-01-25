@@ -4,6 +4,7 @@ import { ContentController } from '@spryker-oryx/experience';
 import { ProductService } from '@spryker-oryx/product';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
+import { repeat } from 'lit-html/directives/repeat.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
@@ -100,7 +101,9 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
   protected renderEntries(entriesData: EntriesData): TemplateResult {
     const { entries, loading, currentlyUpdated, options } = entriesData;
 
-    return html`${entries.map(
+    return html` ${repeat(
+      entries,
+      (entry) => entry.groupKey,
       (entry) => html`
         <cart-entry
           ?inert=${loading}
