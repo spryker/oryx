@@ -120,7 +120,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     this.experiencePreviewEvent$.pipe(
       map((data) => data.data.route),
       filter(isDefined),
-      tap((route) => this.routerService.go(route))
+      tap((route) => this.routerService.navigate(route))
     );
 
   protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(

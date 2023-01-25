@@ -42,16 +42,12 @@ describe('Concrete Products Normalizer', () => {
           mockAbstracts[1].concreteProducts![0],
           ProductNormalizer
         );
-        expect(mockTransformer.transform).toHaveBeenCalledWith(
+        expect(mockTransformer.transform).not.toHaveBeenCalledWith(
           mockAbstracts[1].concreteProducts![1],
           ProductNormalizer
         );
 
-        expect(normalized).toEqual([
-          mockTransformed,
-          mockTransformed,
-          mockTransformed,
-        ]);
+        expect(normalized).toEqual([mockTransformed, mockTransformed]);
       });
   });
 });

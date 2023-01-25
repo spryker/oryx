@@ -14,7 +14,7 @@ import {
 } from './preview-experience.service';
 
 class MockRouterService implements Partial<RouterService> {
-  go = vi.fn().mockReturnValue({});
+  navigate = vi.fn();
   getEvents = vi.fn().mockReturnValue(NEVER);
 }
 
