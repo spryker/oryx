@@ -1,12 +1,21 @@
-# Interceptors
+# HTTP Interceptors
 
-Often behavior for receiving or sending HTTP requests is needed for enhancing. Interceptors allows to intercept incoming (or outgoing) HTTP requests using the `HttpService`.
+HTTP interceptors let you capture or change every request or response performed by the app. They are used when there is a need to modify HTTP calls globally, for example when performing authorization, error handling, or metrics collection.
 
-HTTP interceptors will always be in the middle of any single HTTP request. These services will intercept all requests performed by the app, allowing to perform many operations on them before they are sent to the server. Functions include adding a custom HTTP header to the final outgoing request (e.g. adding an authorization header and passing an authorization token on all endpoints requiring a set of permissions, etc.), caching, logging to collect metrics, error handling, etc.
+HTTP interceptors always function in the middle of a single HTTP request and usually modify the outgoing request. These services intercept all requests performed by the app, and perform designated operations on the requests before they are sent to the server. HTTP interceptors can be used to perform the following operations:
+* adding a custom HTTP header to the final outgoing request – for example, adding an authorization header and passing an authorization token to all endpoints requiring permissions.
+* caching.
+* logging to collect metrics.
+* error handling.
+* other modifications.
+ 
+An interceptor may also transform the response event stream.
 
-## Providing
+Interceptors permit you to intercept incoming and outgoing HTTP requests using the HttpService.
 
-Providing interceptors is possible through DI by `HttpInterceptor` which is multiple (see multiple token doc). Order of interceptors is important. `Request` will be intercepted by the order from the first one registered and to the last one when `response` in reverse order.
+## Set up a custom interceptor
+
+Providing interceptors is possible through dependency injection by `HttpInterceptor`, which accepts multiple values. See [Multi Providers](fes/docs/dependency-injection/multi-providers.html) for more information. The order of interceptors is important. `Request` will be intercepted in order from the first one registered to the last one. `Response` will be intercepted in reverse order.
 
 ```ts
 createInjector({
@@ -19,9 +28,9 @@ createInjector({
 });
 ```
 
-## Implementation
+To create an interceptor, `HttpInterceptor` interface is implemented. Most interceptors transform the outgoing request before passing it to the next interceptor in the chain, by calling `handle(url, options)`. 
 
-To create an interceptor, `HttpInterceptor` interface should be implemented into service. Most interceptors transform the outgoing request before passing it to the next interceptor in the chain, by calling `handle(url, options)`. An interceptor may transform the response event stream as well, by applying additional RxJS operators on the stream returned by handle().
+An interceptor may transform the response event stream as well, by applying additional RxJS operators on the stream returned by `handle()`.
 
 ```ts
 export class NewInterceptor implements HttpInterceptor {
