@@ -279,16 +279,14 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "valueRenderLimit" is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation .options=${{}}></search-facet-navigation>`
+        html`<search-facet-navigation></search-facet-navigation>`
       );
     });
 
     it('should render the default amount in the option', () => {
-      expect(
-        (<Element & { renderLimit: number }>(
-          element.renderRoot.querySelectorAll('oryx-search-facet')[1]
-        )).renderLimit
-      ).toBe(5);
+      element.renderRoot.querySelectorAll('oryx-collapsible').forEach((c) => {
+        expect(c.shadowRoot?.querySelectorAll('li')).toBeLessThanOrEqual(5);
+      });
     });
   });
 

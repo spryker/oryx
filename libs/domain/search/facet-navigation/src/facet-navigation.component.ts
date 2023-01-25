@@ -1,28 +1,26 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import {
+  ComponentMixin,
+  ContentController,
+  defaultOptions,
+} from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '../../src/renderers';
 import { FacetListService } from '../../src/services/facet-list.service';
 import { FacetsOptions } from './facet-navigation.model';
 import { facetNavigation } from './facet-navigation.styles';
 
+@defaultOptions({ expandedItemsCount: 5, valueRenderLimit: 5 })
 export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions>() {
   static styles = [facetNavigation];
 
-  private defaultOptions: FacetsOptions = {
-    valueRenderLimit: 5,
-    expandedItemsCount: 5,
-  };
-
-  protected options$ = new ContentController(this)
-    .getOptions()
-    .pipe(map((options) => ({ ...this.defaultOptions, ...options })));
+  protected options$ = new ContentController(this).getOptions();
   protected facetListService = resolve(FacetListService);
   protected routerService = resolve(RouterService);
   protected facetRenderer = resolve(FacetComponentRegistryService);
