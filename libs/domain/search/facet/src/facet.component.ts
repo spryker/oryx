@@ -85,7 +85,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         type=${multi ? 'checkbox' : 'radio'}
         name=${parameter}
         value=${facetValue.value}
-        .checked=${facetValue.selected}
+        ?checked=${facetValue.selected}
         @change=${this.onChange}
         title=${facetValue.name ?? facetValue.value}
         aria-label=${facetValue.name ?? facetValue.value}

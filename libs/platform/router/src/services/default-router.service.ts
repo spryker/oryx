@@ -123,7 +123,9 @@ export class DefaultRouterService implements RouterService {
         ? v.map((val) => encodeURIComponent(val)).join(',')
         : encodeURIComponent(v ?? '');
 
-      return encodedValue ? `${params}&${k}=${encodedValue}` : params;
+      return encodedValue
+        ? `${params ? `${params}&` : ''}${k}=${encodedValue}`
+        : params;
     }, '');
   }
 

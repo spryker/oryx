@@ -51,7 +51,7 @@ export class SearchFacetValueNavigationComponent
           ${when(
             this.selectedLength,
             () =>
-              html`<oryx-chip dense appearance="success"
+              html`<oryx-chip dense appearance="active"
                 >${this.selectedLength}</oryx-chip
               >`
           )}
@@ -87,7 +87,7 @@ export class SearchFacetValueNavigationComponent
             <button @click=${this.onToggle}>
               ${when(
                 this._isShowed,
-                () => i18n('search.facet-value-navigation.hide-all'),
+                () => i18n('search.facet-value-navigation.show-less'),
                 () => i18n('search.facet-value-navigation.show-all')
               )}
               ${when(

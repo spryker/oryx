@@ -14,6 +14,11 @@ export const FacetControlStyles = css`
     margin-inline-start: auto;
   }
 
+  .header oryx-button button,
+  .controls button {
+    color: var(--oryx-color-primary-300);
+  }
+
   .header oryx-chip {
     margin-inline-start: 10px;
   }
