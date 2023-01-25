@@ -25,32 +25,32 @@ export default async function vitestExecutor(
 
   if (options.watch) {
     delete options.coverage;
+  } else {
+    // list of files that should be included
+    // by default
+    options.coverage.include ??= [`${projectDir}/**/*.ts`];
+
+    options.coverage.exclude ??= [];
+
+    // list of files that should be excluded
+    // as coverage is not important for them
+    options.coverage.exclude.push(
+      ...[
+        '**/vitest.config.ts',
+        '**/index.ts',
+        '**/.constants.ts',
+        '**/*.spec.ts',
+        '**/*.styles.ts',
+        '**/*.stories.ts',
+        '**/*.def.ts',
+        '**/*.model.ts',
+      ]
+    );
+
+    // Don't remove this log, it is used in Unit Tests coverage reports analysis
+    // We should be able to see which files are included in the analysis to not miss something
+    console.log('Unit tests run config: ', options);
   }
-
-  // list of files that should be included
-  // by default
-  options.coverage.include ??= [`${projectDir}/**/*.ts`];
-
-  options.coverage.exclude ??= [];
-
-  // list of files that should be excluded
-  // as coverage is not important for them
-  options.coverage.exclude.push(
-    ...[
-      '**/vitest.config.ts',
-      '**/index.ts',
-      '**/.constants.ts',
-      '**/*.spec.ts',
-      '**/*.styles.ts',
-      '**/*.stories.ts',
-      '**/*.def.ts',
-      '**/*.model.ts',
-    ]
-  );
-
-  // Don't remove this log, it is used in Unit Tests coverage reports analysis
-  // We should be able to see which files are included in the analysis to not miss something
-  console.log('Unit tests run config: ', options);
 
   // TODO: workaround to avoid transpiling of dynamic import
   const { startVitest } = await Function("return import ('vitest/node')")();
