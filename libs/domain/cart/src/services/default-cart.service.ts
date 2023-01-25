@@ -69,20 +69,21 @@ export class DefaultCartService implements CartService {
     return this.adapter.getAll().pipe(
       map((carts) => {
         this.carts.clear();
+        // TODO:complete all value/error streams
 
-        if (carts === null) {
-          this.activeCartId$.next(null);
-
-          return;
-        }
-
-        carts.forEach((cart) => {
+        let activeCartUpdated = false;
+        (carts ?? []).forEach((cart) => {
           this.addCartToMap(cart);
 
           if (cart.isDefault) {
             this.activeCartId$.next(cart.id);
+            activeCartUpdated = true;
           }
         });
+
+        if (!activeCartUpdated) {
+          this.activeCartId$.next(carts?.[0]?.id ?? null);
+        }
       })
     );
   }
