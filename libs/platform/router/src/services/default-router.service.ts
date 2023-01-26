@@ -33,18 +33,20 @@ export class DefaultRouterService implements RouterService {
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
+    const url = route.split('?');
+    const queryParams =
+      extras?.queryParams ?? this.getURLSearchParams(url[1]) ?? {};
+
     if (
-      this.router$.value === route &&
+      this.router$.value === url[0] &&
       JSON.stringify(this.urlSearchParams$.value) ===
         JSON.stringify(extras?.queryParams ?? {})
     ) {
       return;
     }
 
-    this.router$.next(route);
-    this.urlSearchParams$.next(
-      extras?.queryParams ?? this.getURLSearchParams() ?? {}
-    );
+    this.router$.next(url[0]);
+    this.urlSearchParams$.next(queryParams);
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
   }
 
@@ -134,10 +136,10 @@ export class DefaultRouterService implements RouterService {
     this.storedRoute$.next(value);
   }
 
-  protected getURLSearchParams(): { [k: string]: string } {
+  protected getURLSearchParams(search?: string): { [k: string]: string } {
     return Object.fromEntries(
       new URLSearchParams(
-        decodeURIComponent(globalThis.location?.search ?? '')
+        decodeURIComponent(search ?? globalThis.location?.search ?? '')
       ).entries()
     );
   }

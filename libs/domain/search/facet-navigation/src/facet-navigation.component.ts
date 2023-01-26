@@ -7,7 +7,7 @@ import {
 import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { combineLatest } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { FacetListService } from '../../src/services/facet-list.service';
 import { FacetsOptions } from './facet-navigation.model';
 import { facetNavigation } from './facet-navigation.styles';
 
+@hydratable(['mouseover', 'focusin'])
 @defaultOptions({ expandedItemsCount: 5, valueRenderLimit: 5 })
 export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions>() {
   static styles = [facetNavigation];
