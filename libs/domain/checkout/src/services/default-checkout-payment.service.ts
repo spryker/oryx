@@ -6,6 +6,7 @@ import {
   map,
   Observable,
   of,
+  shareReplay,
   switchMap,
   take,
   throwError,
@@ -22,21 +23,23 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
     protected dataService = inject(CheckoutDataService)
   ) {}
 
+  protected methods$ = this.cartService.getCart().pipe(
+    switchMap((cart) =>
+      !cart
+        ? of(null)
+        : this.adapter.get({
+            cartId: cart.id,
+            include: [ApiCheckoutModel.Includes.PaymentMethods],
+          })
+    ),
+    // in some cases, (when cart is not yet created or thresholds are not met), we get 422 error from the backend
+    catchError(() => of(null)),
+    map((data) => data?.paymentMethods ?? null),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
   getMethods(): Observable<PaymentMethod[] | null> {
-    return this.cartService.getCart().pipe(
-      take(1),
-      switchMap((cart) =>
-        !cart
-          ? of(null)
-          : this.adapter.get({
-              cartId: cart.id,
-              include: [ApiCheckoutModel.Includes.PaymentMethods],
-            })
-      ),
-      // in some cases, (when cart is not yet created or thresholds are not met), we get 422 error from the backend
-      catchError(() => of(null)),
-      map((data) => data?.paymentMethods ?? null)
-    );
+    return this.methods$;
   }
 
   setPaymentMethod(id: string): Observable<unknown> {

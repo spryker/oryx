@@ -16,7 +16,7 @@ import { DefaultCheckoutShipmentService } from './default-checkout-shipment.serv
 const mockCartId = 'mockcartid';
 
 class MockCartService implements Partial<CartService> {
-  getCart = vi.fn();
+  getCart = vi.fn().mockReturnValue(of({ id: mockCartId }));
 }
 
 class MockCheckoutAdapter implements Partial<CheckoutAdapter> {

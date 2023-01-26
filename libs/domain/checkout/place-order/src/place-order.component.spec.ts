@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { checkoutPlaceOrderComponent } from './place-order.def';
 
 class MockCheckoutService implements Partial<CheckoutService> {
-  placeOrder = vi.fn();
+  placeOrder = vi.fn().mockReturnValue(of(null));
 }
 
 class MockCheckoutDataService implements Partial<CheckoutDataService> {

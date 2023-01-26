@@ -2,14 +2,13 @@ import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
-  BehaviorSubject,
   catchError,
   map,
   Observable,
   of,
+  shareReplay,
   switchMap,
   take,
-  tap,
 } from 'rxjs';
 import { ApiCheckoutModel, Carrier, CheckoutData, Shipment } from '../models';
 import { CheckoutAdapter } from './adapter';
@@ -27,32 +26,24 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     protected dataService = inject(CheckoutDataService)
   ) {}
 
-  protected shipments$ = new BehaviorSubject<Shipment[] | null>(null);
+  protected shipments$ = this.cartService.getCart().pipe(
+    switchMap((cart) => {
+      if (!cart) {
+        return of({} as CheckoutData);
+      }
+      return this.adapter.get({
+        cartId: cart.id,
+        include: this.includeShipments,
+      });
+    }),
+    // in some cases, when cart is not yet created, we get 422 error from the backend
+    catchError(() => of({} as CheckoutData)),
+    map((data) => data.shipments?.[0] ?? null),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
   getShipment(): Observable<Shipment | null> {
-    return this.cartService
-      .getCart()
-      .pipe(
-        take(1),
-        switchMap((cart) => {
-          if (!cart) {
-            return of({});
-          }
-          return this.adapter.get({
-            cartId: cart.id,
-            include: this.includeShipments,
-          });
-        }),
-        // in some cases, when cart is not yet created, we get 422 error from the backend
-        catchError(() => of(null)),
-        tap((data) => {
-          this.handleShipmentData(data);
-        })
-      )
-      .pipe(
-        switchMap(() => this.shipments$),
-        map((shipments) => (shipments ? shipments[0] : null))
-      );
+    return this.shipments$;
   }
 
   getCarriers(): Observable<Carrier[]> {
@@ -63,15 +54,6 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     );
   }
 
-  protected handleShipmentData(data: CheckoutData | null): void {
-    if (!data) {
-      return;
-    }
-    if (data.shipments) {
-      this.shipments$.next(data.shipments);
-    }
-  }
-
   getSelectedShipmentMethod(): Observable<number> {
     return this.dataService.getShipment().pipe(
       map((details) => details?.idShipmentMethod),
@@ -79,6 +61,7 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
         id
           ? of(id)
           : this.getShipment().pipe(
+              take(1),
               map((shipment) => {
                 return shipment?.selectedShipmentMethod?.id
                   ? Number(shipment.selectedShipmentMethod.id)
