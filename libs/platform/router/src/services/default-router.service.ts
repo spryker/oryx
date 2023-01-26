@@ -100,6 +100,12 @@ export class DefaultRouterService implements RouterService {
     return combineLatest([this.currentRoute(), this.currentQuery()]).pipe(
       take(1),
       map(([activeRoute, activeQueryParams]) => {
+        if (activeQueryParams && extras?.ignoreQueryParams) {
+          extras.ignoreQueryParams.forEach(
+            (param) => delete activeQueryParams[param]
+          );
+        }
+
         const parsedParams = this.createUrlParams(
           extras?.queryParamsHandling === 'merge'
             ? { ...activeQueryParams, ...(extras.queryParams ?? {}) }

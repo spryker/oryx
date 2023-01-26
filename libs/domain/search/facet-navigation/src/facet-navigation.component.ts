@@ -69,6 +69,7 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
           [parameter.toLowerCase()]: values,
         },
         queryParamsHandling: 'merge',
+        ignoreQueryParams: ['page'],
       })
       .pipe(tap((url) => this.routerService.navigate(url)))
       .subscribe();

@@ -33,6 +33,7 @@ export interface RouterEvent {
 export interface NavigationExtras {
   queryParams?: RouteParams;
   queryParamsHandling?: QueryParamsHandling;
+  ignoreQueryParams?: string[];
 }
 
 export interface RouteParams {
