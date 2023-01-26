@@ -1,3 +1,4 @@
+export * from './controllers';
 export * from './feature';
 export * from './mixins';
 export * from './models';

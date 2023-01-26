@@ -1,3 +1,4 @@
+import { CheckoutContext } from '@spryker-oryx/checkout';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ProductContext } from '@spryker-oryx/product';
@@ -19,6 +20,7 @@ export class RootAppComponent extends LitElement {
   protected route$ = this.routerService.currentParams().pipe(
     tap((params: RouteParams) => {
       this.context.provide(ProductContext.SKU, params?.sku);
+      this.context.provide(CheckoutContext.OrderId, params?.id);
     })
   );
 
