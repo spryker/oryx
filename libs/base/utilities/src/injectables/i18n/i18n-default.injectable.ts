@@ -40,12 +40,12 @@ export class DefaultI18nInjectable implements I18nInjectable {
 
     return (
       lastPart
-        // Replace all props with values from context
-        .replace(this.tokenPropRegex, (_, prop) => replacePropValue(prop))
         // Replace all dashes with spaces
         .replace(/-/g, ' ')
         // Capitalize first character
         .replace(/^./, (c) => c.toUpperCase())
+        // Replace all props with values from context
+        .replace(this.tokenPropRegex, (_, prop) => replacePropValue(prop))
         // Remove trailing spaces
         .trim()
     );
