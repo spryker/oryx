@@ -1,4 +1,3 @@
-export * from './adapter/adapter.model';
 export * from './context';
 export * from './error';
 export * from './feature-options';

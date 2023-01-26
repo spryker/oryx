@@ -1,7 +1,10 @@
-import { Adapter } from '@spryker-oryx/core';
+import { Observable } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
 
-export type SuggestionAdapter = Adapter<Suggestion, SuggestionQualifier>;
+export interface SuggestionAdapter {
+  getKey(qualifier: SuggestionQualifier): string;
+  get(qualifier: SuggestionQualifier): Observable<Suggestion>;
+}
 
 export const SuggestionAdapter = 'FES.SuggestionAdapter';
 

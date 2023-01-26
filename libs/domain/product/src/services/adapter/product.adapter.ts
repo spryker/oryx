@@ -1,7 +1,10 @@
-import { Adapter } from '@spryker-oryx/core';
+import { Observable } from 'rxjs';
 import { Product, ProductQualifier } from '../../models';
 
-export type ProductAdapter = Adapter<Product, ProductQualifier>;
+export interface ProductAdapter {
+  getKey(qualifier: ProductQualifier): string;
+  get(qualifier: ProductQualifier): Observable<Product>;
+}
 
 export const ProductAdapter = 'FES.ProductAdapter';
 
