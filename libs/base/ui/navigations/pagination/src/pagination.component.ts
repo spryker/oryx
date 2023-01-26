@@ -46,7 +46,7 @@ export class PaginationComponent
     return html`
       <a
         href=${nav?.getAttribute('href')}
-        .ariaLabel=${this[`${direction}Label`]}
+        aria-label=${this[`${direction}Label`]}
         @click=${(e: MouseEvent): void => this.onClick(e, nav)}
         ?disabled=${!nav}
         ?inert=${!nav}
