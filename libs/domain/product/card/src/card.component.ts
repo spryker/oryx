@@ -15,7 +15,7 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, filter, tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
@@ -45,7 +45,6 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
     // TODO: investigate issue observe decorator with mixin
     this.observe.get('sku'),
   ]).pipe(
-    filter(([options, propSku]) => Boolean(options.sku ?? propSku)),
     tap(([options, propSku]) => {
       this.context.provide(ProductContext.SKU, options.sku ?? propSku);
       if (options.titleLineClamp) {

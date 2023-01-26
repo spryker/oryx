@@ -15,8 +15,8 @@ export const ProductComponentMixin = <T>(): Type<
     extends ComponentMixin<T>()
     implements ProductComponentProperties
   {
-    @property({ type: String }) sku?: string;
-    @property({ type: Object }) product?: Product;
+    @property({ reflect: true }) sku?: string;
+    @property({ type: Object, reflect: true }) product?: Product;
   }
   return ProductComponent as Type<
     LitElement & ContentComponentProperties<T> & ProductComponentProperties

@@ -5,7 +5,7 @@ import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ContentBackendUrl } from '../experience-tokens';
-import { DataTransmitterService } from './data-transmitter';
+import { ExperienceDataClientService } from './data-client';
 import { ExperienceService } from './experience.service';
 import {
   POST_MESSAGE_TYPE,
@@ -18,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
   getEvents = vi.fn().mockReturnValue(NEVER);
 }
 
-class MockDataTransmitterService implements DataTransmitterService {
+class MockExperienceDataClientService implements ExperienceDataClientService {
   initialize = vi.fn();
 }
 
@@ -42,8 +42,8 @@ describe('ExperiencePreviewService', () => {
           useClass: HttpTestService,
         },
         {
-          provide: DataTransmitterService,
-          useClass: MockDataTransmitterService,
+          provide: ExperienceDataClientService,
+          useClass: MockExperienceDataClientService,
         },
         {
           provide: RouterService,

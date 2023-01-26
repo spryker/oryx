@@ -1,4 +1,4 @@
-export * from './data-transmitter';
+export * from './data-client';
 export * from './default-experience.service';
 export * from './experience.service';
 export * from './layout';

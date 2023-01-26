@@ -3,11 +3,11 @@ import { Provider } from '@spryker-oryx/di';
 import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
-  DataTransmitterService,
   DefaultBreakpointService,
-  DefaultDataTransmitterService,
+  DefaultExperienceDataClientService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
+  ExperienceDataClientService,
   ExperienceService,
   LayoutBuilder,
   PreviewExperienceService,
@@ -50,8 +50,8 @@ export const experienceProviders: Provider[] = [
 
 export const experiencePreviewProviders: Provider[] = [
   {
-    provide: DataTransmitterService,
-    useClass: DefaultDataTransmitterService,
+    provide: ExperienceDataClientService,
+    useClass: DefaultExperienceDataClientService,
   },
   {
     provide: ExperienceService,

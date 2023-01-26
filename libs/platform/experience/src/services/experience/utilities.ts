@@ -1,11 +1,7 @@
-import { ExperienceMessageData, MessageType } from './data-transmitter';
+import { ExperienceMessageData, MessageType } from './data-client';
 
 export const sendPostMessage = <T>(
-  message: T extends MessageType
-    ? ExperienceMessageData<T> & {
-        type: T;
-      }
-    : unknown,
+  message: T extends MessageType ? ExperienceMessageData<T> : unknown,
   sender?: Window
 ): void => {
   if (sender) {

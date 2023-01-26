@@ -20,21 +20,29 @@ import {
   DataIds,
   ExperienceMessageType,
   MessageType,
-} from './data-transmitter.model';
-import { DataTransmitterService } from './data-transmitter.service';
+} from './data-client.model';
+import { ExperienceDataClientService } from './data-client.service';
 
-export class DefaultDataTransmitterService implements DataTransmitterService {
+interface ProductsSuggestion {
+  products: {
+    name?: string;
+    sku?: string;
+  }[];
+}
+
+export class DefaultExperienceDataClientService
+  implements ExperienceDataClientService
+{
   constructor(
     protected appRef = inject(AppRef),
     protected optionsService = inject(FeatureOptionsService),
-    // TODO: change it to InjectableSuggestion
     protected suggestionService = inject('oryx.SuggestionService', null)
   ) {}
 
   protected optionsInitializer$ = this.optionsService.getOptions().pipe(
     tap((option) =>
       sendPostMessage({
-        type: MessageType.RequestOptions,
+        type: MessageType.Options,
         [DataIds.Options]: option,
       })
     )
@@ -44,35 +52,36 @@ export class DefaultDataTransmitterService implements DataTransmitterService {
   ).pipe(
     tap((resources) => {
       sendPostMessage({
-        type: MessageType.RequestGraphics,
+        type: MessageType.Graphics,
         [DataIds.Graphics]: Object.keys(resources?.graphics ?? {}),
       });
     })
   );
   protected productsInitializer$ = fromEvent<
-    ExperienceMessageType<MessageType.ResponseQuery>
+    ExperienceMessageType<MessageType.Query>
   >(window, 'message').pipe(
-    filter((e) => e.data?.type === MessageType.ResponseQuery),
+    filter((e) => e.data?.type === MessageType.Query),
     map((e) => e.data[DataIds.Query]),
-    switchMap((query) => this.suggestionService?.get({ query }) ?? of(null)),
-    tap((suggestions: any) =>
+    switchMap<string, Observable<ProductsSuggestion | null>>(
+      (query) => this.suggestionService?.get({ query }) ?? of(null)
+    ),
+    tap((suggestions) => {
       sendPostMessage({
-        type: MessageType.RequestProduct,
+        type: MessageType.Products,
         [DataIds.Products]: (suggestions?.products ?? []).map(
-          ({ name, sku }: any) => ({
+          ({ name, sku }) => ({
             name,
             sku,
           })
         ),
-      })
-    ),
-    shareReplay({ bufferSize: 1, refCount: true })
+      });
+    })
   );
   protected initializer$ = merge(
     this.optionsInitializer$,
     this.graphicsInitializer$,
     this.productsInitializer$
-  );
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {
     return this.initializer$;
