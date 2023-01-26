@@ -1,33 +1,29 @@
-export enum ChipAppearance {
-  Default = 'default',
-  Success = 'success',
-  Offline = 'offline',
-  Inactive = 'inactive',
-  Low = 'low',
-  Info = 'info',
-  Warning = 'warning',
-  Error = 'error',
-  Highlight = 'highlight',
-  /**
-   * `ONLINE` is a synonym for the `SUCCESS` chip type.
-   */
-  Online = 'online',
-  /**
-   * `ACTIVE` is a synonym for the `SUCCESS` chip type.
-   */
-  Active = 'active',
-}
-
 export interface ChipAttributes {
   /**
-   * Defines the chip color
+   * Indicates the visual appearance of the chip.
+   * Can be one of the predefined values of the ChipAppearance enumeration.
    *
-   * @defaults `ChipAppearance.Default`
+   * The value of this property is used to set the CSS variables:
+   * '--oryx-chip-primary' and '--oryx-chip-secondary' by appending
+   * the value of this property. If a new value of the enumeration is
+   * added, the corresponding CSS variables should also be added.
    */
   appearance?: ChipAppearance;
 
   /**
-   * Makes smaller chip paddings
+   * Indicates if the chip should be displayed in a more compact format.
    */
   dense?: boolean;
+
+  /**
+   * Inverts the color scheme for the back and foreground color.
+   */
+  invert?: boolean;
+}
+
+export const enum ChipAppearance {
+  Success = 'success',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
 }

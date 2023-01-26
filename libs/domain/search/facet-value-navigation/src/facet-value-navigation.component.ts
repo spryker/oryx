@@ -51,7 +51,7 @@ export class SearchFacetValueNavigationComponent
           ${when(
             this.selectedLength,
             () =>
-              html`<oryx-chip dense appearance="active"
+              html`<oryx-chip dense appearance="success"
                 >${this.selectedLength}</oryx-chip
               >`
           )}

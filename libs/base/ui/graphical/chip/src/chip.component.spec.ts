@@ -3,7 +3,6 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { ChipComponent } from './chip.component';
 import { chipComponent } from './chip.def';
-import { ChipAppearance } from './chip.model';
 
 describe('ChipComponent', () => {
   let element: ChipComponent;
@@ -17,21 +16,45 @@ describe('ChipComponent', () => {
     expect(el).toBeInstanceOf(ChipComponent);
   });
 
-  describe('chip type', () => {
-    Object.values(Object.values(ChipAppearance)).forEach((type) => {
-      describe(`when type is "${type}"`, () => {
-        beforeEach(async () => {
-          element = await fixture(html`<oryx-chip type="${type}"></oryx-chip>`);
-        });
+  describe(`when appearance is provided`, () => {
+    Object.values(['default', 'success', 'info', 'warning', 'error']).forEach(
+      (appearance) => {
+        describe(`and the appearance is "${appearance}"`, () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<oryx-chip .appearance=${appearance}></oryx-chip>`
+            );
+          });
 
-        it('passes the a11y audit', async () => {
-          await expect(element).shadowDom.to.be.accessible(a11yConfig);
-        });
+          it('passes the a11y audit', async () => {
+            await expect(element).shadowDom.to.be.accessible(a11yConfig);
+          });
 
-        it('should reflect the type attribute on the node', () => {
-          expect(element?.getAttribute('type')).toBe(type);
+          it('should reflect the type attribute', () => {
+            expect(element?.getAttribute('appearance')).toBe(appearance);
+          });
         });
-      });
+      }
+    );
+  });
+
+  describe(`when invert is provided`, () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-chip ?invert=${true}></oryx-chip>`);
+    });
+
+    it('should reflect the type attribute', () => {
+      expect(element?.hasAttribute('invert')).toBe(true);
+    });
+  });
+
+  describe(`when dense is provided`, () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-chip ?dense=${true}></oryx-chip>`);
+    });
+
+    it('should reflect the dense attribute', () => {
+      expect(element?.hasAttribute('dense')).toBe(true);
     });
   });
 });

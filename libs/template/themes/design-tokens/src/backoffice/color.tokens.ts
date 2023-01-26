@@ -13,7 +13,7 @@ export const color: ColorDesignTokens = {
   highlight: colorPalette.red,
 
   success: colorPalette.green,
-  warning: colorPalette.orange,
+  warning: colorPalette.yellow,
   error: colorPalette.red,
   info: colorPalette.blue,
 

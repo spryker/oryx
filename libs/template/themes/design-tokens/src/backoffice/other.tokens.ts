@@ -86,6 +86,7 @@ export const tokens: ThemeToken = {
       },
     },
   },
+
   form: {
     label: {
       transform: 'uppercase',

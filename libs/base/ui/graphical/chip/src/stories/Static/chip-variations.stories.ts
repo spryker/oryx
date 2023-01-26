@@ -3,7 +3,6 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
-import { ChipAppearance } from '../../chip.model';
 
 export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
 
@@ -13,6 +12,7 @@ const longText =
 enum CategoryY {
   Dense = 'Dense',
   Standard = 'Standard',
+  Invert = 'Invert',
   Truncated = 'Truncated',
 }
 
@@ -20,13 +20,15 @@ const generateVariants = (): Variant[] => {
   const result: Variant[] = [];
 
   Object.values(CategoryY).forEach((categoryY) => {
-    Object.values(ChipAppearance).forEach((categoryX) => {
-      result.push({
-        categoryY,
-        categoryX,
-        options: {},
-      });
-    });
+    Object.values(['success', 'info', 'warning', 'error', '(none)']).forEach(
+      (categoryX) => {
+        result.push({
+          categoryY,
+          categoryX,
+          options: {},
+        });
+      }
+    );
   });
 
   return result;
@@ -42,15 +44,16 @@ const Template: Story = (): TemplateResult => {
           () =>
             [...Array(10).keys()].map(
               (num) => html`
-                <oryx-chip appearance=${categoryX} dense>
+                <oryx-chip .appearance=${categoryX} dense>
                   ${num + 1}
                 </oryx-chip>
               `
             ),
           () => html`
             <oryx-chip
-              appearance=${categoryX}
+              .appearance=${categoryX}
               ?dense=${categoryY === CategoryY.Dense}
+              ?invert=${categoryY === CategoryY.Invert}
             >
               ${categoryY === CategoryY.Truncated ? longText : categoryY}
             </oryx-chip>

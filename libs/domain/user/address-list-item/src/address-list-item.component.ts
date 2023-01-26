@@ -110,7 +110,7 @@ export class AddressListItemComponent
     }
 
     const chip = (token: string) =>
-      html`<oryx-chip appearance="active">${i18n(token)}</oryx-chip>`;
+      html`<oryx-chip appearance="success">${i18n(token)}</oryx-chip>`;
 
     return html`<div slot="subtext">
       ${when(defaultShipping, () =>

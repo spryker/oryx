@@ -30,7 +30,7 @@ describe('productLabelsNormalizer', () => {
         normalized = productLabelNormalizer([mockLabel1]);
       });
       it('should convert it to highlight', () => {
-        expect(normalized[0].appearance).toEqual('highlight');
+        expect(normalized[0].appearance).toEqual('error');
       });
     });
 
