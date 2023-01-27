@@ -44,6 +44,7 @@ export class SortComponent extends LitElement {
           sort: (e.target as HTMLSelectElement).value,
         },
         queryParamsHandling: 'merge',
+        ignoreQueryParams: ['page'],
       })
       .pipe(tap((url) => this.routerService.navigate(url)))
       .subscribe();
