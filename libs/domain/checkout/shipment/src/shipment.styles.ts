@@ -2,45 +2,33 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    --oryx-tile-padding: 0;
+
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    --oryx-tile-padding: 0;
   }
 
   .no-methods {
+    --oryx-icon-size: 40px;
+
     text-align: center;
     line-height: 22px;
-
-    --oryx-icon-size: 40px;
   }
 
   oryx-radio {
-    flex: 1;
-  }
-
-  oryx-radio::part(label) {
-    padding: 20px;
-  }
-
-  .content {
-    display: flex;
-    flex-wrap: wrap;
+    padding: var(--oryx-space-4);
   }
 
   .price {
     font-weight: 600;
     font-size: var(--oryx-font-size-medium);
-    flex: 1;
     text-align: end;
   }
 
-  .delivery {
-    flex-basis: 100%;
+  small {
     font-weight: 600;
     color: var(--oryx-color-neutral-200);
-    margin-inline-start: calc(var(--oryx-radio-size, 18px) + 8px);
   }
 
   p {

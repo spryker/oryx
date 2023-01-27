@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const styles = css`
+  :host {
+    display: block;
+  }
+
   section {
     display: grid;
     grid-template-columns: 1fr max-content;
@@ -8,7 +12,7 @@ export const styles = css`
   }
 
   section,
-  oryx-radio::part(label) {
+  oryx-radio {
     padding: var(--oryx-space-2) var(--oryx-space-4);
   }
 

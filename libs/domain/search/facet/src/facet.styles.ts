@@ -15,8 +15,7 @@ export const SingleFacetControlStyles = css`
     padding-inline-start: 25px;
   }
 
-  oryx-checkbox,
-  oryx-radio {
+  oryx-checkbox {
     display: block;
     width: 100%;
   }

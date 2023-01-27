@@ -13,7 +13,7 @@ export class RadioComponent extends LitElement implements ErrorOptions {
 
   protected render(): TemplateResult {
     return html`
-      <label part="label">
+      <label>
         <slot></slot>
         <slot name="subtext"></slot>
       </label>

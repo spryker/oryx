@@ -78,37 +78,35 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
     selected = false
   ): TemplateResult {
     return html`<oryx-tile ?selected="${selected}">
-      <div class="content">
-        <oryx-radio>
-          <input
-            name="shipment-method"
-            type="radio"
-            .value="${method.id}"
-            ?checked="${selected}"
-            @change="${() => {
-              this.currentMethod$.next(method.id);
-              this.orchestrationService.report(CheckoutStepType.Shipping, true);
-            }}"
-          />${method.name}
-          <span class="price">
-            ${asyncValue(
-              this.priceService.format(method.price),
-              (price) => html`${price}`
-            )}
-          </span>
-          ${when(
-            method.deliveryTime,
-            () =>
-              html`${asyncValue(
-                this.localeService.formatDate(method.deliveryTime!),
-                (date) => html`<small class="delivery">
-                  ${i18n('checkout.delivered-at-<date>', { date })}
-                </small>`
-              )}`
-          )}
-        </oryx-radio>
-      </div>
+      <oryx-radio>
+        <input
+          name="shipment-method"
+          type="radio"
+          value="${method.id}"
+          ?checked="${selected}"
+          @change="${(e: Event) => this.onChange(e, method.id)}"
+        />
+        ${method.name}
+        <span class="price">
+          ${asyncValue(this.priceService.format(method.price))}
+        </span>
+        ${when(
+          method.deliveryTime,
+          () =>
+            html`${asyncValue(
+              this.localeService.formatDate(method.deliveryTime!),
+              (date) => html`<small slot="subtext">
+                ${i18n('checkout.delivered-at-<date>', { date })}
+              </small>`
+            )}`
+        )}
+      </oryx-radio>
     </oryx-tile>`;
+  }
+
+  protected onChange(e: Event, methodId: string | number): void {
+    this.currentMethod$.next(methodId);
+    this.orchestrationService.report(CheckoutStepType.Shipping, true);
   }
 
   protected renderEmpty(): TemplateResult {

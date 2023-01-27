@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const tileStyles = css`
   ::slotted(*) {
-    display: block;
     padding: var(--oryx-tile-padding, 20px);
     outline: none;
     border: var(--oryx-border-thin) solid var(--oryx-color-canvas-500);
@@ -14,6 +13,10 @@ export const tileStyles = css`
     );
     background-color: var(--oryx-color-canvas-100);
     transition: var(--oryx-transition-time);
+  }
+
+  ::slotted(a) {
+    display: block;
   }
 
   ::slotted(*:active) {

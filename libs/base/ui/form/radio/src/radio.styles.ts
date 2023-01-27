@@ -6,23 +6,22 @@ export const baseStyles = css`
   :host {
     --oryx-radio-size: 24px;
 
-    display: block;
+    display: grid;
+    grid-template-columns: var(--oryx-radio-size) 1fr max-content;
+    column-gap: 8px;
+    align-items: center;
+    position: relative;
   }
 
   label {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 8px;
-    position: relative;
+    display: contents;
     outline: 0;
     color: var(--oryx-color-inc);
   }
 
   ::slotted(input) {
-    flex: 0 0 var(--oryx-radio-size, 18px);
-    width: var(--oryx-radio-size, 18px);
-    height: var(--oryx-radio-size, 18px);
+    width: var(--oryx-radio-size);
+    height: var(--oryx-radio-size);
     appearance: none;
     border-radius: 50%;
     margin: 3px 0;
@@ -95,13 +94,16 @@ export const baseStyles = css`
 
   slot[name='subtext'] {
     display: block;
-    margin-inline-start: 26px;
-    flex: 0 0 100%;
+    grid-column: 2 / span 2;
   }
 
   slot[name='subtext']::slotted(small) {
     font-weight: 600;
     color: var(--oryx-color-neutral-300);
+  }
+
+  oryx-error-message {
+    grid-column: 1 / span 3;
   }
 `;
 

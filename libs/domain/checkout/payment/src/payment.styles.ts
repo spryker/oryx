@@ -14,7 +14,12 @@ export const styles = css`
     line-height: 22px;
   }
 
-  oryx-radio::part(label) {
-    padding: 20px;
+  oryx-radio {
+    padding: var(--oryx-space-4);
+  }
+
+  small {
+    font-weight: 600;
+    color: var(--oryx-color-neutral-200);
   }
 `;
