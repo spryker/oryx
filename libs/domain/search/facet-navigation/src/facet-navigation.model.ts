@@ -15,4 +15,13 @@ export interface FacetsOptions {
    * @default 5;
    */
   valueRenderLimit?: number;
+
+  /**
+   * Indicates the minimum number of facet values that must be present for a search box
+   * to be enabled for searching facet values. For example, if the color facet contains
+   * more than 13 color values, a search box will be offered to search for a specific color.
+   *
+   * @default 13
+   */
+  minForSearch?: number;
 }

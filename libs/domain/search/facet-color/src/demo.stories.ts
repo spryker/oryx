@@ -55,7 +55,7 @@ const Template: Story<FacetComponentAttributes> = (
   };
 
   return html`<oryx-search-color-facet
-    name="Color"
+    .name=${attrs.name}
     .minForSearch=${attrs.minForSearch}
     .renderLimit=${attrs.renderLimit}
     ?open=${attrs.open}
@@ -68,6 +68,7 @@ const Template: Story<FacetComponentAttributes> = (
 export const Demo = Template.bind({});
 
 Demo.args = {
+  name: 'Color',
   multi: true,
   renderLimit: 5,
   minForSearch: 13,
@@ -77,6 +78,6 @@ Demo.args = {
 Demo.argTypes = {
   name: {
     control: { type: 'select' },
-    options: ['Brand', 'Category'],
+    options: ['Color'],
   },
 };

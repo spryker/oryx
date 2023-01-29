@@ -39,6 +39,12 @@ export class MockProductListAdapter implements ProductListAdapter {
   get(qualifier: ProductListQualifier): Observable<ProductList> {
     return of({
       ...createProductListMock(qualifier),
+      pagination: {
+        itemsPerPage: 10,
+        currentPage: 1,
+        maxPage: 10,
+        numFound: 100,
+      },
       facets: [
         generateFacet('Brand', 'brand', 15, qualifier.brand?.split(',')),
         generateFacet(

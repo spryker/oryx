@@ -12,6 +12,7 @@ export enum FacetParams {
 export interface FacetMappingOptions {
   renderLimit: number;
   open: boolean;
+  minForSearch: number;
 }
 
 export interface FacetRendererMapping {

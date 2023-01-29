@@ -17,7 +17,11 @@ import { FacetsOptions } from './facet-navigation.model';
 import { facetNavigation } from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
-@defaultOptions({ expandedItemsCount: 5, valueRenderLimit: 5 })
+@defaultOptions({
+  expandedItemsCount: 5,
+  valueRenderLimit: 5,
+  minForSearch: 13,
+})
 export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions>() {
   static styles = [facetNavigation];
 
@@ -93,6 +97,7 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
         {
           renderLimit: options.valueRenderLimit!,
           open: index < (options.expandedItemsCount ?? 0),
+          minForSearch: options.minForSearch!,
         },
         this.applyFilters.bind(this)
       );

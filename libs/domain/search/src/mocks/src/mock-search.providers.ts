@@ -1,5 +1,4 @@
 import { Provider } from '@spryker-oryx/di';
-import { ProductListPageService } from '@spryker-oryx/product';
 import {
   DefaultFacetListService,
   DefaultSuggestionAdapter,
@@ -10,7 +9,6 @@ import {
 import { FacetColorsMapping } from '@spryker-oryx/search/facet-color';
 import { SortingService } from '../../services/sorting.service';
 import { mockFacetColors } from './mock-facet-colors';
-import { MockProductListPageService } from './mock-pagiation.service';
 import { MockSortingService } from './sort/mock-sorting.service';
 import { MockSuggestionService } from './suggestion/mock-suggestion.service';
 
@@ -34,9 +32,5 @@ export const mockSearchProviders: Provider[] = [
   {
     provide: FacetColorsMapping,
     useValue: mockFacetColors,
-  },
-  {
-    provide: ProductListPageService,
-    useClass: MockProductListPageService,
   },
 ];
