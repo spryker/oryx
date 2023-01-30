@@ -1,12 +1,12 @@
 import {
   AppRef,
+  ComponentsPlugin,
   FeatureOptionsService,
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  filter,
-  fromEvent,
+  distinctUntilChanged,
   map,
   merge,
   Observable,
@@ -15,12 +15,9 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { sendPostMessage } from '../utilities';
-import {
-  DataIds,
-  ExperienceMessageType,
-  MessageType,
-} from './data-client.model';
+import { optionsKey } from '../../../decorators';
+import { catchMessage, postMessage } from '../utilities';
+import { DataIds, MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
 
 interface ProductsSuggestion {
@@ -39,34 +36,53 @@ export class DefaultExperienceDataClientService
     protected suggestionService = inject('oryx.SuggestionService', null)
   ) {}
 
-  protected optionsInitializer$ = this.optionsService.getOptions().pipe(
-    tap((option) =>
-      sendPostMessage({
-        type: MessageType.Options,
-        [DataIds.Options]: option,
-      })
-    )
+  protected componentType$ = catchMessage(
+    MessageType.ComponentType,
+    DataIds.ComponentType
+  ).pipe(
+    distinctUntilChanged(),
+    map(
+      (type) =>
+        [
+          type,
+          this.appRef.findPlugin(ComponentsPlugin)?.getComponentClass(type),
+        ] as const
+    ),
+    shareReplay({ bufferSize: 1, refCount: true })
   );
-  protected graphicsInitializer$ = of(
+  protected options$ = this.componentType$.pipe(
+    tap(([type, componentClass]) => {
+      if (!componentClass) {
+        return;
+      }
+
+      const options = {
+        ...componentClass[optionsKey],
+        ...this.optionsService.getFeatureOptions(type),
+      };
+
+      postMessage({
+        type: MessageType.Options,
+        [DataIds.Options]: options,
+      });
+    })
+  );
+  protected graphics$ = of(
     this.appRef.findPlugin(ResourcePlugin)?.getResources()
   ).pipe(
     tap((resources) => {
-      sendPostMessage({
+      postMessage({
         type: MessageType.Graphics,
         [DataIds.Graphics]: Object.keys(resources?.graphics ?? {}),
       });
     })
   );
-  protected productsInitializer$ = fromEvent<
-    ExperienceMessageType<MessageType.Query>
-  >(window, 'message').pipe(
-    filter((e) => e.data?.type === MessageType.Query),
-    map((e) => e.data[DataIds.Query]),
+  protected products$ = catchMessage(MessageType.Query, DataIds.Query).pipe(
     switchMap<string, Observable<ProductsSuggestion | null>>(
       (query) => this.suggestionService?.get({ query }) ?? of(null)
     ),
     tap((suggestions) => {
-      sendPostMessage({
+      postMessage({
         type: MessageType.Products,
         [DataIds.Products]: (suggestions?.products ?? []).map(
           ({ name, sku }) => ({
@@ -78,9 +94,9 @@ export class DefaultExperienceDataClientService
     })
   );
   protected initializer$ = merge(
-    this.optionsInitializer$,
-    this.graphicsInitializer$,
-    this.productsInitializer$
+    this.options$,
+    this.graphics$,
+    this.products$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {

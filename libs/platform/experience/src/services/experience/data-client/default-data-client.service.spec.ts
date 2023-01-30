@@ -2,21 +2,28 @@ import { nextFrame } from '@open-wc/testing-helpers';
 import {
   App,
   AppRef,
+  ComponentsPlugin,
   FeatureOptionsService,
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
+import { optionsKey } from '../../../decorators';
 import { DataIds, MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
 import { DefaultExperienceDataClientService } from './default-data-client.service';
 
+const mockAppFn = {
+  getResources: vi.fn(),
+  getComponentClass: vi.fn(),
+};
+
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn();
+  findPlugin = vi.fn().mockReturnValue(mockAppFn);
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
-  getOptions = vi.fn().mockReturnValue(of(null));
+  getFeatureOptions = vi.fn().mockReturnValue(null);
 }
 
 class MockSuggestionService {
@@ -25,6 +32,8 @@ class MockSuggestionService {
 
 const getService = <T>(token: string) =>
   getInjector().inject(token) as unknown as T;
+
+const test$ = new Subject<void>();
 
 describe('ExperienceDataClientService', () => {
   beforeEach(() => {
@@ -53,6 +62,7 @@ describe('ExperienceDataClientService', () => {
 
   afterEach(() => {
     destroyInjector();
+    test$.next();
   });
 
   describe('initialize', () => {
@@ -65,14 +75,13 @@ describe('ExperienceDataClientService', () => {
         },
       };
       const app = getService<MockApp>(AppRef);
-      getService<MockApp>(AppRef).findPlugin.mockReturnValue({
-        getResources: () => mockResources,
-      });
+      mockAppFn.getResources.mockReturnValue(mockResources);
       getInjector()
         .inject(ExperienceDataClientService)
         .initialize()
         .subscribe();
       expect(app.findPlugin).toHaveBeenCalledWith(ResourcePlugin);
+      expect(mockAppFn.getResources).toHaveBeenCalled();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Graphics,
@@ -82,29 +91,47 @@ describe('ExperienceDataClientService', () => {
       );
     });
 
-    it('should send `MessageType.Options` post message', () => {
-      const mockOptions = {
-        global: {
-          a: 'a',
-        },
-        b: {
-          b: 'b',
-        },
+    it('should send `MessageType.Options` post message', async () => {
+      const mockDefaultOptions = {
+        b: 'b',
       };
+      const mockFeatureOptions = {
+        c: 'c',
+      };
+      const mockComponentType = 'mockComponentType';
+      const app = getService<MockApp>(AppRef);
+      mockAppFn.getComponentClass.mockReturnValue({
+        [optionsKey]: mockDefaultOptions,
+      });
       getService<MockFeatureOptionsService>(
         FeatureOptionsService
-      ).getOptions.mockReturnValue(of(mockOptions));
+      ).getFeatureOptions.mockReturnValue(mockFeatureOptions);
       getInjector()
         .inject(ExperienceDataClientService)
         .initialize()
         .subscribe();
-      expect(window.parent.postMessage).toHaveBeenCalledWith(
+      window.postMessage(
         {
-          type: MessageType.Options,
-          [DataIds.Options]: mockOptions,
+          type: MessageType.ComponentType,
+          [DataIds.ComponentType]: mockComponentType,
         },
         '*'
       );
+      await nextFrame();
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
+        {
+          type: MessageType.Options,
+          [DataIds.Options]: {
+            ...mockDefaultOptions,
+            ...mockFeatureOptions,
+          },
+        },
+        '*'
+      );
+      expect(mockAppFn.getComponentClass).toHaveBeenCalledWith(
+        mockComponentType
+      );
+      expect(app.findPlugin).toHaveBeenCalledWith(ComponentsPlugin);
     });
 
     it('should send `MessageType.Products` post message', async () => {

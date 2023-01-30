@@ -35,7 +35,7 @@ const resources = resource.list[resourceKey];
 
 const builder = appBuilder()
   .with(new StorybookPlugin())
-  .withOptions({
+  .withAppOptions({
     components: {
       root: 'body',
       preload: true,

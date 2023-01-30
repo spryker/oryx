@@ -41,9 +41,9 @@ describe('ModularAppBuilder', () => {
     vi.clearAllMocks();
   });
 
-  describe('withOptions', () => {
+  describe('withAppOptions', () => {
     it('should return instance of itself', () => {
-      expect(modularAppBuilder.withOptions(mockOptions)).toBe(
+      expect(modularAppBuilder.withAppOptions(mockOptions)).toBe(
         modularAppBuilder
       );
     });
@@ -61,7 +61,7 @@ describe('ModularAppBuilder', () => {
     it('should add providers and pass them to the InjectionPlugin with options', async () => {
       await modularAppBuilder
         .withProviders(mockProviders)
-        .withOptions(mockOptions)
+        .withAppOptions(mockOptions)
         .create();
       expect(InjectionPlugin).toHaveBeenCalledWith(
         mockProviders,
@@ -83,7 +83,7 @@ describe('ModularAppBuilder', () => {
     it('should add components and pass them to the ComponentsPlugin with options', async () => {
       await modularAppBuilder
         .withComponents(mockComponents)
-        .withOptions(mockOptions)
+        .withAppOptions(mockOptions)
         .create();
       expect(ComponentsPlugin).toHaveBeenCalledWith(
         mockComponents,
@@ -112,7 +112,7 @@ describe('ModularAppBuilder', () => {
           providers: mockProviders,
           components: mockComponents,
         })
-        .withOptions(mockOptions)
+        .withAppOptions(mockOptions)
         .create();
       expect(ComponentsPlugin).toHaveBeenCalledWith(
         mockComponents,
@@ -144,7 +144,7 @@ describe('ModularAppBuilder', () => {
     });
   });
 
-  describe('withFeatureOptions', () => {
+  describe('withOptions', () => {
     const mockOptions: FeatureOptions = {
       global: {
         test: 'test',
@@ -158,13 +158,13 @@ describe('ModularAppBuilder', () => {
     };
 
     it('should return instance of itself', () => {
-      expect(modularAppBuilder.withFeatureOptions(mockOptions)).toBe(
+      expect(modularAppBuilder.withOptions(mockOptions)).toBe(
         modularAppBuilder
       );
     });
 
     it('should add `FeatureOptions` to provider', async () => {
-      await modularAppBuilder.withFeatureOptions(mockOptions).create();
+      await modularAppBuilder.withOptions(mockOptions).create();
       expect(InjectionPlugin).toHaveBeenCalledWith(
         [{ provide: FeatureOptions, useValue: mockOptions }],
         undefined

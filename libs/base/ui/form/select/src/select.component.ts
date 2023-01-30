@@ -29,7 +29,7 @@ export class SelectComponent
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
-  @property() label?: string;
+  @property({ reflect: true }) label?: string;
   @property() errorMessage?: string;
   @property() prefixIcon?: string;
   @property({ type: Boolean }) prefixFill?: boolean;

@@ -46,11 +46,11 @@ export interface AppBuilderWithModules
   withComponents(components: ComponentsInfo): AppBuilderWithModules;
   withProviders(providers: Provider[]): AppBuilderWithModules;
   withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules;
-  withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
+  withAppOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
   withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
   withEnvironment(env: AppEnvironment): AppBuilderWithModules;
   withResources(resources: Resources): AppBuilderWithModules;
-  withFeatureOptions(options: FeatureOptions): AppBuilderWithModules;
+  withOptions(options: FeatureOptions): AppBuilderWithModules;
 }
 
 export interface AppPlugin {

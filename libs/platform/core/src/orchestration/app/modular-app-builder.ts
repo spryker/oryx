@@ -27,7 +27,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   protected themes?: Theme[];
   protected resources?: Resources;
 
-  withOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
+  withAppOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
     this.options = {
       injector: {
         ...this.options?.injector,
@@ -58,10 +58,10 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     const featureMapper: Record<string, (...args: any) => unknown> = {
       providers: this.withProviders.bind(this),
       components: this.withComponents.bind(this),
-      options: this.withOptions.bind(this),
+      options: this.withAppOptions.bind(this),
       plugins: this.with.bind(this),
       resources: this.withResources.bind(this),
-      defaultOptions: this.withFeatureOptions.bind(this),
+      defaultOptions: this.withOptions.bind(this),
     };
 
     for (const feat of features) {
@@ -96,7 +96,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withFeatureOptions(options: FeatureOptions): AppBuilderWithModules {
+  withOptions(options: FeatureOptions): AppBuilderWithModules {
     this.providers.push({
       provide: FeatureOptions,
       useValue: options,

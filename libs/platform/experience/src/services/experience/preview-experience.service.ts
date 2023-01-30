@@ -18,7 +18,7 @@ import {
 } from 'rxjs';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
-import { sendPostMessage } from './utilities';
+import { postMessage } from './utilities';
 
 export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';
@@ -129,28 +129,28 @@ export class PreviewExperienceService extends DefaultExperienceService {
   );
 
   reloadComponent(id: string): void {
-    sendPostMessage({
+    postMessage({
       type: REQUEST_MESSAGE_TYPE,
       structure: id,
     });
   }
 
   reloadContent(id: string): void {
-    sendPostMessage({
+    postMessage({
       type: REQUEST_MESSAGE_TYPE,
       content: id,
     });
   }
 
   reloadOptions(id: string): void {
-    sendPostMessage({
+    postMessage({
       type: REQUEST_MESSAGE_TYPE,
       options: id,
     });
   }
 
   routeChangeHandler(route: string): void {
-    sendPostMessage({
+    postMessage({
       type: REQUEST_MESSAGE_TYPE,
       route,
     });

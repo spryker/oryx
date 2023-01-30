@@ -1,7 +1,3 @@
-import {
-  DefaultFeatureOptionsService,
-  FeatureOptionsService,
-} from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   DefaultProductAdapter,
@@ -48,10 +44,5 @@ export const mockProductProviders: Provider[] = [
   {
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
-  },
-  // TODO: remove when `defaultOptionsClass` will be refactored
-  {
-    provide: FeatureOptionsService,
-    useClass: DefaultFeatureOptionsService,
   },
 ];

@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 export const FeatureOptionsService = 'oryx.FeatureOptionsService';
 export const FeatureOptions = 'oryx.FeatureOptions*';
 
@@ -11,11 +9,7 @@ declare global {
 }
 
 export interface FeatureOptionsService {
-  getFeatureOptions(
-    name: string
-  ): Observable<NonNullable<FeatureOptions[keyof FeatureOptions]>>;
-  getOptions(): Observable<FeatureOptions>;
-  addDefaultOptions(options: FeatureOptions): void;
+  getFeatureOptions(name: string): FeatureOptions;
 }
 
 declare global {

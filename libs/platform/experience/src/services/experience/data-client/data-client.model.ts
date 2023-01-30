@@ -5,13 +5,15 @@ export const enum MessageType {
   Options = 'oryx.options-preview',
   Products = 'oryx.products-preview',
   Query = 'oryx.query-preview',
+  ComponentType = 'oryx.component-type-preview',
 }
 
 export const enum DataIds {
-  Graphics = 'oryx-graphics',
-  Options = 'oryx-options',
-  Products = 'oryx-products',
-  Query = 'oryx-query',
+  Graphics = 'oryx.graphics',
+  Options = 'oryx.options',
+  Products = 'oryx.products',
+  Query = 'oryx.query',
+  ComponentType = 'oryx.component-type',
 }
 
 export interface ExperienceProductData {
@@ -21,16 +23,20 @@ export interface ExperienceProductData {
 
 export type ExperienceMessageData<T> = {
   type: T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 } & (T extends MessageType.Graphics
   ? { [DataIds.Graphics]: (keyof ResourceGraphic)[] }
   : T extends MessageType.Options
-  ? { [DataIds.Options]: FeatureOptions }
+  ? { [DataIds.Options]: FeatureOptions[keyof FeatureOptions] }
   : T extends MessageType.Products
   ? { [DataIds.Products]: ExperienceProductData[] }
   : T extends MessageType.Query
   ? { [DataIds.Query]: string }
+  : T extends MessageType.ComponentType
+  ? { [DataIds.ComponentType]: string }
   : never);
 
-export type ExperienceMessageType<T extends MessageType> = MessageEvent<
+export type ExperienceMessageType<T = MessageType> = MessageEvent<
   ExperienceMessageData<T>
 >;

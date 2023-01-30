@@ -4,6 +4,7 @@ import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
+import { optionsKey } from '../decorators';
 import { ExperienceService } from '../services';
 import { ContentController } from './content.controller';
 
@@ -31,7 +32,7 @@ class MockExperienceService implements Partial<ExperienceService> {
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
-  getFeatureOptions = vi.fn().mockReturnValue(of({}));
+  getFeatureOptions = vi.fn().mockReturnValue({});
 }
 
 const mockObserve = {
@@ -160,17 +161,19 @@ describe('ContentController', () => {
         a: 'a',
         b: 'b',
       };
-
-      beforeEach(() => {
-        mockFeatureOptionsService.getFeatureOptions.mockReturnValue(
-          of(mockDefaultValue)
-        );
-      });
+      const mockPrototype = {
+        ...mockElement,
+        constructor: {
+          __proto__: {
+            [optionsKey]: mockDefaultValue,
+          },
+        },
+      } as unknown as LitElement;
 
       it('should expose options directly if options exist', () => {
         const callback = vi.fn();
         mockObserve.get.mockReturnValue(of(mockObserveValue));
-        const contentController = new ContentController(mockElement);
+        const contentController = new ContentController(mockPrototype);
         contentController.getOptions().subscribe(callback);
 
         expect(callback).toHaveBeenCalledWith({
@@ -184,7 +187,7 @@ describe('ContentController', () => {
         mockObserve.get.mockReturnValueOnce(of(undefined));
         mockObserve.get.mockReturnValue(of(mockUid));
         mockExperienceService.getOptions.mockReturnValue(of(mockOptions));
-        const contentController = new ContentController(mockElement);
+        const contentController = new ContentController(mockPrototype);
         contentController.getOptions().subscribe(callback);
 
         expect(callback).toHaveBeenCalledWith({
@@ -196,10 +199,31 @@ describe('ContentController', () => {
       it('should emit default options if options, uid and ExperienceService are not defined', () => {
         const callback = vi.fn();
         mockObserve.get.mockReturnValue(of(undefined));
-        const contentController = new ContentController(mockElement);
+        const contentController = new ContentController(mockPrototype);
         contentController.getOptions().subscribe(callback);
 
         expect(callback).toHaveBeenCalledWith(mockDefaultValue);
+      });
+
+      describe('when feature options has been passed', () => {
+        it('should merge options and emit', () => {
+          const mocFeatureOptions = {
+            c: 'c',
+          };
+          mockFeatureOptionsService.getFeatureOptions.mockReturnValue(
+            mocFeatureOptions
+          );
+          const callback = vi.fn();
+          mockObserve.get.mockReturnValue(of(mockObserveValue));
+          const contentController = new ContentController(mockPrototype);
+          contentController.getOptions().subscribe(callback);
+
+          expect(callback).toHaveBeenCalledWith({
+            ...mockDefaultValue,
+            ...mocFeatureOptions,
+            ...mockObserveValue,
+          });
+        });
       });
     });
   });

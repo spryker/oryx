@@ -169,4 +169,10 @@ export class ComponentsLoader {
 
     return observableType;
   }
+
+  getComponentClass(
+    tag: string
+  ): (ComponentType & ComponentStatic) | undefined {
+    return this.componentMap.get(tag)?.componentType;
+  }
 }

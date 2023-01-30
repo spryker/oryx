@@ -1,15 +1,13 @@
 import { FeatureOptionsService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ObserveController } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
 import {
-  map,
-  Observable,
-  of,
-  shareReplay,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs';
+  getStaticProp,
+  InstanceWithStatic,
+  ObserveController,
+} from '@spryker-oryx/utilities';
+import { LitElement } from 'lit';
+import { map, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { optionsKey } from '../decorators';
 import { ContentComponentProperties } from '../models';
 import { ExperienceService } from '../services';
 
@@ -50,13 +48,18 @@ export class ContentController<T = unknown, K = unknown> {
 
   getOptions(): Observable<Partial<K>> {
     return this.observe.get('options').pipe(
-      withLatestFrom(
-        this.optionsService?.getFeatureOptions(this.host.tagName) ?? of({})
-      ),
-      switchMap(([options, defaultOptions]) => {
+      switchMap((options) => {
+        const defaultOptions = {
+          ...getStaticProp(
+            this.host as unknown as InstanceWithStatic<K>,
+            optionsKey
+          ),
+          ...this.optionsService?.getFeatureOptions?.(this.host.tagName),
+        } as K;
+
         if (options !== undefined) {
           return of({
-            ...(defaultOptions as K),
+            ...defaultOptions,
             ...options,
           });
         }
@@ -67,11 +70,11 @@ export class ContentController<T = unknown, K = unknown> {
               ? this.experienceContent.getOptions<{ data: K }>({ uid }).pipe(
                   map((component) => {
                     return component?.data
-                      ? { ...(defaultOptions as K), ...component?.data }
-                      : (defaultOptions as K);
+                      ? { ...defaultOptions, ...component?.data }
+                      : defaultOptions;
                   })
                 )
-              : of(defaultOptions as K)
+              : of(defaultOptions)
           ),
           shareReplay({ bufferSize: 1, refCount: true })
         );

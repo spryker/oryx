@@ -34,7 +34,7 @@ export class TypeaheadComponent
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
   @property() emptyMessage?: string;
-  @property() label?: string;
+  @property({ reflect: true }) label?: string;
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
   @property() prefixIcon?: string;

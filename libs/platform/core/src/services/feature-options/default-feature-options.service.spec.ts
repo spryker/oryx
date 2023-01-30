@@ -14,12 +14,6 @@ const mockOptions = {
   },
 };
 
-const mockNewOptions = {
-  'comp-g': {
-    g: 'g',
-  },
-};
-
 describe('DefaultFeatureOptionsService', () => {
   let service: FeatureOptionsService;
 
@@ -29,10 +23,6 @@ describe('DefaultFeatureOptionsService', () => {
         {
           provide: FeatureOptions,
           useValue: mockOptions,
-        },
-        {
-          provide: FeatureOptions,
-          useValue: mockNewOptions,
         },
         {
           provide: FeatureOptionsService,
@@ -53,44 +43,10 @@ describe('DefaultFeatureOptionsService', () => {
   });
 
   describe('getFeatureOptions', () => {
-    it('should return observable with options by name from injector', () => {
-      const callback = vi.fn();
-      service.getFeatureOptions('COMP-A').subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockOptions['comp-a']);
-    });
-  });
-
-  describe('getOptions', () => {
-    it('should return options object', () => {
-      const callback = vi.fn();
-      service.getOptions().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith({
-        ...mockOptions,
-        ...mockNewOptions,
-      });
-    });
-  });
-
-  describe('addDefaultOptions', () => {
-    const mockMergeOptions = {
-      'comp-g': {
-        g: 'l',
-      },
-    };
-
-    it('should prepend options', () => {
-      const callback = vi.fn();
-      service.getOptions().subscribe(callback);
-      expect(callback).toHaveBeenNthCalledWith(1, {
-        ...mockOptions,
-        ...mockNewOptions,
-      });
-      service.addDefaultOptions(mockMergeOptions);
-      expect(callback).toHaveBeenNthCalledWith(2, {
-        ...mockMergeOptions,
-        ...mockOptions,
-        ...mockNewOptions,
-      });
+    it('should return options list by name from injector', () => {
+      expect(service.getFeatureOptions('COMP-A')).toEqual(
+        mockOptions['comp-a']
+      );
     });
   });
 });
