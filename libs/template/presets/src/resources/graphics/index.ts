@@ -10,4 +10,7 @@ export const resourceGraphics: ResourceGraphic = {
   'logo-symbol': {
     source: () => import('./logo').then((m) => m.logoSymbol),
   },
+  'order-confirmation-success': {
+    source: () => import('./order-confirmation-success').then((m) => m.success),
+  },
 };
