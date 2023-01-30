@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap } from 'rxjs';
 import { ApiCheckoutModel, CheckoutData, CheckoutResponse } from '../../models';
 import {
   CheckoutAdapter,
@@ -29,18 +29,21 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
   }
 
   placeOrder(props: PostCheckoutProps): Observable<CheckoutResponse> {
-    return this.transformer
-      .serialize(props, CheckoutSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.CheckoutResponse>(
-              `${this.SCOS_BASE_URL}/checkout`,
-              data
-            )
-            .pipe(this.transformer.do(CheckoutResponseNormalizer))
-        )
-      );
+    return combineLatest([
+      this.identity.get(),
+      this.transformer.serialize(props, CheckoutSerializer),
+    ]).pipe(
+      switchMap(([user, data]) =>
+        this.http
+          .post<ApiCheckoutModel.CheckoutResponse>(
+            `${this.SCOS_BASE_URL}/checkout${
+              user.anonymous ? '?include=orders' : ''
+            }`,
+            data
+          )
+          .pipe(this.transformer.do(CheckoutResponseNormalizer))
+      )
+    );
   }
 
   protected post(

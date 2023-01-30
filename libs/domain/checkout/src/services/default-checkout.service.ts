@@ -1,4 +1,5 @@
 import { CartService } from '@spryker-oryx/cart';
+import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -20,6 +21,7 @@ import {
   Checkout,
   CheckoutResponse,
   ContactDetails,
+  orderStorageKey,
   Validity,
 } from '../models';
 import { CheckoutAdapter } from './adapter';
@@ -34,7 +36,8 @@ export class DefaultCheckoutService implements CheckoutService {
     protected adapter = inject(CheckoutAdapter),
     protected cartService = inject(CartService),
     protected semanticLink = inject(SemanticLinkService),
-    protected router = resolve(RouterService)
+    protected router = resolve(RouterService),
+    protected storage = resolve(StorageService)
   ) {}
 
   protected canCheckout$ = this.orchestrationService.getValidity().pipe(
@@ -119,7 +122,32 @@ export class DefaultCheckoutService implements CheckoutService {
     );
   }
 
+  getLastOrder(): Observable<CheckoutResponse | null> {
+    return this.storage.get<CheckoutResponse>(
+      orderStorageKey,
+      StorageType.SESSION
+    );
+  }
+
+  protected storeLastOrder(response: CheckoutResponse): void {
+    this.storage.set(
+      orderStorageKey,
+      {
+        ...response,
+        orders: response.orders?.map((order) => ({
+          ...order,
+          // For privacy reasons, we cannot store the address in session storage.
+          shippingAddress: {},
+          billingAddress: {},
+        })),
+      },
+      StorageType.SESSION
+    );
+  }
+
   protected postCheckout(response: CheckoutResponse): Observable<unknown> {
+    this.storeLastOrder(response);
+
     this.cartService.load();
     this.dataService.reset();
 

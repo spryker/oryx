@@ -180,9 +180,20 @@ describe('DefaultCheckoutService', () => {
   });
 
   describe('when placing an order', () => {
-    it('should build url', () => {
-      service.placeOrder(mockPostCheckoutProps).subscribe(() => {
-        expect(http.url).toBe(`${mockApiUrl}/checkout`);
+    describe('and user is not logged in', () => {
+      it('should build url', () => {
+        service.placeOrder(mockPostCheckoutProps).subscribe(() => {
+          expect(http.url).toBe(`${mockApiUrl}/checkout?include=orders`);
+        });
+      });
+    });
+
+    describe('and user is logged in', () => {
+      it('should build url', () => {
+        identity.get.mockReturnValue(of({ id: 'mockuser' }));
+        service.placeOrder(mockPostCheckoutProps).subscribe(() => {
+          expect(http.url).toBe(`${mockApiUrl}/checkout`);
+        });
       });
     });
 

@@ -1,4 +1,5 @@
 import { CheckoutResponse, CheckoutService } from '@spryker-oryx/checkout';
+import { mockOrderData } from '@spryker-oryx/checkout/mocks';
 import { Observable, of } from 'rxjs';
 
 export class MockCheckoutService implements CheckoutService {
@@ -7,5 +8,13 @@ export class MockCheckoutService implements CheckoutService {
   }
   placeOrder(): Observable<CheckoutResponse> {
     return of({ orderReference: 'test' });
+  }
+
+  getLastOrder(): Observable<CheckoutResponse | null> {
+    return of({
+      id: 'mockid',
+      orderReference: 'DE--45',
+      orders: [{ ...mockOrderData, shippingAddress: {}, billingAddress: {} }],
+    });
   }
 }

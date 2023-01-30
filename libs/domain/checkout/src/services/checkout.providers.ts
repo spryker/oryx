@@ -2,9 +2,12 @@ import {
   CheckoutAdapter,
   checkoutResponseNormalizer,
   DefaultCheckoutAdapter,
+  DefaultOrderAdapter,
+  OrderAdapter,
 } from './adapter';
 import {
   checkoutNormalizer,
+  orderNormalizer,
   PaymentsNormalizer,
   paymentsNormalizer,
   ShipmentsNormalizer,
@@ -25,12 +28,18 @@ import { DefaultCheckoutOrchestrationService } from './default-checkout-orchestr
 import { DefaultCheckoutPaymentService } from './default-checkout-payment.service';
 import { DefaultCheckoutShipmentService } from './default-checkout-shipment.service';
 import { DefaultCheckoutService } from './default-checkout.service';
+import { DefaultOrderService } from './default-order.service';
+import { OrderService } from './order.service';
 
 export const checkoutProviders = [
   componentsProvider,
   {
     provide: CheckoutAdapter,
     useClass: DefaultCheckoutAdapter,
+  },
+  {
+    provide: OrderAdapter,
+    useClass: DefaultOrderAdapter,
   },
   {
     provide: CheckoutDataService,
@@ -60,8 +69,13 @@ export const checkoutProviders = [
     provide: CheckoutService,
     useClass: DefaultCheckoutService,
   },
+  {
+    provide: OrderService,
+    useClass: DefaultOrderService,
+  },
   ...checkoutDataSerializer,
   ...checkoutSerializer,
   ...checkoutNormalizer,
   ...checkoutResponseNormalizer,
+  ...orderNormalizer,
 ];

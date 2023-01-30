@@ -1,3 +1,5 @@
+import { OrderData } from './order.model';
+
 export interface CheckoutData {
   addresses?: unknown[];
   paymentProviders?: unknown[];
@@ -86,6 +88,7 @@ export interface CheckoutResponse {
   orderReference: string;
   redirectUrl?: string;
   isExternalRedirect?: string;
+  orders?: OrderData[];
 }
 
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
