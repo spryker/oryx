@@ -43,7 +43,7 @@ describe('Product Facet Normalizers', () => {
       name: 'Categories',
       parameter: 'category',
       selectedValues: ['10'],
-      valuesTreeLength: 2,
+      valuesTreeLength: 1,
       values: [
         {
           value: 9,
