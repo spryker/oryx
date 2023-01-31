@@ -4,4 +4,4 @@ Provides dependency injection to Oryx applications.
 
 ## Installation
 
-`npm install @spryker-oryx/injector`
+`npm install @spryker-oryx/di`

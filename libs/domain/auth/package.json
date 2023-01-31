@@ -21,7 +21,7 @@
   "peerDependencies": {
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/router": "*",
     "@spryker-oryx/ui": "*",
     "@spryker-oryx/utilities": "*",

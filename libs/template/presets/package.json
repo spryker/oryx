@@ -22,7 +22,7 @@
     "@spryker-oryx/experience": "*",
     "@spryker-oryx/form": "*",
     "@spryker-oryx/i18n": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/product": "*",
     "@spryker-oryx/search": "*",
     "@spryker-oryx/site": "*",

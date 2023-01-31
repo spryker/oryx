@@ -13,7 +13,7 @@
     "css-convert-json": "^1.1.0"
   },
   "peerDependencies": {
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

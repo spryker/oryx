@@ -11,7 +11,7 @@
   },
   "peerDependencies": {
     "@spryker-oryx/core": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/ui": "*",
     "lit": "^2.4.0",
     "tslib": "^2.4.0"

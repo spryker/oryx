@@ -22,7 +22,7 @@
     "@spryker-oryx/content": "*",
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/router": "*",
     "@spryker-oryx/site": "*",
     "@spryker-oryx/themes": "*",

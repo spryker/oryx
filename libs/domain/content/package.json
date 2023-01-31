@@ -13,7 +13,7 @@
   "peerDependencies": {
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/site": "*",
     "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",

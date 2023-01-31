@@ -19,7 +19,7 @@
     "@spryker-oryx/content": "*",
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/product": "*",
     "@spryker-oryx/router": "*",
     "@spryker-oryx/site": "*",

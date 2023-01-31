@@ -21,7 +21,7 @@
     "@spryker-oryx/core": "*",
     "@spryker-oryx/experience": "*",
     "@spryker-oryx/form": "*",
-    "@spryker-oryx/injector": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
