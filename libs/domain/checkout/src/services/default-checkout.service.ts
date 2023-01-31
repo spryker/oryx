@@ -1,6 +1,7 @@
 import { CartService } from '@spryker-oryx/cart';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/di';
+import { orderStorageKey } from '@spryker-oryx/order';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
@@ -21,7 +22,6 @@ import {
   Checkout,
   CheckoutResponse,
   ContactDetails,
-  orderStorageKey,
   Validity,
 } from '../models';
 import { CheckoutAdapter } from './adapter';

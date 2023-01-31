@@ -10,14 +10,15 @@ import {
   Shipment,
   Validity,
 } from '@spryker-oryx/checkout';
-import { mockOrderData } from '@spryker-oryx/checkout/mocks';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { orderStorageKey } from '@spryker-oryx/order';
+import { mockOrderData } from '@spryker-oryx/order/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { firstValueFrom, of } from 'rxjs';
 import { describe } from 'vitest';
-import { CheckoutResponse, orderStorageKey } from '../models';
+import { CheckoutResponse } from '../models';
 import { CheckoutAdapter } from './adapter';
 
 class MockCheckoutOrchestrationService

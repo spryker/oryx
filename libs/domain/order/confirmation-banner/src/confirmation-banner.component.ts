@@ -1,5 +1,5 @@
-import { OrderController } from '@spryker-oryx/checkout';
 import { ComponentMixin } from '@spryker-oryx/experience';
+import { OrderController } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';

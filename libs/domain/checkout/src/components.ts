@@ -1,7 +1,6 @@
 export * from '../address/src/address.def';
 export * from '../auth/src/auth.def';
 export * from '../composition/src/composition.def';
-export * from '../confirmation-banner/src/confirmation-banner.def';
 export * from '../contact/src/contact.def';
 export * from '../delivery/src/delivery.def';
 export * from '../guest/src/guest.def';

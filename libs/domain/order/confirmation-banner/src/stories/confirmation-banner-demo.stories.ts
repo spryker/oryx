@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Order Confirmation Banner`,
+  title: `${storybookPrefix}/Confirmation Banner`,
 } as unknown as Meta;
 
 interface Props {

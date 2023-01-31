@@ -55,12 +55,5 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-checkout-composition>`,
     },
-    ['oryx-order-confirmation-banner']: {
-      template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-order-confirmation-banner
-          uid="${uid}"
-          class=${ifDefined(layoutClasses)}
-        ></oryx-order-confirmation-banner>`,
-    },
   },
 };

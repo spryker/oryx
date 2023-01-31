@@ -12,6 +12,7 @@ import {
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
+import { orderFeature } from '@spryker-oryx/order';
 import { productFeature } from '@spryker-oryx/product';
 import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature } from '@spryker-oryx/search';
@@ -39,6 +40,7 @@ export const b2cFeatures: AppFeature[] = [
   new RouterFeature(),
   cartFeature,
   checkoutFeature,
+  orderFeature,
   contentFeature,
   formFeature,
   experienceFeature,

@@ -1,5 +1,5 @@
 import { CheckoutResponse, CheckoutService } from '@spryker-oryx/checkout';
-import { mockOrderData } from '@spryker-oryx/checkout/mocks';
+import { mockOrderData } from '@spryker-oryx/order/mocks';
 import { Observable, of } from 'rxjs';
 
 export class MockCheckoutService implements CheckoutService {

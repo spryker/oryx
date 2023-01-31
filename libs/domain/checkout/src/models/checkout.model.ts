@@ -1,4 +1,4 @@
-import { OrderData } from './order.model';
+import { OrderData } from '@spryker-oryx/order';
 
 export interface CheckoutData {
   addresses?: unknown[];

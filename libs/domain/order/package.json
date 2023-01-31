@@ -1,0 +1,30 @@
+{
+  "name": "@spryker-oryx/order",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Order features Oryx applications",
+  "author": "Spryker",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./mocks": {
+      "types": "./src/mocks/index.d.ts",
+      "default": "./src/mocks/index.js"
+    }
+  },
+  "peerDependencies": {
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/cart": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
+    "lit": "^2.4.0",
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
+  }
+}

@@ -2,7 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { map, Observable, shareReplay } from 'rxjs';
-import { CheckoutContext, OrderComponentProperties } from '../models';
+import { OrderComponentProperties, OrderContext } from '../models';
 
 export class OrderController {
   protected context: ContextController;
@@ -18,7 +18,7 @@ export class OrderController {
 
   getRef(): Observable<string | null> {
     return this.context
-      .get(CheckoutContext.OrderId, this.observe.get('order-id'))
+      .get(OrderContext.OrderId, this.observe.get('order-id'))
       .pipe(
         map((id) => id ?? null),
         shareReplay({ refCount: true, bufferSize: 1 })

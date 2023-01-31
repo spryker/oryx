@@ -9,5 +9,3 @@ export * from './default-checkout-orchestration.service';
 export * from './default-checkout-payment.service';
 export * from './default-checkout-shipment.service';
 export * from './default-checkout.service';
-export * from './default-order.service';
-export * from './order.service';
