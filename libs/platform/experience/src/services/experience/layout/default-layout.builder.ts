@@ -110,54 +110,96 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     };
 
     const add = (
-      rule: string,
-      value: string | number | undefined,
+      rulesObj: { [key: string]: string | number | undefined },
       options?: { omitUnit?: boolean; addEmpty?: boolean; unit?: string }
     ) => {
-      if (!value) return;
+      Object.entries(rulesObj).forEach(([rule, value]) => {
+        if (!value) return;
 
-      if (!isNaN(Number(value))) {
-        if (!options?.omitUnit) {
-          value = addUnit(value, options?.unit);
-        } else if (value === 0 && !options?.addEmpty) {
-          value = '';
-        } else {
-          value = String(value);
+        if (!isNaN(Number(value))) {
+          if (!options?.omitUnit) {
+            value = addUnit(value, options?.unit);
+          } else if (value === 0 && !options?.addEmpty) {
+            value = '';
+          } else {
+            value = String(value);
+          }
         }
-      }
 
-      // do not add empty values unless explicitly asked
-      if (!value && !options?.addEmpty) {
-        return;
-      }
+        // do not add empty values unless explicitly asked
+        if (!value && !options?.addEmpty) {
+          return;
+        }
 
-      rules.push(`${rule}: ${value}`);
+        rules.push(`${rule}: ${value}`);
+      });
     };
 
-    add('--cols', data.columnCount, { omitUnit: true });
-    add('--span', data.span, { omitUnit: true });
-    add('--gap', data.gap);
-    add('margin-inline', data.marginInline);
-    add('margin-block', data.marginBlock);
-    add('--padding-inline', data.paddingInline);
-    add('padding-block', data.paddingBlock);
-    add('--top', data.top);
-    add('--width', data.width);
-    if (data.width) {
-      add('--flex', `0 0 min(100%, ${addUnit(data.width)})`);
+    add(
+      {
+        '--cols': data.columnCount,
+        '--grid-column': data.gridColumn,
+        '--grid-row': data.gridRow,
+        '--span': data.span,
+        '--z-index': data.zIndex,
+        '--rotate': data.rotate,
+      },
+      { omitUnit: true }
+    );
+
+    add({
+      '--align-items': data.align,
+      '--gap': data.gap,
+      '--top': data.top,
+      '--width': data.width,
+      '--height': data.height,
+      margin: data.margin,
+      border: data.border,
+      'border-radius': data.radius,
+      background: data.background,
+      overflow: data?.overflow,
+    });
+
+    add({ '--rotate': data.rotate }, { unit: 'deg' });
+
+    if (data.padding) {
+      add({
+        padding: data.padding,
+        '--scroll-start': this.findCssValue(data.padding, 'start'),
+      });
     }
 
-    add('--height', data.height);
-    add('border', data.border);
-    add('border-radius', data.radius);
-    add('background', data.background);
-    add('--z-index', data.zIndex, { omitUnit: true });
-    add('--grid-column', data.gridColumn, { omitUnit: true });
-    add('--grid-row', data.gridRow, { omitUnit: true });
-    add('--align-items', data.align);
-    add('--rotate', data.rotate, { unit: 'deg' });
-    add('overflow', data?.overflow);
-
     return rules;
+  }
+
+  /**
+   * Extracts a specified position value from a given string.
+   *
+   * @param data - A string representing CSS values, with each value separated by a space.
+   * @param pos - The position to extract the value for, one of: 'top', 'end', 'bottom', or 'start'.
+   * @returns The extracted value or `undefined` if the position is not found.
+   *
+   * @example
+   * const padding = '10px 5px 20px';
+   * findCssValue(padding, 'top'); // '10px'
+   * findCssValue(padding, 'end'); // '5px'
+   * findCssValue(padding, 'bottom'); // '20px'
+   * findCssValue(padding, 'start'); // '5px'
+   */
+  protected findCssValue(
+    data: string,
+    pos: 'top' | 'bottom' | 'start' | 'end'
+  ): string | undefined {
+    const positions = data.split(' ');
+    switch (pos) {
+      case 'top':
+        return positions[0];
+      case 'end':
+        return positions[1] ?? positions[0];
+      case 'bottom':
+        return positions[2] ?? positions[0];
+      case 'start':
+        return positions[3] ?? positions[1] ?? positions[0];
+    }
   }
 }

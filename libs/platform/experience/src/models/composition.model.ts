@@ -18,6 +18,7 @@ export enum CompositionLayout {
   Carousel = 'carousel',
   Grid = 'grid',
   Flex = 'flex',
+  Text = 'text',
 }
 
 export interface StyleProperties {
@@ -123,24 +124,14 @@ export interface StyleProperties {
   height?: string;
 
   /**
-   * Allows to set the horizontal padding of the item.
+   * Allows to set the padding of the item.
    */
-  paddingInline?: string;
+  padding?: string;
 
   /**
-   * Allows to set the vertical padding of the item.
+   * Allows to set the margin of the item.
    */
-  paddingBlock?: string;
-
-  /**
-   * Allows to set the horizontal margin of the item.
-   */
-  marginInline?: string;
-
-  /**
-   * Allows to set the vertical margin of the item.
-   */
-  marginBlock?: string;
+  margin?: string;
 
   /**
    * The top is typically used in combination with a sticky layout, to configure the position where the

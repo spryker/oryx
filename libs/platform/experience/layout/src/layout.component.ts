@@ -24,6 +24,7 @@ export class LayoutComponent
 
   @property({ reflect: true }) layout?: CompositionLayout;
   @property({ reflect: true, type: Boolean }) sticky?: boolean;
+  @property({ reflect: true, type: Boolean }) vertical?: boolean;
   @property({ reflect: true, type: Boolean }) container?: boolean;
   @property({ reflect: true, type: Boolean }) maxWidth?: boolean;
 

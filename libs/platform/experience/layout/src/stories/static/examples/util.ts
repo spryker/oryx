@@ -22,6 +22,7 @@ export const pageStyles = html`
   <style>
     .page {
       padding-inline: 10px;
+      align-items: start;
     }
     oryx-layout.page > oryx-layout {
       --padding-inline: 10px;

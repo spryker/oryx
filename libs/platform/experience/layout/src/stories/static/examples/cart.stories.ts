@@ -16,7 +16,7 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout container class="page">
       ${generateHeader()}
 
-      <oryx-layout .layout=${'two-column'}>
+      <oryx-layout layout="two-column">
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}
         </oryx-layout>

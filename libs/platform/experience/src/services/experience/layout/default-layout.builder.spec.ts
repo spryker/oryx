@@ -1,11 +1,7 @@
 import { App, AppRef, Theme, ThemePlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
-import {
-  CompositionLayout,
-  CompositionProperties,
-  StyleProperties,
-} from '../../../models';
+import { LayoutAlign, StyleProperties } from '../../../models';
 import { BreakpointService } from './breakpoint.service';
 import { DefaultBreakpointService } from './default-breakpoint.service';
 import { DefaultLayoutBuilder } from './default-layout.builder';
@@ -29,16 +25,18 @@ class MockApp implements Partial<App> {
   findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
-describe.skip('DefaultLayoutBuilder', () => {
+describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
 
   let styles: string | undefined;
+
   const populate = (data: StyleProperties): void => {
     styles = service.getLayoutStyles(data);
   };
+
   const expectStyleRule = (
-    key: string,
-    value: string,
+    key: keyof StyleProperties,
+    value: string | number,
     expectedRule: string
   ): void => {
     describe(`when the ${key} is configured`, () => {
@@ -98,158 +96,86 @@ describe.skip('DefaultLayoutBuilder', () => {
     expect(service).toBeInstanceOf(DefaultLayoutBuilder);
   });
 
-  describe('styles', () => {
-    expectStyleRule('gap', '10px', 'gap:10px;');
-
-    expectStyleRule('margin', '10px', '--oryx-layout-margin:10px;');
-    expectStyleRuleWithUnit('margin', '10', '--oryx-layout-margin');
-
-    expectStyleRule('padding', '10px', '--oryx-layout-padding:10px;');
-    expectStyleRuleWithUnit('padding', '10', '--oryx-layout-padding');
-
-    expectStyleRule('height', '50%', '--oryx-layout-height:50%');
-    expectStyleRuleWithUnit('height', '10', '--oryx-layout-height');
-
-    expectStyleRule('border', 'solid red 10px', 'border:solid red 10px;');
-
-    expectStyleRule('radius', '10px', 'border-radius:10px;');
-    expectStyleRuleWithUnit('radius', '10', 'radius');
-
-    expectStyleRule('top', '10px', 'top:10px;');
-    expectStyleRuleWithUnit('top', '10', 'top');
-
-    expectStyleRule('bottom', '10px', 'bottom:10px;');
-    expectStyleRuleWithUnit('bottom', '10', 'bottom');
-
-    expectStyleRule('width', '50%', '--oryx-layout-item-width:50%');
-    expectStyleRuleWithUnit('width', '10', '--oryx-layout-item-width');
-
-    expectStyleRule('span', '4', '--oryx-layout-span:4');
-    expectStyleRule('zIndex', '3', '--oryx-z-index:3');
-
-    expectStyleRule('background', 'red', 'background:red;');
+  describe('style properties', () => {
+    expectStyleRule('columnCount', 9, '--cols: 9');
+    expectStyleRule('gridColumn', 3, '--grid-column: 3');
+    expectStyleRule('gridRow', 5, '--grid-row: 5');
+    expectStyleRule('align', LayoutAlign.Center, '--align-items: center');
+    expectStyleRule('align', LayoutAlign.Start, '--align-items: start');
+    expectStyleRule('align', LayoutAlign.Stretch, '--align-items: stretch');
+    expectStyleRule('align', LayoutAlign.End, '--align-items: end');
+    expectStyleRule('span', 3, '--span: 3');
+    expectStyleRule('gap', 10, '--gap: 10px');
+    expectStyleRule('gap', '10%', '--gap: 10%');
+    expectStyleRule('top', '10', '--top: 10px');
+    expectStyleRule('top', '10vh', '--top: 10vh');
+    expectStyleRule('width', '100px', '--width: 100px');
+    expectStyleRule('height', '100px', '--height: 100px');
+    expectStyleRule('margin', '10', 'margin: 10px');
+    expectStyleRule('margin', '10%', 'margin: 10%');
+    expectStyleRule('padding', '15', 'padding: 15px');
+    expectStyleRule('padding', '15%', 'padding: 15%');
+    expectStyleRule('padding', '10px', '--scroll-start: 10px');
+    expectStyleRule('padding', '10px 5px', '--scroll-start: 5px');
+    expectStyleRule('padding', '10px 5px 20px', '--scroll-start: 5px');
+    expectStyleRule('padding', '10px 5px 20px 30px', '--scroll-start: 30px');
+    expectStyleRule('border', '15px solid red', 'border: 15px solid red');
+    expectStyleRule('radius', '15', 'border-radius: 15px');
+    expectStyleRule('background', 'red', 'background: red');
+    expectStyleRule(
+      'background',
+      'url("http://lorempixel.com/1920/1080/nature"',
+      'background: url("http://lorempixel.com/1920/1080/nature"'
+    );
+    expectStyleRule('zIndex', 3, '--z-index: 3');
+    expectStyleRule('rotate', 3, '--rotate: 3deg');
+    expectStyleRule('rotate', -2, '--rotate: -2deg');
+    expectStyleRule('overflow', 'auto', 'overflow: auto');
   });
 
   describe('classes', () => {
-    let layoutClasses: string | undefined;
-    const populateLayout = (data: CompositionProperties): void => {
-      layoutClasses = service.getLayoutClasses(data);
-    };
-
-    describe('when no layout properties are provided', () => {
-      beforeEach(() => {
-        populateLayout({});
-      });
-      it('should return an undefined object', () => {
-        expect(layoutClasses).toBeUndefined();
-      });
-    });
-
-    describe('container', () => {
-      describe('when a container is configured', () => {
-        beforeEach(() => populateLayout({ rules: [{ container: true }] }));
-        it('should add the container class', () => {
-          expect(layoutClasses).toContain('container');
-        });
-      });
-      describe('when a container is not configured', () => {
-        beforeEach(() => populateLayout({}));
-        it('should not add the container class', () => {
-          expect(layoutClasses).toBeUndefined();
-        });
-      });
-    });
-
     describe('maxWidth', () => {
+      let layoutClasses: string | undefined;
+
       describe('when a maxWidth is configured', () => {
-        beforeEach(() => populateLayout({ rules: [{ maxWidth: true }] }));
+        beforeEach(() => {
+          layoutClasses = service.getLayoutClasses({
+            rules: [{ maxWidth: true }],
+          });
+        });
         it('should add the maxWidth class', () => {
           expect(layoutClasses).toContain('maxWidth');
         });
       });
       describe('when a maxWidth is not configured', () => {
-        beforeEach(() => populateLayout({}));
+        beforeEach(() => {
+          layoutClasses = service.getLayoutClasses({});
+        });
         it('should not add the maxWidth class', () => {
           expect(layoutClasses).toBeUndefined();
         });
       });
     });
 
-    describe('layout', () => {
-      describe('column', () => {
-        describe(`when the layout is column`, () => {
-          beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.Column }] });
-          });
-          it(`should have a layout-column class`, () => {
-            expect(layoutClasses).toContain('layout-column');
-          });
-          [1, 2, 3, 4].forEach((columnCount) => {
-            describe(`and a column-count of ${columnCount} is also provided`, () => {
-              beforeEach(() => {
-                populateLayout({
-                  rules: [
-                    {
-                      layout: CompositionLayout.Column,
-                      columnCount,
-                    },
-                  ],
-                });
-              });
-              it(`should add a column-count-${columnCount} class`, () => {
-                expectStyleRule(
-                  '--oryx-layout-item-count',
-                  columnCount.toString(),
-                  `--oryx-layout-item-count:${columnCount}`
-                );
-              });
-            });
-          });
-        });
-      });
-
-      describe('carousel', () => {
-        describe(`when the layout is carousel`, () => {
-          beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.Carousel }] });
-          });
-          it(`should have a layout-carousel class`, () => {
-            expect(layoutClasses).toContain('layout-carousel');
-          });
-        });
-
-        describe(`when layout is not provided`, () => {
-          beforeEach(() => {
-            populateLayout({});
-          });
-          it(`should not have a layout-carousel class`, () => {
-            expect(layoutClasses).toBeUndefined();
-          });
-        });
-
-        describe(`when the layout is not carousel`, () => {
-          beforeEach(() => {
-            populateLayout({ rules: [{ layout: CompositionLayout.Column }] });
-          });
-          it(`should not have a layout-carousel class`, () => {
-            expect(layoutClasses).not.toContain('layout-carousel');
-          });
-        });
-      });
-    });
-
     describe('sticky', () => {
+      let layoutClasses: string | undefined;
       describe('when a sticky = true', () => {
-        beforeEach(() => populateLayout({ rules: [{ sticky: true }] }));
+        beforeEach(() => {
+          layoutClasses = service.getLayoutClasses({
+            rules: [{ sticky: true }],
+          });
+        });
         it('should add the sticky class', () => {
           expect(layoutClasses).toContain('sticky');
         });
       });
 
-      describe('when a sticky = true', () => {
-        beforeEach(() => populateLayout({ rules: [{}] }));
+      describe('when sticky position is not provided', () => {
+        beforeEach(() => {
+          layoutClasses = service.getLayoutClasses({ rules: [] });
+        });
         it('should add the sticky class', () => {
-          expect(layoutClasses).not.toContain('sticky');
+          expect(layoutClasses).toBeUndefined();
         });
       });
     });

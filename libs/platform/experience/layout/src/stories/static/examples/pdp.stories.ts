@@ -11,12 +11,12 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <h1>List layout</h1>
+    <h1>Product Detail Page layout</h1>
 
     <oryx-layout container class="page">
       ${generateHeader()}
 
-      <oryx-layout .layout=${'two-column'}>
+      <oryx-layout layout="two-column">
         <oryx-layout layout="list">
           <div style="min-height:400px;">Product images</div>
 

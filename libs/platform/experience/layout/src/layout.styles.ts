@@ -9,6 +9,8 @@ import { css } from 'lit';
  *
  * The jumbotron effect requires an alternative setup for the auto-margin that you'd normally apply to a container.
  * Instead, we calculate an inline padding, so that the background can be leveraged.
+ *
+ * TODO: consider moving to composition/list component(s)
  */
 const containerLayout = css`
   :host([container]:not([layout])) {
@@ -56,6 +58,10 @@ const listLayout = css`
   :host([layout='list']) ::slotted(*) {
     width: 100%;
   }
+
+  :host([layout='list']) ::slotted(*[layout*='column']) {
+    --oryx-layout-factor: calc(var(--oryx-layout-cols) / var(--span, 1));
+  }
 `;
 
 /**
@@ -68,13 +74,33 @@ const columnLayout = css`
     --nested-layout-factor: 1;
 
     display: flex;
-    align-items: var(--align-items, start);
     flex-wrap: wrap;
+    align-items: var(--align-items, start);
   }
 
-  :host([layout*='column']) ::slotted(*[layout='grid']),
-  :host([layout*='column']) ::slotted(*[layout='carousel']) {
-    --nested-layout-factor: var(--oryx-layout-factor);
+  :host {
+    /* move to 0 for plp... */
+    flex: 0 1
+      min(
+        100%,
+        calc(
+          ((100% - (var(--cols) - 1) * var(--gap, 0px)) / var(--cols)) *
+            var(--span, 1) + ((var(--span, 1) - 1) * var(--gap, 0px))
+        )
+      );
+  }
+
+  :host([layout*='column']) ::slotted(*) {
+    flex: 0 0
+      min(
+        100%,
+        calc(
+          (
+              (100% - (var(--nested-cols, var(--cols)) - 1) * var(--gap, 0px)) /
+                var(--nested-cols, var(--cols))
+            ) * var(--span, 1) + ((var(--span, 1) - 1) * var(--gap, 0px))
+        )
+      );
   }
 
   :host([layout]) ::slotted(*[layout*='column']) {
@@ -86,18 +112,43 @@ const columnLayout = css`
     );
   }
 
-  :host,
-  :host([layout*='column']) ::slotted(*) {
+  :host([layout*='column']) ::slotted(*:is([layout='flex'], [layout='list'])) {
+    --nested-cols: var(--oryx-layout-cols);
+  }
+
+  :host([layout*='column'])
+    ::slotted(*:is([layout='carousel'], [layout='text'])) {
+    --nested-cols: var(--span, 1);
+  }
+
+  :host([layout*='column']) ::slotted(*[layout='grid']) {
+    --nested-cols: calc(
+      var(--oryx-layout-cols) /
+        var(--nested-layout-factor, var(--oryx-layout-factor))
+    );
+  }
+
+  :host([layout*='column'])
+    ::slotted(*:is([layout='grid'], [layout='carousel'], [layout='text'])) {
+    --nested-layout-factor: var(--oryx-layout-factor);
+  }
+
+  /* TODO: we can maybe simplify and align with other nested refactors */
+  :host([layout*='column'])
+    ::slotted(*:is([layout='carousel'], [layout='text'])) {
     flex: 0 0
       min(
         100%,
         calc(
-          ((100% - (var(--cols) - 1) * var(--gap, 0px)) / var(--cols)) *
-            var(--span, 1) + ((var(--span, 1) - 1) * var(--gap, 0px))
+          (100% - ((var(--oryx-layout-cols) - 1) * var(--gap, 0px))) /
+            var(--oryx-layout-factor) * var(--span, 1) +
+            ((var(--span, 1) - 1) * var(--gap, 0px))
         )
       );
   }
+`;
 
+const twoColumnLayout = css`
   :host([layout='two-column']) {
     --gap: var(--oryx-layout-column-two-gap);
   }
@@ -105,8 +156,19 @@ const columnLayout = css`
   :host([layout='two-column']) ::slotted(*:nth-child(odd)) {
     --span: var(--oryx-layout-column-two-span);
   }
+
   :host([layout='two-column']) ::slotted(*:nth-child(even)) {
     flex-grow: 1;
+  }
+
+  :host([layout='two-column']) ::slotted(*:nth-child(odd)[layout='column']) {
+    --nested-cols: var(--oryx-layout-column-two-span);
+  }
+
+  :host([layout='two-column']) ::slotted(*:nth-child(even)[layout='column']) {
+    --nested-cols: calc(
+      var(--oryx-layout-cols, 12) - var(--oryx-layout-column-two-span)
+    );
   }
 `;
 
@@ -117,8 +179,8 @@ const columnLayout = css`
 const flexLayout = css`
   :host([layout='flex']) {
     display: flex;
-    align-items: var(--align-items, start);
     flex-wrap: wrap;
+    align-items: var(--align-items, start);
   }
 
   :host([layout='flex']) ::slotted(*) {
@@ -135,17 +197,20 @@ const flexLayout = css`
  */
 const gridLayout = css`
   :host([layout='grid']) {
-    grid-template-columns: repeat(var(--cols), 1fr);
+    display: grid;
+    flex-basis: inherit;
+    grid-template-columns: repeat(
+      var(--cols, auto-fill),
+      var(--item-size, 1fr)
+    );
   }
 
-  :host([layout*='column']) ::slotted(*[layout='grid']) {
-    grid-template-columns: repeat(
-      calc(
-        var(--oryx-layout-cols, 12) /
-          (var(--oryx-layout-cols, 12) / var(--span, 1))
-      ),
-      1fr
+  :host([layout='grid'][vertical]) {
+    grid-template-rows: repeat(
+      var(--cols, auto-fill),
+      minmax(var(--item-size), 1fr)
     );
+    grid-auto-flow: column;
   }
 `;
 
@@ -159,24 +224,45 @@ const gridLayout = css`
  */
 const carouselLayout = css`
   :host([layout='carousel']) {
-    grid-auto-columns: calc(
-      (100% - var(--gap, 0px) * (var(--nested-cols, var(--cols)) - 1)) /
-        var(--nested-cols, var(--cols))
+    display: grid;
+    grid-auto-columns: var(
+      --item-size,
+      calc(
+        (100% - var(--gap, 0px) * (var(--nested-cols, var(--cols)) - 1)) /
+          var(--nested-cols, var(--cols))
+      )
     );
+
     grid-auto-flow: column;
-    overflow-x: auto;
+    overflow: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: both mandatory;
     scroll-behavior: smooth;
-    scroll-padding-inline-start: var(--padding-inline, 0px);
+    scroll-padding-inline-start: var(--scroll-start, 0px);
+  }
+
+  :host([vertical][layout='carousel']) {
+    overflow-x: initial;
+    grid-column: auto;
+    grid-auto-flow: row;
+    scroll-padding-block-start: var(--scroll-start, 0px);
   }
 
   :host([layout='carousel']) ::slotted(*) {
     scroll-snap-align: start;
   }
+`;
 
-  :host([layout*='column']) ::slotted(*[layout='carousel']) {
-    --nested-cols: var(--span, 1);
+/**
+ * The text layout
+ */
+const textLayout = css`
+  :host([layout='text']) {
+    display: block;
+    column-count: var(--cols, 1);
+  }
+  :host([layout='text']) ::slotted(*:first-child) {
+    margin-top: 0;
   }
 `;
 
@@ -200,8 +286,6 @@ export const layoutStyles = css`
       var(--oryx-layout-cols, 12) /
         var(--nested-layout-factor, var(--oryx-layout-factor, 1))
     );
-
-    padding-inline: var(--padding-inline, initial);
   }
 
   :host,
@@ -210,7 +294,6 @@ export const layoutStyles = css`
   }
 
   :host([layout]) {
-    display: grid;
     align-items: var(--align-items, start);
     gap: var(--gap, 0);
   }
@@ -223,9 +306,7 @@ export const layoutStyles = css`
   :host([layout]),
   ::slotted(*) {
     box-sizing: border-box;
-    grid-column: var(--grid-column, auto) / span
-      min(calc(var(--cols) - (var(--grid-column, 1) - 1)), var(--span));
-    grid-row: var(--grid-row, auto);
+    grid-column: auto / span var(--span, 1);
   }
 
   :host([layout]:not([layout*='column']))
@@ -233,7 +314,8 @@ export const layoutStyles = css`
     --cols: var(--span, 1);
   }
 
-  :host([layout]) ::slotted(*[has-layout]) {
+  :host([layout]) ::slotted(*[has-layout]),
+  :host([layout]) ::slotted(*[layout]) {
     --cols: var(--span, 1);
   }
 
@@ -243,11 +325,13 @@ export const layoutStyles = css`
     flex-grow: 1;
   }
 
-  ${listLayout}
   ${containerLayout}
-  ${columnLayout}
   ${flexLayout}
+  ${columnLayout}
+  ${listLayout}
   ${gridLayout}
   ${carouselLayout}
+  ${textLayout}
+  ${twoColumnLayout}
   ${stickyLayout}
 `;

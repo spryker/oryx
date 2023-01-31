@@ -29,17 +29,10 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <ul>
-      <li>
-        inline padding can be added by a variable (--inline-padding: 10px)
-      </li>
-      <li>block padding can be added by standard css</li>
+      <li>Padding can be added by standard css</li>
     </ul>
 
-    <oryx-layout
-      layout="grid"
-      container
-      style="--padding-inline:10px;padding-block:10px;"
-    >
+    <oryx-layout layout="grid" container style="padding:10px;">
       ${generateLayoutItems(12)}
     </oryx-layout>
 
@@ -47,10 +40,7 @@ const Template: Story = (): TemplateResult => {
       <li>Border does not affect the column width (1, border-width: 5px)</li>
       <li>Margin does not affect the column width (2, margin: 10px)</li>
       <li>Padding does not affect the column width (3, padding: 40px)</li>
-      <li>
-        Items are stretched by default, but can be overridden (4, centered)
-      </li>
-      <li>Outline does not affect the column width nor the gap</li>
+      <li>Outline does not affect the column width nor the gap (4)</li>
       <li>
         The grid will hide all overflowed content though (unless a span is used)
       </li>
@@ -62,28 +52,28 @@ const Template: Story = (): TemplateResult => {
       <div style="padding:40px;background:var(--oryx-color-secondary-300">
         3
       </div>
-      <div style="outline:1px solid blue;outline-offset: 5px;">4</div>
+      <div style=" outline:1px solid blue;outline-offset: 5px;">4</div>
       ${generateLayoutItems(4, 5)}
     </oryx-layout>
 
     <ul>
       <li>Custom height can be applied (1)</li>
       <li>Margin does not affect the column width (c2)</li>
-      <li>Items are stretched by default, but can be overridden (c3)</li>
+      <li>Items are stretched by default, but can be overridden (2-4)</li>
     </ul>
 
     <oryx-layout layout="grid" container>
       <div style="height:100px;background:var(--oryx-color-secondary-300">
         1
       </div>
-      <div style="align-self:start;background:var(--oryx-color-secondary-300">
-        2
-      </div>
       <div style="align-self:center;background:var(--oryx-color-secondary-300">
-        3
+        2 (center)
       </div>
       <div style="align-self:end;background:var(--oryx-color-secondary-300">
-        4
+        3 (end)
+      </div>
+      <div style="align-self:stretch;background:var(--oryx-color-secondary-300">
+        4 (stretch)
       </div>
       ${generateLayoutItems(6, 5)}
     </oryx-layout>
@@ -99,7 +89,7 @@ const Template: Story = (): TemplateResult => {
 
     <h3>Custom column count</h3>
     <ul>
-      <li>Column count can be customised</li>
+      <li>Column count can be customised ( --cols: 6 )</li>
       <li>Column span reflects the new column size</li>
     </ul>
     <oryx-layout layout="grid" style="--cols: 6" container>
