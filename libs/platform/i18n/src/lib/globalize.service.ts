@@ -17,7 +17,8 @@ export class GlobalizeService {
   protected globalizeCaches: Record<string, Globalize> = Object.create(null);
 
   constructor(
-    protected cldrImporters = [...GlobalizeService.MinimalCldrImporters]
+    protected cldrImporters = [...GlobalizeService.MinimalCldrImporters],
+    protected globalize = Globalize
   ) {}
 
   addCldrImporter(cldrImporter: GlobalizeCldrImporter): void {
@@ -27,7 +28,7 @@ export class GlobalizeService {
 
   async loadMessages(data: I18nDataBundle): Promise<void> {
     await this.init();
-    Globalize.loadMessages(data);
+    this.globalize.loadMessages(data);
     this.dropCaches();
   }
 
@@ -71,9 +72,7 @@ export class GlobalizeService {
       return this.globalizeCaches[localeId];
     }
 
-    return (this.globalizeCaches[localeId] = (
-      Globalize as unknown as Globalize.Static
-    )(localeId));
+    return (this.globalizeCaches[localeId] = this.globalize(localeId));
   }
 
   protected async init(): Promise<void> {
@@ -86,7 +85,7 @@ export class GlobalizeService {
       this.cldrImporters.map((cldrImporter) => cldrImporter())
     );
 
-    Globalize.load(await this.loadStatus);
+    this.globalize.load(await this.loadStatus);
   }
 
   protected dropCaches(): void {

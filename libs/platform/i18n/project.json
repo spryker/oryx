@@ -6,6 +6,9 @@
     "build": {
       "executor": "./tools/executors/components-library:build"
     },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
