@@ -22,6 +22,7 @@ const mockCurrentQuery: RouteParams = {
 
 class MockRouterService implements Partial<RouterService> {
   currentQuery = vi.fn().mockReturnValue(of(mockCurrentQuery));
+  getPathId = vi.fn().mockReturnValue('');
 }
 
 class MockProductListService implements Partial<ProductListService> {

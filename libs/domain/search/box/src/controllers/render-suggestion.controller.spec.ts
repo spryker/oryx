@@ -15,12 +15,6 @@ const resource: SuggestionResource = {
   url: 'test',
 };
 
-const mockCategoryNames = [
-  'category-name1',
-  'category-name2',
-  'category-name1232',
-];
-
 const price: ProductPrice = {
   value: 10,
   currency: 'EUR',
@@ -70,9 +64,9 @@ const completionOnly: Suggestion = {
 const categoriesOnly: Suggestion = {
   completion: [],
   categories: [
-    { name: 'test1', url: `test/ua/${mockCategoryNames[0]}` },
-    { name: 'test2', url: `test/ua/uk/${mockCategoryNames[1]}` },
-    { name: 'test3', url: `test/ua/test/name/${mockCategoryNames[2]}` },
+    { name: 'test1', url: '0' },
+    { name: 'test2', url: '1' },
+    { name: 'test3', url: '2' },
   ],
   cmsPages: [],
   products: [],
@@ -197,12 +191,6 @@ describe('RenderSuggestionController', () => {
         'section:nth-child(1) > ul content-link'
       );
       Array.from(links).forEach((link, index) => {
-        expect((link as ContentLinkComponent).options?.id).toBe(
-          mockCategoryNames[index]
-        );
-        expect((link as ContentLinkComponent).options?.params?.q).toBe(
-          mockCategoryNames[index]
-        );
         expect((link as ContentLinkComponent).options?.type).toBe(
           SemanticLinkType.Category
         );

@@ -119,6 +119,15 @@ export class DefaultRouterService implements RouterService {
     );
   }
 
+  getPathId(id: string): string | undefined {
+    const routeTokens = location.pathname.replace(/^\/+/g, '').split('/');
+    const tokenIndex = routeTokens.findIndex((token) => token === id);
+
+    return tokenIndex !== -1 && routeTokens.length > tokenIndex + 1
+      ? routeTokens[tokenIndex + 1]
+      : undefined;
+  }
+
   protected createUrlParams(params?: {
     [x: string]: string | string[] | undefined;
   }): string | undefined {

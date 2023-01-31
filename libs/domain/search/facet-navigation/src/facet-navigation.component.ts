@@ -67,11 +67,15 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
   }
 
   protected facetNavigation(parameter: string, values: string[]): void {
+    const pathId = this.routerService.getPathId(parameter);
+
     this.routerService
-      .getUrl('', {
-        queryParams: {
-          [parameter.toLowerCase()]: values,
-        },
+      .getUrl(`${pathId ? `/${parameter}/${values[0]}` : ''}`, {
+        queryParams: pathId
+          ? undefined
+          : {
+              [parameter.toLowerCase()]: values,
+            },
         queryParamsHandling: 'merge',
         ignoreQueryParams: ['page'],
       })

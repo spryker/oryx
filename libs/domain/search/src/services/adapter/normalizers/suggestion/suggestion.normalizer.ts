@@ -15,11 +15,16 @@ export const SuggestionNormalizer = 'FES.SuggestionNormalizer*';
 export function suggestionAttributesNormalizer(
   data: DeserializedSuggestion[]
 ): Partial<Suggestion> {
-  const { completion, categories, cmsPages } = data[0];
+  const { completion, categories, cmsPages, categoryCollection } = data[0];
 
   return {
     completion,
-    categories,
+    categories: categories.map((category) => ({
+      ...category,
+      idCategory: categoryCollection?.find(
+        (collection) => category.name === collection.name
+      )?.idCategory,
+    })),
     cmsPages,
   };
 }

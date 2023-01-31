@@ -21,4 +21,8 @@ export class MockRouterService implements Partial<RouterService> {
   acceptParams(params: RouteParams): void {
     this.params$.next(params);
   }
+
+  getPathId(id: string): string | undefined {
+    return undefined;
+  }
 }

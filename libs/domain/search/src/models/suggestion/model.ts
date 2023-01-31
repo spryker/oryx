@@ -4,6 +4,7 @@ export interface SuggestionResource {
   name: string;
   url?: string;
   params?: Record<string, string>;
+  idCategory?: string;
 }
 
 export interface Suggestion {

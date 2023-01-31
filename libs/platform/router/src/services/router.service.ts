@@ -11,6 +11,7 @@ export interface RouterService {
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
   getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
+  getPathId(id: string): string | undefined;
 }
 
 export const RouterService = 'oryx.RouterService';

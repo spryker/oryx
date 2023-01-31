@@ -2,7 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { NullableGeneric } from '@spryker-oryx/utilities';
 import { map, Observable, switchMap } from 'rxjs';
-import { Pagination, ProductList, ProductListQualifier } from '../models';
+import { Pagination, ProductList } from '../models';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 
@@ -17,12 +17,13 @@ export class DefaultProductListPageService implements ProductListPageService {
   }
 
   get(): Observable<NullableGeneric<ProductList>> {
-    return this.routerService
-      .currentQuery()
-      .pipe(
-        switchMap((params) =>
-          this.productListService.get(params as ProductListQualifier)
-        )
-      );
+    return this.routerService.currentQuery().pipe(
+      switchMap((params) => {
+        const categoryId = this.routerService.getPathId('category');
+        return this.productListService.get(
+          categoryId ? { ...params, category: categoryId } : params!
+        );
+      })
+    );
   }
 }

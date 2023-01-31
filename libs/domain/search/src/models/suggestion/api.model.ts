@@ -13,6 +13,7 @@ export module ApiSuggestionModel {
   export interface Resource {
     name: string;
     url: string;
+    idCategory?: string;
   }
 
   export type ResponseIncludes =
