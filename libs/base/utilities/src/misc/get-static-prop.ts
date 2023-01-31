@@ -1,7 +1,7 @@
 export interface InstanceWithStatic<T> {
   constructor: {
-    __proto__: Record<string | symbol, T>;
-  } & { [key: string | symbol]: T };
+    [key: string | symbol]: T;
+  };
 }
 
 /**
@@ -10,4 +10,4 @@ export interface InstanceWithStatic<T> {
 export const getStaticProp = <T>(
   clazz: InstanceWithStatic<T>,
   key: string | symbol
-): T => clazz.constructor[key] ?? clazz.constructor.__proto__[key];
+): T => clazz.constructor[key] ?? Object.getPrototypeOf(clazz.constructor)[key];

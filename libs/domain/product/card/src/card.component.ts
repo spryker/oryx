@@ -10,12 +10,12 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import {
   asyncValue,
   hydratable,
-  ObserveController,
+  observe,
   ssrShim,
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { combineLatest, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, tap } from 'rxjs';
 import { ProductCardComponentOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
@@ -34,17 +34,15 @@ import { ProductCardStyles } from './card.styles';
 export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
   static styles = ProductCardStyles;
 
-  protected observe = new ObserveController<ProductCardComponent>(this);
   protected context = new ContextController(this);
   protected product$ = new ProductController(this).getProduct();
   protected options$ = new ContentController(this).getOptions();
 
+  @observe()
+  protected sku$ = new BehaviorSubject(this.sku);
+
   @subscribe()
-  protected sku$ = combineLatest([
-    this.options$,
-    // TODO: investigate issue observe decorator with mixin
-    this.observe.get('sku'),
-  ]).pipe(
+  protected skuSubscriber$ = combineLatest([this.options$, this.sku$]).pipe(
     tap(([options, propSku]) => {
       this.context.provide(ProductContext.SKU, options.sku ?? propSku);
       if (options.titleLineClamp) {

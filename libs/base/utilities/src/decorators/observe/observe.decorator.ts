@@ -18,7 +18,18 @@ const getReactiveDescriptor = (
   proto: TargetDecorator | ReactiveElement,
   propertyKey: string
 ): PropertyDescriptor => {
-  const ownDescriptor = Object.getOwnPropertyDescriptor(proto, propertyKey);
+  let ownDescriptor: PropertyDescriptor | undefined;
+  let prototype = proto;
+
+  while (prototype.constructor.name !== 'LitElement') {
+    ownDescriptor = Object.getOwnPropertyDescriptor(prototype, propertyKey);
+
+    if (ownDescriptor) {
+      break;
+    }
+
+    prototype = Object.getPrototypeOf(prototype);
+  }
 
   if (!ownDescriptor) {
     throw `Invalid observed property name: incorrect ${propertyKey} for observe decorator, please use already created reactive property name as an element to observe`;
