@@ -15,6 +15,7 @@ export enum IconTypes {
   Mark = 'mark',
   Minus = 'minus',
   Remove = 'remove',
+  Report = 'report',
   Rocket = 'rocket',
   Search = 'search',
   Trash = 'trash',

@@ -8,6 +8,7 @@ export const backofficeNgIcons: ThemeIcons = {
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
   [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
+  [IconTypes.Report]: () => import('./icons/report').then((s) => s.default),
   [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
   [IconTypes.Profile]: () => import('./icons/profile').then((s) => s.default),
   [IconTypes.Visible]: () => import('./icons/visible').then((s) => s.default),
