@@ -9,8 +9,8 @@ import { styles } from './banner.styles';
 
 @hydratable('click')
 export class BannerComponent extends ComponentMixin<
-  BannerContent,
-  BannerOptions
+  BannerOptions,
+  BannerContent
 >() {
   static styles = styles;
 

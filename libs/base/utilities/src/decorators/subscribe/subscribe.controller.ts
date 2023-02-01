@@ -8,7 +8,6 @@ interface ObservablesData {
 }
 
 export class SubscribeController implements ReactiveController {
-  protected subscriptions = new Subscription();
   protected observables = new Map<string, ObservablesData>();
   // TODO: temporary solution should be solved with proper hook provided from lit
   protected context = resolve('FES.ContextService', null);

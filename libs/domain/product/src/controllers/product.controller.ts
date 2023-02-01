@@ -32,29 +32,38 @@ export class ProductController {
   }
 
   getProduct(): Observable<Product | null> {
-    return this.observe.get('product').pipe(
-      switchMap((product) => {
-        if (product) {
-          return of(product);
+    return this.context.get(ProductContext.SKU, this.observe.get('sku')).pipe(
+      switchMap((sku, index) => {
+        if (!sku) {
+          return of(null);
         }
 
-        return this.context
-          .get(ProductContext.SKU, this.observe.get('sku'))
-          .pipe(
-            switchMap((sku, index) => {
-              if (!sku) {
-                return of(null);
-              }
-
-              return (
-                this.productService
-                  ?.get({ sku, include: this.include })
-                  .pipe(index ? startWith(null) : identity) ?? of(null)
-              );
-            }),
-            shareReplay({ refCount: true, bufferSize: 1 })
-          );
-      })
+        return (
+          this.productService
+            ?.get({ sku, include: this.include })
+            .pipe(index ? startWith(null) : identity) ?? of(null)
+        );
+      }),
+      shareReplay({ refCount: true, bufferSize: 1 })
     );
+  }
+
+  /**
+   * @deprecated Use getProduct() instead.
+   */
+  getProductLegacy(): Observable<Product | null> {
+    return (
+      this.observe as ObserveController<LitElement & { product?: Product }>
+    )
+      .get('product')
+      .pipe(
+        switchMap((product) => {
+          if (product) {
+            return of(product);
+          }
+
+          return this.getProduct();
+        })
+      );
   }
 }

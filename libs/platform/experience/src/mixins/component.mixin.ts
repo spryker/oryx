@@ -3,7 +3,8 @@ import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ContentComponentProperties } from '../index';
 
-export const ComponentMixin = <A, B = A>(): Type<
+/** @deprecated Use ContentMixin instead */
+export const ComponentMixin = <A, B = unknown>(): Type<
   LitElement & ContentComponentProperties<A, B>
 > => {
   class Component
@@ -11,8 +12,8 @@ export const ComponentMixin = <A, B = A>(): Type<
     implements ContentComponentProperties<A, B>
   {
     @property() uid?: string;
-    @property({ type: Object, reflect: true }) content?: A;
-    @property({ type: Object, reflect: true }) options?: B;
+    @property({ type: Object, reflect: true }) content?: B;
+    @property({ type: Object, reflect: true }) options?: A;
   }
   return Component as Type<LitElement & ContentComponentProperties<A, B>>;
 };

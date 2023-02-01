@@ -1,5 +1,3 @@
-import { Product } from './index';
-
 export interface ProductComponentProperties {
   /**
    * A Stock Keeping Unit (SKU) is used both as an entity (a product or service)
@@ -7,9 +5,4 @@ export interface ProductComponentProperties {
    * is used as a string reference to the product/service.
    */
   sku?: string;
-
-  /**
-   * Allow to pass product data directly bypassing the service
-   */
-  product?: Product;
 }

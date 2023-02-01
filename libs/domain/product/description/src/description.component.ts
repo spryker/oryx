@@ -13,7 +13,7 @@ import { convertLineFeedsToHTML } from './utils';
 @hydratable(['mouseover', 'window:resize'])
 export class ProductDescriptionComponent extends ProductComponentMixin<ProductDescriptionOptions>() {
   protected options$ = new ContentController(this).getOptions();
-  protected product$ = new ProductController(this).getProduct();
+  protected product$ = new ProductController(this).getProductLegacy();
 
   protected override render(): TemplateResult {
     return html`

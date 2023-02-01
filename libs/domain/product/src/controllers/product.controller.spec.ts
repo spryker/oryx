@@ -60,13 +60,11 @@ describe('ProductController', () => {
     // Real example first initialization
     it('should expose the product based on the context', () => {
       const mockObserveReturn = 'mockObserveReturn';
-      mockObserve.get.mockReturnValueOnce(of(null)); // this.observe.get('product') emission
       mockObserve.get.mockReturnValue(mockObserveReturn); // this.observe.get('sku') emission
       const productController = new ProductController(mockThis, mockInclude);
       productController.getProduct().subscribe(callback);
 
-      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'product');
-      expect(mockObserve.get).toHaveBeenNthCalledWith(2, 'sku');
+      expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'sku');
       expect(mockContext.get).toHaveBeenCalledWith(
         ProductContext.SKU,
         mockObserveReturn
@@ -76,18 +74,6 @@ describe('ProductController', () => {
         include: mockInclude,
       });
       expect(callback).toHaveBeenCalledWith(mockProduct);
-    });
-
-    it('should expose the product from the host "product" property', () => {
-      mockObserve.get.mockReturnValue(of(mockWithProduct.product));
-      const productController = new ProductController(
-        mockWithProduct as unknown as LitElement
-      );
-      productController.getProduct().subscribe(callback);
-
-      expect(mockObserve.get).toHaveBeenCalledWith('product');
-      expect(mockContext.get).not.toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith((mockWithProduct as any).product);
     });
 
     // Real example PDP navigation between different products

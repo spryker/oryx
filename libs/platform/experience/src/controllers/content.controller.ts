@@ -17,11 +17,11 @@ export class ContentController<T = unknown, K = unknown> {
     null
   ) as ExperienceService | null;
   protected observe: ObserveController<
-    LitElement & ContentComponentProperties<T, K>
+    LitElement & ContentComponentProperties<K, T>
   >;
   protected optionsService = resolve(FeatureOptionsService, null);
 
-  constructor(protected host: LitElement & ContentComponentProperties<T, K>) {
+  constructor(protected host: LitElement & ContentComponentProperties<K, T>) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
     this.observe = new ObserveController(host);
   }

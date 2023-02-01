@@ -36,7 +36,7 @@ export class ProductMediaComponent extends ProductComponentMixin<ProductMediaOpt
 
   protected productMedia$: Observable<ResponsiveImage> = combineLatest([
     new ContentController(this).getOptions(),
-    new ProductController(this).getProduct(),
+    new ProductController(this).getProductLegacy(),
   ]).pipe(
     map(([options, product]) => {
       const image = this.resolveImage(product, options);
