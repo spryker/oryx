@@ -1,7 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { checkSlots, getShadowElementBySelector } from '@spryker-oryx/testing';
+import {
+  checkSlots,
+  getShadowElementBySelector,
+  userAgentFirefox109,
+} from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
+import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';
 import { modalComponent } from './component';
 import { ModalComponent } from './modal.component';
@@ -19,8 +24,16 @@ describe('Modal', () => {
     }
   };
 
+  const expectBodyOverflow = (overflow: string): void => {
+    expect(document.body.style.getPropertyValue('overflow')).toBe(overflow);
+  };
+
   beforeAll(async () => {
     await useComponent(modalComponent);
+  });
+
+  beforeEach(() => {
+    document.body.style.removeProperty('overflow');
   });
 
   const testCloseStrategies = (): void => {
@@ -238,6 +251,67 @@ describe('Modal', () => {
 
     it('should not render the footer', () => {
       expect(element).not.toContainElement('footer');
+    });
+  });
+
+  describe('body scroll lock', () => {
+    describe('when modal is closed by default', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-modal></oryx-modal>`);
+      });
+
+      it('should not lock body scroll', () => {
+        expectBodyOverflow('');
+      });
+
+      describe('and modal is opened', () => {
+        beforeEach(async () => {
+          element.toggleAttribute('open', true);
+        });
+
+        it('should lock body scroll', () => {
+          expectBodyOverflow('clip');
+        });
+      });
+    });
+
+    describe('when body has default overflow style', () => {
+      const overflow = 'auto';
+      beforeEach(async () => {
+        document.body.style.overflow = overflow;
+        element = await fixture(html`<oryx-modal open></oryx-modal>`);
+      });
+
+      it('should lock body scroll', () => {
+        expectBodyOverflow('clip');
+      });
+
+      describe('and modal is closed', () => {
+        beforeEach(async () => {
+          document.body.style.overflow = overflow;
+          element = await fixture(html`<oryx-modal open></oryx-modal>`);
+          element.toggleAttribute('open', false);
+        });
+
+        it('should restore default value', () => {
+          expectBodyOverflow(overflow);
+        });
+      });
+    });
+
+    describe('Firefox behavior', () => {
+      beforeEach(async () => {
+        mockUserAgent(userAgentFirefox109);
+        element = await fixture(html`<oryx-modal></oryx-modal>`);
+      });
+
+      afterEach(() => {
+        clear();
+      });
+
+      it('should set default value to auto', () => {
+        expectBodyOverflow('auto');
+      });
     });
   });
 

@@ -1,6 +1,9 @@
 export const isSafari = (): boolean =>
   /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
+export const isFirefox = (): boolean =>
+  /^(?!.*Seamonkey)(?=.*Firefox).*/i.test(navigator.userAgent);
+
 export const nonFocusableOnClickInSafari = [
   'button',
   'input[type="radio"]',

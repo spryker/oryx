@@ -1,4 +1,4 @@
-import { Size } from '@spryker-oryx/ui/utilities';
+import { isFirefox, Size } from '@spryker-oryx/ui/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
@@ -8,8 +8,10 @@ import { CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
 
 export class ModalComponent extends LitElement implements ModalProperties {
-  backdropTargetTag = 'dialog';
   static styles = [styles, fullscreenModalStyles];
+
+  protected backdropTargetTag = 'dialog';
+  protected initialBodyOverflow?: string;
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
   @property({ type: Boolean, reflect: true }) fullscreen?: boolean;
@@ -19,7 +21,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
   @property({ type: Boolean }) withoutCloseButton?: boolean;
   @property({ type: Boolean }) withoutFooter?: boolean;
 
-  requestUpdate(name: PropertyKey, oldValue?: unknown): void {
+  requestUpdate(name?: PropertyKey, oldValue?: unknown): void {
     if (name === 'isOpen' && this.isOpen !== oldValue) {
       this.setDialogState();
     }
@@ -33,12 +35,37 @@ export class ModalComponent extends LitElement implements ModalProperties {
     this.setDialogState();
   }
 
+  disconnectedCallback(): void {
+    if (this.isOpen) {
+      this.toggleScrollLock();
+    }
+
+    super.disconnectedCallback();
+  }
+
   protected setDialogState(): void {
     if (this.isOpen) {
       this.dialog?.showModal?.();
     } else {
       this.dialog?.close?.();
     }
+
+    this.toggleScrollLock(this.isOpen);
+  }
+
+  protected toggleScrollLock(lock = false): void {
+    if (lock) {
+      this.initialBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'clip';
+      return;
+    }
+
+    // Need to restore initial value of body overflow property
+    // in case if it predefined as style property
+    // Also firefox has a bug with overflow: clip. It required default value
+    // to make it work correctly. "auto" is using as default
+    document.body.style.overflow =
+      this.initialBodyOverflow || isFirefox() ? 'auto' : '';
   }
 
   protected emitCloseEvent(): void {

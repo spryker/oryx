@@ -3,7 +3,7 @@ import { ModalComponent } from '../modal.component';
 import { NDSStyles } from './modal.styles';
 
 export class NDSModalComponent extends ModalComponent {
-  override backdropTargetTag = this.tagName.toLowerCase();
+  protected override backdropTargetTag = this.tagName.toLowerCase();
   static styles = [...ModalComponent.styles, NDSStyles];
 
   protected override setDialogState(): void {
