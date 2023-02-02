@@ -40,7 +40,7 @@ export class DefaultRouterService implements RouterService {
     if (
       this.router$.value === url[0] &&
       JSON.stringify(this.urlSearchParams$.value) ===
-        JSON.stringify(extras?.queryParams ?? {})
+        JSON.stringify(queryParams)
     ) {
       return;
     }

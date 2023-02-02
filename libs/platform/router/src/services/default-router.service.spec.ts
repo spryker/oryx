@@ -13,6 +13,14 @@ describe('DefaultRouterService', () => {
   let service: DefaultRouterService;
   let storageService: MockStorageService;
 
+  const checkQueryParams = (expectedParams: { [key: string]: string }) =>
+    service
+      .currentQuery()
+      .subscribe((params) => {
+        expect(params).toEqual(expectedParams);
+      })
+      .unsubscribe();
+
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
@@ -43,11 +51,71 @@ describe('DefaultRouterService', () => {
     expect(service).toBeInstanceOf(DefaultRouterService);
   });
 
-  it('should provide the current route', () => {
-    service.go('/mock');
+  describe('when route changes', () => {
+    beforeEach(() => {
+      service.go('/mock');
+    });
 
-    service.currentRoute().subscribe((route) => {
-      expect(route).toBe('/mock');
+    it('should provide the current route', () => {
+      service.currentRoute().subscribe((route) => {
+        expect(route).toBe('/mock');
+      });
+    });
+  });
+
+  describe('when query params are provided', () => {
+    describe('for current route', () => {
+      beforeEach(() => {
+        service.go('/?query=one');
+      });
+
+      it('should provide the current query', () => {
+        checkQueryParams({ query: 'one' });
+      });
+    });
+    describe('with new route', () => {
+      beforeEach(() => {
+        service.go('mock/?query=one');
+      });
+
+      it('should provide the current query', () => {
+        checkQueryParams({ query: 'one' });
+      });
+
+      describe('and query params change', () => {
+        beforeEach(() => {
+          service.go('/?query=two');
+        });
+
+        it('should provide the current query', () => {
+          checkQueryParams({ query: 'two' });
+        });
+      });
+    });
+  });
+
+  it('should update the current query', () => {
+    service.go('/?firstQuery=one');
+    checkQueryParams({ firstQuery: 'one' });
+
+    service.go('/?firstQuery=two');
+    checkQueryParams({ firstQuery: 'two' });
+
+    service.go('/?secondParam=two');
+    checkQueryParams({ secondParam: 'two' });
+
+    service.go('/?thirdParam=three');
+    checkQueryParams({ thirdParam: 'three' });
+
+    service.go('/?firstQuery=one&secondQuery=two');
+    checkQueryParams({
+      firstQuery: 'one',
+      secondQuery: 'two',
+    });
+
+    service.go('/?multiQuery=one,two');
+    checkQueryParams({
+      multiQuery: 'one,two',
     });
   });
 
