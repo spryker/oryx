@@ -1,0 +1,26 @@
+{
+  "name": "@spryker-oryx/indexed-db",
+  "version": "1.0.0-alpha.0",
+  "type": "module",
+  "description": "Functionality to work with IndexedDB",
+  "author": "Spryker",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "dependencies": {
+    "dexie": "^3.2.2"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/utilities": "*",
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

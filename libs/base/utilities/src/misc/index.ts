@@ -1,9 +1,11 @@
 export * from './a11y';
 export * as AjaxClient from './ajax';
 export * from './converters';
+export * from './dedupe-arrays';
 export * from './extract-str-props';
 export * from './get-prop-by-path';
 export * from './get-static-prop';
+export * from './intersect-arrays';
 export * from './query.util';
 export * from './random-string';
 export * from './subscribe-replay';

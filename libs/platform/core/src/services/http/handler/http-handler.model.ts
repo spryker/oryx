@@ -23,7 +23,7 @@ export interface HttpInterceptor {
 
 declare global {
   interface InjectionTokensContractMap {
-    [HttpInterceptor]: HttpInterceptor[];
+    [HttpInterceptor]: HttpInterceptor;
     [HttpHandler]: HttpHandler;
   }
 }

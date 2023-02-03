@@ -24,9 +24,9 @@ import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { resourceGraphics } from '../../resources';
 
-const isPreview = new URLSearchParams(new URL(window.location.href).search).has(
-  'ebPreview'
-);
+const isPreview = new URLSearchParams(
+  new URL(globalThis.location?.href).search
+).has('ebPreview');
 
 export const b2cResources: Resources = {
   graphics: {

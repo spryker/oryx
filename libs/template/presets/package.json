@@ -24,6 +24,8 @@
     "@spryker-oryx/i18n": "*",
     "@spryker-oryx/di": "*",
     "@spryker-oryx/product": "*",
+    "@spryker-oryx/picking": "*",
+    "@spryker-oryx/router": "*",
     "@spryker-oryx/search": "*",
     "@spryker-oryx/site": "*",
     "@spryker-oryx/themes": "*",

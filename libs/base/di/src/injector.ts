@@ -1,4 +1,4 @@
-import { setCurrentInjector } from './inject';
+import { InferInjectType, setCurrentInjector } from './inject';
 import {
   ClassProvider,
   FactoryProvider,
@@ -72,18 +72,16 @@ export class Injector {
    * @param token
    */
   inject<K extends keyof InjectionTokensContractMap>(
-    token: K,
-    defaultInstance?: InjectionTokensContractMap[K]
-  ): InjectionTokensContractMap[K];
+    token: K
+  ): InferInjectType<K>;
   inject<K extends keyof InjectionTokensContractMap, L>(
     token: K,
     defaultInstance?: L
-  ): InjectionTokensContractMap[K] | L;
-  inject(token: any, defaultInstance?: any): any;
-  inject<K extends keyof InjectionTokensContractMap>(
-    token: K | any,
-    defaultInstance?: K | any
-  ): InjectionTokensContractMap[K] | any {
+  ): InferInjectType<K> | L;
+  inject<K>(token: K, defaultValue?: K): InferInjectType<K>;
+  inject<K, L>(token: K, defaultValue?: L): InferInjectType<K> | L;
+  inject<K = any>(token: string, defaultValue?: K): K;
+  inject(token: any, defaultInstance?: any): any {
     if (token === INJECTOR) {
       return this;
     }

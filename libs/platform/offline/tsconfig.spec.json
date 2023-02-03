@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.spec.json",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "WebWorker"]
+  },
+  "files": ["vitest.config.ts"],
+  "include": ["**/*.spec.ts"]
+}

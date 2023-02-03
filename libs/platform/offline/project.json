@@ -1,0 +1,32 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/platform/offline/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "configurations": {
+        "update": {
+          "update": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/platform/offline/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["layer:platform"]
+}
