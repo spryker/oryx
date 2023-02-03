@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { queryFirstAssigned } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { CardComponent } from './card.component';
-import { cardComponent } from './component';
+import { cardComponent } from './card.defs';
 
 describe('Card', () => {
   let element: CardComponent;
@@ -17,11 +17,11 @@ describe('Card', () => {
     expect(el).toBeInstanceOf(CardComponent);
   });
 
-  describe('when header is provided by prop', () => {
+  describe('when heading is provided by prop', () => {
     const headerProp = 'header';
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-card .header=${headerProp}></oryx-card>`
+        html`<oryx-card .heading=${headerProp}></oryx-card>`
       );
     });
 
@@ -33,13 +33,13 @@ describe('Card', () => {
     });
   });
 
-  describe('when header is provided by slot', () => {
+  describe('when heading is provided by slot', () => {
     const titleText = 'Title provided by slot';
 
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-card>
-          <p slot="header">${titleText}</p>
+          <p slot="heading">${titleText}</p>
         </oryx-card>
       `);
     });
@@ -47,7 +47,7 @@ describe('Card', () => {
     it('should render slot content', () => {
       const el = queryFirstAssigned(element, {
         selector: 'p',
-        slot: 'header',
+        slot: 'heading',
       }) as HTMLElement;
 
       expect(el.textContent).toContain(titleText);

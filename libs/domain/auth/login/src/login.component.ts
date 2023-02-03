@@ -117,7 +117,7 @@ export class AuthLoginComponent extends ComponentMixin<LoginOptions>() {
 
   protected override render(): TemplateResult {
     return html`<oryx-card>
-      <oryx-heading slot="header" appearance="h5">
+      <oryx-heading slot="heading" appearance="h5">
         <h1>
           ${when(
             this.heading,

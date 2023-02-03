@@ -10,7 +10,15 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <oryx-modal open withoutCloseButton header="Without close button">
+    <oryx-modal
+      open
+      preventCloseByEscape
+      preventCloseByBackdrop
+      enableNavigateBack
+      heading="With navigate back button"
+      enableFooter
+      enableCloseButtonInHeader
+    >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
@@ -19,4 +27,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const WithoutCloseButton = Template.bind({});
+export const NavigateBack = Template.bind({});

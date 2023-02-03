@@ -23,7 +23,7 @@ CloseNestedModal.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const nestedModal = obj.canvasElement.querySelector(
-    'oryx-modal[header="Nested modal"]'
+    'oryx-modal[heading="Nested modal"]'
   ) as ModalComponent;
   const closeNestedModalBtn = nestedModal.shadowRoot?.querySelector(
     'button[value=cancel]'

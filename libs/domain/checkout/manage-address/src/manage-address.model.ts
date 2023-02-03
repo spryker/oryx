@@ -3,6 +3,6 @@ import { DirectiveResult } from 'lit-html/directive';
 
 export type AddressModalConfig = {
   [key in AddressBookState]: {
-    header: string | DirectiveResult;
+    heading: string | DirectiveResult;
   };
 };

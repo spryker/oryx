@@ -109,7 +109,7 @@ describe('NDS Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal preventCloseWithBackdrop></oryx-modal>`
+        html`<oryx-modal preventCloseByBackdrop></oryx-modal>`
       );
       element.open();
     });
@@ -139,7 +139,7 @@ describe('NDS Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal preventCloseWithEscape></oryx-modal>`
+        html`<oryx-modal preventCloseByEscape></oryx-modal>`
       );
       element.open();
     });
@@ -172,9 +172,9 @@ describe('NDS Modal', () => {
       expectDialogOpen(false);
     });
   });
-  checkSlots(['header', 'default', 'footer'], {
+  checkSlots(['heading', 'default', 'footer'], {
     tag: 'oryx-modal',
-    attributes: ['open'],
+    attributes: ['open', 'enableFooter'],
   });
 
   describe('when the component is removed from the dom', () => {

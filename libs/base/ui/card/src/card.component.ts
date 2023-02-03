@@ -8,13 +8,13 @@ export class CardComponent extends LitElement {
 
   @property({ reflect: true }) type?: CardType;
 
-  @property() header?: string;
+  @property() heading?: string;
 
   protected override render(): TemplateResult {
     return html`
-      <slot name="header">
+      <slot name="heading">
         <oryx-heading>
-          <h5>${this.header}</h5>
+          <h5>${this.heading}</h5>
         </oryx-heading>
       </slot>
       <slot part="body"></slot>

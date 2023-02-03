@@ -12,9 +12,11 @@ const Template: Story = (): TemplateResult => {
   return html`
     <oryx-modal
       open
-      preventCloseWithEscape
-      preventCloseWithBackdrop
-      header="Title"
+      preventCloseByEscape
+      preventCloseByBackdrop
+      heading="Title"
+      enableFooter
+      enableCloseButtonInHeader
     >
       <div>
         ${Array.from(Array(30)).map(

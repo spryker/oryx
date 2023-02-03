@@ -14,13 +14,13 @@ export class ManageAddressComponent extends LitElement {
 
   protected config: AddressModalConfig = {
     [AddressBookState.List]: {
-      header: i18n('checkout.address.addresses'),
+      heading: i18n('checkout.address.addresses'),
     },
     [AddressBookState.Add]: {
-      header: i18n('checkout.address.add-address'),
+      heading: i18n('checkout.address.add-address'),
     },
     [AddressBookState.Edit]: {
-      header: i18n('checkout.address.edit-address'),
+      heading: i18n('checkout.address.edit-address'),
     },
   };
 
@@ -77,13 +77,13 @@ export class ManageAddressComponent extends LitElement {
 
       ${asyncValue(
         this.modalData$,
-        ({ state, open, header }) => html` <oryx-modal
+        ({ state, open, heading }) => html` <oryx-modal
           ?open=${open}
-          preventCloseWithEscape
-          preventCloseWithBackdrop
-          withoutFooter
+          preventCloseByEscape
+          preventCloseByBackdrop
+          enableCloseButtonInHeader
           @oryx.close=${(): void => this.onClose()}
-          header=${header}
+          heading=${heading}
         >
           <oryx-user-address-book
             active-state=${state}
@@ -98,12 +98,10 @@ export class ManageAddressComponent extends LitElement {
             (addressId) => html`
               <oryx-modal
                 ?open=${!!addressId}
-                preventCloseWithEscape
-                preventCloseWithBackdrop
-                withoutCloseButton
-                withoutFooter
+                preventCloseByEscape
+                preventCloseByBackdrop
                 @oryx.close=${(e: CustomEvent): void => this.onCancelRemove(e)}
-                header=${i18n('checkout.address.remove-address')}
+                heading=${i18n('checkout.address.remove-address')}
               >
                 <oryx-user-address-remove
                   .addressId=${addressId}

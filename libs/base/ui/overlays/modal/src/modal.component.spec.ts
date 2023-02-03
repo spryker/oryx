@@ -67,7 +67,7 @@ describe('Modal', () => {
 
     describe('and the "cancel" event is triggered', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-modal header="test"></oryx-modal>`);
+        element = await fixture(html`<oryx-modal heading="test"></oryx-modal>`);
         element.open();
         const event = new Event('cancel', {
           bubbles: true,
@@ -84,7 +84,7 @@ describe('Modal', () => {
     describe('when the dialog backdrop is clicked', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-modal open header="test"></oryx-modal>`
+          html`<oryx-modal open heading="test"></oryx-modal>`
         );
       });
 
@@ -103,7 +103,7 @@ describe('Modal', () => {
 
   describe('when the "open()" method is called', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal header="test"></oryx-modal>`);
+      element = await fixture(html`<oryx-modal heading="test"></oryx-modal>`);
       element.open();
     });
 
@@ -125,7 +125,7 @@ describe('Modal', () => {
   describe('when the "open" attribute is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal open header="test"></oryx-modal>`
+        html`<oryx-modal open heading="test"></oryx-modal>`
       );
     });
 
@@ -143,7 +143,7 @@ describe('Modal', () => {
   describe('when closing by backdrop click is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal preventCloseWithBackdrop header="test"></oryx-modal>`
+        html`<oryx-modal preventCloseByBackdrop heading="test"></oryx-modal>`
       );
       element.open();
     });
@@ -173,7 +173,7 @@ describe('Modal', () => {
   describe('when closing on Escape is disable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal preventCloseWithEscape header="test"></oryx-modal>`
+        html`<oryx-modal preventCloseByEscape heading="test"></oryx-modal>`
       );
       element.open();
     });
@@ -212,11 +212,11 @@ describe('Modal', () => {
     });
   });
 
-  describe('when the header is provided by prop', () => {
-    const headerText = 'Header text';
+  describe('when the heading is provided by prop', () => {
+    const headingText = 'Header text';
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal .header=${headerText}></oryx-modal>`
+        html`<oryx-modal .heading=${headingText}></oryx-modal>`
       );
     });
 
@@ -224,33 +224,58 @@ describe('Modal', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should pass header prop to oryx-card as prop', () => {
+    it('should pass heading prop to oryx-card as prop', () => {
       const headerSlot = element?.shadowRoot?.querySelector(
-        'oryx-card slot[name=header]'
+        'oryx-card slot[name=heading]'
       );
-      expect(headerSlot?.textContent).toContain(headerText);
+      expect(headerSlot?.textContent).toContain(headingText);
     });
   });
 
-  describe('when close button is hidden', () => {
+  describe('when close button is enabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-modal withoutCloseButton></oryx-modal>`
+        html`<oryx-modal enableCloseButtonInHeader></oryx-modal>`
       );
     });
 
-    it('should not render close button in the header', () => {
-      expect(element).not.toContainElement('header > oryx-icon-button');
+    it('should render close button in the header', () => {
+      expect(element).toContainElement('header > oryx-icon-button');
     });
   });
 
-  describe('when footer is hidden', () => {
+  describe('when footer is enabled', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-modal withoutFooter></oryx-modal>`);
+      element = await fixture(html`<oryx-modal enableFooter></oryx-modal>`);
     });
 
-    it('should not render the footer', () => {
-      expect(element).not.toContainElement('footer');
+    it('should render the footer', () => {
+      expect(element).toContainElement('footer');
+    });
+  });
+
+  describe('when go back button is enabled', () => {
+    const callback = vi.fn();
+    beforeEach(async () => {
+      element = await fixture(html`
+        <oryx-modal open enableNavigateBack @oryx.back=${callback}></oryx-modal>
+      `);
+    });
+
+    it('should render the button', () => {
+      expect(element).toContainElement('oryx-icon-button:first-child');
+    });
+
+    describe('and the button is clicked', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-icon-button:first-child button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should dispatch the event', () => {
+        expect(callback).toHaveBeenCalled();
+      });
     });
   });
 
@@ -315,8 +340,8 @@ describe('Modal', () => {
     });
   });
 
-  checkSlots(['header', 'default', 'footer'], {
+  checkSlots(['heading', 'default', 'footer'], {
     tag: 'oryx-modal',
-    attributes: ['open'],
+    attributes: ['open', 'enableFooter'],
   });
 });

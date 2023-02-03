@@ -3,6 +3,7 @@ import { IconTypes } from '../icon.model';
 
 export const storefrontIcons: ThemeIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
+  [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
   [IconTypes.Carrier]: () => import('./icons/carrier').then((s) => s.default),
   [IconTypes.Increase]: () => import('./icons/minus').then((s) => s.default),
   [IconTypes.CartAdd]: () => import('./icons/cart-add').then((s) => s.default),

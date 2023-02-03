@@ -3,7 +3,7 @@ export * from '../actions/icon-button/src/icon-button.def';
 export * from '../actions/link/src/link.def';
 export * from '../actions/toggle-icon/src/component';
 export * from '../actions/toggle/src/component';
-export * from '../card/src/component';
+export * from '../card/src/card.defs';
 export * from '../collapsible/src/collapsible.def';
 export * from '../error-message/src/component';
 export * from '../form/checkbox/src/component';

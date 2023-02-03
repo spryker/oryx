@@ -8,24 +8,24 @@ export class NDSModalComponent extends ModalComponent {
 
   protected override setDialogState(): void {
     if (this.isOpen) {
-      window.addEventListener('keydown', this.keyDownHandler);
-      this.addEventListener('click', this.backdropClickHandler);
+      window.addEventListener('keydown', this.onKeydown);
+      this.addEventListener('click', this.onBackdropClick);
     } else {
       this.onDestroy();
     }
   }
 
-  protected keyDownHandler = (e: KeyboardEvent): void => {
+  protected onKeydown = (e: KeyboardEvent): void => {
     e.preventDefault();
 
-    if (e.key === 'Escape' && !this.preventCloseWithEscape) {
+    if (e.key === 'Escape' && !this.preventCloseByEscape) {
       this.close();
     }
   };
 
   protected onDestroy(): void {
-    window.removeEventListener('keydown', this.keyDownHandler);
-    this.removeEventListener('click', this.backdropClickHandler);
+    window.removeEventListener('keydown', this.onKeydown);
+    this.removeEventListener('click', this.onBackdropClick);
   }
 
   disconnectedCallback(): void {

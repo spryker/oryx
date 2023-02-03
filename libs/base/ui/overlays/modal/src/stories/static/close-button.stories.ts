@@ -14,8 +14,8 @@ const Template: Story = (): TemplateResult => {
       open
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Without footer"
-      enableCloseButtonInHeader
+      heading="Without close button"
+      enableFooter
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -25,4 +25,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const WithoutFooter = Template.bind({});
+export const WithoutCloseButton = Template.bind({});

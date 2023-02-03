@@ -29,7 +29,7 @@ export const styles = css`
     --background-color: var(--oryx-color-canvas-200);
   }
 
-  :host(:not([type='secondary'])) slot[name='header'] {
+  :host(:not([type='secondary'])) slot[name='heading'] {
     padding: var(--oryx-card-header-padding, 18px 30px);
   }
 
@@ -46,7 +46,7 @@ export const styles = css`
     margin-bottom: 18px;
   }
 
-  :host([type='secondary']) slot[name='header'] {
+  :host([type='secondary']) slot[name='heading'] {
     padding: var(--oryx-card-header-padding, 13px 20px);
   }
 
@@ -63,14 +63,14 @@ export const styles = css`
     margin-bottom: 13px;
   }
 
-  slot[name='header'] {
+  slot[name='heading'] {
     display: flex;
     align-items: center;
     gap: 8px;
     border-bottom: 1px solid var(--oryx-color-neutral-200);
   }
 
-  slot[name='header']::slotted(oryx-icon) {
+  slot[name='heading']::slotted(oryx-icon) {
     color: var(--oryx-color-neutral-400);
   }
 `;

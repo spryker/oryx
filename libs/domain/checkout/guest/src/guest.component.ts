@@ -40,7 +40,7 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin<CheckoutGuest
   }
 
   protected override render(): TemplateResult {
-    return html`<oryx-card .header=${i18n('checkout.guest-checkout')}>
+    return html`<oryx-card .heading=${i18n('checkout.guest-checkout')}>
       <slot name="content">
         You can checkout without creating an account. You will have a chance to
         create an account later.

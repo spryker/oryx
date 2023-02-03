@@ -6,7 +6,8 @@ import { storybookPrefix } from '../../../../.constants';
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
 
 interface Props {
-  withoutCloseButton: boolean;
+  enableNavigateBack: boolean;
+  enableCloseButtonInHeader: boolean;
 
   firstModalFullscreen?: boolean;
   secondModalFullscreen?: boolean;
@@ -20,11 +21,11 @@ interface Props {
   firstModalType?: CardType;
   secondModalType?: CardType;
 
-  firstModalpreventCloseWithBackdrop?: boolean;
-  secondModalpreventCloseWithBackdrop?: boolean;
+  firstModalPreventCloseByBackdrop?: boolean;
+  secondModalPreventCloseByBackdrop?: boolean;
 
-  firstModalpreventCloseWithEscape?: boolean;
-  secondModalpreventCloseWithEscape?: boolean;
+  firstModalPreventCloseByEscape?: boolean;
+  secondModalPreventCloseByEscape?: boolean;
 }
 
 const generateContent = (times: number): TemplateResult => html`
@@ -57,25 +58,30 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
     ${generateContent(20)}
 
     <oryx-modal
-      ?withoutCloseButton=${props.withoutCloseButton}
-      ?preventCloseWithEscape=${props.firstModalpreventCloseWithEscape}
-      ?preventCloseWithBackdrop=${props.firstModalpreventCloseWithBackdrop}
+      ?enableNavigateBack=${props.enableNavigateBack}
+      ?enableCloseButtonInHeader=${props.enableCloseButtonInHeader}
+      ?preventCloseByEscape=${props.firstModalPreventCloseByEscape}
+      ?preventCloseByBackdrop=${props.firstModalPreventCloseByBackdrop}
       ?fullscreen=${props.firstModalFullscreen}
-      header=${props.firstModalHeader}
+      heading=${props.firstModalHeader}
       type=${props.firstModalType}
       @oryx.close=${console.log}
+      @oryx.back=${console.log}
+      enableFooter
     >
       <div>
         <p>${props.firstModalContent}</p>
         <button id="openSecondModalBtn">Open second modal</button>
 
         <oryx-modal
-          ?withoutCloseButton=${props.withoutCloseButton}
-          ?preventCloseWithEscape=${props.secondModalpreventCloseWithEscape}
-          ?preventCloseWithBackdrop=${props.secondModalpreventCloseWithBackdrop}
+          ?enableNavigateBack=${props.enableNavigateBack}
+          ?enableCloseButtonInHeader=${props.enableCloseButtonInHeader}
+          ?preventCloseByEscape=${props.secondModalPreventCloseByEscape}
+          ?preventCloseByBackdrop=${props.secondModalPreventCloseByBackdrop}
           ?fullscreen=${props.secondModalFullscreen}
-          header=${props.secondModalHeader}
+          heading=${props.secondModalHeader}
           type=${props.secondModalType}
+          enableFooter
         >
           ${props.secondModalContent}
         </oryx-modal>
@@ -87,13 +93,14 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
 export const ModalDemo = Template.bind({});
 
 ModalDemo.args = {
-  withoutCloseButton: false,
+  enableNavigateBack: false,
+  enableCloseButtonInHeader: false,
   firstModalFullscreen: false,
   secondModalFullscreen: false,
-  firstModalpreventCloseWithBackdrop: false,
-  secondModalpreventCloseWithBackdrop: false,
-  firstModalpreventCloseWithEscape: false,
-  secondModalpreventCloseWithEscape: false,
+  firstModalPreventCloseByBackdrop: false,
+  secondModalPreventCloseByBackdrop: false,
+  firstModalPreventCloseByEscape: false,
+  secondModalPreventCloseByEscape: false,
   firstModalHeader: 'First modal header',
   secondModalHeader: 'Second modal header',
   firstModalContent:
@@ -111,19 +118,19 @@ ModalDemo.argTypes = {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },
-  firstModalpreventCloseWithBackdrop: {
+  firstModalPreventCloseByBackdrop: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },
   },
-  secondModalpreventCloseWithBackdrop: {
+  secondModalPreventCloseByBackdrop: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },
-  firstModalpreventCloseWithEscape: {
+  firstModalPreventCloseByEscape: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },
   },
-  secondModalpreventCloseWithEscape: {
+  secondModalPreventCloseByEscape: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },

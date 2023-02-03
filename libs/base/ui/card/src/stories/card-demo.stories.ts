@@ -10,7 +10,7 @@ export default { title: `${storybookPrefix}/Structure/Card` } as Meta;
 export interface CardProperties {
   type?: CardType;
   icon?: string;
-  header?: string;
+  heading?: string;
   body?: string;
   footer?: string;
 }
@@ -22,12 +22,12 @@ const Template: Story<CardProperties> = (
     <oryx-card .type=${props.type}>
       ${when(
         props.icon,
-        () => html`<oryx-icon .type=${props.icon} slot="header"></oryx-icon>`
+        () => html`<oryx-icon .type=${props.icon} slot="heading"></oryx-icon>`
       )}
       ${when(
-        props.header,
-        () => html` <oryx-heading slot="header">
-          <h5>${props.header}</h5>
+        props.heading,
+        () => html` <oryx-heading slot="heading">
+          <h5>${props.heading}</h5>
         </oryx-heading>`
       )}
 
@@ -43,7 +43,7 @@ const Template: Story<CardProperties> = (
 export const CardDemo = Template.bind({});
 
 CardDemo.args = {
-  header: 'header',
+  heading: 'header',
   body: 'content',
 };
 CardDemo.argTypes = {
@@ -51,7 +51,7 @@ CardDemo.argTypes = {
     control: { type: 'select' },
     options: Object.values(CardType),
   },
-  header: {
+  heading: {
     control: { type: 'text' },
   },
   body: {

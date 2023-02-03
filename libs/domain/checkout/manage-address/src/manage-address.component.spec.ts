@@ -74,7 +74,7 @@ describe('ManageAddressComponent', () => {
   });
 
   it('should pass the header to the modal', async () => {
-    expect(getModal().getAttribute('header')).toEqual('Addresses');
+    expect(getModal().getAttribute('heading')).toEqual('Addresses');
   });
 
   describe('when trigger is clicked', () => {
@@ -97,7 +97,7 @@ describe('ManageAddressComponent', () => {
     });
 
     it('should change the header', () => {
-      expect(getModal().getAttribute('header')).toBe('Add address');
+      expect(getModal().getAttribute('heading')).toBe('Add address');
     });
 
     it('should change the state', () => {

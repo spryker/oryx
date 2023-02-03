@@ -12,9 +12,11 @@ const Template: Story = (): TemplateResult => {
   return html`
     <oryx-modal
       open
-      preventCloseWithEscape
-      preventCloseWithBackdrop
-      header="First modal header"
+      preventCloseByEscape
+      preventCloseByBackdrop
+      heading="First modal header"
+      enableFooter
+      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vel
@@ -32,9 +34,11 @@ const Template: Story = (): TemplateResult => {
       </p>
       <oryx-modal
         open
-        preventCloseWithEscape
-        preventCloseWithBackdrop
-        header="Second modal header"
+        preventCloseByEscape
+        preventCloseByBackdrop
+        heading="Second modal header"
+        enableFooter
+        enableCloseButtonInHeader
       >
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

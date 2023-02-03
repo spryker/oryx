@@ -13,9 +13,11 @@ const Template: Story = (): TemplateResult => {
     <oryx-modal
       open
       fullscreen
-      preventCloseWithEscape
-      preventCloseWithBackdrop
-      header="Title"
+      preventCloseByEscape
+      preventCloseByBackdrop
+      heading="Title"
+      enableFooter
+      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

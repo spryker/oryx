@@ -40,4 +40,12 @@ export const styles = css`
     overflow: auto;
     display: flex;
   }
+
+  oryx-heading {
+    flex: 1 0;
+  }
+
+  oryx-icon-button:first-child button {
+    padding: 0;
+  }
 `;
