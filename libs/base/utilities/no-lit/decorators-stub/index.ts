@@ -19,3 +19,7 @@ export const ssrShim = noopFactoryDecorator;
 export class SubscribeController {}
 
 export const subscribe = noopFactoryDecorator;
+
+export const valueType = noopFactoryDecorator;
+
+export const asyncState = noopFactoryDecorator;
