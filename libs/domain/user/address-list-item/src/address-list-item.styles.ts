@@ -13,7 +13,7 @@ export const styles = css`
 
   section,
   oryx-radio {
-    padding: var(--oryx-space-2) var(--oryx-space-4);
+    padding: 12px 16px;
   }
 
   section [slot='subtext'] {
@@ -23,7 +23,7 @@ export const styles = css`
 
   oryx-user-address {
     line-height: 1.571em;
-    margin-inline-end: var(--oryx-space-2);
+    margin-inline-end: 8px;
   }
 
   .controls {
@@ -34,7 +34,7 @@ export const styles = css`
   .controls,
   [slot='subtext'] {
     display: flex;
-    gap: 4px;
+    gap: 8px;
   }
 
   [slot='subtext'] {
