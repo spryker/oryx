@@ -5,18 +5,6 @@ import { css } from 'lit';
 export const baseStyles = css`
   :host {
     --oryx-radio-size: 24px;
-
-    display: grid;
-    grid-template-columns: var(--oryx-radio-size) 1fr max-content;
-    column-gap: 8px;
-    align-items: center;
-    position: relative;
-  }
-
-  label {
-    display: contents;
-    outline: 0;
-    color: var(--oryx-color-inc);
   }
 
   ::slotted(input) {
@@ -37,7 +25,7 @@ export const baseStyles = css`
     color: var(--oryx-color-primary-300);
   }
 
-  ::slotted(:not(input)) {
+  :not(slot[name='subtext'])::slotted(*) {
     min-width: 0;
     overflow: hidden;
     white-space: nowrap;
@@ -83,27 +71,6 @@ export const baseStyles = css`
   :host([hasError]) ::slotted(input),
   :host([hasError]) ::slotted(input:checked) {
     border-color: var(--oryx-color-error-300);
-  }
-
-  [hasErrorContent] {
-    margin-block-start: 1px;
-    margin-inline-start: 1px;
-    font-size: 0.85em;
-    font-weight: 400;
-  }
-
-  slot[name='subtext'] {
-    display: block;
-    grid-column: 2 / span 2;
-  }
-
-  slot[name='subtext']::slotted(small) {
-    font-weight: 600;
-    color: var(--oryx-color-neutral-300);
-  }
-
-  oryx-error-message {
-    grid-column: 1 / span 3;
   }
 `;
 

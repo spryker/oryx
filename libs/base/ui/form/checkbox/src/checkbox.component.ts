@@ -1,13 +1,14 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ErrorController, ErrorOptions } from '../../input';
+import { groupItemStyles } from '../../styles/group-item.styles';
 import { CheckboxProperties } from './checkbox.model';
 import { checkboxStyles } from './checkbox.styles';
 export class CheckboxComponent
   extends LitElement
   implements CheckboxProperties, ErrorOptions
 {
-  static styles = checkboxStyles;
+  static styles = [checkboxStyles, groupItemStyles];
 
   protected errorController = new ErrorController(this);
 
@@ -20,6 +21,7 @@ export class CheckboxComponent
     return html`
       <label>
         <slot></slot>
+        <slot name="subtext"></slot>
       </label>
       ${this.errorController.render()}
     `;

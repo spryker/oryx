@@ -1,11 +1,6 @@
 import { css } from 'lit';
 
 export const checkboxStyles = css`
-  :host {
-    display: inline-block;
-    height: 24px;
-  }
-
   :host([disabled]) {
     pointer-events: none;
   }
@@ -15,15 +10,6 @@ export const checkboxStyles = css`
     color: var(--oryx-required-asterisk-color, currentColor);
     inset-inline-start: -8px;
     position: relative;
-  }
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    outline: 0;
-    position: relative;
-    line-height: 24px;
   }
 
   ::slotted(input) {

@@ -3,8 +3,11 @@ import { FacetValue } from '@spryker-oryx/product';
 import { SearchFacetComponent } from '@spryker-oryx/search/facet';
 import { html, TemplateResult } from 'lit';
 import { FacetColorsMapping } from './facet-color-colors.mapping';
+import { styles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {
+  static styles = styles;
+
   protected colorsMapping = resolve(FacetColorsMapping).reduce(
     (acc, colors) => ({ ...acc, ...colors }),
     {}
@@ -20,8 +23,10 @@ export class SearchColorFacetComponent extends SearchFacetComponent {
     facetValue: FacetValue
   ): TemplateResult {
     return html`
-      <oryx-swatch .color=${this.getColor(facetValue.value)}></oryx-swatch>
-      ${facetValue.name ?? facetValue.value}
+      <div class="color-facet-label">
+        <oryx-swatch .color=${this.getColor(facetValue.value)}></oryx-swatch>
+        ${facetValue.name ?? facetValue.value}
+      </div>
     `;
   }
 }

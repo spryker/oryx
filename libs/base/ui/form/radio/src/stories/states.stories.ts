@@ -6,11 +6,10 @@ import { storybookPrefix } from '../../../../.constants';
 export default { title: `${storybookPrefix}/Form/Radio/Static` } as Meta;
 
 const variations = [
-  {
-    label: 'default',
-  },
-  { label: 'error', hasError: true, errorMessage: 'Error message' },
-  { label: 'without error message', hasError: true, customError: true },
+  { label: 'default' },
+  { label: 'error message', errorMessage: 'Error message' },
+  { label: 'custom error message', hasError: true, customError: true },
+  { label: 'error state', hasError: true },
 ];
 const states = [
   { state: 'default' },

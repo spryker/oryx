@@ -9,6 +9,7 @@ export const swatchBaseStyle = css`
     outline: 1px solid var(--oryx-color-canvas-500);
     outline-offset: 3px;
     border-radius: 2px;
+    margin: 4px;
     background: var(--swatch) center center;
     background-size: cover;
   }

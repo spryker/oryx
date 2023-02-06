@@ -1,6 +1,6 @@
 import { FacetValue } from '@spryker-oryx/product';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { CSSResultGroup, html, TemplateResult } from 'lit';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { when } from 'lit-html/directives/when.js';
 import { SingleMultiFacet } from './facet.model';
@@ -9,7 +9,7 @@ import { SingleFacetControlStyles } from './facet.styles';
 import { FacetComponentMixin } from '../../src/mixins/facet.mixin';
 
 export class SearchFacetComponent extends FacetComponentMixin() {
-  static styles = SingleFacetControlStyles;
+  static styles: CSSResultGroup = SingleFacetControlStyles;
 
   protected onChange(e: InputEvent): void {
     const { value, checked } = e.target as HTMLInputElement;
@@ -79,7 +79,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
   }
 
   protected renderValueControlLabel(facetValue: FacetValue): TemplateResult {
-    return html`${facetValue.name ?? facetValue.value}`;
+    return html`<span>${facetValue.name ?? facetValue.value}</span>`;
   }
 
   protected renderValueControl(
@@ -96,8 +96,10 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         title=${facetValue.name ?? facetValue.value}
         aria-label=${facetValue.name ?? facetValue.value}
       />
-      ${this.renderValueControlLabel(facetValue)}
-      <span class="counter">${facetValue.count}</span> `;
+      <div class="label">
+        ${this.renderValueControlLabel(facetValue)}
+        <span class="counter">${facetValue.count}</span>
+      </div> `;
 
     return multi
       ? html` <oryx-checkbox>${control}</oryx-checkbox> `

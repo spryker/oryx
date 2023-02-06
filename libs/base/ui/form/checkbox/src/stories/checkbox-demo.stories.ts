@@ -11,7 +11,9 @@ interface Props {
   checked: boolean;
   disabled: boolean;
   hasError: boolean;
-  label?: string;
+  label: string;
+  subtext: string;
+  errorMessage: string;
 }
 
 const Template: Story<Props> = ({
@@ -19,16 +21,20 @@ const Template: Story<Props> = ({
   checked,
   disabled,
   label,
+  subtext,
   hasError,
+  errorMessage,
 }): TemplateResult => {
   return html`
     <oryx-checkbox
       ?intermediate=${intermediate}
       ?hasError=${hasError}
+      errorMessage=${errorMessage}
       @click=${console.log}
     >
       <input type="checkbox" ?checked=${checked} ?disabled=${disabled} />
       ${label}
+      <small slot="subtext">${subtext}</small>
     </oryx-checkbox>
   `;
 };
@@ -36,9 +42,11 @@ const Template: Story<Props> = ({
 export const CheckboxDemo = Template.bind({});
 
 CheckboxDemo.args = {
+  label: 'Option',
+  subtext: 'Subtext',
+  errorMessage: '',
+  hasError: false,
   intermediate: false,
   checked: false,
   disabled: false,
-  hasError: false,
-  label: 'Option',
 };

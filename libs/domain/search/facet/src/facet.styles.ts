@@ -15,9 +15,8 @@ export const SingleFacetControlStyles = css`
     padding-inline-start: 25px;
   }
 
-  oryx-checkbox {
-    display: block;
-    width: 100%;
+  .label {
+    display: flex;
   }
 
   .counter {
