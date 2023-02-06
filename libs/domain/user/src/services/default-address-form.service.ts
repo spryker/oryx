@@ -1,6 +1,6 @@
 import { ErrorService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, switchMap } from 'rxjs';
 import { AddressForm } from '../../address-form';
 import { AddressFormQualifier } from '../models';
 import { AddressFormAdapter } from './adapter';
@@ -14,21 +14,40 @@ export class DefaultAddressFormService implements AddressFormService {
 
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm | null> {
     return this.adapter.get(qualifier).pipe(
-      catchError(() => {
-        //TODO - still under consideration
-        /*
-        if (e.status !== 404) {
-          return of(null);
+      switchMap((response) => {
+        if (typeof response !== 'object') {
+          throw new Error();
         }
-        */
-        const error = new ErrorEvent('error', {
-          message:
-            'We could not load the address form details for the given country.',
-        });
-        this.errorService.dispatchError(error);
 
-        return of(null);
+        return of(response);
+      }),
+      catchError(() => {
+        return qualifier.fallbackCountry
+          ? this.adapter.get({ country: qualifier.fallbackCountry }).pipe(
+              switchMap((response) => {
+                if (!response.id) {
+                  return this.handlerError();
+                }
+
+                return of(response);
+              }),
+              catchError(() => {
+                return this.handlerError();
+              })
+            )
+          : this.handlerError();
       })
     );
+  }
+
+  private handlerError(): Observable<null> {
+    const errorEvent = new ErrorEvent('error', {
+      message:
+        'We could not load the address form details for the given country.',
+    });
+
+    this.errorService.dispatchError(errorEvent);
+
+    return of(null);
   }
 }

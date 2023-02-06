@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { ContentController, defaultOptions } from '@spryker-oryx/experience';
 import {
   FormComponentMixin,
   FormRenderer,
@@ -21,12 +22,17 @@ import {
   tap,
 } from 'rxjs';
 import { styles } from './address-form.styles';
+import { AddressFormOptions } from './model';
 
+@defaultOptions({ fallbackCountry: 'DE' })
 @hydratable(['mouseover', 'focusin'])
-export class AddressFormComponent extends FormComponentMixin() {
+export class AddressFormComponent extends FormComponentMixin<AddressFormOptions>() {
   static styles = [styles, formStyles];
 
+  protected options$ = new ContentController(this).getOptions();
+
   @property() country?: string;
+  @property() fallbackCountry?: string;
 
   protected fieldRenderer = resolve(FormRenderer);
   protected countryService = resolve(CountryService);
@@ -36,6 +42,9 @@ export class AddressFormComponent extends FormComponentMixin() {
 
   @observe()
   protected country$ = new BehaviorSubject(this.country);
+
+  @observe()
+  protected fallbackCountry$ = new BehaviorSubject(this.fallbackCountry);
 
   protected activeCountry$ = this.country$.pipe(
     distinctUntilChanged(),
@@ -63,17 +72,26 @@ export class AddressFormComponent extends FormComponentMixin() {
     this.activeCountry$,
   ]);
 
-  protected form$ = this.activeCountry$.pipe(
-    switchMap((country) =>
+  protected form$ = combineLatest([
+    this.activeCountry$,
+    this.options$,
+    this.fallbackCountry$,
+  ]).pipe(
+    switchMap(([country, options, fallbackCountry]) =>
       country
-        ? this.formService.getForm({ country }).pipe(
-            tap((form) => {
-              this.selectRef.value?.setCustomValidity(
-                form ? '' : 'Address form for given country not available.'
-              );
-            }),
-            map((form) => form?.data?.options)
-          )
+        ? this.formService
+            .getForm({
+              country,
+              fallbackCountry: fallbackCountry ?? options.fallbackCountry,
+            })
+            .pipe(
+              tap((form) => {
+                this.selectRef.value?.setCustomValidity(
+                  form ? '' : 'Address form for given country not available.'
+                );
+              }),
+              map((form) => form?.data?.options)
+            )
         : of([])
     )
   );

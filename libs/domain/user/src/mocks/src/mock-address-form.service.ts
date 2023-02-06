@@ -209,6 +209,13 @@ export class MockAddressFormService implements Partial<AddressFormService> {
   };
 
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm> {
+    if (!MockAddressFormService.mockForm[qualifier.country]) {
+      return of(
+        MockAddressFormService.mockForm[
+          qualifier.fallbackCountry ?? qualifier.country
+        ]
+      );
+    }
     return of(MockAddressFormService.mockForm[qualifier.country]);
   }
 }

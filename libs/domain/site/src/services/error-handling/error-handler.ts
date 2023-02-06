@@ -8,7 +8,7 @@ export class SiteErrorHandler implements ErrorHandler {
 
   handle(error: unknown): void {
     const message =
-      (typeof error === 'object' && (error as any)?.message) ?? String(error);
+      (typeof error === 'object' && (error as any)?.message) || String(error);
 
     this.notificationService.push({
       type: Types.ERROR,

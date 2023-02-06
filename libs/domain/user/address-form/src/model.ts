@@ -7,3 +7,10 @@ export interface AddressForm {
     options: ComponentTypeDataFields[];
   };
 }
+
+export interface AddressFormOptions {
+  /**
+   * In case some country has no based address, should fallback to this country address format.
+   */
+  fallbackCountry?: string;
+}

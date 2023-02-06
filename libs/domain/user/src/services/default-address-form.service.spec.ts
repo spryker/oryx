@@ -25,6 +25,7 @@ class MockErrorService implements Partial<ErrorService> {
 describe('DefaultAddressFormService', () => {
   let service: DefaultAddressFormService;
   let adapter: MockAddressFormAdapter;
+  let error: Partial<ErrorService>;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -48,6 +49,8 @@ describe('DefaultAddressFormService', () => {
       AddressFormService
     ) as DefaultAddressFormService;
     adapter = testInjector.inject(AddressFormAdapter) as MockAddressFormAdapter;
+
+    error = testInjector.inject(ErrorService) as Partial<ErrorService>;
   });
 
   afterEach(() => {
@@ -63,6 +66,17 @@ describe('DefaultAddressFormService', () => {
     service.getForm({ country: 'DE' }).subscribe(callback);
 
     expect(callback).toHaveBeenCalledWith(mockForm);
+    expect(adapter.get).toHaveBeenCalledWith({ country: 'DE' });
+  });
+
+  it('should catch error when there is no data for selected country and call fallback country', () => {
+    const callback = vi.fn();
+    adapter.get.mockReturnValue(of(''));
+    service
+      .getForm({ country: 'FR', fallbackCountry: 'DE' })
+      .subscribe(callback);
+
+    expect(error.dispatchError).toHaveBeenCalled();
     expect(adapter.get).toHaveBeenCalledWith({ country: 'DE' });
   });
 });

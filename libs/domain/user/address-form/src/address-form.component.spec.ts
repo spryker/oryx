@@ -42,6 +42,7 @@ class MockCountryService {
       },
     ])
   );
+  set = vi.fn().mockReturnValue('DE');
 }
 
 const mockForm = {
@@ -50,7 +51,23 @@ const mockForm = {
   data: {
     options: [
       {
-        id: 'mockfield',
+        id: 'mockField',
+        title: 'Mock',
+        label: '',
+        type: 'input',
+        required: true,
+      },
+    ],
+  },
+};
+
+const mockFallbackForm = {
+  id: 'PT',
+  name: 'Portugal',
+  data: {
+    options: [
+      {
+        id: 'mockField',
         title: 'Mock',
         label: '',
         type: 'input',
@@ -70,6 +87,8 @@ describe('AddressFormComponent', () => {
   let formService: MockAddressFormService;
   let countryService: MockCountryService;
   let addressService: MockAddressService;
+
+  let selectElement: HTMLSelectElement | undefined | null;
 
   beforeAll(async () => {
     await useComponent(addressFormComponent);
@@ -123,7 +142,10 @@ describe('AddressFormComponent', () => {
     });
 
     it('should load json form', () => {
-      expect(formService.getForm).toHaveBeenCalledWith({ country: 'DE' });
+      expect(formService.getForm).toHaveBeenCalledWith({
+        country: 'DE',
+        fallbackCountry: 'DE',
+      });
       expect(renderer.buildForm).toHaveBeenCalledWith(mockForm.data.options);
     });
 
@@ -140,11 +162,51 @@ describe('AddressFormComponent', () => {
     beforeEach(async () => {
       formService.getForm.mockReturnValue(of(null));
       element = await fixture(
-        html`<oryx-address-form country="US"></oryx-address-form>`
+        html`<oryx-address-form country="FR"></oryx-address-form>`
       );
     });
     it('should not render a form', () => {
       expect(renderer.buildForm).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when the selected country does not exist, but fallback country does exist', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-address-form
+          country="FR"
+          fallbackCountry="PT"
+        ></oryx-address-form>`
+      );
+    });
+
+    it('should load the form for the fallback country', () => {
+      expect(formService.getForm).toHaveBeenCalledWith({
+        country: 'FR',
+        fallbackCountry: 'PT',
+      });
+    });
+
+    it('should render fallback country form', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(
+        mockFallbackForm.data.options
+      );
+    });
+  });
+
+  describe('when selected country changes', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+      selectElement = element.shadowRoot?.querySelector('select');
+
+      if (selectElement) {
+        selectElement.value = 'US';
+        selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    it('should select second option', () => {
+      expect(countryService.set).toHaveBeenCalledWith('US');
     });
   });
 
@@ -179,9 +241,13 @@ describe('AddressFormComponent', () => {
     });
 
     it('should load the form for the specified country', () => {
-      expect(formService.getForm).toHaveBeenCalledWith({ country: 'US' });
+      expect(formService.getForm).toHaveBeenCalledWith({
+        country: 'US',
+        fallbackCountry: 'DE',
+      });
     });
   });
+
   describe('when a logged in user has an address', () => {
     beforeEach(async () => {
       addressService.getCurrentAddress.mockReturnValue(of({ iso2Code: 'US' }));

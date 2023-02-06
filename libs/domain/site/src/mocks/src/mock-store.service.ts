@@ -17,6 +17,24 @@ export class MockStoreService implements Partial<StoreService> {
         postalCodeMandatory: true,
         postalCodeRegex: '\\d{5}',
       },
+      {
+        iso2Code: 'AT',
+        name: 'Austria',
+        postalCodeMandatory: true,
+        postalCodeRegex: '\\d{5}',
+      },
+      {
+        iso2Code: 'PT',
+        name: 'Portugal',
+        postalCodeMandatory: true,
+        postalCodeRegex: '\\d{5}',
+      },
+      {
+        iso2Code: 'ES',
+        name: 'Spain',
+        postalCodeMandatory: true,
+        postalCodeRegex: '\\d{5}',
+      },
     ],
     defaultCurrency: 'EUR',
     currencies: [
