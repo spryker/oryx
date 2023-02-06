@@ -1,4 +1,5 @@
 import { Transformer } from '@spryker-oryx/core';
+import { snakify } from '@spryker-oryx/core/utilities';
 import { ApiProductListModel, ProductListSort } from '../../../../models';
 
 export const SortNormalizer = 'FES.SortNormalizer*';
@@ -12,7 +13,10 @@ export function sortNormalizer(
     sortOrder: currentSortOrder,
     sortParam: currentSortParam,
     sortValues: Object.entries(sortParamLocalizedNames).map(
-      ([sortKey, sortName]) => ({ sortKey, sortName })
+      ([sortKey, sortName]) => ({
+        sortKey: snakify(sortKey),
+        sortName,
+      })
     ),
   };
 }

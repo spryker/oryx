@@ -3,5 +3,6 @@ export * from './node-element';
 export * from './promise-subject';
 export * from './resolve-lazy-loadable';
 export * from './screen-size';
+export * from './snakify';
 export * from './ssr-awaiter';
 export * from './use-component';
