@@ -1,12 +1,14 @@
 import { TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { ClassMapDirective } from 'lit/directives/class-map.js';
-import { ComponentTypeDataFields } from '../models';
+import { FormFieldDefinition } from '../models';
 
 export interface FormRenderer {
   formatFormData(form: HTMLFormElement): unknown;
 
-  formatFormControl(control: HTMLInputElement | HTMLSelectElement): unknown;
+  formatFormControl(
+    control: HTMLInputElement | HTMLSelectElement
+  ): Record<string, unknown>;
 
   /**
    *
@@ -16,18 +18,18 @@ export interface FormRenderer {
    *
    */
   buildForm(
-    data: ComponentTypeDataFields[],
+    data: FormFieldDefinition[],
     values?: Record<string, string | boolean>,
-    keyFn?: (field: ComponentTypeDataFields) => string
+    keyFn?: (field: FormFieldDefinition) => string
   ): TemplateResult;
 
   buildField(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string | boolean
   ): TemplateResult;
 
   getClassMap(
-    params: ComponentTypeDataFields
+    params: FormFieldDefinition
   ): DirectiveResult<typeof ClassMapDirective>;
 }
 

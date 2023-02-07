@@ -1,4 +1,5 @@
 import { LitElement, ReactiveControllerHost, ReactiveElement } from 'lit';
+import { isLegacyDecorator } from '../../guards';
 import { DecoratorContext, TargetDecorator } from '../../model';
 import { SubscribeController } from './subscribe.controller';
 
@@ -85,15 +86,11 @@ export function subscribe(): any {
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
   ): DecoratorContext | void => {
-    const isLegacy = (
-      context: unknown,
-      name?: PropertyKey
-    ): context is TargetDecorator => {
-      return name !== undefined;
-    };
-    const propName = (isLegacy(context, name) ? name : context.key) as string;
+    const propName = (
+      isLegacyDecorator(context, name) ? name : context.key
+    ) as string;
 
-    return isLegacy(context, name)
+    return isLegacyDecorator(context, name)
       ? legacySubscribe(context, propName)
       : (standardSubscribe(context, propName) as unknown as void);
   };

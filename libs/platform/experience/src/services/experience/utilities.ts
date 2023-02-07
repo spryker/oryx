@@ -10,15 +10,17 @@ export const postMessage = <T>(
   message: T extends MessageType ? ExperienceMessageData<T> : unknown,
   sender?: Window
 ): void => {
-  if (sender) {
-    sender.postMessage(message, '*');
+  setTimeout(() => {
+    if (sender) {
+      sender.postMessage(message, '*');
 
-    return;
-  }
+      return;
+    }
 
-  if (typeof window !== 'undefined' && window.parent) {
-    window.parent.postMessage(message, '*');
-  }
+    if (typeof window !== 'undefined' && window.parent) {
+      window.parent.postMessage(message, '*');
+    }
+  });
 };
 
 export const catchMessage = <T extends MessageType, K extends DataIds>(

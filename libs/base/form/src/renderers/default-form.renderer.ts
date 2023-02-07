@@ -5,7 +5,7 @@ import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { ComponentTypeDataFields, FormFieldType } from '../models';
+import { FormFieldDefinition, FormFieldType } from '../models';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
@@ -25,7 +25,9 @@ export class DefaultFormRenderer implements FormRenderer {
     return formatted;
   }
 
-  formatFormControl(control: HTMLInputElement | HTMLSelectElement): unknown {
+  formatFormControl(
+    control: HTMLInputElement | HTMLSelectElement
+  ): Record<string, unknown> {
     let value;
     if (control instanceof HTMLInputElement && control.type === 'checkbox') {
       value = !!control.checked;
@@ -44,22 +46,22 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   buildForm(
-    data: ComponentTypeDataFields[],
+    data: FormFieldDefinition[],
     values?: Record<string, string | boolean>,
-    keyFn: (field: ComponentTypeDataFields) => string = (
-      field: ComponentTypeDataFields
+    keyFn: (field: FormFieldDefinition) => string = (
+      field: FormFieldDefinition
     ): string => field.id
   ): TemplateResult {
     return html`${repeat(
       data,
       keyFn,
-      (field: ComponentTypeDataFields): TemplateResult =>
+      (field: FormFieldDefinition): TemplateResult =>
         html`${this.buildField(field, values?.[field.id])}`
     )}`;
   }
 
   buildField(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string | boolean
   ): TemplateResult {
     if (!field.label || field.label === '') {
@@ -75,30 +77,30 @@ export class DefaultFormRenderer implements FormRenderer {
     }
     switch (field.type) {
       case 'input':
-      case FormFieldType.PHONE:
-      case FormFieldType.EMAIL:
-      case FormFieldType.TEXT: {
+      case FormFieldType.Phone:
+      case FormFieldType.Email:
+      case FormFieldType.Text: {
         return this.buildTextField(field, value as string);
       }
-      case FormFieldType.NUMBER: {
+      case FormFieldType.Number: {
         return this.buildNumberField(field, value as string);
       }
-      case FormFieldType.TEXTAREA: {
+      case FormFieldType.Textarea: {
         return this.buildTextArea(field, value as string);
       }
-      case FormFieldType.BOOLEAN: {
+      case FormFieldType.Boolean: {
         return this.buildBoolean(field, value as string);
       }
-      case FormFieldType.SELECT: {
+      case FormFieldType.Select: {
         return this.buildSelect(field, value as string);
       }
-      case FormFieldType.TOGGLE: {
+      case FormFieldType.Toggle: {
         return this.buildToggle(field, value);
       }
-      case FormFieldType.TOGGLE_BUTTON: {
+      case FormFieldType.ToggleButton: {
         return this.buildToggleButton(field, value as string);
       }
-      case FormFieldType.COLOR: {
+      case FormFieldType.Color: {
         return this.buildColorField(field, value as string);
       }
     }
@@ -107,7 +109,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildTextField(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -130,7 +132,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildNumberField(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -153,7 +155,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildBoolean(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -173,7 +175,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildTextArea(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -193,7 +195,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildColorField(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value: string
   ): TemplateResult {
     return html`
@@ -209,7 +211,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildToggle(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string | boolean
   ): TemplateResult {
     return html`
@@ -226,7 +228,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildToggleButton(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -253,7 +255,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected buildSelect(
-    field: ComponentTypeDataFields,
+    field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
     return html`
@@ -289,7 +291,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   getClassMap(
-    params: ComponentTypeDataFields
+    params: FormFieldDefinition
   ): DirectiveResult<typeof ClassMapDirective> {
     return classMap({
       w100: params.width === 100,

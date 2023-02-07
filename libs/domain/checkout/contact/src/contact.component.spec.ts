@@ -2,8 +2,8 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormComponentInterface } from '@spryker-oryx/form';
 import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { CheckoutContactComponent } from './contact.component';
 import { checkoutContactComponent } from './contact.def';
 
@@ -11,30 +11,24 @@ class MockCheckoutDataService implements Partial<CheckoutDataService> {
   setCustomer = vi.fn();
 }
 
-const setupFakeForm = (): void => {
-  customElements.define(
-    'user-contact-form',
-    class extends LitElement implements FormComponentInterface {
-      getForm(): HTMLFormElement | null {
-        return this.renderRoot.querySelector('form') as HTMLFormElement;
-      }
+@customElement('user-contact-form')
+class MockForm extends LitElement {
+  getForm(): HTMLFormElement | null {
+    return this.renderRoot.querySelector('form') as HTMLFormElement;
+  }
 
-      render(): TemplateResult {
-        return html`
-          <form>
-            <input name="test" required aria-label="test" />
-          </form>
-        `;
-      }
-    }
-  );
-};
+  render(): TemplateResult {
+    return html`
+      <form>
+        <input name="test" required aria-label="test" />
+      </form>
+    `;
+  }
+}
 
 describe('CheckoutContactComponent', () => {
   let element: CheckoutContactComponent;
   let dataService: CheckoutDataService;
-
-  setupFakeForm();
 
   const setFakeValue = (): void => {
     (

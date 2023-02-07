@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentController, defaultOptions } from '@spryker-oryx/experience';
 import {
-  FormComponentMixin,
-  FormRenderer,
-  formStyles,
-} from '@spryker-oryx/form';
+  ContentController,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
+import { FormMixin, FormRenderer, formStyles } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
 import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { asyncValue, hydratable, observe } from '@spryker-oryx/utilities';
@@ -26,7 +26,9 @@ import { AddressFormOptions } from './model';
 
 @defaultOptions({ fallbackCountry: 'DE' })
 @hydratable(['mouseover', 'focusin'])
-export class AddressFormComponent extends FormComponentMixin<AddressFormOptions>() {
+export class AddressFormComponent extends FormMixin(
+  ContentMixin<AddressFormOptions>(LitElement)
+) {
   static styles = [styles, formStyles];
 
   protected options$ = new ContentController(this).getOptions();

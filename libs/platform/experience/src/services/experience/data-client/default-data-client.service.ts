@@ -5,17 +5,8 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import {
-  distinctUntilChanged,
-  map,
-  merge,
-  Observable,
-  of,
-  shareReplay,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { optionsKey } from '../../../decorators';
+import { map, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { modelKey, optionsKey } from '../../../decorators';
 import { catchMessage, postMessage } from '../utilities';
 import { DataIds, MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -36,28 +27,35 @@ export class DefaultExperienceDataClientService
     protected suggestionService = inject('oryx.SuggestionService', null)
   ) {}
 
-  protected componentType$ = catchMessage(
+  protected component$ = catchMessage(
     MessageType.ComponentType,
     DataIds.ComponentType
   ).pipe(
-    distinctUntilChanged(),
-    map(
-      (type) =>
-        [
-          type,
-          this.appRef.findPlugin(ComponentsPlugin)?.getComponentClass(type),
-        ] as const
-    ),
+    map((type) => [type, this.appRef.findPlugin(ComponentsPlugin)] as const),
     shareReplay({ bufferSize: 1, refCount: true })
   );
-  protected options$ = this.componentType$.pipe(
-    tap(([type, componentClass]) => {
-      if (!componentClass) {
+  protected model$ = this.component$.pipe(
+    tap(([type, componentPlugin]) => {
+      if (!componentPlugin) {
+        return;
+      }
+
+      const model = componentPlugin.getComponentModel(type)?.[modelKey];
+
+      postMessage({
+        type: MessageType.Model,
+        [DataIds.Model]: model,
+      });
+    })
+  );
+  protected options$ = this.component$.pipe(
+    tap(([type, componentPlugin]) => {
+      if (!componentPlugin) {
         return;
       }
 
       const options = {
-        ...componentClass[optionsKey],
+        ...componentPlugin.getComponentClass(type)?.[optionsKey],
         ...this.optionsService.getFeatureOptions(type),
       };
 
@@ -96,7 +94,8 @@ export class DefaultExperienceDataClientService
   protected initializer$ = merge(
     this.options$,
     this.graphics$,
-    this.products$
+    this.products$,
+    this.model$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {

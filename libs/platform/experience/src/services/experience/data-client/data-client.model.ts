@@ -1,4 +1,5 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
+import { FieldDefinition } from '../../../decorators';
 
 export const enum MessageType {
   Graphics = 'oryx.graphics-preview',
@@ -6,6 +7,7 @@ export const enum MessageType {
   Products = 'oryx.products-preview',
   Query = 'oryx.query-preview',
   ComponentType = 'oryx.component-type-preview',
+  Model = 'oryx.component-model-preview',
 }
 
 export const enum DataIds {
@@ -13,6 +15,7 @@ export const enum DataIds {
   Options = 'oryx.options',
   Products = 'oryx.products',
   Query = 'oryx.query',
+  Model = 'oryx.component-model',
   ComponentType = 'oryx.component-type',
 }
 
@@ -35,6 +38,8 @@ export type ExperienceMessageData<T> = {
   ? { [DataIds.Query]: string }
   : T extends MessageType.ComponentType
   ? { [DataIds.ComponentType]: string }
+  : T extends MessageType.Model
+  ? { [DataIds.Model]: FieldDefinition[] | undefined }
   : never);
 
 export type ExperienceMessageType<T = MessageType> = MessageEvent<

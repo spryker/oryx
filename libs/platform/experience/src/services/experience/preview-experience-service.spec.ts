@@ -1,3 +1,4 @@
+import { nextFrame } from '@open-wc/testing-helpers';
 import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
@@ -12,6 +13,7 @@ import {
   PreviewExperienceService,
   REQUEST_MESSAGE_TYPE,
 } from './preview-experience.service';
+import { postMessage } from './utilities';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
@@ -51,10 +53,12 @@ describe('ExperiencePreviewService', () => {
         },
       ],
     });
+    vi.spyOn(window.parent, 'postMessage');
   });
 
   afterEach(() => {
     destroyInjector();
+    vi.clearAllMocks();
   });
 
   describe('when router is not set', () => {
@@ -68,165 +72,133 @@ describe('ExperiencePreviewService', () => {
       expect(service).toBeInstanceOf(PreviewExperienceService);
     });
 
-    it('should get route data', async () =>
-      await new Promise<void>((done) => {
-        const routeValue = '/';
+    it('should get route data', async () => {
+      const callback = vi.fn();
+      const routeValue = '/';
+      postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          route: routeValue,
+        },
+        window
+      );
+      service.getRouteData().subscribe(callback);
+      await nextFrame();
+      expect(callback).toHaveBeenCalledWith(routeValue);
+    });
 
-        window?.postMessage(
+    it('should get interactive data', async () => {
+      const callback = vi.fn();
+      const interactionValue = {
+        action: 'test',
+        componentId: '1',
+      };
+      postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          interaction: interactionValue,
+        },
+        window
+      );
+      service.getInteractionData().subscribe(callback);
+      await nextFrame();
+      expect(callback).toHaveBeenCalledWith(interactionValue);
+    });
+
+    it('should send post message to reload structure', async () => {
+      const structure = 'test';
+      service.getComponent({ uid: structure });
+      await nextFrame();
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
+        {
+          type: REQUEST_MESSAGE_TYPE,
+          structure: structure,
+        },
+        '*'
+      );
+    });
+
+    it('should send post message to reload content', async () => {
+      const content = 'test';
+      service.getContent({ uid: content });
+      await nextFrame();
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
+        {
+          type: REQUEST_MESSAGE_TYPE,
+          content: content,
+        },
+        '*'
+      );
+    });
+
+    it('should get structure data', async () => {
+      const callback = vi.fn();
+      const structure = {
+        id: '/',
+        type: 'Page',
+        components: [
           {
-            type: POST_MESSAGE_TYPE,
-            route: routeValue,
+            id: '1',
+            type: 'Banner',
           },
-          '*'
-        );
-
-        service.getRouteData().subscribe((route) => {
-          expect(route).toBe(routeValue);
-
-          done();
-        });
-      }));
-
-    it('should get interactive data', async () =>
-      await new Promise<void>((done) => {
-        const interactionValue = {
-          action: 'test',
-          componentId: '1',
-        };
-
-        window?.postMessage(
           {
-            type: POST_MESSAGE_TYPE,
-            interaction: interactionValue,
+            id: '2',
+            type: 'Slider',
           },
-          '*'
-        );
+        ],
+      };
+      postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          structure,
+        },
+        window
+      );
+      service.getComponent({ uid: structure.id }).subscribe(callback);
+      await nextFrame();
+      expect(callback).toHaveBeenCalledWith(structure);
+    });
 
-        service.getInteractionData().subscribe((interaction) => {
-          expect(interaction).toBeTruthy();
-          expect(interaction?.action).toBe(interactionValue.action);
-          expect(interaction?.componentId).toBe(interactionValue.componentId);
-
-          done();
-        });
-      }));
-
-    it('should send post message to reload structure', async () =>
-      await new Promise<void>((done) => {
-        const structure = 'test';
-
-        window?.addEventListener(
-          'message',
-          (e: MessageEvent) => {
-            expect(e.data.structure).toBe(structure);
-            expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
-
-            done();
-          },
-          { once: true }
-        );
-
-        service.getComponent({ uid: structure });
-      }));
-
-    it('should send post message to reload content', async () =>
-      await new Promise<void>((done) => {
-        const content = 'test';
-
-        window?.addEventListener(
-          'message',
-          (e: MessageEvent) => {
-            expect(e.data.content).toBe(content);
-            expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
-
-            done();
-          },
-          { once: true }
-        );
-
-        service.getContent({ uid: content });
-      }));
-
-    it('should get structure data', async () =>
-      await new Promise<void>((done) => {
-        const structure = {
-          id: '/',
-          type: 'Page',
-          components: [
-            {
-              id: '1',
-              type: 'Banner',
-            },
-            {
-              id: '2',
-              type: 'Slider',
-            },
-          ],
-        };
-
-        service.getComponent({ uid: structure.id }).subscribe((data) => {
-          expect(data.type).toBe(structure.type);
-          expect(data.components?.length).toBe(structure.components.length);
-
-          done();
-        });
-
-        window.postMessage(
-          {
-            type: POST_MESSAGE_TYPE,
-            structure,
-          },
-          '*'
-        );
-      }));
-
-    it('should get content data', async () =>
-      await new Promise<void>((done) => {
-        const content = {
-          id: '1',
-          data: {
-            title: 'textarea title text1',
-          },
-        };
-
-        service.getContent({ uid: content.id }).subscribe((data) => {
-          expect(data.data.title).toBe(content.data.title);
-
-          done();
-        });
-
-        window.postMessage(
-          {
-            type: POST_MESSAGE_TYPE,
-            content,
-          },
-          '*'
-        );
-      }));
+    it('should get content data', async () => {
+      const callback = vi.fn();
+      const content = {
+        id: '1',
+        data: {
+          title: 'textarea title text1',
+        },
+      };
+      postMessage(
+        {
+          type: POST_MESSAGE_TYPE,
+          content,
+        },
+        window
+      );
+      service.getContent({ uid: content.id }).subscribe(callback);
+      await nextFrame();
+      expect(callback).toHaveBeenCalledWith(content);
+    });
   });
 
   describe('when router is set', () => {
-    it('should send post message', async () =>
-      await new Promise<void>((done) => {
-        (
-          testInjector.inject(RouterService).getEvents as unknown as SpyInstance
-        ).mockReturnValue(
-          of({
-            type: RouterEventType.NavigationEnd,
-            route: '/',
-          })
-        );
-        testInjector.inject(ExperienceService);
-        window?.addEventListener(
-          'message',
-          (e: MessageEvent) => {
-            expect(e.data.route).toBe('/');
-            expect(e.data.type).toBe(REQUEST_MESSAGE_TYPE);
-
-            done();
-          },
-          { once: true }
-        );
-      }));
+    it('should send post message', async () => {
+      (
+        testInjector.inject(RouterService).getEvents as unknown as SpyInstance
+      ).mockReturnValue(
+        of({
+          type: RouterEventType.NavigationEnd,
+          route: '/new',
+        })
+      );
+      testInjector.inject(ExperienceService);
+      await nextFrame();
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
+        {
+          type: REQUEST_MESSAGE_TYPE,
+          route: '/new',
+        },
+        '*'
+      );
+    });
   });
 });

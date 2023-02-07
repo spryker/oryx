@@ -2,9 +2,9 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormComponentInterface } from '@spryker-oryx/form';
 import { AddressService } from '@spryker-oryx/user';
 import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { CheckoutAddressComponent } from './address.component';
 import { checkoutAddressComponent } from './address.def';
@@ -17,31 +17,25 @@ class MockCheckoutDataService implements Partial<CheckoutDataService> {
   setAddress = vi.fn();
 }
 
-const setupFakeForm = (): void => {
-  customElements.define(
-    'oryx-address-form',
-    class extends LitElement implements FormComponentInterface {
-      getForm(): HTMLFormElement | null {
-        return this.renderRoot.querySelector('form') as HTMLFormElement;
-      }
+@customElement('oryx-address-form')
+class MockForm extends LitElement {
+  getForm(): HTMLFormElement | null {
+    return this.renderRoot.querySelector('form') as HTMLFormElement;
+  }
 
-      render(): TemplateResult {
-        return html`
-          <form>
-            <input name="test" required aria-label="test" />
-          </form>
-        `;
-      }
-    }
-  );
-};
+  render(): TemplateResult {
+    return html`
+      <form>
+        <input name="test" required aria-label="test" />
+      </form>
+    `;
+  }
+}
 
 describe('CheckoutAddressComponent', () => {
   let element: CheckoutAddressComponent;
   let addressService: MockAddressService;
   let dataService: CheckoutDataService;
-
-  setupFakeForm();
 
   const setFakeValue = (): void => {
     (

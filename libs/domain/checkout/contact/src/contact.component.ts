@@ -4,21 +4,21 @@ import {
   ContactDetails,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin } from '@spryker-oryx/experience';
-import { FormComponentInterface } from '@spryker-oryx/form';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { ContactFormComponent } from '@spryker-oryx/user/contact-form';
 import { html, LitElement, TemplateResult } from 'lit';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 export class CheckoutContactComponent
-  extends ComponentMixin()
+  extends ContentMixin(LitElement)
   implements CheckoutForm
 {
   protected checkoutDataService = resolve(CheckoutDataService);
 
-  protected formRef: Ref<LitElement & FormComponentInterface> = createRef();
+  protected formRef = createRef<ContactFormComponent>();
 
   protected getFormElement(): HTMLFormElement | null | undefined {
-    return this.formRef.value?.getForm?.();
+    return this.formRef.value?.getForm();
   }
 
   submit(report = false): boolean {

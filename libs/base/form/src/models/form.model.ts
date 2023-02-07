@@ -1,17 +1,36 @@
-export interface DataFieldsAttributes {
+export interface FormFieldAttributes {
   type: string;
   [key: string]: string | number;
 }
 
-export interface ComponentTypeDataFields {
+export interface FormFieldOption {
+  value: string;
+  text?: string;
+  icon?: string;
+}
+
+export const enum FormFieldType {
+  ToggleButton = 'toggle-button',
+  Text = 'text',
+  Email = 'email',
+  Number = 'number',
+  Phone = 'tel',
+  Toggle = 'toggle',
+  Select = 'select',
+  Boolean = 'boolean',
+  Textarea = 'textarea',
+  Color = 'color',
+}
+
+export interface FormFieldDefinition {
   id: string;
-  type?: string;
+  type?: FormFieldType | string;
   title?: string;
   label?: string;
   floatLabel?: boolean;
   required?: boolean;
   options?: FormFieldOption[];
-  attributes?: DataFieldsAttributes;
+  attributes?: FormFieldAttributes;
   placeholder?: string;
   max?: number;
   min?: number;
@@ -23,24 +42,4 @@ export interface ComponentTypeDataFields {
   width?: 50 | 100;
 
   disabled?: boolean;
-}
-
-export interface FormFieldOption {
-  value: string;
-  text?: string;
-  icon?: string;
-}
-
-export enum FormFieldType {
-  TOGGLE_BUTTON = 'toggle-button',
-  TOGGLE_ICON = 'toggle-icon',
-  TEXT = 'text',
-  EMAIL = 'email',
-  NUMBER = 'number',
-  PHONE = 'tel',
-  TOGGLE = 'toggle',
-  SELECT = 'select',
-  BOOLEAN = 'boolean',
-  TEXTAREA = 'textarea',
-  COLOR = 'color',
 }

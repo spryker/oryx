@@ -1,16 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  FormComponentMixin,
-  FormRenderer,
-  formStyles,
-} from '@spryker-oryx/form';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { FormMixin, FormRenderer, formStyles } from '@spryker-oryx/form';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { fields } from './contact-form.model';
 import { styles } from './contact-form.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class ContactFormComponent extends FormComponentMixin() {
+export class ContactFormComponent extends FormMixin(ContentMixin(LitElement)) {
   static styles = [formStyles, styles];
 
   protected fieldRenderer = resolve(FormRenderer);

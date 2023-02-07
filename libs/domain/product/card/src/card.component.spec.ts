@@ -11,7 +11,6 @@ import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './card.def';
-import { ProductCardOptions } from './card.model';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('1')),
@@ -126,10 +125,7 @@ describe('ProductCardComponent', () => {
       const titleLineClamp = 3;
       beforeEach(async () => {
         element = await fixture(html`
-          <product-card
-            sku="1"
-            .options=${{ titleLineClamp } as ProductCardOptions}
-          ></product-card>
+          <product-card sku="1" .options=${{ titleLineClamp }}></product-card>
         `);
       });
 

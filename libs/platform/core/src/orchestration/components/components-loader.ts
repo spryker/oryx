@@ -1,10 +1,12 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
+import { Type } from '@spryker-oryx/di';
 import { isDefined } from '@spryker-oryx/utilities';
 import { ThemeData, ThemePlugin, ThemeStylesheets } from '../theme';
 import {
   ComponentDef,
   ComponentImplMeta,
   ComponentInfo,
+  ComponentModel,
   ComponentsOptions,
   ComponentStatic,
   ComponentType,
@@ -20,6 +22,7 @@ interface ComponentMap {
   observableType: ObservableType;
   componentType: ComponentType & ComponentStatic;
   themes?: (ThemeData | ThemeStylesheets)[] | null;
+  model?: Type<unknown>;
 }
 
 export class ComponentsLoader {
@@ -154,9 +157,10 @@ export class ComponentsLoader {
       return this.componentMap.get(def.name)!.observableType;
     }
 
-    const [componentType, themes] = await Promise.all([
+    const [componentType, themes, model] = await Promise.all([
       this.loadComponentImpl(def, meta),
       this.theme?.resolve(def),
+      resolveLazyLoadable(def.model),
     ]);
 
     if (!componentType) {
@@ -165,7 +169,12 @@ export class ComponentsLoader {
 
     const observableType = observableShadow(componentType, def.name);
 
-    this.componentMap.set(def.name, { observableType, themes, componentType });
+    this.componentMap.set(def.name, {
+      observableType,
+      themes,
+      componentType,
+      model,
+    });
 
     return observableType;
   }
@@ -174,5 +183,9 @@ export class ComponentsLoader {
     tag: string
   ): (ComponentType & ComponentStatic) | undefined {
     return this.componentMap.get(tag)?.componentType;
+  }
+
+  getComponentModel(tag: string): (Type<unknown> & ComponentModel) | undefined {
+    return this.componentMap.get(tag)?.model;
   }
 }

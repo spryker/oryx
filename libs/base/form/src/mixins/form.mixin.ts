@@ -1,24 +1,18 @@
 import { Type } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
 import { LitElement } from 'lit';
 
-export interface FormComponentInterface extends LitElement {
+export declare class FormMixinInterface {
   getForm(): HTMLFormElement | null;
 }
 
-export const FormComponentMixin = <T>(): Type<
-  FormComponentInterface & ContentComponentProperties<T>
-> => {
-  class FormComponent extends ComponentMixin<T>() {
+export const FormMixin = <T extends Type<LitElement> = Type<LitElement>>(
+  superClass: T
+): Type<FormMixinInterface> & T => {
+  class FormMixinClass extends superClass {
     getForm(): HTMLFormElement | null {
       return this.renderRoot.querySelector('form');
     }
   }
 
-  return FormComponent as Type<
-    LitElement & FormComponentInterface & ContentComponentProperties<T>
-  >;
+  return FormMixinClass as unknown as Type<FormMixinInterface> & T;
 };

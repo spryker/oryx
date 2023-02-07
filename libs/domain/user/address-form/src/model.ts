@@ -1,10 +1,10 @@
-import { ComponentTypeDataFields } from '@spryker-oryx/form';
+import { FormFieldDefinition } from '@spryker-oryx/form';
 
 export interface AddressForm {
   id: string;
   name: string;
   data: {
-    options: ComponentTypeDataFields[];
+    options: FormFieldDefinition[];
   };
 }
 

@@ -1,19 +1,19 @@
-import { ComponentTypeDataFields, FormFieldType } from '@spryker-oryx/form';
+import { FormFieldDefinition, FormFieldType } from '@spryker-oryx/form';
 
-export const fields: ComponentTypeDataFields[] = [
+export const fields: FormFieldDefinition[] = [
   {
     id: 'firstName',
-    type: FormFieldType.TEXT,
+    type: FormFieldType.Text,
     label: 'First Name',
   },
   {
     id: 'lastName',
-    type: FormFieldType.TEXT,
+    type: FormFieldType.Text,
     label: 'Last Name',
   },
   {
     id: 'email',
-    type: FormFieldType.EMAIL,
+    type: FormFieldType.Email,
     label: 'Email',
     required: true,
     width: 100,

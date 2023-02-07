@@ -4,16 +4,16 @@ import {
   CheckoutForm,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin } from '@spryker-oryx/experience';
-import { FormComponentInterface } from '@spryker-oryx/form';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
+import { AddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { asyncValue } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 export class CheckoutAddressComponent
-  extends ComponentMixin()
+  extends ContentMixin(LitElement)
   implements CheckoutForm
 {
   protected checkoutDataService = resolve(CheckoutDataService);
@@ -23,10 +23,10 @@ export class CheckoutAddressComponent
 
   protected addresses$ = this.addressService.getAddresses();
 
-  protected formRef: Ref<LitElement & FormComponentInterface> = createRef();
+  protected formRef = createRef<AddressFormComponent>();
 
   protected getFormElement(): HTMLFormElement | null | undefined {
-    return this.formRef.value?.getForm?.() as HTMLFormElement;
+    return this.formRef.value?.getForm();
   }
 
   submit(report = false): boolean {

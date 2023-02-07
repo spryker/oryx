@@ -1,5 +1,6 @@
 import { ReactiveElement, UpdatingElement } from 'lit';
 import { Subject } from 'rxjs';
+import { isLegacyDecorator } from '../../guards';
 import { DecoratorContext, TargetDecorator } from '../../model';
 
 interface DecoratorProps<T = TargetDecorator | ReactiveElement> {
@@ -171,16 +172,12 @@ export function observe(property?: string | string[]): any {
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
   ): DecoratorContext | void => {
-    const isLegacy = (
-      context: DecoratorContext | TargetDecorator,
-      name?: PropertyKey
-    ): context is TargetDecorator => {
-      return name !== undefined;
-    };
-    const subjectKey = (isLegacy(context, name) ? name : context.key) as string;
+    const subjectKey = (
+      isLegacyDecorator(context, name) ? name : context.key
+    ) as string;
     const propertyKey = property ?? subjectKey.slice(0, -1);
 
-    return isLegacy(context, name)
+    return isLegacyDecorator(context, name)
       ? legacyObserve({ context, subjectKey, property: propertyKey })
       : standardObserve({ context, subjectKey, property: propertyKey });
   };
