@@ -45,7 +45,9 @@ const Template: Story<FacetComponentAttributes> = (
                 selectedFacetValue.selected ||
                 selectedValue !== selectedFacetValue.value
             )
-          : [selectedFacetValue.value];
+          : selectedFacetValue.selected
+          ? [selectedFacetValue.value]
+          : [];
 
         router.params$.next({ [facet?.parameter ?? '']: values.join(',') });
       });
