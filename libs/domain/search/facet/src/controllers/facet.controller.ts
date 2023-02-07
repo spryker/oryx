@@ -209,5 +209,18 @@ export class FacetController implements ReactiveController {
 
   protected onClear(): void {
     this.dispatchSelectEvent();
+    this.deselectInputs();
+  }
+
+  private deselectInputs() {
+    const inputs =
+      this.host.renderRoot.querySelectorAll<HTMLInputElement>('input:checked');
+
+    inputs.forEach((input) => {
+      input.checked = false;
+      input.dispatchEvent(
+        new InputEvent('change', { bubbles: true, composed: true })
+      );
+    });
   }
 }

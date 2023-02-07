@@ -34,9 +34,9 @@ const Template: Story<FacetComponentAttributes> = (
 
         const facet = facets?.find((facet) => facet.name === name);
 
-        const values = facet?.multiValued
+        const values = attrs?.multi
           ? [
-              ...(facet.selectedValues ?? []),
+              ...(facet?.selectedValues ?? []),
               ...(selectedFacetValue.selected
                 ? [selectedFacetValue.value]
                 : []),
