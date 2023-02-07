@@ -1,4 +1,3 @@
-export interface ProductAttributesComponentOptions {
-  sku?: string;
+export interface ProductAttributesOptions {
   columnCount?: string;
 }

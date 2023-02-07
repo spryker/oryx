@@ -13,19 +13,25 @@ const template = (sku = '1', link = false, maxLines?: number) =>
     ${Array.from(Array(6).keys()).map(
       (i) =>
         html`
-          <product-title
+          <oryx-product-title
             .sku=${sku}
             .options=${{ tag: 'h' + (i + 1), link, maxLines }}
-          ></product-title>
+          ></oryx-product-title>
         `
     )}
 
-    <product-title
+    <oryx-product-title
       .sku=${sku}
       .options=${{ tag: HeadingTag.Subtitle, link, maxLines }}
-    ></product-title>
+    ></oryx-product-title>
 
-    <product-title .sku=${sku} .options=${{ link, maxLines }}></product-title>
+    <oryx-product-title
+      .sku=${sku}
+      .options=${{
+        link,
+        maxLines,
+      }}
+    ></oryx-product-title>
   `;
 
 const Template: Story<unknown> = (): TemplateResult => {

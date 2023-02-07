@@ -132,11 +132,11 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
           ${when(
             !hidePreview,
             () => html`
-              <product-media
+              <oryx-product-media
                 .options=${{
                   containerSize: ProductMediaContainerSize.Thumbnail,
                 }}
-              ></product-media>
+              ></oryx-product-media>
             `
           )}
 

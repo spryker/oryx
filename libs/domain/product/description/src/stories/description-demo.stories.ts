@@ -6,28 +6,32 @@ import { ProductDescriptionOptions } from '../description.model';
 
 export default {
   title: `${storybookPrefix}/Description`,
-} as unknown as Meta;
+  args: {
+    sku: '1',
+  },
+  argTypes: {
+    truncateAfter: {
+      control: { type: 'number' },
+    },
+    enableToggle: {
+      control: { type: 'boolean' },
+    },
+    sku: {
+      control: { type: 'select' },
+      options: [
+        ...MockProductService.mockProducts.map((p) => p.sku),
+        'not-found',
+      ],
+      table: { category: 'demo' },
+    },
+  },
+} as Meta;
 
 type Props = ProductDescriptionOptions & { sku: string };
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const { sku, ...options } = props;
-  return html` <product-description .sku=${sku} .options=${options} />`;
+  return html` <oryx-product-description .sku=${sku} .options=${options} />`;
 };
+
 export const DescriptionDemo = Template.bind({});
-
-DescriptionDemo.args = {
-  sku: '1',
-  truncateAfter: 3,
-  hideToggle: false,
-};
-
-DescriptionDemo.argTypes = {
-  sku: {
-    control: { type: 'select' },
-    options: [
-      ...MockProductService.mockProducts.map((p) => p.sku),
-      'not-found',
-    ],
-  },
-};

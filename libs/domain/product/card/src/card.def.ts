@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/core';
-import { ProductCardComponentOptions } from './card.model';
+import { ProductCardOptions } from './card.model';
 
 declare global {
   interface FeatureOptions {
-    'product-card'?: ProductCardComponentOptions;
+    'product-card'?: ProductCardOptions;
   }
 }
 

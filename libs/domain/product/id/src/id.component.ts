@@ -1,27 +1,16 @@
-import { ContentController } from '@spryker-oryx/experience';
-import {
-  ProductComponentMixin,
-  ProductController,
-} from '@spryker-oryx/product';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { TemplateResult } from 'lit';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { ProductMixin } from '@spryker-oryx/product';
+import { hydratable } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { combineLatest } from 'rxjs';
-import { Props } from './id.model';
+import { ProductIdOptions } from './id.model';
 
+@defaultOptions({ prefix: 'SKU: ' })
 @hydratable()
-export class ProductIdComponent extends ProductComponentMixin<Props>() {
-  protected product$ = new ProductController(this).getProduct();
-  protected options$ = new ContentController(this).getOptions();
-  protected data$ = combineLatest([this.options$, this.product$]);
-
+export class ProductIdComponent extends ProductMixin(
+  ContentMixin<ProductIdOptions>(LitElement)
+) {
   protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(
-        this.data$,
-        ([options, product]) =>
-          html`${options.prefix ?? 'SKU'}: ${product?.sku}`
-      )}
-    `;
+    return html`${this.componentOptions?.prefix}${this.product?.sku}`;
   }
 }

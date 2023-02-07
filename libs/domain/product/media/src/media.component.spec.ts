@@ -56,7 +56,9 @@ describe('ProductMediaComponent', () => {
           size: Size.Md,
         },
       ]);
-      element = await fixture(html`<product-media sku="1"></product-media>`);
+      element = await fixture(
+        html`<oryx-product-media sku="1"></oryx-product-media>`
+      );
     });
 
     it('should pass the a11y audit', async () => {
@@ -85,7 +87,9 @@ describe('ProductMediaComponent', () => {
             size: Size.Lg,
           },
         ] as ImageSource[]);
-        element = await fixture(html`<product-media sku="1"></product-media>`);
+        element = await fixture(
+          html`<oryx-product-media sku="1"></oryx-product-media>`
+        );
       });
 
       it('should not render a srcset', () => {
@@ -108,7 +112,9 @@ describe('ProductMediaComponent', () => {
             },
           },
         ] as ImageSource[]);
-        element = await fixture(html`<product-media sku="1"></product-media>`);
+        element = await fixture(
+          html`<oryx-product-media sku="1"></oryx-product-media>`
+        );
       });
 
       it('should pass the a11y audit', async () => {
@@ -128,7 +134,9 @@ describe('ProductMediaComponent', () => {
   describe('when there are no images resolved', () => {
     beforeEach(async () => {
       service.resolveSources.mockReturnValue([]);
-      element = await fixture(html`<product-media sku="1"></product-media>`);
+      element = await fixture(
+        html`<oryx-product-media sku="1"></oryx-product-media>`
+      );
     });
 
     it('should pass the a11y audit', async () => {
@@ -156,7 +164,7 @@ describe('ProductMediaComponent', () => {
       describe('when no format is requested', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media sku="1"></product-media>`
+            html`<oryx-product-media sku="1"></oryx-product-media>`
           );
         });
 
@@ -171,10 +179,10 @@ describe('ProductMediaComponent', () => {
       describe('when a format is requested', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media
+            html`<oryx-product-media
               sku="1"
               .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
-            ></product-media>`
+            ></oryx-product-media>`
           );
         });
 
@@ -194,7 +202,7 @@ describe('ProductMediaComponent', () => {
       describe('when no mediaIndex is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media sku="3"></product-media>`
+            html`<oryx-product-media sku="3"></oryx-product-media>`
           );
         });
 
@@ -210,10 +218,10 @@ describe('ProductMediaComponent', () => {
       describe('when mediaIndex = 1', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media
+            html`<oryx-product-media
               sku="3"
               .options=${{ mediaIndex: 1 }}
-            ></product-media>`
+            ></oryx-product-media>`
           );
         });
 
@@ -234,7 +242,7 @@ describe('ProductMediaComponent', () => {
       describe('when alt option is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media sku="1"></product-media>`
+            html`<oryx-product-media sku="1"></oryx-product-media>`
           );
         });
 
@@ -246,10 +254,10 @@ describe('ProductMediaComponent', () => {
       describe('when a custom alt property is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media
+            html`<oryx-product-media
               sku="1"
               .options=${{ alt: 'custom-alt' }}
-            ></product-media>`
+            ></oryx-product-media>`
           );
         });
 
@@ -263,7 +271,7 @@ describe('ProductMediaComponent', () => {
       describe('when no loading strategy is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media sku="1"></product-media>`
+            html`<oryx-product-media sku="1"></oryx-product-media>`
           );
         });
 
@@ -275,10 +283,10 @@ describe('ProductMediaComponent', () => {
       describe('when eager loading strategy is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-media
+            html`<oryx-product-media
               sku="1"
               .options=${{ loading: LoadingStrategy.Eager }}
-            ></product-media>`
+            ></oryx-product-media>`
           );
         });
 

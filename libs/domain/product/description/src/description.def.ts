@@ -3,12 +3,12 @@ import { ProductDescriptionOptions } from './description.model';
 
 declare global {
   interface FeatureOptions {
-    'product-description'?: ProductDescriptionOptions;
+    'oryx-product-description'?: ProductDescriptionOptions;
   }
 }
 
 export const productDescriptionComponent = componentDef({
-  name: 'product-description',
+  name: 'oryx-product-description',
   impl: () =>
     import('./description.component').then(
       (m) => m.ProductDescriptionComponent

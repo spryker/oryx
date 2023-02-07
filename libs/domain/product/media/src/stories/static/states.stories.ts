@@ -11,19 +11,25 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <h3>First image</h3>
-    <product-media sku="1"/></product-media>
+    <oryx-product-media sku="1"/></oryx-product-media>
 
     <h3>Second image</h3>
-    <product-media sku="1" .options=${{ mediaIndex: 1 }} /></product-media>
+    <oryx-product-media sku="1" .options=${{
+      mediaIndex: 1,
+    }} /></oryx-product-media>
     
     <h3>Third image</h3>
-    <product-media sku="1" .options=${{ mediaIndex: 2 }} /></product-media>
+    <oryx-product-media sku="1" .options=${{
+      mediaIndex: 2,
+    }} /></oryx-product-media>
     
     <h3>4th (non existing) image</h3>
-    <product-media sku="1" .options=${{ mediaIndex: 3 }} /></product-media>
+    <oryx-product-media sku="1" .options=${{
+      mediaIndex: 3,
+    }} /></oryx-product-media>
 
     <style>
-      product-media {
+      oryx-product-media {
         display: block;
         width: 300px;
         margin-bottom: 10px;

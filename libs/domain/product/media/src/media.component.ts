@@ -1,69 +1,63 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentController } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ImageSource,
-  Product,
-  ProductComponentMixin,
-  ProductController,
   ProductImageService,
-  ProductMedia,
   ProductMediaContainerSize,
+  ProductMediaSet,
+  ProductMixin,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { hydratable } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { combineLatest, map, Observable } from 'rxjs';
-import { ProductMediaOptions, ResponsiveImage } from './media.model';
+import { ProductMediaOptions } from './media.model';
 
+@defaultOptions({
+  loading: LoadingStrategy.Lazy,
+  containerSize: ProductMediaContainerSize.Detail,
+})
 @hydratable('mouseover')
-export class ProductMediaComponent extends ProductComponentMixin<ProductMediaOptions>() {
+export class ProductMediaComponent extends ProductMixin(
+  ContentMixin<ProductMediaOptions>(LitElement)
+) {
   protected imageService = resolve(ProductImageService);
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(
-      this.productMedia$,
-      (image: ResponsiveImage): TemplateResult => {
-        return html`<oryx-image
-          src=${ifDefined(image.src)}
-          srcset=${ifDefined(image.srcset)}
-          alt=${ifDefined(image.alt)}
-          loading=${image.loading ?? LoadingStrategy.Lazy}
-        ></oryx-image>`;
-      }
-    )}`;
+  protected override render(): TemplateResult | void {
+    const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+
+    const productMedia = this.getMediaSet()?.media[mediaIndex];
+    const sources = this.imageService.resolveSources(
+      productMedia,
+      containerSize
+    );
+
+    return html`<oryx-image
+      src=${ifDefined(sources[0]?.url)}
+      srcset=${ifDefined(this.getSrcSet(sources))}
+      alt=${ifDefined(this.componentOptions?.alt || this.product?.name)}
+      loading=${ifDefined(this.componentOptions?.loading)}
+    ></oryx-image>`;
   }
 
-  protected productMedia$: Observable<ResponsiveImage> = combineLatest([
-    new ContentController(this).getOptions(),
-    new ProductController(this).getProductLegacy(),
-  ]).pipe(
-    map(([options, product]) => {
-      const image = this.resolveImage(product, options);
-      const sources = this.imageService.resolveSources(
-        image,
-        options?.containerSize ?? ProductMediaContainerSize.Detail
+  /**
+   * Resolves the media set. When there's no mediaSet index provided, the first
+   * media set is returned.
+   */
+  protected getMediaSet(): ProductMediaSet | undefined {
+    if (this.componentOptions?.mediaSet) {
+      return this.product?.mediaSet?.find(
+        (set) => set.name === this.componentOptions?.mediaSet
       );
-
-      return {
-        src: sources?.[0]?.url,
-        alt: options?.alt || product?.name,
-        srcset: this.getSrcSet(sources),
-        loading: options?.loading,
-      } as ResponsiveImage;
-    })
-  );
-
-  protected resolveImage(
-    product: Product | null,
-    options: Partial<ProductMediaOptions>
-  ): ProductMedia | undefined {
-    const set = !options.mediaSet
-      ? product?.mediaSet?.[0]
-      : product?.mediaSet?.find((set) => set.name === options.mediaSet);
-    return set?.media?.[options?.mediaIndex ?? 0];
+    } else {
+      return this.product?.mediaSet?.[0];
+    }
   }
 
+  /**
+   * Returns a list of srcset's that contain the url for each provided media
+   * query and density.
+   */
   protected getSrcSet(sources: ImageSource[]): string | undefined {
     if (sources.length < 2) {
       return;

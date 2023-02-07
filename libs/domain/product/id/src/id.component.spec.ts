@@ -32,10 +32,10 @@ describe('ProductIdComponent', () => {
       ],
     });
     element = await fixture(
-      html`<product-id
-        sku="${mockSku}"
+      html`<oryx-product-id
+        .sku=${mockSku}
         .options=${{ prefix: 'Test prefix' }}
-      ></product-id>`
+      ></oryx-product-id>`
     );
   });
 
@@ -58,12 +58,15 @@ describe('ProductIdComponent', () => {
   describe('when prefix is empty', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<product-id sku="${mockSku}" .options=${{}}></product-id>`
+        html`<oryx-product-id
+          sku="${mockSku}"
+          .options=${{}}
+        ></oryx-product-id>`
       );
     });
 
     it('should render default sku prefix', () => {
-      expect(element.shadowRoot?.textContent).toContain('SKU');
+      expect(element.shadowRoot?.textContent).toContain('SKU: ');
     });
   });
 });

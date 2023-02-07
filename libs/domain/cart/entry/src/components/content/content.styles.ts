@@ -3,16 +3,15 @@ import { lgScreen, mdScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const contentBaseStyles = css`
-  product-title {
+  oryx-product-title {
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
   }
 
-  product-title,
-  product-id {
+  oryx-product-title,
+  oryx-product-id {
     margin: 0 0 2px;
-    padding-inline-end: calc(var(--oryx-space-2) * 3);
   }
 
   .seller {
@@ -25,7 +24,7 @@ export const contentBaseStyles = css`
   }
 
   .seller,
-  product-id {
+  oryx-product-id {
     color: var(--oryx-color-neutral-400);
   }
 

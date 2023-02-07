@@ -1,14 +1,14 @@
 import { componentDef } from '@spryker-oryx/core';
-import { ProductAverageRatingModel } from './average-rating.model';
+import { ProductAverageRatingOptions } from './average-rating.model';
 
 declare global {
   interface FeatureOptions {
-    'product-average-rating'?: ProductAverageRatingModel;
+    'oryx-product-average-rating'?: ProductAverageRatingOptions;
   }
 }
 
 export const productAverageRatingComponent = componentDef({
-  name: 'product-average-rating',
+  name: 'oryx-product-average-rating',
   impl: () =>
     import('./average-rating.component').then(
       (m) => m.ProductAverageRatingComponent

@@ -59,7 +59,7 @@ export const searchboxStyles = css`
     background: var(--oryx-color-canvas-200);
   }
 
-  .product product-title {
+  .product oryx-product-title {
     margin-bottom: 4px;
   }
 `;

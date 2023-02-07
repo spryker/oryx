@@ -105,7 +105,7 @@ export const baseStyles = css`
     box-sizing: border-box;
   }
 
-  product-media {
+  oryx-product-media {
     --image-max-width: 50px;
     --image-max-height: 50px;
 

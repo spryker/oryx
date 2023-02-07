@@ -38,7 +38,9 @@ describe('ProductLabelsComponent', () => {
 
   describe('when the product has no labels', () => {
     beforeEach(async () => {
-      element = await fixture(html`<product-labels sku="3"></product-labels>`);
+      element = await fixture(
+        html`<oryx-product-labels sku="3"></oryx-product-labels>`
+      );
     });
 
     it('should not render chip elements', () => {
@@ -48,7 +50,9 @@ describe('ProductLabelsComponent', () => {
 
   describe('when the product has labels', () => {
     beforeEach(async () => {
-      element = await fixture(html`<product-labels sku="1"></product-labels>`);
+      element = await fixture(
+        html`<oryx-product-labels sku="1"></oryx-product-labels>`
+      );
     });
 
     it('should render 2 chip elements', () => {
@@ -59,10 +63,10 @@ describe('ProductLabelsComponent', () => {
     describe('and NEW labels are excluded', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-labels
+          html`<oryx-product-labels
             sku="1"
             .options=${{ excluded: 'new' }}
-          ></product-labels>`
+          ></oryx-product-labels>`
         );
       });
 
@@ -76,10 +80,10 @@ describe('ProductLabelsComponent', () => {
     describe('and SALE labels are included', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<product-labels
+          html`<oryx-product-labels
             sku="1"
             .options=${{ included: 'SALE' }}
-          ></product-labels>`
+          ></oryx-product-labels>`
         );
       });
 

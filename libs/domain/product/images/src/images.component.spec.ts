@@ -57,21 +57,23 @@ describe('ProductImagesComponent', () => {
   });
 
   describe('when the product has 3 images', () => {
-    it('should render a product-media for each main image', () => {
+    it('should render a oryx-product-media for each main image', () => {
       const media = element?.shadowRoot?.querySelectorAll(
-        'section product-media'
+        'section oryx-product-media'
       );
       expect(media?.length).toBe(3);
     });
 
-    it('should render a product-media for each thumbnail', () => {
-      const media = element?.shadowRoot?.querySelectorAll('.nav product-media');
+    it('should render a oryx-product-media for each thumbnail', () => {
+      const media = element?.shadowRoot?.querySelectorAll(
+        '.nav oryx-product-media'
+      );
       expect(media?.length).toBe(3);
     });
 
     it('should make the first main image active', () => {
       const media = element?.shadowRoot?.querySelectorAll(
-        'section product-media'
+        'section oryx-product-media'
       );
       expect(media?.[0].hasAttribute('active')).toBe(true);
     });
@@ -86,7 +88,7 @@ describe('ProductImagesComponent', () => {
 
       it('should make the next main image active', () => {
         const mainImages = element?.shadowRoot?.querySelectorAll(
-          'section product-media'
+          'section oryx-product-media'
         );
         expect(mainImages?.[1]?.hasAttribute('active')).toBe(true);
       });
@@ -121,8 +123,8 @@ describe('ProductImagesComponent', () => {
           expect(element).toContainElement(`slot[main-layout='carousel']`);
         });
 
-        it('should render product-media element(s)', () => {
-          expect(element).toContainElement('section product-media');
+        it('should render oryx-product-media element(s)', () => {
+          expect(element).toContainElement('section oryx-product-media');
         });
       });
 
@@ -140,8 +142,8 @@ describe('ProductImagesComponent', () => {
           expect(element).toContainElement(`slot[main-layout='toggle']`);
         });
 
-        it('should render product-media element(s)', () => {
-          expect(element).toContainElement('section product-media');
+        it('should render oryx-product-media element(s)', () => {
+          expect(element).toContainElement('section oryx-product-media');
         });
       });
 
@@ -155,8 +157,8 @@ describe('ProductImagesComponent', () => {
           );
         });
 
-        it('should not render any product-media elements', () => {
-          expect(element).not.toContainElement('section product-media');
+        it('should not render any oryx-product-media elements', () => {
+          expect(element).not.toContainElement('section oryx-product-media');
         });
       });
     });

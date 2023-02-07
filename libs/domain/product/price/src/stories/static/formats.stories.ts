@@ -6,11 +6,11 @@ import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Price/Static`,
-} as unknown as Meta;
+} as Meta;
 
 const Template: Story<any> = (args): TemplateResult => {
   resolve(LocaleService).set(args.locale);
-  return html` <product-price sku="1"></product-price> `;
+  return html` <oryx-product-price sku="1"></oryx-product-price> `;
 };
 
 export const EurUsFormat = Template.bind({});

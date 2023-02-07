@@ -30,7 +30,7 @@ export const baseStyles = css`
     flex: 1 1 auto;
   }
 
-  product-media {
+  oryx-product-media {
     display: flex;
     width: 80px;
     height: 80px;
@@ -45,7 +45,7 @@ const mediumScreen = css`
     align-items: flex-start;
   }
 
-  product-media {
+  oryx-product-media {
     margin-bottom: 0;
     margin-inline-end: var(--oryx-space-4);
     width: 100px;

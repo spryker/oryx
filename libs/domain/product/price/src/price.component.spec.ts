@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
-import { ProductService } from '@spryker-oryx/product';
+import { ProductPrice, ProductService } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
@@ -16,20 +16,28 @@ class MockExperienceService implements Partial<ExperienceService> {
   }
 }
 
-const mockEur = {
+const mockEurNet = {
   currency: 'EUR',
   value: 1095,
   isNet: true,
 };
 
+const mockEurGross = {
+  currency: 'EUR',
+  value: 1095,
+  isNet: false,
+};
+
 class MockPricingService implements Partial<PricingService> {
-  format = vi.fn();
+  format(price: ProductPrice) {
+    if (!price) return of(null);
+    return of(`${price.currency} ${price.value}`);
+  }
 }
 
 describe('ProductPriceComponent', () => {
   let element: ProductPriceComponent;
   let mockProductService: ProductService;
-  let mockPricingService: MockPricingService;
 
   beforeAll(async () => {
     await useComponent(productPriceComponent);
@@ -51,11 +59,6 @@ describe('ProductPriceComponent', () => {
     });
 
     mockProductService = getInjector().inject(ProductService);
-    mockPricingService = getInjector().inject(
-      PricingService
-    ) as MockPricingService;
-
-    mockPricingService.format.mockReturnValue(of('mock'));
   });
 
   afterEach(() => {
@@ -63,105 +66,124 @@ describe('ProductPriceComponent', () => {
   });
 
   it('is defined', async () => {
-    element = await fixture(html`<product-price sku="123"></product-price>`);
+    element = await fixture(
+      html`<oryx-product-price sku="123"></oryx-product-price>`
+    );
     expect(element).toBeInstanceOf(ProductPriceComponent);
   });
 
   it('passes the a11y audit', async () => {
-    element = await fixture(html`<product-price sku="123"></product-price>`);
+    element = await fixture(
+      html`<oryx-product-price sku="123"></oryx-product-price>`
+    );
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('default price', () => {
-    describe('and default price is provided', () => {
-      beforeEach(async () => {
-        mockPricingService.format.mockReturnValue(of('€10.95'));
-        vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
-          of({ price: { defaultPrice: mockEur } })
-        );
-        element = await fixture(
-          html`<product-price sku="123"></product-price>`
-        );
-      });
-
-      it(`should render default price`, () => {
-        expect(element.shadowRoot?.textContent?.includes('€10.95')).toBe(true);
-      });
+  describe('when no price is provided', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementationOnce(() => of());
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
     });
 
-    describe('and default price is not provided', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
-          of({})
-        );
-      });
-
-      it(`should not render default price`, () => {
-        expect(element.shadowRoot?.textContent?.trim()).toContain('');
-      });
+    it(`should not render any price`, () => {
+      expect(element).not.toContainElement('span');
     });
   });
 
-  describe('original price', () => {
-    describe('when there is no original price available', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
-          of({ price: { defaultPrice: mockEur } })
-        );
-        mockPricingService.format.mockReturnValue(of(null));
-
-        element = await fixture(
-          html`<product-price sku="123"></product-price>`
-        );
-      });
-
-      it(`should render default-original part`, () => {
-        expect(element).toContainElement('[part*="default-original"]');
-      });
-
-      it('should not render the original', () => {
-        expect(element).not.toContainElement('[part="original"]');
-      });
+  describe('when a default price is provided', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({ price: { defaultPrice: mockEurNet } })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
     });
 
-    describe('when there is an original price available', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementationOnce(() =>
-          of({
-            price: {
-              defaultPrice: mockEur,
-              originalPrice: mockEur,
-            },
-          })
-        );
+    it(`should render the sales price`, () => {
+      expect(element).toContainElement('span[part="sales"]');
+    });
 
-        element = await fixture(
-          html`<product-price sku="123"></product-price>`
-        );
-      });
+    it(`should render the vat`, () => {
+      expect(element).toContainElement('span[part="vat"]');
+    });
+  });
 
-      it(`should not render default-original part`, () => {
-        expect(element).not.toContainElement('[part*="default-original"]');
-      });
+  describe('when an original price is provided', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({ price: { originalPrice: mockEurNet } })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+    });
 
-      it('should render the parts', () => {
-        expect(element).toContainElement('[part="default"]');
-        expect(element).toContainElement('[part="original"]');
-      });
+    it(`should render the original price`, () => {
+      expect(element).toContainElement('span[part="original"]');
+    });
 
-      describe('and the experience is configured to hide original price', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<product-price
-              sku="123"
-              .options=${{ hideOriginal: true }}
-            ></product-price>`
-          );
-        });
-        it('should not render the original', () => {
-          expect(element).not.toContainElement('[part="original"]');
-        });
-      });
+    it(`should render the vat`, () => {
+      expect(element).toContainElement('span[part="vat"]');
+    });
+  });
+
+  describe('when a default and original price is provided', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({ price: { originalPrice: mockEurNet, defaultPrice: mockEurNet } })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+    });
+
+    it(`should render the sales price`, () => {
+      expect(element).toContainElement('span[part="sales"]');
+    });
+
+    it(`should render the original price`, () => {
+      expect(element).toContainElement('span[part="original"]');
+    });
+
+    it(`should render the vat`, () => {
+      expect(element).toContainElement('span[part="vat"]');
+    });
+  });
+
+  describe('when the price is net', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({ price: { originalPrice: mockEurNet, defaultPrice: mockEurNet } })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+    });
+
+    it(`should render the excl vat message`, () => {
+      const vat = element.shadowRoot?.querySelector('span[part="vat"]');
+      expect(vat?.textContent).toContain('Excl vat');
+    });
+  });
+
+  describe('when the price is gross', () => {
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({
+          price: { originalPrice: mockEurGross, defaultPrice: mockEurGross },
+        })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+    });
+
+    it(`should render the excl vat message`, () => {
+      const vat = element.shadowRoot?.querySelector('span[part="vat"]');
+      expect(vat?.textContent).toContain('Incl vat');
     });
   });
 });

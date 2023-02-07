@@ -3,11 +3,11 @@ import { ProductIdOptions } from './id.model';
 
 declare global {
   interface FeatureOptions {
-    'product-id'?: ProductIdOptions;
+    'oryx-product-id'?: ProductIdOptions;
   }
 }
 
 export const productIdComponent = componentDef({
-  name: 'product-id',
+  name: 'oryx-product-id',
   impl: () => import('./id.component').then((m) => m.ProductIdComponent),
 });

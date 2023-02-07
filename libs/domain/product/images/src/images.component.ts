@@ -124,7 +124,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
 
     return html`<section class="preview">
       ${images.map(
-        (_, i) => html`<product-media
+        (_, i) => html`<oryx-product-media
           .sku=${this.sku}
           .options=${{
             mediaIndex: i,
@@ -133,7 +133,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
             loading: active !== i ? 'lazy' : undefined,
           }}
           ?active=${active === i}
-        ></product-media>`
+        ></oryx-product-media>`
       )}
     </section>`;
   }
@@ -170,7 +170,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
               @input=${this.onInput}
               @mouseover=${(e: Event): void => this.onMouseover(e, options)}
             />
-            <product-media
+            <oryx-product-media
               .sku=${this.sku}
               .options=${{
                 mediaIndex: i,
@@ -178,7 +178,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
                 loading: active !== i ? 'lazy' : undefined,
               }}
               ?active=${active === i}
-            ></product-media>
+            ></oryx-product-media>
           </label>
         `
       )}

@@ -6,6 +6,7 @@ import { TextComponent } from '@spryker-oryx/ui/text';
 import { html } from 'lit';
 import { ProductDescriptionComponent } from './description.component';
 import { productDescriptionComponent } from './description.def';
+import { ProductDescriptionOptions } from './description.model';
 
 describe('ProductDescriptionComponent', () => {
   let element: ProductDescriptionComponent;
@@ -23,11 +24,11 @@ describe('ProductDescriptionComponent', () => {
       providers: mockProductProviders,
     });
     element = await fixture(
-      html` <product-description
+      html` <oryx-product-description
         sku="1"
         uid="1"
         .content="${{ truncateAfter: 100 }}"
-      ></product-description>`
+      ></oryx-product-description>`
     );
   });
 
@@ -43,18 +44,18 @@ describe('ProductDescriptionComponent', () => {
     const oneLineBreak = `with one
     line break`;
 
-    const options = {
+    const options: ProductDescriptionOptions = {
       truncateAfter: 3,
-      defaultExpanded: true,
-      hideToggle: true,
+      expandInitially: false,
+      enableToggle: true,
     };
 
     beforeEach(async () => {
       element = await fixture(
-        html` <product-description
+        html` <oryx-product-description
           .product=${{ description: oneLineBreak }}
           .options=${options}
-        ></product-description>`
+        ></oryx-product-description>`
       );
     });
 
@@ -68,23 +69,23 @@ describe('ProductDescriptionComponent', () => {
       expect(
         Number(getComputedStyle(getText()).getPropertyValue('--line-clamp'))
       ).toBe(options.truncateAfter);
-      expect(getText().hideToggle).toBe(options.hideToggle);
-      expect(getText().defaultExpanded).toBe(options.defaultExpanded);
+      expect(getText().hideToggle).toBe(!options.enableToggle);
+      expect(getText().defaultExpanded).toBe(options.expandInitially);
     });
   });
 
   describe('when truncateAfter option is not specified', () => {
     beforeEach(async () => {
       element = await fixture(
-        html` <product-description
+        html` <oryx-product-description
           .product=${{ description: 'test' }}
-        ></product-description>`
+        ></oryx-product-description>`
       );
     });
 
     it('should set the default value', () => {
       expect(getComputedStyle(getText()).getPropertyValue('--line-clamp')).toBe(
-        '0'
+        '3'
       );
     });
   });

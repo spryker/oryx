@@ -1,22 +1,20 @@
 import { ContextController } from '@spryker-oryx/core';
-import { ContentController, defaultOptions } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
-  ProductComponentMixin,
   ProductContext,
-  ProductController,
   ProductMediaContainerSize,
+  ProductMixin,
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import {
-  asyncValue,
   hydratable,
   observe,
   ssrShim,
   subscribe,
 } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { BehaviorSubject, combineLatest, tap } from 'rxjs';
-import { ProductCardComponentOptions } from './card.model';
+import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
 @defaultOptions({
@@ -31,18 +29,21 @@ import { ProductCardStyles } from './card.styles';
 })
 @ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
-export class ProductCardComponent extends ProductComponentMixin<ProductCardComponentOptions>() {
-  static styles = ProductCardStyles;
+export class ProductCardComponent extends ProductMixin(
+  ContentMixin<ProductCardOptions>(LitElement)
+) {
+  static styles = [ProductCardStyles];
 
   protected context = new ContextController(this);
-  protected product$ = new ProductController(this).getProduct();
-  protected options$ = new ContentController(this).getOptions();
 
   @observe()
   protected sku$ = new BehaviorSubject(this.sku);
 
   @subscribe()
-  protected skuSubscriber$ = combineLatest([this.options$, this.sku$]).pipe(
+  protected skuSubscriber$ = combineLatest([
+    this.contentController.getOptions(),
+    this.sku$,
+  ]).pipe(
     tap(([options, propSku]) => {
       this.context.provide(ProductContext.SKU, options.sku ?? propSku);
       if (options.titleLineClamp) {
@@ -56,112 +57,92 @@ export class ProductCardComponent extends ProductComponentMixin<ProductCardCompo
   );
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(this.product$, (product) => {
-      if (!product) return html``;
+    if (!this.product) return html``;
 
-      return html`
-        <content-link
-          .options="${{
-            type: SemanticLinkType.Product,
-            id: product.sku,
-            multiLine: true,
-            label: product.name,
-          }}"
-        >
-          ${asyncValue(
-            this.options$,
-            (options) => html`
-              ${this.renderLabels(options)} ${this.renderWishlist(options)}
-              ${this.renderMedia(options)}
-              <div class="popover">${this.renderTitle(options)}</div>
-              ${this.renderRating(options)} ${this.renderPrice(options)}
-              ${this.renderAddToCart(options)}
-            `
-          )}
-        </content-link>
-      `;
-    })}`;
-  }
-
-  protected renderLabels(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableLabels) return;
-
-    return html`<product-labels></product-labels>`;
-  }
-
-  protected renderMedia(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableMedia) return;
+    const linkOptions = {
+      type: SemanticLinkType.Product,
+      id: this.product.sku,
+      multiLine: true,
+      label: this.product.name,
+    };
 
     return html`
-      <product-media
-        .options=${{
-          containerSize: ProductMediaContainerSize.Thumbnail,
-        }}
-      ></product-media>
+      <content-link .options="${linkOptions}">
+        ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
+        <div class="popover">${this.renderTitle()}</div>
+        ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
+      </content-link>
     `;
   }
 
-  protected renderWishlist(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableWishlist) return;
-
-    // TODO: move to wishlist component
-    return html`<div class="actions">
-      <oryx-icon-button>
-        <button
-          tabindex="-1"
-          aria-label="add-to-favorites"
-          @click=${(e: Event) => e.preventDefault()}
-        >
-          <oryx-icon type="wishlist"></oryx-icon>
-        </button>
-      </oryx-icon-button>
-    </div>`;
+  protected renderLabels(): TemplateResult | void {
+    if (this.componentOptions?.enableLabels) {
+      return html`<oryx-product-labels></oryx-product-labels>`;
+    }
   }
 
-  protected renderTitle(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableTitle) return;
-
-    return html`<product-title
-      .options="${{ tag: 'h3', link: false }}"
-    ></product-title>`;
+  // TODO: move to wishlist component
+  protected renderWishlist(): TemplateResult | void {
+    if (this.componentOptions?.enableWishlist) {
+      return html`<div class="actions">
+        <oryx-icon-button>
+          <button
+            tabindex="-1"
+            aria-label="add-to-favorites"
+            @click=${(e: Event) => e.preventDefault()}
+          >
+            <oryx-icon type="wishlist"></oryx-icon>
+          </button>
+        </oryx-icon-button>
+      </div>`;
+    }
   }
 
-  protected renderRating(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableRating) return;
-
-    return html`<product-average-rating
-      .options=${{ size: 'small' }}
-    ></product-average-rating>`;
+  protected renderMedia(): TemplateResult | void {
+    if (this.componentOptions?.enableMedia) {
+      return html`
+        <oryx-product-media
+          .options=${{
+            containerSize: ProductMediaContainerSize.Thumbnail,
+          }}
+        ></oryx-product-media>
+      `;
+    }
   }
 
-  protected renderPrice(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enablePrice) return;
-
-    return html`<product-price></product-price>`;
+  protected renderTitle(): TemplateResult | void {
+    if (this.componentOptions?.enableTitle) {
+      return html`<oryx-product-title
+        .options="${{ tag: 'h3', link: false }}"
+      ></oryx-product-title>`;
+    }
   }
 
-  protected renderAddToCart(
-    options: ProductCardComponentOptions
-  ): TemplateResult | void {
-    if (!options.enableAddToCart) return;
-    return html`<oryx-cart-add
-      tabindex="-1"
-      .options="${{
-        outlined: true,
-        hideQuantityInput: true,
-      }}"
-    ></oryx-cart-add>`;
+  protected renderRating(): TemplateResult | void {
+    if (this.componentOptions?.enableRating) {
+      return html`<oryx-product-average-rating
+        .options=${{ size: 'small', enableCount: false }}
+      ></oryx-product-average-rating>`;
+    }
+  }
+
+  protected renderPrice(): TemplateResult | void {
+    if (this.componentOptions?.enablePrice) {
+      return html`<oryx-product-price
+        .options=${{ enableVatMessage: false }}
+      ></oryx-product-price>`;
+    }
+  }
+
+  protected renderAddToCart(): TemplateResult | void {
+    if (this.componentOptions?.enableAddToCart) {
+      return html`<oryx-cart-add
+        tabindex="-1"
+        .options="${{
+          outlined: true,
+          hideQuantityInput: true,
+        }}"
+      ></oryx-cart-add>`;
+    }
   }
 }

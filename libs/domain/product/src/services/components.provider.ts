@@ -6,12 +6,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['product-title']: {
+    ['oryx-product-title']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-title
+        html`<oryx-product-title
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-title>`,
+        ></oryx-product-title>`,
     },
     ['product-images']: {
       template: (uid: string, layoutClasses?: string) =>
@@ -20,63 +20,63 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></product-images>`,
     },
-    ['product-price']: {
+    ['oryx-product-price']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-price
+        html`<oryx-product-price
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-price>`,
+        ></oryx-product-price>`,
     },
-    ['product-description']: {
+    ['oryx-product-description']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-description
+        html`<oryx-product-description
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-description>`,
+        ></oryx-product-description>`,
     },
-    ['product-average-rating']: {
+    ['oryx-product-average-rating']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-average-rating
+        html`<oryx-product-average-rating
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-average-rating>`,
+        ></oryx-product-average-rating>`,
     },
-    ['product-media']: {
+    ['oryx-product-media']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-media
+        html`<oryx-product-media
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-media>`,
+        ></oryx-product-media>`,
     },
-    ['product-id']: {
+    ['oryx-product-id']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-id
+        html`<oryx-product-id
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-id>`,
+        ></oryx-product-id>`,
     },
-    ['product-labels']: {
+    ['oryx-product-labels']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-labels
+        html`<oryx-product-labels
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-labels>`,
+        ></oryx-product-labels>`,
     },
-    ['product-card']: {
+    ['oryx-product-card']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<product-card
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
         ></product-card>`,
     },
-    ['product-attributes']: {
+    ['oryx-product-attributes']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-attributes
+        html`<oryx-product-attributes
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-attributes>`,
+        ></oryx-product-attributes>`,
     },
-    ['product-list']: {
+    ['oryx-product-list']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<product-list
           uid="${uid}"

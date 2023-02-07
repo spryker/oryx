@@ -7,12 +7,92 @@ import {
   SortParamNames,
 } from '../../../src/models/product-list-qualifier';
 
+const disabledCategory = 'Not Available in Storybook';
+
 export default {
-  title: `${storybookPrefix}/Product List`,
+  title: `${storybookPrefix}/List`,
+
+  args: {
+    q: '',
+    page: 0,
+    maxPrice: 12,
+    minPrice: 1,
+    minRating: 1,
+    ipp: 0,
+    brand: '',
+    label: '',
+    weight: '',
+    color: '',
+    category: '',
+    sort: SortParamNames.None,
+  },
+  argTypes: {
+    sort: {
+      control: { type: 'select' },
+      options: Object.values(SortParamNames),
+      table: {
+        category: disabledCategory,
+      },
+    },
+    ipp: {
+      control: { type: 'select' },
+      options: [12, 24, 36],
+    },
+    page: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    q: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    maxPrice: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    minPrice: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    minRating: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    brand: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    label: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    weight: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    color: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+    category: {
+      table: {
+        category: disabledCategory,
+      },
+    },
+  },
   parameters: {
     chromatic: { delay: 300 },
   },
-} as unknown as Meta;
+} as Meta;
 
 const Template: Story<ProductListQualifier> = (
   props: ProductListQualifier
@@ -38,84 +118,3 @@ const Template: Story<ProductListQualifier> = (
 };
 
 export const ProductDemo = Template.bind({});
-
-const disabledCategory = 'Not Available in Storybook';
-
-ProductDemo.args = {
-  q: '',
-  page: 0,
-  maxPrice: 12,
-  minPrice: 1,
-  minRating: 1,
-  ipp: 0,
-  brand: '',
-  label: '',
-  weight: '',
-  color: '',
-  category: '',
-  sort: SortParamNames.None,
-};
-
-ProductDemo.argTypes = {
-  sort: {
-    control: { type: 'select' },
-    options: Object.values(SortParamNames),
-    table: {
-      category: disabledCategory,
-    },
-  },
-  ipp: {
-    control: { type: 'select' },
-    options: [12, 24, 36],
-  },
-  page: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  q: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  maxPrice: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  minPrice: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  minRating: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  brand: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  label: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  weight: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  color: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-  category: {
-    table: {
-      category: disabledCategory,
-    },
-  },
-};

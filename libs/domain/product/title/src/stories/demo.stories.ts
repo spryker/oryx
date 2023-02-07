@@ -34,8 +34,9 @@ export default {
 type Props = ProductTitleOptions & ProductComponentProperties;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
+  const { sku, ...options } = props;
   return html`
-    <product-title .sku=${props.sku} .options=${props}></product-title>
+    <oryx-product-title .sku=${sku} .options=${options}></oryx-product-title>
   `;
 };
 

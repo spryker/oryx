@@ -11,6 +11,10 @@ export interface ResponsiveImage {
 export interface ProductMediaOptions {
   containerSize?: ProductMediaContainerSize;
 
+  /**
+   * Indicates the media set by name. When there's no media set given, the
+   * first media set is used.
+   */
   mediaSet?: string;
 
   /**

@@ -39,9 +39,9 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
 
   protected render(): TemplateResult {
     return html`
-      <product-title .options=${{ link: true }}></product-title>
+      <oryx-product-title .options=${{ link: true }}></oryx-product-title>
 
-      <product-id></product-id>
+      <oryx-product-id></oryx-product-id>
 
       <!-- TODO: adjust seller's section -->
       <div class="seller">

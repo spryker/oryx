@@ -91,12 +91,15 @@ export class RenderSuggestionController {
         }}"
         close-popover
       >
-        <product-media
-          .product=${product}
+        <oryx-product-media
+          .sku=${product.sku}
           .options=${{ container: ProductMediaContainerSize.Thumbnail }}
-        ></product-media>
-        <product-title .product=${product}></product-title>
-        <product-price .product=${product}></product-price>
+        ></oryx-product-media>
+        <oryx-product-title .sku=${product.sku}></oryx-product-title>
+        <oryx-product-price
+          .sku=${product.sku}
+          .options=${{ enableVatMessage: false }}
+        ></oryx-product-price>
       </content-link>
     `;
   }

@@ -21,10 +21,10 @@ describe('Product attributes', () => {
       providers: mockProductProviders,
     });
     element = await fixture(html`
-      <product-attributes
+      <oryx-product-attributes
         sku="1"
         .options=${{ columnCount: 3 }}
-      ></product-attributes>
+      ></oryx-product-attributes>
     `);
   });
 
@@ -76,7 +76,10 @@ describe('Product attributes', () => {
   describe('when no attributes available in product', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-attributes sku="6" columnCount="3"></product-attributes>
+        <oryx-product-attributes
+          sku="6"
+          columnCount="3"
+        ></oryx-product-attributes>
       `);
     });
 
@@ -90,7 +93,7 @@ describe('Product attributes', () => {
   describe('when bad sku provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-attributes></product-attributes>
+        <oryx-product-attributes></oryx-product-attributes>
       `);
     });
 

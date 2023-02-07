@@ -37,7 +37,6 @@ export class ProductController {
         if (!sku) {
           return of(null);
         }
-
         return (
           this.productService
             ?.get({ sku, include: this.include })

@@ -1,4 +1,4 @@
-export interface ProductCardComponentOptions {
+export interface ProductCardOptions {
   /** The product SKU is used to resolve the product. */
   sku?: string;
 

@@ -8,10 +8,10 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html` <div style="margin-right: 100px">
-    <product-attributes
+    <oryx-product-attributes
       sku=${8}
       .options=${{ columnCount: '2' }}
-    ></product-attributes>
+    ></oryx-product-attributes>
   </div>`;
 };
 

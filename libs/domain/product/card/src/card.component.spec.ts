@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './card.def';
-import { ProductCardComponentOptions } from './card.model';
+import { ProductCardOptions } from './card.model';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('1')),
@@ -48,12 +48,12 @@ describe('ProductCardComponent', () => {
 
   it('should render inner components', () => {
     expect(element).toContainElement('content-link');
-    expect(element).toContainElement('product-media');
-    expect(element).toContainElement('product-title');
-    expect(element).toContainElement('product-price');
-    expect(element).toContainElement('product-average-rating');
+    expect(element).toContainElement('oryx-product-media');
+    expect(element).toContainElement('oryx-product-title');
+    expect(element).toContainElement('oryx-product-price');
+    expect(element).toContainElement('oryx-product-average-rating');
     expect(element).toContainElement('oryx-cart-add');
-    expect(element).toContainElement('product-labels');
+    expect(element).toContainElement('oryx-product-labels');
 
     //TODO: replace by favorites component
     expect(element).toContainElement('oryx-icon-button');
@@ -128,7 +128,7 @@ describe('ProductCardComponent', () => {
         element = await fixture(html`
           <product-card
             sku="1"
-            .options=${{ titleLineClamp } as ProductCardComponentOptions}
+            .options=${{ titleLineClamp } as ProductCardOptions}
           ></product-card>
         `);
       });
@@ -153,7 +153,7 @@ describe('ProductCardComponent', () => {
     });
 
     it('should not render the product media', () => {
-      expect(element).not.toContainElement('product-media');
+      expect(element).not.toContainElement('oryx-product-media');
     });
   });
 
@@ -179,8 +179,8 @@ describe('ProductCardComponent', () => {
       `);
     });
 
-    it('should not render product-average-rating', () => {
-      expect(element).not.toContainElement('product-average-rating');
+    it('should not render oryx-product-average-rating', () => {
+      expect(element).not.toContainElement('oryx-product-average-rating');
     });
   });
 
@@ -195,7 +195,7 @@ describe('ProductCardComponent', () => {
     });
 
     it('should not render product-labels', () => {
-      expect(element).not.toContainElement('product-labels');
+      expect(element).not.toContainElement('oryx-product-labels');
     });
   });
 

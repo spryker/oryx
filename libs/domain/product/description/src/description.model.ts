@@ -9,17 +9,14 @@ export interface ProductDescriptionOptions {
   truncateAfter?: number;
 
   /**
-   * Indicates that a read-more link is created to expand the truncated description
-   * in the full description.
-   *
-   * When true, the read more link is not rendered.
+   * Adds a read-more link to expand the truncated description into the full description.
    */
-  hideToggle?: boolean;
+  enableToggle?: boolean;
 
   /**
    * Whether or not the description should be initially expanded or not.
    *
    * When undefined or false, the description is truncated.
    */
-  defaultExpanded?: boolean;
+  expandInitially?: boolean;
 }

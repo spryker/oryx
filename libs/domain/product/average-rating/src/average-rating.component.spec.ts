@@ -45,7 +45,7 @@ describe('Average Rating', () => {
       ],
     });
     element = await fixture(
-      html`<product-average-rating sku="1"></product-average-rating>`
+      html`<oryx-product-average-rating sku="1"></oryx-product-average-rating>`
     );
   });
 
@@ -68,7 +68,9 @@ describe('Average Rating', () => {
   describe('when product has no reviews', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<product-average-rating sku="3"></product-average-rating>`
+        html`<oryx-product-average-rating
+          sku="3"
+        ></oryx-product-average-rating>`
       );
     });
 
@@ -81,13 +83,13 @@ describe('Average Rating', () => {
     });
   });
 
-  describe('when hideReviewCount options is provided', () => {
+  describe('when enableCount is false', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<product-average-rating
+        html`<oryx-product-average-rating
           sku="1"
-          .options="${{ hideReviewCount: true }}"
-        ></product-average-rating>`
+          .options="${{ enableCount: false }}"
+        ></oryx-product-average-rating>`
       );
     });
 
@@ -100,10 +102,10 @@ describe('Average Rating', () => {
     const size = 'small';
     beforeEach(async () => {
       element = await fixture(
-        html`<product-average-rating
+        html`<oryx-product-average-rating
           sku="1"
           .options="${{ size }}"
-        ></product-average-rating>`
+        ></oryx-product-average-rating>`
       );
     });
 

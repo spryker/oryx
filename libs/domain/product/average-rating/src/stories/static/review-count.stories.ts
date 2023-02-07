@@ -12,20 +12,19 @@ const Template: Story<unknown> = (): TemplateResult => {
       <p>Hidden review count</p>
       ${Array.from(Array(5).keys()).map(
         (i) =>
-          html` <product-average-rating
+          html` <oryx-product-average-rating
             sku=${i + 1}
-            .options=${{ hideReviewCount: true }}
-          />`
+            .options=${{ enableCount: false }}
+          ></oryx-product-average-rating>`
       )}
     </div>
     <div class="hidden">
       <p>Visible review Count</p>
       ${Array.from(Array(5).keys()).map(
         (i) =>
-          html` <product-average-rating
+          html` <oryx-product-average-rating
             sku=${i + 1}
-            .options=${{ hideReviewCount: false }}
-          />`
+          ></oryx-product-average-rating>`
       )}
     </div>
   </div>`;

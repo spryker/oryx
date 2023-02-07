@@ -1,13 +1,13 @@
 import { componentDef } from '@spryker-oryx/core';
-import { ProductLabelsAttributes } from './label.model';
+import { ProductLabelsOptions } from './label.model';
 
 declare global {
   interface FeatureOptions {
-    'product-labels'?: ProductLabelsAttributes;
+    'oryx-product-labels'?: ProductLabelsOptions;
   }
 }
 
 export const productLabelsComponent = componentDef({
-  name: 'product-labels',
+  name: 'oryx-product-labels',
   impl: () => import('./label.component').then((m) => m.ProductLabelsComponent),
 });

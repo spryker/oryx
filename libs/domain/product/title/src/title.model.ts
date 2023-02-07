@@ -17,6 +17,8 @@ export interface ProductTitleOptions {
 
   /**
    * Indicate the max number of lines that are used for the product title.
+   * If there are more lines required to render the title, the text will
+   * be clamped.
    */
   maxLines?: number;
 }

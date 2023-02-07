@@ -1,10 +1,6 @@
 import { css } from 'lit';
 
 export const ProductAttributeStyles = css`
-  :host {
-    --column-count: 2;
-  }
-
   ul {
     list-style: none;
     margin: 0;

@@ -80,7 +80,7 @@ describe('CartEntryComponent', () => {
   describe('"hidePreview" option', () => {
     describe('when option is not provided', () => {
       it('should render product-media', () => {
-        expect(element).toContainElement('product-media');
+        expect(element).toContainElement('oryx-product-media');
       });
     });
 
@@ -91,7 +91,7 @@ describe('CartEntryComponent', () => {
         ></cart-entry>`);
       });
       it('should not render product-media', () => {
-        expect(element).not.toContainElement('product-media');
+        expect(element).not.toContainElement('oryx-product-media');
       });
     });
   });

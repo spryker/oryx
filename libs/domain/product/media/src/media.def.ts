@@ -3,11 +3,11 @@ import { ProductMediaOptions } from './media.model';
 
 declare global {
   interface FeatureOptions {
-    'product-media'?: ProductMediaOptions;
+    'oryx-product-media'?: ProductMediaOptions;
   }
 }
 
 export const productMediaComponent = componentDef({
-  name: 'product-media',
+  name: 'oryx-product-media',
   impl: () => import('./media.component').then((m) => m.ProductMediaComponent),
 });

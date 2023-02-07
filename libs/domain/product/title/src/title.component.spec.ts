@@ -33,7 +33,10 @@ describe('ProductTitleComponent', () => {
       ],
     });
     element = await fixture(
-      html`<product-title sku="1" .options=${{ tag: 'h1' }}></product-title>`
+      html`<oryx-product-title
+        sku="1"
+        .options=${{ tag: 'h1' }}
+      ></oryx-product-title>`
     );
   });
 
@@ -48,7 +51,10 @@ describe('ProductTitleComponent', () => {
   describe('when a the link option is true', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<product-title sku="1" .options=${{ link: true }}></product-title>`
+        html`<oryx-product-title
+          sku="1"
+          .options=${{ link: true }}
+        ></oryx-product-title>`
       );
     });
 
@@ -63,7 +69,9 @@ describe('ProductTitleComponent', () => {
 
   describe('when a the link option is not true', () => {
     beforeEach(async () => {
-      element = await fixture(html`<product-title sku="1"></product-title>`);
+      element = await fixture(
+        html`<oryx-product-title sku="1"></oryx-product-title>`
+      );
     });
 
     it('should render the oryx-heading component', () => {

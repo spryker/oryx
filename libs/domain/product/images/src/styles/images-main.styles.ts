@@ -8,7 +8,7 @@ export const mainImageStyles = css`
     width: var(--product-images-main-width, 100%);
   }
 
-  section product-media {
+  section oryx-product-media {
     box-sizing: border-box;
     min-height: 1px;
   }
@@ -23,19 +23,19 @@ export const mainImageStyles = css`
     -webkit-overflow-scrolling: touch;
   }
 
-  slot:not(${isMainToggle}) section product-media {
+  slot:not(${isMainToggle}) section oryx-product-media {
     flex: 1 0 100%;
     scroll-snap-align: start;
   }
 
-  slot${isMainToggle} section product-media {
+  slot${isMainToggle} section oryx-product-media {
     position: absolute;
     inset: 0;
     opacity: 0;
     transition: opacity var(--oryx-transition-time) ease;
   }
 
-  slot${isMainToggle} section product-media[active] {
+  slot${isMainToggle} section oryx-product-media[active] {
     opacity: 1;
   }
 `;
