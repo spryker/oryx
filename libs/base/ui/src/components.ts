@@ -9,6 +9,7 @@ export * from '../error-message/src/component';
 export * from '../form/checkbox/src/component';
 export * from '../form/input-list/src/component';
 export * from '../form/input/src/input.def';
+export * from '../form/multi-range/src/multi-range.def';
 export * from '../form/password/src/password-input.def';
 export * from '../form/radio/src/radio.def';
 export * from '../form/select/src/select.def';
