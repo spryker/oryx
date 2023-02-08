@@ -3,12 +3,13 @@
 HTTP interceptors let you capture or change every request or response performed by the app. They are used when there is a need to modify HTTP calls globally, for example when performing authorization, error handling, or metrics collection.
 
 HTTP interceptors always function in the middle of a single HTTP request and usually modify the outgoing request. These services intercept all requests performed by the app, and perform designated operations on the requests before they are sent to the server. HTTP interceptors can be used to perform the following operations:
-* adding a custom HTTP header to the final outgoing request – for example, adding an authorization header and passing an authorization token to all endpoints requiring permissions.
-* caching.
-* logging to collect metrics.
-* error handling.
-* other modifications.
- 
+
+- adding a custom HTTP header to the final outgoing request – for example, adding an authorization header and passing an authorization token to all endpoints requiring permissions.
+- caching.
+- logging to collect metrics.
+- error handling.
+- other modifications.
+
 An interceptor may also transform the response event stream.
 
 Interceptors permit you to intercept incoming and outgoing HTTP requests using the HttpService.
@@ -28,7 +29,7 @@ createInjector({
 });
 ```
 
-To create an interceptor, `HttpInterceptor` interface is implemented. Most interceptors transform the outgoing request before passing it to the next interceptor in the chain, by calling `handle(url, options)`. 
+To create an interceptor, `HttpInterceptor` interface is implemented. Most interceptors transform the outgoing request before passing it to the next interceptor in the chain, by calling `handle(url, options)`.
 
 An interceptor may transform the response event stream as well, by applying additional RxJS operators on the stream returned by `handle()`.
 
