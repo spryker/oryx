@@ -1,31 +1,31 @@
 # Colors system
 
-An important part of the application user interface are the colors. Colors are used everywhere in the components and are important to express the brand identity. In order to ensure that you can change the colors to your needs throughout the application, a configurable color system is provided.
+An important part of the application user interface are the colors. Colors are used everywhere in the components and are important to express the brand identity. To ensure that you can adjust the colors to your needs throughout the application, a configurable color system is provided.
 
-The color system allows to change colors globally. The components do not define color _values_ directly in their CSS, but use _design tokens_ to connect to the color values. Design tokens are (CSS) variables that allow for configurable values.
+The color system allows to change colors globally. The components do not define color _values_ directly in their CSS, but use _design tokens_ to connect to the color values. Design tokens are CSS variables that enable configurable values.
 
 The main entities in the color system are:
 
-- **Color groups**: named colors, for example the _primary_ color group
-- **color shades**: each color group can provide colors in different shades
-- **Color modes**: dark versus light mode
-- **Color palettes**: predefined colors that are used inside predefined themes
+- **Color groups**: named colors, for example, the _primary_ color group.
+- **color shades**: each color group can provide colors in different shades.
+- **Color modes**: dark versus light mode.
+- **Color palettes**: predefined colors that are used inside predefined themes.
 
 ## Color groups
 
-The framework supports 10 different color groups. The color grouping helps both designers and developers to quickly identify a color by it's name. The actual colors for those groups are not relevant for the color system, and are part of specific theme configurations.
+The framework supports 10 different color groups. The color grouping helps both designers and developers to quickly identify a color by it's name. The actual colors for those groups are not relevant for the color system and are part of specific theme configurations.
 
-| Color group | Description                                                                                                                                                                                                                                                                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Primary     | The primary color accent which is often related to the corporate or brand identity. This color is also used for call-to-action buttons.                                                                                                                                                                                                                      |
-| Secondary   | The secondary color is used to add subtle differences in the UI next to the primary color. The secondary color is used sporadically to add little accents.                                                                                                                                                                                                   |
-| Canvas      | Canvas colors are typically used to fill the real estate of components, e.g. the background or border color of an element. Some sort of gray is often being used for canvas colors. The lightest canvas color is typically the global background of a page. Canvas colors are not being used in the design system, the design system will only use neutrals. |
-| Neutral     | Similarly to canvas color group, neutral colors are used to build the real estate of a component. The neutrals are mainly in use for the design system.                                                                                                                                                                                                      |
-| Highlight   | The highlight color is used to highlight very specific parts in the UI. It is a variation of the accent, but used for very specific actions, such as a price discount                                                                                                                                                                                        |
-| Info        | The info color is used to indicate an information state of a component.                                                                                                                                                                                                                                                                                      |
-| Success     | The success color is used to indicate an success state of a component. This is typically green.                                                                                                                                                                                                                                                              |
-| Warning     | The warning color is used to indicate the warning state of a component. This is typically yellow or orange.                                                                                                                                                                                                                                                  |
-| Error       | The error color is used to indicate an error state of a component. This is typically red.                                                                                                                                                                                                                                                                    |
+| Color group | Description                                                                                                                                                                                                                                                                                                                                        |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Primary     | The primary color accent which is often related to the corporate or brand identity. This color is also used for call-to-action buttons.                                                                                                                                                                                                            |
+| Secondary   | The secondary color is used to add subtle differences in the UI next to the primary color. The secondary color is used sporadically to add little accents.                                                                                                                                                                                         |
+| Canvas      | Canvas colors are typically used to fill the real estate of components, like the background or border color of an element. Some sort of gray is often used for canvas colors. The lightest canvas color is typically the global background of a page. Canvas colors are not used in the design system. The design system uses only neutral colors. |
+| Neutral     | Similarly to the canvas color group, neutral colors are used to build the real estate of a component. The neutrals are mainly used for the design system.                                                                                                                                                                                          |
+| Highlight   | The highlight color is used to highlight very specific parts in the UI. It is a variation of the accent, but used for very specific actions, like a price discount.                                                                                                                                                                                |
+| Info        | The info color is used to indicate an information state of a component.                                                                                                                                                                                                                                                                            |
+| Success     | The success color is used to indicate a success state of a component. Typically, green.                                                                                                                                                                                                                                                            |
+| Warning     | The warning color is used to indicate the warning state of a component. Typically, yellow or orange.                                                                                                                                                                                                                                               |
+| Error       | The error color is used to indicate an error state of a component. Typically, red.                                                                                                                                                                                                                                                                 |
 
 Primary, neutral, canvas and ink are the colors that are mostly being used. The state color groups (info, warning, error, success and highlight) are rarely being used.
 
@@ -33,29 +33,29 @@ Primary, neutral, canvas and ink are the colors that are mostly being used. The 
 
 Each color group supports five shades. The shades are numbered from 100 to 500, where 300 is the base color. The base primary color is named `oryx-color-primary-300`.
 
-Shades names, such as "light" or "lighter" are avoided to not ensure that the system work in both dark and light mode.
+Shade names, such as "light" or "lighter", are avoided to not ensure that the system works in both dark and light modes.
 
-Not all shades are necessarily used by the components, but for consistency all color groups support the same amount of shades.
+Not all shades are necessarily used by the components, but, for consistency, all color groups support the same number of shades.
 
-| Color&nbsp;group | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| 100              | The most gentle shade of the color group.                                                          |
-| 200              | The 2nd least gentle shade of the color group.                                                     |
-| 300              | The **base shade** of the color group, it's typically the color that has the most pure saturation. |
-| 400              | The 2nd heaviest shade of the color group.                                                         |
-| 500              | The most heavy shade of the color group.                                                           |
+| Color&nbsp;group | Description                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| 100              | The most gentle shade of a color group.                                                    |
+| 200              | The second least gentle shade of a color group.                                            |
+| 300              | The _base shade_ of a color group. Typically, the color that has the most pure saturation. |
+| 400              | The second heaviest shade of a color group.                                                |
+| 500              | The most heavy shade of a color group.                                                     |
 
 ## Color modes
 
-Colors can be configured for both light and dark mode. In a easy, more automated setup, colors shades could be inverted (i.e. 100 becomes 500), but designers might want to select colors precisely for dark mode.
+Colors can be configured for light and dark modes separately. In an easy, more automated setup, colors shades could be inverted, where 100 would become 500. But designers might want to select colors precisely for dark mode.
 
 ## Color palettes
 
-The color system comes with a couple of (opinionated) color palettes. The color palettes are configured in standard themes, but nothings stops you from changing the colors or provide your own theme.
+The color system comes with a couple of opinionated color palettes. The color palettes are configured in standard themes, but you can change the colors or provide your own theme.
 
-The colors in the color palette have been tested for color contrast to ensure accessible colors.
+To make sure the colors are accessible, we tested them for color contrast.
 
-The color palette contains the following 10 colors:
+The color palette contains the following colors:
 
 <style>c {display:block;width:50px;height:50px;background-color: var(--c)}</style>
 
@@ -69,11 +69,9 @@ The color palette contains the following 10 colors:
 | Orange | <c style="--c:#FEF0E6;"></c> | <c style="--c:#FFAA70;"></c> | <c style="--c:#FF6800;"></c> | <c style="--c:#B7540F;"></c> | <c style="--c:#894618;"></c> |
 | Yellow | <c style="--c:#FFF7E6;"></c> | <c style="--c:#FEDC93;"></c> | <c style="--c:#FDBE36;"></c> | <c style="--c:#E4A41C;"></c> | <c style="--c:#D88D00;"></c> |
 
-## Implementation guidance
+## Use color design tokens in CSS
 
-### Using color design tokens in CSS
-
-An example if the usage of design tokens in CSS is given below. In this example, the button background color is setup with the primary color for the default state. When the user hovers over the button, the 400 color shade is used.
+The following example shows the usage of design tokens in CSS. The primary color is defined for the default state of the the button background color. When the user hovers over the button, the 400 color shade is used.
 
 ```css
 button {
@@ -84,11 +82,11 @@ button:hover {
 }
 ```
 
-### Setup colors in your application
+### Set up application colors
 
-The color system is configured by themes. You can use predefined themes from the theme package and amend the theme in your application setup, or build your own theme.
+The color system is configured by themes. You can use predefined themes from the theme package and amend the theme in your application setup or build your own theme.
 
-An example of color configuration is shown below. This configuration uses an existing theme (`storefrontTheme`) and changes the base primary color for both light and dark mode.
+The following configuration example is based on an existing theme `storefrontTheme`, but the base primary color is changed for light and dark modes.
 
 ```ts
 import { storefrontTheme } from '@spryker-oryx/themes';
