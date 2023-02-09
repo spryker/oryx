@@ -12,7 +12,7 @@ export const baseStyles = css`
     height: var(--oryx-radio-size);
     appearance: none;
     border-radius: 50%;
-    margin: 3px 0;
+    margin: 0;
     padding: 2px;
     border: solid 2px currentColor;
     color: var(--oryx-color-neutral-200);

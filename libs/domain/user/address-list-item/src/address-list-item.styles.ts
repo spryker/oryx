@@ -7,8 +7,21 @@ export const styles = css`
 
   section {
     display: grid;
-    grid-template-columns: 1fr max-content;
+    grid-template-columns: 1fr min-content;
+  }
+
+  div {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    gap: 8px;
     align-items: center;
+    white-space: initial;
+    text-overflow: initial;
+    overflow: initial;
+  }
+
+  oryx-icon-button button {
+    padding: 10px;
   }
 
   section,
@@ -23,7 +36,6 @@ export const styles = css`
 
   oryx-user-address {
     line-height: 1.571em;
-    margin-inline-end: 8px;
   }
 
   .controls {
@@ -38,6 +50,7 @@ export const styles = css`
   }
 
   [slot='subtext'] {
+    flex-wrap: wrap;
     padding-block-start: 8px;
   }
 `;

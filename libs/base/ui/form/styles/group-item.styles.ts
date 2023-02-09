@@ -30,8 +30,7 @@ export const groupItemStyles = css`
   }
 
   [hasErrorContent] {
-    margin-block-start: 1px;
-    margin-inline-start: 1px;
+    margin-block-start: 4px;
     font-size: 0.85em;
     font-weight: 400;
   }

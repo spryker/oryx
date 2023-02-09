@@ -86,10 +86,12 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
           ?checked="${selected}"
           @change="${(e: Event) => this.onChange(e, method.id)}"
         />
-        ${method.name}
-        <span class="price">
-          ${asyncValue(this.priceService.format(method.price))}
-        </span>
+        <div>
+          <span>${method.name}</span>
+          <span class="price">
+            ${asyncValue(this.priceService.format(method.price))}
+          </span>
+        </div>
         ${when(
           method.deliveryTime,
           () =>

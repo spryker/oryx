@@ -16,6 +16,10 @@ export const styles = css`
     line-height: 22px;
   }
 
+  div {
+    display: flex;
+  }
+
   oryx-radio {
     padding: var(--oryx-space-4);
   }
@@ -23,7 +27,7 @@ export const styles = css`
   .price {
     font-weight: 600;
     font-size: var(--oryx-font-size-medium);
-    text-align: end;
+    margin-inline-start: auto;
   }
 
   small {

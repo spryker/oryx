@@ -33,17 +33,15 @@ const Template: Story<Props> = ({
   checked,
 }: Props): TemplateResult =>
   html`
-    <div class="wrapper">
-      <oryx-radio ?hasError=${hasError} errorMessage=${errorMessage}>
-        <input
-          name="radio"
-          type="radio"
-          ?disabled=${disabled}
-          ?checked=${checked}
-        />
-        ${label}
-        ${when(subtext, () => html`<small slot="subtext">${subtext}</small>`)}
-      </oryx-radio>
-    </div>
+    <oryx-radio ?hasError=${hasError} errorMessage=${errorMessage}>
+      <input
+        name="radio"
+        type="radio"
+        ?disabled=${disabled}
+        ?checked=${checked}
+      />
+      ${label}
+      ${when(subtext, () => html`<small slot="subtext">${subtext}</small>`)}
+    </oryx-radio>
   `;
 export const RadioDemo = Template.bind({});

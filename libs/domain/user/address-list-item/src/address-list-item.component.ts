@@ -42,8 +42,10 @@ export class AddressListItemComponent
       }
 
       const content = html`
-        <oryx-user-address .addressId=${address.id}></oryx-user-address>
-        ${this.renderActions(address, options)}
+        <div>
+          <oryx-user-address .addressId=${address.id}></oryx-user-address>
+          ${this.renderActions(address, options)}
+        </div>
         ${this.renderDefaults(address, options)}
       `;
 
