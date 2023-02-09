@@ -1,11 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ProductListSort } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { asyncValue, i18n } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs/operators';
 import { SortingService } from '../../src/services/sorting.service';
 
+@hydratable(['mouseover', 'focus'])
 export class SortComponent extends LitElement {
   protected routerService = resolve(RouterService);
   protected sortingService = resolve(SortingService);
