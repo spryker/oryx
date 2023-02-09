@@ -1,4 +1,4 @@
-import { Position } from '../../../utilities/model/common';
+import { Position } from '../../../src/utilities/model/common';
 
 export enum DrawerType {
   PRIMARY = 'primary',

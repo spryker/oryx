@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/ui/utilities';
+import { Size } from '@spryker-oryx/ui';
 import { Address, AddressService } from '@spryker-oryx/user';
 import { AddressBookState } from '@spryker-oryx/user/address-book';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';

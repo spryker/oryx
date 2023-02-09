@@ -2,7 +2,7 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../utilities';
+import { Size } from '../../../../src/utilities';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
 
 export default { title: `${storybookPrefix}/Graphical/Spinner` } as Meta;

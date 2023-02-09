@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Position } from '../../../utilities/model/common';
+import { Position } from '../../../src/utilities/model/common';
 import { DialogElement } from '../../overlay.model';
 import { DrawerProperties, DrawerType } from './drawer.model';
 import {

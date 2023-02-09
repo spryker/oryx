@@ -1,6 +1,6 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { states } from '../../../../utilities/storybook';
+import { states } from '../../../../src/utilities/storybook';
 import { CLOSE_EVENT } from '../../../popover';
 import { Position } from '../dropdown.model';
 

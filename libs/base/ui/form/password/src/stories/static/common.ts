@@ -2,7 +2,7 @@ import {
   Variant,
   VariantOptions,
   VariantsGroup,
-} from '@spryker-oryx/ui/utilities';
+} from '../../../../../src/utilities';
 
 export enum CategoryX {
   INVISIBLE = 'Invisible',

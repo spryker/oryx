@@ -1,7 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { ErrorMessageComponent } from '../../../error-message';
-import { Direction } from '../../../utilities/model';
+import { Direction } from '../../../src/utilities/model';
+import { ErrorMessageComponent } from '../../error-message';
 import { inputListComponent } from './component';
 import { InputListComponent } from './input-list.component';
 

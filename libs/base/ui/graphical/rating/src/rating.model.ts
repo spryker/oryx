@@ -1,4 +1,4 @@
-import { Size } from '../../../utilities';
+import { Size } from '../../../src/utilities';
 
 export interface RatingProperties {
   /**

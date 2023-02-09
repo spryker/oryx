@@ -2,11 +2,11 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import { SearchEvent, SearchOptions } from '@spryker-oryx/ui/searchbox';
-import { branches, states } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
+import { branches, states } from '../../../../src/utilities';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 export default {

@@ -15,7 +15,7 @@ import {
   FilterStrategyType,
   TypeaheadOptions,
 } from '../../../../search/typeahead';
-import { branches, states } from '../../../../utilities/storybook';
+import { branches, states } from '../../../../src/utilities/storybook';
 
 export default {
   title: `${storybookPrefix}/Form/Select`,

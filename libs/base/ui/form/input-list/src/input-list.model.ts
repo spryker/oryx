@@ -1,4 +1,4 @@
-import { Direction } from '../../../utilities/model';
+import { Direction } from '../../../src/utilities/model';
 import { ErrorOptions } from '../../input';
 
 export interface InputListProperties extends Partial<ErrorOptions> {

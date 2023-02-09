@@ -3,7 +3,7 @@ export enum Position {
   CENTER = 'center',
   END = 'end',
 }
-import { Size } from '../../../utilities';
+import { Size } from '../../../src/utilities';
 
 export interface DropdownProperties {
   /**

@@ -1,12 +1,12 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../../.constants';
 import {
   extendVariants,
   generateVariantsMatrix,
   storybookDefaultViewports,
   variantsGroupTemplate,
-} from '@spryker-oryx/ui/utilities';
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+} from '../../../../../src/utilities';
 import { basePasswordInputVariants, groups } from './common';
 
 export default {

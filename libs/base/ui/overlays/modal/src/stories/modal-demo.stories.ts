@@ -1,7 +1,7 @@
-import { CardType } from '@spryker-oryx/ui/card';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
+import { CardType } from '../../../../ui/structure/card';
 
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
 

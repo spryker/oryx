@@ -1,10 +1,10 @@
-import {
-  isSafari,
-  nonFocusableOnClickInSafari,
-} from '@spryker-oryx/ui/utilities';
 import { isFocusable } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
+import {
+  isSafari,
+  nonFocusableOnClickInSafari,
+} from '../../../../src/utilities';
 import { PopoverComponent } from '../popover.component';
 import {
   CLOSE_EVENT,

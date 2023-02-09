@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
-import { storybookDefaultViewports } from '@spryker-oryx/ui/utilities';
+import { storybookDefaultViewports } from '../../../../../src/utilities';
 import { NotificationService, Positions } from '../../index';
 import { generateNotification, removeAllMountedCenters } from '../util';
 

@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../utilities';
+import { Size } from '../../../../src/utilities';
 import { RatingProperties } from '../rating.model';
 
 export default {

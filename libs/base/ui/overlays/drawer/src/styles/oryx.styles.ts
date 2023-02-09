@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { Position } from '../../../../utilities/model/common';
+import { Position } from '../../../../src/utilities/model/common';
 import { DrawerType } from '../drawer.model';
 
 export const drawerStyles = css`

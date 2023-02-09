@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { FilterStrategyType } from '../../../../../search/typeahead';
-import { sideBySide } from '../../../../../utilities/storybook';
+import { sideBySide } from '../../../../../src/utilities/storybook';
 import { keyValueSelectOptions } from './common';
 
 export default {

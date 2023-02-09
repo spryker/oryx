@@ -1,4 +1,4 @@
-import { isFirefox, Size } from '@spryker-oryx/ui/utilities';
+import { isFirefox, Size } from '@spryker-oryx/ui';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';

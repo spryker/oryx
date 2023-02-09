@@ -1,5 +1,5 @@
-import { OptionComponent } from '@spryker-oryx/ui/option';
 import { LitElement, ReactiveController } from 'lit';
+import { OptionComponent } from '../../../form/option';
 import {
   HighlightController,
   SelectedController,
@@ -13,7 +13,7 @@ import {
 import { TAG_NAME } from './tag';
 
 /**
- * Controls the popover behaviour by mouse and keyboard:
+ * Controls the popover behavior by mouse and keyboard:
  * - toggle the popover (delegated to `ToggleController`)
  * - highlight the popover by keyboard (delegated to `HighlightController`)
  * - select the highlighted iem by keyboard (delegated to `SelectedController`)

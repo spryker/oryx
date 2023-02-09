@@ -1,14 +1,14 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
+import { storybookPrefix } from '../../../../../../../.constants';
 import {
   generateVariantsMatrix,
   storybookDefaultViewports,
   VariantOptions,
   VariantsGroup,
   variantsGroupTemplate,
-} from '@spryker-oryx/ui/utilities';
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
-import { storybookPrefix } from '../../../../../../../.constants';
+} from '../../../../../../../src/utilities';
 import {
   getInputVariants,
   InputVariantOptions,

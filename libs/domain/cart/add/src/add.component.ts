@@ -11,8 +11,8 @@ import {
   ProductController,
 } from '@spryker-oryx/product';
 import { IconTypes } from '@spryker-oryx/themes/icons';
+import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { Size } from '@spryker-oryx/ui/utilities';
 import {
   asyncValue,
   hydratable,

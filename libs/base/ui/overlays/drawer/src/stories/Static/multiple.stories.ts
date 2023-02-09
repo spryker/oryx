@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { Position } from '../../../../../utilities/model/common';
-import { OverlaysDecorator } from '../../../../../utilities/storybook';
+import { Position } from '../../../../../src/utilities/model/common';
+import { OverlaysDecorator } from '../../../../../src/utilities/storybook';
 import { DrawerType } from '../../index';
 
 export default {

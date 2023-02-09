@@ -1,11 +1,11 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { dispatchKeydown } from '@spryker-oryx/testing';
-import { OptionComponent, optionComponent } from '@spryker-oryx/ui/option';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';
+import { OptionComponent, optionComponent } from '../../../form/option';
 import { getControl } from '../../../form/utilities/getControl';
 import { popoverComponent } from './component';
 import { SelectedController } from './controllers';

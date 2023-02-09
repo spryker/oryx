@@ -2,7 +2,7 @@ import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ErrorMessageComponent } from '../../../../error-message/index';
+import { ErrorMessageComponent } from '../../../error-message/index';
 import { ErrorController } from './error.controller';
 import { ErrorOptions } from './error.model';
 

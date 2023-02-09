@@ -1,7 +1,7 @@
-import { Direction } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
+import { Direction } from '../../../../../src/utilities';
 import { input, InputListDecorator, inputs, UxType } from '../util';
 
 export default {

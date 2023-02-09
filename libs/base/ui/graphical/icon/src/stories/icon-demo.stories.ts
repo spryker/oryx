@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../utilities';
+import { Size } from '../../../../src/utilities';
 import { IconProperties } from '../icon.model';
 
 export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;

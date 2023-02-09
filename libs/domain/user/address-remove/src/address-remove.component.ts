@@ -1,5 +1,5 @@
+import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { Size } from '@spryker-oryx/ui/utilities';
 import { Address, AddressComponentMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';

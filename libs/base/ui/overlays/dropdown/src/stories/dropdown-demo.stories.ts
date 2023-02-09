@@ -1,9 +1,9 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import { Size } from '@spryker-oryx/ui/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
+import { Size } from '../../../../src/utilities';
 import { Position } from '../dropdown.model';
 import { renderCustomContent, renderOptions } from './utils';
 

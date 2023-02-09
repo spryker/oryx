@@ -1,4 +1,3 @@
-import { OptionComponent } from '@spryker-oryx/ui/option';
 import {
   CLOSE_POPOVER_ATTR,
   PopoverController,
@@ -8,6 +7,7 @@ import {
 import { SearchEvent } from '@spryker-oryx/ui/searchbox';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
+import { OptionComponent } from '../../../../form/option';
 import { getControl } from '../../../../form/utilities/getControl';
 import { TypeaheadOptions } from '../typeahead.model';
 import { FilterController } from './filter.controller';
