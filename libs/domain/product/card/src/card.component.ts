@@ -14,7 +14,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { BehaviorSubject, combineLatest, tap } from 'rxjs';
-import { ComponentSchema } from './card.model';
+import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
 @defaultOptions({
@@ -30,7 +30,7 @@ import { ProductCardStyles } from './card.styles';
 @ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
 export class ProductCardComponent extends ProductMixin(
-  ContentMixin<ComponentSchema>(LitElement)
+  ContentMixin<ProductCardOptions>(LitElement)
 ) {
   static styles = [ProductCardStyles];
 

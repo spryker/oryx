@@ -1,14 +1,14 @@
 import { componentDef } from '@spryker-oryx/core';
-import { ComponentSchema } from './card.model';
+import { ProductCardOptions } from './card.model';
 
 declare global {
   interface FeatureOptions {
-    'product-card'?: ComponentSchema;
+    'oryx-product-card'?: ProductCardOptions;
   }
 }
 
 export const productCardComponent = componentDef({
-  name: 'product-card',
+  name: 'oryx-product-card',
   impl: () => import('./card.component').then((m) => m.ProductCardComponent),
-  model: () => import('./card.model').then((m) => m.ComponentSchema),
+  schema: () => import('./card.schema').then((m) => m.ProductComponentSchema),
 });

@@ -24,71 +24,91 @@ const Template: Story<unknown> = (): TemplateResult => {
     <ul>
       <li>
         <h4>Product card</h4>
-        <product-card sku="1"></product-card>
+        <oryx-product-card sku="1"></oryx-product-card>
       </li>
       <li class="pseudo-hover">
         <h4>Focused/Hovered</h4>
-        <product-card sku="1"></product-card>
+        <oryx-product-card sku="1"></oryx-product-card>
       </li>
       <li>
         <h4>With zero rating</h4>
-        <product-card sku="5"></product-card>
+        <oryx-product-card sku="5"></oryx-product-card>
       </li>
       <li>
         <h4>With lengthy title</h4>
-        <product-card
+        <oryx-product-card
           .options=${{ truncateTitleAfter: 1 }}
           sku="6"
-        ></product-card>
+        ></oryx-product-card>
       </li>
       <li class="pseudo-hover">
         <h4>With lengthy title hovered</h4>
-        <product-card
+        <oryx-product-card
           sku="6"
           .options=${{ truncateTitleAfter: 1 }}
-        ></product-card>
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Without labels</h4>
-        <product-card sku="5"></product-card>
+        <oryx-product-card sku="5"></oryx-product-card>
       </li>
       <li>
         <h4>With fallback image</h4>
-        <product-card sku="without-images"></product-card>
+        <oryx-product-card sku="without-images"></oryx-product-card>
       </li>
       <li>
         <h4>Hide labels</h4>
-        <product-card sku="1" .options=${{ hideLabels: true }}></product-card>
+        <oryx-product-card
+          sku="1"
+          .options=${{
+            hideLabels: true,
+          }}
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Hide favorites</h4>
-        <product-card
+        <oryx-product-card
           sku="1"
           .options=${{ hideFavorites: true }}
-        ></product-card>
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Hide title</h4>
-        <product-card sku="1" .options=${{ hideTitle: true }}></product-card>
+        <oryx-product-card
+          sku="1"
+          .options=${{
+            hideTitle: true,
+          }}
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Hide price</h4>
-        <product-card sku="1" .options=${{ hidePrice: true }}></product-card>
+        <oryx-product-card
+          sku="1"
+          .options=${{
+            hidePrice: true,
+          }}
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Hide rating</h4>
-        <product-card sku="1" .options=${{ hideRating: true }}></product-card>
+        <oryx-product-card
+          sku="1"
+          .options=${{
+            hideRating: true,
+          }}
+        ></oryx-product-card>
       </li>
       <li>
         <h4>Hide content</h4>
-        <product-card
+        <oryx-product-card
           sku="1"
           .options=${{
             hideTitle: true,
             hidePrice: true,
             hideRating: true,
           }}
-        ></product-card>
+        ></oryx-product-card>
       </li>
     </ul>
   `;

@@ -32,7 +32,7 @@ describe('ProductCardComponent', () => {
     });
 
     element = await fixture(
-      html`<product-card sku="1" uid="1"></product-card>`
+      html`<oryx-product-card sku="1" uid="1"></oryx-product-card>`
     );
   });
 
@@ -63,7 +63,9 @@ describe('ProductCardComponent', () => {
     const optionsSku = 'optionSku';
 
     it('sku from the property', async () => {
-      await fixture(html`<product-card sku="${propSku}"></product-card>`);
+      await fixture(
+        html`<oryx-product-card sku="${propSku}"></oryx-product-card>`
+      );
 
       expect(mockContext.provide).toHaveBeenCalledWith(
         ProductContext.SKU,
@@ -73,7 +75,11 @@ describe('ProductCardComponent', () => {
 
     it('sku from the options', async () => {
       await fixture(
-        html`<product-card .options="${{ sku: optionsSku }}"></product-card>`
+        html`<oryx-product-card
+          .options="${{
+            sku: optionsSku,
+          }}"
+        ></oryx-product-card>`
       );
 
       expect(mockContext.provide).toHaveBeenCalledWith(
@@ -84,10 +90,10 @@ describe('ProductCardComponent', () => {
 
     it('sku from options if provided both', async () => {
       await fixture(
-        html`<product-card
+        html`<oryx-product-card
           sku="${propSku}"
           .options="${{ sku: optionsSku }}"
-        ></product-card>`
+        ></oryx-product-card>`
       );
 
       expect(mockContext.provide).toHaveBeenCalledWith(
@@ -100,7 +106,12 @@ describe('ProductCardComponent', () => {
   describe('when enableTitle = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card uid="1" .options=${{ enableTitle: false }}></product-card>
+        <oryx-product-card
+          uid="1"
+          .options=${{
+            enableTitle: false,
+          }}
+        ></oryx-product-card>
       `);
     });
 
@@ -125,7 +136,12 @@ describe('ProductCardComponent', () => {
       const titleLineClamp = 3;
       beforeEach(async () => {
         element = await fixture(html`
-          <product-card sku="1" .options=${{ titleLineClamp }}></product-card>
+          <oryx-product-card
+            sku="1"
+            .options=${{
+              titleLineClamp,
+            }}
+          ></oryx-product-card>
         `);
       });
 
@@ -144,7 +160,12 @@ describe('ProductCardComponent', () => {
   describe('when enableMedia = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card uid="1" .options=${{ enableMedia: false }}></product-card>
+        <oryx-product-card
+          uid="1"
+          .options=${{
+            enableMedia: false,
+          }}
+        ></oryx-product-card>
       `);
     });
 
@@ -156,7 +177,12 @@ describe('ProductCardComponent', () => {
   describe('when enablePrice = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card uid="1" .options=${{ enablePrice: false }}></product-card>
+        <oryx-product-card
+          uid="1"
+          .options=${{
+            enablePrice: false,
+          }}
+        ></oryx-product-card>
       `);
     });
 
@@ -168,10 +194,10 @@ describe('ProductCardComponent', () => {
   describe('when enableRating = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
+        <oryx-product-card
           uid="1"
           .options=${{ enableRating: false }}
-        ></product-card>
+        ></oryx-product-card>
       `);
     });
 
@@ -183,10 +209,10 @@ describe('ProductCardComponent', () => {
   describe('when enableLabels = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
+        <oryx-product-card
           uid="1"
           .options=${{ enableLabels: false }}
-        ></product-card>
+        ></oryx-product-card>
       `);
     });
 
@@ -198,10 +224,10 @@ describe('ProductCardComponent', () => {
   describe('when enableWishlist = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
+        <oryx-product-card
           uid="1"
           .options=${{ enableWishlist: false }}
-        ></product-card>
+        ></oryx-product-card>
       `);
     });
 
@@ -213,10 +239,10 @@ describe('ProductCardComponent', () => {
   describe('when enableAddToCart = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <product-card
+        <oryx-product-card
           uid="1"
           .options=${{ enableAddToCart: false }}
-        ></product-card>
+        ></oryx-product-card>
       `);
     });
 
@@ -242,7 +268,9 @@ describe('ProductCardComponent', () => {
         providers: [...mockProductProviders, ...siteProviders],
       });
 
-      element = await fixture(html` <product-card></product-card> `);
+      element = await fixture(
+        html` <oryx-oryx-product-card></oryx-product-card> `
+      );
     });
 
     it('should not render the content', () => {

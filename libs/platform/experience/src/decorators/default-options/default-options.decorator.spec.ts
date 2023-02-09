@@ -18,6 +18,7 @@ describe('defaultOptions decorator', () => {
     expect(
       (MockAComponent as unknown as { [optionsKey]: unknown })[optionsKey]
     ).toEqual({
+      floatLabel: true,
       a: 'a',
       b: 'b',
     });
@@ -27,6 +28,7 @@ describe('defaultOptions decorator', () => {
     expect(
       (MockBComponent as unknown as { [optionsKey]: unknown })[optionsKey]
     ).toEqual({
+      floatLabel: true,
       a: 'b',
       b: 'b',
       c: 'c',

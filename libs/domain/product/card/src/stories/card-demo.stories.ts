@@ -45,12 +45,12 @@ const Template: Story<ComponentSchema> = (
   const { sku, ...options } = props;
   return html`
     <style>
-      product-card {
+      oryx-product-card {
         max-width: 400px;
       }
     </style>
 
-    <product-card .sku=${sku} .options=${options}></product-card>
+    <oryx-product-card .sku=${sku} .options=${options}></oryx-product-card>
   `;
 };
 

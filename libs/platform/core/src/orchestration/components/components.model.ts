@@ -17,7 +17,7 @@ export interface ComponentDef {
   readonly impl: ComponentDefImpl;
   readonly stylesheets?: ComponentTheme[];
   readonly options?: FeatureOptions[keyof FeatureOptions];
-  readonly model?: LazyLoadable<Type<unknown>>;
+  readonly schema?: LazyLoadable<Type<unknown> | Record<string, any>>;
 }
 
 export type ComponentDefFn = () => ComponentDef;
@@ -37,7 +37,7 @@ export interface ComponentStatic {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ComponentModel {}
+export interface ComponentStaticSchema {}
 
 export type ComponentDefImpl =
   | LazyLoadable<ComponentType>

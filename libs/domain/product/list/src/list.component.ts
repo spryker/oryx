@@ -63,7 +63,7 @@ export class ProductListComponent extends ProductComponentMixin<ProductListQuali
 
   protected renderProducts(products: Product[]): TemplateResult {
     return html`${products.map(
-      (p) => html`<product-card .sku=${p.sku}></product-card>`
+      (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
     )}`;
   }
 }

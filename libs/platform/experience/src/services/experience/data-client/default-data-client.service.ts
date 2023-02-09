@@ -1,14 +1,20 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   AppRef,
   ComponentsPlugin,
+  ComponentStaticSchema,
   FeatureOptionsService,
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { map, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
-import { modelKey, optionsKey } from '../../../decorators';
+import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  ComponentSchema,
+  componentSchemaKey,
+  optionsKey,
+} from '../../../decorators';
 import { catchMessage, postMessage } from '../utilities';
-import { DataIds, MessageType } from './data-client.model';
+import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
 
 interface ProductsSuggestion {
@@ -27,41 +33,32 @@ export class DefaultExperienceDataClientService
     protected suggestionService = inject('oryx.SuggestionService', null)
   ) {}
 
-  protected component$ = catchMessage(
-    MessageType.ComponentType,
-    DataIds.ComponentType
-  ).pipe(
-    map((type) => [type, this.appRef.findPlugin(ComponentsPlugin)] as const),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
-  protected model$ = this.component$.pipe(
-    tap(([type, componentPlugin]) => {
-      if (!componentPlugin) {
-        return;
-      }
-
-      const model = componentPlugin.getComponentModel(type)?.[modelKey];
-
+  protected schemas$ = of(this.appRef.findPlugin(ComponentsPlugin)).pipe(
+    switchMap((componentPlugin) => componentPlugin!.getComponentSchemas()),
+    tap((schemas) => {
       postMessage({
-        type: MessageType.Model,
-        [DataIds.Model]: model,
+        type: MessageType.Schemas,
+        data: schemas.map(
+          ({ schema, type }) =>
+            ({
+              type,
+              ...((schema as ComponentStaticSchema)[componentSchemaKey] ??
+                (schema as unknown as Partial<ComponentSchema>)),
+            } as ComponentSchema)
+        ),
       });
     })
   );
-  protected options$ = this.component$.pipe(
-    tap(([type, componentPlugin]) => {
-      if (!componentPlugin) {
-        return;
-      }
-
-      const options = {
-        ...componentPlugin.getComponentClass(type)?.[optionsKey],
-        ...this.optionsService.getFeatureOptions(type),
-      };
+  protected options$ = catchMessage(MessageType.ComponentType).pipe(
+    tap((type) => {
+      const componentPlugin = this.appRef.findPlugin(ComponentsPlugin)!;
 
       postMessage({
         type: MessageType.Options,
-        [DataIds.Options]: options,
+        data: {
+          ...componentPlugin!.getComponentClass(type)?.[optionsKey],
+          ...this.optionsService.getFeatureOptions(type),
+        },
       });
     })
   );
@@ -71,23 +68,21 @@ export class DefaultExperienceDataClientService
     tap((resources) => {
       postMessage({
         type: MessageType.Graphics,
-        [DataIds.Graphics]: Object.keys(resources?.graphics ?? {}),
+        data: Object.keys(resources?.graphics ?? {}),
       });
     })
   );
-  protected products$ = catchMessage(MessageType.Query, DataIds.Query).pipe(
+  protected products$ = catchMessage(MessageType.Query).pipe(
     switchMap<string, Observable<ProductsSuggestion | null>>(
       (query) => this.suggestionService?.get({ query }) ?? of(null)
     ),
     tap((suggestions) => {
       postMessage({
         type: MessageType.Products,
-        [DataIds.Products]: (suggestions?.products ?? []).map(
-          ({ name, sku }) => ({
-            name,
-            sku,
-          })
-        ),
+        data: (suggestions?.products ?? []).map(({ name, sku }) => ({
+          name,
+          sku,
+        })),
       });
     })
   );
@@ -95,7 +90,7 @@ export class DefaultExperienceDataClientService
     this.options$,
     this.graphics$,
     this.products$,
-    this.model$
+    this.schemas$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {

@@ -8,16 +8,16 @@ import {
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { modelKey, optionsKey } from '../../../decorators';
+import { componentSchemaKey, optionsKey } from '../../../decorators';
 import { postMessage } from '../utilities';
-import { DataIds, MessageType } from './data-client.model';
+import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
 import { DefaultExperienceDataClientService } from './default-data-client.service';
 
 const mockAppFn = {
   getResources: vi.fn(),
   getComponentClass: vi.fn(),
-  getComponentModel: vi.fn(),
+  getComponentSchemas: vi.fn().mockReturnValue(of([])),
 };
 
 class MockApp implements Partial<App> {
@@ -86,7 +86,7 @@ describe('ExperienceDataClientService', () => {
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Graphics,
-          [DataIds.Graphics]: Object.keys(mockResources.graphics),
+          data: Object.keys(mockResources.graphics),
         },
         '*'
       );
@@ -114,7 +114,7 @@ describe('ExperienceDataClientService', () => {
       postMessage(
         {
           type: MessageType.ComponentType,
-          [DataIds.ComponentType]: mockComponentType,
+          data: mockComponentType,
         },
         window
       );
@@ -122,7 +122,7 @@ describe('ExperienceDataClientService', () => {
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Options,
-          [DataIds.Options]: {
+          data: {
             ...mockDefaultOptions,
             ...mockFeatureOptions,
           },
@@ -162,7 +162,7 @@ describe('ExperienceDataClientService', () => {
       postMessage(
         {
           type: MessageType.Query,
-          [DataIds.Query]: mockQuery,
+          data: mockQuery,
         },
         window
       );
@@ -173,7 +173,7 @@ describe('ExperienceDataClientService', () => {
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Products,
-          [DataIds.Products]: mockSuggestions.products.map(({ sku, name }) => ({
+          data: mockSuggestions.products.map(({ sku, name }) => ({
             sku,
             name,
           })),
@@ -182,38 +182,38 @@ describe('ExperienceDataClientService', () => {
       );
     });
 
-    it('should send `MessageType.Model` post message', async () => {
-      const mockModel = {
-        b: 'b',
-      };
-
-      const mockComponentType = 'mockComponentType';
+    it('should send `MessageType.Schemas` post message', async () => {
+      const mockSchemaA = { b: 'b' };
+      const mockSchemaB = { b: 'b' };
       const app = getService<MockApp>(AppRef);
-      mockAppFn.getComponentModel.mockReturnValue({
-        [modelKey]: mockModel,
-      });
+      mockAppFn.getComponentSchemas.mockReturnValue(
+        of([
+          {
+            schema: { [componentSchemaKey]: mockSchemaA },
+            type: 'a',
+          },
+          {
+            schema: { [componentSchemaKey]: mockSchemaB },
+            type: 'b',
+          },
+        ])
+      );
       getInjector()
         .inject(ExperienceDataClientService)
         .initialize()
         .subscribe();
-      postMessage(
-        {
-          type: MessageType.ComponentType,
-          [DataIds.ComponentType]: mockComponentType,
-        },
-        window
-      );
       await nextFrame();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
-          type: MessageType.Model,
-          [DataIds.Model]: mockModel,
+          type: MessageType.Schemas,
+          data: [
+            { ...mockSchemaA, type: 'a' },
+            { ...mockSchemaB, type: 'b' },
+          ],
         },
         '*'
       );
-      expect(mockAppFn.getComponentModel).toHaveBeenCalledWith(
-        mockComponentType
-      );
+      expect(mockAppFn.getComponentSchemas).toHaveBeenCalled();
       expect(app.findPlugin).toHaveBeenCalledWith(ComponentsPlugin);
     });
   });

@@ -20,6 +20,7 @@ function defaultOptionsClass(
   options: Record<string, unknown>
 ): ClassType {
   clazz[optionsKey] = {
+    floatLabel: true,
     ...clazz[optionsKey],
     ...options,
   };

@@ -6,9 +6,9 @@ import {
   ComponentDef,
   ComponentImplMeta,
   ComponentInfo,
-  ComponentModel,
   ComponentsOptions,
   ComponentStatic,
+  ComponentStaticSchema,
   ComponentType,
   ObservableType,
 } from './components.model';
@@ -22,7 +22,11 @@ interface ComponentMap {
   observableType: ObservableType;
   componentType: ComponentType & ComponentStatic;
   themes?: (ThemeData | ThemeStylesheets)[] | null;
-  model?: Type<unknown>;
+}
+
+export interface ComponentSchemaData {
+  schema: ((Type<unknown> & ComponentStaticSchema) | Record<string, any>)[];
+  type: string;
 }
 
 export class ComponentsLoader {
@@ -157,10 +161,9 @@ export class ComponentsLoader {
       return this.componentMap.get(def.name)!.observableType;
     }
 
-    const [componentType, themes, model] = await Promise.all([
+    const [componentType, themes] = await Promise.all([
       this.loadComponentImpl(def, meta),
       this.theme?.resolve(def),
-      resolveLazyLoadable(def.model),
     ]);
 
     if (!componentType) {
@@ -173,7 +176,6 @@ export class ComponentsLoader {
       observableType,
       themes,
       componentType,
-      model,
     });
 
     return observableType;
@@ -185,7 +187,19 @@ export class ComponentsLoader {
     return this.componentMap.get(tag)?.componentType;
   }
 
-  getComponentModel(tag: string): (Type<unknown> & ComponentModel) | undefined {
-    return this.componentMap.get(tag)?.model;
+  async getComponentSchemas(): Promise<ComponentSchemaData[]> {
+    const schemas = await Promise.all(
+      [...(this.componentDefMap.values() ?? [])].map((component) =>
+        resolveLazyLoadable(component.schema)
+      ) as ComponentSchemaData['schema'][]
+    );
+
+    return [...(this.componentDefMap.values() ?? [])].reduce(
+      (data, component, index) =>
+        schemas[index]
+          ? [...data, { schema: schemas[index], type: component.name }]
+          : data,
+      [] as ComponentSchemaData[]
+    );
   }
 }

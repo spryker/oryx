@@ -1,64 +1,98 @@
-import { ComponentModel } from '@spryker-oryx/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ComponentStaticSchema } from '@spryker-oryx/core';
 import { Type } from '@spryker-oryx/di';
-import {
-  DecoratorContext,
-  isLegacyDecorator,
-  TargetDecorator,
-} from '@spryker-oryx/utilities';
+import { DecoratorContext } from '@spryker-oryx/utilities';
 import { UpdatingElement } from 'lit';
-import { FieldDefinition } from './component-schema.model';
+import { ComponentSchema, FieldDefinition } from './component-schema.model';
 
-export const modelKey = Symbol.for('model-options');
+export const componentSchemaKey = Symbol.for('model-options');
+
+type InnerComponentTypeSchema = Omit<ComponentSchema, 'options' | 'type'>;
+type InnerFieldDefinition = Omit<FieldDefinition, 'id'>;
 
 declare module '@spryker-oryx/core' {
-  interface ComponentModel {
-    [modelKey]?: FieldDefinition[];
+  interface ComponentStaticSchema {
+    [componentSchemaKey]?: ComponentSchema;
   }
 }
 
-const defineComponentSchema = (
-  context: Type<unknown> & ComponentModel,
-  name: string,
-  props: Omit<FieldDefinition, 'id'>
+const defineComponentSchema = <T extends string | undefined>(
+  context: Type<unknown> & ComponentStaticSchema,
+  props: T extends string ? InnerFieldDefinition : InnerComponentTypeSchema,
+  name: T
 ): void => {
-  context[modelKey] ??= [];
-  context[modelKey].push({
-    id: name,
+  context[componentSchemaKey] ??= {} as ComponentSchema;
+
+  if (name) {
+    context[componentSchemaKey].options ??= [];
+    context[componentSchemaKey].options.push({
+      id: name,
+      ...props,
+    });
+
+    return;
+  }
+
+  context[componentSchemaKey] = {
+    ...(context[componentSchemaKey] ?? {}),
     ...props,
-  });
+  } as ComponentSchema;
 };
 
 const legacyComponentSchema = (
-  context: TargetDecorator,
-  name: string,
-  props: Omit<FieldDefinition, 'id'>
+  context: Type<unknown>,
+  props: InnerFieldDefinition | InnerComponentTypeSchema,
+  name?: string
 ): void => {
-  defineComponentSchema(context.constructor as Type<unknown>, name, props);
+  // TODO: remove `any` when TS-5 has been released
+  defineComponentSchema(
+    name ? (context.constructor as Type<unknown>) : context,
+    props as any,
+    name
+  );
 };
 
 const standardComponentSchema = (
   context: DecoratorContext,
-  name: string,
-  props: Omit<FieldDefinition, 'id'>
+  props: InnerFieldDefinition | InnerComponentTypeSchema,
+  name?: string
 ): DecoratorContext => ({
   ...context,
-  finisher(clazz: typeof UpdatingElement): void {
-    defineComponentSchema(clazz as unknown as Type<unknown>, name, props);
+  finisher(clazz: typeof UpdatingElement): typeof UpdatingElement | void {
+    // TODO: remove `any` when TS-5 has been released
+    defineComponentSchema(
+      clazz as unknown as Type<unknown>,
+      props as any,
+      name
+    );
+
+    return clazz;
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function componentSchema(props: Omit<FieldDefinition, 'id'>): any {
-  return (
-    context: DecoratorContext | TargetDecorator,
-    name?: PropertyKey
-  ): DecoratorContext | void => {
+// TODO: remove `any` when TS-5 has been released
+export const componentSchema = <T = any>(
+  props: T extends Type<unknown>
+    ? InnerComponentTypeSchema
+    : InnerFieldDefinition
+) => {
+  return (context: T, name?: PropertyKey): any => {
+    const isLegacy = name !== undefined || typeof context === 'function';
     const propName = (
-      isLegacyDecorator(context, name) ? name : context.key
+      name !== undefined ? name : (context as unknown as DecoratorContext).key
     ) as string;
 
-    return isLegacyDecorator(context, name)
-      ? legacyComponentSchema(context, propName, props)
-      : standardComponentSchema(context, propName, props);
+    // TODO: remove `any` when TS-5 has been released
+    return isLegacy
+      ? legacyComponentSchema(
+          context as unknown as Type<unknown>,
+          props as any,
+          propName
+        )
+      : standardComponentSchema(
+          context as unknown as DecoratorContext,
+          props as any,
+          propName
+        );
   };
-}
+};

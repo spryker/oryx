@@ -1,5 +1,10 @@
-import { componentSchema, modelKey } from './component-schema';
+import { componentSchema, componentSchemaKey } from './component-schema';
 
+@componentSchema({
+  name: 'name',
+  group: 'group',
+  category: 'category',
+})
 class MockModelA {
   @componentSchema({
     title: 'a',
@@ -17,10 +22,17 @@ class MockModelA {
 describe('componentSchema decorator', () => {
   it('should assign model as static property', () => {
     expect(
-      (MockModelA as unknown as { [modelKey]: unknown })[modelKey]
-    ).toEqual([
-      { id: 'sku', title: 'a', type: 'b' },
-      { id: 'product', label: 'c', placeholder: 'd' },
-    ]);
+      (MockModelA as unknown as { [componentSchemaKey]: unknown })[
+        componentSchemaKey
+      ]
+    ).toEqual({
+      name: 'name',
+      group: 'group',
+      category: 'category',
+      options: [
+        { id: 'sku', title: 'a', type: 'b' },
+        { id: 'product', label: 'c', placeholder: 'd' },
+      ],
+    });
   });
 });

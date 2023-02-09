@@ -1,6 +1,5 @@
 import { filter, fromEvent, map, Observable, shareReplay } from 'rxjs';
 import {
-  DataIds,
   ExperienceMessageData,
   ExperienceMessageType,
   MessageType,
@@ -23,13 +22,12 @@ export const postMessage = <T>(
   });
 };
 
-export const catchMessage = <T extends MessageType, K extends DataIds>(
-  type: T,
-  key: K
-): Observable<ExperienceMessageData<T>[K]> => {
+export const catchMessage = <T extends MessageType>(
+  type: T
+): Observable<ExperienceMessageData<T>['data']> => {
   return fromEvent<ExperienceMessageType<T>>(window, 'message').pipe(
     filter((e) => e.data?.type === type),
-    map((data) => data.data[key]),
+    map((e) => e.data.data),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 };

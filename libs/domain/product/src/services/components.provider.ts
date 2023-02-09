@@ -64,10 +64,10 @@ export const componentsProvider: Provider = {
     },
     ['oryx-product-card']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<product-card
+        html`<oryx-product-card
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></product-card>`,
+        ></oryx-product-card>`,
     },
     ['oryx-product-attributes']: {
       template: (uid: string, layoutClasses?: string) =>
