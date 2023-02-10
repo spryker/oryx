@@ -46,7 +46,7 @@ describe('ProductCardComponent', () => {
   });
 
   it('should render inner components', () => {
-    expect(element).toContainElement('content-link');
+    expect(element).toContainElement('oryx-content-link');
     expect(element).toContainElement('oryx-product-media');
     expect(element).toContainElement('oryx-product-title');
     expect(element).toContainElement('oryx-product-price');
@@ -268,13 +268,11 @@ describe('ProductCardComponent', () => {
         providers: [...mockProductProviders, ...siteProviders],
       });
 
-      element = await fixture(
-        html` <oryx-oryx-product-card></oryx-product-card> `
-      );
+      element = await fixture(html` <oryx-product-card></oryx-product-card> `);
     });
 
     it('should not render the content', () => {
-      expect(element).not.toContainElement('content-link');
+      expect(element).not.toContainElement('oryx-content-link');
     });
   });
 });

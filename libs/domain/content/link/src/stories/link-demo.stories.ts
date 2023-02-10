@@ -10,7 +10,7 @@ export default {
 } as unknown as Meta;
 
 const Template: Story<ContentLinkOptions> = (options): TemplateResult => {
-  return html`<content-link .options="${options}"></content-link>`;
+  return html`<oryx-content-link .options="${options}"></oryx-content-link>`;
 };
 
 export const LinkDemo = Template.bind({});

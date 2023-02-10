@@ -43,7 +43,7 @@ export const searchboxStyles = css`
     background: linear-gradient(0deg, #fff 0, #fff0 100%);
   }
 
-  content-link::part(link) {
+  oryx-content-link::part(link) {
     padding: 0;
     white-space: normal;
     border-radius: 0;

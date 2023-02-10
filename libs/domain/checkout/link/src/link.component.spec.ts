@@ -54,7 +54,7 @@ describe('CheckoutLinkComponent', () => {
     });
 
     it(`should not render the link`, () => {
-      expect(element).not.toContainElement('content-link');
+      expect(element).not.toContainElement('oryx-content-link');
     });
   });
 
@@ -69,7 +69,7 @@ describe('CheckoutLinkComponent', () => {
     });
 
     it(`should render the link`, () => {
-      expect(element).toContainElement('content-link');
+      expect(element).toContainElement('oryx-content-link');
     });
   });
 
@@ -82,7 +82,7 @@ describe('CheckoutLinkComponent', () => {
 
     it(`should pass the option to content link`, () => {
       const contentLink = element.renderRoot.querySelector(
-        'content-link'
+        'oryx-content-link'
       ) as ContentLinkComponent;
       expect(contentLink?.options?.disabled).toBe(true);
     });

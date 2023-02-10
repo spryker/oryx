@@ -31,8 +31,8 @@ export class ProductTitleComponent extends ProductMixin(
       multiLine: true,
     };
 
-    return html`<content-link .options=${options}>
+    return html`<oryx-content-link .options=${options}>
       ${this.product?.name}
-    </content-link>`;
+    </oryx-content-link>`;
   }
 }

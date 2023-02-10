@@ -23,12 +23,12 @@ export const ProductCardStyles = css`
     border-color: var(--oryx-color-canvas-500);
   }
 
-  content-link,
-  content-link::part(link) {
+  oryx-content-link,
+  oryx-content-link::part(link) {
     display: contents;
   }
 
-  content-link > * {
+  oryx-content-link > * {
     grid-column: 1 / span 2;
   }
 
@@ -51,11 +51,11 @@ export const ProductCardStyles = css`
     justify-self: end;
   }
 
-  content-link > *:not(:is(oryx-product-media, div.popover)) {
+  oryx-content-link > *:not(:is(oryx-product-media, div.popover)) {
     margin-inline: 16px;
   }
 
-  content-link > *:last-child {
+  oryx-content-link > *:last-child {
     margin-bottom: 16px;
   }
 

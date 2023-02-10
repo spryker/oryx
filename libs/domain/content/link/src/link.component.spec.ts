@@ -39,7 +39,7 @@ describe('ContentLinkComponent', () => {
     });
 
     element = await fixture(
-      html`<content-link .options=${options}></content-link>`
+      html`<oryx-content-link .options=${options}></oryx-content-link>`
     );
   });
 
@@ -77,12 +77,12 @@ describe('ContentLinkComponent', () => {
       describe(`and type is ${type}`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<content-link
+            html`<oryx-content-link
               .options=${{
                 ...options,
                 type,
               }}
-            ></content-link>`
+            ></oryx-content-link>`
           );
         });
 
@@ -97,11 +97,11 @@ describe('ContentLinkComponent', () => {
     describe('and id is provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<content-link
+          html`<oryx-content-link
             .options=${{
               id: 'test',
             }}
-          ></content-link>`
+          ></oryx-content-link>`
         );
       });
 
@@ -112,7 +112,7 @@ describe('ContentLinkComponent', () => {
 
     describe('and id is not provided', () => {
       beforeEach(async () => {
-        element = await fixture(html`<content-link></content-link>`);
+        element = await fixture(html`<oryx-content-link></oryx-content-link>`);
       });
 
       it('should not render the oryx-link', () => {
@@ -125,9 +125,9 @@ describe('ContentLinkComponent', () => {
     describe('and "noopener" is provided only', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<content-link
+          html`<oryx-content-link
             .options=${{ ...options, noopener: true }}
-          ></content-link>`
+          ></oryx-content-link>`
         );
       });
 
@@ -139,9 +139,9 @@ describe('ContentLinkComponent', () => {
     describe('and "nofollow" is provided only', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<content-link
+          html`<oryx-content-link
             .options=${{ ...options, nofollow: true }}
-          ></content-link>`
+          ></oryx-content-link>`
         );
       });
 
@@ -153,9 +153,9 @@ describe('ContentLinkComponent', () => {
     describe('and "noopener" and "nofollow" are provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<content-link
+          html`<oryx-content-link
             .options=${{ ...options, noopener: true, nofollow: true }}
-          ></content-link>`
+          ></oryx-content-link>`
         );
       });
 
@@ -168,9 +168,9 @@ describe('ContentLinkComponent', () => {
   describe('when label is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<content-link
+        html`<oryx-content-link
           .options=${{ ...options, label: 'test' }}
-        ></content-link>`
+        ></oryx-content-link>`
       );
     });
 
@@ -182,9 +182,9 @@ describe('ContentLinkComponent', () => {
   describe('when target is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<content-link
+        html`<oryx-content-link
           .options=${{ ...options, target: '_blank' }}
-        ></content-link>`
+        ></oryx-content-link>`
       );
     });
 
@@ -196,9 +196,9 @@ describe('ContentLinkComponent', () => {
   describe('when icon is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<content-link
+        html`<oryx-content-link
           .options=${{ ...options, icon: 'test' }}
-        ></content-link>`
+        ></oryx-content-link>`
       );
     });
 
@@ -210,9 +210,9 @@ describe('ContentLinkComponent', () => {
   describe('when disabled', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<content-link
+        html`<oryx-content-link
           .options=${{ ...options, disabled: true }}
-        ></content-link>`
+        ></oryx-content-link>`
       );
     });
 
@@ -224,9 +224,9 @@ describe('ContentLinkComponent', () => {
   describe('when button option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<content-link
+        html`<oryx-content-link
           .options=${{ ...options, button: true }}
-        ></content-link>`
+        ></oryx-content-link>`
       );
     });
 

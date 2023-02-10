@@ -28,7 +28,7 @@ export class CheckoutLinkComponent extends ComponentMixin() {
         }
 
         return html`
-          <content-link
+          <oryx-content-link
             .options="${{
               type: SemanticLinkType.Checkout,
               disabled: loading,
@@ -36,7 +36,7 @@ export class CheckoutLinkComponent extends ComponentMixin() {
             }}"
           >
             Checkout
-          </content-link>
+          </oryx-content-link>
         `;
       })}
     `;

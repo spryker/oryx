@@ -1,14 +1,16 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { asyncValue } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { ContentLinkOptions, LinkType } from './link.model';
 import { styles } from './link.styles';
 
-export class ContentLinkComponent extends ComponentMixin<ContentLinkOptions>() {
+export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
+  LitElement
+) {
   static styles = styles;
 
   protected contentController = new ContentController(this);

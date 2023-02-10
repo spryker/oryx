@@ -6,12 +6,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['content-link']: {
+    ['oryx-content-link']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<content-link
+        html`<oryx-content-link
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></content-link>`,
+        ></oryx-content-link>`,
     },
     ['oryx-banner']: {
       template: (uid: string, layoutClasses?: string) =>

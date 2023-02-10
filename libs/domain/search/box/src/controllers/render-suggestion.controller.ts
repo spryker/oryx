@@ -27,7 +27,7 @@ export class RenderSuggestionController {
         ${options.map(
           ({ name, url, params }) => html`
             <li>
-              <content-link
+              <oryx-content-link
                 .options="${{
                   type,
                   id: url ?? '',
@@ -35,7 +35,7 @@ export class RenderSuggestionController {
                   text: name,
                 }}"
                 close-popover
-              ></content-link>
+              ></oryx-content-link>
             </li>
           `
         )}
@@ -82,7 +82,7 @@ export class RenderSuggestionController {
 
   protected renderProduct(product: Product): TemplateResult {
     return html`
-      <content-link
+      <oryx-content-link
         class="product"
         .options="${{
           type: SemanticLinkType.Product,
@@ -100,7 +100,7 @@ export class RenderSuggestionController {
           .sku=${product.sku}
           .options=${{ enableVatMessage: false }}
         ></oryx-product-price>
-      </content-link>
+      </oryx-content-link>
     `;
   }
 

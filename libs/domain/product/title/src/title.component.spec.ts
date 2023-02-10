@@ -8,8 +8,6 @@ import { Observable, of } from 'rxjs';
 import { ProductTitleComponent } from './title.component';
 import { productTitleComponent } from './title.def';
 
-const mockSku = '1';
-
 class MockExperienceContentService implements Partial<ExperienceService> {
   getOptions = ({ uid = '' }): Observable<any> => of({});
 }
@@ -63,7 +61,7 @@ describe('ProductTitleComponent', () => {
     });
 
     it('should wrap the element inside a link', () => {
-      expect(element).toContainElement('content-link');
+      expect(element).toContainElement('oryx-content-link');
     });
   });
 
@@ -79,7 +77,7 @@ describe('ProductTitleComponent', () => {
     });
 
     it('should not wrap the element inside a link', () => {
-      expect(element).not.toContainElement('content-link');
+      expect(element).not.toContainElement('oryx-content-link');
     });
   });
 });

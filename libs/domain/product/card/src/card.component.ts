@@ -68,11 +68,11 @@ export class ProductCardComponent extends ProductMixin(
     };
 
     return html`
-      <content-link .options="${linkOptions}">
+      <oryx-content-link .options="${linkOptions}">
         ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
         <div class="popover">${this.renderTitle()}</div>
         ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
-      </content-link>
+      </oryx-content-link>
     `;
   }
 

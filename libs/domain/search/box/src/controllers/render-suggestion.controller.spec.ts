@@ -181,14 +181,14 @@ describe('RenderSuggestionController', () => {
 
     it('should render list of links', () => {
       const links = element.renderRoot.querySelectorAll(
-        'section:nth-child(1) > ul content-link'
+        'section:nth-child(1) > ul oryx-content-link'
       );
       expect(links.length).toBe(3);
     });
 
     it('should render list of links with correct url', () => {
       const links = element.renderRoot.querySelectorAll(
-        'section:nth-child(1) > ul content-link'
+        'section:nth-child(1) > ul oryx-content-link'
       );
       Array.from(links).forEach((link, index) => {
         expect((link as ContentLinkComponent).options?.type).toBe(
