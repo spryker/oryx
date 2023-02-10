@@ -219,7 +219,7 @@ export class FacetController implements ReactiveController {
     inputs.forEach((input) => {
       input.checked = false;
       input.dispatchEvent(
-        new InputEvent('change', { bubbles: true, composed: true })
+        new InputEvent('input', { bubbles: true, composed: true })
       );
     });
   }
