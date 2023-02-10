@@ -39,6 +39,7 @@ export enum IconTypes {
   LightMode = 'lightMode',
   Merchant = 'merchant',
   Orders = 'orders',
+  Parcel = 'parcel',
   Products = 'products',
   Profile = 'profile',
   Desktop = 'desktop',

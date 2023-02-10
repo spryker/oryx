@@ -12,7 +12,7 @@ interface Props {
 
 const Template: Story<Props> = ({ orderId }): TemplateResult => {
   return html`<oryx-order-confirmation-banner
-    .order-id=${orderId}
+    order-id="${orderId}"
   ></oryx-order-confirmation-banner>`;
 };
 

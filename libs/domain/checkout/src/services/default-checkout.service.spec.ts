@@ -10,9 +10,8 @@ import {
   Shipment,
   Validity,
 } from '@spryker-oryx/checkout';
-import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
-import { orderStorageKey } from '@spryker-oryx/order';
+import { OrderService } from '@spryker-oryx/order';
 import { mockOrderData } from '@spryker-oryx/order/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -37,6 +36,10 @@ class MockCheckoutDataService implements Partial<CheckoutDataService> {
   reset = vi.fn();
 }
 
+class MockOrderService implements Partial<OrderService> {
+  storeLastOrder = vi.fn();
+}
+
 const mockCheckoutResponse = {
   orderReference: 'test',
   orders: [mockOrderData],
@@ -52,14 +55,10 @@ class MockCartService implements Partial<CartService> {
 }
 
 const mockSanitizedResponse = {
-  orderReference: 'test',
-  orders: [{ ...mockOrderData, shippingAddress: {}, billingAddress: {} }],
+  ...mockOrderData,
+  shippingAddress: {},
+  billingAddress: {},
 };
-
-class MockStorageService implements Partial<StorageService> {
-  get = vi.fn().mockReturnValue(of(mockSanitizedResponse));
-  set = vi.fn().mockReturnValue(of(undefined));
-}
 
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of('order/test'));
@@ -105,8 +104,8 @@ describe('DefaultCheckoutService', () => {
           useClass: DefaultCheckoutService,
         },
         {
-          provide: StorageService,
-          useClass: MockStorageService,
+          provide: OrderService,
+          useClass: MockOrderService,
         },
       ],
     });
@@ -171,26 +170,8 @@ describe('DefaultCheckoutService', () => {
     });
 
     it('should store the placed order', () => {
-      expect(injector.inject(StorageService).set).toHaveBeenCalledWith(
-        orderStorageKey,
-        mockSanitizedResponse,
-        StorageType.SESSION
-      );
-    });
-  });
-
-  describe('when getLastOrder is called', () => {
-    let result: CheckoutResponse | null;
-    beforeEach(async () => {
-      result = await firstValueFrom(service().getLastOrder());
-    });
-    it('should return previous order details', () => {
-      expect(result).toEqual(mockSanitizedResponse);
-    });
-    it('should call storage get', () => {
-      expect(injector.inject(StorageService).get).toHaveBeenCalledWith(
-        orderStorageKey,
-        StorageType.SESSION
+      expect(injector.inject(OrderService).storeLastOrder).toHaveBeenCalledWith(
+        mockOrderData
       );
     });
   });

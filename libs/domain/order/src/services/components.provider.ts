@@ -13,5 +13,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-order-confirmation-banner>`,
     },
+    ['oryx-order-summary']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-order-summary
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-order-summary>`,
+    },
   },
 };

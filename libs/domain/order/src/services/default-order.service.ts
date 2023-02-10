@@ -1,7 +1,8 @@
 import { IdentityService } from '@spryker-oryx/auth';
+import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { catchError, Observable, of, shareReplay, switchMap } from 'rxjs';
-import { OrderData } from '../models';
+import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
 
@@ -10,7 +11,8 @@ export class DefaultOrderService implements OrderService {
 
   constructor(
     protected adapter = inject(OrderAdapter),
-    protected identity = inject(IdentityService)
+    protected identity = inject(IdentityService),
+    protected storage = inject(StorageService)
   ) {}
 
   get(data: GetOrderDataProps): Observable<OrderData | null> {
@@ -26,5 +28,22 @@ export class DefaultOrderService implements OrderService {
       );
     }
     return this.orders$.get(id)!;
+  }
+
+  getLastOrder(): Observable<OrderData | null> {
+    return this.storage.get<OrderData>(orderStorageKey, StorageType.SESSION);
+  }
+
+  storeLastOrder(order: OrderData): void {
+    this.storage.set(
+      orderStorageKey,
+      {
+        ...order,
+        // For privacy reasons, we cannot store the address in session storage.
+        shippingAddress: {},
+        billingAddress: {},
+      },
+      StorageType.SESSION
+    );
   }
 }

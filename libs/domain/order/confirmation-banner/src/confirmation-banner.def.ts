@@ -6,4 +6,8 @@ export const orderConfirmationBannerComponent = componentDef({
     import('./confirmation-banner.component').then(
       (m) => m.OrderConfirmationBannerComponent
     ),
+  schema: () =>
+    import('./confirmation-banner.schema').then(
+      (m) => m.orderConfirmationBannerSchema
+    ),
 });

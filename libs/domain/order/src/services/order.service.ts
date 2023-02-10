@@ -4,6 +4,8 @@ import { GetOrderDataProps } from './adapter';
 
 export interface OrderService {
   get(data: GetOrderDataProps): Observable<OrderData | null>;
+  getLastOrder(): Observable<OrderData | null>;
+  storeLastOrder(order: OrderData): void;
 }
 
 export const OrderService = 'oryx.OrderService';

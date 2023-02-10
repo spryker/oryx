@@ -1,18 +1,12 @@
 import { IdentityService } from '@spryker-oryx/auth';
+import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { mockOrderData } from '@spryker-oryx/order/mocks';
+import { firstValueFrom, Observable, of } from 'rxjs';
+import { OrderData, orderStorageKey } from '../models';
 import { OrderAdapter } from './adapter';
 import { DefaultOrderService } from './default-order.service';
 import { OrderService } from './order.service';
-
-const mockOrderData = {
-  id: 'mockid',
-  items: [],
-  totals: [],
-  expenses: [],
-  currencyIsoCode: 'DE',
-  createdAt: 'mockdate',
-};
 
 class MockOrderAdapter implements Partial<OrderAdapter> {
   get = vi.fn().mockReturnValue(of(mockOrderData));
@@ -22,11 +16,23 @@ class MockIdentityService implements Partial<IdentityService> {
   get = vi.fn().mockReturnValue(of({}));
 }
 
+class MockStorageService implements Partial<StorageService> {
+  get = vi.fn().mockReturnValue(of(mockSanitizedResponse));
+  set = vi.fn().mockReturnValue(of(undefined));
+}
+
+const mockSanitizedResponse = {
+  ...mockOrderData,
+  shippingAddress: {},
+  billingAddress: {},
+};
+
 const mockGetOrderProps = { id: 'mockid' };
 
 describe('DefaultOrderService', () => {
   let service: OrderService;
   let adapter: MockOrderAdapter;
+  let storage: MockStorageService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -43,11 +49,18 @@ describe('DefaultOrderService', () => {
           provide: IdentityService,
           useClass: MockIdentityService,
         },
+        {
+          provide: StorageService,
+          useClass: MockStorageService,
+        },
       ],
     });
 
     service = testInjector.inject(OrderService);
     adapter = testInjector.inject(OrderAdapter) as MockOrderAdapter;
+    storage = testInjector.inject(
+      StorageService
+    ) as unknown as MockStorageService;
   });
 
   afterEach(() => {
@@ -78,6 +91,33 @@ describe('DefaultOrderService', () => {
         service.get(mockGetOrderProps).subscribe();
         expect(adapter.get).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('when getLastOrder is called', () => {
+    let result: OrderData | null;
+    beforeEach(async () => {
+      result = await firstValueFrom(service.getLastOrder());
+    });
+    it('should return previous order details', () => {
+      expect(result).toEqual(mockSanitizedResponse);
+    });
+    it('should call storage get', () => {
+      expect(storage.get).toHaveBeenCalledWith(
+        orderStorageKey,
+        StorageType.SESSION
+      );
+    });
+  });
+
+  describe('when storeLastOrder is called', () => {
+    it('should call storage', () => {
+      service.storeLastOrder(mockOrderData);
+      expect(storage.set).toHaveBeenCalledWith(
+        orderStorageKey,
+        mockSanitizedResponse,
+        StorageType.SESSION
+      );
     });
   });
 });
