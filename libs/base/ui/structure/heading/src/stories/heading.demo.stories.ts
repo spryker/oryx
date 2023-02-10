@@ -10,18 +10,18 @@ export default {
   },
   argTypes: {
     tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
     },
     maxLines: {
       control: { type: 'number' },
     },
     appearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
     },
     mdAppearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
     },
   },

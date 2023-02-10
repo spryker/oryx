@@ -16,6 +16,20 @@ export const Template: Story = (): TemplateResult => {
           return html`<oryx-heading maxLines=${line}> ${el} </oryx-heading>`;
         });
       })}
+      ${[3, 2, 1].map(
+        (line) => html`
+          <oryx-heading maxLines=${line}>
+            <span class="caption">${lengthyText}</span>
+          </oryx-heading>
+        `
+      )}
+      ${[3, 2, 1].map(
+        (line) => html`
+          <oryx-heading maxLines=${line}>
+            <b class="subtitle">${lengthyText}</b>
+          </oryx-heading>
+        `
+      )}
     </div>
 
     <h2>Appearance heading</h2>
@@ -56,6 +70,19 @@ export const Template: Story = (): TemplateResult => {
       <span class="colorful">Grumpy wizards</span> make toxic brew</${tag}>`);
       return html`<oryx-heading>${el}</oryx-heading>`;
     })}
+    <oryx-heading>
+      <span class="caption">
+        Grumpy wizards make toxic brew.
+        <span class="colorful">Grumpy wizards</span> make toxic brew
+      </span>
+    </oryx-heading>
+
+    <oryx-heading>
+      <span class="subtitle">
+        Grumpy wizards make toxic brew.
+        <span class="colorful">Grumpy wizards</span> make toxic brew
+      </span>
+    </oryx-heading>
 
     <h1>Shadow DOM</h1>
 
@@ -93,17 +120,19 @@ export const Template: Story = (): TemplateResult => {
 
     <h2>Line clamping</h2>
     <div class="clamped">
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'].map((tag) => {
-        return [3, 2, 1].map((line) => {
-          return html`<oryx-heading tag=${tag} maxLines=${line}
-            >${lengthyText}</oryx-heading
-          >`;
-        });
-      })}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'].map(
+        (tag) => {
+          return [3, 2, 1].map((line) => {
+            return html`<oryx-heading tag=${tag} maxLines=${line}
+              >${lengthyText}</oryx-heading
+            >`;
+          });
+        }
+      )}
     </div>
 
     <h2>Colorful</h2>
-    ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'].map(
+    ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'].map(
       (tag) => html` <oryx-heading tag=${tag}>
         Grumpy wizards make toxic brew.
         <span class="colorful">Grumpy wizards</span> make toxic brew

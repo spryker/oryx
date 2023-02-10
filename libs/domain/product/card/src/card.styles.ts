@@ -3,6 +3,8 @@ import { css } from 'lit';
 export const ProductCardStyles = css`
   :host {
     --max-lines: var(--effect, var(--oryx-product-title-max-lines));
+    --oryx-link-color: currentColor;
+    --oryx-link-color-hover: currentColor;
 
     flex: inherit;
     scroll-snap-align: inherit;
@@ -66,7 +68,7 @@ export const ProductCardStyles = css`
 
   oryx-product-title {
     display: block;
-    padding: 16px 16px 0;
+    padding: 16px 16px 5px;
     background-color: var(--oryx-color-canvas-100);
   }
 

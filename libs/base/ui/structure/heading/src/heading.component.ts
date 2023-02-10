@@ -42,6 +42,8 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
         return html`<h6>${template}</h6>`;
       case HeadingTag.Subtitle:
         return html`<b class="subtitle">${template}</b>`;
+      case HeadingTag.Caption:
+        return html`<span class="caption">${template}</span>`;
       default:
         return html`${template}`;
     }

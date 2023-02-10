@@ -6,7 +6,7 @@ export const linkStyles = css`
 
     display: inline-flex;
     align-items: center;
-    color: var(--oryx-color-primary-300);
+    color: var(--oryx-link-color, var(--oryx-color-primary-300));
   }
 
   oryx-icon,
@@ -38,7 +38,7 @@ export const linkStyles = css`
   }
 
   :host(:hover:not([disabled])) {
-    color: var(--oryx-color-primary-400);
+    color: var(--oryx-link-color-hover, var(--oryx-color-primary-400));
   }
 
   :host(:not([disabled])) ::slotted(a:active),

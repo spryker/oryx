@@ -16,19 +16,18 @@ const headingStyle = (
   weight = 600
 ): CSSResultGroup => {
   const selector = unsafe(tag);
+  const tokenPrefix = unsafe(`--oryx-typography-${tag.split('.').join('')}`);
+
   return css`
     :host(:not(:is([appearance], [md-appearance])))
       ${selector},
       :host(:not(:is([appearance], [md-appearance])))
       ::slotted(${selector}),
     :host([appearance='${selector}']) {
-      --_line-height: var(
-        --oryx-typography-${selector}-line,
-        ${unsafe(lineHeight)}
-      );
+      --_line-height: var(${tokenPrefix}-line, ${unsafe(lineHeight)});
 
-      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
-      font-weight: var(--oryx-typography-${selector}-weight, ${weight});
+      font-size: var(${tokenPrefix}-size, ${unsafe(size)});
+      font-weight: var(${tokenPrefix}-weight, ${weight});
     }
   `;
 };
@@ -40,16 +39,14 @@ const headingStyleForMedium = (
   weight = 600
 ): CSSResultGroup => {
   const selector = unsafe(tag);
+  const tokenPrefix = unsafe(`--oryx-typography-${tag.split('.').join('')}`);
   return css`
     ${headingStyle(tag, size, lineHeight, weight)}
     :host([md-appearance='${selector}']) {
-      --_line-height: var(
-        --oryx-typography-${selector}-line,
-        ${unsafe(lineHeight)}
-      );
+      --_line-height: var(${tokenPrefix}-line, ${unsafe(lineHeight)});
 
-      font-size: var(--oryx-typography-${selector}-size, ${unsafe(size)});
-      font-weight: var(--oryx-typography-${selector}-weight, ${weight});
+      font-size: var(${tokenPrefix}-size, ${unsafe(size)});
+      font-weight: var(${tokenPrefix}-weight, ${weight});
     }
   `;
 };
@@ -64,7 +61,7 @@ const headingStyleForMedium = (
 export const headlineStyles = css`
   :host,
   :not(slot, style),
-  ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
+  ::slotted(:is(h1, h2, h3, h4, h5, h6, .caption, .subtitle)) {
     margin-block: 0;
     line-height: var(--_line-height);
     max-height: calc(var(--_line-height) * var(--max-lines));
@@ -77,7 +74,8 @@ export const headlineStyles = css`
   }
 
   :host([appearance]) *,
-  :host([appearance]) ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle)) {
+  :host([appearance])
+    ::slotted(:is(h1, h2, h3, h4, h5, h6, .caption, .subtitle)) {
     font-size: inherit;
     line-height: inherit;
     font-weight: inherit;
@@ -96,12 +94,13 @@ export const headlineStyles = css`
   ${headingStyle('h5', `1em`, `1.571em`, 700)}
   ${headingStyle('h6', `0.857em`, `1.333em`)}
   ${headingStyle('.subtitle', `0.857em`, `1.333em`)}
+  ${headingStyle('.caption', `0.857em`, `1.333em`)}
 `;
 
 const mediumScreen = css`
   :host([md-appearance]) *:not(slot, style),
   :host([md-appearance])
-    ::slotted(:is(h1, h2, h3, h4, h5, h6, .subtitle, span)) {
+    ::slotted(:is(h1, h2, h3, h4, h5, h6, .caption, .subtitle, span)) {
     font-size: inherit;
     line-height: inherit;
     font-weight: inherit;
@@ -122,6 +121,7 @@ const mediumScreen = css`
   ${headingStyleForMedium('h5', `1.143em`, `1.5em`)}
   ${headingStyleForMedium('h6', `1.143em`, `1.5em`, 500)}
   ${headingStyleForMedium('.subtitle', `0.857em`, `1.333em`)}
+  ${headingStyleForMedium('.caption', `0.857em`, `1.333em`)}
 `;
 
 /**

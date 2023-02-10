@@ -6,6 +6,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   hydratable,
   observe,
@@ -113,7 +114,7 @@ export class ProductCardComponent extends ProductMixin(
   protected renderTitle(): TemplateResult | void {
     if (this.componentOptions?.enableTitle) {
       return html`<oryx-product-title
-        .options="${{ tag: 'h3', link: false }}"
+        .options="${{ tag: HeadingTag.Caption }}"
       ></oryx-product-title>`;
     }
   }
