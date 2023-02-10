@@ -20,5 +20,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-banner>`,
     },
+    ['oryx-content-video']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-content-video
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-content-video>`,
+    },
   },
 };

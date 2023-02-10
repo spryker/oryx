@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['cart-add']: {
+    ['oryx-cart-add']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<oryx-cart-add
           uid="${uid}"

@@ -223,7 +223,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
     }
 
     const item = this.shadowRoot?.querySelectorAll<HTMLElement>(
-      'section product-media'
+      'section oryx-product-media'
     )?.[this.active$.getValue()];
 
     if (behavior === ProductImagesScrollBehavior.Disable) {
