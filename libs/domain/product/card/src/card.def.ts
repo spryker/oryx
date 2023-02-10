@@ -10,5 +10,6 @@ declare global {
 export const productCardComponent = componentDef({
   name: 'oryx-product-card',
   impl: () => import('./card.component').then((m) => m.ProductCardComponent),
-  schema: () => import('./card.schema').then((m) => m.ProductComponentSchema),
+  schema: () =>
+    import('./card.schema').then((m) => m.productCardComponentSchema),
 });

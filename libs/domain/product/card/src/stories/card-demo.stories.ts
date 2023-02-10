@@ -2,7 +2,7 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { ComponentSchema } from '../card.model';
+import { ProductCardOptions } from '../card.model';
 
 export default {
   title: `${storybookPrefix}/Card`,
@@ -39,8 +39,8 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ComponentSchema> = (
-  props: ComponentSchema
+const Template: Story<ProductCardOptions> = (
+  props: ProductCardOptions
 ): TemplateResult => {
   const { sku, ...options } = props;
   return html`

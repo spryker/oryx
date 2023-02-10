@@ -1,68 +1,52 @@
-import { componentSchema } from '@spryker-oryx/experience';
+import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { ProductCardOptions } from './card.model';
+import { ProductCardComponent } from './card.component';
 
-@componentSchema({
-  name: 'Product card',
-  category: 'Commerce',
-  group: 'Product',
-})
-export class ProductComponentSchema implements ProductCardOptions {
-  @componentSchema({
-    label: 'SKU',
-    type: 'sku',
-    width: 100,
-  })
-  sku?: string;
-
-  @componentSchema({
-    label: 'Enable title',
-    type: FormFieldType.Boolean,
-  })
-  enableTitle?: boolean;
-
-  @componentSchema({
-    label: 'Title line clamp',
-    type: FormFieldType.Text,
-    attributes: {
-      type: 'number',
+export const productCardComponentSchema: ContentComponentSchema<ProductCardComponent> =
+  {
+    name: 'Product card',
+    category: 'Commerce',
+    group: 'Product',
+    options: {
+      sku: {
+        label: 'SKU',
+        type: 'sku',
+        width: 100,
+      },
+      enableTitle: {
+        label: 'Enable title',
+        type: FormFieldType.Boolean,
+      },
+      titleLineClamp: {
+        label: 'Title line clamp',
+        type: FormFieldType.Text,
+        attributes: {
+          type: 'number',
+        },
+      },
+      enableMedia: {
+        label: 'Enables media',
+        type: FormFieldType.Boolean,
+      },
+      enablePrice: {
+        label: 'Enables price',
+        type: FormFieldType.Boolean,
+      },
+      enableRating: {
+        label: 'Enables rating',
+        type: FormFieldType.Boolean,
+      },
+      enableLabels: {
+        label: 'Enables labels',
+        type: FormFieldType.Boolean,
+      },
+      enableWishlist: {
+        label: 'Enables wishlist',
+        type: FormFieldType.Boolean,
+      },
+      enableAddToCart: {
+        label: 'Enables add to cart',
+        type: FormFieldType.Boolean,
+      },
     },
-  })
-  titleLineClamp?: number;
-
-  @componentSchema({
-    label: 'Enables media',
-    type: FormFieldType.Boolean,
-  })
-  enableMedia?: boolean;
-
-  @componentSchema({
-    label: 'Enables price',
-    type: FormFieldType.Boolean,
-  })
-  enablePrice?: boolean;
-
-  @componentSchema({
-    label: 'Enables rating',
-    type: FormFieldType.Boolean,
-  })
-  enableRating?: boolean;
-
-  @componentSchema({
-    label: 'Enables labels',
-    type: FormFieldType.Boolean,
-  })
-  enableLabels?: boolean;
-
-  @componentSchema({
-    label: 'Enables wishlist',
-    type: FormFieldType.Boolean,
-  })
-  enableWishlist?: boolean;
-
-  @componentSchema({
-    label: 'Enables add to cart',
-    type: FormFieldType.Boolean,
-  })
-  enableAddToCart?: boolean;
-}
+  };

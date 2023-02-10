@@ -1,6 +1,6 @@
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';
@@ -8,10 +8,9 @@ import { BannerContent, BannerOptions } from './banner.model';
 import { styles } from './banner.styles';
 
 @hydratable('click')
-export class BannerComponent extends ComponentMixin<
-  BannerOptions,
-  BannerContent
->() {
+export class BannerComponent extends ContentMixin<BannerOptions, BannerContent>(
+  LitElement
+) {
   static styles = styles;
 
   protected contentController = new ContentController(this);

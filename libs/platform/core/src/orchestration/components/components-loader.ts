@@ -1,5 +1,4 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { Type } from '@spryker-oryx/di';
 import { isDefined } from '@spryker-oryx/utilities';
 import { ThemeData, ThemePlugin, ThemeStylesheets } from '../theme';
 import {
@@ -8,7 +7,6 @@ import {
   ComponentInfo,
   ComponentsOptions,
   ComponentStatic,
-  ComponentStaticSchema,
   ComponentType,
   ObservableType,
 } from './components.model';
@@ -23,12 +21,6 @@ interface ComponentMap {
   componentType: ComponentType & ComponentStatic;
   themes?: (ThemeData | ThemeStylesheets)[] | null;
 }
-
-export interface ComponentSchemaData {
-  schema: ((Type<unknown> & ComponentStaticSchema) | Record<string, any>)[];
-  type: string;
-}
-
 export class ComponentsLoader {
   protected readonly componentDefMap = new Map<string, ComponentDef>();
   protected readonly implMetaPreload: ComponentImplMeta = {};
@@ -187,19 +179,19 @@ export class ComponentsLoader {
     return this.componentMap.get(tag)?.componentType;
   }
 
-  async getComponentSchemas(): Promise<ComponentSchemaData[]> {
+  async getComponentSchemas(): Promise<Record<string, any>[]> {
     const schemas = await Promise.all(
       [...(this.componentDefMap.values() ?? [])].map((component) =>
         resolveLazyLoadable(component.schema)
-      ) as ComponentSchemaData['schema'][]
+      )
     );
 
     return [...(this.componentDefMap.values() ?? [])].reduce(
       (data, component, index) =>
         schemas[index]
-          ? [...data, { schema: schemas[index], type: component.name }]
+          ? [...data, { ...schemas[index], type: component.name }]
           : data,
-      [] as ComponentSchemaData[]
+      [] as Record<string, any>[]
     );
   }
 }

@@ -2,17 +2,13 @@
 import {
   AppRef,
   ComponentsPlugin,
-  ComponentStaticSchema,
   FeatureOptionsService,
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
-import {
-  ComponentSchema,
-  componentSchemaKey,
-  optionsKey,
-} from '../../../decorators';
+import { optionsKey } from '../../../decorators';
+import { ContentComponentSchema } from '../../../models';
 import { catchMessage, postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -38,14 +34,7 @@ export class DefaultExperienceDataClientService
     tap((schemas) => {
       postMessage({
         type: MessageType.Schemas,
-        data: schemas.map(
-          ({ schema, type }) =>
-            ({
-              type,
-              ...((schema as ComponentStaticSchema)[componentSchemaKey] ??
-                (schema as unknown as Partial<ComponentSchema>)),
-            } as ComponentSchema)
-        ),
+        data: schemas as ContentComponentSchema[],
       });
     })
   );

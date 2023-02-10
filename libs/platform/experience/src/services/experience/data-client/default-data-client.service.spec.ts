@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { componentSchemaKey, optionsKey } from '../../../decorators';
+import { optionsKey } from '../../../decorators';
 import { postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -187,16 +187,7 @@ describe('ExperienceDataClientService', () => {
       const mockSchemaB = { b: 'b' };
       const app = getService<MockApp>(AppRef);
       mockAppFn.getComponentSchemas.mockReturnValue(
-        of([
-          {
-            schema: { [componentSchemaKey]: mockSchemaA },
-            type: 'a',
-          },
-          {
-            schema: { [componentSchemaKey]: mockSchemaB },
-            type: 'b',
-          },
-        ])
+        of([mockSchemaA, mockSchemaB])
       );
       getInjector()
         .inject(ExperienceDataClientService)
@@ -206,10 +197,7 @@ describe('ExperienceDataClientService', () => {
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Schemas,
-          data: [
-            { ...mockSchemaA, type: 'a' },
-            { ...mockSchemaB, type: 'b' },
-          ],
+          data: [mockSchemaA, mockSchemaB],
         },
         '*'
       );

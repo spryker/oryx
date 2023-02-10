@@ -1,5 +1,5 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
-import { ComponentSchema } from '../../../decorators';
+import { ContentComponentSchema } from '../../../models';
 
 export const enum MessageType {
   Graphics = 'oryx.graphics',
@@ -28,7 +28,7 @@ export type ExperienceMessageData<T> = {
     : T extends MessageType.Query | MessageType.ComponentType
     ? string
     : T extends MessageType.Schemas
-    ? ComponentSchema[] | undefined
+    ? ContentComponentSchema[] | undefined
     : never;
   [key: string]: any;
 };

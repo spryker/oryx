@@ -22,8 +22,8 @@ export const enum FormFieldType {
   Color = 'color',
 }
 
-export interface FormFieldDefinition {
-  id: string;
+export interface FormFieldDefinition<K = string> {
+  id: K;
   type?: FormFieldType | string;
   title?: string;
   label?: string;
