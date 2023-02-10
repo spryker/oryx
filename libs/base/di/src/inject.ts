@@ -1,5 +1,5 @@
 import { Injector } from './injector';
-import { Type } from './type';
+import { Type } from './models/type';
 
 let _currentInjector: undefined | Injector;
 

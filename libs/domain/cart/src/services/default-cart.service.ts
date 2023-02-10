@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpErrorResponse } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { inject, OnDestroy } from '@spryker-oryx/di';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -28,7 +28,7 @@ import {
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService, STATE } from './cart.service';
 
-export class DefaultCartService implements CartService {
+export class DefaultCartService implements CartService, OnDestroy {
   protected loading$ = new BehaviorSubject(false);
   protected carts = new Map<string, STATE>();
   protected subscription = new Subscription();

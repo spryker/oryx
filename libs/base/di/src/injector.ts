@@ -4,7 +4,7 @@ import {
   FactoryProvider,
   Provider,
   ValueProvider,
-} from './provider';
+} from './models/provider';
 
 export const INJECTOR = 'FES.Injector';
 

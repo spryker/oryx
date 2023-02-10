@@ -1,5 +1,5 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import { inject } from '@spryker-oryx/di';
+import { inject, OnDestroy } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   filter,
@@ -19,7 +19,7 @@ import { Address } from '../models';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
 
-export class DefaultAddressService implements AddressService {
+export class DefaultAddressService implements AddressService, OnDestroy {
   protected addressesState$ = new BehaviorSubject<Address[] | null>(null);
   protected reloadAddress$ = new Subject();
   protected resetSubscription?: Subscription;

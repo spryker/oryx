@@ -1,6 +1,6 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { inject, OnDestroy } from '@spryker-oryx/di';
 import { BehaviorSubject, Observable, skip, Subscription, tap } from 'rxjs';
 import {
   Address,
@@ -15,7 +15,9 @@ import {
 } from '../models';
 import { CheckoutDataService } from './checkout-data.service';
 
-export class DefaultCheckoutDataService implements CheckoutDataService {
+export class DefaultCheckoutDataService
+  implements CheckoutDataService, OnDestroy
+{
   protected isGuestCheckout$ = new BehaviorSubject<boolean>(false);
   protected contactDetails$ = new BehaviorSubject<ContactDetails | null>(null);
   protected addressDetails$ = new BehaviorSubject<Address | null>(null);

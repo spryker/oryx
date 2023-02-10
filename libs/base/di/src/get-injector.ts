@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Injector } from './injector';
-import { Provider } from './provider';
+import { Provider } from './models/provider';
 
 export const enum InjectorContextKey {
   App,

@@ -1,8 +1,8 @@
-import { inject } from '@spryker-oryx/di';
+import { inject, OnDestroy } from '@spryker-oryx/di';
 import { ErrorHandler } from './error-handler';
 import { ErrorService } from './error.service';
 
-export class DefaultErrorService implements ErrorService {
+export class DefaultErrorService implements ErrorService, OnDestroy {
   constructor(
     protected element: EventTarget = window,
     protected handler = inject(ErrorHandler, null)

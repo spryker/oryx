@@ -1,5 +1,6 @@
 import { inject } from './inject';
 import { INJECTOR, Injector } from './injector';
+import { OnDestroy } from './models/on-destroy';
 
 const mockDestroy = vi.fn();
 
@@ -7,8 +8,10 @@ class MockImplementation {
   dependency = inject('dependency');
 }
 class DependencyImplementation {}
-class ServiceWithDestroy {
-  onDestroy = mockDestroy;
+class ServiceWithDestroy implements OnDestroy {
+  onDestroy() {
+    mockDestroy();
+  }
 }
 class MockMultiA {}
 class MockMultiB {}
