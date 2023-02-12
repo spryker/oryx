@@ -18,11 +18,6 @@ export const styles = css`
     margin: 40px 0 16px;
   }
 
-  oryx-image {
-    width: 86px;
-    height: 76px;
-  }
-
   h1 {
     font-size: 26px;
     line-height: 38px;

@@ -13,12 +13,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-content-link>`,
     },
-    ['oryx-banner']: {
+    ['oryx-content-banner']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-banner
+        html`<oryx-content-banner
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></oryx-banner>`,
+        ></oryx-content-banner>`,
     },
     ['oryx-content-video']: {
       template: (uid: string, layoutClasses?: string) =>

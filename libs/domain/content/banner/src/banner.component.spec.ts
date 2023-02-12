@@ -33,10 +33,10 @@ describe('Banner', () => {
     });
 
     element = await fixture(
-      html`<oryx-banner
+      html`<oryx-content-banner
         .content=${{ title: 'test', content: 'test' }}
         .options=${{ alt: 'test' }}
-      ></oryx-banner>`
+      ></oryx-content-banner>`
     );
   });
 

@@ -19,6 +19,7 @@ export const navigationStyles = css`
   }
 
   oryx-image[resource='logo'] {
+    display: block;
     fill: var(--oryx-color-ink);
     margin: 15px;
     width: 120px;

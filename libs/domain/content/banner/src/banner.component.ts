@@ -1,12 +1,18 @@
-import { ContentController, ContentMixin } from '@spryker-oryx/experience';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
+import {
+  ContentController,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
+import { asyncValue, hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { BannerContent, BannerOptions } from './banner.model';
 import { styles } from './banner.styles';
 
+@defaultOptions({})
+@ssrShim('style')
 @hydratable('click')
 export class BannerComponent extends ContentMixin<BannerOptions, BannerContent>(
   LitElement
@@ -20,7 +26,12 @@ export class BannerComponent extends ContentMixin<BannerOptions, BannerContent>(
       graphic: content?.graphic?.trim(),
     }))
   );
-  protected options$ = this.contentController.getOptions();
+
+  protected options$ = this.contentController.getOptions().pipe(
+    tap((options) => {
+      this.style.setProperty('--image-fit', options.objectFit ?? '');
+    })
+  );
 
   protected data$ = combineLatest([this.content$, this.options$]);
 
