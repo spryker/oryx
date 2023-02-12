@@ -43,5 +43,9 @@ export const bannerComponentSchema: ContentComponentSchema<BannerComponent> = {
       label: 'Alt Text',
       type: FormFieldType.Text,
     },
+    objectFit: {
+      type: FormFieldType.Select,
+      options: [{ value: 'none' }, { value: 'contain' }, { value: 'cover' }],
+    },
   },
 };
