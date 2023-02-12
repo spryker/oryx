@@ -22,7 +22,10 @@ const Template: Story<BannerOptions & BannerContent> = (
     alt: props.alt,
   };
   return html`
-    <oryx-banner .content=${content} .options=${options}></oryx-banner>
+    <oryx-content-banner
+      .content=${content}
+      .options=${options}
+    ></oryx-content-banner>
   `;
 };
 

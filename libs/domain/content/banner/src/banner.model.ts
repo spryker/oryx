@@ -3,6 +3,7 @@ export interface BannerOptions {
   linkLabel?: string;
   urlTarget?: string;
   alt?: string;
+  objectFit?: 'none' | 'contain' | 'cover';
 }
 
 export interface BannerContent {
