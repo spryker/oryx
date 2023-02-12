@@ -1,7 +1,7 @@
-import { ContentController } from '@spryker-oryx/experience';
-import { Address, AddressComponentMixin } from '@spryker-oryx/user';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { Address, AddressMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest } from 'rxjs';
 import {
   AddressOptions,
@@ -15,7 +15,9 @@ import {
 import { styles } from './address.styles';
 
 @hydratable('mouseover')
-export class AddressComponent extends AddressComponentMixin<AddressOptions>() {
+export class AddressComponent extends AddressMixin(
+  ContentMixin<AddressOptions>(LitElement)
+) {
   static styles = styles;
 
   protected addressData$ = combineLatest([

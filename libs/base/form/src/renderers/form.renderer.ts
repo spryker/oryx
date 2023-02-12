@@ -1,7 +1,7 @@
 import { TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { ClassMapDirective } from 'lit/directives/class-map.js';
-import { FormFieldDefinition } from '../models';
+import { FormFieldDefinition, FormValues } from '../models';
 
 export interface FormRenderer {
   formatFormData(form: HTMLFormElement): unknown;
@@ -19,7 +19,7 @@ export interface FormRenderer {
    */
   buildForm(
     data: FormFieldDefinition[],
-    values?: Record<string, string | boolean>,
+    values?: FormValues,
     keyFn?: (field: FormFieldDefinition) => string
   ): TemplateResult;
 

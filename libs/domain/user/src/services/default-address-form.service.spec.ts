@@ -1,7 +1,7 @@
 import { ErrorService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { AddressForm } from '@spryker-oryx/user/address-form';
 import { of } from 'rxjs';
-import { AddressForm } from '../../address-form';
 import { AddressFormAdapter } from './adapter';
 import { AddressFormService } from './address-form.service';
 import { DefaultAddressFormService } from './default-address-form.service';

@@ -1,5 +1,5 @@
+import { AddressForm } from '@spryker-oryx/user/address-form';
 import { Observable } from 'rxjs';
-import { AddressForm } from '../../address-form';
 import { AddressFormQualifier } from '../models';
 
 export interface AddressFormService {

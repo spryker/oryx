@@ -190,13 +190,6 @@ export class MockAddressFormService implements Partial<AddressFormService> {
             required: true,
           },
           {
-            id: 'email',
-            label: 'Email',
-            width: 100,
-            type: 'email',
-            required: true,
-          },
-          {
             id: 'phone',
             label: 'Phone',
             width: 100,

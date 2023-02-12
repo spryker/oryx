@@ -36,9 +36,15 @@ export const styles = css`
     justify-content: flex-end;
   }
 
+  slot:not([name]) {
+    display: flex;
+    flex: 1 0;
+  }
+
   oryx-card::part(body) {
     overflow: auto;
     display: flex;
+    flex-direction: column;
   }
 
   oryx-heading {

@@ -17,6 +17,10 @@ class MockForm extends LitElement {
     return this.renderRoot.querySelector('form') as HTMLFormElement;
   }
 
+  submit(): void {
+    return;
+  }
+
   render(): TemplateResult {
     return html`
       <form>

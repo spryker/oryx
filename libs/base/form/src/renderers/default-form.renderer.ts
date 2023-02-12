@@ -5,7 +5,7 @@ import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { FormFieldDefinition, FormFieldType } from '../models';
+import { FormFieldDefinition, FormFieldType, FormValues } from '../models';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
@@ -47,7 +47,7 @@ export class DefaultFormRenderer implements FormRenderer {
 
   buildForm(
     data: FormFieldDefinition[],
-    values?: Record<string, string | boolean>,
+    values?: FormValues,
     keyFn: (field: FormFieldDefinition) => string = (
       field: FormFieldDefinition
     ): string => field.id
@@ -258,11 +258,15 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
+    //oryx.close event that is dispatched by oryx-popover inside
+    //is bubbling up and can affect other parent component
+    //need to prevent propagation of it
     return html`
       <oryx-select
         .label=${field.label}
         class=${this.getClassMap(field)}
         floatLabel=${ifDefined(field.floatLabel)}
+        @oryx.close=${(e: Event): void => e.stopPropagation()}
       >
         <select
           .name=${field.id}

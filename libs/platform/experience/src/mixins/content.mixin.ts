@@ -2,6 +2,7 @@ import { Type } from '@spryker-oryx/di';
 import { asyncState, valueType } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
+import { Observable } from 'rxjs';
 import { ContentComponentProperties, ContentController } from '../index';
 
 export declare class ContentMixinInterface<OptionsType, ContentType>
@@ -13,8 +14,12 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   protected contentController: ContentController<ContentType, OptionsType>;
 
   protected data: { options: OptionsType; content: ContentType };
-  protected componentOptions?: OptionsType;
-  protected componentContent?: ContentType;
+
+  protected options$: Observable<OptionsType>;
+  protected content$: Observable<ContentType>;
+
+  protected componentOptions: OptionsType;
+  protected componentContent: ContentType;
 }
 
 export const ContentMixin = <
@@ -35,11 +40,15 @@ export const ContentMixin = <
 
     protected contentController = new ContentController(this);
 
-    @asyncState()
-    protected componentOptions = valueType(this.contentController.getOptions());
+    protected options$ = this.contentController.getOptions();
 
     @asyncState()
-    protected componentContent = valueType(this.contentController.getContent());
+    protected componentOptions = valueType(this.options$);
+
+    protected content$ = this.contentController.getContent();
+
+    @asyncState()
+    protected componentContent = valueType(this.content$);
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>

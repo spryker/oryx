@@ -1,7 +1,7 @@
-import { ContentController } from '@spryker-oryx/experience';
-import { Address, AddressComponentMixin } from '@spryker-oryx/user';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { Address, AddressMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest } from 'rxjs';
 import {
@@ -15,7 +15,7 @@ import { styles } from './address-list-item.styles';
 
 @hydratable('window:load')
 export class AddressListItemComponent
-  extends AddressComponentMixin<AddressListItemOptions>()
+  extends AddressMixin(ContentMixin<AddressListItemOptions>(LitElement))
   implements AddressListItemAttributes
 {
   static styles = styles;

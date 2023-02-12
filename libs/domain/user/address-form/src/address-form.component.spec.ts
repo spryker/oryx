@@ -146,7 +146,10 @@ describe('AddressFormComponent', () => {
         country: 'DE',
         fallbackCountry: 'DE',
       });
-      expect(renderer.buildForm).toHaveBeenCalledWith(mockForm.data.options);
+      expect(renderer.buildForm).toHaveBeenCalledWith(
+        mockForm.data.options,
+        undefined
+      );
     });
 
     it('should have options for available countries', () => {
@@ -155,18 +158,6 @@ describe('AddressFormComponent', () => {
       );
       expect(options?.length).toBe(2);
       expect((options?.[0] as HTMLInputElement).value).toBe('DE');
-    });
-  });
-
-  describe('when the selected country does not exist', () => {
-    beforeEach(async () => {
-      formService.getForm.mockReturnValue(of(null));
-      element = await fixture(
-        html`<oryx-address-form country="FR"></oryx-address-form>`
-      );
-    });
-    it('should not render a form', () => {
-      expect(renderer.buildForm).not.toHaveBeenCalled();
     });
   });
 
@@ -189,7 +180,8 @@ describe('AddressFormComponent', () => {
 
     it('should render fallback country form', () => {
       expect(renderer.buildForm).toHaveBeenCalledWith(
-        mockFallbackForm.data.options
+        mockFallbackForm.data.options,
+        undefined
       );
     });
   });

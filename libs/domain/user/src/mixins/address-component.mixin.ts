@@ -1,9 +1,5 @@
 import { resolve, Type } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
-import { observe } from '@spryker-oryx/utilities';
+import { asyncState, observe, valueType } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
@@ -18,28 +14,32 @@ import {
 import type { Address, AddressComponentProperties } from '../models';
 import { AddressService } from '../services';
 
-export declare class AddressComponentMixinInterface extends LitElement {
+export declare class AddressMixinInterface
+  implements AddressComponentProperties
+{
+  protected addressService: AddressService;
+  addressId?: string;
   protected addressId$: Observable<string>;
+  address?: Address;
   protected address$: Observable<Address>;
   protected addressProp$: Observable<Address>;
+  protected addressValue: Observable<Address>;
 }
 
-export const AddressComponentMixin = <T>(): Type<
-  AddressComponentMixinInterface &
-    ContentComponentProperties<T> &
-    AddressComponentProperties
-> => {
-  class AddressComponent
-    extends ComponentMixin<T>()
-    implements AddressComponentProperties
-  {
+export const AddressMixin = <
+  T extends Type<LitElement & AddressComponentProperties>
+>(
+  superClass: T
+): Type<AddressMixinInterface> & T => {
+  class AddressMixinClass extends superClass {
     protected addressService = resolve(AddressService);
 
     @property() addressId?: string;
-    @property({ type: Object }) address?: Address;
 
     @observe()
     protected addressId$ = new BehaviorSubject(this.addressId);
+
+    @property({ type: Object }) address?: Address;
 
     @observe('address')
     protected addressProp$ = new BehaviorSubject(this.address);
@@ -55,10 +55,10 @@ export const AddressComponentMixin = <T>(): Type<
           : this.addressService.getAddress(addressId!)
       )
     );
+
+    @asyncState()
+    protected addressValue = valueType(this.address$);
   }
-  return AddressComponent as unknown as Type<
-    AddressComponentMixinInterface &
-      ContentComponentProperties<T> &
-      AddressComponentProperties
-  >;
+
+  return AddressMixinClass as unknown as Type<AddressMixinInterface> & T;
 };

@@ -2,9 +2,14 @@ import { resolve } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/ui';
 import { Address, AddressService } from '@spryker-oryx/user';
 import { AddressBookState } from '@spryker-oryx/user/address-book';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Subject, tap } from 'rxjs';
 import { AddressModalConfig } from './manage-address.model';
 import { styles } from './manage-address.styles';
 
@@ -26,17 +31,17 @@ export class ManageAddressComponent extends LitElement {
 
   protected addressService = resolve(AddressService);
 
-  protected state$ = new BehaviorSubject(AddressBookState.List);
-  protected open$ = new BehaviorSubject(false);
-  protected selectedAddressId$ = new Subject<string | null>();
+  protected addressBookState$ = new BehaviorSubject(AddressBookState.List);
+  @asyncState()
+  protected addressBookState = valueType(this.addressBookState$);
 
-  protected modalData$ = combineLatest([this.state$, this.open$]).pipe(
-    map(([state, open]) => ({
-      state,
-      open,
-      ...this.config[state],
-    }))
-  );
+  protected open$ = new BehaviorSubject(false);
+  @asyncState()
+  protected open = valueType(this.open$);
+
+  protected selectedAddressId$ = new Subject<string | null>();
+  @asyncState()
+  protected selectedAddressId = valueType(this.selectedAddressId$);
 
   protected onRemove(address: Address): void {
     this.selectedAddressId$.next(address.id ?? null);
@@ -54,20 +59,31 @@ export class ManageAddressComponent extends LitElement {
       .subscribe();
   }
 
-  protected onClose(): void {
-    this.state$.next(AddressBookState.List);
-    this.open$.next(false);
+  protected goToList(): void {
+    this.addressBookState$.next(AddressBookState.List);
+    this.selectedAddressId$.next(null);
   }
 
   protected onStateChange(e: CustomEvent): void {
-    this.state$.next(e.detail.state);
+    this.addressBookState$.next(e.detail.state);
   }
 
   protected showModal(): void {
     this.open$.next(true);
   }
 
+  protected onModalClose(): void {
+    this.goToList();
+    this.open$.next(false);
+  }
+
   protected override render(): TemplateResult {
+    if (!this.addressBookState) {
+      return html``;
+    }
+
+    const { heading } = this.config[this.addressBookState];
+
     return html`
       <oryx-button type="text" size=${Size.small}>
         <button @click=${(): void => this.showModal()}>
@@ -75,46 +91,40 @@ export class ManageAddressComponent extends LitElement {
         </button>
       </oryx-button>
 
-      ${asyncValue(
-        this.modalData$,
-        ({ state, open, heading }) => html` <oryx-modal
-          ?open=${open}
+      <oryx-modal
+        ?open=${this.open}
+        preventCloseByEscape
+        preventCloseByBackdrop
+        enableCloseButtonInHeader
+        ?enableNavigateBack=${this.addressBookState !== AddressBookState.List}
+        @oryx.close=${this.onModalClose}
+        @oryx.back=${this.goToList}
+        heading=${heading}
+      >
+        <oryx-user-address-book
+          active-state=${this.addressBookState}
+          @oryx.change-state=${(e: CustomEvent): void => this.onStateChange(e)}
+          @oryx.remove=${(e: CustomEvent): void =>
+            this.onRemove(e.detail.address)}
+          @oryx.success=${this.goToList}
+          @oryx.cancel=${this.goToList}
+        ></oryx-user-address-book>
+
+        <oryx-modal
+          ?open=${!!this.selectedAddressId}
           preventCloseByEscape
           preventCloseByBackdrop
-          enableCloseButtonInHeader
-          @oryx.close=${(): void => this.onClose()}
-          heading=${heading}
+          @oryx.close=${(e: CustomEvent): void => this.onCancelRemove(e)}
+          heading=${i18n('checkout.address.remove-address')}
         >
-          <oryx-user-address-book
-            active-state=${state}
-            @oryx.change-state=${(e: CustomEvent): void =>
-              this.onStateChange(e)}
-            @oryx.remove=${(e: CustomEvent): void =>
-              this.onRemove(e.detail.address)}
-          ></oryx-user-address-book>
-
-          ${asyncValue(
-            this.selectedAddressId$,
-            (addressId) => html`
-              <oryx-modal
-                ?open=${!!addressId}
-                preventCloseByEscape
-                preventCloseByBackdrop
-                @oryx.close=${(e: CustomEvent): void => this.onCancelRemove(e)}
-                heading=${i18n('checkout.address.remove-address')}
-              >
-                <oryx-user-address-remove
-                  .addressId=${addressId}
-                  @oryx.cancel=${(e: CustomEvent): void =>
-                    this.onCancelRemove(e)}
-                  @oryx.confirm=${(e: CustomEvent): void =>
-                    this.onConfirmRemove(e.detail.address)}
-                ></oryx-user-address-remove>
-              </oryx-modal>
-            `
-          )}
-        </oryx-modal>`
-      )}
+          <oryx-user-address-remove
+            .addressId=${this.selectedAddressId}
+            @oryx.cancel=${(e: CustomEvent): void => this.onCancelRemove(e)}
+            @oryx.confirm=${(e: CustomEvent): void =>
+              this.onConfirmRemove(e.detail.address)}
+          ></oryx-user-address-remove>
+        </oryx-modal>
+      </oryx-modal>
     `;
   }
 }
