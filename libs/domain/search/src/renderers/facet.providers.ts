@@ -33,6 +33,7 @@ export const facetProviders = [
               .name=${facet.name}
               .renderLimit=${options.renderLimit}
               .open=${options.open}
+              .enableClearAction="${options.enableClearAction}"
               .multi=${facet.multiValued}
             >
             </oryx-search-facet>

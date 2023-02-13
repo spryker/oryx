@@ -146,6 +146,7 @@ class MockRouterService implements Partial<RouterService> {
   currentQuery = vi.fn().mockReturnValue(of({}));
   currentRoute = vi.fn().mockReturnValue(of({}));
   getUrl = vi.fn().mockReturnValue(of(''));
+  getPathId = vi.fn().mockReturnValue('');
 }
 
 describe('SearchFacetNavigationComponent', () => {

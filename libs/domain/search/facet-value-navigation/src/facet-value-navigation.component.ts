@@ -22,6 +22,7 @@ export class SearchFacetValueNavigationComponent
   @property({ type: Boolean }) enableToggle?: boolean;
   @property({ type: Boolean }) enableSearch?: boolean;
   @property({ type: Boolean }) open?: boolean;
+  @property({ type: Boolean }) enableClearAction?: boolean;
 
   @state() protected _isShowed = false;
 
@@ -58,7 +59,7 @@ export class SearchFacetValueNavigationComponent
         </slot>
 
         ${when(
-          this.selectedLength,
+          this.enableClearAction && this.selectedLength,
           () =>
             html`
               <oryx-button type="text" size="small">

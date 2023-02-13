@@ -25,6 +25,7 @@ describe('SearchFacetValueNavigationComponent', () => {
         .heading=${mockHeading}
         .valuesLength=${mockValuesLength}
         .selectedLength=${mockSelectedLength}
+        ?enableClearAction=${true}
         ?enableToggle=${true}
         ?enableSearch=${true}
         ?open=${true}
@@ -104,7 +105,7 @@ describe('SearchFacetValueNavigationComponent', () => {
       vi.clearAllMocks();
     });
 
-    describe('clear', () => {
+    describe('when clear action is enabled', () => {
       it('should emit oryx.clear event on button click', () => {
         document.addEventListener(FACET_CLEAR_EVENT, callback);
 
@@ -114,6 +115,30 @@ describe('SearchFacetValueNavigationComponent', () => {
 
         button.click();
         expect(callback).toHaveBeenCalled();
+      });
+    });
+
+    describe('when clear action is disabled', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            .heading=${mockHeading}
+            .valuesLength=${mockValuesLength}
+            .selectedLength=${mockSelectedLength}
+            ?enableClearAction=${false}
+            ?enableToggle=${true}
+            ?enableSearch=${true}
+            ?open=${true}
+          ></oryx-search-facet-value-navigation>`
+        );
+      });
+
+      it('сlear button should not exist', () => {
+        const button = element.renderRoot.querySelector(
+          '.header button'
+        ) as HTMLButtonElement;
+
+        expect(button).toBeNull();
       });
     });
 

@@ -48,4 +48,11 @@ export interface FacetComponentAttributes {
    * @default false
    */
   open?: boolean;
+
+  /**
+   * Show or hide clear action.
+   *
+   * @default false
+   */
+  enableClearAction?: boolean;
 }

@@ -102,6 +102,10 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
           renderLimit: options.valueRenderLimit!,
           open: index < (options.expandedItemsCount ?? 0),
           minForSearch: options.minForSearch!,
+          enableClearAction: !(
+            this.routerService.getPathId('category') &&
+            facet.parameter === 'category'
+          ),
         },
         this.applyFilters.bind(this)
       );

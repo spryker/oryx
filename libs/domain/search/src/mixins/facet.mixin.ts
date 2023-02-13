@@ -25,22 +25,41 @@ export const FacetComponentMixin = (): Type<
     @property({ type: Boolean }) multi = false;
     @property({ type: Number }) renderLimit = 5;
     @property({ type: Number }) minForSearch = 13;
+    @property({ type: Boolean }) enableClearAction = true;
 
-    @observe(['name', 'open', 'multi', 'renderLimit', 'minForSearch'])
+    @observe([
+      'name',
+      'open',
+      'multi',
+      'renderLimit',
+      'minForSearch',
+      'enableClearAction',
+    ])
     protected props$ = new BehaviorSubject([
       this.name,
       this.open,
       this.multi,
       this.renderLimit,
       this.minForSearch,
+      this.enableClearAction,
     ] as const).pipe(
-      map(([name, open, multi, renderLimit, minForSearch]) => ({
-        name,
-        open,
-        multi,
-        renderLimit,
-        minForSearch,
-      }))
+      map(
+        ([
+          name,
+          open,
+          multi,
+          renderLimit,
+          minForSearch,
+          enableClearAction,
+        ]) => ({
+          name,
+          open,
+          multi,
+          renderLimit,
+          minForSearch,
+          enableClearAction,
+        })
+      )
     );
 
     facet$ = combineLatest([this.controller.getFacet(), this.props$]);
