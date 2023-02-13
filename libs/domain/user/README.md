@@ -1,7 +1,7 @@
-# Oryx Form package
+# Oryx User package
 
-Provides dynamic form rendering to Oryx applications. This allows to render forms by a definition rather than coding a form and it's inputs.
+Provides features to manage the user profile to Oryx applications.
 
 ## Installation
 
-`npm install @spryker-oryx/form`
+`npm install @spryker-oryx/user`
