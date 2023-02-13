@@ -16,23 +16,23 @@ export class MockAddressFormService implements Partial<AddressFormService> {
             width: 100,
             options: [
               {
-                value: 'mr',
+                value: 'Mr',
                 text: 'Mr',
               },
               {
-                value: 'mrs',
+                value: 'Mrs',
                 text: 'Mrs',
               },
               {
-                value: 'miss',
+                value: 'Miss',
                 text: 'Miss',
               },
               {
-                value: 'ms',
+                value: 'Ms',
                 text: 'Ms',
               },
               {
-                value: 'dr',
+                value: 'Dr',
                 text: 'Dr',
               },
             ],
@@ -97,7 +97,7 @@ export class MockAddressFormService implements Partial<AddressFormService> {
             ],
           },
           {
-            id: 'zipcode',
+            id: 'zipCode',
             label: 'ZIP code',
             type: 'input',
             required: true,
@@ -131,15 +131,15 @@ export class MockAddressFormService implements Partial<AddressFormService> {
             width: 100,
             options: [
               {
-                value: 'mr',
+                value: 'Mr',
                 text: 'Mr',
               },
               {
-                value: 'ms',
+                value: 'Ms',
                 text: 'Ms',
               },
               {
-                value: 'dr',
+                value: 'Dr',
                 text: 'Dr',
               },
             ],
@@ -178,7 +178,7 @@ export class MockAddressFormService implements Partial<AddressFormService> {
             required: true,
           },
           {
-            id: 'zipcode',
+            id: 'zipCode',
             label: 'PLZ',
             type: 'input',
             required: true,

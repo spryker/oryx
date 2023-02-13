@@ -136,7 +136,7 @@ export class AddressFormComponent
 
   protected mergeFields(): FormFieldDefinition[] {
     return [
-      ...(this.form ?? []),
+      ...this.form!,
       ...(this.enableDefaultShipping
         ? [this.processDefaultField(defaultShippingField)]
         : []),
@@ -155,6 +155,7 @@ export class AddressFormComponent
 
     const activeCountry = this.activeCountry ?? '';
     const form = this.mergeFields();
+    const selectedCountry = this.formValues?.iso2Code ?? activeCountry;
 
     return html`<form>
       ${when(
@@ -167,14 +168,14 @@ export class AddressFormComponent
           <select
             ${ref(this.selectRef)}
             name="iso2Code"
-            .value=${activeCountry}
+            .value=${selectedCountry}
             required
             @change=${this.onCountryChange}
           >
             ${countries.map((country) => {
               return html`<option
                 value=${country.iso2Code}
-                ?selected=${country.iso2Code === activeCountry}
+                ?selected=${country.iso2Code === selectedCountry}
               >
                 ${country.name}
               </option>`;
