@@ -2,6 +2,8 @@
   "name": "@spryker-oryx/ui",
   "version": "0.1.0",
   "type": "module",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "description": "Design System for Oryx applications",
   "files": [
     "**/*"

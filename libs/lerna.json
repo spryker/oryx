@@ -12,6 +12,8 @@
     "di",
     "presets",
     "product",
+    "order",
+    "router",
     "search",
     "site",
     "themes",
@@ -19,7 +21,7 @@
     "user",
     "utilities"
   ],
-  "version": "1.0.0-alpha.0",
+  "version": "0.1.0",
   "npmClient": "npm",
   "command": {
     "publish": {
@@ -28,6 +30,9 @@
       "contents": "dist",
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
+      "createRelease": "github",
+      "gitRemote": "pub",
+      "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@"
     }
   }

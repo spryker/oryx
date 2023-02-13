@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Dependency injection for Oryx applications",
-  "author": "Spryker",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "files": [
     "**/*"
   ],

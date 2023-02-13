@@ -3,7 +3,8 @@
   "type": "module",
   "version": "0.1.0",
   "description": "Shopping cart features for Oryx applications",
-  "author": "Spryker",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "files": [
     "**/*"
   ],

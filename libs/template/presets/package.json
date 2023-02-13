@@ -1,7 +1,8 @@
 {
   "name": "@spryker-oryx/presets",
   "version": "0.1.0",
-  "author": "Spryker",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "description": "Presets for Oryx applications",
   "type": "module",
   "files": [

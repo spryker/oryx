@@ -3,8 +3,8 @@
   "version": "1.0.0-alpha.0",
   "type": "module",
   "description": "Functionality to work with IndexedDB",
-  "author": "Spryker",
-  "license": "MIT",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "files": [
     "**/*"
   ],

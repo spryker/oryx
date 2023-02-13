@@ -2,6 +2,8 @@
   "name": "@spryker-oryx/application",
   "version": "0.1.0",
   "type": "module",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
   "description": "Basic infrastructure for Oryx applications",
   "scripts": {
     "postinstall": "patches/patch.sh"
