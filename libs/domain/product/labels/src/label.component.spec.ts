@@ -94,4 +94,46 @@ describe('ProductLabelsComponent', () => {
       });
     });
   });
+
+  describe('when the product label is inverted', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-labels
+          sku="1"
+          .options=${{ invert: true }}
+        ></oryx-product-labels>`
+      );
+    });
+
+    it('should render inverted chip elements', () => {
+      expect(element).toContainElement('oryx-chip[invert]');
+    });
+  });
+
+  describe('when the product label is not inverted', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-labels
+          sku="1"
+          .options=${{ invert: false }}
+        ></oryx-product-labels>`
+      );
+    });
+
+    it('should not render inverted chip elements', () => {
+      expect(element).toContainElement('oryx-chip:not([invert])');
+    });
+  });
+
+  describe('when invert is not provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-labels sku="1"></oryx-product-labels>`
+      );
+    });
+
+    it('should not render inverted chip elements', () => {
+      expect(element).toContainElement('oryx-chip:not([invert])');
+    });
+  });
 });

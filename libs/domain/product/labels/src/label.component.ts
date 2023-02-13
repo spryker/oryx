@@ -14,7 +14,7 @@ export class ProductLabelsComponent extends ProductMixin(
     return html`${this.filterLabels(this.product?.labels)?.map(
       (label) => html`<oryx-chip
         .appearance=${label.appearance}
-        ?invert=${label.invert}
+        ?invert=${!!this.componentOptions?.invert}
       >
         ${label.name}
       </oryx-chip>`

@@ -9,4 +9,9 @@ export interface ProductLabelsOptions {
    * Excludes the labels by name that are part of this list.
    */
   excluded?: string;
+
+  /**
+   * Inverts the label color scheme.
+   */
+  invert?: boolean;
 }

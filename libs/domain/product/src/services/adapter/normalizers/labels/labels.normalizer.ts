@@ -24,7 +24,6 @@ export function productLabelNormalizer(
       ({
         name: label.name,
         appearance: normalizeAppearance(label),
-        invert: label.frontEndReference === 'highlight',
       } as ProductLabel)
   );
 }

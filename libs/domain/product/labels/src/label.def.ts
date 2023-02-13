@@ -10,4 +10,5 @@ declare global {
 export const productLabelsComponent = componentDef({
   name: 'oryx-product-labels',
   impl: () => import('./label.component').then((m) => m.ProductLabelsComponent),
+  schema: () => import('./label.schema').then((m) => m.productLabelSchema),
 });

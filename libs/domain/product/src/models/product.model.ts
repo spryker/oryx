@@ -40,7 +40,6 @@ export interface Product {
 export interface ProductLabel {
   name: string;
   appearance?: ProductLabelAppearance;
-  invert?: boolean;
 }
 
 export const enum ProductLabelAppearance {
