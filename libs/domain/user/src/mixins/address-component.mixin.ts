@@ -23,7 +23,7 @@ export declare class AddressMixinInterface
   address?: Address;
   protected address$: Observable<Address>;
   protected addressProp$: Observable<Address>;
-  protected addressValue: Observable<Address>;
+  protected addressValue: Address;
 }
 
 export const AddressMixin = <
