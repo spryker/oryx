@@ -9,7 +9,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <oryx-option>option</oryx-option>
-    <oryx-option selected>option</oryx-option>
+    <oryx-option active>option</oryx-option>
     <oryx-option>option</oryx-option>
     <oryx-option>option</oryx-option>
     <oryx-option>option</oryx-option>

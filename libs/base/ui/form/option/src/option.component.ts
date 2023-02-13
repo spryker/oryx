@@ -9,7 +9,7 @@ export class OptionComponent extends LitElement {
 
   @property() icon?: Icons | string;
 
-  @property({ type: Boolean, reflect: true }) selected?: boolean;
+  @property({ type: Boolean, reflect: true }) active?: boolean;
 
   @property({ type: Boolean, reflect: true }) hide?: boolean;
 

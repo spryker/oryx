@@ -28,7 +28,7 @@ export const optionStyles = css`
     margin-inline-start: auto;
   }
 
-  :host([selected]) oryx-icon {
+  :host([active]) oryx-icon {
     display: flex;
   }
 
@@ -37,11 +37,11 @@ export const optionStyles = css`
     background-color: var(--oryx-color-canvas-200);
   }
 
-  :host([selected]) {
+  :host([active]) {
     background-color: var(--oryx-color-primary-100);
   }
 
-  :host(:not([selected]):active) {
+  :host(:not([active]):active) {
     background-color: var(--oryx-color-canvas-100);
   }
 

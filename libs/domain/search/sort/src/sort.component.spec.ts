@@ -46,6 +46,7 @@ class MockSortingService implements Partial<SortingService> {
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn().mockReturnValue(of({}));
   getUrl = vi.fn().mockReturnValue(of(''));
+  currentQuery = vi.fn().mockReturnValue(of(''));
 }
 
 describe('DefaultSortingService', () => {

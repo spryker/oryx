@@ -55,7 +55,7 @@ export class FilterController implements ReactiveController {
 
   protected onFocusOut(): void {
     if (this.host.filterStrategy) {
-      const hasSelectedItem = this.items.find((item) => item.selected);
+      const hasSelectedItem = this.items.find((item) => item.active);
       if (!hasSelectedItem) {
         this.clearInput();
       }

@@ -197,7 +197,7 @@ describe('FilterController', () => {
               )}
             </fake-filter>`
           );
-          element.querySelectorAll<OptionComponent>('oryx-option')[0].selected =
+          element.querySelectorAll<OptionComponent>('oryx-option')[0].active =
             true;
         });
         describe('and a focusout event is dispatched', () => {

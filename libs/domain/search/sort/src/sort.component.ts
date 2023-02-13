@@ -1,7 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ProductListSort } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs/operators';
 import { SortingService } from '../../src/services/sorting.service';
@@ -11,27 +16,37 @@ export class SortComponent extends LitElement {
   protected routerService = resolve(RouterService);
   protected sortingService = resolve(SortingService);
 
+  @asyncState()
+  protected sortingOptions = valueType(this.sortingService.get());
+
+  @asyncState()
+  protected querySortValue = valueType(this.routerService.currentQuery());
+
   protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(this.sortingService.get(), (sort) => {
-        return this.renderSorting(sort);
-      })}
-    `;
+    return this.renderSorting(this.sortingOptions);
   }
 
-  protected renderSorting(sort: ProductListSort | null): TemplateResult {
+  protected renderSorting(
+    sort: ProductListSort | undefined | null
+  ): TemplateResult {
     return html`
       <oryx-select>
         <select
           @change=${this.sortingNavigation}
           aria-label="${i18n('search.select-sorting')}"
         >
-          <option value hidden>
+          <option value="" hidden>
             ${i18n('search.select-search-parameter')}
           </option>
+
           ${(sort?.sortValues ?? []).map(
             ({ sortKey, sortName }) =>
-              html`<option value="${sortKey}">${sortName}</option>`
+              html`<option
+                value="${sortKey}"
+                ?selected="${String(this.querySortValue?.sort) === sortKey}"
+              >
+                ${sortName}
+              </option>`
           )}
         </select>
       </oryx-select>

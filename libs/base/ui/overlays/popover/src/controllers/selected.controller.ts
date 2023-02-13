@@ -31,8 +31,8 @@ export class SelectedController implements ReactiveController {
       return;
     }
     this.items
-      .find((item) => item.hasAttribute('selected'))
-      ?.removeAttribute('selected');
+      .find((item) => item.hasAttribute('active'))
+      ?.removeAttribute('active');
     const selected = this.items[index];
 
     if (selected) {
@@ -56,11 +56,11 @@ export class SelectedController implements ReactiveController {
   }
 
   protected get selected(): number {
-    return this.items.findIndex((item) => item.hasAttribute('selected'));
+    return this.items.findIndex((item) => item.hasAttribute('active'));
   }
 
   protected set selected(index: number) {
-    this.items[index].toggleAttribute('selected', true);
+    this.items[index].toggleAttribute('active', true);
   }
 
   protected get items(): HTMLElement[] {

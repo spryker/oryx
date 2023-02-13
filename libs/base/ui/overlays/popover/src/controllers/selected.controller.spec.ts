@@ -36,7 +36,7 @@ describe('SelectedController', () => {
 
     it('should have selected attribute', () => {
       expect(
-        element.querySelector<HTMLElement>('[selected]')?.textContent
+        element.querySelector<HTMLElement>('[active]')?.textContent
       ).toContain('first');
     });
   });
@@ -48,7 +48,7 @@ describe('SelectedController', () => {
 
     it('should have selected attribute', () => {
       expect(
-        element.querySelector<HTMLElement>('[selected]')?.textContent
+        element.querySelector<HTMLElement>('[active]')?.textContent
       ).toContain('second');
     });
   });
@@ -91,7 +91,7 @@ describe('SelectedController', () => {
     });
 
     it('should select the item', () => {
-      expect(item.hasAttribute('selected')).toBeTruthy();
+      expect(item.hasAttribute('active')).toBeTruthy();
     });
   });
 

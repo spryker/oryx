@@ -99,7 +99,7 @@ describe('PopoverController', () => {
           });
 
           it('should select the highlighted element', () => {
-            expect(highlightedItem.hasAttribute('selected')).toBe(true);
+            expect(highlightedItem.hasAttribute('active')).toBe(true);
           });
         });
 
@@ -118,7 +118,7 @@ describe('PopoverController', () => {
             });
 
             it('should select the highlighted element', () => {
-              expect(highlightedItem.hasAttribute('selected')).toBe(true);
+              expect(highlightedItem.hasAttribute('active')).toBe(true);
               expect(expectation).toHaveBeenCalledTimes(1);
             });
           });
@@ -141,7 +141,7 @@ describe('PopoverController', () => {
               });
 
               it('should not select the highlighted element', () => {
-                expect(highlightedItem.hasAttribute('selected')).toBe(false);
+                expect(highlightedItem.hasAttribute('active')).toBe(false);
                 expect(expectation).not.toHaveBeenCalled();
               });
             });
@@ -303,9 +303,9 @@ describe('PopoverController', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-popover>
           <oryx-option>first</oryx-option>
-          <oryx-option selected highlight>second</oryx-option>
+          <oryx-option active highlight>second</oryx-option>
         </fake-popover>`);
-        option = element.querySelector('oryx-option[selected]');
+        option = element.querySelector('oryx-option[active]');
       });
 
       describe('when an item is selected', () => {
@@ -360,7 +360,7 @@ describe('PopoverController', () => {
       it('should select the option', () => {
         element.controller.selectByValue('bar');
         expect(
-          element.querySelector<OptionComponent>('oryx-option[selected]')?.value
+          element.querySelector<OptionComponent>('oryx-option[active]')?.value
         ).toBe('bar');
       });
 
@@ -430,7 +430,7 @@ describe('PopoverController', () => {
       });
 
       it('should not select the highlighted element', () => {
-        expect(highlightedItem?.hasAttribute('selected')).toBe(false);
+        expect(highlightedItem?.hasAttribute('active')).toBe(false);
       });
     });
 
@@ -441,7 +441,7 @@ describe('PopoverController', () => {
         element = await fixture(html`
           <fake-popover show>
             <input />
-            <oryx-option selected>first</oryx-option>
+            <oryx-option active>first</oryx-option>
             <oryx-option>second</oryx-option>
           </fake-popover>
         `);
@@ -449,7 +449,7 @@ describe('PopoverController', () => {
         element.controller.hostDisconnected();
 
         selectedItem = element.querySelector<HTMLElement>(
-          'oryx-option[selected]'
+          'oryx-option[active]'
         );
 
         element.querySelector('input')?.dispatchEvent(
@@ -462,7 +462,7 @@ describe('PopoverController', () => {
       });
 
       it('should not deselect the selected element', () => {
-        expect(selectedItem?.hasAttribute('selected')).toBe(true);
+        expect(selectedItem?.hasAttribute('active')).toBe(true);
       });
     });
 
