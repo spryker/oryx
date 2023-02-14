@@ -106,13 +106,53 @@ describe('ManageAddressComponent', () => {
       );
     });
 
-    describe('and modal was closed', () => {
+    describe('and modal is closed', () => {
       beforeEach(() => {
         getModal().dispatchEvent(new CustomEvent('oryx.close'));
       });
 
       it('should close the modal', () => {
         expect(element).not.toContainElement('oryx-modal[open]');
+      });
+
+      it('should restore the default state', () => {
+        expect(getAddressBook().getAttribute('active-state')).toBe(
+          AddressBookState.List
+        );
+      });
+    });
+
+    describe('and modal is navigated back', () => {
+      beforeEach(() => {
+        getModal().dispatchEvent(new CustomEvent('oryx.back'));
+      });
+
+      it('should restore the default state', () => {
+        expect(getAddressBook().getAttribute('active-state')).toBe(
+          AddressBookState.List
+        );
+      });
+    });
+
+    describe('and editing is successful', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-book')
+          ?.dispatchEvent(new CustomEvent('oryx.success'));
+      });
+
+      it('should restore the default state', () => {
+        expect(getAddressBook().getAttribute('active-state')).toBe(
+          AddressBookState.List
+        );
+      });
+    });
+
+    describe('and editing is cancelled', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-book')
+          ?.dispatchEvent(new CustomEvent('oryx.cancel'));
       });
 
       it('should restore the default state', () => {

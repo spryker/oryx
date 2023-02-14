@@ -254,4 +254,54 @@ describe('AddressFormComponent', () => {
       expect(selected?.value).toBe('US');
     });
   });
+
+  describe('when isDefaultShipping prop is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html` <oryx-address-form
+        enableDefaultShipping
+      ></oryx-address-form>`);
+    });
+
+    it('should merge the field with the form schema', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 'isDefaultShipping' }),
+        ]),
+        undefined
+      );
+    });
+  });
+
+  describe('when enableDefaultBilling prop is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html` <oryx-address-form
+        enableDefaultBilling
+      ></oryx-address-form>`);
+    });
+
+    it('should merge the field with the form schema', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 'isDefaultBilling' }),
+        ]),
+        undefined
+      );
+    });
+  });
+
+  describe('when values are provided', () => {
+    const values = { mockField: 'test' };
+    beforeEach(async () => {
+      element = await fixture(html`
+        <oryx-address-form .values=${values}></oryx-address-form>
+      `);
+    });
+
+    it('should pass values to the buildForm', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(
+        mockForm.data.options,
+        values
+      );
+    });
+  });
 });

@@ -44,7 +44,7 @@ export class ManageAddressComponent extends LitElement {
   protected selectedAddressId = valueType(this.selectedAddressId$);
 
   protected onRemove(address: Address): void {
-    this.selectedAddressId$.next(address.id ?? null);
+    this.selectedAddressId$.next(address.id!);
   }
 
   protected onCancelRemove(e: CustomEvent): void {

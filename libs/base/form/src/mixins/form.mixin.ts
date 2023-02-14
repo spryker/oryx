@@ -1,9 +1,10 @@
 import { Type } from '@spryker-oryx/di';
 import { asyncState, observe, valueType } from '@spryker-oryx/utilities';
-import { LitElement, ReactiveController } from 'lit';
+import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject } from 'rxjs';
-import { FormMixinProperties, SUBMIT_EVENT } from '../models';
+import { FormController } from '../controllers';
+import { FormMixinProperties } from '../models';
 
 export declare class FormMixinInterface<FormValues = unknown>
   implements FormMixinProperties<FormValues>
@@ -15,40 +16,6 @@ export declare class FormMixinInterface<FormValues = unknown>
   protected formValues?: FormValues;
 }
 
-export class FormMixinController implements ReactiveController {
-  constructor(protected host: LitElement & FormMixinProperties) {
-    this.host.addController(this);
-  }
-
-  async hostConnected(): Promise<void> {
-    //simulate first updated hook
-    this.host.requestUpdate();
-    await this.host.updateComplete;
-
-    this.host.getForm()?.addEventListener('submit', (e) => this.onSubmit(e));
-  }
-
-  hostDisconnected(): void {
-    this.host.getForm()?.removeEventListener('submit', (e) => this.onSubmit(e));
-  }
-
-  protected onSubmit(e: Event): void {
-    e.preventDefault();
-
-    const values = Object.fromEntries(
-      new FormData(e.target as HTMLFormElement).entries()
-    );
-
-    this.host.dispatchEvent(
-      new CustomEvent(SUBMIT_EVENT, {
-        composed: true,
-        bubbles: true,
-        detail: { values },
-      })
-    );
-  }
-}
-
 export const FormMixin = <
   // TODO: remove any and pass generic type to mixin
   // when we fix issue with types inference of mixins chain
@@ -58,7 +25,7 @@ export const FormMixin = <
   superClass: T
 ): Type<FormMixinInterface<Values>> & T => {
   class FormMixinClass extends superClass {
-    protected formMixinController = new FormMixinController(this);
+    protected formMixinController = new FormController(this);
 
     getForm(): HTMLFormElement | null {
       return this.renderRoot.querySelector('form');
