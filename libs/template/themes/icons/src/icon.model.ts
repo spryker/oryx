@@ -40,6 +40,7 @@ export enum IconTypes {
   Merchant = 'merchant',
   Orders = 'orders',
   Parcel = 'parcel',
+  Printer = 'printer',
   Products = 'products',
   Profile = 'profile',
   Desktop = 'desktop',

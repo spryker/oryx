@@ -34,19 +34,27 @@ export class OrderSummaryComponent extends OrderMixin(
     return html`<oryx-heading .appearance=${HeadingTag.H3}>
         <h2>${i18n('order.order-details')}</h2>
       </oryx-heading>
-      <div class="details">
-        <div>
-          <oryx-icon type="parcel"></oryx-icon>
+      <div class="details-container">
+        <div class="details">
+          <div>
+            <oryx-icon type="parcel"></oryx-icon>
+          </div>
+          <div class="title">${i18n('order.order-id')}:</div>
+          <div>${this.order?.id}</div>
+          <div>
+            <oryx-icon type="calendar"></oryx-icon>
+          </div>
+          <div class="title">${i18n('order.date')}:</div>
+          <div>
+            ${asyncValue(this.locale.formatDate(this.order?.createdAt ?? ''))}
+          </div>
         </div>
-        <div class="title">${i18n('order.order-id')}:</div>
-        <div>${this.order?.id}</div>
-        <div>
-          <oryx-icon type="calendar"></oryx-icon>
-        </div>
-        <div class="title">${i18n('order.date')}:</div>
-        <div>
-          ${asyncValue(this.locale.formatDate(this.order?.createdAt ?? ''))}
-        </div>
+        <oryx-button outline>
+          <button @click=${this.print}>
+            <oryx-icon type="printer"></oryx-icon>
+            ${i18n('order.print-your-receipt')}
+          </button>
+        </oryx-button>
       </div>
       <hr />`;
   }
@@ -85,5 +93,9 @@ export class OrderSummaryComponent extends OrderMixin(
         <div>${this.order?.shipments[0].shipmentMethodName}</div>
       </div>
       <hr />`;
+  }
+
+  protected print(): void {
+    window.print();
   }
 }

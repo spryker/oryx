@@ -22,6 +22,7 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
   [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
   [IconTypes.Parcel]: () => import('./icons/parcel').then((s) => s.default),
+  [IconTypes.Printer]: () => import('./icons/printer').then((s) => s.default),
   [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
   [IconTypes.Rocket]: () => import('./icons/rocket').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),

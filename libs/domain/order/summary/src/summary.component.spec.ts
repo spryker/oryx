@@ -86,6 +86,7 @@ describe('OrderSummaryComponent', () => {
     expect(element).toContainElement('oryx-heading');
     expect(element).toContainElement('oryx-icon');
     expect(element).toContainElement('oryx-user-address');
+    expect(element).toContainElement('oryx-button');
   });
 
   describe('when there is no order data', () => {
