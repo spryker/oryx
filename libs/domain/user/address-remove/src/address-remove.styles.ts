@@ -27,7 +27,7 @@ export const styles = css`
     flex-basis: calc(50% - var(--oryx-space));
   }
 
-  oryx-button:last-child {
+  oryx-button:last-of-type {
     margin-inline-start: var(--oryx-space-2);
   }
 

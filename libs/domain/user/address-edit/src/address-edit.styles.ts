@@ -11,7 +11,7 @@ export const styles = css`
     flex-basis: 100%;
   }
 
-  oryx-button:last-child {
+  oryx-button:last-of-type {
     margin-inline-start: var(--oryx-space-2);
   }
 `;
