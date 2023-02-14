@@ -13,5 +13,5 @@ runs:
         restore-keys: |
           npm-node-
     - name: Install Deps
-      run: npm ci --ignore-scripts
+      run: npm ci
       shell: bash
