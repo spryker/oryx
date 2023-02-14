@@ -1,0 +1,124 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx", "@typescript-eslint"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "allowCircularSelfDependency": true,
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "layer:domain",
+                "onlyDependOnLibsWithTags": [
+                  "layer:platform",
+                  "layer:base",
+                  "layer:domain",
+                  "layer:template",
+                  "lib:experience",
+                  "lib:i18n",
+                  "lib:ui",
+                  "lib:form"
+                ]
+              },
+              {
+                "sourceTag": "layer:platform",
+                "onlyDependOnLibsWithTags": [
+                  "layer:platform",
+                  "layer:base",
+                  "lib:experience",
+                  "lib:ui",
+                  "lib:form"
+                ]
+              },
+              {
+                "sourceTag": "layer:base",
+                "onlyDependOnLibsWithTags": ["layer:base", "lib:ui", "lib:form"]
+              },
+              {
+                "sourceTag": "layer:template",
+                "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": ["*"]
+              },
+              // Exception rules
+              {
+                "sourceTag": "lib:experience",
+                "onlyDependOnLibsWithTags": [
+                  "lib:themes",
+                  "layer:base",
+                  "layer:platform"
+                ]
+              },
+              {
+                "sourceTag": "lib:i18n",
+                "onlyDependOnLibsWithTags": [
+                  "lib:site",
+                  "layer:base",
+                  "layer:platform"
+                ]
+              },
+              {
+                "sourceTag": "lib:form",
+                "onlyDependOnLibsWithTags": [
+                  "layer:base",
+                  "lib:core",
+                  "lib:experience",
+                  "lib:ui"
+                ]
+              },
+              {
+                "sourceTag": "lib:ui",
+                "onlyDependOnLibsWithTags": [
+                  "layer:base",
+                  "lib:core",
+                  "lib:themes"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-namespace": 0,
+        "@typescript-eslint/prefer-namespace-keyword": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/explicit-module-boundary-types": [
+          "error",
+          {
+            "allowArgumentsExplicitlyTypedAsAny": true,
+            "allowTypedFunctionExpressions": true
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["**/mocks/**/*.ts", "*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": 0
+      }
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "extends": "./tsconfig.core.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@spryker-oryx/application": ["libs/template/application/src/index.ts"],
+      "@spryker-oryx/application/lambda": [
+        "libs/template/application/lambda/index.ts"
+      ],
+      "@spryker-oryx/application/root-app": [
+        "libs/template/application/root-app/index.ts"
+      ],
+      "@spryker-oryx/application/server": [
+        "libs/template/application/server/index.ts"
+      ],
+      "@spryker-oryx/auth": ["libs/domain/auth/src/index.ts"],
+      "@spryker-oryx/auth/login": ["libs/domain/auth/login/index.ts"],
+      "@spryker-oryx/auth/logout": ["libs/domain/auth/logout/index.ts"],
+      "@spryker-oryx/auth/mocks": ["libs/domain/auth/src/mocks/index.ts"],
+      "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
+      "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
+      "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
+      "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
+      "@spryker-oryx/cart/mocks": ["libs/domain/cart/src/mocks/index.ts"],
+      "@spryker-oryx/cart/quantity-input": [
+        "libs/domain/cart/quantity-input/index.ts"
+      ],
+      "@spryker-oryx/cart/summary": ["libs/domain/cart/summary/index.ts"],
+      "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
+      "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
+      "@spryker-oryx/checkout/address": [
+        "libs/domain/checkout/address/index.ts"
+      ],
+      "@spryker-oryx/checkout/auth": ["libs/domain/checkout/auth/index.ts"],
+      "@spryker-oryx/checkout/composition": [
+        "libs/domain/checkout/composition/index.ts"
+      ],
+      "@spryker-oryx/checkout/contact": [
+        "libs/domain/checkout/contact/index.ts"
+      ],
+      "@spryker-oryx/checkout/delivery": [
+        "libs/domain/checkout/delivery/index.ts"
+      ],
+      "@spryker-oryx/checkout/guest": ["libs/domain/checkout/guest/index.ts"],
+      "@spryker-oryx/checkout/link": ["libs/domain/checkout/link/index.ts"],
+      "@spryker-oryx/checkout/manage-address": [
+        "libs/domain/checkout/manage-address/index.ts"
+      ],
+      "@spryker-oryx/checkout/mocks": [
+        "libs/domain/checkout/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/checkout/payment": [
+        "libs/domain/checkout/payment/index.ts"
+      ],
+      "@spryker-oryx/checkout/place-order": [
+        "libs/domain/checkout/place-order/index.ts"
+      ],
+      "@spryker-oryx/checkout/shipment": [
+        "libs/domain/checkout/shipment/index.ts"
+      ],
+      "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
+      "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
+      "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
+      "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
+      "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
+      "@spryker-oryx/core/lambda": ["libs/platform/core/lambda/index.ts"],
+      "@spryker-oryx/core/mocks": ["libs/platform/core/src/mocks/index.ts"],
+      "@spryker-oryx/core/server": ["libs/platform/core/server/index.ts"],
+      "@spryker-oryx/core/testing": ["libs/platform/core/testing/index.ts"],
+      "@spryker-oryx/core/utilities": ["libs/platform/core/utilities/index.ts"],
+      "@spryker-oryx/di": ["libs/base/di/src/index.ts"],
+      "@spryker-oryx/experience": ["libs/platform/experience/src/index.ts"],
+      "@spryker-oryx/experience/composition": [
+        "libs/platform/experience/composition/index.ts"
+      ],
+      "@spryker-oryx/experience/layout": [
+        "libs/platform/experience/layout/index.ts"
+      ],
+      "@spryker-oryx/experience/mocks": [
+        "libs/platform/experience/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/form": ["libs/base/form/src/index.ts"],
+      "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
+      "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
+      "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
+      "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
+      "@spryker-oryx/order/confirmation-banner": [
+        "libs/domain/order/confirmation-banner/index.ts"
+      ],
+      "@spryker-oryx/order/entries": ["libs/domain/order/entries/index.ts"],
+      "@spryker-oryx/order/mocks": ["libs/domain/order/src/mocks/index.ts"],
+      "@spryker-oryx/order/summary": ["libs/domain/order/summary/index.ts"],
+      "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
+      "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
+      "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
+      "@spryker-oryx/product/attributes": [
+        "libs/domain/product/attributes/index.ts"
+      ],
+      "@spryker-oryx/product/average-rating": [
+        "libs/domain/product/average-rating/index.ts"
+      ],
+      "@spryker-oryx/product/card": ["libs/domain/product/card/index.ts"],
+      "@spryker-oryx/product/description": [
+        "libs/domain/product/description/index.ts"
+      ],
+      "@spryker-oryx/product/id": ["libs/domain/product/id/index.ts"],
+      "@spryker-oryx/product/images": ["libs/domain/product/images/index.ts"],
+      "@spryker-oryx/product/labels": ["libs/domain/product/labels/index.ts"],
+      "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],
+      "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
+      "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
+      "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
+      "@spryker-oryx/product/title": ["libs/domain/product/title/index.ts"],
+      "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
+      "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
+      "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
+      "@spryker-oryx/search": ["libs/domain/search/src/index.ts"],
+      "@spryker-oryx/search/box": ["libs/domain/search/box/index.ts"],
+      "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
+      "@spryker-oryx/search/facet-color": [
+        "libs/domain/search/facet-color/index.ts"
+      ],
+      "@spryker-oryx/search/facet-navigation": [
+        "libs/domain/search/facet-navigation/index.ts"
+      ],
+      "@spryker-oryx/search/facet-value-navigation": [
+        "libs/domain/search/facet-value-navigation/index.ts"
+      ],
+      "@spryker-oryx/search/mocks": ["libs/domain/search/src/mocks/index.ts"],
+      "@spryker-oryx/search/pagination": [
+        "libs/domain/search/pagination/index.ts"
+      ],
+      "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
+      "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/notification-center": [
+        "libs/domain/site/notification-center/index.ts"
+      ],
+      "@spryker-oryx/testing": ["tools/testing"],
+      "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
+      "@spryker-oryx/themes/breakpoints": [
+        "libs/template/themes/breakpoints/index.ts"
+      ],
+      "@spryker-oryx/themes/design-tokens": [
+        "libs/template/themes/design-tokens/index.ts"
+      ],
+      "@spryker-oryx/themes/icons": ["libs/template/themes/icons/index.ts"],
+      "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
+      "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
+      "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],
+      "@spryker-oryx/ui/checkbox": ["libs/base/ui/form/checkbox/index.ts"],
+      "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],
+      "@spryker-oryx/ui/collapsible": [
+        "libs/base/ui/structure/collapsible/index.ts"
+      ],
+      "@spryker-oryx/ui/drawer": ["libs/base/ui/overlays/drawer/index.ts"],
+      "@spryker-oryx/ui/dropdown": ["libs/base/ui/overlays/dropdown/index.ts"],
+      "@spryker-oryx/ui/error-message": [
+        "libs/base/ui/form/error-message/index.ts"
+      ],
+      "@spryker-oryx/ui/heading": ["libs/base/ui/structure/heading/index.ts"],
+      "@spryker-oryx/ui/icon": ["libs/base/ui/graphical/icon/index.ts"],
+      "@spryker-oryx/ui/icon-button": [
+        "libs/base/ui/action/icon-button/index.ts"
+      ],
+      "@spryker-oryx/ui/image": ["libs/base/ui/graphical/image/index.ts"],
+      "@spryker-oryx/ui/input": ["libs/base/ui/form/input/index.ts"],
+      "@spryker-oryx/ui/input-list": ["libs/base/ui/form/input-list/index.ts"],
+      "@spryker-oryx/ui/link": ["libs/base/ui/action/link/index.ts"],
+      "@spryker-oryx/ui/modal": ["libs/base/ui/overlays/modal/index.ts"],
+      "@spryker-oryx/ui/multi-range": [
+        "libs/base/ui/form/multi-range/index.ts"
+      ],
+      "@spryker-oryx/ui/navigation": [
+        "libs/base/ui/navigation/navigation/index.ts"
+      ],
+      "@spryker-oryx/ui/navigation-item": [
+        "libs/base/ui/navigation/navigation-item/index.ts"
+      ],
+      "@spryker-oryx/ui/notification": [
+        "libs/base/ui/overlays/notification/index.ts"
+      ],
+      "@spryker-oryx/ui/notification-center": [
+        "libs/base/ui/overlays/notification-center/index.ts"
+      ],
+      "@spryker-oryx/ui/option": ["libs/base/ui/form/option/index.ts"],
+      "@spryker-oryx/ui/page-navigation": [
+        "libs/base/ui/navigation/page-navigation/index.ts"
+      ],
+      "@spryker-oryx/ui/page-navigation-item": [
+        "libs/base/ui/navigation/page-navigation-item/index.ts"
+      ],
+      "@spryker-oryx/ui/pagination": [
+        "libs/base/ui/navigation/pagination/index.ts"
+      ],
+      "@spryker-oryx/ui/password": ["libs/base/ui/form/password/index.ts"],
+      "@spryker-oryx/ui/popover": ["libs/base/ui/overlays/popover/index.ts"],
+      "@spryker-oryx/ui/radio": ["libs/base/ui/form/radio/index.ts"],
+      "@spryker-oryx/ui/rating": ["libs/base/ui/graphical/rating/index.ts"],
+      "@spryker-oryx/ui/searchbox": ["libs/base/ui/search/searchbox/index.ts"],
+      "@spryker-oryx/ui/select": ["libs/base/ui/form/select/index.ts"],
+      "@spryker-oryx/ui/spinner": ["libs/base/ui/graphical/spinner/index.ts"],
+      "@spryker-oryx/ui/swatch": ["libs/base/ui/graphical/swatch/index.ts"],
+      "@spryker-oryx/ui/tab": ["libs/base/ui/navigation/tab/index.ts"],
+      "@spryker-oryx/ui/tabs": ["libs/base/ui/navigation/tabs/index.ts"],
+      "@spryker-oryx/ui/tag": ["libs/base/ui/form/tag/index.ts"],
+      "@spryker-oryx/ui/text": ["libs/base/ui/structure/text/index.ts"],
+      "@spryker-oryx/ui/tile": ["libs/base/ui/structure/tile/index.ts"],
+      "@spryker-oryx/ui/toggle": ["libs/base/ui/action/toggle/index.ts"],
+      "@spryker-oryx/ui/toggle-icon": [
+        "libs/base/ui/action/toggle-icon/index.ts"
+      ],
+      "@spryker-oryx/ui/typeahead": ["libs/base/ui/search/typeahead/index.ts"],
+      "@spryker-oryx/ui/utilities": ["libs/base/ui/form/utilities/index.ts"],
+      "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
+      "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
+      "@spryker-oryx/user/address-book": [
+        "libs/domain/user/address-book/index.ts"
+      ],
+      "@spryker-oryx/user/address-edit": [
+        "libs/domain/user/address-edit/index.ts"
+      ],
+      "@spryker-oryx/user/address-form": [
+        "libs/domain/user/address-form/index.ts"
+      ],
+      "@spryker-oryx/user/address-list": [
+        "libs/domain/user/address-list/index.ts"
+      ],
+      "@spryker-oryx/user/address-list-item": [
+        "libs/domain/user/address-list-item/index.ts"
+      ],
+      "@spryker-oryx/user/address-remove": [
+        "libs/domain/user/address-remove/index.ts"
+      ],
+      "@spryker-oryx/user/contact-form": [
+        "libs/domain/user/contact-form/index.ts"
+      ],
+      "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
+      "@spryker-oryx/user/summary": ["libs/domain/user/summary/index.ts"],
+      "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
+      "@spryker-oryx/utilities/no-lit": ["libs/base/utilities/no-lit/index.ts"]
+    }
+  }
+}

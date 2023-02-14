@@ -1,0 +1,13 @@
+# Add files here to ignore them from prettier formatting
+
+/dist
+/coverage
+
+dist
+test-dist
+coverage
+out-tsc
+
+tools/**/*.js
+*.hbs
+CHANGELOG.md

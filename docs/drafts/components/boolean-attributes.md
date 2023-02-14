@@ -35,27 +35,3 @@ elem.toggleAttribute('attr-name', true); // => <div attr-name></div>
 // Force to be unset
 elem.toggleAttribute('attr-name', false); // => <div></div>
 ```
-
-## Vue Components
-
-When using custom elements and lit components in Vue applications you should be careful with
-setting custom boolean attributes (non standard HTML boolean attributes) because Vue does
-not know that custom attribute is a boolean so it will set it as a normal attribute
-which will cause `false` to still be set in attribute and DOM will treat it as true
-(see [open discussion for Vue](https://github.com/vuejs/rfcs/discussions/409)).
-
-To mitigate this there is a handy global `v-attr` directive in Picking App which allows
-to properly set boolean attributes on DOM elements:
-
-```html
-<div v-attr:attr-name.bool="isActive"></div>
-```
-
-This directive follows HTML spec for boolean attributes and will set attribute
-(using `Element.toggleAttribute()` DOM API) if the value is:
-
-- truthy
-- empty string
-- zero (0)
-
-Otherwise the attribute will be unset.

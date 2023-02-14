@@ -1,11 +1,8 @@
 import { join } from 'path';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
-import { adjustEnv } from '../../tools/utils/adjustUrlVariable';
 import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig((config) => {
-  adjustEnv(config);
-
   return {
     root: viteConfig.index,
     envDir: viteConfig.root,

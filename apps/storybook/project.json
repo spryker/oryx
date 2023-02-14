@@ -11,7 +11,8 @@
         "port": 4400,
         "config": {
           "configFolder": "apps/storybook/.storybook"
-        }
+        },
+        "staticDir": ["libs/base/ui/public"]
       },
       "configurations": {
         "ci": {
@@ -27,7 +28,8 @@
         "config": {
           "configFolder": "apps/storybook/.storybook"
         },
-        "outputPath": "dist/storybook/all"
+        "outputPath": "dist/storybook/all",
+        "staticDir": ["libs/base/ui/public"]
       }
     },
     "deps": {
@@ -47,5 +49,5 @@
     }
   },
   "tags": ["type:app"],
-  "implicitDependencies": ["ui", "content", "launchpad-ui"]
+  "implicitDependencies": ["ui", "content"]
 }

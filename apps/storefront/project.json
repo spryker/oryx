@@ -44,13 +44,6 @@
         "cwd": "apps/storefront"
       }
     },
-    "build-netlify": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run build:netlify",
-        "cwd": "apps/storefront"
-      }
-    },
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {

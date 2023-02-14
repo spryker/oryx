@@ -38,14 +38,14 @@ declare global {
    * Action name should follow convention `<vendor>.<domain>:<action-name>`
    * in kebab-case, where:
    * - `vendor` is a vendor prefix (ex. `oryx`)
-   * - `domain` is a domain name where action is created (ex. `picking`)
+   * - `domain` is a domain name where action is created (ex. `user`)
    * - `action-name` is the name of the action (ex. `my-action`)
    *
    * @example
    * ```ts
    * declare global {
    *   interface OryxSyncActions {
-   *     'oryx.picking:my-action': MyActionPayload;
+   *     'oryx.user:my-action': MyActionPayload;
    *   }
    * }
    * ```

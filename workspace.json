@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "projects": {
+    "application": "libs/template/application",
+    "auth": "libs/domain/auth",
+    "cart": "libs/domain/cart",
+    "checkout": "libs/domain/checkout",
+    "content": "libs/domain/content",
+    "core": "libs/platform/core",
+    "di": "libs/base/di",
+    "experience": "libs/platform/experience",
+    "form": "libs/base/form",
+    "i18n": "libs/platform/i18n",
+    "indexed-db": "libs/platform/indexed-db",
+    "offline": "libs/platform/offline",
+    "order": "libs/domain/order",
+    "presets": "libs/template/presets",
+    "product": "libs/domain/product",
+    "router": "libs/platform/router",
+    "search": "libs/domain/search",
+    "site": "libs/domain/site",
+    "storefront": "apps/storefront",
+    "storybook": "apps/storybook",
+    "themes": "libs/template/themes",
+    "ui": "libs/base/ui",
+    "user": "libs/domain/user",
+    "utilities": "libs/base/utilities"
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
+}

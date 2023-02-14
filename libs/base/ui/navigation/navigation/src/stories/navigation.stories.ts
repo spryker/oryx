@@ -19,7 +19,7 @@ const Template: Story<unknown> = (): TemplateResult => {
                 />
               </svg>
             </oryx-icon>
-            Launchpad
+            Application
           </oryx-navigation-item>
         </a>
 

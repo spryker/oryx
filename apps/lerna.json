@@ -1,0 +1,17 @@
+{
+  "packages": ["storefront"],
+  "version": "independent",
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "contents": "dist",
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
+      "message": "chore(release): publish apps release [skip ci]",
+      "createRelease": "github",
+      "gitRemote": "pub",
+      "allowBranch": ["development", "release/*"],
+      "tagVersionPrefix": "app-"
+    }
+  }
+}

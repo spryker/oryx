@@ -1,0 +1,17 @@
+name: 'Init Action'
+description: 'Initialize state before executing actions'
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: npm-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          npm-node-
+    - name: Install Deps
+      run: npm ci --ignore-scripts
+      shell: bash

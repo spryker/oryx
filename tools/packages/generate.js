@@ -11,7 +11,7 @@ const currentDir = process.cwd();
 const libDistPath = `${currentDir}/dist/libs`;
 const packsDir = `packages`;
 const scriptLoggingPrefix = 'Generate packages:';
-const apps = 'experience-builder,storybook,launchpad,storefront,picking-app'
+const apps = 'storybook,storefront'
 
 const getDirectories = source =>
   readdirSync(source, { withFileTypes: true })

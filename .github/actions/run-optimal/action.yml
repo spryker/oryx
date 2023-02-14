@@ -1,0 +1,21 @@
+name: 'Run Optimal Action'
+description: 'Run command optimally based on the branch'
+inputs:
+  cmd:
+    description: 'Command that runs on development branch only'
+    required: true
+  affectedCmd:
+    description: 'Command that runs everywhere except development branch'
+    required: true
+  isDev:
+    description: 'Is dev mode'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: ${{ inputs.cmd }}
+      if: ${{ inputs.isDev }}
+      shell: bash
+    - run: ${{ inputs.affectedCmd }}
+      if: ${{ inputs.isDev != true }}
+      shell: bash

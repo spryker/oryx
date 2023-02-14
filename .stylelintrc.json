@@ -1,0 +1,68 @@
+{
+  "ignoreFiles": ["!**/*"],
+  "plugins": [
+    "stylelint-use-logical-spec",
+    "stylelint-no-unsupported-browser-features"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.css", "**/*.styles.ts"],
+      "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+      "customSyntax": "@stylelint/postcss-css-in-js"
+    }
+  ],
+  "rules": {
+    "string-quotes": "single",
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "ignore": ["css-appearance", "multicolumn", "intrinsic-width"]
+      }
+    ],
+    "declaration-block-no-duplicate-properties": true,
+    "selector-not-notation": null,
+    "no-descending-specificity": null,
+    "function-no-unknown": null,
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": ["first-nested"],
+        "ignore": ["after-comment", "inside-block"]
+      }
+    ],
+    "liberty/use-logical-spec": [
+      "always",
+      {
+        "except": [
+          "top",
+          "bottom",
+          "margin-bottom",
+          "margin-top",
+          "padding-bottom",
+          "padding-top",
+          "height",
+          "min-height",
+          "max-height",
+          "width",
+          "min-width",
+          "max-width",
+          "border-bottom",
+          "border-top"
+        ]
+      }
+    ],
+    "custom-property-pattern": "^_?([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreKeywords": ["currentColor"]
+      }
+    ],
+    "property-no-vendor-prefix": [
+      true,
+      {
+        "ignoreProperties": ["appearance"]
+      }
+    ]
+  }
+}
