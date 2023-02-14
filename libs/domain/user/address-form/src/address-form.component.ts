@@ -135,8 +135,12 @@ export class AddressFormComponent
   }
 
   protected mergeFields(): FormFieldDefinition[] {
+    if (!this.form) {
+      return [];
+    }
+
     return [
-      ...this.form!,
+      ...this.form,
       ...(this.enableDefaultShipping
         ? [this.processDefaultField(defaultShippingField)]
         : []),
