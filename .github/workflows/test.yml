@@ -95,6 +95,8 @@ jobs:
       - uses: ./.github/actions/init
       - name: Visual Regression Tests
         uses: ./.github/actions/run-optimal
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         with:
           cmd: npx nx run storybook:visual-regression-branch
           affectedCmd: npx nx affected --target=visual-regression-pr
