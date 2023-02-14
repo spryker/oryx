@@ -86,6 +86,7 @@ jobs:
           affectedCmd: npx nx affected:test
           isDev: ${{ env.IS_DEV }}
   test-visual:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
