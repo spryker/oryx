@@ -51,18 +51,18 @@ export const iconButtonBaseStyles = css`
   :host([size='small']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-small);
 
-    padding: 5px;
+    padding: 4px;
   }
 
   :host([size='medium']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-medium);
 
-    padding: 10px;
+    padding: 6px;
   }
 
   :host([size='large']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-large);
 
-    padding: 11px;
+    padding: 6px;
   }
 `;

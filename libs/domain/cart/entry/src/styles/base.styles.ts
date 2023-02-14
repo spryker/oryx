@@ -11,12 +11,8 @@ export const baseStyles = css`
 
   oryx-icon-button {
     position: absolute;
-    top: var(--oryx-space-2);
-    inset-inline-end: var(--oryx-space-2);
-  }
-
-  oryx-icon-button oryx-icon {
-    --oryx-icon-size: var(--oryx-icon-size-small);
+    top: var(--oryx-space-4);
+    inset-inline-end: var(--oryx-space-4);
   }
 
   .entry {

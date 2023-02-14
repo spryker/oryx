@@ -18,8 +18,6 @@ export const notificationBaseStyles = css`
   }
 
   oryx-icon-button {
-    --oryx-icon-size: 12px;
-
     position: absolute;
     top: 16px;
     inset-inline-end: 16px;
