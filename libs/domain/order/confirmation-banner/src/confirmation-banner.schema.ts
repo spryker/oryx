@@ -4,6 +4,5 @@ import { OrderConfirmationBannerComponent } from './confirmation-banner.componen
 export const orderConfirmationBannerSchema: ContentComponentSchema<OrderConfirmationBannerComponent> =
   {
     name: 'Order Confirmation Banner',
-    category: 'Commerce',
     group: 'Order',
   };

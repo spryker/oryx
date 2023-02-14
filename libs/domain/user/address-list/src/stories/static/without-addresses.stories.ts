@@ -13,3 +13,9 @@ const Template: Story<unknown> = (): TemplateResult => {
 };
 
 export const WithoutAddresses = Template.bind({});
+
+WithoutAddresses.parameters = {
+  chromatic: {
+    delay: 3000,
+  },
+};

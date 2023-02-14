@@ -7,7 +7,6 @@ import { ContentVideoComponent } from './video.component';
 export const videoComponentSchema: ContentComponentSchema<ContentVideoComponent> =
   {
     name: 'Video',
-    category: 'Commerce',
     group: 'Content',
     options: {
       src: {

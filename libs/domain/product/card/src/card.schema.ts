@@ -5,7 +5,6 @@ import { ProductCardComponent } from './card.component';
 export const productCardComponentSchema: ContentComponentSchema<ProductCardComponent> =
   {
     name: 'Product card',
-    category: 'Commerce',
     group: 'Product',
     options: {
       sku: {

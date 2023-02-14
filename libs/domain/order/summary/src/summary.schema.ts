@@ -4,6 +4,5 @@ import { OrderSummaryComponent } from './summary.component';
 export const orderSummarySchema: ContentComponentSchema<OrderSummaryComponent> =
   {
     name: 'Order Summary',
-    category: 'Commerce',
     group: 'Order',
   };
