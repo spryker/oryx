@@ -1,5 +1,7 @@
 # Storefront Boilerplate
 
+For quick start the own storefront you have to add the files described below and then build them.
+
 Spryker suggests [Vite](https://vitejs.dev/) to build frontend. As is a build tool that aims to provide a faster and leaner development experience for modern web projects. Also main benefit that vite supports `ts` under the hood.
 
 ## Requirements
