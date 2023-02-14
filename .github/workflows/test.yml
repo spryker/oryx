@@ -4,7 +4,7 @@ on:
   # Triggers the workflow on push events
   push:
     branches:
-      - '**'
+      - development
   # Triggers the workflow on pull request events
   pull_request:
   # Allows you to run this workflow manually from the Actions tab
@@ -36,7 +36,7 @@ jobs:
       - name: Lint
         uses: ./.github/actions/run-optimal
         with:
-          cmd: npx nx run-many --target=lint --all
+          cmd: npx nx run-many --target=lint --all --parallel=2
           affectedCmd: npx nx affected:lint
           isDev: ${{ env.IS_DEV }}
   test-stylelint:
@@ -50,7 +50,7 @@ jobs:
       - name: Style Lint All
         uses: ./.github/actions/run-optimal
         with:
-          cmd: npx nx run-many --target=stylelint --all
+          cmd: npx nx run-many --target=stylelint --all --parallel=2
           affectedCmd: npx nx affected --target=stylelint
           isDev: ${{ env.IS_DEV }}
   test-tsconfig:
@@ -64,7 +64,7 @@ jobs:
       - name: TsConfig Paths
         uses: ./.github/actions/run-optimal
         with:
-          cmd: npx nx run-many --target=paths --all
+          cmd: npx nx run-many --target=paths --all --parallel=2
           affectedCmd: npx nx affected --target=paths
           isDev: ${{ env.IS_DEV }}
   test-unit:
@@ -79,7 +79,7 @@ jobs:
         uses: ./.github/actions/run-optimal
         with:
           cmd: |
-            npx nx run-many --target=test --all
+            npx nx run-many --target=test --all --parallel=2
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/base
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/domain
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/platform
