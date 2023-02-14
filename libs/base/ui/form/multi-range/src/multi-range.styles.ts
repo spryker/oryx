@@ -47,11 +47,11 @@ export const multiRangeStyles = css`
     cursor: pointer;
   }
 
-  label:first-child {
+  label:nth-of-type(1) {
     grid-column: 1 / span 2;
   }
 
-  label:nth-child(2) {
+  label:nth-of-type(2) {
     grid-column: 3 / span 4;
   }
 

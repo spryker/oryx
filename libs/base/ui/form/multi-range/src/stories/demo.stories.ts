@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../.constants';
 import { MultiRangeProperties } from '../multi-range.model';
 
 export default {
-  title: `${storybookPrefix}/Form/MultiRange`,
+  title: `${storybookPrefix}/Form/Multi Range`,
   parameters: {
     chromatic: { disableSnapshot: true },
   },
