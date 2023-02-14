@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/experience';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { CartComponentAttributes } from '../models';
+import type { Cart, CartComponentAttributes } from '../models';
 
 export const CartComponentMixin = <T>(): Type<
   LitElement & ContentComponentProperties<T>
@@ -15,6 +15,7 @@ export const CartComponentMixin = <T>(): Type<
     implements CartComponentAttributes
   {
     @property({ type: String }) cartId?: string;
+    @property({ type: Object }) cart?: Cart;
   }
 
   return CartComponent as Type<LitElement & ContentComponentProperties<T>>;

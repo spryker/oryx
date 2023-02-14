@@ -20,5 +20,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-order-summary>`,
     },
+    ['oryx-order-totals']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-order-totals
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-order-totals>`,
+    },
   },
 };

@@ -3,6 +3,10 @@ import { ApiAddressModel } from '@spryker-oryx/user';
 import { JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiOrderModel {
+  export enum PriceMode {
+    GrossMode = 'GROSS_MODE',
+    NetMode = 'NET_MODE',
+  }
   export interface Attributes {
     createdAt: string;
     id: string;
@@ -12,7 +16,7 @@ export module ApiOrderModel {
     expenses: Expense[];
     billingAddress?: Address;
     shippingAddress?: Address;
-    priceMode: string;
+    priceMode: PriceMode;
     payments: Payment[];
     shipments: Shipment[];
     calculatedDiscounts?: unknown;

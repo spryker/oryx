@@ -32,8 +32,13 @@ export class CartController {
   }
 
   getTotals(): Observable<FormattedCartTotals | null> {
-    return this.observe.get('cartId').pipe(
-      switchMap((cartId) => this.cartService.getCart({ cartId })),
+    return combineLatest([
+      this.observe.get('cart'),
+      this.observe
+        .get('cartId')
+        .pipe(switchMap((cartId) => this.cartService.getCart({ cartId }))),
+    ]).pipe(
+      map(([cart, cartFromId]) => cart ?? cartFromId),
       switchMap((cart) =>
         cart?.products
           ? of(cart).pipe(

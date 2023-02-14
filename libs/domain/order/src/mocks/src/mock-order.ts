@@ -1,9 +1,11 @@
+import { PriceMode } from '@spryker-oryx/cart';
+
 export const mockOrderData = {
   merchantReferences: [],
   itemStates: ['new'],
   createdAt: 'mockdate',
   currencyIsoCode: 'EUR',
-  priceMode: 'GROSS_MODE',
+  priceMode: PriceMode.GrossMode,
   totals: {
     expenseTotal: 490,
     discountTotal: 1800,
@@ -88,8 +90,8 @@ export const mockOrderData = {
       },
       salesOrderItemConfiguration: null,
       salesUnit: null,
-      calculatedDiscounts: [
-        {
+      calculatedDiscounts: {
+        'mock discount': {
           unitAmount: 1800,
           sumAmount: 1800,
           displayName: 'mock discount',
@@ -97,7 +99,7 @@ export const mockOrderData = {
           voucherCode: null,
           quantity: 1,
         },
-      ],
+      },
       productOptions: [],
       amount: null,
     },

@@ -1,4 +1,4 @@
-import type { ProductOption } from '@spryker-oryx/cart';
+import type { PriceMode, ProductOption } from '@spryker-oryx/cart';
 import { Address } from '@spryker-oryx/user';
 
 export interface OrderTotals {
@@ -115,11 +115,20 @@ export interface OrderData {
   expenses: Expense[];
   billingAddress?: Address;
   shippingAddress?: Address;
-  priceMode: string;
+  priceMode: PriceMode;
   payments: OrderPayment[];
   shipments: OrderShipment[];
-  calculatedDiscounts?: unknown;
+  calculatedDiscounts?: Record<string, OrderDiscount>;
   bundleItems?: unknown[];
+}
+
+export interface OrderDiscount {
+  description?: string;
+  displayName: string;
+  quantity: number;
+  sumAmount: number;
+  unitAmount?: number | null;
+  voucherCode?: string | null;
 }
 
 export interface OrderResponse {
