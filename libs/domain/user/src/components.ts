@@ -6,3 +6,4 @@ export * from '../address-list/src/address-list.def';
 export * from '../address-remove/src/address-remove.def';
 export * from '../address/src/address.def';
 export * from '../contact-form/src/contact-form.def';
+export * from '../summary/src/summary.def';

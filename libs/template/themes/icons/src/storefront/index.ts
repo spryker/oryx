@@ -40,4 +40,5 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
   /** Alias to add */
   [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
+  [IconTypes.User]: () => import('./icons/user').then((s) => s.default),
 };

@@ -14,6 +14,7 @@ export enum SemanticLinkType {
   Checkout = 'checkout',
   Order = 'Order',
   Cart = 'cart',
+  Login = 'login',
 }
 
 export interface SemanticLinkService {

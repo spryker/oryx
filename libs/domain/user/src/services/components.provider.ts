@@ -13,5 +13,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-address-list>`,
     },
+    ['oryx-user-summary']: {
+      template: (uid: string, layoutClasses?: string) =>
+        html`<oryx-user-summary
+          uid="${uid}"
+          class=${ifDefined(layoutClasses)}
+        ></oryx-user-summary>`,
+    },
   },
 };

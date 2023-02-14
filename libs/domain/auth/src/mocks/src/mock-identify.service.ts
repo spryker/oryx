@@ -1,8 +1,17 @@
 import { Identity, IdentityService } from '@spryker-oryx/auth';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export class MockIdentityService implements Partial<IdentityService> {
+  protected identity$ = new BehaviorSubject<Identity>({
+    id: 'id',
+    anonymous: true,
+  });
+
   get(): Observable<Identity> {
-    return of({ id: 'id', anonymous: true });
+    return this.identity$;
+  }
+
+  set(identity: Identity): void {
+    this.identity$.next(identity);
   }
 }

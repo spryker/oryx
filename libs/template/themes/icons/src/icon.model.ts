@@ -33,6 +33,7 @@ export enum IconTypes {
   MerchantProfile = 'merchantProfile',
   Ratings = 'ratings',
   Sales = 'sales',
+  User = 'user',
   Users = 'users',
   DarkMode = 'darkMode',
   Dashboards = 'dashboards',

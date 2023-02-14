@@ -7,43 +7,30 @@ const mediumScreen = css`
     --oryx-icon-size: 32px;
 
     width: 75px;
-    height: 68px;
-    border-radius: 4px;
   }
 
-  .subtitle {
-    text-align: center;
+  oryx-heading {
     display: block;
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
-
-  a {
-    padding: 8px;
   }
 
   mark {
-    top: 8px;
-    inset-inline-end: 10px;
+    inset-block-start: 3px;
+    inset-inline-end: 3px;
   }
 `;
 
 const smallScreen = css`
   :host {
     width: 59px;
-    height: 42px;
   }
 
-  .subtitle {
+  oryx-heading {
     display: none;
   }
 
-  a {
-    padding: 9px;
-  }
-
   mark {
-    top: 0;
+    inset-block-start: -2px;
+    inset-inline-end: -2px;
   }
 `;
 
@@ -59,42 +46,31 @@ export const cartSummaryScreenStyles: ThemeStylesWithMedia[] = [
 ];
 
 export const styles = css`
-  :host {
-    --color: 'primary';
-
-    display: block;
-    box-sizing: border-box;
-    position: relative;
-    color: var(--oryx-color-canvas-100);
-    background: var(--oryx-color-primary-300);
-    flex-shrink: 0;
-  }
-
-  :host(:hover) {
-    background: var(--oryx-color-primary-400);
-  }
-
-  :host(:active) {
-    background: var(--oryx-color-primary-500);
-  }
-
   a {
-    display: flex;
-    flex-direction: column;
-    color: inherit;
-    text-decoration: none;
-    border-radius: inherit;
-    outline: none;
+    --oryx-icon-size: 32px;
+
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    padding: 6px;
+    max-width: 75px;
+    width: 75px;
+    border: solid 2px transparent;
   }
 
-  a:focus:focus-visible {
-    border: solid 1px #fff;
+  a:hover {
+    background-color: var(--oryx-color-primary-400);
+    box-shadow: none;
+  }
+
+  a:focus-visible {
+    outline: solid 1px blue;
   }
 
   mark {
     position: absolute;
-    inset-inline-end: 0;
-    height: 18px;
+    line-height: 18px;
     min-width: 6px;
     padding: 1px 6px;
     border-radius: 2px;
