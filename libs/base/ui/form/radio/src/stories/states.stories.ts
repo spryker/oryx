@@ -1,103 +1,94 @@
+import {
+  generateVariantsMatrix,
+  Variant,
+  VariantOptions,
+} from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
+import { generateGroupItemVariants } from '../../../utilities';
 
 export default { title: `${storybookPrefix}/Form/Radio/Static` } as Meta;
 
-const variations = [
-  { label: 'default' },
-  { label: 'error message', errorMessage: 'Error message' },
-  { label: 'custom error message', hasError: true, customError: true },
-  { label: 'error state', hasError: true },
+export interface RadioVariantOptions extends VariantOptions {
+  subtext?: string;
+  errorMessage?: string;
+  hasError?: boolean;
+  checked?: boolean;
+  disabled?: boolean;
+  className?: string;
+  customErrorMessage?: string;
+}
+
+interface RadioVariant extends Variant {
+  options: RadioVariantOptions;
+}
+
+enum CategoryY {
+  UNCHECKED = 'Unchecked',
+  CHECKED = 'Checked',
+}
+
+export enum CategoryX {
+  DEFAULT = 'Default',
+  DEFAULT_WITH_SUBTEXT = 'With subtext',
+  HOVERED = 'Hovered',
+  FOCUSED = 'Focused',
+  DISABLED = 'Disabled',
+  ERROR = 'Error',
+  ERROR_MESSAGE = 'Error message',
+  ERROR_MESSAGE_WITH_SUBTEXT = 'Error message with subtext',
+  CUSTOM_ERROR_MESSAGE = 'Custom error message',
+}
+
+const defaultVariants: RadioVariant[] = [
+  {
+    categoryX: CategoryX.DEFAULT,
+    categoryY: CategoryY.UNCHECKED,
+    options: {},
+  },
+  {
+    categoryX: CategoryX.DEFAULT,
+    categoryY: CategoryY.CHECKED,
+    options: {
+      checked: true,
+    },
+  },
 ];
-const states = [
-  { state: 'default' },
-  { state: 'hover' },
-  { label: 'focus', state: 'focus-visible' },
-  { state: 'disabled' },
-];
 
-const Template: Story = (): TemplateResult =>
-  html`
-    <section>
-      ${variations.map(
-        (group, index) => html` <h3>${group.label}</h3>
-          ${states.map(
-            (variant) => html`
-              <h4>${variant.label ?? variant.state}</h4>
-              <oryx-radio
-                ?hasError=${group.hasError}
-                .errorMessage=${group.errorMessage}
-              >
-                <input
-                  type="radio"
-                  name=${`${index}-${variant.state}`}
-                  class="pseudo-${variant.state}"
-                  ?disabled=${variant.state === 'disabled'}
-                />
-                Option
-                ${when(
-                  group.customError,
-                  () => html`<span slot="error">Custom error message</span>`
-                )}
-              </oryx-radio>
-              <oryx-radio
-                ?hasError=${group.hasError}
-                .errorMessage=${group.errorMessage}
-              >
-                <input
-                  type="radio"
-                  name=${`${index}-${variant.state}`}
-                  checked
-                  class="pseudo-${variant.state}"
-                  ?disabled=${variant.state === 'disabled'}
-                />
-                Option
-                ${when(
-                  group.customError,
-                  () => html`<span slot="error">Custom error message</span>`
-                )}
-              </oryx-radio>
-              <oryx-radio
-                ?hasError=${group.hasError}
-                .errorMessage=${group.errorMessage}
-              >
-                <input
-                  type="radio"
-                  name=${`${index}-${variant.state}`}
-                  class="pseudo-${variant.state}"
-                  ?disabled=${variant.state === 'disabled'}
-                />
-                Option
-                ${when(
-                  group.customError,
-                  () => html`<span slot="error">Custom error message</span>`
-                )}
-                <small slot="subtext">subtext</small>
-              </oryx-radio>
-            `
-          )}`
-      )}
-    </section>
+const Template: Story = (): TemplateResult => {
+  return generateVariantsMatrix(
+    generateGroupItemVariants(defaultVariants),
+    ({
+      options: {
+        hasError,
+        errorMessage,
+        checked,
+        disabled,
+        className,
+        subtext,
+        customErrorMessage,
+      },
+    }) => html`
+      <oryx-radio ?hasError=${hasError} errorMessage=${errorMessage}>
+        <input
+          type="checkbox"
+          defaultValue="false"
+          ?checked=${checked}
+          @click=${(e: Event): void => e.preventDefault()}
+          ?disabled=${disabled}
+          class=${className}
+        />
+        Option
+        ${when(subtext, () => html`<small slot="subtext">${subtext}</small>`)}
+        ${when(
+          customErrorMessage,
+          () => html`<span slot="error">${customErrorMessage}</span>`
+        )}
+      </oryx-radio>
+    `
+  );
+};
 
-    <style>
-      section {
-        display: grid;
-        grid-template-columns: repeat(4, max-content);
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      section h3 {
-        text-transform: capitalize;
-        grid-column: 1 / span 4;
-      }
-
-      section h4 {
-        text-transform: capitalize;
-        margin: 0;
-      }
-    </style>
-  `;
 export const States = Template.bind({});

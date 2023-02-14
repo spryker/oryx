@@ -1,62 +1,74 @@
+import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
+import {
+  CategoryX as RadioCategoryX,
+  RadioVariantOptions,
+} from '../../../../radio/src/stories/states.stories';
+import { generateGroupItemVariants } from '../../../../utilities';
 
 export default {
   title: `${storybookPrefix}/Form/Checkbox/Static`,
 } as Meta;
 
-const headings = ['Unchecked', 'Intermediate', 'Checked'];
+interface CheckboxVariantOptions extends RadioVariantOptions {
+  intermediate?: boolean;
+}
 
-const variations = [
+interface CheckboxVariant extends Variant {
+  options: CheckboxVariantOptions;
+}
+
+enum CategoryY {
+  UNCHECKED = 'Unchecked',
+  INTERMEDIATE = 'Intermediate',
+  CHECKED = 'Checked',
+}
+
+const CategoryX = {
+  ...RadioCategoryX,
+};
+
+const defaultVariants: CheckboxVariant[] = [
   {
-    name: 'default',
-    state: '',
-    lightDomState: '',
+    categoryX: CategoryX.DEFAULT,
+    categoryY: CategoryY.UNCHECKED,
+    options: {},
   },
   {
-    name: 'hovered',
-    state: 'pseudo-hover',
-    lightDomState: '',
+    categoryX: CategoryX.DEFAULT,
+    categoryY: CategoryY.INTERMEDIATE,
+    options: {
+      intermediate: true,
+    },
   },
   {
-    name: 'focused',
-    state: 'pseudo-focus',
-    lightDomState: 'pseudo-focus pseudo-focus-visible',
-  },
-  {
-    name: 'disabled',
-    state: '',
-    lightDomState: '',
-  },
-  {
-    name: 'error-message',
-    state: '',
-    lightDomState: '',
-  },
-  {
-    name: 'error',
-    state: '',
-    lightDomState: '',
+    categoryX: CategoryX.DEFAULT,
+    categoryY: CategoryY.CHECKED,
+    options: {
+      checked: true,
+    },
   },
 ];
 
 const Template: Story = (): TemplateResult => {
-  return html`
-    <div class="row">
-      <div class="col variant"></div>
-      ${headings.map((heading) => html`<div class="col">${heading}</div>`)}
-    </div>
-    ${variations.map((variant) => {
-      const isErrorMessage = variant.name === 'error-message';
-      const isDisabled = variant.name === 'disabled';
-      const hasError = variant.name === 'error' || isErrorMessage;
-      const errorMessage = isErrorMessage ? 'Error validation text' : '';
-
-      const renderCheckbox = ({
-        checked = false,
-        intermediate = false,
-      }): TemplateResult => html`
+  return generateVariantsMatrix(
+    generateGroupItemVariants(defaultVariants),
+    ({
+      options: {
+        intermediate,
+        hasError,
+        errorMessage,
+        checked,
+        disabled,
+        className,
+        subtext,
+        customErrorMessage,
+      },
+    }) => html`
+      <div class=${className}>
         <oryx-checkbox
           ?intermediate=${intermediate}
           ?hasError=${hasError}
@@ -67,48 +79,19 @@ const Template: Story = (): TemplateResult => {
             defaultValue="false"
             ?checked=${checked}
             @click=${(e: Event): void => e.preventDefault()}
-            class="${variant.lightDomState}"
-            ?disabled=${isDisabled}
+            ?disabled=${disabled}
+            class=${className}
           />
           Option
+          ${when(subtext, () => html`<small slot="subtext">${subtext}</small>`)}
+          ${when(
+            customErrorMessage,
+            () => html`<span slot="error">${customErrorMessage}</span>`
+          )}
         </oryx-checkbox>
-      `;
-
-      return html`
-        <div class="row">
-          <div class="col variant">
-            <span>${variant.name}</span>
-          </div>
-          <div class="col ${variant.state}">${renderCheckbox({})}</div>
-          <div class="col ${variant.state}">
-            ${renderCheckbox({ checked: true, intermediate: true })}
-          </div>
-          <div class="col ${variant.state}">
-            ${renderCheckbox({ checked: true })}
-          </div>
-        </div>
-      `;
-    })}
-
-    <style>
-      .row {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-        margin-bottom: 24px;
-      }
-      .col {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        width: 180px;
-      }
-      .col.variant {
-        width: 100px;
-        color: #71747c;
-      }
-    </style>
-  `;
+      </div>
+    `
+  );
 };
 
 export const States = Template.bind({});

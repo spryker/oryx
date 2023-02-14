@@ -1,12 +1,8 @@
-import { Variant, VariantOptions } from './variant.model';
+import { Variant } from './variant.model';
 
 export const extendVariants = <T extends Variant>(
   variants: T[],
-  {
-    options,
-    categoryY,
-    categoryX,
-  }: { options?: VariantOptions; categoryY?: string; categoryX?: string }
+  { options, categoryY, categoryX }: Partial<Variant>
 ): T[] => {
   return variants.map((variant) => ({
     ...variant,
