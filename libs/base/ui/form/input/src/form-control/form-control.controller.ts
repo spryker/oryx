@@ -86,12 +86,18 @@ export class FormControlController implements ReactiveController {
 
   protected addValidationListeners(): void {
     this.control?.addEventListener('invalid', this.setHasErrorAttr);
-    this.control?.addEventListener('input', this.removeHasErrorAttr);
+    this.control?.addEventListener(
+      this.control instanceof HTMLSelectElement ? 'change' : 'input',
+      this.removeHasErrorAttr
+    );
   }
 
   protected removeValidationListeners(): void {
     this.control?.removeEventListener('invalid', this.setHasErrorAttr);
-    this.control?.removeEventListener('input', this.removeHasErrorAttr);
+    this.control?.removeEventListener(
+      this.control instanceof HTMLSelectElement ? 'change' : 'input',
+      this.removeHasErrorAttr
+    );
   }
 
   protected detectAutofill(): void {
