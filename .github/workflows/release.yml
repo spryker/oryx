@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.GITHUB_TOKEN }}
           ref: ${{ env.RELEASE_BRANCH }}
       - uses: actions/cache@v2
         with:
@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             npm-node-
       - name: Auth NPM
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
       - name: Auth Git
         run: |
           git config user.email "${{ env.GIT_EMAIL }}"
