@@ -18,7 +18,7 @@ Some of the application state is maintained below domains. A good example is the
 
 ## Handling asynchronous data loading
 
-Working with asynchronous application state and reactivity in general is considered complex and it can distract the component developer from building the UI. Oryx therefor moves the complexity of the reactive system under the hood as much as possible without loosing the ability to customize the application. Component developers can reuse services that collect data from the backend and maintain the application state. The services and lower level layers are provided in vanilla JavaScript packages, and is not opinionated about the UI framework of choice.
+Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower level layers, which can be reused by component developers regardless of their UI framework choice.
 
 Most of the application state is driven by loading data from backend APIs. Oryx provides a number of standardized application layers:
 
