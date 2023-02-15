@@ -148,6 +148,7 @@ describe('AddressEditComponent', () => {
     });
   });
 
+  // ToDo: This test always fail, due to an error throw. Has to be refactored
   describe.skip('when submit throws an error', () => {
     const callback = vi.fn();
 
