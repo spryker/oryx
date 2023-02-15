@@ -22,14 +22,14 @@ export const renderApp = async (
     orchestrator = await app;
   }
 
-  window.location = config.route;
+  globalThis.location = config.route;
 
   const routerService = getInjector().inject(RouterService);
   const awaiter = getInjector().inject(SSRAwaiterService);
   const context = getInjector().inject(ContextService) as ServerContextService;
-  const ssrResult = litRender(config.element);
+  const ssrResult = litRender(config.element)[Symbol.iterator]();
 
-  routerService.go(window.location.pathname);
+  routerService.go(globalThis.location.pathname);
 
   let stream = '';
   let data = ssrResult.next();

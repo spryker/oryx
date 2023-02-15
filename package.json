@@ -114,7 +114,7 @@
   },
   "dependencies": {
     "@lit-labs/router": "^0.1.1",
-    "@lit-labs/ssr": "^2.2.3",
+    "@lit-labs/ssr": "^3.0.1",
     "@open-wc/semantic-dom-diff": "^0.19.5",
     "@open-wc/testing-helpers": "^2.1.2",
     "@webcomponents/template-shadowroot": "^0.1.0",

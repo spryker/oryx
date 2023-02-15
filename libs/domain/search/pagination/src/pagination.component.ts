@@ -51,10 +51,10 @@ export class PaginationComponent extends ComponentMixin<
   }
 
   protected generateLink(page: number): string {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(globalThis.location.search);
     urlParams.set('page', page.toString());
 
-    return `${window.location.origin}${window.location.pathname}${
+    return `${globalThis.location.origin}${globalThis.location.pathname}${
       urlParams.toString() ? `?${urlParams.toString()}` : ''
     }`;
   }
