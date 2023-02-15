@@ -14,7 +14,7 @@ export interface AuthAdapter {
   refresh(token: AccessToken): Observable<AccessToken>;
 }
 
-export const AuthAdapter = 'FES.AuthAdapter';
+export const AuthAdapter = 'oryx.AuthAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

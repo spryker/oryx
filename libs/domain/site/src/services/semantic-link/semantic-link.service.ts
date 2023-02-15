@@ -21,7 +21,7 @@ export interface SemanticLinkService {
   get(link: SemanticLink): Observable<string | undefined>;
 }
 
-export const SemanticLinkService = 'FES.SemanticLinkService';
+export const SemanticLinkService = 'oryx.SemanticLinkService';
 
 declare global {
   interface InjectionTokensContractMap {

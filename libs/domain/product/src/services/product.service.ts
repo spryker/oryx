@@ -10,7 +10,7 @@ export interface ProductService {
   ): Observable<NullableGeneric<HttpErrorResponse>>;
 }
 
-export const ProductService = 'FES.ProductService';
+export const ProductService = 'oryx.ProductService';
 
 declare global {
   interface InjectionTokensContractMap {

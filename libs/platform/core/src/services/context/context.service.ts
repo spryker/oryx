@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export const ContextService = 'FES.ContextService';
+export const ContextService = 'oryx.ContextService';
 
 export interface ContextService {
   provide(element: Element, key: string, value: unknown): void;

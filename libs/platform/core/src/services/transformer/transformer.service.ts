@@ -1,6 +1,6 @@
 import { Observable, ObservedValueOf } from 'rxjs';
 
-export const TransformerService = 'FES.TransformerService';
+export const TransformerService = 'oryx.TransformerService';
 
 export type TransformerType<T> = T extends keyof InjectionTokensContractMap
   ? InjectionTokensContractMap[T] extends

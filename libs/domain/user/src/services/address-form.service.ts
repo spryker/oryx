@@ -6,7 +6,7 @@ export interface AddressFormService {
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm | null>;
 }
 
-export const AddressFormService = 'FES.AddressFormService';
+export const AddressFormService = 'oryx.AddressFormService';
 
 declare global {
   interface InjectionTokensContractMap {

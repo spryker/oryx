@@ -5,7 +5,7 @@ export interface SalutationService {
   get(): Observable<Salutation[]>;
 }
 
-export const SalutationService = 'FES.SalutationService';
+export const SalutationService = 'oryx.SalutationService';
 
 declare global {
   interface InjectionTokensContractMap {

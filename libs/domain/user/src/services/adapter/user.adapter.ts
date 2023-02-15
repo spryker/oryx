@@ -5,7 +5,7 @@ export interface UserAdapter {
   get: () => Observable<User>;
 }
 
-export const UserAdapter = 'FES.OryxUserAdapter';
+export const UserAdapter = 'oryx.OryxUserAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

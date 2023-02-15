@@ -8,7 +8,7 @@ export interface LocaleService {
   formatDate(stamp: string | number): Observable<string>;
 }
 
-export const LocaleService = 'FES.LocaleService';
+export const LocaleService = 'oryx.LocaleService';
 
 declare global {
   interface InjectionTokensContractMap {

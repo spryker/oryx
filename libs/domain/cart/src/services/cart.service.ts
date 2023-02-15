@@ -28,7 +28,7 @@ export interface CartService {
   isEmpty(data?: CartQualifier): Observable<boolean>;
 }
 
-export const CartService = 'FES.CartService';
+export const CartService = 'oryx.CartService';
 
 declare global {
   interface InjectionTokensContractMap {

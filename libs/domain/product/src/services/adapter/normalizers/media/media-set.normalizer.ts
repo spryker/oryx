@@ -3,7 +3,7 @@ import { combineLatest, map, Observable } from 'rxjs';
 import { ApiProductModel, ProductMediaSet } from '../../../../models';
 import { ProductMediaNormalizer } from './media.normalizer';
 
-export const ProductMediaSetNormalizer = 'FES.ProductMediaSetNormalizer*';
+export const ProductMediaSetNormalizer = 'oryx.ProductMediaSetNormalizer*';
 
 export function mediaSetNormalizer(
   data: ApiProductModel.ImageSet[] = [],

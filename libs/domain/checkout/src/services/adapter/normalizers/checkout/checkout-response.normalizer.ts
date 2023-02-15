@@ -2,7 +2,7 @@ import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { CheckoutResponse } from '../../../../models/checkout.model';
 
-export const CheckoutResponseNormalizer = 'FES.CheckoutResponseNormalizer*';
+export const CheckoutResponseNormalizer = 'oryx.CheckoutResponseNormalizer*';
 
 export function checkoutResponseAttributesNormalizer(
   data: CheckoutResponse

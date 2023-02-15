@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { Store } from '../../../../models';
 import { DeserializedStores } from '../model';
 
-export const StoreNormalizer = 'FES.StoreNormalizer*';
+export const StoreNormalizer = 'oryx.StoreNormalizer*';
 
 export function storeAttributesNormalizer(data: DeserializedStores): Store[] {
   return data;

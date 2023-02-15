@@ -8,7 +8,7 @@ export interface CheckoutShipmentService {
   setShipmentMethod(method: number): Observable<unknown>;
 }
 
-export const CheckoutShipmentService = 'FES.CheckoutShipmentService';
+export const CheckoutShipmentService = 'oryx.CheckoutShipmentService';
 
 declare global {
   interface InjectionTokensContractMap {
