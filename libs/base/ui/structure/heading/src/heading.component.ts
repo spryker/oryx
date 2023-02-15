@@ -1,8 +1,10 @@
+import { ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headlineStyles } from './heading.styles';
 
+@ssrShim('style')
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headlineStyles;
 
