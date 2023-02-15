@@ -97,7 +97,3 @@ export class ProductPriceComponent {
 In this example code you can see that the product data is observed from the ProductService, but switches to the price formatting logic. This means that whenever the product changes (i.e. on route change), new product data is emitted and formatted. The `PriceService` is used to format both the sales and original price. The `PriceService.format()` uses the current currency and locale for the formatting, which is why it also exposes an observable. Since there are two prices involved, the two streams are _combined_ in an object.
 
 With this setup, the product price component will receive updated prices whenever the product, currency or locale in the application state will change.Subscribing to this code could simple, however more work is needed to ensure that the component UI (DOM) will be updated simultaneously. This is described in the next section.
-
-## Ensuring compatibility with SSR
-
-Lorem impsem

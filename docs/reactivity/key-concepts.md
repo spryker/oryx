@@ -6,7 +6,12 @@ Reactive data streams are a fundamental concept in Oryx, and play a crucial role
 
 An observable can emit different values over time. In Oryx, components are bind to data observed from APIs and stored in the [application state](#application-state). Whenever the application state is updated, a new value is emitted and the component will update its view automatically in an efficient manner.
 
-Oryx makes use of reactive programming through the popular library [RxJS](https://rxjs.dev/). It provides a set of tools and techniques to make it easier to work with asynchronous data streams and event-driven systems.
+Oryx makes use of reactive programming through the popular library [RxJS](https://rxjs.dev/). It provides a set of tools and techniques to make it easier to work with asynchronous data streams and event-driven systems. RxJS is an platform agnostic library that provides:
+
+- an Observable primitive that can be used as a base mechanism for reactivity with support or bridges into - different frameworks (vue, react, Lit, svelte, etc.)
+- ability to emit more than one value (unline Promises that are resolved only once)
+- ability to resolve value both asynchronously and synchronously (Promises can resole only asynchronously)
+- be able to utilize battle tested, handy operators to combine streams and define reactive logic
 
 ## Application state
 

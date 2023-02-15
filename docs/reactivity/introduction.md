@@ -6,7 +6,7 @@ Reactivity is a fundamental concept in modern web development that enables dynam
 
 In a reactive frontend, data is treated as _streams_ that continue to emit new values in an asynchronous manner. This allows for a highly responsive and engaging user experience, as updates to the data are immediately reflected in the user interface. Examples of reactive behavior include searching for products (_typeahead_), adding to cart, navigating the application, and more.
 
-This is achieved by establishing a connection between the user interface and the data model, so that changes to the data are automatically reflected in the user interface and vice versa. Reactivity is widely used in modern frontend frameworks, but the the technical solution varies from framework to framework.
+This is achieved by establishing a connection between the user interface and the data model, so that changes to the data are automatically reflected in the user interface. Reactivity is widely used in modern frontend frameworks, but the the technical solution varies from framework to framework.
 
 ## Reactivity patterns in Oryx
 
@@ -46,7 +46,7 @@ The following steps are identified in the diagram:
 2. Component state is _controlled_ by a controller that knows the component lifecycle. This controller is specific to LIT, if you'd use another component framework you can leverage the services lower application layers, but you'd need to take care of the component lifecycle yourself.
 3. Components delegate loading of data to a service. API integration is done in lower layers of the application logic (adapters, converters).
 4. API responses are maintained in the service layer, to avoid duplicated requests (in parallel or sequence).
-5. (new) emissions of the data is exposed to the component. Oryx has standardized on observables (using rxjs), so that the application can operate on streams in a flexible way. Promises can however also be used.
+5. (new) emissions of the data is exposed to the component. Oryx has standardized on observables (using rxjs), so that the application can operate on streams in a flexible way.
 6. The `AsyncStateController` observes (new) emission of the data stream.
 7. The controller requests an update for the component
 8. The component rerenders the requested update (but not for other non-related parts of the application)
