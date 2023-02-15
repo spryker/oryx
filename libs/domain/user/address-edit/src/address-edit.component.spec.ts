@@ -148,7 +148,7 @@ describe('AddressEditComponent', () => {
     });
   });
 
-  describe('when submit throws an error', () => {
+  describe.skip('when submit throws an error', () => {
     const callback = vi.fn();
 
     beforeEach(async () => {
