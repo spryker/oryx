@@ -8,6 +8,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { tap } from 'rxjs/operators';
 import { SortingService } from '../../src/services/sorting.service';
 
@@ -29,6 +30,8 @@ export class SortComponent extends LitElement {
   protected renderSorting(
     sort: ProductListSort | undefined | null
   ): TemplateResult {
+    const hasOptions = !!sort?.sortValues.length;
+
     return html`
       <oryx-select>
         <select
@@ -39,14 +42,16 @@ export class SortComponent extends LitElement {
             ${i18n('search.select-search-parameter')}
           </option>
 
-          ${(sort?.sortValues ?? []).map(
-            ({ sortKey, sortName }) =>
-              html`<option
-                value="${sortKey}"
-                ?selected="${String(this.querySortValue?.sort) === sortKey}"
-              >
-                ${sortName}
-              </option>`
+          ${when(hasOptions, () =>
+            sort?.sortValues.map(
+              ({ sortKey, sortName }) =>
+                html`<option
+                  value="${sortKey}"
+                  ?selected="${this.querySortValue?.sort === sortKey}"
+                >
+                  ${sortName}
+                </option>`
+            )
           )}
         </select>
       </oryx-select>
