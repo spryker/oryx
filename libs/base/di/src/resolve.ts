@@ -1,6 +1,13 @@
 import { getInjector, InjectorContext } from './get-injector';
 import { InferInjectType } from './inject';
 
+/**
+ * Works similarly to `inject`, but it tries to resolve the current injector using context (by default globalThis)
+ * and then use it to resolve the token.
+ *
+ * This method is suitable to use in components, especially in web components, where the injection context
+ * may not be defined at construction time.
+ */
 export function resolve<K extends keyof InjectionTokensContractMap>(
   token: K
 ): InferInjectType<K>;

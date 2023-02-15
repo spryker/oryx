@@ -22,7 +22,8 @@ export function setCurrentInjector(injector: Injector): () => void {
  * Injects service from the current injector.
  *
  * Can be used only, when injection context is defined:
- *  -
+ *  - in services, at construction time
+ *  - in provided factories (useFactory)
  *
  * @param token
  * @param defaultValue
