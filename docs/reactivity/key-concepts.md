@@ -23,7 +23,7 @@ Some of the application state is maintained below domains. A good example is the
 
 ## Handling asynchronous data loading
 
-Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower level layers, which can be reused by component developers regardless of their UI framework choice.
+Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower level layers, which can be reused by developers regardless of their UI framework choice.
 
 Most of the application state is driven by loading data from backend APIs. Oryx provides a number of standardized application layers:
 
