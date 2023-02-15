@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "description": "Product features for Oryx applications",
-  "author": "Spryker Sytems GmbH",
+  "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
   "files": [
     "**/*"
