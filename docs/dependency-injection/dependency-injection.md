@@ -105,7 +105,7 @@ export interface CartService {
 
 Since TypeScript interfaces are lightweight, there's no overhead or tight coupling between the service definition (and its token) and its implementation.
 
-## ## Coupling Token with Interface
+## Coupling Token with Interface
 
 To achieve type safety and couple the string token with a specific interface, we use a technique to augment the global `InjectionTokensContractMap`:
 
@@ -131,7 +131,7 @@ export class DefaultCartService implements CartService {
 
 
 
-# # 5. Providing services
+# 5. Providing services
 
 To be able to use and inject services, they must be provided in the DI container. Oryx provides several types of providers:
 
