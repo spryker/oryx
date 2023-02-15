@@ -49,4 +49,4 @@ The following steps are identified in the diagram:
 5. (new) emissions of the data is exposed to the component. Oryx has standardized on observables (using rxjs), so that the application can operate on streams in a flexible way.
 6. The `AsyncStateController` observes (new) emission of the data stream.
 7. The controller requests an update for the component
-8. The component rerenders the requested update (but not for other non-related parts of the application)
+8. The component re-renders the requested update (but not for other non-related parts of the application).
