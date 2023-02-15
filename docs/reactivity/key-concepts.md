@@ -2,7 +2,7 @@
 
 ## Working with reactive data streams
 
-Reactive data streams are a fundamental concept in Oryx, and play a crucial role in managing and manipulating data in real-time. Oryx prefers Observables over Promises as they allow to keep the application in sync during the full application lifetime. This is particular helpful in experiences that remain active during some time, for example in a Single Page Application (SPA).
+Reactive data streams are a fundamental concept in Oryx, and play a crucial role in managing and manipulating data in real-time. Oryx prefers Observables over Promises as they are more powerful and allow for continuous streams of data over time. This is particular helpful in experiences that remain active during some time, for example in a Single Page Application (SPA).
 
 An observable can emit different values over time. In Oryx, components are bind to data observed from APIs and stored in the [application state](#application-state). Whenever the application state is updated, a new value is emitted and the component will update its view automatically in an efficient manner.
 
@@ -31,8 +31,8 @@ Most of the application state is driven by loading data from backend APIs. Oryx 
 | ---------- | ------------------------------------------------------------------------------------------------------------------- |
 | Component  | Renders application state inside UI elements                                                                        |
 | Controller | Resolves application state for the given context so maximize the component reusability                              |
-| Service    | Manage the application state for a certain application domain.                                                      |
-| Adapter    | Loads the data from a specific backend API                                                                          |
+| Service    | Manage the application state for a certain application domain                                                       |
+| Adapter    | Loads the data from a specific backend API and convert it to the client model                                       |
 | Http       | wraps the native http fetch and provides additional utilities to integrate http headers (e.g. authorization header) |
 
 The various layers can be considered optional if you build your own domains or components. For Oryx these layers are however part of a the recommended architecture. It increases separation of concerns and provides a clear and clean extension model. All application layers are customizable and allow for an alternative implementation.
@@ -64,7 +64,7 @@ Description:
 2. The `ProductController` uses finds out the relevant _context_ for the component and resolves the product qualifier (SKU) in order to make the right request. Whenever the product data is resolved, an update to the DOM is requested (this is actually done in the `AsyncStateController` which is left out on this diagram). The `ProductController` uses the `ProductService` to resolve the product data.
 3. The `ProductService` is a business service that control the application state for the product. It will make sure that multiple requests for the same product will not result in multiple request to the backend. The `ProductService` delegates actual loading of the data to the `ProductAdapter`.
 4. The `ProductAdapter` integrates with the backend, by creating an http request. The `ProductAdapter` knows the backend endpoint and it's contract so that it can create the right request. The `ProductAdapter` delegates actual http requests to the `HttpService`.  
-   When an alternative backend is integrated, the `ProductAdapter` can be replaced. The adapter will convert the API data model to the client side model in case of a mismatch (this is done by using converters, see [Designing the data model](./best-practice.md#designing-the-data-model).
+   When an alternative backend is integrated, the `ProductAdapter` can be replaced. The adapter will convert the API data model to the client side model in case of a mismatch (this is done by using normalizers, see [Designing the data model](./best-practice.md#designing-the-data-model).
 5. The `HttpService` is a small wrapper that is used to provide additional features such as support for interceptors..
 
 ## Propagating updates in the DOM
