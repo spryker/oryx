@@ -14,7 +14,7 @@ export interface ProductListService {
   getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
 }
 
-export const ProductListService = 'FES.ProductListService';
+export const ProductListService = 'oryx.ProductListService';
 
 declare global {
   interface InjectionTokensContractMap {

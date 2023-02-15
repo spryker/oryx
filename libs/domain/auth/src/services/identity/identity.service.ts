@@ -2,7 +2,7 @@ import { HttpInterceptor } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Identity } from '../../models';
 
-export const IdentityService = 'FES.IdentityService';
+export const IdentityService = 'oryx.IdentityService';
 export const IdentityInterceptor = `${HttpInterceptor}Identity` as const;
 
 export interface IdentityService {

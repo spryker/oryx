@@ -3,7 +3,7 @@ import { camelize } from '@spryker-oryx/core/utilities';
 import { ApiCheckoutModel, Shipment, ShipmentMethod } from '../../../../models';
 import { DeserializedCheckout } from '../checkout/model';
 
-export const ShipmentsNormalizer = 'FES.ShipmentsNormalizer*';
+export const ShipmentsNormalizer = 'oryx.ShipmentsNormalizer*';
 
 export function shipmentsNormalizer(data: DeserializedCheckout): Shipment[] {
   if (!data) {

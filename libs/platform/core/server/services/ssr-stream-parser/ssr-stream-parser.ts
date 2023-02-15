@@ -1,4 +1,4 @@
-export const SSRStreamParserService = 'FES.SSRStreamParserService';
+export const SSRStreamParserService = 'oryx.SSRStreamParserService';
 
 export interface SSRStreamParserService {
   fillStream(stream: string): void;

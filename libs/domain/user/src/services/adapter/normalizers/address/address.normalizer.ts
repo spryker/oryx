@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { DeserializedAddress } from '..';
 import { Address } from '../../../../models';
 
-export const AddressNormalizer = 'FES.AddressNormalizer*';
+export const AddressNormalizer = 'oryx.AddressNormalizer*';
 
 export function addressAttributesNormalizer(
   data: DeserializedAddress

@@ -11,7 +11,7 @@ export interface FacetComponentRegistryService {
   ): TemplateResult;
 }
 
-export const FacetComponentRegistryService = 'FES.FacetComponentRegistry';
+export const FacetComponentRegistryService = 'oryx.FacetComponentRegistry';
 
 declare global {
   interface InjectionTokensContractMap {

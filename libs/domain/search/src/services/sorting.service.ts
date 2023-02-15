@@ -6,7 +6,7 @@ export interface SortingService {
   get(): Observable<NullableGeneric<ProductListSort>>;
 }
 
-export const SortingService = 'FES.SortingService';
+export const SortingService = 'oryx.SortingService';
 
 declare global {
   interface InjectionTokensContractMap {

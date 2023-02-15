@@ -29,7 +29,7 @@ export interface CartAdapter {
   updateEntry: (data: UpdateCartEntityProps) => Observable<Cart>;
 }
 
-export const CartAdapter = 'FES.CartAdapter';
+export const CartAdapter = 'oryx.CartAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

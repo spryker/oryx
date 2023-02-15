@@ -3,7 +3,7 @@ import { ComponentsInfo, ComponentsOptions } from '../components';
 import { Resources } from '../resources';
 import { Theme } from '../theme';
 
-export const AppRef = 'FES.AppRef';
+export const AppRef = 'oryx.AppRef';
 
 declare global {
   interface InjectionTokensContractMap {

@@ -11,7 +11,7 @@ import {
   UpdateCheckoutDataProps,
 } from '../../checkout.adapter';
 
-export const CheckoutDataSerializer = 'FES.CheckoutDataSerializers*';
+export const CheckoutDataSerializer = 'oryx.CheckoutDataSerializers*';
 
 export function checkoutDataAttributesSerializer(
   data: UpdateCheckoutDataProps | GetCheckoutDataProps

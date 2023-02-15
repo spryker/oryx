@@ -6,7 +6,7 @@ export interface CheckoutPaymentService {
   setPaymentMethod(id: string): Observable<unknown>;
 }
 
-export const CheckoutPaymentService = 'FES.CheckoutPaymentService';
+export const CheckoutPaymentService = 'oryx.CheckoutPaymentService';
 
 declare global {
   interface InjectionTokensContractMap {
