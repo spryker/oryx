@@ -60,7 +60,7 @@ Description:
 3. The `ProductService` is a business service that control the application state for the product. It will make sure that multiple requests for the same product will not result in multiple request to the backend. The `ProductService` delegates actual loading of the data to the `ProductAdapter`.
 4. The `ProductAdapter` integrates with the backend, by creating an http request. The `ProductAdapter` knows the backend endpoint and it's contract so that it can create the right request. The `ProductAdapter` delegates actual http requests to the `HttpService`.  
    When an alternative backend is integrated, the `ProductAdapter` can be replaced. The adapter will convert the API data model to the client side model in case of a mismatch (this is done by using converters, see [Designing the data model](./best-practice.md#designing-the-data-model).
-5. The `HttpService` is a small wrapper that is used to provide additional features such as http headers. It integrates with the `IdentityService` for those requests that require an authorization header.
+5. The `HttpService` is a small wrapper that is used to provide additional features such as support for interceptors..
 
 ## Propagating updates in the DOM
 
