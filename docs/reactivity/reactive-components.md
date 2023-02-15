@@ -44,7 +44,7 @@ Another missing piece here is how the observed data can be used and rendered ins
 
 While the user navigates through pages in a single page application experience, it's crucial for components to be updated accordingly. This section will explain how data updates are propagated throughout the user interface in Oryx.
 
-RxJS conveniently operates on data streams and updates them in memory, but it won't synchronized this to the UI automatically. Each JavaScript framework ships its own opinionated method to update the DOM. The method of choice contributes significantly to the performance and user experience of the application.
+RxJS conveniently operates on data streams and updates them in memory, but it won't synchronize this to the UI automatically. Each JavaScript framework ships its own opinionated method to update the DOM. The method of choice contributes significantly to the performance and user experience of the application.
 
 The components provided in the Oryx libraries are build with Lit. Lit provides a highly efficient system to only synchronizes the minimum required updates to the DOM. When updates are loaded asynchronous, we need, however, to update the UI whenever new data is emitted. To make this as transparent as possible, a decorator (`@asyncState()`) is provided that can be used in the UI components. The decorator uses the `AsyncStateController` under the hood, which will request updates to the view whenever needed.
 
