@@ -25,7 +25,7 @@ In a typical Oryx application, much of the work related to setting up the DI con
 
 ## inject vs resolve
 
-there are two primary methods for injecting services and dependencies into components: `inject` and `resolve`.
+There are two primary methods for injecting services and dependencies into components: `inject` and `resolve`.
 
 ### inject()
 
