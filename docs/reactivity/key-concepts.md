@@ -68,4 +68,4 @@ While observables and RxJS operators provide a great setup for an in-memory reac
 
 Oryx has standardized its component library on web components and uses (Lit)[https://lit.dev] to develop those components. Lit is capable to update only the mutable parts of the components, and maintains the static parts of the components unchanged. This results in a highly efficient rendering performance.
 
-The combination of a reactive application state and efficient component rendering requires an explicit update request whenever the application state has changed. To simplify the use of reactive streams in components and avoid complex rendering code, a dedicated decorator (`@asyncState`) is provided in Oryx when you work with Lit components. If you'd integrate Oryx in another web framework you must integrate the reactive patterns from the given framework.
+Oryx offers a @asyncState decorator for Lit components, which simplifies the use of reactive streams and reduces code complexity. However, if integrating Oryx with a different web framework, the reactive patterns of that particular framework need to be used instead.
