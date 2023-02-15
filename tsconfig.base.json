@@ -212,6 +212,7 @@
       ],
       "@spryker-oryx/ui/typeahead": ["libs/base/ui/search/typeahead/index.ts"],
       "@spryker-oryx/ui/utilities": ["libs/base/ui/form/utilities/index.ts"],
+      "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
       "@spryker-oryx/user/address-book": [
