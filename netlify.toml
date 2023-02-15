@@ -1,0 +1,3 @@
+[functions.ssr]
+  node_bundler = "esbuild"
+  included_files = ["dist/apps/storefront/**"]
