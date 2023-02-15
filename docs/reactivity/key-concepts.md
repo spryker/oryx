@@ -23,7 +23,7 @@ Some of the application state is maintained below domains. A good example is the
 
 ## Handling asynchronous data loading
 
-Working with asynchronous application state and reactivity in general is considered complex and it can distract the component developer from building the UI. Oryx therefor moves the complexity of the reactive system under the hood as much as possible without loosing the ability to customize the application. Component developers can reuse services that collect data from the backend and maintain the application state. The services and lower level layers are provided in vanilla JavaScript packages, and is not opinionated about the UI framework of choice.
+Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower level layers, which can be reused by component developers regardless of their UI framework choice.
 
 Most of the application state is driven by loading data from backend APIs. Oryx provides a number of standardized application layers:
 
@@ -65,7 +65,7 @@ Description:
 3. The `ProductService` is a business service that control the application state for the product. It will make sure that multiple requests for the same product will not result in multiple request to the backend. The `ProductService` delegates actual loading of the data to the `ProductAdapter`.
 4. The `ProductAdapter` integrates with the backend, by creating an http request. The `ProductAdapter` knows the backend endpoint and it's contract so that it can create the right request. The `ProductAdapter` delegates actual http requests to the `HttpService`.  
    When an alternative backend is integrated, the `ProductAdapter` can be replaced. The adapter will convert the API data model to the client side model in case of a mismatch (this is done by using converters, see [Designing the data model](./best-practice.md#designing-the-data-model).
-5. The `HttpService` is a small wrapper that is used to provide additional features such as http headers. It integrates with the `IdentityService` for those requests that require an authorization header.
+5. The `HttpService` is a small wrapper that is used to provide additional features such as support for interceptors..
 
 ## Propagating updates in the DOM
 
@@ -73,4 +73,4 @@ While observables and RxJS operators provide a great setup for an in-memory reac
 
 Oryx has standardized its component library on web components and uses (Lit)[https://lit.dev] to develop those components. Lit is capable to update only the mutable parts of the components, and maintains the static parts of the components unchanged. This results in a highly efficient rendering performance.
 
-The combination of a reactive application state and efficient component rendering requires an explicit update request whenever the application state has changed. To simplify the use of reactive streams in components and avoid complex rendering code, a dedicated decorator (`@asyncState`) is provided in Oryx when you work with Lit components. If you'd integrate Oryx in another web framework you must integrate the reactive patterns from the given framework.
+Oryx offers a @asyncState decorator for Lit components, which simplifies the use of reactive streams and reduces code complexity. However, if integrating Oryx with a different web framework, the reactive patterns of that particular framework need to be used instead.
