@@ -1,0 +1,9 @@
+255c255,260
+<     const state = stack[stack.length - 1];
+---
+>     let state = stack[stack.length - 1];
+>     let i = 1;
+>     while(state.type !== 'template-instance' && stack.length - i >= 0) {
+>       state = stack[stack.length - i];
+>       i++;
+>     }
