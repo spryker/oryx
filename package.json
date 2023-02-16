@@ -20,6 +20,8 @@
     "release-tag:libs": "cd libs && npm run release-tag",
     "release-branch": "run-s release-branch:*",
     "release-branch:libs": "cd libs && npm run release-branch",
+    "release-from-packages": "run-s release-from-packages:*",
+    "release-from-packages:libs": "cd libs && npm run release-from-packages",
     "postinstall": "libs/template/application/patches/patch.sh ./ libs"
   },
   "author": {
