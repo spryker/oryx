@@ -1,3 +1,7 @@
+# Fine-grained reactivity
+
+## Table of contents
+
 [Introduction](./introduction.md)
 
 - [What is reactivity?](./introduction.md#what-is-reactivity)
