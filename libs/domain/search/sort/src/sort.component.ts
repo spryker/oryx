@@ -1,5 +1,4 @@
 import { resolve } from '@spryker-oryx/di';
-import { ProductListSort } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   asyncState,
@@ -24,13 +23,11 @@ export class SortComponent extends LitElement {
   protected querySortValue = valueType(this.routerService.currentQuery());
 
   protected override render(): TemplateResult {
-    return this.renderSorting(this.sortingOptions);
+    return this.renderSorting();
   }
 
-  protected renderSorting(
-    sort: ProductListSort | undefined | null
-  ): TemplateResult {
-    const hasOptions = !!sort?.sortValues.length;
+  protected renderSorting(): TemplateResult {
+    const hasOptions = !!this.sortingOptions?.sortValues.length;
 
     return html`
       <oryx-select>
@@ -43,7 +40,7 @@ export class SortComponent extends LitElement {
           </option>
 
           ${when(hasOptions, () =>
-            sort?.sortValues.map(
+            this.sortingOptions?.sortValues.map(
               ({ sortKey, sortName }) =>
                 html`<option
                   value="${sortKey}"
