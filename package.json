@@ -14,16 +14,12 @@
     "build:executors": "tsc --project ./tools/tsconfig.tools.json",
     "release": "run-s release:*",
     "release:libs": "cd libs && npm run release",
-    "release:apps": "cd apps && npm run release",
     "release-from-tag": "run-s release-from-tag:*",
     "release-from-tag:libs": "cd libs && npm run release-from-tag",
-    "release-from-tag:apps": "cd apps && npm run release-from-tag",
     "release-tag": "run-s release-tag:*",
     "release-tag:libs": "cd libs && npm run release-tag",
-    "release-tag:apps": "cd apps && npm run release-tag",
     "release-branch": "run-s release-branch:*",
     "release-branch:libs": "cd libs && npm run release-branch",
-    "release-branch:apps": "cd apps && npm run release-branch",
     "postinstall": "libs/template/application/patches/patch.sh ./ libs"
   },
   "author": {
