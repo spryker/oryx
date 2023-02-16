@@ -6,7 +6,7 @@ export const viteConfig = {
   index: './src',
   // vite starts paths from index dir
   root: '../',
-  envPrefix: ['FES', 'SCOS', 'STORE'],
+  envPrefix: ['ORYX', 'FES', 'SCOS', 'STORE'],
   /// need additional escape because we start from './src'
   monorepoRoot: '../../../',
   ssr: {
