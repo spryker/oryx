@@ -27,13 +27,13 @@ export const renderApp = async (
   const routerService = getInjector().inject(RouterService);
   const awaiter = getInjector().inject(SSRAwaiterService);
   const context = getInjector().inject(ContextService) as ServerContextService;
-  const renderResult = litRender(config.element);
+  const ssrResult = litRender(config.element);
 
   routerService.go(globalThis.location.pathname);
 
   let stream = '';
 
-  for (const data of renderResult) {
+  for (const data of ssrResult) {
     if (awaiter.hasAwaiter()) {
       try {
         await awaiter.await();
