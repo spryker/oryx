@@ -12,6 +12,11 @@ runs:
         key: npm-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           npm-node-
+    - name: Nx Cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules/.cache/nx
+        key: nx-cache
     - name: Install Deps
       run: npm ci
       shell: bash
