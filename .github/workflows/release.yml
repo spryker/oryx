@@ -45,10 +45,10 @@ jobs:
           git config user.email "${{ env.GIT_EMAIL }}"
           git config user.name "${{ env.GIT_USER }}"
       - name: Install Deps
-        run: npm ci --ignore-scripts
+        run: npm ci
 
       - name: Build packages
-        run: npx nx run-many --target=build --all
+        run: npx nx run-many --target=build --all --parallel=2
 
       - name: Release Next
         if: ${{ env.RELEASE_BRANCH == 'development' }}
