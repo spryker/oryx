@@ -38,35 +38,22 @@ jobs:
           key: npm-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             npm-node-
-
       - name: Auth NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: Nx Cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules/.cache/nx
-          key: nx-cache
-
       - name: Auth Git
         run: |
           git config user.email "${{ env.GIT_EMAIL }}"
           git config user.name "${{ env.GIT_USER }}"
-
       - name: Install Deps
         run: npm ci
-
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2
-
       - name: Release Next
         if: ${{ env.RELEASE_BRANCH == 'development' }}
         run: RELEASE_TAG=next npm run release-tag
-
       - name: Release Latest
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-branch
-
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log
