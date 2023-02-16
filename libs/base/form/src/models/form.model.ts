@@ -25,7 +25,6 @@ export const enum FormFieldType {
 export interface FormFieldDefinition<K = string> {
   id: K;
   type?: FormFieldType | string;
-  title?: string;
   label?: string;
   floatLabel?: boolean;
   required?: boolean;
@@ -42,6 +41,14 @@ export interface FormFieldDefinition<K = string> {
   width?: 50 | 100;
 
   disabled?: boolean;
+
+  pattern?: string;
+  title?: string;
 }
 
 export type FormValues = Record<string, string | boolean>;
+
+export interface FieldValidationPattern {
+  pattern: string;
+  title: string;
+}
