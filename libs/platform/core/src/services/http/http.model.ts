@@ -20,4 +20,5 @@ export type HttpErrorValues = Pick<Writeable<Response>, ResponseKeys>;
 
 export interface HttpErrorResponse extends Error, HttpErrorValues {
   name: 'FES.HttpErrorResponse';
+  body?: unknown;
 }
