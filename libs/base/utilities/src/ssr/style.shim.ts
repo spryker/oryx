@@ -38,6 +38,9 @@ export const ssrStyleShim = (litClass: Type<LitElement>): void => {
             }) ?? ''
           );
         }.bind(this),
+        getPropertyValue: function (this: any, property: string) {
+          return this._styles[property];
+        }.bind(this),
       };
     },
     set(value: string) {

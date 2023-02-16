@@ -99,6 +99,20 @@ describe('VideoComponent', () => {
         });
       });
     });
+
+    describe('and aspectRatio is provided', () => {
+      describe(`and the aspectRatio is '9/1'`, () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-video url="test.mp4" aspectRatio="9/1"></oryx-video>`
+          );
+        });
+
+        it('should render the aspectRatio attribute', () => {
+          expect(element.style.getPropertyValue('--aspect-ratio')).toBe('9/1');
+        });
+      });
+    });
   });
 
   describe(`when a youtube is provided`, () => {

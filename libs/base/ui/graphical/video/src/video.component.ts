@@ -25,7 +25,6 @@ export default class VideoComponent
   }
 
   protected override render(): TemplateResult | void {
-    console.log('muted', this.muted);
     if (!this.url) return;
 
     if (this.isYoutube()) {
@@ -53,14 +52,14 @@ export default class VideoComponent
   protected resolveYoutubeUrl(): string | undefined {
     if (!this.url) return;
 
-    const resolveId = (url: string): string | null | undefined => {
+    const resolveId = (url: string): string | undefined => {
       if (url.includes('youtu.be')) {
         return url.split('/').pop();
       } else if (url.includes('youtube.com')) {
         if (url.includes('/embed/')) {
           return url.split('/embed/').pop()?.split('?')[0];
         }
-        return new URL(url).searchParams.get('v');
+        return new URL(url).searchParams.get('v') ?? undefined;
       }
       return;
     };
