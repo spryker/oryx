@@ -52,18 +52,16 @@ jobs:
           git config user.email "${{ env.GIT_EMAIL }}"
           git config user.name "${{ env.GIT_USER }}"
 
-#      - name: Install Deps
-#        run: npm ci
-#
-#      - name: Build packages
-#        run: npx nx run-many --target=build --all --parallel=2
-#
-#      - name: Release from packages
-#        if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
-#        run: npm run release-from-packages
-#
-#      - name: Release Error Log
-#        if: failure()
-#        run: cat libs/lerna-debug.log
+      - name: Install Deps
+        run: npm ci
+
+      - name: Build packages
+        run: npx nx run-many --target=build --all --parallel=2
+
+      - name: Release from packages
+        if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
+        run: npm run release-from-packages
+
       - name: Release Error Log
-        run: npm whoami
+        if: failure()
+        run: cat libs/lerna-debug.log
