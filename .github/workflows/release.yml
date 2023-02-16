@@ -38,17 +38,21 @@ jobs:
           key: npm-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             npm-node-
+
       - name: Auth NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Nx Cache
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/nx
           key: nx-cache
+
       - name: Auth Git
         run: |
           git config user.email "${{ env.GIT_EMAIL }}"
           git config user.name "${{ env.GIT_USER }}"
+
       - name: Install Deps
         run: npm ci
 
