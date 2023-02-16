@@ -28,11 +28,12 @@ export class SearchFacetComponent extends FacetComponentMixin() {
       const valuesLength =
         facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0;
 
-      /* ToDo: refactor enabletoggle and enablesearch to camelCase.
+      /* ToDo: refactor enabletoggle, enablesearch and enableclearaction to camelCase.
          On SSR Lit renders boolean attributes in camelCase. For other attributes
          it emulates browser behavior and convert them to lowercase. Lit populates
          reactive props with a data only from lowercased attributes of rendered
-         component. That's why enabletoggle and enablesearch was lowercased manually.
+         component. That's why enabletoggle, enablesearch and enableclearaction
+         was lowercased manually.
       */
       return html`<oryx-search-facet-value-navigation
         ?open=${props.open}
@@ -41,7 +42,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         .heading=${props.name}
         .selectedLength=${facet.selectedValues?.length}
         .valuesLength=${valuesLength}
-        ?enableClearAction="${props.enableClearAction}"
+        ?enableclearaction="${props.enableClearAction}"
       >
         ${when(
           valuesLength,
