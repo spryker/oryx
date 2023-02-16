@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Release from packages Workflow
 
 on:
   # Triggers the workflow after the Test Workflow has completed
@@ -7,7 +7,6 @@ on:
   #   types:
   #     - completed
   #   branches:
-  #     - development
   #     - 'release/*'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,41 +17,51 @@ jobs:
     if: ${{ github.event.workflow_run && github.event.workflow_run.conclusion == 'success' || true }}
     environment: 'Release NPM'
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       GIT_USER: ${{ secrets.GIT_USER }}
       GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
       RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
     steps:
       - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ env.GITHUB_TOKEN }}
+          token: ${{ env.GH_TOKEN }}
           ref: ${{ env.RELEASE_BRANCH }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: npm-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             npm-node-
+
       - name: Auth NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Nx Cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/nx
+          key: nx-cache
+
       - name: Auth Git
         run: |
           git config user.email "${{ env.GIT_EMAIL }}"
           git config user.name "${{ env.GIT_USER }}"
+
       - name: Install Deps
-        run: npm ci --ignore-scripts
+        run: npm ci
 
-      - name: Release Next
-        if: ${{ env.RELEASE_BRANCH == 'development' }}
-        run: RELEASE_TAG=next npm run release-tag
+      - name: Build packages
+        run: npx nx run-many --target=build --all --parallel=2
 
-      - name: Release Latest
-        if: ${{ startsWith(env.RELEASE_BRANCH, 'release/') }}
-        run: npm run release-branch
+      - name: Release from packages
+        if: ${{ env.RELEASE_BRANCH == 'refs/heads/release/' }}
+        run: npm run release-from-packages
 
       - name: Release Error Log
         if: failure()
-        run: cat lerna-debug.log
+        run: cat libs/lerna-debug.log

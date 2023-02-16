@@ -109,6 +109,7 @@ export class AddressFormComponent
                 this.selectRef.value?.setCustomValidity(
                   form ? '' : 'Address form for given country not available.'
                 );
+                this.selectRef.value?.reportValidity();
               }),
               map((form) => form?.data?.options)
             )
