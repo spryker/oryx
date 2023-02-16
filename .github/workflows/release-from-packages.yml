@@ -66,4 +66,4 @@ jobs:
 #        if: failure()
 #        run: cat libs/lerna-debug.log
       - name: Release Error Log
-        run: echo npm whoami
+        run: npm whoami
