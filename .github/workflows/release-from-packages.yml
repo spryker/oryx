@@ -19,8 +19,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GIT_USER: ${{ secrets.GIT_USER }}
-      GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+      GIT_USER: ${{ vars.GIT_USER }}
+      GIT_EMAIL: ${{ vars.GIT_EMAIL }}
       RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
     steps:
       - uses: actions/setup-node@v3
@@ -39,7 +39,9 @@ jobs:
             npm-node-
 
       - name: Auth NPM
-        run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+          npm whoami
 
       - name: Nx Cache
         uses: actions/cache@v3
