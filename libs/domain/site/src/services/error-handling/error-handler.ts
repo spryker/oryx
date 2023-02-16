@@ -3,7 +3,7 @@ import { inject } from '@spryker-oryx/di';
 import { Types } from '@spryker-oryx/ui/notification';
 import { NotificationService } from '../notification';
 
-interface Error {
+interface ApiError {
   code: string;
   detail: string;
   status: number;
@@ -38,7 +38,7 @@ export class SiteErrorHandler implements ErrorHandler {
     return typeof error === 'object';
   }
 
-  protected isApiError(body: any): body is { errors: Error[] } {
+  protected isApiError(body: any): body is { errors: ApiError[] } {
     return (
       typeof body === 'object' &&
       body?.errors !== undefined &&
