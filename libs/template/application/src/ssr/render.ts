@@ -27,14 +27,13 @@ export const renderApp = async (
   const routerService = getInjector().inject(RouterService);
   const awaiter = getInjector().inject(SSRAwaiterService);
   const context = getInjector().inject(ContextService) as ServerContextService;
-  const ssrResult = litRender(config.element)[Symbol.iterator]();
+  const renderResult = litRender(config.element);
 
   routerService.go(globalThis.location.pathname);
 
   let stream = '';
-  let data = ssrResult.next();
 
-  while (!data.done) {
+  for (const data of renderResult) {
     if (awaiter.hasAwaiter()) {
       try {
         await awaiter.await();
@@ -43,8 +42,7 @@ export const renderApp = async (
       }
     }
 
-    stream += data.value;
-    data = ssrResult.next();
+    stream += data;
     context.fillStream(stream);
   }
   context.rendered();
