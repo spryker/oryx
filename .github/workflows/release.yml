@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           token: ${{ env.GITHUB_TOKEN }}
           ref: ${{ env.RELEASE_BRANCH }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: npm-node-${{ hashFiles('**/package-lock.json') }}
@@ -45,6 +45,9 @@ jobs:
       - name: Install Deps
         run: npm ci --ignore-scripts
 
+      - name: Build packages
+        run: npx nx run-many --target=build --all
+
       - name: Release Next
         if: ${{ env.RELEASE_BRANCH == 'development' }}
         run: RELEASE_TAG=next npm run release-tag
@@ -55,4 +58,4 @@ jobs:
 
       - name: Release Error Log
         if: failure()
-        run: cat lerna-debug.log
+        run: cat libs/lerna-debug.log
