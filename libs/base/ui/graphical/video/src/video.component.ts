@@ -1,5 +1,5 @@
 import { ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { VideoAspectRatio, VideoAttributes, VideoPreload } from './video.model';
@@ -24,6 +24,17 @@ export default class VideoComponent
     this.style.setProperty('height', value ? '' : 'var(--height)');
   }
 
+  protected updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+
+    const video = this.renderRoot.querySelector<HTMLVideoElement>('video');
+
+    if (video) {
+      video.toggleAttribute('muted', !!this.muted);
+      video.muted = !!this.muted;
+    }
+  }
+
   protected override render(): TemplateResult | void {
     if (!this.url) return;
 
@@ -36,7 +47,6 @@ export default class VideoComponent
         ?autoplay=${this.autoplay}
         ?controls=${this.controls}
         ?loop=${this.loop}
-        ?muted=${this.muted}
         ?playsInline=${this.playsInline}
         preload=${ifDefined(this.preload)}
       >
