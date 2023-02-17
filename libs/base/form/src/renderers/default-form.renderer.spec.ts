@@ -8,6 +8,7 @@ import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
 @customElement('mock-field')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockFieldComponent extends LitElement {
   render(): TemplateResult {
     return html`<div>mock input</div>`;

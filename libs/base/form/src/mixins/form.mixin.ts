@@ -17,9 +17,9 @@ export declare class FormMixinInterface<FormValues = unknown>
 }
 
 export const FormMixin = <
-  // TODO: remove any and pass generic type to mixin
+  // TODO: remove unknown and pass generic type to mixin
   // when we fix issue with types inference of mixins chain
-  Values = any,
+  Values = unknown,
   T extends Type<LitElement> = Type<LitElement>
 >(
   superClass: T
