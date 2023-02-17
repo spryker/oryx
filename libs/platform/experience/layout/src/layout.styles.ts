@@ -285,7 +285,7 @@ const tabularLayout = css`
 
   :host([layout='tabular']) ::slotted(*:not(label):not(input)):before {
     content: '';
-    border-top: 2px solid var(--oryx-color-neutral-300);
+    border-top: 2px solid var(--oryx-color-canvas-500);
     position: absolute;
     width: 100%;
     margin-top: -2px;
@@ -302,7 +302,7 @@ const tabularLayout = css`
 
   :host([layout='tabular']) ::slotted(label) {
     padding-block: 5px;
-    border-bottom: solid 2px currentColor;
+    border-bottom: solid 2px var(--oryx-color-canvas-500);
     color: var(--oryx-color-neutral-300);
     z-index: 1;
     cursor: pointer;
@@ -311,7 +311,7 @@ const tabularLayout = css`
 
   :host([layout='tabular']) ::slotted(label:hover) {
     color: var(--oryx-color-ink);
-    border-color: var(--oryx-color-neutral-400);
+    border-color: var(--oryx-color-neutral-300);
   }
 
   :host([layout='tabular']) ::slotted(input) {

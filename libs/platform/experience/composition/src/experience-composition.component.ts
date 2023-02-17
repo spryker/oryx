@@ -12,14 +12,13 @@ import {
   asyncState,
   hydratable,
   observe,
-  subscribe,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable()
@@ -39,9 +38,6 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   @observe()
   protected route$ = new BehaviorSubject<string>(this.route);
-
-  @subscribe()
-  protected o = this.options$.pipe(tap(console.log));
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
@@ -141,6 +137,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
           }
           [layout='tabular'] input:checked + label {
             color: var(--oryx-color-primary-300);
+            border-color: var(--oryx-color-primary-300);
           }
 
           [layout='tabular'][orientation='vertical'] *:not(input):not(label) {
