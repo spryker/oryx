@@ -8,6 +8,7 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { generateGroupItemVariants } from '../../../utilities';
+import { CategoryX } from "../../../utilities";
 
 export default { title: `${storybookPrefix}/Form/Radio/Static` } as Meta;
 
@@ -28,18 +29,6 @@ interface RadioVariant extends Variant {
 enum CategoryY {
   UNCHECKED = 'Unchecked',
   CHECKED = 'Checked',
-}
-
-export enum CategoryX {
-  DEFAULT = 'Default',
-  DEFAULT_WITH_SUBTEXT = 'With subtext',
-  HOVERED = 'Hovered',
-  FOCUSED = 'Focused',
-  DISABLED = 'Disabled',
-  ERROR = 'Error',
-  ERROR_MESSAGE = 'Error message',
-  ERROR_MESSAGE_WITH_SUBTEXT = 'Error message with subtext',
-  CUSTOM_ERROR_MESSAGE = 'Custom error message',
 }
 
 const defaultVariants: RadioVariant[] = [
