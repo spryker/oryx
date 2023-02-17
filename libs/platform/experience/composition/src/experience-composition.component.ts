@@ -1,4 +1,3 @@
-import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -10,10 +9,11 @@ import {
   LayoutBuilder,
 } from '@spryker-oryx/experience';
 import {
-  asyncValue,
+  asyncState,
   hydratable,
   observe,
   subscribe,
+  valueType,
 } from '@spryker-oryx/utilities';
 import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -45,7 +45,6 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
-  protected ssrAwaiter = resolve(SSRAwaiterService, null);
   protected hasSSR = false;
   protected isHydrated = false;
 
@@ -96,6 +95,9 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
     map((component: Component) => component?.components ?? [])
   );
 
+  @asyncState()
+  protected components = valueType(this.components$);
+
   // Can be safely used any time on or after calling getUpdateComplete().
   hydrateOnDemand(): void {
     if (!this.isHydrated) {
@@ -105,18 +107,15 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   }
 
   protected override render(): TemplateResult {
+    if (!this.components) return html`Loading...`;
+
     return html`
       <slot></slot>
-      ${asyncValue(
-        this.components$,
-        (components) =>
-          this.shouldRenderChildren()
-            ? html` ${[...this.renderRoot.children]}`
-            : components
-            ? html` ${this.renderComponents(components)} `
-            : html``,
-        () => html`Loading...`
-      )}
+      ${this.shouldRenderChildren()
+        ? html` ${[...this.renderRoot.children]}`
+        : this.components
+        ? html` ${this.renderComponents(this.components)} `
+        : html``}
     `;
   }
 
