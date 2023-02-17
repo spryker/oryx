@@ -19,5 +19,5 @@ const Template: Story = (_, info): TemplateResult => {
   return html`<oryx-user-summary></oryx-user-summary>`;
 };
 
-export const NotLoggedIn = Template.bind({ behavior: 'not-logged' });
-export const LoggedIn = Template.bind({ behavior: 'logged' });
+export const NotLoggedIn = Template.bind({});
+export const LoggedIn = Template.bind({});
