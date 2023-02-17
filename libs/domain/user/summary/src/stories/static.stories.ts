@@ -5,23 +5,12 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
-interface Props {
-  behavior: 'logged' | 'not-logged';
-}
-
 export default {
   title: `${storybookPrefix}/Summary/Static`,
-  argTypes: {
-    behavior: {
-      table: {
-        disable: true,
-      },
-    },
-  },
 } as unknown as Meta;
 
-const Template: Story<Props> = (props): TemplateResult => {
-  if (props.behavior === 'logged') {
+const Template: Story = (_, info): TemplateResult => {
+  if (info.name === 'Logged In') {
     const identityService = resolve(IdentityService) as MockIdentityService;
 
     identityService.set({ id: 'id', anonymous: false });
@@ -30,13 +19,5 @@ const Template: Story<Props> = (props): TemplateResult => {
   return html`<oryx-user-summary></oryx-user-summary>`;
 };
 
-export const NotLoggedIn = Template.bind({});
-export const LoggedIn = Template.bind({});
-
-NotLoggedIn.args = {
-  behavior: 'not-logged',
-};
-
-LoggedIn.args = {
-  behavior: 'logged',
-};
+export const NotLoggedIn = Template.bind({ behavior: 'not-logged' });
+export const LoggedIn = Template.bind({ behavior: 'logged' });
