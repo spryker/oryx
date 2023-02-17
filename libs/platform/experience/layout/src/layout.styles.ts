@@ -279,6 +279,10 @@ const tabularLayout = css`
     grid-template-areas: 'head foot';
   }
 
+  :host([layout='tabular']) ::slotted(*:not(label):not(input)) {
+    position: initial;
+  }
+
   :host([layout='tabular']) ::slotted(*:not(label):not(input)):before {
     content: '';
     border-top: 2px solid var(--oryx-color-neutral-300);

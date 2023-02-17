@@ -4,6 +4,7 @@ export const styles = css`
   :host {
     display: flex;
     overflow: hidden;
+    position: relative;
     color: white;
     width: var(--width, 100%);
     height: var(--height, 100%);

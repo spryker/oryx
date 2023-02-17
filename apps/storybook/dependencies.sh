@@ -1,1 +1,1 @@
-DEPENDENCIES="apps/storybook/* libs/base/ui/* libs/domain/content/*"
+DEPENDENCIES="apps/storybook/* libs/base/ui/* libs/base/utilities/* libs/domain/content/* libs/platform/experience/*"
