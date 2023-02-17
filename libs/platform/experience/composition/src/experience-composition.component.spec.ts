@@ -27,6 +27,8 @@ class MockExperienceService implements Partial<ExperienceService> {
       type: '',
       components: this.components,
     });
+  getOptions = (): Observable<any> => of({});
+  getContent = (): Observable<any> => of({});
 }
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
