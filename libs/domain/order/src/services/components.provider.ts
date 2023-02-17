@@ -1,38 +1,20 @@
 import { Provider } from '@spryker-oryx/di';
 import { ComponentMapping } from '@spryker-oryx/experience';
-import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
     ['oryx-order-confirmation-banner']: {
-      template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-order-confirmation-banner
-          uid="${uid}"
-          class=${ifDefined(layoutClasses)}
-        ></oryx-order-confirmation-banner>`,
+      tag: 'oryx-order-confirmation-banner',
     },
     ['oryx-order-summary']: {
-      template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-order-summary
-          uid="${uid}"
-          class=${ifDefined(layoutClasses)}
-        ></oryx-order-summary>`,
+      tag: 'oryx-order-summary',
     },
     ['oryx-order-entries']: {
-      template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-order-entries
-          uid="${uid}"
-          class=${ifDefined(layoutClasses)}
-        ></oryx-order-entries>`,
+      tag: 'oryx-order-entries',
     },
     ['oryx-order-totals']: {
-      template: (uid: string, layoutClasses?: string) =>
-        html`<oryx-order-totals
-          uid="${uid}"
-          class=${ifDefined(layoutClasses)}
-        ></oryx-order-totals>`,
+      tag: 'oryx-order-totals',
     },
   },
 };
