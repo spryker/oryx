@@ -2,6 +2,9 @@
   "name": "spryker-oryx",
   "version": "0.0.0",
   "description": "Spryker Oryx Monorepo",
+  "workspaces": [
+    "labs"
+  ],
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
