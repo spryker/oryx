@@ -45,6 +45,36 @@ describe('DefaultFormRenderer', () => {
     destroyInjector();
   });
 
+  describe('fieldValidationPattern()', () => {
+    describe('when field doesn`t have validation patterns', () => {
+      it('should assign default values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+        });
+
+        expect(pattern).toBe('.*\\S+.*');
+        expect(title).toBe('at least one character');
+      });
+    });
+
+    describe('when field has own validation patterns', () => {
+      const validationPattern = {
+        pattern: 'testPattern',
+        title: 'testTitle',
+      };
+
+      it('should assign field values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+          ...validationPattern,
+        });
+
+        expect(pattern).toBe(validationPattern.pattern);
+        expect(title).toBe(validationPattern.title);
+      });
+    });
+  });
+
   describe('formatFormData()', () => {
     let element: HTMLFormElement;
 
