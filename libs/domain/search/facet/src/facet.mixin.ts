@@ -1,13 +1,13 @@
 import { Type } from '@spryker-oryx/di';
-import {
-  FacetComponentAttributes,
-  FacetController,
-  SingleMultiFacet,
-} from '@spryker-oryx/search/facet';
 import { observe } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import {
+  FacetComponentAttributes,
+  FacetController,
+  SingleMultiFacet,
+} from './index';
 
 export declare class FacetComponent {
   controller: FacetController;
