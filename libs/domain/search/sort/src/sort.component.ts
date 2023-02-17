@@ -27,7 +27,7 @@ export class SortComponent extends LitElement {
   }
 
   protected renderSorting(): TemplateResult {
-    const hasOptions = !!this.sortingOptions?.sortValues.length;
+    const hasOptions = !!this.sortingOptions?.sortValues?.length;
 
     return html`
       <oryx-select>
