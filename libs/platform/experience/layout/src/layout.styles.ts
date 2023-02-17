@@ -267,6 +267,89 @@ const textLayout = css`
 `;
 
 /**
+ * The tabular layout
+ */
+const tabularLayout = css`
+  :host([layout='tabular']) {
+    display: grid;
+    position: relative;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical'])) {
+    grid-template-areas: 'head foot';
+  }
+
+  :host([layout='tabular']) ::slotted(*:not(label):not(input)):before {
+    content: '';
+    border-top: 2px solid var(--oryx-color-neutral-300);
+    position: absolute;
+    width: 100%;
+    margin-top: -2px;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical'])) ::slotted(label) {
+    grid-row: 1;
+    padding-inline: 24px;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :host([layout='tabular']) ::slotted(label) {
+    padding-block: 5px;
+    border-bottom: solid 2px currentColor;
+    color: var(--oryx-color-neutral-300);
+    z-index: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  :host([layout='tabular']) ::slotted(label:hover) {
+    color: var(--oryx-color-ink);
+    border-color: var(--oryx-color-neutral-400);
+  }
+
+  :host([layout='tabular']) ::slotted(input) {
+    appearance: none;
+    pointer-events: none;
+    outline: none;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical']))
+    ::slotted(*:not(input):not(label)) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  :host([layout='tabular']:not([tab-align])) {
+    grid-template-columns: repeat(var(--item-count), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='full-width'])
+    ::slotted(*:not(input):not(label)) {
+    grid-column: 1 / span var(--item-count, -1);
+  }
+
+  :host([layout='tabular'][tab-align='start']) {
+    grid-template-columns: repeat(var(--max-tabs, 10), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='center']) {
+    grid-template-columns: 1fr repeat(var(--max-tabs, 10), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='center']) ::slotted(label:first-of-type) {
+    grid-column: 2;
+  }
+
+  :host([layout='tabular'][tab-align='center'])
+    ::slotted(label:nth-of-type(n + 2)) {
+    grid-column: span 1 / calc(-1 * var(--max-tabs, 10));
+  }
+`;
+
+/**
  * The layout system is based on a column based system. This system is defined by design tokens, to specify
  * the number of columns (`--oryx-layout-cols`). The design system also factors in a so-called layout-factor
  * (`--oryx-layout-factor`) to recalculate the columns towards a grid or carousel layout.
@@ -333,5 +416,6 @@ export const layoutStyles = css`
   ${carouselLayout}
   ${textLayout}
   ${twoColumnLayout}
+  ${tabularLayout}
   ${stickyLayout}
 `;

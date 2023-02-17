@@ -1,4 +1,7 @@
-import { CompositionLayout } from '../../src/models';
+import {
+  CompositionLayout,
+  CompositionLayoutOrientation,
+} from '../../src/models';
 
 /**
  * The Layout attributes are used to apply layout to a container element. The container
@@ -50,6 +53,8 @@ export interface LayoutAttributes {
    * layout will remain proper.
    */
   layout?: CompositionLayout;
+
+  orientation?: CompositionLayoutOrientation;
 
   /**
    * Indicates whether the layout is rendered inside a container. A container represents the

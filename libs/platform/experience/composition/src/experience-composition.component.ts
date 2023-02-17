@@ -2,22 +2,30 @@ import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
-  ComponentMixin,
   ComponentsRegistryService,
+  CompositionLayout,
   CompositionProperties,
+  ContentMixin,
   ExperienceService,
   LayoutBuilder,
 } from '@spryker-oryx/experience';
-import { asyncValue, hydratable, observe } from '@spryker-oryx/utilities';
-import { html, isServer, TemplateResult } from 'lit';
+import {
+  asyncValue,
+  hydratable,
+  observe,
+  subscribe,
+} from '@spryker-oryx/utilities';
+import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable()
-export class ExperienceCompositionComponent extends ComponentMixin<CompositionProperties>() {
+export class ExperienceCompositionComponent extends ContentMixin<CompositionProperties>(
+  LitElement
+) {
   static styles = [compositionStyles];
 
   @property()
@@ -31,6 +39,9 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
 
   @observe()
   protected route$ = new BehaviorSubject<string>(this.route);
+
+  @subscribe()
+  protected o = this.options$.pipe(tap(console.log));
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
@@ -100,28 +111,81 @@ export class ExperienceCompositionComponent extends ComponentMixin<CompositionPr
         this.components$,
         (components) =>
           this.shouldRenderChildren()
-            ? html`${[...this.renderRoot.children]}`
+            ? html` ${[...this.renderRoot.children]}`
             : components
-            ? html`<oryx-layout .uid=${this.uid}>
-                ${repeat(
-                  components,
-                  (component) => component.id,
-                  (component) =>
-                    html`
-                      ${this.registryService.resolveTemplate(
-                        component.type,
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        component.id!,
-                        this.getLayoutClasses(component)
-                      )}
-                    `
-                )}
-                ${this.addInlineStyles(components)}
-              </oryx-layout> `
+            ? html` ${this.renderComponents(components)} `
             : html``,
         () => html`Loading...`
       )}
     `;
+  }
+
+  protected renderComponents(
+    components: Component<CompositionProperties>[]
+  ): TemplateResult {
+    return html`
+      <oryx-layout .uid=${this.uid} style="--item-count: ${components.length}">
+        ${components
+          ? repeat(
+              components,
+              (component) => component.id,
+              (component, index) => this.renderComponent(component, index)
+            )
+          : ``}
+        ${this.addInlineStyles(components)}
+        <style>
+          [layout='tabular']:not([orientation='vertical'])
+            input:not(:checked)
+            + label
+            + * {
+            display: none;
+          }
+          [layout='tabular'] input:checked + label {
+            color: var(--oryx-color-primary-300);
+          }
+
+          [layout='tabular'][orientation='vertical'] *:not(input):not(label) {
+            transition: max-height 0.3s;
+            overflow: hidden;
+            max-height: 300px;
+          }
+
+          [layout='tabular'][orientation='vertical']
+            input:not(:checked)
+            + label
+            + * {
+            max-height: 0;
+          }
+        </style>
+      </oryx-layout>
+    `;
+  }
+
+  protected renderComponent(
+    component: Component<CompositionProperties>,
+    index: number
+  ): TemplateResult | undefined {
+    const template = this.registryService.resolveTemplate(
+      component.type,
+      component.id,
+      this.getLayoutClasses(component)
+    );
+    if (
+      this.componentOptions?.rules?.[0].layout === CompositionLayout.Tabular
+    ) {
+      return html`
+        <input
+          type="radio"
+          name="tab"
+          id=${component.id}
+          ?checked=${index === 0}
+        />
+        <label for=${component.id}>${component.name ?? component.type}</label>
+        ${template}
+      `;
+    }
+
+    return template;
   }
 
   /**
