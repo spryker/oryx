@@ -30,7 +30,6 @@ export default class VideoComponent
     const video = this.renderRoot.querySelector<HTMLVideoElement>('video');
 
     if (video) {
-      video.toggleAttribute('muted', !!this.muted);
       video.muted = !!this.muted;
     }
   }
@@ -47,6 +46,7 @@ export default class VideoComponent
         ?autoplay=${this.autoplay}
         ?controls=${this.controls}
         ?loop=${this.loop}
+        ?muted=${this.muted}
         ?playsInline=${this.playsInline}
         preload=${ifDefined(this.preload)}
       >
