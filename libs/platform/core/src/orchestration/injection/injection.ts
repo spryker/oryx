@@ -5,7 +5,7 @@ import {
   InjectorOptions,
   Provider,
 } from '@spryker-oryx/di';
-import {App, AppPlugin, AppPluginBeforeApply, AppRef} from '../app';
+import { App, AppPlugin, AppPluginBeforeApply, AppRef } from '../app';
 
 export const InjectionPluginName = 'core$injection';
 

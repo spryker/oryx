@@ -7,8 +7,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
-import { generateGroupItemVariants } from '../../../utilities';
-import { CategoryX } from "../../../utilities";
+import { CategoryX, generateGroupItemVariants } from '../../../utilities';
 
 export default { title: `${storybookPrefix}/Form/Radio/Static` } as Meta;
 
