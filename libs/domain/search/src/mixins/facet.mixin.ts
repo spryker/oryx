@@ -7,7 +7,7 @@ import { observe } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { FacetController } from '../../facet/src/controllers';
+import { FacetController } from '@spryker-oryx/search/facet';
 
 export declare class FacetComponent {
   controller: FacetController;

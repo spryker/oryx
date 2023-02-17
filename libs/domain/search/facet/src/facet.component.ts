@@ -6,7 +6,7 @@ import { when } from 'lit-html/directives/when.js';
 import { SingleMultiFacet } from './facet.model';
 import { SingleFacetControlStyles } from './facet.styles';
 
-import { FacetComponentMixin } from '../../src/mixins/facet.mixin';
+import { FacetComponentMixin } from '@spryker-oryx/search';
 
 export class SearchFacetComponent extends FacetComponentMixin() {
   static styles: CSSResultGroup = SingleFacetControlStyles;
