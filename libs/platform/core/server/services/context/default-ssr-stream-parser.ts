@@ -72,6 +72,10 @@ export class DefaultSSRStreamParserService implements SSRStreamParserService {
         continue;
       }
 
+      if (!tagName.startsWith('/')) {
+        continue;
+      }
+
       const closedTag = tagName.replace('/', '');
       const lastElementIndex = this.tagsStack.length - 1;
       const isClosed = this.tagsStack[lastElementIndex] === closedTag;
