@@ -43,6 +43,7 @@ import {
   productMediaConfig,
   ProductMediaConfig,
 } from './images/product-media.config';
+import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
@@ -123,4 +124,5 @@ export const productProviders: Provider[] = [
   },
   ...productNormalizer,
   ...productListNormalizer,
+  ProductContextFallback,
 ];

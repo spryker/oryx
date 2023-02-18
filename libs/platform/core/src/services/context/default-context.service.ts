@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { resolve } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   distinctUntilChanged,
@@ -8,7 +9,7 @@ import {
   Subject,
   switchMap,
 } from 'rxjs';
-import { ContextService } from './context.service';
+import { ContextService, ContextServiceFallback } from './context.service';
 
 declare global {
   interface Node {
@@ -75,6 +76,7 @@ export class DefaultContextService implements ContextService {
 
         return of(undefined);
       }),
+      this.contextFallback(key),
       distinctUntilChanged()
     );
   }
@@ -98,6 +100,22 @@ export class DefaultContextService implements ContextService {
     }
 
     this.triggerManifest$.next();
+  }
+
+  protected contextFallback<T>(
+    token: string
+  ): (observable$: Observable<T>) => Observable<T> {
+    return (observable$) =>
+      observable$.pipe(
+        switchMap((value) =>
+          value === undefined
+            ? resolve<Observable<T>>(
+                `${ContextServiceFallback}${token}`,
+                of(value)
+              )
+            : of(value)
+        )
+      );
   }
 
   protected getAttributeName(key: string): string {
