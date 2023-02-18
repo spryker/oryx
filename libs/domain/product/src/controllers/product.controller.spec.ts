@@ -4,8 +4,7 @@ import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ProductContext } from '../models';
-import { ProductService } from '../services';
+import { ProductContext, ProductService } from '../services';
 import { ProductController } from './product.controller';
 
 const mockSku = 'mockSku';
