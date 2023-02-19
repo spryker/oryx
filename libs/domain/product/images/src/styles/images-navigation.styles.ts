@@ -77,7 +77,7 @@ const floatingNavigation = css`
 
   slot${isFloating}:not([nav-position]) .nav,
   slot${isFloating}${isPosBottom} .nav {
-    bottom: 0;
+    inset-block-end: 0;
   }
 `;
 

@@ -45,7 +45,7 @@ export const navigationStyles = css`
     justify-content: center;
     position: absolute;
     inset-inline-end: -15px;
-    bottom: 30px;
+    inset-block-end: 30px;
     cursor: pointer;
     transition: all var(--oryx-transition-time);
   }

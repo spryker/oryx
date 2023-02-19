@@ -37,7 +37,7 @@ export const optionsBaseStyles = css`
   }
 
   li:not(:last-child) {
-    margin-bottom: var(--oryx-space);
+    margin-block-end: var(--oryx-space);
   }
 
   li span {

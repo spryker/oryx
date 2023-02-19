@@ -15,7 +15,7 @@ export const contentBaseStyles = css`
   }
 
   .seller {
-    margin-bottom: var(--oryx-space-4);
+    margin-block-end: var(--oryx-space-4);
   }
 
   .seller,
@@ -43,7 +43,7 @@ export const contentBaseStyles = css`
   section {
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--oryx-space-2);
+    margin-block-end: var(--oryx-space-2);
   }
 
   .col {
@@ -54,7 +54,7 @@ export const contentBaseStyles = css`
   }
 
   .col:first-child {
-    margin-bottom: var(--oryx-space-2);
+    margin-block-end: var(--oryx-space-2);
   }
 
   .readonly-quantity {
@@ -78,7 +78,7 @@ const mediumScreen = css`
   }
 
   .seller {
-    margin-bottom: var(--oryx-space-2);
+    margin-block-end: var(--oryx-space-2);
   }
 `;
 
@@ -88,7 +88,7 @@ const largeScreen = css`
   }
 
   .col:first-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
     margin-inline-end: 13px;
   }
 

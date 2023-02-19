@@ -4,7 +4,7 @@ import { css } from 'lit';
 
 export const styles = css`
   h2 {
-    margin-bottom: 33px;
+    margin-block-end: 33px;
   }
 
   .details-container {
@@ -35,7 +35,7 @@ export const styles = css`
 
   hr {
     border: none;
-    border-top: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-canvas-300);
     margin: 26px 0 20px;
     outline: none;
   }

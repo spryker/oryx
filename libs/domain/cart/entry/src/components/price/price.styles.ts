@@ -24,7 +24,7 @@ export const cartEntryPriceStyles = css`
     content: '';
     position: absolute;
     display: none;
-    top: 0;
+    inset-block-start: 0;
     inset-inline-start: 0;
     width: 100%;
     height: 100%;

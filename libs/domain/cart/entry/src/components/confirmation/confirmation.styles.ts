@@ -10,13 +10,12 @@ export const confirmationBaseStyles = css`
 
   oryx-button button {
     line-height: 20px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-block: 2px;
     border: none;
   }
 
   oryx-notification > :not(:last-child) {
-    margin-bottom: var(--oryx-space-2);
+    margin-block-end: var(--oryx-space-2);
   }
 `;
 
@@ -28,7 +27,7 @@ const mediumScreen = css`
 
   oryx-notification > :not(:last-child) {
     padding-inline-end: var(--oryx-space-4);
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 `;
 

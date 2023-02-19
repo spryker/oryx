@@ -19,7 +19,7 @@ export const notificationBaseStyles = css`
 
   oryx-icon-button {
     position: absolute;
-    top: 16px;
+    inset-block-end: 16px;
     inset-inline-end: 16px;
     cursor: pointer;
   }
