@@ -6,8 +6,6 @@ import { HomePage } from './home-page';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
-    provideExperienceData(HeaderTemplate),
-    provideExperienceData(FooterTemplate),
-    provideExperienceData(HomePage),
+    provideExperienceData([HeaderTemplate, FooterTemplate, HomePage]),
   ],
 };

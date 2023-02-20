@@ -22,7 +22,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected initStaticData(): void {
-    this.staticData.forEach((component) => {
+    this.staticData.flat().forEach((component) => {
       if (!this.dataComponent[component.id]) {
         this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }

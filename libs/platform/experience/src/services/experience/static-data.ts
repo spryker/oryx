@@ -5,11 +5,11 @@ export const ExperienceStaticData = 'oryx.ExperiencStaticData*';
 
 declare global {
   interface InjectionTokensContractMap {
-    [ExperienceStaticData]: Component;
+    [ExperienceStaticData]: Component | Component[];
   }
 }
 
-export function provideExperienceData(data: Component): Provider {
+export function provideExperienceData(data: Component | Component[]): Provider {
   return {
     provide: ExperienceStaticData,
     useValue: data,
