@@ -5,14 +5,25 @@ export const LoginPage: Component<unknown> = {
   meta: { title: 'Login Page', route: '/login' },
   components: [
     {
-      type: 'auth-login',
+      type: 'experience-composition',
       options: {
         data: {
-          strategy: 'HOVER',
-          showRememberMe: true,
-          url: '/contact',
+          rules: [{ container: true, layout: 'tabular', margin: '30px 0' }],
         },
       },
+      components: [
+        {
+          type: 'auth-login',
+          name: 'Login',
+          options: {
+            data: {
+              strategy: 'HOVER',
+              showRememberMe: true,
+              url: '/contact',
+            },
+          },
+        },
+      ],
     },
   ],
 };
