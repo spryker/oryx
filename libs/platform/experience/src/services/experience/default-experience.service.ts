@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
+import { ExperienceStaticData } from './static-data';
 
 export class DefaultExperienceService implements ExperienceService {
   protected dataRoutes: Record<string, ReplaySubject<string>> = {};
@@ -14,8 +15,27 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
-    protected http = inject(HttpService)
-  ) {}
+    protected http = inject(HttpService),
+    protected staticData = inject(ExperienceStaticData, [])
+  ) {
+    this.initStaticData();
+  }
+
+  protected initStaticData(): void {
+    this.staticData.forEach((component) => {
+      if (!this.dataComponent[component.id]) {
+        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
+      }
+      this.dataComponent[component.id].next(component);
+      if (component.meta?.route) {
+        if (!this.dataRoutes[component.meta.route]) {
+          this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
+        }
+        this.dataRoutes[component.meta.route].next(component.id);
+      }
+      this.processComponent(component);
+    });
+  }
 
   protected processComponent(component: Component): void {
     const components = component?.components || [];
