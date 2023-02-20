@@ -1,0 +1,3 @@
+[submodule "libs/template/labs"]
+	path = libs/template/labs
+	url = https://github.com/spryker/oryx-labs
