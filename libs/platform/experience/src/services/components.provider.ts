@@ -4,8 +4,6 @@ import { ComponentMapping } from './experience-tokens';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['experience-composition']: {
-      tag: 'experience-composition',
-    },
+    ['experience-composition']: {},
   },
 };
