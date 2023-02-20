@@ -21,7 +21,7 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "0.1.0-rc.0",
+  "version": "0.1.0",
   "npmClient": "npm",
   "command": {
     "publish": {
