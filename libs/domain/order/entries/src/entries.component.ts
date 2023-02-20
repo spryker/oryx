@@ -71,6 +71,7 @@ export class OrderEntriesComponent extends OrderMixin(
                 calculations: {
                   unitPrice: entry.unitPrice,
                   sumPrice: entry.sumPrice,
+                  sumPriceToPayAggregation: entry.sumPriceToPayAggregation,
                 },
               }}
             ></cart-entry>`
