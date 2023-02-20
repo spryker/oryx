@@ -1,2 +1,2 @@
-export * from './home-page';
+export * from './pages';
 export * from './static-experience';

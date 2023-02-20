@@ -1,19 +1,16 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { CartPage } from './cart';
+import { pages } from '.';
 import { FooterTemplate } from './footer';
 import { HeaderTemplate } from './header';
-import { HomePage } from './home-page';
-import { ProductPage } from './pdp';
+export * as pages from './pages';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
     provideExperienceData([
       HeaderTemplate,
       FooterTemplate,
-      HomePage,
-      ProductPage,
-      CartPage,
+      ...Object.values(pages),
     ]),
   ],
 };
