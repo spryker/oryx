@@ -3,30 +3,13 @@ import { Component } from '@spryker-oryx/experience';
 export const HeaderTemplate: Component<unknown> = {
   id: 'header',
   type: 'Page',
-  meta: {
-    title: 'Header',
-    route: '/_header',
-  },
+  meta: { title: 'Header', route: '/_header' },
   components: [
     {
       type: 'experience-composition',
-      name: 'Composition',
       components: [
         {
           type: 'oryx-content-link',
-          name: 'Link',
-          options: {
-            data: {
-              type: 'rawUrl',
-              id: '/',
-              text: 'Home Page',
-              icon: 'mark',
-            },
-          },
-        },
-        {
-          type: 'oryx-content-link',
-          name: 'Link',
           options: {
             data: {
               type: 'rawUrl',
@@ -36,13 +19,7 @@ export const HeaderTemplate: Component<unknown> = {
             },
           },
         },
-        {
-          type: 'site-notification-center',
-          name: 'SiteNotification',
-          options: {
-            data: {},
-          },
-        },
+        { type: 'site-notification-center' },
       ],
       options: {
         data: {
@@ -66,12 +43,7 @@ export const HeaderTemplate: Component<unknown> = {
       components: [
         {
           type: 'oryx-content-banner',
-          name: 'logo',
-          content: {
-            data: {
-              graphic: 'logo',
-            },
-          },
+          content: { data: { graphic: 'logo' } },
           options: {
             data: {
               rules: [
@@ -86,37 +58,18 @@ export const HeaderTemplate: Component<unknown> = {
         },
         {
           type: 'search-box',
-          name: 'Site search',
           options: {
             data: {
-              rules: [
-                {
-                  width: '100%',
-                  margin: '0 35px',
-                  maxWidth: true,
-                },
-              ],
+              rules: [{ width: '100%', margin: '0 35px', maxWidth: true }],
             },
           },
         },
-        {
-          type: 'oryx-user-summary',
-        },
-        {
-          type: 'auth-logout',
-          name: 'Auth Logout',
-        },
+        { type: 'oryx-user-summary' },
+        { type: 'auth-logout' },
         {
           type: 'cart-summary',
           options: {
-            data: {
-              maxVisibleQuantity: 99,
-              rules: [
-                {
-                  maxWidth: false,
-                },
-              ],
-            },
+            data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
           },
         },
       ],

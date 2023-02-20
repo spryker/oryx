@@ -7,7 +7,11 @@ export const LoginPage: Component<unknown> = {
     {
       type: 'auth-login',
       options: {
-        data: { strategy: 'HOVER', showRememberMe: true, url: '/contact' },
+        data: {
+          strategy: 'HOVER',
+          showRememberMe: true,
+          url: '/contact',
+        },
       },
     },
   ],

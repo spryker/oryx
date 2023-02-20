@@ -3,29 +3,13 @@ import { Component } from '@spryker-oryx/experience';
 export const FooterTemplate: Component<unknown> = {
   id: 'footer',
   type: 'Page',
-  meta: {
-    title: 'Footer',
-    route: '/_footer',
-  },
+  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'experience-composition',
-      name: 'Footer',
       components: [
         {
           type: 'oryx-content-link',
-          name: 'Link',
-          options: {
-            data: {
-              text: 'layout',
-              id: '/layout',
-              icon: 'cart',
-            },
-          },
-        },
-        {
-          type: 'oryx-content-link',
-          name: 'Link',
           options: {
             data: {
               type: 'rawUrl',
@@ -41,12 +25,11 @@ export const FooterTemplate: Component<unknown> = {
           rules: [
             {
               container: true,
-              fullWidth: true,
+              maxWidth: true,
               sticky: true,
               top: '100%',
               background: 'var(--oryx-color-canvas-200)',
               padding: '30px 0',
-              maxWidth: true,
               layout: 'flex',
             },
           ],
