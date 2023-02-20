@@ -2,35 +2,15 @@ import { Component } from '@spryker-oryx/experience';
 
 export const ProductPage: Component<any> = {
   type: 'Page',
-  meta: {
-    title: 'Product Page',
-    route: '/product/:sku',
-  },
+  meta: { title: 'Product Page', route: '/product/:sku' },
   components: [
     {
       type: 'experience-composition',
-      options: {
-        data: {
-          rules: [
-            {
-              container: true,
-              layout: 'two-column',
-            },
-          ],
-        },
-      },
+      options: { data: { rules: [{ container: true, layout: 'two-column' }] } },
       components: [
         {
           type: 'experience-composition',
-          options: {
-            data: {
-              rules: [
-                {
-                  padding: '30px 0',
-                },
-              ],
-            },
-          },
+          options: { data: { rules: [{ padding: '30px 0' }] } },
           components: [
             { type: 'oryx-product-labels' },
             { type: 'product-images' },
@@ -63,12 +43,7 @@ export const ProductPage: Component<any> = {
             { type: 'oryx-product-id' },
             {
               type: 'oryx-product-labels',
-              options: {
-                data: {
-                  included: 'sale %',
-                  invert: true,
-                },
-              },
+              options: { data: { included: 'sale %', invert: true } },
             },
             { type: 'oryx-product-price' },
             { type: 'oryx-cart-add' },
