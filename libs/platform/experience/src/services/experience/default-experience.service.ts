@@ -29,14 +29,14 @@ export class DefaultExperienceService implements ExperienceService {
       if (!this.dataComponent[component.id]) {
         this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }
-      this.dataComponent[component.id].next(component);
+      this.dataComponent[component.id].next(component as Component);
       if (component.meta?.route) {
         if (!this.dataRoutes[component.meta.route]) {
           this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
         }
         this.dataRoutes[component.meta.route].next(component.id);
       }
-      this.processComponent(component);
+      this.processComponent(component as Component);
     });
   }
 

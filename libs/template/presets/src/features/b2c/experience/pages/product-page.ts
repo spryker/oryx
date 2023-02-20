@@ -1,6 +1,6 @@
-import { Component } from '@spryker-oryx/experience';
+import { StaticComponent } from '@spryker-oryx/experience';
 
-export const ProductPage: Component<unknown> = {
+export const ProductPage: StaticComponent = {
   type: 'Page',
   meta: { title: 'Product Page', route: '/product/:sku' },
   components: [
