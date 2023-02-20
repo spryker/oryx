@@ -26,31 +26,30 @@ export interface AppFeature {
 }
 
 export interface App {
+  /** Find a plugin if available */
   findPlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T | undefined;
+  /** Require a plugin and throw if not available */
   requirePlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T;
-  registerPlugin(plugin: AppPlugin): void;
+  /** Waits when the app is done initializing */
   whenReady(): Promise<App>;
-  markReady(): void;
+  /** Destroy and cleanup the application */
   destroy(): void;
 }
 
-export interface AppBuilder<T = ''> {
-  with(plugin: AppPlugin | AppPlugin[]): Builder<T>;
+export interface AppBuilder {
+  with(...plugins: AppPlugin[]): this;
   create(): Promise<App>;
 }
 
-export type Builder<T> = T extends string ? AppBuilder : T;
-
-export interface AppBuilderWithModules
-  extends AppBuilder<AppBuilderWithModules> {
-  withComponents(components: ComponentsInfo): AppBuilderWithModules;
-  withProviders(providers: Provider[]): AppBuilderWithModules;
-  withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules;
-  withAppOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
-  withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
-  withEnvironment(env: AppEnvironment): AppBuilderWithModules;
-  withResources(resources: Resources): AppBuilderWithModules;
-  withOptions(options: FeatureOptions): AppBuilderWithModules;
+export interface AppBuilderWithModules extends AppBuilder {
+  withComponents(components: ComponentsInfo): this;
+  withProviders(providers: Provider[]): this;
+  withFeature(...features: AppFeature[] | AppFeature[][]): this;
+  withAppOptions(options: ModularAppBuilderOptions): this;
+  withTheme(theme: Theme | Theme[]): this;
+  withEnvironment(env: AppEnvironment): this;
+  withResources(resources: Resources): this;
+  withOptions(options: FeatureOptions): this;
 }
 
 export interface AppPlugin {

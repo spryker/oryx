@@ -3,7 +3,6 @@ import {
   App,
   AppBuilder,
   AppPlugin,
-  Builder,
   isAppPluginAfterApply,
   isAppPluginBeforeApply,
 } from './app.model';
@@ -11,12 +10,12 @@ import {
 /**
  * Creates application. Plugins can be added with chaining.
  */
-export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
+export class SimpleAppBuilder implements AppBuilder {
   protected readonly plugins: AppPlugin[] = [];
 
-  with(plugin: AppPlugin | AppPlugin[]): Builder<T> {
-    this.plugins.push(...(Array.isArray(plugin) ? plugin : [plugin]));
-    return this as unknown as Builder<T>;
+  with(...plugins: AppPlugin[]): this {
+    this.plugins.push(...plugins);
+    return this;
   }
 
   async create(): Promise<App> {

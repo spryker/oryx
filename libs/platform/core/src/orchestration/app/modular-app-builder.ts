@@ -10,24 +10,19 @@ import { ResourcePlugin, Resources } from '../resources';
 import { Theme, ThemePlugin } from '../theme';
 import { SimpleAppBuilder } from './app-builder';
 import { AppEnvironment } from './app-env';
-import {
-  App,
-  AppBuilderWithModules,
-  AppFeature,
-  ModularAppBuilderOptions,
-} from './app.model';
+import { App, AppFeature, ModularAppBuilderOptions } from './app.model';
 
 /**
  * Creates application with additional modular methods.
  */
-export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
+export class ModularAppBuilder extends SimpleAppBuilder {
   protected componentsInfo: ComponentsInfo = [];
   protected providers: Provider[] = [];
   protected options?: ModularAppBuilderOptions;
   protected themes?: Theme[];
   protected resources?: Resources;
 
-  withAppOptions(options: ModularAppBuilderOptions): AppBuilderWithModules {
+  withAppOptions(options: ModularAppBuilderOptions): this {
     this.options = {
       injector: {
         ...this.options?.injector,
@@ -42,18 +37,19 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withComponents(componentsInfo: ComponentsInfo): AppBuilderWithModules {
+  withComponents(componentsInfo: ComponentsInfo): this {
     this.componentsInfo.push(...componentsInfo);
     return this;
   }
 
-  withProviders(providers: Provider[]): AppBuilderWithModules {
+  withProviders(providers: Provider[]): this {
     this.providers.push(...providers);
     return this;
   }
 
-  withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules {
-    const features = Array.isArray(feature) ? feature : [feature];
+  withFeature(...features: AppFeature[] | AppFeature[][]): this {
+    features = features.flat();
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const featureMapper: Record<string, (...args: any) => unknown> = {
       providers: this.withProviders.bind(this),
@@ -73,7 +69,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withTheme(theme: Theme | Theme[]): AppBuilderWithModules {
+  withTheme(theme: Theme | Theme[]): this {
     this.themes = [
       ...(this.themes ?? []),
       ...(Array.isArray(theme) ? theme : [theme]),
@@ -81,12 +77,12 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withEnvironment(env: AppEnvironment): AppBuilderWithModules {
+  withEnvironment(env: AppEnvironment): this {
     this.withProviders([{ provide: AppEnvironment, useValue: env }]);
     return this;
   }
 
-  withResources(resources: Resources): AppBuilderWithModules {
+  withResources(resources: Resources): this {
     this.resources = {
       graphics: {
         ...(this.resources?.graphics ?? {}),
@@ -96,7 +92,7 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     return this;
   }
 
-  withOptions(options: FeatureOptions): AppBuilderWithModules {
+  withOptions(options: FeatureOptions): this {
     this.providers.push({
       provide: FeatureOptions,
       useValue: options,
@@ -106,21 +102,19 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
 
   async create(): Promise<App> {
     if (this.providers.length) {
-      this.plugins.unshift(
-        new InjectionPlugin(this.providers, this.options?.injector)
-      );
+      this.with(new InjectionPlugin(this.providers, this.options?.injector));
     }
 
     if (this.resources) {
-      this.plugins.unshift(new ResourcePlugin(this.resources));
+      this.with(new ResourcePlugin(this.resources));
     }
 
     if (this.themes) {
-      this.plugins.unshift(new ThemePlugin(this.themes));
+      this.with(new ThemePlugin(this.themes));
     }
 
     if (this.componentsInfo.length) {
-      this.plugins.unshift(
+      this.with(
         new ComponentsPlugin(
           this.componentsInfo,
           this.options?.components as ComponentsOptions
