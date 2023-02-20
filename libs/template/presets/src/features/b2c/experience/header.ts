@@ -11,12 +11,10 @@ export const HeaderTemplate: Component<unknown> = {
     {
       type: 'experience-composition',
       name: 'Composition',
-      id: 'jxslr',
       components: [
         {
           type: 'oryx-content-link',
           name: 'Link',
-          id: '4cl82',
           options: {
             data: {
               type: 'rawUrl',
@@ -29,7 +27,6 @@ export const HeaderTemplate: Component<unknown> = {
         {
           type: 'oryx-content-link',
           name: 'Link',
-          id: 'gjc8z',
           options: {
             data: {
               type: 'rawUrl',
@@ -42,7 +39,6 @@ export const HeaderTemplate: Component<unknown> = {
         {
           type: 'site-notification-center',
           name: 'SiteNotification',
-          id: 'sitenotificationid',
           options: {
             data: {},
           },
@@ -67,12 +63,10 @@ export const HeaderTemplate: Component<unknown> = {
     {
       type: 'experience-composition',
       name: 'Composition',
-      id: 'l93ok',
       components: [
         {
           type: 'oryx-content-banner',
           name: 'logo',
-          id: 'zrg9u',
           content: {
             data: {
               graphic: 'logo',
@@ -93,7 +87,6 @@ export const HeaderTemplate: Component<unknown> = {
         {
           type: 'search-box',
           name: 'Site search',
-          id: 'm50mt',
           options: {
             data: {
               rules: [
@@ -108,16 +101,13 @@ export const HeaderTemplate: Component<unknown> = {
         },
         {
           type: 'oryx-user-summary',
-          id: '2l1k2a3s',
         },
         {
           type: 'auth-logout',
           name: 'Auth Logout',
-          id: '02a3c',
         },
         {
           type: 'cart-summary',
-          id: 'kzvxe',
           options: {
             data: {
               maxVisibleQuantity: 99,

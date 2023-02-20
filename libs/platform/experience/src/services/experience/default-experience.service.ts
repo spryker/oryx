@@ -12,6 +12,7 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataComponent: Record<string, ReplaySubject<Component>> = {};
   protected dataContent: Record<string, ReplaySubject<any>> = {};
   protected dataOptions: Record<string, ReplaySubject<any>> = {};
+  protected autoComponentId = 0;
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
@@ -23,6 +24,8 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected initStaticData(): void {
     this.staticData.flat().forEach((component) => {
+      component.id = component.id ?? `static${this.autoComponentId++}`;
+
       if (!this.dataComponent[component.id]) {
         this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }
@@ -40,12 +43,12 @@ export class DefaultExperienceService implements ExperienceService {
   protected processComponent(component: Component): void {
     const components = component?.components || [];
 
-    if (component?.id) {
-      if (!this.dataComponent[component.id]) {
-        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
-      }
-      this.dataComponent[component.id].next(component);
+    component.id = component.id ?? `static${this.autoComponentId++}`;
+
+    if (!this.dataComponent[component.id]) {
+      this.dataComponent[component.id] = new ReplaySubject<Component>(1);
     }
+    this.dataComponent[component.id].next(component);
 
     components.forEach((component: Component) => {
       this.processComponent(component);

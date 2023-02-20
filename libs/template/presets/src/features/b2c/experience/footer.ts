@@ -11,12 +11,10 @@ export const FooterTemplate: Component<unknown> = {
     {
       type: 'experience-composition',
       name: 'Footer',
-      id: 'okfqx',
       components: [
         {
           type: 'oryx-content-link',
           name: 'Link',
-          id: 'xc8zt',
           options: {
             data: {
               text: 'layout',
@@ -28,7 +26,6 @@ export const FooterTemplate: Component<unknown> = {
         {
           type: 'oryx-content-link',
           name: 'Link',
-          id: 'o0dhk',
           options: {
             data: {
               type: 'rawUrl',

@@ -8,7 +8,7 @@ export interface ComponentData {
 }
 
 export interface Component<C = any> {
-  id: string;
+  id?: string;
   name?: string;
   type: string;
   meta?: {

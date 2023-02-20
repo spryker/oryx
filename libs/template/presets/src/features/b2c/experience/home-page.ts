@@ -1,7 +1,6 @@
 import { Component } from '@spryker-oryx/experience';
 
 export const HomePage: Component<any> = {
-  id: 'home',
   type: 'Page',
   meta: {
     title: 'Home Page',
@@ -11,7 +10,6 @@ export const HomePage: Component<any> = {
     {
       type: 'oryx-content-video',
       name: 'Video',
-      id: 'n8haw',
       options: {
         data: {
           src: 'https://d3g7htsbjjywiv.cloudfront.net/assets/common/images/media-page/redesigned-footage/footage-sizzle.webm',
@@ -24,7 +22,6 @@ export const HomePage: Component<any> = {
       },
     },
     {
-      id: 'home-product-list',
       type: 'oryx-product-list',
       options: {
         data: {
@@ -44,7 +41,6 @@ export const HomePage: Component<any> = {
     {
       type: 'auth-logout',
       name: 'User Logout',
-      id: 'auth-logout',
       options: {
         data: {
           customRedirect: 'contact',
@@ -52,13 +48,11 @@ export const HomePage: Component<any> = {
       },
     },
     {
-      id: 'nested',
       type: 'experience-composition',
       components: [
         {
           type: 'oryx-content-banner',
           name: 'Image banner',
-          id: '7srmoty',
           options: {
             data: {
               alt: 'Banner 1',
@@ -75,12 +69,10 @@ export const HomePage: Component<any> = {
         {
           type: 'experience-composition',
           name: 'Composition2',
-          id: 'tsrmoty',
           components: [
             {
               type: 'oryx-content-banner',
               name: 'Image banner',
-              id: '8srmoty',
               options: {
                 data: {
                   alt: 'Banner 2',
@@ -101,7 +93,6 @@ export const HomePage: Component<any> = {
     {
       type: 'oryx-content-link',
       name: 'Content Link',
-      id: '18is1nq',
       options: {
         data: {
           target: '_self',
@@ -115,7 +106,6 @@ export const HomePage: Component<any> = {
     {
       type: 'oryx-content-link',
       name: 'Content Link 2',
-      id: '18is1nq1',
       options: {
         data: {
           target: '_self',
@@ -130,7 +120,6 @@ export const HomePage: Component<any> = {
     {
       type: 'oryx-content-banner',
       name: 'Test Oryx Banner',
-      id: '4f67j88',
       options: {
         data: {
           alt: 'Banner 3',
@@ -146,7 +135,6 @@ export const HomePage: Component<any> = {
       },
     },
     {
-      id: 'generic-banner',
       type: 'oryx-content-banner',
       options: {
         data: {
@@ -167,7 +155,6 @@ export const HomePage: Component<any> = {
       },
     },
     {
-      id: 'other-banner',
       type: 'oryx-content-banner',
       options: {
         data: {
@@ -188,7 +175,6 @@ export const HomePage: Component<any> = {
     {
       type: 'search-box',
       name: 'SearchBox',
-      id: '2n8fjtk',
       options: {
         data: {
           minChars: 2,
