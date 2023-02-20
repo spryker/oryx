@@ -24,26 +24,26 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected initStaticData(): void {
     this.staticData.flat().forEach((component) => {
-      component.id = component.id ?? `static${this.autoComponentId++}`;
+      component.id = component.id ?? this.getAutoId();
 
       if (!this.dataComponent[component.id]) {
         this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }
-      this.dataComponent[component.id].next(component);
+      this.dataComponent[component.id].next(component as Component);
       if (component.meta?.route) {
         if (!this.dataRoutes[component.meta.route]) {
           this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
         }
         this.dataRoutes[component.meta.route].next(component.id);
       }
-      this.processComponent(component);
+      this.processComponent(component as Component);
     });
   }
 
   protected processComponent(component: Component): void {
     const components = component?.components || [];
 
-    component.id = component.id ?? `static${this.autoComponentId++}`;
+    component.id = component.id ?? this.getAutoId();
 
     if (!this.dataComponent[component.id]) {
       this.dataComponent[component.id] = new ReplaySubject<Component>(1);
@@ -53,6 +53,10 @@ export class DefaultExperienceService implements ExperienceService {
     components.forEach((component: Component) => {
       this.processComponent(component);
     });
+  }
+
+  protected getAutoId(): string {
+    return `static${this.autoComponentId++}`;
   }
 
   protected reloadComponent(uid: string): void {
