@@ -2,7 +2,7 @@
 
 ## Qualify the request
 
-The components, services and adapters are customizable, mainly by mapping defining a new component implementation or by providing a custom service. To ensure that the request can be customized, a best practice is to use a so-called qualifier in the application flow. The qualifying object can be customized using standard TypeScript.
+Components, services and adapters are customizable. To ensure that a change in the requested data by a component can be used in lower layers, a best practice is to use a so-called qualifier in the application flow. The qualifier is a single object that will be passed fro application layer to application layer, and can be extended. The example below shows the use of the `ProductQualifier` in the ProductService.
 
 ```ts
 export interface ProductQualifier {
@@ -17,7 +17,17 @@ export class DefaultProductService implements ProductService {
 }
 ```
 
-The qualifier will travel down through all the application layers. Whenever a custom property must be added, or in case of new qualifying aspects going forward, the object can be extended. The extended object will arrive down, so that the right request can be made in the lowest layer (adapter).
+Whenever the qualifier must be extended, say we like to query the product for a certain brand or supplier, the qualifier can be extended:
+
+```ts
+declare global {
+  interface ProductQualifier {
+    brand?: string;
+  }
+}
+```
+
+This change will be transparent to all application layers and can be picked up by the Adapter layer to use the `brand` field to fetch products by brand.
 
 ## Designing the data model
 
