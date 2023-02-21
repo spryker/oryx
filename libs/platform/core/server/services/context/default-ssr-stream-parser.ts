@@ -38,7 +38,9 @@ export class DefaultSSRStreamParserService implements SSRStreamParserService {
       .split('<');
 
     for (let i = 0; i < stream.length; i++) {
-      const streamEl = stream[i].slice(0, stream[i].lastIndexOf('>') + 1);
+      const streamEl = stream[i]
+        .slice(0, stream[i].lastIndexOf('>') + 1)
+        .trim();
 
       if (!streamEl.endsWith('>') || streamEl.startsWith('?')) {
         continue;

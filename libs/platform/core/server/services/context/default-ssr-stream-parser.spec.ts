@@ -8,9 +8,9 @@ describe('DefaultSSRStreamParserService', () => {
       <test>
         <input data-test />
         <test data-test="4">
-          <test data-test="3"></test>
+          <   test data-test="3"></test>
           <test data-test="2"></test>
-            <test data-inner="1">
+            <    test data-inner="1">
     `;
     const expected = [{ test: '"4"' }, { inner: '"1"' }];
 
