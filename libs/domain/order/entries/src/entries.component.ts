@@ -35,11 +35,13 @@ export class OrderEntriesComponent extends OrderMixin(
 
   protected hasThreshold$ = combineLatest([this.order$, this.options$]).pipe(
     map(([order, options]) => {
-      if (!order || !options.limit || !options.threshold) {
+      if (!order || !options.limit || typeof options.threshold !== 'number') {
         return false;
       }
-
-      return order.items.length < options.limit + options.threshold;
+      const hasThreshold =
+        order.items.length < options.limit + options.threshold;
+      this.showAllEntries = hasThreshold ? true : this.showAllEntries;
+      return hasThreshold;
     })
   );
 

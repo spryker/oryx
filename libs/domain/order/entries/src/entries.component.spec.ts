@@ -167,7 +167,7 @@ describe('OrderEntriesComponent', () => {
       it('should render all items', () => {
         const items = getItems();
 
-        expect(items?.length).toBe(3);
+        expect(items?.length).toBe(6);
       });
 
       it('should not render more products button', () => {
