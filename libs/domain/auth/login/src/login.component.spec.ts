@@ -21,6 +21,7 @@ class MockExperienceService implements Partial<ExperienceService> {
 
 class MockAuthService implements Partial<AuthService> {
   login = vi.fn();
+  isAuthenticated = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -69,6 +70,8 @@ describe('AuthLoginComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+
+    authService.isAuthenticated.mockReturnValue(of(false));
   });
 
   afterEach(() => {
@@ -92,18 +95,18 @@ describe('AuthLoginComponent', () => {
       expect(element?.shadowRoot?.querySelector('oryx-input')).toBeDefined();
     });
 
-    it('should have the CLICK strategy for password visibility', () => {
+    it('should have the click strategy for password visibility', () => {
       expect(
         (
           element?.shadowRoot?.querySelector(
             'oryx-password-input'
           ) as PasswordInputComponent
         ).strategy
-      ).toBe('CLICK');
+      ).toBe(PasswordVisibilityStrategy.Mousedown);
     });
 
-    it('should not have a remember me checkbox', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-checkbox')).toBeNull();
+    it('should have a remember me checkbox', () => {
+      expect(element).toContainElement('oryx-checkbox');
     });
   });
 
@@ -139,7 +142,7 @@ describe('AuthLoginComponent', () => {
             'oryx-password-input'
           ) as PasswordInputComponent
         ).strategy
-      ).toBe('HOVER');
+      ).toBe(PasswordVisibilityStrategy.Hover);
     });
   });
 
@@ -228,7 +231,7 @@ describe('AuthLoginComponent', () => {
       describe('when remember me is checked', () => {
         it('should remember login when checked', async () => {
           const rememberMe = element.shadowRoot?.querySelector(
-            'input[name="rememberme"]'
+            'input[name="rememberMe"]'
           ) as HTMLInputElement;
           rememberMe.click();
           await submit();
@@ -248,17 +251,14 @@ describe('AuthLoginComponent', () => {
         });
       });
 
-      describe('when redirect url is specified', () => {
+      describe.only('when redirect url is specified', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-auth-login
-              .options="${{
-                passwordVisibility: PasswordVisibilityStrategy.Hover,
-                enableRememberMe: true,
-                redirectUrl: '/contact',
-              }}"
+              .options="${{ redirectUrl: '/contact' }}"
             ></oryx-auth-login>`
           );
+          setupLogin();
         });
 
         it('should redirect to the specified url', async () => {

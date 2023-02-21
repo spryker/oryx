@@ -68,7 +68,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
         .heading=${i18n('checkout.authentication.login')}
         .options=${{
           disableRedirect: !options.loginUrl,
-          ...(options.loginUrl && { redirectUrl: options.loginUrl }),
+          ...(options.loginUrl ? { redirectUrl: options.loginUrl } : {}),
         }}
       ></oryx-auth-login>`
     )}`;
@@ -85,7 +85,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
               this.checkoutDataService.setGuestCheckout();
             }}
             .options="${{
-              ...(options.guestUrl && { redirectUrl: options.guestUrl }),
+              ...(options.loginUrl ? { redirectUrl: options.guestUrl } : {}),
             }}"
           ></checkout-guest>`
         )}`

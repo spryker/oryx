@@ -9,7 +9,7 @@ export const enum PasswordVisibilityStrategy {
 
   /**
    * Makes the password visible when the user hold the mouse down on the eye icon. As soon as the
-   * user releases the icon, the password will continue to hidden again.
+   * user releases the icon, the password will continue to hide again.
    *
    * This is considered the 2nd most secured option, as the user needs to actively click on the icon
    * and will only remain visible as long as the user holds down the mouse.
@@ -23,8 +23,8 @@ export const enum PasswordVisibilityStrategy {
   Click = 'click',
 
   /**
-   * Makes the password visible when the user hold the mouse down on the eye icon. As soon as the
-   * user releases the icon, the password will continue to hidden again.
+   * Makes the password visible when the user hovers over the eye icon. As soon as the
+   * user leaves the icon, the password will continue to hide again.
    *
    * This might not be preferred as the user can accidentally hover over the eye icon.
    */

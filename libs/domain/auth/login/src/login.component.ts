@@ -30,8 +30,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   @property() heading?: DirectiveResult | string;
 
-  protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
+  protected routerService = resolve(RouterService);
 
   protected success$ = new BehaviorSubject(true);
   protected loading$ = new BehaviorSubject(false);
@@ -114,14 +114,14 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     return html`
       <div class="options">
         ${when(
-          this.componentOptions?.enableRememberMe,
+          this.componentOptions.enableRememberMe,
           () => html`<oryx-checkbox>
             <input type="checkbox" name="rememberMe" />
             ${i18n('user.login.remember-me')}
           </oryx-checkbox>`
         )}
         ${when(
-          this.componentOptions?.enableForgotPassword,
+          this.componentOptions.enableForgotPassword,
           () => html`<oryx-link class="forgot-password">
             <a href="#">${i18n('user.login.forgot-password?')}</a>
           </oryx-link>`
@@ -132,6 +132,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   protected handleLogin(e: Event): void {
     e.preventDefault();
+    this.loading$.next(true);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
 
@@ -150,19 +151,16 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             return EMPTY;
           })
         )
-        .subscribe(() =>
-          // I assumed this should not be necessary here
-          this.redirect()
-        );
+        .subscribe(() => this.redirect());
     }
   }
 
   protected redirect(): void {
     this.success$.next(true);
 
-    if (this.componentOptions?.disableRedirect) return;
+    if (this.componentOptions.disableRedirect) return;
 
-    if (this.componentOptions?.redirectUrl) {
+    if (this.componentOptions.redirectUrl) {
       this.routerService.navigate(this.componentOptions.redirectUrl);
     }
 
