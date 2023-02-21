@@ -14,6 +14,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
+import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { combineLatest, distinctUntilChanged, ReplaySubject, tap } from 'rxjs';
 import { SELECT_EVENT } from './address-list.model';
@@ -102,38 +103,47 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
     </slot>`;
   }
 
+  protected createAddressesKey(): string | void {
+    return this.addresses?.map(({ id }) => id).join('-');
+  }
+
   protected override render(): TemplateResult {
     if (!this.addresses?.length) {
       return this.renderEmptyMessage();
     }
 
-    return html`${repeat(
-      this.addresses,
-      (address) => address.id,
-      (address) => {
-        const selected = !!(
-          this.componentOptions.selectable &&
-          this.selectedAddress?.id === address.id
-        );
+    return html`
+      ${keyed(
+        this.createAddressesKey(),
+        repeat(
+          this.addresses,
+          (address) => address.id,
+          (address) => {
+            const selected = !!(
+              this.componentOptions.selectable &&
+              this.selectedAddress?.id === address.id
+            );
 
-        return html`<oryx-tile ?selected=${selected}>
-          <oryx-address-list-item
-            .addressId=${address.id}
-            .options=${this.componentOptions}
-          >
-            ${when(
-              this.componentOptions.selectable,
-              () => html`<input
-                name="address"
-                type="radio"
-                value="${address.id as string}"
-                ?checked=${selected}
-                @change=${() => this.onChange(address)}
-              />`
-            )}
-          </oryx-address-list-item>
-        </oryx-tile>`;
-      }
-    )}`;
+            return html`<oryx-tile ?selected=${selected}>
+              <oryx-address-list-item
+                .addressId=${address.id}
+                .options=${this.componentOptions}
+              >
+                ${when(
+                  this.componentOptions.selectable,
+                  () => html`<input
+                    name="address"
+                    type="radio"
+                    value="${address.id as string}"
+                    ?checked=${selected}
+                    @change=${() => this.onChange(address)}
+                  />`
+                )}
+              </oryx-address-list-item>
+            </oryx-tile>`;
+          }
+        )
+      )}
+    `;
   }
 }

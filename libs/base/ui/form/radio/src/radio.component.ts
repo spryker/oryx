@@ -1,4 +1,3 @@
-import { CheckedController } from '@spryker-oryx/ui/controller';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ErrorController, ErrorOptions, errorStyles } from '../../input';
@@ -9,7 +8,6 @@ export class RadioComponent extends LitElement implements ErrorOptions {
   static styles = [baseStyles, errorStyles, groupItemStyles];
 
   protected errorController = new ErrorController(this);
-  protected checkedController = new CheckedController(this);
 
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
@@ -17,7 +15,7 @@ export class RadioComponent extends LitElement implements ErrorOptions {
   protected render(): TemplateResult {
     return html`
       <label>
-        <slot @slotchange=${this.checkedController.onSlotChange}></slot>
+        <slot></slot>
         <slot name="subtext"></slot>
       </label>
       ${this.errorController.render()}
