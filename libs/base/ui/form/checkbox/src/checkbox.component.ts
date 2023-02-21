@@ -1,3 +1,4 @@
+import { CheckedController } from '@spryker-oryx/ui/controller';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ErrorController, ErrorOptions } from '../../input';
@@ -11,6 +12,7 @@ export class CheckboxComponent
   static styles = [checkboxStyles, groupItemStyles];
 
   protected errorController = new ErrorController(this);
+  protected checkedController = new CheckedController(this);
 
   @property({ type: Boolean, reflect: true }) required?: boolean;
   @property({ type: Boolean, reflect: true }) intermediate?: boolean;
@@ -20,7 +22,7 @@ export class CheckboxComponent
   protected override render(): TemplateResult {
     return html`
       <label>
-        <slot></slot>
+        <slot @slotchange=${this.checkedController.onSlotChange}></slot>
         <slot name="subtext"></slot>
       </label>
       ${this.errorController.render()}

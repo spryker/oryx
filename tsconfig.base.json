@@ -154,6 +154,7 @@
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
       ],
+      "@spryker-oryx/ui/controller": ["libs/base/ui/form/controller/index.ts"],
       "@spryker-oryx/ui/drawer": ["libs/base/ui/overlays/drawer/index.ts"],
       "@spryker-oryx/ui/dropdown": ["libs/base/ui/overlays/dropdown/index.ts"],
       "@spryker-oryx/ui/error-message": [

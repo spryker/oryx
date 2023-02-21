@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { Address, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
@@ -7,7 +7,6 @@ import {
 } from '@spryker-oryx/user/address-list-item';
 import {
   asyncState,
-  asyncValue,
   hydratable,
   i18n,
   subscribe,
@@ -16,19 +15,14 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { repeat } from 'lit/directives/repeat.js';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  ReplaySubject,
-  tap,
-} from 'rxjs';
+import { combineLatest, distinctUntilChanged, ReplaySubject, tap } from 'rxjs';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
 @hydratable('window:load')
-export class AddressListComponent 
-  extends ContentMixin<AddressListItemOptions>(LitElement) {
+export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
+  LitElement
+) {
   static styles = styles;
 
   protected addressService = resolve(AddressService);
@@ -49,14 +43,14 @@ export class AddressListComponent
             detail: { address },
           })
         );
-
-        console.log(this.renderRoot.querySelector<HTMLInputElement>(`input[checked]`))
       }
     }),
     distinctUntilChanged()
   );
 
-  protected addresses$ = this.addressService.getAddresses().pipe(distinctUntilChanged());
+  protected addresses$ = this.addressService
+    .getAddresses()
+    .pipe(distinctUntilChanged());
 
   @asyncState()
   protected addresses = valueType(this.addresses$);
@@ -80,7 +74,7 @@ export class AddressListComponent
       this.selectedAddress$.next(defaultAddress ?? addresses?.[0] ?? null);
     })
   );
-  
+
   protected isDefault(
     address: Address,
     options: AddressListItemOptions
@@ -118,7 +112,8 @@ export class AddressListComponent
       (address) => address.id,
       (address) => {
         const selected = !!(
-          this.componentOptions.selectable && this.selectedAddress?.id === address.id
+          this.componentOptions.selectable &&
+          this.selectedAddress?.id === address.id
         );
 
         return html`<oryx-tile ?selected=${selected}>
