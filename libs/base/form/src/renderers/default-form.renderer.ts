@@ -65,7 +65,7 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     if (!field.label || field.label === '') {
-      field.label = field.id;
+      field.label = this.resolveLabel(field.id);
     }
 
     const template = this.injector.inject(
@@ -301,5 +301,16 @@ export class DefaultFormRenderer implements FormRenderer {
       w100: params.width === 100,
       w50: !params.width || params.width == 50,
     });
+  }
+
+  /**
+   * Adds spaces before capitalized letters in a string and lowercases the letter following a
+   * capital letter.
+   *
+   * @param label The input string.
+   * @returns The modified string.
+   */
+  protected resolveLabel(label: string): string {
+    return label.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
   }
 }
