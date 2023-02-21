@@ -115,6 +115,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: true
       - uses: ./.github/actions/init
       - name: Build
         uses: ./.github/actions/run-optimal

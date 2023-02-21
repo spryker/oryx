@@ -10,8 +10,8 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { Product, ProductComponentProperties, ProductContext } from '../models';
-import { ProductService } from '../services';
+import { Product, ProductComponentProperties } from '../models';
+import { ProductContext, ProductService } from '../services';
 
 /**
  * Controls product components by providing easy access to the
