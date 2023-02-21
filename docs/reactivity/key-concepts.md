@@ -27,13 +27,13 @@ Oryx simplifies working with asynchronous application state and reactivity by ha
 
 Most of the application state is driven by loading data from backend APIs. Oryx provides a number of standardized application layers:
 
-| Layer      | Purpose                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------- |
-| Component  | Renders application state inside UI elements                                                                        |
-| Controller | Resolves application state for the given context so maximize the component reusability                              |
-| Service    | Manage the application state for a certain application domain                                                       |
-| Adapter    | Loads the data from a specific backend API and convert it to the client model                                       |
-| Http       | wraps the native http fetch and provides additional utilities to integrate http headers (e.g. authorization header) |
+| Layer      | Purpose                                                                                                                                                                                                                                                                                                                                     |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Component  | Renders application state inside UI elements                                                                                                                                                                                                                                                                                                |
+| Controller | Resolves application state for the given context so that the component can be reused in different places. For example, a product title component can be used on the Product Detail Page, Product Card and in a cart entry. The controller will resolve the product _sku_ from the context, so that the right product title can be resolved. |
+| Service    | Manage the application state for a certain application domain                                                                                                                                                                                                                                                                               |
+| Adapter    | Loads the data from a specific backend API and convert it to the client model                                                                                                                                                                                                                                                               |
+| Http       | wraps the native http fetch and provides additional utilities to integrate http headers (e.g. authorization header)                                                                                                                                                                                                                         |
 
 The various layers can be considered optional if you build your own domains or components. For Oryx these layers are however part of a the recommended architecture. It increases separation of concerns and provides a clear and clean extension model. All application layers are customizable and allow for an alternative implementation.
 
