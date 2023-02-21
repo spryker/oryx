@@ -16,7 +16,7 @@ export class LitRouter extends Router {
   // TODO - @lit-labs/router does not expose _host. If they do, we will prefer it over this.
   protected readonly host: ReactiveControllerHost & HTMLElement;
 
-  // window.location.pathname alternative to private _currentRoute is updated too early
+  // globalThis.location.pathname alternative to private _currentRoute is updated too early
   protected currentPath?: string;
   protected urlSearchParams?: RouteParams;
 
@@ -52,9 +52,11 @@ export class LitRouter extends Router {
   }
 
   async _goto(pathname: string): Promise<void> {
-    this.currentPath = window.location?.pathname;
+    this.currentPath = globalThis.location?.pathname;
     this.urlSearchParams = Object.fromEntries(
-      new URLSearchParams(decodeURIComponent(window.location?.search)).entries()
+      new URLSearchParams(
+        decodeURIComponent(globalThis.location?.search)
+      ).entries()
     );
     // As part of the lazy hydration strategy, everything should not be hydrated by default
     // If the host component is SSR rendered, hydrating it wipes everything
