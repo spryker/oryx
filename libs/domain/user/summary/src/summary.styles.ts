@@ -30,6 +30,7 @@ export const styles = css`
 
   .dropdown-link {
     --oryx-icon-size: 24px;
+
     justify-content: flex-start;
     padding: 9px 15px;
   }
