@@ -1,8 +1,8 @@
 import { FacetValue } from '@spryker-oryx/product';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { CSSResultGroup, html, TemplateResult } from 'lit';
-import { repeat } from 'lit-html/directives/repeat.js';
-import { when } from 'lit-html/directives/when.js';
+import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
 import { SingleMultiFacet } from './facet.model';
 import { SingleFacetControlStyles } from './facet.styles';
 

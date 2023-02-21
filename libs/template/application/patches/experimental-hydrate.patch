@@ -1,4 +1,4 @@
-252c252,257
+255c255,260
 <     const state = stack[stack.length - 1];
 ---
 >     let state = stack[stack.length - 1];
