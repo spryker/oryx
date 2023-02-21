@@ -77,7 +77,7 @@ describe('AuthLoginComponent', () => {
 
   describe('when component is rendered', () => {
     beforeEach(async () => {
-      element = await fixture(html`<auth-login></auth-login>`);
+      element = await fixture(html`<oryx-auth-login></oryx-auth-login>`);
     });
 
     it('should have a defined web component', () => {
@@ -112,7 +112,7 @@ describe('AuthLoginComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login .heading=${heading}></auth-login>`
+        html`<oryx-auth-login .heading=${heading}></oryx-auth-login>`
       );
     });
 
@@ -126,9 +126,9 @@ describe('AuthLoginComponent', () => {
   describe('when password visibility strategy is set to HOVER', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login
-          .options="${{ strategy: PasswordVisibilityStrategy.Hover }}"
-        ></auth-login>`
+        html`<oryx-auth-login
+          .options="${{ passwordVisibility: PasswordVisibilityStrategy.Hover }}"
+        ></oryx-auth-login>`
       );
     });
 
@@ -143,10 +143,12 @@ describe('AuthLoginComponent', () => {
     });
   });
 
-  describe('when the remember property is set to true', () => {
+  describe('when the enableRememberMe property is set to true', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login .options="${{ remember: true }}"></auth-login>`
+        html`<oryx-auth-login
+          .options="${{ enableRememberMe: true }}"
+        ></oryx-auth-login>`
       );
     });
 
@@ -158,11 +160,11 @@ describe('AuthLoginComponent', () => {
   describe('when login button is clicked', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login
+        html`<oryx-auth-login
           .options="${{
-            showRememberMe: true,
+            enableRememberMe: true,
           }}"
-        ></auth-login>`
+        ></oryx-auth-login>`
       );
 
       setupLogin();
@@ -249,13 +251,13 @@ describe('AuthLoginComponent', () => {
       describe('when redirect url is specified', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<auth-login
+            html`<oryx-auth-login
               .options="${{
-                strategy: PasswordVisibilityStrategy.Hover,
-                showRememberMe: true,
-                url: '/contact',
+                passwordVisibility: PasswordVisibilityStrategy.Hover,
+                enableRememberMe: true,
+                redirectUrl: '/contact',
               }}"
-            ></auth-login>`
+            ></oryx-auth-login>`
           );
         });
 
@@ -268,11 +270,11 @@ describe('AuthLoginComponent', () => {
       describe('when redirect was disabled', () => {
         it('should not redirect', async () => {
           element = await fixture(
-            html`<auth-login
+            html`<oryx-auth-login
               .options="${{
                 disableRedirect: true,
               }}"
-            ></auth-login>`
+            ></oryx-auth-login>`
           );
           await submit();
 

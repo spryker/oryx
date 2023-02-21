@@ -17,25 +17,19 @@ export default {
       control: { type: 'radio' },
       description: 'Password field visibility strategy.',
     },
-    showRememberMe: {
-      type: 'boolean',
-    },
-    disableRedirect: {
-      type: 'boolean',
-    },
-    url: {
-      type: 'string',
-    },
+    enableRememberMe: { type: 'boolean' },
+    disableRedirect: { type: 'boolean' },
+    redirectUrl: { type: 'string' },
   },
 } as unknown as Meta;
 
 const Template: Story<LoginOptions> = (props): TemplateResult => {
   const options = {
-    strategy: props.passwordVisibility,
-    showRememberMe: props.enableRememberMe,
-    url: props.redirectUrl,
+    passwordVisibility: props.passwordVisibility,
+    enableRememberMe: props.enableRememberMe,
+    redirectUrl: props.redirectUrl,
   };
-  return html`<auth-login .options=${options}></auth-login>`;
+  return html`<oryx-auth-login .options=${options}></oryx-auth-login>`;
 };
 
 export const Login = Template.bind({});

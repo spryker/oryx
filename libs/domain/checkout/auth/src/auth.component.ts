@@ -48,9 +48,8 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
                 <h3>${i18n('checkout.guest-checkout')}</h3>
                 <oryx-button type="text">
                   <button
-                    @click=${(): void => {
-                      this.checkoutDataService.setGuestCheckout(false);
-                    }}
+                    @click=${() =>
+                      this.checkoutDataService.setGuestCheckout(false)}
                   >
                     ${i18n('checkout.checkout-as-register')}
                   </button>
@@ -65,14 +64,13 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
   protected renderLogin(): TemplateResult {
     return html`${asyncValue(
       this.options$,
-      (options) => html`<auth-login
+      (options) => html`<oryx-auth-login
         .heading=${i18n('checkout.authentication.login')}
-        .options="${{
-          disableRedirect: true,
-          showRememberMe: true,
-          ...(options.loginUrl && { url: options.loginUrl }),
-        }}"
-      ></auth-login>`
+        .options=${{
+          disableRedirect: !options.loginUrl,
+          ...(options.loginUrl && { redirectUrl: options.loginUrl }),
+        }}
+      ></oryx-auth-login>`
     )}`;
   }
 
@@ -87,7 +85,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
               this.checkoutDataService.setGuestCheckout();
             }}
             .options="${{
-              ...(options.guestUrl && { url: options.guestUrl }),
+              ...(options.guestUrl && { redirectUrl: options.guestUrl }),
             }}"
           ></checkout-guest>`
         )}`

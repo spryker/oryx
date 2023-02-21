@@ -84,13 +84,14 @@ describe('Checkout Auth', () => {
       );
       const guestCheckoutComponent =
         element.renderRoot.querySelector('checkout-guest');
-      const authLoginComponent = element.renderRoot.querySelector('auth-login');
+      const authLoginComponent =
+        element.renderRoot.querySelector('oryx-auth-login');
 
       expect(
         (guestCheckoutComponent as CheckoutGuestComponent)?.options
-      ).toContain({ url: mockGuestOptions.guestUrl });
+      ).toContain({ redirectUrl: mockGuestOptions.guestUrl });
       expect((authLoginComponent as AuthLoginComponent)?.options).toContain({
-        url: mockLoginOptions.loginUrl,
+        redirectUrl: mockLoginOptions.loginUrl,
       });
     });
   });
