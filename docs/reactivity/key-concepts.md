@@ -17,7 +17,7 @@ Oryx makes use of reactive programming through the popular library [RxJS](https:
 
 Application state refers to the data that represents the _current_ state of the application. It describes the current state of an application at any given moment and is used to render the user interface and provide the right behavior for user interactions.
 
-Oryx does not come with a global state management layer. Application state is maintained per _domains_. Each domain is concerned with the associated data that is used in the domain.
+Oryx does not provide a _global_ state management layer. Application state is maintained per _domain_ and each domain is only concerned with the associated data used by the domain. For example, product data is maintained in the product domain and the product domain logic will ensure that a product is only loaded once when multiple requests are being made for the same product.
 
 Some of the application state is maintained below domains. A good example is the internationalization state (aka application context), such as the active language or active currency. The internationalization domain is considered a core domain and can therefor be used inside other domains without introducing cycle dependencies in the system.
 
