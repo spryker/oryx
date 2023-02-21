@@ -106,8 +106,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   protected renderLoginOptions(): TemplateResult | void {
     if (
-      !this.componentOptions?.enableForgotPassword &&
-      !this.componentOptions?.enableRememberMe
+      !this.componentOptions.enableForgotPassword &&
+      !this.componentOptions.enableRememberMe
     ) {
       return;
     }
