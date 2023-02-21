@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { viteConfig } from './vite.config.common.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig((config) => {
   return {
     root: viteConfig.index,

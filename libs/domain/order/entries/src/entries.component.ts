@@ -10,7 +10,6 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';
 import { OrderEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
@@ -92,17 +91,15 @@ export class OrderEntriesComponent extends OrderMixin(
       : html``;
   }
 
-  protected renderButton(): TemplateResult {
-    return html`${when(
-      !this.hasThreshold,
-      () => html`<button @click=${this.toggleShowMore}>
-        ${this.showAllEntries ? '-' : '+'}${this.order!.items.length -
-        (this.componentOptions?.limit ?? 0)}
-        ${i18n(
-          this.showAllEntries ? 'order.less-products' : 'order.more-products'
-        )}
-      </button>`
-    )}`;
+  protected renderButton(): TemplateResult | void {
+    if (this.hasThreshold || !this.order) return;
+    return html`<button @click=${this.toggleShowMore}>
+      ${this.showAllEntries ? '-' : '+'}${this.order.items.length -
+      (this.componentOptions?.limit ?? 0)}
+      ${i18n(
+        this.showAllEntries ? 'order.less-products' : 'order.more-products'
+      )}
+    </button>`;
   }
 
   protected toggleShowMore(): void {
