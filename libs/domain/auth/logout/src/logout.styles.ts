@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host oryx-icon {
+  oryx-icon {
     --oryx-icon-size: 24px;
   }
 

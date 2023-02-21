@@ -40,7 +40,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
       </oryx-heading>`;
 
     return html`
-      <oryx-button>
+      <oryx-button slot="trigger">
         ${when(
           isAuthenticated,
           () => html`<button class="trigger">${innerContent}</button>`,
@@ -56,7 +56,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   protected renderDropdown(): TemplateResult {
     return html`
       <div class="dropdown">
-        ${when(this.options?.items && this.options.items.length, () =>
+        ${when(this.options?.items?.length, () =>
           this.options!.items!.map(
             (item) => html`
               <oryx-button type="text">
@@ -83,9 +83,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
     return html`
       <oryx-dropdown position="start" vertical-align>
-        <div slot="trigger">${this.renderTriggerButton(true)}</div>
-
-        ${this.renderDropdown()}
+        ${this.renderTriggerButton(true)} ${this.renderDropdown()}
       </oryx-dropdown>
     `;
   }
