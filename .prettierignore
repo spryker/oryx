@@ -11,3 +11,4 @@ out-tsc
 tools/**/*.js
 *.hbs
 CHANGELOG.md
+libs/template/application/patches/*
