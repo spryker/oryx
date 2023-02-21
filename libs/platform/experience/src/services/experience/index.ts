@@ -5,4 +5,5 @@ export * from './layout';
 export * from './layout/default-layout.builder';
 export * from './models';
 export * from './preview-experience.service';
+export * from './static-data';
 export * from './utilities';
