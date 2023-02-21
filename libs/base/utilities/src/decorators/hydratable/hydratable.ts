@@ -23,7 +23,11 @@ export const hydratable =
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
       ? legacyCustomElement(classOrDescriptor, mode, state)
-      : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
+      : standardCustomElement(
+          classOrDescriptor as ClassDescriptor,
+          mode,
+          state
+        );
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
@@ -35,14 +39,15 @@ const legacyCustomElement = (
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  mode?: string[] | string
+  mode?: string[] | string,
+  state?: string
 ) => {
   const { kind, elements } = descriptor;
   return {
     kind,
     elements,
     finisher(clazz: Constructor<PatchableLitElement>) {
-      return hydratableClass(clazz, mode);
+      return hydratableClass(clazz, mode, state);
     },
   };
 };
