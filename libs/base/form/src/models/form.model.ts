@@ -22,7 +22,8 @@ export const enum FormFieldType {
   Color = 'color',
 }
 
-export interface FormFieldDefinition<K = string> {
+export interface FormFieldDefinition<K = string>
+  extends Partial<FieldValidationPattern> {
   id: K;
   type?: FormFieldType | string;
   label?: string;
@@ -41,9 +42,6 @@ export interface FormFieldDefinition<K = string> {
   width?: 50 | 100;
 
   disabled?: boolean;
-
-  pattern?: string;
-  title?: string;
 }
 
 export type FormValues = Record<string, string | boolean>;
