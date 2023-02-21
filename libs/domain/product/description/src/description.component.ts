@@ -8,7 +8,7 @@ import { ProductDescriptionOptions } from './description.model';
 import { convertLineFeedsToHTML } from './utils';
 
 @defaultOptions({ truncateAfter: 3, enableToggle: true })
-@hydratable(['mouseover', 'window:resize'])
+@hydratable(['mouseover', 'window:resize'], 'product')
 export class ProductDescriptionComponent extends ProductMixin(
   ContentMixin<ProductDescriptionOptions>(LitElement)
 ) {

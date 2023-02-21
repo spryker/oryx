@@ -4,7 +4,8 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement } from 'lit';
+import { html, isServer, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
@@ -18,17 +19,18 @@ export interface PatchableLitElement extends LitElement {
 }
 
 export const hydratable =
-  (mode?: string[] | string) =>
+  (mode?: string[] | string, state?: string) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
-      ? legacyCustomElement(classOrDescriptor, mode)
+      ? legacyCustomElement(classOrDescriptor, mode, state)
       : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  mode?: string[] | string
+  mode?: string[] | string,
+  state?: string
 ) => {
-  return hydratableClass(clazz, mode);
+  return hydratableClass(clazz, mode, state);
 };
 
 const standardCustomElement = (
@@ -47,7 +49,8 @@ const standardCustomElement = (
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string[] | string
+  mode?: string[] | string,
+  state?: string
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
@@ -100,6 +103,14 @@ function hydratableClass<T extends Type<HTMLElement>>(
       this[DEFER_HYDRATION] = false;
       this.removeAttribute('defer-hydration');
       prototype.connectedCallback.call(this);
+    }
+
+    render(): TemplateResult {
+      if (!state) {
+        return super.render();
+      }
+
+      return html`${when(this[state as keyof this], () => super.render())}`;
     }
   };
 }

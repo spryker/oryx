@@ -1,10 +1,12 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductLabel, ProductMixin } from '@spryker-oryx/product';
+import { hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
+hydratable(['mouseover', 'focusin'], 'product');
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {
