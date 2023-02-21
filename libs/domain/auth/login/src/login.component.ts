@@ -158,9 +158,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   protected redirect(): void {
     this.success$.next(true);
 
-    if (this.componentOptions.disableRedirect) return;
+    if (this.componentOptions?.disableRedirect) return;
 
-    if (this.componentOptions.redirectUrl) {
+    if (this.componentOptions?.redirectUrl) {
       this.routerService.navigate(this.componentOptions.redirectUrl);
     }
 
