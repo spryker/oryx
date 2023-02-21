@@ -12,7 +12,7 @@ export const styles = css`
     align-items: center;
   }
 
-  .options .forgot-password {
+  .options oryx-link {
     margin-inline-start: auto;
   }
 `;

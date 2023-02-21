@@ -116,13 +116,17 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         ${when(
           this.componentOptions.enableRememberMe,
           () => html`<oryx-checkbox>
-            <input type="checkbox" name="rememberMe" />
+            <input
+              type="checkbox"
+              name="rememberMe"
+              aria-label=${i18n('user.login.remember-me')}
+            />
             ${i18n('user.login.remember-me')}
           </oryx-checkbox>`
         )}
         ${when(
           this.componentOptions.enableForgotPassword,
-          () => html`<oryx-link class="forgot-password">
+          () => html`<oryx-link>
             <a href="#">${i18n('user.login.forgot-password?')}</a>
           </oryx-link>`
         )}
@@ -133,16 +137,18 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   protected handleLogin(e: Event): void {
     e.preventDefault();
     this.loading$.next(true);
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
 
-    const username = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const remember = !!formData.get('rememberMe');
+    const { email, password, rememberMe } = Object.fromEntries(
+      new FormData(e.target as HTMLFormElement).entries()
+    );
 
-    if (username && password) {
+    if (email && password) {
       this.authService
-        .login({ username, password, remember })
+        .login({
+          username: email.toString(),
+          password: password.toString(),
+          remember: !!rememberMe,
+        })
         .pipe(
           take(1),
           catchError(() => {

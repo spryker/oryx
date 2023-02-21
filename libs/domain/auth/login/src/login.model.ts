@@ -29,9 +29,3 @@ export interface LoginOptions {
    */
   redirectUrl?: string;
 }
-
-export interface LoginParameters {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}

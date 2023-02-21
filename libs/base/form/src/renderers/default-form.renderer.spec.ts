@@ -1,18 +1,9 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LitElement, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators.js';
 import { FormFieldDefinition, FormFieldType } from '../models';
 import { DefaultFormRenderer } from './default-form.renderer';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
-
-@customElement('mock-field')
-class MockFieldComponent extends LitElement {
-  render(): TemplateResult {
-    return html`<div>mock input</div>`;
-  }
-}
 
 class MockRenderer {
   render = vi.fn().mockReturnValue(html`<mock-field></mock-field>`);

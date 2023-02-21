@@ -87,7 +87,7 @@ describe('AuthLoginComponent', () => {
       expect(element).toBeInstanceOf(AuthLoginComponent);
     });
 
-    it.skip('should pass the a11y audit', async () => {
+    it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
