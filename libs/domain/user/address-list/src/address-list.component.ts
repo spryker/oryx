@@ -16,7 +16,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { combineLatest, distinctUntilChanged, ReplaySubject, tap } from 'rxjs';
+import { combineLatest, ReplaySubject, tap } from 'rxjs';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
@@ -45,13 +45,10 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
           })
         );
       }
-    }),
-    distinctUntilChanged()
+    })
   );
 
-  protected addresses$ = this.addressService
-    .getAddresses()
-    .pipe(distinctUntilChanged());
+  protected addresses$ = this.addressService.getAddresses();
 
   @asyncState()
   protected addresses = valueType(this.addresses$);
