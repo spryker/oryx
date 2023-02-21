@@ -3,11 +3,12 @@ import { LoginOptions } from './login.model';
 
 declare global {
   interface FeatureOptions {
-    'auth-login'?: LoginOptions;
+    'oryx-auth-login'?: LoginOptions;
   }
 }
 
 export const authLoginComponent = componentDef({
-  name: 'auth-login',
+  name: 'oryx-auth-login',
   impl: () => import('./login.component').then((m) => m.AuthLoginComponent),
+  schema: () => import('./login.schema').then((m) => m.loginComponentSchema),
 });

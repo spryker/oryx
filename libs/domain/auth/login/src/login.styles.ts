@@ -1,13 +1,18 @@
 import { css } from 'lit';
 
 export const styles = css`
-  oryx-card form > * {
-    margin: 10px 0;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
   .options {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+  }
+
+  .options .forgot-password {
+    margin-inline-start: auto;
   }
 `;

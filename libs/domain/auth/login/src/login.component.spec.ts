@@ -127,7 +127,7 @@ describe('AuthLoginComponent', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<auth-login
-          .options="${{ strategy: PasswordVisibilityStrategy.HOVER }}"
+          .options="${{ strategy: PasswordVisibilityStrategy.Hover }}"
         ></auth-login>`
       );
     });
@@ -251,7 +251,7 @@ describe('AuthLoginComponent', () => {
           element = await fixture(
             html`<auth-login
               .options="${{
-                strategy: PasswordVisibilityStrategy.HOVER,
+                strategy: PasswordVisibilityStrategy.Hover,
                 showRememberMe: true,
                 url: '/contact',
               }}"

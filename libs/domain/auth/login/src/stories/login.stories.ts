@@ -9,10 +9,10 @@ export default {
   argTypes: {
     strategy: {
       options: [
-        PasswordVisibilityStrategy.CLICK,
-        PasswordVisibilityStrategy.MOUSEDOWN,
-        PasswordVisibilityStrategy.HOVER,
-        PasswordVisibilityStrategy.NONE,
+        PasswordVisibilityStrategy.Click,
+        PasswordVisibilityStrategy.Mousedown,
+        PasswordVisibilityStrategy.Hover,
+        PasswordVisibilityStrategy.None,
       ],
       control: { type: 'radio' },
       description: 'Password field visibility strategy.',
@@ -31,16 +31,16 @@ export default {
 
 const Template: Story<LoginOptions> = (props): TemplateResult => {
   const options = {
-    strategy: props.strategy,
-    showRememberMe: props.showRememberMe,
-    url: props.url,
+    strategy: props.passwordVisibility,
+    showRememberMe: props.enableRememberMe,
+    url: props.redirectUrl,
   };
   return html`<auth-login .options=${options}></auth-login>`;
 };
 
 export const Login = Template.bind({});
 Login.args = {
-  strategy: PasswordVisibilityStrategy.CLICK,
-  showRememberMe: true,
-  url: '',
+  passwordVisibility: PasswordVisibilityStrategy.Click,
+  enableRememberMe: true,
+  redirectUrl: '',
 };
