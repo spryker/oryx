@@ -12,8 +12,8 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs';
-import { OrderComponentProperties, OrderContext, OrderData } from '../models';
-import { OrderService } from '../services';
+import { OrderComponentProperties, OrderData } from '../models';
+import { OrderContext, OrderService } from '../services';
 
 export class OrderController {
   protected context: ContextController;
