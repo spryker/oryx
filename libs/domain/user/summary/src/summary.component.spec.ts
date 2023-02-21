@@ -113,7 +113,7 @@ describe('UserSummaryComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render user firstName insteadOf Login title', () => {
+    it('should render user firstName instead of Login title', () => {
       const subtitle = element.renderRoot.querySelector(
         'oryx-heading'
       ) as HTMLElement;
