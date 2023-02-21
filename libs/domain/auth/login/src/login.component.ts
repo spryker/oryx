@@ -69,7 +69,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
       <form @submit=${this.handleLogin} method="post">
         <oryx-input
-          label=${i18n('user.login.email')}
+          .label=${i18n('user.login.email')}
           required
           ?hasError="${!this.hasSuccess}"
         >
@@ -83,7 +83,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         <oryx-password-input
           strategy="${ifDefined(this.componentOptions?.passwordVisibility)}"
-          label=${i18n('login.password')}
+          .label=${i18n('login.password')}
           required
           ?hasError="${!this.hasSuccess}"
         >
