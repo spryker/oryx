@@ -93,9 +93,9 @@ describe('Auth Logout', () => {
   });
 
   describe('logout', () => {
-    const emmitLogoutClick = async (): Promise<void> => {
+    const emitLogoutClick = async (): Promise<void> => {
       const submit = element?.shadowRoot?.querySelector(
-        'oryx-button'
+        'button'
       ) as HTMLButtonElement;
       setTimeout(() => {
         submit.click();
@@ -111,7 +111,7 @@ describe('Auth Logout', () => {
 
     it('should call logout on click with default navigate', async () => {
       authService.logout.mockReturnValue(of(null));
-      await emmitLogoutClick();
+      await emitLogoutClick();
       expect(authService.logout).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith('');
     });
@@ -129,7 +129,7 @@ describe('Auth Logout', () => {
 
       it('should call logout on click with custom navigate', async () => {
         authService.logout.mockReturnValue(of(null));
-        await emmitLogoutClick();
+        await emitLogoutClick();
         expect(authService.logout).toHaveBeenCalled();
         expect(routerService.navigate).toHaveBeenCalledWith('/contact');
       });
