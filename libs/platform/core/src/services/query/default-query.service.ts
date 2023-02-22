@@ -1,4 +1,4 @@
-import { inject, INJECTOR } from '@spryker-oryx/di';
+import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import { Command } from './command';
 import { CoreQueryService } from './core';
 import { Query } from './query';
@@ -11,7 +11,7 @@ import {
 
 export class DefaultQueryService
   extends CoreQueryService
-  implements QueryService
+  implements QueryService, OnDestroy
 {
   constructor(
     effects = inject(EFFECT_TOKEN, []),
@@ -57,5 +57,9 @@ export class DefaultQueryService
     }
 
     return undefined;
+  }
+
+  onDestroy(): void {
+    this.dispose();
   }
 }
