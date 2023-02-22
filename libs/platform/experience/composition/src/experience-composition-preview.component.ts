@@ -51,7 +51,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
 
   protected interactionAddComponentEvent$ = this.interaction$.pipe(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    filter((data: any) => data.action === 'add'),
+    filter((data: any) => data.action === 'add')
   );
 
   @subscribe()
