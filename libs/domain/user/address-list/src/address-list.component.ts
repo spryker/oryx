@@ -1,37 +1,40 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { Address, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
   AddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
 import {
-  asyncValue,
+  asyncState,
   hydratable,
   i18n,
   subscribe,
+  valueType,
 } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
+import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  ReplaySubject,
-  tap,
-} from 'rxjs';
+import { combineLatest, ReplaySubject, tap } from 'rxjs';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
 @hydratable('window:load')
-export class AddressListComponent extends ComponentMixin<AddressListItemOptions>() {
+export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
+  LitElement
+) {
   static styles = styles;
+
+  protected addressService = resolve(AddressService);
 
   protected selectedAddress$ = new ReplaySubject<Address | null>(1);
 
+  @asyncState()
+  protected selectedAddress = valueType(this.selectedAddress$);
+
   @subscribe()
-  protected handle$ = this.selectedAddress$.pipe(
+  protected handleSelectedAddress$ = this.selectedAddress$.pipe(
     tap((address) => {
       if (address) {
         this.dispatchEvent(
@@ -42,13 +45,18 @@ export class AddressListComponent extends ComponentMixin<AddressListItemOptions>
           })
         );
       }
-    }),
-    distinctUntilChanged()
+    })
   );
 
-  protected addresses$ = combineLatest([
-    resolve(AddressService).getAddresses().pipe(distinctUntilChanged()),
-    new ContentController(this).getOptions(),
+  protected addresses$ = this.addressService.getAddresses();
+
+  @asyncState()
+  protected addresses = valueType(this.addresses$);
+
+  @subscribe()
+  protected handleAddresses$ = combineLatest([
+    this.addresses$,
+    this.options$,
   ]).pipe(
     tap(([addresses, options]) => {
       if (!options.selectable) {
@@ -81,19 +89,6 @@ export class AddressListComponent extends ComponentMixin<AddressListItemOptions>
     );
   }
 
-  protected data$ = combineLatest([
-    this.addresses$,
-    this.selectedAddress$,
-  ]).pipe(
-    map(
-      ([addresses, selectedAddress]): [
-        Address[] | null,
-        Partial<AddressListItemOptions>,
-        Address | null
-      ] => [...addresses, selectedAddress]
-    )
-  );
-
   protected onChange(address: Address): void {
     this.selectedAddress$.next(address);
   }
@@ -105,29 +100,34 @@ export class AddressListComponent extends ComponentMixin<AddressListItemOptions>
     </slot>`;
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(
-      this.data$,
-      ([addresses, options, selectedAddress]) => {
-        if (!addresses || !addresses.length) {
-          return this.renderEmptyMessage();
-        }
+  protected createAddressesKey(): string | void {
+    return this.addresses?.map(({ id }) => id).join('-');
+  }
 
-        return html`${repeat(
-          addresses,
+  protected override render(): TemplateResult {
+    if (!this.addresses?.length) {
+      return this.renderEmptyMessage();
+    }
+
+    return html`
+      ${keyed(
+        this.createAddressesKey(),
+        repeat(
+          this.addresses,
           (address) => address.id,
           (address) => {
             const selected = !!(
-              options.selectable && selectedAddress?.id === address.id
+              this.componentOptions.selectable &&
+              this.selectedAddress?.id === address.id
             );
 
             return html`<oryx-tile ?selected=${selected}>
               <oryx-address-list-item
                 .addressId=${address.id}
-                .options=${options}
+                .options=${this.componentOptions}
               >
                 ${when(
-                  options.selectable,
+                  this.componentOptions.selectable,
                   () => html`<input
                     name="address"
                     type="radio"
@@ -139,8 +139,8 @@ export class AddressListComponent extends ComponentMixin<AddressListItemOptions>
               </oryx-address-list-item>
             </oryx-tile>`;
           }
-        )}`;
-      }
-    )}`;
+        )
+      )}
+    `;
   }
 }
