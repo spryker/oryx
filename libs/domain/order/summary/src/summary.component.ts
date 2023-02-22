@@ -11,6 +11,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { styles } from './summary.styles';
 
 @hydratable('window:load')
@@ -64,11 +65,15 @@ export class OrderSummaryComponent extends OrderMixin(
         <h3>${i18n('order.billing-details')}</h3>
       </oryx-heading>
       <div class="details">
-        <div class="title">${i18n('order.billing-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.billingAddress}>
-          </oryx-user-address>
-        </div>
+        ${when(
+          this.order?.billingAddress &&
+            Object.keys(this.order.billingAddress).length > 0,
+          () => html` <div class="title">${i18n('order.billing-address')}:</div>
+            <div>
+              <oryx-user-address .address=${this.order?.billingAddress}>
+              </oryx-user-address>
+            </div>`
+        )}
         <div class="title">${i18n('order.email')}:</div>
         <div>${this.order?.billingAddress?.email}</div>
         <div class="title">${i18n('order.payment')}:</div>
@@ -82,11 +87,17 @@ export class OrderSummaryComponent extends OrderMixin(
         <h3>${i18n('order.shipping-details')}</h3>
       </oryx-heading>
       <div class="details">
-        <div class="title">${i18n('order.delivery-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.shippingAddress}>
-          </oryx-user-address>
-        </div>
+        ${when(
+          this.order?.shippingAddress &&
+            Object.keys(this.order.shippingAddress).length > 0,
+          () => html` <div class="title">
+              ${i18n('order.delivery-address')}:
+            </div>
+            <div>
+              <oryx-user-address .address=${this.order?.shippingAddress}>
+              </oryx-user-address>
+            </div>`
+        )}
         <div class="title">${i18n('order.email')}:</div>
         <div>${this.order?.shippingAddress?.email}</div>
         <div class="title">${i18n('order.shipping-method')}:</div>
