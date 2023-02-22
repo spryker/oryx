@@ -8,15 +8,6 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
-import { SearchBoxOptions } from './box.model';
-
-const mockedOptions: SearchBoxOptions = {
-  placeholder: 'placeholder',
-};
-
-const brokenOptions: SearchBoxOptions = {
-  placeholder: '',
-};
 
 class MockEBService implements Partial<ExperienceService> {
   getOptions = vi.fn().mockReturnValue(of({}));
@@ -30,8 +21,7 @@ describe('SearchBoxComponent', () => {
   const hasControls = (): boolean => {
     return (
       element.renderRoot.querySelectorAll(
-        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]
-    `
+        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]`
       ).length === 2
     );
   };
@@ -231,7 +221,7 @@ describe('SearchBoxComponent', () => {
     });
   });
 
-  describe('when container with result is scrolled', () => {
+  describe('when container with results is scrolled', () => {
     beforeEach(async () => {
       element = await fixture(html`<search-box></search-box>`);
 
@@ -293,40 +283,6 @@ describe('SearchBoxComponent', () => {
       element.dispatchEvent(new CustomEvent('oryx.close'));
 
       expect(typeahead.hasAttribute('open')).toBe(false);
-    });
-  });
-
-  describe('when options provided', () => {
-    describe('and data is correct', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<search-box .options=${mockedOptions}></search-box>`
-        );
-      });
-
-      it('should apply placeholder to input', () => {
-        const input = element.renderRoot.querySelector('input') as HTMLElement;
-
-        expect(input.getAttribute('placeholder')).toBe(
-          mockedOptions.placeholder
-        );
-      });
-    });
-
-    describe('and data is incorrect', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<search-box .options=${brokenOptions}></search-box>`
-        );
-      });
-
-      it('should not apply placeholder from options to input', () => {
-        const input = element.renderRoot.querySelector('input') as HTMLElement;
-
-        expect(input.getAttribute('placeholder')).not.toBe(
-          brokenOptions.placeholder
-        );
-      });
     });
   });
 

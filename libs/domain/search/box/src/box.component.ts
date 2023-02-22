@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentController, ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
-import { TemplateResult } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
@@ -35,27 +35,21 @@ import {
 import { baseStyles, searchboxStyles } from './styles';
 
 @hydratable('focusin')
+@defaultOptions({
+  minChars: 2,
+  completionsCount: 5,
+  productsCount: 5,
+  categoriesCount: 5,
+  cmsCount: 0,
+})
 export class SearchBoxComponent
-  extends ComponentMixin<SearchBoxOptions>()
+  extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
 {
   static styles = [baseStyles, searchboxStyles];
 
-  private defaultOptions: SearchBoxOptions = {
-    minChars: 2,
-    completionsCount: 5,
-    productsCount: 5,
-    categoriesCount: 5,
-    cmsCount: 0,
-  };
-
   protected contentController = new ContentController(this);
   protected suggestionService = resolve(SuggestionService);
-  protected options$ = this.contentController.getOptions().pipe(
-    map((options) => ({ ...this.defaultOptions, ...options })),
-    shareReplay({ refCount: true, bufferSize: 1 }),
-    tap((options) => this.applyInputTexts(options))
-  );
 
   protected scrollingAreaController = new ScrollingAreaController(this);
   protected queryControlsController = new QueryControlsController();
@@ -72,7 +66,7 @@ export class SearchBoxComponent
       if (query && (!options.minChars || query.length >= options.minChars)) {
         return this.suggestionService.get({ query }).pipe(
           map((raw) => {
-            const suggestion = raw
+            return raw
               ? {
                   completion: raw.completion.slice(0, options.completionsCount),
                   products: raw.products?.slice(0, options.productsCount) ?? [],
@@ -80,23 +74,16 @@ export class SearchBoxComponent
                   cmsPages: raw.cmsPages.slice(0, options.cmsCount),
                 }
               : raw;
-
-            return { suggestion, options };
           })
         );
       }
 
-      return of({ suggestion: null, options });
+      return of(null);
     }),
-    tap(({ suggestion }) => {
+    tap(suggestion => {
       this.stretched = this.hasCompleteData(suggestion);
     })
   );
-
-  protected controlButtons$ = combineLatest([
-    this.options$,
-    this.triggerInputValue$,
-  ]).pipe(map(([options, query]) => ({ options, showButtons: !!query })));
 
   @subscribe()
   protected scrollEvent = defer(() =>
@@ -172,14 +159,6 @@ export class SearchBoxComponent
     );
   }
 
-  protected applyInputTexts(options: SearchBoxOptions): void {
-    const { placeholder } = options;
-
-    if (placeholder) {
-      this.inputRef?.value?.setAttribute('placeholder', placeholder);
-    }
-  }
-
   protected hasLinks(suggestion: Suggestion | null): boolean {
     return !!(
       suggestion?.completion.length ||
@@ -201,15 +180,14 @@ export class SearchBoxComponent
   }
 
   protected renderSuggestion(
-    suggestion: Suggestion | null,
-    options: SearchBoxOptions
+    suggestion: Suggestion | null
   ): TemplateResult {
     if (!suggestion) {
       return html``;
     }
 
     if (this.isNothingFound(suggestion)) {
-      return this.renderSuggestionController.renderNothingFound(options);
+      return this.renderSuggestionController.renderNothingFound();
     }
 
     return html`
@@ -219,16 +197,10 @@ export class SearchBoxComponent
           ${ref(this.scrollContainerRef)}
         >
           ${when(this.hasLinks(suggestion), () =>
-            this.renderSuggestionController.renderLinksSection(
-              suggestion,
-              options
-            )
+            this.renderSuggestionController.renderLinksSection(suggestion)
           )}
           ${when(this.hasProducts(suggestion), () =>
-            this.renderSuggestionController.renderProductsSection(
-              suggestion,
-              options
-            )
+            this.renderSuggestionController.renderProductsSection(suggestion)
           )}
         </div>
       </div>
@@ -237,23 +209,28 @@ export class SearchBoxComponent
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-typeahead
-        @oryx.typeahead=${this.onTypeahead}
-        .clearIconPosition=${ClearIconPosition.NONE}
-      >
-        <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
-        <input ${ref(this.inputRef)} placeholder="Search" />
-        ${asyncValue(
-          this.suggestion$,
-          ({ suggestion, options }) =>
-            html`${this.renderSuggestion(suggestion, options)}`
-        )}
-        ${asyncValue(this.controlButtons$, ({ options, showButtons }) =>
-          showButtons
-            ? this.queryControlsController.renderControls(options)
-            : html``
-        )}
-      </oryx-typeahead>
+      <form @submit=${(e: SubmitEvent) => {
+        e.preventDefault();
+        console.log(e);
+        
+      }}>
+        <oryx-typeahead
+          @oryx.typeahead=${this.onTypeahead}
+          .clearIconPosition=${ClearIconPosition.NONE}
+        >
+          <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
+          <input ${ref(this.inputRef)} placeholder="Search" />
+          ${asyncValue(
+            this.suggestion$,
+            suggestion => html`${this.renderSuggestion(suggestion)}`
+          )}
+          ${asyncValue(this.triggerInputValue$, query =>
+            query
+              ? this.queryControlsController.renderControls()
+              : html``
+          )}
+        </oryx-typeahead>
+      </form>
     `;
   }
 }

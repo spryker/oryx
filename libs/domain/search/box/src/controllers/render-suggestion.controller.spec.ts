@@ -74,15 +74,6 @@ const categoriesOnly: Suggestion = {
 
 @customElement('fake-container')
 class FakeContainer extends LitElement {
-  protected options = {
-    nothingFoundText: '',
-    completionTitle: '',
-    categoriesTitle: '',
-    cmsTitle: '',
-    productsTitle: '',
-    viewAllProductsButtonTitle: '',
-  };
-
   controller = new RenderSuggestionController();
 
   protected isNothingFound(suggestion: Suggestion): boolean {
@@ -99,13 +90,10 @@ class FakeContainer extends LitElement {
     return html`
       ${when(
         this.isNothingFound(this.suggestion),
-        () => this.controller.renderNothingFound(this.options),
+        () => this.controller.renderNothingFound(),
         () => html`
-          ${this.controller.renderLinksSection(this.suggestion, this.options)}
-          ${this.controller.renderProductsSection(
-            this.suggestion,
-            this.options
-          )}
+          ${this.controller.renderLinksSection(this.suggestion)}
+          ${this.controller.renderProductsSection(this.suggestion)}
         `
       )}
     `;
@@ -190,7 +178,7 @@ describe('RenderSuggestionController', () => {
       const links = element.renderRoot.querySelectorAll(
         'section:nth-child(1) > ul oryx-content-link'
       );
-      Array.from(links).forEach((link, index) => {
+      Array.from(links).forEach(link => {
         expect((link as ContentLinkComponent).options?.type).toBe(
           SemanticLinkType.Category
         );

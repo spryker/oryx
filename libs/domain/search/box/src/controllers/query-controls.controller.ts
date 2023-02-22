@@ -1,6 +1,6 @@
+import { i18n } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
-import { SearchBoxOptions } from '../index';
 
 export class QueryControlsController {
   protected dispatchEvent(e: Event, eventType: string): void {
@@ -18,20 +18,20 @@ export class QueryControlsController {
     e.preventDefault();
   }
 
-  renderControls(options: SearchBoxOptions): TemplateResult {
+  renderControls(): TemplateResult {
     return html`
       <oryx-button slot="suffix" type="text">
         <button
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.clear')}
           @mousedown=${this.muteMousedown}
         >
-          ${options.clearButtonTitle || 'Clear'}
+          ${i18n('search.box.clear')}
         </button>
       </oryx-button>
 
       <oryx-icon-button slot="suffix" size="small">
         <button
-          aria-label=${options.closeButtonArialLabel || 'Close results'}
+          aria-label="Close results"
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.close')}
           @mousedown=${this.muteMousedown}
         >

@@ -19,4 +19,5 @@ export const searchBoxComponent = componentDef({
         ]),
     },
   ],
+  schema: () => import('./box.schema').then((m) => m.searchBoxComponentSchema),
 });
