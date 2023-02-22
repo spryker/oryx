@@ -8,7 +8,6 @@ export const authLogoutComponentSchema: ContentComponentSchema<AuthLogoutCompone
     group: 'Auth',
     options: {
       redirectUrl: {
-        label: 'Redirect url',
         type: FormFieldType.Text,
       },
     },
