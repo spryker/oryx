@@ -11,7 +11,6 @@ import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
   catchError,
-  combineLatest,
   debounce,
   defer,
   distinctUntilChanged,
@@ -19,7 +18,6 @@ import {
   fromEvent,
   map,
   of,
-  shareReplay,
   Subject,
   switchMap,
   tap,
@@ -65,16 +63,13 @@ export class SearchBoxComponent
     switchMap(([query, options]) => {
       if (query && (!options.minChars || query.length >= options.minChars)) {
         return this.suggestionService.get({ query }).pipe(
-          map((raw) => {
-            return raw
-              ? {
-                  completion: raw.completion.slice(0, options.completionsCount),
-                  products: raw.products?.slice(0, options.productsCount) ?? [],
-                  categories: raw.categories.slice(0, options.categoriesCount),
-                  cmsPages: raw.cmsPages.slice(0, options.cmsCount),
-                }
-              : raw;
-          })
+          map((raw) => raw ? {
+              completion: raw.completion.slice(0, options.completionsCount),
+              products: raw.products?.slice(0, options.productsCount) ?? [],
+              categories: raw.categories.slice(0, options.categoriesCount),
+              cmsPages: raw.cmsPages.slice(0, options.cmsCount),
+            } : raw
+          )
         );
       }
 

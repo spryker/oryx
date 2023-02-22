@@ -22,6 +22,7 @@ export class QueryControlsController {
     return html`
       <oryx-button slot="suffix" type="text">
         <button
+          type="button"
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.clear')}
           @mousedown=${this.muteMousedown}
         >
@@ -32,6 +33,7 @@ export class QueryControlsController {
       <oryx-icon-button slot="suffix" size="small">
         <button
           aria-label="Close results"
+          type="button"
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.close')}
           @mousedown=${this.muteMousedown}
         >
