@@ -14,7 +14,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
     label="Hover strategy"
-    strategy=${PasswordVisibilityStrategy.HOVER}
+    strategy=${PasswordVisibilityStrategy.Hover}
     timeout="1000"
   >
     <input type="password" value="Change123$" placeholder="Placeholder..." />

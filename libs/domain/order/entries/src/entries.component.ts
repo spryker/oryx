@@ -1,5 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,
   hydratable,
@@ -34,11 +35,10 @@ export class OrderEntriesComponent extends OrderMixin(
 
   protected hasThreshold$ = combineLatest([this.order$, this.options$]).pipe(
     map(([order, options]) => {
-      if (!order || !options.limit || !options.threshold) {
+      if (!order || !options.limit || isNaN(options.threshold as any)) {
         return false;
       }
-
-      return order.items.length < options.limit + options.threshold;
+      return order.items.length < options.limit + options.threshold!;
     })
   );
 
@@ -49,8 +49,20 @@ export class OrderEntriesComponent extends OrderMixin(
 
   protected override render(): TemplateResult {
     return this.order
-      ? html`${this.renderEntries()} ${this.renderButton()}`
+      ? html`${this.renderHeading()} ${this.renderEntries()}
+        ${this.renderButton()}`
       : html``;
+  }
+
+  protected renderHeading(): TemplateResult {
+    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+      <h3>
+        ${i18n('order.Products')}
+        ${i18n('order.(<count> items)', {
+          count: this.order?.items.length ?? 0,
+        })}
+      </h3>
+    </oryx-heading>`;
   }
 
   protected renderEntries(): TemplateResult {
@@ -58,7 +70,7 @@ export class OrderEntriesComponent extends OrderMixin(
       ? html`${repeat(
           this.order.items.slice(
             0,
-            this.showAllEntries
+            this.hasThreshold || this.showAllEntries
               ? this.order.items.length
               : this.componentOptions?.limit
           ),
@@ -71,6 +83,7 @@ export class OrderEntriesComponent extends OrderMixin(
                 calculations: {
                   unitPrice: entry.unitPrice,
                   sumPrice: entry.sumPrice,
+                  sumPriceToPayAggregation: entry.sumPriceToPayAggregation,
                 },
               }}
             ></cart-entry>`

@@ -36,7 +36,7 @@ UnderDefaultThreshold.args = {
 UnderShortThreshold.args = {
   itemCount: OrderItemCount.UnderThreshold,
   threshold: 0,
-  limit: 2,
+  limit: 7,
 };
 
 AboveShortThreshold.args = {
