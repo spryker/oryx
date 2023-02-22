@@ -49,6 +49,9 @@ export interface CommandOptions<
   onSuccess?: any[];
 }
 
-export interface Command<ResultType, Qualifier extends object | undefined = undefined> {
+export interface Command<
+  ResultType,
+  Qualifier extends object | undefined = undefined
+> {
   execute(qualifier: Qualifier): Observable<ResultType>;
 }

@@ -22,7 +22,11 @@ export class CoreQueryService {
   createQuery<ValueType, Qualifier extends object | undefined = undefined>(
     options: QueryOptions<ValueType, Qualifier>
   ): Query<ValueType, Qualifier> {
-    const query = new CoreQuery<ValueType, Qualifier>(options, this, this.destroy$);
+    const query = new CoreQuery<ValueType, Qualifier>(
+      options,
+      this,
+      this.destroy$
+    );
     if (options.id) {
       this.queries.set(options.id, query);
     }
@@ -39,7 +43,11 @@ export class CoreQueryService {
   createCommand<ResultType, Qualifier extends object | undefined = undefined>(
     options: CommandOptions<ResultType, Qualifier>
   ): Command<ResultType, Qualifier> {
-    const command = new CoreCommand<ResultType, Qualifier>(options, this, this.destroy$);
+    const command = new CoreCommand<ResultType, Qualifier>(
+      options,
+      this,
+      this.destroy$
+    );
     if (options.id) {
       this.commands.set(options.id, command);
     }
