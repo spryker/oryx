@@ -1,4 +1,4 @@
-import { AuthService } from '@spryker-oryx/auth';
+import { AuthenticateQualifier, AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -75,7 +75,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         >
           <input
             type="email"
-            name="email"
+            name="username"
             required
             placeholder=${i18n('user.login.email')}
           />
@@ -106,26 +106,26 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   protected renderLoginOptions(): TemplateResult | void {
     if (
-      !this.componentOptions.enableForgotPassword &&
-      !this.componentOptions.enableRememberMe
+      !this.componentOptions?.enableForgotPassword &&
+      !this.componentOptions?.enableRememberMe
     ) {
       return;
     }
     return html`
       <div class="options">
         ${when(
-          this.componentOptions.enableRememberMe,
+          this.componentOptions?.enableRememberMe,
           () => html`<oryx-checkbox>
             <input
               type="checkbox"
-              name="rememberMe"
+              name="remember"
               aria-label=${i18n('user.login.remember-me')}
             />
             ${i18n('user.login.remember-me')}
           </oryx-checkbox>`
         )}
         ${when(
-          this.componentOptions.enableForgotPassword,
+          this.componentOptions?.enableForgotPassword,
           () => html`<oryx-link>
             <a href="#">${i18n('user.login.forgot-password?')}</a>
           </oryx-link>`
@@ -138,27 +138,25 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     e.preventDefault();
     this.loading$.next(true);
 
-    const { email, password, rememberMe } = Object.fromEntries(
+    const { username, password, remember } = Object.fromEntries(
       new FormData(e.target as HTMLFormElement).entries()
-    );
+    ) as unknown as AuthenticateQualifier;
 
-    if (email && password) {
-      this.authService
-        .login({
-          username: email.toString(),
-          password: password.toString(),
-          remember: !!rememberMe,
+    this.authService
+      .login({
+        username,
+        password,
+        remember: !!remember,
+      })
+      .pipe(
+        take(1),
+        catchError(() => {
+          this.success$.next(false);
+          this.loading$.next(false);
+          return EMPTY;
         })
-        .pipe(
-          take(1),
-          catchError(() => {
-            this.success$.next(false);
-            this.loading$.next(false);
-            return EMPTY;
-          })
-        )
-        .subscribe(() => this.redirect());
-    }
+      )
+      .subscribe(() => this.redirect());
   }
 
   protected redirect(): void {
@@ -168,6 +166,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
     if (this.componentOptions?.redirectUrl) {
       this.routerService.navigate(this.componentOptions.redirectUrl);
+      return;
     }
 
     this.routerService

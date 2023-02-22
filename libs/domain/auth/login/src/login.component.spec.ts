@@ -178,7 +178,7 @@ describe('AuthLoginComponent', () => {
     const setupLogin = (): void => {
       const shadowRoot = element.shadowRoot;
       const email = shadowRoot?.querySelector(
-        'input[name="email"]'
+        'input[name="username"]'
       ) as HTMLInputElement;
       const password = shadowRoot?.querySelector(
         'input[name="password"]'
@@ -231,7 +231,7 @@ describe('AuthLoginComponent', () => {
       describe('when remember me is checked', () => {
         it('should remember login when checked', async () => {
           const rememberMe = element.shadowRoot?.querySelector(
-            'input[name="rememberMe"]'
+            'input[name="remember"]'
           ) as HTMLInputElement;
           rememberMe.click();
           await submit();
@@ -244,6 +244,14 @@ describe('AuthLoginComponent', () => {
       });
 
       describe('when redirect url is not specified', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-auth-login
+              .options="${{ redirectUrl: '' }}"
+            ></oryx-auth-login>`
+          );
+        });
+
         it('should redirect to the last page', async () => {
           routerService.previousRoute.mockReturnValue(of('/previous'));
           await submit();
