@@ -41,7 +41,9 @@ describe('ProductImagesComponent', () => {
         },
       ],
     });
-    element = await fixture(html`<product-images sku="1"></product-images>`);
+    element = await fixture(
+      html`<oryx-product-images sku="1"></oryx-product-images>`
+    );
   });
 
   afterEach(() => {
@@ -100,7 +102,7 @@ describe('ProductImagesComponent', () => {
       describe('when mainLayout is not configured', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images sku="1"></product-images>`
+            html`<oryx-product-images sku="1"></oryx-product-images>`
           );
         });
 
@@ -112,10 +114,10 @@ describe('ProductImagesComponent', () => {
       describe('when mainLayout is `carousel`', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               sku="1"
               .options=${{ mainLayout: ProductImagesMainLayout.Carousel }}
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 
@@ -131,10 +133,10 @@ describe('ProductImagesComponent', () => {
       describe('when mainLayout is `toggle`', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               sku="1"
               .options=${{ mainLayout: ProductImagesMainLayout.Toggle }}
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 
@@ -150,10 +152,10 @@ describe('ProductImagesComponent', () => {
       describe('when mainLayout is `none`', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               sku="1"
               .options=${{ mainLayout: ProductImagesMainLayout.None }}
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 
@@ -172,12 +174,12 @@ describe('ProductImagesComponent', () => {
         describe(`when the navigationPosition is '${pos}'`, () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<product-images
+              html`<oryx-product-images
                 sku="1"
                 .options=${{
                   navigationPosition: pos,
                 }}
-              ></product-images>`
+              ></oryx-product-images>`
             );
           });
 
@@ -190,7 +192,7 @@ describe('ProductImagesComponent', () => {
       describe(`when the navigationPosition is not provided`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images sku="1"></product-images>`
+            html`<oryx-product-images sku="1"></oryx-product-images>`
           );
         });
 
@@ -208,12 +210,12 @@ describe('ProductImagesComponent', () => {
         describe(`when the navigationLayout is '${navigationLayout}'`, () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<product-images
+              html`<oryx-product-images
                 sku="1"
                 .options=${{
                   navigationLayout,
                 }}
-              ></product-images>`
+              ></oryx-product-images>`
             );
           });
 
@@ -227,7 +229,7 @@ describe('ProductImagesComponent', () => {
         describe(`when the navigationLayout is not provided`, () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<product-images sku="1"></product-images>`
+              html`<oryx-product-images sku="1"></oryx-product-images>`
             );
           });
 
@@ -242,7 +244,7 @@ describe('ProductImagesComponent', () => {
       describe(`when the navigationDisplay is not provided`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images sku="1"></product-images>`
+            html`<oryx-product-images sku="1"></oryx-product-images>`
           );
         });
 
@@ -258,10 +260,10 @@ describe('ProductImagesComponent', () => {
         describe(`when navigationDisplay is ${display}`, () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<product-images
+              html`<oryx-product-images
                 sku="1"
                 .options=${{ navigationDisplay: display }}
-              ></product-images>`
+              ></oryx-product-images>`
             );
           });
 
@@ -276,10 +278,10 @@ describe('ProductImagesComponent', () => {
           describe('and when there are no images', () => {
             beforeEach(async () => {
               element = await fixture(
-                html`<product-images
+                html`<oryx-product-images
                   sku="without-images"
                   .options=${{ navigationDisplay: display }}
-                ></product-images>`
+                ></oryx-product-images>`
               );
             });
 
@@ -291,10 +293,10 @@ describe('ProductImagesComponent', () => {
           describe('and when there is only 1 image', () => {
             beforeEach(async () => {
               element = await fixture(
-                html`<product-images
+                html`<oryx-product-images
                   sku="single-image"
                   .options=${{ navigationDisplay: display }}
-                ></product-images>`
+                ></oryx-product-images>`
               );
             });
 
@@ -308,12 +310,12 @@ describe('ProductImagesComponent', () => {
       describe(`when navigationDisplay is set to none`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               sku="1"
               .options=${{
                 navigationDisplay: ProductImagesNavigationDisplay.None,
               }}
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 
@@ -336,10 +338,10 @@ describe('ProductImagesComponent', () => {
         describe(`when the navigationAlignment is '${navigationAlignment}'`, () => {
           beforeEach(async () => {
             element = await fixture(
-              html`<product-images
+              html`<oryx-product-images
                 sku="1"
                 .options=${{ navigationAlignment }}
-              ></product-images>`
+              ></oryx-product-images>`
             );
           });
 
@@ -353,7 +355,7 @@ describe('ProductImagesComponent', () => {
       describe(`when the navigationAlignment is not provided`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images sku="1"></product-images>`
+            html`<oryx-product-images sku="1"></oryx-product-images>`
           );
         });
 
@@ -373,13 +375,13 @@ describe('ProductImagesComponent', () => {
       describe('when the navigationMouseEvent is set to click', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               @input=${onInput}
               sku="1"
               .options=${{
                 navigationMouseEvent: ProductImagesNavigationMouseEvent.Click,
               }}
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 
@@ -400,14 +402,14 @@ describe('ProductImagesComponent', () => {
       describe('when the navigationMouseEvent is set to hover', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<product-images
+            html`<oryx-product-images
               @input=${onInput}
               .options=${{
                 navigationMouseEvent:
                   ProductImagesNavigationMouseEvent.Mouseover,
               }}
               sku="1"
-            ></product-images>`
+            ></oryx-product-images>`
           );
         });
 

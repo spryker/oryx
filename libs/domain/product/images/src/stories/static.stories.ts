@@ -23,11 +23,11 @@ const render = (
   sku = '3'
 ): TemplateResult => {
   return html`
-    <product-images
+    <oryx-product-images
       title=${JSON.stringify(options)}
       .sku=${sku}
       .options=${{ ...options, groupName: `i-${renderCount++}` }}
-    ></product-images>
+    ></oryx-product-images>
   `;
 };
 

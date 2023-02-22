@@ -1,13 +1,13 @@
-import { ContentController } from '@spryker-oryx/experience';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import {
   Product,
-  ProductComponentMixin,
   ProductController,
   ProductMedia,
   ProductMediaContainerSize,
+  ProductMixin,
 } from '@spryker-oryx/product';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
@@ -22,8 +22,14 @@ import {
 import { styles } from './styles';
 
 @hydratable('mouseover')
-export class ProductImagesComponent extends ProductComponentMixin<ProductImagesComponentOptions>() {
+export class ProductImagesComponent extends ProductMixin(
+  ContentMixin<ProductImagesComponentOptions>(LitElement)
+) {
   static styles = styles;
+
+  protected override render(): TemplateResult {
+    return html`images...`;
+  }
 
   protected product$ = new ProductController(this)
     .getProduct()
@@ -35,7 +41,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
 
   protected active$ = new BehaviorSubject(0);
 
-  protected override render(): TemplateResult {
+  protected renderOld(): TemplateResult {
     return html`
       ${asyncValue(
         combineLatest([this.product$, this.options$, this.active$]),
