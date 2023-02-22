@@ -114,7 +114,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     render(): TemplateResult {
       const hasSsr =
-        (Boolean(this.renderRoot) || this.safariRoot()) && Boolean(state);
+        (Boolean(this.renderRoot) || this.safariRoot()) &&
+        Boolean(state) &&
+        !isServer;
 
       if (state) {
         return html`${whenState(this[state as keyof this], () =>
