@@ -6,7 +6,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
 @defaultOptions({ enableCount: true, size: Size.large })
-@hydratable(['mouseover', 'focusin'], 'product')
+@hydratable(['mouseover', 'focusin'])
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {

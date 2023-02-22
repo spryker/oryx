@@ -7,7 +7,7 @@ import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
 
-@hydratable(['mouseover', 'focusin'], 'product')
+@hydratable(['mouseover', 'focusin'])
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {

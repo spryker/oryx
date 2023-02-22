@@ -7,7 +7,7 @@ import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-hydratable(['mouseover', 'focusin'], 'product');
+hydratable(['mouseover', 'focusin']);
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {

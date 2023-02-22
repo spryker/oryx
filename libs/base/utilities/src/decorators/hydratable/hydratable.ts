@@ -5,6 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
+import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
@@ -21,43 +22,36 @@ const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
   condition ? trueCase() : noChange;
 
 export const hydratable =
-  (mode?: string[] | string, state?: string) =>
+  (mode?: string[] | string) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
-      ? legacyCustomElement(classOrDescriptor, mode, state)
-      : standardCustomElement(
-          classOrDescriptor as ClassDescriptor,
-          mode,
-          state
-        );
+      ? legacyCustomElement(classOrDescriptor, mode)
+      : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  mode?: string[] | string,
-  state?: string
+  mode?: string[] | string
 ) => {
-  return hydratableClass(clazz, mode, state);
+  return hydratableClass(clazz, mode);
 };
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  mode?: string[] | string,
-  state?: string
+  mode?: string[] | string
 ) => {
   const { kind, elements } = descriptor;
   return {
     kind,
     elements,
     finisher(clazz: Constructor<PatchableLitElement>) {
-      return hydratableClass(clazz, mode, state);
+      return hydratableClass(clazz, mode);
     },
   };
 };
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string[] | string,
-  state?: string
+  mode?: string[] | string
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
@@ -113,18 +107,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     render(): TemplateResult {
+      const states = this.getAttribute(asyncStates);
       const hasSsr =
-        (Boolean(this.renderRoot) || this.safariRoot()) &&
-        Boolean(state) &&
-        !isServer;
+        (Boolean(this.renderRoot) || this.safariRoot()) && states && !isServer;
 
-      if (state) {
-        return html`${whenState(this[state as keyof this], () =>
-          super.render()
+      if (hasSsr) {
+        return html`${whenState(
+          states === JSON.stringify(this[asyncStates]),
+          () => super.render()
         )}`;
       }
 
-      return super.render();
+      return html`${whenState(true, () => super.render())}`;
     }
 
     protected safariRoot(): boolean {

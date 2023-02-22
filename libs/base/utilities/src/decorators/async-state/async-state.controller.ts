@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { resolve } from '@spryker-oryx/di';
 import { isServer, LitElement, ReactiveController } from 'lit';
 import { from, isObservable, Observable, Subscription } from 'rxjs';
@@ -9,14 +10,17 @@ interface ObservablesData {
   value?: unknown;
 }
 
+export const asyncStates = 'data-async-states';
+
 export class AsyncStateController implements ReactiveController {
   protected observables = new Map<string, ObservablesData>();
   // TODO: temporary solution should be solved with proper hook provided from lit
   protected context = resolve('FES.ContextService', null);
-
   protected isConnected = false;
 
-  constructor(protected host: LitElement) {
+  constructor(
+    protected host: LitElement & { [asyncStates]?: Record<string, boolean> }
+  ) {
     host.addController(this);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +30,9 @@ export class AsyncStateController implements ReactiveController {
   }
 
   add(key: string, value: unknown): void {
+    this.host[asyncStates] ??= {};
+    this.host[asyncStates][key] = isServer;
+
     let oldValue: unknown = undefined;
     if (this.observables.has(key)) {
       const current = this.observables.get(key);
@@ -72,6 +79,16 @@ export class AsyncStateController implements ReactiveController {
 
     data.subscription = data.observable$.subscribe((value) => {
       const oldValue = data.value;
+
+      this.host[asyncStates]![key] = true;
+
+      if (isServer) {
+        this.host.setAttribute(
+          asyncStates,
+          JSON.stringify(this.host[asyncStates])
+        );
+      }
+
       if (oldValue !== value) {
         data.value = value;
         this.host.requestUpdate(key, oldValue);

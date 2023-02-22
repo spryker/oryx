@@ -8,7 +8,7 @@ import { ProductAttributeStyles } from './attributes.styles';
 
 @defaultOptions({ columnCount: '2' })
 @ssrShim('style')
-@hydratable(['mouseover', 'focusin'], 'product')
+@hydratable(['mouseover', 'focusin'])
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {

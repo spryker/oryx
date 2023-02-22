@@ -29,7 +29,7 @@ import { ProductCardStyles } from './card.styles';
   enableAddToCart: true,
 })
 @ssrShim('style')
-@hydratable(['mouseover', 'focusin'], 'product')
+@hydratable(['mouseover', 'focusin'])
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {

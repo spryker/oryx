@@ -27,7 +27,7 @@ import { ProductPriceStyles } from './price.styles';
  * the active locale and currency.
  */
 @defaultOptions({ enableOriginalPrice: true, enableVatMessage: true })
-@hydratable(['mouseover', 'focusin'], 'product')
+@hydratable(['mouseover', 'focusin'])
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
