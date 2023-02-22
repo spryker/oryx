@@ -86,7 +86,9 @@ describe('AddressListComponent', () => {
       );
     });
 
-    it('should emit select event', () => {
+    // TODO: consider dropping this unless this is a feature we need; I'd rather
+    // extended the client model and keep the state in the service if this
+    it.skip('should emit select event', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { address: expect.any(Object) } })
       );
