@@ -27,6 +27,7 @@
     "@spryker-oryx/site": "*",
     "@spryker-oryx/ui": "*",
     "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/order": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"
