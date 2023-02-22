@@ -25,8 +25,10 @@ export class OrderSummaryComponent extends OrderMixin(
 
   protected override render(): TemplateResult {
     return this.order
-      ? html`${this.renderDetails()} ${this.renderBilling()}
-        ${this.renderShipping()}`
+      ? html`${this.renderDetails()}
+          <div class="details">
+            ${this.renderBilling()} ${this.renderShipping()}
+          </div>`
       : html``;
   }
 
@@ -35,7 +37,7 @@ export class OrderSummaryComponent extends OrderMixin(
         <h2>${i18n('order.order-details')}</h2>
       </oryx-heading>
       <div class="details-container">
-        <div class="details">
+        <div class="details summary">
           <div>
             <oryx-icon type="parcel"></oryx-icon>
           </div>
@@ -63,17 +65,15 @@ export class OrderSummaryComponent extends OrderMixin(
     return html`<oryx-heading .appearance=${HeadingTag.H6}>
         <h3>${i18n('order.billing-details')}</h3>
       </oryx-heading>
-      <div class="details">
-        <div class="title">${i18n('order.billing-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.billingAddress}>
-          </oryx-user-address>
-        </div>
-        <div class="title">${i18n('order.email')}:</div>
-        <div>${this.order?.billingAddress?.email}</div>
-        <div class="title">${i18n('order.payment')}:</div>
-        <div>${this.order?.payments[0].paymentProvider}</div>
+      <div class="title">${i18n('order.billing-address')}:</div>
+      <div>
+        <oryx-user-address .address=${this.order?.billingAddress}>
+        </oryx-user-address>
       </div>
+      <div class="title">${i18n('order.email')}:</div>
+      <div>${this.order?.billingAddress?.email}</div>
+      <div class="title">${i18n('order.payment')}:</div>
+      <div>${this.order?.payments[0].paymentProvider}</div>
       <hr />`;
   }
 
@@ -81,17 +81,15 @@ export class OrderSummaryComponent extends OrderMixin(
     return html`<oryx-heading .appearance=${HeadingTag.H6}>
         <h3>${i18n('order.shipping-details')}</h3>
       </oryx-heading>
-      <div class="details">
-        <div class="title">${i18n('order.delivery-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.shippingAddress}>
-          </oryx-user-address>
-        </div>
-        <div class="title">${i18n('order.email')}:</div>
-        <div>${this.order?.shippingAddress?.email}</div>
-        <div class="title">${i18n('order.shipping-method')}:</div>
-        <div>${this.order?.shipments[0].shipmentMethodName}</div>
+      <div class="title">${i18n('order.delivery-address')}:</div>
+      <div>
+        <oryx-user-address .address=${this.order?.shippingAddress}>
+        </oryx-user-address>
       </div>
+      <div class="title">${i18n('order.email')}:</div>
+      <div>${this.order?.shippingAddress?.email}</div>
+      <div class="title">${i18n('order.shipping-method')}:</div>
+      <div>${this.order?.shipments[0].shipmentMethodName}</div>
       <hr />`;
   }
 
