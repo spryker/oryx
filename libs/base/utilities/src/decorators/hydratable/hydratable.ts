@@ -4,8 +4,7 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
+import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
@@ -17,6 +16,9 @@ export interface PatchableLitElement extends LitElement {
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
 }
+
+const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
+  condition ? trueCase() : noChange;
 
 export const hydratable =
   (mode?: string[] | string, state?: string) =>
@@ -111,11 +113,33 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     render(): TemplateResult {
-      if (!state) {
-        return super.render();
+      const hasSsr =
+        (Boolean(this.renderRoot) || this.safariRoot()) && Boolean(state);
+
+      if (state) {
+        return html`${whenState(this[state as keyof this], () =>
+          super.render()
+        )}`;
       }
 
-      return html`${when(this[state as keyof this], () => super.render())}`;
+      return super.render();
+    }
+
+    protected safariRoot(): boolean {
+      /**
+       * Lit is using adoptedStyleSheets native feature for the styles are specified by
+       * static 'styles' property:
+       * https://www.w3.org/TR/cssom-1/#extensions-to-the-document-or-shadow-root-interface
+       * That is not yet supported by safari:
+       * https://caniuse.com/mdn-api_document_adoptedstylesheets
+       *
+       * In result safari uses the common approach and just creates bunch of <style> elements
+       * inside components, that makes them not empty
+       *
+       * To overcome this limitation need to check presence of any other elements
+       * inside component, except for style elements
+       */
+      return this.renderRoot?.querySelector(':not(slot, style)');
     }
   };
 }
