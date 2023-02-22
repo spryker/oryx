@@ -24,10 +24,6 @@ export const styles = css`
     outline-offset: -3px;
   }
 
-  .dropdown {
-    padding: 17px 0;
-  }
-
   .dropdown-link {
     --oryx-icon-size: 24px;
 

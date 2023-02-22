@@ -139,7 +139,7 @@ describe('UserSummaryComponent', () => {
       const dropdown = element.renderRoot.querySelector(
         'oryx-dropdown'
       ) as LitElement;
-      const logoutComponent = dropdown.querySelector('auth-logout');
+      const logoutComponent = dropdown.querySelector('oryx-auth-logout');
 
       expect(logoutComponent).not.toBe(null);
     });

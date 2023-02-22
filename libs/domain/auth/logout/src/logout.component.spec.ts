@@ -66,7 +66,7 @@ describe('Auth Logout', () => {
 
   describe('default component', () => {
     beforeEach(async () => {
-      element = await fixture(html`<auth-logout></auth-logout>`);
+      element = await fixture(html`<oryx-auth-logout></oryx-auth-logout>`);
     });
 
     it('is defined', () => {
@@ -106,24 +106,24 @@ describe('Auth Logout', () => {
 
     beforeEach(async () => {
       mockIsAuthenticated.next(true);
-      element = await fixture(html`<auth-logout></auth-logout>`);
+      element = await fixture(html`<oryx-auth-logout></oryx-auth-logout>`);
     });
 
     it('should call logout on click with default navigate', async () => {
       authService.logout.mockReturnValue(of(null));
       await emitLogoutClick();
       expect(authService.logout).toHaveBeenCalled();
-      expect(routerService.navigate).toHaveBeenCalledWith('');
+      expect(routerService.navigate).toHaveBeenCalledWith('/');
     });
 
     describe('when custom redirect has been provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<auth-logout
+          html`<oryx-auth-logout
             .options="${{
-              customRedirect: 'contact',
+              redirectUrl: 'contact',
             }}"
-          ></auth-logout>`
+          ></oryx-auth-logout>`
         );
       });
 

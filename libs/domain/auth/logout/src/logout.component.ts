@@ -5,11 +5,11 @@ import { RouterService } from '@spryker-oryx/router';
 import {
   asyncState,
   hydratable,
-  subscribe,
+  i18n,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { LogoutOptions } from './logout.model';
 import { styles } from './logout.styles';
 
@@ -22,24 +22,24 @@ export class AuthLogoutComponent extends ContentMixin<LogoutOptions>(
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
 
-  protected logoutTrigger$ = new ReplaySubject<void>(1);
-
   @asyncState()
   protected isAuthenticated = valueType(this.authService.isAuthenticated());
 
-  @subscribe()
-  protected logout$ = this.logoutTrigger$.pipe(
-    withLatestFrom(this.options$),
-    switchMap(([_, options]) =>
-      this.authService.logout().pipe(
-        finalize(() => {
-          this.routerService.navigate(
-            options.customRedirect ? `/${options.customRedirect}` : ''
-          );
-        })
+  protected logout(): void {
+    this.authService
+      .logout()
+      .pipe(
+        take(1),
+        tap(() => this.redirect())
       )
-    )
-  );
+      .subscribe();
+  }
+
+  protected redirect(): void {
+    this.routerService.navigate(
+      this.options?.redirectUrl ? `/${this.options.redirectUrl}` : '/'
+    );
+  }
 
   protected override render(): TemplateResult | void {
     if (!this.isAuthenticated) {
@@ -48,9 +48,9 @@ export class AuthLogoutComponent extends ContentMixin<LogoutOptions>(
 
     return html`
       <oryx-button type="text">
-        <button @click=${() => this.logoutTrigger$.next()}>
+        <button @click=${this.logout}>
           <oryx-icon type="login"></oryx-icon>
-          Logout
+          ${i18n('auth.logout')}
         </button>
       </oryx-button>
     `;

@@ -55,24 +55,22 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected renderDropdown(): TemplateResult {
     return html`
-      <div class="dropdown">
-        ${when(this.options?.items?.length, () =>
-          this.options!.items!.map(
-            (item) => html`
-              <oryx-button type="text">
-                <a href=${item.link} class="dropdown-link" close-popover>
-                  ${when(
-                    item.icon,
-                    () => html`<oryx-icon type="${item.icon}"></oryx-icon>`
-                  )}
-                  ${item.title}
-                </a>
-              </oryx-button>
-            `
-          )
-        )}
-        <auth-logout></auth-logout>
-      </div>
+      ${when(this.options?.items?.length, () =>
+        this.options!.items!.map(
+          (item) => html`
+            <oryx-button type="text">
+              <a href=${item.link} class="dropdown-link" close-popover>
+                ${when(
+                  item.icon,
+                  () => html`<oryx-icon type="${item.icon}"></oryx-icon>`
+                )}
+                ${item.title}
+              </a>
+            </oryx-button>
+          `
+        )
+      )}
+      <oryx-auth-logout></oryx-auth-logout>
     `;
   }
 
