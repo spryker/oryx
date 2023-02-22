@@ -6,7 +6,6 @@ import {
 } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
 import {
   combineLatest,
   EMPTY,
@@ -135,22 +134,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     return html`
       ${asyncValue(
         this.components$,
-        (components) =>
-          html`<oryx-layout .uid=${this.uid}>
-            ${components
-              ? repeat(
-                  components,
-                  (component) => component.id,
-                  (component) =>
-                    this.registryService.resolveTemplate(
-                      component.type,
-                      component.id,
-                      this.getLayoutClasses(component)
-                    )
-                )
-              : ``}
-            ${this.addInlineStyles(components)}
-          </oryx-layout>`,
+        (components) => html` ${this.renderComponents(components)} `,
         () => html`Loading...`
       )}
     `;

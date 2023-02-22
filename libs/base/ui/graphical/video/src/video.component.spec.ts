@@ -70,6 +70,12 @@ describe('VideoComponent', () => {
       it('should render the muted attribute', () => {
         expect(element).toContainElement('video[muted]');
       });
+
+      it('should mute the video', () => {
+        expect(
+          element.renderRoot.querySelector<HTMLVideoElement>('video')?.muted
+        ).toBe(true);
+      });
     });
 
     describe('and playsInline is provided', () => {

@@ -4,10 +4,6 @@ LIB="${2:-node_modules/@spryker-oryx}"
 
 cd $ROOT
 
-if ! patch -R -s -f --dry-run node_modules/@lit-labs/ssr/lib/util/parse5-utils.js < $LIB/template/application/patches/parse5-utils.patch; then
-  patch node_modules/@lit-labs/ssr/lib/util/parse5-utils.js < $LIB/template/application/patches/parse5-utils.patch
-fi
-
 if ! patch -R -s -f --dry-run node_modules/lit-html/development/experimental-hydrate.js < $LIB/template/application/patches/experimental-hydrate.patch; then
   patch node_modules/lit-html/development/experimental-hydrate.js < $LIB/template/application/patches/experimental-hydrate.patch
 fi
