@@ -6,3 +6,4 @@ export * from './providers';
 export * from './ssr-awaiter.service';
 export * from './storage';
 export * from './transformer';
+export * from './query';
