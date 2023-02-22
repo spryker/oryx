@@ -1,7 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LitElement, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators';
+import { customElement } from 'lit/decorators.js';
 import { FormFieldDefinition, FormFieldType } from '../models';
 import { DefaultFormRenderer } from './default-form.renderer';
 import { FormRenderer } from './form.renderer';
