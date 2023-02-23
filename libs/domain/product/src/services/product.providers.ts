@@ -47,7 +47,8 @@ import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
-import { productEffects, productQueries } from './state';
+import { productEffects } from './state/effects';
+import { productQueries } from './state/queries';
 
 export const productProviders: Provider[] = [
   componentsProvider,

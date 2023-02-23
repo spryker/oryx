@@ -1,3 +1,4 @@
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Observable, of, switchMap } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -34,6 +35,10 @@ describe('DefaultProductService', () => {
         {
           provide: ProductListAdapter,
           useClass: MockProductListAdapter,
+        },
+        {
+          provide: QueryService,
+          useClass: DefaultQueryService,
         },
       ],
     });
