@@ -36,6 +36,7 @@ export class DefaultQueryService
 
     const providedQuery = this.injector.inject(`${QUERY_TOKEN}${id}`, null);
     if (providedQuery) {
+      providedQuery.id = id;
       return this.createQuery<ValueType, Qualifier>(providedQuery);
     }
 
@@ -53,6 +54,7 @@ export class DefaultQueryService
 
     const providedCommand = this.injector.inject(`${COMMAND_TOKEN}${id}`, null);
     if (providedCommand) {
+      providedCommand.id = id;
       return this.createCommand<ResultType, Qualifier>(providedCommand);
     }
 
