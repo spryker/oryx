@@ -68,8 +68,7 @@ export class OrderSummaryComponent extends OrderMixin(
       </oryx-heading>
       <div class="details">
         ${when(
-          this.order?.billingAddress &&
-            Object.keys(this.order.billingAddress).length > 0,
+          this.order?.billingAddress,
           () => html` <div class="title">${i18n('order.billing-address')}:</div>
             <div>
               <oryx-user-address .address=${this.order?.billingAddress}>
@@ -88,8 +87,7 @@ export class OrderSummaryComponent extends OrderMixin(
       </oryx-heading>
       <div class="details">
         ${when(
-          this.order?.shippingAddress &&
-            Object.keys(this.order.shippingAddress).length > 0,
+          this.order?.shippingAddress,
           () => html` <div class="title">
               ${i18n('order.delivery-address')}:
             </div>
