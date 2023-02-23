@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
-import { Command, CommandOptions } from './command';
-import { Query, QueryOptions } from './query';
+import { Command, CommandOptions, Query, QueryOptions } from './models';
 
 export const QueryService = 'oryx.QueryService';
 

@@ -1,5 +1,6 @@
-import { Query, QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { Query } from '../models';
+import { QueryService } from '../query.service';
 
 export function injectQuery<
   ValueType = unknown,

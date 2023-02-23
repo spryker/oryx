@@ -10,7 +10,12 @@ import {
   tap,
 } from 'rxjs';
 import { CoreQueryService } from '../core';
-import { Command, CommandOptions, CommandStrategy } from './model';
+import {
+  Command,
+  CommandOptions,
+  CommandStrategy,
+  StateEvent,
+} from '../models';
 
 export class CoreCommand<
   ResultType,
@@ -144,7 +149,10 @@ export class CoreCommand<
       const event = callback(data, qualifier);
       if (event) this.query.emit(event);
     } else {
-      const event: any = { type: callback, qualifier };
+      const event: StateEvent<ResultType, Qualifier> = {
+        type: callback,
+        qualifier,
+      };
       if (data) event.data = data;
       if (error) event.error = error;
       this.query.emit(event);

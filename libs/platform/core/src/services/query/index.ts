@@ -1,5 +1,5 @@
-export * from './command';
+export * from './core';
 export * from './default-query.service';
-export * from './query';
+export * from './models';
 export * from './query.service';
 export * from './utils';

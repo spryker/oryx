@@ -1,7 +1,8 @@
 import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
-import { Command } from './command';
+
 import { CoreQueryService } from './core';
-import { Query } from './query';
+
+import { Command, Query } from './models';
 import {
   COMMAND_TOKEN,
   EFFECT_TOKEN,

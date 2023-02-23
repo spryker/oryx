@@ -1,7 +1,6 @@
 import { inject } from '@spryker-oryx/di';
-import { Command, CommandOptions } from '../command';
+import { Command, CommandOptions, Query, QueryOptions } from '../models';
 import { QueryService } from '../query.service';
-import { Query, QueryOptions } from '../query/model';
 
 export function createQuery<
   ValueType,

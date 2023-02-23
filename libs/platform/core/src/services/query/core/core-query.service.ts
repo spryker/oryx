@@ -1,4 +1,15 @@
-import { Command, CommandOptions, CoreCommand } from '@spryker-oryx/core';
+import {
+  Command,
+  CommandOptions,
+  CoreCommand,
+  CoreQuery,
+  EffectDefinition,
+  isCallbackEffect,
+  isStreamEffect,
+  Query,
+  QueryOptions,
+  StateEvent,
+} from '@spryker-oryx/core';
 import {
   filter,
   identity,
@@ -9,13 +20,12 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { CoreQuery, Query, QueryOptions } from '../query';
 
 export class CoreQueryService {
   protected queries = new Map<string, Query<unknown, any>>();
   protected commands = new Map<string, Command<unknown, any>>();
 
-  protected stateEvents$ = new ReplaySubject<any>();
+  protected stateEvents$ = new ReplaySubject<StateEvent>();
 
   protected destroy$ = new Subject<undefined>();
 
@@ -61,14 +71,16 @@ export class CoreQueryService {
     return this.commands.get(id) as Command<ResultType, Qualifier> | undefined;
   }
 
-  createEffect(effect: any): void {
-    if (typeof effect === 'function') {
-      effect(this.stateEvents$, this).pipe(retry()).subscribe();
-    } else if (Array.isArray(effect) && effect.length === 2) {
+  createEffect(effect: EffectDefinition): void {
+    if (isStreamEffect(effect)) {
+      effect({ events$: this.stateEvents$, query: this })
+        .pipe(retry())
+        .subscribe();
+    } else if (isCallbackEffect(effect)) {
       this.stateEvents$
         .pipe(
           filter((event) => event.type === effect[0]),
-          tap((event) => effect[1](event, this)),
+          tap((event) => effect[1]({ event, query: this })),
           retry(),
           takeUntil(this.destroy$)
         )
@@ -76,13 +88,13 @@ export class CoreQueryService {
     }
   }
 
-  emit(stateEvent: any): void {
+  emit(stateEvent: StateEvent): void {
     this.stateEvents$.next(stateEvent);
   }
 
-  getEvents(eventType?: string): Observable<any> {
+  getEvents(eventType?: string): Observable<StateEvent> {
     return this.stateEvents$.pipe(
-      eventType ? filter((event) => event[eventType]) : identity
+      eventType ? filter((event) => event.type === eventType) : identity
     );
   }
 

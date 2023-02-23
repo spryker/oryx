@@ -17,7 +17,7 @@ import {
   using,
 } from 'rxjs';
 import { CoreQueryService } from '../core';
-import { Query, QueryOptions, QueryState, QueryTrigger } from './model';
+import { Query, QueryOptions, QueryState, QueryTrigger } from '../models';
 
 export class CoreQuery<
   ValueType,

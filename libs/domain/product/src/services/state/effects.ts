@@ -5,7 +5,7 @@ import { ProductQuery } from './queries';
 export const productEffects = [
   provideEffect([
     ProductsLoaded,
-    (event: any, query: any) =>
+    ({ event, query }: { event: any; query: any }) =>
       event.data?.products?.forEach((product: any) =>
         query
           .getQuery(ProductQuery)
