@@ -56,15 +56,15 @@ function hydratableClass<T extends Type<HTMLElement>>(
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
     private [HYDRATION_CALLS] = 0;
-    protected hasRenderRoot?: boolean;
+    protected hasSsr?: boolean;
 
     constructor(...args: any[]) {
       super();
-      this.hasRenderRoot = !isServer && this.shadowRoot;
+      this.hasSsr = !isServer && this.shadowRoot;
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');
       }
-      if (this.hasRenderRoot) {
+      if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
         return;
       }
@@ -110,34 +110,16 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     render(): TemplateResult {
       const states = this[asyncStates];
-      const hasSsr = this.hasRenderRoot || this.safariRoot();
 
-      if (hasSsr && states) {
+      if (this.hasSsr && states) {
         return html`${whenState(Object.values(states).every(Boolean), () =>
           super.render()
         )}`;
       }
 
-      return hasSsr || isServer
+      return this.hasSsr || isServer
         ? html`${whenState(true, () => super.render())}`
         : super.render();
-    }
-
-    protected safariRoot(): boolean {
-      /**
-       * Lit is using adoptedStyleSheets native feature for the styles are specified by
-       * static 'styles' property:
-       * https://www.w3.org/TR/cssom-1/#extensions-to-the-document-or-shadow-root-interface
-       * That is not yet supported by safari:
-       * https://caniuse.com/mdn-api_document_adoptedstylesheets
-       *
-       * In result safari uses the common approach and just creates bunch of <style> elements
-       * inside components, that makes them not empty
-       *
-       * To overcome this limitation need to check presence of any other elements
-       * inside component, except for style elements
-       */
-      return this.renderRoot?.querySelector(':not(slot, style)');
     }
   };
 }
