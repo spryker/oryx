@@ -13,7 +13,7 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></oryx-product-title>`,
     },
-    ['product-images']: {
+    ['oryx-product-images']: {
       template: (uid: string, layoutClasses?: string) =>
         html`<oryx-product-images
           uid="${uid}"

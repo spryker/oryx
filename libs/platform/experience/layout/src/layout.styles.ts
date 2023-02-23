@@ -241,6 +241,10 @@ const carouselLayout = css`
     scroll-padding-inline-start: var(--scroll-start, 0px);
   }
 
+  :host([layout='carousel'])::-webkit-scrollbar {
+    display: none;
+  }
+
   :host([vertical][layout='carousel']) {
     overflow-x: initial;
     grid-column: auto;

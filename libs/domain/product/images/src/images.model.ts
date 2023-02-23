@@ -1,6 +1,8 @@
 export interface ProductImagesComponentOptions {
   mediaSet?: string;
 
+  scrollBehavior?: ProductImagesScrollBehavior;
+
   /**
    * The main image shows a single image at the time. The images
    * can be shown in a scrollable carousel or toggled one at the time.
@@ -15,7 +17,7 @@ export interface ProductImagesComponentOptions {
    *
    * @default 'carousel'
    */
-  mainLayout?: ProductImagesMainLayout;
+  imageLayout?: ProductImagesMainLayout;
 
   /**
    * Allows to position the navigation at each side of the main image:
@@ -67,7 +69,7 @@ export interface ProductImagesComponentOptions {
    *
    * @default `300px`
    */
-  mainImageHeight?: number;
+  imageHeight?: string;
 
   /**
    * The width of the main image can be provided in pixels.
@@ -77,7 +79,7 @@ export interface ProductImagesComponentOptions {
    *
    * There is no default applied, so that images will take the full available width.
    */
-  mainImageWidth?: number;
+  imageWidth?: string;
 
   /**
    * The height of the navigation thumbnail can be provided in pixels.
@@ -86,7 +88,7 @@ export interface ProductImagesComponentOptions {
    *
    * @default min(8vw, 80px)
    */
-  thumbHeight?: number;
+  navigationHeight?: string;
 
   /**
    * The width of the navigation thumbnail can be provided in pixels.
@@ -95,16 +97,10 @@ export interface ProductImagesComponentOptions {
    *
    * @default copies the `thumbHeight`
    */
-  thumbWidth?: number;
+  navigationWidth?: string;
 
-  /**
-   * The navigation requires a unique groupName (as part of a radiogroup).
-   * When an explicit groupName is not provided, the component `uid` is used
-   * as a fallback.
-   *
-   * @default `product-image-nav-${this.uid}`
-   */
-  groupName?: string;
+  imageObjectFit?: 'none' | 'contain' | 'cover';
+  navigationObjectFit?: 'none' | 'contain' | 'cover';
 
   /**
    * The number of items that are rendered per column.

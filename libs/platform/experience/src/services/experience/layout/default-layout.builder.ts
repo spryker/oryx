@@ -120,7 +120,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
           if (!options?.omitUnit) {
             value = addUnit(value, options?.unit);
           } else if (value === 0 && !options?.addEmpty) {
-            value = '';
+            // value = '';
           } else {
             value = String(value);
           }
