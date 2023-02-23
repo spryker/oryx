@@ -7,6 +7,7 @@ import {
   from,
   map,
   merge,
+  NEVER,
   Observable,
   shareReplay,
   Subscription,
@@ -17,7 +18,7 @@ import {
   using,
 } from 'rxjs';
 import { CoreQueryService } from '../core';
-import { Query, QueryOptions, QueryState } from './model';
+import { Query, QueryOptions, QueryState, QueryTrigger } from './model';
 
 export class CoreQuery<
   ValueType,
@@ -76,7 +77,7 @@ export class CoreQuery<
       )
     );
 
-    const resetTrigger$ = merge(this.options.resetOn ?? []).pipe(
+    const resetTrigger$ = this.getTriggerStream(this.options.resetOn).pipe(
       tap(() => {
         if (subject$.value !== initialState) {
           subject$.next(initialState);
@@ -84,7 +85,7 @@ export class CoreQuery<
       })
     );
 
-    const refreshTrigger$ = merge(this.options.refreshOn ?? []).pipe(
+    const refreshTrigger$ = this.getTriggerStream(this.options.refreshOn).pipe(
       tap(() => {
         if (!subject$.value.stale) {
           subject$.next({
@@ -144,7 +145,7 @@ export class CoreQuery<
             }
 
             offlineSub = merge(refreshTrigger$, resetTrigger$)
-              .pipe(take(1))
+              .pipe(take(1), takeUntil(this.destroyNotifier$ ?? NEVER))
               .subscribe(() => subject$.next(initialState));
           },
         };
@@ -196,6 +197,16 @@ export class CoreQuery<
   protected onError(error: any, qualifier?: Qualifier): void {
     this.options.onError?.forEach((callback: any) =>
       this.dispatchEvent(callback, qualifier, undefined, error)
+    );
+  }
+
+  protected getTriggerStream(
+    triggers: QueryTrigger[] = []
+  ): Observable<undefined> {
+    return merge(
+      ...triggers.map((trigger) =>
+        typeof trigger === 'string' ? this.query.getEvents(trigger) : trigger
+      )
     );
   }
 

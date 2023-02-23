@@ -1,16 +1,18 @@
 import { Observable } from 'rxjs';
 
+export type QueryTrigger = string | Observable<any>;
+
 export interface QueryOptions<
   ValueType,
   Qualifier extends object | undefined = undefined
 > {
   id?: string;
   loader: (qualifier: Qualifier) => Promise<ValueType> | Observable<ValueType>;
-  resetOn?: any[];
-  refreshOn?: any[];
+  resetOn?: QueryTrigger[];
+  refreshOn?: QueryTrigger[];
 
-  onLoad?: any;
-  onError?: any;
+  onLoad?: any[];
+  onError?: any[];
 
   /**
    * Query is not cached between subscriptions.
