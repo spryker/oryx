@@ -24,7 +24,7 @@ import {
   QueryState,
   QueryTrigger,
 } from '../models';
-import { buildEvent } from './dispatch-event';
+import { buildEvent } from './build-event';
 
 export class CoreQuery<
   ValueType,
