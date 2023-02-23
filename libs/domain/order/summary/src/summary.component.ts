@@ -11,6 +11,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { styles } from './summary.styles';
 
 @hydratable('window:load')
@@ -66,11 +67,14 @@ export class OrderSummaryComponent extends OrderMixin(
         <h3>${i18n('order.billing-details')}</h3>
       </oryx-heading>
       <div class="details">
-        <div class="title">${i18n('order.billing-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.billingAddress}>
-          </oryx-user-address>
-        </div>
+        ${when(
+          this.order?.billingAddress,
+          () => html` <div class="title">${i18n('order.billing-address')}:</div>
+            <div>
+              <oryx-user-address .address=${this.order?.billingAddress}>
+              </oryx-user-address>
+            </div>`
+        )}
         <div class="title">${i18n('order.payment')}:</div>
         <div>${this.order?.payments[0].paymentProvider}</div>
       </div>
@@ -82,11 +86,16 @@ export class OrderSummaryComponent extends OrderMixin(
         <h3>${i18n('order.shipping-details')}</h3>
       </oryx-heading>
       <div class="details">
-        <div class="title">${i18n('order.delivery-address')}:</div>
-        <div>
-          <oryx-user-address .address=${this.order?.shippingAddress}>
-          </oryx-user-address>
-        </div>
+        ${when(
+          this.order?.shippingAddress,
+          () => html` <div class="title">
+              ${i18n('order.delivery-address')}:
+            </div>
+            <div>
+              <oryx-user-address .address=${this.order?.shippingAddress}>
+              </oryx-user-address>
+            </div>`
+        )}
         <div class="title">${i18n('order.shipping-method')}:</div>
         <div>${this.order?.shipments[0].shipmentMethodName}</div>
       </div>

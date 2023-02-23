@@ -35,15 +35,8 @@ export class DefaultOrderService implements OrderService {
   }
 
   storeLastOrder(order: OrderData): void {
-    this.storage.set(
-      orderStorageKey,
-      {
-        ...order,
-        // For privacy reasons, we cannot store the address in session storage.
-        shippingAddress: {},
-        billingAddress: {},
-      },
-      StorageType.SESSION
-    );
+    // For privacy reasons, we cannot store the address in session storage.
+    const { billingAddress, shippingAddress, ...sanitized } = order;
+    this.storage.set(orderStorageKey, sanitized, StorageType.SESSION);
   }
 }
