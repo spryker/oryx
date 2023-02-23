@@ -32,12 +32,32 @@ export class ProductMediaComponent extends ProductMixin(
       containerSize
     );
 
+    if (sources[0]?.url) {
+      if (this.isVideo(sources[0]?.url)) {
+        return this.renderVideo(sources[0]?.url);
+      } else {
+        return this.renderImage(sources[0]?.url, this.getSrcSet(sources));
+      }
+    }
+  }
+
+  protected isVideo(url: string): boolean {
+    const videoRegex =
+      /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|vimeo\.com\/|(?:https?:\/\/.*\.(?:mp4|avi|mov|wmv|flv|webm)))/;
+    return videoRegex.test(url);
+  }
+
+  protected renderImage(src: string, srcSet?: string): TemplateResult | void {
     return html`<oryx-image
-      src=${ifDefined(sources[0]?.url)}
-      srcset=${ifDefined(this.getSrcSet(sources))}
+      src=${src}
+      srcset=${ifDefined(srcSet)}
       alt=${ifDefined(this.componentOptions?.alt || this.product?.name)}
       loading=${ifDefined(this.componentOptions?.loading)}
     ></oryx-image>`;
+  }
+
+  protected renderVideo(src: string): TemplateResult | void {
+    return html`<oryx-video url=${src}></oryx-video>`;
   }
 
   /**

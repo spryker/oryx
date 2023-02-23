@@ -26,7 +26,7 @@ const objectFitFallback = 'contain';
 @defaultOptions({
   imageLayout: ProductImagesMainLayout.Carousel,
   navigationLayout: NavigationLayout.Grid,
-  navigationPosition: NavigationPosition.Top,
+  navigationPosition: NavigationPosition.Bottom,
   imageObjectFit: objectFitFallback,
   navigationObjectFit: objectFitFallback,
   imageHeight: heightFallback,
@@ -50,7 +50,7 @@ export class ProductImagesComponent extends ProductMixin(
 
       return html`
         <oryx-layout
-          navigation=${this.componentOptions?.navigationPosition ??
+          navigation=${this.componentOptions?.navigationPosition ||
           NavigationPosition.Bottom}
           ?floating=${this.componentOptions?.navigationDisplay ===
           ProductImagesNavigationDisplay.Floating}
@@ -88,7 +88,7 @@ export class ProductImagesComponent extends ProductMixin(
       behavior=${ifDefined(scrollBehavior)}
     >
       ${media.map(
-        (_, i: number) => html`
+        (_, i) => html`
           <oryx-product-media
             .sku=${this.sku}
             .options=${{
@@ -127,13 +127,13 @@ export class ProductImagesComponent extends ProductMixin(
       navigationHeightFallback};--image-fit:${objectFit || objectFitFallback}"
     >
       ${media.map(
-        (_, i: number) => html`
+        (_, i) => html`
           <label aria-label=${`image ${i}`}>
             <input
               value=${i}
               type="radio"
               name=${ifDefined(this.uid)}
-              ?checked=${i === (this.active ?? 0)}
+              ?checked=${i === 0}
               @input=${this.onInput}
               @mouseover=${this.onMouseover}
             />

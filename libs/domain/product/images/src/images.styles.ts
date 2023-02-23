@@ -89,4 +89,10 @@ export const productImageStyles = css`
     border: 1px solid var(--oryx-color-primary-300);
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
+
+  .navigation oryx-product-media {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
 `;
