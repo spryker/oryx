@@ -34,6 +34,7 @@ export const productImageStyles = css`
 
   .navigation {
     --cols: initial;
+
     padding: 6px;
   }
 
@@ -54,6 +55,7 @@ export const productImageStyles = css`
   :host > oryx-layout[floating] .navigation {
     z-index: 1;
   }
+
   :host > oryx-layout[floating][navigation='bottom'] .navigation {
     align-self: end;
   }
