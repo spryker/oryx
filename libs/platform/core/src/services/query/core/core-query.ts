@@ -17,7 +17,14 @@ import {
   using,
 } from 'rxjs';
 import { CoreQueryService } from '../core';
-import { Query, QueryOptions, QueryState, QueryTrigger } from '../models';
+import {
+  Query,
+  QueryEventHandler,
+  QueryOptions,
+  QueryState,
+  QueryTrigger,
+} from '../models';
+import { buildEvent } from './dispatch-event';
 
 export class CoreQuery<
   ValueType,
@@ -35,7 +42,7 @@ export class CoreQuery<
 
   constructor(
     protected options: QueryOptions<ValueType, Qualifier>,
-    protected query: CoreQueryService,
+    protected service: CoreQueryService,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -186,15 +193,32 @@ export class CoreQuery<
   }
 
   protected onLoad(data: ValueType, qualifier?: Qualifier): void {
-    this.options.onLoad?.forEach((callback: any) => {
+    this.options.onLoad?.forEach((callback) => {
       this.dispatchEvent(callback, qualifier, data);
     });
   }
 
   protected onError(error: any, qualifier?: Qualifier): void {
-    this.options.onError?.forEach((callback: any) =>
+    this.options.onError?.forEach((callback) =>
       this.dispatchEvent(callback, qualifier, undefined, error)
     );
+  }
+
+  protected dispatchEvent(
+    handler: QueryEventHandler<ValueType, Qualifier>,
+    qualifier?: Qualifier,
+    data?: ValueType,
+    error?: any
+  ): void {
+    const event = buildEvent<ValueType, Qualifier>(
+      handler,
+      qualifier,
+      data,
+      error
+    );
+    if (event) {
+      this.service.emit(event);
+    }
   }
 
   protected getTriggerStream(
@@ -202,25 +226,8 @@ export class CoreQuery<
   ): Observable<undefined> {
     return merge(
       ...triggers.map((trigger) =>
-        typeof trigger === 'string' ? this.query.getEvents(trigger) : trigger
+        typeof trigger === 'string' ? this.service.getEvents(trigger) : trigger
       )
     );
-  }
-
-  protected dispatchEvent(
-    callback: (data: any, qualifier?: Qualifier) => any | string,
-    qualifier?: Qualifier,
-    data?: ValueType,
-    error?: any
-  ): void {
-    if (typeof callback === 'function') {
-      const event = callback(data, qualifier);
-      if (event) this.query.emit(event);
-    } else {
-      const event: any = { type: callback, qualifier };
-      if (data) event.data = data;
-      if (error) event.error = error;
-      this.query.emit(event);
-    }
   }
 }

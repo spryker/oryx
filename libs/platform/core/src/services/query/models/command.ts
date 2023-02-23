@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { QueryEventHandler } from './query-event';
 
 export enum CommandStrategy {
   /**
@@ -43,10 +44,10 @@ export interface CommandOptions<
 
   strategy?: CommandStrategy;
 
-  onStart?: any[];
-  onFinish?: any[];
-  onError?: any[];
-  onSuccess?: any[];
+  onStart?: QueryEventHandler[];
+  onFinish?: QueryEventHandler[];
+  onError?: QueryEventHandler[];
+  onSuccess?: QueryEventHandler[];
 }
 
 export interface Command<

@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { QueryEventHandler } from './query-event';
 
 export type QueryTrigger = string | Observable<any>;
 
@@ -11,8 +12,8 @@ export interface QueryOptions<
   resetOn?: QueryTrigger[];
   refreshOn?: QueryTrigger[];
 
-  onLoad?: any[];
-  onError?: any[];
+  onLoad?: QueryEventHandler[];
+  onError?: QueryEventHandler[];
 
   /**
    * Query is not cached between subscriptions.

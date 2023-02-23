@@ -14,20 +14,21 @@ import {
   Command,
   CommandOptions,
   CommandStrategy,
-  QueryEvent,
+  QueryEventHandler,
 } from '../models';
+import { buildEvent } from './dispatch-event';
 
 export class CoreCommand<
   ResultType,
   Qualifier extends object | undefined = undefined
 > implements Command<ResultType, Qualifier>
 {
-  protected currentResult?: ReplaySubject<any>;
+  protected currentResult?: ReplaySubject<ResultType>;
   protected currentSubscription?: Subscription;
 
   constructor(
     protected options: CommandOptions<ResultType, Qualifier>,
-    protected query: CoreQueryService,
+    protected service: CoreQueryService,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -47,7 +48,7 @@ export class CoreCommand<
   }
 
   protected executeQueueStrategy(qualifier: Qualifier): Observable<ResultType> {
-    const result = new ReplaySubject<any>(1);
+    const result = new ReplaySubject<ResultType>(1);
     if (this.currentResult) {
       concat(this.currentResult, this.getStream(result, qualifier)).subscribe();
       this.currentResult = result;
@@ -58,7 +59,7 @@ export class CoreCommand<
   protected executeParallelStrategy(
     qualifier: Qualifier
   ): Observable<ResultType> {
-    const result = new ReplaySubject<any>(1);
+    const result = new ReplaySubject<ResultType>(1);
     this.getStream(result, qualifier).subscribe();
     return result;
   }
@@ -66,7 +67,7 @@ export class CoreCommand<
   protected executeReplaceStrategy(
     qualifier: Qualifier
   ): Observable<ResultType> {
-    const result = new ReplaySubject<any>(1);
+    const result = new ReplaySubject<ResultType>(1);
     if (this.currentSubscription) {
       this.currentSubscription.unsubscribe();
       if (this.options.strategy === CommandStrategy.Override) {
@@ -80,7 +81,7 @@ export class CoreCommand<
   }
 
   protected executeSkipStrategy(qualifier: Qualifier): Observable<ResultType> {
-    const result = new ReplaySubject<any>(1);
+    const result = new ReplaySubject<ResultType>(1);
     if (!this.currentResult?.closed) {
       if (this.options.strategy === CommandStrategy.Cancel) {
         result.error('Command cancelled');
@@ -94,9 +95,9 @@ export class CoreCommand<
   }
 
   protected getStream(
-    result: ReplaySubject<any>,
+    result: ReplaySubject<ResultType>,
     qualifier: Qualifier
-  ): Observable<any> {
+  ): Observable<ResultType> {
     this.onStart(qualifier);
     return from(this.options.action(qualifier)).pipe(
       tap((data) => {
@@ -116,46 +117,43 @@ export class CoreCommand<
   }
 
   protected onStart(qualifier?: Qualifier): void {
-    this.options.onStart?.forEach((callback: any) => {
-      this.dispatchEvent(callback, qualifier);
+    this.options.onStart?.forEach((handler) => {
+      this.dispatchEvent(handler, qualifier);
     });
   }
 
   protected onFinish(qualifier?: Qualifier): void {
-    this.options.onFinish?.forEach((callback: any) =>
-      this.dispatchEvent(callback, qualifier)
+    this.options.onFinish?.forEach((handler) =>
+      this.dispatchEvent(handler, qualifier)
     );
   }
 
   protected onSuccess(data: ResultType, qualifier?: Qualifier): void {
-    this.options.onSuccess?.forEach((callback: any) =>
-      this.dispatchEvent(callback, qualifier, data)
+    this.options.onSuccess?.forEach((handler) =>
+      this.dispatchEvent(handler, qualifier, data)
     );
   }
 
   protected onError(error: any, qualifier?: Qualifier): void {
-    this.options.onError?.forEach((callback: any) =>
-      this.dispatchEvent(callback, qualifier, undefined, error)
+    this.options.onError?.forEach((handler) =>
+      this.dispatchEvent(handler, qualifier, undefined, error)
     );
   }
 
   protected dispatchEvent(
-    callback: (data: any, qualifier?: Qualifier) => any | string,
+    handler: QueryEventHandler<ResultType, Qualifier>,
     qualifier?: Qualifier,
     data?: ResultType,
     error?: any
   ): void {
-    if (typeof callback === 'function') {
-      const event = callback(data, qualifier);
-      if (event) this.query.emit(event);
-    } else {
-      const event: QueryEvent<ResultType, Qualifier> = {
-        type: callback,
-        qualifier,
-      };
-      if (data) event.data = data;
-      if (error) event.error = error;
-      this.query.emit(event);
+    const event = buildEvent<ResultType, Qualifier>(
+      handler,
+      qualifier,
+      data,
+      error
+    );
+    if (event) {
+      this.service.emit(event);
     }
   }
 }
