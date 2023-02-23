@@ -19,6 +19,6 @@ export function createCommand<
   return inject(QueryService).createCommand(options);
 }
 
-export function createEffect(effect: any): any {
+export function createEffect(effect: any): unknown {
   return inject(QueryService).createEffect(effect);
 }

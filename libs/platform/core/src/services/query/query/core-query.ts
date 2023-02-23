@@ -150,7 +150,7 @@ export class CoreQuery<
         };
       },
       () => subject$
-    ).pipe(shareReplay({ bufferSize: 1, refCount: !!this.options.permanent }));
+    ).pipe(shareReplay({ bufferSize: 1, refCount: !this.options.permanent }));
 
     const data$ = state$.pipe(
       map((x) => x.data),
