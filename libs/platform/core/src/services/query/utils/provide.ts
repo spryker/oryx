@@ -1,5 +1,10 @@
 import { FactoryProvider, ValueProvider } from '@spryker-oryx/di';
-import { CommandOptions, EffectDefinition, QueryOptions } from '../models';
+import {
+  CommandOptions,
+  EffectDefinition,
+  QueryEvent,
+  QueryOptions,
+} from '../models';
 import { COMMAND_TOKEN, EFFECT_TOKEN, QUERY_TOKEN } from '../query.service';
 
 export function provideQuery<
@@ -28,6 +33,12 @@ export function provideCommand<
   };
 }
 
+export function provideEffect<Event extends QueryEvent<any, any>>(
+  effect: EffectDefinition<Event['data'], Event['qualifier']>
+): ValueProvider;
+export function provideEffect<Data = unknown, Qualifier = unknown>(
+  effect: EffectDefinition<Data, Qualifier>
+): ValueProvider;
 export function provideEffect(effect: EffectDefinition): ValueProvider {
   return {
     provide: EFFECT_TOKEN,

@@ -25,12 +25,17 @@ export interface QueryService {
 
   createEffect(effect: EffectDefinition): void;
 
+  getQuery<QueryType extends Query<any, any>>(
+    id: string
+  ): QueryType | undefined;
   getQuery<
     ValueType = unknown,
     Qualifier extends object | undefined = undefined
   >(
     id: string
   ): Query<ValueType, Qualifier> | undefined;
+  getQuery(id: string): Query<unknown, object | undefined> | undefined;
+
   getCommand<
     ResultType = unknown,
     Qualifier extends object | undefined = undefined

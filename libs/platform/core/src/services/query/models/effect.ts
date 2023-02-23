@@ -2,9 +2,15 @@ import { Observable } from 'rxjs';
 import { QueryService } from '../query.service';
 import { QueryEvent } from './query-event';
 
-export type CallbackEffect = [
+export type CallbackEffect<Data = unknown, Qualifier = unknown> = [
   string,
-  ({ event, query }: { event: QueryEvent; query: QueryService }) => void
+  ({
+    event,
+    query,
+  }: {
+    event: QueryEvent<Data, Qualifier>;
+    query: QueryService;
+  }) => void
 ];
 
 export type StreamEffect = ({
@@ -14,7 +20,9 @@ export type StreamEffect = ({
   query: QueryService;
 }) => Observable<unknown>;
 
-export type EffectDefinition = CallbackEffect | StreamEffect;
+export type EffectDefinition<Data = unknown, Qualifier = unknown> =
+  | CallbackEffect<Data, Qualifier>
+  | StreamEffect;
 
 export function isStreamEffect(
   effect: EffectDefinition

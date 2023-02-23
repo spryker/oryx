@@ -3,13 +3,14 @@ import { ProductsLoaded } from './events';
 import { ProductQuery } from './queries';
 
 export const productEffects = [
-  provideEffect([
+  provideEffect<ProductsLoaded>([
     ProductsLoaded,
-    ({ event, query }: { event: any; query: any }) =>
-      event.data?.products?.forEach((product: any) =>
+    ({ event, query }) => {
+      event.data?.products?.forEach((product) =>
         query
-          .getQuery(ProductQuery)
+          .getQuery<ProductQuery>(ProductQuery)
           ?.set({ data: product, qualifier: { sku: product.sku } })
-      ),
+      );
+    },
   ]),
 ];
