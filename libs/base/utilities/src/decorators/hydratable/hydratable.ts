@@ -56,13 +56,15 @@ function hydratableClass<T extends Type<HTMLElement>>(
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
     private [HYDRATION_CALLS] = 0;
+    protected hasRenderRoot?: boolean;
 
     constructor(...args: any[]) {
       super();
+      this.hasRenderRoot = !isServer && this.shadowRoot;
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');
       }
-      if (!isServer && this.shadowRoot) {
+      if (this.hasRenderRoot) {
         this[DEFER_HYDRATION] = true;
         return;
       }
@@ -108,7 +110,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     render(): TemplateResult {
       const states = this[asyncStates];
-      const hasSsr = (!!this.renderRoot || this.safariRoot()) && !isServer;
+      const hasSsr = this.hasRenderRoot || this.safariRoot();
 
       if (hasSsr && states) {
         return html`${whenState(Object.values(states).every(Boolean), () =>
