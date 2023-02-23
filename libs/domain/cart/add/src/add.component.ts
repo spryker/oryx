@@ -37,7 +37,7 @@ import {
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
-@hydratable(['click', 'focusin'])
+@hydratable(['mouseover', 'focusin'])
 export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
   static styles = styles;
 
