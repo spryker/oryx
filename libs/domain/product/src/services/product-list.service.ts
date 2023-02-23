@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 
 export interface ProductListService {
-  get(qualifier: ProductListQualifier): Observable<ProductList | undefined>;
+  get(qualifier: ProductListQualifier): Observable<ProductList | null>;
   getState(
     qualifier: ProductListQualifier
   ): Observable<QueryState<ProductList | undefined>>;

@@ -28,7 +28,7 @@ export class ProductController {
     this.context = new ContextController(host);
   }
 
-  getProduct(): Observable<Product | null | undefined> {
+  getProduct(): Observable<Product | null> {
     return this.context.get(ProductContext.SKU, this.observe.get('sku')).pipe(
       switchMap((sku, index) => {
         if (!sku) {

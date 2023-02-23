@@ -7,8 +7,13 @@ import { ProductQuery } from './state';
 export class DefaultProductService implements ProductService {
   protected productQuery = injectQuery<Product, ProductQualifier>(ProductQuery);
 
-  get(qualifier: ProductQualifier): Observable<Product | undefined> {
-    return this.productQuery.get(qualifier);
+  get(qualifier: ProductQualifier): Observable<Product | null> {
+    return (
+      this.productQuery
+        .get(qualifier)
+        // TODO: temporary fix for backward compatibility
+        .pipe(map((product) => product || null))
+    );
   }
 
   getState(qualifier: ProductQualifier): Observable<QueryState<Product>> {

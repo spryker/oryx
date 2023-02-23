@@ -31,8 +31,13 @@ export class DefaultProductListService implements ProductListService {
 
   constructor(protected adapter = inject(ProductListAdapter)) {}
 
-  get(qualifier: ProductListQualifier): Observable<ProductList | undefined> {
-    return this.productListQuery.get(qualifier);
+  get(qualifier: ProductListQualifier): Observable<ProductList | null> {
+    return (
+      this.productListQuery
+        .get(qualifier)
+        // TODO: temporary fix for backward compatibility
+        .pipe(map((list) => list || null))
+    );
   }
 
   getSearchParams(qualifier: ProductListQualifier): Record<string, string> {
