@@ -1,10 +1,7 @@
 import { provideQuery, Query } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import {
-  Product,
-  ProductAdapter,
-  ProductQualifier,
-} from '@spryker-oryx/product';
+import { Product, ProductQualifier } from '../../models';
+import { ProductAdapter } from '../adapter';
 
 export const ProductQuery = 'oryx.productQuery';
 
