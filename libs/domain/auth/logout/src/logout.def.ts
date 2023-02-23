@@ -3,11 +3,13 @@ import { LogoutOptions } from './logout.model';
 
 declare global {
   interface FeatureOptions {
-    'auth-logout'?: LogoutOptions;
+    'oryx-auth-logout'?: LogoutOptions;
   }
 }
 
 export const authLogoutComponent = componentDef({
-  name: 'auth-logout',
+  name: 'oryx-auth-logout',
   impl: () => import('./logout.component').then((m) => m.AuthLogoutComponent),
+  schema: () =>
+    import('./logout.schema').then((m) => m.authLogoutComponentSchema),
 });

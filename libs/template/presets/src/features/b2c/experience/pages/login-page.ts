@@ -8,22 +8,10 @@ export const LoginPage: StaticComponent = {
       type: 'experience-composition',
       options: {
         data: {
-          rules: [{ container: true, layout: 'tabular', margin: '30px 0' }],
+          rules: [{ container: true, margin: '30px 0' }],
         },
       },
-      components: [
-        {
-          type: 'auth-login',
-          name: 'Login',
-          options: {
-            data: {
-              strategy: 'HOVER',
-              showRememberMe: true,
-              url: '/contact',
-            },
-          },
-        },
-      ],
+      components: [{ type: 'oryx-auth-login' }],
     },
   ],
 };

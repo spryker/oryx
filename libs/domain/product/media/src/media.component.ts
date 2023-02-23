@@ -17,7 +17,7 @@ import { ProductMediaOptions } from './media.model';
   loading: LoadingStrategy.Lazy,
   containerSize: ProductMediaContainerSize.Detail,
 })
-@hydratable('mouseover')
+@hydratable(['mouseover', 'focusin'])
 export class ProductMediaComponent extends ProductMixin(
   ContentMixin<ProductMediaOptions>(LitElement)
 ) {

@@ -30,10 +30,21 @@ export class DefaultLocaleService implements LocaleService {
     this.active$.next(value);
   }
 
-  formatDate(stamp: string | number): Observable<string> {
+  formatDate(stamp: string | number, showTime = false): Observable<string> {
     return this.get().pipe(
       map((locale) =>
-        Intl.DateTimeFormat(locale.replace('_', '-')).format(new Date(stamp))
+        Intl.DateTimeFormat(
+          locale.replace('_', '-'),
+          showTime
+            ? {
+                hour: '2-digit',
+                minute: '2-digit',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              }
+            : undefined
+        ).format(new Date(stamp))
       )
     );
   }

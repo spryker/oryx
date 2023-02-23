@@ -65,7 +65,7 @@ describe('PasswordComponent', () => {
 
     describe('when the strategy is set to NONE', () => {
       beforeEach(async () => {
-        element = await fixture(render(PasswordVisibilityStrategy.NONE));
+        element = await fixture(render(PasswordVisibilityStrategy.None));
         toggle = getShadowElementBySelector(
           element,
           'oryx-icon'
@@ -89,7 +89,7 @@ describe('PasswordComponent', () => {
 
     describe('when the strategy is set to CLICK', () => {
       beforeEach(async () => {
-        element = await fixture(render(PasswordVisibilityStrategy.CLICK));
+        element = await fixture(render(PasswordVisibilityStrategy.Click));
         toggle = getShadowElementBySelector(
           element,
           'oryx-icon'
@@ -125,7 +125,7 @@ describe('PasswordComponent', () => {
 
     describe('when the strategy is set to MOUSEDOWN', () => {
       beforeEach(async () => {
-        element = await fixture(render(PasswordVisibilityStrategy.MOUSEDOWN));
+        element = await fixture(render(PasswordVisibilityStrategy.Mousedown));
         toggle = getShadowElementBySelector(
           element,
           'oryx-icon'
@@ -150,7 +150,7 @@ describe('PasswordComponent', () => {
 
     describe('when the strategy is set to MOUSEOVER', () => {
       beforeEach(async () => {
-        element = await fixture(render(PasswordVisibilityStrategy.HOVER));
+        element = await fixture(render(PasswordVisibilityStrategy.Hover));
         toggle = getShadowElementBySelector(
           element,
           'oryx-icon'
@@ -180,7 +180,7 @@ describe('PasswordComponent', () => {
           vi.useFakeTimers();
           element = await fixture(
             html`<oryx-password-input
-              .strategy=${PasswordVisibilityStrategy.CLICK}
+              .strategy=${PasswordVisibilityStrategy.Click}
               .timeout=${10}
             >
               <input type="password" aria-label="password" />

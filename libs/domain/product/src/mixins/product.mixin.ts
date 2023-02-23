@@ -25,7 +25,7 @@ export const ProductMixin = <
   superClass: T
 ): Type<ProductMixinInterface> & T => {
   class ProductMixinClass extends superClass {
-    @property() sku?: string;
+    @property({ reflect: true }) sku?: string;
 
     protected productController = new ProductController(this);
 
