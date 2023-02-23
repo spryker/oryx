@@ -21,11 +21,8 @@ class MockStorageService implements Partial<StorageService> {
   set = vi.fn().mockReturnValue(of(undefined));
 }
 
-const mockSanitizedResponse = {
-  ...mockOrderData,
-  shippingAddress: {},
-  billingAddress: {},
-};
+const { shippingAddress, billingAddress, ...mockSanitizedResponse } =
+  mockOrderData;
 
 const mockGetOrderProps = { id: 'mockid' };
 
