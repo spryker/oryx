@@ -41,4 +41,5 @@ export const storefrontIcons: ThemeIcons = {
   /** Alias to add */
   [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.User]: () => import('./icons/user').then((s) => s.default),
+  [IconTypes.Login]: () => import('./icons/login').then((s) => s.default),
 };

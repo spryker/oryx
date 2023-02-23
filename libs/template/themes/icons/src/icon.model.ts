@@ -101,4 +101,5 @@ export enum IconTypes {
   AmbientCategory = 'ambientCategory',
   Carrier = 'carrier',
   Location = 'location',
+  Login = 'login',
 }
