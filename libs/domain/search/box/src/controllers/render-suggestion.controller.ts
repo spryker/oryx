@@ -1,11 +1,11 @@
 import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
-import { TemplateResult } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit-html/directive';
 import { html } from 'lit/static-html.js';
 import { Suggestion, SuggestionResource } from '../../../src';
-import { SearchBoxOptions } from '../box.model';
+import { SearchBoxProperties } from '../box.model';
 
 interface LinksSection {
   title?: DirectiveResult;
@@ -14,6 +14,18 @@ interface LinksSection {
 }
 
 export class RenderSuggestionController {
+  constructor(protected host: LitElement & SearchBoxProperties) {
+    this.host.addController(this);
+  }
+
+  hostConnected?(): void;
+
+  protected onViewAllClick(e: Event): void {
+    e.target?.dispatchEvent(
+      new CustomEvent('oryx.close', { bubbles: true, composed: true })
+    );
+  }
+
   protected processCompletions(completions: string[]): SuggestionResource[] {
     return completions.map((name) => ({ name, params: { q: name } }));
   }
@@ -54,9 +66,7 @@ export class RenderSuggestionController {
     `;
   }
 
-  renderLinksSection(
-    suggestion: Suggestion
-  ): TemplateResult {
+  renderLinksSection(suggestion: Suggestion): TemplateResult {
     const links: LinksSection[] = [
       {
         title: i18n('search.box.search-suggestions'),
@@ -105,16 +115,20 @@ export class RenderSuggestionController {
     `;
   }
 
-  renderProductsSection(
-    suggestion: Suggestion
-  ): TemplateResult {
+  renderProductsSection(suggestion: Suggestion): TemplateResult {
     return html`
       <section>
         <h5>${i18n('search.box.products')}</h5>
         ${suggestion.products.map(this.renderProduct)}
-        <!-- TODO link to PLP -->
-        <oryx-button outline>
-          <a href="#">${i18n('search.box.view-all-products')}</a>
+
+        <oryx-button outline @click=${(e: Event) => this.onViewAllClick(e)}>
+          <oryx-content-link
+            .options="${{
+              type: SemanticLinkType.ProductList,
+              text: i18n('search.box.view-all-products'),
+              params: { q: this.host.query },
+            }}"
+          ></oryx-content-link>
         </oryx-button>
       </section>
     `;

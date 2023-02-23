@@ -11,27 +11,27 @@ export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent
       minChars: {
         label: 'Min query length',
         type: FormFieldType.Number,
-        min: 0
+        min: 0,
       },
       completionsCount: {
         label: 'Max completions to show',
         type: FormFieldType.Number,
-        min: 0
+        min: 0,
       },
       productsCount: {
         label: 'Max products to show',
         type: FormFieldType.Number,
-        min: 0
+        min: 0,
       },
       categoriesCount: {
         label: 'Max categories to show',
         type: FormFieldType.Number,
-        min: 0
+        min: 0,
       },
       cmsCount: {
         label: 'Max CMS links to show',
         type: FormFieldType.Number,
-        min: 0
+        min: 0,
       },
     },
   };

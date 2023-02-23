@@ -37,7 +37,7 @@ Demo.args = {
   completionsCount: 5,
   productsCount: 6,
   categoriesCount: 5,
-  cmsCount: 5
+  cmsCount: 5,
 };
 
 Demo.argTypes = {

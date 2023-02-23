@@ -1,9 +1,16 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentController, ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
-import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  subscribe,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
@@ -46,12 +53,13 @@ export class SearchBoxComponent
 {
   static styles = [baseStyles, searchboxStyles];
 
-  protected contentController = new ContentController(this);
   protected suggestionService = resolve(SuggestionService);
+  protected routerService = resolve(RouterService);
+  protected semanticLinkService = resolve(SemanticLinkService);
 
   protected scrollingAreaController = new ScrollingAreaController(this);
   protected queryControlsController = new QueryControlsController();
-  protected renderSuggestionController = new RenderSuggestionController();
+  protected renderSuggestionController = new RenderSuggestionController(this);
 
   protected triggerInputValue$ = new Subject<string>();
 
@@ -63,22 +71,28 @@ export class SearchBoxComponent
     switchMap(([query, options]) => {
       if (query && (!options.minChars || query.length >= options.minChars)) {
         return this.suggestionService.get({ query }).pipe(
-          map((raw) => raw ? {
-              completion: raw.completion.slice(0, options.completionsCount),
-              products: raw.products?.slice(0, options.productsCount) ?? [],
-              categories: raw.categories.slice(0, options.categoriesCount),
-              cmsPages: raw.cmsPages.slice(0, options.cmsCount),
-            } : raw
+          map((raw) =>
+            raw
+              ? {
+                  completion: raw.completion.slice(0, options.completionsCount),
+                  products: raw.products?.slice(0, options.productsCount) ?? [],
+                  categories: raw.categories.slice(0, options.categoriesCount),
+                  cmsPages: raw.cmsPages.slice(0, options.cmsCount),
+                }
+              : undefined
           )
         );
       }
 
-      return of(null);
+      return of();
     }),
-    tap(suggestion => {
+    tap((suggestion) => {
       this.stretched = this.hasCompleteData(suggestion);
     })
   );
+
+  @asyncState()
+  protected suggestion = valueType(this.suggestion$);
 
   @subscribe()
   protected scrollEvent = defer(() =>
@@ -94,7 +108,7 @@ export class SearchBoxComponent
     })
   );
 
-  @property({ type: String }) query = '';
+  @property({ type: String, reflect: true }) query = '';
   @property({ type: Boolean, reflect: true })
   protected stretched = false;
 
@@ -108,13 +122,13 @@ export class SearchBoxComponent
   connectedCallback(): void {
     super.connectedCallback();
 
-    this.addEventListener('oryx.clear', this.clear);
-    this.addEventListener('oryx.close', this.close);
+    this.addEventListener('oryx.clear', this.onClear);
+    this.addEventListener('oryx.close', this.onClose);
   }
 
   disconnectedCallback(): void {
-    this.removeEventListener('oryx.clear', this.clear);
-    this.removeEventListener('oryx.close', this.close);
+    this.removeEventListener('oryx.clear', this.onClear);
+    this.removeEventListener('oryx.close', this.onClose);
 
     super.disconnectedCallback();
   }
@@ -122,15 +136,16 @@ export class SearchBoxComponent
   constructor() {
     super();
 
-    this.clear = this.clear.bind(this);
-    this.close = this.close.bind(this);
-    this.dispatchContainerScroll = this.dispatchContainerScroll.bind(this);
+    this.onClear = this.onClear.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onScroll = this.onScroll.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   protected inputRef: Ref<HTMLInputElement> = createRef();
   protected scrollContainerRef: Ref<HTMLElement> = createRef();
 
-  protected clear(e: Event): void {
+  protected onClear(e: Event): void {
     e.stopPropagation();
     const input = this.inputRef.value as HTMLInputElement;
 
@@ -139,7 +154,7 @@ export class SearchBoxComponent
     this.triggerInputValue$.next('');
   }
 
-  protected close(): void {
+  protected onClose(): void {
     this.renderRoot.querySelector('oryx-typeahead')?.removeAttribute('open');
   }
 
@@ -148,13 +163,30 @@ export class SearchBoxComponent
     this.triggerInputValue$.next(this.query);
   }
 
-  protected dispatchContainerScroll(e: Event): void {
+  protected onScroll(e: Event): void {
     e.target?.dispatchEvent(
       new CustomEvent('containerScroll', { bubbles: true, composed: true })
     );
   }
 
-  protected hasLinks(suggestion: Suggestion | null): boolean {
+  protected onSubmit(e: SubmitEvent): void {
+    e.preventDefault();
+
+    this.semanticLinkService
+      .get({
+        type: SemanticLinkType.ProductList,
+        ...(this.query ? { params: { q: this.query } } : {}),
+      })
+      .pipe(
+        tap((link) => {
+          this.routerService.navigate(link!);
+          this.onClose();
+        })
+      )
+      .subscribe();
+  }
+
+  protected hasLinks(suggestion?: Suggestion): boolean {
     return !!(
       suggestion?.completion.length ||
       suggestion?.cmsPages.length ||
@@ -162,21 +194,19 @@ export class SearchBoxComponent
     );
   }
 
-  protected hasProducts(suggestion: Suggestion | null): boolean {
+  protected hasProducts(suggestion?: Suggestion): boolean {
     return !!suggestion?.products?.length;
   }
 
-  protected isNothingFound(suggestion: Suggestion | null): boolean {
+  protected isNothingFound(suggestion?: Suggestion): boolean {
     return !this.hasLinks(suggestion) && !this.hasProducts(suggestion);
   }
 
-  protected hasCompleteData(suggestion: Suggestion | null): boolean {
+  protected hasCompleteData(suggestion?: Suggestion): boolean {
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
   }
 
-  protected renderSuggestion(
-    suggestion: Suggestion | null
-  ): TemplateResult {
+  protected renderSuggestion(suggestion?: Suggestion): TemplateResult {
     if (!suggestion) {
       return html``;
     }
@@ -187,10 +217,7 @@ export class SearchBoxComponent
 
     return html`
       <div slot="option">
-        <div
-          @scroll=${this.dispatchContainerScroll}
-          ${ref(this.scrollContainerRef)}
-        >
+        <div @scroll=${this.onScroll} ${ref(this.scrollContainerRef)}>
           ${when(this.hasLinks(suggestion), () =>
             this.renderSuggestionController.renderLinksSection(suggestion)
           )}
@@ -204,25 +231,16 @@ export class SearchBoxComponent
 
   protected override render(): TemplateResult {
     return html`
-      <form @submit=${(e: SubmitEvent) => {
-        e.preventDefault();
-        console.log(e);
-        
-      }}>
+      <form @submit=${this.onSubmit}>
         <oryx-typeahead
           @oryx.typeahead=${this.onTypeahead}
           .clearIconPosition=${ClearIconPosition.NONE}
         >
           <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
           <input ${ref(this.inputRef)} placeholder="Search" />
-          ${asyncValue(
-            this.suggestion$,
-            suggestion => html`${this.renderSuggestion(suggestion)}`
-          )}
-          ${asyncValue(this.triggerInputValue$, query =>
-            query
-              ? this.queryControlsController.renderControls()
-              : html``
+          ${this.renderSuggestion(this.suggestion)}
+          ${when(this.query, () =>
+            this.queryControlsController.renderControls()
           )}
         </oryx-typeahead>
       </form>
