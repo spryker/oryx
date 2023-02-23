@@ -101,17 +101,17 @@ export class CoreCommand<
     this.onStart(qualifier);
     return from(this.options.action(qualifier)).pipe(
       tap((data) => {
-        result.next(data);
         this.onSuccess(data, qualifier);
+        result.next(data);
       }),
       catchError((error) => {
-        result.error(error);
         this.onError(error, qualifier);
+        result.error(error);
         return EMPTY;
       }),
       finalize(() => {
-        result.complete();
         this.onFinish(qualifier);
+        result.complete();
       })
     );
   }

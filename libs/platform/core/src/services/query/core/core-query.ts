@@ -119,12 +119,12 @@ export class CoreQuery<
         from(this.options.loader(qualifier)).pipe(takeUntil(resetTrigger$))
       ),
       tap((data) => {
-        subject$.next({ error: false, loading: false, stale: false, data });
         this.onLoad(data, qualifier);
+        subject$.next({ error: false, loading: false, stale: false, data });
       }),
       catchError((error, source$) => {
-        subject$.next({ error, loading: false, stale: false, data: undefined });
         this.onError(error, qualifier);
+        subject$.next({ error, loading: false, stale: false, data: undefined });
         return source$;
       })
     );
