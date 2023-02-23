@@ -46,7 +46,9 @@ export class OrderSummaryComponent extends OrderMixin(
           </div>
           <div class="title">${i18n('order.date')}:</div>
           <div>
-            ${asyncValue(this.locale.formatDate(this.order?.createdAt ?? ''))}
+            ${asyncValue(
+              this.locale.formatDate(this.order?.createdAt ?? '', true)
+            )}
           </div>
         </div>
         <oryx-button outline>
