@@ -46,7 +46,9 @@ export class OrderSummaryComponent extends OrderMixin(
           </div>
           <div class="title">${i18n('order.date')}:</div>
           <div>
-            ${asyncValue(this.locale.formatDate(this.order?.createdAt ?? ''))}
+            ${asyncValue(
+              this.locale.formatDate(this.order?.createdAt ?? '', true)
+            )}
           </div>
         </div>
         <oryx-button outline>
@@ -69,8 +71,6 @@ export class OrderSummaryComponent extends OrderMixin(
           <oryx-user-address .address=${this.order?.billingAddress}>
           </oryx-user-address>
         </div>
-        <div class="title">${i18n('order.email')}:</div>
-        <div>${this.order?.billingAddress?.email}</div>
         <div class="title">${i18n('order.payment')}:</div>
         <div>${this.order?.payments[0].paymentProvider}</div>
       </div>
@@ -87,8 +87,6 @@ export class OrderSummaryComponent extends OrderMixin(
           <oryx-user-address .address=${this.order?.shippingAddress}>
           </oryx-user-address>
         </div>
-        <div class="title">${i18n('order.email')}:</div>
-        <div>${this.order?.shippingAddress?.email}</div>
         <div class="title">${i18n('order.shipping-method')}:</div>
         <div>${this.order?.shipments[0].shipmentMethodName}</div>
       </div>
