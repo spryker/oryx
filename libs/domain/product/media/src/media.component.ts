@@ -9,7 +9,8 @@ import {
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductMediaOptions } from './media.model';
 
@@ -23,22 +24,28 @@ export class ProductMediaComponent extends ProductMixin(
 ) {
   protected imageService = resolve(ProductImageService);
 
-  protected override render(): TemplateResult | void {
-    const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+  @state()
+  protected sources?: ImageSource[];
 
+  update(changedProperties: PropertyValues): void {
+    const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
     const productMedia = this.getMediaSet()?.media[mediaIndex];
-    const sources = this.imageService.resolveSources(
+    this.sources = this.imageService.resolveSources(
       productMedia,
       containerSize
     );
 
-    if (sources[0]?.url) {
-      if (this.isVideo(sources[0]?.url)) {
-        return this.renderVideo(sources[0]?.url);
-      } else {
-        return this.renderImage(sources[0]?.url, this.getSrcSet(sources));
-      }
+    super.update(changedProperties);
+  }
+
+  protected override render(): TemplateResult | void {
+    if (!this.sources?.[0]?.url) return;
+
+    if (this.isVideo(this.sources[0]?.url)) {
+      return this.renderVideo(this.sources[0]?.url);
     }
+
+    return this.renderImage(this.sources[0]?.url, this.getSrcSet(this.sources));
   }
 
   protected isVideo(url: string): boolean {

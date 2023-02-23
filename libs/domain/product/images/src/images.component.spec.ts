@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductImagesComponent } from './images.component';
 import { productImagesComponent } from './images.def';
@@ -21,7 +21,7 @@ import {
 Element.prototype.scroll = (): void => {};
 
 class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ uid = '' }): Observable<any> => of({});
+  getOptions = vi.fn().mockReturnValue(of({}));
 }
 
 describe('ProductImagesComponent', () => {

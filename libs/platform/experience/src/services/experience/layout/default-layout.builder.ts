@@ -119,8 +119,8 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         if (!isNaN(Number(value))) {
           if (!options?.omitUnit) {
             value = addUnit(value, options?.unit);
-          } else if (value === 0 && !options?.addEmpty) {
-            // value = '';
+          } else if (value === 0 && options?.addEmpty) {
+            value = '';
           } else {
             value = String(value);
           }

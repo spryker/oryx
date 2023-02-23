@@ -25,7 +25,7 @@ const objectFitFallback = 'contain';
 
 @defaultOptions({
   imageLayout: ProductImagesMainLayout.Carousel,
-  navigationLayout: NavigationLayout.Grid,
+  navigationLayout: NavigationLayout.Carousel,
   navigationPosition: NavigationPosition.Bottom,
   imageObjectFit: objectFitFallback,
   navigationObjectFit: objectFitFallback,
@@ -74,6 +74,7 @@ export class ProductImagesComponent extends ProductMixin(
     const {
       imageLayout: layout,
       imageObjectFit: objectFit,
+      imagesColumns: cols,
       scrollBehavior,
     } = this.componentOptions ?? {};
 
@@ -84,7 +85,7 @@ export class ProductImagesComponent extends ProductMixin(
     return html`<oryx-layout
       class="main"
       .layout=${layout || ProductImagesMainLayout.Carousel}
-      style="--image-fit:${objectFit || objectFitFallback}"
+      style="--image-fit:${objectFit || objectFitFallback};--cols: ${cols ?? 1}"
       behavior=${ifDefined(scrollBehavior)}
     >
       ${media.map(
@@ -111,6 +112,7 @@ export class ProductImagesComponent extends ProductMixin(
       navigationLayout: layout,
       navigationPosition: position,
       navigationHeight: height,
+      navigationWidth: width,
       navigationObjectFit: objectFit,
     } = this.componentOptions ?? {};
 
@@ -123,8 +125,10 @@ export class ProductImagesComponent extends ProductMixin(
       .layout=${layout || NavigationLayout.Carousel}
       .vertical=${position === NavigationPosition.Start ||
       position === NavigationPosition.End}
-      style="--item-size:${height ||
-      navigationHeightFallback};--image-fit:${objectFit || objectFitFallback}"
+      style="--item-height:${height ||
+      navigationHeightFallback};--item-width:${width ||
+      height ||
+      navigationHeightFallback}; --image-fit:${objectFit || objectFitFallback};"
     >
       ${media.map(
         (_, i) => html`
@@ -176,11 +180,13 @@ export class ProductImagesComponent extends ProductMixin(
   }
 
   protected resolveImages(): ProductMedia[] {
-    const set = !this.componentOptions?.mediaSet
-      ? this.product?.mediaSet?.[0]
-      : this.product?.mediaSet?.find(
-          (set) => set.name === this.componentOptions?.mediaSet
-        );
-    return set?.media ?? [];
+    return (
+      (!this.componentOptions?.mediaSet
+        ? this.product?.mediaSet?.[0]
+        : this.product?.mediaSet?.find(
+            (set) => set.name === this.componentOptions?.mediaSet
+          )
+      )?.media ?? []
+    );
   }
 }

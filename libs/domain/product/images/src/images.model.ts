@@ -105,7 +105,7 @@ export interface ProductImagesComponentOptions {
   /**
    * The number of items that are rendered per column.
    */
-  gridItemsPerColumn?: number;
+  imagesColumns?: number;
 }
 
 export const enum ProductImagesNavigationMouseEvent {
@@ -115,7 +115,7 @@ export const enum ProductImagesNavigationMouseEvent {
 
 export const enum ProductImagesMainLayout {
   Carousel = 'carousel',
-  Toggle = 'toggle',
+  Grid = 'grid',
   None = 'none',
 }
 

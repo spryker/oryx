@@ -15,11 +15,7 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
       },
       imageLayout: {
         type: 'select',
-        options: [
-          { value: 'carousel' },
-          { value: 'toggle' },
-          { value: 'none' },
-        ],
+        options: [{ value: 'carousel' }, { value: 'grid' }, { value: 'none' }],
       },
       scrollBehavior: {
         type: 'select',
@@ -70,7 +66,7 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
         type: FormFieldType.Select,
         options: [{ value: 'contain' }, { value: 'cover' }, { value: 'none' }],
       },
-      gridItemsPerColumn: {
+      imagesColumns: {
         type: 'input',
         attributes: {
           type: 'number',

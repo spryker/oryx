@@ -9,7 +9,6 @@ export const productImageStyles = css`
 
   :host > oryx-layout {
     display: grid;
-    gap: var(--gap);
   }
 
   :host > oryx-layout[navigation='start'] {
@@ -62,8 +61,8 @@ export const productImageStyles = css`
 
   label {
     position: relative;
-    width: var(--item-size);
-    height: var(--item-size);
+    height: var(--item-height);
+    width: var(--item-width, var(--item-height));
     padding: 10px;
     background-color: var(--oryx-color-canvas-100);
     border-radius: 2px;
