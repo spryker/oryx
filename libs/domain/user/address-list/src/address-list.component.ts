@@ -9,12 +9,15 @@ import {
   asyncState,
   hydratable,
   i18n,
+  subscribe,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
+import { state } from 'lit/decorators.js';
 import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { tap } from 'rxjs';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
@@ -29,24 +32,25 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   @asyncState()
   protected addresses = valueType(this.addressService.getAddresses());
 
+  @state()
   protected selectedAddressId?: string;
 
-  protected onChange(ev: Event): void {
-    const el = ev.target as HTMLInputElement;
+  @subscribe()
+  protected addressesSubscription = this.addressService.getAddresses().pipe(
+    tap((addresses) => {
+      if (!this.componentOptions?.selectable) return;
 
-    const address = this.addresses?.find((address) => address.id === el.value);
-    if (address) {
-      this.selectedAddressId = address.id;
-      this.requestUpdate('selectedAddressId');
-      this.dispatchEvent(
-        new CustomEvent(SELECT_EVENT, {
-          bubbles: true,
-          composed: true,
-          detail: { address },
-        })
-      );
-    }
-  }
+      if (
+        !this.selectedAddressId ||
+        !addresses?.find((address) => address.id == this.selectedAddressId)
+      ) {
+        const defaultAddress = addresses?.find((address) =>
+          this.isDefault(address)
+        );
+        this.selectedAddressId = defaultAddress?.id ?? addresses?.[0]?.id;
+      }
+    })
+  );
 
   protected override render(): TemplateResult {
     if (!this.addresses?.length) {
@@ -63,7 +67,8 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
           this.addresses,
           (address) => address.id,
           (address) => {
-            const isSelected = this.isSelected(address);
+            const isSelected = this.selectedAddressId === address.id;
+
             return html`<oryx-tile ?selected=${isSelected}>
               <oryx-address-list-item
                 .addressId=${address.id}
@@ -87,34 +92,36 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
     `;
   }
 
+  protected onChange(ev: Event): void {
+    const el = ev.target as HTMLInputElement;
+
+    const address = this.addresses?.find((address) => address.id === el.value);
+    if (address) {
+      this.selectedAddressId = address.id;
+      this.requestUpdate('selectedAddressId');
+      this.dispatchEvent(
+        new CustomEvent(SELECT_EVENT, {
+          bubbles: true,
+          composed: true,
+          detail: { address },
+        })
+      );
+    }
+  }
+
   protected createAddressesKey(): string | void {
     return this.addresses?.map(({ id }) => id).join('-');
   }
 
-  protected isSelected(address: Address): boolean {
-    if (!this.componentOptions.selectable) return false;
-
-    if (
-      !this.selectedAddressId ||
-      !this.addresses?.find((a) => a.id == this.selectedAddressId)
-    ) {
-      if (this.isDefault(address) || this.isFirstInList(address.id)) {
-        this.selectedAddressId = address.id;
-      }
-    }
-
-    return this.selectedAddressId === address.id;
-  }
-
   protected isDefault(address: Address): boolean {
     const isDefault =
-      this.componentOptions.addressDefaults === AddressDefaults.All;
+      this.componentOptions?.addressDefaults === AddressDefaults.All;
     const isDefaultBilling =
       isDefault ||
-      this.componentOptions.addressDefaults === AddressDefaults.Billing;
+      this.componentOptions?.addressDefaults === AddressDefaults.Billing;
     const isDefaultShipping =
       isDefault ||
-      this.componentOptions.addressDefaults === AddressDefaults.Shipping;
+      this.componentOptions?.addressDefaults === AddressDefaults.Shipping;
     return (
       !!(isDefaultShipping && address.isDefaultShipping) ||
       !!(isDefaultBilling && address.isDefaultBilling)
