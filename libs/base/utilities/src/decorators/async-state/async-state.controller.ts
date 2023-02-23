@@ -31,7 +31,7 @@ export class AsyncStateController implements ReactiveController {
 
   add(key: string, value: unknown): void {
     this.host[asyncStates] ??= {};
-    this.host[asyncStates][key] = isServer;
+    this.host[asyncStates][key] = false;
 
     let oldValue: unknown = undefined;
     if (this.observables.has(key)) {
@@ -81,13 +81,6 @@ export class AsyncStateController implements ReactiveController {
       const oldValue = data.value;
 
       this.host[asyncStates]![key] = true;
-
-      if (isServer) {
-        this.host.setAttribute(
-          asyncStates,
-          JSON.stringify(this.host[asyncStates])
-        );
-      }
 
       if (oldValue !== value) {
         data.value = value;

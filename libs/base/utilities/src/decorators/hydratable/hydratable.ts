@@ -107,18 +107,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     render(): TemplateResult {
-      const states = this.getAttribute(asyncStates);
-      const hasSsr =
-        (Boolean(this.renderRoot) || this.safariRoot()) && states && !isServer;
+      const states = this[asyncStates];
+      const hasSsr = (!!this.renderRoot || this.safariRoot()) && !isServer;
 
-      if (hasSsr) {
-        return html`${whenState(
-          states === JSON.stringify(this[asyncStates]),
-          () => super.render()
+      if (hasSsr && states) {
+        return html`${whenState(Object.values(states).every(Boolean), () =>
+          super.render()
         )}`;
       }
 
-      return html`${whenState(true, () => super.render())}`;
+      return hasSsr || isServer
+        ? html`${whenState(true, () => super.render())}`
+        : super.render();
     }
 
     protected safariRoot(): boolean {

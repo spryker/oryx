@@ -58,12 +58,14 @@ export class ProductCardComponent extends ProductMixin(
   );
 
   protected override render(): TemplateResult {
+    if (!this.product) return html``;
+
     return html` <oryx-content-link
       .options="${{
         type: SemanticLinkType.Product,
-        id: this.product?.sku,
+        id: this.product.sku,
         multiLine: true,
-        label: this.product?.name,
+        label: this.product.name,
       }}"
     >
       ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
