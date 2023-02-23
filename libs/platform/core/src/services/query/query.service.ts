@@ -1,5 +1,12 @@
 import { Observable } from 'rxjs';
-import { Command, CommandOptions, Query, QueryOptions } from './models';
+import {
+  Command,
+  CommandOptions,
+  EffectDefinition,
+  Query,
+  QueryEvent,
+  QueryOptions,
+} from './models';
 
 export const QueryService = 'oryx.QueryService';
 
@@ -16,7 +23,7 @@ export interface QueryService {
     options: CommandOptions<ResultType, Qualifier>
   ): Command<ResultType, Qualifier>;
 
-  createEffect(effect: any): void;
+  createEffect(effect: EffectDefinition): void;
 
   getQuery<
     ValueType = unknown,
@@ -31,8 +38,8 @@ export interface QueryService {
     id: string
   ): Command<ResultType, Qualifier> | undefined;
 
-  emit(stateEvent: any): void;
-  getEvents(eventType?: string): Observable<any>;
+  emit(event: QueryEvent): void;
+  getEvents(eventType?: string): Observable<QueryEvent>;
 }
 
 declare global {

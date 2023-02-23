@@ -1,13 +1,18 @@
 import { Observable } from 'rxjs';
 import { QueryService } from '../query.service';
-import { StateEvent } from './state-event';
+import { QueryEvent } from './query-event';
 
 export type CallbackEffect = [
   string,
-  ({ event, query }: { event: StateEvent; query: QueryService }) => void
+  ({ event, query }: { event: QueryEvent; query: QueryService }) => void
 ];
 
-export type StreamEffect = ($events: any) => Observable<any>;
+export type StreamEffect = ({
+  events$,
+}: {
+  events$: Observable<QueryEvent>;
+  query: QueryService;
+}) => Observable<unknown>;
 
 export type EffectDefinition = CallbackEffect | StreamEffect;
 

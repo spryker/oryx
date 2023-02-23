@@ -1,5 +1,5 @@
 import { FactoryProvider, ValueProvider } from '@spryker-oryx/di';
-import { CommandOptions, QueryOptions } from '../models';
+import { CommandOptions, EffectDefinition, QueryOptions } from '../models';
 import { COMMAND_TOKEN, EFFECT_TOKEN, QUERY_TOKEN } from '../query.service';
 
 export function provideQuery<
@@ -28,7 +28,7 @@ export function provideCommand<
   };
 }
 
-export function provideEffect(effect: any): ValueProvider {
+export function provideEffect(effect: EffectDefinition): ValueProvider {
   return {
     provide: EFFECT_TOKEN,
     useValue: effect,

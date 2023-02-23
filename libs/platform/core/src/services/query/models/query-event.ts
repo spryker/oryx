@@ -1,4 +1,4 @@
-export interface StateEvent<Data = unknown, Qualifier = unknown> {
+export interface QueryEvent<Data = unknown, Qualifier = unknown> {
   type: string;
   data?: Data;
   error?: any;

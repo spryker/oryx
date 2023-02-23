@@ -14,7 +14,7 @@ import {
   Command,
   CommandOptions,
   CommandStrategy,
-  StateEvent,
+  QueryEvent,
 } from '../models';
 
 export class CoreCommand<
@@ -149,7 +149,7 @@ export class CoreCommand<
       const event = callback(data, qualifier);
       if (event) this.query.emit(event);
     } else {
-      const event: StateEvent<ResultType, Qualifier> = {
+      const event: QueryEvent<ResultType, Qualifier> = {
         type: callback,
         qualifier,
       };

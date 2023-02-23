@@ -7,8 +7,8 @@ import {
   isCallbackEffect,
   isStreamEffect,
   Query,
+  QueryEvent,
   QueryOptions,
-  StateEvent,
 } from '@spryker-oryx/core';
 import {
   filter,
@@ -25,7 +25,7 @@ export class CoreQueryService {
   protected queries = new Map<string, Query<unknown, any>>();
   protected commands = new Map<string, Command<unknown, any>>();
 
-  protected stateEvents$ = new ReplaySubject<StateEvent>();
+  protected stateEvents$ = new ReplaySubject<QueryEvent>();
 
   protected destroy$ = new Subject<undefined>();
 
@@ -73,7 +73,10 @@ export class CoreQueryService {
 
   createEffect(effect: EffectDefinition): void {
     if (isStreamEffect(effect)) {
-      effect({ events$: this.stateEvents$, query: this })
+      effect({
+        events$: this.stateEvents$.asObservable(),
+        query: this,
+      })
         .pipe(retry())
         .subscribe();
     } else if (isCallbackEffect(effect)) {
@@ -88,11 +91,11 @@ export class CoreQueryService {
     }
   }
 
-  emit(stateEvent: StateEvent): void {
-    this.stateEvents$.next(stateEvent);
+  emit(event: QueryEvent): void {
+    this.stateEvents$.next(event);
   }
 
-  getEvents(eventType?: string): Observable<StateEvent> {
+  getEvents(eventType?: string): Observable<QueryEvent> {
     return this.stateEvents$.pipe(
       eventType ? filter((event) => event.type === eventType) : identity
     );
