@@ -44,10 +44,10 @@ export interface CommandOptions<
 
   strategy?: CommandStrategy;
 
-  onStart?: QueryEventHandler[];
-  onFinish?: QueryEventHandler[];
-  onError?: QueryEventHandler[];
-  onSuccess?: QueryEventHandler[];
+  onStart?: QueryEventHandler<ResultType, Qualifier>[];
+  onFinish?: QueryEventHandler<ResultType, Qualifier>[];
+  onError?: QueryEventHandler<ResultType, Qualifier>[];
+  onSuccess?: QueryEventHandler<ResultType, Qualifier>[];
 }
 
 export interface Command<

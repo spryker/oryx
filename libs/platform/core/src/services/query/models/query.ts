@@ -12,8 +12,8 @@ export interface QueryOptions<
   resetOn?: QueryTrigger[];
   refreshOn?: QueryTrigger[];
 
-  onLoad?: QueryEventHandler[];
-  onError?: QueryEventHandler[];
+  onLoad?: QueryEventHandler<ValueType, Qualifier>[];
+  onError?: QueryEventHandler<ValueType, Qualifier>[];
 
   /**
    * Query is not cached between subscriptions.
