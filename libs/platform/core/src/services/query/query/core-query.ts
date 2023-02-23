@@ -1,7 +1,6 @@
 import {
   BehaviorSubject,
   catchError,
-  debounceTime,
   distinctUntilChanged,
   filter,
   from,
@@ -99,8 +98,6 @@ export class CoreQuery<
     );
 
     const loadLogic$ = needToLoad$.pipe(
-      // TODO: check if this is needed, or decide if we want to debounce or make it configurable
-      debounceTime(0),
       tap(() => {
         if (subject$.value.loading!) {
           subject$.next({
