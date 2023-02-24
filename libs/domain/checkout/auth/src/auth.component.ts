@@ -64,6 +64,7 @@ export class CheckoutAuthComponent extends CheckoutComponentMixin<CheckoutAuthOp
   protected renderLogin(): TemplateResult {
     return html`${asyncValue(
       this.options$,
+      // TODO: i18n issue inside asyncValue
       (options) => html`<oryx-auth-login
         .heading=${i18n('checkout.authentication.login')}
         .options=${{
