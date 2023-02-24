@@ -14,5 +14,4 @@ export const parameters = {
       method: 'alphabetical',
     },
   },
-  chromatic: { delay: 1500 },
 };
