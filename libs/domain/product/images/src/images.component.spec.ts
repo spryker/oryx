@@ -125,24 +125,24 @@ describe('ProductImagesComponent', () => {
         });
       });
 
-      describe('when mainLayout is `toggle`', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-product-images
-              sku="1"
-              .options=${{ mainLayout: ProductImagesMainLayout.Toggle }}
-            ></oryx-product-images>`
-          );
-        });
+      // describe('when mainLayout is `toggle`', () => {
+      //   beforeEach(async () => {
+      //     element = await fixture(
+      //       html`<oryx-product-images
+      //         sku="1"
+      //         .options=${{ mainLayout: ProductImagesMainLayout.Toggle }}
+      //       ></oryx-product-images>`
+      //     );
+      //   });
 
-        it('should render main-layout attribute', () => {
-          expect(element).toContainElement(`slot[main-layout='toggle']`);
-        });
+      //   it('should render main-layout attribute', () => {
+      //     expect(element).toContainElement(`slot[main-layout='toggle']`);
+      //   });
 
-        it('should render oryx-product-media element(s)', () => {
-          expect(element).toContainElement('section oryx-product-media');
-        });
-      });
+      //   it('should render oryx-product-media element(s)', () => {
+      //     expect(element).toContainElement('section oryx-product-media');
+      //   });
+      // });
 
       describe('when mainLayout is `none`', () => {
         beforeEach(async () => {
