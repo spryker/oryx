@@ -87,7 +87,7 @@ describe('ProductController', () => {
 
         expect(callback).toHaveBeenCalledTimes(3);
         expect(callback).toHaveBeenNthCalledWith(1, mockProduct);
-        expect(callback).toHaveBeenNthCalledWith(2, null);
+        expect(callback).toHaveBeenNthCalledWith(2, undefined);
         expect(callback).toHaveBeenNthCalledWith(3, mockProduct);
       });
     });
@@ -99,7 +99,7 @@ describe('ProductController', () => {
       const productController = new ProductController(mockThis);
       productController.getProduct().subscribe(callback);
 
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(callback).toHaveBeenCalledWith(undefined);
     });
   });
 });

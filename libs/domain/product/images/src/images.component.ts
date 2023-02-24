@@ -52,7 +52,7 @@ export class ProductImagesComponent extends ProductComponentMixin<ProductImagesC
   }
 
   protected resolveImages(
-    product: Product | null,
+    product: Product | undefined,
     options: Partial<ProductImagesComponentOptions>
   ): ProductMedia[] {
     const set = !options.mediaSet

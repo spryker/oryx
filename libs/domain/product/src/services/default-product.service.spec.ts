@@ -75,7 +75,7 @@ describe('DefaultProductService', () => {
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
 
-    it('should return an observable with null if error has been caught', () => {
+    it('should return an observable with undefined if error has been caught', () => {
       (adapter.get as unknown as SpyInstance).mockReturnValue(
         of(null).pipe(
           switchMap(() => {
@@ -85,43 +85,46 @@ describe('DefaultProductService', () => {
       );
       const callback = vi.fn();
       service.get({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(callback).toHaveBeenCalledWith(undefined);
     });
   });
 
-  describe('getError', () => {
-    const mockObjectError = {
-      status: 0,
-      statusCode: 1,
-    };
+  describe('getState', () => {
+    it('should return an observable', () => {
+      expect(service.getState({})).toBeInstanceOf(Observable);
+    });
 
-    beforeEach(() => {
-      (adapter.get as unknown as SpyInstance).mockReturnValue(
-        of(null).pipe(
-          switchMap(() => {
-            throw mockObjectError;
-          })
-        )
+    it('should return an observable with a product state from adapter', () => {
+      const callback = vi.fn();
+      service.getState({ sku: '123' }).subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ data: { name: 'adapter 123' } })
       );
     });
 
-    it('should return an observable', () => {
-      expect(service.getError({})).toBeInstanceOf(Observable);
-    });
-
-    it('should return an observable with an error information', () => {
-      const callback = vi.fn();
-      service.getError({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockObjectError);
-    });
-
     it('should call `get` method of adapter only for getting new product', () => {
-      service.getError({ sku: '123' }).pipe(take(1)).subscribe();
+      service.getState({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ sku: '123' }).pipe(take(1)).subscribe();
+      service.getState({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ sku: '124' }).pipe(take(1)).subscribe();
+      service.getState({ sku: '124' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
+    });
+
+    it('should return an observable with error state if error has been caught', () => {
+      const testError = new Error();
+      (adapter.get as unknown as SpyInstance).mockReturnValue(
+        of(null).pipe(
+          switchMap(() => {
+            throw testError;
+          })
+        )
+      );
+      const callback = vi.fn();
+      service.getState({}).subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ data: undefined, error: testError })
+      );
     });
   });
 });
