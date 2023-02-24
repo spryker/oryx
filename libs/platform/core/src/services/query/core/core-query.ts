@@ -136,7 +136,8 @@ export class CoreQuery<
         offlineSub?.unsubscribe();
 
         const subscription = loadLogic$.subscribe();
-        subscription.add(() => resetTrigger$.subscribe());
+        subscription.add(resetTrigger$.subscribe());
+        subscription.add(refreshTrigger$.subscribe());
 
         return {
           unsubscribe: () => {
