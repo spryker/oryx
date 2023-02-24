@@ -1,5 +1,7 @@
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Observable, of, switchMap } from 'rxjs';
+import { productQueries } from '@spryker-oryx/product';
+import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductQualifier } from '../models';
 import { ProductAdapter } from './adapter/product.adapter';
@@ -31,6 +33,11 @@ describe('DefaultProductService', () => {
           provide: ProductAdapter,
           useClass: MockProductAdapter,
         },
+        {
+          provide: QueryService,
+          useClass: DefaultQueryService,
+        },
+        ...productQueries,
       ],
     });
 
@@ -60,11 +67,11 @@ describe('DefaultProductService', () => {
     });
 
     it('should call `get` method of adapter only for getting new product', () => {
-      service.get({ sku: '123' });
+      service.get({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.get({ sku: '123' });
+      service.get({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.get({ sku: '124' });
+      service.get({ sku: '124' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
 
@@ -109,11 +116,11 @@ describe('DefaultProductService', () => {
     });
 
     it('should call `get` method of adapter only for getting new product', () => {
-      service.getError({ sku: '123' });
+      service.getError({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ sku: '123' });
+      service.getError({ sku: '123' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ sku: '124' });
+      service.getError({ sku: '124' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
   });

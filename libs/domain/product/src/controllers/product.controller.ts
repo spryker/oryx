@@ -22,10 +22,7 @@ export class ProductController {
   protected observe: ObserveController<LitElement & ProductComponentProperties>;
   protected productService = resolve(ProductService, null);
 
-  constructor(
-    protected host: LitElement & ProductComponentProperties,
-    protected include: string[] = []
-  ) {
+  constructor(protected host: LitElement & ProductComponentProperties) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
     this.observe = new ObserveController(host);
     this.context = new ContextController(host);
@@ -39,7 +36,7 @@ export class ProductController {
         }
         return (
           this.productService
-            ?.get({ sku, include: this.include })
+            ?.get({ sku })
             .pipe(index ? startWith(null) : identity) ?? of(null)
         );
       }),
@@ -50,7 +47,7 @@ export class ProductController {
   /**
    * @deprecated Use getProduct() instead.
    */
-  getProductLegacy(): Observable<Product | null> {
+  getProductLegacy(): Observable<Product | null | undefined> {
     return (
       this.observe as ObserveController<LitElement & { product?: Product }>
     )
