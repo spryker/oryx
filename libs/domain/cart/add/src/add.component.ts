@@ -141,7 +141,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
    * Returns 0 when the max available quantity is smaller than the min order quantity.
    */
   protected calculateMin(
-    product: Product | null,
+    product: Product | undefined,
     entries: CartEntry[]
   ): number {
     const maxAvailable = this.calculateMax(product, entries);
@@ -156,7 +156,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
    * the active cart, and subtract this number from the available quantity.
    */
   protected calculateMax(
-    product: Product | null,
+    product: Product | undefined,
     entries: CartEntry[]
   ): number | undefined {
     const cumulatedEntryCount = entries
