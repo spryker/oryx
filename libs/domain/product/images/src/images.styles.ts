@@ -9,6 +9,7 @@ export const productImageStyles = css`
 
   :host > oryx-layout {
     display: grid;
+    gap: var(--gap);
   }
 
   :host > oryx-layout[navigation='start'] {

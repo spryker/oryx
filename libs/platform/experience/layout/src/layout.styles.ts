@@ -377,8 +377,6 @@ export const layoutStyles = css`
       var(--oryx-layout-cols, 12) /
         var(--nested-layout-factor, var(--oryx-layout-factor, 1))
     );
-
-    gap: var(--gap, 0);
   }
 
   :host,
@@ -387,6 +385,7 @@ export const layoutStyles = css`
   }
 
   :host([layout]) {
+    gap: var(--gap, 0);
     align-items: var(--align-items, start);
   }
 
