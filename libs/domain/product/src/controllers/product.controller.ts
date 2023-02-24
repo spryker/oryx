@@ -28,38 +28,19 @@ export class ProductController {
     this.context = new ContextController(host);
   }
 
-  getProduct(): Observable<Product | null> {
+  getProduct(): Observable<Product | undefined> {
     return this.context.get(ProductContext.SKU, this.observe.get('sku')).pipe(
       switchMap((sku, index) => {
         if (!sku) {
-          return of(null);
+          return of(undefined);
         }
         return (
           this.productService
             ?.get({ sku })
-            .pipe(index ? startWith(null) : identity) ?? of(null)
+            .pipe(index ? startWith(undefined) : identity) ?? of(undefined)
         );
       }),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
-  }
-
-  /**
-   * @deprecated Use getProduct() instead.
-   */
-  getProductLegacy(): Observable<Product | null | undefined> {
-    return (
-      this.observe as ObserveController<LitElement & { product?: Product }>
-    )
-      .get('product')
-      .pipe(
-        switchMap((product) => {
-          if (product) {
-            return of(product);
-          }
-
-          return this.getProduct();
-        })
-      );
   }
 }
