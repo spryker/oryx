@@ -86,7 +86,7 @@ export class SearchBoxComponent
         );
       }
 
-      return of({ suggestion: null, options });
+      return of({ suggestion: undefined, options });
     }),
     tap(({ suggestion }) => {
       this.stretched = this.hasCompleteData(suggestion);
@@ -180,7 +180,7 @@ export class SearchBoxComponent
     }
   }
 
-  protected hasLinks(suggestion: Suggestion | null): boolean {
+  protected hasLinks(suggestion: Suggestion | undefined): boolean {
     return !!(
       suggestion?.completion.length ||
       suggestion?.cmsPages.length ||
@@ -188,20 +188,20 @@ export class SearchBoxComponent
     );
   }
 
-  protected hasProducts(suggestion: Suggestion | null): boolean {
+  protected hasProducts(suggestion: Suggestion | undefined): boolean {
     return !!suggestion?.products?.length;
   }
 
-  protected isNothingFound(suggestion: Suggestion | null): boolean {
+  protected isNothingFound(suggestion: Suggestion | undefined): boolean {
     return !this.hasLinks(suggestion) && !this.hasProducts(suggestion);
   }
 
-  protected hasCompleteData(suggestion: Suggestion | null): boolean {
+  protected hasCompleteData(suggestion: Suggestion | undefined): boolean {
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
   }
 
   protected renderSuggestion(
-    suggestion: Suggestion | null,
+    suggestion: Suggestion | undefined,
     options: SearchBoxOptions
   ): TemplateResult {
     if (!suggestion) {
