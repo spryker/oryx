@@ -241,6 +241,10 @@ const carouselLayout = css`
     scroll-padding-inline-start: var(--scroll-start, 0px);
   }
 
+  :host([layout='carousel'])::-webkit-scrollbar {
+    display: none;
+  }
+
   :host([vertical][layout='carousel']) {
     overflow-x: initial;
     grid-column: auto;
@@ -381,8 +385,8 @@ export const layoutStyles = css`
   }
 
   :host([layout]) {
-    align-items: var(--align-items, start);
     gap: var(--gap, 0);
+    align-items: var(--align-items, start);
   }
 
   ::slotted(*) {

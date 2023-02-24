@@ -13,7 +13,7 @@ export const ProductPage: StaticComponent = {
           options: { data: { rules: [{ padding: '30px 0' }] } },
           components: [
             { type: 'oryx-product-labels' },
-            { type: 'product-images' },
+            { type: 'oryx-product-images' },
             { type: 'oryx-product-description' },
             { type: 'oryx-product-attributes' },
           ],
