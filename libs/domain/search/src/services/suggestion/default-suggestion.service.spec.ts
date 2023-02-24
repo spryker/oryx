@@ -85,7 +85,7 @@ describe('DefaultSuggestionService', () => {
     });
   });
 
-  describe('getError method', () => {
+  describe('getState method', () => {
     const mockObjectError = {
       status: 0,
       statusCode: 1,
@@ -102,21 +102,21 @@ describe('DefaultSuggestionService', () => {
     });
 
     it('should return an observable', () => {
-      expect(service.getError({})).toBeInstanceOf(Observable);
+      expect(service.getState({})).toBeInstanceOf(Observable);
     });
 
     it('should return an observable with an error information', () => {
       const callback = vi.fn();
-      service.getError({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockObjectError);
+      service.getState({}).subscribe(callback);
+      expect(callback).toHaveBeenCalledWith({ error: mockObjectError });
     });
 
     it('should get data from cache when call with the same query string', () => {
-      service.getError({ query: 'any' });
+      service.getState({ query: 'any' }).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ query: 'any' });
+      service.getState({ query: 'any' }).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ query: 'test' });
+      service.getState({ query: 'test' }).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
   });
