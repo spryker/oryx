@@ -23,11 +23,11 @@ const render = (
   sku = '3'
 ): TemplateResult => {
   return html`
-    <product-images
+    <oryx-product-images
       title=${JSON.stringify(options)}
       .sku=${sku}
       .options=${{ ...options, groupName: `i-${renderCount++}` }}
-    ></product-images>
+    ></oryx-product-images>
   `;
 };
 
@@ -50,7 +50,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           ProductImagesMainLayout.Carousel,
           ProductImagesMainLayout.Toggle,
           ProductImagesMainLayout.None,
-        ].map((mainLayout) => render({ mainLayout }))}
+        ].map((mainLayout) => render({ imageLayout: mainLayout }))}
       </div>
 
       <h2>Alignment in carousel navigation</h2>
@@ -153,7 +153,7 @@ const Template: Story<unknown> = (): TemplateResult => {
               navigationLayout: PINL.Grid,
               navigationPosition: ProductImagesNavigationPosition.Start,
               gridItemsPerColumn,
-              thumbHeight: 40,
+              navigationHeight: 40,
             },
             '3'
           )
@@ -169,7 +169,7 @@ const Template: Story<unknown> = (): TemplateResult => {
               navigationPosition: ProductImagesNavigationPosition.Start,
               navigationDisplay: ProductImagesNavigationDisplay.Floating,
               gridItemsPerColumn,
-              thumbHeight: 40,
+              navigationHeight: 40,
             },
             '3'
           )
@@ -181,7 +181,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         render(
           {
             navigationPosition,
-            mainImageWidth: 500,
+            imageWidth: 500,
           },
           '1'
         )
