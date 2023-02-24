@@ -69,12 +69,12 @@ export class RenderSuggestionController {
   renderLinksSection(suggestion: Suggestion): TemplateResult {
     const links: LinksSection[] = [
       {
-        title: i18n('search.box.search-suggestions'),
+        title: i18n('search.box.suggestions'),
         options: this.processCompletions(suggestion.completion),
         type: SemanticLinkType.ProductList,
       },
       {
-        title: i18n('search.box.in-categories'),
+        title: i18n('search.box.categories'),
         options: suggestion.categories.map(({ name, idCategory }) => ({
           name,
           url: idCategory,
@@ -82,7 +82,7 @@ export class RenderSuggestionController {
         type: SemanticLinkType.Category,
       },
       {
-        title: i18n('search.box.in-CMS-pages'),
+        title: i18n('search.box.content'),
         options: suggestion.cmsPages,
         type: SemanticLinkType.Page,
       },

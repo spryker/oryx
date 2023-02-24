@@ -108,7 +108,7 @@ export class SearchBoxComponent
     })
   );
 
-  @property({ type: String, reflect: true }) query = '';
+  @property({ type: String }) query = '';
   @property({ type: Boolean, reflect: true })
   protected stretched = false;
 
