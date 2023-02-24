@@ -2,7 +2,7 @@ import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 
 import { CoreQueryService } from './core';
 
-import { Command, Query } from './models';
+import { Command, EffectDefinition, Query } from './models';
 import {
   COMMAND_TOKEN,
   EFFECT_TOKEN,
@@ -15,14 +15,14 @@ export class DefaultQueryService
   implements QueryService, OnDestroy
 {
   constructor(
-    effects = inject(EFFECT_TOKEN, []),
+    protected effects = inject(EFFECT_TOKEN, []),
     protected injector = inject(INJECTOR)
   ) {
     super();
     this.initEffects(effects);
   }
 
-  protected initEffects(effects: any[]): void {
+  protected initEffects(effects: EffectDefinition[]): void {
     effects.forEach((effect) => this.createEffect(effect));
   }
 

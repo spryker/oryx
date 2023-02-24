@@ -62,7 +62,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.ConcreteProductPrices,
       ApiProductModel.Includes.ConcreteProductAvailabilities,
       ApiProductModel.Includes.Labels,
-    ].filter((type, index, arr) => arr.indexOf(type) === index);
+    ];
 
     return this.http
       .get<ApiProductModel.Response>(
