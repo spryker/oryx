@@ -66,12 +66,7 @@ export const HeaderTemplate: StaticComponent = {
         },
         { type: 'oryx-user-summary' },
         { type: 'auth-logout' },
-        {
-          type: 'cart-summary',
-          options: {
-            data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
-          },
-        },
+        { type: 'oryx-cart-summary' },
       ],
       options: {
         data: {

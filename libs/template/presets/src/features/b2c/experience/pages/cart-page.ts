@@ -11,7 +11,7 @@ export const CartPage: StaticComponent = {
       },
       components: [
         {
-          type: 'cart-entries',
+          type: 'oryx-cart-entries',
           options: {
             data: {
               defaultExpandedOptions: true,
