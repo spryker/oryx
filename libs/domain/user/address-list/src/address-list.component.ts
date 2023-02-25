@@ -14,7 +14,6 @@ import {
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
-import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
@@ -32,49 +31,50 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   @state()
   protected selectedAddressId?: string;
 
-  protected update(changedProperties: PropertyValues): void {
+  protected willUpdate(changedProperties: PropertyValues): void {
     this.select();
-    super.update(changedProperties);
+    super.willUpdate(changedProperties);
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
     if (!this.addresses?.length) {
-      return html`<slot name="empty">
-        <oryx-icon type="location" size="large"></oryx-icon>
-        ${i18n('user.address.no-addresses')}
-      </slot>`;
+      return this.renderEmpty();
     }
 
     return html`
-      ${keyed(
-        this.createAddressesKey(),
-        repeat(
-          this.addresses,
-          (address) => address.id,
-          (address) => {
-            return html`<oryx-tile
-              ?selected=${this.selectedAddressId === address.id}
-            >
-              <oryx-address-list-item
-                .addressId=${address.id}
-                .options=${this.componentOptions}
-              >
-                ${when(
-                  this.componentOptions.selectable,
-                  () => html`<input
-                    name="address"
-                    type="radio"
-                    value="${address.id as string}"
-                    ?checked=${this.selectedAddressId === address.id}
-                    @change=${this.onChange}
-                  />`
-                )}
-              </oryx-address-list-item>
-            </oryx-tile>`;
-          }
-        )
+      ${repeat(
+        this.addresses,
+        (address) => this.createKey(address.id),
+        (address) => this.renderAddress(address)
       )}
     `;
+  }
+
+  protected renderAddress(address: Address): TemplateResult | void {
+    return html`<oryx-tile ?selected=${this.selectedAddressId === address.id}>
+      <oryx-address-list-item
+        .addressId=${address.id}
+        .options=${this.componentOptions}
+      >
+        ${when(
+          this.componentOptions.selectable,
+          () => html`<input
+            name="address"
+            type="radio"
+            value="${address.id as string}"
+            ?checked=${this.selectedAddressId === address.id}
+            @input=${this.onInput}
+          />`
+        )}
+      </oryx-address-list-item>
+    </oryx-tile>`;
+  }
+
+  protected renderEmpty(): TemplateResult | void {
+    return html`<slot name="empty">
+      <oryx-icon type="location" size="large"></oryx-icon>
+      ${i18n('user.address.no-addresses')}
+    </slot>`;
   }
 
   protected select(): void {
@@ -88,7 +88,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
     }
   }
 
-  protected onChange(ev: Event): void {
+  protected onInput(ev: Event): void {
     const el = ev.target as HTMLInputElement;
 
     const address = this.addresses?.find((address) => address.id === el.value);
@@ -130,7 +130,9 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
     );
   }
 
-  protected createAddressesKey(): string | void {
-    return this.addresses?.map(({ id }) => id).join('-');
+  protected createKey(addressId?: string): string {
+    return `${addressId}-${this.addresses?.findIndex(
+      (a) => a.id === addressId
+    )}-${this.addresses?.length}`;
   }
 }

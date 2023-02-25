@@ -100,7 +100,7 @@ describe('AddressListComponent', () => {
           element.renderRoot.querySelector(
             'oryx-tile:nth-child(2) input'
           ) as HTMLInputElement
-        ).dispatchEvent(new InputEvent('change'));
+        ).dispatchEvent(new InputEvent('input'));
 
         element.requestUpdate();
         await elementUpdated(element);
