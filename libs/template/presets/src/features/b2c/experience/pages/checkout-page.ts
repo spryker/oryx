@@ -53,7 +53,7 @@ export const CheckoutPage: StaticComponent = {
             },
           },
           components: [
-            { type: 'cart-totals' },
+            { type: 'oryx-cart-totals' },
             { type: 'checkout-place-order' },
           ],
         },

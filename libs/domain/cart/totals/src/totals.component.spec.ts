@@ -60,14 +60,14 @@ describe('Cart totals component', () => {
   });
 
   it('is defined', async () => {
-    element = await fixture(html`<cart-totals></cart-totals>`);
+    element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
     expect(element).toBeInstanceOf(CartTotalsComponent);
   });
 
   it('passes the a11y audit', async () => {
     service.getCart.mockReturnValue(of(mockBaseCart));
     service.getTotals.mockReturnValue(of(mockBaseCart.totals));
-    element = await fixture(html`<cart-totals></cart-totals>`);
+    element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
 
     await expect(element).shadowDom.to.be.accessible();
   });
@@ -75,7 +75,7 @@ describe('Cart totals component', () => {
   describe('when the cart is empty', () => {
     beforeEach(async () => {
       service.getCart.mockReturnValue(of(mockEmptyCart));
-      element = await fixture(html`<cart-totals></cart-totals>`);
+      element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
     });
 
     it('should not render any html', () => {
@@ -90,7 +90,7 @@ describe('Cart totals component', () => {
     ): void => {
       beforeEach(async () => {
         element = await fixture(
-          html`<cart-totals .options=${options}></cart-totals>`
+          html`<oryx-cart-totals .options=${options}></oryx-cart-totals>`
         );
       });
     };
@@ -109,14 +109,14 @@ describe('Cart totals component', () => {
       });
 
       describe('when hideSubtotal is false', () => {
-        renderCartTotals({ hideSubtotal: false });
+        renderCartTotals({ enableSubtotal: false });
         it('should render the subtotal', () => {
           expect(element).toContainElement('.subtotal');
         });
       });
 
       describe('when hideSubtotal is true', () => {
-        renderCartTotals({ hideSubtotal: true });
+        renderCartTotals({ enableSubtotal: true });
         it('should not render the subtotal', () => {
           expect(element).not.toContainElement('.subtotal');
         });
@@ -171,14 +171,14 @@ describe('Cart totals component', () => {
           });
 
           describe('when hideDiscounts is false', () => {
-            renderCartTotals({ hideDiscounts: false });
+            renderCartTotals({ enableDiscounts: false });
             it('should render the discounts', () => {
               expect(element).toContainElement('.discounts');
             });
           });
 
           describe('when hideDiscounts is true', () => {
-            renderCartTotals({ hideDiscounts: true });
+            renderCartTotals({ enableDiscounts: true });
             it('should not render the discounts', () => {
               expect(element).not.toContainElement('.discounts');
             });
@@ -274,14 +274,14 @@ describe('Cart totals component', () => {
         });
 
         describe('when hideExpense is false', () => {
-          renderCartTotals({ hideExpense: false });
+          renderCartTotals({ enableExpense: false });
           it('should render the expense', () => {
             expect(element).toContainElement('.expense');
           });
         });
 
         describe('when hideExpense is true', () => {
-          renderCartTotals({ hideExpense: true });
+          renderCartTotals({ enableExpense: true });
           it('should not render the expense', () => {
             expect(element).not.toContainElement('.expense');
           });
@@ -318,14 +318,14 @@ describe('Cart totals component', () => {
         });
 
         describe('and hideTaxAmount is false', () => {
-          renderCartTotals({ hideTaxAmount: false });
+          renderCartTotals({ enableTaxAmount: false });
           it('should render the tax amount', () => {
             expect(element).toContainElement('.tax');
           });
         });
 
         describe('and hideTaxAmount is true', () => {
-          renderCartTotals({ hideTaxAmount: true });
+          renderCartTotals({ enableTaxAmount: true });
           it('should not render the tax amount', () => {
             expect(element).not.toContainElement('.tax');
           });
@@ -363,14 +363,14 @@ describe('Cart totals component', () => {
       });
 
       describe('when hideDelivery is false', () => {
-        renderCartTotals({ hideDelivery: false });
+        renderCartTotals({ enableDelivery: false });
         it('should render the delivery', () => {
           expect(element).toContainElement('.delivery');
         });
       });
 
       describe('when hideDelivery is true', () => {
-        renderCartTotals({ hideDelivery: true });
+        renderCartTotals({ enableDelivery: true });
         it('should not render the delivery', () => {
           expect(element).not.toContainElement('.delivery');
         });

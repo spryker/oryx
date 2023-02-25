@@ -20,12 +20,12 @@ export const componentsProvider: Provider = {
           class=${ifDefined(layoutClasses)}
         ></cart-entries>`,
     },
-    ['cart-totals']: {
+    ['oryx-cart-totals']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<cart-totals
+        html`<oryx-cart-totals
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></cart-totals>`,
+        ></oryx-cart-totals>`,
     },
     ['cart-summary']: {
       template: (uid: string, layoutClasses?: string) =>

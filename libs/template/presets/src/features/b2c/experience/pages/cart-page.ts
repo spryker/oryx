@@ -23,7 +23,7 @@ export const CartPage: StaticComponent = {
         },
         {
           type: 'experience-composition',
-          components: [{ type: 'cart-totals' }, { type: 'checkout-link' }],
+          components: [{ type: 'oryx-cart-totals' }, { type: 'checkout-link' }],
           options: {
             data: {
               rules: [

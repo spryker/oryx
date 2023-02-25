@@ -1,22 +1,40 @@
 import { Type } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
+import { asyncState, valueType } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import type { Cart, CartComponentAttributes } from '../models';
+import { CartController } from '../controllers';
+import type {
+  Cart,
+  CartComponentAttributes,
+  FormattedCartTotals,
+} from '../models';
 
-export const CartComponentMixin = <T>(): Type<
-  LitElement & ContentComponentProperties<T>
-> => {
-  class CartComponent
-    extends ComponentMixin<T>()
-    implements CartComponentAttributes
-  {
-    @property({ type: String }) cartId?: string;
-    @property({ type: Object }) cart?: Cart;
+export declare class CartMixinInterface implements CartComponentAttributes {
+  cartId?: string;
+  cart?: Cart;
+
+  protected cartController: CartController;
+
+  protected totals?: FormattedCartTotals;
+  protected totalQuantity?: number;
+}
+
+export const CartComponentMixin = <
+  T extends Type<LitElement & CartComponentAttributes>
+>(
+  superClass: T
+): Type<CartMixinInterface> & T => {
+  class CartMixinClass extends superClass {
+    @property({ reflect: true }) cartId?: string;
+    @property({ type: Object, reflect: true }) cart?: Cart;
+
+    protected cartController = new CartController(this);
+
+    @asyncState()
+    protected totals = valueType(this.cartController.getTotals());
+
+    @asyncState()
+    protected totalQuantity = valueType(this.cartController.getTotalQuantity());
   }
-
-  return CartComponent as Type<LitElement & ContentComponentProperties<T>>;
+  return CartMixinClass as unknown as Type<CartMixinInterface> & T;
 };
