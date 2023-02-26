@@ -41,15 +41,13 @@ class MockAddressService implements Partial<AddressService> {
 
 describe('CheckoutCompositionComponent', () => {
   let element: CheckoutCompositionComponent;
-  let cartService: MockCartService;
-  let addressService: MockAddressService;
 
   beforeAll(async () => {
     await useComponent(checkoutCompositionComponent);
   });
 
   beforeEach(async () => {
-    const testInjector = createInjector({
+    createInjector({
       providers: [
         {
           provide: CartService,
@@ -73,14 +71,6 @@ describe('CheckoutCompositionComponent', () => {
         },
       ],
     });
-
-    cartService = testInjector.inject(
-      CartService
-    ) as unknown as MockCartService;
-
-    addressService = testInjector.inject(
-      AddressService
-    ) as unknown as MockAddressService;
 
     element = await fixture(
       html`<oryx-checkout-composition></oryx-checkout-composition>`

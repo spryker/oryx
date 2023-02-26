@@ -18,6 +18,7 @@ export default {
 const Template: Story<Props> = (props): TemplateResult => {
   const orderService = resolve(OrderService) as unknown as MockOrderService;
   orderService.changeItemCount(props.itemCount);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { itemCount, ...options } = props;
   return html`<oryx-order-entries .options=${options}></oryx-order-entries>`;
 };

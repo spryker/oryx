@@ -1,15 +1,15 @@
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { NullableGeneric } from '@spryker-oryx/utilities';
+import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 
 export interface ProductListService {
-  get(
+  get(qualifier: ProductListQualifier): Observable<ProductList | null>;
+  getState(
     qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<ProductList>>;
-  getError(
-    qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<HttpErrorResponse>>;
+  ): Observable<QueryState<ProductList | undefined>>;
+
+  /** @deprecated Use getState instead */
+  getError(qualifier: ProductListQualifier): Observable<false | Error>;
 
   getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
 }

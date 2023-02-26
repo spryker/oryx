@@ -9,7 +9,8 @@ import {
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductMediaOptions } from './media.model';
 
@@ -23,21 +24,52 @@ export class ProductMediaComponent extends ProductMixin(
 ) {
   protected imageService = resolve(ProductImageService);
 
+  @state()
+  protected sources?: ImageSource[];
+
+  willUpdate(changedProperties: PropertyValues): void {
+    if (
+      changedProperties.has('product') ||
+      changedProperties.has('componentOptions')
+    ) {
+      const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+      const productMedia = this.getMediaSet()?.media[mediaIndex];
+      this.sources = this.imageService.resolveSources(
+        productMedia,
+        containerSize
+      );
+    }
+
+    super.willUpdate(changedProperties);
+  }
+
   protected override render(): TemplateResult | void {
-    const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+    if (!this.sources?.[0]?.url) return;
 
-    const productMedia = this.getMediaSet()?.media[mediaIndex];
-    const sources = this.imageService.resolveSources(
-      productMedia,
-      containerSize
-    );
+    if (this.isVideo(this.sources[0]?.url)) {
+      return this.renderVideo(this.sources[0]?.url);
+    }
 
+    return this.renderImage(this.sources[0]?.url, this.getSrcSet(this.sources));
+  }
+
+  protected isVideo(url: string): boolean {
+    const videoRegex =
+      /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|vimeo\.com\/|(?:https?:\/\/.*\.(?:mp4|avi|mov|wmv|flv|webm)))/;
+    return videoRegex.test(url);
+  }
+
+  protected renderImage(src: string, srcSet?: string): TemplateResult | void {
     return html`<oryx-image
-      src=${ifDefined(sources[0]?.url)}
-      srcset=${ifDefined(this.getSrcSet(sources))}
+      src=${src}
+      srcset=${ifDefined(srcSet)}
       alt=${ifDefined(this.componentOptions?.alt || this.product?.name)}
       loading=${ifDefined(this.componentOptions?.loading)}
     ></oryx-image>`;
+  }
+
+  protected renderVideo(src: string): TemplateResult | void {
+    return html`<oryx-video url=${src}></oryx-video>`;
   }
 
   /**
