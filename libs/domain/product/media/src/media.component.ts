@@ -27,15 +27,20 @@ export class ProductMediaComponent extends ProductMixin(
   @state()
   protected sources?: ImageSource[];
 
-  update(changedProperties: PropertyValues): void {
-    const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
-    const productMedia = this.getMediaSet()?.media[mediaIndex];
-    this.sources = this.imageService.resolveSources(
-      productMedia,
-      containerSize
-    );
+  willUpdate(changedProperties: PropertyValues): void {
+    if (
+      changedProperties.has('product') ||
+      changedProperties.has('componentOptions')
+    ) {
+      const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+      const productMedia = this.getMediaSet()?.media[mediaIndex];
+      this.sources = this.imageService.resolveSources(
+        productMedia,
+        containerSize
+      );
+    }
 
-    super.update(changedProperties);
+    super.willUpdate(changedProperties);
   }
 
   protected override render(): TemplateResult | void {
