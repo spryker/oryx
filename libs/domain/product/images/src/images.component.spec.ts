@@ -108,7 +108,7 @@ describe('ProductImagesComponent', () => {
     describe('when options is not provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-product-images sku="1"></oryx-product-images>`
+          html`<oryx-product-images sku="1" .options=${{}}></oryx-product-images>`
         );
       });
 
