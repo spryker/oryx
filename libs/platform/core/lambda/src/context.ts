@@ -32,6 +32,7 @@ export const serverContext = (options: ContextOptions): any => {
     },
   });
   window.setTimeout = setTimeout;
+  window.setInterval = setInterval;
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

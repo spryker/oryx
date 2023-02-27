@@ -17,15 +17,15 @@ import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
+  BehaviorSubject,
   catchError,
   debounce,
   defer,
+  distinctUntilChanged,
   filter,
   fromEvent,
   map,
   of,
-  startWith,
-  Subject,
   switchMap,
   tap,
   timer,
@@ -61,13 +61,12 @@ export class SearchBoxComponent
   protected queryControlsController = new QueryControlsController();
   protected renderSuggestionController = new RenderSuggestionController(this);
 
-  protected triggerInputValue$ = new Subject<string>();
+  protected triggerInputValue$ = new BehaviorSubject('');
 
   protected suggestion$ = this.triggerInputValue$.pipe(
-    startWith(''),
-    // debounce(() => timer(300)),
-    // map((q) => q.trim()),
-    // distinctUntilChanged(),
+    debounce(() => timer(300)),
+    map((q) => q.trim()),
+    distinctUntilChanged(),
     withLatestFrom(this.options$),
     switchMap(([query, options]) => {
       if (query && (!options.minChars || query.length >= options.minChars)) {
