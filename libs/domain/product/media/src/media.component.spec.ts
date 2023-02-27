@@ -143,8 +143,8 @@ describe('ProductMediaComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render the oryx-image element', () => {
-      expect(element).toContainElement(`oryx-image`);
+    it('should not render the oryx-image element', () => {
+      expect(element).not.toContainElement(`oryx-image`);
     });
   });
 

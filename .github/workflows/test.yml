@@ -12,7 +12,7 @@ on:
 
 env:
   GITHUB_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
-  IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'development' }}
+  IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
 
 jobs:
   test-format:
@@ -22,6 +22,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Format
         run: npx nx format:check --verbose
@@ -32,6 +33,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Lint
         uses: ./.github/actions/run-optimal
@@ -46,6 +48,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Style Lint All
         uses: ./.github/actions/run-optimal
@@ -60,6 +63,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: TsConfig Paths
         uses: ./.github/actions/run-optimal
@@ -74,6 +78,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Unit Tests
         uses: ./.github/actions/run-optimal
@@ -93,6 +98,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Visual Regression Tests
         uses: ./.github/actions/run-optimal
@@ -101,4 +107,19 @@ jobs:
         with:
           cmd: npx nx run storybook:visual-regression-branch
           affectedCmd: npx nx affected --target=visual-regression-pr
+          isDev: ${{ env.IS_DEV }}
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+          submodules: true
+      - uses: ./.github/actions/init
+      - name: Build
+        uses: ./.github/actions/run-optimal
+        with:
+          cmd: npx nx run-many --target=build --all --parallel=2
+          affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}

@@ -40,10 +40,14 @@ export default async function vitestExecutor(
         '**/index.ts',
         '**/.constants.ts',
         '**/*.spec.ts',
-        '**/*.styles.ts',
+        '**/*mock*.ts',
         '**/*.stories.ts',
+        '**/stories/*.ts',
+        '**/*.schema.ts',
+        '**/*.styles.ts',
         '**/*.def.ts',
         '**/*.model.ts',
+        '**/components.provider.ts',
       ]
     );
 
