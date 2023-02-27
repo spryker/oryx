@@ -8,6 +8,7 @@ import { ContentController } from '../../src/controllers';
 import { ComponentMixin } from '../../src/mixins';
 import {
   CompositionLayout,
+  CompositionLayoutOrientation,
   CompositionProperties,
   StyleRuleSet,
 } from '../../src/models';
@@ -23,6 +24,7 @@ export class LayoutComponent
   static styles = layoutStyles;
 
   @property({ reflect: true }) layout?: CompositionLayout;
+  @property({ reflect: true }) orientation?: CompositionLayoutOrientation;
   @property({ reflect: true, type: Boolean }) sticky?: boolean;
   @property({ reflect: true, type: Boolean }) vertical?: boolean;
   @property({ reflect: true, type: Boolean }) container?: boolean;
@@ -41,6 +43,10 @@ export class LayoutComponent
           this.layout = rule.layout;
         }
 
+        if (rule.orientation) {
+          this.orientation = rule.orientation;
+        }
+
         this.sticky = !!rule?.sticky;
         this.container = !!rule?.container;
         this.maxWidth = !!rule?.maxWidth;
@@ -49,7 +55,8 @@ export class LayoutComponent
   );
 
   protected override render(): TemplateResult {
-    return html`<slot></slot>
+    return html`
+      <slot></slot>
       ${asyncValue(this.options$, (options) => {
         const rules = this.layoutBuilder.getLayoutStyles(options?.rules?.[0]);
         return rules
@@ -58,7 +65,8 @@ export class LayoutComponent
         }
         </style>`)}`
           : html``;
-      })} `;
+      })}
+    `;
   }
 
   protected getRule(options: CompositionProperties): StyleRuleSet | undefined {

@@ -3,7 +3,7 @@ import { camelize } from '@spryker-oryx/core/utilities';
 import { ApiCheckoutModel, PaymentMethod } from '../../../../models';
 import { DeserializedCheckout } from '../checkout/model';
 
-export const PaymentsNormalizer = 'FES.PaymentsNormalizer*';
+export const PaymentsNormalizer = 'oryx.PaymentsNormalizer*';
 
 export function paymentsNormalizer(
   data: DeserializedCheckout

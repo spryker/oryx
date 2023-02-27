@@ -21,6 +21,7 @@ class MockExperienceService implements Partial<ExperienceService> {
 
 class MockAuthService implements Partial<AuthService> {
   login = vi.fn();
+  isAuthenticated = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -69,6 +70,8 @@ describe('AuthLoginComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+
+    authService.isAuthenticated.mockReturnValue(of(false));
   });
 
   afterEach(() => {
@@ -77,7 +80,7 @@ describe('AuthLoginComponent', () => {
 
   describe('when component is rendered', () => {
     beforeEach(async () => {
-      element = await fixture(html`<auth-login></auth-login>`);
+      element = await fixture(html`<oryx-auth-login></oryx-auth-login>`);
     });
 
     it('should have a defined web component', () => {
@@ -92,18 +95,18 @@ describe('AuthLoginComponent', () => {
       expect(element?.shadowRoot?.querySelector('oryx-input')).toBeDefined();
     });
 
-    it('should have the CLICK strategy for password visibility', () => {
+    it('should have the click strategy for password visibility', () => {
       expect(
         (
           element?.shadowRoot?.querySelector(
             'oryx-password-input'
           ) as PasswordInputComponent
         ).strategy
-      ).toBe('CLICK');
+      ).toBe(PasswordVisibilityStrategy.Mousedown);
     });
 
-    it('should not have a remember me checkbox', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-checkbox')).toBeNull();
+    it('should have a remember me checkbox', () => {
+      expect(element).toContainElement('oryx-checkbox');
     });
   });
 
@@ -112,7 +115,7 @@ describe('AuthLoginComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login .heading=${heading}></auth-login>`
+        html`<oryx-auth-login .heading=${heading}></oryx-auth-login>`
       );
     });
 
@@ -126,9 +129,9 @@ describe('AuthLoginComponent', () => {
   describe('when password visibility strategy is set to HOVER', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login
-          .options="${{ strategy: PasswordVisibilityStrategy.HOVER }}"
-        ></auth-login>`
+        html`<oryx-auth-login
+          .options="${{ passwordVisibility: PasswordVisibilityStrategy.Hover }}"
+        ></oryx-auth-login>`
       );
     });
 
@@ -139,14 +142,16 @@ describe('AuthLoginComponent', () => {
             'oryx-password-input'
           ) as PasswordInputComponent
         ).strategy
-      ).toBe('HOVER');
+      ).toBe(PasswordVisibilityStrategy.Hover);
     });
   });
 
-  describe('when the remember property is set to true', () => {
+  describe('when the enableRememberMe property is set to true', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login .options="${{ remember: true }}"></auth-login>`
+        html`<oryx-auth-login
+          .options="${{ enableRememberMe: true }}"
+        ></oryx-auth-login>`
       );
     });
 
@@ -158,11 +163,11 @@ describe('AuthLoginComponent', () => {
   describe('when login button is clicked', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<auth-login
+        html`<oryx-auth-login
           .options="${{
-            showRememberMe: true,
+            enableRememberMe: true,
           }}"
-        ></auth-login>`
+        ></oryx-auth-login>`
       );
 
       setupLogin();
@@ -173,7 +178,7 @@ describe('AuthLoginComponent', () => {
     const setupLogin = (): void => {
       const shadowRoot = element.shadowRoot;
       const email = shadowRoot?.querySelector(
-        'input[name="email"]'
+        'input[name="username"]'
       ) as HTMLInputElement;
       const password = shadowRoot?.querySelector(
         'input[name="password"]'
@@ -226,7 +231,7 @@ describe('AuthLoginComponent', () => {
       describe('when remember me is checked', () => {
         it('should remember login when checked', async () => {
           const rememberMe = element.shadowRoot?.querySelector(
-            'input[name="rememberme"]'
+            'input[name="remember"]'
           ) as HTMLInputElement;
           rememberMe.click();
           await submit();
@@ -239,6 +244,14 @@ describe('AuthLoginComponent', () => {
       });
 
       describe('when redirect url is not specified', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-auth-login
+              .options="${{ redirectUrl: '' }}"
+            ></oryx-auth-login>`
+          );
+        });
+
         it('should redirect to the last page', async () => {
           routerService.previousRoute.mockReturnValue(of('/previous'));
           await submit();
@@ -249,14 +262,11 @@ describe('AuthLoginComponent', () => {
       describe('when redirect url is specified', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<auth-login
-              .options="${{
-                strategy: PasswordVisibilityStrategy.HOVER,
-                showRememberMe: true,
-                url: '/contact',
-              }}"
-            ></auth-login>`
+            html`<oryx-auth-login
+              .options="${{ redirectUrl: '/contact' }}"
+            ></oryx-auth-login>`
           );
+          setupLogin();
         });
 
         it('should redirect to the specified url', async () => {
@@ -268,11 +278,11 @@ describe('AuthLoginComponent', () => {
       describe('when redirect was disabled', () => {
         it('should not redirect', async () => {
           element = await fixture(
-            html`<auth-login
+            html`<oryx-auth-login
               .options="${{
                 disableRedirect: true,
               }}"
-            ></auth-login>`
+            ></oryx-auth-login>`
           );
           await submit();
 

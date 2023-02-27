@@ -5,7 +5,7 @@ import { ApiProductModel, Product } from '../../../../models';
 import { ProductNormalizer } from '../product';
 import { DeserializedAbstract } from './model';
 
-export const ConcreteProductsNormalizer = 'FES.ConcreteProductsNormalizer*';
+export const ConcreteProductsNormalizer = 'oryx.ConcreteProductsNormalizer*';
 
 export function concreteProductsNormalizer(
   data: DeserializedAbstract[],

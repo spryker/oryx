@@ -1,5 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import { Observable, of, switchMap } from 'rxjs';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 import { HttpHandler } from './handler';
 import {
   HttpErrorResponse,
@@ -25,25 +25,26 @@ export class DefaultHttpService implements HttpService {
 
     return this.handler.handle(url, options).pipe(
       switchMap((response) => {
-        if (!response.ok) {
-          this.throwError(response);
-        }
-
         if (options.parser) {
           return options.parser(response);
         }
 
         const contentType = response.headers.get('content-type') ?? '';
+        let body;
 
         if (jsonRegex.test(contentType)) {
-          return response.json();
+          body = response.json();
         }
 
         if (htmlRegex.test(contentType)) {
-          return response.text();
+          body = response.text();
         }
 
-        return of(null);
+        if (!response.ok) {
+          return this.throwError(response, body);
+        }
+
+        return body ?? of(null);
       })
     );
   }
@@ -86,16 +87,28 @@ export class DefaultHttpService implements HttpService {
     });
   }
 
-  protected throwError(response: Response): never {
-    const error = new Error(
-      `${response.status} ${response.statusText}`
-    ) as HttpErrorResponse;
+  protected throwError(
+    response: Response,
+    body?: Promise<unknown>
+  ): Observable<never> {
+    return from(body ?? of(null)).pipe(
+      map((responseBody) => {
+        const error = new Error(
+          `${response.status} ${response.statusText}`
+        ) as HttpErrorResponse;
 
-    for (const field of Object.values(ResponseKeys)) {
-      (error as Record<typeof field, HttpErrorValues[typeof field]>)[field] =
-        response[field];
-    }
+        for (const field of Object.values(ResponseKeys)) {
+          (error as Record<typeof field, HttpErrorValues[typeof field]>)[
+            field
+          ] = response[field];
+        }
 
-    throw error;
+        if (responseBody) {
+          error.body = responseBody;
+        }
+
+        throw error;
+      })
+    );
   }
 }

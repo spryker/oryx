@@ -4,7 +4,7 @@ import { TAG_NAME } from './tag';
 export const drawerComponent = componentDef({
   name: TAG_NAME,
   impl: () =>
-    window.HTMLDialogElement
+    globalThis.HTMLDialogElement
       ? import('./drawer.component').then((m) => m.DrawerComponent)
       : import('./no-dialog-support/drawer.component').then(
           (m) => m.NDSDrawerComponent

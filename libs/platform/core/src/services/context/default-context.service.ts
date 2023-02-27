@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { inject, INJECTOR } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   distinctUntilChanged,
@@ -8,7 +9,7 @@ import {
   Subject,
   switchMap,
 } from 'rxjs';
-import { ContextService } from './context.service';
+import { ContextService, ContextServiceFallback } from './context.service';
 
 declare global {
   interface Node {
@@ -24,6 +25,8 @@ export class DefaultContextService implements ContextService {
     Map<string, BehaviorSubject<any>>
   >();
   protected triggerManifest$ = new Subject<void>();
+
+  constructor(protected injector = inject(INJECTOR)) {}
 
   provide(element: Element, key: string, value: unknown): void {
     const stringifiedValue =
@@ -75,6 +78,7 @@ export class DefaultContextService implements ContextService {
 
         return of(undefined);
       }),
+      this.contextFallback(key),
       distinctUntilChanged()
     );
   }
@@ -98,6 +102,22 @@ export class DefaultContextService implements ContextService {
     }
 
     this.triggerManifest$.next();
+  }
+
+  protected contextFallback<T>(
+    token: string
+  ): (observable$: Observable<T>) => Observable<T> {
+    return (observable$) =>
+      observable$.pipe(
+        switchMap((value) =>
+          value === undefined
+            ? this.injector.inject<Observable<T>>(
+                `${ContextServiceFallback}${token}`,
+                of(value)
+              )
+            : of(value)
+        )
+      );
   }
 
   protected getAttributeName(key: string): string {

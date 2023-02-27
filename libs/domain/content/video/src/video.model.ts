@@ -1,3 +1,5 @@
+import { VideoAspectRatio, VideoPreload } from '@spryker-oryx/ui/video';
+
 export interface ContentVideoOptions {
   /**
    * The source URL of the video.
@@ -44,17 +46,4 @@ export interface ContentVideoOptions {
    * provided by the layout styles, but a preset might simplify the usage.
    */
   aspectRatio?: VideoAspectRatio;
-}
-
-export const enum VideoAspectRatio {
-  '9/1' = '9/1',
-  '21/9' = '21/9',
-  '16/9' = '16/9',
-  '4/3' = '4/3',
-}
-
-export const enum VideoPreload {
-  None = 'none',
-  Metadata = 'metadata',
-  Auto = 'auto',
 }

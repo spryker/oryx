@@ -38,5 +38,5 @@ Banner.args = {
   content:
     'Keep your office up-to-date with the latest technology and accessories.',
   image:
-    'https://www.us.sc-b2b.demo-spryker.com/assets/static/images/section-slider-item-image-10@2x.jpg',
+    'https://raw.githubusercontent.com/spryker-shop/b2b-demo-shop/master/frontend/static/images/section-slider-item-image-10%402x.jpg',
 };

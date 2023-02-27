@@ -5,7 +5,7 @@ import {
   ProductPrices,
 } from '../../../../models';
 
-export const PriceNormalizer = 'FES.PriceNormalizer*';
+export const PriceNormalizer = 'oryx.PriceNormalizer*';
 
 export function priceNormalizer(data: ApiProductModel.Prices): ProductPrices {
   const normalize = (

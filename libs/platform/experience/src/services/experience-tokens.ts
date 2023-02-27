@@ -1,7 +1,7 @@
 import { TemplateResult } from 'lit';
 
-export const ComponentMapping = 'FES.ComponentMapping*';
-export const ContentBackendUrl = 'FES.ContentBackendUrl';
+export const ComponentMapping = 'oryx.ComponentMapping*';
+export const ContentBackendUrl = 'oryx.ContentBackendUrl';
 
 declare global {
   interface Environment {

@@ -3,7 +3,7 @@ export interface ErrorService {
   dispatchError(error: ErrorEvent | PromiseRejectionEvent): void;
 }
 
-export const ErrorService = 'FES.ErrorService';
+export const ErrorService = 'oryx.ErrorService';
 
 declare global {
   interface InjectionTokensContractMap {

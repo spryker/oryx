@@ -6,7 +6,7 @@ import { PaymentsNormalizer } from '../payments';
 import { ShipmentsNormalizer } from '../shipments';
 import { DeserializedCheckout } from './model';
 
-export const CheckoutNormalizer = 'FES.CheckoutNormalizer*';
+export const CheckoutNormalizer = 'oryx.CheckoutNormalizer*';
 
 export function checkoutAttributesNormalizer(
   data: DeserializedCheckout

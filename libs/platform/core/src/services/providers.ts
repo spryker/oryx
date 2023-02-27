@@ -11,6 +11,7 @@ import {
   HttpHandler,
   HttpService,
 } from './http';
+import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import {
   DefaultJsonAPITransformerService,
@@ -51,5 +52,9 @@ export const coreProviders: Provider[] = [
   {
     provide: FeatureOptionsService,
     useClass: DefaultFeatureOptionsService,
+  },
+  {
+    provide: QueryService,
+    useClass: DefaultQueryService,
   },
 ];

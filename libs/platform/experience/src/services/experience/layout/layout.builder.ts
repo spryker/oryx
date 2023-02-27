@@ -4,7 +4,7 @@ import {
   StyleProperties,
 } from '@spryker-oryx/experience';
 
-export const LayoutBuilder = 'FES.LayoutBuilder';
+export const LayoutBuilder = 'oryx.LayoutBuilder';
 
 export interface LayoutBuilder {
   /**
