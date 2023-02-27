@@ -1,5 +1,5 @@
 import { Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit-html';
+import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 const lengthyText = `Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy wizards make toxic brew`;

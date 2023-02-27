@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import { TemplateResult } from 'lit-html';
+import { TemplateResult } from 'lit';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import {
   FacetMappingOptions,
