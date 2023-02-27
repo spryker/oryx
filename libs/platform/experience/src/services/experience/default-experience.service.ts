@@ -3,30 +3,28 @@ import { inject } from '@spryker-oryx/di';
 import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
-import { ExperienceDataClientService } from './data-client';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
-import { ExperienceStaticData } from './static-data';
+import { ExperienceStaticData, StaticComponent } from './static-data';
 
 export class DefaultExperienceService implements ExperienceService {
   protected dataRoutes: Record<string, ReplaySubject<string>> = {};
   protected dataComponent: Record<string, ReplaySubject<Component>> = {};
   protected dataContent: Record<string, ReplaySubject<any>> = {};
   protected dataOptions: Record<string, ReplaySubject<any>> = {};
+  protected staticComponents: StaticComponent[] = [];
   protected autoComponentId = 0;
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, []),
-    protected dataClient = inject(ExperienceDataClientService)
+    protected staticData = inject(ExperienceStaticData, [])
   ) {
     this.initStaticData();
   }
 
   protected initStaticData(): void {
-    console.log('initStaticData 2');
-    const data = this.staticData.flat().map((component) => {
+    this.staticComponents = this.staticData.flat().map((component) => {
       component.id = component.id ?? this.getAutoId();
 
       if (!this.dataComponent[component.id]) {
@@ -43,8 +41,6 @@ export class DefaultExperienceService implements ExperienceService {
 
       return component;
     });
-
-    this.dataClient.sendStatic(data);
   }
 
   protected processComponent(component: Component): void {

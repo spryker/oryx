@@ -16,6 +16,7 @@ import {
   shareReplay,
   tap,
 } from 'rxjs';
+import { ExperienceDataClientService } from './data-client';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 import { postMessage } from './utilities';
@@ -38,8 +39,13 @@ interface ExperiencePreviewData {
 export type ExperiencePreviewEvent = MessageEvent<ExperiencePreviewData>;
 
 export class PreviewExperienceService extends DefaultExperienceService {
-  constructor(protected routerService = inject(RouterService)) {
+  constructor(
+    protected routerService = inject(RouterService),
+    protected dataClient = inject(ExperienceDataClientService)
+  ) {
     super();
+
+    this.dataClient?.sendStatic(this.staticComponents);
 
     this.structureDataEvent$.subscribe();
     this.contentDataEvent$.subscribe();
@@ -128,21 +134,21 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined)
   );
 
-  reloadComponent(id: string): void {
+  protected reloadComponent(id: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       structure: id,
     });
   }
 
-  reloadContent(id: string): void {
+  protected reloadContent(id: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       content: id,
     });
   }
 
-  reloadOptions(id: string): void {
+  protected reloadOptions(id: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       options: id,
