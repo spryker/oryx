@@ -110,10 +110,10 @@ const Template: Story<ProductListQualifier> = (
       }
     </style>
 
-    <product-list
+    <oryx-product-list
       .options=${props}
       class="xs-container xs-layout-grid"
-    ></product-list>
+    ></oryx-product-list>
   `;
 };
 
