@@ -28,7 +28,7 @@ import { StaticExperienceFeature } from './experience';
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
 ).has('ebPreview');
-
+console.log(isPreview);
 export const b2cResources: Resources = {
   graphics: {
     ...resourceGraphics,

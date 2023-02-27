@@ -21,6 +21,7 @@ export class DefaultExperienceService implements ExperienceService {
     protected staticData = inject(ExperienceStaticData, [])
   ) {
     this.initStaticData();
+    console.log('initStaticData');
   }
 
   protected initStaticData(): void {
