@@ -35,7 +35,7 @@ export class PasswordInputComponent
    * While the UI event will make the password visible, it will become invisible after the timeout is passed.
    */
   @property()
-  strategy: PasswordVisibilityStrategy = PasswordVisibilityStrategy.CLICK;
+  strategy: PasswordVisibilityStrategy = PasswordVisibilityStrategy.Click;
 
   /**
    * Sets the timeout in milliseconds that is used to revoke the visibility of the password.
@@ -64,9 +64,9 @@ export class PasswordInputComponent
    */
   protected renderActionIcon(): TemplateResult {
     switch (this.strategy) {
-      case PasswordVisibilityStrategy.NONE:
+      case PasswordVisibilityStrategy.None:
         return html``;
-      case PasswordVisibilityStrategy.HOVER:
+      case PasswordVisibilityStrategy.Hover:
         return html`
           <oryx-icon
             type=${this.visibilityIcon}
@@ -75,7 +75,7 @@ export class PasswordInputComponent
           ></oryx-icon>
         `;
 
-      case PasswordVisibilityStrategy.MOUSEDOWN:
+      case PasswordVisibilityStrategy.Mousedown:
         return html`
           <oryx-icon
             type=${this.visibilityIcon}

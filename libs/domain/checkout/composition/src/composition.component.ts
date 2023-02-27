@@ -65,7 +65,7 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
             isAuthenticated || isGuestCheckout,
             () =>
               html`
-                ${steps.map(({ id, validity }, index) => {
+                ${steps.map(({ id }, index) => {
                   return html`${this.renderStep(
                     id,
                     this.renderHeading(index, id, isAuthenticated, hasAddresses)

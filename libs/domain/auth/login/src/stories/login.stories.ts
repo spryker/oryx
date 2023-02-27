@@ -9,38 +9,32 @@ export default {
   argTypes: {
     strategy: {
       options: [
-        PasswordVisibilityStrategy.CLICK,
-        PasswordVisibilityStrategy.MOUSEDOWN,
-        PasswordVisibilityStrategy.HOVER,
-        PasswordVisibilityStrategy.NONE,
+        PasswordVisibilityStrategy.Click,
+        PasswordVisibilityStrategy.Mousedown,
+        PasswordVisibilityStrategy.Hover,
+        PasswordVisibilityStrategy.None,
       ],
       control: { type: 'radio' },
       description: 'Password field visibility strategy.',
     },
-    showRememberMe: {
-      type: 'boolean',
-    },
-    disableRedirect: {
-      type: 'boolean',
-    },
-    url: {
-      type: 'string',
-    },
+    enableRememberMe: { type: 'boolean' },
+    disableRedirect: { type: 'boolean' },
+    redirectUrl: { type: 'string' },
   },
 } as unknown as Meta;
 
 const Template: Story<LoginOptions> = (props): TemplateResult => {
   const options = {
-    strategy: props.strategy,
-    showRememberMe: props.showRememberMe,
-    url: props.url,
+    passwordVisibility: props.passwordVisibility,
+    enableRememberMe: props.enableRememberMe,
+    redirectUrl: props.redirectUrl,
   };
-  return html`<auth-login .options=${options}></auth-login>`;
+  return html`<oryx-auth-login .options=${options}></oryx-auth-login>`;
 };
 
 export const Login = Template.bind({});
 Login.args = {
-  strategy: PasswordVisibilityStrategy.CLICK,
-  showRememberMe: true,
-  url: '',
+  passwordVisibility: PasswordVisibilityStrategy.Click,
+  enableRememberMe: true,
+  redirectUrl: '',
 };

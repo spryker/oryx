@@ -6,12 +6,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['auth-login']: {
+    ['oryx-auth-login']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<auth-login
+        html`<oryx-auth-login
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></auth-login>`,
+        ></oryx-auth-login>`,
     },
     ['auth-logout']: {
       template: (uid: string, layoutClasses?: string) =>
