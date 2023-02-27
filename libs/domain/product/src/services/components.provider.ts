@@ -5,7 +5,7 @@ export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
     ['oryx-product-title']: {},
-    ['product-images']: {},
+    ['oryx-product-images']: {},
     ['oryx-product-price']: {},
     ['oryx-product-description']: {},
     ['oryx-product-average-rating']: {},

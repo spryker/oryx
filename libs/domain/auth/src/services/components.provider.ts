@@ -4,7 +4,7 @@ import { ComponentMapping } from '@spryker-oryx/experience';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['auth-login']: {},
-    ['auth-logout']: {},
+    ['oryx-auth-login']: {},
+    ['oryx-auth-logout']: {},
   },
 };

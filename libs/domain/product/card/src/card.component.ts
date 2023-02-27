@@ -51,7 +51,7 @@ export class ProductCardComponent extends ProductMixin(
         this.toggleAttribute('has-line-clamp', true);
         this.style.setProperty(
           '--oryx-product-title-max-lines',
-          options.titleLineClamp.toString()
+          String(options.titleLineClamp)
         );
       }
     })
@@ -60,20 +60,18 @@ export class ProductCardComponent extends ProductMixin(
   protected override render(): TemplateResult {
     if (!this.product) return html``;
 
-    const linkOptions = {
-      type: SemanticLinkType.Product,
-      id: this.product.sku,
-      multiLine: true,
-      label: this.product.name,
-    };
-
-    return html`
-      <oryx-content-link .options="${linkOptions}">
-        ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
-        <div class="popover">${this.renderTitle()}</div>
-        ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
-      </oryx-content-link>
-    `;
+    return html` <oryx-content-link
+      .options="${{
+        type: SemanticLinkType.Product,
+        id: this.product.sku,
+        multiLine: true,
+        label: this.product.name,
+      }}"
+    >
+      ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
+      <div class="popover">${this.renderTitle()}</div>
+      ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
+    </oryx-content-link>`;
   }
 
   protected renderLabels(): TemplateResult | void {

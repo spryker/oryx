@@ -55,13 +55,20 @@ export class DefaultProductListAdapter implements ProductListAdapter {
   }
 
   get(qualifier: ProductListQualifier): Observable<ProductList> {
+    const include = [
+      ApiProductModel.Includes.AbstractProducts,
+      ApiProductModel.Includes.ConcreteProducts,
+      ApiProductModel.Includes.ConcreteProductImageSets,
+      ApiProductModel.Includes.ConcreteProductPrices,
+      ApiProductModel.Includes.ConcreteProductAvailabilities,
+      ApiProductModel.Includes.Labels,
+    ];
+
     return this.http
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
           qualifier
-        )}&include=${ApiProductModel.Includes.AbstractProducts},${
-          ApiProductModel.Includes.ConcreteProducts
-        }`
+        )}&include=${include?.join(',')}`
       )
       .pipe(this.transformer.do(ProductListNormalizer));
   }

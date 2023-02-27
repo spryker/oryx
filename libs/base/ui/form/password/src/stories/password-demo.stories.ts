@@ -59,7 +59,7 @@ export const PasswordDemo = Template.bind({});
 
 PasswordDemo.args = {
   timeout: 2000,
-  strategy: PasswordVisibilityStrategy.CLICK,
+  strategy: PasswordVisibilityStrategy.Click,
   disabled: false,
   label: 'Password with label',
   floatLabel: false,

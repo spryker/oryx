@@ -4,6 +4,7 @@ import { Position } from '../dropdown.model';
 
 export const dropdownBaseStyles = css`
   :host {
+    --oryx-popover-top-space: 4px;
     --oryx-popover-vertical-offset: 10px;
     --oryx-popover-maxwidth: 206px;
 
@@ -79,7 +80,7 @@ export const dropdownBaseStyles = css`
   }
 
   :host([vertical-align]:not([up])) oryx-popover {
-    top: 100%;
+    top: calc(100% + var(--oryx-popover-top-space));
   }
 
   :host([vertical-align][up]) oryx-popover {
