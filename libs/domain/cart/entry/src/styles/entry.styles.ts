@@ -24,7 +24,6 @@ export const cartEntryStyles = css`
     margin-inline-start: 20px;
     width: 87px;
     height: 87px;
-    /* border: solid 1px gray; */
   }
 
   oryx-product-id {
