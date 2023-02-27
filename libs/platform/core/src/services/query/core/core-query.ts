@@ -9,6 +9,7 @@ import {
   NEVER,
   Observable,
   shareReplay,
+  skipWhile,
   Subscription,
   switchMap,
   take,
@@ -159,6 +160,7 @@ export class CoreQuery<
     ).pipe(shareReplay({ bufferSize: 1, refCount: !this.options.permanent }));
 
     const data$ = state$.pipe(
+      skipWhile((state) => state.data === undefined && !state.error),
       map((x) => x.data),
       distinctUntilChanged(),
       shareReplay({ bufferSize: 1, refCount: true })
