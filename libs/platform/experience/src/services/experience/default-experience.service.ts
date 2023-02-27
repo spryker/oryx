@@ -3,6 +3,7 @@ import { inject } from '@spryker-oryx/di';
 import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
+import { ExperienceDataClientService } from './data-client';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
 import { ExperienceStaticData } from './static-data';
@@ -17,14 +18,15 @@ export class DefaultExperienceService implements ExperienceService {
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, [])
+    protected staticData = inject(ExperienceStaticData, []),
+    protected dataClient = inject(ExperienceDataClientService)
   ) {
     this.initStaticData();
   }
 
   protected initStaticData(): void {
-    console.log('initStaticData');
-    this.staticData.flat().forEach((component) => {
+    console.log('initStaticData 2');
+    const data = this.staticData.flat().map((component) => {
       component.id = component.id ?? this.getAutoId();
 
       if (!this.dataComponent[component.id]) {
@@ -38,7 +40,11 @@ export class DefaultExperienceService implements ExperienceService {
         this.dataRoutes[component.meta.route].next(component.id);
       }
       this.processComponent(component as Component);
+
+      return component;
     });
+
+    this.dataClient.sendStatic(data);
   }
 
   protected processComponent(component: Component): void {

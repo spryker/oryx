@@ -9,7 +9,7 @@ import { inject } from '@spryker-oryx/di';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
-import { ExperienceStaticData } from '../static-data';
+import { ExperienceStaticData, StaticComponent } from '../static-data';
 import { catchMessage, postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -37,14 +37,6 @@ export class DefaultExperienceDataClientService
       postMessage({
         type: MessageType.Schemas,
         data: schemas as ContentComponentSchema[],
-      });
-    })
-  );
-  protected static$ = of(this.staticData.flat()).pipe(
-    tap((data) => {
-      postMessage({
-        type: MessageType.Static,
-        data,
       });
     })
   );
@@ -89,11 +81,17 @@ export class DefaultExperienceDataClientService
     this.options$,
     this.graphics$,
     this.products$,
-    this.schemas$,
-    this.static$
+    this.schemas$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {
     return this.initializer$;
+  }
+
+  sendStatic(data: StaticComponent[]): void {
+    postMessage({
+      type: MessageType.Static,
+      data,
+    });
   }
 }
