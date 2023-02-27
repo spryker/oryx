@@ -19,19 +19,18 @@ import {
 } from './images.model';
 import { productImageStyles } from './images.styles';
 
-const heightFallback = '300px';
-const navigationHeightFallback = '80px';
-const objectFitFallback = 'contain';
-
-@defaultOptions({
+const defaultImagesOptions = {
   imageLayout: ProductImagesMainLayout.Carousel,
   navigationLayout: NavigationLayout.Carousel,
   navigationPosition: NavigationPosition.Bottom,
-  imageObjectFit: objectFitFallback,
-  navigationObjectFit: objectFitFallback,
-  imageHeight: heightFallback,
-  navigationHeight: navigationHeightFallback,
-} as ProductImagesComponentOptions)
+  imageObjectFit: 'contain',
+  navigationObjectFit: 'contain',
+  imageHeight: '300px',
+  navigationHeight: '80px',
+  imageColumns: 1
+};
+
+@defaultOptions(defaultImagesOptions)
 @hydratable('mouseover')
 export class ProductImagesComponent extends ProductMixin(
   ContentMixin<ProductImagesComponentOptions>(LitElement)
@@ -43,31 +42,31 @@ export class ProductImagesComponent extends ProductMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (this.product) {
-      const media = this.resolveImages();
-      const main = this.renderMainLayout(media);
-      const navigation = this.renderNavigationLayout(media);
+    if (!this.product) return;
 
-      return html`
-        <oryx-layout
-          navigation=${this.componentOptions?.navigationPosition ||
-          NavigationPosition.Bottom}
-          ?floating=${this.componentOptions?.navigationDisplay ===
-          ProductImagesNavigationDisplay.Floating}
-          style="--product-image-height: ${this.componentOptions?.imageHeight ||
-          heightFallback};"
-        >
-          ${when(
+    const media = this.resolveImages();
+    const main = this.renderMainLayout(media);
+    const navigation = this.renderNavigationLayout(media);
+
+    return html`
+      <oryx-layout
+        navigation=${this.componentOptions?.navigationPosition ||
+        defaultImagesOptions.navigationPosition}
+        ?floating=${this.componentOptions?.navigationDisplay ===
+        ProductImagesNavigationDisplay.Floating}
+        style="--product-image-height: ${this.componentOptions?.imageHeight ||
+        defaultImagesOptions.imageHeight};"
+      >
+        ${when(
+          this.componentOptions?.navigationPosition ===
+            NavigationPosition.Top ||
             this.componentOptions?.navigationPosition ===
-              NavigationPosition.Top ||
-              this.componentOptions?.navigationPosition ===
-                NavigationPosition.Start,
-            () => html`${navigation}${main}`,
-            () => html`${main}${navigation}`
-          )}
-        </oryx-layout>
-      `;
-    }
+              NavigationPosition.Start,
+          () => html`${navigation}${main}`,
+          () => html`${main}${navigation}`
+        )}
+      </oryx-layout>
+    `;
   }
 
   protected renderMainLayout(media: ProductMedia[]): TemplateResult | void {
@@ -84,8 +83,9 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="main"
-      .layout=${layout || ProductImagesMainLayout.Carousel}
-      style="--image-fit:${objectFit || objectFitFallback};--cols: ${cols ?? 1}"
+      layout=${layout || defaultImagesOptions.imageLayout}
+      style="--image-fit:${objectFit || defaultImagesOptions.imageObjectFit};
+      --cols: ${cols || defaultImagesOptions.imageColumns}"
       behavior=${ifDefined(scrollBehavior)}
     >
       ${media.map(
@@ -122,13 +122,14 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="navigation"
-      .layout=${layout || NavigationLayout.Carousel}
-      .vertical=${position === NavigationPosition.Start ||
+      layout=${layout || NavigationLayout.Carousel}
+      ?vertical=${position === NavigationPosition.Start ||
       position === NavigationPosition.End}
       style="--item-height:${height ||
-      navigationHeightFallback};--item-width:${width ||
+      defaultImagesOptions.navigationHeight};--item-width:${width ||
       height ||
-      navigationHeightFallback}; --image-fit:${objectFit || objectFitFallback};"
+      defaultImagesOptions.navigationHeight}; --image-fit:${objectFit || 
+      defaultImagesOptions.navigationObjectFit};"
     >
       ${media.map(
         (_, i) => html`
