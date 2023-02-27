@@ -3,8 +3,5 @@ import { ComponentMapping } from '@spryker-oryx/experience';
 
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
-  useValue: {
-    ['address-list']: {},
-    ['oryx-user-summary']: {},
-  },
+  useValue: true,
 };

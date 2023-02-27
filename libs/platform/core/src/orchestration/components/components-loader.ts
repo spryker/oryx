@@ -42,7 +42,7 @@ export class ComponentsLoader {
     }
   }
 
-  protected findComponentDefBy(name: string): ComponentDef {
+  findComponentDefBy(name: string): ComponentDef {
     if (!this.componentDefMap.has(name)) {
       throw new ComponentsPluginError(`Component '${name}' is not registered!`);
     }

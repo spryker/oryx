@@ -1,7 +1,7 @@
 import { isFirefox, Size } from '@spryker-oryx/ui';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { DialogElement } from '../../overlay.model';
 import { fullscreenModalStyles } from './fullscreen-modal.styles';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';

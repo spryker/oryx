@@ -3,7 +3,7 @@ import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
