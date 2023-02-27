@@ -17,6 +17,7 @@ import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
+  BehaviorSubject,
   catchError,
   debounce,
   defer,
@@ -25,7 +26,6 @@ import {
   fromEvent,
   map,
   of,
-  Subject,
   switchMap,
   tap,
   timer,
@@ -39,7 +39,6 @@ import {
 } from './controllers';
 import { baseStyles, searchboxStyles } from './styles';
 
-@hydratable('focusin')
 @defaultOptions({
   minChars: 2,
   completionsCount: 5,
@@ -47,6 +46,7 @@ import { baseStyles, searchboxStyles } from './styles';
   categoriesCount: 5,
   cmsCount: 0,
 })
+@hydratable('focusin')
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
@@ -61,7 +61,7 @@ export class SearchBoxComponent
   protected queryControlsController = new QueryControlsController();
   protected renderSuggestionController = new RenderSuggestionController(this);
 
-  protected triggerInputValue$ = new Subject<string>();
+  protected triggerInputValue$ = new BehaviorSubject('');
 
   protected suggestion$ = this.triggerInputValue$.pipe(
     debounce(() => timer(300)),
@@ -79,12 +79,12 @@ export class SearchBoxComponent
                   categories: raw.categories.slice(0, options.categoriesCount),
                   cmsPages: raw.cmsPages.slice(0, options.cmsCount),
                 }
-              : undefined
+              : null
           )
         );
       }
 
-      return of();
+      return of(null);
     }),
     tap((suggestion) => {
       this.stretched = this.hasCompleteData(suggestion);
@@ -186,7 +186,7 @@ export class SearchBoxComponent
       .subscribe();
   }
 
-  protected hasLinks(suggestion?: Suggestion): boolean {
+  protected hasLinks(suggestion: Suggestion | null): boolean {
     return !!(
       suggestion?.completion.length ||
       suggestion?.cmsPages.length ||
@@ -194,19 +194,19 @@ export class SearchBoxComponent
     );
   }
 
-  protected hasProducts(suggestion?: Suggestion): boolean {
+  protected hasProducts(suggestion: Suggestion | null): boolean {
     return !!suggestion?.products?.length;
   }
 
-  protected isNothingFound(suggestion?: Suggestion): boolean {
+  protected isNothingFound(suggestion: Suggestion | null): boolean {
     return !this.hasLinks(suggestion) && !this.hasProducts(suggestion);
   }
 
-  protected hasCompleteData(suggestion?: Suggestion): boolean {
+  protected hasCompleteData(suggestion: Suggestion | null): boolean {
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
   }
 
-  protected renderSuggestion(suggestion?: Suggestion): TemplateResult {
+  protected renderSuggestion(suggestion?: Suggestion | null): TemplateResult {
     if (!suggestion) {
       return html``;
     }
