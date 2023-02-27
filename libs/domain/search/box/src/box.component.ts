@@ -17,7 +17,6 @@ import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
-  BehaviorSubject,
   catchError,
   debounce,
   defer,
@@ -26,6 +25,8 @@ import {
   fromEvent,
   map,
   of,
+  startWith,
+  Subject,
   switchMap,
   tap,
   timer,
@@ -61,9 +62,10 @@ export class SearchBoxComponent
   protected queryControlsController = new QueryControlsController();
   protected renderSuggestionController = new RenderSuggestionController(this);
 
-  protected triggerInputValue$ = new BehaviorSubject('');
+  protected triggerInputValue$ = new Subject<string>();
 
   protected suggestion$ = this.triggerInputValue$.pipe(
+    startWith(''),
     debounce(() => timer(300)),
     map((q) => q.trim()),
     distinctUntilChanged(),
