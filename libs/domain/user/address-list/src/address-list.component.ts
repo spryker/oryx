@@ -32,7 +32,12 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   protected selectedAddressId?: string;
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    this.select();
+    if (!this.addresses?.find((a) => a.id === this.selectedAddressId)) {
+      this.selectedAddressId =
+        this.addresses?.find((a) => this.isDefault(a))?.id ??
+        this.addresses?.[0].id;
+    }
+
     super.willUpdate(changedProperties);
   }
 
@@ -75,17 +80,6 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
       <oryx-icon type="location" size="large"></oryx-icon>
       ${i18n('user.address.no-addresses')}
     </slot>`;
-  }
-
-  protected select(): void {
-    const hasSelectedAddress = this.addresses?.find(
-      (address) => address.id === this.selectedAddressId
-    );
-    if (!hasSelectedAddress) {
-      this.selectedAddressId =
-        this.addresses?.find((a) => this.isDefault(a))?.id ??
-        this.addresses?.[0].id;
-    }
   }
 
   protected onInput(ev: Event): void {
