@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, CSSResult, CSSResultGroup, unsafeCSS } from 'lit';
 
 const unsafe = (value: string): CSSResult => unsafeCSS(value);
@@ -32,17 +32,19 @@ const headingStyle = (
   `;
 };
 
-const headingStyleForMedium = (
+const screenSizeHeadingStyle = (
+  screenSize: string,
   tag: string,
   size: string,
   lineHeight: string,
   weight = 600
 ): CSSResultGroup => {
+  const appearanceSelector = unsafe(`${screenSize}-appearance`);
   const selector = unsafe(tag);
   const tokenPrefix = unsafe(`--oryx-typography-${tag.split('.').join('')}`);
   return css`
     ${headingStyle(tag, size, lineHeight, weight)}
-    :host([md-appearance='${selector}']) {
+    :host([${appearanceSelector}='${selector}']) {
       --_line-height: var(${tokenPrefix}-line, ${unsafe(lineHeight)});
 
       font-size: var(${tokenPrefix}-size, ${unsafe(size)});
@@ -114,14 +116,41 @@ const mediumScreen = css`
     text-transform: initial;
   }
 
-  ${headingStyleForMedium('h1', `2.857em`, `1.2em`)}
-  ${headingStyleForMedium('h2', `2.143em`, `1.2em`)}
-  ${headingStyleForMedium('h3', `1.571em`, `1.364em`, 500)}
-  ${headingStyleForMedium('h4', `1.286em`, `1.444em`, 500)}
-  ${headingStyleForMedium('h5', `1.143em`, `1.5em`)}
-  ${headingStyleForMedium('h6', `1.143em`, `1.5em`, 500)}
-  ${headingStyleForMedium('.subtitle', `0.857em`, `1.333em`)}
-  ${headingStyleForMedium('.caption', `0.857em`, `1.333em`)}
+  ${screenSizeHeadingStyle('md', 'h1', `2.857em`, `1.2em`)}
+  ${screenSizeHeadingStyle('md', 'h2', `2.143em`, `1.2em`)}
+  ${screenSizeHeadingStyle('md', 'h3', `1.571em`, `1.364em`, 500)}
+  ${screenSizeHeadingStyle('md', 'h4', `1.286em`, `1.444em`, 500)}
+  ${screenSizeHeadingStyle('md', 'h5', `1.143em`, `1.5em`)}
+  ${screenSizeHeadingStyle('md', 'h6', `1.143em`, `1.5em`, 500)}
+  ${screenSizeHeadingStyle('md', '.subtitle', `0.857em`, `1.333em`)}
+  ${screenSizeHeadingStyle('md', '.caption', `0.857em`, `1.333em`)}
+`;
+
+const smallScreen = css`
+  :host([sm-appearance]) *:not(slot, style),
+  :host([sm-appearance])
+    ::slotted(:is(h1, h2, h3, h4, h5, h6, .caption, .subtitle, span)) {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+  }
+
+  :host([sm-appearance='subtitle']) {
+    text-transform: uppercase;
+  }
+
+  :host(:not([sm-appearance='subtitle'])) {
+    text-transform: initial;
+  }
+
+  ${screenSizeHeadingStyle('sm', 'h1', `2.857em`, `1.2em`)}
+  ${screenSizeHeadingStyle('sm', 'h2', `2.143em`, `1.2em`)}
+  ${screenSizeHeadingStyle('sm', 'h3', `1.571em`, `1.364em`, 500)}
+  ${screenSizeHeadingStyle('sm', 'h4', `1.286em`, `1.444em`, 500)}
+  ${screenSizeHeadingStyle('sm', 'h5', `1.143em`, `1.5em`)}
+  ${screenSizeHeadingStyle('sm', 'h6', `1.143em`, `1.5em`, 500)}
+  ${screenSizeHeadingStyle('sm', '.subtitle', `0.857em`, `1.333em`)}
+  ${screenSizeHeadingStyle('sm', '.caption', `0.857em`, `1.333em`)}
 `;
 
 /**
@@ -136,5 +165,9 @@ export const headlineScreenStyles: ThemeStylesWithMedia[] = [
   {
     media: mdScreen,
     css: mediumScreen,
+  },
+  {
+    media: smScreen,
+    css: smallScreen,
   },
 ];

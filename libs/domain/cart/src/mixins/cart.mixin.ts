@@ -6,6 +6,7 @@ import { CartController } from '../controllers';
 import type {
   Cart,
   CartComponentAttributes,
+  CartEntry,
   FormattedCartTotals,
 } from '../models';
 
@@ -15,6 +16,7 @@ export declare class CartMixinInterface implements CartComponentAttributes {
 
   protected cartController: CartController;
 
+  protected entries?: CartEntry[];
   protected totals?: FormattedCartTotals;
   protected totalQuantity?: number;
 }
@@ -29,6 +31,9 @@ export const CartComponentMixin = <
     @property({ type: Object, reflect: true }) cart?: Cart;
 
     protected cartController = new CartController(this);
+
+    @asyncState()
+    protected entries = valueType(this.cartController.getEntries());
 
     @asyncState()
     protected totals = valueType(this.cartController.getTotals());

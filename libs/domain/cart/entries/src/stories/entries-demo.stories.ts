@@ -16,9 +16,9 @@ export default {
 const Template: Story<CartEntriesOptions> = (
   options: CartEntriesOptions
 ): TemplateResult => {
-  return html`<cart-entries
+  return html`<oryx-cart-entries
     .options=${{ ...options, cartId: 'multiple' }}
-  ></cart-entries>`;
+  ></oryx-cart-entries>`;
 };
 
 export const Demo = Template.bind({});

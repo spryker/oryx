@@ -27,7 +27,7 @@ export class CartTotalsComponent extends CartComponentMixin(
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    if (this.totalQuantity) return;
+    if (!this.totalQuantity) return;
 
     return html`
       <oryx-heading md-appearance="h4">
@@ -43,7 +43,7 @@ export class CartTotalsComponent extends CartComponentMixin(
 
   protected renderSubtotal(): TemplateResult | void {
     if (this.componentOptions?.enableSubtotal) {
-      this.renderSection(
+      return this.renderSection(
         'subtotal',
         html`${i18n('cart.totals.subtotal')}`,
         String(this.totals?.calculations?.subtotal)
@@ -105,7 +105,7 @@ export class CartTotalsComponent extends CartComponentMixin(
   protected renderExpense(): TemplateResult | void {
     const { expenseTotal } = this.totals?.calculations ?? {};
     if (this.componentOptions?.enableExpense && expenseTotal) {
-      this.renderSection(
+      return this.renderSection(
         'expense',
         html`${i18n('cart.totals.expense')}`,
         String(expenseTotal)
@@ -116,7 +116,7 @@ export class CartTotalsComponent extends CartComponentMixin(
   protected renderTax(): TemplateResult | void {
     const { taxTotal } = this.totals?.calculations ?? {};
     if (this.componentOptions.enableTaxAmount && taxTotal) {
-      this.renderSection(
+      return this.renderSection(
         'tax',
         html`${i18n('cart.totals.tax')}`,
         String(taxTotal)
@@ -126,7 +126,7 @@ export class CartTotalsComponent extends CartComponentMixin(
 
   protected renderDelivery(): TemplateResult | void {
     if (this.componentOptions.enableDelivery) {
-      this.renderSection(
+      return this.renderSection(
         'delivery',
         html`${i18n('cart.totals.delivery')}`,
         html`

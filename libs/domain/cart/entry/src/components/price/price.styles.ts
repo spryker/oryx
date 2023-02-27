@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const cartEntryPriceStyles = css`
-  :host {
+  /* :host {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -34,5 +34,5 @@ export const cartEntryPriceStyles = css`
 
   :host([loading]) span::before {
     display: block;
-  }
+  } */
 `;

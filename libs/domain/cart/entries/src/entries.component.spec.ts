@@ -40,7 +40,7 @@ describe('CartEntriesComponent', () => {
         },
       ],
     });
-    element = await fixture(html`<cart-entries></cart-entries>`);
+    element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
   });
@@ -56,7 +56,7 @@ describe('CartEntriesComponent', () => {
   describe('when cart is empty', () => {
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([]));
-      element = await fixture(html`<cart-entries></cart-entries>`);
+      element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
     });
 
     it('should render the section', () => {
@@ -69,7 +69,7 @@ describe('CartEntriesComponent', () => {
 
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([entry]));
-      element = await fixture(html`<cart-entries></cart-entries>`);
+      element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
       entryElement = element.renderRoot.querySelector('cart-entry');
     });
 
@@ -97,7 +97,7 @@ describe('CartEntriesComponent', () => {
     describe('and cart is loading', () => {
       beforeEach(async () => {
         service.getLoadingState.mockReturnValue(of(true));
-        element = await fixture(html`<cart-entries></cart-entries>`);
+        element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
         entryElement = element.renderRoot.querySelector('cart-entry');
       });
 
@@ -115,7 +115,9 @@ describe('CartEntriesComponent', () => {
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([entry]));
       element = await fixture(html`
-        <cart-entries .options=${{ collapsible: true }}></cart-entries>
+        <oryx-cart-entries
+          .options=${{ collapsible: true }}
+        ></oryx-cart-entries>
       `);
     });
 
@@ -132,9 +134,9 @@ describe('CartEntriesComponent', () => {
     describe('and expanded by default', () => {
       beforeEach(async () => {
         element = await fixture(html`
-          <cart-entries
+          <oryx-cart-entries
             .options=${{ collapsible: true, expanded: true }}
-          ></cart-entries>
+          ></oryx-cart-entries>
         `);
       });
 
@@ -146,9 +148,9 @@ describe('CartEntriesComponent', () => {
     describe('and items count is hidden', () => {
       beforeEach(async () => {
         element = await fixture(html`
-          <cart-entries
+          <oryx-cart-entries
             .options=${{ collapsible: true, hideItemsCount: true }}
-          ></cart-entries>
+          ></oryx-cart-entries>
         `);
       });
 
@@ -161,7 +163,9 @@ describe('CartEntriesComponent', () => {
       beforeEach(async () => {
         service.getEntries = vi.fn().mockReturnValue(of([entry, entry, entry]));
         element = await fixture(html`
-          <cart-entries .options=${{ collapsible: true }}></cart-entries>
+          <oryx-cart-entries
+            .options=${{ collapsible: true }}
+          ></oryx-cart-entries>
         `);
       });
 

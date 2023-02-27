@@ -17,7 +17,10 @@ export const cartEntryComponent = componentDef({
   impl: () => import('./entry.component').then((m) => m.CartEntryComponent),
   stylesheets: [
     {
-      rules: () => import('./styles').then((m) => m.screenStyles),
+      rules: () =>
+        import('./styles/entry-screen.styles').then(
+          (m) => m.cartEntryScreenStyles
+        ),
     },
   ],
 });

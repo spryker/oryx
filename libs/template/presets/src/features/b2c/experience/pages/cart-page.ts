@@ -12,14 +12,7 @@ export const CartPage: StaticComponent = {
       components: [
         {
           type: 'oryx-cart-entries',
-          options: {
-            data: {
-              defaultExpandedOptions: true,
-              removeByQuantity: 'showBin',
-              silentRemove: true,
-              rules: [{ padding: '30px 0' }],
-            },
-          },
+          options: { data: { rules: [{ padding: '30px 0' }] } },
         },
         {
           type: 'experience-composition',

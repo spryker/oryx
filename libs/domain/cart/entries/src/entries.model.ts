@@ -1,11 +1,6 @@
-import { CartEntry } from '@spryker-oryx/cart';
+import { CartEntryOptions } from '../../entry/src';
 
-export interface CartEntriesOptions extends CartEntry {
-  /**
-   * Identifier of the cart.
-   */
-  cartId?: string;
-
+export interface CartEntriesOptions extends CartEntryOptions {
   /**
    * Indicates whether wrap the entries into the collapsible container or not
    *
@@ -26,4 +21,9 @@ export interface CartEntriesOptions extends CartEntry {
    * @default false
    */
   hideItemsCount?: boolean;
+
+  /**
+   * Emit removing immediately without confirmation.
+   */
+  silentRemove?: boolean;
 }

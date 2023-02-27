@@ -22,7 +22,7 @@ export const CheckoutPage: StaticComponent = {
           },
           components: [
             {
-              type: 'cart-entries',
+              type: 'oryx-cart-entries',
               options: {
                 data: {
                   collapsible: true,

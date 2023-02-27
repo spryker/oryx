@@ -7,6 +7,7 @@ import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
 import {
   Cart,
   CartComponentAttributes,
+  CartEntry,
   CartTotalCalculations,
   FormattedCartTotals,
   FormattedDiscount,
@@ -19,6 +20,16 @@ export class CartController {
 
   constructor(protected host: LitElement & CartComponentAttributes) {
     this.observe = new ObserveController(host);
+  }
+
+  getEntries(): Observable<CartEntry[]> {
+    return this.cartService.getEntries();
+  }
+
+  getEntry(groupKey?: string): Observable<CartEntry | undefined> {
+    return this.getEntries().pipe(
+      map((entries) => entries.find((entry) => entry.groupKey === groupKey))
+    );
   }
 
   /**

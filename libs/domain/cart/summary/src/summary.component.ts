@@ -44,17 +44,22 @@ export class CartSummaryComponent extends CartComponentMixin(
     `;
   }
 
+  /**
+   * Renders the quantity of the total cart items.
+   *
+   * When the quantity is larger that the allowed max visible,
+   * the quantity is _truncated_ to the `maxVisibleQuantity`, e.g.
+   * "99+".
+   */
   protected renderMark(): TemplateResult | void {
-    if (this.totalQuantity) {
-      return html`<mark>${this.populateQuantity()}</mark>`;
-    }
-  }
-
-  protected populateQuantity(): string | number {
-    return this.totalQuantity &&
+    const quantity =
+      this.totalQuantity &&
       this.componentOptions?.maxVisibleQuantity &&
       this.totalQuantity > this.componentOptions?.maxVisibleQuantity
-      ? `${this.componentOptions?.maxVisibleQuantity}+`
-      : Number(this.totalQuantity);
+        ? `${this.componentOptions?.maxVisibleQuantity}+`
+        : Number(this.totalQuantity);
+    if (this.totalQuantity) {
+      return html`<mark>${quantity}</mark>`;
+    }
   }
 }
