@@ -32,7 +32,10 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   protected selectedAddressId?: string;
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    if (!this.addresses?.find((a) => a.id === this.selectedAddressId)) {
+    if (
+      this.componentOptions.selectable &&
+      !this.addresses?.find((address) => address.id === this.selectedAddressId)
+    ) {
       this.selectedAddressId =
         this.addresses?.find((a) => this.isDefault(a))?.id ??
         this.addresses?.[0].id;
