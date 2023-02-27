@@ -66,9 +66,9 @@ export class SearchBoxComponent
 
   protected suggestion$ = this.triggerInputValue$.pipe(
     startWith(''),
-    debounce(() => timer(300)),
-    map((q) => q.trim()),
-    distinctUntilChanged(),
+    // debounce(() => timer(300)),
+    // map((q) => q.trim()),
+    // distinctUntilChanged(),
     withLatestFrom(this.options$),
     switchMap(([query, options]) => {
       if (query && (!options.minChars || query.length >= options.minChars)) {
