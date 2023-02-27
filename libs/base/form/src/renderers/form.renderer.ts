@@ -33,7 +33,7 @@ export interface FormRenderer {
   ): DirectiveResult<typeof ClassMapDirective>;
 }
 
-export const FormRenderer = 'FES.FormRenderer';
+export const FormRenderer = 'oryx.FormRenderer';
 
 declare global {
   interface InjectionTokensContractMap {

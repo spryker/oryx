@@ -1,4 +1,4 @@
-export const SsrOptions = 'FES.SsrOptions';
+export const SsrOptions = 'oryx.SsrOptions';
 
 /**
  * Exposes the options used to configure behavior of the server-side rendering and hydration.

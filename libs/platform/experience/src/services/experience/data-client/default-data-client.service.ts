@@ -62,8 +62,8 @@ export class DefaultExperienceDataClientService
     })
   );
   protected products$ = catchMessage(MessageType.Query).pipe(
-    switchMap<string, Observable<ProductsSuggestion | null>>(
-      (query) => this.suggestionService?.get({ query }) ?? of(null)
+    switchMap<string, Observable<ProductsSuggestion | undefined>>(
+      (query) => this.suggestionService?.get({ query }) ?? of(undefined)
     ),
     tap((suggestions) => {
       postMessage({

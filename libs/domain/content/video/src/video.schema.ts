@@ -1,7 +1,6 @@
-import { VideoAspectRatio, VideoPreload } from './video.model';
-
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
+import { VideoAspectRatio, VideoPreload } from '@spryker-oryx/ui/video';
 import { ContentVideoComponent } from './video.component';
 
 export const videoComponentSchema: ContentComponentSchema<ContentVideoComponent> =

@@ -9,7 +9,7 @@ import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
-export const ProductNormalizer = 'FES.ProductNormalizer*';
+export const ProductNormalizer = 'oryx.ProductNormalizer*';
 
 export function productAttributeNormalizer(
   data: DeserializedProduct

@@ -67,4 +67,22 @@ describe('SiteErrorHandler', () => {
       });
     });
   });
+
+  describe('when an API error body value is handled', () => {
+    it('should call notification service with string of first error item', async () => {
+      const error = {
+        body: {
+          errors: [{ code: 'code', detail: 'detail', status: 'status' }],
+        },
+      };
+
+      handler.handle(error);
+
+      expect(notificationService.push).toHaveBeenCalledWith({
+        type: Types.ERROR,
+        content: 'Error',
+        subtext: `${error.body.errors[0].status} ${error.body.errors[0].detail}`,
+      });
+    });
+  });
 });

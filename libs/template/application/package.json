@@ -1,8 +1,8 @@
 {
   "name": "@spryker-oryx/application",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.0",
   "type": "module",
-  "author": "Spryker Sytems GmbH",
+  "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
   "description": "Basic infrastructure for Oryx applications",
   "scripts": {
@@ -25,5 +25,8 @@
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

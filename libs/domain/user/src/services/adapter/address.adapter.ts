@@ -15,7 +15,7 @@ export interface AddressAdapter {
   delete: (data: Address) => Observable<unknown>;
 }
 
-export const AddressAdapter = 'FES.AddressAdapter';
+export const AddressAdapter = 'oryx.AddressAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

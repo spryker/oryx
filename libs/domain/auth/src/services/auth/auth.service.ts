@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { AuthenticateQualifier } from './adapter';
 
-export const AuthService = 'FES.AuthService';
+export const AuthService = 'oryx.AuthService';
 
 export interface AuthService {
   login(qualifier: AuthenticateQualifier): Observable<boolean>;

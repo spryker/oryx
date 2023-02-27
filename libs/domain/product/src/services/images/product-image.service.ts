@@ -23,7 +23,7 @@ export interface ProductImageService {
   ): ImageSource[];
 }
 
-export const ProductImageService = 'FES.ProductImageService';
+export const ProductImageService = 'oryx.ProductImageService';
 
 declare global {
   interface InjectionTokensContractMap {

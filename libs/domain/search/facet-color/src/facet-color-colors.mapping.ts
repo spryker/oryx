@@ -1,4 +1,4 @@
-export const FacetColorsMapping = 'FES.OryxFacetColorsMapping*';
+export const FacetColorsMapping = 'oryx.OryxFacetColorsMapping*';
 
 export const colorsMap = {
   platinum: 'rgb(229, 228, 226)',

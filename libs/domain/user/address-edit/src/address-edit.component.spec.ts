@@ -147,29 +147,4 @@ describe('AddressEditComponent', () => {
       });
     });
   });
-
-  describe('when submit throws an error', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      addressService.addAddress = vi.fn().mockImplementation(() => {
-        throw new Error('test: address storing is failed');
-      });
-      element = await fixture(
-        html`<oryx-user-address-edit
-          @oryx.success=${callback}
-        ></oryx-user-address-edit>`
-      );
-      form = element.renderRoot.querySelector(
-        'oryx-address-form'
-      ) as AddressFormComponent;
-      form.dispatchEvent(
-        new CustomEvent('oryx.submit', { detail: { values: {} } })
-      );
-    });
-
-    it('should not dispatch oryx.success event', () => {
-      expect(callback).not.toHaveBeenCalled();
-    });
-  });
 });

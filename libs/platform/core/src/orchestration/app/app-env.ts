@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 
-export const AppEnvironment = 'FES.Environment';
+export const AppEnvironment = 'oryx.Environment';
 
 declare global {
   interface InjectionTokensContractMap {

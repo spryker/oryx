@@ -6,7 +6,7 @@ export interface ProductListAdapter {
   get(qualifier: ProductListQualifier): Observable<ProductList>;
 }
 
-export const ProductListAdapter = 'FES.ProductListAdapter';
+export const ProductListAdapter = 'oryx.ProductListAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

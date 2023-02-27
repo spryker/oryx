@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { toMilliseconds } from '@spryker-oryx/utilities';
 import { AccessToken } from '../../../../models';
 
-export const TokenNormalizer = 'FES.TokenNormalizer*';
+export const TokenNormalizer = 'oryx.TokenNormalizer*';
 
 export function tokenAttributesNormalizer(source: any): AccessToken {
   const token: AccessToken = {

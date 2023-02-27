@@ -4,7 +4,7 @@ import { MediaContext, ProductMediaContainerSize, Size } from '../../models';
  * Allows to configure product media dimensions, sizes and context per
  * format.
  */
-export const ProductMediaConfig = 'FES.ProductMediaConfig';
+export const ProductMediaConfig = 'oryx.ProductMediaConfig';
 
 const qualityContext: MediaContext = { density: 2, connection: 'fast' };
 const highQualityContext: MediaContext = { density: 3, connection: 'fast' };

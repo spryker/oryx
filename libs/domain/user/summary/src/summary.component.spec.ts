@@ -5,7 +5,7 @@ import { I18nService } from '@spryker-oryx/i18n';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { i18n } from '@spryker-oryx/utilities';
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
 import { of } from 'rxjs';
 import { UserSummaryComponent } from './summary.component';
 import { accountSummaryComponent } from './summary.def';
@@ -98,6 +98,12 @@ describe('UserSummaryComponent', () => {
 
       expect(subtitle.innerText.trim()).toBe(i18n('user.login'));
     });
+
+    it('should not render dropdown', () => {
+      const dropdown = element.renderRoot.querySelector('oryx-dropdown');
+
+      expect(dropdown).toBe(null);
+    });
   });
 
   describe('logged in user', () => {
@@ -113,12 +119,29 @@ describe('UserSummaryComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render user firstName insteadOf Login title', () => {
+    it('should render user firstName instead of Login title', () => {
       const subtitle = element.renderRoot.querySelector(
         'oryx-heading'
       ) as HTMLElement;
 
       expect(subtitle.innerText.trim()).toBe(mockUser.firstName);
+    });
+
+    it('should render dropdown', () => {
+      const dropdown = element.renderRoot.querySelector(
+        'oryx-dropdown'
+      ) as HTMLElement;
+
+      expect(dropdown).not.toBe(null);
+    });
+
+    it('should render logout component inside dropdown', () => {
+      const dropdown = element.renderRoot.querySelector(
+        'oryx-dropdown'
+      ) as LitElement;
+      const logoutComponent = dropdown.querySelector('oryx-auth-logout');
+
+      expect(logoutComponent).not.toBe(null);
     });
   });
 });

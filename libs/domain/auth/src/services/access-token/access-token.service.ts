@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { AccessToken } from '../../models';
 
-export const AccessTokenService = 'FES.AccessTokenService';
+export const AccessTokenService = 'oryx.AccessTokenService';
 
 export interface AccessTokenService {
   set(props: { token: AccessToken; persist?: boolean }): Observable<unknown>;

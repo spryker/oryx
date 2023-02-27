@@ -8,7 +8,7 @@ export interface FacetListService {
   getFacet(options: FacetQualifier): Observable<Facet>;
 }
 
-export const FacetListService = 'FES.FacetListService';
+export const FacetListService = 'oryx.FacetListService';
 
 declare global {
   interface InjectionTokensContractMap {

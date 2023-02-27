@@ -12,6 +12,7 @@ class MockCheckoutDataService implements Partial<CheckoutDataService> {
 }
 
 @customElement('user-contact-form')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockForm extends LitElement {
   getForm(): HTMLFormElement | null {
     return this.renderRoot.querySelector('form') as HTMLFormElement;
