@@ -46,6 +46,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     super();
 
     this.dataClient?.sendStatic(this.staticComponents);
+    console.log(this.staticComponents, 'this.staticComponents');
 
     this.structureDataEvent$.subscribe();
     this.contentDataEvent$.subscribe();
