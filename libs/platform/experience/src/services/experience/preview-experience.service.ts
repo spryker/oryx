@@ -53,10 +53,6 @@ export class PreviewExperienceService extends DefaultExperienceService {
       });
   }
 
-  protected initStaticData(): void {
-    // we don't want to use static data here yet
-  }
-
   protected experiencePreviewEvent$ =
     typeof window !== 'undefined'
       ? fromEvent<ExperiencePreviewEvent>(window, 'message').pipe(
