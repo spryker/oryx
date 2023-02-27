@@ -23,6 +23,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected initStaticData(): void {
+    console.log('initStaticData');
     this.staticData.flat().forEach((component) => {
       component.id = component.id ?? this.getAutoId();
 
