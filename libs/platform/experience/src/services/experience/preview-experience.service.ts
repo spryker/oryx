@@ -47,7 +47,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   ) {
     super();
 
-    this.dataClient?.sendStatic(this.staticComponents);
+    this.dataClient?.sendStatic(this.staticService.getData());
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
 
     this.structureDataEvent$.subscribe();
@@ -131,7 +131,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
     this.experiencePreviewEvent$.pipe(
       map((data) => data.data.route),
       filter(isDefined),
-      tap((route) => this.routerService.navigate(route))
+      tap((route) => {
+        console.log('this.routerService.navigate(route)');
+        this.routerService.navigate(route);
+      })
     );
 
   protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(
@@ -139,24 +142,32 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined)
   );
 
-  protected reloadComponent(id: string): void {
+  protected reloadComponent(uid: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      structure: id,
+      structure: uid,
     });
   }
 
-  protected reloadContent(id: string): void {
+  protected reloadComponentByRoute(route: string): void {
+    console.log('reloadComponentByRoute');
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      content: id,
+      route,
     });
   }
 
-  protected reloadOptions(id: string): void {
+  protected reloadContent(uid: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      options: id,
+      content: uid,
+    });
+  }
+
+  protected reloadOptions(uid: string): void {
+    postMessage({
+      type: REQUEST_MESSAGE_TYPE,
+      options: uid,
     });
   }
 
