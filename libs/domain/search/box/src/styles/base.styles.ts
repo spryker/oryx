@@ -1,12 +1,21 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const baseStyles = css`
+  :host([stretched]) {
+    --oryx-popover-width: auto;
+  }
+
   oryx-typeahead {
     --oryx-popover-maxheight: 480px;
     --oryx-popover-vertical-offset: 0;
-    --oryx-popover-distance: 62px;
+    --oryx-popover-distance: 48px;
+  }
+
+  :host([stretched]) [slot='option'] > * {
+    min-width: 530px;
+    display: flex;
   }
 
   [slot='option'] {
@@ -43,11 +52,12 @@ export const baseStyles = css`
   }
 
   section {
+    flex: 1 1 auto;
     padding: 20px;
   }
 
   section:first-child:not(:only-child) {
-    padding-bottom: 0;
+    padding-block-end: 20px;
   }
 
   [slot='empty'] {
@@ -113,38 +123,29 @@ export const baseStyles = css`
     top: 5px;
     inset-inline-start: 5px;
   }
-`;
-
-const mediumScreen = css`
-  /* :host([stretched]) {
-    --oryx-popover-width: auto;
-  }
-
-  oryx-typeahead {
-    --oryx-popover-distance: 48px;
-  }
 
   oryx-icon-button[slot='suffix'] {
     display: none;
   }
+`;
 
-  :host([stretched]) [slot='option'] > * {
-    min-width: 530px;
-    display: flex;
+const smallScreen = css`
+  oryx-typeahead {
+    --oryx-popover-distance: 62px;
   }
 
-  section {
-    flex: 1 1 auto;
+  :host([stretched]) [slot='option'] > * {
+    min-width: initial;
   }
 
   section:first-child:not(:only-child) {
-    padding-bottom: 20px;
-  } */
+    padding-block-end: 0;
+  }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];
