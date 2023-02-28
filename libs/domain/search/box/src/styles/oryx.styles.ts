@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const searchboxStyles = css`
@@ -12,8 +12,8 @@ export const searchboxStyles = css`
   }
 
   input {
-    padding-block: 16px;
-    height: 56px;
+    padding-block: 9px;
+    height: 42px;
   }
 
   oryx-button[slot='suffix'] {
@@ -64,16 +64,13 @@ export const searchboxStyles = css`
   }
 `;
 
-export const searchboxMediumScreen = css`
+const smallScreen = css`
   input {
-    padding-block: 9px;
-    height: 42px;
+    padding-block: 16px;
+    height: 56px;
   }
 `;
 
 export const searchboxScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: mdScreen,
-    css: searchboxMediumScreen,
-  },
+  { media: smScreen, css: smallScreen },
 ];
