@@ -32,12 +32,38 @@ export const Template: Story = (): TemplateResult => {
       )}
     </div>
 
-    <h2>Appearance heading</h2>
+    <h1>Large</h1>
+    <h2>Appearance none</h2>
+    <p>The appearance allows to hide a heading all together.</p>
     <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading>${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading appearance="none">${el}</oryx-heading>
+        `;
+      })}
+    </div>
+
+    <h2>Appearance heading</h2>
+    <p>
+      The appearance allows to mimic the heading to be visually different from
+      it's structure.
+    </p>
+    <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
+        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
+        return html`
           <oryx-heading appearance="h1">${el}</oryx-heading>
           <oryx-heading appearance="h2">${el}</oryx-heading>
           <oryx-heading appearance="h3">${el}</oryx-heading>
@@ -48,12 +74,34 @@ export const Template: Story = (): TemplateResult => {
       })}
     </div>
 
-    <h2>Appearance heading (medium)</h2>
+    <h1>Medium screen</h1>
+    <h2>Appearance none</h2>
+    <p>The appearance allows to hide a heading all together.</p>
     <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading>${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading md-appearance="none">${el}</oryx-heading>
+        `;
+      })}
+    </div>
+
+    <h2>Appearance heading (medium)</h2>
+    <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
+        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
+        return html`
           <oryx-heading md-appearance="h1">${el}</oryx-heading>
           <oryx-heading md-appearance="h2">${el}</oryx-heading>
           <oryx-heading md-appearance="h3">${el}</oryx-heading>
@@ -64,12 +112,35 @@ export const Template: Story = (): TemplateResult => {
       })}
     </div>
 
-    <h2>Appearance heading (small)</h2>
+    <h1>Small screen</h1>
+
+    <h2>Appearance none</h2>
+    <p>The appearance allows to hide a heading all together.</p>
     <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading>${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+        `;
+      })}
+    </div>
+
+    <h2>Appearance heading (small)</h2>
+    <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
+        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
+        return html`
           <oryx-heading sm-appearance="h1">${el}</oryx-heading>
           <oryx-heading sm-appearance="h2">${el}</oryx-heading>
           <oryx-heading sm-appearance="h3">${el}</oryx-heading>
@@ -105,9 +176,11 @@ export const Template: Story = (): TemplateResult => {
     <h2>Appearance heading</h2>
     <div class="appearance">
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
         (tag) =>
           html`
-            <oryx-heading tag=${tag}>${tag}</oryx-heading>
             <oryx-heading tag=${tag} appearance="h1">${tag}</oryx-heading>
             <oryx-heading tag=${tag} appearance="h2">${tag}</oryx-heading>
             <oryx-heading tag=${tag} appearance="h3">${tag}</oryx-heading>
@@ -118,18 +191,39 @@ export const Template: Story = (): TemplateResult => {
       )}
     </div>
 
-    <h2>Appearance heading (medium and larger)</h2>
+    <h2>Appearance heading (medium)</h2>
+
     <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
         (tag) =>
           html`
-            <oryx-heading tag=${tag}>${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h1">${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h2">${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h3">${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h4">${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h5">${tag}</oryx-heading>
             <oryx-heading tag=${tag} md-appearance="h6">${tag}</oryx-heading>
+          `
+      )}
+    </div>
+
+    <h2>Appearance heading (small)</h2>
+    <div class="appearance">
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) => html`<div>(${tag})</div>`
+      )}
+      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
+        (tag) =>
+          html`
+            <oryx-heading tag=${tag} sm-appearance="h1">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} sm-appearance="h2">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} sm-appearance="h3">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} sm-appearance="h4">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} sm-appearance="h5">${tag}</oryx-heading>
+            <oryx-heading tag=${tag} sm-appearance="h6">${tag}</oryx-heading>
           `
       )}
     </div>
@@ -162,6 +256,7 @@ export const Template: Story = (): TemplateResult => {
         grid-auto-flow: row;
         gap: 30px;
       }
+
       .clamped oryx-heading {
         display: flex;
         align-items: start;
@@ -169,13 +264,8 @@ export const Template: Story = (): TemplateResult => {
 
       .appearance {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         grid-auto-flow: row;
-      }
-
-      .appearance oryx-heading {
-        display: flex;
-        align-items: center;
       }
 
       .colorful {
