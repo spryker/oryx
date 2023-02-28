@@ -116,7 +116,7 @@ export const baseStyles = css`
 `;
 
 const mediumScreen = css`
-  :host([stretched]) {
+  /* :host([stretched]) {
     --oryx-popover-width: auto;
   }
 
@@ -139,7 +139,7 @@ const mediumScreen = css`
 
   section:first-child:not(:only-child) {
     padding-bottom: 20px;
-  }
+  } */
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
