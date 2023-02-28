@@ -12,6 +12,7 @@ import { when } from 'lit/directives/when.js';
 import {
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
+  ProductImagesNavigationAlignment,
   ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout as NavigationLayout,
   ProductImagesNavigationMouseEvent,
@@ -21,6 +22,7 @@ import { productImageStyles } from './images.styles';
 
 const defaultImagesOptions = {
   imageLayout: ProductImagesMainLayout.Carousel,
+  navigationAlignment: ProductImagesNavigationAlignment.Center,
   navigationLayout: NavigationLayout.Carousel,
   navigationPosition: NavigationPosition.Bottom,
   imageObjectFit: 'contain',
