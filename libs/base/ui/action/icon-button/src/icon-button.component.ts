@@ -2,13 +2,13 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Size } from '../../../src/utilities/model';
 import { IconButtonProperties } from './icon-button.model';
-import { iconButtonBaseStyles } from './styles';
+import { iconButtonStyles } from './icon-button.styles';
 
 export class IconButtonComponent
   extends LitElement
   implements IconButtonProperties
 {
-  static styles = [iconButtonBaseStyles];
+  static styles = [iconButtonStyles];
 
   @property({ reflect: true }) size = Size.medium;
 
