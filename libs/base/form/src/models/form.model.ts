@@ -47,6 +47,6 @@ export interface FormFieldDefinition<K = string>
 export type FormValues = Record<string, string | boolean>;
 
 export interface FieldValidationPattern {
-  pattern: string;
-  title: string;
+  pattern?: string;
+  title?: string;
 }

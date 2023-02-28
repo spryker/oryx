@@ -18,9 +18,10 @@ export class DefaultFormRenderer implements FormRenderer {
   constructor(protected injector = inject(INJECTOR)) {}
 
   fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern {
+    const { required, pattern, title } = field;
     return {
-      pattern: field.pattern ?? '.*\\S+.*',
-      title: field.title ?? 'at least one character',
+      pattern: pattern ?? (required ? '.*\\S+.*' : undefined),
+      title: title ?? (required ? 'at least one character' : undefined),
     };
   }
 
@@ -140,8 +141,8 @@ export class DefaultFormRenderer implements FormRenderer {
           maxlength=${ifDefined(field.max)}
           type=${ifDefined(field.attributes?.type ?? field.type)}
           ?required=${field.required}
-          pattern=${pattern}
-          title=${title}
+          pattern=${ifDefined(pattern)}
+          title=${ifDefined(title)}
         />
       </oryx-input>
     `;

@@ -47,14 +47,26 @@ describe('DefaultFormRenderer', () => {
   });
 
   describe('fieldValidationPattern()', () => {
-    describe('when field doesn`t have validation patterns', () => {
-      it('should assign default values', () => {
+    describe('when field does not have validation patterns', () => {
+      it('should not assign default values', () => {
         const { pattern, title } = service.fieldValidationPattern({
           id: 'test',
         });
 
-        expect(pattern).toBe('.*\\S+.*');
-        expect(title).toBe('at least one character');
+        expect(pattern).toBeUndefined();
+        expect(title).toBeUndefined();
+      });
+
+      describe('and field is required', () => {
+        it('should return default values', () => {
+          const { pattern, title } = service.fieldValidationPattern({
+            id: 'test',
+            required: true,
+          });
+
+          expect(pattern).toBe('.*\\S+.*');
+          expect(title).toBe('at least one character');
+        });
       });
     });
 
