@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/user",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "User features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
@@ -20,9 +20,9 @@
   "peerDependencies": {
     "@spryker-oryx/auth": "*",
     "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
     "@spryker-oryx/experience": "*",
     "@spryker-oryx/form": "*",
-    "@spryker-oryx/di": "*",
     "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",

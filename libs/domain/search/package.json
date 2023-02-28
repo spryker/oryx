@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/search",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
@@ -20,8 +20,8 @@
   "peerDependencies": {
     "@spryker-oryx/content": "*",
     "@spryker-oryx/core": "*",
-    "@spryker-oryx/experience": "*",
     "@spryker-oryx/di": "*",
+    "@spryker-oryx/experience": "*",
     "@spryker-oryx/product": "*",
     "@spryker-oryx/router": "*",
     "@spryker-oryx/site": "*",

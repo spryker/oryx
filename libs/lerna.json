@@ -21,17 +21,19 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "0.1.0",
+  "version": "0.2.0",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
+      "ignoreChanges": [
+        "*.md",
+        "**/*.spec.ts",
+        "**/*.stories.ts"
+      ],
       "message": "chore(release): publish libs release [skip ci]",
-      "createRelease": "github",
-      "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
       "verifyAccess": false
     }

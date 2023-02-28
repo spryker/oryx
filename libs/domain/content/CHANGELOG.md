@@ -1,0 +1,12 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.2.0](https://github.com/spryker/oryx/compare/lib@0.1.0...lib@0.2.0) (2023-02-28)
+
+
+### Features
+
+* Release workflow ([#29](https://github.com/spryker/oryx/issues/29)) ([8611f72](https://github.com/spryker/oryx/commit/8611f72e2c14f9bef80fa28bd26ca89c7fcacb16))
+* tab layout ([#34](https://github.com/spryker/oryx/issues/34)) ([b00c0ab](https://github.com/spryker/oryx/commit/b00c0ab6912b01720b850b7fdc799c8c87c6f3a7))
