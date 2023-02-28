@@ -38,6 +38,7 @@
   "devDependencies": {
     "@netlify/functions": "^1.4.0",
     "@nrwl/cli": "14.5.8",
+    "@nrwl/cypress": "^15.7.2",
     "@nrwl/devkit": "14.5.8",
     "@nrwl/eslint-plugin-nx": "14.5.8",
     "@nrwl/js": "14.5.8",
@@ -65,6 +66,8 @@
     "browserslist": "^4.20.3",
     "chromatic": "^6.5.1",
     "copyfiles": "^2.4.1",
+    "cypress": "^12.7.0",
+    "cypress-log-to-output": "^1.1.2",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-prettier": "^3.3.1",

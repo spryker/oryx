@@ -1,0 +1,102 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/storefront-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/storefront-e2e/cypress.config.js",
+        "watch": true,        
+        "testingType": "e2e"
+      }
+    },
+    "open": {
+      "executor": "./tools/executors/oryx-vite:cypress",
+      "options": {
+        "cypress": {
+          "browser": "chrome",
+          "watch": true,
+          "configFile": "apps/storefront-e2e/cypress.config.js"
+        },
+        "vite": {
+          "port": 3000,
+          "configFile": "apps/storefront/vite.config.dev.ts",
+          "devServer": true,
+          "root": "apps/storefront/src"
+        }
+      },
+      "configurations": {
+        "production": {
+          "cypress": {
+            "browser": "chrome",
+            "watch": true,
+            "configFile": "apps/storefront-e2e/cypress.config.js"
+          },
+          "vite": {
+            "port": 3000,
+            "configFile": "apps/storefront/vite.config.dev.ts",
+            "devServer": true,
+            "mode": "production",
+            "root": "apps/storefront/src"
+          }
+        }
+      }
+    },
+    "run-headless-local": {
+      "executor": "./tools/executors/oryx-vite:cypress",
+      "options": {
+        "cypress": {
+          "browser": "chrome",
+          "configFile": "apps/storefront-e2e/cypress.config.js"
+        },
+        "vite": {
+          "port": 3000,
+          "configFile": "apps/storefront/vite.config.dev.ts",
+          "devServer": true,
+          "root": "apps/storefront/src"
+        }
+      },
+      "configurations": {
+        "production": {
+          "cypress": {
+            "browser": "chrome",
+            "configFile": "apps/storefront-e2e/cypress.config.js"
+          },
+          "vite": {
+            "port": 3000,
+            "configFile": "apps/storefront/vite.config.dev.ts",
+            "devServer": true,
+            "mode": "production",
+            "root": "apps/storefront/src"
+          }
+        }
+      }
+    },
+    "run-headless-ci": {
+      "executor": "./tools/executors/oryx-vite:cypress",
+      "options": {
+        "cypress": {
+          "browser": "chrome",
+          "configFile": "apps/storefront-e2e/cypress.ci.config.js",
+          "key": "will_be_set_on_ci_server",
+          "record": true
+        },
+        "vite": {
+          "port": 3000,
+          "configFile": "apps/storefront/vite.config.dev.ts",
+          "devServer": true,
+          "root": "apps/storefront/src"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/storefront-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": ["root"]
+}
