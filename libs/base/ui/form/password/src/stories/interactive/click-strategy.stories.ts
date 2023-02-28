@@ -14,7 +14,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
     label="Click strategy"
-    strategy=${PasswordVisibilityStrategy.CLICK}
+    strategy=${PasswordVisibilityStrategy.Click}
     timeout=${1000}
   >
     <input type="password" placeholder="Password" />

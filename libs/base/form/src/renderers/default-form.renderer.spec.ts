@@ -163,17 +163,33 @@ describe('DefaultFormRenderer', () => {
 
     describe('field label', () => {
       describe('when there is no label', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-        };
+        describe('and the field id has no camelCase letters', () => {
+          const field: FormFieldDefinition = {
+            id: 'field',
+            type: FormFieldType.Text,
+          };
+          beforeEach(async () => {
+            await service.buildField(field);
+          });
 
-        beforeEach(async () => {
-          await service.buildField(field);
+          it('should use the field id as a label', () => {
+            expect(field.label).toBe('field');
+          });
         });
 
-        it('should use the field id as a label', () => {
-          expect(field.label).toBe('field-id');
+        describe('and the field id has camelCase letters', () => {
+          const field: FormFieldDefinition = {
+            id: 'firstSecondLast',
+            type: FormFieldType.Text,
+          };
+
+          beforeEach(async () => {
+            await service.buildField(field);
+          });
+
+          it('should use add spaces in the label', () => {
+            expect(field.label).toBe('first second last');
+          });
         });
       });
 
