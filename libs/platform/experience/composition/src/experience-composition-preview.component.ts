@@ -122,6 +122,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
   );
 
   protected override render(): TemplateResult {
+    console.log('renderrenderrender');
     return html`
       ${asyncValue(
         this.components$,

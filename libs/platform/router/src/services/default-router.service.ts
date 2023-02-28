@@ -27,7 +27,7 @@ export class DefaultRouterService implements RouterService {
   private urlSearchParams$ = new BehaviorSubject<RouteParams>(
     this.getURLSearchParams()
   );
-  private routerEvents$: Subject<RouterEvent> = new Subject();
+  private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
   protected storageService = inject(StorageService);

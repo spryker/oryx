@@ -38,15 +38,9 @@ export class LitRouter extends Router {
     this.routerService
       .currentRoute()
       .pipe(
-        this.ssrRendered
-          ? (skip(1),
-            tap(
-              (route) =>
-                route !== '' && this.routerService.acceptParams(this.params)
-            ))
-          : identity,
+        this.ssrRendered ? skip(1) : identity,
         tap(async (route) => {
-          if (route !== '') {
+          if (route && route !== '') {
             const resolve = this.ssrAwaiter?.getAwaiter();
             await this._goto(route);
             this.routerService.acceptParams(this.params);
@@ -64,6 +58,7 @@ export class LitRouter extends Router {
         decodeURIComponent(globalThis.location?.search)
       ).entries()
     );
+
     // As part of the lazy hydration strategy, everything should not be hydrated by default
     // If the host component is SSR rendered, hydrating it wipes everything
     // So none of the previously SSRed sub components will remain
@@ -74,7 +69,7 @@ export class LitRouter extends Router {
     ) {
       return;
     }
-
+    console.log('safasf');
     await super.goto(pathname);
   }
 
