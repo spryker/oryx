@@ -13,13 +13,12 @@ export class DefaultComponentsRegistryService
   protected componentMapping?: ComponentMapping;
 
   constructor(
-    registeredComponents = inject(ComponentMapping),
+    registeredComponents = inject(ComponentMapping, []),
     protected readonly appRef = inject(AppRef)
   ) {
-    this.componentMapping = registeredComponents.reduce(
-      (acc, components) => ({ ...acc, ...components }),
-      {}
-    );
+    this.componentMapping = (
+      registeredComponents as Record<string, any>[]
+    ).reduce((acc, components) => ({ ...acc, ...components }), {});
     this.componentsPlugin = this.appRef.requirePlugin(ComponentsPlugin);
   }
 
