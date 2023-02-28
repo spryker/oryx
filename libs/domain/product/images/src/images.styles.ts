@@ -28,6 +28,22 @@ export const productImageStyles = css`
     justify-self: end;
   }
 
+  .navigation[alignment='center'] {
+    margin-inline: auto;
+  }
+
+  .navigation[alignment='end'] {
+    margin-inline: auto 0;
+  }
+
+  .navigation[alignment='center'][vertical] {
+    margin-block: auto;
+  }
+
+  .navigation[alignment='end'][vertical] {
+    margin-block: auto 0;
+  }
+
   .main {
     --cols: 1;
   }

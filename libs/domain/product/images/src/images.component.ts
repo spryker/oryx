@@ -111,6 +111,7 @@ export class ProductImagesComponent extends ProductMixin(
       navigationHeight: height,
       navigationWidth: width,
       navigationObjectFit: objectFit,
+      navigationAlignment: alignment,
     } = this.componentOptions;
 
     if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
@@ -122,8 +123,11 @@ export class ProductImagesComponent extends ProductMixin(
       layout=${layout || NavigationLayout.Carousel}
       ?vertical=${position === NavigationPosition.Start ||
       position === NavigationPosition.End}
+      alignment=${ifDefined(alignment)}
       style="--item-height:${height ||
       defaultImagesOptions.navigationHeight};--item-width:${width ||
+      height ||
+      defaultImagesOptions.navigationHeight};--item-size:${width ||
       height ||
       defaultImagesOptions.navigationHeight}; --image-fit:${objectFit ||
       defaultImagesOptions.navigationObjectFit};"
