@@ -32,7 +32,7 @@ export class ProductMediaComponent extends ProductMixin(
       changedProperties.has('product') ||
       changedProperties.has('componentOptions')
     ) {
-      const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+      const { mediaIndex = 0, containerSize } = this.componentOptions;
       const productMedia = this.getMediaSet()?.media[mediaIndex];
       this.sources = this.imageService.resolveSources(
         productMedia,
@@ -63,8 +63,8 @@ export class ProductMediaComponent extends ProductMixin(
     return html`<oryx-image
       src=${src}
       srcset=${ifDefined(srcSet)}
-      alt=${ifDefined(this.componentOptions?.alt || this.product?.name)}
-      loading=${ifDefined(this.componentOptions?.loading)}
+      alt=${ifDefined(this.componentOptions.alt || this.product?.name)}
+      loading=${ifDefined(this.componentOptions.loading)}
     ></oryx-image>`;
   }
 
@@ -77,9 +77,9 @@ export class ProductMediaComponent extends ProductMixin(
    * media set is returned.
    */
   protected getMediaSet(): ProductMediaSet | undefined {
-    if (this.componentOptions?.mediaSet) {
+    if (this.componentOptions.mediaSet) {
       return this.product?.mediaSet?.find(
-        (set) => set.name === this.componentOptions?.mediaSet
+        (set) => set.name === this.componentOptions.mediaSet
       );
     } else {
       return this.product?.mediaSet?.[0];

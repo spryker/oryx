@@ -4,7 +4,7 @@ import { css } from 'lit';
 
 export const styles = css`
   h2 {
-    margin-bottom: 33px;
+    margin: 32px 0;
   }
 
   .details-container {
@@ -18,25 +18,37 @@ export const styles = css`
   }
 
   .details {
-    gap: 10px;
+    gap: 8px;
     display: grid;
-    align-items: center;
     grid-template-columns: max-content auto;
+  }
+
+  .summary {
+    align-items: center;
   }
 
   .details:first-of-type {
     grid-template-columns: 20px max-content auto;
-    gap: 16px 6px;
+    gap: 8px 6px;
   }
 
   .title {
     font-weight: 600;
   }
 
+  h3 {
+    margin-bottom: 4px;
+  }
+
+  hr,
+  oryx-heading {
+    grid-column: 1 / 3;
+  }
+
   hr {
     border: none;
     border-top: 1px solid var(--oryx-color-canvas-300);
-    margin: 26px 0 20px;
+    margin: 20px 0;
     outline: none;
   }
 

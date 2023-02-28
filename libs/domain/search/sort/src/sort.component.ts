@@ -7,7 +7,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs/operators';
 import { SortingService } from '../../src/services/sorting.service';
 

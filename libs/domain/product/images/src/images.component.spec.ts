@@ -1,20 +1,19 @@
-import { fixture } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstance } from 'vitest';
 import { ProductImagesComponent } from './images.component';
 import { productImagesComponent } from './images.def';
 import {
   ProductImagesMainLayout,
-  ProductImagesNavigationAlignment,
   ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout,
   ProductImagesNavigationMouseEvent,
   ProductImagesNavigationPosition,
+  ProductImagesScrollBehavior,
 } from './images.model';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -92,217 +91,216 @@ describe('ProductImagesComponent', () => {
     });
   });
 
-  describe.skip('options', () => {
-    describe('mainLayout', () => {
-      describe('when mainLayout is not configured', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-product-images sku="1"></oryx-product-images>`
-          );
-        });
+  describe('when no product', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-images></oryx-product-images>`
+      );
+    });
 
-        it('should not render main-layout attribute', () => {
-          expect(element).toContainElement(`slot:not([main-layout])`);
-        });
+    it('should not render content', () => {
+      expect(element).not.toContainElement('oryx-layout');
+    });
+  });
+
+  describe('when amount of medias is less then 2', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-images sku="single-image"></oryx-product-images>`
+      );
+    });
+
+    it('should not render navigation', () => {
+      expect(element).not.toContainElement(`.navigation`);
+    });
+  });
+
+  describe('options', () => {
+    describe('when options is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{
+              imageLayout: '',
+              navigationLayout: '',
+              navigationPosition: '',
+              imageObjectFit: '',
+              navigationObjectFit: '',
+              imageHeight: '',
+              navigationHeight: '',
+              imageColumns: '',
+            }}
+          ></oryx-product-images>`
+        );
       });
 
-      describe('when mainLayout is `carousel`', () => {
+      it('should set up default options values', () => {
+        expect(element).toContainElement(
+          `oryx-layout[navigation="${ProductImagesNavigationPosition.Bottom}"]:not([floating])`
+        );
+      });
+
+      it('should set up default values for css properties', () => {
+        expect(
+          element.renderRoot
+            .querySelector<HTMLElement>('oryx-layout')
+            ?.style.getPropertyValue('--product-image-height')
+        ).toBe('300px');
+      });
+
+      it('should render main layout first', () => {
+        expect(element).toContainElement('.main:first-child');
+      });
+
+      it('should set up default properties for main layout', () => {
+        expect(element).toContainElement(
+          `.main[layout="${ProductImagesMainLayout.Carousel}"]:not([behavior])`
+        );
+      });
+
+      it('should set up default values for css properties of main layout', () => {
+        const layout = element.renderRoot.querySelector<HTMLElement>('.main');
+        expect(layout?.style.getPropertyValue('--image-fit')).toBe('contain');
+        expect(layout?.style.getPropertyValue('--cols')).toBe('1');
+      });
+
+      it('should set up default properties for navigation layout', () => {
+        expect(element).toContainElement(
+          `.navigation[layout="${ProductImagesNavigationLayout.Carousel}"]:not([vertical])`
+        );
+      });
+
+      it('should set up default values for css properties of navigation layout', () => {
+        const layout =
+          element.renderRoot.querySelector<HTMLElement>('.navigation');
+        expect(layout?.style.getPropertyValue('--item-height')).toBe('80px');
+        expect(layout?.style.getPropertyValue('--item-width')).toBe('80px');
+        expect(layout?.style.getPropertyValue('--image-fit')).toBe('contain');
+      });
+    });
+
+    describe('mediaSet', () => {
+      describe('when mediaSet is provided', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-images
               sku="1"
-              .options=${{ mainLayout: ProductImagesMainLayout.Carousel }}
+              .options=${{ mediaSet: 'default' }}
             ></oryx-product-images>`
           );
         });
 
-        it('should render main-layout attribute', () => {
-          expect(element).toContainElement(`slot[main-layout='carousel']`);
-        });
-
-        it('should render oryx-product-media element(s)', () => {
-          expect(element).toContainElement('section oryx-product-media');
+        it('should render medias', () => {
+          expect(element).toContainElement('oryx-product-media');
         });
       });
 
-      // describe('when mainLayout is `toggle`', () => {
-      //   beforeEach(async () => {
-      //     element = await fixture(
-      //       html`<oryx-product-images
-      //         sku="1"
-      //         .options=${{ mainLayout: ProductImagesMainLayout.Toggle }}
-      //       ></oryx-product-images>`
-      //     );
-      //   });
-
-      //   it('should render main-layout attribute', () => {
-      //     expect(element).toContainElement(`slot[main-layout='toggle']`);
-      //   });
-
-      //   it('should render oryx-product-media element(s)', () => {
-      //     expect(element).toContainElement('section oryx-product-media');
-      //   });
-      // });
-
-      describe('when mainLayout is `none`', () => {
+      describe('when wrong mediaSet is provided', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-images
               sku="1"
-              .options=${{ mainLayout: ProductImagesMainLayout.None }}
+              .options=${{ mediaSet: 'original' }}
             ></oryx-product-images>`
           );
         });
 
-        it('should not render any oryx-product-media elements', () => {
-          expect(element).not.toContainElement('section oryx-product-media');
+        it('should not render medias', () => {
+          expect(element).not.toContainElement('oryx-product-media');
         });
+      });
+    });
+
+    describe('when scrollBehavior is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ scrollBehavior: ProductImagesScrollBehavior.Smooth }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set attribute on main layout', () => {
+        expect(element).toContainElement(
+          `.main[behavior=${ProductImagesScrollBehavior.Smooth}]`
+        );
+      });
+    });
+
+    describe('when imageLayout is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ imageLayout: ProductImagesMainLayout.Grid }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set attribute on main layout', () => {
+        expect(element).toContainElement(
+          `.main[layout=${ProductImagesMainLayout.Grid}]`
+        );
       });
     });
 
     describe('navigationPosition', () => {
-      [
-        ProductImagesNavigationPosition.Start,
-        ProductImagesNavigationPosition.Bottom,
-        ProductImagesNavigationPosition.End,
-      ].forEach((pos) => {
-        describe(`when the navigationPosition is '${pos}'`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-product-images
-                sku="1"
-                .options=${{
-                  navigationPosition: pos,
-                }}
-              ></oryx-product-images>`
-            );
-          });
-
-          it('should render nav-position attribute', () => {
-            expect(element).toContainElement(`slot[nav-position='${pos}']`);
-          });
-        });
-      });
-
-      describe(`when the navigationPosition is not provided`, () => {
+      describe('when navigationPosition is equal start', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-product-images sku="1"></oryx-product-images>`
+            html`<oryx-product-images
+              sku="1"
+              .options=${{
+                navigationPosition: ProductImagesNavigationPosition.Start,
+              }}
+            ></oryx-product-images>`
           );
         });
 
-        it('should not render nav-position attribute', () => {
-          expect(element).toContainElement(`slot:not([nav-position])`);
+        it('should set vertical attribute on navigation layout', () => {
+          expect(element).toContainElement(`.navigation[vertical]`);
         });
       });
-    });
 
-    describe('navigationLayout', () => {
-      [
-        ProductImagesNavigationLayout.Carousel,
-        ProductImagesNavigationLayout.Grid,
-      ].forEach((navigationLayout) => {
-        describe(`when the navigationLayout is '${navigationLayout}'`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-product-images
-                sku="1"
-                .options=${{
-                  navigationLayout,
-                }}
-              ></oryx-product-images>`
-            );
-          });
-
-          it('should render nav-layout attribute', () => {
-            expect(element).toContainElement(
-              `slot[nav-layout='${navigationLayout}']`
-            );
-          });
+      describe('when navigationPosition is equal end', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-product-images
+              sku="1"
+              .options=${{
+                navigationPosition: ProductImagesNavigationPosition.End,
+              }}
+            ></oryx-product-images>`
+          );
         });
 
-        describe(`when the navigationLayout is not provided`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-product-images sku="1"></oryx-product-images>`
-            );
-          });
-
-          it('should not render nav-layout attribute', () => {
-            expect(element).toContainElement(`slot:not([nav-layout])`);
-          });
+        it('should set vertical attribute on navigation layout', () => {
+          expect(element).toContainElement(`.navigation[vertical]`);
         });
       });
     });
 
     describe('navigationDisplay', () => {
-      describe(`when the navigationDisplay is not provided`, () => {
+      describe('when navigationDisplay is equal floating', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-product-images sku="1"></oryx-product-images>`
+            html`<oryx-product-images
+              sku="1"
+              .options=${{
+                navigationDisplay: ProductImagesNavigationDisplay.Floating,
+              }}
+            ></oryx-product-images>`
           );
         });
 
-        it('should not render nav-display attribute', () => {
-          expect(element).toContainElement(`slot:not([nav-display])`);
+        it('should set floating attribute on base layout', () => {
+          expect(element).toContainElement(`oryx-layout[floating]`);
         });
       });
 
-      [
-        ProductImagesNavigationDisplay.Inline,
-        ProductImagesNavigationDisplay.Floating,
-      ].forEach((display) => {
-        describe(`when navigationDisplay is ${display}`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-product-images
-                sku="1"
-                .options=${{ navigationDisplay: display }}
-              ></oryx-product-images>`
-            );
-          });
-
-          it(`should render a nav-display attribute`, () => {
-            expect(element).toContainElement(`slot[nav-display='${display}']`);
-          });
-
-          it(`should render the navigation`, () => {
-            expect(element).toContainElement(`.nav`);
-          });
-
-          describe('and when there are no images', () => {
-            beforeEach(async () => {
-              element = await fixture(
-                html`<oryx-product-images
-                  sku="without-images"
-                  .options=${{ navigationDisplay: display }}
-                ></oryx-product-images>`
-              );
-            });
-
-            it('should not render the navigation', () => {
-              expect(element).not.toContainElement('.nav');
-            });
-          });
-
-          describe('and when there is only 1 image', () => {
-            beforeEach(async () => {
-              element = await fixture(
-                html`<oryx-product-images
-                  sku="single-image"
-                  .options=${{ navigationDisplay: display }}
-                ></oryx-product-images>`
-              );
-            });
-
-            it('should not render the navigation', () => {
-              expect(element).not.toContainElement('.nav');
-            });
-          });
-        });
-      });
-
-      describe(`when navigationDisplay is set to none`, () => {
+      describe('when navigationDisplay is equal none', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-images
@@ -314,112 +312,181 @@ describe('ProductImagesComponent', () => {
           );
         });
 
-        it(`should render a nav-display attribute`, () => {
-          expect(element).toContainElement(`slot[nav-display='none']`);
-        });
-
-        it(`should not render the navigation`, () => {
-          expect(element).not.toContainElement(`.nav`);
+        it('should not render navigation', () => {
+          expect(element).not.toContainElement(`.navigation`);
         });
       });
     });
 
-    describe('navigationAlignment', () => {
-      [
-        ProductImagesNavigationAlignment.Start,
-        ProductImagesNavigationAlignment.Center,
-        ProductImagesNavigationAlignment.End,
-      ].forEach((navigationAlignment) => {
-        describe(`when the navigationAlignment is '${navigationAlignment}'`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-product-images
-                sku="1"
-                .options=${{ navigationAlignment }}
-              ></oryx-product-images>`
-            );
-          });
-
-          it(`should render a nav-align attribute`, () => {
-            expect(element).toContainElement(
-              `slot[nav-align='${navigationAlignment}']`
-            );
-          });
-        });
+    describe('when navigationLayout is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ navigationLayout: ProductImagesNavigationLayout.Grid }}
+          ></oryx-product-images>`
+        );
       });
-      describe(`when the navigationAlignment is not provided`, () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-product-images sku="1"></oryx-product-images>`
-          );
-        });
 
-        it(`should not render a nav-align attribute`, () => {
-          expect(element).toContainElement(`slot:not([nav-align])`);
-        });
+      it('should set attribute on navigation layout', () => {
+        expect(element).toContainElement(
+          `.navigation[layout=${ProductImagesNavigationLayout.Grid}]`
+        );
       });
     });
 
     describe('navigationMouseEvent', () => {
-      let onInput: SpyInstance;
-
-      beforeEach(() => {
-        onInput = vi.fn();
-      });
-
       describe('when the navigationMouseEvent is set to click', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-images
-              @input=${onInput}
               sku="1"
               .options=${{
                 navigationMouseEvent: ProductImagesNavigationMouseEvent.Click,
               }}
             ></oryx-product-images>`
           );
-        });
 
-        describe('and the mouseover event is dispatched on the thumbnail', () => {
-          beforeEach(async () => {
-            const thumbs = element?.shadowRoot?.querySelectorAll('.nav input');
-            thumbs?.[0].dispatchEvent(
+          element.renderRoot
+            .querySelector('label:nth-child(2) input')
+            ?.dispatchEvent(
               new MouseEvent('mouseover', { bubbles: true, composed: true })
             );
-          });
+        });
 
-          it('should not dispatch an input event', () => {
-            expect(onInput).not.toHaveBeenCalled();
-          });
+        it('should not change active media', () => {
+          expect(
+            element.renderRoot
+              .querySelector('label:nth-child(2) oryx-product-media')
+              ?.hasAttribute('active')
+          ).toBe(false);
         });
       });
 
-      describe('when the navigationMouseEvent is set to hover', () => {
+      describe('when the navigationMouseEvent is set to Mouseover', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-images
-              @input=${onInput}
+              sku="1"
               .options=${{
                 navigationMouseEvent:
                   ProductImagesNavigationMouseEvent.Mouseover,
               }}
+            ></oryx-product-images>`
+          );
+
+          element.renderRoot
+            .querySelector('label:nth-child(2) input')
+            ?.dispatchEvent(
+              new MouseEvent('mouseover', { bubbles: true, composed: true })
+            );
+
+          element.requestUpdate();
+          await elementUpdated(element);
+        });
+
+        it('should set related media as active', () => {
+          expect(
+            element.renderRoot
+              .querySelector('label:nth-child(2) oryx-product-media')
+              ?.hasAttribute('active')
+          ).toBe(true);
+        });
+      });
+    });
+
+    describe('when imageHeight is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ imageHeight: '100px' }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set css property', () => {
+        expect(
+          element.renderRoot
+            .querySelector<HTMLElement>('oryx-layout')
+            ?.style.getPropertyValue('--product-image-height')
+        ).toBe('100px');
+      });
+    });
+
+    describe('when navigationHeight is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ navigationHeight: '100px' }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set css property', () => {
+        expect(
+          element.renderRoot
+            .querySelector<HTMLElement>('.navigation')
+            ?.style.getPropertyValue('--item-height')
+        ).toBe('100px');
+      });
+
+      describe('and navigationWidth is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-product-images
               sku="1"
+              .options=${{ navigationHeight: '100px' }}
             ></oryx-product-images>`
           );
         });
 
-        describe('and the mouseover event is dispatched on the thumbnail', () => {
-          beforeEach(async () => {
-            const thumbs = element?.shadowRoot?.querySelectorAll('.nav input');
-            thumbs?.[0].dispatchEvent(
-              new MouseEvent('mouseover', { bubbles: true, composed: true })
-            );
-          });
-
-          it('should dispatch an input event', () => {
-            expect(onInput).toHaveBeenCalled();
-          });
+        it('should set --item-width equal height', () => {
+          const nav =
+            element.renderRoot.querySelector<HTMLElement>('.navigation');
+          expect(nav?.style.getPropertyValue('--item-width')).toBe(
+            nav?.style.getPropertyValue('--item-height')
+          );
         });
+      });
+    });
+
+    describe('when navigationWidth is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ navigationWidth: '100px' }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set css property', () => {
+        expect(
+          element.renderRoot
+            .querySelector<HTMLElement>('.navigation')
+            ?.style.getPropertyValue('--item-width')
+        ).toBe('100px');
+      });
+    });
+
+    describe('when imagesColumns is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-images
+            sku="1"
+            .options=${{ imagesColumns: 2 }}
+          ></oryx-product-images>`
+        );
+      });
+
+      it('should set css property', () => {
+        expect(
+          element.renderRoot
+            .querySelector<HTMLElement>('.main')
+            ?.style.getPropertyValue('--cols')
+        ).toBe('2');
       });
     });
   });
