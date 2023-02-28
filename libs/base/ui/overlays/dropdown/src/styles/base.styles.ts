@@ -95,7 +95,7 @@ export const dropdownBaseStyles = css`
           var(--_available-popover-width-end) +
           var(--_bounding-element-width, 0)
       ),
-      calc(var(--oryx-popover-maxwidth) + var(--_bounding-element-width, 0))
+      calc(var(--oryx-popover-maxwidth))
     );
 
     max-height: min(
