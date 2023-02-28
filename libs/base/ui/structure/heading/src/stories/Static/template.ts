@@ -42,12 +42,12 @@ export const Template: Story = (): TemplateResult => {
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading appearance="none">${el}</oryx-heading>
-          <oryx-heading appearance="none">${el}</oryx-heading>
-          <oryx-heading appearance="none">${el}</oryx-heading>
-          <oryx-heading appearance="none">${el}</oryx-heading>
-          <oryx-heading appearance="none">${el}</oryx-heading>
-          <oryx-heading appearance="none">${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
+          <oryx-heading disappear-lg>${el}</oryx-heading>
         `;
       })}
     </div>
@@ -84,12 +84,12 @@ export const Template: Story = (): TemplateResult => {
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
-          <oryx-heading md-appearance="none">${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
+          <oryx-heading disappear-md>${el}</oryx-heading>
         `;
       })}
     </div>
@@ -123,12 +123,12 @@ export const Template: Story = (): TemplateResult => {
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
         return html`
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
-          <oryx-heading sm-appearance="none">${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
+          <oryx-heading disappear-sm>${el}</oryx-heading>
         `;
       })}
     </div>

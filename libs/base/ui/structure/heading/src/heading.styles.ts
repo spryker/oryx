@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, CSSResult, CSSResultGroup, unsafeCSS } from 'lit';
 
 const unsafe = (value: string): CSSResult => unsafeCSS(value);
@@ -7,7 +7,6 @@ const unsafe = (value: string): CSSResult => unsafeCSS(value);
  * Generates the CSS selectors and rules for the given tag to plain heading selectors
  * as well as mimic headings with an appearance. The style rules depend on CSS variables
  * for the size, weight and line-height.
- * ```
  */
 const headingStyle = (
   tag: string,
@@ -97,9 +96,10 @@ export const headlineStyles = css`
   ${headingStyle('h6', `1.143em`, `1.5em`, 500)}
   ${headingStyle('.subtitle', `0.857em`, `1.333em`)}
   ${headingStyle('.caption', `0.857em`, `1.333em`)}
+`;
 
-
-  :host([appearance='none']) {
+const largeScreen = css`
+  :host([disappear-lg]) {
     display: none;
   }
 `;
@@ -121,7 +121,7 @@ const mediumScreen = css`
     text-transform: initial;
   }
 
-  :host([md-appearance='none']) {
+  :host([disappear-md]) {
     display: none;
   }
 
@@ -152,7 +152,7 @@ const smallScreen = css`
     text-transform: initial;
   }
 
-  :host([sm-appearance='none']) {
+  :host([disappear-sm]) {
     display: none;
   }
 
@@ -175,6 +175,10 @@ const smallScreen = css`
  * Each definition can be controlled with a CSS variable.
  */
 export const headlineScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: lgScreen,
+    css: largeScreen,
+  },
   {
     media: mdScreen,
     css: mediumScreen,
