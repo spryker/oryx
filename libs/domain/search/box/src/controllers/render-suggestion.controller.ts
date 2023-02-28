@@ -2,7 +2,7 @@ import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { DirectiveResult } from 'lit-html/directive';
+import { DirectiveResult } from 'lit/directive';
 import { html } from 'lit/static-html.js';
 import { Suggestion, SuggestionResource } from '../../../src';
 import { SearchBoxProperties } from '../box.model';
