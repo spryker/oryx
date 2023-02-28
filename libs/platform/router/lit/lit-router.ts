@@ -69,7 +69,7 @@ export class LitRouter extends Router {
     ) {
       return;
     }
-    console.log('safasf');
+
     await super.goto(pathname);
   }
 
