@@ -30,4 +30,8 @@ export const styles = css`
     justify-content: flex-start;
     padding: 9px 15px;
   }
+
+  oryx-dropdown {
+    --oryx-popover-maxwidth: 188px;
+  }
 `;
