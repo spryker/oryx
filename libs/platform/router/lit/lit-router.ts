@@ -38,9 +38,15 @@ export class LitRouter extends Router {
     this.routerService
       .currentRoute()
       .pipe(
-        this.ssrRendered ? skip(1) : identity,
+        this.ssrRendered
+          ? (skip(1),
+            tap(
+              (route) =>
+                route !== '' && this.routerService.acceptParams(this.params)
+            ))
+          : identity,
         tap(async (route) => {
-          if (route && route !== '') {
+          if (route !== '') {
             const resolve = this.ssrAwaiter?.getAwaiter();
             await this._goto(route);
             this.routerService.acceptParams(this.params);

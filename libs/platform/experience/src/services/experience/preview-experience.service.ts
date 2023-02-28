@@ -47,7 +47,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   ) {
     super();
 
-    this.dataClient?.sendStatic(this.staticService.getData());
+    this.dataClient.sendStatic(this.staticService.getData());
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
 
     this.structureDataEvent$.subscribe();
@@ -131,10 +131,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     this.experiencePreviewEvent$.pipe(
       map((data) => data.data.route),
       filter(isDefined),
-      tap((route) => {
-        console.log('this.routerService.navigate(route)');
-        this.routerService.navigate(route);
-      })
+      tap((route) => this.routerService.navigate(route))
     );
 
   protected interactionDataEvent$ = this.experiencePreviewEvent$.pipe(
@@ -150,7 +147,6 @@ export class PreviewExperienceService extends DefaultExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
-    console.log('reloadComponentByRoute');
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       route,

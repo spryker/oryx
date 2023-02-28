@@ -1,10 +1,11 @@
 import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
-import { Injector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { ContentBackendUrl } from '../experience-tokens';
 import { DefaultExperienceService } from './default-experience.service';
 import { ExperienceService } from './experience.service';
+import { ExperienceStaticService } from './static-data';
 
 const mockStructureKey = 'bannerSlider';
 const mockDataKey = 'homepage-banner';
@@ -73,32 +74,42 @@ const mockComponentData = {
   },
 };
 
+class MockExperienceStaticService implements ExperienceStaticService {
+  getData = vi.fn().mockReturnValue([]);
+}
+
 describe('DefaultExperienceService', () => {
   let service: ExperienceService;
   let http: HttpTestService;
-  let testInjector;
 
   beforeEach(() => {
-    testInjector = new Injector([
-      {
-        provide: ContentBackendUrl,
-        useValue: ContentBackendUrl,
-      },
-      {
-        provide: HttpService,
-        useClass: HttpTestService,
-      },
-      {
-        provide: 'ExperienceService',
-        useClass: DefaultExperienceService,
-      },
-    ]);
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: ContentBackendUrl,
+          useValue: ContentBackendUrl,
+        },
+        {
+          provide: HttpService,
+          useClass: HttpTestService,
+        },
+        {
+          provide: 'ExperienceService',
+          useClass: DefaultExperienceService,
+        },
+        {
+          provide: ExperienceStaticService,
+          useClass: MockExperienceStaticService,
+        },
+      ],
+    });
 
     service = testInjector.inject('ExperienceService');
     http = testInjector.inject(HttpService) as HttpTestService;
   });
 
   afterEach(() => {
+    destroyInjector();
     http.clear();
   });
 
