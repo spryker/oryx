@@ -32,18 +32,7 @@ export class DefaultComponentsRegistryService
     uid: string,
     styleClasses?: string
   ): TemplateResult | undefined {
-    let component;
-    try {
-      component = !this.componentsPlugin.findComponentDefBy(type)
-        ? this.componentMapping?.[type]
-        : { tag: type };
-    } catch (e) {
-      // Didn't find registered component
-    }
-
-    if (!component) {
-      return undefined;
-    }
+    const component = this.componentMapping?.[type] ?? { tag: type };
 
     return component.template
       ? component.template(uid, styleClasses)
