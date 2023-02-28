@@ -14,6 +14,8 @@ import {
   Observable,
   ReplaySubject,
   shareReplay,
+  Subject,
+  takeUntil,
   tap,
 } from 'rxjs';
 import { ExperienceDataClientService } from './data-client';
@@ -46,7 +48,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
     super();
 
     this.dataClient?.sendStatic(this.staticComponents);
-    console.log(this.staticComponents, 'this.staticComponents');
+    this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
+
     this.structureDataEvent$.subscribe();
     this.contentDataEvent$.subscribe();
     this.optionsDataEvent$.subscribe();
@@ -58,6 +61,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
         this.routeChangeHandler(event.route);
       });
   }
+
+  protected destroy$ = new Subject<void>();
 
   protected experiencePreviewEvent$ =
     typeof window !== 'undefined'
@@ -174,4 +179,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
    * Temporary flag for storing the information about header/footer editing
    */
   public headerEdit$ = new BehaviorSubject<boolean>(false);
+
+  onDestroy(): void {
+    this.destroy$.next();
+  }
 }
