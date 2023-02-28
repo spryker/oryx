@@ -65,7 +65,7 @@ describe('DefaultFormRenderer', () => {
           });
 
           expect(pattern).toBe('.*\\S+.*');
-          expect(title).toBe('at least one character');
+          expect(title).toBe('Invalid empty text');
         });
       });
     });
