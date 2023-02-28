@@ -1,3 +1,5 @@
+import { DirectiveResult } from 'lit/directive';
+
 export interface FormFieldAttributes {
   type: string;
   [key: string]: string | number;
@@ -48,5 +50,5 @@ export type FormValues = Record<string, string | boolean>;
 
 export interface FieldValidationPattern {
   pattern?: string;
-  title?: string;
+  title?: DirectiveResult | string;
 }

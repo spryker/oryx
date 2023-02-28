@@ -1,4 +1,5 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
@@ -21,7 +22,9 @@ export class DefaultFormRenderer implements FormRenderer {
     const { required, pattern, title } = field;
     return {
       pattern: pattern ?? (required ? '.*\\S+.*' : undefined),
-      title: title ?? (required ? 'at least one character' : undefined),
+      title:
+        title ??
+        (required ? i18n('form.validation.invalid-empty-text') : undefined),
     };
   }
 
