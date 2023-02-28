@@ -5,7 +5,7 @@ import {
   isPromise,
   ResourceInjectable,
 } from '@spryker-oryx/utilities';
-import { DirectiveResult } from 'lit-html/directive.js';
+import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { AppRef, Graphic, ResourcePlugin } from '../orchestration';
 

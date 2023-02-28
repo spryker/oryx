@@ -43,7 +43,7 @@ export const ContentMixin = <
     protected options$ = this.contentController.getOptions();
 
     @asyncState()
-    protected componentOptions = valueType(this.options$);
+    protected componentOptions = valueType(this.options$) as OptionsType;
 
     protected content$ = this.contentController.getContent();
 

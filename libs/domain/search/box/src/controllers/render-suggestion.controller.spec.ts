@@ -8,6 +8,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { SearchBoxProperties } from '../box.model';
 import { RenderSuggestionController } from './render-suggestion.controller';
 
 const resource: SuggestionResource = {
@@ -73,17 +74,10 @@ const categoriesOnly: Suggestion = {
 };
 
 @customElement('fake-container')
-class FakeContainer extends LitElement {
-  protected options = {
-    nothingFoundText: '',
-    completionTitle: '',
-    categoriesTitle: '',
-    cmsTitle: '',
-    productsTitle: '',
-    viewAllProductsButtonTitle: '',
-  };
+class FakeContainer extends LitElement implements SearchBoxProperties {
+  query = '';
 
-  controller = new RenderSuggestionController();
+  controller = new RenderSuggestionController(this);
 
   protected isNothingFound(suggestion: Suggestion): boolean {
     return (
@@ -99,13 +93,10 @@ class FakeContainer extends LitElement {
     return html`
       ${when(
         this.isNothingFound(this.suggestion),
-        () => this.controller.renderNothingFound(this.options),
+        () => this.controller.renderNothingFound(),
         () => html`
-          ${this.controller.renderLinksSection(this.suggestion, this.options)}
-          ${this.controller.renderProductsSection(
-            this.suggestion,
-            this.options
-          )}
+          ${this.controller.renderLinksSection(this.suggestion)}
+          ${this.controller.renderProductsSection(this.suggestion)}
         `
       )}
     `;
@@ -190,11 +181,53 @@ describe('RenderSuggestionController', () => {
       const links = element.renderRoot.querySelectorAll(
         'section:nth-child(1) > ul oryx-content-link'
       );
-      Array.from(links).forEach((link, index) => {
+      Array.from(links).forEach((link) => {
         expect((link as ContentLinkComponent).options?.type).toBe(
           SemanticLinkType.Category
         );
       });
+    });
+  });
+
+  describe('when host has query', () => {
+    const query = 'test';
+
+    beforeAll(async () => {
+      element = await fixture(html`
+        <fake-container
+          .query=${query}
+          .suggestion=${suggestion}
+        ></fake-container>
+      `);
+    });
+
+    it('should pass query to the view all link params', () => {
+      const viewAllLink =
+        element.renderRoot.querySelector<ContentLinkComponent>(
+          'oryx-button > oryx-content-link'
+        );
+      expect(viewAllLink?.options?.params?.q).toBe(query);
+    });
+  });
+
+  describe('when view all button is clicked', () => {
+    const callback = vi.fn();
+
+    beforeAll(async () => {
+      element = await fixture(html`
+        <fake-container
+          .suggestion=${suggestion}
+          @oryx.close=${callback}
+        ></fake-container>
+      `);
+
+      element.renderRoot
+        .querySelector('oryx-button')
+        ?.dispatchEvent(new MouseEvent('click'));
+    });
+
+    it('should dispatch oryx.close event', () => {
+      expect(callback).toHaveBeenCalled();
     });
   });
 });
