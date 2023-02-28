@@ -62,6 +62,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
       });
   }
 
+  protected initStaticData(): void {
+    // TODO: we don't want load data in preview mode
+  }
+
   protected destroy$ = new Subject<void>();
 
   protected experiencePreviewEvent$ =
@@ -75,7 +79,15 @@ export class PreviewExperienceService extends DefaultExperienceService {
   protected structureDataEvent$ = this.experiencePreviewEvent$.pipe(
     map((data) => data.data?.structure),
     filter(isDefined),
-    tap((structure) => {
+    tap((structure: any) => {
+      // TODO: refactoring
+      if (structure.meta) {
+        if (!this.dataRoutes[structure.meta.route]) {
+          this.dataRoutes[structure.meta.route] = new ReplaySubject<string>(1);
+        }
+        this.dataRoutes[structure.meta.route].next(structure.id);
+      }
+
       if (!this.dataComponent[structure.id]) {
         this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
       }
