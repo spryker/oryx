@@ -117,7 +117,7 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe.only('when marginBlock option is provided', () => {
+  describe('when marginBlock option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-site-notification-center
@@ -138,7 +138,7 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe.only('when marginInline option is provided', () => {
+  describe('when marginInline option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-site-notification-center
