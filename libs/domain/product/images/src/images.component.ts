@@ -48,16 +48,17 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`
       <oryx-layout
-        navigation=${this.componentOptions.navigationPosition ||
+        navigation=${this.componentOptions?.navigationPosition ||
         defaultImagesOptions.navigationPosition}
-        ?floating=${this.componentOptions.navigationDisplay ===
+        ?floating=${this.componentOptions?.navigationDisplay ===
         ProductImagesNavigationDisplay.Floating}
-        style="--product-image-height: ${this.componentOptions.imageHeight ||
+        style="--product-image-height: ${this.componentOptions?.imageHeight ||
         defaultImagesOptions.imageHeight};"
       >
         ${when(
-          this.componentOptions.navigationPosition === NavigationPosition.Top ||
-            this.componentOptions.navigationPosition ===
+          this.componentOptions?.navigationPosition ===
+            NavigationPosition.Top ||
+            this.componentOptions?.navigationPosition ===
               NavigationPosition.Start,
           () => html`${navigation}${main}`,
           () => html`${main}${navigation}`
@@ -163,7 +164,7 @@ export class ProductImagesComponent extends ProductMixin(
 
   protected onMouseover(e: Event): void {
     if (
-      this.componentOptions.navigationMouseEvent ===
+      this.componentOptions?.navigationMouseEvent ===
       ProductImagesNavigationMouseEvent.Mouseover
     ) {
       const target = e.target as HTMLInputElement;
@@ -183,7 +184,7 @@ export class ProductImagesComponent extends ProductMixin(
 
   protected resolveImages(): ProductMedia[] {
     return (
-      (!this.componentOptions.mediaSet
+      (!this.componentOptions?.mediaSet
         ? this.product?.mediaSet?.[0]
         : this.product?.mediaSet?.find(
             (set) => set.name === this.componentOptions?.mediaSet
