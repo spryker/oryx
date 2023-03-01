@@ -16,7 +16,7 @@ export class DefaultExperienceStaticService implements ExperienceStaticService {
 
   protected processData(): Component[] {
     return this.staticData.flat().map((component) => {
-      component.id = component.id ?? this.getAutoId();
+      component.id ??= this.getAutoId();
 
       this.processComponent(component as Component);
 
@@ -25,11 +25,9 @@ export class DefaultExperienceStaticService implements ExperienceStaticService {
   }
 
   protected processComponent(component: Component): void {
-    const components = component?.components || [];
+    component.id ??= this.getAutoId();
 
-    component.id = component.id ?? this.getAutoId();
-
-    components.forEach((component: Component) => {
+    (component?.components ?? []).forEach((component: Component) => {
       this.processComponent(component);
     });
   }

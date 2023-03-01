@@ -17,7 +17,7 @@ export class RootAppComponent extends LitElement {
   override render(): TemplateResult {
     return html`
       ${asyncValue(
-        // Uses as a trigger for dropping hydration
+        // TODO: will be fixed when another solution will be found. Uses as a trigger for dropping hydration
         this.routerService.currentParams(),
         () => html` <experience-composition
             uid="header"
