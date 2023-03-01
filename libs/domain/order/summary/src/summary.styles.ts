@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const styles = css`
@@ -9,8 +9,11 @@ export const styles = css`
 
   .details-container {
     display: flex;
-    flex-direction: column;
     gap: 17px;
+  }
+
+  oryx-button {
+    align-self: end;
   }
 
   oryx-button button {
@@ -21,6 +24,7 @@ export const styles = css`
     gap: 8px;
     display: grid;
     grid-template-columns: max-content auto;
+    flex: 1;
   }
 
   .summary {
@@ -57,23 +61,19 @@ export const styles = css`
   }
 `;
 
-const mediumScreen = css`
+const smallScreen = css`
   .details-container {
-    flex-direction: row;
-  }
-
-  .details {
-    flex: 1;
+    flex-direction: column;
   }
 
   oryx-button {
-    align-self: end;
+    align-self: start;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

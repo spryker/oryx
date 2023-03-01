@@ -3,6 +3,8 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { HeadingAttributes } from '../heading.model';
 
+const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'];
+
 export default {
   title: `${storybookPrefix}/Structure/Heading`,
   args: {
@@ -10,19 +12,23 @@ export default {
   },
   argTypes: {
     tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
+      options: tags,
     },
     maxLines: {
       control: { type: 'number' },
     },
     appearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
+      options: tags,
     },
     mdAppearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
+      options: tags,
+    },
+    smAppearance: {
+      control: { type: 'select' },
+      options: tags,
     },
   },
 } as Meta;
@@ -34,6 +40,7 @@ const Template: Story<HeadingAttributes> = (
     .tag=${props.tag}
     .appearance=${props.appearance}
     .mdAppearance=${props.mdAppearance}
+    .smAppearance=${props.smAppearance}
     .maxLines=${props.maxLines}
   >
     Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy
