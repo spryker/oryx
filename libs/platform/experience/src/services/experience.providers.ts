@@ -1,6 +1,5 @@
 import { injectEnv, SsrOptions } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { componentsProvider } from './components.provider';
 import {
   BreakpointService,
   DefaultBreakpointService,
@@ -27,7 +26,6 @@ declare global {
 }
 
 export const experienceProviders: Provider[] = [
-  componentsProvider,
   {
     provide: ContentBackendUrl,
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),

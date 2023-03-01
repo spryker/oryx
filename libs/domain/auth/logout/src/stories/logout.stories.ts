@@ -38,7 +38,7 @@ const Template: Story<LogoutOptions> = (props): TemplateResult => {
     </oryx-button>
 
     <div @click=${pageReload}>
-      <auth-logout .options=${options}></auth-logout>
+      <oryx-auth-logout .options=${options}></oryx-auth-logout>
     </div>
   `;
 };
