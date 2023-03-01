@@ -1,49 +1,58 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { finalize, ReplaySubject, switchMap, withLatestFrom } from 'rxjs';
+import {
+  asyncState,
+  hydratable,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { take, tap } from 'rxjs';
 import { LogoutOptions } from './logout.model';
+import { styles } from './logout.styles';
 
 @hydratable('window:load')
-export class AuthLogoutComponent extends ComponentMixin<LogoutOptions>() {
+export class AuthLogoutComponent extends ContentMixin<LogoutOptions>(
+  LitElement
+) {
+  static styles = styles;
+
   protected routerService = resolve(RouterService);
-
   protected authService = resolve(AuthService);
-  protected options$ = new ContentController(this).getOptions();
 
-  protected logoutTrigger$ = new ReplaySubject<void>(1);
+  @asyncState()
+  protected isAuthenticated = valueType(this.authService.isAuthenticated());
 
-  @subscribe()
-  protected logout$ = this.logoutTrigger$.pipe(
-    withLatestFrom(this.options$),
-    switchMap(([_, options]) => {
-      return this.authService.logout().pipe(
-        finalize(() => {
-          this.routerService.navigate(
-            options.customRedirect ? `/${options.customRedirect}` : ''
-          );
-        })
-      );
-    })
-  );
+  protected logout(): void {
+    this.authService
+      .logout()
+      .pipe(
+        take(1),
+        tap(() => this.redirect())
+      )
+      .subscribe();
+  }
 
-  protected override render(): TemplateResult {
+  protected redirect(): void {
+    this.routerService.navigate(
+      this.options?.redirectUrl ? `/${this.options.redirectUrl}` : '/'
+    );
+  }
+
+  protected override render(): TemplateResult | void {
+    if (!this.isAuthenticated) {
+      return;
+    }
+
     return html`
-      ${asyncValue(this.authService.isAuthenticated(), (isAuthenticated) =>
-        isAuthenticated
-          ? html`
-              <oryx-button
-                size="small"
-                @click=${() => this.logoutTrigger$.next()}
-              >
-                <button type="submit">Logout</button>
-              </oryx-button>
-            `
-          : html``
-      )}
+      <oryx-button type="text">
+        <button @click=${this.logout}>
+          <oryx-icon type="login"></oryx-icon>
+          ${i18n('auth.logout')}
+        </button>
+      </oryx-button>
     `;
   }
 }

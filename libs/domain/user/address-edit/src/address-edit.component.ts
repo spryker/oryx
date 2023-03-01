@@ -5,7 +5,7 @@ import { AddressFormComponent } from '@spryker-oryx/user/address-form';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { catchError, tap, throwError } from 'rxjs';
+import { tap } from 'rxjs';
 import { BACK_EVENT, SUCCESS_EVENT } from './address-edit.model';
 import { styles } from './address-edit.styles';
 
@@ -34,10 +34,7 @@ export class AddressEditComponent extends AddressMixin(
     this.addressService[this.addressId ? 'updateAddress' : 'addAddress'](
       this.ensureAddress(e.detail.values as Address)
     )
-      .pipe(
-        catchError((e) => throwError(() => e)),
-        tap(() => this.emitEvent(SUCCESS_EVENT))
-      )
+      .pipe(tap(() => this.emitEvent(SUCCESS_EVENT)))
       .subscribe();
   }
 

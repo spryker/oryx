@@ -82,6 +82,7 @@
       "@spryker-oryx/form": ["libs/base/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
+      "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
       "@spryker-oryx/order/confirmation-banner": [
@@ -212,6 +213,7 @@
       ],
       "@spryker-oryx/ui/typeahead": ["libs/base/ui/search/typeahead/index.ts"],
       "@spryker-oryx/ui/utilities": ["libs/base/ui/form/utilities/index.ts"],
+      "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
       "@spryker-oryx/user/address-book": [

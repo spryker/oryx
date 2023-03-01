@@ -10,8 +10,8 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { Product, ProductComponentProperties, ProductContext } from '../models';
-import { ProductService } from '../services';
+import { Product, ProductComponentProperties } from '../models';
+import { ProductContext, ProductService } from '../services';
 
 /**
  * Controls product components by providing easy access to the
@@ -22,47 +22,25 @@ export class ProductController {
   protected observe: ObserveController<LitElement & ProductComponentProperties>;
   protected productService = resolve(ProductService, null);
 
-  constructor(
-    protected host: LitElement & ProductComponentProperties,
-    protected include: string[] = []
-  ) {
+  constructor(protected host: LitElement & ProductComponentProperties) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
     this.observe = new ObserveController(host);
     this.context = new ContextController(host);
   }
 
-  getProduct(): Observable<Product | null> {
+  getProduct(): Observable<Product | undefined> {
     return this.context.get(ProductContext.SKU, this.observe.get('sku')).pipe(
       switchMap((sku, index) => {
         if (!sku) {
-          return of(null);
+          return of(undefined);
         }
         return (
           this.productService
-            ?.get({ sku, include: this.include })
-            .pipe(index ? startWith(null) : identity) ?? of(null)
+            ?.get({ sku })
+            .pipe(index ? startWith(undefined) : identity) ?? of(undefined)
         );
       }),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
-  }
-
-  /**
-   * @deprecated Use getProduct() instead.
-   */
-  getProductLegacy(): Observable<Product | null> {
-    return (
-      this.observe as ObserveController<LitElement & { product?: Product }>
-    )
-      .get('product')
-      .pipe(
-        switchMap((product) => {
-          if (product) {
-            return of(product);
-          }
-
-          return this.getProduct();
-        })
-      );
   }
 }

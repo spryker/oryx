@@ -1,12 +1,9 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { OrderContext } from '@spryker-oryx/order';
-import { ProductContext } from '@spryker-oryx/product';
-import { RouteParams, RouterService } from '@spryker-oryx/router';
+import { RouterService } from '@spryker-oryx/router';
 import { LitRouter } from '@spryker-oryx/router/lit';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
-import { take, tap } from 'rxjs';
+import { hydratable } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './root-app.styles';
 
 @hydratable()
@@ -17,28 +14,9 @@ export class RootAppComponent extends LitElement {
 
   static styles = styles;
 
-  protected route$ = this.routerService.currentParams().pipe(
-    tap((params: RouteParams) => {
-      this.context.provide(ProductContext.SKU, params?.sku);
-      this.context.provide(OrderContext.OrderId, params?.id);
-    })
-  );
-
-  constructor() {
-    super();
-    if (isServer) {
-      // Workaround to properly set SKU context on the SSR
-      this.route$.pipe(take(1)).subscribe();
-    }
-  }
-
   override render(): TemplateResult {
-    return html` ${asyncValue(
-      this.route$,
-      () =>
-        html`<experience-composition uid="header"></experience-composition>
-          ${this._router.outlet()}
-          <experience-composition uid="footer"></experience-composition>`
-    )}`;
+    return html`<experience-composition uid="header"></experience-composition>
+      ${this._router.outlet()}
+      <experience-composition uid="footer"></experience-composition>`;
   }
 }
