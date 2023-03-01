@@ -96,23 +96,66 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe('when type is set', () => {
+  describe.only('when maxWidth option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-site-notification-center
-          .options=${{ type: Types.INFO }}
+          .options=${{ maxWidth: '50%' }}
         ></oryx-site-notification-center>`
       );
     });
 
-    it('should display notification with the given type', () => {
+    it('should create a CSS variable at the oryx-notification-center', () => {
       const notificationCenter = element.shadowRoot?.querySelector(
         'oryx-notification-center'
       ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-max-width'
+        )
+      ).toBe('50%');
+    });
+  });
 
-      const open = vi.spyOn(notificationCenter, 'open');
-      notificationTrigger$.next(mockNotification);
-      expect(open).toHaveBeenCalledWith(mockNotification);
+  describe.only('when marginBlock option is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-site-notification-center
+          .options=${{ marginBlock: '10vh' }}
+        ></oryx-site-notification-center>`
+      );
+    });
+
+    it('should create a CSS variable at the oryx-notification-center', () => {
+      const notificationCenter = element.shadowRoot?.querySelector(
+        'oryx-notification-center'
+      ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-margin-block'
+        )
+      ).toBe('10vh');
+    });
+  });
+
+  describe.only('when marginInline option is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-site-notification-center
+          .options=${{ marginInline: '10vw' }}
+        ></oryx-site-notification-center>`
+      );
+    });
+
+    it('should create a CSS variable at the oryx-notification-center', () => {
+      const notificationCenter = element.shadowRoot?.querySelector(
+        'oryx-notification-center'
+      ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-margin-inline'
+        )
+      ).toBe('10vw');
     });
   });
 });

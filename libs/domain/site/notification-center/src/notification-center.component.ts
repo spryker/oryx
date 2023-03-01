@@ -52,6 +52,6 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
     if (maxWidth) style += `--oryx-notification-max-width: ${maxWidth};`;
     if (block) style += `--oryx-notification-margin-block: ${block};`;
     if (inline) style += `--oryx-notification-margin-inline: ${inline};`;
-    return style;
+    return style === '' ? undefined : style;
   }
 }
