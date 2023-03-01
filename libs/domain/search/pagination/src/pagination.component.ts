@@ -8,13 +8,14 @@ import {
   ProductListPageService,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { TemplateResult } from 'lit/development';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest } from 'rxjs';
 import { PaginationOptions } from './pagination.model';
 
+@hydratable('window:load')
 @defaultOptions({ max: 3, enableControls: true })
 export class PaginationComponent extends ComponentMixin<
   PaginationOptions & ProductListQualifier
@@ -51,10 +52,10 @@ export class PaginationComponent extends ComponentMixin<
   }
 
   protected generateLink(page: number): string {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(globalThis.location.search);
     urlParams.set('page', page.toString());
 
-    return `${window.location.origin}${window.location.pathname}${
+    return `${globalThis.location.origin}${globalThis.location.pathname}${
       urlParams.toString() ? `?${urlParams.toString()}` : ''
     }`;
   }

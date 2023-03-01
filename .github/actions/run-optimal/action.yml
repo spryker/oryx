@@ -14,8 +14,8 @@ runs:
   using: 'composite'
   steps:
     - run: ${{ inputs.cmd }}
-      if: ${{ inputs.isDev }}
+      if: ${{ inputs.isDev == 'true' }}
       shell: bash
     - run: ${{ inputs.affectedCmd }}
-      if: ${{ inputs.isDev != true }}
+      if: ${{ inputs.isDev == 'false' }}
       shell: bash

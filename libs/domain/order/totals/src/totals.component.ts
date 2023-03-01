@@ -14,7 +14,10 @@ export class OrderTotalsComponent extends OrderMixin(ContentMixin(LitElement)) {
       ? {
           name: 'order',
           priceMode: this.order.priceMode,
-          totals: { ...this.order.totals, priceToPay: 0 },
+          totals: {
+            ...this.order.totals,
+            priceToPay: this.order.totals.grandTotal,
+          },
           id: this.order.id,
           products: this.order.items.map((item) => ({
             ...item,

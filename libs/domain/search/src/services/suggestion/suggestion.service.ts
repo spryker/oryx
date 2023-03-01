@@ -1,13 +1,10 @@
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { NullableGeneric } from '@spryker-oryx/utilities';
+import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
 
 export interface SuggestionService {
-  get(qualifier: SuggestionQualifier): Observable<NullableGeneric<Suggestion>>;
-  getError(
-    qualifier: SuggestionQualifier
-  ): Observable<NullableGeneric<HttpErrorResponse>>;
+  get(qualifier: SuggestionQualifier): Observable<Suggestion | undefined>;
+  getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>>;
 }
 
 export const SuggestionService = 'oryx.SuggestionService';

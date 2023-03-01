@@ -6,7 +6,6 @@ import {
 } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
 import {
   combineLatest,
   EMPTY,
@@ -38,24 +37,20 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
 
   protected interactionMouseEvent$ = this.interaction$.pipe(
     filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (data: any) => data.action === 'mouseover' || data.action === 'mouseout'
     )
   );
 
   // TODO: do we need to react on composition item click?
   protected interactionClickEvent$ = this.interaction$.pipe(
-    filter((data: any) => data.action === 'click'),
-    tap((data: any) => {
-      // TODO: scroll to target component
-    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filter((data: any) => data.action === 'click')
   );
 
   protected interactionAddComponentEvent$ = this.interaction$.pipe(
-    filter((data: any) => data.action === 'add'),
-    tap((data: any) => {
-      const { componentId } = data;
-      // TODO: scroll to target component
-    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filter((data: any) => data.action === 'add')
   );
 
   @subscribe()
@@ -64,6 +59,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     this.interactionClickEvent$,
     this.interactionAddComponentEvent$
   ).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tap((data: any) => {
       const focusedNameAttr = 'name';
       const root = this.shadowRoot;
@@ -98,6 +94,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     this.uid$,
     this.route$,
   ]).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     tap(([uid, route]) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
         .headerEdit$;
@@ -137,22 +134,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     return html`
       ${asyncValue(
         this.components$,
-        (components) =>
-          html`<oryx-layout .uid=${this.uid}>
-            ${components
-              ? repeat(
-                  components,
-                  (component) => component.id,
-                  (component) =>
-                    this.registryService.resolveTemplate(
-                      component.type,
-                      component.id,
-                      this.getLayoutClasses(component)
-                    )
-                )
-              : ``}
-            ${this.addInlineStyles(components)}
-          </oryx-layout>`,
+        (components) => html` ${this.renderComponents(components)} `,
         () => html`Loading...`
       )}
     `;

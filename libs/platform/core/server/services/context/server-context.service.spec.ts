@@ -1,13 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { ContextService } from '@spryker-oryx/core';
+import { ContextService, ContextServiceFallback } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { finalize } from 'rxjs';
+import { finalize, of } from 'rxjs';
 import { SSRStreamParserService } from './default-ssr-stream-parser';
 import { ServerContextService } from './server-context.service';
 
 const mockKey = 'mockKey';
+const mockKeyFallback = 'mockKeyFallback';
+const mockFallbackValue = 'mockFallbackValue';
 const mockObject = {
   name: 'name',
   value: 'value',
@@ -51,6 +53,10 @@ describe('SSRContextService', () => {
         {
           provide: ContextService,
           useClass: ServerContextService,
+        },
+        {
+          provide: `${ContextServiceFallback}${mockKeyFallback}`,
+          useValue: of(mockFallbackValue),
         },
       ],
     });
@@ -111,5 +117,15 @@ describe('SSRContextService', () => {
 
     expect(element.hasAttribute(`data-${mockKey}`)).toBe(false);
     expect(mockCallback).toHaveBeenCalled();
+  });
+
+  it('should use fallback value if provided', () => {
+    const mockCallback = vi.fn();
+
+    testChildContext()
+      .context.get(testChildContext(), mockKeyFallback)
+      .subscribe(mockCallback);
+
+    expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
   });
 });

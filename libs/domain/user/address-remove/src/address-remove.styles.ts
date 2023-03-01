@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const styles = css`
@@ -23,10 +23,6 @@ export const styles = css`
     flex-basis: 100%;
   }
 
-  oryx-button {
-    flex-basis: calc(50% - var(--oryx-space));
-  }
-
   oryx-button:last-of-type {
     margin-inline-start: var(--oryx-space-2);
   }
@@ -38,15 +34,16 @@ export const styles = css`
   }
 `;
 
-const mediumScreen = css`
+// TODO: consider making this standard behavior of cart/modal
+const smallScreen = css`
   oryx-button {
-    flex-basis: auto;
+    flex-basis: calc(50% - var(--oryx-space));
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

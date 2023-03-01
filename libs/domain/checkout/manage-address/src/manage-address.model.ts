@@ -1,5 +1,5 @@
 import { AddressBookState } from '@spryker-oryx/user/address-book';
-import { DirectiveResult } from 'lit-html/directive';
+import { DirectiveResult } from 'lit/directive';
 
 export type AddressModalConfig = {
   [key in AddressBookState]: {

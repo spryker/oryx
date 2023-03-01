@@ -1,5 +1,4 @@
 import { resolve } from '@spryker-oryx/di';
-import { ProductListSort } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   asyncState,
@@ -8,6 +7,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs/operators';
 import { SortingService } from '../../src/services/sorting.service';
 
@@ -23,12 +23,12 @@ export class SortComponent extends LitElement {
   protected querySortValue = valueType(this.routerService.currentQuery());
 
   protected override render(): TemplateResult {
-    return this.renderSorting(this.sortingOptions);
+    return this.renderSorting();
   }
 
-  protected renderSorting(
-    sort: ProductListSort | undefined | null
-  ): TemplateResult {
+  protected renderSorting(): TemplateResult {
+    const hasOptions = !!this.sortingOptions?.sortValues?.length;
+
     return html`
       <oryx-select>
         <select
@@ -39,14 +39,16 @@ export class SortComponent extends LitElement {
             ${i18n('search.select-search-parameter')}
           </option>
 
-          ${(sort?.sortValues ?? []).map(
-            ({ sortKey, sortName }) =>
-              html`<option
-                value="${sortKey}"
-                ?selected="${String(this.querySortValue?.sort) === sortKey}"
-              >
-                ${sortName}
-              </option>`
+          ${when(hasOptions, () =>
+            this.sortingOptions?.sortValues.map(
+              ({ sortKey, sortName }) =>
+                html`<option
+                  value="${sortKey}"
+                  ?selected="${this.querySortValue?.sort === sortKey}"
+                >
+                  ${sortName}
+                </option>`
+            )
           )}
         </select>
       </oryx-select>

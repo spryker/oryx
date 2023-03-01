@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import {
   baseStyles as inputBaseStyles,
   screenStyles as inputScreenStyles,
@@ -15,7 +15,7 @@ export const baseStyles = [
     }
 
     .clear[type='remove'] {
-      --oryx-icon-size: var(--oryx-icon-size-large);
+      --oryx-icon-size: var(--oryx-icon-size-medium);
     }
 
     .clear {
@@ -45,16 +45,16 @@ export const baseStyles = [
   `,
 ];
 
-const mediumScreen = css`
+const smallScreen = css`
   .clear[type='remove'] {
-    --oryx-icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-large);
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   ...inputScreenStyles,
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

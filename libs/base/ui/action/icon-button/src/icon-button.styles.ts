@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const iconButtonBaseStyles = css`
+export const iconButtonStyles = css`
   :host {
     color: var(--oryx-icon-button-color, var(--oryx-color-neutral-300));
     display: inline-block;

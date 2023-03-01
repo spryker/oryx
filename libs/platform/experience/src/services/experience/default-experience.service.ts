@@ -5,31 +5,58 @@ import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
+import { ExperienceStaticData } from './static-data';
 
 export class DefaultExperienceService implements ExperienceService {
   protected dataRoutes: Record<string, ReplaySubject<string>> = {};
   protected dataComponent: Record<string, ReplaySubject<Component>> = {};
   protected dataContent: Record<string, ReplaySubject<any>> = {};
   protected dataOptions: Record<string, ReplaySubject<any>> = {};
+  protected autoComponentId = 0;
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
-    protected http = inject(HttpService)
-  ) {}
+    protected http = inject(HttpService),
+    protected staticData = inject(ExperienceStaticData, [])
+  ) {
+    this.initStaticData();
+  }
+
+  protected initStaticData(): void {
+    this.staticData.flat().forEach((component) => {
+      component.id = component.id ?? this.getAutoId();
+
+      if (!this.dataComponent[component.id]) {
+        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
+      }
+      this.dataComponent[component.id].next(component as Component);
+      if (component.meta?.route) {
+        if (!this.dataRoutes[component.meta.route]) {
+          this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
+        }
+        this.dataRoutes[component.meta.route].next(component.id);
+      }
+      this.processComponent(component as Component);
+    });
+  }
 
   protected processComponent(component: Component): void {
     const components = component?.components || [];
 
-    if (component?.id) {
-      if (!this.dataComponent[component.id]) {
-        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
-      }
-      this.dataComponent[component.id].next(component);
+    component.id = component.id ?? this.getAutoId();
+
+    if (!this.dataComponent[component.id]) {
+      this.dataComponent[component.id] = new ReplaySubject<Component>(1);
     }
+    this.dataComponent[component.id].next(component);
 
     components.forEach((component: Component) => {
       this.processComponent(component);
     });
+  }
+
+  protected getAutoId(): string {
+    return `static${this.autoComponentId++}`;
   }
 
   protected reloadComponent(uid: string): void {
