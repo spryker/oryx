@@ -46,3 +46,31 @@ export const backofficeTokens: DesignToken[] = [
     ...layoutMdTokens,
   },
 ];
+
+export const backofficeTokensWithoutDarkMode: DesignToken[] = [
+  {
+    color,
+    ...tokens,
+    ...typographyTokens,
+  },
+  {
+    media: {
+      screen: Size.Lg,
+    },
+    ...layoutTokens,
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...typographySmallTokens,
+    ...layoutSmTokens,
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...typographyMediumTokens,
+    ...layoutMdTokens,
+  },
+];
