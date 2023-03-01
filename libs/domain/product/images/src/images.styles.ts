@@ -30,6 +30,8 @@ export const productImageStyles = css`
 
   .main {
     --cols: 1;
+
+    overflow-y: hidden;
   }
 
   .navigation {
