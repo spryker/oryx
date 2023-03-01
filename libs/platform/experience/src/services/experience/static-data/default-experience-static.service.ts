@@ -27,7 +27,7 @@ export class DefaultExperienceStaticService implements ExperienceStaticService {
   protected processComponent(component: Component): void {
     component.id ??= this.getAutoId();
 
-    (component?.components ?? []).forEach((component: Component) => {
+    component?.components?.forEach((component: Component) => {
       this.processComponent(component);
     });
   }
