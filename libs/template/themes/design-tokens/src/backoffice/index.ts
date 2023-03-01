@@ -47,6 +47,7 @@ export const backofficeTokens: DesignToken[] = [
   },
 ];
 
+// TODO: This should be dropped after HRZ-2239
 export const backofficeTokensWithoutDarkMode: DesignToken[] = [
   {
     color,
