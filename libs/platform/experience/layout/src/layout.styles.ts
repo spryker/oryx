@@ -39,7 +39,7 @@ const stickyLayout = css`
   ::slotted(*[sticky]),
   ::slotted([class*='sticky']) {
     position: sticky;
-    top: var(--top, 0px);
+    inset-block-start: var(--top, 0px);
     max-height: calc(var(--height) - var(--top, 0px));
     z-index: var(--z-index, 1);
   }
@@ -266,7 +266,7 @@ const textLayout = css`
     column-count: var(--cols, 1);
   }
   :host([layout='text']) ::slotted(*:first-child) {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 `;
 

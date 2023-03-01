@@ -14,7 +14,7 @@ export const compositionStyles = css`
     /* we like this to be part of oryx-heading, but it's currently blocked by line clamp feature */
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-block-end: 12px;
   }
 
   oryx-checkout-manage-address {

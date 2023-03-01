@@ -6,7 +6,7 @@ export const drawerBaseStyles = css`
     all: unset;
     position: fixed;
     inset: auto;
-    top: 0;
+    inset-block-start: 0;
     height: 100%;
     width: var(--oryx-aside-width, 50%);
     transform: scaleX(var(--oryx-aside-visible, 0));
@@ -77,6 +77,6 @@ export const panelBaseStyles = css`
   }
 
   nav > * {
-    margin-bottom: 5px;
+    margin-block-end: 5px;
   }
 `;

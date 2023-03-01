@@ -27,6 +27,6 @@ export const styles = css`
   }
 
   slot[name='empty'] oryx-icon {
-    margin-bottom: 15px;
+    margin-block-end: 15px;
   }
 `;

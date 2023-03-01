@@ -41,7 +41,7 @@ export const styles = css`
   }
 
   h3 {
-    margin-bottom: 4px;
+    margin-block-end: 4px;
   }
 
   hr,
@@ -51,7 +51,7 @@ export const styles = css`
 
   hr {
     border: none;
-    border-top: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-canvas-300);
     margin: 20px 0;
     outline: none;
   }

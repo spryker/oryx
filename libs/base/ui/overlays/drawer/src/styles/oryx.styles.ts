@@ -15,7 +15,7 @@ export const drawerStyles = css`
   dialog::before {
     content: '';
     position: absolute;
-    top: 0;
+    inset-block-start: 0;
     inset-inline-start: 0;
     width: calc(100% - var(--_drawer-panel-size, 0px));
     height: 100%;
@@ -33,7 +33,7 @@ export const panelStyles = css`
   nav {
     --oryx-icon-size: var(--oryx-icon-size-small);
 
-    padding-top: 20px;
+    padding-block-start: 20px;
   }
 
   button {
