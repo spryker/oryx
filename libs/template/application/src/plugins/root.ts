@@ -43,7 +43,7 @@ export class RootPlugin
 
   apply(app: App): void | Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.rootSelector = app.findPlugin(ComponentsPlugin)!.rootSelector;
+    this.rootSelector = app.findPlugin(ComponentsPlugin)!.getRoot();
 
     // TODO - remove when we have app initializers
     resolve(ErrorService).initialize();

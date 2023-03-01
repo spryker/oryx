@@ -25,9 +25,11 @@ export class ComponentsLoader {
   protected readonly componentDefMap = new Map<string, ComponentDef>();
   protected readonly implMetaPreload: ComponentImplMeta = {};
   protected readonly componentMap = new Map<string, ComponentMap>();
-  public options: Partial<ComponentsOptions> = {};
+
   protected readonly logger = this.options?.logger ?? console;
   protected theme?: ThemePlugin;
+
+  constructor(protected options: ComponentsOptions) {}
 
   protected async loadComponentImpl(
     def: ComponentDef,
