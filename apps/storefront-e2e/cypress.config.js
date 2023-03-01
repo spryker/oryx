@@ -1,4 +1,5 @@
 const { defineConfig } = require('cypress');
+require('dotenv').config();
 
 module.exports = defineConfig({
   fileServerFolder: '.',
@@ -22,6 +23,6 @@ module.exports = defineConfig({
     supportFile: './src/support/index.ts',
   },
   env: {
-    GLUE_API: 'https://glue.de.faas-suite-prod.cloud.spryker.toys',
+    GLUE_API: process.env.GLUE_API,
   },
 });

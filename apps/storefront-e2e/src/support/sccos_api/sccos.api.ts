@@ -2,7 +2,7 @@ import { Product } from '../../types/product.type';
 
 export class SCCOSApi {
   private customerUniqueId: number = Math.random();
-  private headers: any;
+  private headers: object;
   private apiUrl: string;
 
   constructor() {

@@ -4,12 +4,12 @@ export class LandingPage extends AbstractSFPage {
   url = '/';
 
   waitForLoadedSSR(): void {
-    this.getVideo().should('be.visible')
+    this.getVideo().should('be.visible');
   }
 
   waitForLoadedSPA(): void {
-    this.waitForLoadedSSR()
+    this.waitForLoadedSSR();
   }
 
-  getVideo = () => cy.get('oryx-video')
+  getVideo = () => cy.get('oryx-video');
 }

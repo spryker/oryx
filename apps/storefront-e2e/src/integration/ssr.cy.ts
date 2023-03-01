@@ -36,20 +36,20 @@ describe('SSR suite', () => {
     const contactPage = new ContactPage();
 
     contactPage.visit();
-    contactPage.getHeading().should('be.visible')
+    contactPage.getHeading().should('be.visible');
   });
 
   it('must render Login page', () => {
     const loginPage = new LoginPage();
 
     loginPage.visit();
-    loginPage.loginForm.getWrapper().should('be.visible')
+    loginPage.loginForm.getWrapper().should('be.visible');
   });
 
   it('must render Cart page', () => {
     const cartPage = new CartPage();
 
     cartPage.visit();
-    cartPage.getCartEntriesWrapper().should('be.visible')
+    cartPage.getCartEntriesWrapper().should('be.visible');
   });
 });

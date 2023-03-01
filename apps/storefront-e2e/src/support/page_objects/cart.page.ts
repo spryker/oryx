@@ -13,7 +13,7 @@ export class CartPage extends AbstractSFPage {
 
   waitForLoadedSPA(): void {
     // TODO: add move accurate check
-    this.waitForLoadedSSR()
+    this.waitForLoadedSSR();
   }
 
   getCartEntriesWrapper = () => cy.get('cart-entries');

@@ -8,7 +8,7 @@ export class ContactPage extends AbstractSFPage {
   }
 
   waitForLoadedSPA(): void {
-    this.waitForLoadedSSR()
+    this.waitForLoadedSSR();
   }
 
   getHeading = () => cy.contains('This is Contact Page element.');

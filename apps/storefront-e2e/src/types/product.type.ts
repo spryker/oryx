@@ -5,4 +5,4 @@ export type Product = {
   currentPrice: string;
   currentPriceWith10pDiscount: string;
   previewImageURL?: string;
-}
+};

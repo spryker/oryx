@@ -13,9 +13,7 @@ export class SearchFragment {
     this.getSearchResultsWrapper().find('section:first-of-type li');
 
   getSearchProducts = () =>
-    this.getSearchResultsWrapper().find(
-      'oryx-content-link.product'
-    );
+    this.getSearchResultsWrapper().find('oryx-content-link.product');
 
   getViewAllBtn = () =>
     this.getSearchResultsWrapper().contains('View all products');
@@ -25,8 +23,8 @@ export class SearchFragment {
       `**/catalog-search-suggestions?q=${encodeURIComponent(text)}*`
     ).as('searchQuery');
 
-    this.getWrapper().trigger('focusin')
-    cy.waitUpdateComplete(this.getTypeahead()).should('be.true')
+    this.getWrapper().trigger('focusin');
+    cy.waitUpdateComplete(this.getTypeahead()).should('be.true');
 
     this.getInput().type(text, { delay: 100 });
 

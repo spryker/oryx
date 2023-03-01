@@ -1,4 +1,4 @@
-import { User } from "../../types/user.type";
+import { User } from '../../types/user.type';
 
 export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');
@@ -11,7 +11,7 @@ export class LoginFragment {
 
   login = (user: User) => {
     this.getEmailInput().type(user.email, { delay: 100 });
-    this.getPasswordInput().type(user.password, { delay: 100 })
+    this.getPasswordInput().type(user.password, { delay: 100 });
     this.getRememberMeCheckbox().click();
     this.getLoginButton().click();
   };

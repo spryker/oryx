@@ -108,6 +108,25 @@ jobs:
           cmd: npx nx run storybook:visual-regression-branch
           affectedCmd: npx nx affected --target=visual-regression-pr
           isDev: ${{ env.IS_DEV }}
+  test-e2e-storefront:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Storefront E2E Tests
+        uses: ./.github/actions/run-optimal
+        env:
+          GLUE_API: ${{ secrets.GLUE_API }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        with:
+          cmd: npm run sf:e2e:headless:ci
+          affectedCmd: npm run sf:e2e:headless:ci:affected
+          isDev: ${{ env.IS_DEV }}
   test-build:
     runs-on: ubuntu-latest
     steps:

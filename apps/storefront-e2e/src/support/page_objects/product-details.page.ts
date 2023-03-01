@@ -30,18 +30,22 @@ export class ProductDetailsPage extends AbstractSFPage {
   }
 
   hydrateAddToCart = () => {
-    this.getAddToCartWrapper().trigger('focusin')
+    this.getAddToCartWrapper().trigger('focusin');
     // I can't find another way to detect the end of hydration
     // waitUpdateComplete - does not work, even if the promise is resolved to true
-    // 
+    //
     // cy.waitUpdateComplete(this.getAddToCartWrapper())
-    cy.wait(1000)
-  }
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+  };
 
   getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');
-  getDetailsWrapper = () => this.getWrapper().find('oryx-layout[layout="list"]')
-  getTitle = () => this.getDetailsWrapper().find('oryx-product-title').find('oryx-heading');
-  getRating = () => this.getDetailsWrapper().find('oryx-product-average-rating');
+  getDetailsWrapper = () =>
+    this.getWrapper().find('oryx-layout[layout="list"]');
+  getTitle = () =>
+    this.getDetailsWrapper().find('oryx-product-title').find('oryx-heading');
+  getRating = () =>
+    this.getDetailsWrapper().find('oryx-product-average-rating');
   getSKU = () => this.getDetailsWrapper().find('oryx-product-id').shadow();
   getPrice = () => this.getDetailsWrapper().find('oryx-product-price').shadow();
   getAddToCartWrapper = () => this.getDetailsWrapper().find('oryx-cart-add');
@@ -50,14 +54,15 @@ export class ProductDetailsPage extends AbstractSFPage {
     return this.quantityInput
       ? this.quantityInput
       : new QuantityInputFragment(
-        this.getAddToCartWrapper().find('oryx-cart-quantity-input')
-      );
+          this.getAddToCartWrapper().find('oryx-cart-quantity-input')
+        );
   };
 
   getAddToCartBtn = () => this.getAddToCartWrapper().contains('Add to cart');
   getImages = () => this.getWrapper().find('oryx-product-media');
   getDescription = () => this.getWrapper().find('oryx-product-description');
-  getAttributes = () => this.getWrapper().find('oryx-product-attributes').find('li');
+  getAttributes = () =>
+    this.getWrapper().find('oryx-product-attributes').find('li');
 
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {

@@ -14,17 +14,23 @@ describe('Authentication suite', () => {
     it('must allow user to login with valid credentials', () => {
       cy.login(defaultUser);
 
-      loginPage.header.getUserSummaryHeading().should('contain', defaultUser.name);
+      loginPage.header
+        .getUserSummaryHeading()
+        .should('contain', defaultUser.name);
       cy.location('pathname').should('be.eq', landingPage.url);
     });
 
     it('must show and error message if a user logs in with invalid credentials', () => {
-      cy.login({ name: 'Sonia', email: 'sonia@spryker.com', password: 'change123123' });
+      cy.login({
+        name: 'Sonia',
+        email: 'sonia@spryker.com',
+        password: 'change123123',
+      });
 
       loginPage.header.getUserSummaryHeading().should('contain', 'Login');
       loginPage.loginForm.getBEValidationError().should('be.visible');
     });
-  })
+  });
 
   context('Logout functionality', () => {
     it('User is able to logout', () => {

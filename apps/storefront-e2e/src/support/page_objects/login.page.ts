@@ -5,11 +5,11 @@ export class LoginPage extends AbstractSFPage {
   url = '/login';
 
   waitForLoadedSSR(): void {
-    this.loginForm.getWrapper().should('be.visible')
+    this.loginForm.getWrapper().should('be.visible');
   }
 
   waitForLoadedSPA(): void {
-    this.waitForLoadedSSR()
+    this.waitForLoadedSSR();
   }
 
   loginForm = new LoginFragment();

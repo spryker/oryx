@@ -18,6 +18,6 @@ describe('SPA navigation suite', () => {
     contactPage.header.getLogo().click();
 
     cy.location('pathname').should('be.eq', landingPage.url);
-    landingPage.getVideo().should('be.visible')
+    landingPage.getVideo().should('be.visible');
   });
 });

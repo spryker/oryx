@@ -1,8 +1,8 @@
 import { ProductStorage } from '../data-storages/product.storage';
-import { Product } from '../types/product.type';
 import { CartEntryFragment } from '../support/page_fragments/cart-entry.fragment';
 import { CartPage } from '../support/page_objects/cart.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { Product } from '../types/product.type';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
