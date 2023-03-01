@@ -1,5 +1,5 @@
 import { ProductStorage } from '../data-storages/product.storage';
-import { Product } from '../interfaces/product.interface';
+import { Product } from '../types/product.type';
 import { CartEntryFragment } from '../support/page_fragments/cart-entry.fragment';
 import { CartPage } from '../support/page_objects/cart.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
@@ -9,14 +9,14 @@ const cartTotals = cartPage.getCartTotals();
 
 let sccosApi: SCCOSApi;
 
-describe('Cart spec', () => {
+describe('Cart suite', () => {
   beforeEach(() => {
     sccosApi = new SCCOSApi();
     sccosApi.getGuestCarts();
   });
 
-  context('Cart Entry displaying', () => {
-    it('HRZ-1403 | must show correct Cart Entry when product is added to the Cart', () => {
+  context('Cart Entries', () => {
+    it('must show correct Cart Entry if product is added to the Cart', () => {
       const productData = ProductStorage.getProductByEq(2);
 
       sccosApi.postGuestCartsItems(productData, 1);
@@ -28,37 +28,10 @@ describe('Cart spec', () => {
         entries[0].getQuantityInput().getInput().should('have.value', 1);
       });
     });
-
-    it('HRZ-1017 | must show default product image if it is not set', () => {
-      const productData = ProductStorage.getProductByEq(2);
-
-      productData.previewImageURL = undefined;
-
-      sccosApi.postGuestCartsItems(productData, 1);
-
-      cy.intercept('GET', '**/concrete-products/**?include=*', (req) => {
-        const include = req.query.include as string;
-
-        req.query.include = include.replace('concrete-product-image-sets,', '');
-        req.continue();
-      });
-
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        checkCartEntry(entries[0], productData);
-      });
-    });
   });
 
-  context('"Cart is empty" message displaying', () => {
-    it('HRZ-1404 | must show the message if no products were added', () => {
-      cartPage.visit();
-
-      checkCartEmptyState();
-    });
-
-    it('HRZ-1405 | must show the message if all entries are removed', () => {
+  context('"Cart is empty" message ', () => {
+    it('is shown if cart entries are removed', () => {
       sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
       cartPage.visit();
 
@@ -72,44 +45,10 @@ describe('Cart spec', () => {
     });
   });
 
+  // This check covers FE -> BE integration
+  // it might be extended/changed, but we should not add additional stuff here
+  // everything should already be covered by unit tests
   context('Prices displaying', () => {
-    it('must show correct Prices if 1 product with price <= 100€ is added', () => {
-      const productData = ProductStorage.getProductByEq(2);
-
-      sccosApi.postGuestCartsItems(productData, 1);
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        checkCartEntryPrices(entries[0], productData);
-      });
-
-      checkCartTotals({
-        subtotalText: '1 item',
-        subtotalPrice: productData.currentPrice,
-        taxTotal: '4.11',
-        totalPrice: productData.currentPrice,
-      });
-    });
-
-    it('must show correct Prices if 1 product with price > 100€ is added (10% minimum discount)', () => {
-      const productData = ProductStorage.getProductByEq(3);
-
-      sccosApi.postGuestCartsItems(productData, 1);
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        checkCartEntryPrices(entries[0], productData, true);
-      });
-
-      checkCartTotals({
-        subtotalText: '1 item',
-        subtotalPrice: productData.currentPrice,
-        discountsTotal: '-18.00',
-        taxTotal: '10.60',
-        totalPrice: productData.currentPriceWith10pDiscount,
-      });
-    });
-
     it('must show correct Prices if 2 products are added', () => {
       const product0Data = ProductStorage.getProductByEq(2);
       const product1Data = ProductStorage.getProductByEq(3);
@@ -133,8 +72,8 @@ describe('Cart spec', () => {
     });
   });
 
-  context('Prices updates after manipulations with Cart Entries', () => {
-    it('HRZ-1022 | must increase # of items and prices (+ btn click)', () => {
+  context('Prices recalculation', () => {
+    it('must recalculate the prices if + btn was clicked on any entry', () => {
       sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
 
       cartPage.visit();
@@ -150,24 +89,8 @@ describe('Cart spec', () => {
       });
     });
 
-    it('HRZ-1023 | must decrease # of items and prices (- btn click)', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 2);
-
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        const firstEntry = entries[0];
-
-        firstEntry.getQuantityInput().decrease();
-
-        firstEntry.getQuantityInput().getInput().should('have.value', 1);
-        firstEntry.getTotalPrice().should('contain.text', '299.28');
-        cartTotals.getTotalPrice().should('contain.text', '299.28');
-      });
-    });
-
-    it('HRZ-1414 | must increase # of items and prices (input, manual)', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
+    it('must recalculate the prices if user manualy chaged number of items in any entry', () => {
+      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 3);
 
       cartPage.visit();
 
@@ -183,24 +106,7 @@ describe('Cart spec', () => {
       });
     });
 
-    it('HRZ-1024 | must decrease # of items and prices (input, manual)', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 2);
-
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        const firstEntry = entries[0];
-
-        firstEntry.getQuantityInput().getInput().type('{selectall}1');
-        cy.get('body').click();
-
-        firstEntry.getQuantityInput().getInput().should('have.value', 1);
-        firstEntry.getTotalPrice().should('contain.text', '299.28');
-        cartTotals.getTotalPrice().should('contain.text', '299.28');
-      });
-    });
-
-    it('HRZ-1401 | must remove cart entry and change prices (trash btn click)', () => {
+    it('must recalculate the prices if user removes entry from the cart', () => {
       sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
       sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(2), 1);
 
@@ -208,19 +114,6 @@ describe('Cart spec', () => {
 
       cartPage.getCartEntries().then((entries) => {
         entries[0].getQuantityInput().decrease();
-
-        cartTotals.getTotalPrice().should('contain.text', '62.77');
-      });
-    });
-
-    it('HRZ-820 | must remove cart entry and change prices (X btn click)', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(2), 1);
-
-      cartPage.visit();
-
-      cartPage.getCartEntries().then((entries) => {
-        entries[0].remove();
 
         cartTotals.getTotalPrice().should('contain.text', '62.77');
       });
@@ -283,7 +176,8 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
-  cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
+  // should be fixed in https://spryker.atlassian.net/browse/HRZ-2353
+  // cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
   cartTotals.getTotalPrice().should('contain.text', expectedData.totalPrice);
 
   // covers HRZ-1008

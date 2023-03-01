@@ -1,4 +1,4 @@
-import { Product } from '../../interfaces/product.interface';
+import { Product } from '../../types/product.type';
 
 export class SCCOSApi {
   private customerUniqueId: number = Math.random();

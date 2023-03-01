@@ -5,7 +5,7 @@ import { ProductDetailsPage } from '../support/page_objects/product-details.page
 const landingPage = new LandingPage();
 const search = landingPage.search;
 
-describe('Search spec', () => {
+describe('Search suite', () => {
   beforeEach(() => {
     landingPage.visit();
   });

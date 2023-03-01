@@ -4,9 +4,12 @@ import { AbstractSFPage } from './abstract.page';
 export class LoginPage extends AbstractSFPage {
   url = '/login';
 
-  waitForLoaded(): void {
-    this.loginForm.getWrapper().should('be.visible').click()
-    cy.waitUpdateComplete(this.loginForm.getWrapper()).should('be.true')
+  waitForLoadedSSR(): void {
+    this.loginForm.getWrapper().should('be.visible')
+  }
+
+  waitForLoadedSPA(): void {
+    this.waitForLoadedSSR()
   }
 
   loginForm = new LoginFragment();

@@ -3,9 +3,13 @@ import { AbstractSFPage } from './abstract.page';
 export class LandingPage extends AbstractSFPage {
   url = '/';
 
-  waitForLoaded(): void {
-    this.video().should('be.visible')
+  waitForLoadedSSR(): void {
+    this.getVideo().should('be.visible')
   }
 
-  video = () => cy.get('oryx-video')
+  waitForLoadedSPA(): void {
+    this.waitForLoadedSSR()
+  }
+
+  getVideo = () => cy.get('oryx-video')
 }

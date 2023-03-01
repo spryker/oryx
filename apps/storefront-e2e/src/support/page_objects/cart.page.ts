@@ -7,8 +7,13 @@ export class CartPage extends AbstractSFPage {
 
   private cartTotals = new CartTotalsFragment();
 
-  waitForLoaded(): void {
+  waitForLoadedSSR(): void {
     this.getCartEntriesWrapper().should('be.visible');
+  }
+
+  waitForLoadedSPA(): void {
+    // TODO: add move accurate check
+    this.waitForLoadedSSR()
   }
 
   getCartEntriesWrapper = () => cy.get('cart-entries');

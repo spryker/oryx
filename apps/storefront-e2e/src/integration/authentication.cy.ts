@@ -11,15 +11,15 @@ describe('Authentication suite', () => {
   });
 
   context('Login functionality', () => {
-    it('User is able to log in', () => {
-      cy.login();
+    it('must allow user to login with valid credentials', () => {
+      cy.login(defaultUser);
 
       loginPage.header.getUserSummaryHeading().should('contain', defaultUser.name);
       cy.location('pathname').should('be.eq', landingPage.url);
     });
 
-    it('An error message is displayed if the User logs in with invalid credentials', () => {
-      cy.login({ email: 'sonia@spryker.com', password: 'change123123' });
+    it('must show and error message if a user logs in with invalid credentials', () => {
+      cy.login({ name: 'Sonia', email: 'sonia@spryker.com', password: 'change123123' });
 
       loginPage.header.getUserSummaryHeading().should('contain', 'Login');
       loginPage.loginForm.getBEValidationError().should('be.visible');
@@ -28,7 +28,7 @@ describe('Authentication suite', () => {
 
   context('Logout functionality', () => {
     it('User is able to logout', () => {
-      cy.login();
+      cy.login(defaultUser);
       landingPage.header.logout();
 
       cy.location('pathname').should('be.eq', landingPage.url);

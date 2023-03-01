@@ -4,7 +4,7 @@ import { SearchFragment } from '../page_fragments/search.fragment';
 export abstract class AbstractSFPage {
   abstract url: string;
 
-  visit(skipWait = false): void {
+  visit(isSSR = true): void {
     if (!this.url) {
       throw new Error(
         'It is not possibe to visit this page bacause `url` is not set.'
@@ -12,7 +12,7 @@ export abstract class AbstractSFPage {
     }
 
     cy.visit(this.url);
-    skipWait ? null : this.waitForLoaded();
+    isSSR ? this.waitForLoadedSSR() : this.waitForLoadedSPA();
   }
 
   header = new HeaderFragment();
@@ -20,11 +20,21 @@ export abstract class AbstractSFPage {
 
   /**
    * Method should contain a check that will be TRUE
-   * when concrete page is ready to be used by customer
+   * when concrete page was successfully renderred in SPA mode
    *
    * It might be a simple element.should('be.visible') check
    * or something more complicated, like API requests interception
    * or Page Fragments initialization checks
    */
-  abstract waitForLoaded(): void;
+  abstract waitForLoadedSPA(): void;
+
+  /**
+   * Method should contain a check that will be TRUE
+   * when concrete page was successfully renderred in SSR mode
+   *
+   * It might be a simple element.should('be.visible') check
+   * or something more complicated, like API requests interception
+   * or Page Fragments initialization checks
+   */
+  abstract waitForLoadedSSR(): void;
 }

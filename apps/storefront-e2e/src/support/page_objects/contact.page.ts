@@ -3,9 +3,13 @@ import { AbstractSFPage } from './abstract.page';
 export class ContactPage extends AbstractSFPage {
   url = '/contact';
 
-  waitForLoaded(): void {
+  waitForLoadedSSR(): void {
     this.getHeading().should('be.visible');
   }
 
-  getHeading = () => cy.contains('oryx-heading', 'Contact Us');
+  waitForLoadedSPA(): void {
+    this.waitForLoadedSSR()
+  }
+
+  getHeading = () => cy.contains('This is Contact Page element.');
 }

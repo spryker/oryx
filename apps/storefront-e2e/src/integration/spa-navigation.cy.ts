@@ -4,7 +4,7 @@ import { LandingPage } from '../support/page_objects/landing.page';
 const landingPage = new LandingPage();
 const contactPage = new ContactPage();
 
-describe('SPA mode navigation tests', () => {
+describe('SPA navigation suite', () => {
   it('must navigate to Contact page from header', () => {
     landingPage.visit();
     landingPage.header.getContactLink().click();
@@ -18,6 +18,6 @@ describe('SPA mode navigation tests', () => {
     contactPage.header.getLogo().click();
 
     cy.location('pathname').should('be.eq', landingPage.url);
-    landingPage.video().should('be.visible')
+    landingPage.getVideo().should('be.visible')
   });
 });

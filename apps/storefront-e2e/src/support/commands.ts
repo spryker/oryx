@@ -1,3 +1,4 @@
+import { User } from '../types/user.type';
 import { LoginPage } from './page_objects/login.page';
 
 export { };
@@ -5,19 +6,19 @@ export { };
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      login(user?: { email: string; password: string }): Chainable<void>;
+      login(user: User): Chainable<void>;
       waitUpdateComplete(element: Cypress.Chainable<JQuery<HTMLElement>>): Chainable<boolean>
     }
   }
 }
 
-export const defaultUser = {
+export const defaultUser: User = {
   name: 'Sonia',
   email: 'sonia@spryker.com',
   password: 'change123'
 };
 
-Cypress.Commands.add('login', (user = defaultUser) => {
+Cypress.Commands.add('login', (user: User) => {
   const homePage = new LoginPage();
 
   homePage.loginForm.login(user);
