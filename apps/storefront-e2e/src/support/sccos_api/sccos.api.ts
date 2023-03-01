@@ -14,7 +14,7 @@ export class SCCOSApi {
       'X-Anonymous-Customer-Unique-Id': this.customerUniqueId,
     };
 
-    this.apiUrl = Cypress.env('GLUE_API');
+    this.apiUrl = Cypress.env('SCOS_BASE_URL');
   }
 
   getGuestCarts = () => {

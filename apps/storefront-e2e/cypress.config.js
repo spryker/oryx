@@ -23,6 +23,6 @@ module.exports = defineConfig({
     supportFile: './src/support/index.ts',
   },
   env: {
-    GLUE_API: process.env.GLUE_API,
+    SCOS_BASE_URL: process.env.SCOS_BASE_URL,
   },
 });
