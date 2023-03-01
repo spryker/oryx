@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
+  NotificationPosition,
   NotificationRegistry,
   NotificationStrategy,
-  Positions,
 } from './notification-center.model';
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
@@ -23,7 +23,22 @@ export const defaultStrategy: NotificationStrategy = {
 export class NotificationCenterComponent extends LitElement {
   static styles = [notificationCenterBaseStyles];
 
-  @property({ reflect: true }) position?: Positions;
+  @property({ reflect: true }) position?: NotificationPosition;
+
+  @property() set maxWidth(value: string) {
+    if (!value) return;
+    this.style.setProperty('--oryx-notification-max-width', value);
+  }
+
+  @property() set marginBlock(value: string) {
+    if (!value) return;
+    this.style.setProperty('--oryx-notification-margin-block', value);
+  }
+
+  @property() set marginInline(value: string) {
+    if (!value) return;
+    this.style.setProperty('--oryx-notification-margin-inline', value);
+  }
 
   protected registryController = new RegistryController(this);
 
@@ -38,6 +53,7 @@ export class NotificationCenterComponent extends LitElement {
       strategy,
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.registry[this.registry.length - 1].key!;
   }
 

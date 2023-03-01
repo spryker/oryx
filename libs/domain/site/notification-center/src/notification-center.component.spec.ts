@@ -7,7 +7,7 @@ import { Types } from '@spryker-oryx/ui/notification';
 import {
   notificationCenterComponent,
   NotificationCenterComponent,
-  Positions,
+  NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
 import { html } from 'lit';
 import { of, Subject } from 'rxjs';
@@ -31,7 +31,6 @@ class MockNotificationService implements Partial<NotificationService> {
 
 describe('SiteNotificationCenterComponent', () => {
   let element: SiteNotificationCenterComponent;
-  let notificationService: MockNotificationService;
 
   beforeAll(async () => {
     await useComponent([
@@ -41,7 +40,7 @@ describe('SiteNotificationCenterComponent', () => {
   });
 
   beforeEach(async () => {
-    const testInjector = createInjector({
+    createInjector({
       providers: [
         {
           provide: ExperienceService,
@@ -55,7 +54,7 @@ describe('SiteNotificationCenterComponent', () => {
     });
 
     element = await fixture(
-      html`<site-notification-center></site-notification-center>`
+      html`<oryx-site-notification-center></oryx-site-notification-center>`
     );
   });
 
@@ -83,11 +82,12 @@ describe('SiteNotificationCenterComponent', () => {
   describe('when position is set', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<site-notification-center
-          .options=${{ position: Positions.TOP_START }}
-        ></site-notification-center>`
+        html`<oryx-site-notification-center
+          .options=${{ position: NotificationPosition.TopStart }}
+        ></oryx-site-notification-center>`
       );
     });
+
     it('should display notification in the correct position', async () => {
       const notificationCenter = element.shadowRoot?.querySelector(
         'oryx-notification-center'
@@ -99,11 +99,12 @@ describe('SiteNotificationCenterComponent', () => {
   describe('when type is set', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<site-notification-center
+        html`<oryx-site-notification-center
           .options=${{ type: Types.INFO }}
-        ></site-notification-center>`
+        ></oryx-site-notification-center>`
       );
     });
+
     it('should display notification with the given type', () => {
       const notificationCenter = element.shadowRoot?.querySelector(
         'oryx-notification-center'

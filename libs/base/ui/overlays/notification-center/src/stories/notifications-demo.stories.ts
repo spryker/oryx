@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { Positions } from '../notification-center.model';
+import { NotificationPosition } from '../notification-center.model';
 import { NotificationService } from '../service';
 import { generateRandomNotification } from './util';
 
@@ -10,13 +10,13 @@ export default {
 } as Meta;
 
 interface Props {
-  position?: Positions;
+  position?: NotificationPosition;
 }
 
 const service = new NotificationService();
 
 const Template: Story<Props> = ({
-  position = Positions.TOP_END,
+  position = NotificationPosition.TopEnd,
 }: Props): TemplateResult => {
   const pushSticky = (): void => {
     service
@@ -54,11 +54,18 @@ const Template: Story<Props> = ({
 
 export const NotificationCenterDemo = Template.bind({});
 NotificationCenterDemo.args = {
-  position: Positions.TOP_END,
+  position: NotificationPosition.TopEnd,
 };
 NotificationCenterDemo.argTypes = {
   position: {
-    options: Object.values(Positions),
+    options: [
+      NotificationPosition.TopStart,
+      NotificationPosition.TopCenter,
+      NotificationPosition.TopEnd,
+      NotificationPosition.BottomStart,
+      NotificationPosition.BottomCenter,
+      NotificationPosition.BottomEnd,
+    ],
     control: { type: 'radio' },
   },
 };

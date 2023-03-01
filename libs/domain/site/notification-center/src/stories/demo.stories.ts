@@ -2,19 +2,26 @@ import { resolve } from '@spryker-oryx/di';
 import { NotificationService } from '@spryker-oryx/site';
 import { Types } from '@spryker-oryx/ui/notification';
 import {
+  NotificationPosition,
   NotificationStrategy,
-  Positions,
 } from '@spryker-oryx/ui/notification-center';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { SiteNotificationCenterOptions } from '../../../../../../dist/libs/domain/site/notification-center/src/notification-center.model';
 import { storybookPrefix } from '../../../.constants';
-import { SiteNotificationCenterOptions } from '../notification-center.model';
 
 export default {
   title: `${storybookPrefix}/Notification Center`,
   argTypes: {
     position: {
-      options: Object.values(Positions),
+      options: [
+        NotificationPosition.TopStart,
+        NotificationPosition.TopCenter,
+        NotificationPosition.TopEnd,
+        NotificationPosition.BottomStart,
+        NotificationPosition.BottomCenter,
+        NotificationPosition.BottomEnd,
+      ],
       control: { type: 'radio' },
       description: 'Position in which to display site error notifications.',
     },
@@ -22,10 +29,11 @@ export default {
       options: Object.values(Types),
       control: { type: 'radio' },
       description: 'Type of notification to display.',
+      table: { category: 'demo' },
     },
   },
   args: {
-    position: Positions.TOP_END,
+    position: NotificationPosition.TopEnd,
     type: Types.INFO,
   },
 } as Meta;
@@ -34,7 +42,7 @@ const emitMessage = (option: NotificationStrategy): void => {
   resolve(NotificationService).push(option);
 };
 
-const Template: Story<SiteNotificationCenterOptions> = (
+const Template: Story<SiteNotificationCenterOptions & { type: Types }> = (
   props
 ): TemplateResult => {
   const message = {
@@ -45,9 +53,9 @@ const Template: Story<SiteNotificationCenterOptions> = (
   return html`<div class="buttons">
       <button @click=${() => emitMessage(message)}>emit message</button>
     </div>
-    <site-notification-center
+    <oryx-site-notification-center
       .options=${{ position: props.position }}
-    ></site-notification-center>`;
+    ></oryx-site-notification-center>`;
 };
 
-export const SiteNotificationCenterDemo = Template.bind({});
+export const Demo = Template.bind({});

@@ -1,6 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Types } from '@spryker-oryx/ui/notification';
-import { Positions } from '@spryker-oryx/ui/notification-center';
+import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { DefaultNotificationService } from './default-notification.service';
 import { NotificationService } from './notification.service';
 
@@ -8,7 +8,7 @@ const mockNotification = {
   type: Types.INFO,
   content: 'mock title',
   subtext: 'content',
-  position: Positions.BOTTOM_START,
+  position: NotificationPosition.BottomStart,
 };
 
 describe('DefaultNotificationService', () => {

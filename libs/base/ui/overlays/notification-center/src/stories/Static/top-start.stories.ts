@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { storybookDefaultViewports } from '../../../../../src/utilities';
-import { NotificationService, Positions } from '../../index';
+import { NotificationPosition, NotificationService } from '../../index';
 import { generateNotification, removeAllMountedCenters } from '../util';
 
 export default {
@@ -30,7 +30,7 @@ const Template: Story = (): TemplateResult => {
   return html`
     <div id="parent">
       <oryx-notification-center
-        position=${Positions.TOP_START}
+        position=${NotificationPosition.TopStart}
       ></oryx-notification-center>
     </div>
   `;

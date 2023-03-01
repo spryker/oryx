@@ -6,12 +6,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const componentsProvider: Provider = {
   provide: ComponentMapping,
   useValue: {
-    ['site-notification-center']: {
+    ['oryx-site-notification-center']: {
       template: (uid: string, layoutClasses?: string) =>
-        html`<site-notification-center
+        html`<oryx-site-notification-center
           uid="${uid}"
           class=${ifDefined(layoutClasses)}
-        ></site-notification-center>`,
+        ></oryx-site-notification-center>`,
     },
   },
 };

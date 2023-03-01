@@ -1,11 +1,14 @@
 import { Schemes, Types } from '@spryker-oryx/ui/notification';
 import { TemplateResult } from 'lit';
 
-export enum Positions {
-  TOP_START = 'top-start',
-  TOP_END = 'top-end',
-  BOTTOM_START = 'bottom-start',
-  BOTTOM_END = 'bottom-end',
+// TODO: const
+export const enum NotificationPosition {
+  TopStart = 'top-start',
+  TopCenter = 'top-center',
+  TopEnd = 'top-end',
+  BottomStart = 'bottom-start',
+  BottomCenter = 'bottom-center',
+  BottomEnd = 'bottom-end',
 }
 
 export type NotificationStrategy = {

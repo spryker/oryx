@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
-import { NotificationService, Positions } from '../../index';
+import { NotificationPosition, NotificationService } from '../../index';
 import { generateNotification, removeAllMountedCenters } from '../util';
 
 export default {
@@ -54,25 +54,25 @@ const Template: Story = (): TemplateResult => {
     </style>
     <div id="parent1">
       <oryx-notification-center
-        position=${Positions.TOP_END}
+        position=${NotificationPosition.TopEnd}
       ></oryx-notification-center>
     </div>
 
     <div id="parent2">
       <oryx-notification-center
-        position=${Positions.BOTTOM_END}
+        position=${NotificationPosition.BottomEnd}
       ></oryx-notification-center>
     </div>
 
     <div id="parent3">
       <oryx-notification-center
-        position=${Positions.BOTTOM_START}
+        position=${NotificationPosition.BottomStart}
       ></oryx-notification-center>
     </div>
 
     <div id="parent4">
       <oryx-notification-center
-        position=${Positions.TOP_START}
+        position=${NotificationPosition.TopStart}
       ></oryx-notification-center>
     </div>
   `;
