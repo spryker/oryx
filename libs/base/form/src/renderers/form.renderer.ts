@@ -1,9 +1,15 @@
 import { TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { ClassMapDirective } from 'lit/directives/class-map.js';
-import { FormFieldDefinition, FormValues } from '../models';
+import {
+  FieldValidationPattern,
+  FormFieldDefinition,
+  FormValues,
+} from '../models';
 
 export interface FormRenderer {
+  fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern;
+
   formatFormData(form: HTMLFormElement): unknown;
 
   formatFormControl(

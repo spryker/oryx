@@ -5,27 +5,24 @@ import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
-import { ExperienceStaticData } from './static-data';
+import { ExperienceStaticService } from './static-data';
 
 export class DefaultExperienceService implements ExperienceService {
   protected dataRoutes: Record<string, ReplaySubject<string>> = {};
   protected dataComponent: Record<string, ReplaySubject<Component>> = {};
   protected dataContent: Record<string, ReplaySubject<any>> = {};
   protected dataOptions: Record<string, ReplaySubject<any>> = {};
-  protected autoComponentId = 0;
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, [])
+    protected staticService = inject(ExperienceStaticService)
   ) {
     this.initStaticData();
   }
 
   protected initStaticData(): void {
-    this.staticData.flat().forEach((component) => {
-      component.id = component.id ?? this.getAutoId();
-
+    this.staticService.getData().map((component) => {
       if (!this.dataComponent[component.id]) {
         this.dataComponent[component.id] = new ReplaySubject<Component>(1);
       }
@@ -36,14 +33,14 @@ export class DefaultExperienceService implements ExperienceService {
         }
         this.dataRoutes[component.meta.route].next(component.id);
       }
-      this.processComponent(component as Component);
+      this.processComponent(component);
+
+      return component;
     });
   }
 
   protected processComponent(component: Component): void {
     const components = component?.components || [];
-
-    component.id = component.id ?? this.getAutoId();
 
     if (!this.dataComponent[component.id]) {
       this.dataComponent[component.id] = new ReplaySubject<Component>(1);
@@ -53,10 +50,6 @@ export class DefaultExperienceService implements ExperienceService {
     components.forEach((component: Component) => {
       this.processComponent(component);
     });
-  }
-
-  protected getAutoId(): string {
-    return `static${this.autoComponentId++}`;
   }
 
   protected reloadComponent(uid: string): void {
@@ -88,7 +81,7 @@ export class DefaultExperienceService implements ExperienceService {
       .get<Component[]>(componentsUrl)
       .pipe(
         tap((components) => {
-          if (!components || !components.length) {
+          if (!components?.length) {
             return;
           }
           const component = components[0];
@@ -114,7 +107,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadOptions(uid: string): void {
-    this.getComponent({ uid: uid })
+    this.getComponent({ uid })
       .pipe(take(1))
       .subscribe((component) => {
         const options = component?.options ?? {};

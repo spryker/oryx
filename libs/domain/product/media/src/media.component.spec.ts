@@ -143,8 +143,8 @@ describe('ProductMediaComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should not render the oryx-image element', () => {
-      expect(element).not.toContainElement(`oryx-image`);
+    it('should render the oryx-image element', () => {
+      expect(element).toContainElement(`oryx-image`);
     });
   });
 
@@ -294,6 +294,36 @@ describe('ProductMediaComponent', () => {
           expect(element).toContainElement(`oryx-image[loading="eager"]`);
         });
       });
+    });
+
+    describe('when mediaSet is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-media
+            sku="1"
+            .options=${{ mediaSet: 'default' }}
+          ></oryx-product-media>`
+        );
+      });
+
+      it('should render media resource', () => {
+        expect(element).toContainElement('oryx-image');
+      });
+    });
+  });
+
+  describe('when video link is provided', () => {
+    beforeEach(async () => {
+      service.resolveSources.mockReturnValue([
+        { url: 'https://www.youtube.com/watch?v=test' },
+      ]);
+      element = await fixture(
+        html`<oryx-product-media sku="1"></oryx-product-media>`
+      );
+    });
+
+    it('should render the video', () => {
+      expect(element).toContainElement(`oryx-video`);
     });
   });
 });

@@ -52,7 +52,7 @@ export const navigationStyles = css`
     padding: 0;
     position: absolute;
     inset-inline-end: -15px;
-    bottom: 30px;
+    inset-block-end: 30px;
     border-radius: 100%;
     border: none;
     background-color: var(--oryx-color-canvas-100);

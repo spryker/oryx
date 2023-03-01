@@ -1,10 +1,10 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const baseStyles = css`
   :host {
-    --oryx-radio-size: 24px;
+    --oryx-radio-size: 18px;
   }
 
   ::slotted(input) {
@@ -74,15 +74,13 @@ export const baseStyles = css`
   }
 `;
 
-const mediumScreen = css`
-  :host {
-    --oryx-radio-size: 18px;
-  }
-`;
-
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: css`
+      :host {
+        --oryx-radio-size: 24px;
+      }
+    `,
   },
 ];

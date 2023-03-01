@@ -12,9 +12,9 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
 import { SELECT_EVENT } from './address-list.model';
 import { styles } from './address-list.styles';
 
@@ -33,7 +33,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected willUpdate(changedProperties: PropertyValues): void {
     if (
-      this.componentOptions.selectable &&
+      this.componentOptions?.selectable &&
       !this.addresses?.find((address) => address.id === this.selectedAddressId)
     ) {
       this.selectedAddressId =
@@ -65,7 +65,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
         .options=${this.componentOptions}
       >
         ${when(
-          this.componentOptions.selectable,
+          this.componentOptions?.selectable,
           () => html`<input
             name="address"
             type="radio"

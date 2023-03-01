@@ -32,7 +32,7 @@ export class ProductMediaComponent extends ProductMixin(
       changedProperties.has('product') ||
       changedProperties.has('componentOptions')
     ) {
-      const { mediaIndex = 0, containerSize } = this.componentOptions ?? {};
+      const { mediaIndex = 0, containerSize } = this.componentOptions;
       const productMedia = this.getMediaSet()?.media[mediaIndex];
       this.sources = this.imageService.resolveSources(
         productMedia,
@@ -44,7 +44,7 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.sources?.[0]?.url) return;
+    if (!this.sources?.[0]?.url) return this.renderImage('');
 
     if (this.isVideo(this.sources[0]?.url)) {
       return this.renderVideo(this.sources[0]?.url);
@@ -79,7 +79,7 @@ export class ProductMediaComponent extends ProductMixin(
   protected getMediaSet(): ProductMediaSet | undefined {
     if (this.componentOptions?.mediaSet) {
       return this.product?.mediaSet?.find(
-        (set) => set.name === this.componentOptions?.mediaSet
+        (set) => set.name === this.componentOptions.mediaSet
       );
     } else {
       return this.product?.mediaSet?.[0];

@@ -31,10 +31,15 @@ export interface HeadingAttributes {
   appearance?: string;
 
   /**
-   * Similar to the generic _appearance_ behaviour you can mimic a certain style for medium (and larger)
+   * Similar to the generic _appearance_ behavior you can mimic a certain style for medium (and larger)
    * screen size.
    */
   mdAppearance?: string;
+
+  /**
+   * Similar to the generic _appearance_ behavior you can mimic a certain style for small screen size.
+   */
+  smAppearance?: string;
 }
 
 /**

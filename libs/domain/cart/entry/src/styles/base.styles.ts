@@ -11,7 +11,7 @@ export const baseStyles = css`
 
   oryx-icon-button {
     position: absolute;
-    top: var(--oryx-space-4);
+    inset-block-start: var(--oryx-space-4);
     inset-inline-end: var(--oryx-space-4);
   }
 
@@ -30,7 +30,7 @@ export const baseStyles = css`
     display: flex;
     width: 80px;
     height: 80px;
-    margin-bottom: var(--oryx-space-2);
+    margin-block-end: var(--oryx-space-2);
     align-self: center;
   }
 `;
@@ -42,7 +42,7 @@ const mediumScreen = css`
   }
 
   oryx-product-media {
-    margin-bottom: 0;
+    margin-block-end: 0;
     margin-inline-end: var(--oryx-space-4);
     width: 100px;
     height: 100px;

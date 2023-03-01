@@ -13,7 +13,7 @@ export class DefaultComponentsRegistryService
   protected componentMapping?: ComponentMapping;
 
   constructor(
-    registeredComponents = inject(ComponentMapping),
+    registeredComponents = inject<ComponentMapping[]>(ComponentMapping, []),
     protected readonly appRef = inject(AppRef)
   ) {
     this.componentMapping = registeredComponents.reduce(
@@ -32,11 +32,7 @@ export class DefaultComponentsRegistryService
     uid: string,
     styleClasses?: string
   ): TemplateResult | undefined {
-    const component = this.componentMapping?.[type];
-
-    if (!component) {
-      return undefined;
-    }
+    const component = this.componentMapping?.[type] ?? { tag: type };
 
     return component.template
       ? component.template(uid, styleClasses)
@@ -44,7 +40,7 @@ export class DefaultComponentsRegistryService
           component.tag ?? type
         )} uid=${uid} class=${styleClasses}></${unsafeStatic(
           component.tag ?? type
-        )}>`;
+        )}>${null}`;
   }
 
   async hydrateOnDemand(element: HTMLElement): Promise<void> {

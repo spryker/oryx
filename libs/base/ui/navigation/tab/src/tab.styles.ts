@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const baseStyles = css`
@@ -8,7 +8,7 @@ export const baseStyles = css`
     flex: 1 0 auto;
     min-height: 46px;
     min-width: 90px;
-    border-block-end: 4px solid var(--oryx-color-canvas-500);
+    border-block-end: 2px solid var(--oryx-color-canvas-500);
     color: var(--oryx-color-neutral-300);
     background: none;
     line-height: var(--oryx-line-height-base);
@@ -48,15 +48,15 @@ export const baseStyles = css`
   }
 `;
 
-const mediumScreen = css`
+const smallScreen = css`
   :host {
-    border-width: 2px;
+    border-width: 4px;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

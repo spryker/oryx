@@ -31,7 +31,7 @@ export const dropdownBaseStyles = css`
       var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
     width: var(--_oryx-dropdown-width);
-    top: 0;
+    inset-block-start: 0;
     inset-inline: var(--_oryx-dropdown-start-offset, auto)
       var(--_oryx-dropdown-end-offset, auto);
     transform-origin: var(--_dropdown-origin-x, left)
@@ -75,17 +75,15 @@ export const dropdownBaseStyles = css`
   }
 
   :host([up]:not([vertical-align])) oryx-popover {
-    top: auto;
-    bottom: 0;
+    inset-block: auto 0;
   }
 
   :host([vertical-align]:not([up])) oryx-popover {
-    top: calc(100% + var(--oryx-popover-top-space));
+    inset-block-start: calc(100% + var(--oryx-popover-top-space));
   }
 
   :host([vertical-align][up]) oryx-popover {
-    top: auto;
-    bottom: 100%;
+    inset-block: auto 100%;
   }
 
   :host([vertical-align]) oryx-popover {
@@ -95,7 +93,7 @@ export const dropdownBaseStyles = css`
           var(--_available-popover-width-end) +
           var(--_bounding-element-width, 0)
       ),
-      calc(var(--oryx-popover-maxwidth) + var(--_bounding-element-width, 0))
+      calc(var(--oryx-popover-maxwidth))
     );
 
     max-height: min(

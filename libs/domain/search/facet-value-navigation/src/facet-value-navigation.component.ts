@@ -1,7 +1,7 @@
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import {
   FacetValueNavigationComponentAttributes,
   FACET_CLEAR_EVENT,

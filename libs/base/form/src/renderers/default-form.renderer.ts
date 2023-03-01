@@ -1,16 +1,32 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { FormFieldDefinition, FormFieldType, FormValues } from '../models';
+import {
+  FieldValidationPattern,
+  FormFieldDefinition,
+  FormFieldType,
+  FormValues,
+} from '../models';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
 export class DefaultFormRenderer implements FormRenderer {
   constructor(protected injector = inject(INJECTOR)) {}
+
+  fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern {
+    const { required, pattern, title } = field;
+    return {
+      pattern: pattern ?? (required ? '.*\\S+.*' : undefined),
+      title:
+        title ??
+        (required ? i18n('form.validation.invalid-empty-text') : undefined),
+    };
+  }
 
   formatFormData(form: HTMLFormElement): unknown {
     const formData = new FormData(form);
@@ -112,6 +128,8 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
+    const { pattern, title } = this.fieldValidationPattern(field);
+
     return html`
       <oryx-input
         .label=${field.label}
@@ -126,6 +144,8 @@ export class DefaultFormRenderer implements FormRenderer {
           maxlength=${ifDefined(field.max)}
           type=${ifDefined(field.attributes?.type ?? field.type)}
           ?required=${field.required}
+          pattern=${ifDefined(pattern)}
+          title=${ifDefined(title)}
         />
       </oryx-input>
     `;

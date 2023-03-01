@@ -1,6 +1,6 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { distinctUntilChanged, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 import { ProductListAdapter } from './adapter';
 import { ProductListService } from './product-list.service';
@@ -31,13 +31,8 @@ export class DefaultProductListService implements ProductListService {
 
   constructor(protected adapter = inject(ProductListAdapter)) {}
 
-  get(qualifier: ProductListQualifier): Observable<ProductList | null> {
-    return (
-      this.productListQuery
-        .get(qualifier)
-        // TODO: temporary fix for backward compatibility
-        .pipe(map((list) => list || null))
-    );
+  get(qualifier: ProductListQualifier): Observable<ProductList | undefined> {
+    return this.productListQuery.get(qualifier);
   }
 
   getSearchParams(qualifier: ProductListQualifier): Record<string, string> {
@@ -60,12 +55,5 @@ export class DefaultProductListService implements ProductListService {
     qualifier: ProductListQualifier
   ): Observable<QueryState<ProductList>> {
     return this.productListQuery.getState(qualifier);
-  }
-
-  getError(qualifier: ProductListQualifier): Observable<false | Error> {
-    return this.productListQuery.getState(qualifier).pipe(
-      map((state) => state.error),
-      distinctUntilChanged()
-    );
   }
 }

@@ -13,6 +13,7 @@ import {
   PreviewExperienceService,
   REQUEST_MESSAGE_TYPE,
 } from './preview-experience.service';
+import { ExperienceStaticService } from './static-data';
 import { postMessage } from './utilities';
 
 class MockRouterService implements Partial<RouterService> {
@@ -21,7 +22,12 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockExperienceDataClientService implements ExperienceDataClientService {
-  initialize = vi.fn();
+  initialize = vi.fn().mockReturnValue(of(null));
+  sendStatic = vi.fn();
+}
+
+class MockExperienceStaticService implements ExperienceStaticService {
+  getData = vi.fn().mockReturnValue([]);
 }
 
 describe('ExperiencePreviewService', () => {
@@ -50,6 +56,10 @@ describe('ExperiencePreviewService', () => {
         {
           provide: RouterService,
           useClass: MockRouterService,
+        },
+        {
+          provide: ExperienceStaticService,
+          useClass: MockExperienceStaticService,
         },
       ],
     });
