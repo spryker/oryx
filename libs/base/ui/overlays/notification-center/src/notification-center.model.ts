@@ -1,7 +1,6 @@
 import { Schemes, Types } from '@spryker-oryx/ui/notification';
 import { TemplateResult } from 'lit';
 
-// TODO: const
 export const enum NotificationPosition {
   TopStart = 'top-start',
   TopCenter = 'top-center',

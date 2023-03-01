@@ -10,7 +10,13 @@ interface ApiError {
 }
 
 export class SiteErrorHandler implements ErrorHandler {
-  constructor(protected notificationService = inject(NotificationService)) {}
+  constructor(protected notificationService = inject(NotificationService)) {
+    this.notificationService.push({
+      autoClose: false,
+      type: Types.ERROR,
+      content: 'Error',
+    });
+  }
 
   handle(error: unknown): void {
     let message;

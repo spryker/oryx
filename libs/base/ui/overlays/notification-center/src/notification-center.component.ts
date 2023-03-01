@@ -25,21 +25,6 @@ export class NotificationCenterComponent extends LitElement {
 
   @property({ reflect: true }) position?: NotificationPosition;
 
-  @property() set maxWidth(value: string) {
-    if (!value) return;
-    this.style.setProperty('--oryx-notification-max-width', value);
-  }
-
-  @property() set marginBlock(value: string) {
-    if (!value) return;
-    this.style.setProperty('--oryx-notification-margin-block', value);
-  }
-
-  @property() set marginInline(value: string) {
-    if (!value) return;
-    this.style.setProperty('--oryx-notification-margin-inline', value);
-  }
-
   protected registryController = new RegistryController(this);
 
   @state()
