@@ -33,7 +33,6 @@ import {
   PaginationNormalizer,
 } from './adapter/normalizers/pagination';
 import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
-import { componentsProvider } from './components.provider';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
@@ -51,7 +50,6 @@ import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
 
 export const productProviders: Provider[] = [
-  componentsProvider,
   {
     provide: ProductAdapter,
     useClass: DefaultProductAdapter,

@@ -1,14 +1,8 @@
-import { resolve } from '@spryker-oryx/di';
-import {
-  Component,
-  ExperienceDataClientService,
-  PreviewExperienceService,
-} from '@spryker-oryx/experience';
+import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import {
   combineLatest,
-  EMPTY,
   filter,
   map,
   merge,
@@ -25,11 +19,6 @@ const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
   static override styles = [compositionStyles, previewStyles];
-
-  protected dataClient = resolve(ExperienceDataClientService, null);
-
-  @subscribe()
-  protected initializeEvent$ = this.dataClient?.initialize() ?? EMPTY;
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService

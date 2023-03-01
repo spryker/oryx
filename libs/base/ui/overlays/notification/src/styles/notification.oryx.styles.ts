@@ -13,7 +13,7 @@ export const notificationStyles = css`
 
   :host([type])::before {
     position: absolute;
-    top: 10px;
+    inset-block-start: 10px;
     inset-inline-start: 15px;
     display: flex;
     align-items: center;

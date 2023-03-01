@@ -7,7 +7,7 @@ export const styles = css`
     align-items: center;
     line-height: 24px;
     background-color: var(--oryx-color-primary-100);
-    padding-bottom: 48px;
+    padding-block-end: 48px;
   }
 
   oryx-heading {

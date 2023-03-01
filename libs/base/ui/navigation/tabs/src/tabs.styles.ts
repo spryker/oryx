@@ -53,7 +53,7 @@ export const baseStyles = css`
     color: var(--oryx-color-ink);
     background: var(--oryx-color-canvas-200);
     border-block-start: 2px solid transparent;
-    border-bottom: none;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab:hover) {
@@ -66,14 +66,14 @@ export const baseStyles = css`
     color: var(--oryx-color-primary-300);
     background: none;
     border-color: var(--oryx-color-primary-300);
-    border-bottom: none;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]) {
     color: var(--oryx-color-error-300);
     background: var(--oryx-color-canvas-200);
     border-color: transparent;
-    border-bottom: none;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]:hover) {
@@ -86,7 +86,7 @@ export const baseStyles = css`
     color: var(--oryx-color-error-300);
     background: none;
     border-color: var(--oryx-color-error-300);
-    border-bottom: none;
+    border-block-end: none;
   }
 
   slot[name='panels'] {

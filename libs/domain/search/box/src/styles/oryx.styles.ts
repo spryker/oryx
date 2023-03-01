@@ -60,7 +60,7 @@ export const searchboxStyles = css`
   }
 
   .product oryx-product-title {
-    margin-bottom: 4px;
+    margin-block-end: 4px;
   }
 `;
 

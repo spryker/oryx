@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { NotificationPosition } from './notification-center.model';
+import { NotificationPosition as Position } from './notification-center.model';
 
 export const notificationCenterBaseStyles = css`
   :host {
@@ -19,47 +19,45 @@ export const notificationCenterBaseStyles = css`
     width: 100%;
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.TopStart)}']),
-  :host([position='${unsafeCSS(NotificationPosition.TopEnd)}']),
-  :host([position='${unsafeCSS(NotificationPosition.TopCenter)}']) {
+  :host([position='${unsafeCSS(Position.TopStart)}']),
+  :host([position='${unsafeCSS(Position.TopEnd)}']),
+  :host([position='${unsafeCSS(Position.TopCenter)}']) {
     flex-direction: column-reverse;
-    top: var(--oryx-notification-margin-block);
+    inset-block-start: var(--oryx-notification-margin-block);
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.TopStart)}']),
-  :host([position='${unsafeCSS(NotificationPosition.BottomStart)}']) {
+  :host([position='${unsafeCSS(Position.TopStart)}']),
+  :host([position='${unsafeCSS(Position.BottomStart)}']) {
     inset-inline-start: var(--oryx-notification-margin-inline);
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.TopCenter)}']),
-  :host([position='${unsafeCSS(NotificationPosition.BottomCenter)}']) {
+  :host([position='${unsafeCSS(Position.TopCenter)}']),
+  :host([position='${unsafeCSS(Position.BottomCenter)}']) {
     inset-inline-start: calc((100% - var(--_max-width)) / 2);
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.TopEnd)}']),
-  :host([position='${unsafeCSS(NotificationPosition.BottomEnd)}']) {
+  :host([position='${unsafeCSS(Position.TopEnd)}']),
+  :host([position='${unsafeCSS(Position.BottomEnd)}']) {
     inset-inline-end: var(--oryx-notification-margin-inline);
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.BottomStart)}']),
-  :host([position='${unsafeCSS(NotificationPosition.BottomEnd)}']),
-  :host([position='${unsafeCSS(NotificationPosition.BottomCenter)}']) {
-    bottom: var(--oryx-notification-margin-block);
+  :host([position='${unsafeCSS(Position.BottomStart)}']),
+  :host([position='${unsafeCSS(Position.BottomEnd)}']),
+  :host([position='${unsafeCSS(Position.BottomCenter)}']) {
+    inset-block-end: var(--oryx-notification-margin-block);
   }
 
   :host > * {
-    margin-bottom: 10px;
+    margin-block-end: 10px;
     opacity: 0;
     transition-property: opacity;
     transition-duration: var(--oryx-transition-time-long);
   }
 
-  :host([position='${unsafeCSS(NotificationPosition.BottomStart)}'])
-    :last-child,
-  :host([position='${unsafeCSS(NotificationPosition.BottomCenter)}'])
-    :last-child,
-  :host([position='${unsafeCSS(NotificationPosition.BottomEnd)}']) :last-child {
-    margin-bottom: 0;
+  :host([position='${unsafeCSS(Position.BottomStart)}']) :last-child,
+  :host([position='${unsafeCSS(Position.BottomCenter)}']) :last-child,
+  :host([position='${unsafeCSS(Position.BottomEnd)}']) :last-child {
+    inset-block-end: 0;
   }
 
   :host > [visible] {

@@ -16,7 +16,7 @@ export const floatingLabelBaseStyles = css`
     line-height: 16px;
     color: var(--oryx-color-neutral-300);
     position: absolute;
-    top: min(calc(50% - 0.5em), 17px);
+    inset-block-start: min(calc(50% - 0.5em), 17px);
     inset-inline-start: calc(var(--float-label-start-gap, 0px) + 13px);
     max-width: calc(100% - 26px - var(--float-label-start-gap, 0px));
     z-index: 1;
@@ -49,7 +49,7 @@ export const floatingLabelBaseStyles = css`
     color: var(--oryx-color-neutral-400);
     font-size: 12px;
     padding: 3px 8px;
-    top: -10px;
+    inset-block-start: -10px;
     inset-inline-start: 20px;
     max-width: calc(100% - 56px);
   }

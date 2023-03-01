@@ -48,7 +48,7 @@ export const baseStyles = css`
   }
 
   ul:not(:last-child) {
-    margin-bottom: 20px;
+    margin-block-end: 20px;
   }
 
   section {
@@ -91,11 +91,11 @@ export const baseStyles = css`
   }
 
   [slot='option']::before {
-    top: 0;
+    inset-block-start: 0;
   }
 
   [slot='option']::after {
-    bottom: 0;
+    inset-block-end: 0;
   }
 
   :host([scrollable-top]) [slot='option']::before,
@@ -120,7 +120,7 @@ export const baseStyles = css`
     --image-max-height: 50px;
 
     position: absolute;
-    top: 5px;
+    inset-block-start: 5px;
     inset-inline-start: 5px;
   }
 
