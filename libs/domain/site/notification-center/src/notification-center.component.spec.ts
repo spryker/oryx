@@ -96,7 +96,7 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe.only('when maxWidth option is provided', () => {
+  describe('when maxWidth option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-site-notification-center
