@@ -1,5 +1,8 @@
-import { applicationFeature } from '@spryker-oryx/application';
-import { authFeature } from '@spryker-oryx/auth';
+import {
+  applicationFeature,
+  SapiAuthComponentsFeature,
+  SapiAuthFeature,
+} from '@spryker-oryx/application';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
@@ -52,7 +55,8 @@ export const b2cFeatures: AppFeature[] = [
   siteFeature,
   applicationFeature,
   userFeature,
-  authFeature,
+  new SapiAuthFeature(),
+  new SapiAuthComponentsFeature(),
   new I18nFeature(),
   isServer ? { providers: coreServerProviders } : {},
   {

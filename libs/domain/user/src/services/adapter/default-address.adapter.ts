@@ -1,4 +1,4 @@
-import { Identity, IdentityService } from '@spryker-oryx/auth';
+import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable, of, switchMap, take } from 'rxjs';
@@ -18,13 +18,13 @@ export class DefaultAddressAdapter implements AddressAdapter {
   getAll(): Observable<Address[]> {
     return this.identityService.get().pipe(
       take(1),
-      switchMap((identity: Identity) => {
-        if (identity.anonymous) {
+      switchMap((identity) => {
+        if (!identity.isAuthenticated || !identity.userId) {
           return of([]);
         }
 
         return this.httpService
-          .get(this.generateUrl(identity.id))
+          .get(this.generateUrl(identity.userId))
           .pipe(this.transformer.do(AddressesNormalizer));
       })
     );
@@ -32,23 +32,26 @@ export class DefaultAddressAdapter implements AddressAdapter {
 
   add(data: Address): Observable<Address> {
     return this.modify(data, ({ payload, identity }) =>
-      this.httpService.post(this.generateUrl(identity.id), payload)
+      this.httpService.post(this.generateUrl(identity.userId!), payload)
     );
   }
 
   update(data: Address): Observable<Address> {
     return this.modify(data, ({ payload, identity }) =>
-      this.httpService.patch(this.generateUrl(identity.id, data.id), payload)
+      this.httpService.patch(
+        this.generateUrl(identity.userId!, data.id),
+        payload
+      )
     );
   }
 
   delete(data: Address): Observable<unknown> {
     return this.identityService.get().pipe(
       take(1),
-      switchMap((identity: Identity) =>
-        identity.anonymous
+      switchMap((identity) =>
+        !identity.isAuthenticated || !identity.userId
           ? of(false)
-          : this.httpService.delete(this.generateUrl(identity.id, data.id))
+          : this.httpService.delete(this.generateUrl(identity.userId, data.id))
       )
     );
   }
@@ -59,7 +62,7 @@ export class DefaultAddressAdapter implements AddressAdapter {
   ): Observable<Address> {
     return this.identityService.get().pipe(
       take(1),
-      switchMap((identity: Identity) => {
+      switchMap((identity) => {
         return this.transformer.serialize(data, AddressSerializer).pipe(
           switchMap((serializedData) => {
             return request({ payload: serializedData, identity }).pipe(
