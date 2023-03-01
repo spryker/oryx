@@ -40,7 +40,7 @@ export const formControlBaseStyles = css`
     font-size: 12px;
     text-transform: var(--oryx-form-label-transform);
     position: relative;
-    top: -4px;
+    inset-block-start: -4px;
     line-height: 20px;
   }
 

@@ -11,7 +11,7 @@ export const NDSStyles = css`
     position: fixed;
     z-index: 999;
     inset-inline-start: 0;
-    top: 0;
+    inset-block-start: 0;
     width: 100%;
     max-height: 100vh;
     height: 100vh;

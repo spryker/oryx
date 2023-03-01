@@ -64,6 +64,7 @@ export class LitRouter extends Router {
         decodeURIComponent(globalThis.location?.search)
       ).entries()
     );
+
     // As part of the lazy hydration strategy, everything should not be hydrated by default
     // If the host component is SSR rendered, hydrating it wipes everything
     // So none of the previously SSRed sub components will remain

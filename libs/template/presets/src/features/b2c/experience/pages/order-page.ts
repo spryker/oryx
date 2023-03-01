@@ -28,6 +28,7 @@ export const OrderPage: StaticComponent = {
                   align: 'stretch',
                   maxWidth: true,
                   padding: '30px 0',
+                  margin: '-30px 0',
                   sticky: true,
                   layout: 'list',
                   gap: '20px',

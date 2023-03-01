@@ -31,7 +31,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected renderTriggerButton(isAuthenticated: boolean): TemplateResult {
     const innerContent = html`<oryx-icon type="user"></oryx-icon>
-      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
+      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1} disappear-sm>
         ${when(
           isAuthenticated,
           () => this.user?.firstName,
@@ -62,7 +62,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
               <a href=${item.link} class="dropdown-link" close-popover>
                 ${when(
                   item.icon,
-                  () => html`<oryx-icon type="${item.icon}"></oryx-icon>`
+                  () => html`<oryx-icon type=${item.icon}></oryx-icon>`
                 )}
                 ${item.title}
               </a>

@@ -32,7 +32,7 @@ export const baseStyles = [
 
     :host(:not([up]):not([popoverDirection])) oryx-popover,
     :host([popoverDirection='DOWN']) oryx-popover {
-      top: calc(
+      inset-block-start: calc(
         var(--oryx-popover-distance, 42px) + var(--oryx-label-height, 0px)
       );
       transform-origin: left top;
@@ -40,7 +40,7 @@ export const baseStyles = [
 
     :host([up]:not([popoverDirection])) oryx-popover,
     :host([popoverDirection='UP']) oryx-popover {
-      bottom: var(--oryx-popover-distance, 42px);
+      inset-block-end: var(--oryx-popover-distance, 42px);
       transform-origin: left bottom;
     }
 

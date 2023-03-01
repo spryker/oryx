@@ -11,7 +11,7 @@ import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';
 import { CheckoutCompositionOptions } from './composition.model';
 import { compositionStyles } from './composition.styles';

@@ -6,7 +6,7 @@ export const styles = css`
   }
 
   h2 {
-    margin-bottom: var(--oryx-space-4);
+    margin-block-end: var(--oryx-space-4);
   }
 
   h2,
@@ -34,8 +34,8 @@ export const styles = css`
 
   .summary,
   .summary + oryx-heading {
-    padding-top: var(--oryx-space-2);
-    border-top: solid 1px var(--oryx-color-canvas-500);
+    padding-block-start: var(--oryx-space-2);
+    border-block-start: solid 1px var(--oryx-color-canvas-500);
   }
 
   small {
@@ -64,7 +64,7 @@ export const styles = css`
   }
 
   :not(oryx-collapsible) > ul {
-    margin-top: -10px;
+    margin-block-start: -10px;
     padding-inline: var(--oryx-space-4);
   }
 

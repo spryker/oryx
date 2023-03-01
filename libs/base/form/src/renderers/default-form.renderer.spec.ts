@@ -46,6 +46,48 @@ describe('DefaultFormRenderer', () => {
     destroyInjector();
   });
 
+  describe('fieldValidationPattern()', () => {
+    describe('when field does not have validation patterns', () => {
+      it('should not assign default values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+        });
+
+        expect(pattern).toBeUndefined();
+        expect(title).toBeUndefined();
+      });
+
+      describe('and field is required', () => {
+        it('should return default values', () => {
+          const { pattern, title } = service.fieldValidationPattern({
+            id: 'test',
+            required: true,
+          });
+
+          expect(pattern).toBe('.*\\S+.*');
+          expect(title).toBe('Invalid empty text');
+        });
+      });
+    });
+
+    describe('when field has own validation patterns', () => {
+      const validationPattern = {
+        pattern: 'testPattern',
+        title: 'testTitle',
+      };
+
+      it('should assign field values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+          ...validationPattern,
+        });
+
+        expect(pattern).toBe(validationPattern.pattern);
+        expect(title).toBe(validationPattern.title);
+      });
+    });
+  });
+
   describe('formatFormData()', () => {
     let element: HTMLFormElement;
 

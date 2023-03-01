@@ -33,10 +33,8 @@ export class CartSummaryComponent extends CartComponentMixin(
       <oryx-button>
         <a href=${ifDefined(this.link)}>
           <oryx-icon type="cart"></oryx-icon>
-
           ${this.renderMark()}
-
-          <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
+          <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1} disappear-sm>
             ${i18n('cart.cart')}
           </oryx-heading>
         </a>

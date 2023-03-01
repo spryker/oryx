@@ -1,7 +1,6 @@
 import { ErrorHandler, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
-import { componentsProvider } from './components.provider';
 import { CountryService, DefaultCountryService } from './country';
 import { CurrencyService, DefaultCurrencyService } from './currency';
 import { SiteErrorHandler } from './error-handling';
@@ -26,7 +25,6 @@ declare global {
 }
 
 export const siteProviders: Provider[] = [
-  componentsProvider,
   {
     provide: 'SCOS_BASE_URL',
     useFactory: () => injectEnv('SCOS_BASE_URL', ''),

@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, CSSResult, CSSResultGroup, unsafeCSS } from 'lit';
 
 const unsafe = (value: string): CSSResult => unsafeCSS(value);
@@ -7,7 +7,6 @@ const unsafe = (value: string): CSSResult => unsafeCSS(value);
  * Generates the CSS selectors and rules for the given tag to plain heading selectors
  * as well as mimic headings with an appearance. The style rules depend on CSS variables
  * for the size, weight and line-height.
- * ```
  */
 const headingStyle = (
   tag: string,
@@ -19,9 +18,9 @@ const headingStyle = (
   const tokenPrefix = unsafe(`--oryx-typography-${tag.split('.').join('')}`);
 
   return css`
-    :host(:not(:is([appearance], [md-appearance])))
+    :host(:not(:is([appearance], [md-appearance], [sm-appearance])))
       ${selector},
-      :host(:not(:is([appearance], [md-appearance])))
+      :host(:not(:is([appearance], [md-appearance], [sm-appearance])))
       ::slotted(${selector}),
     :host([appearance='${selector}']) {
       --_line-height: var(${tokenPrefix}-line, ${unsafe(lineHeight)});
@@ -89,14 +88,20 @@ export const headlineStyles = css`
     text-transform: uppercase;
   }
 
-  ${headingStyle('h1', `1.571em`, `1.364em`)}
-  ${headingStyle('h2', `1.286em`, `1.444em`, 700)}
-  ${headingStyle('h3', `1.143em`, `1.375em`)}
-  ${headingStyle('h4', `1em`, `1.571em`)}
-  ${headingStyle('h5', `1em`, `1.571em`, 700)}
-  ${headingStyle('h6', `0.857em`, `1.333em`)}
+  ${headingStyle('h1', `2.857em`, `1.2em`)}
+  ${headingStyle('h2', `2.143em`, `1.2em`)}
+  ${headingStyle('h3', `1.572em`, `1.364em`, 500)}
+  ${headingStyle('h4', `1.286em`, `1.444em`, 500)}
+  ${headingStyle('h5', `1.143em`, `1.5em`)}
+  ${headingStyle('h6', `1.143em`, `1.5em`, 500)}
   ${headingStyle('.subtitle', `0.857em`, `1.333em`)}
   ${headingStyle('.caption', `0.857em`, `1.333em`)}
+`;
+
+const largeScreen = css`
+  :host([disappear-lg]) {
+    display: none;
+  }
 `;
 
 const mediumScreen = css`
@@ -114,6 +119,10 @@ const mediumScreen = css`
 
   :host(:not([md-appearance='subtitle'])) {
     text-transform: initial;
+  }
+
+  :host([disappear-md]) {
+    display: none;
   }
 
   ${screenSizeHeadingStyle('md', 'h1', `2.857em`, `1.2em`)}
@@ -143,12 +152,16 @@ const smallScreen = css`
     text-transform: initial;
   }
 
-  ${screenSizeHeadingStyle('sm', 'h1', `2.857em`, `1.2em`)}
-  ${screenSizeHeadingStyle('sm', 'h2', `2.143em`, `1.2em`)}
-  ${screenSizeHeadingStyle('sm', 'h3', `1.571em`, `1.364em`, 500)}
-  ${screenSizeHeadingStyle('sm', 'h4', `1.286em`, `1.444em`, 500)}
-  ${screenSizeHeadingStyle('sm', 'h5', `1.143em`, `1.5em`)}
-  ${screenSizeHeadingStyle('sm', 'h6', `1.143em`, `1.5em`, 500)}
+  :host([disappear-sm]) {
+    display: none;
+  }
+
+  ${screenSizeHeadingStyle('sm', 'h1', `1.572em`, `1.364em`)}
+  ${screenSizeHeadingStyle('sm', 'h2', `1.286em`, `1.44em`, 700)}
+  ${screenSizeHeadingStyle('sm', 'h3', `1.143em`, `1.375em`)}
+  ${screenSizeHeadingStyle('sm', 'h4', `1em`, `1.572em`)}
+  ${screenSizeHeadingStyle('sm', 'h5', `1em`, `1.572em`, 700)}
+  ${screenSizeHeadingStyle('sm', 'h6', `0.857em`, `1.333em`)}
   ${screenSizeHeadingStyle('sm', '.subtitle', `0.857em`, `1.333em`)}
   ${screenSizeHeadingStyle('sm', '.caption', `0.857em`, `1.333em`)}
 `;
@@ -162,6 +175,10 @@ const smallScreen = css`
  * Each definition can be controlled with a CSS variable.
  */
 export const headlineScreenStyles: ThemeStylesWithMedia[] = [
+  {
+    media: lgScreen,
+    css: largeScreen,
+  },
   {
     media: mdScreen,
     css: mediumScreen,
