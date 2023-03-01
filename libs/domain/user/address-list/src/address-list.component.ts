@@ -33,7 +33,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected willUpdate(changedProperties: PropertyValues): void {
     if (
-      this.componentOptions.selectable &&
+      this.componentOptions?.selectable &&
       !this.addresses?.find((address) => address.id === this.selectedAddressId)
     ) {
       this.selectedAddressId =
@@ -65,7 +65,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
         .options=${this.componentOptions}
       >
         ${when(
-          this.componentOptions.selectable,
+          this.componentOptions?.selectable,
           () => html`<input
             name="address"
             type="radio"
