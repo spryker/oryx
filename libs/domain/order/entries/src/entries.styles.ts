@@ -8,7 +8,7 @@ export const styles = css`
   }
 
   h3 {
-    margin-bottom: 2px;
+    margin-block-end: 2px;
   }
 
   button {

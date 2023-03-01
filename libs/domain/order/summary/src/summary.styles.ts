@@ -41,7 +41,7 @@ export const styles = css`
   }
 
   h3 {
-    margin-bottom: 4px;
+    margin-block-end: 4px;
   }
 
   hr,
