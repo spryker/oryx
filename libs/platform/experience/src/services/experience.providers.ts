@@ -6,9 +6,11 @@ import {
   DefaultBreakpointService,
   DefaultExperienceDataClientService,
   DefaultExperienceService,
+  DefaultExperienceStaticService,
   DefaultLayoutBuilder,
   ExperienceDataClientService,
   ExperienceService,
+  ExperienceStaticService,
   LayoutBuilder,
   PreviewExperienceService,
 } from './experience';
@@ -45,6 +47,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
+  },
+  {
+    provide: ExperienceStaticService,
+    useClass: DefaultExperienceStaticService,
   },
 ];
 
