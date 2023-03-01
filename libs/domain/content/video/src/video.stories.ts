@@ -6,7 +6,7 @@ import { ContentVideoOptions } from './video.model';
 export default {
   title: `${storybookPrefix}/Video`,
   args: {
-    src: 'https://d3g7htsbjjywiv.cloudfront.net/assets/common/images/media-page/redesigned-footage/footage-sizzle.webm',
+    src: 'https://dms.licdn.com/playlist/D4E05AQHKwD2mLTM4Og/mp4-720p-30fp-crf28/0/1677583837226?e=1678287600&v=beta&t=YCFw7j-GCjAJEh9GfrTdLloXbbYrkRkTSU866PNVFlE',
   },
   argTypes: {
     src: { control: { type: 'text' } },
