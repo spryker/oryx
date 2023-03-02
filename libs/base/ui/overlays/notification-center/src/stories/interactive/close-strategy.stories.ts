@@ -29,6 +29,7 @@ CloseStrategy.play = async (obj: {
     TAG_NAME
   ) as NotificationCenterComponent;
 
+  await wait(1000);
   open({ autoClose: false });
   await wait(0);
   expect(getNotification(center)).toBeDefined;

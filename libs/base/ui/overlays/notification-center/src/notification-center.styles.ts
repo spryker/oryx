@@ -4,8 +4,8 @@ import { NotificationPosition as Position } from './notification-center.model';
 export const notificationCenterBaseStyles = css`
   :host {
     --_max-width: min(
-      calc(100% - (var(--oryx-notification-margin-inline, 0) * 2)),
-      var(--oryx-notification-max-width, 0px)
+      calc(100% - (var(--oryx-notification-margin-inline, 0px) * 2)),
+      var(--oryx-notification-max-width, 400px)
     );
 
     display: flex;
@@ -28,7 +28,7 @@ export const notificationCenterBaseStyles = css`
 
   :host([position='${unsafeCSS(Position.TopStart)}']),
   :host([position='${unsafeCSS(Position.BottomStart)}']) {
-    inset-inline-start: var(--oryx-notification-margin-inline);
+    inset-inline-start: var(--oryx-notification-margin-inline, 0);
   }
 
   :host([position='${unsafeCSS(Position.TopCenter)}']),
@@ -38,13 +38,13 @@ export const notificationCenterBaseStyles = css`
 
   :host([position='${unsafeCSS(Position.TopEnd)}']),
   :host([position='${unsafeCSS(Position.BottomEnd)}']) {
-    inset-inline-end: var(--oryx-notification-margin-inline);
+    inset-inline-end: var(--oryx-notification-margin-inline, 0);
   }
 
   :host([position='${unsafeCSS(Position.BottomStart)}']),
   :host([position='${unsafeCSS(Position.BottomEnd)}']),
   :host([position='${unsafeCSS(Position.BottomCenter)}']) {
-    inset-block-end: var(--oryx-notification-margin-block);
+    inset-block-end: var(--oryx-notification-margin-block, 0);
   }
 
   :host > * {

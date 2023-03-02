@@ -16,6 +16,7 @@ export const generateNotification = (
     type: Types.INFO,
     content: 'Title',
     subtext: 'Sub text',
+    autoClose: false,
     ...strategy,
   };
 };

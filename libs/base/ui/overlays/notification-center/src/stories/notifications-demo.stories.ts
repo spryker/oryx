@@ -7,6 +7,22 @@ import { generateRandomNotification } from './util';
 
 export default {
   title: `${storybookPrefix}/Overlays/Notification Center`,
+  args: {
+    position: NotificationPosition.TopEnd,
+  },
+  argTypes: {
+    position: {
+      options: [
+        NotificationPosition.TopStart,
+        NotificationPosition.TopCenter,
+        NotificationPosition.TopEnd,
+        NotificationPosition.BottomStart,
+        NotificationPosition.BottomCenter,
+        NotificationPosition.BottomEnd,
+      ],
+      control: { type: 'radio' },
+    },
+  },
 } as Meta;
 
 interface Props {
@@ -52,20 +68,4 @@ const Template: Story<Props> = ({
   `;
 };
 
-export const NotificationCenterDemo = Template.bind({});
-NotificationCenterDemo.args = {
-  position: NotificationPosition.TopEnd,
-};
-NotificationCenterDemo.argTypes = {
-  position: {
-    options: [
-      NotificationPosition.TopStart,
-      NotificationPosition.TopCenter,
-      NotificationPosition.TopEnd,
-      NotificationPosition.BottomStart,
-      NotificationPosition.BottomCenter,
-      NotificationPosition.BottomEnd,
-    ],
-    control: { type: 'radio' },
-  },
-};
+export const Demo = Template.bind({});

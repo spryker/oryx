@@ -16,7 +16,9 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <button
-      @click=${(): void => open({ autoCloseTime: 2000 })}
+      @click=${(): void => {
+        open({ autoCloseTime: 2000 });
+      }}
       data-testid="button"
     >
       open
