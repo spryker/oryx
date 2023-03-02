@@ -3,7 +3,7 @@ import { iconInjectable } from '@spryker-oryx/utilities';
 import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
-import { ThemeTokens } from './theme-token';
+import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
   ThemeBreakpoints,
