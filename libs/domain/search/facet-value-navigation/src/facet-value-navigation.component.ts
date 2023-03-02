@@ -45,7 +45,7 @@ export class SearchFacetValueNavigationComponent
   }
 
   protected override render(): TemplateResult {
-    return html` <oryx-collapsible ?open=${this.open}>
+    return html` <oryx-collapsible ?open=${this.open} nonTabbable>
       <span class="header" slot="header">
         <slot name="title">
           ${when(this.heading, () => html`${this.heading}`)}

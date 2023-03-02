@@ -1,4 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -19,11 +20,15 @@ export class CollapsibleComponent
     CollapsibleToggleControlType.IconButton;
   @property({ type: Boolean }) open?: boolean;
   @property() header?: string;
+  @property({ type: Boolean }) nonTabbable?: boolean;
 
   protected override render(): TemplateResult {
     return html`
       <details ?open=${this.open}>
-        <summary tabindex=${this.isInline ? -1 : 0} part="heading">
+        <summary
+          part="heading"
+          tabindex=${ifDefined(this.preventKeyboardNavigation ? '-1' : undefined)}
+        >
           <slot name="header">${this.header}</slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>
@@ -35,33 +40,28 @@ export class CollapsibleComponent
 
   protected renderToggleControl(): TemplateResult {
     return html`
-      ${when(
-        this.toggleControlType !== CollapsibleToggleControlType.TextButton,
-        () => html`
-          <oryx-icon-button size=${this.controlSize}>
-            <span tabindex=${this.isInline ? 0 : -1}>
-              <slot name="collapsed">
-                <oryx-icon type="expand"></oryx-icon>
-              </slot>
-              <slot name="expanded">
-                <oryx-icon type="collapse"></oryx-icon>
-              </slot>
-            </span>
-          </oryx-icon-button>
-        `
-      )}
-      ${when(
-        this.toggleControlType === CollapsibleToggleControlType.TextButton,
-        () => html`
-          <oryx-button type="text" size=${this.controlSize}>
-            <span tabindex=${this.isInline ? 0 : -1}>
-              <slot name="collapsed"> Hide </slot>
-              <slot name="expanded"> Show </slot>
-            </span>
-          </oryx-button>
-        `
-      )}
-    `;
+      <oryx-icon-button
+        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}
+        size=${this.controlSize}
+      >
+        <span tabindex=${ifDefined(this.preventKeyboardNavigation ? '0' : undefined)}>
+          <slot name="collapsed">
+            ${when(
+              !this.isTextTrigger,
+              () => html`<oryx-icon type="expand"></oryx-icon>`,
+              () => html`Hide`
+            )}
+          </slot>
+          <slot name="expanded">
+            ${when(
+              !this.isTextTrigger,
+              () => html`<oryx-icon type="collapse"></oryx-icon>`,
+              () => html`Show`
+            )}
+          </slot>
+        </span>
+      </oryx-icon-button>
+    `
   }
 
   /**
@@ -73,5 +73,13 @@ export class CollapsibleComponent
 
   protected get isInline(): boolean {
     return this.appearance === CollapsibleAppearance.Inline;
+  }
+
+  protected get isTextTrigger(): boolean {
+    return this.toggleControlType === CollapsibleToggleControlType.TextButton;
+  }
+
+  protected get preventKeyboardNavigation(): boolean {
+    return this.nonTabbable || this.isInline;
   }
 }
