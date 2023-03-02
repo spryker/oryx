@@ -125,7 +125,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           cmd: npm run sf:e2e:headless:ci
-          affectedCmd: DEBUG='start-server-and-test' npm run sf:e2e:headless:ci:affected
+          affectedCmd: npm run sf:e2e:headless:ci:affected
           isDev: ${{ env.IS_DEV }}
   test-build:
     runs-on: ubuntu-latest
