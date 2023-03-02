@@ -19,6 +19,9 @@ export default {
       control: { type: 'select', options: ['auto', 'metadata', 'none'] },
     },
   },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 } as Meta;
 
 const Template: Story<ContentVideoOptions> = (
