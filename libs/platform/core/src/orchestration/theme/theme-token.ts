@@ -83,6 +83,52 @@ export class ThemeTokens {
     themes: Theme[],
     root = ':host'
   ): Promise<ThemeData> {
+    const tokens = await this.parseTokens(themes);
+    let styles = '';
+
+    for (const media in tokens) {
+      const tokensList = tokens[media];
+
+      if (tokensList && !Object.keys(tokensList).length) {
+        continue;
+      }
+
+      const isMode = media.includes(ThemeDefaultMedia.Mode);
+      let start = '';
+      let end = '}';
+
+      if (media !== DesignTokenGlobal.Global && !isMode) {
+        end += '}';
+        start += ` ${this.generateMedia(media)} {`;
+      }
+
+      if (isMode) {
+        const isLight = media.includes('light');
+        const modeAttr = media.replace('.', '-');
+        const modeOrder = isLight
+          ? `@layer mode.dark, ${media};`
+          : `@layer mode.light, ${media};`;
+
+        end += '}';
+        start += `
+          ${this.generateMedia(media)} { ${modeOrder} }
+          @layer ${media} { ${root}([${modeAttr}]),${root}[${modeAttr}],${root} {
+        `;
+      } else {
+        start += ` ${root} {`;
+      }
+
+      for (const key in tokensList) {
+        start += `${key}: ${tokensList[key]};`;
+      }
+
+      styles += `${start}${end}`;
+    }
+
+    return { styles };
+  }
+
+  protected async parseTokens(themes: Theme[]): Promise<DesignTokenMapper> {
     const designTokensMapper: DesignTokenMapper = {};
     const generateCssVarKey = (
       currentKey: string,
@@ -104,7 +150,15 @@ export class ThemeTokens {
     for (const tokens of tokensList) {
       let tokenMedia = DesignTokenGlobal.Global as string;
 
-      if (tokens?.media) {
+      if (!tokens.media && tokens.color) {
+        tokensList.push({
+          media: { [ThemeDefaultMedia.Mode]: 'light' },
+          color: tokens.color,
+        });
+        delete tokens.color;
+      }
+
+      if (tokens.media) {
         for (const key in tokens.media) {
           tokenMedia = `${key}.${tokens.media[key as keyof ThemeMediaQueries]}`;
         }
@@ -143,30 +197,7 @@ export class ThemeTokens {
       }
     }
 
-    let stream = '';
-
-    for (const media in designTokensMapper) {
-      const tokensList = designTokensMapper[media];
-      let start = '';
-      let end = '}';
-
-      if (media !== DesignTokenGlobal.Global) {
-        end += '}';
-        start += ` ${this.generateMedia(media)} {`;
-      }
-
-      start += ` ${root} {`;
-
-      for (const key in tokensList) {
-        start += `${key}: ${tokensList[key]};`;
-      }
-
-      stream += `${start}${end}`;
-    }
-
-    return {
-      styles: stream,
-    };
+    return designTokensMapper;
   }
 
   protected getStylesFromCollection(

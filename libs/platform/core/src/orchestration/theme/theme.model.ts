@@ -21,7 +21,7 @@ export interface ThemeBreakpoints {
 }
 
 export interface ThemeMediaQueries {
-  [ThemeDefaultMedia.Mode]?: 'dark';
+  [ThemeDefaultMedia.Mode]?: 'dark' | 'light';
   [ThemeDefaultMedia.Screen]?: keyof ThemeBreakpoints;
 }
 
