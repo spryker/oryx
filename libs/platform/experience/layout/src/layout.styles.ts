@@ -234,7 +234,7 @@ const carouselLayout = css`
     );
 
     grid-auto-flow: column;
-    overflow: auto;
+    overflow: auto hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: both mandatory;
     scroll-behavior: smooth;
@@ -246,7 +246,7 @@ const carouselLayout = css`
   }
 
   :host([vertical][layout='carousel']) {
-    overflow-x: initial;
+    overflow: hidden auto;
     grid-column: auto;
     grid-auto-flow: row;
     scroll-padding-block-start: var(--scroll-start, 0px);
