@@ -10,6 +10,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   GITHUB_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
   IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
