@@ -94,8 +94,24 @@ jobs:
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/platform
           affectedCmd: npx nx affected:test
           isDev: ${{ env.IS_DEV }}
-  test-visual:
-    if: ${{ github.actor != 'dependabot[bot]' }}
+  test-visual-pr:
+    if: ${{ github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Visual Regression Tests
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha }}
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: npx nx affected --target=visual-regression-pr
+  test-visual-dev:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -105,13 +121,11 @@ jobs:
           submodules: recursive
       - uses: ./.github/actions/init
       - name: Visual Regression Tests
-        uses: ./.github/actions/run-optimal
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        with:
-          cmd: npx nx run storybook:visual-regression-branch
-          affectedCmd: npx nx affected --target=visual-regression-pr
-          isDev: ${{ env.IS_DEV }}
+          CHROMATIC_SHA: ${{ github.event.after }}
+          CHROMATIC_BRANCH: development
+        run: npx nx run storybook:visual-regression-branch
   test-build:
     runs-on: ubuntu-latest
     steps:
