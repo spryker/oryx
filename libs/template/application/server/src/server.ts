@@ -21,6 +21,7 @@ export function createServer(config: ServerConfig): CreateServer {
       await server(app, modeConfig);
 
       app.listen(config.port ?? 3001, () => {
+        console.debug(process.env)
         console.log(`listening on port ${config.port ?? 3001}`);
       });
     },
