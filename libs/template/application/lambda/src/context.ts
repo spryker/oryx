@@ -33,20 +33,12 @@ export const serverContext = (options: ContextOptions): any => {
   });
   window.setTimeout = setTimeout;
 
-  console.debug('entry path: ', resolve(basePath, entry))
-  console.debug('entry size: ', `${readFileSync(resolve(basePath, entry), 'utf8')}`.length)
-
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
 
-  console.debug('options: ', entry, root, namespace)
-  console.debug('basepath: ', basePath)
-
   createContext(window);
-
-  console.debug('context created, start to run script in context')
 
   return script.runInContext(window);
 };

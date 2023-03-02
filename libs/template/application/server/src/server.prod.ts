@@ -18,7 +18,6 @@ export async function createProdSever(
   });
 
   app.get('/*', async (req, res, next) => {
-    console.debug(req.url, 'prod | get request')
     const url = generateUrl(req);
 
     if (!url) {
@@ -26,16 +25,11 @@ export async function createProdSever(
     }
 
     try {
-      console.debug('indexFile: ', indexPath)
       const indexFile = readFileSync(`${indexPath}/index.html`, 'utf-8');
-      console.debug('indexFile: ', indexFile.length)
       const template = indexFile;
       const render = serverContext({ entry: entryPath, namespace });
-      console.debug('render: ', render)
       const appHtml = await render({ route: url });
-      console.debug('appHtml: ', appHtml.length)
       const html = template.replace(component, appHtml);
-      console.debug('html: ', html.length)
 
       res.status(200).end(html);
     } catch (e) {
