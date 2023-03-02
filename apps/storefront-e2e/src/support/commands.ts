@@ -21,9 +21,9 @@ export const defaultUser: User = {
 };
 
 Cypress.Commands.add('login', (user: User) => {
-  const homePage = new LoginPage();
+  const loginPage = new LoginPage();
 
-  homePage.loginForm.login(user);
+  loginPage.loginForm.login(user);
 });
 
 Cypress.Commands.add('waitUpdateComplete', (element) => {

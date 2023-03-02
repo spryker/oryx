@@ -16,8 +16,6 @@ export class HeaderFragment {
   getContactLink = () => this.getWrapper().find('oryx-content-link').find('a');
 
   logout = () => {
-    cy.waitUpdateComplete(this.getOpenUserMenuButton());
-
     this.getOpenUserMenuButton().click();
     this.getUserSummaryMenu().should('have.attr', 'open');
 
