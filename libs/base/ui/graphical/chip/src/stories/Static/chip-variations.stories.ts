@@ -10,7 +10,7 @@ const longText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim';
 
 enum CategoryY {
-  Dense = 'Dense',
+  Dense = 'Dense_or_not',
   Standard = 'Standard',
   Invert = 'Invert',
   Truncated = 'Truncated',
