@@ -30,7 +30,9 @@ export interface ThemeStylesWithMedia {
   css: ThemeStyles;
 }
 
-export type ThemeStylesCollection = CSSResult | string | ThemeStylesWithMedia;
+export type ThemeStylesCollection =
+  | Exclude<ThemeStyles, CSSResult[]>
+  | ThemeStylesWithMedia;
 
 export type ThemeStylesheets = ThemeStyles | ThemeStylesCollection[];
 

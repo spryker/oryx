@@ -60,7 +60,7 @@ export class ThemePlugin
 
     if (typeof componentOptions.root === 'string' && document.body) {
       const styles = document.createElement('style');
-      const streamStyles = await this.setTokens(this.themes, ':root');
+      const streamStyles = await this.getStylesFromTokens(this.themes, ':root');
       styles.innerHTML = streamStyles.styles as string;
       document.body.prepend(styles);
     }
@@ -92,7 +92,7 @@ export class ThemePlugin
     }
 
     if (componentPlugin?.getRoot() === name) {
-      implementations.unshift(this.setTokens(this.themes));
+      implementations.unshift(this.getStylesFromTokens(this.themes));
     }
 
     const themes = await Promise.all(implementations);

@@ -25,10 +25,7 @@ interface DesignTokenMapper {
 
 export class ThemeTokens {
   protected cssVarPrefix = '--oryx';
-  protected mediaMapper: Record<
-    keyof ThemeMediaQueries,
-    Record<string, string>
-  > = {
+  protected mediaMapper = {
     [ThemeDefaultMedia.Mode]: {
       dark: 'prefers-color-scheme: dark',
       light: 'prefers-color-scheme: light',
@@ -42,7 +39,7 @@ export class ThemeTokens {
 
   normalizeStyles(styles: ThemeStyles | ThemeStylesCollection[]): CSSResult[] {
     if (this.isThemeCollection(styles)) {
-      return this.generateBreakpoints(styles);
+      return this.getStylesFromCollection(styles);
     }
 
     if (typeof styles === 'string') {
@@ -54,7 +51,7 @@ export class ThemeTokens {
 
   /**
    * Interpolates value from {@link mediaMapper} by value path.
-   * Value path should be separated by a dot. (e.g. `mode.dark`)
+   * Value path should be separated by a dot. (e.g. `mode.dark` => `@media (prefers-color-scheme: dark)`)
    */
   generateMedia(value: string): string {
     const path = value.split('.');
@@ -82,7 +79,7 @@ export class ThemeTokens {
     return media(`(${mediaKey})`);
   }
 
-  protected async setTokens(
+  protected async getStylesFromTokens(
     themes: Theme[],
     root = ':host'
   ): Promise<ThemeData> {
@@ -166,20 +163,23 @@ export class ThemeTokens {
 
       stream += `${start}${end}`;
     }
-    // console.log(stream);
+
     return {
       styles: stream,
     };
   }
 
-  protected generateBreakpoints(styles: ThemeStylesCollection[]): CSSResult[] {
-    let stylesStream = '';
+  protected getStylesFromCollection(
+    styles: ThemeStylesCollection[]
+  ): CSSResult[] {
     this.sortByBreakpoints(styles);
     const stringifiedStyles = (styles: ThemeStyles): string =>
       this.normalizeStyles(styles).reduce(
         (acc, style) => `${acc} ${style.toString()}`,
         ''
       );
+
+    let stylesStream = '';
 
     for (const style of styles) {
       if (!this.isMediaStyles(style)) {
