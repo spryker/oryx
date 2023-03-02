@@ -37,9 +37,14 @@ export async function createDevSever(
         req.originalUrl,
         indexFile
       );
+      console.debug('indexFile: ', indexFile)
+      console.debug('template: ', template)
       const { render } = await vite.ssrLoadModule(entryPath);
+      console.debug('render: ', render)
       const appHtml = await render({ route: url });
+      console.debug('appHtml: ', appHtml)
       const html = template.replace(component, appHtml);
+      console.debug('html: ', html)
 
       res.status(200).end(html);
     } catch (e) {
