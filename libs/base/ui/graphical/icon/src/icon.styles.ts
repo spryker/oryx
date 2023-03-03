@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    --_margin: 0;
+    --_margin: 0px;
 
     display: flex;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
