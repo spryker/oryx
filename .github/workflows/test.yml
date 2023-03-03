@@ -126,6 +126,26 @@ jobs:
           CHROMATIC_SHA: ${{ github.event.after }}
           CHROMATIC_BRANCH: development
         run: npx nx run storybook:visual-regression-branch
+  test-e2e-storefront:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Storefront E2E Tests
+        uses: ./.github/actions/run-optimal
+        env:
+          SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          STORE: DE
+        with:
+          cmd: npm run sf:e2e:headless:ci
+          affectedCmd: npm run sf:e2e:headless:ci:affected
+          isDev: ${{ env.IS_DEV }}
   test-build:
     runs-on: ubuntu-latest
     steps:
