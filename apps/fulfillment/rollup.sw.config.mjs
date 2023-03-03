@@ -35,10 +35,7 @@ export default {
         },
         {
           find: /^@spryker-oryx\/utilities(\/.+)?/,
-          replacement: resolve(
-            __dirname,
-            '../../libs/base/utilities/no-lit$1'
-          ),
+          replacement: resolve(__dirname, '../../libs/base/utilities/no-lit$1'),
         },
       ],
     }),
