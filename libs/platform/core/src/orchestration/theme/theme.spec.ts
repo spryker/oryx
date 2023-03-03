@@ -211,7 +211,7 @@ describe('ThemePlugin', () => {
       ...mockBTheme,
     };
     const expectedStyles = (selector = ':host'): string =>
-      ` ${selector} {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; } @layer mode.dark { ${selector}(:not(mode-light)) {--oryx-color-red: red1;}} @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; } @layer mode.light { ${selector}(:not(mode-dark)) {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;}}`;
+      ` ${selector} {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; } @layer mode.dark { ${selector}(:not([mode-light])) {--oryx-color-red: red1;}} @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; } @layer mode.light { ${selector}(:not([mode-dark])) {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;}}`;
     const plugin = new ThemePlugin([mockATokensTheme, mockBTokensTheme]);
 
     beforeEach(() => {
