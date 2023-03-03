@@ -16,12 +16,12 @@ export const ratingReadonlyStyles = css`
     background-color: var(--oryx-color-canvas-500);
   }
 
-  :host([readonly]:not([size='small'])) input {
+  :host([readonly]:not([size='sm'])) input {
     /* stylelint-disable-next-line */
     clip-path: url('#star-path');
   }
 
-  :host([readonly][size='small']) input {
+  :host([readonly][size='sm']) input {
     /* stylelint-disable-next-line */
     clip-path: url('#star-path-small');
   }

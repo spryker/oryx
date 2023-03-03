@@ -38,7 +38,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe('md');
       });
     });
 
@@ -54,7 +54,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe('md');
       });
     });
   });
@@ -72,7 +72,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe('sm');
       });
     });
 
@@ -88,7 +88,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe('sm');
       });
     });
   });

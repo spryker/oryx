@@ -33,16 +33,16 @@ export const toggleIconStyles = css`
     padding: 7px;
   }
 
-  :host([has-text][size='small']) {
+  :host([has-text][size='sm']) {
     padding: 8px 12px;
   }
 
   :host([has-text]),
-  :host([has-text][size='medium']) {
+  :host([has-text][size='md']) {
     padding: 8px 12px;
   }
 
-  :host([has-text][size='large']) {
+  :host([has-text][size='lg']) {
     padding: 12px 16px;
   }
 

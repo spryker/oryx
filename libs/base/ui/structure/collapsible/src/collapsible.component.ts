@@ -67,8 +67,8 @@ export class CollapsibleComponent
   /**
    * returns the size of the control based on the appearance of the component.
    */
-  protected get controlSize(): 'small' | 'medium' | 'large' {
-    return this.isInline ? 'small' : 'medium';
+  protected get controlSize(): 'sm' | 'md' | 'lg' {
+    return this.isInline ? 'sm' : 'md';
   }
 
   protected get isInline(): boolean {

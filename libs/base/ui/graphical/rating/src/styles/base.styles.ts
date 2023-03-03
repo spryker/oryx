@@ -12,7 +12,7 @@ export const ratingBaseStyles = css`
     gap: 10px;
   }
 
-  :host([size='small']) {
+  :host([size='sm']) {
     --oryx-rating-size: 12px;
     --oryx-icon-size: 12px;
     --_margin: 2px;

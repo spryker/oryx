@@ -20,11 +20,11 @@ export const styles = css`
     transition: var(--oryx-transition-time);
   }
 
-  :host([size='medium']) {
+  :host([size='md']) {
     --_margin: 2px;
   }
 
-  :host([size='small']) {
+  :host([size='sm']) {
     --_margin: 4px;
   }
 `;

@@ -99,7 +99,7 @@ describe('Average Rating', () => {
   });
 
   describe('when size options is provided', () => {
-    const size = 'small';
+    const size = 'sm';
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-product-average-rating

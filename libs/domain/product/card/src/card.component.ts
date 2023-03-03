@@ -120,7 +120,7 @@ export class ProductCardComponent extends ProductMixin(
   protected renderRating(): TemplateResult | void {
     if (this.componentOptions?.enableRating) {
       return html`<oryx-product-average-rating
-        .options=${{ size: 'small', enableCount: false }}
+        .options=${{ size: 'sm', enableCount: false }}
       ></oryx-product-average-rating>`;
     }
   }
