@@ -39,30 +39,48 @@ export class CollapsibleComponent
   }
 
   protected renderToggleControl(): TemplateResult {
+    const content = html`
+     <slot name="collapsed">
+        ${when(
+          !this.isTextTrigger,
+          () => html`<oryx-icon type="expand"></oryx-icon>`,
+          () => html`Hide`
+        )}
+      </slot>
+      <slot name="expanded">
+        ${when(
+          !this.isTextTrigger,
+          () => html`<oryx-icon type="collapse"></oryx-icon>`,
+          () => html`Show`
+        )}
+      </slot>
+    `;
+    
     return html`
       <oryx-icon-button
-        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}
+        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}  
         size=${this.controlSize}
       >
-        <span tabindex=${ifDefined(this.preventKeyboardNavigation ? '0' : undefined)}>
-          <slot name="collapsed">
-            ${when(
-              !this.isTextTrigger,
-              () => html`<oryx-icon type="expand"></oryx-icon>`,
-              () => html`Hide`
-            )}
-          </slot>
-          <slot name="expanded">
-            ${when(
-              !this.isTextTrigger,
-              () => html`<oryx-icon type="collapse"></oryx-icon>`,
-              () => html`Show`
-            )}
-          </slot>
-        </span>
+        ${when(
+          this.preventKeyboardNavigation,
+          () => html`
+            <button 
+              aria-label=${this.open ? 'hide' : 'show'}
+              type="button"
+              @click=${(e: Event) => this.onClick(e)}
+            >${content}</button>
+          `,
+          () => html`<span>${content}</span>`
+        )}
       </oryx-icon-button>
     `
   }
+
+  protected onClick(e: Event): void {
+    e.stopPropagation();
+
+    this.open = !this.open;
+  } 
 
   /**
    * returns the size of the control based on the appearance of the component.

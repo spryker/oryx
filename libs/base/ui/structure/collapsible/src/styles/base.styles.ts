@@ -79,11 +79,15 @@ export const collapsibleBaseStyle = css`
     pointer-events: all;
   }
 
-  :host(${blockSelector}) oryx-icon-button > span {
+  :host(${blockSelector}) oryx-icon-button > * {
     padding: 2px;
   }
 
   slot[name='aside']::slotted(*) {
     margin-inline-start: auto;
+  }
+
+  button {
+    padding: 0;
   }
 `;

@@ -61,7 +61,13 @@ const Template = (): TemplateResult => {
       ${facetComponent({ minForSearch: 13, open: true })}
     </div>
 
-   
+    <h3>Selected</h3>
+    ${facetComponent({
+      name: 'Category',
+      multi: true,
+      renderLimit: 5,
+      open: true,
+    })}
   `;
 };
 
