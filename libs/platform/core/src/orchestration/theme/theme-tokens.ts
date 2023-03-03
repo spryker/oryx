@@ -125,10 +125,8 @@ export class ThemeTokens {
 
       styles += `${start}${end}`;
     }
-    console.log(styles);
-    return {
-      styles,
-    };
+
+    return { styles };
   }
 
   protected async parseTokens(themes: Theme[]): Promise<DesignTokenMapper> {
