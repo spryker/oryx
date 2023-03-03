@@ -13,15 +13,41 @@ export const notificationCenterBaseStyles = css`
   }
 
   :host([stackable]:hover) {
-    --_margin: 10px;
+    --_margin: 3px;
     --_max-height: 58px;
     --_opacity: 1;
   }
 
-  :host([stackable]) oryx-notification:not(:last-child) {
+  :host([stackable]) oryx-notification {
+    transition: all var(--oryx-transition-time) ease-in-out;
+  }
+
+  :host([stackable]:is([position='${unsafeCSS(
+          Position.TopStart
+        )}'], [position='${unsafeCSS(
+          Position.TopCenter
+        )}'], [position='${unsafeCSS(Position.TopEnd)}']))
+    oryx-notification:not(:last-child) {
     margin-block-start: var(--_margin, -58px);
     max-height: var(--_max-height, 30px);
-    transition: all 0.3s ease-in-out;
+  }
+
+  :host([stackable]:is([position='${unsafeCSS(
+          Position.BottomStart
+        )}'], [position='${unsafeCSS(
+          Position.BottomCenter
+        )}'], [position='${unsafeCSS(Position.BottomEnd)}']))
+    oryx-notification:not(:last-child) {
+    max-height: var(--_max-height, 30px);
+  }
+
+  :host([stackable]:is([position='${unsafeCSS(
+          Position.BottomStart
+        )}'], [position='${unsafeCSS(
+          Position.BottomEnd
+        )}'], [position='${unsafeCSS(Position.BottomCenter)}']))
+    oryx-notification:not(:first-child) {
+    margin-block-start: var(--_margin, -58px);
   }
 
   oryx-notification[visible] {
