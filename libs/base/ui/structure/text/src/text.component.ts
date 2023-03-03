@@ -49,7 +49,7 @@ export class TextComponent extends LitElement implements TextProperties {
       ${when(
         !this.hideToggle,
         () => html` <slot name="toggle">
-          <oryx-icon-button size="small">
+          <oryx-icon-button size="sm">
             <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
               <oryx-icon type="dropdown"></oryx-icon>
             </button>

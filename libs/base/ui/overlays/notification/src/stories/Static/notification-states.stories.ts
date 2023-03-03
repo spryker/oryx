@@ -109,7 +109,7 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
                     <span class="title"> Custom title </span>
                     <div class="content">Italic content</div>
                     <div class="buttons">
-                      <oryx-button size="small">
+                      <oryx-button size="sm">
                         <button>OK</button>
                       </oryx-button>
                     </div>

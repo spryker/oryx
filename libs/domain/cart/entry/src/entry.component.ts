@@ -113,7 +113,7 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
               ></cart-entry-confirmation>
             `,
             () => html`
-              <oryx-icon-button size="small">
+              <oryx-icon-button size="sm">
                 <button
                   @click=${(): void =>
                     this.onRemove(entry.silentRemove || confirmationRequired)}

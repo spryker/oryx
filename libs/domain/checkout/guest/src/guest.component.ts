@@ -46,7 +46,7 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin<CheckoutGuest
         create an account later.
       </slot>
 
-      <oryx-button slot="footer" size="small">
+      <oryx-button slot="footer" size="sm">
         <button @click=${this.handleProceed}>Checkout as a guest</button>
       </oryx-button>
     </oryx-card>`;

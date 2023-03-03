@@ -145,7 +145,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           html`
             <small class="delivery-message">
               ${ifDefined(options?.deliveryMessage)}
-              <oryx-icon-button size="small">
+              <oryx-icon-button size="sm">
                 <a href="#" title=${i18n('cart.totals.delivery-message')}>
                   <oryx-icon type="info"></oryx-icon>
                 </a>

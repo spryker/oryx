@@ -80,7 +80,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected renderEmpty(): TemplateResult | void {
     return html`<slot name="empty">
-      <oryx-icon type="location" size="large"></oryx-icon>
+      <oryx-icon type="location" size="lg"></oryx-icon>
       ${i18n('user.address.no-addresses')}
     </slot>`;
   }

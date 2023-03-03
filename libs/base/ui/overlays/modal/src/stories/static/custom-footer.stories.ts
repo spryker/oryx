@@ -22,10 +22,10 @@ const Template: Story = (): TemplateResult => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
       </p>
-      <oryx-button slot="footer" type="primary" size="small">
+      <oryx-button slot="footer" type="primary" size="sm">
         <button>Save</button>
       </oryx-button>
-      <oryx-button slot="footer" type="primary" size="small">
+      <oryx-button slot="footer" type="primary" size="sm">
         <button>Ok</button>
       </oryx-button>
     </oryx-modal>

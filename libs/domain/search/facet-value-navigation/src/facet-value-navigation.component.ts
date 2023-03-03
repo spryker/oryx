@@ -62,7 +62,7 @@ export class SearchFacetValueNavigationComponent
           this.enableClearAction && this.selectedLength,
           () =>
             html`
-              <oryx-button type="text" size="small">
+              <oryx-button type="text" size="sm">
                 <button @click=${this.onClear}>
                   ${i18n('search.facet-value-navigation.clear')}
                 </button>
@@ -84,7 +84,7 @@ export class SearchFacetValueNavigationComponent
       ${when(
         this.enableToggle,
         () => html`<div class="controls">
-          <oryx-button type="text" size="large">
+          <oryx-button type="text" size="lg">
             <button @click=${this.onToggle}>
               ${when(
                 this._isShowed,

@@ -238,7 +238,7 @@ export class SearchBoxComponent
           @oryx.typeahead=${this.onTypeahead}
           .clearIconPosition=${ClearIconPosition.NONE}
         >
-          <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
+          <oryx-icon slot="prefix" type="search" size="md"></oryx-icon>
           <input ${ref(this.inputRef)} placeholder="Search" />
           ${this.renderSuggestion(this.suggestion)}
           ${when(this.query, () =>

@@ -46,7 +46,7 @@ const Template: Story<Props> = ({
           animation-timing-function: linear;
         }
       </style>
-      <oryx-icon slot="error" type="error" size="large"></oryx-icon>
+      <oryx-icon slot="error" type="error" size="lg"></oryx-icon>
       <span slot="error"> Custom error content </span>
     </oryx-input>
   `;

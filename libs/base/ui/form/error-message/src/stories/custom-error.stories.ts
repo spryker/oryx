@@ -26,7 +26,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           animation-timing-function: linear;
         }
       </style>
-      <oryx-icon type="error" size="large"></oryx-icon>
+      <oryx-icon type="error" size="lg"></oryx-icon>
       <span> Custom error content </span>
     </oryx-error-message>
   `;

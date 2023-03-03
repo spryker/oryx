@@ -97,7 +97,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size="small">
+        <oryx-button size="sm">
           <button ?disabled=${this.isLoading}>${i18n('user.login')}</button>
         </oryx-button>
       </form>

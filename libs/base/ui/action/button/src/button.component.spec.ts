@@ -34,7 +34,7 @@ describe('ButtonComponent', () => {
       describe(`when the type is set to ${type}`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-button type="${type}" size="small"></oryx-button>`
+            html`<oryx-button type="${type}" size="sm"></oryx-button>`
           );
         });
 

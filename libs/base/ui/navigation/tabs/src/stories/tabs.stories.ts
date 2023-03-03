@@ -50,7 +50,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         return html`<div slot="panels" id="n${i + 1}">
           <p>Сontent for tab ${i + 1}</p>
 
-          <oryx-button size="small">
+          <oryx-button size="sm">
             <button>button for tab ${i + 1}</button>
           </oryx-button>
         </div> `;
