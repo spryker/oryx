@@ -112,12 +112,10 @@ export class ThemeTokens {
           ? `@layer mode.dark, ${media};`
           : `@layer mode.light, ${media};`;
         const mode = modeSelector(isLight ? 'mode-dark' : 'mode-light');
+        const mediaMode = this.generateMedia(media);
 
         end += '}';
-        start += `
-          ${this.generateMedia(media)} { ${modeOrder} }
-          @layer ${media} { ${mode} {
-        `;
+        start += ` ${mediaMode} { ${modeOrder} } @layer ${media} { ${mode} {`;
       } else {
         start += ` ${root} {`;
       }

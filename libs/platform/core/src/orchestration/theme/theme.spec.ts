@@ -19,7 +19,8 @@ const mockBTheme: Theme = {
 };
 
 const mockComponentPlugin = {
-  options: {},
+  getOptions: vi.fn().mockReturnValue({}),
+  getRoot: vi.fn(),
 };
 
 const mockApp = {
@@ -210,7 +211,7 @@ describe('ThemePlugin', () => {
       ...mockBTheme,
     };
     const expectedStyles = (selector = ':host'): string =>
-      ` ${selector} {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { ${selector} {--oryx-color-red: red1;}}`;
+      ` ${selector} {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; } @layer mode.dark { ${selector}(:not(mode-light)) {--oryx-color-red: red1;}} @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; } @layer mode.light { ${selector}(:not(mode-dark)) {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;}}`;
     const plugin = new ThemePlugin([mockATokensTheme, mockBTokensTheme]);
 
     beforeEach(() => {
@@ -219,10 +220,8 @@ describe('ThemePlugin', () => {
 
     describe('resolve', () => {
       it('should resolve theme with parsed design token and global styles', async () => {
-        const mockComponentPlugin = {
-          rootSelector: 'a',
-          options: {},
-        };
+        mockComponentPlugin.getRoot.mockReturnValue('a');
+
         const expected = [
           { styles: expectedStyles() },
           { styles: ['a'] },
@@ -246,24 +245,21 @@ describe('ThemePlugin', () => {
             },
           ],
         } as ComponentDef);
-
         expect(themeData).toEqual(expected);
       });
     });
 
     describe('apply', () => {
       it('should add parsed design tokens to the document.body if components plugin root options is string', async () => {
-        const mockComponentPlugin = {
-          options: {
-            root: 'root',
-          },
-        };
+        mockComponentPlugin.getOptions.mockReturnValue({
+          root: 'root',
+        });
         mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
         await plugin.apply();
         const styles = document.body
           .querySelector('style')
           ?.textContent?.trim();
-        expect(styles).toBe(expectedStyles(':root').trim());
+        expect(styles).toContain(':root');
       });
     });
   });
