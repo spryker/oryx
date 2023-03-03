@@ -1,0 +1,28 @@
+{
+  "name": "@spryker-oryx/picking",
+  "version": "0.0.1",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "author": "Spryker Sytems GmbH",
+  "license": "See license in LICENSE.md",
+  "peerDependencies": {
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/router": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
+    "dexie": "^3.2.2",
+    "lit": "^2.4.0",
+    "tslib": "^2.4.1",
+    "rxjs": "^7.5.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./*": {
+      "types": "./*/index.d.ts",
+      "default": "./*/index.js"
+    }
+  }
+}
