@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
+    /* stylelint-disable-next-line */
     --_margin: 0px;
 
     display: flex;
