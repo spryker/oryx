@@ -41,8 +41,7 @@ describe('Toggle component', () => {
     });
 
     it('fails the a11y audit', async () => {
-      // TODO: change it to `a11yConfig` when rules will be deleted
-      await expect(element).shadowDom.not.to.be.accessible({});
+      await expect(element).shadowDom.not.to.be.accessible(a11yConfig);
     });
 
     it('should render default slot input', () => {
