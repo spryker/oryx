@@ -13,6 +13,7 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
   marginBlock: '40px',
   marginInline: '30px',
   maxWidth: '470px',
+  enableStaking: true,
 })
 @hydratable('window:oryx-notify')
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(
@@ -38,6 +39,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
       .position=${this.componentOptions?.position}
       style=${ifDefined(this.getStyle())}
       ${ref(this.centerRef)}
+      ?stackable=${this.componentOptions.enableStacking}
     ></oryx-notification-center>`;
   }
 

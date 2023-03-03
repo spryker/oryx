@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
+  NotificationCenterComponentAttributes,
   NotificationPosition,
   NotificationRegistry,
   NotificationStrategy,
@@ -20,10 +21,14 @@ export const defaultStrategy: NotificationStrategy = {
   floating: true,
 };
 
-export class NotificationCenterComponent extends LitElement {
+export class NotificationCenterComponent
+  extends LitElement
+  implements NotificationCenterComponentAttributes
+{
   static styles = [notificationCenterBaseStyles];
 
   @property({ reflect: true }) position?: NotificationPosition;
+  @property({ reflect: true, type: Boolean }) stackable?: boolean;
 
   protected registryController = new RegistryController(this);
 

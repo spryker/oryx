@@ -12,6 +12,26 @@ export const notificationCenterBaseStyles = css`
     flex-direction: column;
   }
 
+  :host([stackable]:hover) {
+    --_margin: 10px;
+    --_max-height: 58px;
+    --_opacity: 1;
+  }
+
+  :host([stackable]) oryx-notification:not(:last-child) {
+    margin-block-start: var(--_margin, -58px);
+    max-height: var(--_max-height, 30px);
+    transition: all 0.3s ease-in-out;
+  }
+
+  oryx-notification[visible] {
+    opacity: 1;
+  }
+
+  :host([stackable]) oryx-notification[visible]:not(:last-child) {
+    opacity: var(--_opacity, 0.4);
+  }
+
   :host([position]) {
     position: fixed;
     z-index: var(--oryx-notification-z-index, 1001);
@@ -61,7 +81,6 @@ export const notificationCenterBaseStyles = css`
   }
 
   :host > [visible] {
-    opacity: 1;
     transition-duration: var(--oryx-transition-time-medium);
   }
 `;

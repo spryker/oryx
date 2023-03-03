@@ -22,5 +22,6 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
       maxWidth: { type: 'text' },
       marginBlock: { type: 'text' },
       marginInline: { type: 'text' },
+      enableStacking: { type: 'boolean' },
     },
   };

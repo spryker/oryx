@@ -24,7 +24,7 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-site-notification-center',
           options: {
             data: {
-              position: NotificationPosition.TopCenter,
+              position: NotificationPosition.BottomStart,
               marginBlock: '100px',
             },
           },

@@ -6,11 +6,18 @@ export interface SiteNotificationCenterOptions {
   maxWidth?: string;
 
   /**
-   * Adds a margin to the top or bottom of the notification center,
-   * depending on where it is located. If the notification is positioned at the top,
-   * a margin is added to the sticky notification to move it lower on the screen. Similarly,
-   * when the notification sticks at the bottom, it will have more margin at the bottom.
+   * Adds a margin to the top or bottom of the notification center.
    */
   marginBlock?: string;
+
+  /**
+   * Adds a margin to the start or end (aka left/right) of the notification center.
+   */
   marginInline?: string;
+
+  /**
+   * Enables stacking of multiple notifications by partially overlapping them in the UI as long as the user
+   * doesn't hover over the center.
+   */
+  enableStacking?: boolean;
 }

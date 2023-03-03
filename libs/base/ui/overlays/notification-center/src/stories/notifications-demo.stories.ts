@@ -1,7 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { NotificationPosition } from '../notification-center.model';
+import {
+  NotificationCenterComponentAttributes,
+  NotificationPosition,
+} from '../notification-center.model';
 import { NotificationService } from '../service';
 import { generateRandomNotification } from './util';
 
@@ -9,6 +12,7 @@ export default {
   title: `${storybookPrefix}/Overlays/Notification Center`,
   args: {
     position: NotificationPosition.TopEnd,
+    stackable: true,
   },
   argTypes: {
     position: {
@@ -25,15 +29,12 @@ export default {
   },
 } as Meta;
 
-interface Props {
-  position?: NotificationPosition;
-}
-
 const service = new NotificationService();
 
-const Template: Story<Props> = ({
+const Template: Story<NotificationCenterComponentAttributes> = ({
   position = NotificationPosition.TopEnd,
-}: Props): TemplateResult => {
+  stackable,
+}: NotificationCenterComponentAttributes): TemplateResult => {
   const pushSticky = (): void => {
     service
       .getCenter('#parent-with-sticky', position)
@@ -63,7 +64,10 @@ const Template: Story<Props> = ({
     </div>
 
     <div id="parent-with-sticky">
-      <oryx-notification-center position=${position}></oryx-notification-center>
+      <oryx-notification-center
+        position=${position}
+        ?stackable=${stackable}
+      ></oryx-notification-center>
     </div>
   `;
 };
