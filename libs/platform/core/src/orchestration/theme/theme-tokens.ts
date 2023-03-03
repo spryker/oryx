@@ -83,6 +83,10 @@ export class ThemeTokens {
     themes: Theme[],
     root = ':host'
   ): Promise<ThemeData> {
+    const modeSelector = (notAttr: string) =>
+      root === ':host'
+        ? `${root}(:not(${notAttr}))`
+        : `${root}:not(${notAttr})`;
     const tokens = await this.parseTokens(themes);
     let styles = '';
 
@@ -104,15 +108,15 @@ export class ThemeTokens {
 
       if (isMode) {
         const isLight = media.includes('light');
-        const modeAttr = media.replace('.', '-');
         const modeOrder = isLight
           ? `@layer mode.dark, ${media};`
           : `@layer mode.light, ${media};`;
+        const mode = modeSelector(isLight ? 'mode-dark' : 'mode-light');
 
         end += '}';
         start += `
           ${this.generateMedia(media)} { ${modeOrder} }
-          @layer ${media} { ${root}([${modeAttr}]),${root}[${modeAttr}],${root} {
+          @layer ${media} { ${mode} {
         `;
       } else {
         start += ` ${root} {`;
@@ -125,7 +129,9 @@ export class ThemeTokens {
       styles += `${start}${end}`;
     }
 
-    return { styles };
+    return {
+      styles,
+    };
   }
 
   protected async parseTokens(themes: Theme[]): Promise<DesignTokenMapper> {
