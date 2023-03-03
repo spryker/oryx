@@ -27,7 +27,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Large Default',
     options: {
       checked: false,
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -35,7 +35,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Large Clicked',
     options: {
       checked: true,
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -44,7 +44,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-hover',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -53,7 +53,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-hover',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -62,7 +62,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-focus-visible',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -71,7 +71,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-focus-visible',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -80,7 +80,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-active',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -89,7 +89,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-active',
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -98,7 +98,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       disabled: true,
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -107,7 +107,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       disabled: true,
-      size: Size.large,
+      size: Size.Large,
     },
   },
   {
@@ -115,7 +115,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Large Default',
     options: {
       checked: false,
-      size: Size.large,
+      size: Size.Large,
       hasError: true,
     },
   },
@@ -124,116 +124,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Large Clicked',
     options: {
       checked: true,
-      size: Size.large,
-      hasError: true,
-    },
-  },
-
-  //////////////
-
-  {
-    categoryX: 'Default',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Default',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Hovered',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      className: 'pseudo-hover',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Hovered',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      className: 'pseudo-hover',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Focused',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      className: 'pseudo-focus-visible',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Focused',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      className: 'pseudo-focus-visible',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Active',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      className: 'pseudo-active',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Active',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      className: 'pseudo-active',
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Disabled',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      disabled: true,
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Disabled',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      disabled: true,
-      size: Size.medium,
-    },
-  },
-  {
-    categoryX: 'Error',
-    categoryY: 'Medium Default',
-    options: {
-      checked: false,
-      size: Size.medium,
-      hasError: true,
-    },
-  },
-  {
-    categoryX: 'Error',
-    categoryY: 'Medium Clicked',
-    options: {
-      checked: true,
-      size: Size.medium,
+      size: Size.Large,
       hasError: true,
     },
   },
@@ -242,10 +133,119 @@ const variants: ToggleIconVariant[] = [
 
   {
     categoryX: 'Default',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Default',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Hovered',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      className: 'pseudo-hover',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Hovered',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      className: 'pseudo-hover',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Focused',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      className: 'pseudo-focus-visible',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Focused',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      className: 'pseudo-focus-visible',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Active',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      className: 'pseudo-active',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Active',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      className: 'pseudo-active',
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Disabled',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      disabled: true,
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Disabled',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      disabled: true,
+      size: Size.Medium,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Medium Default',
+    options: {
+      checked: false,
+      size: Size.Medium,
+      hasError: true,
+    },
+  },
+  {
+    categoryX: 'Error',
+    categoryY: 'Medium Clicked',
+    options: {
+      checked: true,
+      size: Size.Medium,
+      hasError: true,
+    },
+  },
+
+  //////////////
+
+  {
+    categoryX: 'Default',
     categoryY: 'Small Default',
     options: {
       checked: false,
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -253,7 +253,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Small Clicked',
     options: {
       checked: true,
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -262,7 +262,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-hover',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -271,7 +271,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-hover',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -280,7 +280,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-focus-visible',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -289,7 +289,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-focus-visible',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -298,7 +298,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       className: 'pseudo-active',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -307,7 +307,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       className: 'pseudo-active',
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -316,7 +316,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: false,
       disabled: true,
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -325,7 +325,7 @@ const variants: ToggleIconVariant[] = [
     options: {
       checked: true,
       disabled: true,
-      size: Size.small,
+      size: Size.Small,
     },
   },
   {
@@ -333,7 +333,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Small Default',
     options: {
       checked: false,
-      size: Size.small,
+      size: Size.Small,
       hasError: true,
     },
   },
@@ -342,7 +342,7 @@ const variants: ToggleIconVariant[] = [
     categoryY: 'Small Clicked',
     options: {
       checked: true,
-      size: Size.small,
+      size: Size.Small,
       hasError: true,
     },
   },

@@ -10,11 +10,11 @@ export default {
   args: {
     scale: 5,
     characters: '',
-    size: Size.large,
+    size: Size.Large,
   },
   argTypes: {
     size: {
-      options: [Size.large, Size.small],
+      options: [Size.Large, Size.Small],
       control: { type: 'radio' },
     },
   },

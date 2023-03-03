@@ -29,7 +29,7 @@ export class AddressRemoveComponent extends AddressMixin(LitElement) {
       return html`
         <oryx-user-address .addressId=${address.id}></oryx-user-address>
         <section>
-          <oryx-icon type="info" size=${Size.medium}></oryx-icon>
+          <oryx-icon type="info" size=${Size.Medium}></oryx-icon>
           <span>
             ${i18n(
               'user.address.removing-this-address-will-not-remove-any-pending-orders-being-dispatched-to-this-address'

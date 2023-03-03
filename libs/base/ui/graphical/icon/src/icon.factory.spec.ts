@@ -38,7 +38,7 @@ describe('icon factory', () => {
 
   describe('when an icon size is given', () => {
     beforeEach(async () => {
-      element = await fixture(html`${icon({ size: Size.medium })}`);
+      element = await fixture(html`${icon({ size: Size.Medium })}`);
     });
 
     it('should have a medium size', () => {

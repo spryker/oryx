@@ -10,12 +10,12 @@ export default {
   args: {
     value: 2.5,
     scale: 5,
-    size: Size.large,
+    size: Size.Large,
     reviewCount: '173',
   },
   argTypes: {
     size: {
-      options: [Size.large, Size.small],
+      options: [Size.Large, Size.Small],
       control: { type: 'radio' },
     },
   },

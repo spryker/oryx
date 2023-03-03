@@ -1,7 +1,7 @@
-export enum Size {
-  large = 'large',
-  medium = 'medium',
-  small = 'small',
+export const enum Size {
+  Large = 'large',
+  Medium = 'medium',
+  Small = 'small',
 }
 
 export enum Position {

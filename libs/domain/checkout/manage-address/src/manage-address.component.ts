@@ -85,7 +85,7 @@ export class ManageAddressComponent extends LitElement {
     const { heading } = this.config[this.addressBookState];
 
     return html`
-      <oryx-button type="text" size=${Size.small}>
+      <oryx-button type="text" size=${Size.Small}>
         <button @click=${(): void => this.showModal()}>
           ${i18n('checkout.address.change')}
         </button>

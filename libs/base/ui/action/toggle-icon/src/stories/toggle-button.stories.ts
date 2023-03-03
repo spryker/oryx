@@ -11,7 +11,7 @@ export default {
   argTypes: {
     text: { control: { type: 'text' } },
     size: {
-      options: Object.values(Size),
+      options: [Size.Large, Size.Medium, Size.Small],
       control: { type: 'select' },
     },
   },

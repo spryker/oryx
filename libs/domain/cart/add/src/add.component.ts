@@ -120,7 +120,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
 
   protected renderButton(options: Partial<CartAddOptions>): TemplateResult {
     return html` <oryx-button
-      size=${Size.small}
+      size=${Size.Small}
       ?loading=${asyncValue(this.isBusy$)}
       ?confirmed=${asyncValue(this.isConfirmed$)}
       type=${ButtonType.Primary}
@@ -131,7 +131,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
         ?inert=${asyncValue(this.isBusy$)}
         @click=${this.onSubmit}
       >
-        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.large}></oryx-icon>
+        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Large}></oryx-icon>
         ${i18n('cart.add-to-cart')}
       </button>
     </oryx-button>`;

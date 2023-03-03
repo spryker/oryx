@@ -40,7 +40,7 @@ export const IconButtonDemo = Template.bind({});
 
 IconButtonDemo.argTypes = {
   size: {
-    options: Object.values(Size),
+    options: [Size.Large, Size.Medium, Size.Small],
     control: { type: 'select' },
   },
   disabled: {
@@ -58,5 +58,5 @@ IconButtonDemo.argTypes = {
 IconButtonDemo.args = {
   disabled: false,
   type: icons[0],
-  size: Size.medium,
+  size: Size.Medium,
 };
