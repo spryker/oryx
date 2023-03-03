@@ -1,10 +1,6 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
-    --oryx-icon-size-small: 15px;
-  }
-
   h2 {
     margin-block-end: var(--oryx-space-4);
   }
