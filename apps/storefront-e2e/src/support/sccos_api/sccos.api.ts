@@ -1,4 +1,4 @@
-import { Product } from '../../types/product.type';
+import { TestProductData } from '../../types/product.type';
 
 export class SCCOSApi {
   private customerUniqueId: number = Math.random();
@@ -27,7 +27,7 @@ export class SCCOSApi {
     });
   };
 
-  postGuestCartsItems = (productData: Product, quantity: number) => {
+  postGuestCartsItems = (productData: TestProductData, quantity: number) => {
     const body = {
       data: {
         type: 'guest-cart-items',

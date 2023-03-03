@@ -1,4 +1,4 @@
-import { User } from '../../types/user.type';
+import { TestUserData } from '../../types/user.type';
 
 export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');
@@ -9,7 +9,7 @@ export class LoginFragment {
   getLoginButton = () => this.getWrapper().contains('button', 'Login');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
-  login = (user: User) => {
+  login = (user: TestUserData) => {
     this.getEmailInput().click();
     // there is no other way to detect that hydration is finished
     // eslint-disable-next-line cypress/no-unnecessary-waiting

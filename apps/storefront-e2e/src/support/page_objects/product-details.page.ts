@@ -1,4 +1,4 @@
-import { Product } from '../../types/product.type';
+import { TestProductData } from '../../types/product.type';
 import { QuantityInputFragment } from '../page_fragments/quantity-input.fragment';
 import { AbstractSFPage } from './abstract.page';
 
@@ -7,7 +7,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   productId: string;
   quantityInput: QuantityInputFragment;
 
-  constructor(productData: Product) {
+  constructor(productData: TestProductData) {
     super();
 
     this.productId = productData.id;

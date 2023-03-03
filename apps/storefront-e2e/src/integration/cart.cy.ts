@@ -2,7 +2,7 @@ import { ProductStorage } from '../data-storages/product.storage';
 import { CartEntryFragment } from '../support/page_fragments/cart-entry.fragment';
 import { CartPage } from '../support/page_objects/cart.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { Product } from '../types/product.type';
+import { TestProductData } from '../types/product.type';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
@@ -121,7 +121,7 @@ describe('Cart suite', () => {
   });
 });
 
-function checkCartEntry(entry: CartEntryFragment, product: Product) {
+function checkCartEntry(entry: CartEntryFragment, product: TestProductData) {
   entry.getTitle().should('contain.text', product.title);
   entry.getSKU().should('contain.text', product.id);
 
@@ -137,7 +137,7 @@ function checkCartEntry(entry: CartEntryFragment, product: Product) {
 
 function checkCartEntryPrices(
   entry: CartEntryFragment,
-  productData: Product,
+  productData: TestProductData,
   isDiscounted = false
 ) {
   entry.getPrice().should('contain.text', productData.currentPrice);
