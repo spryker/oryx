@@ -24,7 +24,7 @@ export class RatingComponent extends LitElement implements RatingProperties {
   @property() reviewCount?: number | string;
   @property({ type: Number }) scale = 5;
   @property() characters?: string;
-  @property({ reflect: true }) size?: Size.Small | Size.Large;
+  @property({ reflect: true }) size?: Size.Sm | Size.Lg;
 
   protected override render(): TemplateResult {
     return html`

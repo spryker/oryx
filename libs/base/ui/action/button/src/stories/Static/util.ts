@@ -78,7 +78,7 @@ const createOryxButton = (variant: {
   const type = variant.type;
 
   return html`
-    ${[Size.Large, Size.Medium, Size.Small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`
         <oryx-button
           .type=${type}
@@ -100,7 +100,7 @@ const createOryxButton = (variant: {
         </oryx-button>
       `
     )}
-    ${[Size.Large, Size.Medium, Size.Small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`
         <oryx-button
           .type=${type}

@@ -5,5 +5,5 @@ export interface ProductAverageRatingOptions {
   enableCount?: boolean;
 
   /** Size of the rating icons */
-  size?: Size.Small | Size.Large;
+  size?: Size.Sm | Size.Lg;
 }

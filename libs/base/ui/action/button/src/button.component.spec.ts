@@ -46,7 +46,7 @@ describe('ButtonComponent', () => {
   });
 
   describe('size', () => {
-    [Size.Large, Size.Medium, Size.Small].forEach((size) => {
+    [Size.Lg, Size.Md, Size.Sm].forEach((size) => {
       describe(`when the size is set to ${size}`, () => {
         beforeEach(async () => {
           element = await fixture(

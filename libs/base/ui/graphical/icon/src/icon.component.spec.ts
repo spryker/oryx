@@ -53,7 +53,7 @@ describe('Icon', () => {
   });
 
   describe('icon size', () => {
-    [Size.Large, Size.Medium, Size.Small].forEach((size) => {
+    [Size.Lg, Size.Md, Size.Sm].forEach((size) => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {
           element = await fixture(

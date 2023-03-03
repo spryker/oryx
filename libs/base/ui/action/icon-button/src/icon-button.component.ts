@@ -10,7 +10,7 @@ export class IconButtonComponent
 {
   static styles = [iconButtonStyles];
 
-  @property({ reflect: true }) size = Size.Medium;
+  @property({ reflect: true }) size = Size.Md;
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;

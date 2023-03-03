@@ -32,7 +32,7 @@ export const IconDemo = Template.bind({});
 IconDemo.args = {
   type: icons[0],
   color: 'black',
-  size: Size.Large,
+  size: Size.Lg,
 };
 
 IconDemo.argTypes = {
@@ -44,7 +44,7 @@ IconDemo.argTypes = {
     control: { type: 'color' },
   },
   size: {
-    options: [Size.Large, Size.Medium, Size.Small],
+    options: [Size.Lg, Size.Md, Size.Sm],
     control: { type: 'radio' },
   },
 };

@@ -19,7 +19,7 @@ export class DropdownComponent
   @property() position?: Position;
   @property({ type: Boolean, attribute: 'vertical-align' })
   verticalAlign?: boolean;
-  @property() triggerIconSize = Size.Medium;
+  @property() triggerIconSize = Size.Md;
 
   //translation
   @property() toggleButtonAriaLabel = 'Toggle dropdown';

@@ -90,7 +90,7 @@ DropdownDemo.args = {
   verticalAlign: false,
   content: 'options',
   customTrigger: false,
-  triggerIconSize: Size.Medium,
+  triggerIconSize: Size.Md,
 };
 
 DropdownDemo.argTypes = {
@@ -113,7 +113,7 @@ DropdownDemo.argTypes = {
     options: Object.values(Position),
   },
   triggerIconSize: {
-    options: [Size.Large, Size.Medium, Size.Small],
+    options: [Size.Lg, Size.Md, Size.Sm],
     control: { type: 'select' },
   },
   verticalAlign: {

@@ -9,7 +9,7 @@ export default {
   title: `${storybookPrefix}/Actions/Button`,
   args: {
     type: ButtonType.Primary,
-    size: Size.Large,
+    size: Size.Lg,
     loading: false,
     confirmed: false,
     outline: false,
@@ -20,7 +20,7 @@ export default {
       control: { type: 'select' },
     },
     size: {
-      options: [Size.Large, Size.Medium, Size.Small],
+      options: [Size.Lg, Size.Md, Size.Sm],
       control: { type: 'select' },
     },
     loading: {

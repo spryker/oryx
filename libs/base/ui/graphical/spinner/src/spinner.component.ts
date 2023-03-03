@@ -10,7 +10,7 @@ export class SpinnerComponent extends LitElement implements SpinnerProperties {
   static styles = [styles];
 
   @property() icon: Icons | string = IconTypes.Loader;
-  @property() size = Size.Medium;
+  @property() size = Size.Md;
   @property({ reflect: true }) rotation = SpinnerRotation.ClockWise;
 
   protected override render(): TemplateResult {

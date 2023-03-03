@@ -31,7 +31,7 @@ export const SpinnerDemo = Template.bind({});
 
 SpinnerDemo.argTypes = {
   size: {
-    options: [Size.Large, Size.Medium, Size.Small],
+    options: [Size.Lg, Size.Md, Size.Sm],
     control: { type: 'select' },
   },
   icon: {
@@ -50,6 +50,6 @@ SpinnerDemo.argTypes = {
 SpinnerDemo.args = {
   color: 'green',
   icon: IconTypes.Loader,
-  size: Size.Medium,
+  size: Size.Md,
   rotation: SpinnerRotation.ClockWise,
 };

@@ -10,13 +10,13 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h4>Trigger Icon Size</h4>
-    ${[Size.Large, Size.Medium, Size.Small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`<oryx-dropdown triggerIconSize=${size}></oryx-dropdown>`
     )}
 
     <h4>Icon size</h4>
 
-    ${[Size.Large, Size.Medium, Size.Small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`<oryx-dropdown>
         <oryx-icon slot="icon" type="actions" size=${size}></oryx-icon>
       </oryx-dropdown>`

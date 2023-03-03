@@ -89,7 +89,7 @@ describe('DropdownComponent', () => {
     });
   });
 
-  [Size.Large, Size.Medium, Size.Small].forEach((size) => {
+  [Size.Lg, Size.Md, Size.Sm].forEach((size) => {
     describe(`when the triggerIconSize is '${size}'`, () => {
       beforeEach(async () => {
         element = await fixture(
