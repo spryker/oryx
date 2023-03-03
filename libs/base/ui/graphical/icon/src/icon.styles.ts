@@ -2,8 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    /* stylelint-disable-next-line */
-    --_margin: 0px;
+    --_margin: 0;
 
     display: flex;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
@@ -22,10 +21,10 @@ export const styles = css`
   }
 
   :host([size='medium']) {
-    --_margin: 3px;
+    --_margin: 2px;
   }
 
   :host([size='small']) {
-    --_margin: 6px;
+    --_margin: 4px;
   }
 `;

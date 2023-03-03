@@ -48,8 +48,8 @@ export const tokens: ThemeToken = {
     size: {
       default: 'var(--oryx-icon-size-large)',
       large: '24px',
-      medium: '18px',
-      small: '12px',
+      medium: '20px',
+      small: '16px',
     },
   },
   modal: {
