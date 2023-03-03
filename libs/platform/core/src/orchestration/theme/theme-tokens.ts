@@ -85,8 +85,8 @@ export class ThemeTokens {
   ): Promise<ThemeData> {
     const modeSelector = (notAttr: string) =>
       root === ':host'
-        ? `${root}(:not(${notAttr}))`
-        : `${root}:not(${notAttr})`;
+        ? `${root}(:not([${notAttr}]))`
+        : `${root}:not([${notAttr}])`;
     const tokens = await this.parseTokens(themes);
     let styles = '';
 
