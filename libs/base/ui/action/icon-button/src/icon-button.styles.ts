@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const iconButtonStyles = css`
   :host {
-    color: var(--oryx-icon-button-color, var(--oryx-color-neutral-300));
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -11,19 +10,13 @@ export const iconButtonStyles = css`
   }
 
   ::slotted(*) {
-    display: flex;
-    position: relative;
-    flex: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
     cursor: pointer;
-    transition: var(--oryx-transition-time);
     background: transparent;
-    outline: none;
     border: solid transparent 1px;
     border-radius: 50%;
+    outline: none;
     color: inherit;
+    transition: var(--oryx-transition-time);
   }
 
   :host(:hover) ::slotted(:not([disabled])),
@@ -54,19 +47,19 @@ export const iconButtonStyles = css`
     background: var(--oryx-color-canvas-200);
   }
 
-  :host([size='small']) ::slotted(*) {
+  :host([size='sm']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-small);
 
     padding: 3px;
   }
 
-  :host([size='medium']) ::slotted(*) {
+  :host([size='md']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-medium);
 
     padding: 5px;
   }
 
-  :host([size='large']) ::slotted(*) {
+  :host([size='lg']) ::slotted(*) {
     --oryx-icon-size: var(--oryx-icon-size-large);
 
     padding: 6px;
