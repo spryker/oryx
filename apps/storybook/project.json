@@ -27,7 +27,9 @@
         "config": {
           "configFolder": "apps/storybook/.storybook"
         },
-        "outputPath": "dist/storybook/all"
+        "outputPath": "dist/storybook/all",
+        "outputDir": "dist/storybook/all",
+        "webpackStatsJson": "dist/storybook/all"
       }
     },
     "deps": {
