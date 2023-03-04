@@ -200,7 +200,7 @@ export class AuthLoginComponent
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size="small">
+        <oryx-button size="sm">
           <button ?disabled=${this.isLoading} @click=${this.login}>
             ${i18n('user.login')}
           </button>
