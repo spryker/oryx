@@ -1,5 +1,4 @@
-import { AccessTokenService, IdentityService } from '@spryker-oryx/auth';
-import { MockIdentityService } from '@spryker-oryx/auth/mocks';
+import { MockAuthService } from '@spryker-oryx/auth/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -11,11 +10,7 @@ export default {
 
 const Template: Story = (_, info): TemplateResult => {
   if (info.name === 'Logged In') {
-    const identityService = resolve(IdentityService) as MockIdentityService;
-    const accessTokenService = resolve(AccessTokenService);
-
-    identityService.set({ id: 'id', anonymous: false });
-    accessTokenService.set({ token: { accessToken: 'token' } });
+    resolve(MockAuthService).setAuthenticated(true);
   }
 
   return html`<oryx-user-summary></oryx-user-summary>`;

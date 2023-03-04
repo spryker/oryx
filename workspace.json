@@ -2,7 +2,7 @@
   "version": 2,
   "projects": {
     "application": "libs/template/application",
-    "auth": "libs/domain/auth",
+    "auth": "libs/platform/auth",
     "cart": "libs/domain/cart",
     "checkout": "libs/domain/checkout",
     "content": "libs/domain/content",

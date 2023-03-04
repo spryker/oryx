@@ -24,7 +24,7 @@ export class OrderController {
   protected order$ = defer(() =>
     combineLatest([this.getRef(), this.identityService.get()]).pipe(
       switchMap(([id, user]) => {
-        if (user.anonymous || !id) {
+        if (!user.isAuthenticated || !id) {
           return this.orderService
             .getLastOrder()
             .pipe(map((lastOrder) => lastOrder ?? null));
