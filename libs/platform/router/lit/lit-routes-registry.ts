@@ -14,11 +14,16 @@ declare global {
 }
 
 export function provideLitRoutes(
-  routesRegistry?: LitRoutesRegistry
+  routesRegistry?: LitRoutesRegistry | (() => LitRoutesRegistry)
 ): Provider[] {
   if (!routesRegistry) {
     return [];
   }
 
-  return [{ provide: LitRoutesRegistry, useValue: routesRegistry }];
+  const routesFactory =
+    typeof routesRegistry === 'function'
+      ? routesRegistry
+      : () => routesRegistry;
+
+  return [{ provide: LitRoutesRegistry, useFactory: routesFactory }];
 }

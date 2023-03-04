@@ -32,6 +32,7 @@
                   "layer:platform",
                   "layer:base",
                   "lib:experience",
+                  "lib:i18n",
                   "lib:ui",
                   "lib:form"
                 ]
