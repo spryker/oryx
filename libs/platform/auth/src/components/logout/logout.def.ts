@@ -9,7 +9,7 @@ declare global {
 
 export const authLogoutComponent = componentDef({
   name: 'oryx-auth-logout',
-  impl: () => import('./logout.component').then((m) => m.default),
+  impl: () => import('./logout.component').then((m) => m.AuthLogoutComponent),
   schema: () =>
     import('./logout.schema').then((m) => m.authLogoutComponentSchema),
 });
