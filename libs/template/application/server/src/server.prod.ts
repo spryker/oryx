@@ -13,6 +13,10 @@ export async function createProdSever(
 
   app.use('/assets', express.static(`${indexPath}/assets`));
 
+  app.head('/*', (req, res) => {
+    res.status(200).end('');
+  });
+
   app.get('/*', async (req, res, next) => {
     const url = generateUrl(req);
 

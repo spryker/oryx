@@ -1,9 +1,9 @@
 {
   "name": "@spryker-oryx/router",
-  "version": "1.0.0-alpha.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "Routing functionality for Oryx framework",
-  "author": "Spryker Sytems GmbH",
+  "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
   "files": [
     "**/*"

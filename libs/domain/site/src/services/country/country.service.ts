@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Country } from '../../models';
 
-export const CountryService = 'FES.CountryService';
+export const CountryService = 'oryx.CountryService';
 
 export interface CountryService {
   getAll(): Observable<Country[]>;

@@ -34,20 +34,12 @@
       "always",
       {
         "except": [
-          "top",
-          "bottom",
-          "margin-bottom",
-          "margin-top",
-          "padding-bottom",
-          "padding-top",
           "height",
           "min-height",
           "max-height",
           "width",
           "min-width",
-          "max-width",
-          "border-bottom",
-          "border-top"
+          "max-width"
         ]
       }
     ],

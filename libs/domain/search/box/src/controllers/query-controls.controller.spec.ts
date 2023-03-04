@@ -9,17 +9,12 @@ class FakeContainer extends LitElement {
 
   @property({ type: String }) query = '';
 
-  protected options = {
-    clearButtonTitle: '',
-    closeButtonArialLabel: '',
-  };
-
   get input(): HTMLInputElement {
     return this.renderRoot.querySelector('input') as HTMLInputElement;
   }
 
   render(): TemplateResult {
-    return html` <div>${this.controller.renderControls(this.options)}</div> `;
+    return html` <div>${this.controller.renderControls()}</div> `;
   }
 }
 

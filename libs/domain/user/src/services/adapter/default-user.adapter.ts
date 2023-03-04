@@ -19,7 +19,7 @@ export class DefaultUserAdapter implements UserAdapter {
       take(1),
       switchMap((identity) =>
         this.httpService.get<ApiUserModel.Response>(
-          `${this.SCOS_BASE_URL}/customers/${identity.id}`
+          `${this.SCOS_BASE_URL}/customers/${identity.userId}`
         )
       ),
       this.transformer.do(UserNormalizer)

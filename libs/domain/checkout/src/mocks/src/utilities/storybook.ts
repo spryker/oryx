@@ -1,12 +1,7 @@
-import { AccessTokenService } from '@spryker-oryx/auth';
+import { MockAuthService } from '@spryker-oryx/auth/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
-
-const token = {
-  accessToken: 'test',
-  tokenType: 'Bearer',
-};
 
 export type BehaviorType = 'guest' | 'no-address' | 'with-address';
 
@@ -17,12 +12,12 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
   const addressService = resolve(
     AddressService
   ) as unknown as MockAddressService;
-  const accessTokenService = resolve(AccessTokenService);
+  const authService = resolve(MockAuthService);
 
   if (behavior === 'guest') {
-    accessTokenService.remove();
+    authService.setAuthenticated(false);
   } else {
-    accessTokenService.set({ token });
+    authService.setAuthenticated(true);
   }
 
   if (behavior === 'with-address') {

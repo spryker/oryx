@@ -5,7 +5,7 @@ import { DeserializedAddress } from '../';
 import { Address } from '../../../../models';
 import { AddressNormalizer } from '../address';
 
-export const AddressesNormalizer = 'FES.AddressesNormalizer*';
+export const AddressesNormalizer = 'oryx.AddressesNormalizer*';
 
 export function addressesListNormalizer(
   data: DeserializedAddress[],

@@ -10,7 +10,7 @@ import { map, Observable } from 'rxjs';
 import { Suggestion } from '../../../../models';
 import { DeserializedSuggestion } from './model';
 
-export const SuggestionNormalizer = 'FES.SuggestionNormalizer*';
+export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 
 export function suggestionAttributesNormalizer(
   data: DeserializedSuggestion[]

@@ -21,7 +21,7 @@ export interface I18nDataBundle {
   readonly [localeId: string]: I18nData;
 }
 
-export const I18nLoader = 'FES.I18nLoader' as const;
+export const I18nLoader = 'oryx.I18nLoader' as const;
 
 declare global {
   interface InjectionTokensContractMap {

@@ -1,17 +1,23 @@
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
-import { asyncValue, hydratable, subscribe } from '@spryker-oryx/utilities';
-import { TemplateResult } from 'lit';
+import {
+  asyncState,
+  hydratable,
+  subscribe,
+  valueType,
+} from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import {
   catchError,
-  combineLatest,
   debounce,
   defer,
   distinctUntilChanged,
@@ -19,7 +25,7 @@ import {
   fromEvent,
   map,
   of,
-  shareReplay,
+  startWith,
   Subject,
   switchMap,
   tap,
@@ -34,69 +40,61 @@ import {
 } from './controllers';
 import { baseStyles, searchboxStyles } from './styles';
 
+@defaultOptions({
+  minChars: 2,
+  completionsCount: 5,
+  productsCount: 5,
+  categoriesCount: 5,
+  cmsCount: 0,
+})
 @hydratable('focusin')
 export class SearchBoxComponent
-  extends ComponentMixin<SearchBoxOptions>()
+  extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
 {
   static styles = [baseStyles, searchboxStyles];
 
-  private defaultOptions: SearchBoxOptions = {
-    minChars: 2,
-    completionsCount: 5,
-    productsCount: 5,
-    categoriesCount: 5,
-    cmsCount: 0,
-  };
-
-  protected contentController = new ContentController(this);
   protected suggestionService = resolve(SuggestionService);
-  protected options$ = this.contentController.getOptions().pipe(
-    map((options) => ({ ...this.defaultOptions, ...options })),
-    shareReplay({ refCount: true, bufferSize: 1 }),
-    tap((options) => this.applyInputTexts(options))
-  );
+  protected routerService = resolve(RouterService);
+  protected semanticLinkService = resolve(SemanticLinkService);
 
   protected scrollingAreaController = new ScrollingAreaController(this);
   protected queryControlsController = new QueryControlsController();
-  protected renderSuggestionController = new RenderSuggestionController();
+  protected renderSuggestionController = new RenderSuggestionController(this);
 
   protected triggerInputValue$ = new Subject<string>();
 
   protected suggestion$ = this.triggerInputValue$.pipe(
     debounce(() => timer(300)),
+    startWith(''),
     map((q) => q.trim()),
     distinctUntilChanged(),
     withLatestFrom(this.options$),
     switchMap(([query, options]) => {
       if (query && (!options.minChars || query.length >= options.minChars)) {
         return this.suggestionService.get({ query }).pipe(
-          map((raw) => {
-            const suggestion = raw
+          map((raw) =>
+            raw
               ? {
                   completion: raw.completion.slice(0, options.completionsCount),
                   products: raw.products?.slice(0, options.productsCount) ?? [],
                   categories: raw.categories.slice(0, options.categoriesCount),
                   cmsPages: raw.cmsPages.slice(0, options.cmsCount),
                 }
-              : raw;
-
-            return { suggestion, options };
-          })
+              : null
+          )
         );
       }
 
-      return of({ suggestion: null, options });
+      return of(null);
     }),
-    tap(({ suggestion }) => {
+    tap((suggestion) => {
       this.stretched = this.hasCompleteData(suggestion);
     })
   );
 
-  protected controlButtons$ = combineLatest([
-    this.options$,
-    this.triggerInputValue$,
-  ]).pipe(map(([options, query]) => ({ options, showButtons: !!query })));
+  @asyncState()
+  protected suggestion = valueType(this.suggestion$);
 
   @subscribe()
   protected scrollEvent = defer(() =>
@@ -126,13 +124,13 @@ export class SearchBoxComponent
   connectedCallback(): void {
     super.connectedCallback();
 
-    this.addEventListener('oryx.clear', this.clear);
-    this.addEventListener('oryx.close', this.close);
+    this.addEventListener('oryx.clear', this.onClear);
+    this.addEventListener('oryx.close', this.onClose);
   }
 
   disconnectedCallback(): void {
-    this.removeEventListener('oryx.clear', this.clear);
-    this.removeEventListener('oryx.close', this.close);
+    this.removeEventListener('oryx.clear', this.onClear);
+    this.removeEventListener('oryx.close', this.onClose);
 
     super.disconnectedCallback();
   }
@@ -140,15 +138,16 @@ export class SearchBoxComponent
   constructor() {
     super();
 
-    this.clear = this.clear.bind(this);
-    this.close = this.close.bind(this);
-    this.dispatchContainerScroll = this.dispatchContainerScroll.bind(this);
+    this.onClear = this.onClear.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onScroll = this.onScroll.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   protected inputRef: Ref<HTMLInputElement> = createRef();
   protected scrollContainerRef: Ref<HTMLElement> = createRef();
 
-  protected clear(e: Event): void {
+  protected onClear(e: Event): void {
     e.stopPropagation();
     const input = this.inputRef.value as HTMLInputElement;
 
@@ -157,7 +156,7 @@ export class SearchBoxComponent
     this.triggerInputValue$.next('');
   }
 
-  protected close(): void {
+  protected onClose(): void {
     this.renderRoot.querySelector('oryx-typeahead')?.removeAttribute('open');
   }
 
@@ -166,18 +165,27 @@ export class SearchBoxComponent
     this.triggerInputValue$.next(this.query);
   }
 
-  protected dispatchContainerScroll(e: Event): void {
+  protected onScroll(e: Event): void {
     e.target?.dispatchEvent(
       new CustomEvent('containerScroll', { bubbles: true, composed: true })
     );
   }
 
-  protected applyInputTexts(options: SearchBoxOptions): void {
-    const { placeholder } = options;
+  protected onSubmit(e: SubmitEvent): void {
+    e.preventDefault();
 
-    if (placeholder) {
-      this.inputRef?.value?.setAttribute('placeholder', placeholder);
-    }
+    this.semanticLinkService
+      .get({
+        type: SemanticLinkType.ProductList,
+        ...(this.query ? { params: { q: this.query } } : {}),
+      })
+      .pipe(
+        tap((link) => {
+          this.routerService.navigate(link!);
+          this.onClose();
+        })
+      )
+      .subscribe();
   }
 
   protected hasLinks(suggestion: Suggestion | null): boolean {
@@ -200,35 +208,23 @@ export class SearchBoxComponent
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
   }
 
-  protected renderSuggestion(
-    suggestion: Suggestion | null,
-    options: SearchBoxOptions
-  ): TemplateResult {
+  protected renderSuggestion(suggestion?: Suggestion | null): TemplateResult {
     if (!suggestion) {
       return html``;
     }
 
     if (this.isNothingFound(suggestion)) {
-      return this.renderSuggestionController.renderNothingFound(options);
+      return this.renderSuggestionController.renderNothingFound();
     }
 
     return html`
       <div slot="option">
-        <div
-          @scroll=${this.dispatchContainerScroll}
-          ${ref(this.scrollContainerRef)}
-        >
+        <div @scroll=${this.onScroll} ${ref(this.scrollContainerRef)}>
           ${when(this.hasLinks(suggestion), () =>
-            this.renderSuggestionController.renderLinksSection(
-              suggestion,
-              options
-            )
+            this.renderSuggestionController.renderLinksSection(suggestion)
           )}
           ${when(this.hasProducts(suggestion), () =>
-            this.renderSuggestionController.renderProductsSection(
-              suggestion,
-              options
-            )
+            this.renderSuggestionController.renderProductsSection(suggestion)
           )}
         </div>
       </div>
@@ -237,23 +233,19 @@ export class SearchBoxComponent
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-typeahead
-        @oryx.typeahead=${this.onTypeahead}
-        .clearIconPosition=${ClearIconPosition.NONE}
-      >
-        <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
-        <input ${ref(this.inputRef)} placeholder="Search" />
-        ${asyncValue(
-          this.suggestion$,
-          ({ suggestion, options }) =>
-            html`${this.renderSuggestion(suggestion, options)}`
-        )}
-        ${asyncValue(this.controlButtons$, ({ options, showButtons }) =>
-          showButtons
-            ? this.queryControlsController.renderControls(options)
-            : html``
-        )}
-      </oryx-typeahead>
+      <form @submit=${this.onSubmit}>
+        <oryx-typeahead
+          @oryx.typeahead=${this.onTypeahead}
+          .clearIconPosition=${ClearIconPosition.NONE}
+        >
+          <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
+          <input ${ref(this.inputRef)} placeholder="Search" />
+          ${this.renderSuggestion(this.suggestion)}
+          ${when(this.query, () =>
+            this.queryControlsController.renderControls()
+          )}
+        </oryx-typeahead>
+      </form>
     `;
   }
 }

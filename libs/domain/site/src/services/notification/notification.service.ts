@@ -1,7 +1,7 @@
 import { NotificationStrategy } from '@spryker-oryx/ui/notification-center';
 import { Observable } from 'rxjs';
 
-export const NotificationService = 'FES.NotificationService';
+export const NotificationService = 'oryx.NotificationService';
 
 export interface NotificationService {
   get(): Observable<NotificationStrategy | null>;

@@ -1,25 +1,25 @@
 {
   "packages": [
-    "application",
-    "auth",
-    "cart",
-    "checkout",
-    "content",
-    "core",
-    "experience",
-    "form",
-    "i18n",
-    "di",
-    "presets",
-    "product",
-    "order",
-    "router",
-    "search",
-    "site",
-    "themes",
-    "ui",
-    "user",
-    "utilities"
+    "template/application",
+    "domain/auth",
+    "domain/cart",
+    "domain/checkout",
+    "domain/content",
+    "platform/core",
+    "platform/experience",
+    "base/form",
+    "platform/i18n",
+    "base/di",
+    "template/presets",
+    "domain/product",
+    "domain/order",
+    "platform/router",
+    "domain/search",
+    "domain/site",
+    "template/themes",
+    "base/ui",
+    "domain/user",
+    "base/utilities"
   ],
   "version": "0.1.0",
   "npmClient": "npm",
@@ -31,9 +31,9 @@
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "createRelease": "github",
-      "gitRemote": "pub",
       "allowBranch": ["development", "release/*"],
-      "tagVersionPrefix": "lib@"
+      "tagVersionPrefix": "lib@",
+      "verifyAccess": false
     }
   }
 }

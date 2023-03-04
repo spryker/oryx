@@ -11,7 +11,7 @@ export interface I18nService {
   ): Observable<string>;
 }
 
-export const I18nService = 'FES.I18nService' as const;
+export const I18nService = 'oryx.I18nService' as const;
 
 declare global {
   interface InjectionTokensContractMap {

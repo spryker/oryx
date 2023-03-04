@@ -1,2 +1,2 @@
-export * from './feature';
+export * from './mock-feature';
 export * from './src';

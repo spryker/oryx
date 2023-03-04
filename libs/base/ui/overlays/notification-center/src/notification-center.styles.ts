@@ -20,22 +20,22 @@ export const notificationCenterBaseStyles = css`
   }
 
   :host([position='${unsafeCSS(Positions.TOP_START)}']) {
-    top: 40px;
+    inset-block-start: 40px;
     inset-inline-start: 30px;
   }
 
   :host([position='${unsafeCSS(Positions.TOP_END)}']) {
-    top: 40px;
+    inset-block-start: 40px;
     inset-inline-end: 30px;
   }
 
   :host([position='${unsafeCSS(Positions.BOTTOM_START)}']) {
-    bottom: 40px;
+    inset-block-end: 40px;
     inset-inline-start: 30px;
   }
 
   :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) {
-    bottom: 40px;
+    inset-block-end: 40px;
     inset-inline-end: 30px;
   }
 
@@ -50,7 +50,7 @@ export const notificationCenterBaseStyles = css`
   }
 
   :host > * {
-    margin-bottom: 10px;
+    margin-block-end: 10px;
     opacity: 0;
     transition-property: opacity;
     transition-duration: var(--oryx-transition-time-long);
@@ -58,7 +58,7 @@ export const notificationCenterBaseStyles = css`
 
   :host([position='${unsafeCSS(Positions.BOTTOM_START)}']) :last-child,
   :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) :last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
   :host > [visible] {

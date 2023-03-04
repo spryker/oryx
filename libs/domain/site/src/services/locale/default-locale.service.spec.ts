@@ -70,5 +70,22 @@ describe('DefaultLocaleService', () => {
         Intl.DateTimeFormat('de-DE').format(date)
       );
     });
+
+    describe('and showTime is true', () => {
+      it('should return a locale formatted date with time', () => {
+        const date = Date.now();
+        const cb = vi.fn();
+        service.formatDate(date, true).subscribe(cb);
+        expect(cb).toHaveBeenCalledWith(
+          Intl.DateTimeFormat('de-DE', {
+            hour: '2-digit',
+            minute: '2-digit',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          }).format(date)
+        );
+      });
+    });
   });
 });

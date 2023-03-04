@@ -3,11 +3,12 @@ import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
 
-@hydratable()
+@hydratable(['mouseover', 'focusin'])
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {
@@ -17,8 +18,8 @@ export class ProductTitleComponent extends ProductMixin(
     const options = this.componentOptions;
 
     return html`<oryx-heading
-      .tag=${options?.tag}
-      .maxLines=${options?.maxLines}
+      tag=${ifDefined(options?.tag)}
+      maxLines=${ifDefined(options?.maxLines)}
     >
       ${options?.link ? this.renderLink() : html`${this.product?.name}`}
     </oryx-heading>`;

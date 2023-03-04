@@ -43,7 +43,7 @@ export const ProductCardStyles = css`
   oryx-product-labels,
   .actions {
     grid-row: 1;
-    padding-top: 12px;
+    padding-block-start: 12px;
     z-index: 1;
   }
 
@@ -56,7 +56,7 @@ export const ProductCardStyles = css`
   }
 
   oryx-content-link > *:last-child {
-    margin-bottom: 16px;
+    margin-block-end: 16px;
   }
 
   :host([has-line-clamp]) .popover {
@@ -74,7 +74,7 @@ export const ProductCardStyles = css`
 
   oryx-product-price,
   oryx-cart-add {
-    margin-top: 8px;
+    margin-block-start: 8px;
   }
 
   oryx-cart-add {

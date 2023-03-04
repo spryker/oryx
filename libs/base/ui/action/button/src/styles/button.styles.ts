@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const buttonStyles = css`
@@ -249,20 +249,9 @@ const smallScreen = css`
   }
 `;
 
-const mediumScreen = css`
-  :host {
-    font-size: 1em;
-    font-weight: var(--oryx-typography-font-weight);
-  }
-`;
-
 export const buttonScreenStyles: ThemeStylesWithMedia[] = [
   {
     media: smScreen,
     css: smallScreen,
-  },
-  {
-    media: mdScreen,
-    css: mediumScreen,
   },
 ];

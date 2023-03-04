@@ -8,6 +8,7 @@ import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
 @customElement('mock-field')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockFieldComponent extends LitElement {
   render(): TemplateResult {
     return html`<div>mock input</div>`;
@@ -43,6 +44,48 @@ describe('DefaultFormRenderer', () => {
 
   afterEach(() => {
     destroyInjector();
+  });
+
+  describe('fieldValidationPattern()', () => {
+    describe('when field does not have validation patterns', () => {
+      it('should not assign default values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+        });
+
+        expect(pattern).toBeUndefined();
+        expect(title).toBeUndefined();
+      });
+
+      describe('and field is required', () => {
+        it('should return default values', () => {
+          const { pattern, title } = service.fieldValidationPattern({
+            id: 'test',
+            required: true,
+          });
+
+          expect(pattern).toBe('.*\\S+.*');
+          expect(title).toBe('Invalid empty text');
+        });
+      });
+    });
+
+    describe('when field has own validation patterns', () => {
+      const validationPattern = {
+        pattern: 'testPattern',
+        title: 'testTitle',
+      };
+
+      it('should assign field values', () => {
+        const { pattern, title } = service.fieldValidationPattern({
+          id: 'test',
+          ...validationPattern,
+        });
+
+        expect(pattern).toBe(validationPattern.pattern);
+        expect(title).toBe(validationPattern.title);
+      });
+    });
   });
 
   describe('formatFormData()', () => {
@@ -132,17 +175,33 @@ describe('DefaultFormRenderer', () => {
 
     describe('field label', () => {
       describe('when there is no label', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-        };
+        describe('and the field id has no camelCase letters', () => {
+          const field: FormFieldDefinition = {
+            id: 'field',
+            type: FormFieldType.Text,
+          };
+          beforeEach(async () => {
+            await service.buildField(field);
+          });
 
-        beforeEach(async () => {
-          await service.buildField(field);
+          it('should use the field id as a label', () => {
+            expect(field.label).toBe('field');
+          });
         });
 
-        it('should use the field id as a label', () => {
-          expect(field.label).toBe('field-id');
+        describe('and the field id has camelCase letters', () => {
+          const field: FormFieldDefinition = {
+            id: 'firstSecondLast',
+            type: FormFieldType.Text,
+          };
+
+          beforeEach(async () => {
+            await service.buildField(field);
+          });
+
+          it('should use add spaces in the label', () => {
+            expect(field.label).toBe('first second last');
+          });
         });
       });
 

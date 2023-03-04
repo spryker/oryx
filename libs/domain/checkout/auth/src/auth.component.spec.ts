@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { AuthService } from '@spryker-oryx/auth';
-import { AuthLoginComponent } from '@spryker-oryx/auth/login';
+import { AuthLoginComponent, AuthService } from '@spryker-oryx/auth';
 import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { CheckoutGuestComponent } from '@spryker-oryx/checkout/guest';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -61,7 +60,8 @@ describe('Checkout Auth', () => {
     element = await fixture(html`<checkout-auth uid="1"></checkout-auth>`);
     const guestCheckoutComponent =
       element.renderRoot.querySelector('checkout-guest');
-    const authLoginComponent = element.renderRoot.querySelector('auth-login');
+    const authLoginComponent =
+      element.renderRoot.querySelector('oryx-auth-login');
 
     expect(guestCheckoutComponent).toBe(null);
     expect(authLoginComponent).toBe(null);
@@ -84,13 +84,14 @@ describe('Checkout Auth', () => {
       );
       const guestCheckoutComponent =
         element.renderRoot.querySelector('checkout-guest');
-      const authLoginComponent = element.renderRoot.querySelector('auth-login');
+      const authLoginComponent =
+        element.renderRoot.querySelector('oryx-auth-login');
 
       expect(
         (guestCheckoutComponent as CheckoutGuestComponent)?.options
-      ).toContain({ url: mockGuestOptions.guestUrl });
+      ).toContain({ redirectUrl: mockGuestOptions.guestUrl });
       expect((authLoginComponent as AuthLoginComponent)?.options).toContain({
-        url: mockLoginOptions.loginUrl,
+        redirectUrl: mockLoginOptions.loginUrl,
       });
     });
   });

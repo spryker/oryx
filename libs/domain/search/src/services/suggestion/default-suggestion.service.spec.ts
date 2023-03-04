@@ -1,6 +1,7 @@
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { createSuggestionMock } from '@spryker-oryx/search/mocks';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter/suggestion.adapter';
@@ -34,6 +35,10 @@ describe('DefaultSuggestionService', () => {
           provide: SuggestionAdapter,
           useClass: MockedAdapter,
         },
+        {
+          provide: QueryService,
+          useClass: DefaultQueryService,
+        },
       ],
     });
 
@@ -63,15 +68,15 @@ describe('DefaultSuggestionService', () => {
     });
 
     it('should get data from cache when call with the same query string', () => {
-      service.get({ query: 'any' });
+      service.get({ query: 'any' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.get({ query: 'any' });
+      service.get({ query: 'any' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.get({ query: 'test' });
+      service.get({ query: 'test' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
 
-    it('should return an observable with null if error has been caught', () => {
+    it('should return an observable with undefined if error has been caught', () => {
       (adapter.get as unknown as SpyInstance).mockReturnValue(
         of(null).pipe(
           switchMap(() => {
@@ -81,11 +86,11 @@ describe('DefaultSuggestionService', () => {
       );
       const callback = vi.fn();
       service.get({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(callback).toHaveBeenCalledWith(undefined);
     });
   });
 
-  describe('getError method', () => {
+  describe('getState method', () => {
     const mockObjectError = {
       status: 0,
       statusCode: 1,
@@ -102,21 +107,23 @@ describe('DefaultSuggestionService', () => {
     });
 
     it('should return an observable', () => {
-      expect(service.getError({})).toBeInstanceOf(Observable);
+      expect(service.getState({})).toBeInstanceOf(Observable);
     });
 
     it('should return an observable with an error information', () => {
       const callback = vi.fn();
-      service.getError({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(mockObjectError);
+      service.getState({}).subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ error: mockObjectError })
+      );
     });
 
     it('should get data from cache when call with the same query string', () => {
-      service.getError({ query: 'any' });
+      service.getState({ query: 'any' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ query: 'any' });
+      service.getState({ query: 'any' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(1);
-      service.getError({ query: 'test' });
+      service.getState({ query: 'test' }).pipe(take(1)).subscribe();
       expect(adapter.get).toHaveBeenCalledTimes(2);
     });
   });

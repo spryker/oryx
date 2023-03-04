@@ -1,10 +1,10 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockOrderData } from '@spryker-oryx/order/mocks';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { OrderService } from '../services';
 import { OrderController } from './order.controller';
@@ -31,19 +31,20 @@ class MockOrderService implements Partial<OrderService> {
   get = vi.fn().mockReturnValue(of(mockOrderData));
 }
 
-const mockAnonymousUser = {
-  id: 'userId',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: false,
 };
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
-  token: { accessToken: 'token' },
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('OrderController', () => {

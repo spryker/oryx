@@ -12,8 +12,8 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs';
-import { OrderComponentProperties, OrderContext, OrderData } from '../models';
-import { OrderService } from '../services';
+import { OrderComponentProperties, OrderData } from '../models';
+import { OrderContext, OrderService } from '../services';
 
 export class OrderController {
   protected context: ContextController;
@@ -24,7 +24,7 @@ export class OrderController {
   protected order$ = defer(() =>
     combineLatest([this.getRef(), this.identityService.get()]).pipe(
       switchMap(([id, user]) => {
-        if (user.anonymous || !id) {
+        if (!user.isAuthenticated || !id) {
           return this.orderService
             .getLastOrder()
             .pipe(map((lastOrder) => lastOrder ?? null));

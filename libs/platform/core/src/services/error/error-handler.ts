@@ -2,7 +2,7 @@ export interface ErrorHandler {
   handle(error: unknown): void;
 }
 
-export const ErrorHandler = 'FES.ErrorHandler';
+export const ErrorHandler = 'oryx.ErrorHandler';
 
 declare global {
   interface InjectionTokensContractMap {

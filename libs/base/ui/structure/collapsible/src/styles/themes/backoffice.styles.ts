@@ -29,14 +29,14 @@ const styles = [
     }
 
     :host(${blockSelector}) details[open] summary {
-      border-bottom: 1px solid var(--oryx-color-canvas-500);
+      border-block-end: 1px solid var(--oryx-color-canvas-500);
     }
 
     :host(${blockSelector}:hover) summary {
       background: var(--oryx-color-canvas-500);
     }
 
-    /* 
+    /*
       We isolate this style for both inline/block since "storybook-addon-pseudo-states"
       doesn't support us otherwise.
     */

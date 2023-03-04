@@ -13,10 +13,9 @@
       "@spryker-oryx/application/server": [
         "libs/template/application/server/index.ts"
       ],
-      "@spryker-oryx/auth": ["libs/domain/auth/src/index.ts"],
-      "@spryker-oryx/auth/login": ["libs/domain/auth/login/index.ts"],
-      "@spryker-oryx/auth/logout": ["libs/domain/auth/logout/index.ts"],
-      "@spryker-oryx/auth/mocks": ["libs/domain/auth/src/mocks/index.ts"],
+      "@spryker-oryx/auth": ["libs/platform/auth/src/index.ts"],
+      "@spryker-oryx/auth/*": ["libs/platform/auth/*/index.ts"],
+      "@spryker-oryx/auth/mocks": ["libs/platform/auth/mocks/index.ts"],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
@@ -82,6 +81,7 @@
       "@spryker-oryx/form": ["libs/base/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
+      "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
       "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
       "@spryker-oryx/order/confirmation-banner": [
@@ -212,6 +212,7 @@
       ],
       "@spryker-oryx/ui/typeahead": ["libs/base/ui/search/typeahead/index.ts"],
       "@spryker-oryx/ui/utilities": ["libs/base/ui/form/utilities/index.ts"],
+      "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
       "@spryker-oryx/user/address-book": [

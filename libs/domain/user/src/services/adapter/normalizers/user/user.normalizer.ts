@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { User } from '../../../../models';
 import { DeserializedUser } from '../model';
 
-export const UserNormalizer = 'FES.UserNormalizer*';
+export const UserNormalizer = 'oryx.UserNormalizer*';
 
 export function userDataNormalizer(data: DeserializedUser): User {
   return data;

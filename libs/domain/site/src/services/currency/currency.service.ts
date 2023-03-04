@@ -7,7 +7,7 @@ export interface CurrencyService {
   set(value: string): void;
 }
 
-export const CurrencyService = 'FES.CurrencyService';
+export const CurrencyService = 'oryx.CurrencyService';
 
 declare global {
   interface InjectionTokensContractMap {

@@ -34,49 +34,4 @@ export interface SearchBoxOptions {
    * @default 5
    */
   cmsCount?: number;
-
-  /**
-   * @default 'Search'
-   */
-  placeholder?: string;
-
-  /**
-   * @default 'Clear'
-   */
-  clearButtonTitle?: string;
-
-  /**
-   * @default 'Close results'
-   */
-  closeButtonArialLabel?: string;
-
-  /**
-   * @default 'Nothing found…'
-   */
-  nothingFoundText?: string;
-
-  /**
-   * @default 'Search suggestions'
-   */
-  completionTitle?: string;
-
-  /**
-   * @default 'In categories'
-   */
-  categoriesTitle?: string;
-
-  /**
-   * @default 'In CMS pages'
-   */
-  cmsTitle?: string;
-
-  /**
-   * @default 'Products'
-   */
-  productsTitle?: string;
-
-  /**
-   * @default 'View all products'
-   */
-  viewAllProductsButtonTitle?: string;
 }

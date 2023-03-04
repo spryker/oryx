@@ -9,6 +9,7 @@ import { inject } from '@spryker-oryx/di';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
+import { ExperienceStaticData, StaticComponent } from '../static-data';
 import { catchMessage, postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -26,7 +27,8 @@ export class DefaultExperienceDataClientService
   constructor(
     protected appRef = inject(AppRef),
     protected optionsService = inject(FeatureOptionsService),
-    protected suggestionService = inject('oryx.SuggestionService', null)
+    protected suggestionService = inject('oryx.SuggestionService', null),
+    protected staticData = inject(ExperienceStaticData, [])
   ) {}
 
   protected schemas$ = of(this.appRef.findPlugin(ComponentsPlugin)).pipe(
@@ -62,8 +64,8 @@ export class DefaultExperienceDataClientService
     })
   );
   protected products$ = catchMessage(MessageType.Query).pipe(
-    switchMap<string, Observable<ProductsSuggestion | null>>(
-      (query) => this.suggestionService?.get({ query }) ?? of(null)
+    switchMap<string, Observable<ProductsSuggestion | undefined>>(
+      (query) => this.suggestionService?.get({ query }) ?? of(undefined)
     ),
     tap((suggestions) => {
       postMessage({
@@ -84,5 +86,12 @@ export class DefaultExperienceDataClientService
 
   initialize(): Observable<unknown> {
     return this.initializer$;
+  }
+
+  sendStatic(data: StaticComponent[]): void {
+    postMessage({
+      type: MessageType.Static,
+      data,
+    });
   }
 }

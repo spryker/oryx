@@ -6,7 +6,7 @@ import {
   ValueProvider,
 } from './models/provider';
 
-export const INJECTOR = 'FES.Injector';
+export const INJECTOR = 'oryx.Injector';
 
 declare global {
   export interface InjectionTokensContractMap {

@@ -12,7 +12,7 @@ import { PaginationNormalizer } from '../pagination';
 import { SortNormalizer } from '../sort';
 import { DeserializedProductList } from './model';
 
-export const ProductListNormalizer = 'FES.ProductListNormalizer*';
+export const ProductListNormalizer = 'oryx.ProductListNormalizer*';
 
 export function paginationNormalizer(
   data: [DeserializedProductList],

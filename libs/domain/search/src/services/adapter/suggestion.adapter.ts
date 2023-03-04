@@ -6,7 +6,7 @@ export interface SuggestionAdapter {
   get(qualifier: SuggestionQualifier): Observable<Suggestion>;
 }
 
-export const SuggestionAdapter = 'FES.SuggestionAdapter';
+export const SuggestionAdapter = 'oryx.SuggestionAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

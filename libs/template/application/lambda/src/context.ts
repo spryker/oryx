@@ -2,10 +2,12 @@ import {
   getWindow,
   installWindowOnGlobal,
 } from '@lit-labs/ssr/lib/dom-shim.js';
+import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { TextDecoder, TextEncoder } from 'util';
 import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
@@ -26,6 +28,9 @@ export const serverContext = (options: ContextOptions): any => {
       require: createRequire(root),
       Event,
       process,
+      buffer,
+      TextDecoder,
+      TextEncoder,
       exports: {},
     },
   });
