@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { NotificationService } from '@spryker-oryx/site';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import {
   notificationCenterComponent,
   NotificationCenterComponent,
@@ -15,7 +15,7 @@ import { SiteNotificationCenterComponent } from './notification-center.component
 import { siteNotificationCenterComponent } from './notification-center.def';
 
 const mockNotification = {
-  type: Types.ERROR,
+  type: AlertType.Error,
   content: 'Error',
   subtext: 'Mock error',
 };

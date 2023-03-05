@@ -1,4 +1,4 @@
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -47,28 +47,28 @@ StaticPosition.play = async (): Promise<void> => {
       generateNotification({
         autoClose: false,
         content: 'Content',
-        type: Types.INFO,
+        type: AlertType.Info,
       })
     );
     service.getCenter('#parent').open(
       generateNotification({
         autoClose: false,
         content: 'Content',
-        type: Types.INFO,
+        type: AlertType.Info,
       })
     );
     service.getCenter('#parent').open(
       generateNotification({
         autoClose: false,
         content: 'Content',
-        type: Types.INFO,
+        type: AlertType.Info,
       })
     );
     service.getCenter('#parent').open(
       generateNotification({
         autoClose: false,
         content: 'Content',
-        type: Types.INFO,
+        type: AlertType.Info,
       })
     );
   })();

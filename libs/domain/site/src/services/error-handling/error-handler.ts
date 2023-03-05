@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { NotificationService } from '../notification';
 
 interface ApiError {
@@ -13,7 +13,7 @@ export class SiteErrorHandler implements ErrorHandler {
   constructor(protected notificationService = inject(NotificationService)) {
     this.notificationService.push({
       autoClose: false,
-      type: Types.ERROR,
+      type: AlertType.Error,
       content: 'Error',
     });
   }
@@ -26,7 +26,7 @@ export class SiteErrorHandler implements ErrorHandler {
     }
 
     this.notificationService.push({
-      type: Types.ERROR,
+      type: AlertType.Error,
       content: 'Error',
       subtext: message || String(error),
     });

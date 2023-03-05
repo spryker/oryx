@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { NotificationService } from '../notification';
 import { SiteErrorHandler } from './error-handler';
 
@@ -47,7 +47,7 @@ describe('SiteErrorHandler', () => {
       handler.handle(error);
 
       expect(notificationService.push).toHaveBeenCalledWith({
-        type: Types.ERROR,
+        type: AlertType.Error,
         content: 'Error',
         subtext: 'ERROR',
       });
@@ -61,7 +61,7 @@ describe('SiteErrorHandler', () => {
       handler.handle(error);
 
       expect(notificationService.push).toHaveBeenCalledWith({
-        type: Types.ERROR,
+        type: AlertType.Error,
         content: 'Error',
         subtext: '[object Object]',
       });
@@ -79,7 +79,7 @@ describe('SiteErrorHandler', () => {
       handler.handle(error);
 
       expect(notificationService.push).toHaveBeenCalledWith({
-        type: Types.ERROR,
+        type: AlertType.Error,
         content: 'Error',
         subtext: `${error.body.errors[0].status} ${error.body.errors[0].detail}`,
       });

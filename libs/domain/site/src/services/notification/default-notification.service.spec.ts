@@ -1,11 +1,11 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { DefaultNotificationService } from './default-notification.service';
 import { NotificationService } from './notification.service';
 
 const mockNotification = {
-  type: Types.INFO,
+  type: AlertType.Info,
   content: 'mock title',
   subtext: 'content',
   position: NotificationPosition.BottomStart,
@@ -43,7 +43,7 @@ describe('DefaultNotificationService', () => {
       service.push(mockNotification);
     });
 
-    it('should retuurn the notification', () => {
+    it('should return the notification', () => {
       const callback = vi.fn();
       service.get().subscribe(callback);
       expect(callback).toHaveBeenCalledWith(mockNotification);

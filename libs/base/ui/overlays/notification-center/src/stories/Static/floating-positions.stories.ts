@@ -1,4 +1,4 @@
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -62,20 +62,32 @@ Positions.play = async (): Promise<void> => {
       NotificationPosition.BottomEnd
     );
 
-    center1.open?.(generateNotification({ content: 'info', type: Types.INFO }));
     center1.open?.(
-      generateNotification({ content: 'success', type: Types.SUCCESS })
+      generateNotification({ content: 'info', type: AlertType.Info })
     );
     center1.open?.(
-      generateNotification({ content: 'warning', type: Types.WARNING })
+      generateNotification({ content: 'success', type: AlertType.Success })
     );
     center1.open?.(
-      generateNotification({ content: 'error', type: Types.ERROR })
+      generateNotification({ content: 'warning', type: AlertType.Warning })
     );
-    center2.open?.(generateNotification({ content: 'info', type: Types.INFO }));
-    center3.open?.(generateNotification({ content: 'info', type: Types.INFO }));
-    center4.open?.(generateNotification({ content: 'info', type: Types.INFO }));
-    center5.open?.(generateNotification({ content: 'info', type: Types.INFO }));
-    center6.open?.(generateNotification({ content: 'info', type: Types.INFO }));
+    center1.open?.(
+      generateNotification({ content: 'error', type: AlertType.Error })
+    );
+    center2.open?.(
+      generateNotification({ content: 'info', type: AlertType.Info })
+    );
+    center3.open?.(
+      generateNotification({ content: 'info', type: AlertType.Info })
+    );
+    center4.open?.(
+      generateNotification({ content: 'info', type: AlertType.Info })
+    );
+    center5.open?.(
+      generateNotification({ content: 'info', type: AlertType.Info })
+    );
+    center6.open?.(
+      generateNotification({ content: 'info', type: AlertType.Info })
+    );
   })();
 };

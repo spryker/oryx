@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { NotificationService } from '@spryker-oryx/site';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
+
 import {
   NotificationPosition,
   NotificationStrategy,
@@ -26,7 +27,12 @@ export default {
       description: 'Position in which to display site error notifications.',
     },
     type: {
-      options: Object.values(Types),
+      options: [
+        AlertType.Info,
+        AlertType.Success,
+        AlertType.Warning,
+        AlertType.Error,
+      ],
       control: { type: 'radio' },
       description: 'Type of notification to display.',
       table: { category: 'demo' },
@@ -34,7 +40,7 @@ export default {
   },
   args: {
     position: NotificationPosition.TopEnd,
-    type: Types.INFO,
+    type: AlertType.Info,
   },
 } as Meta;
 
@@ -42,7 +48,7 @@ const emitMessage = (option: NotificationStrategy): void => {
   resolve(NotificationService).push(option);
 };
 
-const Template: Story<SiteNotificationCenterOptions & { type: Types }> = (
+const Template: Story<SiteNotificationCenterOptions & { type: AlertType }> = (
   props
 ): TemplateResult => {
   const message = {

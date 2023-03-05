@@ -1,4 +1,5 @@
-import { Schemes, Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
+import { Schemes } from '@spryker-oryx/ui/notification';
 import { TemplateResult } from 'lit';
 
 export interface NotificationCenterComponentAttributes {
@@ -30,7 +31,7 @@ export const enum NotificationPosition {
 }
 
 export type NotificationStrategy = {
-  type?: Types;
+  type?: AlertType;
   scheme?: Schemes;
   closable?: boolean;
   floating?: boolean;

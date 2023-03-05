@@ -1,13 +1,14 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { CLOSE_EVENT, Schemes, Types } from './notification.model';
+import { CLOSE_EVENT, Schemes } from './notification.model';
 import { notificationBaseStyles, notificationStyles } from './styles';
 
 export class NotificationComponent extends LitElement {
   static styles = [notificationBaseStyles, notificationStyles];
 
-  @property({ type: String, reflect: true }) type?: Types;
+  @property({ type: String, reflect: true }) type?: AlertType;
   @property({ type: Boolean }) closable = false;
   @property({ type: Boolean }) floating = false;
   @property({ type: String, reflect: true }) scheme?: Schemes;

@@ -4,6 +4,13 @@ export enum Size {
   small = 'small',
 }
 
+export const enum AlertType {
+  Info = 'info',
+  Success = 'success',
+  Warning = 'warning',
+  Error = 'error',
+}
+
 export enum Position {
   START = 'start',
   END = 'end',
