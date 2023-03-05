@@ -31,6 +31,7 @@ export const storefrontTokens: DesignToken[] = [
     },
     ...layoutSmTokens,
     ...typographySmallTokens,
+    ...commonTokensSmall,
   },
   {
     media: {
@@ -38,7 +39,6 @@ export const storefrontTokens: DesignToken[] = [
     },
     ...layoutMdTokens,
     ...typographyMediumTokens,
-    ...commonTokensSmall,
   },
   {
     media: {

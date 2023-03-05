@@ -31,7 +31,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         }
 
         return html`
-          <oryx-heading appearance="h4" sm-appearance="none">
+          <oryx-heading appearance="h4">
             <h2>${i18n('cart.totals.summary')}</h2>
           </oryx-heading>
           <section>
