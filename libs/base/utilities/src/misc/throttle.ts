@@ -3,7 +3,7 @@ export const throttle = (
   wait: number,
   deferACall = false
 ): (() => void) => {
-  let deferredCall!: NodeJS.Timeout;
+  let deferredCall!: ReturnType<typeof setTimeout>;
 
   let lastCalledAt = Date.now();
   let isFirstCall = true;

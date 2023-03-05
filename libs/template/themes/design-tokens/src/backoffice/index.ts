@@ -46,3 +46,32 @@ export const backofficeTokens: DesignToken[] = [
     ...layoutMdTokens,
   },
 ];
+
+// TODO: This should be dropped after HRZ-2239
+export const backofficeTokensWithoutDarkMode: DesignToken[] = [
+  {
+    color,
+    ...tokens,
+    ...typographyTokens,
+  },
+  {
+    media: {
+      screen: Size.Lg,
+    },
+    ...layoutTokens,
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...typographySmallTokens,
+    ...layoutSmTokens,
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...typographyMediumTokens,
+    ...layoutMdTokens,
+  },
+];

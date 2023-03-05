@@ -44,7 +44,7 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.sources?.[0]?.url) return;
+    if (!this.sources?.[0]?.url) return this.renderImage('');
 
     if (this.isVideo(this.sources[0]?.url)) {
       return this.renderVideo(this.sources[0]?.url);

@@ -37,7 +37,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
         this.http
           .post<ApiCheckoutModel.CheckoutResponse>(
             `${this.SCOS_BASE_URL}/checkout${
-              user.anonymous ? '?include=orders' : ''
+              !user.isAuthenticated ? '?include=orders' : ''
             }`,
             data
           )

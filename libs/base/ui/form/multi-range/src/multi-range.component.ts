@@ -135,7 +135,7 @@ export class MultiRangeComponent
     isFirst = false
   ): TemplateResult {
     return html`
-      <label>
+      <label aria-label=${isFirst ? 'min' : 'max'}>
         <input
           ref="${ref(inputRef)}"
           type="range"
