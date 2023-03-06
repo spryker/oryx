@@ -91,6 +91,9 @@
       "@spryker-oryx/order/mocks": ["libs/domain/order/src/mocks/index.ts"],
       "@spryker-oryx/order/summary": ["libs/domain/order/summary/index.ts"],
       "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
+      "@spryker-oryx/picking": ["libs/domain/picking/src/index.ts"],
+      "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
+      "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
       "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
       "@spryker-oryx/product/attributes": [
