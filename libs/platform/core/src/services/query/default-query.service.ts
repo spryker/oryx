@@ -1,6 +1,6 @@
 import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 
-import { CoreQueryService } from './core';
+import { CoreQueryManager } from './core';
 
 import { Command, EffectDefinition, Query } from './models';
 import {
@@ -11,7 +11,7 @@ import {
 } from './query.service';
 
 export class DefaultQueryService
-  extends CoreQueryService
+  extends CoreQueryManager
   implements QueryService, OnDestroy
 {
   constructor(
