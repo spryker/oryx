@@ -43,7 +43,7 @@ export class CoreQuery<
 
   constructor(
     protected options: QueryOptions<ValueType, Qualifier>,
-    protected service: QueryManager,
+    protected manager: QueryManager,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -220,7 +220,7 @@ export class CoreQuery<
       error
     );
     if (event) {
-      this.service.emit(event);
+      this.manager.emit(event);
     }
   }
 
@@ -229,7 +229,7 @@ export class CoreQuery<
   ): Observable<undefined> {
     return merge(
       ...triggers.map((trigger) =>
-        typeof trigger === 'string' ? this.service.getEvents(trigger) : trigger
+        typeof trigger === 'string' ? this.manager.getEvents(trigger) : trigger
       )
     );
   }

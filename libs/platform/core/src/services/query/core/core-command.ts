@@ -28,7 +28,7 @@ export class CoreCommand<
 
   constructor(
     protected options: CommandOptions<ResultType, Qualifier>,
-    protected service: QueryManager,
+    protected manager: QueryManager,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -153,7 +153,7 @@ export class CoreCommand<
       error
     );
     if (event) {
-      this.service.emit(event);
+      this.manager.emit(event);
     }
   }
 }
