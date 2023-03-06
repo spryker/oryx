@@ -1,23 +1,22 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DefaultOrderAdapter } from './default-order.adapter';
 import { OrderNormalizer } from './normalizers';
 import { OrderAdapter } from './order.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 
-const mockAnonymousUser = {
-  id: 'userId',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: false,
 };
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
-  token: { accessToken: 'token' },
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
 const mockGetOrderProps = { id: 'mockid' };
@@ -28,7 +27,9 @@ const mockTransformer = {
 };
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('DefaultOrderAdapter', () => {

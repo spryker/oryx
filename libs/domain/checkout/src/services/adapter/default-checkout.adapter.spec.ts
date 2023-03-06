@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import {
   mockCheckout,
   mockGetShipmentResponse,
@@ -9,7 +9,7 @@ import {
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiCheckoutModel } from '../../models';
 import { CheckoutAdapter, UpdateCheckoutDataProps } from './checkout.adapter';
 import { DefaultCheckoutAdapter } from './default-checkout.adapter';
@@ -24,16 +24,15 @@ const mockTransformer = {
   do: vi.fn().mockReturnValue(() => of(null)),
 };
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
-  token: { accessToken: 'token' },
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'anonymousUserId',
+  isAuthenticated: false,
 };
 
-const mockAnonymousUser = { id: 'anonymousUserId', anonymous: true };
-
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('DefaultCheckoutService', () => {
@@ -190,7 +189,9 @@ describe('DefaultCheckoutService', () => {
 
     describe('and user is logged in', () => {
       it('should build url', () => {
-        identity.get.mockReturnValue(of({ id: 'mockuser' }));
+        identity.get.mockReturnValue(
+          of({ userId: 'mockUser', isAuthenticated: true })
+        );
         service.placeOrder(mockPostCheckoutProps).subscribe(() => {
           expect(http.url).toBe(`${mockApiUrl}/checkout`);
         });
