@@ -85,7 +85,7 @@ export class SiteModeSelectorComponent extends LitElement {
         <button
           type="button"
           aria-label="${i18n('site.change-color-mode')}"
-          @click=${() => this.triggerEvent()}
+          @click=${this.triggerEvent}
         >
           <oryx-icon type="${this.mode}"></oryx-icon>
         </button>

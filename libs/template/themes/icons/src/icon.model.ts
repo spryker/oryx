@@ -102,5 +102,4 @@ export enum IconTypes {
   Carrier = 'carrier',
   Location = 'location',
   Login = 'login',
-  Sun = 'sun',
 }
