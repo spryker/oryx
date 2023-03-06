@@ -6,7 +6,6 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { EVENT_TOGGLE_MODE } from '@spryker-oryx/site/mode-selector';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
@@ -81,7 +80,7 @@ export class DefaultExperienceDataClientService
   protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(
     tap((mode) => {
       window.dispatchEvent(
-        new CustomEvent(EVENT_TOGGLE_MODE, {
+        new CustomEvent('oryx.toggle-mode', {
           bubbles: true,
           composed: true,
           detail: mode,

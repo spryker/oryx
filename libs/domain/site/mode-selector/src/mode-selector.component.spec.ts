@@ -6,7 +6,6 @@ import { createEvent } from '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
 import { of } from 'rxjs';
 import {
-  EVENT_TOGGLE_MODE,
   modeStorageKey,
   SiteModeSelectorComponent,
 } from './mode-selector.component';
@@ -113,7 +112,7 @@ describe('ButtonComponent', () => {
       expect(icon?.getAttribute('type')).toBe('mode-light');
       window.dispatchEvent(
         createEvent(
-          { type: EVENT_TOGGLE_MODE },
+          { type: 'oryx.toggle-mode' },
           { old: 'mode-light', mode: 'mode-dark' }
         )
       );
@@ -121,7 +120,7 @@ describe('ButtonComponent', () => {
       expect(icon?.getAttribute('type')).toBe('mode-dark');
       window.dispatchEvent(
         createEvent(
-          { type: EVENT_TOGGLE_MODE },
+          { type: 'oryx.toggle-mode' },
           { old: 'mode-dark', mode: 'mode-light' }
         )
       );
@@ -132,7 +131,7 @@ describe('ButtonComponent', () => {
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
         createEvent(
-          { type: EVENT_TOGGLE_MODE },
+          { type: 'oryx.toggle-mode' },
           { old: 'mode-light', mode: 'mode-dark' }
         )
       );
@@ -140,7 +139,7 @@ describe('ButtonComponent', () => {
       expect(document.body?.hasAttribute('mode-dark')).toBe(true);
       window.dispatchEvent(
         createEvent(
-          { type: EVENT_TOGGLE_MODE },
+          { type: 'oryx.toggle-mode' },
           { old: 'mode-dark', mode: 'mode-light' }
         )
       );

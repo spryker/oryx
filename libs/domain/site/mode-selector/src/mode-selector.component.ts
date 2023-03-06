@@ -11,13 +11,7 @@ import { state } from 'lit/decorators.js';
 import { filter, tap } from 'rxjs';
 import { styles } from './mode-selector.styles';
 
-export const EVENT_TOGGLE_MODE = 'oryx.toggle-mode';
 export const modeStorageKey = 'oryx.modeStorageKey';
-
-export interface ModeEvent {
-  old: string;
-  mode: string;
-}
 
 @hydratable('window:load')
 export class SiteModeSelectorComponent extends LitElement {
@@ -49,16 +43,17 @@ export class SiteModeSelectorComponent extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    window.addEventListener(EVENT_TOGGLE_MODE, this.toggleMode);
+    window.addEventListener('oryx.toggle-mode', this.toggleMode);
   }
 
   disconnectedCallback(): void {
-    window.removeEventListener(EVENT_TOGGLE_MODE, this.toggleMode);
+    window.removeEventListener('oryx.toggle-mode', this.toggleMode);
     super.disconnectedCallback();
   }
 
   protected toggleMode(event: Event): void {
-    const { old, mode } = (event as CustomEvent<ModeEvent>).detail;
+    const { old, mode } = (event as CustomEvent<{ old: string; mode: string }>)
+      .detail;
     const root = document.querySelector(this.root);
     root?.removeAttribute(old);
     this.mode = mode;
@@ -68,7 +63,7 @@ export class SiteModeSelectorComponent extends LitElement {
 
   protected triggerEvent(): void {
     this.dispatchEvent(
-      new CustomEvent(EVENT_TOGGLE_MODE, {
+      new CustomEvent('oryx.toggle-mode', {
         bubbles: true,
         composed: true,
         detail: {

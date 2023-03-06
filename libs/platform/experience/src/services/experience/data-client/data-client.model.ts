@@ -1,5 +1,4 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
-import { ModeEvent } from '@spryker-oryx/site/mode-selector';
 import { ContentComponentSchema } from '../../../models';
 import { StaticComponent } from '../static-data';
 
@@ -18,6 +17,11 @@ export const enum MessageType {
 export interface ExperienceProductData {
   sku?: string;
   name?: string;
+}
+
+export interface ModeEvent {
+  old: string;
+  mode: string;
 }
 
 export type ExperienceMessageData<T> = {
