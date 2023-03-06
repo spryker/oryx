@@ -58,25 +58,32 @@ export class CollapsibleComponent
       </slot>
     `;
 
+    const trigger = html`
+      ${when(
+        this.preventKeyboardNavigation,
+        () => html`
+          <button
+            aria-label=${this.open ? 'hide' : 'show'}
+            type="button"
+            @click=${() => (this.open = !this.open)}
+          >
+            ${content}
+          </button>
+        `,
+        () => html`<span>${content}</span>`
+      )}
+    `;
+
+    if (this.isTextTrigger) {
+      return html`
+        <oryx-button type="text" size=${this.controlSize}>
+          ${trigger}
+        </oryx-button>
+      `;
+    }
+
     return html`
-      <oryx-icon-button
-        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}
-        size=${this.controlSize}
-      >
-        ${when(
-          this.preventKeyboardNavigation,
-          () => html`
-            <button
-              aria-label=${this.open ? 'hide' : 'show'}
-              type="button"
-              @click=${() => (this.open = !this.open)}
-            >
-              ${content}
-            </button>
-          `,
-          () => html`<span>${content}</span>`
-        )}
-      </oryx-icon-button>
+      <oryx-icon-button size=${this.controlSize}> ${trigger} </oryx-icon-button>
     `;
   }
 
