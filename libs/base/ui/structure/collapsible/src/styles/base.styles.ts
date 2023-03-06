@@ -86,8 +86,4 @@ export const collapsibleBaseStyle = css`
   slot[name='aside']::slotted(*) {
     margin-inline-start: auto;
   }
-
-  button {
-    padding: 0;
-  }
 `;
