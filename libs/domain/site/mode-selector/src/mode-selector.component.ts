@@ -34,7 +34,7 @@ export class SiteModeSelectorComponent extends LitElement {
   );
 
   @state()
-  protected mode = this.lightMode;
+  protected mode = this.getBrowserMode();
 
   constructor() {
     super();
@@ -59,6 +59,13 @@ export class SiteModeSelectorComponent extends LitElement {
     this.mode = mode;
     root?.setAttribute(mode, '');
     this.storage.set(modeStorageKey, mode);
+  }
+
+  protected getBrowserMode(): string {
+    return window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? this.darkMode
+      : this.lightMode;
   }
 
   protected triggerEvent(): void {
