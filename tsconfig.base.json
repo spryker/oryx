@@ -136,6 +136,9 @@
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/mode-selector": [
+        "libs/domain/site/mode-selector/index.ts"
+      ],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
       ],
@@ -171,9 +174,6 @@
       "@spryker-oryx/ui/input-list": ["libs/base/ui/form/input-list/index.ts"],
       "@spryker-oryx/ui/link": ["libs/base/ui/action/link/index.ts"],
       "@spryker-oryx/ui/modal": ["libs/base/ui/overlays/modal/index.ts"],
-      "@spryker-oryx/ui/mode-selector": [
-        "libs/base/ui/action/mode-selector/index.ts"
-      ],
       "@spryker-oryx/ui/multi-range": [
         "libs/base/ui/form/multi-range/index.ts"
       ],

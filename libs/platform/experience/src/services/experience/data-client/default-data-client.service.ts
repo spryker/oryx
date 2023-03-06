@@ -6,7 +6,7 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { EVENT_TOGGLE_MODE } from '@spryker-oryx/ui/mode-selector';
+import { EVENT_TOGGLE_MODE } from '@spryker-oryx/site/mode-selector';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';

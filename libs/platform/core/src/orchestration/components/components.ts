@@ -1,4 +1,3 @@
-import { rootInjectable } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import {
   ThemeData,
@@ -36,11 +35,6 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
   ) {
     super(options);
     this.registerComponents(componentsInfo);
-    rootInjectable.inject(
-      typeof options.root === 'string'
-        ? options.root
-        : this.processDef(options.root).name
-    );
   }
 
   getName(): string {
@@ -50,7 +44,7 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
   async apply(app: App): Promise<void> {
     this.theme = app.findPlugin(ThemePlugin);
 
-    const root = rootInjectable.get();
+    const root = this.getRoot();
 
     if (this.options.preload) {
       await this.preloadComponents();
@@ -80,6 +74,12 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
 
   getOptions(): ComponentsOptions {
     return this.options;
+  }
+
+  getRoot(): string {
+    return typeof this.options.root === 'string'
+      ? this.options.root
+      : this.processDef(this.options.root).name;
   }
 
   async loadComponent(name: string): Promise<ComponentType | undefined> {

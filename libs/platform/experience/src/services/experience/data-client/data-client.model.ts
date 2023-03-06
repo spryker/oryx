@@ -1,4 +1,5 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
+import { ModeEvent } from '@spryker-oryx/site/mode-selector';
 import { ContentComponentSchema } from '../../../models';
 import { StaticComponent } from '../static-data';
 
@@ -28,15 +29,14 @@ export type ExperienceMessageData<T> = {
     ? FeatureOptions[keyof FeatureOptions]
     : T extends MessageType.Products
     ? ExperienceProductData[]
-    : T extends
-        | MessageType.Query
-        | MessageType.ComponentType
-        | MessageType.ColorMode
+    : T extends MessageType.Query | MessageType.ComponentType
     ? string
     : T extends MessageType.Schemas
     ? ContentComponentSchema[] | undefined
     : T extends MessageType.Static
     ? StaticComponent[]
+    : T extends MessageType.ColorMode
+    ? ModeEvent
     : never;
   [key: string]: any;
 };
