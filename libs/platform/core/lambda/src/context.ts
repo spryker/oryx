@@ -10,8 +10,6 @@ import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
-// added because of oauth, we probably should not require oauth in the ssr
-console.log('TextEncoder', TextEncoder);
 
 interface ContextOptions {
   entry: string;
@@ -30,9 +28,6 @@ export const serverContext = (options: ContextOptions): any => {
       Event,
       process,
       buffer,
-      // added because of oauth, we probably should not require oauth in the ssr
-      TextEncoder,
-      TextDecoder,
       exports: {},
     },
   });

@@ -1,14 +1,13 @@
 import {
-getWindow,
-installWindowOnGlobal
+  getWindow,
+  installWindowOnGlobal,
 } from '@lit-labs/ssr/lib/dom-shim.js';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
-import { dirname,resolve } from 'path';
+import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { TextDecoder,TextEncoder } from 'util';
-import { createContext,Script } from 'vm';
+import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
 
@@ -20,8 +19,6 @@ interface ContextOptions {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const serverContext = (options: ContextOptions): any => {
-  console.log('TextEncoder222', TextEncoder);
-
   const { entry, root = import.meta.url, namespace = 'storefront' } = options;
   const basePath = dirname(fileURLToPath(root));
   const window = getWindow({
@@ -35,6 +32,7 @@ export const serverContext = (options: ContextOptions): any => {
     },
   });
   window.setTimeout = setTimeout;
+  // added because of oauth, we probably should not require oauth in the ssr
   window.TextEncoder = class {};
   window.TextDecoder = class {};
 
