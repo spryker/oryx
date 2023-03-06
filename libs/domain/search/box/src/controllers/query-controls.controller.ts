@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
@@ -30,7 +31,7 @@ export class QueryControlsController {
         </button>
       </oryx-button>
 
-      <oryx-icon-button slot="suffix" size="sm">
+      <oryx-icon-button slot="suffix" size=${Size.Lg}>
         <button
           aria-label="Close results"
           type="button"

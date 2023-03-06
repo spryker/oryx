@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -26,7 +27,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           animation-timing-function: linear;
         }
       </style>
-      <oryx-icon type="error" size="lg"></oryx-icon>
+      <oryx-icon type="error" size=${Size.Lg}></oryx-icon>
       <span> Custom error content </span>
     </oryx-error-message>
   `;

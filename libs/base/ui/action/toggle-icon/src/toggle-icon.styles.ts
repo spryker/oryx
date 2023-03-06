@@ -1,4 +1,9 @@
-import { css } from 'lit';
+import { Size } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
+
+const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
+const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
+const largeSize = unsafeCSS(`[size='${Size.Lg}']`);
 
 export const toggleIconStyles = css`
   :host {
@@ -33,16 +38,16 @@ export const toggleIconStyles = css`
     padding: 7px;
   }
 
-  :host([has-text][size='sm']) {
+  :host([has-text]${smallSize}) {
     padding: 8px 12px;
   }
 
   :host([has-text]),
-  :host([has-text][size='md']) {
+  :host([has-text]${mediumSize}) {
     padding: 8px 12px;
   }
 
-  :host([has-text][size='lg']) {
+  :host([has-text]${largeSize}) {
     padding: 12px 16px;
   }
 
