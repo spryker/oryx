@@ -14,7 +14,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               type: 'rawUrl',
               id: '/contact',
-              text: 'Contact Page',
+              text: 'Contact Us',
               icon: 'mark',
             },
           },

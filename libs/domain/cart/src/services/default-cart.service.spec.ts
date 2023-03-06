@@ -1,4 +1,4 @@
-import { AuthService, Identity, IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, AuthService, IdentityService } from '@spryker-oryx/auth';
 import {
   mockBaseCart,
   mockCartEntry,
@@ -15,9 +15,9 @@ import { DefaultCartService } from './default-cart.service';
 
 const mockErrorMessage = 'Test Error Message';
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
 const mockEntryQualifier = {
@@ -38,7 +38,7 @@ class MockAuthService implements Partial<AuthService> {
 class MockIdentityService implements Partial<IdentityService> {
   user$ = new BehaviorSubject(mockUser);
   get = vi.fn().mockImplementation(() => this.user$);
-  set(data: Identity): void {
+  set(data: AuthIdentity): void {
     this.user$.next(data);
   }
 }

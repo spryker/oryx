@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   mockCurrentAddress,
@@ -18,18 +18,20 @@ class MockAddressAdapter implements Partial<AddressAdapter> {
 
 const callback = vi.fn();
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
-const mockAnonymousUser = {
-  id: 'guestid',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'guestid',
+  isAuthenticated: false,
 };
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('DefaultAddressService', () => {

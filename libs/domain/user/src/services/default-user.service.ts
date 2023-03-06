@@ -21,7 +21,7 @@ export class DefaultUserService implements UserService, OnDestroy {
       .get()
       .pipe(
         switchMap((identity) =>
-          identity.anonymous ? of(null) : this.adapter.get()
+          !identity.isAuthenticated ? of(null) : this.adapter.get()
         )
       )
   ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));

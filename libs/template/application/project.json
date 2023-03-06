@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/template/application",
   "sourceRoot": "libs/template/application/src",
   "prefix": "fes",
   "targets": {
