@@ -24,10 +24,26 @@ class MockStorageService implements Partial<StorageService> {
 
 export class RootMock extends LitElement {
   protected override render(): TemplateResult {
-    console.log('render');
     return html`<root-element><slot></slot></root-element>`;
   }
 }
+
+let triggerMatcher: () => void;
+const darkMode = { match: false };
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: darkMode.match,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: (type: string, cb: () => void) => (triggerMatcher = cb),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
 
 describe('ButtonComponent', () => {
   let element: SiteModeSelectorComponent;
@@ -41,6 +57,9 @@ describe('ButtonComponent', () => {
   });
 
   beforeEach(async () => {
+    document.body?.removeAttribute('mode-light');
+    document.body?.removeAttribute('mode-dark');
+
     const testInjector = createInjector({
       providers: [
         {
@@ -127,7 +146,6 @@ describe('ButtonComponent', () => {
       await nextFrame();
       expect(icon?.getAttribute('type')).toBe('mode-light');
     });
-
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
         createEvent(
@@ -151,7 +169,7 @@ describe('ButtonComponent', () => {
 
   describe('when storage emits value', () => {
     it('should assign proper values', async () => {
-      storage.get.mockReturnValue(of('mode-dark'));
+      storage.get.mockReturnValueOnce(of('mode-dark'));
       element = await fixture(
         html`<oryx-site-mode-selector></oryx-site-mode-selector> `
       );
@@ -160,6 +178,34 @@ describe('ButtonComponent', () => {
       expect(document.body?.hasAttribute('mode-light')).toBe(false);
       expect(document.body?.hasAttribute('mode-dark')).toBe(true);
       expect(icon?.getAttribute('type')).toBe('mode-dark');
+    });
+  });
+
+  describe('when mode has been change thought browser', () => {
+    it('should change icon type', async () => {
+      const icon = element.renderRoot.querySelector('oryx-icon');
+      darkMode.match = false;
+      triggerMatcher();
+      await nextFrame();
+      expect(icon?.getAttribute('type')).toBe('mode-light');
+      darkMode.match = true;
+      triggerMatcher();
+      await nextFrame();
+      expect(icon?.getAttribute('type')).toBe('mode-dark');
+    });
+
+    it('should not change icon type if root element has attribute', async () => {
+      storage.get.mockReturnValueOnce(of('mode-light'));
+      element = await fixture(
+        html`<oryx-site-mode-selector></oryx-site-mode-selector> `
+      );
+      const icon = element.renderRoot.querySelector('oryx-icon');
+      expect(document.body?.hasAttribute('mode-light')).toBe(true);
+      expect(icon?.getAttribute('type')).toBe('mode-light');
+      darkMode.match = true;
+      triggerMatcher();
+      await nextFrame();
+      expect(icon?.getAttribute('type')).toBe('mode-light');
     });
   });
 });
