@@ -44,7 +44,7 @@ export const iconButtonStyles = css`
     cursor: default;
     color: var(--oryx-color-neutral-200);
     border-color: var(--oryx-color-canvas-500);
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-canvas-100);
   }
 
   :host([size='sm']) ::slotted(*) {
