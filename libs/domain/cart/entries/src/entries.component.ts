@@ -91,7 +91,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
       <section>
         <oryx-icon type="cart"></oryx-icon>
         <p>Your shopping cart is empty</p>
-        <oryx-button size="lg">
+        <oryx-button>
           <button>Shop now</button>
         </oryx-button>
       </section>

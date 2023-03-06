@@ -6,6 +6,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
+import { Size } from '@spryker-oryx/ui';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   hydratable,
@@ -120,7 +121,7 @@ export class ProductCardComponent extends ProductMixin(
   protected renderRating(): TemplateResult | void {
     if (this.componentOptions?.enableRating) {
       return html`<oryx-product-average-rating
-        .options=${{ size: 'sm', enableCount: false }}
+        .options=${{ size: Size.Sm, enableCount: false }}
       ></oryx-product-average-rating>`;
     }
   }

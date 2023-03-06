@@ -1,4 +1,5 @@
 import { prehydrate } from '@spryker-oryx/core';
+import { Size } from '@spryker-oryx/ui';
 import { throttle } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -49,7 +50,7 @@ export class TextComponent extends LitElement implements TextProperties {
       ${when(
         !this.hideToggle,
         () => html` <slot name="toggle">
-          <oryx-icon-button size="sm">
+          <oryx-icon-button size=${Size.Sm}>
             <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
               <oryx-icon type="dropdown"></oryx-icon>
             </button>

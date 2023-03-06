@@ -3,6 +3,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { Size } from '@spryker-oryx/ui';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import {
@@ -238,7 +239,7 @@ export class SearchBoxComponent
           @oryx.typeahead=${this.onTypeahead}
           .clearIconPosition=${ClearIconPosition.NONE}
         >
-          <oryx-icon slot="prefix" type="search" size="md"></oryx-icon>
+          <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
           <input ${ref(this.inputRef)} placeholder="Search" />
           ${this.renderSuggestion(this.suggestion)}
           ${when(this.query, () =>

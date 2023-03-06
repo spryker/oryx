@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -62,7 +63,7 @@ export class SearchFacetValueNavigationComponent
           this.enableClearAction && this.selectedLength,
           () =>
             html`
-              <oryx-button type="text" size="sm">
+              <oryx-button type="text" size=${Size.Sm}>
                 <button @click=${this.onClear}>
                   ${i18n('search.facet-value-navigation.clear')}
                 </button>

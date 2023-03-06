@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -50,7 +51,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         return html`<div slot="panels" id="n${i + 1}">
           <p>Сontent for tab ${i + 1}</p>
 
-          <oryx-button size="sm">
+          <oryx-button size=${Size.Sm}>
             <button>button for tab ${i + 1}</button>
           </oryx-button>
         </div> `;

@@ -1,4 +1,5 @@
 import { ContentController } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/ui';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
@@ -145,7 +146,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           html`
             <small class="delivery-message">
               ${ifDefined(options?.deliveryMessage)}
-              <oryx-icon-button size="sm">
+              <oryx-icon-button size=${Size.Sm}>
                 <a href="#" title=${i18n('cart.totals.delivery-message')}>
                   <oryx-icon type="info"></oryx-icon>
                 </a>

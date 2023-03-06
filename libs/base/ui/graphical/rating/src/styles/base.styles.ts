@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { Size } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
+
+const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
 
 export const ratingBaseStyles = css`
   :host {
@@ -12,7 +15,7 @@ export const ratingBaseStyles = css`
     gap: 10px;
   }
 
-  :host([size='sm']) {
+  :host(${smallSize}) {
     --oryx-rating-size: 12px;
     --oryx-icon-size: 12px;
     --_margin: 2px;

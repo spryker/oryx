@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { LogoutOptions } from '../logout.model';
@@ -30,7 +31,7 @@ const Template: Story<LogoutOptions> = (props): TemplateResult => {
   };
 
   return html`
-    <oryx-button size="sm" @click=${(e: Event) => toggleLogin(e)}>
+    <oryx-button size=${Size.Sm} @click=${(e: Event) => toggleLogin(e)}>
       <button style="margin-bottom: 16px" type="submit">
         Provide test auth token
       </button>
