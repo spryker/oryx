@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { QueryManager } from './core';
 import {
   Command,
   CommandOptions,
@@ -14,7 +15,7 @@ export const QUERY_TOKEN = 'oryx.QueryToken*';
 export const EFFECT_TOKEN = 'oryx.EffectToken*';
 export const COMMAND_TOKEN = 'oryx.CommandToken*';
 
-export interface QueryService {
+export interface QueryService extends QueryManager {
   createQuery<ValueType, Qualifier extends object | undefined = undefined>(
     options: QueryOptions<ValueType, Qualifier>
   ): Query<ValueType, Qualifier>;

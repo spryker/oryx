@@ -17,7 +17,6 @@ import {
   tap,
   using,
 } from 'rxjs';
-import { CoreQueryService } from '../core';
 import {
   Query,
   QueryEventHandler,
@@ -26,6 +25,7 @@ import {
   QueryTrigger,
 } from '../models';
 import { buildEvent } from './build-event';
+import { QueryManager } from './query-manager';
 
 export class CoreQuery<
   ValueType,
@@ -43,7 +43,7 @@ export class CoreQuery<
 
   constructor(
     protected options: QueryOptions<ValueType, Qualifier>,
-    protected service: CoreQueryService,
+    protected service: QueryManager,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 

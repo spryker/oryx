@@ -20,8 +20,9 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
+import { QueryManager } from './query-manager';
 
-export class CoreQueryService {
+export class CoreQueryManager implements QueryManager {
   protected queries = new Map<string, Query<unknown, any>>();
   protected commands = new Map<string, Command<unknown, any>>();
 
