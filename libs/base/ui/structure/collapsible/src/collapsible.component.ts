@@ -4,14 +4,14 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
   CollapsibleAppearance,
-  CollapsibleProps,
+  CollapsibleAttributes,
   CollapsibleToggleControlType,
 } from './collapsible.model';
 import { collapsibleBaseStyle } from './styles';
 
 export class CollapsibleComponent
   extends LitElement
-  implements CollapsibleProps
+  implements CollapsibleAttributes
 {
   static styles = [collapsibleBaseStyle];
 
@@ -27,7 +27,9 @@ export class CollapsibleComponent
       <details ?open=${this.open}>
         <summary
           part="heading"
-          tabindex=${ifDefined(this.preventKeyboardNavigation ? '-1' : undefined)}
+          tabindex=${ifDefined(
+            this.preventKeyboardNavigation ? '-1' : undefined
+          )}
         >
           <slot name="header">${this.header}</slot>
           ${this.renderToggleControl()}
@@ -40,7 +42,7 @@ export class CollapsibleComponent
 
   protected renderToggleControl(): TemplateResult {
     const content = html`
-     <slot name="collapsed">
+      <slot name="collapsed">
         ${when(
           !this.isTextTrigger,
           () => html`<oryx-icon type="expand"></oryx-icon>`,
@@ -55,32 +57,28 @@ export class CollapsibleComponent
         )}
       </slot>
     `;
-    
+
     return html`
       <oryx-icon-button
-        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}  
+        type=${ifDefined(this.isTextTrigger ? 'text' : undefined)}
         size=${this.controlSize}
       >
         ${when(
           this.preventKeyboardNavigation,
           () => html`
-            <button 
+            <button
               aria-label=${this.open ? 'hide' : 'show'}
               type="button"
-              @click=${(e: Event) => this.onClick(e)}
-            >${content}</button>
+              @click=${() => (this.open = !this.open)}
+            >
+              ${content}
+            </button>
           `,
           () => html`<span>${content}</span>`
         )}
       </oryx-icon-button>
-    `
+    `;
   }
-
-  protected onClick(e: Event): void {
-    e.stopPropagation();
-
-    this.open = !this.open;
-  } 
 
   /**
    * returns the size of the control based on the appearance of the component.

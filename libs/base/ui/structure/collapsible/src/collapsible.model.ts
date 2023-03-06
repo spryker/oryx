@@ -1,4 +1,4 @@
-export interface CollapsibleProps {
+export interface CollapsibleAttributes {
   /**
    * allow to control expanded state of component
    */
@@ -28,7 +28,7 @@ export interface CollapsibleProps {
   toggleControlType?: CollapsibleToggleControlType;
 
   /**
-   * Prevent focus by keyboard navigation 
+   * Prevent focus by keyboard navigation
    */
   nonTabbable?: boolean;
 }

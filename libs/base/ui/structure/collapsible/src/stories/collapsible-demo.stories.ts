@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import {
   CollapsibleAppearance,
-  CollapsibleProps,
+  CollapsibleAttributes,
   CollapsibleToggleControlType,
 } from '../collapsible.model';
 
@@ -13,7 +13,7 @@ export default {
     appearance: CollapsibleAppearance.Block,
     toggleControlType: CollapsibleToggleControlType.IconButton,
     header: 'header',
-    nonTabbable: false
+    nonTabbable: false,
   },
   argTypes: {
     appearance: {
@@ -37,9 +37,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<CollapsibleProps> = (
-  props: CollapsibleProps
-): TemplateResult => {
+const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
   return html`
     <oryx-collapsible
       ?open=${props.open}
