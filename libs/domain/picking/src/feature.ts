@@ -43,8 +43,10 @@ export class PickingFeature implements AppFeature {
   }
 
   protected getComponents(): ComponentsInfo {
-    return [pickingListCardComponent,
+    return [
+      pickingListCardComponent,
       pickingListListComponent,
-      customerNoteModalComponent,];
+      customerNoteModalComponent,
+    ];
   }
 }
