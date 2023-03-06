@@ -4,7 +4,7 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    --oryx-icon-size: 18px;
+    --oryx-icon-size: 16px;
 
     display: inline-flex;
   }
@@ -17,16 +17,13 @@ export const styles = css`
   input {
     appearance: textfield;
     text-align: center;
+    font-weight: 600;
   }
 
   oryx-input {
     --oryx-form-control-border-radius: 0;
 
-    width: var(--oryx-cart-quantity-input-width, 75px);
-  }
-
-  oryx-input:not([hasError]) {
-    border-color: var(--oryx-cart-quantity-input-button-border-color);
+    width: var(--oryx-cart-quantity-input-width, 71px);
   }
 
   input::-webkit-outer-spin-button,
@@ -51,34 +48,39 @@ export const styles = css`
     align-items: center;
     padding: 10px;
     cursor: pointer;
-    background: var(--oryx-cart-quantity-input-button-background-color);
-    color: var(--oryx-cart-quantity-input-button-color);
-    border: 2px solid var(--oryx-cart-quantity-input-button-border-color);
+    background: var(--oryx-color-canvas-200);
+    color: var(--oryx-color-neutral-300);
+    border: 2px solid var(--oryx-color-canvas-400);
     outline: none;
     border-radius: var(--oryx-border-radius-small);
     margin: 0;
   }
 
   button[disabled] {
-    color: var(--oryx-cart-quantity-input-button-disabled-color);
+    color: var(--oryx-color-neutral-100);
     cursor: default;
     pointer-events: none;
   }
 
   button:hover {
-    background: var(--oryx-cart-quantity-input-button-hover-background-color);
-    border-color: var(--oryx-cart-quantity-input-button-border-color);
+    background: var(--oryx-color-canvas-300);
+    border-color: var(--oryx-color-neutral-100);
   }
 
+  :host(:not(:focus-within)) button:hover,
   button:active,
   oryx-input:hover,
   oryx-input:active {
     z-index: 1;
   }
 
+  button:active {
+    background-color: var(--oryx-color-canvas-500);
+  }
+
   oryx-input:not([hasError]):hover,
   oryx-input:not([hasError]):active {
-    border-color: var(--oryx-cart-quantity-input-input-border-color);
+    border-color: var(--oryx-color-canvas-400);
   }
 
   button:focus-visible {
@@ -100,6 +102,8 @@ export const styles = css`
   }
 `;
 
+// TODO: consider moving this to global design tokens instead
+// alternatively, we could make it inline in the definition
 const smallScreen = css`
   :host {
     --oryx-icon-size: 22px;

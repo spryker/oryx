@@ -65,32 +65,4 @@ export const tokens: ThemeToken = {
       color: 'var(--oryx-color-primary-300)',
     },
   },
-  cart: {
-    'quantity-input': {
-      button: {
-        disabled: {
-          color: '#b2b2b2',
-        },
-        hover: {
-          background: {
-            color: '#e7eaee',
-          },
-        },
-        color: '#121212',
-        background: {
-          color: '#f5f5f5',
-        },
-        border: {
-          color: '#dce0e5',
-        },
-      },
-      input: {
-        hover: {
-          border: {
-            color: '#b7bec9',
-          },
-        },
-      },
-    },
-  },
 };
