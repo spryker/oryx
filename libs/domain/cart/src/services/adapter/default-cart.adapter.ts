@@ -26,10 +26,10 @@ export class DefaultCartAdapter implements CartAdapter {
       take(1),
       switchMap((identity) => {
         const url = this.generateUrl(
-          !identity.anonymous
-            ? `${ApiCartModel.UrlParts.Customers}/${identity.id}/${ApiCartModel.UrlParts.Carts}`
+          identity.isAuthenticated
+            ? `${ApiCartModel.UrlParts.Customers}/${identity.userId}/${ApiCartModel.UrlParts.Carts}`
             : ApiCartModel.UrlParts.GuestCarts,
-          identity.anonymous
+          !identity.isAuthenticated
         );
 
         return this.http
@@ -45,11 +45,11 @@ export class DefaultCartAdapter implements CartAdapter {
       switchMap((identity) => {
         const url = this.generateUrl(
           `${
-            !identity.anonymous
+            identity.isAuthenticated
               ? ApiCartModel.UrlParts.Carts
               : ApiCartModel.UrlParts.GuestCarts
           }/${data.cartId}`,
-          identity.anonymous
+          !identity.isAuthenticated
         );
 
         return this.http
@@ -65,19 +65,19 @@ export class DefaultCartAdapter implements CartAdapter {
       switchMap((identity) => {
         const url = data.cartId
           ? this.generateUrl(
-              !identity.anonymous
+              identity.isAuthenticated
                 ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}`
                 : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}`,
-              identity.anonymous
+              !identity.isAuthenticated
             )
           : this.generateUrl(
               ApiCartModel.UrlParts.GuestCartItems,
-              identity.anonymous
+              !identity.isAuthenticated
             );
 
         const body = {
           data: {
-            type: !identity.anonymous
+            type: identity.isAuthenticated
               ? ApiCartModel.UrlParts.Items
               : ApiCartModel.UrlParts.GuestCartItems,
             attributes: data.attributes,
@@ -96,14 +96,14 @@ export class DefaultCartAdapter implements CartAdapter {
       take(1),
       switchMap((identity) => {
         const url = this.generateUrl(
-          !identity.anonymous
+          identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
             : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}/${data.groupKey}`,
-          identity.anonymous
+          !identity.isAuthenticated
         );
         const body = {
           data: {
-            type: !identity.anonymous
+            type: identity.isAuthenticated
               ? ApiCartModel.UrlParts.Items
               : ApiCartModel.UrlParts.GuestCartItems,
             attributes: data.attributes,
@@ -122,10 +122,10 @@ export class DefaultCartAdapter implements CartAdapter {
       take(1),
       switchMap((identity) => {
         const url = this.generateUrl(
-          !identity.anonymous
+          identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}/${data.groupKey}`
             : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}/${data.groupKey}`,
-          identity.anonymous
+          !identity.isAuthenticated
         );
 
         return this.http.delete(url);

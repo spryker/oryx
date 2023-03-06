@@ -3,7 +3,8 @@
   "compilerOptions": {
     "declaration": true,
     "preserveConstEnums": true,
-    "outDir": "../dist"
+    "outDir": "../dist",
+    "types": ["web", "node"]
   },
   "exclude": [
     "**/vitest.config.ts",

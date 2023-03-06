@@ -7,7 +7,10 @@ export class SCCOSApi {
 
   constructor() {
     cy.window().then((win) => {
-      win.sessionStorage.setItem('anonymous-user', `${this.customerUniqueId}`);
+      win.sessionStorage.setItem(
+        'oryx.anonymous-user',
+        `${this.customerUniqueId}`
+      );
     });
 
     this.headers = {

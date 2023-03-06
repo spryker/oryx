@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { AuthService } from '@spryker-oryx/auth';
-import { AuthLoginComponent } from '@spryker-oryx/auth/login';
+import { AuthLoginComponent, AuthService } from '@spryker-oryx/auth';
 import { CheckoutDataService } from '@spryker-oryx/checkout';
 import { CheckoutGuestComponent } from '@spryker-oryx/checkout/guest';
 import { useComponent } from '@spryker-oryx/core/utilities';

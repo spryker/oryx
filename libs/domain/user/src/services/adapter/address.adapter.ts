@@ -1,11 +1,11 @@
-import { Identity } from '@spryker-oryx/auth';
+import { AuthIdentity } from '@spryker-oryx/auth';
 import { JsonApiPayload } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 import { Address } from '../../models';
 
 export interface AddressRequestProps {
   payload: JsonApiPayload<unknown>;
-  identity: Identity;
+  identity: AuthIdentity;
 }
 
 export interface AddressAdapter {
