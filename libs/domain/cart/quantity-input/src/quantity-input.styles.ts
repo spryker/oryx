@@ -31,18 +31,6 @@ export const styles = css`
     appearance: none;
   }
 
-  button:nth-of-type(1) {
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-    margin-inline-end: -2px;
-  }
-
-  button:nth-of-type(2) {
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    margin-inline-start: -2px;
-  }
-
   button {
     display: flex;
     align-items: center;
@@ -56,15 +44,37 @@ export const styles = css`
     margin: 0;
   }
 
-  button[disabled] {
-    color: var(--oryx-color-neutral-100);
-    cursor: default;
-    pointer-events: none;
+  button:nth-of-type(1) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    margin-inline-end: -2px;
+  }
+
+  button:nth-of-type(2) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    margin-inline-start: -2px;
   }
 
   button:hover {
     background: var(--oryx-color-canvas-300);
     border-color: var(--oryx-color-neutral-100);
+  }
+
+  button:active {
+    background-color: var(--oryx-color-canvas-500);
+  }
+
+  button:focus-visible {
+    border: 2px solid var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    z-index: 1;
+  }
+
+  button[disabled] {
+    color: var(--oryx-color-neutral-100);
+    cursor: default;
+    pointer-events: none;
   }
 
   :host(:not(:focus-within)) button:hover,
@@ -74,19 +84,9 @@ export const styles = css`
     z-index: 1;
   }
 
-  button:active {
-    background-color: var(--oryx-color-canvas-500);
-  }
-
   oryx-input:not([hasError]):hover,
   oryx-input:not([hasError]):active {
     border-color: var(--oryx-color-canvas-400);
-  }
-
-  button:focus-visible {
-    border: 2px solid var(--oryx-color-primary-300);
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
-    z-index: 1;
   }
 
   oryx-input::part(label) {
