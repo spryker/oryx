@@ -16,6 +16,7 @@
     "labs": "libs/template/labs",
     "offline": "libs/platform/offline",
     "order": "libs/domain/order",
+    "picking": "libs/domain/picking",
     "presets": "libs/template/presets",
     "product": "libs/domain/product",
     "router": "libs/platform/router",
