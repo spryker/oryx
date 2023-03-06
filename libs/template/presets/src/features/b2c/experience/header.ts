@@ -19,6 +19,7 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
+        { type: 'oryx-mode-selector' },
         { type: 'site-notification-center' },
       ],
       options: {

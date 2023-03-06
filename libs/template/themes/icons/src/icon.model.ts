@@ -35,9 +35,9 @@ export enum IconTypes {
   Sales = 'sales',
   User = 'user',
   Users = 'users',
-  DarkMode = 'darkMode',
   Dashboards = 'dashboards',
-  LightMode = 'lightMode',
+  ModeDark = 'mode-dark',
+  ModeLight = 'mode-light',
   Merchant = 'merchant',
   Orders = 'orders',
   Parcel = 'parcel',
@@ -102,4 +102,5 @@ export enum IconTypes {
   Carrier = 'carrier',
   Location = 'location',
   Login = 'login',
+  Sun = 'sun',
 }

@@ -42,11 +42,11 @@ export const backofficeIcons: ThemeIcons = {
   [IconTypes.Ratings]: () => import('./icons/ratings').then((s) => s.default),
   [IconTypes.Sales]: () => import('./icons/sales').then((s) => s.default),
   [IconTypes.Users]: () => import('./icons/users').then((s) => s.default),
-  [IconTypes.DarkMode]: () =>
-    import('./icons/dark-mode').then((s) => s.default),
   [IconTypes.Dashboards]: () =>
     import('./icons/dashboards').then((s) => s.default),
-  [IconTypes.LightMode]: () =>
+  [IconTypes.ModeDark]: () =>
+    import('./icons/dark-mode').then((s) => s.default),
+  [IconTypes.ModeLight]: () =>
     import('./icons/light-mode').then((s) => s.default),
   [IconTypes.Merchant]: () => import('./icons/merchant').then((s) => s.default),
   [IconTypes.Orders]: () => import('./icons/orders').then((s) => s.default),
