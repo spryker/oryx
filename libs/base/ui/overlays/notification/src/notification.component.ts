@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -32,7 +33,7 @@ export class NotificationComponent extends LitElement {
       ${when(
         this.closable,
         () => html`
-          <oryx-icon-button size="small">
+          <oryx-icon-button size=${Size.Sm}>
             <button
               aria-label=${this.closeButtonAriaLabel}
               @click="${(): void => this.dispatchCloseEvent()}"

@@ -1,10 +1,10 @@
 import { inject } from '@spryker-oryx/di';
+import { Size } from '@spryker-oryx/ui';
 import {
   ImageSource,
   MediaContext,
   ProductMedia,
   ProductMediaContainerSize,
-  Size,
 } from '../../models';
 declare global {
   interface Navigator {

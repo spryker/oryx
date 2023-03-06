@@ -33,24 +33,6 @@ export const Template: Story = (): TemplateResult => {
     </div>
 
     <h1>Large</h1>
-    <h2>Appearance none</h2>
-    <p>The appearance allows to hide a heading all together.</p>
-    <div class="appearance">
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
-        (tag) => html`<div>(${tag})</div>`
-      )}
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
-        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
-        return html`
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-          <oryx-heading disappear-lg>${el}</oryx-heading>
-        `;
-      })}
-    </div>
 
     <h2>Appearance heading</h2>
     <p>
@@ -75,24 +57,6 @@ export const Template: Story = (): TemplateResult => {
     </div>
 
     <h1>Medium screen</h1>
-    <h2>Appearance none</h2>
-    <p>The appearance allows to hide a heading all together.</p>
-    <div class="appearance">
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
-        (tag) => html`<div>(${tag})</div>`
-      )}
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
-        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
-        return html`
-          <oryx-heading disappear-md>${el}</oryx-heading>
-          <oryx-heading disappear-md>${el}</oryx-heading>
-          <oryx-heading disappear-md>${el}</oryx-heading>
-          <oryx-heading disappear-md>${el}</oryx-heading>
-          <oryx-heading disappear-md>${el}</oryx-heading>
-          <oryx-heading disappear-md>${el}</oryx-heading>
-        `;
-      })}
-    </div>
 
     <h2>Appearance heading (medium)</h2>
     <div class="appearance">
@@ -113,25 +77,6 @@ export const Template: Story = (): TemplateResult => {
     </div>
 
     <h1>Small screen</h1>
-
-    <h2>Appearance none</h2>
-    <p>The appearance allows to hide a heading all together.</p>
-    <div class="appearance">
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map(
-        (tag) => html`<div>(${tag})</div>`
-      )}
-      ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
-        const el = unsafeHTML(`<${tag}>${tag}</${tag}>`);
-        return html`
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-          <oryx-heading disappear-sm>${el}</oryx-heading>
-        `;
-      })}
-    </div>
 
     <h2>Appearance heading (small)</h2>
     <div class="appearance">

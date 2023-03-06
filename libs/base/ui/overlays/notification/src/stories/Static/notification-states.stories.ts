@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -109,7 +110,7 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
                     <span class="title"> Custom title </span>
                     <div class="content">Italic content</div>
                     <div class="buttons">
-                      <oryx-button size="small">
+                      <oryx-button size=${Size.Sm}>
                         <button>OK</button>
                       </oryx-button>
                     </div>

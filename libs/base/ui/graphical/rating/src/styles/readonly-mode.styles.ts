@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { Size } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
+
+const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
 
 export const ratingReadonlyStyles = css`
   :host([readonly]) {
@@ -16,12 +19,12 @@ export const ratingReadonlyStyles = css`
     background-color: var(--oryx-color-canvas-500);
   }
 
-  :host([readonly]:not([size='small'])) input {
+  :host([readonly]:not(${smallSize})) input {
     /* stylelint-disable-next-line */
     clip-path: url('#star-path');
   }
 
-  :host([readonly][size='small']) input {
+  :host([readonly]${smallSize}) input {
     /* stylelint-disable-next-line */
     clip-path: url('#star-path-small');
   }
