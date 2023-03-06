@@ -33,8 +33,8 @@ export const serverContext = (options: ContextOptions): any => {
   });
   window.setTimeout = setTimeout;
   // added because of oauth, we probably should not require oauth in the ssr
-  window.TextDecoder = TextDecoder;
-  window.TextEncoder = TextEncoder;
+  window.TextDecoder = class {};
+  window.TextEncoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
