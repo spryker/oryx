@@ -85,7 +85,7 @@ export class SearchFacetValueNavigationComponent
       ${when(
         this.enableToggle,
         () => html`<div class="controls">
-          <oryx-button type="text" size="lg">
+          <oryx-button type="text" size=${Size.Lg}>
             <button @click=${this.onToggle}>
               ${when(
                 this._isShowed,

@@ -31,7 +31,7 @@ export class QueryControlsController {
         </button>
       </oryx-button>
 
-      <oryx-icon-button slot="suffix" size=${Size.Lg}>
+      <oryx-icon-button slot="suffix" size=${Size.Sm}>
         <button
           aria-label="Close results"
           type="button"
