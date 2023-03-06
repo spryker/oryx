@@ -1,17 +1,41 @@
 import { AppRef, ThemePlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import { Size } from '@spryker-oryx/ui';
 import { IconProperties } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../src/utilities';
-
-export default { title: `${storybookPrefix}/Actions/Icon Button` } as Meta;
 
 const icons = Object.keys(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
 );
+
+export default {
+  title: `${storybookPrefix}/Actions/Icon Button`,
+  args: {
+    disabled: false,
+    type: icons[0],
+    size: Size.Md,
+  },
+  argTypes: {
+    size: {
+      options: [Size.Lg, Size.Md, Size.Sm],
+      control: { type: 'select' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+    },
+    type: {
+      options: Object.values(icons),
+      control: { type: 'select' },
+    },
+    color: {
+      control: { type: 'color' },
+    },
+  },
+} as Meta;
 
 interface Props extends IconProperties {
   color: string;
@@ -26,37 +50,14 @@ const Template: Story<Props> = ({
 }: Props): TemplateResult => {
   return html`
     <oryx-icon-button
-      size=${size}
-      style=${color ? `color: ${color}` : undefined}
+      size=${ifDefined(size)}
+      style=${ifDefined(color ? `color: ${color}` : undefined)}
     >
       <button ?disabled=${disabled} aria-label="story">
-        <oryx-icon type=${type}></oryx-icon>
+        <oryx-icon type=${ifDefined(type)}></oryx-icon>
       </button>
     </oryx-icon-button>
   `;
 };
 
-export const IconButtonDemo = Template.bind({});
-
-IconButtonDemo.argTypes = {
-  size: {
-    options: Object.values(Size),
-    control: { type: 'select' },
-  },
-  disabled: {
-    control: { type: 'boolean' },
-  },
-  type: {
-    options: Object.values(icons),
-    control: { type: 'select' },
-  },
-  color: {
-    control: { type: 'color' },
-  },
-};
-
-IconButtonDemo.args = {
-  disabled: false,
-  type: icons[0],
-  size: Size.medium,
-};
+export const Demo = Template.bind({});

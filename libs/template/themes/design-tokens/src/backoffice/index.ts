@@ -10,6 +10,7 @@ import {
   typographyTokens,
 } from './typography.tokens';
 
+import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 
 export const backofficeTokens: DesignToken[] = [
@@ -37,6 +38,7 @@ export const backofficeTokens: DesignToken[] = [
     },
     ...typographySmallTokens,
     ...layoutSmTokens,
+    ...commonTokensSmall,
   },
   {
     media: {

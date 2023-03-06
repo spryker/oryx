@@ -34,4 +34,8 @@ export const styles = css`
   oryx-dropdown {
     --oryx-popover-maxwidth: 188px;
   }
+
+  oryx-heading {
+    display: var(--oryx-screen-small-hide, initial);
+  }
 `;

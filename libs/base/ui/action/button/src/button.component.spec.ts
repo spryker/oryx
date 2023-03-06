@@ -34,7 +34,7 @@ describe('ButtonComponent', () => {
       describe(`when the type is set to ${type}`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-button type="${type}" size="small"></oryx-button>`
+            html`<oryx-button type="${type}" size="sm"></oryx-button>`
           );
         });
 
@@ -46,7 +46,7 @@ describe('ButtonComponent', () => {
   });
 
   describe('size', () => {
-    Object.values(Size).forEach((size) => {
+    [Size.Lg, Size.Md, Size.Sm].forEach((size) => {
       describe(`when the size is set to ${size}`, () => {
         beforeEach(async () => {
           element = await fixture(
