@@ -6,6 +6,7 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { EVENT_TOGGLE_MODE } from '@spryker-oryx/ui/mode-selector';
 import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
@@ -77,11 +78,23 @@ export class DefaultExperienceDataClientService
       });
     })
   );
+  protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(
+    tap((mode) => {
+      window.dispatchEvent(
+        new CustomEvent(EVENT_TOGGLE_MODE, {
+          bubbles: true,
+          composed: true,
+          detail: mode,
+        })
+      );
+    })
+  );
   protected initializer$ = merge(
     this.options$,
     this.graphics$,
     this.products$,
-    this.schemas$
+    this.schemas$,
+    this.colorMode$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {

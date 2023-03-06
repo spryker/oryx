@@ -19,20 +19,31 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
-        { type: 'oryx-mode-selector' },
+        {
+          type: 'oryx-mode-selector',
+          options: {
+            data: {
+              rules: [
+                {
+                  margin: '0 0 0 auto',
+                },
+              ],
+            },
+          },
+        },
         { type: 'site-notification-center' },
       ],
       options: {
         data: {
           rules: [
             {
-              layout: 'column',
+              layout: 'flex',
               container: true,
               fullWidth: true,
               background: 'var(--oryx-color-primary-500)',
-              gap: '40px',
               maxWidth: true,
               padding: '10px 0',
+              align: 'center',
             },
           ],
         },

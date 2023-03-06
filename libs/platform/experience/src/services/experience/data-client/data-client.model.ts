@@ -11,6 +11,7 @@ export const enum MessageType {
   Static = 'oryx.static',
   ComponentType = 'oryx.component-type',
   Schemas = 'oryx.component-schemas',
+  ColorMode = 'oryx.color-mode',
 }
 
 export interface ExperienceProductData {
@@ -27,7 +28,10 @@ export type ExperienceMessageData<T> = {
     ? FeatureOptions[keyof FeatureOptions]
     : T extends MessageType.Products
     ? ExperienceProductData[]
-    : T extends MessageType.Query | MessageType.ComponentType
+    : T extends
+        | MessageType.Query
+        | MessageType.ComponentType
+        | MessageType.ColorMode
     ? string
     : T extends MessageType.Schemas
     ? ContentComponentSchema[] | undefined

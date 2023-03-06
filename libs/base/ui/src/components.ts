@@ -1,6 +1,7 @@
 export * from '../action/button/src/button.def';
 export * from '../action/icon-button/src/icon-button.def';
 export * from '../action/link/src/link.def';
+export * from '../action/mode-selector/src/mode-selector.def';
 export * from '../action/toggle-icon/src/component';
 export * from '../action/toggle/src/component';
 export * from '../form/checkbox/src/component';

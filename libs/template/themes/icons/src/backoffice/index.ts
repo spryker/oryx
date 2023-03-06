@@ -45,9 +45,9 @@ export const backofficeIcons: ThemeIcons = {
   [IconTypes.Dashboards]: () =>
     import('./icons/dashboards').then((s) => s.default),
   [IconTypes.ModeDark]: () =>
-    import('./icons/dark-mode').then((s) => s.default),
+    import('./icons/mode-dark').then((s) => s.default),
   [IconTypes.ModeLight]: () =>
-    import('./icons/light-mode').then((s) => s.default),
+    import('./icons/mode-light').then((s) => s.default),
   [IconTypes.Merchant]: () => import('./icons/merchant').then((s) => s.default),
   [IconTypes.Orders]: () => import('./icons/orders').then((s) => s.default),
   [IconTypes.Products]: () => import('./icons/products').then((s) => s.default),
