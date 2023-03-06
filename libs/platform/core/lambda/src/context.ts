@@ -10,6 +10,9 @@ import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
+// added because of oauth, we probably should not require oauth in the ssr
+globalThis.TextDecoder = class {} as any;
+globalThis.TextEncoder = class {} as any;
 
 interface ContextOptions {
   entry: string;
