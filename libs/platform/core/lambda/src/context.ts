@@ -11,8 +11,7 @@ import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
 // added because of oauth, we probably should not require oauth in the ssr
-globalThis.TextDecoder = class {} as any;
-globalThis.TextEncoder = class {} as any;
+console.log('TextEncoder', TextEncoder);
 
 interface ContextOptions {
   entry: string;
@@ -31,13 +30,13 @@ export const serverContext = (options: ContextOptions): any => {
       Event,
       process,
       buffer,
+      // added because of oauth, we probably should not require oauth in the ssr
+      TextEncoder,
+      TextDecoder,
       exports: {},
     },
   });
   window.setTimeout = setTimeout;
-  // added because of oauth, we probably should not require oauth in the ssr
-  window.TextDecoder = class {};
-  window.TextEncoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
