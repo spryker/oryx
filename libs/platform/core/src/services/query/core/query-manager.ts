@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import {
   Command,
   CommandOptions,
@@ -5,8 +6,7 @@ import {
   Query,
   QueryEvent,
   QueryOptions,
-} from '@spryker-oryx/core';
-import { Observable } from 'rxjs';
+} from '../models';
 
 export interface QueryManager {
   createQuery<ValueType, Qualifier extends object | undefined = undefined>(
