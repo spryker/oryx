@@ -28,7 +28,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       )}
     </oryx-rating>
 
-    <oryx-rating value="4.3" size=${Size.Md}>
+    <oryx-rating value="4.3" size=${Size.Sm}>
       ${[1, 2, 3, 4, 5].map(
         (scale) => html`<oryx-icon type="ratings" slot=${scale}></oryx-icon>`
       )}
