@@ -39,15 +39,18 @@ export class SiteModeSelectorComponent extends LitElement {
   constructor() {
     super();
     this.toggleMode = this.toggleMode.bind(this);
+    this.setBrowserMode = this.setBrowserMode.bind(this);
   }
 
   connectedCallback(): void {
     super.connectedCallback();
     window.addEventListener('oryx.toggle-mode', this.toggleMode);
+    this.modeMatcher().addEventListener('change', this.setBrowserMode);
   }
 
   disconnectedCallback(): void {
     window.removeEventListener('oryx.toggle-mode', this.toggleMode);
+    this.modeMatcher().addEventListener('change', this.setBrowserMode);
     super.disconnectedCallback();
   }
 
@@ -61,11 +64,25 @@ export class SiteModeSelectorComponent extends LitElement {
     this.storage.set(modeStorageKey, mode);
   }
 
+  protected modeMatcher(): MediaQueryList {
+    return window.matchMedia?.('(prefers-color-scheme: dark)');
+  }
+
   protected getBrowserMode(): string {
-    return window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? this.darkMode
-      : this.lightMode;
+    return this.modeMatcher().matches ? this.darkMode : this.lightMode;
+  }
+
+  protected setBrowserMode(): void {
+    const root = document.querySelector(this.root);
+
+    if (
+      root?.hasAttribute(this.lightMode) ||
+      root?.hasAttribute(this.darkMode)
+    ) {
+      return;
+    }
+
+    this.mode = this.getBrowserMode();
   }
 
   protected triggerEvent(): void {
