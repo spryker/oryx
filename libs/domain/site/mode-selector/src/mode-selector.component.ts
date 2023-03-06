@@ -19,7 +19,7 @@ export interface ModeEvent {
   mode: string;
 }
 
-@hydratable(['window:load'])
+@hydratable('window:load')
 export class SiteModeSelectorComponent extends LitElement {
   static styles = styles;
 
