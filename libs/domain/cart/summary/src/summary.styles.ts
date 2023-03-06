@@ -49,6 +49,10 @@ export const styles = css`
     outline: solid 1px blue;
   }
 
+  oryx-heading {
+    display: var(--oryx-screen-small-hide, initial);
+  }
+
   mark {
     position: absolute;
     line-height: 18px;

@@ -7,7 +7,6 @@ import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { TextDecoder, TextEncoder } from 'util';
 import { createContext, Script } from 'vm';
 
 installWindowOnGlobal();
@@ -29,12 +28,13 @@ export const serverContext = (options: ContextOptions): any => {
       Event,
       process,
       buffer,
-      TextDecoder,
-      TextEncoder,
       exports: {},
     },
   });
   window.setTimeout = setTimeout;
+  // added because of oauth, we probably should not require oauth in the ssr
+  window.TextEncoder = class {};
+  window.TextDecoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

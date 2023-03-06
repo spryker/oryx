@@ -31,7 +31,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected renderTriggerButton(isAuthenticated: boolean): TemplateResult {
     const innerContent = html`<oryx-icon type="user"></oryx-icon>
-      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1} disappear-sm>
+      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
         ${when(
           isAuthenticated,
           () => this.user?.firstName,

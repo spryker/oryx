@@ -46,7 +46,7 @@ export interface IconProperties {
    * </div>
    * ```
    *
-   * Defaults to 'large'.
+   * Defaults to 'lg'.
    *
    * The default can be controlled by a CSS property (`--oryx-icon-size-default`)
    */

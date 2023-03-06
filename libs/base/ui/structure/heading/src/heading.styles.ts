@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, CSSResult, CSSResultGroup, unsafeCSS } from 'lit';
 
 const unsafe = (value: string): CSSResult => unsafeCSS(value);
@@ -98,12 +98,6 @@ export const headlineStyles = css`
   ${headingStyle('.caption', `0.857em`, `1.333em`)}
 `;
 
-const largeScreen = css`
-  :host([disappear-lg]) {
-    display: none;
-  }
-`;
-
 const mediumScreen = css`
   :host([md-appearance]) *:not(slot, style),
   :host([md-appearance])
@@ -119,10 +113,6 @@ const mediumScreen = css`
 
   :host(:not([md-appearance='subtitle'])) {
     text-transform: initial;
-  }
-
-  :host([disappear-md]) {
-    display: none;
   }
 
   ${screenSizeHeadingStyle('md', 'h1', `2.857em`, `1.2em`)}
@@ -152,10 +142,6 @@ const smallScreen = css`
     text-transform: initial;
   }
 
-  :host([disappear-sm]) {
-    display: none;
-  }
-
   ${screenSizeHeadingStyle('sm', 'h1', `1.572em`, `1.364em`)}
   ${screenSizeHeadingStyle('sm', 'h2', `1.286em`, `1.44em`, 700)}
   ${screenSizeHeadingStyle('sm', 'h3', `1.143em`, `1.375em`)}
@@ -175,10 +161,6 @@ const smallScreen = css`
  * Each definition can be controlled with a CSS variable.
  */
 export const headlineScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: lgScreen,
-    css: largeScreen,
-  },
   {
     media: mdScreen,
     css: mediumScreen,

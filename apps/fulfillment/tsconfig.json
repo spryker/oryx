@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": ["src"],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.sw.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "types": ["vite/client", "vite-plugin-pwa/client", "vitest", "web", "node"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
+    "noEmit": true,
+    "strict": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": false
+  }
+}
