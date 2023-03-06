@@ -1,6 +1,9 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
+import { Schemes } from '../../../notification/src';
 import {
   NotificationCenterComponentAttributes,
   NotificationPosition,
@@ -16,6 +19,7 @@ export default {
   },
   argTypes: {
     position: {
+      control: { type: 'select' },
       options: [
         NotificationPosition.TopStart,
         NotificationPosition.TopCenter,
@@ -24,25 +28,45 @@ export default {
         NotificationPosition.BottomCenter,
         NotificationPosition.BottomEnd,
       ],
+    },
+    type: {
+      control: { type: 'select' },
+      options: [
+        AlertType.Info,
+        AlertType.Success,
+        AlertType.Warning,
+        AlertType.Error,
+      ],
+      table: { category: 'Demo' },
+    },
+    scheme: {
       control: { type: 'radio' },
+      options: [Schemes.LIGHT, Schemes.DARK],
+      table: { category: 'Demo' },
     },
   },
 } as Meta;
 
+interface DemoProps {
+  type?: AlertType;
+  scheme?: Schemes;
+}
+
 const service = new NotificationService();
 
-const Template: Story<NotificationCenterComponentAttributes> = ({
-  position = NotificationPosition.TopEnd,
-  stackable,
-}: NotificationCenterComponentAttributes): TemplateResult => {
+const Template: Story<NotificationCenterComponentAttributes> = (
+  props: NotificationCenterComponentAttributes & DemoProps
+): TemplateResult => {
   const pushSticky = (): void => {
     service
-      .getCenter('#parent-with-sticky', position)
-      .open(generateRandomNotification());
+      .getCenter('#parent-with-sticky', props.position)
+      .open(generateRandomNotification(props.type, props.scheme));
   };
 
   const pushStatic = (): void => {
-    service.getCenter('#parent-with-static').open(generateRandomNotification());
+    service
+      .getCenter('#parent-with-static')
+      .open(generateRandomNotification(props.type, props.scheme));
   };
 
   return html`
@@ -65,8 +89,8 @@ const Template: Story<NotificationCenterComponentAttributes> = ({
 
     <div id="parent-with-sticky">
       <oryx-notification-center
-        position=${position}
-        ?stackable=${stackable}
+        position=${ifDefined(props.position)}
+        ?stackable=${props.stackable}
       ></oryx-notification-center>
     </div>
   `;

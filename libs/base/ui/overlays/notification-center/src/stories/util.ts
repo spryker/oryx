@@ -27,9 +27,12 @@ export const generateNotification = (
   };
 };
 
-export const generateRandomNotification = (): NotificationStrategy => {
-  const type = types[getRandomIndex(types.length)];
-  const scheme = schemes[getRandomIndex(schemes.length)];
+export const generateRandomNotification = (
+  demoType?: AlertType,
+  demoScheme?: Schemes
+): NotificationStrategy => {
+  const type = demoType ?? types[getRandomIndex(types.length)];
+  const scheme = demoScheme ?? schemes[getRandomIndex(schemes.length)];
 
   return {
     ...(type ? { type } : {}),
@@ -37,6 +40,7 @@ export const generateRandomNotification = (): NotificationStrategy => {
     ...(getRandom() ? { subtext: 'Sub text' } : {}),
     closable: getRandom(),
     content: type ? 'Title' : 'Custom content',
+    autoClose: false,
   };
 };
 

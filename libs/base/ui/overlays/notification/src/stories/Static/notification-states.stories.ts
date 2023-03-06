@@ -6,6 +6,13 @@ import { storybookPrefix } from '../../../../../.constants';
 import { Schemes } from '../../notification.model';
 import { bodyBackgroundColor } from '../util';
 
+const alertTypes = [
+  AlertType.Info,
+  AlertType.Success,
+  AlertType.Warning,
+  AlertType.Error,
+];
+
 export default {
   title: `${storybookPrefix}/Overlays/Notification/Static`,
   args: {
@@ -26,7 +33,7 @@ const getNotification = (
   scheme: Schemes,
   closable = false,
   floating = false,
-  subtext: string,
+  subtext?: string,
   title = type
 ): TemplateResult => {
   return html`<oryx-notification
@@ -83,48 +90,25 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
         (scheme) => html`
           <section>
             <h3>Closable (${scheme})</h3>
-            ${[
-              AlertType.Info,
-              AlertType.Success,
-              AlertType.Warning,
-              AlertType.Error,
-            ].map((type) => getNotification(type, scheme, true))}
+            ${alertTypes.map((type) => getNotification(type, scheme, true))}
 
             <h3>Subtext (${scheme})</h3>
-            ${[
-              AlertType.Info,
-              AlertType.Success,
-              AlertType.Warning,
-              AlertType.Error,
-            ].map((type) =>
+            ${alertTypes.map((type) =>
               getNotification(type, scheme, false, false, `subtext`)
             )}
 
             <h3>Floating (${scheme})</h3>
-            ${[
-              AlertType.Info,
-              AlertType.Success,
-              AlertType.Warning,
-              AlertType.Error,
-            ].map((type) => getNotification(type, scheme, false, true))}
+            ${alertTypes.map((type) =>
+              getNotification(type, scheme, false, true)
+            )}
 
             <h3>Long text (${scheme})</h3>
-            ${[
-              AlertType.Info,
-              AlertType.Success,
-              AlertType.Warning,
-              AlertType.Error,
-            ].map((type) =>
+            ${alertTypes.map((type) =>
               getNotification(type, scheme, false, false, longText, longTitle)
             )}
 
             <h3>Custom content (${scheme})</h3>
-            ${[
-              AlertType.Info,
-              AlertType.Success,
-              AlertType.Warning,
-              AlertType.Error,
-            ].map(
+            ${alertTypes.map(
               (type) => html`
                 <oryx-notification type=${type} scheme=${scheme}>
                   <div class="custom">

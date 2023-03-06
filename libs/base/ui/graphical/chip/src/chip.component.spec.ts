@@ -18,13 +18,13 @@ describe('ChipComponent', () => {
   });
 
   describe(`when appearance is provided`, () => {
-    Object.values([
+    [
       'default',
       AlertType.Info,
       AlertType.Success,
       AlertType.Warning,
       AlertType.Error,
-    ]).forEach((appearance) => {
+    ].forEach((appearance) => {
       describe(`and the appearance is "${appearance}"`, () => {
         beforeEach(async () => {
           element = await fixture(

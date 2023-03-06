@@ -1,4 +1,3 @@
-import { Schemes } from '@spryker-oryx/ui/notification';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -12,14 +11,6 @@ import {
 } from './notification-center.model';
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
-
-export const defaultStrategy: NotificationStrategy = {
-  scheme: Schemes.LIGHT,
-  autoClose: true,
-  autoCloseTime: 4000,
-  closable: true,
-  floating: true,
-};
 
 export class NotificationCenterComponent
   extends LitElement
