@@ -20,7 +20,7 @@ interface ContextOptions {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const serverContext = (options: ContextOptions): any => {
-  console.log('TextEncoder', TextEncoder);
+  console.log('TextEncoder222', TextEncoder);
 
   const { entry, root = import.meta.url, namespace = 'storefront' } = options;
   const basePath = dirname(fileURLToPath(root));
@@ -31,12 +31,12 @@ export const serverContext = (options: ContextOptions): any => {
       Event,
       process,
       buffer,
-      TextDecoder,
-      TextEncoder,
       exports: {},
     },
   });
   window.setTimeout = setTimeout;
+  window.TextEncoder = class {};
+  window.TextDecoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
