@@ -1,8 +1,8 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { notificationComponent } from '@spryker-oryx/ui/notification';
-import { notificationCenterComponent } from './component';
+import { notificationComponent } from '@spryker-oryx/ui';
 import { NotificationCenterComponent } from './notification-center.component';
+import { notificationCenterComponent } from './notification-center.def';
 
 describe('NotificationCenterComponent', () => {
   let element: NotificationCenterComponent;

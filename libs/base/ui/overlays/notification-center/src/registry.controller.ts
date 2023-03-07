@@ -1,6 +1,17 @@
 import { LitElement, ReactiveController } from 'lit';
-import { defaultStrategy } from './notification-center.component';
-import { NotificationRegistry } from './notification-center.model';
+import { Schemes } from '../../notification/src';
+import {
+  NotificationRegistry,
+  NotificationStrategy,
+} from './notification-center.model';
+
+const defaultStrategy: NotificationStrategy = {
+  scheme: Schemes.LIGHT,
+  autoClose: true,
+  autoCloseTime: 8000,
+  closable: true,
+  floating: true,
+};
 
 const createKey = (registry: NotificationRegistry[]): string => {
   return String(
