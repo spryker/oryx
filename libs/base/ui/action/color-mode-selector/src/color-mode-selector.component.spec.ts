@@ -1,4 +1,5 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { ColorMode } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createEvent } from '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -64,7 +65,7 @@ describe('ColorModeSelectorComponent', () => {
       expect(element).toContainElement('oryx-icon-button');
       expect(element).toContainElement('button');
       expect(element).toContainElement('oryx-icon');
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
     });
   });
 
@@ -72,13 +73,13 @@ describe('ColorModeSelectorComponent', () => {
     it('should toggle icon type', async () => {
       const button = element.renderRoot.querySelector('button');
       const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
       button?.click();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Light);
       button?.click();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
     });
 
     it('should toggle attribute on the root element', async () => {
@@ -96,7 +97,7 @@ describe('ColorModeSelectorComponent', () => {
   describe('when `oryx.toggle-mode` event has been dispatched', () => {
     it('should toggle icon type', async () => {
       const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -104,7 +105,7 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Light);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -112,7 +113,7 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
     });
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
@@ -141,11 +142,11 @@ describe('ColorModeSelectorComponent', () => {
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Dark);
       darkMode.match = true;
       triggerMatcher();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Light);
       darkMode.match = false;
     });
 
@@ -155,11 +156,11 @@ describe('ColorModeSelectorComponent', () => {
       button?.click();
       await nextFrame();
       expect(document.body?.hasAttribute('mode-dark')).toBe(true);
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Light);
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      expect(icon?.getAttribute('type')).toBe(ColorMode.Light);
     });
   });
 });
