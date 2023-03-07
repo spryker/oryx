@@ -3,7 +3,7 @@ import { asyncValue, ssrShim, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { tap } from 'rxjs';
+import { skipWhile, tap } from 'rxjs';
 import { ContentController } from '../../src/controllers';
 import { ComponentMixin } from '../../src/mixins';
 import {
@@ -34,6 +34,7 @@ export class LayoutComponent
 
   @subscribe()
   protected options$ = new ContentController(this).getOptions().pipe(
+    skipWhile((options) => options.rules?.[0] === undefined),
     tap((options) => {
       const rule = this.getRule(options);
       if (rule) {
