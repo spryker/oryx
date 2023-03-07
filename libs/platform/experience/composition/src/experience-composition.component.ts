@@ -18,7 +18,7 @@ import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable()
@@ -87,6 +87,11 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
         this.experienceService?.getComponent({ uid, route }) ||
         of({} as Component)
       );
+    }),
+    tap((component) => {
+      if (this.route) {
+        this.uid = component?.id;
+      }
     }),
     map((component: Component) => component?.components ?? [])
   );
