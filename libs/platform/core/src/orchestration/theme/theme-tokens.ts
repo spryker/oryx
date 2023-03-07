@@ -2,6 +2,7 @@ import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { getPropByPath } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import {
+  ColorMode,
   DesignToken,
   Theme,
   ThemeBreakpoints,
@@ -110,7 +111,7 @@ export class ThemeTokens {
           ? `@layer mode.dark, ${media};`
           : `@layer mode.light, ${media};`;
         const attr = media.replace('.', '-');
-        const mode = modeSelector(isLight ? 'mode-dark' : 'mode-light');
+        const mode = modeSelector(isLight ? ColorMode.Dark : ColorMode.Light);
         const mediaMode = this.generateMedia(media);
 
         end += '}';

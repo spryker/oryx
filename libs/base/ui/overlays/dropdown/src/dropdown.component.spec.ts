@@ -89,7 +89,7 @@ describe('DropdownComponent', () => {
     });
   });
 
-  Object.values(Size).forEach((size) => {
+  [Size.Lg, Size.Md, Size.Sm].forEach((size) => {
     describe(`when the triggerIconSize is '${size}'`, () => {
       beforeEach(async () => {
         element = await fixture(

@@ -1,4 +1,8 @@
-import { css } from 'lit';
+import { Size } from '@spryker-oryx/ui';
+import { css, unsafeCSS } from 'lit';
+
+const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
+const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
 
 export const styles = css`
   :host {
@@ -21,11 +25,11 @@ export const styles = css`
     transition: var(--oryx-transition-time);
   }
 
-  :host([size='medium']) {
-    --_margin: 3px;
+  :host(${mediumSize}) {
+    --_margin: 2px;
   }
 
-  :host([size='small']) {
-    --_margin: 6px;
+  :host(${smallSize}) {
+    --_margin: 4px;
   }
 `;

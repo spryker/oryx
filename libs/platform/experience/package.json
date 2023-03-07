@@ -20,6 +20,7 @@
   "peerDependencies": {
     "@spryker-oryx/core": "~0.2.0",
     "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/ui": "~0.2.0",
     "@spryker-oryx/router": "~0.2.0",
     "@spryker-oryx/themes": "~0.2.0",
     "@spryker-oryx/utilities": "~0.2.0",
