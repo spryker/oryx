@@ -42,7 +42,7 @@ describe('Checkout suite', () => {
       checkoutPage.waitForLoadedSPA();
       // we are not able to detect when element is hydrated and ready for interactions
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
+      cy.wait(2000);
 
       checkoutPage.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
