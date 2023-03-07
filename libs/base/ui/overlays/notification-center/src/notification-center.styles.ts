@@ -17,7 +17,6 @@ export const notificationCenterBaseStyles = css`
 
     display: flex;
     flex-direction: column;
-
     box-sizing: border-box;
   }
 
@@ -54,10 +53,8 @@ export const notificationCenterBaseStyles = css`
   oryx-notification {
     transition: all var(--oryx-transition-time) ease-in-out;
     transform-origin: bottom center;
-
     transform: scaleY(var(--_scale, var(--_scale-y, 1)));
-
-    margin-inline: var(--_m, 0px);
+    margin-inline: var(--_m, 0);
   }
 
   oryx-notification:nth-child(1) {
@@ -71,7 +68,7 @@ export const notificationCenterBaseStyles = css`
   :host(:not([stackable])) > *,
   :host([stackable]:hover) > * {
     margin-block-start: 13px;
-    margin-inline: 0px;
+    margin-inline: 0;
   }
 
   :host([stackable]:hover) > * {
@@ -88,6 +85,7 @@ export const notificationCenterBaseStyles = css`
 
   :host([stackable]) > *:nth-child(n + 4) {
     --_margin-block-start: -58px;
+    --_scale-y: 0;
   }
 
   :host([stackable]:hover) > *:nth-child(n + 2) {
@@ -104,10 +102,6 @@ export const notificationCenterBaseStyles = css`
 
   :host([stackable]) > *:nth-child(n + 3) {
     --_m: 20px;
-  }
-
-  :host([stackable]) > *:nth-child(n + 4) {
-    --_scale-y: 0;
   }
 
   :host([stackable]) > *:nth-child(n + 2) span[slot='subtext'] {
