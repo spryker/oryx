@@ -1,6 +1,7 @@
 import { defaultUser } from '../support/commands';
 import { LandingPage } from '../support/page_objects/landing.page';
 import { LoginPage } from '../support/page_objects/login.page';
+import { TestUserData } from '../types/user.type';
 
 const loginPage = new LoginPage();
 const landingPage = new LandingPage();
@@ -18,14 +19,21 @@ describe('Authentication suite', () => {
     });
 
     it('must show and error message if a user logs in with invalid credentials', () => {
-      cy.login({
+      const invalidUser: TestUserData = {
         id: 'DE--1',
         name: 'Sonia',
         email: 'sonia@spryker.com',
         password: 'change123123',
-      });
+      };
 
+      const loginPage = new LoginPage();
+
+      loginPage.visit();
+      loginPage.loginForm.login(invalidUser);
+
+      loginPage.header.getUserSummaryHeading().should('not.contain', invalidUser.name);
       loginPage.header.getUserSummaryHeading().should('contain', 'Login');
+
       loginPage.loginForm.getBEValidationError().should('be.visible');
     });
   });

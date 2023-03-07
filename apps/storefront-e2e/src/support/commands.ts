@@ -30,7 +30,7 @@ Cypress.Commands.add('login', (user: TestUserData) => {
   loginPage.visit();
   loginPage.loginForm.login(user);
 
-  loginPage.header.getUserSummaryHeading().should('contain', defaultUser.name);
+  loginPage.header.getUserSummaryHeading().should('contain', user.name);
 });
 
 Cypress.Commands.add('waitUpdateComplete', (element) => {
