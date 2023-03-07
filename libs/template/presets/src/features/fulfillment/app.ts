@@ -2,7 +2,7 @@ import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { RouterFeature } from '@spryker-oryx/router';
-import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
+import { backofficeNgTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import { resourceGraphics } from '../../resources';
 import {
