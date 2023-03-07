@@ -35,10 +35,8 @@ export class LayoutComponent
   @subscribe()
   protected options$ = new ContentController(this).getOptions().pipe(
     tap((options) => {
-      if (options.rules) {
-        const rule = this.getRule(options);
-        if (!rule) return;
-
+      const rule = this.getRule(options);
+      if (rule) {
         if (rule.layout) {
           this.layout = rule.layout;
         }
@@ -50,6 +48,12 @@ export class LayoutComponent
         this.sticky = !!rule?.sticky;
         this.container = !!rule?.container;
         this.maxWidth = !!rule?.maxWidth;
+      } else {
+        this.layout = undefined;
+        this.orientation = undefined;
+        this.sticky = undefined;
+        this.container = undefined;
+        this.maxWidth = undefined;
       }
     })
   );
