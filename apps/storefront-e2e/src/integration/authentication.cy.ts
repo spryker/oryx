@@ -6,10 +6,6 @@ const loginPage = new LoginPage();
 const landingPage = new LandingPage();
 
 describe('Authentication suite', () => {
-  beforeEach(() => {
-    loginPage.visit();
-  });
-
   context('Login functionality', () => {
     it('must allow user to login with valid credentials', () => {
       cy.login(defaultUser);
@@ -17,11 +13,13 @@ describe('Authentication suite', () => {
       loginPage.header
         .getUserSummaryHeading()
         .should('contain', defaultUser.name);
+
       cy.location('pathname').should('be.eq', landingPage.url);
     });
 
     it('must show and error message if a user logs in with invalid credentials', () => {
       cy.login({
+        id: 'DE--1',
         name: 'Sonia',
         email: 'sonia@spryker.com',
         password: 'change123123',
