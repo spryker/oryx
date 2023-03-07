@@ -7,6 +7,7 @@ import {
   ContentMixin,
   ExperienceService,
   LayoutBuilder,
+  StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
   asyncState,
@@ -40,7 +41,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected route$ = new BehaviorSubject<string>(this.route);
 
   @state()
-  layoutUid = '';
+  layoutRules: StyleRuleSet[] | undefined;
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
@@ -92,7 +93,9 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       );
     }),
     tap((component) => {
-      this.layoutUid = component?.id;
+      this.layoutRules = (
+        component?.options?.data as CompositionProperties
+      )?.rules;
     }),
     map((component: Component) => component?.components ?? [])
   );
@@ -126,7 +129,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   ): TemplateResult {
     return html`
       <oryx-layout
-        .uid=${this.layoutUid}
+        .rules=${this.layoutRules}
         style="--item-count: ${components.length}"
       >
         ${components
