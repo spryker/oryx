@@ -5,7 +5,6 @@ export const notificationStyles = css`
   :host {
     display: grid;
     grid-auto-flow: column;
-    align-items: center;
     grid-template-columns: auto 1fr auto;
     column-gap: 10px;
     padding-block: 10px;
@@ -31,6 +30,7 @@ export const notificationStyles = css`
   slot:not([name]) {
     display: block;
     grid-row: 1;
+    align-self: center;
   }
 
   slot[name='subtext']::slotted(*) {
