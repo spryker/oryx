@@ -20,7 +20,7 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'oryx-site-mode-selector',
+          type: 'oryx-color-mode-selector',
           options: {
             data: {
               rules: [

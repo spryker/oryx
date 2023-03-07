@@ -135,9 +135,6 @@
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
-      "@spryker-oryx/site/mode-selector": [
-        "libs/domain/site/mode-selector/index.ts"
-      ],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
       ],
@@ -157,6 +154,9 @@
       "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
+      ],
+      "@spryker-oryx/ui/color-mode-selector": [
+        "libs/base/ui/action/color-mode-selector/index.ts"
       ],
       "@spryker-oryx/ui/drawer": ["libs/base/ui/overlays/drawer/index.ts"],
       "@spryker-oryx/ui/dropdown": ["libs/base/ui/overlays/dropdown/index.ts"],

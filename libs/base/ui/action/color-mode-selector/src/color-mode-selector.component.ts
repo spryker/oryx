@@ -1,0 +1,84 @@
+import { i18n, rootInjectable } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
+import { styles } from './color-mode-selector.styles';
+import { ModeEvent, toggleMode } from './utilities';
+
+export const EVENT_TOGGLE_COLOR = 'oryx.toggle-mode';
+
+export class ColorModeSelectorComponent extends LitElement {
+  static styles = [styles];
+
+  protected darkMode = 'mode-dark';
+  protected lightMode = 'mode-light';
+
+  @state()
+  protected mode = this.getMode();
+
+  constructor() {
+    super();
+    this.toggleMode = this.toggleMode.bind(this);
+    this.setMode = this.setMode.bind(this);
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    window.addEventListener(EVENT_TOGGLE_COLOR, this.toggleMode);
+    this.darkModeMatcher().addEventListener('change', this.setMode);
+  }
+
+  disconnectedCallback(): void {
+    window.removeEventListener(EVENT_TOGGLE_COLOR, this.toggleMode);
+    this.darkModeMatcher().addEventListener('change', this.setMode);
+    super.disconnectedCallback();
+  }
+
+  protected toggleMode(event: Event): void {
+    toggleMode((event as CustomEvent<ModeEvent>).detail);
+    this.setMode();
+  }
+
+  protected darkModeMatcher(): MediaQueryList {
+    return window.matchMedia?.('(prefers-color-scheme: dark)');
+  }
+
+  protected getMode(): string {
+    const root = document.querySelector(rootInjectable.get());
+
+    if (root?.hasAttribute(this.darkMode)) return this.darkMode;
+    if (root?.hasAttribute(this.lightMode)) return this.lightMode;
+
+    return this.darkModeMatcher().matches ? this.darkMode : this.lightMode;
+  }
+
+  protected setMode(): void {
+    this.mode = this.getMode();
+  }
+
+  protected triggerEvent(): void {
+    this.dispatchEvent(
+      new CustomEvent(EVENT_TOGGLE_COLOR, {
+        bubbles: true,
+        composed: true,
+        detail: {
+          old: this.mode,
+          mode: this.mode === this.lightMode ? this.darkMode : this.lightMode,
+        },
+      })
+    );
+  }
+
+  protected override render(): TemplateResult {
+    return html`
+      <oryx-icon-button>
+        <button
+          type="button"
+          aria-label="${i18n('site.change-color-mode')}"
+          @click=${this.triggerEvent}
+        >
+          <oryx-icon type="${this.mode}"></oryx-icon>
+        </button>
+      </oryx-icon-button>
+    `;
+  }
+}

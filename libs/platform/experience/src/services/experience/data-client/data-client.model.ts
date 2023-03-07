@@ -1,4 +1,5 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
+import { ModeEvent } from '@spryker-oryx/ui/color-mode-selector';
 import { ContentComponentSchema } from '../../../models';
 import { StaticComponent } from '../static-data';
 
@@ -12,16 +13,12 @@ export const enum MessageType {
   ComponentType = 'oryx.component-type',
   Schemas = 'oryx.component-schemas',
   ColorMode = 'oryx.color-mode',
+  AppReady = 'oryx.app-ready',
 }
 
 export interface ExperienceProductData {
   sku?: string;
   name?: string;
-}
-
-export interface ModeEvent {
-  old: string;
-  mode: string;
 }
 
 export type ExperienceMessageData<T> = {
@@ -41,6 +38,8 @@ export type ExperienceMessageData<T> = {
     ? StaticComponent[]
     : T extends MessageType.ColorMode
     ? ModeEvent
+    : T extends MessageType.AppReady
+    ? null
     : never;
   [key: string]: any;
 };

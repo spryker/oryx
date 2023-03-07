@@ -1,26 +1,12 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { AppRef, StorageService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { createEvent } from '@spryker-oryx/testing';
 import { html, LitElement, TemplateResult } from 'lit';
-import { of } from 'rxjs';
 import {
-  modeStorageKey,
-  SiteModeSelectorComponent,
-} from './mode-selector.component';
-import { siteModeSelectorComponent } from './mode-selector.def';
-
-const mockAppRef = {
-  findPlugin: () => ({
-    getRoot: vi.fn().mockReturnValue('body'),
-  }),
-};
-
-class MockStorageService implements Partial<StorageService> {
-  get = vi.fn().mockReturnValue(of(null));
-  set = vi.fn();
-}
+  ColorModeSelectorComponent,
+  EVENT_TOGGLE_COLOR,
+} from './color-mode-selector.component';
+import { colorModeSelectorComponent } from './color-mode-selector.def';
 
 export class RootMock extends LitElement {
   protected override render(): TemplateResult {
@@ -45,13 +31,12 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-describe('ButtonComponent', () => {
-  let element: SiteModeSelectorComponent;
-  let storage: MockStorageService;
+describe('ColorModeSelectorComponent', () => {
+  let element: ColorModeSelectorComponent;
 
   beforeAll(async () => {
     await useComponent([
-      siteModeSelectorComponent,
+      colorModeSelectorComponent,
       { name: 'root-mock', impl: RootMock },
     ]);
   });
@@ -60,29 +45,12 @@ describe('ButtonComponent', () => {
     document.body?.removeAttribute('mode-light');
     document.body?.removeAttribute('mode-dark');
 
-    const testInjector = createInjector({
-      providers: [
-        {
-          provide: AppRef,
-          useValue: mockAppRef,
-        },
-        {
-          provide: StorageService,
-          useClass: MockStorageService,
-        },
-      ],
-    });
-
     element = await fixture(
-      html`<oryx-site-mode-selector></oryx-site-mode-selector> `
+      html`<oryx-color-mode-selector></oryx-color-mode-selector> `
     );
-    storage = testInjector.inject(
-      StorageService
-    ) as unknown as MockStorageService;
   });
 
   afterEach(() => {
-    destroyInjector();
     vi.clearAllMocks();
   });
 
@@ -131,7 +99,7 @@ describe('ButtonComponent', () => {
       expect(icon?.getAttribute('type')).toBe('mode-light');
       window.dispatchEvent(
         createEvent(
-          { type: 'oryx.toggle-mode' },
+          { type: EVENT_TOGGLE_COLOR },
           { old: 'mode-light', mode: 'mode-dark' }
         )
       );
@@ -139,7 +107,7 @@ describe('ButtonComponent', () => {
       expect(icon?.getAttribute('type')).toBe('mode-dark');
       window.dispatchEvent(
         createEvent(
-          { type: 'oryx.toggle-mode' },
+          { type: EVENT_TOGGLE_COLOR },
           { old: 'mode-dark', mode: 'mode-light' }
         )
       );
@@ -149,7 +117,7 @@ describe('ButtonComponent', () => {
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
         createEvent(
-          { type: 'oryx.toggle-mode' },
+          { type: EVENT_TOGGLE_COLOR },
           { old: 'mode-light', mode: 'mode-dark' }
         )
       );
@@ -157,27 +125,13 @@ describe('ButtonComponent', () => {
       expect(document.body?.hasAttribute('mode-dark')).toBe(true);
       window.dispatchEvent(
         createEvent(
-          { type: 'oryx.toggle-mode' },
+          { type: EVENT_TOGGLE_COLOR },
           { old: 'mode-dark', mode: 'mode-light' }
         )
       );
       await nextFrame();
       expect(document.body?.hasAttribute('mode-light')).toBe(true);
       expect(document.body?.hasAttribute('mode-dark')).toBe(false);
-    });
-  });
-
-  describe('when storage emits value', () => {
-    it('should assign proper values', async () => {
-      storage.get.mockReturnValueOnce(of('mode-dark'));
-      element = await fixture(
-        html`<oryx-site-mode-selector></oryx-site-mode-selector> `
-      );
-      const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(storage.get).toHaveBeenCalledWith(modeStorageKey);
-      expect(document.body?.hasAttribute('mode-light')).toBe(false);
-      expect(document.body?.hasAttribute('mode-dark')).toBe(true);
-      expect(icon?.getAttribute('type')).toBe('mode-dark');
     });
   });
 
@@ -192,20 +146,20 @@ describe('ButtonComponent', () => {
       triggerMatcher();
       await nextFrame();
       expect(icon?.getAttribute('type')).toBe('mode-dark');
+      darkMode.match = false;
     });
 
     it('should not change icon type if root element has attribute', async () => {
-      storage.get.mockReturnValueOnce(of('mode-light'));
-      element = await fixture(
-        html`<oryx-site-mode-selector></oryx-site-mode-selector> `
-      );
+      const button = element.renderRoot.querySelector('button');
       const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(document.body?.hasAttribute('mode-light')).toBe(true);
-      expect(icon?.getAttribute('type')).toBe('mode-light');
-      darkMode.match = true;
+      button?.click();
+      await nextFrame();
+      expect(document.body?.hasAttribute('mode-dark')).toBe(true);
+      expect(icon?.getAttribute('type')).toBe('mode-dark');
+      darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect(icon?.getAttribute('type')).toBe('mode-light');
+      expect(icon?.getAttribute('type')).toBe('mode-dark');
     });
   });
 });
