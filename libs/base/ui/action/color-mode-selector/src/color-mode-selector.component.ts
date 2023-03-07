@@ -69,6 +69,9 @@ export class ColorModeSelectorComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
+    const iconType =
+      this.mode === this.lightMode ? this.darkMode : this.lightMode;
+
     return html`
       <oryx-icon-button>
         <button
@@ -76,7 +79,7 @@ export class ColorModeSelectorComponent extends LitElement {
           aria-label="${i18n('site.change-color-mode')}"
           @click=${this.triggerEvent}
         >
-          <oryx-icon type="${this.mode}"></oryx-icon>
+          <oryx-icon type="${iconType}"></oryx-icon>
         </button>
       </oryx-icon-button>
     `;
