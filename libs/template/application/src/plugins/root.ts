@@ -3,12 +3,13 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
+  SsrOptions,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
-import { LitElement } from 'lit';
+import { isServer, LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
 import { initHydrateHooks } from './hydrate-hooks';
 
@@ -48,6 +49,12 @@ export class RootPlugin
   }
 
   afterApply(): void | Promise<void> {
-    initHydrateHooks(rootInjectable.get());
+    const root = rootInjectable.get();
+    const ssrOptions = resolve(SsrOptions, {} as SsrOptions);
+    const isRendered = Boolean(document.querySelector(root)?.shadowRoot);
+    const isForce =
+      !isServer && Boolean(ssrOptions.initialNavigation) && isRendered;
+
+    initHydrateHooks(root, isForce);
   }
 }

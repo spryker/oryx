@@ -52,7 +52,7 @@ export function treewalk(
   return arr;
 }
 
-export function initHydrateHooks(rootSelector: string): void {
+export function initHydrateHooks(rootSelector: string, force = false): void {
   const registryService = resolve(ComponentsRegistryService);
 
   //TODO - remove this when we no longer need manual hydrate on demand
@@ -60,6 +60,12 @@ export function initHydrateHooks(rootSelector: string): void {
     registryService.hydrateOnDemand.bind(registryService);
 
   treewalk('[hydratable]').forEach((el) => {
+    if (force) {
+      registryService.hydrateOnDemand(el);
+
+      return;
+    }
+
     const modes = el.getAttribute('hydratable')?.split?.(',') ?? [];
     for (let i = 0; i < modes.length; i++) {
       const parts = modes[i].split(':');

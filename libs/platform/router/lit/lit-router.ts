@@ -4,7 +4,7 @@ import { resolve } from '@spryker-oryx/di';
 import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { PatchableLitElement } from '@spryker-oryx/utilities';
 import { html, isServer, ReactiveControllerHost, TemplateResult } from 'lit';
-import { identity, skip, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
 export class LitRouter extends Router {
@@ -38,13 +38,6 @@ export class LitRouter extends Router {
     this.routerService
       .currentRoute()
       .pipe(
-        this.ssrRendered
-          ? (skip(1),
-            tap(
-              (route) =>
-                route !== '' && this.routerService.acceptParams(this.params)
-            ))
-          : identity,
         tap(async (route) => {
           if (route !== '') {
             const resolve = this.ssrAwaiter?.getAwaiter();
