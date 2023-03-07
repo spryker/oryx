@@ -1,4 +1,5 @@
 import { FormFieldDefinition } from '@spryker-oryx/form';
+import { LitElement } from 'lit';
 import { ContentMixinInterface } from '../mixins';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -20,6 +21,6 @@ export type ComponentSchema<Options, Content> = {
 
 export type ContentComponentSchema<
   T = ContentMixinInterface<unknown, unknown>
-> = T extends ContentMixinInterface<infer Options, infer Content>
+> = T extends ContentMixinInterface<infer Options, infer Content> | LitElement
   ? ComponentSchema<Options, Content>
   : never;

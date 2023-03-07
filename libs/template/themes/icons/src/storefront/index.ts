@@ -42,4 +42,8 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.User]: () => import('./icons/user').then((s) => s.default),
   [IconTypes.Login]: () => import('./icons/login').then((s) => s.default),
+  [IconTypes.ModeLight]: () =>
+    import('./icons/mode-light').then((s) => s.default),
+  [IconTypes.ModeDark]: () =>
+    import('./icons/mode-dark').then((s) => s.default),
 };
