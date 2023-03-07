@@ -67,7 +67,7 @@ export const notificationCenterBaseStyles = css`
 
   :host(:is(:not([stackable]), :host([stackable]:hover)))
     > *:not(:first-child) {
-    margin-block-start: 13px;
+    margin-block-start: 10px;
     margin-inline: 0;
   }
 
