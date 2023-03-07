@@ -31,6 +31,10 @@
     "@spryker-oryx/themes": "~0.2.0",
     "@spryker-oryx/ui": "~0.2.0",
     "@spryker-oryx/user": "~0.2.0",
+    "@spryker-oryx/indexed-db": "~0.2.0",
+    "@spryker-oryx/offline": "~0.2.0",
+    "@spryker-oryx/picking": "~0.2.0",
+    "@spryker-oryx/order": "~0.2.0",
     "lit": "^2.4.0",
     "tslib": "^2.4.0",
     "urlpattern-polyfill": "^4.0.0"
