@@ -11,9 +11,9 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/ui": "~0.2.0",
     "lit": "^2.4.0",
     "tslib": "^2.4.0"
   }

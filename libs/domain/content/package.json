@@ -12,11 +12,11 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/experience": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/site": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/experience": "~0.2.0",
+    "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/site": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

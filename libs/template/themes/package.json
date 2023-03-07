@@ -14,7 +14,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/utilities": "*"
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0"
   }
 }

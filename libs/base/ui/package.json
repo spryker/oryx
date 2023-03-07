@@ -12,9 +12,9 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/themes": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/themes": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "tslib": "^2.4.0"
   }

@@ -14,10 +14,10 @@
     "globalize": "^1.7.0"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/site": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/site": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0",
     "cldr-data": "^36.0.1",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
