@@ -69,9 +69,10 @@ export class NotificationCenterComponent
   }
 
   protected override render(): TemplateResult {
+    const notifications = [...this.registry].reverse();
     return html`
       ${repeat(
-        this.registry,
+        notifications,
         ({ key }) => key,
         (item) => this.renderNotification(item)
       )}

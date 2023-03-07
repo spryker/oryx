@@ -1,5 +1,4 @@
 import { StaticComponent } from '@spryker-oryx/experience';
-import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -22,12 +21,6 @@ export const HeaderTemplate: StaticComponent = {
         },
         {
           type: 'oryx-site-notification-center',
-          options: {
-            data: {
-              position: NotificationPosition.BottomStart,
-              marginBlock: '100px',
-            },
-          },
         },
       ],
       options: {

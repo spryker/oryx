@@ -1,14 +1,13 @@
 import { AlertType, Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { CLOSE_EVENT, Schemes } from './notification.model';
-import { notificationBaseStyles, notificationStyles } from './styles';
+import { notificationStyles } from './notification.styles';
 
 export class NotificationComponent extends LitElement {
-  static styles = [notificationBaseStyles, notificationStyles];
+  static styles = [notificationStyles];
 
-  @property({ type: String, reflect: true }) type?: AlertType;
+  @property({ type: String, reflect: true }) type = AlertType.Info;
   @property({ type: Boolean }) closable = false;
   @property({ type: Boolean }) floating = false;
   @property({ type: String, reflect: true }) scheme?: Schemes;
@@ -28,21 +27,29 @@ export class NotificationComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
+      ${this.renderIcon()}
       <slot></slot>
       <slot name="subtext">${this.subtext}</slot>
-      ${when(
-        this.closable,
-        () => html`
-          <oryx-icon-button size=${Size.Sm}>
-            <button
-              aria-label=${this.closeButtonAriaLabel}
-              @click="${this.dispatchCloseEvent}"
-            >
-              <oryx-icon type="close"></oryx-icon>
-            </button>
-          </oryx-icon-button>
-        `
-      )}
+      ${this.renderCloseButton()}
     `;
+  }
+
+  protected renderIcon(): TemplateResult | void {
+    if (!this.type) return;
+
+    return html`<oryx-icon type=${this.type} class="illustrative"></oryx-icon>`;
+  }
+
+  protected renderCloseButton(): TemplateResult | void {
+    if (!this.closable) return;
+
+    return html`<oryx-icon-button size=${Size.Sm}>
+      <button
+        aria-label=${this.closeButtonAriaLabel}
+        @click="${this.dispatchCloseEvent}"
+      >
+        <oryx-icon type="close"></oryx-icon>
+      </button>
+    </oryx-icon-button>`;
   }
 }

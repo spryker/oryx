@@ -39,7 +39,6 @@ export type NotificationStrategy = {
   autoCloseTime?: number;
   content?: NotificationContent;
   subtext?: NotificationContent;
-  stackable?: boolean;
 };
 
 export type NotificationRegistry = NotificationStrategy & {

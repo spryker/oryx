@@ -16,38 +16,9 @@ export const notificationCenterBaseStyles = css`
     );
 
     display: flex;
-    flex-direction: column-reverse;
-  }
+    flex-direction: column;
 
-  :host([stackable]:hover) {
-    --_margin: 3px;
-    --_max-height: 58px;
-    --_opacity: 1;
-  }
-
-  :host([stackable]) oryx-notification,
-  :host([stackable]) oryx-notification * {
-    transition: all var(--oryx-transition-time) ease-in-out;
-  }
-
-  :host([stackable]) oryx-notification {
-    margin-block-start: var(--_margin, -58px);
-    max-height: var(--_max-height, 24px);
-  }
-
-  :host([stackable]) oryx-notification:last-child {
-    margin-block-start: initial;
-    max-height: initial;
-  }
-
-  :host([stackable]) oryx-notification:not(:last-child) span[slot='subtext'] {
-    opacity: 0;
-  }
-
-  :host([stackable]:hover)
-    oryx-notification:not(:last-child)
-    span[slot='subtext'] {
-    opacity: 1;
+    box-sizing: border-box;
   }
 
   :host([position]) {
@@ -57,12 +28,12 @@ export const notificationCenterBaseStyles = css`
     width: 100%;
   }
 
-  :host > * {
-    margin-block-end: 13px;
-  }
-
   :host(${isTop}) {
     inset-block-start: var(--oryx-notification-margin-block);
+  }
+
+  :host(${isBottom}) {
+    inset-block-end: var(--oryx-notification-margin-block, 0);
   }
 
   :host([position='${unsafeCSS(Position.TopStart)}']),
@@ -80,15 +51,71 @@ export const notificationCenterBaseStyles = css`
     inset-inline-end: var(--oryx-notification-margin-inline, 0);
   }
 
-  :host(${isBottom}) {
-    inset-block-end: var(--oryx-notification-margin-block, 0);
+  oryx-notification {
+    transition: all var(--oryx-transition-time) ease-in-out;
+    transform-origin: bottom center;
+
+    transform: scaleY(var(--_scale, var(--_scale-y, 1)));
+
+    margin-inline: var(--_m, 0px);
   }
 
-  :host(${isBottom}) :last-child {
-    inset-block-end: 0;
+  oryx-notification:nth-child(1) {
+    z-index: 3;
   }
 
-  :host > [visible] {
-    transition-duration: var(--oryx-transition-time-medium);
+  oryx-notification:nth-child(2) {
+    z-index: 2;
+  }
+
+  :host(:not([stackable])) > *,
+  :host([stackable]:hover) > * {
+    margin-block-start: 13px;
+    margin-inline: 0px;
+  }
+
+  :host([stackable]:hover) > * {
+    transform: scale(1);
+  }
+
+  :host([stackable]) > * {
+    margin-block-start: var(--_margin-block-start, -45px);
+  }
+
+  :host([stackable]) > *:nth-child(1) {
+    --_margin-block-start: 13px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 4) {
+    --_margin-block-start: -58px;
+  }
+
+  :host([stackable]:hover) > *:nth-child(n + 2) {
+    max-height: 1000px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 2) {
+    max-height: 58px;
+  }
+
+  :host([stackable]) > *:nth-child(2) {
+    --_m: 10px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 3) {
+    --_m: 20px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 4) {
+    --_scale-y: 0;
+  }
+
+  :host([stackable]) > *:nth-child(n + 2) span[slot='subtext'] {
+    opacity: 0;
+    transition: all var(--oryx-transition-time) ease-in-out;
+  }
+
+  :host([stackable]:hover) > *:nth-child(n + 2) span[slot='subtext'] {
+    opacity: 1;
   }
 `;

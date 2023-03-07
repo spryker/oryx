@@ -1,7 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { NotificationService as SiteNotificationService } from '@spryker-oryx/site';
-import { NotificationCenterComponent } from '@spryker-oryx/ui/notification-center';
+import {
+  NotificationCenterComponent,
+  NotificationPosition,
+} from '@spryker-oryx/ui/notification-center';
 import { hydratable, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -13,8 +16,9 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
   marginBlock: '40px',
   marginInline: '30px',
   maxWidth: '470px',
-  enableStaking: true,
-})
+  enableStacking: true,
+  position: NotificationPosition.BottomStart,
+} as SiteNotificationCenterOptions)
 @hydratable('window:oryx-notify')
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(
   LitElement
