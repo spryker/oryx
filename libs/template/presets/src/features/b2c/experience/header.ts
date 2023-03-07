@@ -19,18 +19,6 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
-        {
-          type: 'oryx-color-mode-selector',
-          options: {
-            data: {
-              rules: [
-                {
-                  margin: '0 0 0 auto',
-                },
-              ],
-            },
-          },
-        },
         { type: 'site-notification-center' },
       ],
       options: {
