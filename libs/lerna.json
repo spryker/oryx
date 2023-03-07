@@ -12,6 +12,7 @@
     "base/di",
     "template/presets",
     "domain/product",
+    "domain/picking",
     "domain/order",
     "platform/router",
     "platform/indexed-db",

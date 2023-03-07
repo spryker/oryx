@@ -2,11 +2,11 @@ import { Provider } from '@spryker-oryx/di';
 import {
   DefaultFacetListService,
   DefaultSuggestionAdapter,
+  FacetColorsMapping,
   FacetListService,
   SuggestionAdapter,
   SuggestionService,
 } from '@spryker-oryx/search';
-import { FacetColorsMapping } from '@spryker-oryx/search/facet-color';
 import { SortingService } from '../../services/sorting.service';
 import { mockFacetColors } from './mock-facet-colors';
 import { MockSortingService } from './sort/mock-sorting.service';
