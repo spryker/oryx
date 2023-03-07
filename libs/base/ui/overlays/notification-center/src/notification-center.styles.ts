@@ -65,8 +65,8 @@ export const notificationCenterBaseStyles = css`
     z-index: 2;
   }
 
-  :host(:not([stackable])) > *,
-  :host([stackable]:hover) > * {
+  :host(:is(:not([stackable]), :host([stackable]:hover)))
+    > *:not(:first-child) {
     margin-block-start: 13px;
     margin-inline: 0;
   }
@@ -77,10 +77,6 @@ export const notificationCenterBaseStyles = css`
 
   :host([stackable]) > * {
     margin-block-start: var(--_margin-block-start, -45px);
-  }
-
-  :host([stackable]) > *:nth-child(1) {
-    --_margin-block-start: 13px;
   }
 
   :host([stackable]) > *:nth-child(n + 4) {

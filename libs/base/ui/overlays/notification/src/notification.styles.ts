@@ -8,7 +8,8 @@ export const notificationStyles = css`
     align-items: center;
     grid-template-columns: auto 1fr auto;
     column-gap: 10px;
-    padding: 10px 22px 15px 15px;
+    padding-block: 10px;
+    padding-inline: 22px 15px;
     border-radius: var(--oryx-border-radius-small);
     line-height: 24px;
     border-inline-start: 6px solid red;
@@ -33,6 +34,7 @@ export const notificationStyles = css`
   }
 
   slot[name='subtext']::slotted(*) {
+    padding-block-end: 5px;
     grid-row: 2;
     color: var(--oryx-color-neutral-300);
   }
