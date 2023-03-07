@@ -31,7 +31,9 @@ describe('Authentication suite', () => {
       loginPage.visit();
       loginPage.loginForm.login(invalidUser);
 
-      loginPage.header.getUserSummaryHeading().should('not.contain', invalidUser.name);
+      loginPage.header
+        .getUserSummaryHeading()
+        .should('not.contain', invalidUser.name);
       loginPage.header.getUserSummaryHeading().should('contain', 'Login');
 
       loginPage.loginForm.getBEValidationError().should('be.visible');
