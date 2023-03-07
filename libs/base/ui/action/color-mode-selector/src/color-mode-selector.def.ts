@@ -6,8 +6,4 @@ export const colorModeSelectorComponent = componentDef({
     import('./color-mode-selector.component').then(
       (m) => m.ColorModeSelectorComponent
     ),
-  schema: () =>
-    import('./color-mode-selector.schema').then(
-      (m) => m.colorModeSelectorSchema
-    ),
 });

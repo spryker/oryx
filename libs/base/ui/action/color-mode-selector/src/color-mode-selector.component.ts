@@ -1,3 +1,4 @@
+import { ColorMode } from '@spryker-oryx/core';
 import { i18n, rootInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -8,9 +9,6 @@ export const EVENT_TOGGLE_COLOR = 'oryx.toggle-mode';
 
 export class ColorModeSelectorComponent extends LitElement {
   static styles = [styles];
-
-  protected darkMode = 'mode-dark';
-  protected lightMode = 'mode-light';
 
   @state()
   protected mode = this.getMode();
@@ -45,10 +43,10 @@ export class ColorModeSelectorComponent extends LitElement {
   protected getMode(): string {
     const root = document.querySelector(rootInjectable.get());
 
-    if (root?.hasAttribute(this.darkMode)) return this.darkMode;
-    if (root?.hasAttribute(this.lightMode)) return this.lightMode;
+    if (root?.hasAttribute(ColorMode.Dark)) return ColorMode.Dark;
+    if (root?.hasAttribute(ColorMode.Light)) return ColorMode.Light;
 
-    return this.darkModeMatcher().matches ? this.darkMode : this.lightMode;
+    return this.darkModeMatcher().matches ? ColorMode.Dark : ColorMode.Light;
   }
 
   protected setMode(): void {
@@ -62,7 +60,8 @@ export class ColorModeSelectorComponent extends LitElement {
         composed: true,
         detail: {
           old: this.mode,
-          mode: this.mode === this.lightMode ? this.darkMode : this.lightMode,
+          mode:
+            this.mode === ColorMode.Light ? ColorMode.Dark : ColorMode.Light,
         },
       })
     );
@@ -70,7 +69,7 @@ export class ColorModeSelectorComponent extends LitElement {
 
   protected override render(): TemplateResult {
     const iconType =
-      this.mode === this.lightMode ? this.darkMode : this.lightMode;
+      this.mode === ColorMode.Light ? ColorMode.Dark : ColorMode.Light;
 
     return html`
       <oryx-icon-button>

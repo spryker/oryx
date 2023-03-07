@@ -7,6 +7,11 @@ export interface ModeEvent {
 
 export const toggleMode = ({ old, mode }: ModeEvent): void => {
   const root = document.querySelector(rootInjectable.get());
+
+  if (root?.hasAttribute(mode)) {
+    return;
+  }
+
   root?.removeAttribute(old);
   root?.setAttribute(mode, '');
 };
