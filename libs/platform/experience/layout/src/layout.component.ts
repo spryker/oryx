@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { asyncValue, ssrShim, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { tap } from 'rxjs';
+import { skipWhile, tap } from 'rxjs';
 import { ContentController } from '../../src/controllers';
-import { ContentMixin } from '../../src/mixins';
+import { ComponentMixin } from '../../src/mixins';
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
@@ -18,7 +18,7 @@ import { layoutStyles } from './layout.styles';
 
 @ssrShim('style')
 export class LayoutComponent
-  extends ContentMixin<CompositionProperties>(LitElement)
+  extends ComponentMixin<CompositionProperties>()
   implements LayoutAttributes
 {
   static styles = layoutStyles;
@@ -34,11 +34,10 @@ export class LayoutComponent
 
   @subscribe()
   protected options$ = new ContentController(this).getOptions().pipe(
+    skipWhile((options) => options.rules?.[0] === undefined),
     tap((options) => {
-      if (options.rules) {
-        const rule = this.getRule(options);
-        if (!rule) return;
-
+      const rule = this.getRule(options);
+      if (rule) {
         if (rule.layout) {
           this.layout = rule.layout;
         }
@@ -50,6 +49,12 @@ export class LayoutComponent
         this.sticky = !!rule?.sticky;
         this.container = !!rule?.container;
         this.maxWidth = !!rule?.maxWidth;
+      } else {
+        this.layout = undefined;
+        this.orientation = undefined;
+        this.sticky = undefined;
+        this.container = undefined;
+        this.maxWidth = undefined;
       }
     })
   );
