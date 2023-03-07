@@ -25,13 +25,13 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'flex',
+              layout: 'column',
               container: true,
               fullWidth: true,
               background: 'var(--oryx-color-primary-500)',
+              gap: '40px',
               maxWidth: true,
               padding: '10px 0',
-              align: 'center',
             },
           ],
         },
