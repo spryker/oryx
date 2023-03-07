@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { asyncValue, ssrShim, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs';
 import { ContentController } from '../../src/controllers';
-import { ContentMixin } from '../../src/mixins';
+import { ComponentMixin } from '../../src/mixins';
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
@@ -18,7 +18,7 @@ import { layoutStyles } from './layout.styles';
 
 @ssrShim('style')
 export class LayoutComponent
-  extends ContentMixin<CompositionProperties>(LitElement)
+  extends ComponentMixin<CompositionProperties>()
   implements LayoutAttributes
 {
   static styles = layoutStyles;
