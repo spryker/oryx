@@ -8,7 +8,7 @@ export class CustomerNoteModal extends LitElement {
   @property() customerNote?: string;
 
   protected closeCustomerNoteModal(): void {
-    this.dispatchEvent(new CustomEvent('close'));
+    this.dispatchEvent(new Event('close'));
   }
 
   protected override render(): TemplateResult {

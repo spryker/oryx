@@ -11,7 +11,7 @@ export class PickingListCardComponent extends LitElement {
 
   protected pickingListService = resolve(PickingListService);
 
-  @property() pickingList?: PickingList;
+  @property({ type: Object }) pickingList?: PickingList;
   @state() isDisabled?: boolean;
 
   protected startPicking(): void {
@@ -34,9 +34,10 @@ export class PickingListCardComponent extends LitElement {
     );
   }
 
-  protected override render = (): TemplateResult => {
+  protected override render(): TemplateResult {
     return html`
       <oryx-card>
+        <div slot="heading" class="qqq">qqq</div>
         <div slot="heading" class="time">
           ${this.formatTime(this.pickingList?.createdAt)}
         </div>
@@ -52,15 +53,16 @@ export class PickingListCardComponent extends LitElement {
         ${when(
           this.pickingList?.cartNote,
           () => html`
-              <oryx-icon-button size="large"
-                <button
-                  :data-e2e="order-note-button-${this.pickingList?.id}"
-                  @click=${this.showCustomerNote}
-                >
-                  <oryx-icon type="info"></oryx-icon>
-                </button>
-              </oryx-icon-button>
-            `
+            <oryx-icon-button size="large">
+              <button
+                aria-label="Show customer note"
+                :data-e2e="order-note-button-${this.pickingList?.id}"
+                @click=${this.showCustomerNote}
+              >
+                <oryx-icon type="info"></oryx-icon>
+              </button>
+            </oryx-icon-button>
+          `
         )}
 
         <oryx-button
@@ -78,7 +80,7 @@ export class PickingListCardComponent extends LitElement {
         </oryx-button>
       </oryx-card>
     `;
-  };
+  }
 
   protected formatTime(time?: Date): string {
     if (!time) {
