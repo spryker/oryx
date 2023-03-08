@@ -10,6 +10,7 @@ import {
   Observable,
   shareReplay,
   skipWhile,
+  Subject,
   Subscription,
   switchMap,
   take,
@@ -38,6 +39,8 @@ export class CoreQuery<
       subject$: BehaviorSubject<QueryState<ValueType>>;
       state$: Observable<QueryState<ValueType>>;
       data$: Observable<ValueType | undefined>;
+      refresh$: Subject<undefined>;
+      reset$: Subject<undefined>;
     }
   >();
 
@@ -84,7 +87,11 @@ export class CoreQuery<
       )
     );
 
-    const resetTrigger$ = this.getTriggerStream(this.options.resetOn).pipe(
+    const reset$ = new Subject<undefined>();
+    const resetTrigger$ = this.getTriggerStream([
+      ...(this.options.resetOn ?? []),
+      reset$,
+    ]).pipe(
       tap(() => {
         if (subject$.value !== initialState) {
           subject$.next(initialState);
@@ -92,7 +99,11 @@ export class CoreQuery<
       })
     );
 
-    const refreshTrigger$ = this.getTriggerStream(this.options.refreshOn).pipe(
+    const refresh$ = new Subject<undefined>();
+    const refreshTrigger$ = this.getTriggerStream([
+      ...(this.options.refreshOn ?? []),
+      refresh$,
+    ]).pipe(
       tap(() => {
         if (!subject$.value.stale) {
           subject$.next({
@@ -107,7 +118,7 @@ export class CoreQuery<
 
     const loadLogic$ = needToLoad$.pipe(
       tap(() => {
-        if (subject$.value.loading!) {
+        if (!subject$.value.loading) {
           subject$.next({
             error: subject$.value.error,
             loading: true,
@@ -166,7 +177,7 @@ export class CoreQuery<
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
-    this.queryCache.set(key, { subject$, state$, data$ });
+    this.queryCache.set(key, { subject$, state$, data$, reset$, refresh$ });
   }
 
   get(qualifier: Qualifier): Observable<ValueType | undefined> {
@@ -193,6 +204,20 @@ export class CoreQuery<
       stale: optimistic ? true : subject$.value.stale,
       data,
     });
+  }
+
+  reset(qualifier: Qualifier): void {
+    const key = this.getKey(qualifier);
+    if (this.queryCache.has(key)) {
+      this.queryCache.get(key)!.reset$.next(undefined);
+    }
+  }
+
+  refresh(qualifier: Qualifier): void {
+    const key = this.getKey(qualifier);
+    if (this.queryCache.has(key)) {
+      this.queryCache.get(key)!.refresh$.next(undefined);
+    }
   }
 
   protected onLoad(data: ValueType, qualifier?: Qualifier): void {
