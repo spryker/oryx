@@ -1,4 +1,4 @@
-# Build reactive components with Oryx
+# Reactive components
 
 ## Integrate with domain logic
 
