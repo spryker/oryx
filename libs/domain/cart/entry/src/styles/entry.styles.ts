@@ -11,7 +11,7 @@ export const cartEntryStyles = css`
     padding-block: 20px 28px;
   }
 
-  :host(:not(:last-of-type)) {
+  :host {
     border-bottom: 1px solid var(--oryx-color-canvas-300);
   }
 
@@ -21,9 +21,9 @@ export const cartEntryStyles = css`
   }
 
   oryx-product-media {
-    margin-inline-start: 20px;
     width: 87px;
-    height: 87px;
+    aspect-ratio: 1/1;
+    margin-inline-start: 20px;
   }
 
   oryx-product-id {

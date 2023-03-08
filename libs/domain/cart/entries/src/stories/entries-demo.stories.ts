@@ -10,6 +10,7 @@ export default {
     collapsible: false,
     expanded: false,
     hideItemsCount: false,
+    silentRemove: false,
   },
 } as Meta;
 

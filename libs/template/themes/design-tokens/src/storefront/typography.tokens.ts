@@ -21,7 +21,7 @@ export const typographyTokens: ThemeToken = {
 };
 
 export const typographySmallTokens: ThemeToken = {
-  typography: {},
+  typography: { h1: { align: 'center' } },
 };
 
 export const typographyMediumTokens: ThemeToken = {

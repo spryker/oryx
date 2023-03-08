@@ -34,4 +34,8 @@ export const cartEntriesStyles = css`
   oryx-chip {
     margin-inline-start: var(--oryx-space-2);
   }
+
+  oryx-heading {
+    text-align: var(--oryx-typography-h1-align);
+  }
 `;

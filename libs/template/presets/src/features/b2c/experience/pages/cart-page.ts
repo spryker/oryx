@@ -12,7 +12,7 @@ export const CartPage: StaticComponent = {
       components: [
         {
           type: 'oryx-cart-entries',
-          options: { data: { rules: [{ padding: '30px 0' }] } },
+          // options: { data: { rules: [{ padding: '30px 0 0' }] } },
         },
         {
           type: 'experience-composition',
@@ -24,7 +24,6 @@ export const CartPage: StaticComponent = {
                   sticky: true,
                   top: '78px',
                   maxWidth: true,
-                  padding: '30px 0',
                   layout: 'list',
                   gap: '20px',
                 },

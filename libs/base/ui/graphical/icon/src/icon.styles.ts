@@ -22,10 +22,10 @@ export const styles = css`
   }
 
   :host([size='medium']) {
-    --_margin: 3px;
+    --_margin: 2px;
   }
 
   :host([size='small']) {
-    --_margin: 6px;
+    --_margin: 4px;
   }
 `;

@@ -33,8 +33,9 @@ export class CartEntryComponent extends CartComponentMixin(
 ) {
   static styles = [cartEntryStyles];
 
-  @property() available?: number;
   @property() key?: string;
+  @property() available?: number;
+  @property({ type: Boolean }) readonly?: boolean;
 
   @state() protected entry?: CartEntry;
 
@@ -71,7 +72,7 @@ export class CartEntryComponent extends CartComponentMixin(
         .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
       ></oryx-product-media>
       <div class="details">
-        <oryx-product-title .options=${{ link: true }}></oryx-product-title>
+        <oryx-product-title></oryx-product-title>
 
         ${when(
           this.componentOptions?.enableSku,
@@ -79,23 +80,29 @@ export class CartEntryComponent extends CartComponentMixin(
         )}
       </div>
 
-      <div class="actions">
-        <oryx-icon-button>
-          <button aria-label="remove" @click=${this.onRemove}>
-            <oryx-icon type="trash"></oryx-icon>
-          </button>
-        </oryx-icon-button>
-      </div>
+      ${when(
+        !this.readonly,
+        () => html`<div class="actions">
+          <oryx-cart-entry-remove
+            .groupKey=${this.entry?.groupKey}
+          ></oryx-cart-entry-remove>
+        </div>`
+      )}
 
       <div class="price">
-        <oryx-cart-quantity-input
-          .min=${!this.componentOptions?.removeByQuantity ? 1 : 0}
-          .max=${this.available ?? Infinity}
-          .value=${this.entry?.quantity}
-          .decreaseIcon=${this.decreaseIcon}
-          submitOnChange
-          @submit=${this.onSubmit}
-        ></oryx-cart-quantity-input>
+        ${when(
+          !this.readonly,
+          () => html`<oryx-cart-quantity-input
+            .min=${!this.componentOptions?.removeByQuantity ? 1 : 0}
+            .max=${this.available ?? Infinity}
+            .value=${this.entry?.quantity}
+            .decreaseIcon=${this.decreaseIcon}
+            submitOnChange
+            @submit=${this.onSubmit}
+          ></oryx-cart-quantity-input>`,
+          () => this.entry?.quantity
+        )}
+
         <oryx-heading tag="h6" sm-appearance="h3"
           >${this.formattedPrice}</oryx-heading
         >
@@ -111,13 +118,7 @@ export class CartEntryComponent extends CartComponentMixin(
 
   protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {
     e.stopPropagation();
-    if (this.entry?.quantity !== undefined) {
-      this.dispatchSubmitEvent(this.entry.quantity);
-    }
-  }
-
-  protected onRemove(): void {
-    this.dispatchSubmitEvent(0);
+    this.dispatchSubmitEvent(e.detail.quantity);
   }
 
   protected dispatchSubmitEvent(quantity: number): void {

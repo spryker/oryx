@@ -9,7 +9,7 @@ export const styles = css`
     margin-block-end: var(--oryx-space-4);
   }
 
-  h2,
+  section h2,
   section > * {
     padding-inline: var(--oryx-space-4);
   }
