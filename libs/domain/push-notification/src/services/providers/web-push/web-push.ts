@@ -75,6 +75,6 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
    * @see https://developer.mozilla.org/en-US/docs/Web/API/PushManager/subscribe#parameters
    */
   protected encodeKey(key: string): string {
-    return encodeURIComponent(key.replace(/=+$/, ''));
+    return encodeURIComponent(key.replace(/([^=].)=+$/, '$1'));
   }
 }
