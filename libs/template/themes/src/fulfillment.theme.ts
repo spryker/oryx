@@ -1,12 +1,12 @@
 import { Theme } from '@spryker-oryx/core';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
-import { backofficeNgIcons } from '@spryker-oryx/themes/icons';
+import { fulfillmentIcons } from '@spryker-oryx/themes/icons';
 
 // TODO: This should be dropped after HRZ-2239
 export const fulfillmentTheme: Theme = {
-  name: 'backoffice-ng',
+  name: 'fulfillment',
   breakpoints: defaultBreakpoints,
-  icons: backofficeNgIcons,
+  icons: fulfillmentIcons,
   designTokens: () =>
     import('../design-tokens/src/backoffice').then(
       (s) => s.backofficeTokensWithoutDarkMode

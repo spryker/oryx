@@ -5,6 +5,7 @@ import { RouterFeature } from '@spryker-oryx/router';
 import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import { resourceGraphics } from '../../resources';
+import { fulfillmentResourceGraphics } from '../../resources/graphics/fulfillment';
 import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
@@ -13,6 +14,7 @@ import {
 export const fulfillmentResources: Resources = {
   graphics: {
     ...resourceGraphics,
+    ...fulfillmentResourceGraphics,
   },
 };
 
