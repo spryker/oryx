@@ -114,6 +114,12 @@
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
       "@spryker-oryx/product/title": ["libs/domain/product/title/index.ts"],
+      "@spryker-oryx/push-notification": [
+        "libs/domain/push-notification/src/index.ts"
+      ],
+      "@spryker-oryx/push-notification/*": [
+        "libs/domain/push-notification/*/index.ts"
+      ],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],

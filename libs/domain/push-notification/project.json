@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domain/push-notification/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "configurations": {
+        "update": {
+          "update": true
+        }
+      }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/domain/push-notification/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["layer:domain", "root"]
+}
