@@ -45,7 +45,7 @@ export interface QueryService extends QueryManager {
   ): Command<ResultType, Qualifier> | undefined;
 
   emit(event: QueryEvent): void;
-  getEvents(eventType?: string): Observable<QueryEvent>;
+  getEvents(eventType?: string): Observable<QueryEvent<any, any>>;
 }
 
 declare global {

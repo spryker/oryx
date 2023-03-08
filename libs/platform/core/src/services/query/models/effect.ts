@@ -18,7 +18,9 @@ export type StreamEffect = ({
   events$,
 }: {
   events$: Observable<QueryEvent>;
-  getEvents: (eventType?: string | string[]) => Observable<QueryEvent>;
+  getEvents: (
+    eventType?: string | string[]
+  ) => Observable<QueryEvent<any, any>>;
   query: QueryManager;
 }) => Observable<unknown>;
 

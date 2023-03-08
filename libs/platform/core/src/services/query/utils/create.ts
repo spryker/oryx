@@ -25,7 +25,7 @@ export function createCommand<
   return inject(QueryService).createCommand(options);
 }
 
-export function createEffect<Data = unknown, Qualifier = unknown>(
+export function createEffect<Data = any, Qualifier = any>(
   effect: EffectDefinition<Data, Qualifier>
 ): Observable<unknown> & Unsubscribable {
   return inject(QueryService).createEffect(effect as EffectDefinition);
