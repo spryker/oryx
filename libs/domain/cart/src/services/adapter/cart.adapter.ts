@@ -22,7 +22,7 @@ export interface DeleteCartEntityProps {
 }
 
 export interface CartAdapter {
-  getAll: () => Observable<Cart[] | null>;
+  getAll: () => Observable<Cart[]>;
   get: (data: GetCartProps) => Observable<Cart>;
   addEntry: (data: AddCartEntityProps) => Observable<Cart>;
   deleteEntry: (data: DeleteCartEntityProps) => Observable<unknown>;

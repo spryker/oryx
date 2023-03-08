@@ -21,7 +21,7 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService)
   ) {}
 
-  getAll(): Observable<Cart[] | null> {
+  getAll(): Observable<Cart[]> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
