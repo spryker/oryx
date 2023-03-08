@@ -1,284 +1,269 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IdentityService } from '@spryker-oryx/auth';
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { inject, OnDestroy } from '@spryker-oryx/di';
+import {
+  Command,
+  createCommand,
+  createEffect,
+  createQuery,
+  QueryService,
+  QueryState,
+} from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
-  BehaviorSubject,
-  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  filter,
   map,
-  mapTo,
   Observable,
   of,
-  ReplaySubject,
-  Subscription,
+  scan,
+  skip,
+  startWith,
   switchMap,
   take,
-  tap,
 } from 'rxjs';
 import {
   AddCartEntryQualifier,
   Cart,
   CartEntry,
+  CartEntryQualifier,
   CartQualifier,
   CartTotals,
-  DeleteCartEntryQualifier,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
-import { CartService, STATE } from './cart.service';
+import { CartService } from './cart.service';
+import {
+  CartEntryRemoved,
+  CartModificationEnd,
+  CartModificationFail,
+  CartModificationStart,
+  CartModificationSuccess,
+} from './state';
 
-export class DefaultCartService implements CartService, OnDestroy {
-  protected loading$ = new BehaviorSubject(false);
-  protected carts = new Map<string, STATE>();
-  protected subscription = new Subscription();
-  protected activeCartId$ = new ReplaySubject<string | null>(1);
-  protected activeCart$ = this.activeCartId$.pipe(
+export class DefaultCartService implements CartService {
+  protected cartCommandBase = {
+    onStart: [CartModificationStart],
+    onFinish: [CartModificationEnd],
+    onSuccess: [CartModificationSuccess],
+    onError: [CartModificationFail],
+  };
+
+  protected cartsQuery$ = createQuery({
+    loader: () => this.adapter.getAll(),
+    onLoad: [
+      ({ data: carts }) => {
+        carts?.forEach((cart) => {
+          this.cartQuery$.set({ data: cart, qualifier: { cartId: cart.id } });
+        });
+      },
+    ],
+    resetOn: [this.identity.get().pipe(skip(1))],
+  });
+
+  protected cartQuery$ = createQuery<Cart, CartQualifier>({
+    loader: (qualifier) => this.adapter.get(qualifier), // we are not loading individual carts yet
+    refreshOn: [CartEntryRemoved],
+  });
+
+  protected addEntryCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: AddCartEntryQualifier) => {
+      return this.adapter.addEntry(qualifier);
+    },
+  });
+
+  protected removeEntryCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: CartEntryQualifier) => {
+      return this.adapter.deleteEntry(qualifier);
+    },
+    onSuccess: [...this.cartCommandBase.onSuccess, CartEntryRemoved],
+  });
+
+  protected updateEntryCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartEntryQualifier) => {
+      return this.adapter.updateEntry(qualifier);
+    },
+  });
+
+  protected updateAfterModification$ = createEffect<Cart>([
+    CartModificationSuccess,
+    ({ event }) => {
+      if (event.data)
+        this.cartQuery$.set({
+          data: event.data,
+          qualifier: { cartId: event.data.id },
+        });
+    },
+  ]);
+
+  protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
+    getEvents([CartModificationStart, CartModificationEnd]).pipe(
+      scan(
+        (acc, event: any) =>
+          event.type === CartModificationStart ? ++acc : --acc,
+        0
+      ),
+      map(Boolean)
+    )
+  ) as Observable<boolean>;
+
+  protected entryBusyState$ = createEffect<Cart>(({ getEvents }) =>
+    getEvents([CartModificationStart, CartModificationEnd]).pipe(
+      filter((event) => (event.qualifier as any)?.groupKey),
+      scan((acc, event: any) => {
+        if (event.type === CartModificationStart) {
+          acc.set(
+            event.qualifier.groupKey,
+            (acc.get(event.qualifier.groupKey) ?? 0) + 1
+          );
+        } else {
+          const newValue = (acc.get(event.qualifier.groupKey) ?? 0) - 1;
+          if (newValue > 0) {
+            acc.set(event.qualifier.groupKey, newValue);
+          } else {
+            acc.delete(event.qualifier.groupKey);
+          }
+        }
+        return acc;
+      }, new Map<string, number>())
+    )
+  ) as Observable<Map<string, number>>;
+
+  protected activeCartId$ = this.cartsQuery$.get(undefined).pipe(
+    map((carts) => {
+      for (const cart of carts ?? []) {
+        if (cart.isDefault) {
+          return cart.id;
+        }
+      }
+      return carts?.[0]?.id ?? null;
+    }),
     switchMap((id) =>
-      this.carts.has(id!) ? this.carts.get(id!)!.value$ : of(null)
+      id
+        ? of(id)
+        : // we want to wait for the first cart to be created
+          this.query.getEvents(CartModificationSuccess).pipe(
+            map((event: any) => event.data?.id),
+            filter(Boolean),
+            startWith(null)
+          )
     )
   );
-  protected activeCartError$ = this.activeCartId$.pipe(
-    switchMap((id) =>
-      this.carts.has(id!) ? this.carts.get(id!)!.error$ : of(null)
-    )
+
+  protected isBusy$ = combineLatest([
+    this.cartsQuery$.getState(undefined), // loading state of all carts
+    this.getCartState().pipe(startWith({ loading: false } as QueryState<Cart>)), // loading state of the active cart
+    this.isCartModified$.pipe(startWith(false)), // is any cart being modified
+  ]).pipe(
+    map(
+      ([cartsState, cartState, isCartModified]) =>
+        cartsState.loading || cartState.loading || isCartModified
+    ),
+    distinctUntilChanged()
   );
 
   constructor(
     protected adapter = inject(CartAdapter),
-    protected identity = inject(IdentityService)
-  ) {
-    this.initSubscriptions();
+    protected identity = inject(IdentityService),
+    protected query = inject(QueryService)
+  ) {}
+
+  load(): void {
+    this.cartsQuery$.refresh();
   }
 
-  protected initSubscriptions(): void {
-    this.loading$.next(true);
+  getCart(qualifier?: CartQualifier): Observable<Cart | undefined> {
+    if (qualifier?.cartId) {
+      return this.cartQuery$.get(qualifier);
+    }
 
-    const loadCartsSubs = this.identity
-      .get()
-      .pipe(
-        switchMap(() => this.loadCarts()),
-        tap(() => this.loading$.next(false))
-      )
-      .subscribe();
-
-    this.subscription.add(loadCartsSubs);
-  }
-
-  protected loadCarts(): Observable<void> {
-    return this.adapter.getAll().pipe(
-      map((carts) => {
-        this.carts.clear();
-        // TODO:complete all value/error streams
-
-        let activeCartUpdated = false;
-        (carts ?? []).forEach((cart) => {
-          this.addCartToMap(cart);
-
-          if (cart.isDefault) {
-            this.activeCartId$.next(cart.id);
-            activeCartUpdated = true;
-          }
-        });
-
-        if (!activeCartUpdated) {
-          this.activeCartId$.next(carts?.[0]?.id ?? null);
-        }
-      })
-    );
-  }
-
-  getLoadingState(): Observable<boolean> {
-    return this.loading$;
-  }
-
-  load(): Observable<null> {
-    return subscribeReplay(
-      this.identity.get().pipe(
-        take(1),
-        switchMap(() => this.loadCarts()),
-        mapTo(null)
+    return this.activeCartId$.pipe(
+      switchMap((id) =>
+        id ? this.cartQuery$.get({ cartId: id! }) : of(undefined)
       )
     );
   }
 
-  onDestroy(): void {
-    this.subscription.unsubscribe();
-    this.loading$.next(false);
-    this.loading$.complete();
-  }
-
-  // ToDo: implement such methods for multi-cart behavior
-  /** get all carts (multi-cart) */
-  // getCarts() {}
-  /** creates a new cart */
-  // create() {}
-  /** deletes existing cart */
-  // remove() {}
-
-  getCart(data?: CartQualifier): Observable<Cart | null> {
-    if (data?.cartId && this.carts.has(data.cartId)) {
-      return this.carts.get(data.cartId)!.value$;
+  getCartState(qualifier?: CartQualifier): Observable<QueryState<Cart>> {
+    if (qualifier?.cartId) {
+      return this.cartQuery$.getState(qualifier);
     }
 
-    return this.activeCart$;
-  }
-
-  getCartError(data?: CartQualifier): Observable<HttpErrorResponse | null> {
-    if (!data?.cartId) {
-      return this.activeCartError$;
-    }
-
-    return this.carts.get(data.cartId!)!.error$;
+    return this.activeCartId$.pipe(
+      switchMap((id) => this.cartQuery$.getState({ cartId: id! }))
+    );
   }
 
   getTotals(data?: CartQualifier): Observable<CartTotals | null> {
-    const cart$ = data?.cartId
-      ? this.carts.get(data!.cartId)!.value$
-      : this.activeCart$;
-
-    return cart$.pipe(map((cart) => cart?.totals ?? null));
+    return this.getCart(data).pipe(map((cart) => cart?.totals ?? null));
   }
 
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
-    const cart$ = data?.cartId
-      ? this.carts.get(data!.cartId)!.value$
-      : this.activeCart$;
-
-    return cart$.pipe(map((cart) => cart?.products ?? []));
+    return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
 
   isEmpty(data?: CartQualifier): Observable<boolean> {
     return this.getEntries(data).pipe(map((entries) => !entries?.length));
   }
 
-  addEntry({ cartId, ...attributes }: AddCartEntryQualifier): Observable<null> {
-    this.loading$.next(true);
-
-    return subscribeReplay(
-      this.activeCartId$.pipe(
-        take(1),
-        switchMap((activeId) =>
-          this.adapter.addEntry({
-            cartId: cartId ?? activeId!,
-            attributes,
-          })
-        ),
-        tap((cart) => {
-          const isNoCarts = this.carts.size === 0;
-          const cartData = this.carts.get(cart.id);
-
-          if (!cartData) {
-            this.addCartToMap(cart);
-          } else {
-            cartData.value$.next(cart);
-          }
-
-          if (isNoCarts) {
-            this.activeCartId$.next(cart.id);
-          }
-
-          this.loading$.next(false);
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.loading$.next(false);
-          this.updateError(error, cartId);
-          throw error;
-        }),
-        mapTo(null)
-      )
-    );
-  }
-
-  deleteEntry({
-    cartId,
-    groupKey,
-  }: DeleteCartEntryQualifier): Observable<null> {
-    this.loading$.next(true);
-
-    return subscribeReplay(
-      this.activeCartId$.pipe(
-        take(1),
-        switchMap((activeId) =>
-          this.adapter
-            .deleteEntry({
-              cartId: cartId ?? activeId!,
-              groupKey,
+  protected executeWithOptionalCart<
+    Qualifier extends { cartId?: string },
+    Result
+  >(
+    qualifier: Qualifier & { cartId?: string },
+    command: Command<Result, Qualifier>
+  ): Observable<Result> {
+    if (!qualifier.cartId) {
+      return subscribeReplay(
+        this.activeCartId$.pipe(
+          take(1),
+          switchMap((cartId) =>
+            command.execute({
+              ...qualifier,
+              cartId,
             })
-            .pipe(
-              switchMap(() =>
-                this.adapter.get({
-                  cartId: cartId ?? activeId!,
-                })
-              )
-            )
-        ),
-        tap((cart) => {
-          const cachedCart = this.carts.get(cart.id);
-          cachedCart?.value$.next(cart);
-
-          this.loading$.next(false);
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.loading$.next(false);
-          this.updateError(error, cartId);
-          throw error;
-        }),
-        mapTo(null)
-      )
-    );
-  }
-
-  updateEntry({
-    cartId,
-    groupKey,
-    ...attributes
-  }: UpdateCartEntryQualifier): Observable<null> {
-    this.loading$.next(true);
-
-    return subscribeReplay(
-      this.activeCartId$.pipe(
-        take(1),
-        switchMap((activeId) =>
-          this.adapter.updateEntry({
-            groupKey,
-            cartId: cartId ?? activeId!,
-            attributes,
-          })
-        ),
-        tap((cart) => {
-          const cachedCart = this.carts.get(cart.id)!;
-
-          cachedCart.value$.next(cart);
-
-          this.loading$.next(false);
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.loading$.next(false);
-          this.updateError(error, cartId);
-          throw error;
-        }),
-        mapTo(null)
-      )
-    );
-  }
-
-  protected updateError(error: HttpErrorResponse, cartId?: string): void {
-    this.activeCartId$.pipe(take(1)).subscribe((activeCartId) => {
-      const id = cartId ?? activeCartId!;
-      const cachedCart = this.carts.get(id)!;
-
-      cachedCart?.error$?.next(error);
-    });
-  }
-
-  protected addCartToMap(cart: Cart): void {
-    if (!this.carts.has(cart.id)) {
-      this.carts.set(cart.id, {
-        value$: new ReplaySubject<Cart | null>(1),
-        error$: new ReplaySubject(1),
-      });
+          )
+        )
+      );
     }
-    this.carts.get(cart.id)!.value$.next(cart);
+
+    return command.execute(qualifier);
+  }
+
+  addEntry(qualifier: AddCartEntryQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(
+      qualifier as any,
+      this.addEntryCommand$
+    );
+  }
+
+  deleteEntry(qualifier: CartEntryQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(
+      qualifier as any,
+      this.removeEntryCommand$
+    );
+  }
+
+  updateEntry(qualifier: UpdateCartEntryQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(
+      qualifier as any,
+      this.updateEntryCommand$
+    );
+  }
+
+  isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {
+    if (groupKey) {
+      return this.entryBusyState$.pipe(
+        map((state) => state.has(groupKey)),
+        distinctUntilChanged()
+      );
+    }
+
+    //TODO: support for multiple carts has to be implemented (cartId qualifier is ignored currently)
+    return this.isBusy$;
   }
 }
