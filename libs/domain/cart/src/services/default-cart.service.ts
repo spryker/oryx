@@ -177,7 +177,7 @@ export class DefaultCartService implements CartService {
     protected query = inject(QueryService)
   ) {}
 
-  load(): void {
+  reload(): void {
     this.cartsQuery$.refresh();
   }
 
