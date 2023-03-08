@@ -4,7 +4,9 @@ import { Observable, of } from 'rxjs';
 import { PushService } from './push.service';
 
 export class NoopPushService implements PushService {
-  async init(): Promise<void> {}
+  init(): Observable<void> {
+    return of(undefined);
+  }
 
   subscribe(): Observable<any> {
     return of(undefined);
