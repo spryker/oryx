@@ -62,8 +62,8 @@ export class DefaultCartService implements CartService {
     resetOn: [this.identity.get().pipe(skip(1))],
   });
 
-  protected cartQuery$ = createQuery<Cart, CartQualifier>({
-    loader: (qualifier) => this.adapter.get(qualifier), // we are not loading individual carts yet
+  protected cartQuery$ = createQuery({
+    loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
     refreshOn: [CartEntryRemoved],
   });
 
@@ -93,6 +93,7 @@ export class DefaultCartService implements CartService {
     CartModificationSuccess,
     ({ event }) => {
       if (event.data)
+        // Use result of modification commands to update cart state
         this.cartQuery$.set({
           data: event.data,
           qualifier: { cartId: event.data.id },
@@ -103,7 +104,7 @@ export class DefaultCartService implements CartService {
   protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(
       scan(
-        (acc, event: any) =>
+        (acc, event: CartModificationStart | CartModificationEnd) =>
           event.type === CartModificationStart ? ++acc : --acc,
         0
       ),
@@ -113,19 +114,23 @@ export class DefaultCartService implements CartService {
 
   protected entryBusyState$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(
-      filter((event) => (event.qualifier as any)?.groupKey),
-      scan((acc, event: any) => {
+      filter(
+        (event: CartModificationStart | CartModificationEnd) =>
+          !!event.qualifier?.groupKey
+      ),
+      scan((acc, event) => {
         if (event.type === CartModificationStart) {
           acc.set(
-            event.qualifier.groupKey,
-            (acc.get(event.qualifier.groupKey) ?? 0) + 1
+            (event as CartModificationStart).qualifier!.groupKey!,
+            (acc.get((event as CartModificationStart).qualifier!.groupKey!) ??
+              0) + 1
           );
         } else {
-          const newValue = (acc.get(event.qualifier.groupKey) ?? 0) - 1;
+          const newValue = (acc.get(event.qualifier!.groupKey!) ?? 0) - 1;
           if (newValue > 0) {
-            acc.set(event.qualifier.groupKey, newValue);
+            acc.set(event.qualifier!.groupKey!, newValue);
           } else {
-            acc.delete(event.qualifier.groupKey);
+            acc.delete(event.qualifier!.groupKey!);
           }
         }
         return acc;
@@ -147,7 +152,7 @@ export class DefaultCartService implements CartService {
         ? of(id)
         : // we want to wait for the first cart to be created
           this.query.getEvents(CartModificationSuccess).pipe(
-            map((event: any) => event.data?.id),
+            map((event: CartModificationSuccess) => (event.data as Cart)?.id),
             filter(Boolean),
             startWith(null)
           )
@@ -210,11 +215,8 @@ export class DefaultCartService implements CartService {
     return this.getEntries(data).pipe(map((entries) => !entries?.length));
   }
 
-  protected executeWithOptionalCart<
-    Qualifier extends { cartId?: string },
-    Result
-  >(
-    qualifier: Qualifier & { cartId?: string },
+  protected executeWithOptionalCart<Qualifier extends CartQualifier, Result>(
+    qualifier: Qualifier,
     command: Command<Result, Qualifier>
   ): Observable<Result> {
     if (!qualifier.cartId) {
@@ -235,24 +237,15 @@ export class DefaultCartService implements CartService {
   }
 
   addEntry(qualifier: AddCartEntryQualifier): Observable<unknown> {
-    return this.executeWithOptionalCart(
-      qualifier as any,
-      this.addEntryCommand$
-    );
+    return this.executeWithOptionalCart(qualifier, this.addEntryCommand$);
   }
 
   deleteEntry(qualifier: CartEntryQualifier): Observable<unknown> {
-    return this.executeWithOptionalCart(
-      qualifier as any,
-      this.removeEntryCommand$
-    );
+    return this.executeWithOptionalCart(qualifier, this.removeEntryCommand$);
   }
 
   updateEntry(qualifier: UpdateCartEntryQualifier): Observable<unknown> {
-    return this.executeWithOptionalCart(
-      qualifier as any,
-      this.updateEntryCommand$
-    );
+    return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {
