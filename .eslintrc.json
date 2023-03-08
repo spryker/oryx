@@ -55,7 +55,8 @@
                 "onlyDependOnLibsWithTags": [
                   "lib:themes",
                   "layer:base",
-                  "layer:platform"
+                  "layer:platform",
+                  "lib:ui"
                 ]
               },
               {

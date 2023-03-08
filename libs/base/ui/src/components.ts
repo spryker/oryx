@@ -1,4 +1,5 @@
 export * from '../action/button/src/button.def';
+export * from '../action/color-mode-selector/src/color-mode-selector.def';
 export * from '../action/icon-button/src/icon-button.def';
 export * from '../action/link/src/link.def';
 export * from '../action/toggle-icon/src/component';
@@ -24,8 +25,8 @@ export * from '../navigation/tabs/src/tabs.def';
 export * from '../overlays/drawer/src/component';
 export * from '../overlays/dropdown/src/component';
 export * from '../overlays/modal/src/component';
-export * from '../overlays/notification-center/src/component';
-export * from '../overlays/notification/src/component';
+export * from '../overlays/notification-center/src/notification-center.def';
+export * from '../overlays/notification/src/notification.def';
 export * from '../overlays/popover/src/component';
 export * from '../search/searchbox/src/searchbox.def';
 export * from '../search/typeahead/src/typeahead.def';

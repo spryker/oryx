@@ -1,8 +1,14 @@
-import { Schemes, Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
+import { Schemes } from '@spryker-oryx/ui/notification';
 import { NotificationStrategy } from '../index';
 import { TAG_NAME } from '../tag';
 
-const types = Object.values(Types);
+const types = [
+  AlertType.Info,
+  AlertType.Success,
+  AlertType.Warning,
+  AlertType.Error,
+];
 const schemes = Object.values(Schemes);
 
 const getRandomIndex = (limit: number): number =>
@@ -13,16 +19,20 @@ export const generateNotification = (
   strategy: NotificationStrategy = {}
 ): NotificationStrategy => {
   return {
-    type: Types.INFO,
+    type: AlertType.Info,
     content: 'Title',
     subtext: 'Sub text',
+    autoClose: false,
     ...strategy,
   };
 };
 
-export const generateRandomNotification = (): NotificationStrategy => {
-  const type = types[getRandomIndex(types.length)];
-  const scheme = schemes[getRandomIndex(schemes.length)];
+export const generateRandomNotification = (
+  demoType?: AlertType,
+  demoScheme?: Schemes
+): NotificationStrategy => {
+  const type = demoType ?? types[getRandomIndex(types.length)];
+  const scheme = demoScheme ?? schemes[getRandomIndex(schemes.length)];
 
   return {
     ...(type ? { type } : {}),
@@ -30,6 +40,7 @@ export const generateRandomNotification = (): NotificationStrategy => {
     ...(getRandom() ? { subtext: 'Sub text' } : {}),
     closable: getRandom(),
     content: type ? 'Title' : 'Custom content',
+    autoClose: false,
   };
 };
 

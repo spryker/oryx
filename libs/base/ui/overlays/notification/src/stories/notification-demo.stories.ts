@@ -1,7 +1,8 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { Schemes, Types } from '../notification.model';
+import { Schemes } from '../notification.model';
 import { bodyBackgroundColor } from './util';
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 export default {
   title: `${storybookPrefix}/Overlays/Notification`,
   args: {
-    type: Types.INFO,
+    type: AlertType.Info,
     title: 'Title',
     subtext: 'Content text',
     backgroundColor: bodyBackgroundColor.options[0],
@@ -28,7 +29,12 @@ export default {
   argTypes: {
     backgroundColor: bodyBackgroundColor,
     type: {
-      options: Object.values(Types),
+      options: [
+        AlertType.Info,
+        AlertType.Success,
+        AlertType.Warning,
+        AlertType.Error,
+      ],
       control: { type: 'radio' },
     },
     scheme: {

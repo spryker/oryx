@@ -5,12 +5,12 @@ import {
   ImageSource,
   ProductImageService,
   ProductMediaContainerSize,
-  Size,
 } from '@spryker-oryx/product';
 import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
+import { Size } from '@spryker-oryx/ui';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 
 import { html } from 'lit';

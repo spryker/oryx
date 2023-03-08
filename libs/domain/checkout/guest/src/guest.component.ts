@@ -2,6 +2,7 @@ import { CheckoutComponentMixin } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentController } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
+import { Size } from '@spryker-oryx/ui';
 import { hydratable, i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { Subject, switchMap, take, tap } from 'rxjs';
@@ -46,7 +47,7 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin<CheckoutGuest
         create an account later.
       </slot>
 
-      <oryx-button slot="footer" size="small">
+      <oryx-button slot="footer" size=${Size.Sm}>
         <button @click=${this.handleProceed}>Checkout as a guest</button>
       </oryx-button>
     </oryx-card>`;

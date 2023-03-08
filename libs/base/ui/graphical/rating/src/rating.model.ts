@@ -56,5 +56,5 @@ export interface RatingProperties {
    *
    * No default value, but the styles default to large size.
    */
-  size?: Size.small | Size.large;
+  size?: Size.Sm | Size.Lg;
 }
