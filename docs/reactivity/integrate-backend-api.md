@@ -2,7 +2,7 @@
 
 ## Qualify the request
 
-Components, services and adapters are customizable. To ensure that a change in the requested data by a component can be used in lower layers, a best practice is to use a so-called qualifier in the application flow. The qualifier is a single object that will be passed fro application layer to application layer, and can be extended. The example below shows the use of the `ProductQualifier` in the ProductService.
+Components, services and adapters are customizable. To ensure that a change in the request can be introduced and applied in any layer, without customizing all layers, a best practice is to use a so-called qualifier in the application flow. A qualifier is a single object that is passed through the application, and can be (re)defined globally. The example below shows the use of the `ProductQualifier` in the ProductService.
 
 ```ts
 export interface ProductQualifier {
@@ -17,7 +17,7 @@ export class DefaultProductService implements ProductService {
 }
 ```
 
-Whenever the qualifier must be extended, say we like to query the product for a certain brand or supplier, the qualifier can be extended:
+Whenever the request requires a new property, say we like to query the product for a certain brand or supplier, the qualifier can be extended:
 
 ```ts
 declare global {
