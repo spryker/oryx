@@ -1,5 +1,12 @@
 import { inject } from '@spryker-oryx/di';
-import { Command, CommandOptions, Query, QueryOptions } from '../models';
+import { Observable, Unsubscribable } from 'rxjs';
+import {
+  Command,
+  CommandOptions,
+  EffectDefinition,
+  Query,
+  QueryOptions,
+} from '../models';
 import { QueryService } from '../query.service';
 
 export function createQuery<
@@ -18,6 +25,8 @@ export function createCommand<
   return inject(QueryService).createCommand(options);
 }
 
-export function createEffect(effect: any): unknown {
-  return inject(QueryService).createEffect(effect);
+export function createEffect<Data = unknown, Qualifier = unknown>(
+  effect: EffectDefinition<Data, Qualifier>
+): Observable<unknown> & Unsubscribable {
+  return inject(QueryService).createEffect(effect as EffectDefinition);
 }
