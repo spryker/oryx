@@ -6,9 +6,14 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  EVENT_TOGGLE_COLOR,
+  toggleMode,
+} from '@spryker-oryx/ui/color-mode-selector';
+import { from, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
+import { ExperienceStaticData, StaticComponent } from '../static-data';
 import { catchMessage, postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -26,9 +31,9 @@ export class DefaultExperienceDataClientService
   constructor(
     protected appRef = inject(AppRef),
     protected optionsService = inject(FeatureOptionsService),
-    protected suggestionService = inject('oryx.SuggestionService', null)
+    protected suggestionService = inject('oryx.SuggestionService', null),
+    protected staticData = inject(ExperienceStaticData, [])
   ) {}
-
   protected schemas$ = of(this.appRef.findPlugin(ComponentsPlugin)).pipe(
     switchMap((componentPlugin) => componentPlugin!.getComponentSchemas()),
     tap((schemas) => {
@@ -62,8 +67,8 @@ export class DefaultExperienceDataClientService
     })
   );
   protected products$ = catchMessage(MessageType.Query).pipe(
-    switchMap<string, Observable<ProductsSuggestion | null>>(
-      (query) => this.suggestionService?.get({ query }) ?? of(null)
+    switchMap<string, Observable<ProductsSuggestion | undefined>>(
+      (query) => this.suggestionService?.get({ query }) ?? of(undefined)
     ),
     tap((suggestions) => {
       postMessage({
@@ -75,14 +80,38 @@ export class DefaultExperienceDataClientService
       });
     })
   );
+  protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(
+    tap((mode) => {
+      toggleMode(mode);
+      window.dispatchEvent(
+        new CustomEvent(EVENT_TOGGLE_COLOR, {
+          bubbles: true,
+          composed: true,
+          detail: mode,
+        })
+      );
+    })
+  );
+  protected appReady$ = from(this.appRef.whenReady()).pipe(
+    tap(() => postMessage({ type: MessageType.AppReady, data: null }))
+  );
   protected initializer$ = merge(
     this.options$,
     this.graphics$,
     this.products$,
-    this.schemas$
+    this.schemas$,
+    this.colorMode$,
+    this.appReady$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {
     return this.initializer$;
+  }
+
+  sendStatic(data: StaticComponent[]): void {
+    postMessage({
+      type: MessageType.Static,
+      data,
+    });
   }
 }

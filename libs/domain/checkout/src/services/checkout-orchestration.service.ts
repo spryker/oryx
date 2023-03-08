@@ -14,7 +14,7 @@ export interface CheckoutOrchestrationService {
   submit(step?: CheckoutStepType): Observable<ValidityReport[]>;
 }
 
-export const CheckoutOrchestrationService = 'FES.CheckoutOrchestrationService';
+export const CheckoutOrchestrationService = 'oryx.CheckoutOrchestrationService';
 
 declare global {
   interface InjectionTokensContractMap {

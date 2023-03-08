@@ -20,7 +20,7 @@ export interface CheckoutDataService {
   reset(): void;
 }
 
-export const CheckoutDataService = 'FES.CheckoutDataService';
+export const CheckoutDataService = 'oryx.CheckoutDataService';
 
 declare global {
   interface InjectionTokensContractMap {

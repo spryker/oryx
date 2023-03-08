@@ -2,7 +2,7 @@ import { Transformer } from '@spryker-oryx/core';
 import { snakify } from '@spryker-oryx/core/utilities';
 import { ApiProductListModel, ProductListSort } from '../../../../models';
 
-export const SortNormalizer = 'FES.SortNormalizer*';
+export const SortNormalizer = 'oryx.SortNormalizer*';
 
 export function sortNormalizer(
   sort: ApiProductListModel.Sort

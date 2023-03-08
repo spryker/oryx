@@ -10,7 +10,7 @@ export interface AddressService {
   deleteAddress(data: Address): Observable<unknown>;
 }
 
-export const AddressService = 'FES.AddressService';
+export const AddressService = 'oryx.AddressService';
 
 declare global {
   interface InjectionTokensContractMap {

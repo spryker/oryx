@@ -1,3 +1,3 @@
 export * from './icon-button.component';
 export * from './icon-button.model';
-export * from './styles';
+export * from './icon-button.styles';

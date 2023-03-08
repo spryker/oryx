@@ -3,7 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { ApiCheckoutModel } from '../../../../models';
 import { PostCheckoutProps } from '../../checkout.adapter';
 
-export const CheckoutSerializer = 'FES.CheckoutSerializers*';
+export const CheckoutSerializer = 'oryx.CheckoutSerializers*';
 
 export function checkoutAttributesSerializer(
   data: PostCheckoutProps

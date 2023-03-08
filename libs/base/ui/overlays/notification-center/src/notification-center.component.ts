@@ -1,29 +1,25 @@
-import { Schemes } from '@spryker-oryx/ui/notification';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
+  NotificationCenterComponentAttributes,
+  NotificationPosition,
   NotificationRegistry,
   NotificationStrategy,
-  Positions,
 } from './notification-center.model';
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
 
-export const defaultStrategy: NotificationStrategy = {
-  scheme: Schemes.LIGHT,
-  autoClose: true,
-  autoCloseTime: 4000,
-  closable: true,
-  floating: true,
-};
-
-export class NotificationCenterComponent extends LitElement {
+export class NotificationCenterComponent
+  extends LitElement
+  implements NotificationCenterComponentAttributes
+{
   static styles = [notificationCenterBaseStyles];
 
-  @property({ reflect: true }) position?: Positions;
+  @property({ reflect: true }) position?: NotificationPosition;
+  @property({ reflect: true, type: Boolean }) stackable?: boolean;
 
   protected registryController = new RegistryController(this);
 
@@ -38,6 +34,7 @@ export class NotificationCenterComponent extends LitElement {
       strategy,
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.registry[this.registry.length - 1].key!;
   }
 
@@ -72,9 +69,10 @@ export class NotificationCenterComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
+    const notifications = [...this.registry].reverse();
     return html`
       ${repeat(
-        this.registry,
+        notifications,
         ({ key }) => key,
         (item) => this.renderNotification(item)
       )}

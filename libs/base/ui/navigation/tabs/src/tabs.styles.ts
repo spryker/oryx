@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
@@ -52,8 +52,8 @@ export const baseStyles = css`
   :host([appearance='${secondary}']) ::slotted(oryx-tab) {
     color: var(--oryx-color-ink);
     background: var(--oryx-color-canvas-200);
-    border-block-start: 4px solid transparent;
-    border-bottom: none;
+    border-block-start: 2px solid transparent;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab:hover) {
@@ -66,14 +66,14 @@ export const baseStyles = css`
     color: var(--oryx-color-primary-300);
     background: none;
     border-color: var(--oryx-color-primary-300);
-    border-bottom: none;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]) {
     color: var(--oryx-color-error-300);
     background: var(--oryx-color-canvas-200);
     border-color: transparent;
-    border-bottom: none;
+    border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]:hover) {
@@ -86,7 +86,7 @@ export const baseStyles = css`
     color: var(--oryx-color-error-300);
     background: none;
     border-color: var(--oryx-color-error-300);
-    border-bottom: none;
+    border-block-end: none;
   }
 
   slot[name='panels'] {
@@ -98,15 +98,15 @@ export const baseStyles = css`
   }
 `;
 
-const mediumScreen = css`
+const smallScreen = css`
   :host([appearance='${secondary}']) ::slotted(oryx-tab) {
-    border-width: 2px;
+    border-width: 4px;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

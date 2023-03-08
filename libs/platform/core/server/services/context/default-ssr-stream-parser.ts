@@ -24,21 +24,26 @@ export class DefaultSSRStreamParserService implements SSRStreamParserService {
     track: true,
     wbr: true,
   };
+  protected prevTag = '';
 
   fillStream(stream: string): void {
     this.stream = stream;
   }
 
   getStreamStack(): Record<string, string>[] {
-    const subStream = this.stream.replace(this.parsedStream, '');
+    let subStream = this.stream.replace(this.parsedStream, '');
     this.parsedStream = this.stream;
+    !subStream.startsWith('<') && (subStream = `<${this.prevTag} ` + subStream);
     const stream = subStream
       .replace(/(\r\n|\n|\r)/gm, ' ')
       .replace(/<!--(.*?)-->/g, ' ')
       .split('<');
+    this.prevTag = stream.at(-1) as string;
 
     for (let i = 0; i < stream.length; i++) {
-      const streamEl = stream[i].slice(0, stream[i].lastIndexOf('>') + 1);
+      const streamEl = stream[i]
+        .slice(0, stream[i].lastIndexOf('>') + 1)
+        .trim();
 
       if (!streamEl.endsWith('>') || streamEl.startsWith('?')) {
         continue;

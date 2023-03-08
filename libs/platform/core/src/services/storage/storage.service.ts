@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { StorageType } from './model';
 
-export const StorageService = 'FES.StorageService';
+export const StorageService = 'oryx.StorageService';
 
 export interface StorageService {
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null>;

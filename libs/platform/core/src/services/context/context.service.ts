@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
-export const ContextService = 'FES.ContextService';
+export const ContextService = 'oryx.ContextService';
+export const ContextServiceFallback = 'oryx.ContextServiceFallback*';
 
 export interface ContextService {
   provide(element: Element, key: string, value: unknown): void;
@@ -11,5 +12,6 @@ export interface ContextService {
 declare global {
   interface InjectionTokensContractMap {
     [ContextService]: ContextService;
+    [ContextServiceFallback]: Observable<unknown>;
   }
 }

@@ -1,6 +1,6 @@
 import { TemplateResult } from 'lit';
 
-export const ComponentsRegistryService = 'FES.ComponentsRegistry';
+export const ComponentsRegistryService = 'oryx.ComponentsRegistry';
 
 export interface ComponentsRegistryService {
   resolveTemplate(

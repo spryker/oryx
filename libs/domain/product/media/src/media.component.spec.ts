@@ -5,12 +5,12 @@ import {
   ImageSource,
   ProductImageService,
   ProductMediaContainerSize,
-  Size,
 } from '@spryker-oryx/product';
 import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
+import { Size } from '@spryker-oryx/ui';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 
 import { html } from 'lit';
@@ -294,6 +294,36 @@ describe('ProductMediaComponent', () => {
           expect(element).toContainElement(`oryx-image[loading="eager"]`);
         });
       });
+    });
+
+    describe('when mediaSet is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-media
+            sku="1"
+            .options=${{ mediaSet: 'default' }}
+          ></oryx-product-media>`
+        );
+      });
+
+      it('should render media resource', () => {
+        expect(element).toContainElement('oryx-image');
+      });
+    });
+  });
+
+  describe('when video link is provided', () => {
+    beforeEach(async () => {
+      service.resolveSources.mockReturnValue([
+        { url: 'https://www.youtube.com/watch?v=test' },
+      ]);
+      element = await fixture(
+        html`<oryx-product-media sku="1"></oryx-product-media>`
+      );
+    });
+
+    it('should render the video', () => {
+      expect(element).toContainElement(`oryx-video`);
     });
   });
 });

@@ -5,7 +5,7 @@ import { Cart } from '../../../../models';
 import { CartNormalizer } from './cart.normalizer';
 import { DeserializedCart } from './model';
 
-export const CartsNormalizer = 'FES.CartsNormalizer*';
+export const CartsNormalizer = 'oryx.CartsNormalizer*';
 
 export function cartsItemsNormalizer(
   data: DeserializedCart[],

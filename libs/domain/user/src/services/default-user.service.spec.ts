@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mergeMap, Observable, of, Subject } from 'rxjs';
 import { UserAdapter } from './adapter';
@@ -12,14 +12,14 @@ const mockUser = {
 
 const callback = vi.fn();
 
-const mockLoggedUser = {
-  id: 'userId',
-  anonymous: false,
+const mockLoggedUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
-const mockAnonymousUser = {
-  id: 'guestid',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'guestid',
+  isAuthenticated: false,
 };
 
 class MockUserAdapter implements Partial<UserAdapter> {
@@ -27,7 +27,9 @@ class MockUserAdapter implements Partial<UserAdapter> {
 }
 
 const mockIdentityMethods = {
-  get: vi.fn().mockReturnValue(of(mockAnonymousUser)),
+  get: vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser)),
 };
 
 class MockIdentityService implements Partial<IdentityService> {

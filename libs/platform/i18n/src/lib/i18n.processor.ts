@@ -8,7 +8,7 @@ export interface I18nProcessor {
   ): Observable<string>;
 }
 
-export const I18nProcessor = 'FES.I18nProcessor' as const;
+export const I18nProcessor = 'oryx.I18nProcessor' as const;
 
 declare global {
   interface InjectionTokensContractMap {

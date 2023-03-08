@@ -1,4 +1,5 @@
 import { ContentController } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/ui';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
@@ -31,7 +32,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         }
 
         return html`
-          <oryx-heading md-appearance="h4">
+          <oryx-heading appearance="h4">
             <h2>${i18n('cart.totals.summary')}</h2>
           </oryx-heading>
           <section>
@@ -100,10 +101,10 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
       ?open=${options.discountRowsAppearance !==
       DiscountRowsAppearance.Collapsed}
     >
-      <oryx-heading slot="header" md-appearance="h6">
+      <oryx-heading slot="header" appearance="h6" sm-appearance="h3">
         <h3>${i18n('cart.totals.discount')}</h3>
       </oryx-heading>
-      <oryx-heading slot="aside" md-appearance="h6" appearance="h3">
+      <oryx-heading slot="aside" appearance="h6" sm-appearance="h3">
         ${totals.calculations.discountTotal}
       </oryx-heading>
       ${rows}
@@ -145,7 +146,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           html`
             <small class="delivery-message">
               ${ifDefined(options?.deliveryMessage)}
-              <oryx-icon-button size="small">
+              <oryx-icon-button size=${Size.Sm}>
                 <a href="#" title=${i18n('cart.totals.delivery-message')}>
                   <oryx-icon type="info"></oryx-icon>
                 </a>
@@ -181,7 +182,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     value: string | TemplateResult
   ): TemplateResult {
     return html`
-      <oryx-heading md-appearance="h6" appearance="h3" class=${type}>
+      <oryx-heading appearance="h6" sm-appearance="h3" class=${type}>
         <h3>${title}</h3>
         <span>${value}</span>
       </oryx-heading>

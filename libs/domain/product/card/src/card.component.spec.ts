@@ -124,12 +124,8 @@ describe('ProductCardComponent', () => {
   describe('title truncation', () => {
     it('should set default (1) --oryx-product-title-max-lines when option is not provided', () => {
       expect(
-        Number(
-          (element.style as Record<string, any>)[
-            '--oryx-product-title-max-lines'
-          ]
-        )
-      ).toBe(1);
+        element.style.getPropertyValue('--oryx-product-title-max-lines')
+      ).toBe('1');
     });
 
     describe('when option is provided', () => {
@@ -145,14 +141,10 @@ describe('ProductCardComponent', () => {
         `);
       });
 
-      it('should set the --oryx-product-title-max-lines css property', async () => {
+      it('should set the --oryx-product-title-max-lines css property', () => {
         expect(
-          Number(
-            (element.style as Record<string, any>)[
-              '--oryx-product-title-max-lines'
-            ]
-          )
-        ).toBe(titleLineClamp);
+          element.style.getPropertyValue('--oryx-product-title-max-lines')
+        ).toBe(String(titleLineClamp));
       });
     });
   });

@@ -4,7 +4,7 @@ import { Provider } from '@spryker-oryx/di';
 import { ApiCartModel, Cart } from '../../../../models';
 import { DeserializedCart } from './model';
 
-export const CartNormalizer = 'FES.CartNormalizer*';
+export const CartNormalizer = 'oryx.CartNormalizer*';
 
 export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   const guestItemsKey = camelize(ApiCartModel.Includes.GuestCartItems);

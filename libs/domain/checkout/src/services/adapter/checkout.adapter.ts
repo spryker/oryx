@@ -27,7 +27,7 @@ export interface CheckoutAdapter {
   placeOrder: (data: PostCheckoutProps) => Observable<CheckoutResponse>;
 }
 
-export const CheckoutAdapter = 'FES.CheckoutAdapter';
+export const CheckoutAdapter = 'oryx.CheckoutAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

@@ -1,4 +1,4 @@
-export const SSRAwaiterService = 'FES.SSRAwaiterService';
+export const SSRAwaiterService = 'oryx.SSRAwaiterService';
 
 export interface SSRAwaiterService {
   getAwaiter(): () => void;

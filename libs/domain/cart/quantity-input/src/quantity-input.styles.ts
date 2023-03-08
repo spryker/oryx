@@ -1,37 +1,47 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const styles = css`
   :host {
-    --oryx-icon-size: 22px;
+    --oryx-icon-size: 16px;
 
     display: inline-flex;
   }
 
   :host([label]:not([label=''])) {
     position: relative;
-    padding-top: 22px;
+    padding-block-start: 22px;
   }
 
   input {
     appearance: textfield;
     text-align: center;
+    font-weight: 600;
   }
 
   oryx-input {
     --oryx-form-control-border-radius: 0;
 
-    width: var(--oryx-cart-quantity-input-width, 75px);
-  }
-
-  oryx-input:not([hasError]) {
-    border-color: var(--oryx-cart-quantity-input-button-border-color);
+    width: var(--oryx-cart-quantity-input-width, 71px);
   }
 
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     appearance: none;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    background: var(--oryx-color-canvas-200);
+    color: var(--oryx-color-neutral-300);
+    border: 2px solid var(--oryx-color-canvas-400);
+    outline: none;
+    border-radius: var(--oryx-border-radius-small);
+    margin: 0;
   }
 
   button:nth-of-type(1) {
@@ -46,39 +56,13 @@ export const styles = css`
     margin-inline-start: -2px;
   }
 
-  button {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    background: var(--oryx-cart-quantity-input-button-background-color);
-    color: var(--oryx-cart-quantity-input-button-color);
-    border: 2px solid var(--oryx-cart-quantity-input-button-border-color);
-    outline: none;
-    border-radius: var(--oryx-border-radius-small);
-    margin: 0;
-  }
-
-  button[disabled] {
-    color: var(--oryx-cart-quantity-input-button-disabled-color);
-    cursor: default;
-    pointer-events: none;
-  }
-
   button:hover {
-    background: var(--oryx-cart-quantity-input-button-hover-background-color);
-    border-color: var(--oryx-cart-quantity-input-button-border-color);
+    background: var(--oryx-color-canvas-300);
+    border-color: var(--oryx-color-neutral-100);
   }
 
-  button:active,
-  oryx-input:hover,
-  oryx-input:active {
-    z-index: 1;
-  }
-
-  oryx-input:not([hasError]):hover,
-  oryx-input:not([hasError]):active {
-    border-color: var(--oryx-cart-quantity-input-input-border-color);
+  button:active {
+    background-color: var(--oryx-color-canvas-500);
   }
 
   button:focus-visible {
@@ -87,9 +71,27 @@ export const styles = css`
     z-index: 1;
   }
 
+  button[disabled] {
+    color: var(--oryx-color-neutral-100);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  :host(:not(:focus-within)) button:hover,
+  button:active,
+  oryx-input:hover,
+  oryx-input:active {
+    z-index: 1;
+  }
+
+  oryx-input:not([hasError]):hover,
+  oryx-input:not([hasError]):active {
+    border-color: var(--oryx-color-canvas-400);
+  }
+
   oryx-input::part(label) {
     position: absolute;
-    top: 0;
+    inset-block-start: 0;
     inset-inline-start: 0;
     width: 100%;
     text-transform: unset;
@@ -100,15 +102,17 @@ export const styles = css`
   }
 `;
 
-const mediumScreen = css`
+// TODO: consider moving this to global design tokens instead
+// alternatively, we could make it inline in the definition
+const smallScreen = css`
   :host {
-    --oryx-icon-size: 18px;
+    --oryx-icon-size: 22px;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

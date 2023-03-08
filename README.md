@@ -1,7 +1,8 @@
 # Oryx
 
-![CI](https://github.com/spryker/oryx/actions/workflows/test.yml/badge.svg)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/983ba7e1-0787-4036-a333-b1e01ef10fea/deploy-status)](https://app.netlify.com/sites/dev-oryx-components/deploys)
+[![CI checks](https://github.com/spryker/oryx/actions/workflows/test.yml/badge.svg)](https://github.com/spryker/oryx/actions/workflows/test.yml)
+[![Oryx component dev env status](https://api.netlify.com/api/v1/badges/983ba7e1-0787-4036-a333-b1e01ef10fea/deploy-status)](https://app.netlify.com/sites/dev-oryx-components/deploys)
+[![Composable storefront dev env status](https://api.netlify.com/api/v1/badges/873ecabe-76b0-4493-af27-a0d150844cae/deploy-status)](https://app.netlify.com/sites/dev-composable-storefront/deploys)
 
 Oryx is a framework for building composable storefronts, providing a rich library of components, a render engine, and a design system. It is based on web components and vanilla JavaScript (Typescript), allowing integration into any web framework. Oryx integrates with Spryker APIs by default, providing a seamless experience for developers.
 

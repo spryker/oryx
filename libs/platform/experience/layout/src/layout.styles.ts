@@ -39,7 +39,7 @@ const stickyLayout = css`
   ::slotted(*[sticky]),
   ::slotted([class*='sticky']) {
     position: sticky;
-    top: var(--top, 0px);
+    inset-block-start: var(--top, 0px);
     max-height: calc(var(--height) - var(--top, 0px));
     z-index: var(--z-index, 1);
   }
@@ -234,15 +234,19 @@ const carouselLayout = css`
     );
 
     grid-auto-flow: column;
-    overflow: auto;
+    overflow: auto hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: both mandatory;
     scroll-behavior: smooth;
     scroll-padding-inline-start: var(--scroll-start, 0px);
   }
 
+  :host([layout='carousel'])::-webkit-scrollbar {
+    display: none;
+  }
+
   :host([vertical][layout='carousel']) {
-    overflow-x: initial;
+    overflow: hidden auto;
     grid-column: auto;
     grid-auto-flow: row;
     scroll-padding-block-start: var(--scroll-start, 0px);
@@ -262,7 +266,94 @@ const textLayout = css`
     column-count: var(--cols, 1);
   }
   :host([layout='text']) ::slotted(*:first-child) {
-    margin-top: 0;
+    margin-block-start: 0;
+  }
+`;
+
+/**
+ * The tabular layout
+ */
+const tabularLayout = css`
+  :host([layout='tabular']) {
+    display: grid;
+    position: relative;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical'])) {
+    grid-template-areas: 'head foot';
+  }
+
+  :host([layout='tabular']) ::slotted(*:not(label):not(input)) {
+    position: initial;
+  }
+
+  :host([layout='tabular']) ::slotted(*:not(label):not(input)):before {
+    content: '';
+    border-top: 2px solid var(--oryx-color-canvas-500);
+    position: absolute;
+    width: 100%;
+    margin-top: -2px;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical'])) ::slotted(label) {
+    grid-row: 1;
+    padding-inline: 24px;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :host([layout='tabular']) ::slotted(label) {
+    padding-block: 5px;
+    border-bottom: solid 2px var(--oryx-color-canvas-500);
+    color: var(--oryx-color-neutral-300);
+    z-index: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  :host([layout='tabular']) ::slotted(label:hover) {
+    color: var(--oryx-color-ink);
+    border-color: var(--oryx-color-neutral-300);
+  }
+
+  :host([layout='tabular']) ::slotted(input) {
+    appearance: none;
+    pointer-events: none;
+    outline: none;
+  }
+
+  :host([layout='tabular']:not([orientation='vertical']))
+    ::slotted(*:not(input):not(label)) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  :host([layout='tabular']:not([tab-align])) {
+    grid-template-columns: repeat(var(--item-count), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='full-width'])
+    ::slotted(*:not(input):not(label)) {
+    grid-column: 1 / span var(--item-count, -1);
+  }
+
+  :host([layout='tabular'][tab-align='start']) {
+    grid-template-columns: repeat(var(--max-tabs, 10), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='center']) {
+    grid-template-columns: 1fr repeat(var(--max-tabs, 10), auto) 1fr;
+  }
+
+  :host([layout='tabular'][tab-align='center']) ::slotted(label:first-of-type) {
+    grid-column: 2;
+  }
+
+  :host([layout='tabular'][tab-align='center'])
+    ::slotted(label:nth-of-type(n + 2)) {
+    grid-column: span 1 / calc(-1 * var(--max-tabs, 10));
   }
 `;
 
@@ -294,8 +385,8 @@ export const layoutStyles = css`
   }
 
   :host([layout]) {
-    align-items: var(--align-items, start);
     gap: var(--gap, 0);
+    align-items: var(--align-items, start);
   }
 
   ::slotted(*) {
@@ -333,5 +424,6 @@ export const layoutStyles = css`
   ${carouselLayout}
   ${textLayout}
   ${twoColumnLayout}
+  ${tabularLayout}
   ${stickyLayout}
 `;

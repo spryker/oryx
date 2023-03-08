@@ -4,7 +4,8 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement } from 'lit';
+import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
+import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
@@ -16,6 +17,9 @@ export interface PatchableLitElement extends LitElement {
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
 }
+
+const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
+  condition ? trueCase() : noChange;
 
 export const hydratable =
   (mode?: string[] | string) =>
@@ -52,13 +56,15 @@ function hydratableClass<T extends Type<HTMLElement>>(
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
     private [HYDRATION_CALLS] = 0;
+    protected hasSsr?: boolean;
 
     constructor(...args: any[]) {
       super();
+      this.hasSsr = !isServer && this.shadowRoot;
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');
       }
-      if (!isServer && this.shadowRoot) {
+      if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
         return;
       }
@@ -100,6 +106,20 @@ function hydratableClass<T extends Type<HTMLElement>>(
       this[DEFER_HYDRATION] = false;
       this.removeAttribute('defer-hydration');
       prototype.connectedCallback.call(this);
+    }
+
+    render(): TemplateResult {
+      const states = this[asyncStates];
+
+      if (this.hasSsr && states) {
+        return html`${whenState(Object.values(states).every(Boolean), () =>
+          super.render()
+        )}`;
+      }
+
+      return this.hasSsr || isServer
+        ? html`${whenState(true, () => super.render())}`
+        : super.render();
     }
   };
 }

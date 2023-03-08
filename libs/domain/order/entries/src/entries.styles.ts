@@ -7,6 +7,10 @@ export const styles = css`
     gap: 10px;
   }
 
+  h3 {
+    margin-block-end: 2px;
+  }
+
   button {
     border: none;
     background-color: transparent;

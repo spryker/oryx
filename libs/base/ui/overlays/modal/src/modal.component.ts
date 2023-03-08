@@ -1,8 +1,7 @@
 import { isFirefox, Size } from '@spryker-oryx/ui';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
-import { DialogElement } from '../../overlay.model';
+import { when } from 'lit/directives/when.js';
 import { fullscreenModalStyles } from './fullscreen-modal.styles';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
@@ -46,9 +45,9 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   protected setDialogState(): void {
     if (this.isOpen) {
-      this.dialog?.showModal?.();
+      this.dialog?.showModal();
     } else {
-      this.dialog?.close?.();
+      this.dialog?.close();
     }
 
     this.toggleScrollLock(this.isOpen);
@@ -113,8 +112,8 @@ export class ModalComponent extends LitElement implements ModalProperties {
     );
   }
 
-  protected get dialog(): DialogElement {
-    return this.shadowRoot?.querySelector('dialog') as DialogElement;
+  protected get dialog(): HTMLDialogElement | null | undefined {
+    return this.shadowRoot?.querySelector('dialog');
   }
 
   protected override render(): TemplateResult {
@@ -155,7 +154,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
         ${when(
           this.enableCloseButtonInHeader,
           () => html`
-            <oryx-icon-button size=${Size.small}>
+            <oryx-icon-button size=${Size.Sm}>
               <button value="cancel" aria-label="close modal">
                 <oryx-icon type="close"></oryx-icon>
               </button>
@@ -178,7 +177,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <footer slot="footer">
               <slot name="footer">
-                <oryx-button type="secondary" outline size="small">
+                <oryx-button type="secondary" outline size="sm">
                   <button value="cancel">Cancel</button>
                 </oryx-button>
               </slot>

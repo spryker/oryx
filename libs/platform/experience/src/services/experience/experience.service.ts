@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Component } from './models';
 
-export const ExperienceService = 'FES.ExperienceService';
+export const ExperienceService = 'oryx.ExperienceService';
 
 export interface ComponentQualifier {
   uid?: string;

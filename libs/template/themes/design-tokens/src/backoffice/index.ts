@@ -10,6 +10,7 @@ import {
   typographyTokens,
 } from './typography.tokens';
 
+import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 
 export const backofficeTokens: DesignToken[] = [
@@ -24,6 +25,36 @@ export const backofficeTokens: DesignToken[] = [
     },
     color: darkColor,
     ...darkTokens,
+  },
+  {
+    media: {
+      screen: Size.Lg,
+    },
+    ...layoutTokens,
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...typographySmallTokens,
+    ...layoutSmTokens,
+    ...commonTokensSmall,
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...typographyMediumTokens,
+    ...layoutMdTokens,
+  },
+];
+
+// TODO: This should be dropped after HRZ-2239
+export const backofficeTokensWithoutDarkMode: DesignToken[] = [
+  {
+    color,
+    ...tokens,
+    ...typographyTokens,
   },
   {
     media: {

@@ -5,7 +5,7 @@ export interface StoreAdapter {
   get: () => Observable<Store[]>;
 }
 
-export const StoreAdapter = 'FES.StoreAdapter';
+export const StoreAdapter = 'oryx.StoreAdapter';
 
 declare global {
   interface InjectionTokensContractMap {

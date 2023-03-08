@@ -2,6 +2,7 @@ import {
   getWindow,
   installWindowOnGlobal,
 } from '@lit-labs/ssr/lib/dom-shim.js';
+import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
@@ -26,10 +27,14 @@ export const serverContext = (options: ContextOptions): any => {
       require: createRequire(root),
       Event,
       process,
+      buffer,
       exports: {},
     },
   });
   window.setTimeout = setTimeout;
+  // added because of oauth, we probably should not require oauth in the ssr
+  window.TextEncoder = class {};
+  window.TextDecoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

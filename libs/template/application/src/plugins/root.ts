@@ -1,13 +1,12 @@
 import {
-  App,
   AppPlugin,
   AppPluginAfterApply,
   AppPluginBeforeApply,
-  ComponentsPlugin,
   ErrorService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
@@ -24,8 +23,6 @@ export const RootPluginName = 'application$root';
 export class RootPlugin
   implements AppPlugin, AppPluginBeforeApply, AppPluginAfterApply
 {
-  protected rootSelector = '';
-
   getName(): string {
     return RootPluginName;
   }
@@ -41,19 +38,16 @@ export class RootPlugin
     globalThis.litElementHydrateSupport?.({ LitElement });
   }
 
-  apply(app: App): void | Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.rootSelector = app.findPlugin(ComponentsPlugin)!.rootSelector;
-
+  apply(): void | Promise<void> {
     // TODO - remove when we have app initializers
     resolve(ErrorService).initialize();
 
-    if (!document.querySelector(this.rootSelector)?.shadowRoot) {
+    if (!document.querySelector(rootInjectable.get())?.shadowRoot) {
       resolve(RouterService).go(window.location.pathname);
     }
   }
 
   afterApply(): void | Promise<void> {
-    initHydrateHooks(this.rootSelector);
+    initHydrateHooks(rootInjectable.get());
   }
 }

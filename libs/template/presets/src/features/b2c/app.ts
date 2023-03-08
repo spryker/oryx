@@ -1,5 +1,8 @@
-import { applicationFeature } from '@spryker-oryx/application';
-import { authFeature } from '@spryker-oryx/auth';
+import {
+  applicationFeature,
+  SapiAuthComponentsFeature,
+  SapiAuthFeature,
+} from '@spryker-oryx/application';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
@@ -23,6 +26,7 @@ import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { resourceGraphics } from '../../resources';
+import { StaticExperienceFeature } from './experience';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
@@ -51,12 +55,14 @@ export const b2cFeatures: AppFeature[] = [
   siteFeature,
   applicationFeature,
   userFeature,
-  authFeature,
+  new SapiAuthFeature(),
+  new SapiAuthComponentsFeature(),
   new I18nFeature(),
   isServer ? { providers: coreServerProviders } : {},
   {
     resources: b2cResources,
   },
+  StaticExperienceFeature,
 ];
 
 export const b2cTheme = { ...storefrontTheme };

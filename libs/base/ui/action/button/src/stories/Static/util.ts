@@ -1,7 +1,7 @@
-import { html, TemplateResult } from 'lit-html';
+import { Size } from '@spryker-oryx/ui';
+import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { Size } from '../../../../../src/utilities';
 
 export const buttonTypes = (
   variations: { name: string; lightDom?: string }[],
@@ -23,28 +23,28 @@ export const buttonTypes = (
 
     <h3>Sizes</h3>
     <section class="sizes">
-      <oryx-button .type=${type} size="large" style="width:100%">
+      <oryx-button .type=${type} size="lg" style="width:100%">
         <button>large button (100%)</button>
       </oryx-button>
 
-      <oryx-button .type=${type} size="medium" style="width:50%">
+      <oryx-button .type=${type} size="md" style="width:50%">
         <a>medium sized link (50%)</a>
       </oryx-button>
 
-      <oryx-button .type=${type} size="medium" outline style="width:400px">
+      <oryx-button .type=${type} size="md" outline style="width:400px">
         <button>
           <oryx-icon type="rocket"></oryx-icon>
           medium outline button (400px)
         </button>
       </oryx-button>
 
-      <oryx-button .type=${type} size="small" style="width:33%">
+      <oryx-button .type=${type} size="sm" style="width:33%">
         <button disabled>
           <oryx-icon type="rocket"></oryx-icon>small disabled (33%)
         </button>
       </oryx-button>
 
-      <oryx-button .type=${type} size="small" loading style="flex:auto">
+      <oryx-button .type=${type} size="sm" loading style="flex:auto">
         <button>loading</button>
       </oryx-button>
     </section>
@@ -78,7 +78,7 @@ const createOryxButton = (variant: {
   const type = variant.type;
 
   return html`
-    ${[Size.large, Size.medium, Size.small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`
         <oryx-button
           .type=${type}
@@ -100,7 +100,7 @@ const createOryxButton = (variant: {
         </oryx-button>
       `
     )}
-    ${[Size.large, Size.medium, Size.small].map(
+    ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`
         <oryx-button
           .type=${type}
