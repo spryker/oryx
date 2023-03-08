@@ -1,32 +1,18 @@
 import { Observable } from 'rxjs';
-import { Cart, CartEntryAttributesQualifier } from '../../models';
-
-export interface GetCartProps {
-  cartId: string;
-}
-
-export interface AddCartEntityProps {
-  cartId: string;
-  attributes: CartEntryAttributesQualifier;
-}
-
-export interface UpdateCartEntityProps {
-  cartId: string;
-  groupKey: string;
-  attributes: CartEntryAttributesQualifier;
-}
-
-export interface DeleteCartEntityProps {
-  cartId: string;
-  groupKey: string;
-}
+import {
+  AddCartEntryQualifier,
+  Cart,
+  CartEntryQualifier,
+  CartQualifier,
+  UpdateCartEntryQualifier,
+} from '../../models';
 
 export interface CartAdapter {
   getAll: () => Observable<Cart[]>;
-  get: (data: GetCartProps) => Observable<Cart>;
-  addEntry: (data: AddCartEntityProps) => Observable<Cart>;
-  deleteEntry: (data: DeleteCartEntityProps) => Observable<unknown>;
-  updateEntry: (data: UpdateCartEntityProps) => Observable<Cart>;
+  get: (data: CartQualifier) => Observable<Cart>;
+  addEntry: (data: AddCartEntryQualifier) => Observable<Cart>;
+  deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
+  updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
 }
 
 export const CartAdapter = 'oryx.CartAdapter';
