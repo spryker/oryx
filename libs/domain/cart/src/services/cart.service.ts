@@ -1,30 +1,28 @@
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { QueryState } from '@spryker-oryx/core';
+import { Observable } from 'rxjs';
 import {
   AddCartEntryQualifier,
   Cart,
   CartEntry,
+  CartEntryQualifier,
   CartQualifier,
   CartTotals,
-  DeleteCartEntryQualifier,
   UpdateCartEntryQualifier,
 } from '../models';
 
-export interface STATE {
-  value$: ReplaySubject<Cart | null>;
-  error$: ReplaySubject<HttpErrorResponse | null>;
-}
-
 export interface CartService {
-  load(): Observable<null>;
-  getCart(data?: CartQualifier): Observable<Cart | null>;
-  getCartError(data?: CartQualifier): Observable<HttpErrorResponse | null>;
+  load(): void;
+  getCart(data?: CartQualifier): Observable<Cart | undefined>;
+  getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
   getTotals(data?: CartQualifier): Observable<CartTotals | null>;
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
-  addEntry(data: AddCartEntryQualifier): Observable<null>;
-  updateEntry(data: UpdateCartEntryQualifier): Observable<null>;
-  deleteEntry(data: DeleteCartEntryQualifier): Observable<null>;
-  getLoadingState(): Observable<boolean>;
+  addEntry(data: AddCartEntryQualifier): Observable<unknown>;
+  updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
+  deleteEntry(data: CartEntryQualifier): Observable<unknown>;
+  /**
+   * Get busy state for either cart or individual entry by groupKey
+   */
+  isBusy(qualifier?: CartEntryQualifier): Observable<boolean>;
   isEmpty(data?: CartQualifier): Observable<boolean>;
 }
 
