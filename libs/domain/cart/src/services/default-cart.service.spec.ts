@@ -6,9 +6,8 @@ import {
   mockEmptyCart,
   mockNetCart,
 } from '@spryker-oryx/cart/mocks';
-import { HttpErrorResponse } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { BehaviorSubject, Observable, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap, take } from 'rxjs';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
@@ -105,7 +104,7 @@ describe('DefaultCartService', () => {
     });
 
     it('should trigger getAll method of the CartAdapter', () => {
-      service.load().pipe(take(1)).subscribe();
+      service.reload();
 
       expect(adapter.getAll).toHaveBeenCalledTimes(1);
     });
@@ -130,25 +129,13 @@ describe('DefaultCartService', () => {
       });
 
       it('should return an observable with default cart if cartId has not been provided', () => {
-        service
-          .load()
-          .pipe(
-            take(1),
-            switchMap(() => service.getCart())
-          )
-          .subscribe(cartCallback);
+        service.getCart().subscribe(cartCallback);
 
         expect(cartCallback).toHaveBeenCalledWith(mockDefaultCart);
       });
 
       it('should return an observable with a cart by provided cartId', () => {
-        service
-          .load()
-          .pipe(
-            take(1),
-            switchMap(() => service.getCart({ cartId: 'cart' }))
-          )
-          .subscribe(cartCallback);
+        service.getCart({ cartId: 'cart' }).subscribe(cartCallback);
 
         expect(cartCallback).toHaveBeenCalledWith(mockBaseCart);
       });
@@ -165,13 +152,7 @@ describe('DefaultCartService', () => {
     });
 
     it('should trigger addEntry method of the CartAdapter', () => {
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.addEntry(mockEntryQualifier))
-        )
-        .subscribe();
+      service.addEntry(mockEntryQualifier).subscribe();
 
       expect(adapter.addEntry).toHaveBeenCalledWith({
         cartId: mockDefaultCart.id,
@@ -183,10 +164,8 @@ describe('DefaultCartService', () => {
       adapter.addEntry.mockReturnValue(of(mockDefaultCart));
 
       service
-        .load()
+        .addEntry(mockEntryQualifier)
         .pipe(
-          take(1),
-          switchMap(() => service.addEntry(mockEntryQualifier)),
           switchMap((status) => {
             statusCallback(status);
 
@@ -207,12 +186,8 @@ describe('DefaultCartService', () => {
       adapter.addEntry.mockReturnValue(of(mockBaseCart));
 
       service
-        .load()
+        .addEntry({ cartId: 'cart', ...mockEntryQualifier })
         .pipe(
-          take(1),
-          switchMap(() =>
-            service.addEntry({ cartId: 'cart', ...mockEntryQualifier })
-          ),
           switchMap((status) => {
             statusCallback(status);
 
@@ -246,14 +221,7 @@ describe('DefaultCartService', () => {
 
     it('should trigger updateEntry method of the CartAdapter', () => {
       adapter.updateEntry.mockReturnValue(of(mockBaseCart));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.updateEntry(mockUpdateEntryQualifier))
-        )
-        .subscribe();
+      service.updateEntry(mockUpdateEntryQualifier).subscribe();
 
       expect(adapter.updateEntry).toHaveBeenCalled();
     });
@@ -271,10 +239,8 @@ describe('DefaultCartService', () => {
       adapter.updateEntry.mockReturnValue(of(mockUpdatedCartEntry));
 
       service
-        .load()
+        .updateEntry(mockUpdateEntryQualifier)
         .pipe(
-          take(1),
-          switchMap(() => service.updateEntry(mockUpdateEntryQualifier)),
           switchMap((status) => {
             statusCallback(status);
 
@@ -300,15 +266,11 @@ describe('DefaultCartService', () => {
       adapter.updateEntry.mockReturnValue(of(mockUpdatedCartEntry));
 
       service
-        .load()
+        .updateEntry({
+          cartId: 'cart',
+          ...mockUpdateEntryQualifier,
+        })
         .pipe(
-          take(1),
-          switchMap(() =>
-            service.updateEntry({
-              cartId: 'cart',
-              ...mockUpdateEntryQualifier,
-            })
-          ),
           switchMap((status) => {
             statusCallback(status);
 
@@ -335,14 +297,7 @@ describe('DefaultCartService', () => {
 
     it('should trigger deleteEntry and get of the CartAdapter', () => {
       adapter.get.mockReturnValue(of(mockBaseCart));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.deleteEntry({ groupKey: 'groupKey' }))
-        )
-        .subscribe();
+      service.deleteEntry({ groupKey: 'groupKey' }).subscribe();
 
       expect(adapter.deleteEntry).toHaveBeenCalled();
       expect(adapter.get).toHaveBeenCalled();
@@ -352,10 +307,8 @@ describe('DefaultCartService', () => {
       adapter.get.mockReturnValue(of(mockDefaultCart));
 
       service
-        .load()
+        .deleteEntry({ groupKey: 'groupKey' })
         .pipe(
-          take(1),
-          switchMap(() => service.deleteEntry({ groupKey: 'groupKey' })),
           switchMap((status) => {
             statusCallback(status);
 
@@ -372,12 +325,8 @@ describe('DefaultCartService', () => {
       adapter.get.mockReturnValue(of(mockEmptyCart));
 
       service
-        .load()
+        .deleteEntry({ cartId: 'cart', groupKey: 'groupKey' })
         .pipe(
-          take(1),
-          switchMap(() =>
-            service.deleteEntry({ cartId: 'cart', groupKey: 'groupKey' })
-          ),
           switchMap((status) => {
             statusCallback(status);
 
@@ -404,28 +353,14 @@ describe('DefaultCartService', () => {
 
     it('should return cart totals of the active cart', () => {
       adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.getTotals())
-        )
-        .subscribe(statusCallback);
+      service.getTotals().subscribe(statusCallback);
 
       expect(statusCallback).toHaveBeenCalledWith(mockDefaultCart.totals);
     });
 
     it('should return cart totals of the cart by provided cartId', () => {
       adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.getTotals({ cartId: 'cart' }))
-        )
-        .subscribe(statusCallback);
+      service.getTotals({ cartId: 'cart' }).subscribe(statusCallback);
 
       expect(statusCallback).toHaveBeenCalledWith(mockBaseCart.totals);
     });
@@ -444,35 +379,21 @@ describe('DefaultCartService', () => {
 
     it('should return cart entries of the active cart', () => {
       adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.getEntries())
-        )
-        .subscribe(statusCallback);
+      service.getEntries().subscribe(statusCallback);
 
       expect(statusCallback).toHaveBeenCalledWith(mockDefaultCart.products);
     });
 
     it('should return cart entries of the cart by provided cartId', () => {
       adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
-
-      service
-        .load()
-        .pipe(
-          take(1),
-          switchMap(() => service.getEntries({ cartId: 'cart' }))
-        )
-        .subscribe(statusCallback);
+      service.getEntries({ cartId: 'cart' }).subscribe(statusCallback);
 
       expect(statusCallback).toHaveBeenCalledWith(mockBaseCart.products);
     });
   });
 
-  describe('error handling with getCartError', () => {
-    let error$: Observable<HttpErrorResponse | null>;
+  describe('error handling with getCartState', () => {
+    let error$: Observable<Error | false>;
 
     beforeEach(() => {
       adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
@@ -485,17 +406,15 @@ describe('DefaultCartService', () => {
       adapter.updateEntry.mockImplementation(() => {
         throw mockErrorMessage;
       });
-
-      service.load().pipe(take(1)).subscribe();
     });
 
     it('should return an observable', () => {
-      expect(service.getCartError()).toBeInstanceOf(Observable);
+      expect(service.getCartState()).toBeInstanceOf(Observable);
     });
 
     describe('should update error ReplaySubject for an active cart', () => {
       beforeEach(() => {
-        error$ = service.getCartError();
+        error$ = service.getCartState().pipe(map((state) => state.error));
       });
 
       it('on addEntry', () => {
@@ -531,7 +450,9 @@ describe('DefaultCartService', () => {
 
     describe('should update error ReplaySubject for a cart with provided cartId', () => {
       beforeEach(() => {
-        error$ = service.getCartError({ cartId: 'cart' });
+        error$ = service
+          .getCartState({ cartId: 'cart' })
+          .pipe(map((state) => state.error));
       });
 
       it('on addEntry', () => {
@@ -589,7 +510,7 @@ describe('DefaultCartService', () => {
     describe('when cart contains products', () => {
       beforeEach(() => {
         adapter.getAll.mockReturnValue(of([mockDefaultCart]));
-        service.load().subscribe();
+        service.reload();
         service.isEmpty().subscribe(statusCallback);
       });
 
@@ -601,7 +522,7 @@ describe('DefaultCartService', () => {
 
   describe('getLoadingState', () => {
     beforeEach(() => {
-      service.getLoadingState().subscribe(statusCallback);
+      service.isBusy().subscribe(statusCallback);
     });
 
     it('should return current state', () => {
