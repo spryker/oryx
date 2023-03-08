@@ -65,7 +65,7 @@ const Template: Story = (): TemplateResult => {
 
           ${sizes.map(
             (size) => html`
-              <oryx-icon-button size="${size}">
+              <oryx-icon-button size=${size}>
                 <button
                   aria-label="${name}${size}"
                   ?disabled=${isDisabled}
@@ -78,7 +78,7 @@ const Template: Story = (): TemplateResult => {
           )}
           ${sizes.map(
             (size) => html`
-              <oryx-icon-button size="${size}">
+              <oryx-icon-button size=${size}>
                 <button
                   aria-label="${name}${size}"
                   ?disabled=${isDisabled}
@@ -92,6 +92,7 @@ const Template: Story = (): TemplateResult => {
           )}
         `;
       })}
+
       <h3>anchor element</h3>
       ${variations.map(({ name, state, lightDomState }) => {
         const isDisabled = name === 'disabled';
@@ -101,7 +102,7 @@ const Template: Story = (): TemplateResult => {
 
           ${sizes.map(
             (size) => html`
-              <oryx-icon-button size="${size}">
+              <oryx-icon-button size=${size}>
                 <a
                   class="${state} ${lightDomState}"
                   ?disabled=${isDisabled}
@@ -114,7 +115,7 @@ const Template: Story = (): TemplateResult => {
           )}
           ${sizes.map(
             (size) => html`
-              <oryx-icon-button size="${size}">
+              <oryx-icon-button size=${size}>
                 <a
                   class="${state} ${lightDomState}"
                   ?disabled=${isDisabled}
@@ -129,7 +130,7 @@ const Template: Story = (): TemplateResult => {
         `;
       })}
 
-      <h3>With icon element</h3>
+      <h3>oryx-icon element</h3>
       ${variations.map(({ name, state, lightDomState }) => {
         const isDisabled = name === 'disabled';
 
@@ -138,7 +139,7 @@ const Template: Story = (): TemplateResult => {
 
           ${sizes.map(
             (size) => html`
-              <oryx-icon-button size="${size}">
+              <oryx-icon-button size=${size}>
                 <oryx-icon
                   class="${state} ${lightDomState}"
                   type=${icon}
@@ -161,6 +162,43 @@ const Template: Story = (): TemplateResult => {
           )}
         </section>
       `;
+      })}
+
+      <h3>text inside element</h3>
+      ${variations.map(({ name, state, lightDomState }) => {
+        const isDisabled = name === 'disabled';
+
+        return html`
+          <h4>${name}</h4>
+
+          ${sizes.map(
+            (size) => html`
+              <oryx-icon-button size=${size}>
+                <a
+                  class="${state} ${lightDomState}"
+                  ?disabled=${isDisabled}
+                  href="http://www.link.com"
+                >
+                  <oryx-icon type=${icon}></oryx-icon>
+                </a>
+              </oryx-icon-button>
+            `
+          )}
+          ${sizes.map(
+            (size) => html`
+              <oryx-icon-button size=${size}>
+                <a
+                  class="${state} ${lightDomState}"
+                  ?disabled=${isDisabled}
+                  href="http://www.link.com"
+                >
+                  <oryx-icon type=${icon}></oryx-icon>
+                </a>
+                <span>label</span>
+              </oryx-icon-button>
+            `
+          )}
+        `;
       })}
 
       <style>
