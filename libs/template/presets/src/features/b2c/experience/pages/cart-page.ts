@@ -3,35 +3,38 @@ import { StaticComponent } from '@spryker-oryx/experience';
 export const CartPage: StaticComponent = {
   type: 'Page',
   meta: { title: 'Cart Page', route: '/cart' },
+  options: {
+    data: { rules: [{ layout: 'two-column', container: 'true' }] },
+  },
   components: [
     {
-      type: 'experience-composition',
+      type: 'cart-entries',
       options: {
-        data: { rules: [{ layout: 'two-column', container: 'true' }] },
+        data: {
+          defaultExpandedOptions: true,
+          removeByQuantity: 'showBin',
+          silentRemove: true,
+          rules: [{ padding: '30px 0' }],
+        },
       },
-      components: [
-        {
-          type: 'oryx-cart-entries',
-          // options: { data: { rules: [{ padding: '30px 0 0' }] } },
-        },
-        {
-          type: 'experience-composition',
-          components: [{ type: 'oryx-cart-totals' }, { type: 'checkout-link' }],
-          options: {
-            data: {
-              rules: [
-                {
-                  sticky: true,
-                  top: '78px',
-                  maxWidth: true,
-                  layout: 'list',
-                  gap: '20px',
-                },
-              ],
+    },
+    {
+      type: 'experience-composition',
+      components: [{ type: 'cart-totals' }, { type: 'checkout-link' }],
+      options: {
+        data: {
+          rules: [
+            {
+              sticky: true,
+              top: '78px',
+              maxWidth: true,
+              padding: '30px 0',
+              layout: 'list',
+              gap: '20px',
             },
-          },
+          ],
         },
-      ],
+      },
     },
   ],
 };

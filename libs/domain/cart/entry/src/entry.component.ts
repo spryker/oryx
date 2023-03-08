@@ -8,8 +8,8 @@ import {
 import { PricingService } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { take } from 'rxjs';
 import { QuantityEventDetail } from '../../quantity-input/src';
 import { CartComponentMixin } from '../../src/mixins';

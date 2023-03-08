@@ -1,16 +1,4 @@
 import {
-  Command,
-  CommandOptions,
-  CoreCommand,
-  CoreQuery,
-  EffectDefinition,
-  isCallbackEffect,
-  isStreamEffect,
-  Query,
-  QueryEvent,
-  QueryOptions,
-} from '@spryker-oryx/core';
-import {
   filter,
   identity,
   Observable,
@@ -20,6 +8,18 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
+import {
+  Command,
+  CommandOptions,
+  EffectDefinition,
+  isCallbackEffect,
+  isStreamEffect,
+  Query,
+  QueryEvent,
+  QueryOptions,
+} from '../models';
+import { CoreCommand } from './core-command';
+import { CoreQuery } from './core-query';
 import { QueryManager } from './query-manager';
 
 export class CoreQueryManager implements QueryManager {

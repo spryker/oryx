@@ -1,5 +1,5 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { iconInjectable } from '@spryker-oryx/utilities';
+import { iconInjectable, rootInjectable } from '@spryker-oryx/utilities';
 import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
@@ -71,7 +71,6 @@ export class ThemePlugin
   ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
-    const componentPlugin = this.app?.findPlugin(ComponentsPlugin);
 
     for (const styles of stylesheets) {
       if (!styles.theme) {
@@ -91,7 +90,7 @@ export class ThemePlugin
       implementations.push(resolveLazyLoadable(styles.rules));
     }
 
-    if (componentPlugin?.getRoot() === name) {
+    if (rootInjectable.get() === name) {
       implementations.unshift(this.getStylesFromTokens(this.themes));
     }
 

@@ -34,7 +34,7 @@ export class CartSummaryComponent extends CartComponentMixin(
         <a href=${ifDefined(this.link)}>
           <oryx-icon type="cart"></oryx-icon>
           ${this.renderMark()}
-          <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1} disappear-sm>
+          <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
             ${i18n('cart.cart')}
           </oryx-heading>
         </a>

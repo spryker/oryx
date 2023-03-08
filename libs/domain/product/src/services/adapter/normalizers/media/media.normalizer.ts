@@ -1,5 +1,6 @@
 import { Transformer } from '@spryker-oryx/core';
-import { ApiProductModel, ProductMedia, Size } from '../../../../models';
+import { Size } from '@spryker-oryx/ui';
+import { ApiProductModel, ProductMedia } from '../../../../models';
 
 export const ProductMediaNormalizer = 'oryx.ProductMediaNormalizer*';
 export const DefaultProductMediaNormalizer = `${ProductMediaNormalizer}Default`;

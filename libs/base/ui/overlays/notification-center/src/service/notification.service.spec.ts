@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { Positions } from '../notification-center.model';
+import { NotificationPosition } from '../notification-center.model';
 import { TAG_NAME } from '../tag';
 import { NotificationService } from './notification.service';
 
@@ -27,8 +27,13 @@ describe('NotificationService', () => {
     });
 
     it('should create with position', async () => {
-      const center = service.getCenter('#parent2', Positions.BOTTOM_END);
-      expect(center?.getAttribute('position')).toBe(Positions.BOTTOM_END);
+      const center = service.getCenter(
+        '#parent2',
+        NotificationPosition.BottomEnd
+      );
+      expect(center?.getAttribute('position')).toBe(
+        NotificationPosition.BottomEnd
+      );
     });
 
     it('should throw error if parent not found', () => {
