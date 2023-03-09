@@ -118,3 +118,9 @@ const Template: Story<ProductListQualifier> = (
 };
 
 export const ProductDemo = Template.bind({});
+
+ProductDemo.parameters = {
+  chromatic: {
+    delay: 3000,
+  },
+};

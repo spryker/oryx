@@ -28,7 +28,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
 
   protected currentlyUpdated$ = new BehaviorSubject<string | null>(null);
 
-  protected loading$ = this.cartService.getLoadingState();
+  protected loading$ = this.cartService.isBusy();
 
   protected entries$ = this.options$.pipe(
     switchMap(({ cartId }) =>
@@ -77,7 +77,6 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
     this.currentlyUpdated$.next(groupKey);
     this.cartService.updateEntry({
       groupKey,
-      sku,
       quantity: e.detail.quantity,
     });
   }
