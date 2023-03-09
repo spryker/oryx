@@ -1,6 +1,17 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { pushNotificationProviders } from './services';
+import { pushNotificationProviders, PushServiceConfig } from './services';
 
-export const PushNotificationFeature: AppFeature = {
-  providers: pushNotificationProviders,
-};
+export class PushNotificationFeature implements AppFeature {
+  providers;
+
+  constructor(config: PushServiceConfig) {
+    const configFactory = typeof config === 'function' ? config : () => config;
+    this.providers = [
+      {
+        provide: PushServiceConfig,
+        useFactory: () => configFactory(),
+      },
+      ...pushNotificationProviders,
+    ];
+  }
+}

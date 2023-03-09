@@ -6,10 +6,18 @@ export interface PushService {
   unsubscribe(): Observable<boolean>;
 }
 
+export interface PushServiceConfig {
+  readonly apiUrl: string;
+}
+
+export const pushApiType = 'web';
+
 export const PushService = 'oryx.PushService';
+export const PushServiceConfig = 'oryx.PushServiceConfig';
 
 declare global {
   export interface InjectionTokensContractMap {
     [PushService]: PushService;
+    [PushServiceConfig]: PushServiceConfig;
   }
 }
