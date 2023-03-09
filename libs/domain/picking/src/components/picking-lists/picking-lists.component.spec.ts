@@ -65,14 +65,14 @@ describe('PickingListsComponent', () => {
 
     it(`should render ${mockPickingLists.length} picking lists`, () => {
       expect(
-        element.renderRoot.querySelectorAll('oryx-picking-list-card').length
+        element.renderRoot.querySelectorAll('oryx-picking-list-item').length
       ).toBe(mockPickingLists.length);
     });
 
     it('should open and close customer note modal', async () => {
       const customerNoteText = 'Customer note';
       const pickingListCard = element.renderRoot.querySelector(
-        'oryx-picking-list-card'
+        'oryx-picking-list-item'
       );
 
       element.addEventListener('showCustomerNote', () => {

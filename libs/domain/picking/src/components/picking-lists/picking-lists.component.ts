@@ -44,10 +44,10 @@ export class PickingListsComponent extends LitElement {
             pickingLists,
             (pl) => pl.id,
             (pl) =>
-              html`<oryx-picking-list-card
+              html`<oryx-picking-list-item
                 .pickingList=${pl}
                 @showCustomerNote=${this.openCustomerNoteModal}
-              ></oryx-picking-list-card>`
+              ></oryx-picking-list-item>`
           )}`,
         this.renderFallback
       )}

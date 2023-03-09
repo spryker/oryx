@@ -2,22 +2,22 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  pickingListCardComponent,
+  pickingListItemComponent,
   PickingListService,
 } from '@spryker-oryx/picking';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { PickingListCardComponent } from './picking-list-card.component';
+import { PickingListItemComponent } from './picking-list-item.component';
 
 class MockPickingListService implements Partial<PickingListService> {
   startPicking = vi.fn().mockReturnValue(of({}));
 }
 
 describe('PickingListCardComponent', () => {
-  let element: PickingListCardComponent;
+  let element: PickingListItemComponent;
 
   beforeAll(async () => {
-    await useComponent(pickingListCardComponent);
+    await useComponent(pickingListItemComponent);
   });
 
   describe('when cart note is provided', () => {
@@ -62,9 +62,9 @@ describe('PickingListCardComponent', () => {
       });
 
       element = await fixture(
-        html`<oryx-picking-list-card
+        html`<oryx-picking-list-item
           .pickingList=${pickingListProp}
-        ></oryx-picking-list-card>`
+        ></oryx-picking-list-item>`
       );
     });
 
@@ -157,9 +157,9 @@ describe('PickingListCardComponent', () => {
       });
 
       element = await fixture(
-        html`<oryx-picking-list-card
+        html`<oryx-picking-list-item
           .pickingList=${pickingListProp}
-        ></oryx-picking-list-card>`
+        ></oryx-picking-list-item>`
       );
     });
 

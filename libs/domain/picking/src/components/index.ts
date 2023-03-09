@@ -1,3 +1,3 @@
-export * from './customer-note-modal/component';
-export * from './picking-list-card/component';
-export * from './picking-lists/component';
+export * from './customer-note-modal/customer-note-modal.def';
+export * from './picking-list-item/picking-list-item.def';
+export * from './picking-lists/picking-lists.def';

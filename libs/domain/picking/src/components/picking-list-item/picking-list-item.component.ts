@@ -4,9 +4,9 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import type { PickingList } from '../../models';
-import { styles } from './picking-list-card.styles';
+import { styles } from './picking-list-item.styles';
 
-export class PickingListCardComponent extends LitElement {
+export class PickingListItemComponent extends LitElement {
   static styles = styles;
 
   protected pickingListService = resolve(PickingListService);
