@@ -28,4 +28,5 @@ export class CartPage extends AbstractSFPage {
       });
 
   getCartTotals = () => this.cartTotals;
+  getCheckoutBtn = () => cy.contains('oryx-content-link', 'Checkout').find('a');
 }
