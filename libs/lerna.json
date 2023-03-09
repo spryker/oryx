@@ -12,8 +12,11 @@
     "base/di",
     "template/presets",
     "domain/product",
+    "domain/picking",
     "domain/order",
     "platform/router",
+    "platform/indexed-db",
+    "platform/offline",
     "domain/search",
     "domain/site",
     "template/themes",
@@ -33,7 +36,8 @@
       "createRelease": "github",
       "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
-      "verifyAccess": false
+      "verifyAccess": false,
+      "exact": true
     }
   }
 }

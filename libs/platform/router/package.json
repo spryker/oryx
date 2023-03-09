@@ -12,9 +12,9 @@
   "typings": "./src/index.d.ts",
   "dependencies": {},
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/core": "~0.2.0",
+    "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0",
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "^2.2.3",
     "lit": "^2.4.0",

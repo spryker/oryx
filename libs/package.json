@@ -16,7 +16,7 @@
     "release-branch": "node ../tools/release/release.js",
     "release-from-packages": "lerna publish from-package --yes",
     "pack": "run-s pack:*",
-    "prepack:libs": "npm run clean:dist",
+    "prepack:libs": "npm run clean:dist && node ../tools/post-build/add-js-extension.js",
     "pack:libs": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/pack-lib.js",
     "pack:files": "node ../tools/utils/multi-copy.js ../LICENSE '../dist/libs/*/*'",
     "postversion": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/update-lib.js",
