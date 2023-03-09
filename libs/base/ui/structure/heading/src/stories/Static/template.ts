@@ -40,11 +40,20 @@ export const Template: Story = (): TemplateResult => {
     <oryx-heading as="hide" as-lg="show">
       <h1>hidden on all, but large screen</h1>
     </oryx-heading>
+    <oryx-heading as="hide" as-lg="h3">
+      <h1>hidden on all, but h3 on large screen</h1>
+    </oryx-heading>
     <oryx-heading as="hide" as-md="show">
       <h1>hidden on all, but medium screen</h1>
     </oryx-heading>
+    <oryx-heading as="hide" as-md="h3">
+      <h1>hidden on all, but h3 on medium screen</h1>
+    </oryx-heading>
     <oryx-heading as="hide" as-sm="show">
       <h1>hidden on all, but small screen</h1>
+    </oryx-heading>
+    <oryx-heading as="hide" as-sm="h3">
+      <h1>hidden on all, but h3 on small screen</h1>
     </oryx-heading>
 
     <h3>"as"</h3>
@@ -162,14 +171,23 @@ export const Template: Story = (): TemplateResult => {
     <oryx-heading tag="h1" as-md="hide">hidden on medium screen</oryx-heading>
     <oryx-heading tag="h1" as-sm="hide">hidden on small screen</oryx-heading>
     <oryx-heading tag="h1" as="hide">hidden on all</oryx-heading>
-    <oryx-heading tag="h1" as="hide" as-lg="show"
-      >hidden on all, but large screen
+    <oryx-heading tag="h1" as="hide" as-lg="show">
+      hidden on all, but large screen
     </oryx-heading>
-    <oryx-heading tag="h1" as="hide" as-md="show"
-      >hidden on all, but medium screen
+    <oryx-heading tag="h1" as="hide" as-lg="h3">
+      hidden on all, but h3 on large screen
     </oryx-heading>
-    <oryx-heading tag="h1" as="hide" as-sm="show"
-      >hidden on all, but small screen
+    <oryx-heading tag="h1" as="hide" as-md="show">
+      hidden on all, but medium screen
+    </oryx-heading>
+    <oryx-heading tag="h1" as="hide" as-md="h3">
+      hidden on all, but h3 on medium screen
+    </oryx-heading>
+    <oryx-heading tag="h1" as="hide" as-sm="show">
+      hidden on all, but small screen
+    </oryx-heading>
+    <oryx-heading tag="h1" as="hide" as-sm="h3">
+      hidden on all, but h3 on small screen
     </oryx-heading>
 
     <h2>"as"</h2>

@@ -14,8 +14,8 @@ const smallScreen = css`
     --display: none;
   }
 
-  :host([as-sm='show']) {
-    --display: initial;
+  :host([as-sm]:not([as-sm='hide'])) {
+    display: initial;
   }
 
   :host([as-sm='h1']) {
@@ -81,8 +81,8 @@ const mediumScreen = css`
     --display: none;
   }
 
-  :host([as-md='show']) {
-    --display: initial;
+  :host([as-md]:not([as-md='hide'])) {
+    display: initial;
   }
 
   :host([as-md='h1']) {
@@ -148,8 +148,8 @@ const largeScreen = css`
     --display: none;
   }
 
-  :host([as-lg='show']) {
-    --display: initial;
+  :host([as-lg]:not([as-lg='hide'])) {
+    display: initial;
   }
 
   :host([as-lg='h1']) {

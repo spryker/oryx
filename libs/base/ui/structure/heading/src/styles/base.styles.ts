@@ -30,15 +30,22 @@ export const headlineStyles = css`
 
   :host,
   :host > *,
-  ::slotted(*) {
+  ::slotted(*:not(oryx-content-link)) {
     font-size: var(--fs);
-    font-weight: var(--fw, 600);
+    font-weight: var(--fw);
     line-height: var(--lh);
   }
 
   :host > *,
   ::slotted(*) {
     margin-block: 0;
+  }
+
+  :host {
+    display: var(--display, block);
+  }
+
+  :host([style*='--max-lines']) {
     max-height: calc(var(--_line-height) * var(--max-lines));
     transition: max-height 2s;
     display: var(--display, -webkit-box);
@@ -55,7 +62,7 @@ export const headlineStyles = css`
   }
 
   :host([as='hide']) {
-    --display: none;
+    display: none;
   }
 
   h1,
