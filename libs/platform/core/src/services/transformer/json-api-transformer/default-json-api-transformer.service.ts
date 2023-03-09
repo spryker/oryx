@@ -4,7 +4,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 // Add full import because of issue with naming exports from cjs.
 import jsonapi from 'jsonapi-serializer';
-import { map, Observable, switchMap, from } from 'rxjs';
+import { map, Observable, switchMap, of } from 'rxjs';
 import {
   InheritTransformerResult,
   TransformerService,
@@ -33,7 +33,7 @@ export class DefaultJsonAPITransformerService
     data: unknown,
     token: keyof InjectionTokensContractMap
   ): InheritTransformerResult<T> {
-    return from(this.deserializer.deserialize(data)).pipe(
+    return of(this.deserializer.deserialize(data)).pipe(
       switchMap((deserializedData) =>
         this.transformer.transform<T>(deserializedData, token)
       )
