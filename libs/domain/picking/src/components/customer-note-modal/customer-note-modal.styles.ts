@@ -6,9 +6,9 @@ export const styles = css`
     --oryx-card-body-padding: 18px 30px;
   }
 
-  // [slot='heading'] {
-  //   font-size: 18px;
-  // }
+  [slot='heading'] {
+    font-size: 18px;
+  }
 
   oryx-button {
     width: 100%;
