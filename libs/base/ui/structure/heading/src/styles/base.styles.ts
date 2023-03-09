@@ -26,6 +26,8 @@ export const headlineStyles = css`
     --caps: var(--oryx-typography-caption-size);
     --capw: var(--oryx-typography-caption-weight);
     --capl: var(--oryx-typography-caption-line);
+
+    display: var(--display, block);
   }
 
   :host,
@@ -39,10 +41,6 @@ export const headlineStyles = css`
   :host > *,
   ::slotted(*) {
     margin-block: 0;
-  }
-
-  :host {
-    display: var(--display, block);
   }
 
   :host([style*='--max-lines']) {
