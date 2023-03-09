@@ -43,6 +43,12 @@ import {
 } from './state';
 
 export class DefaultCartService implements CartService {
+
+  // fix for storybook :(
+  protected adapter = inject(CartAdapter);
+  protected identity = inject(IdentityService);
+  protected query = inject(QueryService);
+
   protected cartCommandBase = {
     onStart: [CartModificationStart],
     onFinish: [CartModificationEnd],
@@ -170,12 +176,6 @@ export class DefaultCartService implements CartService {
     ),
     distinctUntilChanged()
   );
-
-  constructor(
-    protected adapter = inject(CartAdapter),
-    protected identity = inject(IdentityService),
-    protected query = inject(QueryService)
-  ) {}
 
   reload(): void {
     this.cartsQuery$.refresh();
