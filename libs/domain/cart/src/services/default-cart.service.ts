@@ -43,8 +43,7 @@ import {
 } from './state';
 
 export class DefaultCartService implements CartService {
-
-  // fix for storybook :(
+  // TODO: find a better fix for storybook
   protected adapter = inject(CartAdapter);
   protected identity = inject(IdentityService);
   protected query = inject(QueryService);
