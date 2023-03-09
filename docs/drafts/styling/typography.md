@@ -36,13 +36,29 @@ Font sizes and line height of headings are configured with relative sizes, using
 
 **note**: While `rem` (_root_ `em`) is a fair alternative to `em` it does not work out of the box in oryx, as oryx does not control the _root_ of the page. `rem`-based sizes can however be configured and controlled in themes.
 
-### Appearance vs structure
+### Semantic HTML structure versus UI
 
-The underlying structure of the typography is important to users with limited sight; screen readers require a strict DOM structure and do not allow to skip headers in the structure. An H3 for example cannot be followed by an H5, as it will cause an accessibility violation. This strict structure might not be required for UI design as the layout of the page often helps with structuring content. In fact, UI designers often ignore the structure of the page, and use heading levels in a random order, just to satisfy their needs. This is actually fair, as they also layout to accommodate the structure, so from a pure design perspective, there's often a different perspective on the heading levels.
+The semantic structure of the typography elements is important on the web. Crawlers and screen readers use the structure to interpreted the content. This is important for users with limited sight, as they will be guided by screen readers. It helps navigating the content and allows to skip sections which are not of interest.
 
-To allow for a flexible but compliant design, the oryx heading component support a structure (`tag`) and an optional `appearance`. The `appearance` dictates the UI, regardless of the element tag.
+If the structure contains an incorrect order, e.g. a H3 followed by a H5, it violates with accessibility best practices.
 
-Appearance can also be applied to medium - large screens only, using the `md-appearance` attribute.
+This strict structure might not be required for the UI design, as the layout of the page often helps with structuring content. UI designers often ignore the structure of the page, and use heading levels in a random order, just to satisfy their design needs. This might be fair, as visual layout accommodates the structure, so from a pure design perspective, there's often a different perspective on the heading levels.
+
+To allow for a flexible but compliant design, the heading component supports to distinguish the structure from the UI when needed. The heading component is equipped with an utility to mimic the structure _as_ with alternative typography.
+
+```html
+<oryx-heading as="h3">
+  <h1>This h1 appears as an h3 on small screens</h1>
+</oryx-heading>
+```
+
+The mimicking can be applied per screen size (lg, md, sm), for example if you only want to change the UI on small screens you could use:
+
+```html
+<oryx-heading as-sm="h3">
+  <h1>This h1 appears as an h3 on small screens</h1>
+</oryx-heading>
+```
 
 ### Examples
 
@@ -63,17 +79,17 @@ Alternatively, the heading can be provided using a tag attribute or property. Th
 The last option is to provide the heading appearance, regardless of the actual `tag`. This will render the tag as-is, but applies the styles based on the UI design.
 
 ```html
-<oryx-heading appearance="h5">
+<oryx-heading as="h5">
   <h3>This heading appears as an H5</h3>
 </oryx-heading>
 
-<oryx-heading appearance="h5"> This text appears as an H5 </oryx-heading>
+<oryx-heading as="h5"> This text appears as an H5 </oryx-heading>
 
-<oryx-heading tag="h3" appearance="h5">
+<oryx-heading tag="h3" as="h5">
   This text renders as an h3, but appears as an H5
 </oryx-heading>
 
-<oryx-heading md-appearance="h5">
+<oryx-heading as-md="h5">
   <h3>
     This heading appears as an H5 on for medium (and larger) screen-size devices
   </h3>

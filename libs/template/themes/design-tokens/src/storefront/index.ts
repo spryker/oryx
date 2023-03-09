@@ -7,7 +7,7 @@ import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 import { darkTokens } from './other-dark';
 import { tokens } from './other.tokens';
 import {
-  typographyMediumTokens,
+  typographyMediumAndLargerTokens,
   typographySmallTokens,
   typographyTokens,
 } from './typography.tokens';
@@ -38,12 +38,13 @@ export const storefrontTokens: DesignToken[] = [
       screen: Size.Md,
     },
     ...layoutMdTokens,
-    ...typographyMediumTokens,
+    ...typographyMediumAndLargerTokens,
   },
   {
     media: {
       screen: Size.Lg,
     },
     ...layoutTokens,
+    ...typographyMediumAndLargerTokens,
   },
 ];
