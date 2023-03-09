@@ -43,7 +43,8 @@ export const headlineStyles = css`
     margin-block: 0;
   }
 
-  :host([style*='--max-lines']) {
+  :host([style*='--max-lines']) > *,
+  :host([style*='--max-lines']) ::slotted(*) {
     max-height: calc(var(--_line-height) * var(--max-lines));
     transition: max-height 2s;
     display: var(--display, -webkit-box);
