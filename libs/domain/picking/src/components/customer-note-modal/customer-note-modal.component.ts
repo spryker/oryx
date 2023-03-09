@@ -1,3 +1,5 @@
+import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styles } from './customer-note-modal.styles';
@@ -5,26 +7,27 @@ import { styles } from './customer-note-modal.styles';
 export class CustomerNoteModal extends LitElement {
   static styles = styles;
 
-  @property() customerNote?: string;
+  @property() note?: string;
 
-  protected closeCustomerNoteModal(): void {
-    this.dispatchEvent(new Event('close'));
+  protected close(): void {
+    this.dispatchEvent(
+      new CustomEvent(CLOSE_EVENT, {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   protected override render(): TemplateResult {
-    return html` <oryx-modal
-      ?open=${this.customerNote}
-      enableFooter
-      @oryx.close=${this.closeCustomerNoteModal}
-    >
-      <span slot="heading">Customer note</span>
+    return html` <oryx-modal ?open=${this.note} enableFooter>
+      <span slot="heading">${i18n('picking.customer-note.heading')}</span/>
 
-      ${this.customerNote}
+      ${this.note}
 
       <oryx-button slot="footer" type="primary" size="small">
-        <button @click=${this.closeCustomerNoteModal}>
+        <button @click=${this.close}>
           <oryx-icon type="checkMark"></oryx-icon>
-          Got it
+          ${i18n('picking.customer-note.close')}
         </button>
       </oryx-button>
     </oryx-modal>`;

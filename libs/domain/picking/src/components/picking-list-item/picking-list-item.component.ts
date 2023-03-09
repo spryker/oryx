@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -25,10 +26,14 @@ export class PickingListItemComponent extends LitElement {
   }
 
   protected showCustomerNote(): void {
+    if (!this.pickingList?.cartNote) {
+      return;
+    }
+
     this.dispatchEvent(
-      new CustomEvent('showCustomerNote', {
+      new CustomEvent('oryx.show-note', {
         detail: {
-          customerNote: this.pickingList?.cartNote,
+          note: this.pickingList?.cartNote,
         },
       })
     );
@@ -37,16 +42,24 @@ export class PickingListItemComponent extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <oryx-card>
-        <div slot="heading" class="qqq">qqq</div>
-        <div slot="heading" class="time">
-          ${this.formatTime(this.pickingList?.createdAt)}
+        <div slot="heading">
+          ${when(
+            this.pickingList?.createdAt,
+            () => html`
+              <div class="time">
+                ${this.formatTime(this.pickingList!.createdAt!)}
+              </div>
+            `
+          )}
+          <div class="identifier">${this.pickingList?.id}</div>
         </div>
-        <div slot="heading" class="identifier">${this.pickingList?.id}</div>
 
         <div class="total">
           <oryx-icon type="cart"></oryx-icon>
-          <span :data-e2e="order-total-label-${this.pickingList?.id}"
-            >${this.pickingList?.items?.length} items</span
+          <span
+            >${i18n('picking.picking-list-item.{count}-items', {
+              count: this.pickingList?.items?.length,
+            })}</span
           >
         </div>
 
@@ -56,7 +69,6 @@ export class PickingListItemComponent extends LitElement {
             <oryx-icon-button size="large">
               <button
                 aria-label="Show customer note"
-                :data-e2e="order-note-button-${this.pickingList?.id}"
                 @click=${this.showCustomerNote}
               >
                 <oryx-icon type="info"></oryx-icon>
@@ -71,22 +83,15 @@ export class PickingListItemComponent extends LitElement {
           size="large"
           @click=${this.startPicking}
         >
-          <button
-            :disabled=${this.isDisabled}
-            :data-e2e="start-picking-button-${this.pickingList?.id}"
-          >
-            Start picking
+          <button :disabled=${this.isDisabled}>
+            ${i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>
       </oryx-card>
     `;
   }
 
-  protected formatTime(time?: Date): string {
-    if (!time) {
-      return 'invalid time';
-    }
-
+  protected formatTime(time: Date): string {
     return time
       .toLocaleString('en-US', {
         hour: '2-digit',

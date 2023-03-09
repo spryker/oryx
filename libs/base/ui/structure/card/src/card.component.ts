@@ -12,7 +12,7 @@ export class CardComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <slot name="heading" part="heading">
+      <slot name="heading">
         <oryx-heading>
           <h5>${this.heading}</h5>
         </oryx-heading>

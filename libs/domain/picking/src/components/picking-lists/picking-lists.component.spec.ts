@@ -5,6 +5,7 @@ import {
   pickingListsComponent,
   PickingListService,
 } from '@spryker-oryx/picking';
+import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeAll, beforeEach } from 'vitest';
@@ -75,21 +76,19 @@ describe('PickingListsComponent', () => {
         'oryx-picking-list-item'
       );
 
-      element.addEventListener('showCustomerNote', () => {
+      element.addEventListener('oryx.show-note', () => {
         const customerNoteModal = element.renderRoot.querySelector(
           'oryx-customer-note-modal'
         );
-        expect(customerNoteModal?.getAttribute('customerNote')).toBe(
-          customerNoteText
-        );
+        expect(customerNoteModal?.getAttribute('note')).toBe(customerNoteText);
 
-        customerNoteModal?.dispatchEvent(new Event('close'));
-        expect(customerNoteModal?.getAttribute('customerNote')).toBe(null);
+        customerNoteModal?.dispatchEvent(new CustomEvent('oryx.close'));
+        expect(customerNoteModal?.getAttribute('note')).toBe(null);
       });
 
       pickingListCard?.dispatchEvent(
-        new CustomEvent('showCustomerNote', {
-          detail: { customerNote: customerNoteText },
+        new CustomEvent('oryx.show-note', {
+          detail: { note: customerNoteText },
         })
       );
     });
@@ -124,7 +123,7 @@ describe('PickingListsComponent', () => {
 
     it(`should render fallback text`, () => {
       expect(element.renderRoot.querySelector('p')?.textContent).toBe(
-        'No picking lists found!'
+        i18n('picking.no-picking-lists-found')
       );
     });
   });

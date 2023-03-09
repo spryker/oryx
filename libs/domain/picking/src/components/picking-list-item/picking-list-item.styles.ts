@@ -13,10 +13,16 @@ export const styles = css`
     }
   }
 
-  ::part(heading) {
+  [slot='heading'] {
     justify-content: space-between;
     align-items: baseline;
     font-weight: 600;
+    display: flex;
+    width: 100%;
+  }
+
+  [slot='heading'] div:only-child {
+    margin-inline-start: auto;
   }
 
   .time {

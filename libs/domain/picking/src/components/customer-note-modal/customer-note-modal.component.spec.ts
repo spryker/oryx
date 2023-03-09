@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { customerNoteModalComponent } from '@spryker-oryx/picking';
+import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { CustomerNoteModal } from './customer-note-modal.component';
 
@@ -11,7 +12,7 @@ describe('CustomerNoteModalComponent', () => {
     await useComponent([customerNoteModalComponent]);
   });
 
-  describe('when customerNote prop is not provided', () => {
+  describe('when "note" prop is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-customer-note-modal></oryx-customer-note>`
@@ -25,13 +26,13 @@ describe('CustomerNoteModalComponent', () => {
     });
   });
 
-  describe('when customerNote prop is provided', () => {
+  describe('when "note" prop is provided', () => {
     const customerNote = 'This is a note';
     beforeEach(async () => {
       element = await fixture(
         html`
 					<oryx-customer-note-modal 
-						.customerNote=${customerNote} 
+						.note=${customerNote} 
 					</oryx-customer-note>`
       );
     });
@@ -49,7 +50,7 @@ describe('CustomerNoteModalComponent', () => {
     it('should have proper heading', () => {
       expect(
         element.renderRoot.querySelector('span[slot="heading"]')?.textContent
-      ).toBe('Customer note');
+      ).toBe(i18n('picking.customer-note.heading'));
     });
 
     it('should render a modal with the provided customer note', async () => {
@@ -58,9 +59,9 @@ describe('CustomerNoteModalComponent', () => {
       ).contains(customerNote);
     });
 
-    it('should dispatch a "close" event when the "Got it" button is clicked', async () => {
+    it('should dispatch a "oryx.close" event when the "Got it" button is clicked', async () => {
       const closeEvent = vi.fn();
-      element.addEventListener('close', closeEvent);
+      element.addEventListener('oryx.close', closeEvent);
 
       const closeBtn = element.renderRoot.querySelector('button');
       closeBtn?.click();

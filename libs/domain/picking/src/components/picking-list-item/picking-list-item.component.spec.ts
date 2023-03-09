@@ -5,6 +5,7 @@ import {
   pickingListItemComponent,
   PickingListService,
 } from '@spryker-oryx/picking';
+import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { PickingListItemComponent } from './picking-list-item.component';
@@ -100,12 +101,16 @@ describe('PickingListCardComponent', () => {
     it('should render items number', () => {
       expect(
         element.renderRoot.querySelector('.total')?.textContent?.trim()
-      ).toBe(`${pickingListProp.items.length} items`);
+      ).toBe(
+        i18n('picking.picking-list-item.{count}-items', {
+          count: pickingListProp.items.length,
+        })
+      );
     });
 
     it('should emit showCustomerNote event when the customer note button is clicked', () => {
       const event = vi.fn();
-      element.addEventListener('showCustomerNote', event);
+      element.addEventListener('oryx.show-note', event);
 
       const button: HTMLButtonElement | null = element.renderRoot.querySelector(
         'oryx-icon-button > button'
