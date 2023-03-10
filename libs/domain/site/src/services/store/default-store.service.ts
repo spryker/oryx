@@ -31,10 +31,14 @@ export class DefaultStoreService implements StoreService {
       switchMap((store) =>
         !store
           ? this.getAll().pipe(
-              map(
-                (stores) =>
-                  stores.find((store) => store.id === this.store) ?? null
-              )
+              map((stores) => {
+                const store = !this.store
+                  ? stores?.[0]
+                  : stores.find((store) => store.id === this.store) ??
+                    stores?.[0];
+                this.store$.next(store);
+                return this.store$.value;
+              })
             )
           : of(store)
       )
