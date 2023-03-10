@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
@@ -90,8 +91,8 @@ export class CollapsibleComponent
   /**
    * returns the size of the control based on the appearance of the component.
    */
-  protected get controlSize(): 'small' | 'medium' | 'large' {
-    return this.isInline ? 'small' : 'medium';
+  protected get controlSize(): Size {
+    return this.isInline ? Size.Sm : Size.Md;
   }
 
   protected get isInline(): boolean {

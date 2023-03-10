@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { QueryManager } from '../core';
 import { QueryService } from '../query.service';
 import { QueryEvent } from './query-event';
 
@@ -17,7 +18,10 @@ export type StreamEffect = ({
   events$,
 }: {
   events$: Observable<QueryEvent>;
-  query: QueryService;
+  getEvents: (
+    eventType?: string | string[]
+  ) => Observable<QueryEvent<any, any>>;
+  query: QueryManager;
 }) => Observable<unknown>;
 
 export type EffectDefinition<Data = unknown, Qualifier = unknown> =

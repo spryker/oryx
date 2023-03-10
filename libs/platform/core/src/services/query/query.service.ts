@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs';
+import { Observable, Unsubscribable } from 'rxjs';
+import { QueryManager } from './core';
 import {
   Command,
   CommandOptions,
@@ -14,7 +15,7 @@ export const QUERY_TOKEN = 'oryx.QueryToken*';
 export const EFFECT_TOKEN = 'oryx.EffectToken*';
 export const COMMAND_TOKEN = 'oryx.CommandToken*';
 
-export interface QueryService {
+export interface QueryService extends QueryManager {
   createQuery<ValueType, Qualifier extends object | undefined = undefined>(
     options: QueryOptions<ValueType, Qualifier>
   ): Query<ValueType, Qualifier>;
@@ -23,7 +24,7 @@ export interface QueryService {
     options: CommandOptions<ResultType, Qualifier>
   ): Command<ResultType, Qualifier>;
 
-  createEffect(effect: EffectDefinition): void;
+  createEffect(effect: EffectDefinition): Observable<unknown> & Unsubscribable;
 
   getQuery<QueryType extends Query<any, any>>(
     id: string
@@ -44,7 +45,7 @@ export interface QueryService {
   ): Command<ResultType, Qualifier> | undefined;
 
   emit(event: QueryEvent): void;
-  getEvents(eventType?: string): Observable<QueryEvent>;
+  getEvents(eventType?: string): Observable<QueryEvent<any, any>>;
 }
 
 declare global {

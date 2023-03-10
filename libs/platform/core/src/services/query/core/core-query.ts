@@ -10,6 +10,7 @@ import {
   Observable,
   shareReplay,
   skipWhile,
+  Subject,
   Subscription,
   switchMap,
   take,
@@ -17,7 +18,6 @@ import {
   tap,
   using,
 } from 'rxjs';
-import { CoreQueryService } from '../core';
 import {
   Query,
   QueryEventHandler,
@@ -26,6 +26,7 @@ import {
   QueryTrigger,
 } from '../models';
 import { buildEvent } from './build-event';
+import { QueryManager } from './query-manager';
 
 export class CoreQuery<
   ValueType,
@@ -38,12 +39,14 @@ export class CoreQuery<
       subject$: BehaviorSubject<QueryState<ValueType>>;
       state$: Observable<QueryState<ValueType>>;
       data$: Observable<ValueType | undefined>;
+      refresh$: Subject<undefined>;
+      reset$: Subject<undefined>;
     }
   >();
 
   constructor(
     protected options: QueryOptions<ValueType, Qualifier>,
-    protected service: CoreQueryService,
+    protected manager: QueryManager,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -84,7 +87,11 @@ export class CoreQuery<
       )
     );
 
-    const resetTrigger$ = this.getTriggerStream(this.options.resetOn).pipe(
+    const reset$ = new Subject<undefined>();
+    const resetTrigger$ = this.getTriggerStream([
+      ...(this.options.resetOn ?? []),
+      reset$,
+    ]).pipe(
       tap(() => {
         if (subject$.value !== initialState) {
           subject$.next(initialState);
@@ -92,7 +99,11 @@ export class CoreQuery<
       })
     );
 
-    const refreshTrigger$ = this.getTriggerStream(this.options.refreshOn).pipe(
+    const refresh$ = new Subject<undefined>();
+    const refreshTrigger$ = this.getTriggerStream([
+      ...(this.options.refreshOn ?? []),
+      refresh$,
+    ]).pipe(
       tap(() => {
         if (!subject$.value.stale) {
           subject$.next({
@@ -107,7 +118,7 @@ export class CoreQuery<
 
     const loadLogic$ = needToLoad$.pipe(
       tap(() => {
-        if (subject$.value.loading!) {
+        if (!subject$.value.loading) {
           subject$.next({
             error: subject$.value.error,
             loading: true,
@@ -166,7 +177,7 @@ export class CoreQuery<
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
-    this.queryCache.set(key, { subject$, state$, data$ });
+    this.queryCache.set(key, { subject$, state$, data$, reset$, refresh$ });
   }
 
   get(qualifier: Qualifier): Observable<ValueType | undefined> {
@@ -195,6 +206,20 @@ export class CoreQuery<
     });
   }
 
+  reset(qualifier: Qualifier): void {
+    const key = this.getKey(qualifier);
+    if (this.queryCache.has(key)) {
+      this.queryCache.get(key)!.reset$.next(undefined);
+    }
+  }
+
+  refresh(qualifier: Qualifier): void {
+    const key = this.getKey(qualifier);
+    if (this.queryCache.has(key)) {
+      this.queryCache.get(key)!.refresh$.next(undefined);
+    }
+  }
+
   protected onLoad(data: ValueType, qualifier?: Qualifier): void {
     this.options.onLoad?.forEach((callback) => {
       this.dispatchEvent(callback, qualifier, data);
@@ -220,7 +245,7 @@ export class CoreQuery<
       error
     );
     if (event) {
-      this.service.emit(event);
+      this.manager.emit(event);
     }
   }
 
@@ -229,7 +254,7 @@ export class CoreQuery<
   ): Observable<undefined> {
     return merge(
       ...triggers.map((trigger) =>
-        typeof trigger === 'string' ? this.service.getEvents(trigger) : trigger
+        typeof trigger === 'string' ? this.manager.getEvents(trigger) : trigger
       )
     );
   }

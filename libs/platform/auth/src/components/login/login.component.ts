@@ -2,6 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
+import { Size } from '@spryker-oryx/ui';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import {
   FormAssociatedElement,
@@ -12,7 +13,6 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DirectiveResult } from 'lit/directive.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, EMPTY, map, of, Subject, switchMap, tap } from 'rxjs';
@@ -155,7 +155,7 @@ export class AuthLoginComponent
 
   protected override render(): TemplateResult {
     return html`<oryx-card>
-      <oryx-heading slot="heading" appearance="h5">
+      <oryx-heading slot="heading" as="h5">
         <h1>${this.heading ?? i18n('user.login')}</h1>
       </oryx-heading>
 
@@ -184,7 +184,7 @@ export class AuthLoginComponent
         </oryx-input>
 
         <oryx-password-input
-          .strategy="${ifDefined(this.componentOptions?.passwordVisibility)}"
+          .strategy="${this.componentOptions?.passwordVisibility}"
           .label=${i18n('login.password')}
           required
           ?hasError="${this.hasError}"
@@ -200,7 +200,7 @@ export class AuthLoginComponent
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size="small">
+        <oryx-button size=${Size.Sm}>
           <button ?disabled=${this.isLoading} @click=${this.login}>
             ${i18n('user.login')}
           </button>

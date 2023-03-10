@@ -1,5 +1,9 @@
-import { AppPluginAfterApply, AppPluginBeforeApply } from '@spryker-oryx/core';
-import { App, AppPlugin } from '../app';
+import {
+  App,
+  AppPlugin,
+  AppPluginAfterApply,
+  AppPluginBeforeApply,
+} from '../app';
 import { ExecFn, ExecPluginOptions, ExecPluginRuntime } from './exec.model';
 
 export const ExecPluginName = 'core$exec';

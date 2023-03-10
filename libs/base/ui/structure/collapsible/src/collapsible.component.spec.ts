@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { Size } from '@spryker-oryx/ui';
 import { CollapsibleComponent } from './collapsible.component';
 import { collapsibleComponent } from './collapsible.def';
 import {
@@ -38,7 +39,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe(Size.Md);
       });
     });
 
@@ -54,7 +55,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe(Size.Md);
       });
     });
   });
@@ -84,7 +85,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
       });
     });
 
@@ -100,7 +101,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
       });
     });
   });

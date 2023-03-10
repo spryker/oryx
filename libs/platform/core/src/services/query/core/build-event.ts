@@ -1,4 +1,4 @@
-import { QueryEvent, QueryEventHandler } from '@spryker-oryx/core';
+import { QueryEvent, QueryEventHandler } from '../models/query-event';
 
 export function buildEvent<Data = unknown, Qualifier = unknown>(
   handler: QueryEventHandler<Data, Qualifier>,

@@ -36,7 +36,7 @@ export class ProductDetailsPage extends AbstractSFPage {
     //
     // cy.waitUpdateComplete(this.getAddToCartWrapper())
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait(2000);
   };
 
   getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');

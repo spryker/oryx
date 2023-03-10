@@ -1,3 +1,5 @@
+import { AlertType } from '@spryker-oryx/ui';
+
 export interface ChipAttributes {
   /**
    * Indicates the visual appearance of the chip.
@@ -8,7 +10,7 @@ export interface ChipAttributes {
    * the value of this property. If a new value of the enumeration is
    * added, the corresponding CSS variables should also be added.
    */
-  appearance?: ChipAppearance;
+  appearance?: AlertType;
 
   /**
    * Indicates if the chip should be displayed in a more compact format.
@@ -19,11 +21,4 @@ export interface ChipAttributes {
    * Inverts the color scheme for the back and foreground color.
    */
   invert?: boolean;
-}
-
-export const enum ChipAppearance {
-  Success = 'success',
-  Info = 'info',
-  Warning = 'warning',
-  Error = 'error',
 }

@@ -54,7 +54,7 @@ export class OrderEntriesComponent extends OrderMixin(
   }
 
   protected renderHeading(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
       <h3>
         ${i18n('order.Products')}
         ${i18n('order.(<count> items)', {

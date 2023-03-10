@@ -17,7 +17,7 @@ export class CheckoutLinkComponent extends ComponentMixin() {
 
   protected data$ = combineLatest([
     this.cartService.isEmpty(),
-    this.cartService.getLoadingState(),
+    this.cartService.isBusy(),
   ]);
 
   protected override render(): TemplateResult {

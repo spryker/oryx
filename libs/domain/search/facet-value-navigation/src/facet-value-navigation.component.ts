@@ -1,3 +1,4 @@
+import { AlertType, Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -52,7 +53,7 @@ export class SearchFacetValueNavigationComponent
           ${when(
             this.selectedLength,
             () =>
-              html`<oryx-chip dense appearance="success"
+              html`<oryx-chip dense appearance=${AlertType.Success}
                 >${this.selectedLength}</oryx-chip
               >`
           )}
@@ -62,7 +63,7 @@ export class SearchFacetValueNavigationComponent
           this.enableClearAction && this.selectedLength,
           () =>
             html`
-              <oryx-button type="text" size="small">
+              <oryx-button type="text" size=${Size.Sm}>
                 <button @click=${this.onClear}>
                   ${i18n('search.facet-value-navigation.clear')}
                 </button>
@@ -84,7 +85,7 @@ export class SearchFacetValueNavigationComponent
       ${when(
         this.enableToggle,
         () => html`<div class="controls">
-          <oryx-button type="text" size="large">
+          <oryx-button type="text" size=${Size.Lg}>
             <button @click=${this.onToggle}>
               ${when(
                 this._isShowed,

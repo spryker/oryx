@@ -9,7 +9,6 @@ import {
   Subscription,
   tap,
 } from 'rxjs';
-import { CoreQueryService } from '../core';
 import {
   Command,
   CommandOptions,
@@ -17,6 +16,7 @@ import {
   QueryEventHandler,
 } from '../models';
 import { buildEvent } from './build-event';
+import { QueryManager } from './query-manager';
 
 export class CoreCommand<
   ResultType,
@@ -28,7 +28,7 @@ export class CoreCommand<
 
   constructor(
     protected options: CommandOptions<ResultType, Qualifier>,
-    protected service: CoreQueryService,
+    protected manager: QueryManager,
     protected destroyNotifier$?: Observable<undefined>
   ) {}
 
@@ -52,7 +52,11 @@ export class CoreCommand<
     if (this.currentResult) {
       concat(this.currentResult, this.getStream(result, qualifier)).subscribe();
       this.currentResult = result;
+    } else {
+      this.getStream(result, qualifier).subscribe();
+      this.currentResult = result;
     }
+
     return result;
   }
 
@@ -153,7 +157,7 @@ export class CoreCommand<
       error
     );
     if (event) {
-      this.service.emit(event);
+      this.manager.emit(event);
     }
   }
 }

@@ -2,27 +2,25 @@ import { css } from 'lit';
 
 export const iconButtonStyles = css`
   :host {
-    color: var(--oryx-icon-button-color, var(--oryx-color-neutral-300));
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--oryx-color-neutral-400);
   }
 
-  ::slotted(*) {
-    display: flex;
-    position: relative;
-    flex: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+  ::slotted(*:first-child) {
     cursor: pointer;
-    transition: var(--oryx-transition-time);
     background: transparent;
-    outline: none;
     border: solid transparent 1px;
     border-radius: 50%;
+    outline: none;
     color: inherit;
+    transition: var(--oryx-transition-time);
   }
 
-  ::slotted(:hover:not([disabled])) {
+  :host(:hover) ::slotted(:first-child:not([disabled])),
+  ::slotted(:first-child:hover:not([disabled])) {
     border-color: var(--oryx-color-neutral-200);
     background: var(--oryx-color-canvas-200);
   }
@@ -36,7 +34,8 @@ export const iconButtonStyles = css`
     border-color: var(--oryx-color-canvas-200);
   }
 
-  ::slotted(:active:not([disabled])) {
+  :host(:active) ::slotted(:first-child:not([disabled])),
+  ::slotted(:active:first-child:not([disabled])) {
     border-color: var(--oryx-color-neutral-300);
     background: var(--oryx-color-canvas-200);
   }
@@ -45,22 +44,22 @@ export const iconButtonStyles = css`
     cursor: default;
     color: var(--oryx-color-neutral-200);
     border-color: var(--oryx-color-canvas-500);
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-canvas-100);
   }
 
-  :host([size='small']) ::slotted(*) {
+  :host([size='sm']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-small);
 
-    padding: 4px;
+    padding: 3px;
   }
 
-  :host([size='medium']) ::slotted(*) {
+  :host([size='md']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-medium);
 
-    padding: 6px;
+    padding: 5px;
   }
 
-  :host([size='large']) ::slotted(*) {
+  :host([size='lg']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-large);
 
     padding: 6px;

@@ -126,7 +126,7 @@ export class DefaultCheckoutService implements CheckoutService {
       this.orderService.storeLastOrder(response.orders[0]);
     }
 
-    this.cartService.load();
+    this.cartService.reload();
     this.dataService.reset();
 
     return subscribeReplay(
