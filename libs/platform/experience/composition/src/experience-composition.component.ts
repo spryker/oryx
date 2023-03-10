@@ -21,7 +21,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
-@hydratable()
+@hydratable({ force: true })
 export class ExperienceCompositionComponent extends ContentMixin<CompositionProperties>(
   LitElement
 ) {

@@ -3,7 +3,6 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
-  Force,
   SsrOptions,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
@@ -51,10 +50,11 @@ export class RootPlugin
 
   afterApply(): void | Promise<void> {
     const root = rootInjectable.get();
-    const ssrOptions = resolve(SsrOptions, {} as SsrOptions);
-    const isRendered = Boolean(document.querySelector(root)?.shadowRoot);
-    const isForce = !isServer && ssrOptions.force === Force.All && isRendered;
+    const ssrOptions = resolve(SsrOptions, null);
+    const isSsred =
+      Boolean(document.querySelector(root)?.shadowRoot) && !isServer;
+    const force = ssrOptions?.force && isSsred ? ssrOptions.force : undefined;
 
-    initHydrateHooks(root, isForce);
+    initHydrateHooks(root, force);
   }
 }

@@ -1,3 +1,4 @@
+import { Force } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentsRegistryService } from '@spryker-oryx/experience';
 import { LitElement } from 'lit';
@@ -52,7 +53,10 @@ export function treewalk(
   return arr;
 }
 
-export function initHydrateHooks(rootSelector: string, force = false): void {
+export function initHydrateHooks(
+  rootSelector: string,
+  force?: Force | boolean
+): void {
   const registryService = resolve(ComponentsRegistryService);
 
   //TODO - remove this when we no longer need manual hydrate on demand
@@ -60,13 +64,13 @@ export function initHydrateHooks(rootSelector: string, force = false): void {
     registryService.hydrateOnDemand.bind(registryService);
 
   treewalk('[hydratable]').forEach((el) => {
-    if (force && el.tagName === 'experience-composition'.toLocaleUpperCase()) {
-      console.log(
-        Object.getPrototypeOf(el).partiallyForce,
-        el.tagName,
-        (el as any).partiallyForce,
-        el.hasAttribute('force-hydration')
-      );
+    if (force === Force.All || force === true) {
+      registryService.hydrateOnDemand(el);
+
+      return;
+    }
+
+    if (force === Force.Partially && el.hasAttribute('force-hydration')) {
       registryService.hydrateOnDemand(el);
 
       return;

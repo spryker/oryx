@@ -11,10 +11,10 @@ export const enum Force {
 export interface SsrOptions {
   /**
    * By default, if SSR rendering is available, initial navigation is skipped.
-   * By setting this option to Force.All, hydration will be forced on demand automatically for all components.
+   * By setting this option to Force.All or true, hydration will be forced on demand automatically for all components.
    * By setting this option to Force.Partially, hydration will be forced on demand automatically for components which are marked for automatic hydration.
    */
-  force?: Force;
+  force?: Force | boolean;
 }
 
 declare global {
