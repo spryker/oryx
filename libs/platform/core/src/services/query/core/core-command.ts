@@ -52,7 +52,11 @@ export class CoreCommand<
     if (this.currentResult) {
       concat(this.currentResult, this.getStream(result, qualifier)).subscribe();
       this.currentResult = result;
+    } else {
+      this.getStream(result, qualifier).subscribe();
+      this.currentResult = result;
     }
+
     return result;
   }
 

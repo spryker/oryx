@@ -30,7 +30,10 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected productService = resolve(ProductService);
 
   @asyncState()
-  protected isLoading = valueType(this.cartService.getLoadingState());
+  protected isEmpty = valueType(this.cartService.isEmpty());
+
+  @asyncState()
+  protected isBusy = valueType(this.cartService.isBusy());
 
   // TODO: implement loading state
   protected override render(): TemplateResult | void {

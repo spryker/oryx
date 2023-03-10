@@ -18,7 +18,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       return require('./src/plugins/index.ts')(on, config);
     },
-    baseUrl: 'http://localhost:3001/',
+    baseUrl: 'http://localhost:3001',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',
     supportFile: './src/support/index.ts',
   },

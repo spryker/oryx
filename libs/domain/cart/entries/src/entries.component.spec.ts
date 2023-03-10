@@ -10,8 +10,8 @@ import { of } from 'rxjs';
 import { CartEntriesComponent } from './entries.component';
 import { cartEntriesComponent } from './entries.def';
 
-class MockCartService {
-  getLoadingState = vi.fn().mockReturnValue(of(false));
+class MockCartService implements Partial<CartService> {
+  isBusy = vi.fn().mockReturnValue(of(false));
   getEntries = vi.fn().mockReturnValue(of([]));
   updateEntry = vi.fn().mockReturnValue(of(null));
   deleteEntry = vi.fn().mockReturnValue(of(null));
@@ -83,7 +83,10 @@ describe('CartEntriesComponent', () => {
         new CustomEvent('submit', { detail: { quantity } })
       );
 
-      expect(service.updateEntry).toHaveBeenCalledWith({ ...entry, quantity });
+      expect(service.updateEntry).toHaveBeenCalledWith({
+        groupKey: entry.groupKey,
+        quantity,
+      });
     });
 
     it('should emit remove when remove event is dispatched', () => {
@@ -96,7 +99,7 @@ describe('CartEntriesComponent', () => {
 
     describe('and cart is loading', () => {
       beforeEach(async () => {
-        service.getLoadingState.mockReturnValue(of(true));
+        service.isBusy.mockReturnValue(of(true));
         element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
         entryElement = element.renderRoot.querySelector('cart-entry');
       });
