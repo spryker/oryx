@@ -1,21 +1,19 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  BehaviorSubject,
-  map,
-  Observable,
-  of,
-  shareReplay,
-  Subscription,
-  switchMap,
-} from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
 import { Store } from '../../models';
 import { StoreAdapter } from '../adapter';
 import { StoreService } from './store.service';
 
 export class DefaultStoreService implements StoreService {
   protected stores$ = this.adapter.get().pipe(shareReplay(1));
-  protected store$ = new BehaviorSubject<Store | null>(null);
-  protected subscription = new Subscription();
+  protected store$ = this.stores$.pipe(
+    map(
+      (stores) =>
+        (this.store && stores.find((store) => store.id === this.store)) ??
+        stores?.[0]
+    ),
+    shareReplay(1)
+  );
 
   constructor(
     protected adapter = inject(StoreAdapter),
@@ -26,22 +24,7 @@ export class DefaultStoreService implements StoreService {
     return this.stores$;
   }
 
-  get(): Observable<Store | null> {
-    return this.store$.pipe(
-      switchMap((store) =>
-        !store
-          ? this.getAll().pipe(
-              map((stores) => {
-                const store = !this.store
-                  ? stores?.[0]
-                  : stores.find((store) => store.id === this.store) ??
-                    stores?.[0];
-                this.store$.next(store);
-                return this.store$.value;
-              })
-            )
-          : of(store)
-      )
-    );
+  get(): Observable<Store | undefined> {
+    return this.store$;
   }
 }
