@@ -90,5 +90,6 @@ export const cartEntryStyles = css`
     padding-top: 14px;
     grid-row: 2;
     grid-column: 2;
+    justify-content: start;
   }
 `;

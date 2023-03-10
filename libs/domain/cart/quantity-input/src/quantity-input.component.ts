@@ -1,4 +1,5 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
+import { Size } from '@spryker-oryx/ui';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -53,7 +54,10 @@ export class QuantityInputComponent
         ?disabled=${this.isMinDisabled()}
         part="decrease"
       >
-        <oryx-icon .type=${this.decreaseIcon ?? IconTypes.Decrease}></oryx-icon>
+        <oryx-icon
+          .type=${this.decreaseIcon ?? IconTypes.Decrease}
+          size=${Size.Sm}
+        ></oryx-icon>
       </button>
       <oryx-input ?hasError=${this.hasError} label=${ifDefined(this.label)}>
         <input
@@ -80,7 +84,10 @@ export class QuantityInputComponent
         ?disabled=${this.isMaxDisabled()}
         part="increase"
       >
-        <oryx-icon .type=${this.increaseIcon ?? IconTypes.Increase}></oryx-icon>
+        <oryx-icon
+          .type=${this.increaseIcon ?? IconTypes.Increase}
+          size=${Size.Sm}
+        ></oryx-icon>
       </button>
     `;
   }

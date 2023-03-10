@@ -1,18 +1,13 @@
 import { css } from 'lit';
 
 export const cartEntriesStyles = css`
-  :host,
-  oryx-collapsible::part(content) {
+  section.entries {
     display: flex;
     flex-direction: column;
     row-gap: var(--oryx-space-4);
   }
 
-  oryx-collapsible::part(content) {
-    padding-block: var(--oryx-space-4);
-  }
-
-  section {
+  section.empty {
     --oryx-icon-size: 40px;
 
     display: flex;

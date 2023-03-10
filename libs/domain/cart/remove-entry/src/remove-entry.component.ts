@@ -1,10 +1,9 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductService } from '@spryker-oryx/product';
 import { NotificationService } from '@spryker-oryx/site';
+import { AlertType, Size } from '@spryker-oryx/ui';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
-import { Types } from '@spryker-oryx/ui/notification';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -20,24 +19,30 @@ export class CartEntryRemoveComponent extends CartComponentMixin(
   ContentMixin<CartEntryRemoveOptions>(LitElement)
 ) {
   protected cartService = resolve(CartService);
-  protected productService = resolve(ProductService);
-
   protected notificationService = resolve(NotificationService);
+
+  // protected productService = resolve(ProductService);
+  // protected productController = new ProductController(this);
 
   @property() groupKey?: string;
 
   @state() protected requiresConfirmation?: boolean;
   @state() protected startRemoving?: boolean;
 
+  // @asyncState()
+  // protected productName = valueType(this.productService.get().pipe(map(product => product?.name)))
+
   protected override render(): TemplateResult | void {
     if (!this.groupKey) return;
 
     return html`<slot>
-        <oryx-icon-button size="small" @click=${this.onRequestRemove}>
+        <oryx-icon-button size=${Size.Md} @click=${this.onRequestRemove}>
           <button aria-label="remove">
             <oryx-icon type="trash"></oryx-icon>
           </button>
-          ${i18n('cart.remove')}
+          <span style="display:var(--oryx-screen-small-inline, none)"
+            >${i18n('cart.remove')}</span
+          >
         </oryx-icon-button>
       </slot>
 
@@ -47,7 +52,6 @@ export class CartEntryRemoveComponent extends CartComponentMixin(
   protected renderConfirmation(): TemplateResult {
     return html`<oryx-modal
       enableFooter
-      enableCloseButtonInHeader
       heading=${i18n('cart.entry.confirm-remove')}
       open
     >
@@ -55,7 +59,7 @@ export class CartEntryRemoveComponent extends CartComponentMixin(
       <oryx-button
         slot="footer-more"
         type="primary"
-        size="small"
+        size=${Size.Md}
         @click=${this.onRemove}
         ?loading=${this.startRemoving}
       >
@@ -84,17 +88,15 @@ export class CartEntryRemoveComponent extends CartComponentMixin(
         .deleteEntry({ groupKey: this.groupKey })
         .pipe(
           tap(() => {
-            console.log('removed?');
-
             this.notificationService.push({
-              type: Types.SUCCESS,
-              content: 'Removed',
-              subtext: 'message...',
+              type: AlertType.Success,
+              content: i18n('cart.entry.<item>-removed-success', {
+                item: this.groupKey,
+              }) as string,
             });
           })
         )
         .subscribe();
-      // .subscribe(() => this.success);
     }
   }
 

@@ -6,6 +6,7 @@ import {
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
+import { Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -72,7 +73,9 @@ export class CartEntryComponent extends CartComponentMixin(
         .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
       ></oryx-product-media>
       <div class="details">
-        <oryx-product-title></oryx-product-title>
+        <oryx-product-title
+          .options=${{ tag: 'h3', smAppearance: 'h5', appearance: 'none' }}
+        ></oryx-product-title>
 
         ${when(
           this.componentOptions?.enableSku,
@@ -80,14 +83,7 @@ export class CartEntryComponent extends CartComponentMixin(
         )}
       </div>
 
-      ${when(
-        !this.readonly,
-        () => html`<div class="actions">
-          <oryx-cart-entry-remove
-            .groupKey=${this.entry?.groupKey}
-          ></oryx-cart-entry-remove>
-        </div>`
-      )}
+      ${this.renderActions()}
 
       <div class="price">
         ${when(
@@ -114,6 +110,36 @@ export class CartEntryComponent extends CartComponentMixin(
         </div>
       </div>
     `;
+  }
+
+  protected renderActions(): TemplateResult | void {
+    if (this.readonly) return;
+
+    return html`
+      <div class="actions">
+        <oryx-icon-button size=${Size.Md} @click=${this.onRequestRemove}>
+          <button aria-label="remove">
+            <oryx-icon type="trash"></oryx-icon>
+          </button>
+          <span style="display:var(--oryx-screen-small-inline, none)"
+            >${i18n('cart.remove')}</span
+          >
+        </oryx-icon-button>
+      </div>
+    `;
+  }
+
+  // TODO
+  protected onRequestRemove(): void {
+    // if (this.componentOptions.silentRemove) {
+    //   this.onRemove();
+    //   return;
+    // }
+    // if (!this.requiresConfirmation) {
+    //   this.requiresConfirmation = true;
+    // } else {
+    //   this.shadowRoot?.querySelector<ModalComponent>('oryx-modal')?.open();
+    // }
   }
 
   protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {
