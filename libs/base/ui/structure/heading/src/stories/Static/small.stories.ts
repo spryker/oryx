@@ -4,8 +4,8 @@ import { Template } from './template';
 
 export default {
   title: `${storybookPrefix}/Structure/Heading/Static`,
-  chromatic: { viewports: [414, 896] },
   parameters: {
+    chromatic: { delay: 3000, viewports: [414, 896] },
     viewport: {
       defaultViewport: 'mobile2',
     },
