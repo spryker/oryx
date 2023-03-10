@@ -116,6 +116,10 @@ describe('SearchFacetValueNavigationComponent', () => {
         button.click();
         expect(callback).toHaveBeenCalled();
       });
+
+      it('should add nonTabbable attribute', () => {
+        expect(element).toContainElement('oryx-collapsible[nonTabbable]');
+      });
     });
 
     describe('when clear action is disabled', () => {
@@ -139,6 +143,10 @@ describe('SearchFacetValueNavigationComponent', () => {
         ) as HTMLButtonElement;
 
         expect(button).toBeNull();
+      });
+
+      it('should not add nonTabbable attribute', () => {
+        expect(element).not.toContainElement('oryx-collapsible[nonTabbable]');
       });
     });
 
