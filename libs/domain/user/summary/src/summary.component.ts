@@ -1,15 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,
   hydratable,
-  i18n,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { UserService } from '../../src/services';
 import { UserSummaryOptions } from './summary.model';
@@ -29,27 +26,9 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
     resolve(SemanticLinkService).get({ type: SemanticLinkType.Login })
   );
 
-  protected renderTriggerButton(isAuthenticated: boolean): TemplateResult {
-    const innerContent = html`<oryx-icon type="user"></oryx-icon>
-      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
-        ${when(
-          isAuthenticated,
-          () => this.user?.firstName,
-          () => i18n('user.login')
-        )}
-      </oryx-heading>`;
-
+  protected renderTrigger(): TemplateResult {
     return html`
-      <oryx-button slot="trigger">
-        ${when(
-          isAuthenticated,
-          () => html`<button class="trigger">${innerContent}</button>`,
-          () =>
-            html`<a href=${ifDefined(this.link)} class="trigger">
-              ${innerContent}
-            </a>`
-        )}
-      </oryx-button>
+      <oryx-user-summary-trigger slot="trigger"></oryx-user-summary-trigger>
     `;
   }
 
@@ -59,7 +38,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
         this.options!.items!.map(
           (item) => html`
             <oryx-button type="text">
-              <a href=${item.link} class="dropdown-link" close-popover>
+              <a href=${item.link} close-popover>
                 ${when(
                   item.icon,
                   () => html`<oryx-icon type=${item.icon}></oryx-icon>`
@@ -76,12 +55,12 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected override render(): TemplateResult {
     if (!this.user) {
-      return this.renderTriggerButton(false);
+      return this.renderTrigger();
     }
 
     return html`
       <oryx-dropdown position="start" vertical-align>
-        ${this.renderTriggerButton(true)} ${this.renderDropdown()}
+        ${this.renderTrigger()} ${this.renderDropdown()}
       </oryx-dropdown>
     `;
   }
