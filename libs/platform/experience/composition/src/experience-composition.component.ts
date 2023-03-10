@@ -1,4 +1,3 @@
-import { SsrOptions } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -15,7 +14,7 @@ import {
   observe,
   valueType,
 } from '@spryker-oryx/utilities';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -42,16 +41,10 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
-  protected ssrOptions = resolve(SsrOptions, {} as SsrOptions);
-  protected hasSSR = false;
+
   protected isHydrated = false;
 
   protected layoutBuilder = resolve(LayoutBuilder);
-
-  constructor() {
-    super();
-    this.hasSSR = !!this.shadowRoot && !isServer;
-  }
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
     switchMap(([uid, route], index) => {
@@ -81,13 +74,12 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected override render(): TemplateResult {
     if (!this.components) return html`Loading...`;
 
+    // TODO: fix any with TS 5. we add `hasSsr` prop in hydratable decorator
     return html`
       <slot></slot>
-      ${this.hasSSR && !this.ssrOptions.initialNavigation
+      ${(this as any).hasSsr && this.isHydrated
         ? html`${[...this.renderRoot.children]}`
-        : this.components
-        ? html`${this.renderComponents(this.components)} `
-        : html``}
+        : html`${this.renderComponents(this.components)}`}
     `;
   }
 

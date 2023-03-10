@@ -18,55 +18,72 @@ export interface PatchableLitElement extends LitElement {
   _$needsHydration?: boolean;
 }
 
+type hydratableProp =
+  | string[]
+  | string
+  | {
+      mode?: string | string[];
+      force?: boolean;
+    };
+
 const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
   condition ? trueCase() : noChange;
 
 export const hydratable =
-  (mode?: string[] | string) =>
+  (prop?: hydratableProp) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
-      ? legacyCustomElement(classOrDescriptor, mode)
-      : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
+      ? legacyCustomElement(classOrDescriptor, prop)
+      : standardCustomElement(classOrDescriptor as ClassDescriptor, prop);
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  mode?: string[] | string
+  prop?: hydratableProp
 ) => {
-  return hydratableClass(clazz, mode);
+  return hydratableClass(clazz, prop);
 };
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  mode?: string[] | string
+  prop?: hydratableProp
 ) => {
   const { kind, elements } = descriptor;
   return {
     kind,
     elements,
     finisher(clazz: Constructor<PatchableLitElement>) {
-      return hydratableClass(clazz, mode);
+      return hydratableClass(clazz, prop);
     },
   };
 };
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string[] | string
+  prop?: hydratableProp
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
     private [HYDRATION_CALLS] = 0;
     protected hasSsr?: boolean;
+    protected partiallyForce?: boolean;
 
     constructor(...args: any[]) {
-      super();
-      this.hasSsr = !isServer && this.shadowRoot;
+      super(...args);
+      this.hasSsr = !isServer && !!this.shadowRoot;
+      (target as any).hasSsr = this.hasSsr;
+      const isObject = typeof prop === 'object' && !Array.isArray(prop);
+      const mode = isObject ? prop.mode : prop;
+
+      if (isObject && isServer) {
+        this.setAttribute('force-hydration', '');
+      }
+
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');
       }
+
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
-        return;
       }
     }
 

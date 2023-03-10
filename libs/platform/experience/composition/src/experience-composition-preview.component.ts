@@ -1,22 +1,19 @@
-import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
-import { asyncValue, subscribe } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
 import {
-  combineLatest,
-  filter,
-  map,
-  merge,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+  asyncState,
+  hydratable,
+  subscribe,
+  valueType,
+} from '@spryker-oryx/utilities';
+import { html, TemplateResult } from 'lit';
+import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
+import { Component, PreviewExperienceService } from '../../src/services';
 import { compositionStyles } from './composition.styles';
 import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
+@hydratable()
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
   static override styles = [compositionStyles, previewStyles];
 
@@ -79,10 +76,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
 
   // TODO: temporary solution, hiding header and footer for header or footer editing
   // The whole override may be dropped when we will have proper template extensibility mechanism
-  protected override components$: Observable<Component[]> = combineLatest([
-    this.uid$,
-    this.route$,
-  ]).pipe(
+  protected override components$ = combineLatest([this.uid$, this.route$]).pipe(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     tap(([uid, route]) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
@@ -119,13 +113,12 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
     map((component: Component) => component?.components ?? [])
   );
 
+  @asyncState()
+  protected components = valueType(this.components$);
+
   protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(
-        this.components$,
-        (components) => html` ${this.renderComponents(components)} `,
-        () => html`Loading...`
-      )}
-    `;
+    if (!this.components) return html`Loading...`;
+
+    return html`${this.renderComponents(this.components)}`;
   }
 }
