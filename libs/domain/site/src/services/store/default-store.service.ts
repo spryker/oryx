@@ -19,7 +19,7 @@ export class DefaultStoreService implements StoreService {
         ? stores?.find((store) => store.id === activeStore)
         : stores?.[0]
     ),
-    shareReplay({refCount: true, bufferSize: 1})
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
 
   constructor(
