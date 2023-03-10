@@ -60,7 +60,7 @@ export class MockStoreService implements Partial<StoreService> {
     timeZone: 'Europe/Berlin',
   };
 
-  get(): Observable<Store | null> {
+  get(): Observable<Store | undefined> {
     return of(MockStoreService.mockStore);
   }
 }

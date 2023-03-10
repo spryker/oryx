@@ -14,11 +14,10 @@ export class DefaultStoreService implements StoreService {
   protected activeStore$ = new BehaviorSubject<string | undefined>(this.store);
   protected stores$ = this.adapter.get().pipe(shareReplay(1));
   protected store$ = combineLatest([this.stores$, this.activeStore$]).pipe(
-    map(
-      ([stores, activeStore]) =>
-        (activeStore
-          ? stores?.find((store) => store.id === activeStore)
-          : undefined) ?? stores?.[0]
+    map(([stores, activeStore]) =>
+      activeStore
+        ? stores?.find((store) => store.id === activeStore)
+        : stores?.[0]
     ),
     shareReplay(1)
   );
