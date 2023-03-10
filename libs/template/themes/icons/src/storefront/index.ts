@@ -14,6 +14,7 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.DropUp]: () => import('./icons/drop-up').then((s) => s.default),
   [IconTypes.Dropdown]: () => import('./icons/dropdown').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
+  [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),
   [IconTypes.Expand]: () => import('./icons/expand').then((s) => s.default),
   [IconTypes.Image]: () => import('./icons/image').then((s) => s.default),
   [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),
@@ -26,10 +27,12 @@ export const storefrontIcons: ThemeIcons = {
   [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
   [IconTypes.Rocket]: () => import('./icons/rocket').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
+  [IconTypes.Success]: () => import('./icons/success').then((s) => s.default),
   [IconTypes.Trash]: () => import('./icons/trash').then((s) => s.default),
   [IconTypes.Visible]: () => import('./icons/visible').then((s) => s.default),
   [IconTypes.Invisible]: () =>
     import('./icons/invisible').then((s) => s.default),
+  [IconTypes.Warning]: () => import('./icons/warning').then((s) => s.default),
   [IconTypes.Wishlist]: () => import('./icons/wishlist').then((s) => s.default),
   [IconTypes.Location]: () => import('./icons/location').then((s) => s.default),
   [IconTypes.NavigationArrow]: () =>

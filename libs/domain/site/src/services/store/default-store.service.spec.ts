@@ -63,4 +63,15 @@ describe('DefaultStoreService', () => {
       expect(callback).toHaveBeenCalledWith(mockStores[0]);
     });
   });
+
+  describe('set active store', () => {
+    it('should set active store', () => {
+      service.set('AT');
+      service.get().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(undefined);
+      service.set('DE');
+      service.get().subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(mockStores[0]);
+    });
+  });
 });

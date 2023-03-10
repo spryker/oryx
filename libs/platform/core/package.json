@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Core features for Oryx applications",
   "author": "Spryker Systems GmbH",
@@ -14,8 +14,8 @@
     "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/di": "~0.2.0",
+    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

@@ -5,7 +5,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { NotificationCenterComponent } from '../../notification-center.component';
-import { Positions } from '../../notification-center.model';
+import { NotificationPosition } from '../../notification-center.model';
 import { TAG_NAME } from '../../tag';
 import { getNotification, open } from './util';
 
@@ -16,12 +16,14 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <button
-      @click=${(): void => open({ autoCloseTime: 2000 })}
+      @click=${(): void => {
+        open({ autoCloseTime: 2000 });
+      }}
       data-testid="button"
     >
       open
     </button>
-    <oryx-notification-center position=${Positions.TOP_END}>
+    <oryx-notification-center position=${NotificationPosition.TopEnd}>
     </oryx-notification-center>
   `;
 };

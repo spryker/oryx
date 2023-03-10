@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, Unsubscribable } from 'rxjs';
 import { QueryManager } from './core';
 import {
   Command,
@@ -24,7 +24,7 @@ export interface QueryService extends QueryManager {
     options: CommandOptions<ResultType, Qualifier>
   ): Command<ResultType, Qualifier>;
 
-  createEffect(effect: EffectDefinition): void;
+  createEffect(effect: EffectDefinition): Observable<unknown> & Unsubscribable;
 
   getQuery<QueryType extends Query<any, any>>(
     id: string
@@ -45,7 +45,7 @@ export interface QueryService extends QueryManager {
   ): Command<ResultType, Qualifier> | undefined;
 
   emit(event: QueryEvent): void;
-  getEvents(eventType?: string): Observable<QueryEvent>;
+  getEvents(eventType?: string): Observable<QueryEvent<any, any>>;
 }
 
 declare global {

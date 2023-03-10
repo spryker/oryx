@@ -3,11 +3,10 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { NotificationService } from '@spryker-oryx/site';
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType, notificationCenterComponent } from '@spryker-oryx/ui';
 import {
-  notificationCenterComponent,
   NotificationCenterComponent,
-  Positions,
+  NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
 import { html } from 'lit';
 import { of, Subject } from 'rxjs';
@@ -15,7 +14,7 @@ import { SiteNotificationCenterComponent } from './notification-center.component
 import { siteNotificationCenterComponent } from './notification-center.def';
 
 const mockNotification = {
-  type: Types.ERROR,
+  type: AlertType.Error,
   content: 'Error',
   subtext: 'Mock error',
 };
@@ -31,7 +30,6 @@ class MockNotificationService implements Partial<NotificationService> {
 
 describe('SiteNotificationCenterComponent', () => {
   let element: SiteNotificationCenterComponent;
-  let notificationService: MockNotificationService;
 
   beforeAll(async () => {
     await useComponent([
@@ -41,7 +39,7 @@ describe('SiteNotificationCenterComponent', () => {
   });
 
   beforeEach(async () => {
-    const testInjector = createInjector({
+    createInjector({
       providers: [
         {
           provide: ExperienceService,
@@ -55,7 +53,7 @@ describe('SiteNotificationCenterComponent', () => {
     });
 
     element = await fixture(
-      html`<site-notification-center></site-notification-center>`
+      html`<oryx-site-notification-center></oryx-site-notification-center>`
     );
   });
 
@@ -83,11 +81,12 @@ describe('SiteNotificationCenterComponent', () => {
   describe('when position is set', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<site-notification-center
-          .options=${{ position: Positions.TOP_START }}
-        ></site-notification-center>`
+        html`<oryx-site-notification-center
+          .options=${{ position: NotificationPosition.TopStart }}
+        ></oryx-site-notification-center>`
       );
     });
+
     it('should display notification in the correct position', async () => {
       const notificationCenter = element.shadowRoot?.querySelector(
         'oryx-notification-center'
@@ -96,22 +95,66 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe('when type is set', () => {
+  describe('when maxWidth option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<site-notification-center
-          .options=${{ type: Types.INFO }}
-        ></site-notification-center>`
+        html`<oryx-site-notification-center
+          .options=${{ maxWidth: '50%' }}
+        ></oryx-site-notification-center>`
       );
     });
-    it('should display notification with the given type', () => {
+
+    it('should create a CSS variable at the oryx-notification-center', () => {
       const notificationCenter = element.shadowRoot?.querySelector(
         'oryx-notification-center'
       ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-max-width'
+        )
+      ).toBe('50%');
+    });
+  });
 
-      const open = vi.spyOn(notificationCenter, 'open');
-      notificationTrigger$.next(mockNotification);
-      expect(open).toHaveBeenCalledWith(mockNotification);
+  describe('when marginBlock option is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-site-notification-center
+          .options=${{ marginBlock: '10vh' }}
+        ></oryx-site-notification-center>`
+      );
+    });
+
+    it('should create a CSS variable at the oryx-notification-center', () => {
+      const notificationCenter = element.shadowRoot?.querySelector(
+        'oryx-notification-center'
+      ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-margin-block'
+        )
+      ).toBe('10vh');
+    });
+  });
+
+  describe('when marginInline option is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-site-notification-center
+          .options=${{ marginInline: '10vw' }}
+        ></oryx-site-notification-center>`
+      );
+    });
+
+    it('should create a CSS variable at the oryx-notification-center', () => {
+      const notificationCenter = element.shadowRoot?.querySelector(
+        'oryx-notification-center'
+      ) as NotificationCenterComponent;
+      expect(
+        notificationCenter.style.getPropertyValue(
+          '--oryx-notification-margin-inline'
+        )
+      ).toBe('10vw');
     });
   });
 });
