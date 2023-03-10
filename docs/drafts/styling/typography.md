@@ -22,7 +22,7 @@ The base font definition can therefore be set globally inside the root of the ap
 }
 ```
 
-The CSS variables are provided by themes, or can be customised in the application setup. The standard font-size in most themes is `14px`.
+The CSS variables are provided by themes, or can be customized in the application setup. The standard font-size in most themes is `14px`.
 
 ## Headings
 
@@ -38,13 +38,13 @@ Font sizes and line height of headings are configured with relative sizes, using
 
 ### Semantic HTML structure versus UI
 
-The semantic structure of the typography elements is important on the web. Crawlers and screen readers use the structure to interpreted the content. This is important for users with limited sight, as they will be guided by screen readers. It helps navigating the content and allows to skip sections which are not of interest.
+The semantic usage of heading elements (h1, h2, etc.) is important on the web. Crawlers and screen readers use the structure to interpreted the content. This is important to navigate the content, especially for those with limited sight; screen readers will guide them and allow to skip sections which are not of interest. Consequently, if the structure is not well formatted (e.g. a h3 followed by a h5), it violates with accessibility best practices.
 
-If the structure contains an incorrect order, e.g. a H3 followed by a H5, it violates with accessibility best practices.
+A valid structure, however, might conflict with the UI design. UI designers use the headings in combination with layout, which means that their options are more advanced compared to the structure only. UI designers tend to ignore the structure and favor layout options to emphasize sections of the page.
 
-This strict structure might not be required for the UI design, as the layout of the page often helps with structuring content. UI designers often ignore the structure of the page, and use heading levels in a random order, just to satisfy their design needs. This might be fair, as visual layout accommodates the structure, so from a pure design perspective, there's often a different perspective on the heading levels.
+An example would be a 2 column layout, where content in both sections have the same visual weight. However, based on their position, the content on the left (in the LTR-world) is automatically of more importance.
 
-To allow for a flexible but compliant design, the heading component supports to distinguish the structure from the UI when needed. The heading component is equipped with an utility to mimic the structure _as_ with alternative typography.
+To allow for a solution that can cope with both the structure and the visual design, the heading component supports a mechanism to render the structure visually _as_ it was a different structure. It basically mimics an alternative typography as illustrated below.
 
 ```html
 <oryx-heading as="h3">
@@ -62,7 +62,7 @@ The mimicking can be applied per screen size (lg, md, sm), for example if you on
 
 ### Examples
 
-The most common approach to add headings to the UI is using the native heading (H1 - H6) and slot it into the heading component. The heading component will provide the styles for the headings, so that the host component remains clean.
+The most common approach to add headings to the UI is using the native heading (h1 - h6) and slot it into the heading component. The heading component will provide the styles for the headings, so that the host component remains clean.
 
 ```html
 <oryx-heading>
@@ -80,18 +80,18 @@ The last option is to provide the heading appearance, regardless of the actual `
 
 ```html
 <oryx-heading as="h5">
-  <h3>This heading appears as an H5</h3>
+  <h3>This heading appears as an h5</h3>
 </oryx-heading>
 
-<oryx-heading as="h5"> This text appears as an H5 </oryx-heading>
+<oryx-heading as="h5"> This text appears as an h5 </oryx-heading>
 
 <oryx-heading tag="h3" as="h5">
-  This text renders as an h3, but appears as an H5
+  This text renders as an h3, but appears as an h5
 </oryx-heading>
 
 <oryx-heading as-md="h5">
   <h3>
-    This heading appears as an H5 on for medium (and larger) screen-size devices
+    This heading appears as an h5 on for medium (and larger) screen-size devices
   </h3>
 </oryx-heading>
 ```
@@ -104,22 +104,22 @@ The heading definitions for the storefront theme are based on a `14px` font size
 
 | token    | font size | relative font size | line height | relative line height | weight |
 | -------- | --------- | ------------------ | ----------- | -------------------- | ------ |
-| H1       | `22px`    | `1.571em`          | `30px`      | `1.364em`            | `600`  |
-| H2       | `18px`    | `1.286em`          | `26px`      | `1.444em`            | `700`  |
-| H3       | `16px`    | `1.143em`          | `22px`      | `1.375em`            | `600`  |
-| H4       | `14px`    | `1em`              | `22px`      | `1.571em`            | `600`  |
-| H5       | `14px`    | `1em`              | `22px`      | `1.571em`            | `700`  |
-| H6       | `12px`    | `0.857em`          | `16px`      | `1.333em`            | `600`  |
+| h1       | `22px`    | `1.571em`          | `30px`      | `1.364em`            | `600`  |
+| h2       | `18px`    | `1.286em`          | `26px`      | `1.444em`            | `700`  |
+| h3       | `16px`    | `1.143em`          | `22px`      | `1.375em`            | `600`  |
+| h4       | `14px`    | `1em`              | `22px`      | `1.571em`            | `600`  |
+| h5       | `14px`    | `1em`              | `22px`      | `1.571em`            | `700`  |
+| h6       | `12px`    | `0.857em`          | `16px`      | `1.333em`            | `600`  |
 | subtitle | `12px`    | `0.857em`          | `16px`      | `1.333em`            | `600`  |
 
 ### Medium (and up) screen
 
 | token    | font size | relative font size | line height | relative line height | weight |
 | -------- | --------- | ------------------ | ----------- | -------------------- | ------ |
-| H1       | `40px`    | `2.857em`          | `48px`      | `1.2em`              | `600`  |
-| H2       | `30px`    | `2.143em`          | `36px`      | `1.2em`              | `600`  |
-| H3       | `22px`    | `1.571em`          | `30px`      | `1.364em`            | `500`  |
-| H4       | `18px`    | `1.286em`          | `26px`      | `1.444em`            | `500`  |
-| H5       | `16px`    | `1.143em`          | `24px`      | `1.5em`              | `600`  |
-| H6       | `16px`    | `1.143em`          | `24px`      | `1.5em`              | `500`  |
+| h1       | `40px`    | `2.857em`          | `48px`      | `1.2em`              | `600`  |
+| h2       | `30px`    | `2.143em`          | `36px`      | `1.2em`              | `600`  |
+| h3       | `22px`    | `1.571em`          | `30px`      | `1.364em`            | `500`  |
+| h4       | `18px`    | `1.286em`          | `26px`      | `1.444em`            | `500`  |
+| h5       | `16px`    | `1.143em`          | `24px`      | `1.5em`              | `600`  |
+| h6       | `16px`    | `1.143em`          | `24px`      | `1.5em`              | `500`  |
 | subtitle | `12px`    | `0.857em`          | `16px`      | `1.333em`            | `600`  |

@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/web-components';
-import { Template } from '../../../../../../../../dist/libs/base/ui/structure/heading/src/stories/Static/template';
 import { storybookPrefix } from '../../../../../.constants';
+import { Template } from './template';
 
 export default {
   title: `${storybookPrefix}/Structure/Heading/Static`,
