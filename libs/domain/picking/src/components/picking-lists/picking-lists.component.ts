@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { PickingListStatus } from '../../models';
@@ -18,20 +17,14 @@ export class PickingListsComponent extends LitElement {
     status: PickingListStatus.ReadyForPicking,
   });
 
-  @state() customerNote?: string;
+  @state()
+  protected customerNote?: string;
 
   @asyncState()
   protected pickingLists = valueType(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html`
-      ${this.renderPickingLists()}
-
-      <oryx-customer-note-modal
-        note=${ifDefined(this.customerNote)}
-        @oryx.close=${this.closeCustomerNoteModal}
-      ></oryx-customer-note-modal>
-    `;
+    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()} `;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -50,6 +43,25 @@ export class PickingListsComponent extends LitElement {
           )}`,
         this.renderFallback
       )}
+    `;
+  }
+
+  protected renderCustomerNote(): TemplateResult {
+    return html`
+      <oryx-modal
+        ?open=${this.customerNote}
+        enableFooter
+        @oryx.close=${this.closeCustomerNoteModal}
+      >
+        <span slot="heading">${i18n('picking.customer-note.heading')}</span/>
+        ${this.customerNote}
+        <oryx-button slot="footer" type="primary" size="small">
+          <button @click=${this.closeCustomerNoteModal}>
+            <oryx-icon type="checkMark"></oryx-icon>
+            ${i18n('picking.customer-note.close')}
+          </button>
+        </oryx-button>
+      </oryx-modal>
     `;
   }
 

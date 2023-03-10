@@ -1,11 +1,7 @@
 import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import {
-  customerNoteModalComponent,
-  pickingListItemComponent,
-  pickingListsComponent,
-} from './components';
+import { pickingListItemComponent, pickingListsComponent } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
 import {
@@ -43,10 +39,6 @@ export class PickingFeature implements AppFeature {
   }
 
   protected getComponents(): ComponentsInfo {
-    return [
-      pickingListItemComponent,
-      pickingListsComponent,
-      customerNoteModalComponent,
-    ];
+    return [pickingListItemComponent, pickingListsComponent];
   }
 }
