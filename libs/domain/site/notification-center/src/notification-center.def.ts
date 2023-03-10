@@ -3,14 +3,18 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
 
 declare global {
   interface FeatureOptions {
-    'site-notification-center'?: SiteNotificationCenterOptions;
+    'oryx-site-notification-center'?: SiteNotificationCenterOptions;
   }
 }
 
 export const siteNotificationCenterComponent = componentDef({
-  name: 'site-notification-center',
+  name: 'oryx-site-notification-center',
   impl: () =>
     import('./notification-center.component').then(
       (m) => m.SiteNotificationCenterComponent
+    ),
+  schema: () =>
+    import('./notification-center.schema').then(
+      (m) => m.siteNotificationCenterSchema
     ),
 });

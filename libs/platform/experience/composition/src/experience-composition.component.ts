@@ -15,10 +15,10 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, isServer, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable()
@@ -38,6 +38,9 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   @observe()
   protected route$ = new BehaviorSubject<string>(this.route);
+
+  @state()
+  layoutUid = '';
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
@@ -88,6 +91,9 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
         of({} as Component)
       );
     }),
+    tap((component) => {
+      this.layoutUid = component?.id;
+    }),
     map((component: Component) => component?.components ?? [])
   );
 
@@ -119,7 +125,10 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
     components: Component<CompositionProperties>[]
   ): TemplateResult {
     return html`
-      <oryx-layout .uid=${this.uid} style="--item-count: ${components.length}">
+      <oryx-layout
+        .uid=${this.layoutUid}
+        style="--item-count: ${components.length}"
+      >
         ${components
           ? repeat(
               components,

@@ -5,6 +5,7 @@ import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
+import { Size } from '@spryker-oryx/ui';
 import { asyncValue, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -113,7 +114,7 @@ export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
               ></cart-entry-confirmation>
             `,
             () => html`
-              <oryx-icon-button size="small">
+              <oryx-icon-button size=${Size.Sm}>
                 <button
                   @click=${(): void =>
                     this.onRemove(entry.silentRemove || confirmationRequired)}

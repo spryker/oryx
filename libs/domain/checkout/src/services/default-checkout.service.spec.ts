@@ -51,7 +51,7 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of({}));
-  load = vi.fn().mockReturnValue(of({}));
+  reload = vi.fn();
 }
 
 const mockSanitizedResponse = {

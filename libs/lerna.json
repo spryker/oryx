@@ -1,7 +1,7 @@
 {
   "packages": [
     "template/application",
-    "domain/auth",
+    "platform/auth",
     "domain/cart",
     "domain/checkout",
     "domain/content",
@@ -12,8 +12,11 @@
     "base/di",
     "template/presets",
     "domain/product",
+    "domain/picking",
     "domain/order",
     "platform/router",
+    "platform/indexed-db",
+    "platform/offline",
     "domain/search",
     "domain/site",
     "template/themes",
@@ -21,7 +24,7 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "0.1.0",
+  "version": "0.2.0",
   "npmClient": "npm",
   "command": {
     "publish": {
@@ -33,7 +36,8 @@
       "createRelease": "github",
       "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
-      "verifyAccess": false
+      "verifyAccess": false,
+      "exact": true
     }
   }
 }

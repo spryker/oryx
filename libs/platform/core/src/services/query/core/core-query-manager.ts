@@ -1,15 +1,4 @@
-import {
-  Command,
-  CommandOptions,
-  CoreCommand,
-  CoreQuery,
-  EffectDefinition,
-  isCallbackEffect,
-  isStreamEffect,
-  Query,
-  QueryEvent,
-  QueryOptions,
-} from '@spryker-oryx/core';
+import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   filter,
   identity,
@@ -19,7 +8,20 @@ import {
   Subject,
   takeUntil,
   tap,
+  Unsubscribable,
 } from 'rxjs';
+import {
+  Command,
+  CommandOptions,
+  EffectDefinition,
+  isCallbackEffect,
+  isStreamEffect,
+  Query,
+  QueryEvent,
+  QueryOptions,
+} from '../models';
+import { CoreCommand } from './core-command';
+import { CoreQuery } from './core-query';
 import { QueryManager } from './query-manager';
 
 export class CoreQueryManager implements QueryManager {
@@ -72,33 +74,41 @@ export class CoreQueryManager implements QueryManager {
     return this.commands.get(id) as Command<ResultType, Qualifier> | undefined;
   }
 
-  createEffect(effect: EffectDefinition): void {
+  createEffect(effect: EffectDefinition): Observable<unknown> & Unsubscribable {
     if (isStreamEffect(effect)) {
-      effect({
-        events$: this.stateEvents$.asObservable(),
-        query: this,
-      })
-        .pipe(retry())
-        .subscribe();
+      return subscribeReplay(
+        effect({
+          events$: this.stateEvents$.asObservable(),
+          getEvents: this.getEvents.bind(this),
+          query: this,
+        }).pipe(retry())
+      );
     } else if (isCallbackEffect(effect)) {
-      this.stateEvents$
-        .pipe(
+      return subscribeReplay(
+        this.stateEvents$.pipe(
           filter((event) => event.type === effect[0]),
           tap((event) => effect[1]({ event, query: this })),
           retry(),
           takeUntil(this.destroy$)
         )
-        .subscribe();
+      );
     }
+    throw new Error('Wrong effect definition');
   }
 
   emit(event: QueryEvent): void {
     this.stateEvents$.next(event);
   }
 
-  getEvents(eventType?: string): Observable<QueryEvent> {
+  getEvents(eventType?: string | string[]): Observable<QueryEvent> {
     return this.stateEvents$.pipe(
-      eventType ? filter((event) => event.type === eventType) : identity
+      eventType
+        ? filter((event) =>
+            Array.isArray(eventType)
+              ? eventType.some((type) => type === event.type)
+              : event.type === eventType
+          )
+        : identity
     );
   }
 

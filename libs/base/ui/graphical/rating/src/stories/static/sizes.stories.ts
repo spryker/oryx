@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -7,15 +8,17 @@ export default { title: `${storybookPrefix}/Graphical/Rating/Static` } as Meta;
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <oryx-rating readonly value="4.3">readonly, large</oryx-rating>
-    <oryx-rating readonly value="4.3" size="small">readonly, small</oryx-rating>
+    <oryx-rating readonly value="4.3" size=${Size.Sm}
+      >readonly, small</oryx-rating
+    >
 
     <oryx-rating value="4.3" characters="😡😔😐😀🤩">emojis, large</oryx-rating>
-    <oryx-rating value="4.3" characters="😡😔😐😀🤩" size="small"
+    <oryx-rating value="4.3" characters="😡😔😐😀🤩" size=${Size.Sm}
       >emojis, small</oryx-rating
     >
 
     <oryx-rating value="4.3" characters="✪✪✪✪✪">unicode, large</oryx-rating>
-    <oryx-rating value="4.3" characters="✪✪✪✪✪" size="small"
+    <oryx-rating value="4.3" characters="✪✪✪✪✪" size=${Size.Sm}
       >unicode, small</oryx-rating
     >
 
@@ -25,7 +28,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       )}
     </oryx-rating>
 
-    <oryx-rating value="4.3" size="small">
+    <oryx-rating value="4.3" size=${Size.Sm}>
       ${[1, 2, 3, 4, 5].map(
         (scale) => html`<oryx-icon type="ratings" slot=${scale}></oryx-icon>`
       )}

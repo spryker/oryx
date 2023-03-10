@@ -1,4 +1,5 @@
 import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { AlertType } from '@spryker-oryx/ui';
 import { Address, AddressMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -112,7 +113,9 @@ export class AddressListItemComponent
     }
 
     const chip = (token: string) =>
-      html`<oryx-chip appearance="success">${i18n(token)}</oryx-chip>`;
+      html`<oryx-chip appearance=${AlertType.Success}
+        >${i18n(token)}</oryx-chip
+      >`;
 
     return html`<div slot="subtext">
       ${when(defaultShipping, () =>

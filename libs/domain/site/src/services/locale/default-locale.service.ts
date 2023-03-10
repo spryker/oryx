@@ -11,7 +11,7 @@ export class DefaultLocaleService implements LocaleService {
 
   getAll(): Observable<Locale[]> {
     return this.storeService.get().pipe(
-      filter(<Store>(response: Store | null): response is Store => !!response),
+      filter(Boolean),
       map((response) => response.locales)
     );
   }

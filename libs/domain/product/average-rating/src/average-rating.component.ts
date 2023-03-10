@@ -5,7 +5,7 @@ import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
-@defaultOptions({ enableCount: true, size: Size.large })
+@defaultOptions({ enableCount: true, size: Size.Lg })
 @hydratable(['mouseover', 'focusin'])
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)

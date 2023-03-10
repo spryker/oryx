@@ -1,6 +1,6 @@
 import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 
-import { CoreQueryManager } from './core';
+import { CoreQueryManager } from './core/core-query-manager';
 
 import { Command, EffectDefinition, Query } from './models';
 import {

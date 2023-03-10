@@ -1,3 +1,4 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -11,7 +12,12 @@ export default {
   },
   argTypes: {
     appearance: {
-      options: ['success', 'info', 'warning', 'error'],
+      options: [
+        AlertType.Info,
+        AlertType.Success,
+        AlertType.Warning,
+        AlertType.Error,
+      ],
       control: { type: 'select' },
     },
   },

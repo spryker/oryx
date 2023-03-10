@@ -6,13 +6,13 @@ import {
 } from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
+import { FacetListService } from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { combineLatest } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '../../src/renderers';
-import { FacetListService } from '../../src/services/facet-list.service';
 import { FacetsOptions } from './facet-navigation.model';
 import { facetNavigation } from './facet-navigation.styles';
 
