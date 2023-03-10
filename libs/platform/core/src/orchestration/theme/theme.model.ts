@@ -2,6 +2,11 @@ import { LazyLoadable, ScreenSize } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 
+export enum ColorMode {
+  Light = 'mode-light',
+  Dark = 'mode-dark',
+}
+
 export const enum ThemeStrategies {
   Replace = 'replace',
   ReplaceAll = 'replace-all',

@@ -1,15 +1,18 @@
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Unsubscribable } from 'rxjs';
 
 /**
  * Will subscribe to the observable and return an observable that will reply oll the emissions of the source observable.
  *
- * Should only be used with short living observables, i.e. the ones that complete after a short time, and don't
- * require or expect unsubscribing.
+ * In general, it should be used with short living observables, i.e. the ones that complete after a short time, and don't
+ * require or expect unsubscribing. But for completeness, it also allows to unsubscribe from the source observable, if needed.
  */
 export function subscribeReplay<T>(
   shortLivingObservable$: Observable<T>
-): Observable<T> {
+): Observable<T> & Unsubscribable {
   const result$ = new ReplaySubject<T>();
-  shortLivingObservable$.subscribe(result$);
+  const subscription = shortLivingObservable$.subscribe(result$);
+  result$.unsubscribe = () => {
+    subscription.unsubscribe();
+  };
   return result$;
 }

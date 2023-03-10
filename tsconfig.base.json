@@ -62,7 +62,6 @@
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
       "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
-      "@spryker-oryx/core/lambda": ["libs/platform/core/lambda/index.ts"],
       "@spryker-oryx/core/mocks": ["libs/platform/core/src/mocks/index.ts"],
       "@spryker-oryx/core/server": ["libs/platform/core/server/index.ts"],
       "@spryker-oryx/core/testing": ["libs/platform/core/testing/index.ts"],
@@ -155,6 +154,9 @@
       "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
+      ],
+      "@spryker-oryx/ui/color-mode-selector": [
+        "libs/base/ui/action/color-mode-selector/index.ts"
       ],
       "@spryker-oryx/ui/drawer": ["libs/base/ui/overlays/drawer/index.ts"],
       "@spryker-oryx/ui/dropdown": ["libs/base/ui/overlays/dropdown/index.ts"],

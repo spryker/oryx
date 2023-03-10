@@ -19,9 +19,12 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
 
       const env = injector.inject(AppEnvironment, {} as AppEnvironment);
 
+      // TODO - re-enable this check when online features are added to orchestration. We'd like to display something in netlify for the time being.
+      /*
       if (!env.DEV) {
         return;
       }
+      */
 
       const dexieIdbService = injector.inject(DexieIndexedDbService);
 

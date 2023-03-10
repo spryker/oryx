@@ -22,6 +22,7 @@ const mockAppFn = {
 
 class MockApp implements Partial<App> {
   findPlugin = vi.fn().mockReturnValue(mockAppFn);
+  whenReady = vi.fn().mockReturnValue(of(null));
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {

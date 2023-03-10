@@ -191,10 +191,8 @@ describe('DefaultCartAdapter', () => {
   describe('addEntry should send `post` request', () => {
     const mockGuestAddEntryQualifier = {
       cartId: 'test',
-      attributes: {
-        sku: 'sku',
-        quantity: 1,
-      },
+      sku: 'sku',
+      quantity: 1,
     };
     const mockAddEntryQualifier = {
       ...mockGuestAddEntryQualifier,
@@ -217,7 +215,10 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'guest-cart-items',
-            attributes: mockGuestAddEntryQualifier.attributes,
+            attributes: {
+              sku: mockGuestAddEntryQualifier.sku,
+              quantity: mockGuestAddEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -244,7 +245,10 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'items',
-            attributes: mockAddEntryQualifier.attributes,
+            attributes: {
+              sku: mockAddEntryQualifier.sku,
+              quantity: mockAddEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -273,10 +277,8 @@ describe('DefaultCartAdapter', () => {
     const mockGuestUpdateEntryQualifier = {
       cartId: 'test',
       groupKey: 'groupKey',
-      attributes: {
-        sku: 'sku',
-        quantity: 1,
-      },
+      sku: 'sku',
+      quantity: 1,
     };
     const mockUpdateEntryQualifier = {
       ...mockGuestUpdateEntryQualifier,
@@ -301,7 +303,9 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'guest-cart-items',
-            attributes: mockGuestUpdateEntryQualifier.attributes,
+            attributes: {
+              quantity: mockGuestUpdateEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -328,7 +332,7 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'items',
-            attributes: mockUpdateEntryQualifier.attributes,
+            attributes: { quantity: mockUpdateEntryQualifier.quantity },
           },
         });
       });

@@ -1,39 +1,16 @@
-export interface CartEntitySalesUnit {
-  id: number;
-  amount: number;
-}
-
-export interface CartEntityProductOption {
-  sku: string;
-}
-
-export interface CartEntryAttributesQualifier {
-  sku: string;
-  quantity: number;
-  idPromotionalItem?: string;
-  salesUnit?: CartEntitySalesUnit;
-  productOptions?: CartEntityProductOption[];
-  extra?: Record<string, unknown>;
-}
-
 export interface CartQualifier {
   cartId?: string;
 }
 
-export interface LoadCartsQualifier {
-  forceReload?: boolean;
+export interface CartEntryQualifier extends CartQualifier {
+  groupKey?: string;
 }
 
-export interface AddCartEntryQualifier extends CartEntryAttributesQualifier {
-  cartId?: string;
+export interface AddCartEntryQualifier extends CartQualifier {
+  sku: string;
+  quantity?: number;
 }
 
-export interface UpdateCartEntryQualifier extends CartEntryAttributesQualifier {
-  cartId?: string;
-  groupKey: string;
-}
-
-export interface DeleteCartEntryQualifier {
-  cartId?: string;
-  groupKey: string;
+export interface UpdateCartEntryQualifier extends CartEntryQualifier {
+  quantity: number;
 }

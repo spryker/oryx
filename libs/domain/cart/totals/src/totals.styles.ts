@@ -1,15 +1,14 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
-    --oryx-icon-size-small: 15px;
+  :host > oryx-heading {
+    display: var(--oryx-screen-small-hide, block);
   }
 
   h2 {
     margin-block-end: var(--oryx-space-4);
   }
 
-  h2,
   section > * {
     padding-inline: var(--oryx-space-4);
   }

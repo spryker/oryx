@@ -6,7 +6,11 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  EVENT_TOGGLE_COLOR,
+  toggleMode,
+} from '@spryker-oryx/ui/color-mode-selector';
+import { from, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
 import { ExperienceStaticData, StaticComponent } from '../static-data';
@@ -30,7 +34,6 @@ export class DefaultExperienceDataClientService
     protected suggestionService = inject('oryx.SuggestionService', null),
     protected staticData = inject(ExperienceStaticData, [])
   ) {}
-
   protected schemas$ = of(this.appRef.findPlugin(ComponentsPlugin)).pipe(
     switchMap((componentPlugin) => componentPlugin!.getComponentSchemas()),
     tap((schemas) => {
@@ -77,11 +80,28 @@ export class DefaultExperienceDataClientService
       });
     })
   );
+  protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(
+    tap((mode) => {
+      toggleMode(mode);
+      window.dispatchEvent(
+        new CustomEvent(EVENT_TOGGLE_COLOR, {
+          bubbles: true,
+          composed: true,
+          detail: mode,
+        })
+      );
+    })
+  );
+  protected appReady$ = from(this.appRef.whenReady()).pipe(
+    tap(() => postMessage({ type: MessageType.AppReady, data: null }))
+  );
   protected initializer$ = merge(
     this.options$,
     this.graphics$,
     this.products$,
-    this.schemas$
+    this.schemas$,
+    this.colorMode$,
+    this.appReady$
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {

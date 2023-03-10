@@ -13,7 +13,7 @@ export class LoginFragment {
     this.getEmailInput().focus();
     // there is no other way to detect that hydration is finished
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait(2000);
 
     this.getEmailInput().type(user.email, { delay: 100 });
     this.getPasswordInput().type(user.password, { delay: 100 });
