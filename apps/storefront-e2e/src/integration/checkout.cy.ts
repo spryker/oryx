@@ -10,8 +10,8 @@ let thankYouPage: ThankYouPage;
 const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
 
-describe('Checkout suite', () => {
-  describe('Create a new order', () => {
+describe('Checkout authorized user suite', () => {
+  describe('Create a new order by authorized user without address', () => {
     beforeEach(() => {
       cy.login(defaultUser);
 
@@ -34,15 +34,13 @@ describe('Checkout suite', () => {
       });
 
       cy.intercept('POST', '/checkout').as('checkout');
+      cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
       cartPage.getCheckoutBtn().click({ force: true });
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
-      checkoutPage.waitForLoadedSPA();
-      // we are not able to detect when element is hydrated and ready for interactions
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(2000);
+      cy.wait('@addresses');
 
       checkoutPage.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
@@ -55,6 +53,57 @@ describe('Checkout suite', () => {
         thankYouPage = new ThankYouPage(id);
 
         thankYouPage.getHeading().should('be.visible');
+        cy.location('pathname').should('contain', id);
+        thankYouPage.getBannerOrderId().should('contain', id);
+        thankYouPage.getOrderDetails().should('contain', id);
+        thankYouPage.getOrderDetails().contains('Billing address');
+        thankYouPage.getOrderDetails().contains('Delivery address');
+      });
+    });
+  });
+});
+
+describe('Checkout guest user suite', () => {
+  describe('Create a new order by guest user', () => {
+    beforeEach(() => {
+      sccosApi = new SCCOSApi();
+      sccosApi.guestCarts.get();
+    });
+
+    it('must allow user to create a new order', () => {
+      const productData = ProductStorage.getProductByEq(2);
+
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
+
+      cy.intercept('POST', '/checkout').as('checkout');
+      cy.intercept('/customers/*/addresses').as('addresses');
+
+      cartPage.visit();
+      cartPage.getCheckoutBtn().click({ force: true });
+
+      cy.location('pathname').should('be.eq', checkoutPage.url);
+      checkoutPage.getCheckoutAsGuestBtn().click();
+
+      checkoutPage.fillUserContactForm();
+      checkoutPage.fillAddressForm();
+      checkoutPage.getPlaceOrderBtn().click();
+
+      cy.wait('@checkout')
+        .its('response.body.data.attributes.orderReference')
+        .as('createdOrderId');
+
+      cy.get<string>('@createdOrderId').then((id) => {
+        thankYouPage = new ThankYouPage(id);
+
+        thankYouPage
+          .getHeading()
+          .should('be.visible')
+          .and('contain', 'Thank You');
+        cy.location('pathname').should('contain', id);
+        thankYouPage.getBannerOrderId().should('contain', id);
+        thankYouPage.getOrderDetails().should('contain', id);
+        //TODO: Add checks for Billing Address and Delivery Address should not exist
+        //thankYouPage.getOrderDetails().should('not.exist');
       });
     });
   });

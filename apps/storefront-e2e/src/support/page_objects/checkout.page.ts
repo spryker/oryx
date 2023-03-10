@@ -4,15 +4,14 @@ export class CheckoutPage extends AbstractSFPage {
   url = '/checkout';
 
   waitForLoadedSPA(): void {
-    cy.intercept('**/customers/*/addresses').as('addresses');
     this.waitForLoadedSSR();
-    cy.wait('@addresses');
   }
 
   waitForLoadedSSR(): void {
     this.getPlaceOrderBtn().should('be.visible');
   }
-
+  getCheckoutAsGuestBtn = () =>
+    cy.contains('oryx-button', 'Checkout as a guest');
   getPlaceOrderBtn = () => cy.get('checkout-place-order');
   getCountrySelect = () => cy.get('oryx-select[label="Country"]');
   getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
@@ -24,6 +23,12 @@ export class CheckoutPage extends AbstractSFPage {
   getZipInput = () => cy.get('input[name="zipCode"]');
   getCityInput = () => cy.get('input[name="city"]');
   getPhoneInput = () => cy.get('input[name="phone"]');
+  getGuestEmailInput = () =>
+    cy.get('user-contact-form').get('input[name="email"]');
+  getGuestFirstNameInput = () =>
+    cy.get('user-contact-form').get('input[name="firstName"]');
+  getGuestLastNameInput = () =>
+    cy.get('user-contact-form').get('input[name="lastName"]');
 
   selectCoutry = (country: string) => {
     this.getCountrySelect().click();
@@ -51,5 +56,11 @@ export class CheckoutPage extends AbstractSFPage {
     this.getZipInput().type('10557');
     this.getCityInput().type('Berlin');
     this.getPhoneInput().type('+49 30 208498350');
+  };
+
+  fillUserContactForm = () => {
+    this.getGuestFirstNameInput().type('Test');
+    this.getGuestLastNameInput().type('User');
+    this.getGuestEmailInput().type('test@test.test');
   };
 }

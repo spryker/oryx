@@ -6,7 +6,7 @@ export class ThankYouPage extends AbstractSFPage {
   constructor(orderId: string) {
     super();
 
-    this.url = `/checkout/${orderId}`;
+    this.url = `/order/${orderId}`;
   }
 
   waitForLoadedSPA(): void {
@@ -18,4 +18,8 @@ export class ThankYouPage extends AbstractSFPage {
   }
 
   getHeading = () => cy.contains('Thank you');
+  getConfirmationBanner = () => cy.get('oryx-order-confirmation-banner');
+  getBannerOrderId = () => this.getConfirmationBanner().find('p');
+  getOrderSummary = () => cy.get('oryx-order-summary');
+  getOrderDetails = () => this.getOrderSummary().find('div');
 }
