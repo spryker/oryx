@@ -4,7 +4,7 @@ import { storybookPrefix } from '../../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Structure/Heading/Static`,
-  parameters: { chromatic: { delay: 3000 } },
+  parameters: { chromatic: { delay: 1000 } },
 } as Meta;
 
 export const LargeScreen = Template.bind({});
