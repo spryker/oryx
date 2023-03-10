@@ -83,7 +83,7 @@ The last option is to provide the heading appearance, regardless of the actual `
   <h3>This heading appears as an h5</h3>
 </oryx-heading>
 
-<oryx-heading as="h5"> This text appears as an H5 </oryx-heading>
+<oryx-heading as="h5"> This text appears as an h5 </oryx-heading>
 
 <oryx-heading tag="h3" as="h5">
   This text renders as an h3, but appears as an H5
