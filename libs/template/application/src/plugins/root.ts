@@ -3,6 +3,7 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
+  Force,
   SsrOptions,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
@@ -52,8 +53,7 @@ export class RootPlugin
     const root = rootInjectable.get();
     const ssrOptions = resolve(SsrOptions, {} as SsrOptions);
     const isRendered = Boolean(document.querySelector(root)?.shadowRoot);
-    const isForce =
-      !isServer && Boolean(ssrOptions.initialNavigation) && isRendered;
+    const isForce = !isServer && ssrOptions.force === Force.All && isRendered;
 
     initHydrateHooks(root, isForce);
   }

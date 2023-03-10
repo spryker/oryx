@@ -33,8 +33,7 @@ export class LitRouter extends Router {
 
     super(host, routes);
     this.host = host;
-    this.ssrRendered =
-      !isServer && !!host.shadowRoot && !this.ssrOptions.initialNavigation;
+    this.ssrRendered = !isServer && !!host.shadowRoot;
     this.routerService
       .currentRoute()
       .pipe(

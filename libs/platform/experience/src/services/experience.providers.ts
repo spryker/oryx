@@ -1,4 +1,4 @@
-import { injectEnv, SsrOptions } from '@spryker-oryx/core';
+import { Force, injectEnv, SsrOptions } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   BreakpointService,
@@ -64,7 +64,7 @@ export const experiencePreviewProviders: Provider[] = [
   {
     provide: SsrOptions,
     useValue: {
-      initialNavigation: true,
+      force: Force.Partially,
     },
   },
 ];

@@ -60,7 +60,7 @@ export function initHydrateHooks(rootSelector: string, force = false): void {
     registryService.hydrateOnDemand.bind(registryService);
 
   treewalk('[hydratable]').forEach((el) => {
-    if (el.tagName === 'experience-composition'.toLocaleUpperCase()) {
+    if (force && el.tagName === 'experience-composition'.toLocaleUpperCase()) {
       console.log(
         Object.getPrototypeOf(el).partiallyForce,
         el.tagName,
