@@ -48,7 +48,7 @@ To allow for a solution that can cope with both the structure and the visual des
 
 ```html
 <oryx-heading as="h3">
-  <h1>This h1 appears as an h3 on small screens</h1>
+  <h1>This heading appears as an h3</h1>
 </oryx-heading>
 ```
 
@@ -56,7 +56,7 @@ The mimicking can be applied per screen size (lg, md, sm), for example if you on
 
 ```html
 <oryx-heading as-sm="h3">
-  <h1>This h1 appears as an h3 on small screens</h1>
+  <h1>This heading appears as an h3 on small screens</h1>
 </oryx-heading>
 ```
 
