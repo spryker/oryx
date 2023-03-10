@@ -1,3 +1,4 @@
+import { ContentLinkOptions } from '@spryker-oryx/content/link';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
@@ -30,7 +31,11 @@ export class ProductTitleComponent extends ProductMixin(
   }
 
   protected renderLink(): TemplateResult {
-    const options = { type: SemanticLinkType.Product, id: this.product?.sku };
+    const options = {
+      type: SemanticLinkType.Product,
+      id: this.product?.sku,
+      multiLine: true,
+    } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
       ${this.product?.name}
