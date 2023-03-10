@@ -48,7 +48,7 @@ To allow for a flexible but compliant design, the heading component supports to 
 
 ```html
 <oryx-heading as="h3">
-  <h1>This h1 appears as an h3 on small screens</h1>
+  <h1>This heading appears as an h3</h1>
 </oryx-heading>
 ```
 
