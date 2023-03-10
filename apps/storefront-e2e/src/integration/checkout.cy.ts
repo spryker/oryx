@@ -34,15 +34,13 @@ describe('Checkout suite', () => {
       });
 
       cy.intercept('POST', '/checkout').as('checkout');
+      cy.intercept('**/customers/*/addresses').as('addresses');
 
       cartPage.visit();
       cartPage.getCheckoutBtn().click({ force: true });
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
-      checkoutPage.waitForLoadedSPA();
-      // we are not able to detect when element is hydrated and ready for interactions
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(2000);
+      cy.wait('@addresses');
 
       checkoutPage.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
