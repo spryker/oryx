@@ -65,7 +65,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
     [DEFER_HYDRATION] = false;
     private [HYDRATION_CALLS] = 0;
     protected hasSsr?: boolean;
-    protected partiallyForce?: boolean;
 
     constructor(...args: any[]) {
       super(...args);
