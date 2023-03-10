@@ -9,6 +9,7 @@ export interface QueryOptions<
 > {
   id?: string;
   loader: (qualifier: Qualifier) => Promise<ValueType> | Observable<ValueType>;
+
   resetOn?: QueryTrigger[];
   refreshOn?: QueryTrigger[];
 
@@ -44,4 +45,6 @@ export interface Query<
     qualifier?: Qualifier;
     optimistic?: boolean;
   }): void;
+  reset(qualifier?: Qualifier): void;
+  refresh(qualifier?: Qualifier): void;
 }

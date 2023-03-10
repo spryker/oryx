@@ -11,3 +11,9 @@ const Template: Story<unknown> = (): TemplateResult =>
   getTemplate(['empty', 'multiple', 'large']);
 
 export const LargeScreen = Template.bind({});
+
+LargeScreen.parameters = {
+  chromatic: {
+    delay: 3000,
+  },
+};

@@ -12,14 +12,14 @@ let sccosApi: SCCOSApi;
 describe('Cart suite', () => {
   beforeEach(() => {
     sccosApi = new SCCOSApi();
-    sccosApi.getGuestCarts();
+    sccosApi.guestCarts.get();
   });
 
   context('Cart Entries', () => {
     it('must show correct Cart Entry if product is added to the Cart', () => {
       const productData = ProductStorage.getProductByEq(2);
 
-      sccosApi.postGuestCartsItems(productData, 1);
+      sccosApi.guestCartItems.post(productData, 1);
       cartPage.visit();
 
       cartPage.getCartEntries().then((entries) => {
@@ -32,7 +32,7 @@ describe('Cart suite', () => {
 
   context('"Cart is empty" message ', () => {
     it('is shown if cart entries are removed', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
       cartPage.visit();
 
       cartPage.getCartEntries().then((entries) => {
@@ -53,8 +53,8 @@ describe('Cart suite', () => {
       const product0Data = ProductStorage.getProductByEq(2);
       const product1Data = ProductStorage.getProductByEq(3);
 
-      sccosApi.postGuestCartsItems(product0Data, 1);
-      sccosApi.postGuestCartsItems(product1Data, 1);
+      sccosApi.guestCartItems.post(product0Data, 1);
+      sccosApi.guestCartItems.post(product1Data, 1);
       cartPage.visit();
 
       cartPage.getCartEntries().then((entries) => {
@@ -74,7 +74,7 @@ describe('Cart suite', () => {
 
   context('Prices recalculation', () => {
     it('must recalculate the prices if + btn was clicked on any entry', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
 
       cartPage.visit();
 
@@ -90,7 +90,7 @@ describe('Cart suite', () => {
     });
 
     it('must recalculate the prices if user manualy chaged number of items in any entry', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 3);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 3);
 
       cartPage.visit();
 
@@ -107,8 +107,8 @@ describe('Cart suite', () => {
     });
 
     it('must recalculate the prices if user removes entry from the cart', () => {
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(1), 1);
-      sccosApi.postGuestCartsItems(ProductStorage.getProductByEq(2), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
 
       cartPage.visit();
 

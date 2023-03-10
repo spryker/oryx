@@ -1,11 +1,11 @@
 import { AppRef, ThemePlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/ui';
-import { IconProperties } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
+import { IconButtonProperties } from '../icon-button.model';
 
 const icons = Object.keys(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -16,46 +16,49 @@ export default {
   title: `${storybookPrefix}/Actions/Icon Button`,
   args: {
     disabled: false,
-    type: icons[0],
+    icon: icons[0],
     size: Size.Md,
+    text: '',
   },
   argTypes: {
     size: {
       options: [Size.Lg, Size.Md, Size.Sm],
       control: { type: 'select' },
     },
-    disabled: {
-      control: { type: 'boolean' },
-    },
-    type: {
+    icon: {
       options: Object.values(icons),
       control: { type: 'select' },
+      table: { category: 'demo' },
     },
-    color: {
-      control: { type: 'color' },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: 'demo' },
+    },
+    text: {
+      control: { type: 'text' },
+      table: { category: 'demo' },
     },
   },
 } as Meta;
 
-interface Props extends IconProperties {
-  color: string;
-  disabled: boolean;
+interface Props {
+  disabled?: boolean;
+  icon?: string;
+  text?: string;
 }
 
-const Template: Story<Props> = ({
+const Template: Story<IconButtonProperties & Props> = ({
   size,
   disabled,
-  type,
-  color,
-}: Props): TemplateResult => {
+  icon,
+  text,
+}: IconButtonProperties & Props): TemplateResult => {
   return html`
-    <oryx-icon-button
-      size=${ifDefined(size)}
-      style=${ifDefined(color ? `color: ${color}` : undefined)}
-    >
+    <oryx-icon-button size=${ifDefined(size)}>
       <button ?disabled=${disabled} aria-label="story">
-        <oryx-icon type=${ifDefined(type)}></oryx-icon>
+        <oryx-icon type=${ifDefined(icon)}></oryx-icon>
       </button>
+      ${text}
     </oryx-icon-button>
   `;
 };

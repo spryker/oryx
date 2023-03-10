@@ -57,7 +57,7 @@ export const States = Template.bind({});
 
 States.parameters = {
   chromatic: {
-    delay: 3000,
+    delay: 5000,
     viewports: [
       storybookDefaultViewports.mobile.min,
       storybookDefaultViewports.desktop.min,

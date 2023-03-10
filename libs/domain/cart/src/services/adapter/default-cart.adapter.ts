@@ -2,15 +2,16 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, switchMap, take } from 'rxjs';
-import { ApiCartModel, Cart } from '../../models';
+import { Observable, switchMap, take, throwError } from 'rxjs';
 import {
-  AddCartEntityProps,
-  CartAdapter,
-  DeleteCartEntityProps,
-  GetCartProps,
-  UpdateCartEntityProps,
-} from './cart.adapter';
+  AddCartEntryQualifier,
+  ApiCartModel,
+  Cart,
+  CartEntryQualifier,
+  CartQualifier,
+  UpdateCartEntryQualifier,
+} from '../../models';
+import { CartAdapter } from './cart.adapter';
 import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
@@ -21,7 +22,7 @@ export class DefaultCartAdapter implements CartAdapter {
     protected identity = inject(IdentityService)
   ) {}
 
-  getAll(): Observable<Cart[] | null> {
+  getAll(): Observable<Cart[]> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
@@ -39,7 +40,9 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  get(data: GetCartProps): Observable<Cart> {
+  get(data: CartQualifier): Observable<Cart> {
+    if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
+
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
@@ -59,7 +62,12 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  addEntry(data: AddCartEntityProps): Observable<Cart> {
+  addEntry(data: AddCartEntryQualifier): Observable<Cart> {
+    const attributes = {
+      sku: data.sku,
+      quantity: data.quantity,
+    };
+
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
@@ -80,7 +88,7 @@ export class DefaultCartAdapter implements CartAdapter {
             type: identity.isAuthenticated
               ? ApiCartModel.UrlParts.Items
               : ApiCartModel.UrlParts.GuestCartItems,
-            attributes: data.attributes,
+            attributes,
           },
         };
 
@@ -91,7 +99,11 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  updateEntry(data: UpdateCartEntityProps): Observable<Cart> {
+  updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
+    const attributes = {
+      quantity: data.quantity,
+    };
+
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
@@ -106,7 +118,7 @@ export class DefaultCartAdapter implements CartAdapter {
             type: identity.isAuthenticated
               ? ApiCartModel.UrlParts.Items
               : ApiCartModel.UrlParts.GuestCartItems,
-            attributes: data.attributes,
+            attributes,
           },
         };
 
@@ -117,7 +129,7 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  deleteEntry(data: DeleteCartEntityProps): Observable<unknown> {
+  deleteEntry(data: CartEntryQualifier): Observable<unknown> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {

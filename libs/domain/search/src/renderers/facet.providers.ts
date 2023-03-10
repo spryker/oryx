@@ -1,11 +1,8 @@
 import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import {
-  colorsMap,
-  FacetColorsMapping,
-} from '@spryker-oryx/search/facet-color';
 import { html, TemplateResult } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
+import { colorsMap, FacetColorsMapping } from './facet-color-colors.mapping';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import {
   FacetMappingOptions,
