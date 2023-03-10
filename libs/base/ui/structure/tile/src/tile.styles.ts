@@ -15,7 +15,7 @@ export const tileStyles = css`
     transition: var(--oryx-transition-time);
   }
 
-  ::slotted(a) {
+  ::slotted(*) {
     display: block;
   }
 
