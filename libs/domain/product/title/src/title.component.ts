@@ -18,8 +18,8 @@ export class ProductTitleComponent extends ProductMixin(
     const options = this.componentOptions;
 
     return html`<oryx-heading
-      tag=${ifDefined(options?.tag)}
-      maxLines=${ifDefined(options?.maxLines)}
+      .tag=${options?.tag}
+      .maxLines=${options?.maxLines}
     >
       ${options?.link ? this.renderLink() : html`${this.product?.name}`}
     </oryx-heading>`;

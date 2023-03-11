@@ -8,7 +8,7 @@ import { headlineStyles } from './styles/base.styles';
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headlineStyles;
 
-  @property() tag?: HeadingTag;
+  @property({ reflect: true }) tag?: HeadingTag;
   @property({ reflect: true }) as?: HeadingTag | 'hide';
 
   @property({ reflect: true, attribute: 'as-lg' }) asLg?:
