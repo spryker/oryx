@@ -4,24 +4,18 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
 
 export class PickingListsComponent extends LitElement {
   static styles = styles;
-
   protected pickingListService = resolve(PickingListService);
-
-  protected pickingLists$ = this.pickingListService.get({
-    status: PickingListStatus.ReadyForPicking,
-  });
 
   @state()
   protected customerNote?: string;
 
   @asyncState()
-  protected pickingLists = valueType(this.pickingLists$);
+  protected pickingLists = valueType(this.pickingListService.get());
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()} ${this.renderCustomerNote()} `;
@@ -37,7 +31,7 @@ export class PickingListsComponent extends LitElement {
             (pl) => pl.id,
             (pl) =>
               html`<oryx-picking-list-item
-                .pickingList=${pl}
+                .pickingListId=${pl.id}
                 @oryx.show-note=${this.openCustomerNoteModal}
               ></oryx-picking-list-item>`
           )}`,
@@ -53,7 +47,9 @@ export class PickingListsComponent extends LitElement {
         enableFooter
         @oryx.close=${this.closeCustomerNoteModal}
       >
-        <span slot="heading">${i18n('picking.customer-note.heading')}</span/>
+        <oryx-heading slot="heading">
+          <h2>${i18n('picking.customer-note.heading')}</h2>
+        </oryx-heading/>
         ${this.customerNote}
         <oryx-button slot="footer" type="primary" size="small">
           <button @click=${this.closeCustomerNoteModal}>

@@ -7,4 +7,18 @@ export const styles = css`
     display: grid;
     gap: 34px;
   }
+
+  oryx-modal {
+    --oryx-card-header-padding: 18px 30px;
+    --oryx-card-body-padding: 18px 30px;
+  }
+
+  oryx-modal [slot='heading'] {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  oryx-modal oryx-button {
+    width: 100%;
+  }
 `;

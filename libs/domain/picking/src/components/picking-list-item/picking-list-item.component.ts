@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
-import { i18n } from '@spryker-oryx/utilities';
+import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import type { PickingList } from '../../models';
+import { BehaviorSubject, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { styles } from './picking-list-item.styles';
 
 export class PickingListItemComponent extends LitElement {
@@ -12,14 +12,30 @@ export class PickingListItemComponent extends LitElement {
 
   protected pickingListService = resolve(PickingListService);
 
-  @property({ type: Object }) pickingList?: PickingList;
+  @property() pickingListId?: string;
+
+  @observe()
+  protected pickingListId$ = new BehaviorSubject(this.pickingListId);
+
   @state() isDisabled?: boolean;
+
+  protected pickingList$ = this.pickingListId$
+    .pipe(distinctUntilChanged())
+    .pipe(
+      filter((pickingListId) => !!pickingListId),
+      switchMap((pickingListId) =>
+        this.pickingListService.getById(pickingListId!)
+      )
+    );
+
+  @asyncState()
+  pickingList = valueType(this.pickingList$);
 
   protected startPicking(): void {
     this.isDisabled = true;
     // TODO: push to customer note page if this.pickingList?.cartNote exists
     // else
-    this.pickingListService.startPicking(this.pickingList!);
+    // this.pickingListService.startPicking(this.pickingList$!);
     // TODO: push to picking-items page
 
     this.isDisabled = false;
@@ -66,7 +82,7 @@ export class PickingListItemComponent extends LitElement {
         ${when(
           this.pickingList?.cartNote,
           () => html`
-            <oryx-icon-button size="large">
+            <oryx-icon-button size="lg">
               <button
                 aria-label="Show customer note"
                 @click=${this.showCustomerNote}
