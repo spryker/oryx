@@ -2,7 +2,7 @@
 
 ## Regular release.
 
-This is a regular flow, when you are just following our usual versioning and there no additional conditions.   
+This is a regular flow, when you are just following our usual versioning and there no additional conditions.
 
 For a `next` release, run Release workflow from Github actions panel on `development` branch.
 For a stable release, do the following:
@@ -27,7 +27,7 @@ For a patch on a release branch, do the following:
 
 ## Release from packages workflow.
 
-This workflow should be used in case regular workflow 
+This workflow should be used in case regular workflow
 
 1. Create branch from `development` for next minor/major as `release/v1.2.x`
 2. Set the version of every package in `libs` manually (ex. `1.2.0`).
@@ -35,4 +35,3 @@ This workflow should be used in case regular workflow
 4. Update `libs/lerna.json` version `1.2.0`.
 5. Push the release branch.
 6. Trigger Release from packages workflow from Github actions panel on release branch.
-
