@@ -1,7 +1,8 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { ApiProductModel } from '@spryker-oryx/product';
-import { Observable } from 'rxjs';
+import { CurrencyService } from '@spryker-oryx/site';
+import { Observable, switchMap, take } from 'rxjs';
 import {
   ApiSuggestionModel,
   Suggestion,
@@ -16,7 +17,8 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected transformer = inject(JsonAPITransformerService)
+    protected transformer = inject(JsonAPITransformerService),
+    protected currencyService = inject(CurrencyService)
   ) {}
 
   getKey({ query }: SuggestionQualifier): string {
@@ -33,10 +35,14 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
       ApiProductModel.Includes.Labels,
     ].join(',');
 
-    return this.http
-      .get<ApiSuggestionModel.Response>(
-        `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${include}`
-      )
-      .pipe(this.transformer.do(SuggestionNormalizer));
+    return this.currencyService.get().pipe(
+      take(1),
+      switchMap((currency) =>
+        this.http.get<ApiSuggestionModel.Response>(
+          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&currency=${currency}&include=${include}`
+        )
+      ),
+      this.transformer.do(SuggestionNormalizer)
+    );
   }
 }

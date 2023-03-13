@@ -31,7 +31,7 @@ export class DefaultPricingService implements PricingService {
     const value = isComplexPrice ? price.value : price;
 
     if (isComplexPrice && price.currency !== currency) {
-      throw new Error(`Price error: ${price.currency} is invalid currency`);
+      return null;
     }
 
     if (isNaN(+value)) {
