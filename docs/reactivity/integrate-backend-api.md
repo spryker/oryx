@@ -19,7 +19,7 @@ export class DefaultProductService implements ProductService {
 
 The qualifier will travel down through all the application layers. Whenever a custom property must be added, or in case of new qualifying aspects going forward, the object can be extended. The extended object will arrive down, so that the right request can be made in the lowest layer (adapter).
 
-## Designing the data model
+## Data model
 
 In modern web applications, it is common to communicate with an API to retrieve data. However, the response from an API can often be complex and not suitable for direct use in a component. This is where the concept of client models comes into play. A client model is a representation of the data that is specifically tailored for the needs of the client side application.
 
@@ -58,9 +58,9 @@ The following steps are visualized:
 1. Service requests data from Adapter.
 2. Adapter sends an API call to the API.
 3. API returns a response to the Adapter.
-4. The Adapter loops through all Normalizers, passing the response through each one.
+4. Adapter loops through all Normalizers, passing the response through each one.
 5. Normalizers normalize the response.
-6. The Adapter receives the normalized response from the Normalizer and returns it to the Service.
+6. Adapter receives the normalized response from Normalizer and returns it to Service.
 
 In order to make the transformation from API models to client models extensible, Oryx utilizes a _multiprovider_ injection token for normalizers. This allows for third-party packages or custom implementations to provide their own normalizers and seamlessly integrate with the existing architecture.
 

@@ -1,43 +1,43 @@
-# Key Concepts of Reactivity
+# Key concepts of reactivity
 
 ## Working with reactive data streams
 
-Reactive data streams are a fundamental concept in Oryx, and play a crucial role in managing and manipulating data in real-time. Oryx prefers Observables over Promises as they are more powerful and allow for continuous streams of data over time. This is particular helpful in experiences that remain active during some time, for example in a Single Page Application (SPA).
+Reactive data streams are a fundamental concept in Oryx. They play a crucial role in managing and manipulating data in real-time. Oryx prefers Observables over Promises as they are more powerful and allow for continuous streams of data over time. This is particularly helpful in experiences that remain active during some time, for example, in a Single Page Application (SPA).
 
-An observable can emit different values over time. In Oryx, components are bind to data observed from APIs and stored in the [application state](#application-state). Whenever the application state is updated, a new value is emitted and the component will update its view automatically in an efficient manner.
+An observable can emit different values over time. In Oryx, components are bound to data observed from APIs and stored in the [application state](#application-state). Whenever the application state is updated, a new value is emitted and the component updates its view automatically in an efficient manner.
 
-Oryx makes use of reactive programming through the popular library [RxJS](https://rxjs.dev/). It provides a set of tools and techniques to make it easier to work with asynchronous data streams and event-driven systems. RxJS is an platform agnostic library that provides:
+Oryx makes use of reactive programming through the popular library [RxJS](https://rxjs.dev/). It provides a set of tools and techniques to make it easier to work with asynchronous data streams and event-driven systems. RxJS is a platform agnostic library that provides the following:
 
-- an Observable primitive that can be used as a base mechanism for reactivity with support or bridges into - different frameworks (vue, react, Lit, svelte, etc.)
-- ability to emit more than one value (unline Promises that are resolved only once)
-- ability to resolve value both asynchronously and synchronously (Promises can resole only asynchronously)
-- be able to utilize battle tested, handy operators to combine streams and define reactive logic
+- An Observable primitive that can be used as a base mechanism for reactivity with support or bridges into different frameworks, like vue, react, Lit or svelte.
+- Ability to emit more than one value (unlike Promises that are resolved only once)
+- Ability to resolve value both asynchronously and synchronously (Promises can resole only asynchronously)
+- Tried and tested, handy operators to combine streams and define reactive logic.
 
 ## Application state
 
-Application state refers to the data that represents the _current_ state of the application. It describes the current state of an application at any given moment and is used to render the user interface and provide the right behavior for user interactions.
+Application state is data that describes the _current_ state of an application at any given moment. It is used to render the user interface and provide the right behavior for user interactions.
 
 Oryx does not come with a global state management layer. Application state is maintained per _domains_. Each domain is concerned with the associated data that is used in the domain.
 
-Some of the application state is maintained below domains. A good example is the internationalization state (aka application context), such as the active language or active currency. The internationalization domain is considered a core domain and can therefor be used inside other domains without introducing cycle dependencies in the system.
+Some part of the application state is maintained below domains. A good example is the internationalization state (or application context), like active language currency. The internationalization domain is considered a core domain, so it can be used in other domains without introducing cycle dependencies in the system.
 
 ## Handling asynchronous data loading
 
-Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower level layers, which can be reused by developers regardless of their UI framework choice.
+Oryx simplifies working with asynchronous application state and reactivity by handling the complexity under the hood while still allowing customization. It provides vanilla JavaScript packages for services and lower-level layers, which can be reused by developers regardless of UI framework.
 
-Most of the application state is driven by loading data from backend APIs. Oryx provides a number of standardized application layers:
+Most of the application state is driven by loading data from backend APIs. Oryx provides the following standardized application layers:
 
-| Layer      | Purpose                                                                                                             |
+| LAYER      | PURPOSE                                                                                                             |
 | ---------- | ------------------------------------------------------------------------------------------------------------------- |
-| Component  | Renders application state inside UI elements                                                                        |
+| Component  | Renders application state inside UI elements.                                                                        |
 | Controller | Resolves application state for the given context so maximize the component reusability                              |
-| Service    | Manage the application state for a certain application domain                                                       |
-| Adapter    | Loads the data from a specific backend API and convert it to the client model                                       |
-| Http       | wraps the native http fetch and provides additional utilities to integrate http headers (e.g. authorization header) |
+| Service    | Manages the application state for a certain application domain.                                                      |
+| Adapter    | Loads the data from a specific backend API and converts it into the client model                                       |
+| Http       | Wraps the native http fetch and provides additional utilities to integrate http headers like authorization header. |
 
-The various layers can be considered optional if you build your own domains or components. For Oryx these layers are however part of a the recommended architecture. It increases separation of concerns and provides a clear and clean extension model. All application layers are customizable and allow for an alternative implementation.
+Some layers can be considered optional if you build your own domains or components. However, for Oryx these layers are part of the recommended architecture. It increases separation of concerns and provides a clear and clean extension model. All application layers are customizable and allow for an alternative implementation.
 
-The interaction between the various layers is illustrated in the following diagram, where we use the product domain as an example.
+The following diagram shows the interaction between layers using the product domain as an example.
 
 ```mermaid
 sequenceDiagram
