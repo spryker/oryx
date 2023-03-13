@@ -1,14 +1,19 @@
+import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BehaviorSubject, filter, map, Observable, of, switchMap } from 'rxjs';
 import { Locale } from '../../models';
 import { StoreService } from '../store';
 import { LocaleService } from './locale.service';
+import { LocaleChanged } from './state';
 
 export class DefaultLocaleService implements LocaleService {
   private active$ = new BehaviorSubject<string | null>(null);
 
-  constructor(protected storeService = inject(StoreService)) {
-    (window as any)['oryxLocale'] = this;
+  constructor(
+    protected storeService = inject(StoreService),
+    protected queryService = inject(QueryService)
+  ) {
+    (globalThis as any)['oryxLocale'] = this;
   }
 
   getAll(): Observable<Locale[]> {
@@ -29,7 +34,11 @@ export class DefaultLocaleService implements LocaleService {
   }
 
   set(value: string): void {
+    const prev = this.active$.value;
     this.active$.next(value);
+    if (prev !== value) {
+      this.queryService.emit({ type: LocaleChanged, data: value });
+    }
   }
 
   formatDate(stamp: string | number, showTime = false): Observable<string> {
