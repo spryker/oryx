@@ -81,9 +81,17 @@ export default class VideoComponent
       'muted',
     ];
 
-    const params = allowedUrlQueryParams
-      .filter((key) => !!this[key])
-      .map((key) => `&${key}=${this[key]}`);
+    const paramsReplaces: Record<string, string> = {
+      muted: 'mute',
+    };
+
+    const parseParams = (param: string): string => {
+      return paramsReplaces[param] ?? param;
+    };
+
+    const params = allowedUrlQueryParams.map(
+      (key) => `&${parseParams(key)}=${this[key] ? 1 : 0}`
+    );
 
     const separator = params.length ? '?' : '';
 
