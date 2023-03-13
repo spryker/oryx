@@ -14,7 +14,7 @@ export class OrderConfirmationBannerComponent extends OrderMixin(
   protected orderRef = valueType(this.orderController.getRef());
 
   protected override render(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H2}>
+    return html`<oryx-heading .as=${HeadingTag.H2}>
         <oryx-image resource="order-confirmation-success"></oryx-image>
         <h1>${i18n('order.confirmation.thank-you')}</h1>
       </oryx-heading>

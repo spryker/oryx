@@ -1,5 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { HeadingAttributes } from '../heading.model';
 
@@ -18,15 +19,19 @@ export default {
     maxLines: {
       control: { type: 'number' },
     },
-    appearance: {
+    as: {
       control: { type: 'select' },
       options: tags,
     },
-    mdAppearance: {
+    asLg: {
       control: { type: 'select' },
       options: tags,
     },
-    smAppearance: {
+    asMd: {
+      control: { type: 'select' },
+      options: tags,
+    },
+    asSm: {
       control: { type: 'select' },
       options: tags,
     },
@@ -37,11 +42,12 @@ const Template: Story<HeadingAttributes> = (
   props: HeadingAttributes
 ): TemplateResult => {
   return html`<oryx-heading
-    .tag=${props.tag}
-    .appearance=${props.appearance}
-    .mdAppearance=${props.mdAppearance}
-    .smAppearance=${props.smAppearance}
-    .maxLines=${props.maxLines}
+    tag=${ifDefined(props.tag)}
+    as=${ifDefined(props.as)}
+    as-lg=${ifDefined(props.asLg)}
+    as-md=${ifDefined(props.asMd)}
+    as-sm=${ifDefined(props.asSm)}
+    maxLines=${ifDefined(props.maxLines)}
   >
     Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy
     wizards make toxic brew.

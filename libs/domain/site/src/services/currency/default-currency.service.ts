@@ -28,10 +28,6 @@ export class DefaultCurrencyService implements CurrencyService {
   }
 
   protected loadStore(): Observable<Store> {
-    return this.storeService
-      .get()
-      .pipe(
-        filter(<Store>(response: Store | null): response is Store => !!response)
-      );
+    return this.storeService.get().pipe(filter(Boolean));
   }
 }
