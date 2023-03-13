@@ -11,9 +11,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { UserService } from '@spryker-oryx/user';
 import { triggerStyles } from './trigger.styles';
+import { property } from 'lit/decorators';
 
 export class UserSummaryTriggerComponent extends LitElement {
   static styles = triggerStyles;
+
+  @property()
+  icon = 'user';
 
   @asyncState()
   protected user = valueType(resolve(UserService).getUser());
@@ -24,7 +28,7 @@ export class UserSummaryTriggerComponent extends LitElement {
   );
 
   protected override render(): TemplateResult {
-    const innerContent = html`<oryx-icon type="user"></oryx-icon>
+    const innerContent = html`<oryx-icon type=${this.icon}></oryx-icon>
       <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
         ${when(
           this.user,
