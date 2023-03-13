@@ -34,7 +34,7 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
             ...options,
             headers: {
               ...options.headers,
-              [this.headerName]: locale.replace('_', '-'),
+              [this.headerName]: locale,
             } as HeadersInit,
           };
         }),
