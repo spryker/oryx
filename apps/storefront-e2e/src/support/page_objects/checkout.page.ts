@@ -10,30 +10,38 @@ export class CheckoutPage extends AbstractSFPage {
   waitForLoadedSSR(): void {
     this.getPlaceOrderBtn().should('be.visible');
   }
+
   getCheckoutAsGuestBtn = () =>
     cy.contains('oryx-button', 'Checkout as a guest');
+
+  getCheckoutAddressWrapper = () => cy.get('checkout-address');
   getPlaceOrderBtn = () => cy.get('checkout-place-order');
   getCountrySelect = () => cy.get('oryx-select[label="Country"]');
   getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
-  getFirstNameInput = () => cy.get('input[name="firstName"]');
-  getLastNameInput = () => cy.get('input[name="lastName"]');
+  getFirstNameInput = () =>
+    this.getCheckoutAddressWrapper().find('input[name="firstName"]');
+  getLastNameInput = () =>
+    this.getCheckoutAddressWrapper().find('input[name="lastName"]');
   getCompanyInput = () => cy.get('input[name="company"]');
   getAddress1Input = () => cy.get('input[name="address1"]');
   getAddress2Input = () => cy.get('input[name="address2"]');
   getZipInput = () => cy.get('input[name="zipCode"]');
   getCityInput = () => cy.get('input[name="city"]');
   getPhoneInput = () => cy.get('input[name="phone"]');
+
+  getCheckoutContactWrapper = () => cy.get('checkout-contact');
   getGuestEmailInput = () =>
-    cy.get('user-contact-form').get('input[name="email"]');
+    this.getCheckoutContactWrapper().find('input[name="email"]');
   getGuestFirstNameInput = () =>
-    cy.get('user-contact-form').get('input[name="firstName"]');
+    this.getCheckoutContactWrapper().find('input[name="firstName"]');
   getGuestLastNameInput = () =>
-    cy.get('user-contact-form').get('input[name="lastName"]');
+    this.getCheckoutContactWrapper().find('input[name="lastName"]');
 
   selectCoutry = (country: string) => {
     this.getCountrySelect().click();
     this.getCountrySelect()
       .contains('oryx-option', country)
+      .should('be.visible')
       .click({ force: true });
   };
 
@@ -41,11 +49,16 @@ export class CheckoutPage extends AbstractSFPage {
     this.getSalutationSelect().click();
     this.getSalutationSelect()
       .contains('oryx-option', salutation)
+      .should('be.visible')
       .click({ force: true });
   };
 
   fillAddressForm = () => {
+    cy.intercept('/assets/addresses/DE.json').as('addressData');
+
     this.selectCoutry('Germany');
+    cy.wait('@addressData');
+
     this.selectSalutation('Mr');
 
     this.getFirstNameInput().type('Test');

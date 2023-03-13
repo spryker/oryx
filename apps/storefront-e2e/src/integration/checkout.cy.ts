@@ -10,8 +10,8 @@ let thankYouPage: ThankYouPage;
 const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
 
-describe('Checkout authorized user suite', () => {
-  describe('Create a new order by authorized user without address', () => {
+describe('Checkout suite', () => {
+  describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
       cy.login(defaultUser);
 
@@ -52,18 +52,25 @@ describe('Checkout authorized user suite', () => {
       cy.get<string>('@createdOrderId').then((id) => {
         thankYouPage = new ThankYouPage(id);
 
-        thankYouPage.getHeading().should('be.visible');
         cy.location('pathname').should('contain', id);
-        thankYouPage.getBannerOrderId().should('contain', id);
-        thankYouPage.getOrderDetails().should('contain', id);
-        thankYouPage.getOrderDetails().contains('Billing address');
-        thankYouPage.getOrderDetails().contains('Delivery address');
+
+        thankYouPage
+          .getHeading()
+          .should('be.visible')
+          .and('contain', 'Thank you');
+
+        thankYouPage.getConfirmationBannerText().should('contain', id);
+
+        thankYouPage
+          .getOrderDetails()
+          .should('be.visible')
+          .and('contain', id)
+          .and('contain', 'Billing address')
+          .and('contain', 'Delivery address');
       });
     });
   });
-});
 
-describe('Checkout guest user suite', () => {
   describe('Create a new order by guest user', () => {
     beforeEach(() => {
       sccosApi = new SCCOSApi();
@@ -71,8 +78,6 @@ describe('Checkout guest user suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      const productData = ProductStorage.getProductByEq(2);
-
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
 
       cy.intercept('POST', '/checkout').as('checkout');
@@ -95,15 +100,21 @@ describe('Checkout guest user suite', () => {
       cy.get<string>('@createdOrderId').then((id) => {
         thankYouPage = new ThankYouPage(id);
 
+        cy.location('pathname').should('contain', id);
+
         thankYouPage
           .getHeading()
           .should('be.visible')
-          .and('contain', 'Thank You');
-        cy.location('pathname').should('contain', id);
-        thankYouPage.getBannerOrderId().should('contain', id);
-        thankYouPage.getOrderDetails().should('contain', id);
-        //TODO: Add checks for Billing Address and Delivery Address should not exist
-        //thankYouPage.getOrderDetails().should('not.exist');
+          .and('contain', 'Thank you');
+
+        thankYouPage.getConfirmationBannerText().should('contain', id);
+
+        thankYouPage
+          .getOrderDetails()
+          .should('be.visible')
+          .and('contain', id)
+          .and('contain', 'Billing address')
+          .and('contain', 'Delivery address');
       });
     });
   });

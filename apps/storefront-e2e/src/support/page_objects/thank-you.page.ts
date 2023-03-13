@@ -19,7 +19,7 @@ export class ThankYouPage extends AbstractSFPage {
 
   getHeading = () => cy.contains('Thank you');
   getConfirmationBanner = () => cy.get('oryx-order-confirmation-banner');
-  getBannerOrderId = () => this.getConfirmationBanner().find('p');
+  getConfirmationBannerText = () => this.getConfirmationBanner().find('p');
   getOrderSummary = () => cy.get('oryx-order-summary');
-  getOrderDetails = () => this.getOrderSummary().find('div');
+  getOrderDetails = () => this.getOrderSummary().find('.details');
 }
