@@ -8,7 +8,5 @@ export const fulfillmentTheme: Theme = {
   breakpoints: defaultBreakpoints,
   icons: fulfillmentIcons,
   designTokens: () =>
-    import('../design-tokens/src/backoffice').then(
-      (s) => s.backofficeTokens
-    ),
+    import('../design-tokens/src/backoffice').then((s) => s.backofficeTokens),
 };
