@@ -13,6 +13,7 @@ export class DefaultCurrencyService implements CurrencyService {
     protected storeService = inject(StoreService),
     protected queryService = inject(QueryService)
   ) {
+    // TODO: Make currency service available globally for testing
     (globalThis as any).oryxCurrency = this;
   }
 
