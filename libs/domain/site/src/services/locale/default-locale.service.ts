@@ -7,7 +7,9 @@ import { LocaleService } from './locale.service';
 export class DefaultLocaleService implements LocaleService {
   private active$ = new BehaviorSubject<string | null>(null);
 
-  constructor(protected storeService = inject(StoreService)) {}
+  constructor(protected storeService = inject(StoreService)) {
+    (window as any)['oryxLocale'] = this;
+  }
 
   getAll(): Observable<Locale[]> {
     return this.storeService.get().pipe(
@@ -21,7 +23,7 @@ export class DefaultLocaleService implements LocaleService {
       switchMap((active) =>
         active
           ? of(active)
-          : this.getAll().pipe(map((locales) => locales?.[0].name))
+          : this.getAll().pipe(map((locales) => locales?.[0].code))
       )
     );
   }
