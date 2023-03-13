@@ -90,13 +90,13 @@ export default class VideoComponent
     };
 
     const params = allowedUrlQueryParams.map(
-      (key) => `&${parseParams(key)}=${this[key] ? 1 : 0}`
+      (key) => `${parseParams(key)}=${this[key] ? 1 : 0}`
     );
 
     const separator = params.length ? '?' : '';
 
     return `https://www.youtube.com/embed/${resolveId(
       this.url
-    )}${separator}${params.join('')}`;
+    )}${separator}${params.join('&')}`;
   }
 }
