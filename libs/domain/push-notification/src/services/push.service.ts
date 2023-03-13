@@ -7,7 +7,7 @@ export interface PushService {
 }
 
 export interface PushServiceConfig {
-  readonly apiUrl: string;
+  readonly apiUrl?: string;
 }
 
 export const pushApiType = 'web';
