@@ -20,7 +20,7 @@ export interface PricingService {
   format(price?: PriceValue): Observable<string | null>;
 }
 
-export const PricingService = 'FES.PricingService';
+export const PricingService = 'oryx.PricingService';
 
 declare global {
   interface InjectionTokensContractMap {

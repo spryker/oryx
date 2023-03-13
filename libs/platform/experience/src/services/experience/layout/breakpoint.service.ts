@@ -1,7 +1,7 @@
 import { ThemeBreakpoints } from '@spryker-oryx/core';
 import { Breakpoint } from '../../../models';
 
-export const BreakpointService = 'FES.BreakpointService';
+export const BreakpointService = 'oryx.BreakpointService';
 
 export interface BreakpointService {
   getBreakpoints(): ThemeBreakpoints;

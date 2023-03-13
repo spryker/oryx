@@ -1,20 +1,17 @@
-import { HttpErrorResponse } from '@spryker-oryx/core';
-import { NullableGeneric } from '@spryker-oryx/utilities';
+import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 
 export interface ProductListService {
-  get(
+  get(qualifier: ProductListQualifier): Observable<ProductList | undefined>;
+  getState(
     qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<ProductList>>;
-  getError(
-    qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<HttpErrorResponse>>;
+  ): Observable<QueryState<ProductList | undefined>>;
 
   getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
 }
 
-export const ProductListService = 'FES.ProductListService';
+export const ProductListService = 'oryx.ProductListService';
 
 declare global {
   interface InjectionTokensContractMap {

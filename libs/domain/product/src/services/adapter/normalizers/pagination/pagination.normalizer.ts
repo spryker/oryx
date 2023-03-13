@@ -1,7 +1,7 @@
 import { Transformer } from '@spryker-oryx/core';
 import { ApiProductListModel, Pagination } from '@spryker-oryx/product';
 
-export const PaginationNormalizer = 'FES.PaginationNormalizer*';
+export const PaginationNormalizer = 'oryx.PaginationNormalizer*';
 
 export function paginationNormalizer(
   data: ApiProductListModel.Pagination

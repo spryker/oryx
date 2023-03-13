@@ -42,8 +42,7 @@ export const styles = css`
   }
 
   :host(:not([type='secondary'])) slot[name='footer']::slotted(*) {
-    margin-top: 18px;
-    margin-bottom: 18px;
+    margin-block: 18px;
   }
 
   :host([type='secondary']) slot[name='heading'] {
@@ -59,15 +58,14 @@ export const styles = css`
   }
 
   :host([type='secondary']) slot[name='footer']::slotted(*) {
-    margin-top: 13px;
-    margin-bottom: 13px;
+    margin-block: 13px;
   }
 
   slot[name='heading'] {
     display: flex;
     align-items: center;
     gap: 8px;
-    border-bottom: 1px solid var(--oryx-color-neutral-200);
+    border-block-end: 1px solid var(--oryx-color-neutral-200);
   }
 
   slot[name='heading']::slotted(oryx-icon) {

@@ -122,7 +122,7 @@ observer.observe(el as HTMLHtmlElement, {
 const Template: Story<
   ProductImagesComponentOptions & ProductComponentProperties
 > = (options): TemplateResult => {
-  return html`<product-images .sku=${options.sku} .options=${options} />`;
+  return html`<oryx-product-images .sku=${options.sku} .options=${options} />`;
 };
 
 export const ImagesDemo = Template.bind({});

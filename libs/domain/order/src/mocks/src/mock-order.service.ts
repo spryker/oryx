@@ -24,7 +24,7 @@ export class MockOrderService implements Partial<OrderService> {
   getLastOrder(): Observable<OrderData | null> {
     MockOrderService.mockOrder.items =
       this.itemCount === OrderItemCount.UnderThreshold
-        ? mockOrderData.items.slice(0, 3)
+        ? mockOrderData.items.slice(0, 6)
         : mockOrderData.items;
     return of(MockOrderService.mockOrder);
   }

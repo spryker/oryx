@@ -7,6 +7,7 @@ import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
+import { Size } from '@spryker-oryx/ui';
 import { RatingComponent } from '@spryker-oryx/ui/rating';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -99,18 +100,17 @@ describe('Average Rating', () => {
   });
 
   describe('when size options is provided', () => {
-    const size = 'small';
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-product-average-rating
           sku="1"
-          .options="${{ size }}"
+          .options="${{ size: Size.Sm }}"
         ></oryx-product-average-rating>`
       );
     });
 
     it('should pass the size to the oryx-rating', async () => {
-      expect(getRating().size).toBe(size);
+      expect(getRating().size).toBe(Size.Sm);
     });
   });
 });

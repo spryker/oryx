@@ -1,23 +1,6 @@
-# Building a reactive frontend with Oryx
+# Integrate backend APIs
 
-## Qualify the request
-
-The components, services and adapters are customizable, mainly by mapping defining a new component implementation or by providing a custom service. To ensure that the request can be customized, a best practice is to use a so-called qualifier in the application flow. The qualifying object can be customized using standard TypeScript.
-
-```ts
-export interface ProductQualifier {
-  sku?: string;
-  include?: string[];
-}
-
-export class DefaultProductService implements ProductService {
-  get(qualifier: ProductQualifier): Observable<NullableGeneric<Product>> {
-    return this.getProductData(qualifier).value;
-  }
-}
-```
-
-The qualifier will travel down through all the application layers. Whenever a custom property must be added, or in case of new qualifying aspects going forward, the object can be extended. The extended object will arrive down, so that the right request can be made in the lowest layer (adapter).
+To compose a frontend application from different backend APIs, Oryx provides a flexible architecture. This architecture allows to adapt a 3rd party API without changing business logic and components that is used. For example, when a alternative search system would be used, the existing application layers and components can remain unchanged.
 
 ## Data model
 
@@ -65,3 +48,32 @@ The following steps are visualized:
 In order to make the transformation from API models to client models extensible, Oryx utilizes a _multiprovider_ injection token for normalizers. This allows for third-party packages or custom implementations to provide their own normalizers and seamlessly integrate with the existing architecture.
 
 **Note:** While a decoupled data model provides a more flexible architecture and is recommended in the Oryx framework, it does not mean that customizations or 3rd party integration need to follow this practice. There might be good reasons that the architecture is over-engineered for an individual extension, and skipping the normalization can be perfectly fine.
+
+## Qualify the request
+
+Components, services and adapters are customizable. To ensure that a change in the request can be introduced and applied in any layer, without customizing all layers, a best practice is to use a so-called qualifier in the application flow. A qualifier is a single object that is passed through the application, and can be (re)defined globally. The example below shows the use of the `ProductQualifier` in the ProductService.
+
+```ts
+export interface ProductQualifier {
+  sku?: string;
+  include?: string[];
+}
+
+export class DefaultProductService implements ProductService {
+  get(qualifier: ProductQualifier): Observable<NullableGeneric<Product>> {
+    return this.getProductData(qualifier).value;
+  }
+}
+```
+
+Whenever the request requires a new property, say we like to query the product for a certain brand or supplier, the qualifier can be extended:
+
+```ts
+declare global {
+  interface ProductQualifier {
+    brand?: string;
+  }
+}
+```
+
+This change will be transparent to all application layers and can be picked up by the Adapter layer to use the `brand` field to fetch products by brand.

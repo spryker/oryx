@@ -4,7 +4,7 @@ import { ContentController } from '@spryker-oryx/experience';
 import { ProductService } from '@spryker-oryx/product';
 import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
 import { styles } from './entries.styles';
@@ -91,7 +91,7 @@ export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>
       <section>
         <oryx-icon type="cart"></oryx-icon>
         <p>Your shopping cart is empty</p>
-        <oryx-button size="large">
+        <oryx-button>
           <button>Shop now</button>
         </oryx-button>
       </section>

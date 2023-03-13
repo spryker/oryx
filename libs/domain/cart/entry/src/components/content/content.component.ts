@@ -1,9 +1,9 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { ComponentMixin } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { when } from 'lit/directives/when.js';
 import {
   CartEntryCompositionOptions,
   RemoveByQuantity,

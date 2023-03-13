@@ -1,5 +1,16 @@
 import { extendVariants, PseudoStates, Variant } from '@spryker-oryx/ui';
-import { CategoryX } from '../../radio/src/stories/states.stories';
+
+export enum CategoryX {
+  DEFAULT = 'Default',
+  DEFAULT_WITH_SUBTEXT = 'With subtext',
+  HOVERED = 'Hovered',
+  FOCUSED = 'Focused',
+  DISABLED = 'Disabled',
+  ERROR = 'Error',
+  ERROR_MESSAGE = 'Error message',
+  ERROR_MESSAGE_WITH_SUBTEXT = 'Error message with subtext',
+  CUSTOM_ERROR_MESSAGE = 'Custom error message',
+}
 
 export const generateGroupItemVariants = <T extends Variant>(
   basicVariants: T[]

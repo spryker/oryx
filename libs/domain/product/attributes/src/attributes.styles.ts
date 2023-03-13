@@ -13,7 +13,7 @@ export const ProductAttributeStyles = css`
     display: flex;
     flex-direction: column;
     row-gap: 5px;
-    margin-bottom: 20px;
+    margin-block-end: 20px;
   }
 
   li > div {

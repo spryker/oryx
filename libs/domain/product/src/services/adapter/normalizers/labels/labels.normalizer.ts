@@ -5,7 +5,7 @@ import {
   ProductLabelAppearance,
 } from '../../../../models';
 
-export const ProductLabelsNormalizer = 'FES.ProductLabelsNormalizer*';
+export const ProductLabelsNormalizer = 'oryx.ProductLabelsNormalizer*';
 
 export function productLabelNormalizer(
   data: ApiProductModel.ProductLabel[]

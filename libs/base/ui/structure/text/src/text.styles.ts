@@ -9,7 +9,7 @@ export const textStyles = css`
   }
 
   ::slotted(p) {
-    margin-top: 0;
+    margin-block-start: 0;
     transition: margin-bottom 0.8s cubic-bezier(0, 1, 0, 1);
   }
 
@@ -83,7 +83,7 @@ export const textStyles = css`
     transform: rotate(180deg);
   }
 
-  /* FF won't render line-clamp properly wen there's not wrapping block element surrounding 
+  /* FF won't render line-clamp properly wen there's not wrapping block element surrounding
    * various child elements. This breaks Safari, hence we limit this behaviour only to FF. */
   @supports (-moz-appearance: none) {
     slot:not([name]) {

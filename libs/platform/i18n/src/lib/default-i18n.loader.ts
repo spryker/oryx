@@ -7,7 +7,7 @@ export interface DefaultI18nLoaderConfig {
   skipCache?: boolean;
 }
 
-export const DefaultI18nLoaderConfig = 'FES.DefaultI18nLoaderConfig' as const;
+export const DefaultI18nLoaderConfig = 'oryx.DefaultI18nLoaderConfig' as const;
 
 export class DefaultI18nLoader implements I18nLoader {
   protected cache: Partial<Record<string, I18nDataBundle>> =

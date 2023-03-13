@@ -1,17 +1,31 @@
 import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { TemplateResult } from 'lit';
+import { i18n } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult } from 'lit';
+import { DirectiveResult } from 'lit/directive';
 import { html } from 'lit/static-html.js';
 import { Suggestion, SuggestionResource } from '../../../src';
-import { SearchBoxOptions } from '../box.model';
+import { SearchBoxProperties } from '../box.model';
 
 interface LinksSection {
-  title?: string;
+  title?: DirectiveResult;
   options: SuggestionResource[];
   type: SemanticLinkType;
 }
 
 export class RenderSuggestionController {
+  constructor(protected host: LitElement & SearchBoxProperties) {
+    this.host.addController(this);
+  }
+
+  hostConnected?(): void;
+
+  protected onViewAllClick(e: Event): void {
+    e.target?.dispatchEvent(
+      new CustomEvent('oryx.close', { bubbles: true, composed: true })
+    );
+  }
+
   protected processCompletions(completions: string[]): SuggestionResource[] {
     return completions.map((name) => ({ name, params: { q: name } }));
   }
@@ -43,35 +57,32 @@ export class RenderSuggestionController {
     `;
   }
 
-  renderNothingFound({ nothingFoundText }: SearchBoxOptions): TemplateResult {
+  renderNothingFound(): TemplateResult {
     return html`
       <div slot="empty">
         <oryx-icon type="search"></oryx-icon>
-        <span>${nothingFoundText || 'Nothing found…'}</span>
+        <span>${i18n('search.box.nothing-found')}</span>
       </div>
     `;
   }
 
-  renderLinksSection(
-    suggestion: Suggestion,
-    options: SearchBoxOptions
-  ): TemplateResult {
+  renderLinksSection(suggestion: Suggestion): TemplateResult {
     const links: LinksSection[] = [
       {
-        title: options.completionTitle || 'Search suggestions',
+        title: i18n('search.box.suggestions'),
         options: this.processCompletions(suggestion.completion),
         type: SemanticLinkType.ProductList,
       },
       {
-        title: options.categoriesTitle || 'In categories',
-        options: suggestion.categories.map(({ name, url, idCategory }) => ({
+        title: i18n('search.box.categories'),
+        options: suggestion.categories.map(({ name, idCategory }) => ({
           name,
           url: idCategory,
         })) as SuggestionResource[],
         type: SemanticLinkType.Category,
       },
       {
-        title: options.cmsTitle || 'In CMS pages',
+        title: i18n('search.box.content'),
         options: suggestion.cmsPages,
         type: SemanticLinkType.Page,
       },
@@ -104,19 +115,20 @@ export class RenderSuggestionController {
     `;
   }
 
-  renderProductsSection(
-    suggestion: Suggestion,
-    options: SearchBoxOptions
-  ): TemplateResult {
+  renderProductsSection(suggestion: Suggestion): TemplateResult {
     return html`
       <section>
-        <h5>${options.productsTitle || 'Products'}</h5>
+        <h5>${i18n('search.box.products')}</h5>
         ${suggestion.products.map(this.renderProduct)}
-        <!-- TODO link to PLP -->
-        <oryx-button outline>
-          <a href="#"
-            >${options.viewAllProductsButtonTitle || 'View all products'}</a
-          >
+
+        <oryx-button outline @click=${(e: Event) => this.onViewAllClick(e)}>
+          <oryx-content-link
+            .options="${{
+              type: SemanticLinkType.ProductList,
+              text: i18n('search.box.view-all-products'),
+              params: { q: this.host.query },
+            }}"
+          ></oryx-content-link>
         </oryx-button>
       </section>
     `;

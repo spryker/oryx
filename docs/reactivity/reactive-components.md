@@ -1,10 +1,7 @@
 # Reactive components
 
 
-
-## Domain logic
-
-There are multiple ways for components to fetch data, but we recommend using the domain logic. Domain services provide a convenient API to request data. For example, when loading product data, the Product Service can be leveraged:
+Components are organized by domains, for example components in a product domain, and can leverage domain logic to communicate with the associated backend API. Each domain is shipped with a domain service that provides an API to communicate backend API. For example, when rendering product data, `ProductService` can be used:
 
 ```ts
 export class ProductPriceComponent extends LitElement {
@@ -13,7 +10,9 @@ export class ProductPriceComponent extends LitElement {
 }
 ```
 
-The `ProductPriceComponent` should ideally not be aware of the SKU, as this is provided by the context; the SKU might be resolved from the URL or from the context, i.e. from a cart entry component. Oryx provides a context controller that can be used to resolve the SKU. Different domains have their own controller to resolve the right qualifier from the context. In case of the product domain, we use the `ProductController`:
+To ensure that components are reusable in different contexts, it is recommended to not couple them directly with the qualifier that is used to load data. In case of the `ProductPriceComponent` we'd rather not make it aware of the `SKU`, as the `SKU` could be determined from the route (on the product page), the product card (in a list) or the cart entry. Oryx provides a mechanism to setup a so-called context. In the case of product components, the product controller is used to resolve the SKU from the context controller.
+
+`ProductController` resolves the product qualifier (SKU) from the context and returns an observable from `ProductService`. If SKU is provided statically to the component, `ProductController` also takes `sku` as a component property into account. This can be useful in custom development or for demonstrating the component, for example, in a Storybook.
 
 ```ts
 export class ProductPriceComponent extends LitElement {
@@ -23,9 +22,7 @@ export class ProductPriceComponent extends LitElement {
 }
 ```
 
-`ProductController` resolves the product qualifier (SKU) from the context and returns an observable from `ProductService`. If SKU is provided statically to the component, `ProductController` also takes `sku` as a component property into account. This can be useful in custom development or for demonstrating the component, for example, in a Storybook.
-
-In the following code snippet, an observable is assigned to the local `product$` field. This will not do anything, since you need to _subscribe_ to an observable. There is a convenient approach in Oryx to subscribe using a decorator:
+In these code snippet, an observable is assigned to the local `product$` field. Observables require to subscribe and unsubscribe. To avoid such boilerplate code, we can use a convenient decorator to subscribe/unsubscribe to observables. The decorator will subscribe to the observable, but also unsubscribe when the component is destroyed. This will ensure that there's no leaking memory in the application.
 
 ```ts
 export class ProductPriceComponent {
@@ -38,10 +35,6 @@ export class ProductPriceComponent {
 }
 ```
 
-The `subscribe` decorator subscribes to the observable, but also unsubscribes when the component is destroyed. This ensures that there is no leaking memory in the application.
-
-Another missing piece here is how the observed data can be used and rendered inside the component. This is described in the next section.
-
 ## Update the DOM
 
 While the user navigates through pages in a single page application experience, it is crucial for components to be updated accordingly. This section describes how data updates are propagated throughout the user interface in Oryx.
@@ -52,7 +45,7 @@ The components provided in the Oryx libraries are build with Lit. Lit provides a
 
 The following example shows the use of the `asyncState` decorator. The decorator subscribes to the assigned observable and requests an update to the component when needed. This means that as a component developer you do not need to worry about how the reactive system works under the hood.
 
-Oryx components are build in TypeScript, which is why we need to ensure type safety. The original type of the assigned observable needs to be adjusted. It isn't possible to resolve a correct TypeScript type from the observable by using a decorator, which is why the `valueType` function is offered to project the observed type.
+Oryx components are build in TypeScript, and we provides types everywhere to increase the developer experience and avoid error upfront. The original type of the assigned observable needs to be adjusted. It's impossible to resolve a correct TypeScript type from the observable by using a decorator, which is why the `valueType` function is offered to project the observed type.
 
 ```ts
 export class ProductPriceComponent {
@@ -97,5 +90,3 @@ export class ProductPriceComponent {
 **Note:** the example is simplified to focus on the RxJs part.
 
 In this example, the product data is observed from `ProductService`, but switches to the price formatting logic. This means that whenever the product changes (i.e. on route change), new product data is emitted and formatted. `PriceService` is used to format both the sales and original prices. `PriceService.format()` uses the current currency and locale for the formatting, which is why it also exposes an observable. Since there are two prices involved, the two streams are _combined_ in an object.
-
-With this setup, the product price component receives updated prices whenever the product, currency or locale in the application state change. Subscribing to this code could simple, however more work is needed to ensure that the component UI (DOM) will be updated simultaneously. This is described in the next section.

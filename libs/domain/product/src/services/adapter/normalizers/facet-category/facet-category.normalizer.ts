@@ -7,7 +7,7 @@ export interface FacetCategory {
   categoryTreeFilter: ApiProductListModel.TreeFacet[];
 }
 
-export const FacetCategoryNormalizer = 'FES.FacetCategoryNormalizer*';
+export const FacetCategoryNormalizer = 'oryx.FacetCategoryNormalizer*';
 
 export function facetCategoryNormalizer(fasets: FacetCategory): Facet {
   const { categoryFacet, categoryTreeFilter } = fasets;

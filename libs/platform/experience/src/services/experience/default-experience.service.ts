@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
+import { ExperienceStaticService } from './static-data';
 
 export class DefaultExperienceService implements ExperienceService {
   protected dataRoutes: Record<string, ReplaySubject<string>> = {};
@@ -14,18 +15,37 @@ export class DefaultExperienceService implements ExperienceService {
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
-    protected http = inject(HttpService)
-  ) {}
+    protected http = inject(HttpService),
+    protected staticService = inject(ExperienceStaticService)
+  ) {
+    this.initStaticData();
+  }
+
+  protected initStaticData(): void {
+    this.staticService.getData().map((component) => {
+      if (!this.dataComponent[component.id]) {
+        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
+      }
+      this.dataComponent[component.id].next(component as Component);
+      if (component.meta?.route) {
+        if (!this.dataRoutes[component.meta.route]) {
+          this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
+        }
+        this.dataRoutes[component.meta.route].next(component.id);
+      }
+      this.processComponent(component);
+
+      return component;
+    });
+  }
 
   protected processComponent(component: Component): void {
     const components = component?.components || [];
 
-    if (component?.id) {
-      if (!this.dataComponent[component.id]) {
-        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
-      }
-      this.dataComponent[component.id].next(component);
+    if (!this.dataComponent[component.id]) {
+      this.dataComponent[component.id] = new ReplaySubject<Component>(1);
     }
+    this.dataComponent[component.id].next(component);
 
     components.forEach((component: Component) => {
       this.processComponent(component);
@@ -61,7 +81,7 @@ export class DefaultExperienceService implements ExperienceService {
       .get<Component[]>(componentsUrl)
       .pipe(
         tap((components) => {
-          if (!components || !components.length) {
+          if (!components?.length) {
             return;
           }
           const component = components[0];
@@ -87,7 +107,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadOptions(uid: string): void {
-    this.getComponent({ uid: uid })
+    this.getComponent({ uid })
       .pipe(take(1))
       .subscribe((component) => {
         const options = component?.options ?? {};

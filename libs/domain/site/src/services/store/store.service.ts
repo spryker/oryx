@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Store } from '../../models';
 
-export const StoreService = 'FES.StoreService';
+export const StoreService = 'oryx.StoreService';
 
 export interface StoreService {
   getAll(): Observable<Store[]>;

@@ -1,3 +1,5 @@
+import { Size } from '@spryker-oryx/ui';
+
 /**
  * Interface for pagination information.
  */
@@ -104,11 +106,15 @@ export interface FacetValue {
   children?: FacetValue[];
 }
 
+export type ProductMediaSet = {
+  name?: string;
+  media: ProductMedia[];
+};
+
 /**
- * TODO: move size to utility package as it's a generic reusable Size.
  *
  * Product media are typically provided in different sizes, so that an
- * optimised experience can be created for each product image usage and
+ * optimized experience can be created for each product image usage and
  * user device/screen size.
  *
  * The `ProductMediaSize` provides all sizes potentially available. While
@@ -122,20 +128,6 @@ export interface FacetValue {
  *
  * The actual size (width/height) of each media is provided additionally.
  */
-
-export const enum Size {
-  Xs = 'xs',
-  Sm = 'sm',
-  Md = 'md',
-  Lg = 'lg',
-  Xl = 'xl',
-}
-
-export type ProductMediaSet = {
-  name?: string;
-  media: ProductMedia[];
-};
-
 export type ProductMedia = {
   [key in Size]?: string;
 };
@@ -151,7 +143,7 @@ export const enum ProductMediaContainerSize {
 }
 
 /**
- * The media context can be used to further optimise the experience and provide
+ * The media context can be used to further optimize the experience and provide
  * specific media for a specific device or network speed.
  */
 export interface MediaContext {

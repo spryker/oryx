@@ -4,14 +4,11 @@ import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ProductContext } from '../models';
-import { ProductService } from '../services';
+import { ProductContext, ProductService } from '../services';
 import { ProductController } from './product.controller';
 
 const mockSku = 'mockSku';
 const mockThis = {} as LitElement;
-const mockWithProduct = { product: { name: 'test' } };
-const mockInclude = ['includeA', 'includeB'];
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of(mockSku)),
@@ -61,7 +58,7 @@ describe('ProductController', () => {
     it('should expose the product based on the context', () => {
       const mockObserveReturn = 'mockObserveReturn';
       mockObserve.get.mockReturnValue(mockObserveReturn); // this.observe.get('sku') emission
-      const productController = new ProductController(mockThis, mockInclude);
+      const productController = new ProductController(mockThis);
       productController.getProduct().subscribe(callback);
 
       expect(mockObserve.get).toHaveBeenNthCalledWith(1, 'sku');
@@ -71,7 +68,6 @@ describe('ProductController', () => {
       );
       expect(productService.get).toHaveBeenCalledWith({
         sku: mockSku,
-        include: mockInclude,
       });
       expect(callback).toHaveBeenCalledWith(mockProduct);
     });
@@ -84,14 +80,14 @@ describe('ProductController', () => {
         mockObserve.get.mockReturnValueOnce(of(null)); // this.observe.get('product') emission
         mockObserve.get.mockReturnValue(mockObserveReturn); // this.observe.get('sku') emission
         mockContext.get.mockReturnValue(skuTrigger);
-        const productController = new ProductController(mockThis, mockInclude);
+        const productController = new ProductController(mockThis);
 
         productController.getProduct().subscribe(callback);
         skuTrigger.next(mockSku); // second ContextController emission
 
         expect(callback).toHaveBeenCalledTimes(3);
         expect(callback).toHaveBeenNthCalledWith(1, mockProduct);
-        expect(callback).toHaveBeenNthCalledWith(2, null);
+        expect(callback).toHaveBeenNthCalledWith(2, undefined);
         expect(callback).toHaveBeenNthCalledWith(3, mockProduct);
       });
     });
@@ -103,7 +99,7 @@ describe('ProductController', () => {
       const productController = new ProductController(mockThis);
       productController.getProduct().subscribe(callback);
 
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(callback).toHaveBeenCalledWith(undefined);
     });
   });
 });

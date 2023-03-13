@@ -1,4 +1,4 @@
-import { Types } from '@spryker-oryx/ui/notification';
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -10,42 +10,7 @@ export default {
   title: `${storybookPrefix}/Overlays/Notification Center/Static`,
 } as Meta;
 
-const service = new NotificationService();
-
 const Template: Story = (): TemplateResult => {
-  removeAllMountedCenters();
-
-  setTimeout(() => {
-    service.getCenter('#parent').open(
-      generateNotification({
-        autoClose: false,
-        content: 'Content',
-        type: Types.INFO,
-      })
-    );
-    service.getCenter('#parent').open(
-      generateNotification({
-        autoClose: false,
-        content: 'Content',
-        type: Types.INFO,
-      })
-    );
-    service.getCenter('#parent').open(
-      generateNotification({
-        autoClose: false,
-        content: 'Content',
-        type: Types.INFO,
-      })
-    );
-    service.getCenter('#parent').open(
-      generateNotification({
-        autoClose: false,
-        content: 'Content',
-        type: Types.INFO,
-      })
-    );
-  }, 0);
-
   return html`
     <style>
       #parent {
@@ -66,3 +31,45 @@ const Template: Story = (): TemplateResult => {
 };
 
 export const StaticPosition = Template.bind({});
+
+StaticPosition.play = async (): Promise<void> => {
+  const service = new NotificationService();
+
+  removeAllMountedCenters();
+
+  (async function () {
+    await Promise.all([
+      customElements.whenDefined('oryx-notification-center'),
+      customElements.whenDefined('oryx-notification'),
+    ]);
+
+    service.getCenter('#parent').open(
+      generateNotification({
+        autoClose: false,
+        content: 'Content',
+        type: AlertType.Info,
+      })
+    );
+    service.getCenter('#parent').open(
+      generateNotification({
+        autoClose: false,
+        content: 'Content',
+        type: AlertType.Info,
+      })
+    );
+    service.getCenter('#parent').open(
+      generateNotification({
+        autoClose: false,
+        content: 'Content',
+        type: AlertType.Info,
+      })
+    );
+    service.getCenter('#parent').open(
+      generateNotification({
+        autoClose: false,
+        content: 'Content',
+        type: AlertType.Info,
+      })
+    );
+  })();
+};

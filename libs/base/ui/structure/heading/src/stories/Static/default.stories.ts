@@ -6,4 +6,4 @@ export default {
   title: `${storybookPrefix}/Structure/Heading/Static`,
 } as Meta;
 
-export const Variations = Template.bind({});
+export const LargeScreen = Template.bind({});

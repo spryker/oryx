@@ -37,7 +37,7 @@ import {
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
-@hydratable(['click', 'focusin'])
+@hydratable(['mouseover', 'focusin'])
 export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
   static styles = styles;
 
@@ -120,7 +120,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
 
   protected renderButton(options: Partial<CartAddOptions>): TemplateResult {
     return html` <oryx-button
-      size=${Size.small}
+      size=${Size.Sm}
       ?loading=${asyncValue(this.isBusy$)}
       ?confirmed=${asyncValue(this.isConfirmed$)}
       type=${ButtonType.Primary}
@@ -131,7 +131,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
         ?inert=${asyncValue(this.isBusy$)}
         @click=${this.onSubmit}
       >
-        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.large}></oryx-icon>
+        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
         ${i18n('cart.add-to-cart')}
       </button>
     </oryx-button>`;
@@ -141,7 +141,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
    * Returns 0 when the max available quantity is smaller than the min order quantity.
    */
   protected calculateMin(
-    product: Product | null,
+    product: Product | undefined,
     entries: CartEntry[]
   ): number {
     const maxAvailable = this.calculateMax(product, entries);
@@ -156,7 +156,7 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
    * the active cart, and subtract this number from the available quantity.
    */
   protected calculateMax(
-    product: Product | null,
+    product: Product | undefined,
     entries: CartEntry[]
   ): number | undefined {
     const cumulatedEntryCount = entries

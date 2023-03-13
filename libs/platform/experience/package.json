@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Experience features for Oryx applications",
-  "author": "Spryker Sytems GmbH",
+  "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",
   "files": [
     "**/*"
@@ -20,6 +20,7 @@
   "peerDependencies": {
     "@spryker-oryx/core": "*",
     "@spryker-oryx/di": "*",
+    "@spryker-oryx/ui": "*",
     "@spryker-oryx/router": "*",
     "@spryker-oryx/themes": "*",
     "@spryker-oryx/utilities": "*",

@@ -1,4 +1,4 @@
-import { DirectiveResult } from 'lit-html/directive.js';
+import { DirectiveResult } from 'lit/directive.js';
 import { Injectable } from './injectable';
 
 export const ResourceInjectable = 'oryx.ResourceInjectable';

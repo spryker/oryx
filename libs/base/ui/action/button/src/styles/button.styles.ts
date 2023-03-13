@@ -1,5 +1,5 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const buttonStyles = css`
@@ -32,23 +32,23 @@ export const buttonStyles = css`
     position: relative;
   }
 
-  :host([size='medium']) {
+  :host([size='md']) {
     --_margin: 8px 19px;
   }
 
-  :host([size='small']) {
+  :host([size='sm']) {
     --_margin: 6px 15px;
   }
 
-  :host([size='large'][icon]:not([type='text'])) {
+  :host([size='lg'][icon]:not([type='text'])) {
     --_margin: 11px 15px;
   }
 
-  :host([size='medium'][icon]:not([type='text'])) {
+  :host([size='md'][icon]:not([type='text'])) {
     --_margin: 8px 15px;
   }
 
-  :host([size='small'][icon]:not([type='text'])) {
+  :host([size='sm'][icon]:not([type='text'])) {
     --_margin: 6px 15px;
   }
 
@@ -249,20 +249,9 @@ const smallScreen = css`
   }
 `;
 
-const mediumScreen = css`
-  :host {
-    font-size: 1em;
-    font-weight: var(--oryx-typography-font-weight);
-  }
-`;
-
 export const buttonScreenStyles: ThemeStylesWithMedia[] = [
   {
     media: smScreen,
     css: smallScreen,
-  },
-  {
-    media: mdScreen,
-    css: mediumScreen,
   },
 ];

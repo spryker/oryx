@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
@@ -7,22 +7,21 @@ import {
   mockCurrentAddressResponse,
   mockGetAddressesResponse,
 } from '@spryker-oryx/user/mocks';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AddressAdapter } from './address.adapter';
 import { DefaultAddressAdapter } from './default-address.adapter';
 import { AddressesNormalizer, AddressNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
-const mockAnonymousUser = {
-  id: 'userId',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: false,
 };
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
-  token: { accessToken: 'token' },
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
 const mockTransformer = {
@@ -32,7 +31,9 @@ const mockTransformer = {
 };
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('DefaultAddressAdapter', () => {
@@ -111,7 +112,7 @@ describe('DefaultAddressAdapter', () => {
         service.getAll().subscribe();
 
         expect(http.url).toBe(
-          `${mockApiUrl}/customers/${mockUser.id}/addresses`
+          `${mockApiUrl}/customers/${mockUser.userId}/addresses`
         );
       });
 
@@ -167,7 +168,7 @@ describe('DefaultAddressAdapter', () => {
         service.add(mockCurrentAddress).subscribe();
 
         expect(http.url).toBe(
-          `${mockApiUrl}/customers/${mockUser.id}/addresses`
+          `${mockApiUrl}/customers/${mockUser.userId}/addresses`
         );
       });
 
@@ -232,7 +233,7 @@ describe('DefaultAddressAdapter', () => {
         service.update(mockCurrentAddress).subscribe();
 
         expect(http.url).toBe(
-          `${mockApiUrl}/customers/${mockUser.id}/addresses/${mockCurrentAddressResponse.id}`
+          `${mockApiUrl}/customers/${mockUser.userId}/addresses/${mockCurrentAddressResponse.id}`
         );
       });
 
@@ -277,7 +278,7 @@ describe('DefaultAddressAdapter', () => {
 
       it('should build url', () => {
         expect(http.url).toBe(
-          `${mockApiUrl}/customers/${mockUser.id}/addresses/${mockCurrentAddress.id}`
+          `${mockApiUrl}/customers/${mockUser.userId}/addresses/${mockCurrentAddress.id}`
         );
       });
 

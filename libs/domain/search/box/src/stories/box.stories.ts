@@ -38,15 +38,6 @@ Demo.args = {
   productsCount: 6,
   categoriesCount: 5,
   cmsCount: 5,
-  placeholder: '',
-  clearButtonTitle: '',
-  closeButtonArialLabel: '',
-  nothingFoundText: '',
-  completionTitle: '',
-  categoriesTitle: '',
-  cmsTitle: '',
-  productsTitle: '',
-  viewAllProductsButtonTitle: '',
 };
 
 Demo.argTypes = {
@@ -69,41 +60,5 @@ Demo.argTypes = {
   cmsCount: {
     control: { type: 'number' },
     table: { category: 'Options' },
-  },
-  placeholder: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  clearButtonTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  closeButtonArialLabel: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  nothingFoundText: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  completionTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  categoriesTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  cmsTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  productsTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
-  },
-  viewAllProductsButtonTitle: {
-    control: { type: 'text' },
-    table: { category: 'Texts' },
   },
 };

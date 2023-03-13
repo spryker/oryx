@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/domain/user",
   "sourceRoot": "libs/domain/user",
   "prefix": "fes",
   "targets": {

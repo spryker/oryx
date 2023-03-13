@@ -20,6 +20,10 @@ export async function createDevSever(
 
   app.use(vite.middlewares);
 
+  app.head('/*', (req, res) => {
+    res.status(200).end('');
+  });
+
   app.get('/*', async (req, res, next) => {
     const url = generateUrl(req);
 

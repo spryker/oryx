@@ -2,7 +2,7 @@ import { Facet } from '@spryker-oryx/product';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { TemplateResult } from 'lit';
 
-export const FacetValueRenderer = 'FES.FacetValueRenderer*';
+export const FacetValueRenderer = 'oryx.FacetValueRenderer*';
 
 export enum FacetParams {
   Default = 'default',

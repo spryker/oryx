@@ -14,7 +14,7 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<oryx-password-input
     label="Mousedown strategy"
-    strategy=${PasswordVisibilityStrategy.MOUSEDOWN}
+    strategy=${PasswordVisibilityStrategy.Mousedown}
   >
     <input type="password" value="Change123$" placeholder="Placeholder..." />
   </oryx-password-input>`;
