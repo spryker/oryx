@@ -129,7 +129,11 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     totals: FormattedCartTotals
   ): TemplateResult {
     return totals.calculations.taxTotal && !options.hideTaxAmount
-      ? this.renderSection('tax', 'Tax', String(totals.calculations.taxTotal))
+      ? this.renderSection(
+          'tax',
+          html`${i18n(['cart.totals.tax'])}`,
+          String(totals.calculations.taxTotal)
+        )
       : html``;
   }
 
@@ -169,8 +173,8 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         () =>
           html`<small class="tax-message">
             ${totals.priceMode === PriceMode.GrossMode
-              ? i18n('cart.totals.tax-included')
-              : i18n('cart.totals.tax-excluded')}
+              ? i18n('cart.totals.incl-vat')
+              : i18n('cart.totals.incl-vat')}
           </small>`
       )}`
     );
