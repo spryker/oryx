@@ -6,9 +6,6 @@ export const FooterTemplate: StaticComponent = {
   meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
-      type: 'oryx-site-notification-center',
-    },
-    {
       type: 'experience-composition',
       components: [
         {

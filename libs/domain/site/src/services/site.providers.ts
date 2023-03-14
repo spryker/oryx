@@ -1,11 +1,10 @@
-import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
+import { ErrorHandler, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
 import { CurrencyService, DefaultCurrencyService } from './currency';
 import { SiteErrorHandler } from './error-handling';
 import { DefaultLocaleService, LocaleService } from './locale';
-import { AcceptLanguageInterceptor } from './locale/accept-language.interceptor';
 import {
   DefaultNotificationService,
   NotificationService,
@@ -76,8 +75,4 @@ export const siteProviders: Provider[] = [
     useClass: DefaultSalutationService,
   },
   ...storeNormalizer,
-  {
-    provide: HttpInterceptor,
-    useClass: AcceptLanguageInterceptor,
-  },
 ];
