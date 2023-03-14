@@ -4,7 +4,9 @@ export const CartPage: StaticComponent = {
   type: 'Page',
   meta: { title: 'Cart Page', route: '/cart' },
   options: {
-    data: { rules: [{ layout: 'two-column', container: 'true' }] },
+    data: {
+      rules: [{ layout: 'two-column', container: 'true', padding: '30px 0 0' }],
+    },
   },
   components: [
     {
@@ -14,7 +16,6 @@ export const CartPage: StaticComponent = {
           defaultExpandedOptions: true,
           removeByQuantity: 'showBin',
           silentRemove: true,
-          rules: [{ padding: '30px 0' }],
         },
       },
     },
@@ -26,9 +27,8 @@ export const CartPage: StaticComponent = {
           rules: [
             {
               sticky: true,
-              top: '78px',
+              top: '108px',
               maxWidth: true,
-              padding: '30px 0',
               layout: 'list',
               gap: '20px',
             },
