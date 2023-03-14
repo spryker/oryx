@@ -8,27 +8,21 @@ import {
   tap,
   using,
 } from 'rxjs';
-import {
-  PickingList,
-  PickingListQualifier,
-  PickingListStatus,
-} from '../models';
+import { PickingList, PickingListQualifier } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
 
 export class PickingListDefaultService implements PickingListService {
-  protected pickingListsQualifier$ =
-    new BehaviorSubject<PickingListQualifier | null>(null);
+  protected pickingListsQualifier$ = new BehaviorSubject<PickingListQualifier>(
+    {}
+  );
   protected pickingListsState$ = new BehaviorSubject<PickingList[]>([]);
 
   protected pickingListsLoading$ = this.pickingListsQualifier$.pipe(
-    switchMap((qualifier) =>
-      this.adapter.get(
-        qualifier ?? {
-          status: PickingListStatus.ReadyForPicking,
-        }
-      )
-    ),
+    switchMap((qualifier) => {
+      console.log('qualifier', qualifier);
+      return this.adapter.get(qualifier);
+    }),
     tap((pickingLists) => {
       this.pickingListsState$.next(pickingLists?.length ? pickingLists : []);
     })
@@ -41,8 +35,12 @@ export class PickingListDefaultService implements PickingListService {
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
 
-  setQualifier(qualifier: PickingListQualifier): void {
+  setQualifier(
+    qualifier: PickingListQualifier
+  ): Observable<PickingListQualifier> {
     this.pickingListsQualifier$.next(qualifier);
+
+    return this.pickingListsQualifier$;
   }
 
   get(): Observable<PickingList[]> {
