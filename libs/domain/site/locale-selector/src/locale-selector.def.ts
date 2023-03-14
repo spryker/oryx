@@ -1,7 +1,7 @@
 import { componentDef } from '@spryker-oryx/core';
 
 export const localeSelectorComponent = componentDef({
-  name: 'oryx-locale-selector',
+  name: 'oryx-site-locale-selector',
   impl: () =>
     import('./locale-selector.component').then(
       (m) => m.SiteLocaleSelectorComponent

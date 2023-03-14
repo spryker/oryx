@@ -20,7 +20,7 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'oryx-locale-selector',
+          type: 'oryx-site-locale-selector',
           options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
         },
       ],

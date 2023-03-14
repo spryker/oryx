@@ -30,7 +30,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
       <oryx-dropdown vertical-align position="start">
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
-            ${this.getCode(this.current)}
+            ${this.current}
             <oryx-icon type="dropdown"></oryx-icon>
           </button>
         </oryx-button>
@@ -41,7 +41,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
             html` <oryx-option
               close-popover
               value=${locale.code}
-              ?active=${locale.name === this.current}
+              ?active=${locale.code === this.current}
               @click=${() => this.onClick(locale.code)}
             >
               ${this.getLabel(locale.code)}
@@ -55,15 +55,11 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
     this.service.set(locale);
   }
 
-  protected getLabel(isoCode: string): string {
-    const lang = this.getCode(isoCode);
-    const languageNames = new Intl.DisplayNames(
-      [this.current?.replace('_', '-') ?? 'en-US'],
-      {
-        type: 'language',
-      }
-    );
-    return languageNames.of(lang) ?? lang;
+  protected getLabel(code: string): string {
+    const languageNames = new Intl.DisplayNames([this.current ?? 'en'], {
+      type: 'language',
+    });
+    return languageNames.of(code) ?? code;
   }
 
   protected getCode(isoCode: string): string {
