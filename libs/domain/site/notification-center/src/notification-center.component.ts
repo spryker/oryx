@@ -43,7 +43,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
       .position=${this.componentOptions?.position}
       style=${ifDefined(this.getStyle())}
       ${ref(this.centerRef)}
-      ?stackable=${this.componentOptions.enableStacking}
+      ?stackable=${this.componentOptions?.enableStacking}
     ></oryx-notification-center>`;
   }
 
