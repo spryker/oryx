@@ -88,11 +88,17 @@ export class DefaultI18nProcessor implements I18nProcessor {
     do {
       tokenPart = tokenPart.slice(nextDotIdx + 1);
 
+      console.log('tokenPart', tokenPart, this.globalizeService);
+
+      (global as any).oryxGlobalize = this.globalizeService;
+
       const msg = await this.globalizeService.formatMessage(
         localeId,
         tokenPart,
         context
       );
+
+      console.log('msg', msg);
 
       if (msg !== undefined) {
         return msg;
