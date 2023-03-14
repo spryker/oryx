@@ -10,6 +10,12 @@ import { CurrencyService } from './currency.service';
 export class CurrentCurrencyInterceptor implements HttpInterceptor {
   protected parameterName = 'currency';
 
+  protected includedEndpoints = [
+    'concreete-product',
+    'catalog-search',
+    'catalog-search-suggestions',
+  ];
+
   constructor(
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
     protected injector = inject(INJECTOR)
@@ -44,14 +50,9 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
   protected shouldInterceptRequest(url: string): boolean {
     if (!url.startsWith(this.SCOS_BASE_URL)) return false;
 
-    const endpoints = [
-      'concreete-product',
-      'catalog-search',
-      'catalog-search-suggestions',
-    ];
     const path = url.substring(this.SCOS_BASE_URL.length);
 
-    for (const endpoint of endpoints) {
+    for (const endpoint of this.includedEndpoints) {
       if (path.startsWith(`/${endpoint}`)) return true;
     }
     return false;
