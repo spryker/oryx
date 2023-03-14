@@ -36,8 +36,7 @@
       "createRelease": "github",
       "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
-      "verifyAccess": false,
-      "exact": true
+      "verifyAccess": false
     }
   }
 }
