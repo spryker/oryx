@@ -7,8 +7,6 @@ export const styles = css`
 
   oryx-card {
     max-width: 380px;
-    /* --oryx-card-header-padding: 10px;
-    --oryx-card-body-padding: 7px 10px 10px; */
   }
 
   [slot='heading'] {
@@ -30,12 +28,12 @@ export const styles = css`
   }
 
   .edit-quantity {
-    margin-top: 7px;
+    margin-block-start: 7px;
   }
 
   .edit-quantity-info {
-    margin-top: 14px;
-    margin-bottom: 9px;
+    margin-block-start: 14px;
+    margin-block-end: 9px;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -45,7 +43,7 @@ export const styles = css`
 
   .image {
     height: 106px;
-    margin-top: 5px;
+    margin-block-start: 5px;
     object-fit: cover;
     max-width: 182px;
 
@@ -59,8 +57,8 @@ export const styles = css`
   }
 
   .summary-info {
-    margin-top: 12px;
-    margin-bottom: 14px;
+    margin-block-start: 12px;
+    margin-block-end: 14px;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
