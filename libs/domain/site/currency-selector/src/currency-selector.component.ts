@@ -1,30 +1,37 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { LocaleService } from '@spryker-oryx/site';
+import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
-import { SiteLocaleSelectorOptions } from './locale-selector.model';
-import { siteLocaleSelectorStyles } from './locale-selector.styles';
+import { SiteCurrencySelectorOptions } from './currency-selector.model';
+import { siteLocaleSelectorStyles } from './currency-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelectorOptions>(
+export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySelectorOptions>(
   LitElement
 ) {
   static styles = [siteLocaleSelectorStyles];
 
-  protected localeService = resolve(LocaleService);
+  protected currencyService = resolve(CurrencyService);
 
   @asyncState()
-  protected locales = valueType(this.localeService.getAll());
+  protected currencies = valueType(this.currencyService.getAll());
 
   @asyncState()
-  protected current = valueType(this.localeService.get());
+  protected current = valueType(this.currencyService.get());
+
+  @asyncState()
+  protected currentLocale = valueType(resolve(LocaleService).get());
 
   protected override render(): TemplateResult | void {
-    if (!this.current || !this.locales?.length || this.locales.length < 2) {
+    if (
+      !this.current ||
+      !this.currencies?.length ||
+      this.currencies.length < 2
+    ) {
       return;
     }
 
@@ -37,7 +44,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
           </button>
         </oryx-button>
         ${repeat(
-          this.locales ?? [],
+          this.currencies ?? [],
           (locale) => locale.code,
           (locale) =>
             html` <oryx-option
@@ -54,12 +61,12 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected onClick(locale: string): void {
-    this.localeService.set(locale);
+    this.currencyService.set(locale);
   }
 
   protected getLabel(code: string): string {
-    const languageNames = new Intl.DisplayNames([this.current ?? 'en'], {
-      type: 'language',
+    const languageNames = new Intl.DisplayNames([this.currentLocale ?? 'en'], {
+      type: 'currency',
     });
     return languageNames.of(code) ?? code;
   }
