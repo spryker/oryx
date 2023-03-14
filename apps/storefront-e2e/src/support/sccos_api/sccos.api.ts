@@ -173,6 +173,40 @@ export class SCCOSApi {
         });
       });
     },
+    post: (customerId: string) => {
+      const body = {
+        "data": {
+          "type": "addresses",
+          "attributes": {
+            "iso2Code": "DE",
+            "salutation": "Mr",
+            "firstName": "Test",
+            "lastName": "User",
+            "company": "123",
+            "address1": "Addr 1",
+            "address2": "123",
+            "zipCode": "ZIP",
+            "city": "City",
+            "phone": "1234567890",
+            "isDefaultShipping": true,
+            "isDefaultBilling": true
+          }
+        }
+      };
+
+      cy.log('SCCOSApi | Create customer address');
+
+      return cy.getAllLocalStorage().then((storage) => {
+        this.addAuthorizationHeaders(storage);
+
+        return cy.request({
+          method: 'POST',
+          url: `${this.apiUrl}/customers/${customerId}/addresses`,
+          headers: this.headers,
+          body,
+        });
+      });
+    },
     delete: (customerId: string, addressId: string) => {
       cy.log('SCCOSApi | Delete customer address');
 
