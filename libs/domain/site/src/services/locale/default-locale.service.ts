@@ -12,9 +12,7 @@ export class DefaultLocaleService implements LocaleService {
   constructor(
     protected storeService = inject(StoreService),
     protected queryService = inject(QueryService)
-  ) {
-    (globalThis as any)['oryxLocale'] = this;
-  }
+  ) {}
 
   getAll(): Observable<Locale[]> {
     return this.storeService.get().pipe(
