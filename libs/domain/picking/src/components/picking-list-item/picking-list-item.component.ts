@@ -1,5 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
+import { IconTypes } from '@spryker-oryx/themes/icons';
+import { Size } from '@spryker-oryx/ui';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -71,7 +74,7 @@ export class PickingListItemComponent extends LitElement {
         </div>
 
         <div class="total">
-          <oryx-icon type="cart"></oryx-icon>
+          <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           <span
             >${i18n('picking.picking-list-item.{count}-items', {
               count: this.pickingList?.items?.length,
@@ -82,12 +85,12 @@ export class PickingListItemComponent extends LitElement {
         ${when(
           this.pickingList?.cartNote,
           () => html`
-            <oryx-icon-button size="lg">
+            <oryx-icon-button size=${Size.Lg}>
               <button
                 aria-label="Show customer note"
                 @click=${this.showCustomerNote}
               >
-                <oryx-icon type="info"></oryx-icon>
+                <oryx-icon type=${IconTypes.Info}></oryx-icon>
               </button>
             </oryx-icon-button>
           `
@@ -95,8 +98,8 @@ export class PickingListItemComponent extends LitElement {
 
         <oryx-button
           slot="footer"
-          type="primary"
-          size="large"
+          type=${ButtonType.Primary}
+          size=${Size.Lg}
           @click=${this.startPicking}
         >
           <button :disabled=${this.isDisabled}>

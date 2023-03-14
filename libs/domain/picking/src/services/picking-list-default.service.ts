@@ -17,7 +17,6 @@ import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
 
 export class PickingListDefaultService implements PickingListService {
-  // status: PickingListStatus.ReadyForPicking,
   protected pickingListsQualifier$ =
     new BehaviorSubject<PickingListQualifier | null>(null);
   protected pickingListsState$ = new BehaviorSubject<PickingList[]>([]);

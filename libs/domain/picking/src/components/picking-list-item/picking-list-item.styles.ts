@@ -2,15 +2,9 @@ import { css } from 'lit';
 
 export const styles = css`
   oryx-card {
-    text-align: initial;
-
     --oryx-card-header-padding: 16px 10px 12px;
     --oryx-card-body-padding: 9px 10px 12px;
     --oryx-card-footer-padding: 0 10px 12px;
-
-    .categories {
-      margin: 21.5px 0 18.5px;
-    }
   }
 
   [slot='heading'] {
