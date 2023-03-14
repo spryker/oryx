@@ -54,6 +54,7 @@ describe('Checkout suite', () => {
 
         cy.location('pathname').should('contain', id);
 
+        // check that correct data is shown on thank you page
         thankYouPage
           .getHeading()
           .should('be.visible')
@@ -65,8 +66,15 @@ describe('Checkout suite', () => {
           .getOrderDetails()
           .should('be.visible')
           .and('contain', id)
+          .and('not.contain', 'Email')
           .and('contain', 'Billing address')
           .and('contain', 'Delivery address');
+
+        // check that the cart is cleared
+        thankYouPage.header.getCartCount().should('not.exist');
+        thankYouPage.header.getCartSummary().click();
+
+        cartPage.getEmptyCartMessage().should('be.visible');
       });
     });
   });
@@ -102,6 +110,7 @@ describe('Checkout suite', () => {
 
         cy.location('pathname').should('contain', id);
 
+        // check that correct data is shown on thank you page
         thankYouPage
           .getHeading()
           .should('be.visible')
@@ -113,8 +122,15 @@ describe('Checkout suite', () => {
           .getOrderDetails()
           .should('be.visible')
           .and('contain', id)
-          .and('contain', 'Billing address')
-          .and('contain', 'Delivery address');
+          .and('not.contain', 'Email')
+          .and('not.contain', 'Billing address')
+          .and('not.contain', 'Delivery address');
+
+        // check that the cart is cleared
+        thankYouPage.header.getCartCount().should('not.exist');
+        thankYouPage.header.getCartSummary().click();
+
+        cartPage.getEmptyCartMessage().should('be.visible');
       });
     });
   });
