@@ -7,12 +7,12 @@ import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { SiteLocaleSelectorOptions } from './locale-selector.model';
-import { localeSelectorStyles } from './locale-selector.styles';
+import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
 export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelectorOptions>(
   LitElement
 ) {
-  static styles = [localeSelectorStyles];
+  static styles = [siteLocaleSelectorStyles];
 
   protected service = resolve(LocaleService);
 
