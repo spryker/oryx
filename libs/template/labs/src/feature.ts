@@ -1,7 +1,7 @@
-import { I18nFeature } from '@spryker-oryx/i18n';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
+import { labsI18nFeature } from './i18n';
 export * from './components';
 
 // tmp solution until we've published our packages and we can pull this from core
@@ -20,7 +20,5 @@ export const labsFeature: AppFeature[] = [
     components: labsComponents,
     providers: [cloudinaryImageConverter, bazaarVoiceComponentMapping],
   },
-  new I18nFeature({
-    load: (localeId) => import(`./i18n/${localeId}.ts`),
-  }),
+  labsI18nFeature,
 ];
