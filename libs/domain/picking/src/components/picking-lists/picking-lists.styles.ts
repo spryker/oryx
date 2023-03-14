@@ -8,11 +8,6 @@ export const styles = css`
     gap: 34px;
   }
 
-  oryx-modal {
-    --oryx-card-header-padding: 18px 30px;
-    --oryx-card-body-padding: 18px 30px;
-  }
-
   oryx-modal [slot='heading'] {
     font-size: 18px;
     font-weight: 600;
