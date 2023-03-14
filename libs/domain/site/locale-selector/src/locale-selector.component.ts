@@ -2,13 +2,14 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, valueType } from '@spryker-oryx/utilities';
+import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { SiteLocaleSelectorOptions } from './locale-selector.model';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelectorOptions>(
   LitElement
 ) {

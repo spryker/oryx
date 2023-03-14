@@ -1,3 +1,2 @@
-export interface SiteLocaleSelectorOptions {
-  empty?: boolean;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface SiteLocaleSelectorOptions {}
