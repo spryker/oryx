@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
-  "license": "See license in LICENSE.md",
+  "license": "See license in LICENSE",
   "files": [
     "**/*"
   ],

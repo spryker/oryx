@@ -4,7 +4,7 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "author": "Spryker Sytems GmbH",
-  "license": "See license in LICENSE.md",
+  "license": "See license in LICENSE",
   "dependencies": {
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/di": "latest",
