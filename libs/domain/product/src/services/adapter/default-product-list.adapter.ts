@@ -1,7 +1,6 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { CurrencyService } from '@spryker-oryx/site';
-import { Observable, switchMap, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   ApiProductModel,
   ProductList,
@@ -22,8 +21,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected transformer = inject(JsonAPITransformerService),
-    protected currencyService = inject(CurrencyService)
+    protected transformer = inject(JsonAPITransformerService)
   ) {}
 
   getKey(qualifier: ProductListQualifier): string {
@@ -66,18 +64,12 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.Labels,
     ];
 
-    return this.currencyService.get().pipe(
-      take(1),
-      switchMap((currency) =>
-        this.http.get<ApiProductModel.Response>(
-          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey({
-            ...qualifier,
-            currency,
-          })}&include=${include?.join(',')}`
-        )
-      ),
-
-      this.transformer.do(ProductListNormalizer)
-    );
+    return this.http
+      .get<ApiProductModel.Response>(
+        `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
+          qualifier
+        )}&include=${include?.join(',')}`
+      )
+      .pipe(this.transformer.do(ProductListNormalizer));
   }
 }
