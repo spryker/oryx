@@ -1,3 +1,4 @@
+import { ContentLinkOptions } from '@spryker-oryx/content/link';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
@@ -13,12 +14,17 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  protected override render(): TemplateResult {
-    const options = this.componentOptions;
+  protected override render(): TemplateResult | void {
+    const options = this.componentOptions ?? {};
+    const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptions ?? {};
 
     return html`<oryx-heading
-      .tag=${options?.tag}
-      .maxLines=${options?.maxLines}
+      .tag=${tag}
+      .maxLines=${maxLines}
+      .as=${as}
+      .asLg=${asLg}
+      .asMd=${asMd}
+      .asSm=${asSm}
     >
       ${options?.link ? this.renderLink() : html`${this.product?.name}`}
     </oryx-heading>`;
@@ -29,7 +35,7 @@ export class ProductTitleComponent extends ProductMixin(
       type: SemanticLinkType.Product,
       id: this.product?.sku,
       multiLine: true,
-    };
+    } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
       ${this.product?.name}
