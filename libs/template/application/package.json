@@ -9,19 +9,20 @@
     "postinstall": "patches/patch.sh"
   },
   "dependencies": {
-    "@lit-labs/router": "^0.1.1",
-    "@lit-labs/ssr": "^2.2.3",
     "@webcomponents/template-shadowroot": "^0.1.0",
     "abort-controller": "^3.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/experience": "latest",
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/router": "latest",
+    "@spryker-oryx/ui": "latest",
+    "@spryker-oryx/utilities": "latest",
+    "@spryker-oryx/auth": "latest"
   },
   "peerDependencies": {
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/experience": "~0.2.0",
-    "@spryker-oryx/di": "~0.2.0",
-    "@spryker-oryx/router": "~0.2.0",
-    "@spryker-oryx/ui": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0",
+    "@lit-labs/router": "^0.1.1",
+    "@lit-labs/ssr": "^2.2.3",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

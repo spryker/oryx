@@ -5,12 +5,16 @@
   "typings": "./src/index.d.ts",
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE.md",
+  "dependencies": {
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/router": "latest",
+    "@spryker-oryx/ui": "latest",
+    "@spryker-oryx/utilities": "latest",
+    "@spryker-oryx/offline": "latest",
+    "@spryker-oryx/indexed-db": "latest"
+  },
   "peerDependencies": {
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/di": "~0.2.0",
-    "@spryker-oryx/router": "~0.2.0",
-    "@spryker-oryx/ui": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0",
     "dexie": "^3.2.2",
     "lit": "^2.4.0",
     "tslib": "^2.4.1",

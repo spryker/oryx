@@ -13,8 +13,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0"
+  "dependencies": {
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/utilities": "latest"
   }
 }

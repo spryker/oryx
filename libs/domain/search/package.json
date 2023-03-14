@@ -17,16 +17,16 @@
       "default": "./src/mocks/index.js"
     }
   },
-  "peerDependencies": {
-    "@spryker-oryx/content": "~0.2.0",
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/experience": "~0.2.0",
-    "@spryker-oryx/di": "~0.2.0",
-    "@spryker-oryx/product": "~0.2.0",
-    "@spryker-oryx/router": "~0.2.0",
-    "@spryker-oryx/site": "~0.2.0",
-    "@spryker-oryx/themes": "~0.2.0",
-    "@spryker-oryx/ui": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0"
+  "dependencies": {
+    "@spryker-oryx/content": "latest",
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/experience": "latest",
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/product": "latest",
+    "@spryker-oryx/router": "latest",
+    "@spryker-oryx/site": "latest",
+    "@spryker-oryx/themes": "latest",
+    "@spryker-oryx/ui": "latest",
+    "@spryker-oryx/utilities": "latest"
   }
 }

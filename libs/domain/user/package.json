@@ -17,13 +17,18 @@
       "default": "./src/mocks/index.js"
     }
   },
+  "dependencies": {
+    "@spryker-oryx/auth": "latest",
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/experience": "latest",
+    "@spryker-oryx/form": "latest",
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/utilities": "latest",
+    "@spryker-oryx/site": "latest",
+    "@spryker-oryx/ui": "latest",
+    "@spryker-oryx/themes": "latest"
+  },
   "peerDependencies": {
-    "@spryker-oryx/auth": "~0.2.0",
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/experience": "~0.2.0",
-    "@spryker-oryx/form": "~0.2.0",
-    "@spryker-oryx/di": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

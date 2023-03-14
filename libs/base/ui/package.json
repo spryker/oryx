@@ -11,10 +11,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/themes": "latest",
+    "@spryker-oryx/utilities": "latest"
+  },
   "peerDependencies": {
-    "@spryker-oryx/core": "~0.2.0",
-    "@spryker-oryx/themes": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "tslib": "^2.4.0"
   }

@@ -11,11 +11,11 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/utilities": "latest",
     "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
-    "@spryker-oryx/di": "~0.2.0",
-    "@spryker-oryx/utilities": "~0.2.0",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"
