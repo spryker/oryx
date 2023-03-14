@@ -9,6 +9,12 @@ export interface PickingList {
   updatedAt: Date;
 }
 
+export enum ItemFilters {
+  NotPicked = 'not_picked',
+  Picked = 'picked',
+  NotFound = 'not_found',
+}
+
 export enum PickingListStatus {
   ReadyForPicking = 'ready-for-picking',
   PickingStarted = 'picking-started',
