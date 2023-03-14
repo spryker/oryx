@@ -1,7 +1,6 @@
 import { provideQuery, Query } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { LocaleChanged } from '@spryker-oryx/site';
-import { CurrencyChanged } from '@spryker-oryx/site';
+import { CurrencyChanged, LocaleChanged } from '@spryker-oryx/site';
 import { Product, ProductQualifier } from '../../models';
 import { ProductAdapter } from '../adapter';
 

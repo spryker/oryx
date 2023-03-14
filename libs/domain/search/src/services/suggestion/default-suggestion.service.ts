@@ -1,8 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { ProductsLoaded } from '@spryker-oryx/product';
-import { CurrencyChanged } from '@spryker-oryx/site';
-import { LocaleChanged } from '@spryker-oryx/site';
+import { CurrencyChanged, LocaleChanged } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter';
