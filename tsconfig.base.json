@@ -134,6 +134,9 @@
       ],
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/locale-selector": [
+        "libs/domain/site/locale-selector/index.ts"
+      ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
