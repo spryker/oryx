@@ -20,7 +20,10 @@ const origLog = Cypress.log;
 
 // removes useless log messages from cypress runner
 Cypress.log = function (opts: any, ...other) {
-  if (opts.url && (opts.url.includes('google') || opts.url.includes('youtube'))) {
+  if (
+    opts.url &&
+    (opts.url.includes('google') || opts.url.includes('youtube'))
+  ) {
     return;
   }
 

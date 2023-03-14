@@ -56,8 +56,8 @@ export class CheckoutPage extends AbstractSFPage {
   fillAddressForm = () => {
     // wait till form is rendered and ready
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(2000)
-    cy.disableAnimations()
+    cy.wait(2000);
+    cy.disableAnimations();
 
     this.selectCoutry('Germany');
     this.selectSalutation('Mr');
