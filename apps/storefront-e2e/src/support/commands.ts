@@ -17,6 +17,7 @@ declare global {
   }
 }
 
+// add random stuff
 export const defaultUser: TestUserData = {
   id: 'DE--1',
   name: 'Spencor',
