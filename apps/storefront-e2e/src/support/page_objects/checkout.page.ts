@@ -54,13 +54,13 @@ export class CheckoutPage extends AbstractSFPage {
   };
 
   fillAddressForm = () => {
-    cy.intercept('/assets/addresses/DE.json').as('addressData');
+    // wait till form is rendered and ready
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(2000)
+    cy.disableAnimations()
 
     this.selectCoutry('Germany');
-    cy.wait('@addressData');
-
     this.selectSalutation('Mr');
-
     this.getFirstNameInput().type('Test');
     this.getLastNameInput().type('User');
     this.getCompanyInput().type('Spryker');

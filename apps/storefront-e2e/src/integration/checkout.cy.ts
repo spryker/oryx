@@ -80,7 +80,7 @@ describe('Checkout suite', () => {
     it('must allow user to create a new order', () => {
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
 
-      cy.intercept('POST', '/checkout').as('checkout');
+      cy.intercept('POST', '/checkout?include=orders').as('checkout');
       cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
