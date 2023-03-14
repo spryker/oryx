@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { CurrencyService } from '@spryker-oryx/site';
+import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -23,10 +23,18 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   @asyncState()
   protected current = valueType(this.currencyService.get());
 
+  @asyncState()
+  protected currentLocale = valueType(resolve(LocaleService).get());
+
   protected override render(): TemplateResult | void {
-    if (!this.current || !this.currencies?.length || this.currencies.length < 2)
+    if (
+      !this.current ||
+      !this.currencies?.length ||
+      this.currencies.length < 2
+    ) {
       return;
-    console.log(this.currencies);
+    }
+
     return html`
       <oryx-dropdown vertical-align position="start">
         <oryx-button type=${ButtonType.Text} slot="trigger">
@@ -57,7 +65,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   }
 
   protected getLabel(code: string): string {
-    const languageNames = new Intl.DisplayNames([this.current ?? 'en'], {
+    const languageNames = new Intl.DisplayNames([this.currentLocale ?? 'en'], {
       type: 'currency',
     });
     return languageNames.of(code) ?? code;
