@@ -26,7 +26,7 @@ export const styles = css`
 
   .price {
     font-weight: 600;
-    font-size: var(--oryx-font-size-medium);
+    font-size: 16px;
     margin-inline-start: auto;
   }
 

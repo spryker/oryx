@@ -155,7 +155,7 @@ export class AuthLoginComponent
 
   protected override render(): TemplateResult {
     return html`<oryx-card>
-      <oryx-heading slot="heading" appearance="h5">
+      <oryx-heading slot="heading" as="h5">
         <h1>${this.heading ?? i18n('user.login')}</h1>
       </oryx-heading>
 

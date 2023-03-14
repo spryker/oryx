@@ -34,7 +34,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderDetails(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H3}>
+    return html`<oryx-heading .as=${HeadingTag.H3}>
         <h2>${i18n('order.order-details')}</h2>
       </oryx-heading>
       <div class="details-container">
@@ -65,7 +65,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderBilling(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
         <h3>${i18n('order.billing-details')}</h3>
       </oryx-heading>
       ${when(
@@ -87,7 +87,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderShipping(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
         <h3>${i18n('order.shipping-details')}</h3>
       </oryx-heading>
       ${when(
