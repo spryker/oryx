@@ -8,11 +8,11 @@ const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,
   project: string
 ): string[] => {
-  const temp = { [project]: true };
+  const foundDependencies = { [project]: true };
   const iterable = dependencies[project];
 
   for (const dep of iterable) {
-    const isExist = temp[dep.target];
+    const isExist = foundDependencies[dep.target];
     const isNpm = dep.target.match('^npm:.*$');
     const isSprykerOryx = dep.target === 'spryker-oryx';
 
@@ -20,11 +20,11 @@ const findDependencies = (
       continue;
     }
 
-    temp[dep.target] = true;
+    foundDependencies[dep.target] = true;
     iterable.push(...dependencies[dep.target]);
   }
 
-  return Object.keys(temp);
+  return Object.keys(foundDependencies);
 };
 
 const stringifyDependencies = (
