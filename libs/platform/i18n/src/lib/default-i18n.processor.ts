@@ -27,8 +27,9 @@ export class DefaultI18nProcessor implements I18nProcessor {
       distinctUntilChanged(),
       switchMap(async (localeId) => {
         const data = await this.loader.load(localeId);
-
+        console.log('data', data);
         await this.globalizeService.loadMessages(data);
+        console.log('loaded');
 
         return localeId;
       }),

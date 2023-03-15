@@ -46,6 +46,10 @@ export class DefaultI18nLoader implements I18nLoader {
       )
     );
 
+    console.log('aa', dataBundles);
+
+    console.log('aa2',Object.fromEntries(dataBundles));
+
     return Object.fromEntries(dataBundles);
   }
 }
