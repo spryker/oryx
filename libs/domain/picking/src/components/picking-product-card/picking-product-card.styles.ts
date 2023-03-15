@@ -6,7 +6,7 @@ export const styles = css`
   }
 
   oryx-card {
-    max-width: 380px;
+    max-width: 440px;
   }
 
   [slot='heading'] {

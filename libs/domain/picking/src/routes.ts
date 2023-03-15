@@ -1,11 +1,17 @@
 import { RouteConfig } from '@lit-labs/router';
 import { html } from 'lit';
-import { PickingListItem, PickingOrderItem, PickingProduct } from './models';
+import {
+  ItemsFilters,
+  PickingListItem,
+  PickingOrderItem,
+  PickingProduct,
+} from './models';
 
 const pickingItem: PickingListItem = {
   numberOfNotPicked: 3,
   numberOfPicked: 0,
   quantity: 3,
+  status: ItemsFilters.NotPicked,
   product: {
     id: '136_24425591',
     image:
@@ -32,6 +38,7 @@ export const defaultPickingRoutes: RouteConfig[] = [
       html`<oryx-picking-product-card
         mode-light
         .productItem=${pickingItem}
+        .status=${pickingItem.status}
       ></oryx-picking-product-card>`,
   },
 ];

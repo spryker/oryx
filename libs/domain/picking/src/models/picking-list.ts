@@ -21,6 +21,13 @@ export interface PickingListItem {
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
   product: PickingProduct;
+  status: ItemsFilters;
+}
+
+export enum ItemsFilters {
+  NotPicked = 'not_picked',
+  Picked = 'picked',
+  NotFound = 'not_found',
 }
 
 export interface PickingOrderItem {
@@ -42,4 +49,9 @@ export interface PickingAmountSalesUnit {
 export interface PickingMeasurementUnit {
   name: string;
   code: string;
+}
+
+export interface SummaryInfo {
+  main: string;
+  additional?: string;
 }

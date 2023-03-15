@@ -2,6 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import { Deserializer } from 'jsonapi-serializer';
 import { map, Observable, of, switchMap } from 'rxjs';
 import {
+  ItemsFilters,
   PickingList,
   PickingListItem,
   PickingListQualifier,
@@ -58,6 +59,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       data: pickingList.items.map((item) => ({
         id: item.orderItem.uuid,
         type: 'picking-list-items',
+        status: item.status,
         attributes: {
           numberOfPicked: item.numberOfPicked,
           numberOfNotPicked: item.numberOfNotPicked,
@@ -164,6 +166,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
           orderItem: item.orderItem,
           product: product,
           type: 'picking-list-items',
+          status: item.numberOfPicked
+            ? ItemsFilters.Picked
+            : ItemsFilters.NotPicked,
         };
       }
     );
