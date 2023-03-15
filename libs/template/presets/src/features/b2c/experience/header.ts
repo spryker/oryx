@@ -20,20 +20,21 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'oryx-site-notification-center',
+          type: 'oryx-site-currency-selector',
+          options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
         },
+        { type: 'oryx-site-locale-selector' },
       ],
       options: {
         data: {
           rules: [
             {
-              layout: 'column',
-              container: true,
-              fullWidth: true,
+              layout: 'flex',
               background: 'var(--oryx-color-primary-500)',
-              gap: '40px',
+              container: true,
               maxWidth: true,
               padding: '10px 0',
+              gap: '10px',
             },
           ],
         },
