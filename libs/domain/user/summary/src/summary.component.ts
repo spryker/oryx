@@ -14,7 +14,8 @@ import { styles } from './summary.styles';
 
 @hydratable('window:load')
 @defaultOptions({
-  icon: 'user'
+  icon: 'user',
+  type: MenuItemTypes.Button
 })
 export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   LitElement
@@ -30,34 +31,34 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   );
 
   protected onClick(): void {
-
+    if (this.componentOptions?.eventName) {
+      this.dispatchEvent(new CustomEvent(
+        this.componentOptions.eventName, {
+          bubbles: true,
+          composed: true
+        })
+      )
+    }
   }
 
   protected renderTrigger(): TemplateResult {
-    const icon = html`<oryx-icon type=""></oryx-icon>`;
+    const icon = html`<oryx-icon 
+      .type=${this.componentOptions?.icon}
+    ></oryx-icon>`;
     
     if (this.componentOptions?.type === MenuItemTypes.Icon) {
       return html`
         <oryx-icon-button slot="trigger">
           ${when(
-            this.componentOptions?.url,
-            () => html`<a 
-              href=${this.componentOptions.url!}
-              @click=${this.onClick}
-            >${icon}</a>
-            `,
-            () => html`<button
-              @click=${this.onClick}
-            >${icon}</button>`
+            this.isLink,
+            () => html`<a href=${this.componentOptions.url!}>${icon}</a>`,
+            () => html`<button @click=${this.onClick}>${icon}</button>`
           )}
-          <button>
-            
-          </button>
-        </oryx-icon-button>>
+        </oryx-icon-button>
       `;
     }
 
-    // TODO: url logic
+    // TODO: url and icon
     return html`
       <oryx-user-summary-trigger 
         slot="trigger"
@@ -69,7 +70,8 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected renderDropdown(): TemplateResult {
     return html`
-      ${when(this.options?.items?.length, () =>
+      content
+      <!-- ${when(this.options?.items?.length, () =>
         this.options!.items!.map(
           (item) => html`
             <oryx-button type="text">
@@ -84,12 +86,15 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
           `
         )
       )}
-      <oryx-auth-logout></oryx-auth-logout>
+      <oryx-auth-logout></oryx-auth-logout> -->
     `;
   }
 
   protected override render(): TemplateResult {
-    if (!this.user) {
+    console.log(this.componentOptions);
+    
+    // if (!this.user || this.componentOptions?.eventName) {
+    if (this.isLink || this.componentOptions?.eventName) {
       return this.renderTrigger();
     }
 
@@ -98,5 +103,9 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
         ${this.renderTrigger()} ${this.renderDropdown()}
       </oryx-dropdown>
     `;
+  }
+
+  protected get isLink(): boolean {
+    return !!this.componentOptions?.url && !this.componentOptions?.eventName;
   }
 }

@@ -11,7 +11,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { UserService } from '@spryker-oryx/user';
 import { triggerStyles } from './trigger.styles';
-import { property } from 'lit/decorators';
+import { property } from 'lit/decorators.js';
 
 export class UserSummaryTriggerComponent extends LitElement {
   static styles = triggerStyles;
