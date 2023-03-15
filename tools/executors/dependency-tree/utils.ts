@@ -8,20 +8,19 @@ const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,
   project: string
 ): string[] => {
-  // filter out external dependencies
-  const deps = dependencies[project]
-    .filter((dep) => dep.target.match('^((?!npm:).)*$'))
-    .map((dep) => dep.target);
+  const temp = [project];
 
-  return [
-    ...new Set<string>([
-      project,
-      ...deps.reduce(
-        (acc, dep) => [...acc, ...findDependencies(dependencies, dep)],
-        []
-      ),
-    ]),
-  ];
+  for (const p of temp) {
+    const deps = dependencies[p]
+      .filter((dep) => dep.target.match('^((?!npm:).)*$'))
+      .filter((dep) => !temp.includes(dep.target))
+      .filter((dep) => dep.target !== 'spryker-oryx')
+      .map((dep) => dep.target);
+
+    temp.push(...deps);
+  }
+
+  return temp;
 };
 
 const stringifyDependencies = (
