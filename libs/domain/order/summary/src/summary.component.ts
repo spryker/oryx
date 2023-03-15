@@ -78,6 +78,13 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.payment')}:</div>
       <div>${this.order?.payments[0].paymentProvider}</div>
+      ${when(
+        this.order?.billingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.billingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 
@@ -95,6 +102,13 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.shipping-method')}:</div>
       <div>${this.order?.shipments[0].shipmentMethodName}</div>
+      ${when(
+        this.order?.shippingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.shippingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 
