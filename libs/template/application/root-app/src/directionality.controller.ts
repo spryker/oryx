@@ -13,7 +13,7 @@ export class DirectionalityController implements ReactiveController {
       .pipe(tap((locale) => this.setDirection(locale as string)));
   }
 
-  hostConnected(): void {}
+  hostConnected?(): void;
 
   constructor(protected host: LitElement) {
     this.host.addController(this);
