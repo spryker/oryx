@@ -21,89 +21,75 @@ export class PickingComponent extends LitElement {
     switchMap((id) => this.pickingListService.getById(id ?? ''))
   );
 
-  //TODO - filter by item.status when it's there again
-  @asyncState()
-  protected notPickedItems = valueType(
-    this.pickingList$.pipe(
-      map((list) =>
-        list?.items.filter((item) => item.status === ItemsFilters.NotPicked)
-      )
-    )
-  );
-
-  @asyncState()
-  protected pickedItems = valueType(
-    this.pickingList$.pipe(
-      map((list) =>
-        list?.items.filter(
+  protected tabs$ = this.pickingList$.pipe(
+    map((list) => [
+      {
+        id: ItemsFilters.NotPicked,
+        title: 'not-picked',
+        items: list?.items.filter(
+          (item) => item.status === ItemsFilters.NotPicked
+        ),
+      },
+      {
+        id: ItemsFilters.Picked,
+        title: 'picked',
+        items: list?.items.filter(
           (item) => item.numberOfPicked && item.status === ItemsFilters.Picked
-        )
-      )
-    )
-  );
-
-  @asyncState()
-  protected notFoundItems = valueType(
-    this.pickingList$.pipe(
-      map((list) =>
-        list?.items.filter(
+        ),
+      },
+      {
+        id: ItemsFilters.NotFound,
+        title: 'not-found',
+        items: list?.items.filter(
           (item) =>
             item.numberOfNotPicked ||
             (item.numberOfPicked < item.quantity &&
               item.status === ItemsFilters.NotFound)
-        )
-      )
-    )
+        ),
+      },
+    ])
   );
 
-  protected tabs = [
-    {
-      id: ItemsFilters.NotPicked,
-      title: 'not-picked',
-      items: this.notPickedItems,
-    },
-    { id: ItemsFilters.Picked, title: 'picked', items: this.pickedItems },
-    {
-      id: ItemsFilters.NotFound,
-      title: 'not-found',
-      items: this.notFoundItems,
-    },
-  ];
+  @asyncState()
+  protected tabs = valueType(this.tabs$);
 
   protected override render(): TemplateResult {
-    this.tabs[0].items = this.notPickedItems;
-    this.tabs[1].items = this.pickedItems;
-    this.tabs[2].items = this.notFoundItems;
     return html`<oryx-tabs appearance="secondary">
       ${this.renderTabs()} ${this.renderTabContents()}
     </oryx-tabs>`;
   }
 
   protected renderTabs(): TemplateResult {
-    return html`${repeat(
-      this.tabs,
-      (tab) => html`<oryx-tab for="tab-${tab.id}">
-        ${i18n(`picking.${tab.title}`)}
-        <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
-      </oryx-tab>`
-    )}`;
+    return this.tabs
+      ? html`${repeat(
+          this.tabs,
+          (tab) => html`<oryx-tab for="tab-${tab.id}">
+            ${i18n(`picking.${tab.title}`)}
+            <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
+          </oryx-tab>`
+        )}`
+      : html``;
   }
 
   protected renderTabContents(): TemplateResult {
-    return html`${repeat(
-      this.tabs,
-      (tab) => html`<div slot="panels" id="tab-${tab.id}">
-        ${tab.items && tab.items?.length > 0
-          ? repeat(
-              tab.items,
-              (item) =>
-                html`<oryx-picking-product-card .productItem=${item.product}>
-                  ${item.product.sku} ${item.product.productName}
-                </oryx-picking-product-card>`
-            )
-          : this.renderFallback()}
-      </div>`
-    )}`;
+    return this.tabs
+      ? html`${repeat(
+          this.tabs,
+          (tab) => html`<div slot="panels" id="tab-${tab.id}">
+            ${tab.items?.length
+              ? repeat(
+                  tab.items,
+                  (item) =>
+                    html`<oryx-picking-product-card
+                      .productItem=${item.product}
+                    >
+                      ${item.product.sku} ${item.product.productName}
+                    </oryx-picking-product-card>`
+                )
+              : this.renderFallback()}
+          </div>`
+        )}`
+      : html``;
   }
 
   protected renderFallback(): TemplateResult {
