@@ -1,5 +1,4 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListStatus } from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -8,7 +7,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { switchMap } from 'rxjs';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
 
@@ -19,14 +17,8 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  protected pickingLists$ = this.pickingListService
-    .setQualifier({
-      status: PickingListStatus.ReadyForPicking,
-    })
-    .pipe(switchMap(() => this.pickingListService.get()));
-
   @asyncState()
-  protected pickingLists = valueType(this.pickingLists$);
+  protected pickingLists = valueType(this.pickingListService.get());
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()} ${this.renderCustomerNote()} `;
@@ -65,7 +57,7 @@ export class PickingListsComponent extends LitElement {
         <oryx-button
           slot="footer"
           type=${ButtonType.Primary}
-          size=${Size.Md}
+          size=${Size.Sm}
         >
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
