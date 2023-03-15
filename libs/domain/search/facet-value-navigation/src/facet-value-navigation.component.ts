@@ -46,25 +46,21 @@ export class SearchFacetValueNavigationComponent
   }
 
   protected override render(): TemplateResult {
-    const allowClear = this.enableClearAction && this.selectedLength;
-
-    return html` <oryx-collapsible
-      ?open=${this.open}
-      ?nonTabbable=${allowClear}
-    >
+    return html` <oryx-collapsible ?open=${this.open}>
       <span class="header" slot="header">
         <slot name="title">
           ${when(this.heading, () => html`${this.heading}`)}
           ${when(
             this.selectedLength,
-            () => html` <oryx-chip dense appearance=${AlertType.Success}
-              >${this.selectedLength}</oryx-chip
-            >`
+            () =>
+              html`<oryx-chip dense appearance=${AlertType.Success}
+                >${this.selectedLength}</oryx-chip
+              >`
           )}
         </slot>
 
         ${when(
-          allowClear,
+          this.enableClearAction && this.selectedLength,
           () =>
             html`
               <oryx-button type="text" size=${Size.Sm}>

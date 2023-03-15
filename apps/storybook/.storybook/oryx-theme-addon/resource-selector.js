@@ -13,8 +13,4 @@ export class ResourceSelector extends ToolSelector {
   getSelectorTitle() {
     return 'Change the resource of the preview';
   }
-
-  getToolIcon() {
-    return 'document';
-  }
 }

@@ -73,7 +73,7 @@ export class ProductImagesComponent extends ProductMixin(
       imageObjectFit: objectFit,
       imagesColumns: cols,
       scrollBehavior,
-    } = this.componentOptions ?? {};
+    } = this.componentOptions;
 
     if (!media.length || layout === ProductImagesMainLayout.None) {
       return;
@@ -112,7 +112,7 @@ export class ProductImagesComponent extends ProductMixin(
       navigationHeight: height,
       navigationWidth: width,
       navigationObjectFit: objectFit,
-    } = this.componentOptions ?? {};
+    } = this.componentOptions;
 
     if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
       return;

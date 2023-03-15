@@ -1,4 +1,4 @@
-export interface CollapsibleAttributes {
+export interface CollapsibleProps {
   /**
    * allow to control expanded state of component
    */
@@ -26,11 +26,6 @@ export interface CollapsibleAttributes {
    * that needs a show/hide button rather than an drop down/up icon.
    */
   toggleControlType?: CollapsibleToggleControlType;
-
-  /**
-   * Prevent focus by keyboard navigation
-   */
-  nonTabbable?: boolean;
 }
 
 export const enum CollapsibleToggleControlType {

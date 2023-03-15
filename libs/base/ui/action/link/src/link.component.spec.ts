@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { LinkComponent } from './link.component';
 import { linkComponent } from './link.def';
-import { LinkType } from './link.model';
+import { LinkTypes } from './link.model';
 
 describe('LinkComponent', () => {
   let element: LinkComponent;
@@ -18,7 +18,7 @@ describe('LinkComponent', () => {
   });
 
   describe('link type', () => {
-    const types: LinkType[] = [LinkType.Link, LinkType.ExternalLink];
+    const types: LinkTypes[] = [LinkTypes.Link, LinkTypes.ExternalLink];
     Object.values(types).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {

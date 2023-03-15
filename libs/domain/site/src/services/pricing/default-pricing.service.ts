@@ -12,7 +12,9 @@ export class DefaultPricingService implements PricingService {
       this.currencyService.get(),
       this.localeService.get(),
     ]).pipe(
-      map(([currency, locale]) => this.formatPrice(price, currency, locale))
+      map(([currency, locale]) =>
+        this.formatPrice(price, currency, locale.replace('_', '-'))
+      )
     );
   }
 
@@ -29,7 +31,7 @@ export class DefaultPricingService implements PricingService {
     const value = isComplexPrice ? price.value : price;
 
     if (isComplexPrice && price.currency !== currency) {
-      return null;
+      throw new Error(`Price error: ${price.currency} is invalid currency`);
     }
 
     if (isNaN(+value)) {

@@ -1,4 +1,3 @@
-import { QueryService } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
 import { mockStore } from '../../mocks';
@@ -8,10 +7,6 @@ import { DefaultCurrencyService } from './default-currency.service';
 
 class MockStoreService implements Partial<StoreService> {
   get = vi.fn().mockReturnValue(of(mockStore));
-}
-
-class MockQueryService implements Partial<QueryService> {
-  emit = vi.fn();
 }
 
 describe('DefaultCurrencyService', () => {
@@ -28,7 +23,6 @@ describe('DefaultCurrencyService', () => {
         provide: StoreService,
         useClass: MockStoreService,
       },
-      { provide: QueryService, useClass: MockQueryService },
     ]);
 
     service = testInjector.inject(CurrencyService);

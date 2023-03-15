@@ -39,12 +39,11 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   );
 
   protected override render(): TemplateResult {
-    const { position, enableStacking } = this.componentOptions ?? {};
     return html`<oryx-notification-center
-      .position=${position}
+      .position=${this.componentOptions?.position}
       style=${ifDefined(this.getStyle())}
       ${ref(this.centerRef)}
-      ?stackable=${enableStacking}
+      ?stackable=${this.componentOptions.enableStacking}
     ></oryx-notification-center>`;
   }
 

@@ -1,4 +1,3 @@
-import { QueryService } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
 import { mockStore } from '../../mocks';
@@ -8,10 +7,6 @@ import { LocaleService } from './locale.service';
 
 class MockStoreService implements Partial<StoreService> {
   get = vi.fn().mockReturnValue(of(mockStore));
-}
-
-class MockQueryService implements Partial<QueryService> {
-  emit = vi.fn();
 }
 
 describe('DefaultLocaleService', () => {
@@ -28,7 +23,6 @@ describe('DefaultLocaleService', () => {
         provide: StoreService,
         useClass: MockStoreService,
       },
-      { provide: QueryService, useClass: MockQueryService },
     ]);
 
     service = testInjector.inject(LocaleService);
@@ -47,7 +41,7 @@ describe('DefaultLocaleService', () => {
     it('should return an observable with current locale', () => {
       const cb = vi.fn();
       service.get().subscribe(cb);
-      expect(cb).toHaveBeenCalledWith('de');
+      expect(cb).toHaveBeenCalledWith('de_DE');
     });
 
     it('should return an observable with all available locales', () => {

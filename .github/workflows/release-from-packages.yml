@@ -50,8 +50,6 @@ jobs:
         run: npm ci
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2
-      - name: Fix js extension
-        run: node tools/post-build/add-js-extension.js
       - name: Release from packages
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-from-packages

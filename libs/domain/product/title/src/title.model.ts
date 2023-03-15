@@ -1,7 +1,6 @@
-import { HeadingAttributes, HeadingTag } from '@spryker-oryx/ui/heading';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 
-export interface ProductTitleOptions
-  extends Pick<HeadingAttributes, 'as' | 'asLg' | 'asMd' | 'asSm'> {
+export interface ProductTitleOptions {
   /**
    * Specifies the html tag that is used to render the title.
    *

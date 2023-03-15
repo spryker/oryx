@@ -121,10 +121,14 @@ describe('DefaultPricingService', () => {
       });
 
       describe('and price currency is invalid', () => {
-        it('should return null', () => {
+        it('should throw currency error', () => {
           const cb = vi.fn();
-          service.format(mockUSD).subscribe(cb);
-          expect(cb).toHaveBeenCalledWith(null);
+          service.format(mockUSD).subscribe({
+            error: cb,
+          });
+          expect(cb).toHaveBeenCalledWith(
+            Error(`Price error: ${mockUSD.currency} is invalid currency`)
+          );
         });
       });
     });

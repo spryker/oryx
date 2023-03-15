@@ -81,22 +81,14 @@ export default class VideoComponent
       'muted',
     ];
 
-    const paramsReplaces: Record<string, string> = {
-      muted: 'mute',
-    };
-
-    const parseParams = (param: string): string => {
-      return paramsReplaces[param] ?? param;
-    };
-
-    const params = allowedUrlQueryParams.map(
-      (key) => `${parseParams(key)}=${this[key] ? 1 : 0}`
-    );
+    const params = allowedUrlQueryParams
+      .filter((key) => !!this[key])
+      .map((key) => `&${key}=${this[key]}`);
 
     const separator = params.length ? '?' : '';
 
     return `https://www.youtube.com/embed/${resolveId(
       this.url
-    )}${separator}${params.join('&')}`;
+    )}${separator}${params.join('')}`;
   }
 }

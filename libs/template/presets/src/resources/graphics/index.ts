@@ -1,5 +1,4 @@
 import { ResourceGraphic } from '@spryker-oryx/core';
-import { fulfillmentResourceGraphics } from './fulfillment';
 
 export const resourceGraphics: ResourceGraphic = {
   logo: {
@@ -14,5 +13,4 @@ export const resourceGraphics: ResourceGraphic = {
   'order-confirmation-success': {
     source: () => import('./order-confirmation-success').then((m) => m.success),
   },
-  ...fulfillmentResourceGraphics,
 };

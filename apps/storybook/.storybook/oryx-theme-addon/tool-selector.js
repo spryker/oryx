@@ -64,10 +64,6 @@ export class ToolSelector extends Component {
     return '';
   }
 
-  getToolIcon() {
-    return 'photo';
-  }
-
   render() {
     const { expanded } = this.state;
     const links = this.state.list.map((value) => ({
@@ -93,7 +89,7 @@ export class ToolSelector extends Component {
           key={this.getToolIdentifier()}
           title={this.getSelectorTitle()}
         >
-          <Icons icon={this.getToolIcon()} />
+          <Icons icon="photo" />
         </IconButton>
       </WithTooltip>
     );

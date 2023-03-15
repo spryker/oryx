@@ -6,7 +6,7 @@ import { ContentVideoOptions } from './video.model';
 export default {
   title: `${storybookPrefix}/Video`,
   args: {
-    src: 'https://www.youtube.com/watch?v=m6pG6fubp9g&t=5s',
+    src: 'https://dms.licdn.com/playlist/D4E05AQHKwD2mLTM4Og/mp4-720p-30fp-crf28/0/1677583837226?e=1678287600&v=beta&t=YCFw7j-GCjAJEh9GfrTdLloXbbYrkRkTSU866PNVFlE',
   },
   argTypes: {
     src: { control: { type: 'text' } },

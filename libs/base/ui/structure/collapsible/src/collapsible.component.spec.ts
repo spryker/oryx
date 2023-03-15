@@ -60,19 +60,7 @@ describe('CollapsibleComponent', () => {
     });
   });
 
-  describe('when the appearance is inline', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-collapsible
-          .appearance=${CollapsibleAppearance.Inline}
-        ></oryx-collapsible>`
-      );
-    });
-
-    it('should set tabindex on summary', () => {
-      expect(element).toContainElement('summary[tabindex="-1"]');
-    });
-
+  describe('When the appearance is inline', () => {
     describe('and the TextButton toggle control type is provided', () => {
       beforeEach(async () => {
         element = await fixture(
@@ -103,18 +91,6 @@ describe('CollapsibleComponent', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
         expect(toggle?.getAttribute('size')).toBe(Size.Sm);
       });
-    });
-  });
-
-  describe('when is not tabbable', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-collapsible nonTabbable></oryx-collapsible>`
-      );
-    });
-
-    it('should set tabindex on summary', () => {
-      expect(element).toContainElement('summary[tabindex="-1"]');
     });
   });
 });

@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import {
   CollapsibleAppearance,
-  CollapsibleAttributes,
+  CollapsibleProps,
   CollapsibleToggleControlType,
 } from '../collapsible.model';
 
@@ -13,7 +13,6 @@ export default {
     appearance: CollapsibleAppearance.Block,
     toggleControlType: CollapsibleToggleControlType.IconButton,
     header: 'header',
-    nonTabbable: false,
   },
   argTypes: {
     appearance: {
@@ -31,20 +30,18 @@ export default {
     open: {
       control: { type: 'boolean' },
     },
-    nonTabbable: {
-      control: { type: 'boolean' },
-    },
   },
 } as Meta;
 
-const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
+const Template: Story<CollapsibleProps> = (
+  props: CollapsibleProps
+): TemplateResult => {
   return html`
     <oryx-collapsible
       ?open=${props.open}
       .appearance=${props.appearance}
       .toggleControlType=${props.toggleControlType}
       .header=${props.header}
-      ?nonTabbable=${props.nonTabbable}
     >
       Content with <button>accessible</button> elements.
     </oryx-collapsible>

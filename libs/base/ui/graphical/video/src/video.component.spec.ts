@@ -144,10 +144,10 @@ describe('VideoComponent', () => {
 
         it('should have default parameters applied', () => {
           const el = element.shadowRoot?.querySelector('object');
-          expect(el?.getAttribute('data')).toContain('controls=0');
-          expect(el?.getAttribute('data')).toContain('autoplay=0');
-          expect(el?.getAttribute('data')).toContain('loop=0');
-          expect(el?.getAttribute('data')).toContain('mute=0');
+          expect(el?.getAttribute('data')).not.toContain('controls=');
+          expect(el?.getAttribute('data')).not.toContain('autoplay=');
+          expect(el?.getAttribute('data')).not.toContain('loop=');
+          expect(el?.getAttribute('data')).not.toContain('muted=');
         });
 
         describe(`and autoplay attribute is provided`, () => {
@@ -159,7 +159,7 @@ describe('VideoComponent', () => {
 
           it('should have autoplay parameter listed in the url', () => {
             const el = element.shadowRoot?.querySelector('object');
-            expect(el?.getAttribute('data')).toContain('autoplay=1');
+            expect(el?.getAttribute('data')).toContain('autoplay=true');
           });
         });
 
@@ -172,7 +172,7 @@ describe('VideoComponent', () => {
 
           it('should have controls parameter listed in the url', () => {
             const el = element.shadowRoot?.querySelector('object');
-            expect(el?.getAttribute('data')).toContain('controls=1');
+            expect(el?.getAttribute('data')).toContain('controls=true');
           });
         });
 
@@ -185,7 +185,7 @@ describe('VideoComponent', () => {
 
           it('should have muted parameter listed in the url', () => {
             const el = element.shadowRoot?.querySelector('object');
-            expect(el?.getAttribute('data')).toContain('mute=1');
+            expect(el?.getAttribute('data')).toContain('muted=true');
           });
         });
 
@@ -198,7 +198,7 @@ describe('VideoComponent', () => {
 
           it('should have loop parameter listed in the url', () => {
             const el = element.shadowRoot?.querySelector('object');
-            expect(el?.getAttribute('data')).toContain('loop=1');
+            expect(el?.getAttribute('data')).toContain('loop=true');
           });
         });
       });
@@ -218,10 +218,10 @@ describe('VideoComponent', () => {
 
         it('should have autoplay parameter listed in the url', () => {
           const el = element.shadowRoot?.querySelector('object');
-          expect(el?.getAttribute('data')).toContain('autoplay=1');
-          expect(el?.getAttribute('data')).toContain('controls=1');
-          expect(el?.getAttribute('data')).toContain('mute=1');
-          expect(el?.getAttribute('data')).toContain('loop=1');
+          expect(el?.getAttribute('data')).toContain('autoplay=true');
+          expect(el?.getAttribute('data')).toContain('controls=true');
+          expect(el?.getAttribute('data')).toContain('muted=true');
+          expect(el?.getAttribute('data')).toContain('loop=true');
         });
       });
     });

@@ -28,16 +28,16 @@ export const notificationCenterBaseStyles = css`
   }
 
   :host(${isTop}) {
-    inset-block-start: var(--oryx-notification-margin-block, 40px);
+    inset-block-start: var(--oryx-notification-margin-block);
   }
 
   :host(${isBottom}) {
-    inset-block-end: var(--oryx-notification-margin-block, 40px);
+    inset-block-end: var(--oryx-notification-margin-block, 0);
   }
 
   :host([position='${unsafeCSS(Position.TopStart)}']),
   :host([position='${unsafeCSS(Position.BottomStart)}']) {
-    inset-inline-start: var(--oryx-notification-margin-inline, 30px);
+    inset-inline-start: var(--oryx-notification-margin-inline, 0);
   }
 
   :host([position='${unsafeCSS(Position.TopCenter)}']),
@@ -47,7 +47,7 @@ export const notificationCenterBaseStyles = css`
 
   :host([position='${unsafeCSS(Position.TopEnd)}']),
   :host([position='${unsafeCSS(Position.BottomEnd)}']) {
-    inset-inline-end: var(--oryx-notification-margin-inline, 30px);
+    inset-inline-end: var(--oryx-notification-margin-inline, 0);
   }
 
   oryx-notification {

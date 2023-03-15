@@ -79,7 +79,7 @@ export const collapsibleBaseStyle = css`
     pointer-events: all;
   }
 
-  :host(${blockSelector}) oryx-icon-button > * {
+  :host(${blockSelector}) oryx-icon-button > span {
     padding: 2px;
   }
 
