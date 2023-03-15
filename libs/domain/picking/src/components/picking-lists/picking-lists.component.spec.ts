@@ -19,6 +19,11 @@ describe('PickingListsComponent', () => {
     await useComponent(pickingListsComponent);
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+    destroyInjector();
+  });
+
   describe('when picking lists is not empty', () => {
     const mockPickingLists = [
       {
@@ -54,11 +59,6 @@ describe('PickingListsComponent', () => {
             useClass: MockPickingListService,
           },
         ],
-      });
-
-      afterEach(() => {
-        vi.clearAllMocks();
-        destroyInjector();
       });
 
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
@@ -171,11 +171,6 @@ describe('PickingListsComponent', () => {
       });
 
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
-    });
-
-    afterEach(() => {
-      vi.clearAllMocks();
-      destroyInjector();
     });
 
     it('passes the a11y audit', async () => {

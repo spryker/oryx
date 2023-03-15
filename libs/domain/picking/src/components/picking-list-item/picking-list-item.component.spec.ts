@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { createInjector } from '@spryker-oryx/di';
 import {
   pickingListItemComponent,
   PickingListService,
@@ -67,11 +67,6 @@ describe('PickingListCardComponent', () => {
           .pickingList=${pickingListProp}
         ></oryx-picking-list-item>`
       );
-    });
-
-    afterEach(() => {
-      vi.clearAllMocks();
-      destroyInjector();
     });
 
     it('passes the a11y audit', async () => {
@@ -166,11 +161,6 @@ describe('PickingListCardComponent', () => {
           .pickingList=${pickingListProp}
         ></oryx-picking-list-item>`
       );
-    });
-
-    afterEach(() => {
-      vi.clearAllMocks();
-      destroyInjector();
     });
 
     it('should not render icon button', () => {
