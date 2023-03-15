@@ -4,7 +4,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, distinctUntilChanged, map, switchMap } from 'rxjs';
-import { ItemFilters, PickingListStatus } from '../../models';
+import { ItemsFilters } from '../../models';
 import { PickingListService } from '../../services';
 
 export class PickingComponent extends LitElement {
@@ -26,9 +26,7 @@ export class PickingComponent extends LitElement {
   protected notPickedItems = valueType(
     this.pickingList$.pipe(
       map((list) =>
-        list?.items.filter(
-          (item) => list.status === PickingListStatus.ReadyForPicking
-        )
+        list?.items.filter((item) => item.status === ItemsFilters.NotPicked)
       )
     )
   );
@@ -38,9 +36,7 @@ export class PickingComponent extends LitElement {
     this.pickingList$.pipe(
       map((list) =>
         list?.items.filter(
-          (item) =>
-            item.numberOfPicked &&
-            list.status === PickingListStatus.PickingFinished
+          (item) => item.numberOfPicked && item.status === ItemsFilters.Picked
         )
       )
     )
@@ -54,7 +50,7 @@ export class PickingComponent extends LitElement {
           (item) =>
             item.numberOfNotPicked ||
             (item.numberOfPicked < item.quantity &&
-              list.status === PickingListStatus.PickingFinished)
+              item.status === ItemsFilters.NotFound)
         )
       )
     )
@@ -62,12 +58,16 @@ export class PickingComponent extends LitElement {
 
   protected tabs = [
     {
-      id: ItemFilters.NotPicked,
+      id: ItemsFilters.NotPicked,
       title: 'not-picked',
       items: this.notPickedItems,
     },
-    { id: ItemFilters.Picked, title: 'picked', items: this.pickedItems },
-    { id: ItemFilters.NotFound, title: 'not-found', items: this.notFoundItems },
+    { id: ItemsFilters.Picked, title: 'picked', items: this.pickedItems },
+    {
+      id: ItemsFilters.NotFound,
+      title: 'not-found',
+      items: this.notFoundItems,
+    },
   ];
 
   protected override render(): TemplateResult {

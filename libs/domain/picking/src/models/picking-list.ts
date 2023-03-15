@@ -9,7 +9,7 @@ export interface PickingList {
   updatedAt: Date;
 }
 
-export enum ItemFilters {
+export enum ItemsFilters {
   NotPicked = 'not_picked',
   Picked = 'picked',
   NotFound = 'not_found',
@@ -27,6 +27,7 @@ export interface PickingListItem {
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
   product: PickingProduct;
+  status: ItemsFilters;
 }
 
 export interface PickingOrderItem {

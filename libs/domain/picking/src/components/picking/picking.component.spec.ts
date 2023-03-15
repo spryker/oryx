@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import { ItemsFilters, PickingListService } from '@spryker-oryx/picking';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -24,6 +24,7 @@ const mockPickingList = {
         image: null,
         imageLarge: null,
       },
+      status: ItemsFilters.NotPicked,
     },
     {
       numberOfPicked: 0,
@@ -37,6 +38,7 @@ const mockPickingList = {
         image: null,
         imageLarge: null,
       },
+      status: ItemsFilters.NotPicked,
     },
   ],
   cartNote: 'Note',

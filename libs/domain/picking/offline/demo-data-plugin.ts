@@ -4,7 +4,7 @@ import {
   InjectionPlugin,
 } from '@spryker-oryx/core';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
-import { PickingListStatus } from '@spryker-oryx/picking';
+import { ItemsFilters, PickingListStatus } from '@spryker-oryx/picking';
 import { Transaction } from 'dexie';
 import {
   PickingListEntity,
@@ -57,6 +57,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-1',
               uuid: 'order-1',
             },
+            status: ItemsFilters.NotPicked,
           },
           {
             numberOfPicked: 0,
@@ -71,6 +72,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-2',
               uuid: 'order-1',
             },
+            status: ItemsFilters.NotPicked,
           },
         ],
         itemsCount: 1,
@@ -98,6 +100,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-2',
               uuid: 'order-2',
             },
+            status: ItemsFilters.NotPicked,
           },
           {
             numberOfPicked: 0,
@@ -112,6 +115,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-2',
               uuid: 'order-2',
             },
+            status: ItemsFilters.NotPicked,
           },
           {
             numberOfPicked: 0,
@@ -126,6 +130,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-2',
               uuid: 'order-2',
             },
+            status: ItemsFilters.NotPicked,
           },
         ],
         itemsCount: 1,
@@ -153,6 +158,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-1',
               uuid: 'order-1',
             },
+            status: ItemsFilters.NotPicked,
           },
           {
             numberOfPicked: 0,
@@ -167,6 +173,7 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               sku: 'sku-2',
               uuid: 'order-1',
             },
+            status: ItemsFilters.NotPicked,
           },
         ],
         itemsCount: 1,
