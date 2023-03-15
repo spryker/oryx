@@ -185,7 +185,7 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
   cartTotals
     .getTaxMessage()
     .should('be.visible')
-    .and('contain.text', 'Tax included');
+    .and('contain.text', 'Incl vat');
 }
 
 function checkCartEmptyState() {
