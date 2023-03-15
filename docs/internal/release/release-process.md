@@ -8,7 +8,7 @@ For a `next` release, run Release workflow from Github actions panel on `develop
 For a stable release, do the following:
 
 1. Create branch from `development` for next minor/major as `release/v1.2.x`.
-2. Update `libs/lerna.json` version to a new minor/major version as `1.2.0`.
+2. Update `libs/lerna.json` version to a new minor/major version as `1.2.0-rc.1`.
 3. Push the release branch.
 4. Trigger Release workflow from Github actions panel on release branch.
    This creates an RC release.
