@@ -1,6 +1,6 @@
 import { prehydrate } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/ui';
-import { throttle } from '@spryker-oryx/utilities';
+import { hydratable, throttle } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -10,6 +10,7 @@ import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 

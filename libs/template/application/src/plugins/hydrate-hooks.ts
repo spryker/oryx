@@ -1,6 +1,6 @@
-import { Force } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentsRegistryService } from '@spryker-oryx/experience';
+import { rootInjectable } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
 declare global {
@@ -53,29 +53,11 @@ export function treewalk(
   return arr;
 }
 
-export function initHydrateHooks(
-  rootSelector: string,
-  force?: Force | boolean
-): void {
+export function initHydrateHooks(): void {
+  const root = rootInjectable.get();
   const registryService = resolve(ComponentsRegistryService);
 
-  //TODO - remove this when we no longer need manual hydrate on demand
-  globalThis.hydrateOnDemand =
-    registryService.hydrateOnDemand.bind(registryService);
-
   treewalk('[hydratable]').forEach((el) => {
-    if (force === Force.All || force === true) {
-      registryService.hydrateOnDemand(el);
-
-      return;
-    }
-
-    if (force === Force.Partially && el.hasAttribute('force-hydration')) {
-      registryService.hydrateOnDemand(el);
-
-      return;
-    }
-
     const modes = el.getAttribute('hydratable')?.split?.(',') ?? [];
     for (let i = 0; i < modes.length; i++) {
       const parts = modes[i].split(':');
@@ -89,6 +71,5 @@ export function initHydrateHooks(
   });
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const root = document.body.querySelector<LitElement>(rootSelector)!;
-  registryService.hydrateOnDemand(root);
+  registryService.hydrateOnDemand(document.querySelector<LitElement>(root)!);
 }

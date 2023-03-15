@@ -21,7 +21,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
-@hydratable({ force: true })
+@hydratable()
 export class ExperienceCompositionComponent extends ContentMixin<CompositionProperties>(
   LitElement
 ) {
@@ -138,6 +138,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       component.id,
       this.getLayoutClasses(component)
     );
+
     if (
       this.componentOptions?.rules?.[0].layout === CompositionLayout.Tabular
     ) {

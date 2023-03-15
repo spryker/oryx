@@ -1,5 +1,5 @@
 import { RouteConfig, Router } from '@lit-labs/router';
-import { SSRAwaiterService, SsrOptions } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { html, ReactiveControllerHost, TemplateResult } from 'lit';
@@ -10,11 +10,7 @@ export class LitRouter extends Router {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
-  protected ssrOptions = resolve(SsrOptions, {} as SsrOptions);
-  protected ssrRendered = false;
 
-  // globalThis.location.pathname alternative to private _currentRoute is updated too early
-  protected currentPath?: string;
   protected urlSearchParams?: RouteParams;
 
   constructor(
@@ -44,7 +40,6 @@ export class LitRouter extends Router {
   }
 
   async _goto(pathname: string): Promise<void> {
-    this.currentPath = globalThis.location?.pathname;
     this.urlSearchParams = Object.fromEntries(
       new URLSearchParams(
         decodeURIComponent(globalThis.location?.search)

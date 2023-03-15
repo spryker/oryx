@@ -3,13 +3,12 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
-  SsrOptions,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
-import { isServer, LitElement } from 'lit';
+import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
 import { initHydrateHooks } from './hydrate-hooks';
 
@@ -28,7 +27,7 @@ export class RootPlugin
     return RootPluginName;
   }
 
-  beforeApply(): void | Promise<void> {
+  beforeApply(): void {
     try {
       hydrateShadowRoots(document.body);
     } catch (e) {
@@ -39,7 +38,7 @@ export class RootPlugin
     globalThis.litElementHydrateSupport?.({ LitElement });
   }
 
-  apply(): void | Promise<void> {
+  apply(): void {
     // TODO - remove when we have app initializers
     resolve(ErrorService).initialize();
 
@@ -48,13 +47,7 @@ export class RootPlugin
     }
   }
 
-  afterApply(): void | Promise<void> {
-    const root = rootInjectable.get();
-    const ssrOptions = resolve(SsrOptions, null);
-    const isSsred =
-      Boolean(document.querySelector(root)?.shadowRoot) && !isServer;
-    const force = ssrOptions?.force && isSsred ? ssrOptions.force : undefined;
-
-    initHydrateHooks(root, force);
+  afterApply(): void {
+    initHydrateHooks();
   }
 }

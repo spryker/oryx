@@ -18,19 +18,11 @@ export interface PatchableLitElement extends LitElement {
   _$needsHydration?: boolean;
 }
 
-type hydratableProp =
-  | string[]
-  | string
-  | {
-      mode?: string | string[];
-      force?: boolean;
-    };
-
 const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
   condition ? trueCase() : noChange;
 
 export const hydratable =
-  (prop?: hydratableProp) =>
+  (prop?: string | string[]) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
       ? legacyCustomElement(classOrDescriptor, prop)
@@ -38,14 +30,14 @@ export const hydratable =
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  prop?: hydratableProp
+  prop?: string | string[]
 ) => {
   return hydratableClass(clazz, prop);
 };
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  prop?: hydratableProp
+  prop?: string | string[]
 ) => {
   const { kind, elements } = descriptor;
   return {
@@ -59,7 +51,7 @@ const standardCustomElement = (
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  prop?: hydratableProp
+  mode?: string | string[]
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
@@ -70,12 +62,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
       super(...args);
       this.hasSsr = !isServer && !!this.shadowRoot;
       (target as any).hasSsr = this.hasSsr;
-      const isObject = typeof prop === 'object' && !Array.isArray(prop);
-      const mode = isObject ? prop.mode : prop;
-
-      if (isObject && isServer) {
-        this.setAttribute('force-hydration', '');
-      }
 
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');

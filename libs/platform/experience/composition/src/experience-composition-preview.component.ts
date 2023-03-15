@@ -1,9 +1,4 @@
-import {
-  asyncState,
-  hydratable,
-  subscribe,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { asyncState, subscribe, valueType } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
 import { Component, PreviewExperienceService } from '../../src/services';
@@ -13,7 +8,6 @@ import { ExperienceCompositionComponent } from './experience-composition.compone
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
-@hydratable()
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
   static override styles = [compositionStyles, previewStyles];
 
@@ -109,6 +103,9 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
         );
       }
       return component;
+    }),
+    tap((component) => {
+      this.layoutUid = component?.id;
     }),
     map((component: Component) => component?.components ?? [])
   );
