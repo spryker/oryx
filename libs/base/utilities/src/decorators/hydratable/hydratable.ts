@@ -16,6 +16,7 @@ export interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
+  hasSsr: boolean;
 }
 
 const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
@@ -55,13 +56,12 @@ function hydratableClass<T extends Type<HTMLElement>>(
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
+    hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
-    protected hasSsr?: boolean;
 
     constructor(...args: any[]) {
       super(...args);
       this.hasSsr = !isServer && !!this.shadowRoot;
-      (target as any).hasSsr = this.hasSsr;
 
       if (isServer) {
         this.setAttribute('hydratable', mode ?? '');
