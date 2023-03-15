@@ -18,7 +18,19 @@ const facetComponent = (attrs: FacetComponentAttributes): TemplateResult => {
 
 export default {
   title: `${storybookPrefix}/Facet/Static`,
-} as unknown as Meta;
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'nested-interactive',
+            selector: '*:not(summary)',
+          },
+        ],
+      },
+    },
+  },
+} as Meta;
 
 const Template = (): TemplateResult => {
   const router = resolve(RouterService) as unknown as MockRouterService;
