@@ -116,6 +116,9 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
   protected override render(): TemplateResult {
     if (!this.components) return html`Loading...`;
 
-    return html`${this.renderComponents(this.components)}`;
+    return html`
+      <slot></slot>
+      ${this.renderComponents(this.components)}
+    `;
   }
 }

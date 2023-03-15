@@ -1,1 +1,1 @@
-export * from './preview-plugin'
+export * from './preview-plugin';
