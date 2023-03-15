@@ -2,29 +2,31 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, valueType } from '@spryker-oryx/utilities';
+import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { SiteLocaleSelectorOptions } from './locale-selector.model';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelectorOptions>(
   LitElement
 ) {
   static styles = [siteLocaleSelectorStyles];
 
-  protected service = resolve(LocaleService);
+  protected localeService = resolve(LocaleService);
 
   @asyncState()
-  protected locales = valueType(this.service.getAll());
+  protected locales = valueType(this.localeService.getAll());
 
   @asyncState()
-  protected current = valueType(this.service.get());
+  protected current = valueType(this.localeService.get());
 
   protected override render(): TemplateResult | void {
-    if (!this.current || !this.locales?.length || this.locales.length < 2)
+    if (!this.current || !this.locales?.length || this.locales.length < 2) {
       return;
+    }
 
     return html`
       <oryx-dropdown vertical-align position="start">
@@ -52,7 +54,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected onClick(locale: string): void {
-    this.service.set(locale);
+    this.localeService.set(locale);
   }
 
   protected getLabel(code: string): string {
@@ -60,9 +62,5 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
       type: 'language',
     });
     return languageNames.of(code) ?? code;
-  }
-
-  protected getCode(isoCode: string): string {
-    return isoCode.split('_')[0];
   }
 }
