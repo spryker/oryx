@@ -28,7 +28,7 @@ export class GlobalizeService {
 
   async loadMessages(data: I18nDataBundle): Promise<void> {
     await this.init();
-    this.globalize.loadMessages(data);
+    await this.globalize.loadMessages(data);
     this.dropCaches();
   }
 
