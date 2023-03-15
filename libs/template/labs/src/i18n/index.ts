@@ -3,7 +3,7 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 export * from './translations/de';
 
 // to avoid console errors, we provide a list of supported languages
-const supported = ['de'];
+const supported = ['de', 'ar'];
 
 export const labsI18nFeature = new I18nFeature({
   load: (localeId) => {
