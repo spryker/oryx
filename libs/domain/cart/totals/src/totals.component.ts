@@ -173,8 +173,8 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
         () =>
           html`<small class="tax-message">
             ${totals.priceMode === PriceMode.GrossMode
-              ? i18n('cart.totals.incl-vat')
-              : i18n('cart.totals.incl-vat')}
+              ? i18n('cart.totals.tax-included')
+              : i18n('cart.totals.tax-included')}
           </small>`
       )}`
     );

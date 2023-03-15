@@ -12,8 +12,8 @@ export default {
   total: 'الإجمالي',
   price: 'السعر',
   quantity: 'الكمية',
-  'incl-vat': 'شامل الضريبة',
-  'excl-vat': 'غير شامل الضريبة',
+  'tax-included': 'شامل الضريبة',
+  'tax-excluded': 'لا تشمل الضرائب',
   password: 'كلمة المرور',
   'remember-me': 'تذكرني',
 };

@@ -12,8 +12,8 @@ export default {
   total: 'Gesamt',
   price: 'Preis',
   quantity: 'Menge',
-  'incl-vat': 'Inkl. MwSt',
-  'excl-vat': 'Ohne MwSt',
+  'tax-included': 'Steuern inklusive',
+  'tax-excluded': 'Steuer ausgeschlossen',
   password: 'Passwort',
   'remember-me': 'Mch erinnern',
 };
