@@ -20,7 +20,10 @@ export class SearchFragment {
 
   search = (text: string) => {
     cy.intercept(
-      `**/catalog-search-suggestions?q=${encodeURIComponent(text)}*`
+      `**/catalog-search-suggestions?q=${encodeURIComponent(text).replace(
+        /%20/g,
+        '+'
+      )}*`
     ).as('searchQuery');
 
     this.getWrapper().trigger('focusin');
