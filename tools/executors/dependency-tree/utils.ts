@@ -8,19 +8,23 @@ const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,
   project: string
 ): string[] => {
-  const temp = [project];
+  const temp = { [project]: true };
+  const iterable = dependencies[project];
 
-  for (const p of temp) {
-    const deps = dependencies[p]
-      .filter((dep) => dep.target.match('^((?!npm:).)*$'))
-      .filter((dep) => !temp.includes(dep.target))
-      .filter((dep) => dep.target !== 'spryker-oryx')
-      .map((dep) => dep.target);
+  for (const dep of iterable) {
+    const isExist = temp[dep.target];
+    const isNpm = dep.target.match('^npm:.*$');
+    const isSprykerOryx = dep.target === 'spryker-oryx';
 
-    temp.push(...deps);
+    if (isNpm || isExist || isSprykerOryx) {
+      continue;
+    }
+
+    temp[dep.target] = true;
+    iterable.push(...dependencies[dep.target]);
   }
 
-  return temp;
+  return Object.keys(temp);
 };
 
 const stringifyDependencies = (
