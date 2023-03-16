@@ -8,22 +8,22 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
-import { CurrencyService } from './currency.service';
-import { CurrentCurrencyInterceptor } from './current-currency.interceptor';
+import { StoreInterceptor } from './store.interceptor';
+import { StoreService } from './store.service';
 
 vi.mock('rxjs/fetch', () => ({
   fromFetch: vi.fn(),
 }));
 
-class MockCurrencyService implements Partial<CurrencyService> {
-  get = vi.fn();
+class MockStoreService implements Partial<StoreService> {
+  getAll = vi.fn();
 }
 
-describe('CurrentCurrencyInterceptor', () => {
+describe('StoreInterceptor', () => {
   const SCOS_BASE_URL = 'http://example.com';
+  const STORE = 'DE';
 
-  let interceptor: CurrentCurrencyInterceptor;
-  let currencyService: CurrencyService;
+  let storeService: StoreService;
   let handler: HttpHandler;
 
   beforeEach(() => {
@@ -34,12 +34,16 @@ describe('CurrentCurrencyInterceptor', () => {
           useValue: SCOS_BASE_URL,
         },
         {
-          provide: CurrencyService,
-          useClass: MockCurrencyService,
+          provide: 'STORE',
+          useValue: STORE,
+        },
+        {
+          provide: StoreService,
+          useClass: MockStoreService,
         },
         {
           provide: HttpInterceptor,
-          useClass: CurrentCurrencyInterceptor,
+          useClass: StoreInterceptor,
         },
         {
           provide: HttpHandler,
@@ -48,8 +52,8 @@ describe('CurrentCurrencyInterceptor', () => {
       ],
     });
 
+    storeService = testInjector.inject(StoreService);
     handler = testInjector.inject(HttpHandler);
-    currencyService = testInjector.inject(CurrencyService);
   });
 
   afterEach(() => {
@@ -64,11 +68,11 @@ describe('CurrentCurrencyInterceptor', () => {
     },
     {
       url: `${SCOS_BASE_URL}/unrelated-endpoint/some-id`,
-      shouldIntercept: false,
+      shouldIntercept: true,
     },
     {
-      url: `${SCOS_BASE_URL}/concreete-product/some-product-id`,
-      shouldIntercept: true,
+      url: `${SCOS_BASE_URL}/store/some-store-id`,
+      shouldIntercept: false,
     },
     {
       url: `${SCOS_BASE_URL}/catalog-search/some-search-term`,
@@ -86,20 +90,31 @@ describe('CurrentCurrencyInterceptor', () => {
       : 'should not intercept the request';
 
     it(`${testName}: ${testCase.url}`, async () => {
-      const options = {};
-      const currency = 'USD';
-      const expectedUrl = new URL(testCase.url);
-      expectedUrl.searchParams.set('currency', currency);
-
-      (currencyService.get as Mock).mockReturnValue(of(currency));
+      const options = {
+        headers: {},
+      };
+      (storeService.getAll as Mock).mockReturnValue(of([{}, {}]));
       (fromFetch as Mock).mockReturnValue(of(null));
 
       handler.handle(testCase.url, options).subscribe();
       await nextFrame();
       expect(fromFetch).toHaveBeenCalledWith(
-        testCase.shouldIntercept ? expectedUrl.toString() : testCase.url,
-        options
+        testCase.url,
+        testCase.shouldIntercept ? { headers: { 'X-Store': STORE } } : options
       );
     });
+  });
+
+  it(`should not intercept if store only one`, async () => {
+    const url = `${SCOS_BASE_URL}/unrelated-endpoint/some-id`;
+    const options = {
+      headers: {},
+    };
+    (storeService.getAll as Mock).mockReturnValue(of([{}]));
+    (fromFetch as Mock).mockReturnValue(of(null));
+
+    handler.handle(url, options).subscribe();
+    await nextFrame();
+    expect(fromFetch).toHaveBeenCalledWith(url, options);
   });
 });

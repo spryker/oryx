@@ -4,16 +4,15 @@ import {
   RequestOptions,
 } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { map, Observable, switchMap, take } from 'rxjs';
-import { LocaleService } from './locale.service';
+import { Observable, switchMap, take } from 'rxjs';
+import { StoreService } from './store.service';
 
-export class AcceptLanguageInterceptor implements HttpInterceptor {
-  protected headerName = 'Accept-Language';
-
+export class StoreInterceptor implements HttpInterceptor {
   protected excludedEndpoints = ['store'];
 
   constructor(
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
+    protected STORE = inject('STORE'),
     protected injector = inject(INJECTOR)
   ) {}
 
@@ -23,24 +22,24 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     handle: HttpHandlerFn
   ): Observable<Response> {
     return this.injector
-      .inject(LocaleService)
-      .get()
+      .inject(StoreService)
+      .getAll()
       .pipe(
         take(1),
-        map((locale) => this.addLanguageHeader(locale, options)),
-        switchMap((options) => handle(url, options))
+        switchMap((stores) =>
+          stores.length <= 1
+            ? handle(url, options)
+            : handle(url, this.addStoreHeader(options))
+        )
       );
   }
 
-  protected addLanguageHeader(
-    locale: string,
-    options: RequestOptions
-  ): RequestOptions {
+  protected addStoreHeader(options: RequestOptions): RequestOptions {
     return {
       ...options,
       headers: {
         ...options.headers,
-        [this.headerName]: locale,
+        'X-Store': this.STORE,
       } as HeadersInit,
     };
   }
