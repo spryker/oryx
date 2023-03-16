@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
+import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { mockSearchProviders } from '@spryker-oryx/search/mocks';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -21,6 +22,10 @@ class MockSemanticLinkService implements Partial<SemanticLinkService> {
 
 class MockEBService implements Partial<ExperienceService> {
   getOptions = vi.fn().mockReturnValue(of({}));
+}
+
+class MockI18NService implements Partial<I18nService> {
+  translate = vi.fn().mockReturnValue(of('search'));
 }
 
 const query = 'pro';
@@ -86,6 +91,10 @@ describe('SearchBoxComponent', () => {
         {
           provide: SemanticLinkService,
           useClass: MockSemanticLinkService,
+        },
+        {
+          provide: I18nService,
+          useClass: MockI18NService,
         },
         ...mockSearchProviders,
       ],

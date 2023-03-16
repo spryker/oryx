@@ -49,6 +49,8 @@ jobs:
         run: npm ci
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2
+      - name: Fix js extension
+        run: node tools/post-build/add-js-extension.js
       - name: Release Next
         if: ${{ env.RELEASE_BRANCH == 'development' }}
         run: RELEASE_TAG=next npm run release-tag

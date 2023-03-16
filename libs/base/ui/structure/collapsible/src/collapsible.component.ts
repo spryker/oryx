@@ -1,17 +1,18 @@
 import { Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
   CollapsibleAppearance,
-  CollapsibleProps,
+  CollapsibleAttributes,
   CollapsibleToggleControlType,
 } from './collapsible.model';
 import { collapsibleBaseStyle } from './styles';
 
 export class CollapsibleComponent
   extends LitElement
-  implements CollapsibleProps
+  implements CollapsibleAttributes
 {
   static styles = [collapsibleBaseStyle];
 
@@ -20,11 +21,17 @@ export class CollapsibleComponent
     CollapsibleToggleControlType.IconButton;
   @property({ type: Boolean }) open?: boolean;
   @property() header?: string;
+  @property({ type: Boolean }) nonTabbable?: boolean;
 
   protected override render(): TemplateResult {
     return html`
       <details ?open=${this.open}>
-        <summary tabindex=${this.isInline ? -1 : 0} part="heading">
+        <summary
+          part="heading"
+          tabindex=${ifDefined(
+            this.preventKeyboardNavigation ? '-1' : undefined
+          )}
+        >
           <slot name="header">${this.header}</slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>
@@ -35,33 +42,49 @@ export class CollapsibleComponent
   }
 
   protected renderToggleControl(): TemplateResult {
+    const content = html`
+      <slot name="collapsed">
+        ${when(
+          !this.isTextTrigger,
+          () => html`<oryx-icon type="expand"></oryx-icon>`,
+          () => html`Hide`
+        )}
+      </slot>
+      <slot name="expanded">
+        ${when(
+          !this.isTextTrigger,
+          () => html`<oryx-icon type="collapse"></oryx-icon>`,
+          () => html`Show`
+        )}
+      </slot>
+    `;
+
+    const trigger = html`
+      ${when(
+        this.preventKeyboardNavigation,
+        () => html`
+          <button
+            aria-label=${this.open ? 'hide' : 'show'}
+            type="button"
+            @click=${() => (this.open = !this.open)}
+          >
+            ${content}
+          </button>
+        `,
+        () => html`<span>${content}</span>`
+      )}
+    `;
+
+    if (this.isTextTrigger) {
+      return html`
+        <oryx-button type="text" size=${this.controlSize}>
+          ${trigger}
+        </oryx-button>
+      `;
+    }
+
     return html`
-      ${when(
-        this.toggleControlType !== CollapsibleToggleControlType.TextButton,
-        () => html`
-          <oryx-icon-button size=${this.controlSize}>
-            <span tabindex=${this.isInline ? 0 : -1}>
-              <slot name="collapsed">
-                <oryx-icon type="expand"></oryx-icon>
-              </slot>
-              <slot name="expanded">
-                <oryx-icon type="collapse"></oryx-icon>
-              </slot>
-            </span>
-          </oryx-icon-button>
-        `
-      )}
-      ${when(
-        this.toggleControlType === CollapsibleToggleControlType.TextButton,
-        () => html`
-          <oryx-button type="text" size=${this.controlSize}>
-            <span tabindex=${this.isInline ? 0 : -1}>
-              <slot name="collapsed"> Hide </slot>
-              <slot name="expanded"> Show </slot>
-            </span>
-          </oryx-button>
-        `
-      )}
+      <oryx-icon-button size=${this.controlSize}> ${trigger} </oryx-icon-button>
     `;
   }
 
@@ -74,5 +97,13 @@ export class CollapsibleComponent
 
   protected get isInline(): boolean {
     return this.appearance === CollapsibleAppearance.Inline;
+  }
+
+  protected get isTextTrigger(): boolean {
+    return this.toggleControlType === CollapsibleToggleControlType.TextButton;
+  }
+
+  protected get preventKeyboardNavigation(): boolean {
+    return this.nonTabbable || this.isInline;
   }
 }

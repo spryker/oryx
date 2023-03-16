@@ -163,9 +163,9 @@ describe('ProductPriceComponent', () => {
       );
     });
 
-    it(`should render the excl vat message`, () => {
+    it(`should render the tax excluded message`, () => {
       const vat = element.shadowRoot?.querySelector('span[part="vat"]');
-      expect(vat?.textContent).toContain('Excl vat');
+      expect(vat?.textContent).toContain('Tax excluded');
     });
   });
 
@@ -181,9 +181,9 @@ describe('ProductPriceComponent', () => {
       );
     });
 
-    it(`should render the excl vat message`, () => {
+    it(`should render the tax included message`, () => {
       const vat = element.shadowRoot?.querySelector('span[part="vat"]');
-      expect(vat?.textContent).toContain('Incl vat');
+      expect(vat?.textContent).toContain('Tax included');
     });
   });
 });
