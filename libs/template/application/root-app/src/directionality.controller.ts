@@ -2,14 +2,18 @@ import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/site';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 export class DirectionalityController implements ReactiveController {
   protected localeService = resolve(LocaleService, null);
 
-  install(): Observable<string> | undefined {
+  install(): Observable<string | undefined> {
+    if (!this.localeService?.get()) {
+      return of(undefined);
+    }
+
     return this.localeService
-      ?.get()
+      .get()
       .pipe(tap((locale) => this.setDirection(locale as string)));
   }
 
