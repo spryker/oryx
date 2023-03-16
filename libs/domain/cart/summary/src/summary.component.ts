@@ -36,7 +36,7 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
             quantity === 0 ? html`` : html`<mark>${quantity}</mark>`
           )}
           <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
-            ${i18n('cart.cart')}
+            ${i18n(['cart', 'cart.summary.heading'])}
           </oryx-heading>
         </a>
       </oryx-button>

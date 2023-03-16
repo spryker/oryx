@@ -1,4 +1,5 @@
 import { ComponentMixin } from '@spryker-oryx/experience';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { CartEntryOptions } from '../../entry.model';
 import { cartEntryTotalsStyles } from './totals.styles';
@@ -11,7 +12,7 @@ export class CartEntryTotalsComponent extends ComponentMixin<CartEntryOptions>()
 
     return html`
       <cart-entry-price .price="${price}" ?loading="${this.options?.updating}">
-        Total price
+        ${i18n('cart.entries.total')}
       </cart-entry-price>
     `;
   }
