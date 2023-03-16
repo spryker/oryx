@@ -4,12 +4,10 @@ import {
   RequestOptions,
 } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { map, Observable, switchMap, take } from 'rxjs';
-import { LocaleService } from './locale.service';
+import { Observable, switchMap, take } from 'rxjs';
+import { StoreService } from './store.service';
 
-export class AcceptLanguageInterceptor implements HttpInterceptor {
-  protected headerName = 'Accept-Language';
-
+export class StoreInterceptor implements HttpInterceptor {
   protected excludedEndpoints = ['store'];
 
   constructor(
@@ -22,25 +20,32 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    return this.injector
-      .inject(LocaleService)
-      .get()
-      .pipe(
-        take(1),
-        map((locale) => this.addLanguageHeader(locale, options)),
-        switchMap((options) => handle(url, options))
-      );
+    const storeService = this.injector.inject(StoreService);
+
+    return storeService.getAll().pipe(
+      take(1),
+      switchMap((stores) =>
+        stores.length <= 1
+          ? handle(url, options)
+          : storeService.get().pipe(
+              switchMap((store) =>
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                handle(url, this.addStoreHeader(options, store!.id))
+              )
+            )
+      )
+    );
   }
 
-  protected addLanguageHeader(
-    locale: string,
-    options: RequestOptions
+  protected addStoreHeader(
+    options: RequestOptions,
+    store: string
   ): RequestOptions {
     return {
       ...options,
       headers: {
         ...options.headers,
-        [this.headerName]: locale,
+        'X-Store': store,
       } as HeadersInit,
     };
   }
