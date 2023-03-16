@@ -3,7 +3,13 @@ import { PickingListService } from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  i18n,
+  isDefined,
+  observe,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -25,9 +31,9 @@ export class PickingListItemComponent extends LitElement {
   protected pickingList$ = this.pickingListId$
     .pipe(distinctUntilChanged())
     .pipe(
-      filter((pickingListId) => !!pickingListId),
+      filter(isDefined),
       switchMap((pickingListId) =>
-        this.pickingListService.getById(pickingListId!)
+        this.pickingListService.getById(pickingListId)
       )
     );
 
