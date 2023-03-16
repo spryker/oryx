@@ -216,6 +216,7 @@ export class PickingProductCardComponent extends LitElement {
       <oryx-modal
         ?open=${this.isConfirmPickingDialogOpen}
         enableFooter
+        preventclosebybackdrop
         @oryx.close=${this.onModalClose}
       >
         <div slot="heading">
