@@ -29,7 +29,19 @@ export class DirectionalityController implements ReactiveController {
       this.host.setAttribute('dir', (locale as any).textInfo.direction);
     } else {
       // FF doesn't support textInfo
-      const rtlLanguages = ['ar', 'he'];
+      const rtlLanguages = [
+        'ar', // Arabic
+        'dv', // Dhivehi
+        'he', // Hebrew
+        'ks', // Kashmiri
+        'ku', // Kurdish
+        'fa', // Persian (Farsi)
+        'ps', // Pashto
+        'sd', // Sindhi
+        'ug', // Uyghur
+        'ur', // Urdu
+        'yi', // Yiddish
+      ];
       const dir = rtlLanguages.includes(localeCode) ? 'rtl' : 'ltr';
       this.host.setAttribute('dir', dir);
     }
