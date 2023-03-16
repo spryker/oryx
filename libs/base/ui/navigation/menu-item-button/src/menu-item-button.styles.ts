@@ -1,16 +1,26 @@
 import { css } from 'lit';
 
-export const triggerStyles = css`
+export const styles = css`
+  :host {
+    min-width: 75px;
+    max-width: 154px;
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  oryx-button {
+    flex: 1 0 auto;
+  }
+
   oryx-button > * {
     --oryx-icon-size: 32px;
 
     display: grid;
     justify-items: center;
-    min-width: 71px;
-    max-width: 154px;
     gap: 5px;
     padding: 6px;
     border: solid 2px transparent;
+    box-sizing: border-box;
   }
 
   oryx-button > :hover {

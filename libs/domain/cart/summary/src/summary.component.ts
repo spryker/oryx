@@ -2,9 +2,9 @@ import { CartComponentMixin, CartController } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentController } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import { asyncState, hydratable, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { combineLatest, map } from 'rxjs';
 import { CartSummaryOptions } from './summary.model';
 import { styles } from './summary.styles';
@@ -16,9 +16,10 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
   protected contentController = new ContentController(this);
   protected cartController = new CartController(this);
 
-  protected link = resolve(SemanticLinkService).get({
-    type: SemanticLinkType.Cart,
-  });
+  @asyncState()
+  protected link = valueType(
+    resolve(SemanticLinkService).get({ type: SemanticLinkType.Cart })
+  );
 
   protected quantity$ = combineLatest([
     this.cartController.getTotalQuantity(),
@@ -27,19 +28,21 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
     map(([quantity, options]) => this.populateQuantity(quantity, options))
   );
 
+  @asyncState()
+  protected quantity = valueType(this.quantity$);
+
   protected override render(): TemplateResult {
     return html`
-      <oryx-button>
-        <a href=${asyncValue(this.link)}>
-          <oryx-icon type="cart"></oryx-icon>
-          ${asyncValue(this.quantity$, (quantity) =>
-            quantity === 0 ? html`` : html`<mark>${quantity}</mark>`
-          )}
-          <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
-            ${i18n('cart.cart')}
-          </oryx-heading>
-        </a>
-      </oryx-button>
+      <oryx-menu-item-button
+        icon="cart"
+        .url=${this.link}
+      >
+        ${when(
+          this.quantity,
+          () => html`<mark>${this.quantity}</mark>`
+        )}
+        <span slot="text">${i18n('cart.cart')}</span>
+      </oryx-menu-item-button>
     `;
   }
 
