@@ -69,6 +69,8 @@ export class PickingProductCardComponent extends LitElement {
         composed: true,
       })
     );
+
+    this.isConfirmPickingDialogOpen$.next(false);
   }
 
   protected editProductPicking(): void {
@@ -142,7 +144,9 @@ export class PickingProductCardComponent extends LitElement {
         this.productItem,
         () => html`
           <oryx-card>
-            <div slot="heading">${this.productItem?.orderItem?.name}</div>
+            <div slot="heading" class="title">
+              ${this.productItem?.orderItem?.name}
+            </div>
             <div class="subtitle">
               <span>${this.productItem?.orderItem.sku}</span>
             </div>
@@ -228,14 +232,16 @@ export class PickingProductCardComponent extends LitElement {
         </span>
 
         <div slot="footer">
-          <oryx-button outline="true">
+          <oryx-button outline type="secondary">
             <button @click=${this.onModalClose}>
               ${i18n('picking.product-card.cancel')}
             </button>
           </oryx-button>
 
-          <oryx-button @click=${this.confirmPartialPicking}>
-            <button>${i18n('picking.product-card.confirm')}</button>
+          <oryx-button type="primary">
+            <button @click=${this.confirmPartialPicking}>
+              ${i18n('picking.product-card.confirm')}
+            </button>
           </oryx-button>
         </div>
       </oryx-modal>
