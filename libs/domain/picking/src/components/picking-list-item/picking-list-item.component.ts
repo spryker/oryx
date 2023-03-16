@@ -26,7 +26,8 @@ export class PickingListItemComponent extends LitElement {
   @observe()
   protected pickingListId$ = new BehaviorSubject(this.pickingListId);
 
-  @state() isDisabled?: boolean;
+  @state()
+  protected isDisabled?: boolean;
 
   protected pickingList$ = this.pickingListId$
     .pipe(distinctUntilChanged())
