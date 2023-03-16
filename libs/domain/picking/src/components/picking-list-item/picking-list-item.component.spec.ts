@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   pickingListItemComponent,
   PickingListService,
@@ -8,49 +8,33 @@ import {
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { afterEach } from 'vitest';
+import { mockPickingListData } from '../../mocks';
 import { PickingListItemComponent } from './picking-list-item.component';
-
-class MockPickingListService implements Partial<PickingListService> {
-  startPicking = vi.fn().mockReturnValue(of({}));
-}
 
 describe('PickingListCardComponent', () => {
   let element: PickingListItemComponent;
+
+  class MockPickingListService implements Partial<PickingListService> {
+    getById = vi.fn((pickingListId: string) => {
+      return of(
+        mockPickingListData.find(({ id }) => id === pickingListId) ?? null
+      );
+    });
+    startPicking = vi.fn();
+  }
 
   beforeAll(async () => {
     await useComponent(pickingListItemComponent);
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+    destroyInjector();
+  });
+
   describe('when cart note is provided', () => {
-    const pickingListProp = {
-      id: 'pickingListId',
-      status: 'not_started',
-      items: [
-        {
-          quantity: 1,
-          numberOfPicked: 0,
-          numberOfNotPicked: 1,
-          orderItem: {
-            idSalesOrderItem: 123,
-            uuid: 'orderItemUuid',
-            name: 'name',
-            sku: 'sku',
-            quantity: 2,
-            amount: '4',
-          },
-          product: {
-            id: 'productId',
-            sku: 'sku',
-            productName: 'productName',
-            image: null,
-            imageLarge: null,
-          },
-        },
-      ],
-      cartNote: 'cartNote',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const pickingList = mockPickingListData.find(({ cartNote }) => cartNote)!;
 
     beforeEach(async () => {
       createInjector({
@@ -64,7 +48,7 @@ describe('PickingListCardComponent', () => {
 
       element = await fixture(
         html`<oryx-picking-list-item
-          .pickingList=${pickingListProp}
+          .pickingListId=${pickingList.id}
         ></oryx-picking-list-item>`
       );
     });
@@ -74,7 +58,7 @@ describe('PickingListCardComponent', () => {
     });
 
     it('should render time', () => {
-      const formattedTime = pickingListProp.createdAt
+      const formattedTime = pickingList.createdAt
         .toLocaleString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -89,7 +73,7 @@ describe('PickingListCardComponent', () => {
 
     it('should render id', () => {
       expect(element.renderRoot.querySelector('.identifier')?.textContent).toBe(
-        pickingListProp.id
+        pickingList.id
       );
     });
 
@@ -98,7 +82,7 @@ describe('PickingListCardComponent', () => {
         element.renderRoot.querySelector('.total')?.textContent?.trim()
       ).toBe(
         i18n('picking.picking-list-item.{count}-items', {
-          count: pickingListProp.items.length,
+          count: pickingList.items.length,
         })
       );
     });
@@ -117,34 +101,7 @@ describe('PickingListCardComponent', () => {
   });
 
   describe('when cart note is not provided', () => {
-    const pickingListProp = {
-      id: 'pickingListId',
-      status: 'not_started',
-      items: [
-        {
-          quantity: 1,
-          numberOfPicked: 0,
-          numberOfNotPicked: 1,
-          orderItem: {
-            idSalesOrderItem: 123,
-            uuid: 'orderItemUuid',
-            name: 'name',
-            sku: 'sku',
-            quantity: 2,
-            amount: '4',
-          },
-          product: {
-            id: 'productId',
-            sku: 'sku',
-            productName: 'productName',
-            image: null,
-            imageLarge: null,
-          },
-        },
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const pickingList = mockPickingListData.find(({ cartNote }) => !cartNote)!;
 
     beforeEach(async () => {
       createInjector({
@@ -158,7 +115,7 @@ describe('PickingListCardComponent', () => {
 
       element = await fixture(
         html`<oryx-picking-list-item
-          .pickingList=${pickingListProp}
+          .pickingListId=${pickingList.id}
         ></oryx-picking-list-item>`
       );
     });

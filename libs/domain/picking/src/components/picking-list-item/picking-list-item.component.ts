@@ -26,7 +26,8 @@ export class PickingListItemComponent extends LitElement {
   @observe()
   protected pickingListId$ = new BehaviorSubject(this.pickingListId);
 
-  @state() isDisabled?: boolean;
+  @state()
+  protected isDisabled?: boolean;
 
   protected pickingList$ = this.pickingListId$
     .pipe(distinctUntilChanged())
@@ -91,7 +92,7 @@ export class PickingListItemComponent extends LitElement {
         ${when(
           this.pickingList?.cartNote,
           () => html`
-            <oryx-icon-button size=${Size.Lg}>
+            <oryx-icon-button size=${Size.Sm}>
               <button
                 aria-label="Show customer note"
                 @click=${this.showCustomerNote}
