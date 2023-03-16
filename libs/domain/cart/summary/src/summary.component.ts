@@ -40,7 +40,7 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
     return html`
       <oryx-menu-item-button icon="cart" .url=${this.link}>
         ${when(this.quantity, () => html`<mark>${this.quantity}</mark>`)}
-        <span slot="text">${i18n('cart.cart')}</span>
+        <span slot="text">${i18n(['cart', 'cart.summary.heading'])}</span>
       </oryx-menu-item-button>
     `;
   }

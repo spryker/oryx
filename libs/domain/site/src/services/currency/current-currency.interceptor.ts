@@ -26,10 +26,6 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (!this.shouldInterceptRequest(url)) {
-      return handle(url, options);
-    }
-
     return this.injector
       .inject(CurrencyService)
       .get()
@@ -47,7 +43,7 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
     return urlObject.toString();
   }
 
-  protected shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest(url: string): boolean {
     if (!url.startsWith(this.SCOS_BASE_URL)) return false;
 
     const path = url.substring(this.SCOS_BASE_URL.length);

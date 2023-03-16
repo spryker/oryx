@@ -59,8 +59,8 @@ export class ProductPriceComponent extends ProductMixin(
           ${i18n(
             `product.price.${
               this.product?.price?.originalPrice?.isNet
-                ? 'excl-vat'
-                : 'incl-vat'
+                ? 'tax-excluded'
+                : 'tax-included'
             }`
           )}
         </span>`

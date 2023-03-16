@@ -19,6 +19,7 @@ export interface HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response>;
+  shouldInterceptRequest?(url: string, options: RequestOptions): boolean;
 }
 
 declare global {
