@@ -1,8 +1,19 @@
+import { nextFrame } from '@open-wc/testing-helpers';
+import {
+  DefaultHttpHandler,
+  HttpHandler,
+  HttpInterceptor,
+} from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { firstValueFrom, of } from 'rxjs';
+import { of } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { LocaleService } from './locale.service';
+
+vi.mock('rxjs/fetch', () => ({
+  fromFetch: vi.fn(),
+}));
 
 class MockLocaleService implements Partial<LocaleService> {
   get = vi.fn();
@@ -11,13 +22,11 @@ class MockLocaleService implements Partial<LocaleService> {
 describe('AcceptLanguageInterceptor', () => {
   const SCOS_BASE_URL = 'http://example.com';
 
-  let interceptor: AcceptLanguageInterceptor;
   let localeService: LocaleService;
-  let handleMock: Mock;
-  let testInjector;
+  let handler: HttpHandler;
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: 'SCOS_BASE_URL',
@@ -28,15 +37,18 @@ describe('AcceptLanguageInterceptor', () => {
           useClass: MockLocaleService,
         },
         {
-          provide: 'interceptor',
+          provide: HttpInterceptor,
           useClass: AcceptLanguageInterceptor,
+        },
+        {
+          provide: HttpHandler,
+          useClass: DefaultHttpHandler,
         },
       ],
     });
 
-    interceptor = testInjector.inject('interceptor');
     localeService = testInjector.inject(LocaleService);
-    handleMock = vi.fn();
+    handler = testInjector.inject(HttpHandler);
   });
 
   afterEach(() => {
@@ -78,18 +90,15 @@ describe('AcceptLanguageInterceptor', () => {
       };
       const locale = 'en-US';
       (localeService.get as Mock).mockReturnValue(of(locale));
+      (fromFetch as Mock).mockReturnValue(of(null));
 
-      handleMock.mockImplementation((url, modifiedOptions) => {
-        if (testCase.shouldIntercept) {
-          expect(modifiedOptions.headers['Accept-Language']).toBe(locale);
-        } else {
-          expect(modifiedOptions.headers['Accept-Language']).toBeUndefined();
-        }
-        return of(null);
-      });
-
-      await firstValueFrom(
-        interceptor.intercept(testCase.url, options, handleMock)
+      handler.handle(testCase.url, options).subscribe();
+      await nextFrame();
+      expect(fromFetch).toHaveBeenCalledWith(
+        testCase.url,
+        testCase.shouldIntercept
+          ? { headers: { 'Accept-Language': locale } }
+          : options
       );
     });
   });
