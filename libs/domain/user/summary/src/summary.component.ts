@@ -22,7 +22,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   LitElement
 ) {
   static styles = styles;
-  
+
   @asyncState()
   protected user = valueType(resolve(UserService).getUser());
 
@@ -33,7 +33,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected override render(): TemplateResult {
     console.log(this.user);
-    
+
     return html`
       <oryx-menu-item>
         <oryx-menu-item-button
@@ -41,11 +41,13 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
           .icon=${this.componentOptions?.icon}
           url=${ifDefined(this.url)}
         >
-          <span slot="text">${when(
-            this.user,
-            () => html`${this.user?.firstName}`,
-            () => html`${i18n('user.login')}`
-          )}</span>
+          <span slot="text"
+            >${when(
+              this.user,
+              () => html`${this.user?.firstName}`,
+              () => html`${i18n('user.login')}`
+            )}</span
+          >
         </oryx-menu-item-button>
 
         <oryx-auth-logout></oryx-auth-logout>

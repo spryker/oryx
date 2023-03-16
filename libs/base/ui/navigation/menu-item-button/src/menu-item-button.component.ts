@@ -1,13 +1,15 @@
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { styles } from './menu-item-button.styles';
-import { property } from 'lit/decorators.js';
 import { MenuItemButtonAttributes } from './menu-item-button.model';
+import { styles } from './menu-item-button.styles';
 
-export class MenuItemButtonComponent extends LitElement 
-  implements MenuItemButtonAttributes {
+export class MenuItemButtonComponent
+  extends LitElement
+  implements MenuItemButtonAttributes
+{
   static styles = styles;
 
   @property() url?: string;

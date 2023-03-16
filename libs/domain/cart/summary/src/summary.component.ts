@@ -2,7 +2,12 @@ import { CartComponentMixin, CartController } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentController } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { asyncState, hydratable, i18n, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { combineLatest, map } from 'rxjs';
@@ -33,14 +38,8 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-menu-item-button
-        icon="cart"
-        .url=${this.link}
-      >
-        ${when(
-          this.quantity,
-          () => html`<mark>${this.quantity}</mark>`
-        )}
+      <oryx-menu-item-button icon="cart" .url=${this.link}>
+        ${when(this.quantity, () => html`<mark>${this.quantity}</mark>`)}
         <span slot="text">${i18n('cart.cart')}</span>
       </oryx-menu-item-button>
     `;

@@ -14,9 +14,7 @@ class eventsOrchestrator extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <oryx-modal>
-        modal content
-      </oryx-modal>
+      <oryx-modal> modal content </oryx-modal>
       <slot @modal.event=${this.onEvent}></slot>
     `;
   }
@@ -37,20 +35,28 @@ const Template = (): TemplateResult => {
       </div>
       <div>
         <h4>Icon</h4>
-        <oryx-user-summary .options=${{type: "icon"}}></oryx-user-summary>
+        <oryx-user-summary .options=${{ type: 'icon' }}></oryx-user-summary>
       </div>
       <div>
         <h4>Url</h4>
-        <oryx-user-summary .options=${{type: "icon", url: "www.google.com"}} type="icon"></oryx-user-summary>
+        <oryx-user-summary
+          .options=${{ type: 'icon', url: 'www.google.com' }}
+          type="icon"
+        ></oryx-user-summary>
       </div>
       <div>
         <h4>Custom icon</h4>
-        <oryx-user-summary .options=${{type: "icon", icon: "add"}} type="icon" ></oryx-user-summary>
+        <oryx-user-summary
+          .options=${{ type: 'icon', icon: 'add' }}
+          type="icon"
+        ></oryx-user-summary>
       </div>
       <div>
         <h4>Event</h4>
         <events-orchestrator>
-          <oryx-user-summary .options=${{type: "icon", eventName: "modal.event"}}></oryx-user-summary>
+          <oryx-user-summary
+            .options=${{ type: 'icon', eventName: 'modal.event' }}
+          ></oryx-user-summary>
         </events-orchestrator>
       </div>
     </section>

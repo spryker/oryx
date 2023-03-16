@@ -8,24 +8,24 @@ export class MenuItemComponent extends LitElement {
   static styles = styles;
 
   @property() eventName?: string;
-  @property({type: Array}) items?: MenuListItem[];
+  @property({ type: Array }) items?: MenuListItem[];
 
   protected onClick(): void {
     if (this.eventName) {
-      this.dispatchEvent(new CustomEvent(
-        this.eventName, {
+      this.dispatchEvent(
+        new CustomEvent(this.eventName, {
           bubbles: true,
-          composed: true
+          composed: true,
         })
-      )
+      );
     }
   }
 
   protected renderTrigger(): TemplateResult {
-    // const icon = html`<oryx-icon 
+    // const icon = html`<oryx-icon
     //   .type=${this.componentOptions?.icon}
     // ></oryx-icon>`;
-    
+
     // if (this.componentOptions?.type === MenuItemTypes.Icon) {
     //   return html`
     //     <oryx-icon-button slot="trigger">
@@ -38,7 +38,7 @@ export class MenuItemComponent extends LitElement {
     //   `;
     // }
 
-    return html`<slot 
+    return html`<slot
       name="trigger"
       slot="trigger"
       @click=${this.onClick}
@@ -51,8 +51,8 @@ export class MenuItemComponent extends LitElement {
     }
 
     return html`
-      ${this.items.map(item => html`
-        <oryx-button type="text">
+      ${this.items.map(
+        (item) => html` <oryx-button type="text">
           <a href=${item.link} close-popover>
             ${when(
               !!item.icon,
@@ -66,11 +66,9 @@ export class MenuItemComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
-
     return html`
       <oryx-dropdown position="start" vertical-align>
-        ${this.renderTrigger()} 
-        ${this.renderMenuItemsList()}
+        ${this.renderTrigger()} ${this.renderMenuItemsList()}
         <slot></slot>
       </oryx-dropdown>
     `;
