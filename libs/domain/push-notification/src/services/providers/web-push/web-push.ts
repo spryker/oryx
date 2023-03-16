@@ -40,12 +40,9 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
 
   deleteSubscription(): Observable<boolean> {
     return this.getExistingSubscription().pipe(
-      switchMap((subscription) => {
-        if (subscription) {
-          return subscription.unsubscribe();
-        }
-        return of(true);
-      })
+      switchMap((subscription) =>
+        subscription ? subscription.unsubscribe() : of(true)
+      )
     );
   }
 
