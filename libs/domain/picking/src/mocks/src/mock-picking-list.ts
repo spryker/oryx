@@ -1,4 +1,8 @@
-import { ItemsFilters, PickingList, PickingListStatus } from '@spryker-oryx/picking';
+import {
+  ItemsFilters,
+  PickingList,
+  PickingListStatus,
+} from '@spryker-oryx/picking';
 
 export const mockPickingListData: PickingList[] = [
   {
@@ -27,7 +31,7 @@ export const mockPickingListData: PickingList[] = [
           image: '',
           imageLarge: '',
         },
-        status: ItemsFilters.NotPicked
+        status: ItemsFilters.NotPicked,
       },
     ],
   },
