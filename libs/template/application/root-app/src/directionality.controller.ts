@@ -23,13 +23,14 @@ export class DirectionalityController implements ReactiveController {
   }
 
   protected setDirection(localeCode: string): void {
-    debugger;
-    if (Intl.Locale.prototype.getTextInfo) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (Intl.Locale.prototype.hasOwnProperty('textInfo')) {
       const locale = new Intl.Locale(localeCode);
       this.host.setAttribute('dir', (locale as any).textInfo.direction);
     } else {
       // FF doesn't support textInfo
-      const dir = ['ar', 'he'].includes(localeCode) ? 'rtl' : 'ltr';
+      const rtlLanguages = ['ar', 'he'];
+      const dir = rtlLanguages.includes(localeCode) ? 'rtl' : 'ltr';
       this.host.setAttribute('dir', dir);
     }
   }
