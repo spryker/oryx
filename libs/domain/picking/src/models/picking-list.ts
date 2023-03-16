@@ -50,3 +50,8 @@ export interface PickingMeasurementUnit {
   name: string;
   code: string;
 }
+
+export interface SummaryInfo {
+  main: string;
+  additional?: string;
+}
