@@ -12,7 +12,6 @@ export class StoreInterceptor implements HttpInterceptor {
 
   constructor(
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected STORE = inject('STORE'),
     protected injector = inject(INJECTOR)
   ) {}
 
@@ -21,25 +20,32 @@ export class StoreInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    return this.injector
-      .inject(StoreService)
-      .getAll()
-      .pipe(
-        take(1),
-        switchMap((stores) =>
-          stores.length <= 1
-            ? handle(url, options)
-            : handle(url, this.addStoreHeader(options))
-        )
-      );
+    const storeService = this.injector.inject(StoreService);
+
+    return storeService.getAll().pipe(
+      take(1),
+      switchMap((stores) =>
+        stores.length <= 1
+          ? handle(url, options)
+          : storeService.get().pipe(
+              switchMap((store) =>
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                handle(url, this.addStoreHeader(options, store!.id))
+              )
+            )
+      )
+    );
   }
 
-  protected addStoreHeader(options: RequestOptions): RequestOptions {
+  protected addStoreHeader(
+    options: RequestOptions,
+    store: string
+  ): RequestOptions {
     return {
       ...options,
       headers: {
         ...options.headers,
-        'X-Store': this.STORE,
+        'X-Store': store,
       } as HeadersInit,
     };
   }

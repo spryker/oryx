@@ -17,6 +17,7 @@ vi.mock('rxjs/fetch', () => ({
 
 class MockStoreService implements Partial<StoreService> {
   getAll = vi.fn();
+  get = vi.fn();
 }
 
 describe('StoreInterceptor', () => {
@@ -32,10 +33,6 @@ describe('StoreInterceptor', () => {
         {
           provide: 'SCOS_BASE_URL',
           useValue: SCOS_BASE_URL,
-        },
-        {
-          provide: 'STORE',
-          useValue: STORE,
         },
         {
           provide: StoreService,
@@ -94,6 +91,7 @@ describe('StoreInterceptor', () => {
         headers: {},
       };
       (storeService.getAll as Mock).mockReturnValue(of([{}, {}]));
+      (storeService.get as Mock).mockReturnValue(of({ id: STORE }));
       (fromFetch as Mock).mockReturnValue(of(null));
 
       handler.handle(testCase.url, options).subscribe();
