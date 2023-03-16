@@ -2,16 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  asyncState,
-  hydratable,
-  rootInjectable,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
-import { tap } from 'rxjs';
 import { SiteLocaleSelectorOptions } from './locale-selector.model';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
@@ -27,9 +21,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   protected locales = valueType(this.localeService.getAll());
 
   @asyncState()
-  protected current = valueType(
-    this.localeService.get().pipe(tap((locale) => this.setDirection(locale)))
-  );
+  protected current = valueType(this.localeService.get());
 
   protected override render(): TemplateResult | void {
     if (!this.current || !this.locales?.length || this.locales.length < 2) {
@@ -70,13 +62,5 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
       type: 'language',
     });
     return languageNames.of(code) ?? code;
-  }
-
-  protected setDirection(locale: string): void {
-    const ar = new Intl.Locale(locale);
-    // console.log(ar.textInfo.direction); // { direction: "rtl" }
-    // console.log(ar.textInfo.direction); // "rtl"
-    const root = document.querySelector(rootInjectable.get());
-    root?.setAttribute('dir', (ar as any).textInfo.direction);
   }
 }
