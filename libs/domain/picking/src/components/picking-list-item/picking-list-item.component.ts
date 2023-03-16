@@ -91,7 +91,7 @@ export class PickingListItemComponent extends LitElement {
         ${when(
           this.pickingList?.cartNote,
           () => html`
-            <oryx-icon-button size=${Size.Lg}>
+            <oryx-icon-button size=${Size.Sm}>
               <button
                 aria-label="Show customer note"
                 @click=${this.showCustomerNote}

@@ -2,9 +2,9 @@ import { css } from 'lit';
 
 export const styles = css`
   oryx-card {
-    --oryx-card-header-padding: 16px 10px 12px;
-    --oryx-card-body-padding: 9px 10px 12px;
-    --oryx-card-footer-padding: 0 10px 12px;
+    --oryx-card-header-padding: 14px 10px 10px;
+    --oryx-card-body-padding: 9px 10px 16px;
+    --oryx-card-footer-padding: 0px 10px 12px;
   }
 
   [slot='heading'] {
@@ -39,18 +39,23 @@ export const styles = css`
     letter-spacing: 0.005em;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    min-height: 48px;
+    min-height: 38px;
   }
 
   .total {
     color: var(--oryx-color-neutral-darker);
     display: flex;
     gap: 8px;
+    height: fit-content;
   }
 
   .total oryx-icon {
     display: inline;
+  }
+
+  oryx-icon-button {
+    align-items: start;
+    height: fit-content;
   }
 
   oryx-icon[type='info'] {
