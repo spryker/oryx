@@ -45,6 +45,9 @@ export class PickingProductCardComponent extends LitElement {
         new CustomEvent(EVENT_SUBMIT, {
           bubbles: true,
           composed: true,
+          detail: {
+            productId: this.productItem?.product.id,
+          },
         })
       );
     } else {
@@ -58,6 +61,7 @@ export class PickingProductCardComponent extends LitElement {
         bubbles: true,
         composed: true,
         detail: {
+          productId: this.productItem?.product.id,
           numberOfPicked: this.currentNumberOfPicked,
         },
       })
@@ -67,6 +71,9 @@ export class PickingProductCardComponent extends LitElement {
       new CustomEvent(EVENT_SUBMIT, {
         bubbles: true,
         composed: true,
+        detail: {
+          productId: this.productItem?.product.id,
+        },
       })
     );
 
@@ -88,14 +95,16 @@ export class PickingProductCardComponent extends LitElement {
 
   protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
     this.currentNumberOfPicked$.next(quantity);
-
-    new CustomEvent(EVENT_CHANGE_NUMBER_OF_PICKED, {
-      bubbles: true,
-      composed: true,
-      detail: {
-        numberOfPicked: this.currentNumberOfPicked,
-      },
-    });
+    this.dispatchEvent(
+      new CustomEvent(EVENT_CHANGE_NUMBER_OF_PICKED, {
+        bubbles: true,
+        composed: true,
+        detail: {
+          productId: this.productItem?.product.id,
+          numberOfPicked: this.currentNumberOfPicked,
+        },
+      })
+    );
   }
 
   protected getSummaryInfo(): Observable<SummaryInfo> {

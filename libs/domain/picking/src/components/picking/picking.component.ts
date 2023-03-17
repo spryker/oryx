@@ -4,7 +4,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BehaviorSubject, distinctUntilChanged, map, switchMap } from 'rxjs';
-import { ItemsFilters } from '../../models';
+import { ItemsFilters, ProductItemPickedEvent } from '../../models';
 import { PickingListService } from '../../services';
 
 export class PickingComponent extends LitElement {
@@ -20,6 +20,9 @@ export class PickingComponent extends LitElement {
     distinctUntilChanged(),
     switchMap((id) => this.pickingListService.getById(id ?? ''))
   );
+
+  @asyncState()
+  protected pickingList = valueType(this.pickingList$);
 
   protected tabs$ = this.pickingList$.pipe(
     map((list) => [
@@ -71,6 +74,35 @@ export class PickingComponent extends LitElement {
       : html``;
   }
 
+  protected changeNumberOfPicked(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    this.pickingList?.items.map((item) => {
+      if (
+        item.product.id === detail.productId &&
+        detail.numberOfPicked <= item.quantity &&
+        detail.numberOfPicked >= 0
+      ) {
+        item.numberOfPicked = detail.numberOfPicked;
+        item.numberOfNotPicked = item.quantity - item.numberOfPicked;
+      }
+    });
+  }
+
+  protected savePickingItem(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    if (!this.pickingList) {
+      return;
+    }
+
+    this.pickingList.items.map((item) => {
+      if (item.product.id === detail.productId) {
+        item.status = ItemsFilters.Picked;
+      }
+    });
+  }
+
   protected renderTabContents(): TemplateResult {
     return this.tabs
       ? html`${repeat(
@@ -88,6 +120,9 @@ export class PickingComponent extends LitElement {
                       <oryx-picking-product-card
                         .productItem=${item}
                         .status=${item.status}
+                        @oryx.change-number-of-picked=${this
+                          .changeNumberOfPicked}
+                        @oryx.submit=${this.savePickingItem}
                       ></oryx-picking-product-card>
                     `
                 )
