@@ -188,15 +188,16 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
         id: 'product-1',
         sku: 'sku-1',
         productName: 'Mock product #1',
-        image: null,
-        imageLarge: null,
+        image:
+          'https://images.icecat.biz/img/gallery_mediums/img_24425591_medium_1483525296_3275_9985.jpg',
+        imageLarge: 'https://images.icecat.biz/img/norm/high/24425591-5275.jpg',
       },
       {
         id: 'product-2',
         sku: 'sku-2',
         productName: 'Mock product #2',
-        image: null,
-        imageLarge: null,
+        image: 'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+        imageLarge: 'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
       },
       {
         id: 'product-3',

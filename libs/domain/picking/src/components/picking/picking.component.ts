@@ -75,16 +75,21 @@ export class PickingComponent extends LitElement {
     return this.tabs
       ? html`${repeat(
           this.tabs,
-          (tab) => html`<div slot="panels" id="tab-${tab.id}">
+          (tab) => html`<div
+            slot="panels"
+            id="tab-${tab.id}"
+            style="width: 100%"
+          >
             ${tab.items?.length
               ? repeat(
                   tab.items,
                   (item) =>
-                    html`<oryx-picking-product-card
-                      .productItem=${item.product}
-                    >
-                      ${item.product.sku} ${item.product.productName}
-                    </oryx-picking-product-card>`
+                    html`
+                      <oryx-picking-product-card
+                        .productItem=${item}
+                        .status=${item.status}
+                      ></oryx-picking-product-card>
+                    `
                 )
               : this.renderFallback()}
           </div>`
