@@ -88,8 +88,9 @@ export const siteProviders: Provider[] = [
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
   },
-  {
-    provide: HttpInterceptor,
-    useClass: StoreInterceptor,
-  },
+  // TODO: uncomment when CORs header issue is fixed
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: StoreInterceptor,
+  // },
 ];
