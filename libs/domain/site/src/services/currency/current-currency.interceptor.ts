@@ -44,7 +44,8 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
   }
 
   shouldInterceptRequest(url: string): boolean {
-    if (!url.startsWith(this.SCOS_BASE_URL)) return false;
+    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
+      return false;
 
     const path = url.substring(this.SCOS_BASE_URL.length);
 
