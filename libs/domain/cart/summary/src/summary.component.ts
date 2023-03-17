@@ -38,10 +38,16 @@ export class CartSummaryComponent extends CartComponentMixin<CartSummaryOptions>
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-menu-item-button icon="cart" .url=${this.link}>
-        ${when(this.quantity, () => html`<mark>${this.quantity}</mark>`)}
-        <span slot="text">${i18n(['cart', 'cart.summary.heading'])}</span>
-      </oryx-menu-item-button>
+      <oryx-menu-item>
+        <oryx-menu-item-button 
+          slot="trigger"
+          icon="cart"
+          .url=${this.link}
+        >
+          ${when(this.quantity, () => html`<mark>${this.quantity}</mark>`)}
+          <span slot="text">${i18n(['cart', 'cart.summary.heading'])}</span>
+        </oryx-menu-item-button>
+      </oryx-menu-item>
     `;
   }
 

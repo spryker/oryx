@@ -10,9 +10,17 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit-html/directives/when.js';
+import { customElement } from 'lit/decorators.js';
 import { UserService } from '../../src/services';
 import { UserSummaryOptions } from './summary.model';
 import { styles } from './summary.styles';
+
+@customElement('oryx-account-summary-content')
+export class UserSummaryContentComponent extends LitElement {
+  protected override render(): TemplateResult {
+    return html`<oryx-auth-logout></oryx-auth-logout>`;
+  }
+}
 
 @hydratable('window:load')
 @defaultOptions({
@@ -32,10 +40,10 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   );
 
   protected override render(): TemplateResult {
-    console.log(this.user);
-
     return html`
-      <oryx-menu-item>
+      <oryx-menu-item
+        .items=${this.user ? this.componentOptions?.items : []}
+      >
         <oryx-menu-item-button
           slot="trigger"
           .icon=${this.componentOptions?.icon}
@@ -50,7 +58,13 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
           >
         </oryx-menu-item-button>
 
-        <oryx-auth-logout></oryx-auth-logout>
+        ${when(
+          this.user,
+          () => html`
+            <oryx-account-summary-content></oryx-account-summary-content>
+            <!-- <oryx-auth-logout></oryx-auth-logout> -->
+          `
+        )}
       </oryx-menu-item>
     `;
   }
