@@ -8,16 +8,6 @@ export const typographyTokens: ThemeToken = {
       weight: '500',
     },
   },
-  // TODO: drop these tokens
-  'font-size': {
-    caption: '12px',
-    base: '14px',
-    medium: '16px',
-  },
-  'font-weight': {
-    medium: '500',
-    semibold: '600',
-  },
 };
 
 export const typographySmallTokens: ThemeToken = {
@@ -32,7 +22,7 @@ export const typographySmallTokens: ThemeToken = {
   },
 };
 
-export const typographyMediumTokens: ThemeToken = {
+export const typographyMediumAndLargerTokens: ThemeToken = {
   typography: {
     h1: { size: '2.143em', line: '1.333em', weight: '600' },
     h2: { size: '1.857em', line: '1.462em', weight: '600' },

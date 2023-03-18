@@ -5,7 +5,7 @@ import { color } from './color.tokens';
 import { darkTokens } from './other-dark';
 import { tokens } from './other.tokens';
 import {
-  typographyMediumTokens,
+  typographyMediumAndLargerTokens,
   typographySmallTokens,
   typographyTokens,
 } from './typography.tokens';
@@ -31,20 +31,21 @@ export const backofficeTokens: DesignToken[] = [
       screen: Size.Lg,
     },
     ...layoutTokens,
-  },
-  {
-    media: {
-      screen: Size.Sm,
-    },
-    ...typographySmallTokens,
-    ...layoutSmTokens,
-    ...commonTokensSmall,
+    ...typographyMediumAndLargerTokens,
   },
   {
     media: {
       screen: Size.Md,
     },
-    ...typographyMediumTokens,
     ...layoutMdTokens,
+    ...typographyMediumAndLargerTokens,
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...layoutSmTokens,
+    ...typographySmallTokens,
+    ...commonTokensSmall,
   },
 ];

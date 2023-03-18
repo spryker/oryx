@@ -34,7 +34,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderDetails(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H3}>
+    return html`<oryx-heading .as=${HeadingTag.H3}>
         <h2>${i18n('order.order-details')}</h2>
       </oryx-heading>
       <div class="details-container">
@@ -65,7 +65,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderBilling(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
         <h3>${i18n('order.billing-details')}</h3>
       </oryx-heading>
       ${when(
@@ -78,16 +78,18 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.payment')}:</div>
       <div>${this.order?.payments[0].paymentProvider}</div>
-      </div>
-      <div class="title">${i18n('order.email')}:</div>
-      <div>${this.order?.billingAddress?.email}</div>
-      <div class="title">${i18n('order.payment')}:</div>
-      <div>${this.order?.payments[0].paymentProvider}</div>
+      ${when(
+        this.order?.billingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.billingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 
   protected renderShipping(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
         <h3>${i18n('order.shipping-details')}</h3>
       </oryx-heading>
       ${when(
@@ -100,11 +102,13 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.shipping-method')}:</div>
       <div>${this.order?.shipments[0].shipmentMethodName}</div>
-      </div>
-      <div class="title">${i18n('order.email')}:</div>
-      <div>${this.order?.shippingAddress?.email}</div>
-      <div class="title">${i18n('order.shipping-method')}:</div>
-      <div>${this.order?.shipments[0].shipmentMethodName}</div>
+      ${when(
+        this.order?.shippingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.shippingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 

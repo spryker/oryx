@@ -15,7 +15,7 @@ export class DefaultAddressFormService implements AddressFormService {
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm | null> {
     return this.adapter.get(qualifier).pipe(
       switchMap((response) => {
-        if (typeof response !== 'object') {
+        if (!response?.id) {
           throw new Error();
         }
 

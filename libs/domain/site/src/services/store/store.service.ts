@@ -5,7 +5,7 @@ export const StoreService = 'oryx.StoreService';
 
 export interface StoreService {
   getAll(): Observable<Store[]>;
-  get(): Observable<Store | null>;
+  get(): Observable<Store | undefined>;
 }
 
 declare global {

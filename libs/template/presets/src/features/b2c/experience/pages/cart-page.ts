@@ -27,7 +27,7 @@ export const CartPage: StaticComponent = {
           rules: [
             {
               sticky: true,
-              top: '78px',
+              top: '108px',
               maxWidth: true,
               layout: 'list',
               gap: '20px',
