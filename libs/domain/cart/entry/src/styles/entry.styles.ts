@@ -11,9 +11,7 @@ const pricing = css`
 
   oryx-product-price,
   oryx-product-price::part(original) {
-    // font-weight: inherit;
     color: inherit;
-    // font-size: 0.857rem;
   }
 
   oryx-product-price {

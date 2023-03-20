@@ -48,9 +48,6 @@ export const oldProductPriceStyles = css`
     flex-wrap: wrap;
     align-items: baseline;
     column-gap: 10px;
-    // font-size: 1.286em;
-    // font-weight: 700;
-    // line-height: 1.444em;
     color: var(--oryx-color-neutral-400);
   }
 
@@ -64,12 +61,5 @@ export const oldProductPriceStyles = css`
     line-height: var(--oryx-typography-h4-line);
     text-decoration: line-through;
     color: var(--oryx-color-neutral-400);
-    flex: 50%;
-  }
-
-  [part='vat'] {
-    // font-size: 0.666em;
-    // font-weight: 500;
-    flex: 50%;
   }
 `;

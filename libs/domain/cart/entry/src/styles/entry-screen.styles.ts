@@ -48,7 +48,7 @@ const smallScreen = css`
   }
 
   :host(:first-of-type) {
-    border-top: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-canvas-300);
   }
 `;
 

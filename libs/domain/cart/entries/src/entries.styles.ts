@@ -5,12 +5,11 @@ export const cartEntriesStyles = css`
     font-size: var(--oryx-typography-h3-size);
     font-weight: var(--oryx-typography-h3-weight);
     line-height: var(--oryx-typography-h3-line);
-
     margin-block-end: 20px;
   }
 
   oryx-cart-entry:not(:last-child) {
-    border-bottom: 1px solid var(--oryx-color-canvas-500);
+    border-block-end: 1px solid var(--oryx-color-canvas-500);
   }
 
   section.empty {
