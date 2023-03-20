@@ -1,13 +1,12 @@
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { PickingListMixin } from '@spryker-oryx/picking';
 import { styles } from './customer-note.styles';
 
-export class CustomerNoteComponent extends LitElement {
+export class CustomerNoteComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
-  // protected cartService = resolve(CartService);
-
-  protected onClick(): void {
+  protected onProceed(): void {
     //
   }
 
@@ -16,7 +15,7 @@ export class CustomerNoteComponent extends LitElement {
       <section>
         <oryx-navigate-back></oryx-navigate-back>
         <oryx-image resource="user-note"></oryx-image>
-        <oryx-heading>
+        <oryx-heading as-md="h2">
           <h4>${i18n('picking.customer-note')}</h4>
         </oryx-heading>
       </section>
@@ -26,7 +25,7 @@ export class CustomerNoteComponent extends LitElement {
       </p>
 
       <oryx-button>
-        <button @click=${this.onClick}>
+        <button @click=${this.onProceed}>
           ${i18n('picking.proceed-to-picking')}
         </button>
       </oryx-button>
