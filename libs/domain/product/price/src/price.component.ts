@@ -47,10 +47,8 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected override render(): TemplateResult | void {
     return html`
-      ${this.renderSalesPrice()}
-      ${this.renderTaxMessage()}
-      ${this.renderOriginalPrice()}
-      ${this.renderSalesLabel()}
+      ${this.renderSalesPrice()} ${this.renderTaxMessage()}
+      ${this.renderOriginalPrice()} ${this.renderSalesLabel()}
     `;
   }
 
@@ -59,7 +57,9 @@ export class ProductPriceComponent extends ProductMixin(
 
     const hasDiscount = !!salesPrice && !!originalPrice;
 
-    return html`<span part="sales" ?has-discount=${hasDiscount}>${salesPrice ?? originalPrice}</span>`;
+    return html`<span part="sales" ?has-discount=${hasDiscount}
+      >${salesPrice ?? originalPrice}</span
+    >`;
   }
 
   protected renderTaxMessage(): TemplateResult | void {
@@ -67,18 +67,24 @@ export class ProductPriceComponent extends ProductMixin(
 
     return html`<span part="tax">
       ${i18n(
-      `product.price.${this.product?.price?.originalPrice?.isNet
-        ? 'tax-excluded'
-        : 'tax-included'
-      }`
-    )}
+        `product.price.${
+          this.product?.price?.originalPrice?.isNet
+            ? 'tax-excluded'
+            : 'tax-included'
+        }`
+      )}
     </span>`;
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
     const { originalPrice, salesPrice } = this.prices ?? {};
-    if (!this.componentOptions?.enableOriginalPrice || !salesPrice || !originalPrice) return
-    return html`<span part="original">${originalPrice}</span>`
+    if (
+      !this.componentOptions?.enableOriginalPrice ||
+      !salesPrice ||
+      !originalPrice
+    )
+      return;
+    return html`<span part="original">${originalPrice}</span>`;
   }
 
   protected renderSalesLabel(): TemplateResult | void {
