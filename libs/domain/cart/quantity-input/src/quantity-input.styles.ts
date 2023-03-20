@@ -75,11 +75,13 @@ export const styles = css`
     pointer-events: none;
   }
 
-  :host(:not(:focus-within)) button:hover,
-  button:active,
-  oryx-input:hover,
-  oryx-input:active {
+  button:hover,
+  button:active {
     z-index: 1;
+  }
+
+  oryx-input:focus-within {
+    z-index: 2;
   }
 
   oryx-input:not([hasError]):hover,
