@@ -1,68 +1,111 @@
 import { css, unsafeCSS } from 'lit';
-import { Positions } from './notification-center.model';
+import { NotificationPosition as Position } from './notification-center.model';
+
+const isTop = unsafeCSS(
+  `:is([position='${Position.TopStart}'], [position='${Position.TopCenter}'], [position='${Position.TopEnd}'])`
+);
+const isBottom = unsafeCSS(
+  `:is([position='${Position.BottomStart}'], [position='${Position.BottomCenter}'], [position='${Position.BottomEnd}'])`
+);
 
 export const notificationCenterBaseStyles = css`
   :host {
+    --_max-width: min(
+      calc(100% - (var(--oryx-notification-margin-inline, 0px) * 2)),
+      var(--oryx-notification-max-width, 400px)
+    );
+
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
   }
 
   :host([position]) {
     position: fixed;
     z-index: var(--oryx-notification-z-index, 1001);
-    max-width: 470px;
+    max-width: var(--_max-width);
     width: 100%;
   }
 
-  :host([position='${unsafeCSS(Positions.TOP_START)}']),
-  :host([position='${unsafeCSS(Positions.TOP_END)}']) {
-    flex-direction: column-reverse;
+  :host(${isTop}) {
+    inset-block-start: var(--oryx-notification-margin-block, 40px);
   }
 
-  :host([position='${unsafeCSS(Positions.TOP_START)}']) {
-    top: 40px;
-    inset-inline-start: 30px;
+  :host(${isBottom}) {
+    inset-block-end: var(--oryx-notification-margin-block, 40px);
   }
 
-  :host([position='${unsafeCSS(Positions.TOP_END)}']) {
-    top: 40px;
-    inset-inline-end: 30px;
+  :host([position='${unsafeCSS(Position.TopStart)}']),
+  :host([position='${unsafeCSS(Position.BottomStart)}']) {
+    inset-inline-start: var(--oryx-notification-margin-inline, 30px);
   }
 
-  :host([position='${unsafeCSS(Positions.BOTTOM_START)}']) {
-    bottom: 40px;
-    inset-inline-start: 30px;
+  :host([position='${unsafeCSS(Position.TopCenter)}']),
+  :host([position='${unsafeCSS(Position.BottomCenter)}']) {
+    inset-inline-start: calc((100% - var(--_max-width)) / 2);
   }
 
-  :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) {
-    bottom: 40px;
-    inset-inline-end: 30px;
+  :host([position='${unsafeCSS(Position.TopEnd)}']),
+  :host([position='${unsafeCSS(Position.BottomEnd)}']) {
+    inset-inline-end: var(--oryx-notification-margin-inline, 30px);
   }
 
-  /* TODO: refactor with theme BP's */
-  @media (max-width: 530px) {
-    :host([position='${unsafeCSS(Positions.TOP_END)}']),
-    :host([position='${unsafeCSS(Positions.TOP_START)}']),
-    :host([position='${unsafeCSS(Positions.BOTTOM_START)}']),
-    :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) {
-      max-width: calc(100% - 60px);
-    }
+  oryx-notification {
+    transition: all var(--oryx-transition-time) ease-in-out;
+    transform-origin: bottom center;
+    transform: scaleY(var(--_scale, var(--_scale-y, 1)));
+    margin-inline: var(--_m, 0);
   }
 
-  :host > * {
-    margin-bottom: 10px;
+  oryx-notification:nth-child(1) {
+    z-index: 3;
+  }
+
+  oryx-notification:nth-child(2) {
+    z-index: 2;
+  }
+
+  :host(:is(:not([stackable]), :host([stackable]:hover)))
+    > *:not(:first-child) {
+    margin-block-start: 10px;
+    margin-inline: 0;
+  }
+
+  :host([stackable]:hover) > * {
+    transform: scale(1);
+  }
+
+  :host([stackable]) > * {
+    margin-block-start: var(--_margin-block-start, -45px);
+  }
+
+  :host([stackable]) > *:nth-child(n + 4) {
+    --_margin-block-start: -58px;
+    --_scale-y: 0;
+  }
+
+  :host([stackable]:hover) > *:nth-child(n + 2) {
+    max-height: 1000px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 2) {
+    max-height: 58px;
+  }
+
+  :host([stackable]) > *:nth-child(2) {
+    --_m: 10px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 3) {
+    --_m: 20px;
+  }
+
+  :host([stackable]) > *:nth-child(n + 2) span[slot='subtext'] {
     opacity: 0;
-    transition-property: opacity;
-    transition-duration: var(--oryx-transition-time-long);
+    transition: all var(--oryx-transition-time) ease-in-out;
   }
 
-  :host([position='${unsafeCSS(Positions.BOTTOM_START)}']) :last-child,
-  :host([position='${unsafeCSS(Positions.BOTTOM_END)}']) :last-child {
-    margin-bottom: 0;
-  }
-
-  :host > [visible] {
+  :host([stackable]:hover) > *:nth-child(n + 2) span[slot='subtext'] {
     opacity: 1;
-    transition-duration: var(--oryx-transition-time-medium);
   }
 `;

@@ -46,6 +46,13 @@ export class DefaultHttpHandler implements HttpHandler {
           options: RequestOptions,
           handle: HttpHandlerFn
         ): Observable<Response> => {
+          if (
+            interceptor.shouldInterceptRequest &&
+            !interceptor.shouldInterceptRequest(url, options)
+          ) {
+            return chainFn(url, options, handle);
+          }
+
           return interceptor.intercept(url, options, (url, options) =>
             chainFn(url, options, handle)
           );

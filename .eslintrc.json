@@ -32,6 +32,7 @@
                   "layer:platform",
                   "layer:base",
                   "lib:experience",
+                  "lib:i18n",
                   "lib:ui",
                   "lib:form"
                 ]
@@ -54,7 +55,8 @@
                 "onlyDependOnLibsWithTags": [
                   "lib:themes",
                   "layer:base",
-                  "layer:platform"
+                  "layer:platform",
+                  "lib:ui"
                 ]
               },
               {

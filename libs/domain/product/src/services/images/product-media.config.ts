@@ -1,4 +1,5 @@
-import { MediaContext, ProductMediaContainerSize, Size } from '../../models';
+import { Size } from '@spryker-oryx/ui';
+import { MediaContext, ProductMediaContainerSize } from '../../models';
 
 /**
  * Allows to configure product media dimensions, sizes and context per

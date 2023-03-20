@@ -55,3 +55,9 @@ const Template: Story<ProductCardOptions> = (
 };
 
 export const CardDemo = Template.bind({});
+
+CardDemo.parameters = {
+  chromatic: {
+    delay: 3000,
+  },
+};

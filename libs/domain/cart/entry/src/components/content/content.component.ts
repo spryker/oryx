@@ -1,9 +1,10 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { ComponentMixin } from '@spryker-oryx/experience';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { when } from 'lit/directives/when.js';
 import {
   CartEntryCompositionOptions,
   RemoveByQuantity,
@@ -60,7 +61,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
           >
             <!-- TODO: replace by tooltip -->
             <oryx-icon type="inputError"></oryx-icon>
-            Price
+            ${i18n('cart.entries.price')}
           </cart-entry-price>
         </div>
 
@@ -80,7 +81,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
             `,
             () => html`
               <div class="readonly-quantity">
-                <span>Quantity</span>
+                <span>${i18n('cart.entries.quantity')}</span>
                 <span>${this.options?.quantity}</span>
               </div>
             `
@@ -90,7 +91,7 @@ export class CartEntryContentComponent extends ComponentMixin<CartEntryCompositi
             .price="${this.options?.calculations?.sumPrice}"
             ?loading="${this.options?.updating}"
           >
-            Subtotal
+            ${i18n('cart.entries.subtotal')}
           </cart-entry-price>
         </div>
       </section>

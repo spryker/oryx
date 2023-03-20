@@ -72,7 +72,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
-    const styles = this.getProperties(data).join(';');
+    let styles = this.getProperties(data).join(';');
+    if (data?.style) {
+      styles += data.style;
+    }
     return styles === '' ? undefined : styles;
   }
 
@@ -119,7 +122,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         if (!isNaN(Number(value))) {
           if (!options?.omitUnit) {
             value = addUnit(value, options?.unit);
-          } else if (value === 0 && !options?.addEmpty) {
+          } else if (value === 0 && options?.addEmpty) {
             value = '';
           } else {
             value = String(value);

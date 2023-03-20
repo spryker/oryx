@@ -3,8 +3,8 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     display: flex;
-    position: relative;
     overflow: hidden;
+    position: relative;
     color: white;
     width: var(--width, 100%);
     height: var(--height, 100%);
@@ -23,7 +23,7 @@ export const styles = css`
 
   .overlay {
     position: absolute;
-    top: 0;
+    inset-block-start: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,8 +37,7 @@ export const styles = css`
     font-size: 3.125rem;
     line-height: 3rem;
     font-weight: 500;
-    margin-bottom: 1.6875rem;
-    margin-top: 0;
+    margin-block: 0 1.6875rem;
   }
 
   h2 {

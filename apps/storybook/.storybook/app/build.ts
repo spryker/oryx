@@ -1,4 +1,4 @@
-import { mockAuthFeature } from '@spryker-oryx/auth/mocks';
+import { MockAuthFeature } from '@spryker-oryx/auth/mocks';
 import { mockCartFeature } from '@spryker-oryx/cart/mocks';
 import { mockCheckoutFeature } from '@spryker-oryx/checkout/mocks';
 import { contentFeature } from '@spryker-oryx/content';
@@ -54,7 +54,7 @@ const builder = appBuilder()
   .withFeature(mockSearchFeature)
   .withFeature(mockSiteFeature)
   .withFeature(mockUserFeature)
-  .withFeature(mockAuthFeature)
+  .withFeature(new MockAuthFeature())
   .withFeature(new I18nFeature());
 
 // TODO: Find another way without overriding injectables

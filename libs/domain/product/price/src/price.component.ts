@@ -2,7 +2,12 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import { ProductPriceOptions } from './price.model';
@@ -22,6 +27,7 @@ import { ProductPriceStyles } from './price.styles';
  * the active locale and currency.
  */
 @defaultOptions({ enableOriginalPrice: true, enableVatMessage: true })
+@hydratable(['mouseover', 'focusin'])
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
@@ -53,8 +59,8 @@ export class ProductPriceComponent extends ProductMixin(
           ${i18n(
             `product.price.${
               this.product?.price?.originalPrice?.isNet
-                ? 'excl-vat'
-                : 'incl-vat'
+                ? 'tax-excluded'
+                : 'tax-included'
             }`
           )}
         </span>`

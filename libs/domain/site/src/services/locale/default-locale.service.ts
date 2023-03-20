@@ -1,17 +1,22 @@
+import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BehaviorSubject, filter, map, Observable, of, switchMap } from 'rxjs';
 import { Locale } from '../../models';
 import { StoreService } from '../store';
 import { LocaleService } from './locale.service';
+import { LocaleChanged } from './state';
 
 export class DefaultLocaleService implements LocaleService {
   private active$ = new BehaviorSubject<string | null>(null);
 
-  constructor(protected storeService = inject(StoreService)) {}
+  constructor(
+    protected storeService = inject(StoreService),
+    protected queryService = inject(QueryService)
+  ) {}
 
   getAll(): Observable<Locale[]> {
     return this.storeService.get().pipe(
-      filter(<Store>(response: Store | null): response is Store => !!response),
+      filter(Boolean),
       map((response) => response.locales)
     );
   }
@@ -21,19 +26,34 @@ export class DefaultLocaleService implements LocaleService {
       switchMap((active) =>
         active
           ? of(active)
-          : this.getAll().pipe(map((locales) => locales?.[0].name))
+          : this.getAll().pipe(map((locales) => locales?.[0].code))
       )
     );
   }
 
   set(value: string): void {
+    const prev = this.active$.value;
     this.active$.next(value);
+    if (prev !== value) {
+      this.queryService.emit({ type: LocaleChanged, data: value });
+    }
   }
 
-  formatDate(stamp: string | number): Observable<string> {
+  formatDate(stamp: string | number, showTime = false): Observable<string> {
     return this.get().pipe(
       map((locale) =>
-        Intl.DateTimeFormat(locale.replace('_', '-')).format(new Date(stamp))
+        Intl.DateTimeFormat(
+          locale.replace('_', '-'),
+          showTime
+            ? {
+                hour: '2-digit',
+                minute: '2-digit',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              }
+            : undefined
+        ).format(new Date(stamp))
       )
     );
   }

@@ -53,7 +53,7 @@ describe('ProductListComponent', () => {
     vi.spyOn(mockProductListService, 'get');
 
     element = await fixture(
-      html`<product-list .options="${{ q: 'sony' }}"></product-list>`
+      html`<oryx-product-list .options="${{ q: 'sony' }}"></oryx-product-list>`
     );
   });
 
@@ -79,7 +79,7 @@ describe('ProductListComponent', () => {
     beforeEach(async () => {
       mockProductListPageService.get.mockReturnValue(of([]));
       element = await fixture(
-        html`<product-list .options="${{ q: '' }}"></product-list>`
+        html`<oryx-product-list .options="${{ q: '' }}"></oryx-product-list>`
       );
     });
 

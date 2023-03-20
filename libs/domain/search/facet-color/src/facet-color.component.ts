@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
+import { FacetColorsMapping } from '@spryker-oryx/search';
 import { SearchFacetComponent } from '@spryker-oryx/search/facet';
 import { html, TemplateResult } from 'lit';
-import { FacetColorsMapping } from './facet-color-colors.mapping';
 import { styles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {

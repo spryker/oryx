@@ -10,9 +10,13 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   GITHUB_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
-  IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'development' }}
+  IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
 
 jobs:
   test-format:
@@ -22,6 +26,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Format
         run: npx nx format:check --verbose
@@ -32,6 +37,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Lint
         uses: ./.github/actions/run-optimal
@@ -46,6 +52,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Style Lint All
         uses: ./.github/actions/run-optimal
@@ -60,6 +67,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: TsConfig Paths
         uses: ./.github/actions/run-optimal
@@ -74,6 +82,7 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
       - name: Unit Tests
         uses: ./.github/actions/run-optimal
@@ -85,7 +94,39 @@ jobs:
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/platform
           affectedCmd: npx nx affected:test
           isDev: ${{ env.IS_DEV }}
-  test-visual:
+  test-visual-pr:
+    if: ${{ github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Visual Regression Tests
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha }}
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: npx nx affected --target=visual-regression-pr
+  test-visual-dev:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Visual Regression Tests
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          CHROMATIC_SHA: ${{ github.event.after }}
+          CHROMATIC_BRANCH: development
+        run: npx nx run storybook:visual-regression-branch
+  test-e2e-storefront:
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
@@ -93,12 +134,30 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
+          submodules: recursive
       - uses: ./.github/actions/init
-      - name: Visual Regression Tests
+      - name: Storefront E2E Tests
         uses: ./.github/actions/run-optimal
         env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          STORE: DE
         with:
-          cmd: npx nx run storybook:visual-regression-branch
-          affectedCmd: npx nx affected --target=visual-regression-pr
+          cmd: npm run sf:e2e:headless:ci
+          affectedCmd: npm run sf:e2e:headless:ci:affected
+          isDev: ${{ env.IS_DEV }}
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ./.github/actions/init
+      - name: Build
+        uses: ./.github/actions/run-optimal
+        with:
+          cmd: npx nx run-many --target=build --all --parallel=2
+          affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}

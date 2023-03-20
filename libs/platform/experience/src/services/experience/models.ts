@@ -11,7 +11,13 @@ export interface ComponentData {
 
 export interface Component<C = CompositionProperties> {
   id: string;
+  name?: string;
   type: string;
+  meta?: {
+    route?: string;
+    title?: string;
+    [key: string]: any;
+  };
   components?: Component[];
   options?: { data?: C };
   content?: { data?: any };

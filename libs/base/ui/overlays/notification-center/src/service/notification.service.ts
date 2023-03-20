@@ -1,14 +1,14 @@
 import { NotificationCenterComponent } from '../notification-center.component';
-import { Positions } from '../notification-center.model';
+import { NotificationPosition } from '../notification-center.model';
 import { TAG_NAME } from '../tag';
 
-const ensurePosition = (position?: Positions): string =>
+const ensurePosition = (position?: NotificationPosition): string =>
   position ? `[position=${position}]` : '';
 
 export class NotificationService {
   getCenter(
     parentSelector = 'body',
-    position?: Positions
+    position?: NotificationPosition
   ): NotificationCenterComponent {
     let center = document.querySelector<NotificationCenterComponent>(
       `${parentSelector} ${TAG_NAME}${ensurePosition(position)}`
@@ -23,7 +23,7 @@ export class NotificationService {
 
   protected createCenter(
     parentSelector = 'body',
-    position?: Positions
+    position?: NotificationPosition
   ): NotificationCenterComponent {
     const parent = document.querySelector(parentSelector);
 

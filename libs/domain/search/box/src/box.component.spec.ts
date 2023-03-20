@@ -2,36 +2,43 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
+import { I18nService } from '@spryker-oryx/i18n';
+import { RouterService } from '@spryker-oryx/router';
 import { mockSearchProviders } from '@spryker-oryx/search/mocks';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
-import { SearchBoxOptions } from './box.model';
 
-const mockedOptions: SearchBoxOptions = {
-  placeholder: 'placeholder',
-};
+class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
+}
 
-const brokenOptions: SearchBoxOptions = {
-  placeholder: '',
-};
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of(''));
+}
 
 class MockEBService implements Partial<ExperienceService> {
   getOptions = vi.fn().mockReturnValue(of({}));
+}
+
+class MockI18NService implements Partial<I18nService> {
+  translate = vi.fn().mockReturnValue(of('search'));
 }
 
 const query = 'pro';
 
 describe('SearchBoxComponent', () => {
   let element: SearchBoxComponent;
+  let linkService: MockSemanticLinkService;
+  let routerService: MockRouterService;
 
   const hasControls = (): boolean => {
     return (
       element.renderRoot.querySelectorAll(
-        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]
-    `
+        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]`
       ).length === 2
     );
   };
@@ -71,15 +78,33 @@ describe('SearchBoxComponent', () => {
   });
 
   beforeEach(async () => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: ExperienceService,
           useClass: MockEBService,
         },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
+        {
+          provide: I18nService,
+          useClass: MockI18NService,
+        },
         ...mockSearchProviders,
       ],
     });
+    linkService = testInjector.inject(
+      SemanticLinkService
+    ) as MockSemanticLinkService;
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
     element = await fixture(html`<search-box></search-box>`);
   });
 
@@ -231,7 +256,7 @@ describe('SearchBoxComponent', () => {
     });
   });
 
-  describe('when container with result is scrolled', () => {
+  describe('when container with results is scrolled', () => {
     beforeEach(async () => {
       element = await fixture(html`<search-box></search-box>`);
 
@@ -296,40 +321,6 @@ describe('SearchBoxComponent', () => {
     });
   });
 
-  describe('when options provided', () => {
-    describe('and data is correct', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<search-box .options=${mockedOptions}></search-box>`
-        );
-      });
-
-      it('should apply placeholder to input', () => {
-        const input = element.renderRoot.querySelector('input') as HTMLElement;
-
-        expect(input.getAttribute('placeholder')).toBe(
-          mockedOptions.placeholder
-        );
-      });
-    });
-
-    describe('and data is incorrect', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<search-box .options=${brokenOptions}></search-box>`
-        );
-      });
-
-      it('should not apply placeholder from options to input', () => {
-        const input = element.renderRoot.querySelector('input') as HTMLElement;
-
-        expect(input.getAttribute('placeholder')).not.toBe(
-          brokenOptions.placeholder
-        );
-      });
-    });
-  });
-
   describe('suggestion is provided partially', () => {
     describe('and there are links only', () => {
       beforeEach(async () => {
@@ -383,6 +374,51 @@ describe('SearchBoxComponent', () => {
           '[slot="option"] section'
         );
         expect(sections?.length).toBe(1);
+      });
+    });
+  });
+
+  describe('when search is submitted', () => {
+    describe('and query is empty string', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<search-box></search-box>`);
+        element.renderRoot
+          .querySelector('oryx-typeahead')
+          ?.toggleAttribute('open', true);
+        element.renderRoot
+          .querySelector('form')
+          ?.dispatchEvent(new Event('submit'));
+      });
+
+      it('should get the link from service without params', () => {
+        expect(linkService.get).toHaveBeenCalledWith({
+          type: SemanticLinkType.ProductList,
+        });
+      });
+
+      it('should navigate by link', () => {
+        expect(routerService.navigate).toHaveBeenCalled();
+      });
+
+      it('should close typeahead', () => {
+        expect(element).toContainElement('oryx-typeahead:not([open])');
+      });
+    });
+
+    describe('and query is provided', () => {
+      const q = 'test';
+      beforeEach(async () => {
+        element = await fixture(html`<search-box .query=${q}></search-box>`);
+        element.renderRoot
+          .querySelector('form')
+          ?.dispatchEvent(new Event('submit'));
+      });
+
+      it('should get the link from service with params', () => {
+        expect(linkService.get).toHaveBeenCalledWith({
+          type: SemanticLinkType.ProductList,
+          params: { q },
+        });
       });
     });
   });

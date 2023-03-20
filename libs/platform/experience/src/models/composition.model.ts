@@ -19,6 +19,12 @@ export enum CompositionLayout {
   Grid = 'grid',
   Flex = 'flex',
   Text = 'text',
+  Tabular = 'tabular',
+}
+
+export const enum CompositionLayoutOrientation {
+  horizontal = 'horizontal',
+  Vertical = 'vertical',
 }
 
 export interface StyleProperties {
@@ -159,6 +165,8 @@ export interface StyleProperties {
    * Rounds the corners of an element's outer border edge.
    */
   radius?: string;
+
+  style?: string;
 }
 
 export const enum LayoutAlign {

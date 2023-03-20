@@ -30,10 +30,14 @@ async function vitestExecutor(options, context) {
             '**/index.ts',
             '**/.constants.ts',
             '**/*.spec.ts',
-            '**/*.styles.ts',
+            '**/*mock*.ts',
             '**/*.stories.ts',
+            '**/stories/*.ts',
+            '**/*.schema.ts',
+            '**/*.styles.ts',
             '**/*.def.ts',
             '**/*.model.ts',
+            '**/components.provider.ts',
         ]);
         // Don't remove this log, it is used in Unit Tests coverage reports analysis
         // We should be able to see which files are included in the analysis to not miss something

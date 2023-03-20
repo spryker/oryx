@@ -12,11 +12,9 @@ import {
   LayoutBuilder,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { componentsProvider } from '../../services/components.provider';
 import { MockRouterService } from './mock-router.service';
 
 export const mockExperienceProviders: Provider[] = [
-  componentsProvider,
   {
     provide: ContentBackendUrl,
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),

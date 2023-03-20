@@ -2,10 +2,13 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { ContextService } from './context.service';
+import { of } from 'rxjs';
+import { ContextService, ContextServiceFallback } from './context.service';
 import { DefaultContextService } from './default-context.service';
 
 const mockKey = 'mockKey';
+const mockKeyFallback = 'mockKeyFallback';
+const mockFallbackValue = 'mockFallbackValue';
 const mockObject = {
   name: 'name',
   value: 'value',
@@ -43,6 +46,10 @@ describe('ContextService', () => {
         {
           provide: ContextService,
           useClass: DefaultContextService,
+        },
+        {
+          provide: `${ContextServiceFallback}${mockKeyFallback}`,
+          useValue: of(mockFallbackValue),
         },
       ],
     });
@@ -204,6 +211,26 @@ describe('ContextService', () => {
         .subscribe(mockCallback);
 
       expect(mockCallback).toHaveBeenCalledWith(mockObject);
+    });
+  });
+
+  describe('when context is not provided', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <overlay-parent-context>
+          <test-child-context></test-child-context>
+        </overlay-parent-context>
+      `);
+    });
+
+    it('should use fallback value if provided', () => {
+      const mockCallback = vi.fn();
+
+      testChildContext()
+        .context.get(testChildContext(), mockKeyFallback)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
     });
   });
 });

@@ -3,7 +3,6 @@ import {
   ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { Observable, of } from 'rxjs';
 
 export class MockProductListService implements Partial<ProductListService> {
@@ -24,10 +23,8 @@ export class MockProductListService implements Partial<ProductListService> {
     'sort',
   ];
 
-  get(
-    qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<ProductList>> {
-    return of(null);
+  get(qualifier: ProductListQualifier): Observable<ProductList | undefined> {
+    return of(undefined);
   }
 
   getSearchParams = (

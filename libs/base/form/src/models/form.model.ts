@@ -1,3 +1,5 @@
+import { DirectiveResult } from 'lit/directive';
+
 export interface FormFieldAttributes {
   type: string;
   [key: string]: string | number;
@@ -22,10 +24,10 @@ export const enum FormFieldType {
   Color = 'color',
 }
 
-export interface FormFieldDefinition<K = string> {
+export interface FormFieldDefinition<K = string>
+  extends Partial<FieldValidationPattern> {
   id: K;
   type?: FormFieldType | string;
-  title?: string;
   label?: string;
   floatLabel?: boolean;
   required?: boolean;
@@ -45,3 +47,8 @@ export interface FormFieldDefinition<K = string> {
 }
 
 export type FormValues = Record<string, string | boolean>;
+
+export interface FieldValidationPattern {
+  pattern?: string;
+  title?: DirectiveResult | string;
+}

@@ -6,7 +6,7 @@ import { ContentVideoOptions } from './video.model';
 export default {
   title: `${storybookPrefix}/Video`,
   args: {
-    src: 'https://d3g7htsbjjywiv.cloudfront.net/assets/common/images/media-page/redesigned-footage/footage-sizzle.webm',
+    src: 'https://www.youtube.com/watch?v=m6pG6fubp9g&t=5s',
   },
   argTypes: {
     src: { control: { type: 'text' } },
@@ -18,6 +18,9 @@ export default {
     preload: {
       control: { type: 'select', options: ['auto', 'metadata', 'none'] },
     },
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 } as Meta;
 

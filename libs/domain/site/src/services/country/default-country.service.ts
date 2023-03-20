@@ -11,7 +11,7 @@ export class DefaultCountryService implements CountryService {
 
   getAll(): Observable<Country[]> {
     return this.storeService.get().pipe(
-      filter(<Store>(response: Store | null): response is Store => !!response),
+      filter(Boolean),
       map((response) => response.countries)
     );
   }

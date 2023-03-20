@@ -1,18 +1,19 @@
-import { HttpErrorResponse } from '@spryker-oryx/core';
+import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { NullableGeneric } from '@spryker-oryx/utilities';
-import { Observable, ReplaySubject } from 'rxjs';
+import { CurrencyChanged, LocaleChanged } from '@spryker-oryx/site';
+import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 import { ProductListAdapter } from './adapter';
 import { ProductListService } from './product-list.service';
-
-export interface ProductListData {
-  value: ReplaySubject<NullableGeneric<ProductList>>;
-  error: ReplaySubject<NullableGeneric<HttpErrorResponse>>;
-}
+import { ProductsLoaded } from './state';
 
 export class DefaultProductListService implements ProductListService {
-  protected products = new Map<string, ProductListData>();
+  protected productListQuery = createQuery({
+    loader: (q: ProductListQualifier) => this.adapter.get(q),
+    onLoad: [ProductsLoaded],
+    refreshOn: [LocaleChanged, CurrencyChanged],
+  });
+
   protected readonly productListSearchParams: Array<
     keyof ProductListQualifier
   > = [
@@ -32,10 +33,8 @@ export class DefaultProductListService implements ProductListService {
 
   constructor(protected adapter = inject(ProductListAdapter)) {}
 
-  get(
-    qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<ProductList>> {
-    return this.getData(qualifier).value;
+  get(qualifier: ProductListQualifier): Observable<ProductList | undefined> {
+    return this.productListQuery.get(qualifier);
   }
 
   getSearchParams(qualifier: ProductListQualifier): Record<string, string> {
@@ -54,39 +53,9 @@ export class DefaultProductListService implements ProductListService {
     );
   }
 
-  getError(
+  getState(
     qualifier: ProductListQualifier
-  ): Observable<NullableGeneric<HttpErrorResponse>> {
-    return this.getData(qualifier).error;
-  }
-
-  protected getData(qualifier: ProductListQualifier): ProductListData {
-    const key = this.adapter.getKey(qualifier);
-
-    this.initProducts(qualifier, key);
-    return this.products.get(key) as ProductListData;
-  }
-
-  protected initProducts(qualifier: ProductListQualifier, key: string): void {
-    if (this.products.has(key)) {
-      return;
-    }
-
-    this.products.set(key, {
-      value: new ReplaySubject<NullableGeneric<ProductList>>(1),
-      error: new ReplaySubject<NullableGeneric<HttpErrorResponse>>(1),
-    });
-
-    const data = this.products.get(key) as ProductListData;
-    this.adapter.get(qualifier).subscribe({
-      next: (productList) => {
-        data.value.next(productList);
-        data.error.next(null);
-      },
-      error: (error: HttpErrorResponse) => {
-        data.error.next(error);
-        data.value.next(null);
-      },
-    });
+  ): Observable<QueryState<ProductList>> {
+    return this.productListQuery.getState(qualifier);
   }
 }

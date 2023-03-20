@@ -1,3 +1,4 @@
+import { rootInjectable } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import {
   ThemeData,
@@ -27,14 +28,19 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
     programmaticLoad: true,
   };
   protected theme?: ThemePlugin;
-  rootSelector = '';
+  protected rootSelector = '';
 
   constructor(
-    componentsInfo: ComponentsInfo,
-    public options: ComponentsOptions
+    protected componentsInfo: ComponentsInfo,
+    protected options: ComponentsOptions
   ) {
-    super();
+    super(options);
     this.registerComponents(componentsInfo);
+    rootInjectable.inject(
+      typeof this.options.root === 'string'
+        ? this.options.root
+        : this.processDef(this.options.root).name
+    );
   }
 
   getName(): string {
@@ -44,10 +50,7 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
   async apply(app: App): Promise<void> {
     this.theme = app.findPlugin(ThemePlugin);
 
-    this.rootSelector =
-      typeof this.options.root === 'string'
-        ? this.options.root
-        : this.processDef(this.options.root).name;
+    const root = rootInjectable.get();
 
     if (this.options.preload) {
       await this.preloadComponents();
@@ -55,11 +58,11 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       return;
     }
 
-    const rootElement = document.querySelector?.(this.rootSelector);
+    const rootElement = document.querySelector?.(root);
 
     if (!rootElement) {
       throw new ComponentsPluginError(
-        `Cannot find root element by selector '${this.rootSelector}'!`
+        `Cannot find root element by selector '${root}'!`
       );
     }
 
@@ -73,6 +76,10 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       const def = this.processDef(info);
       this.componentDefMap.set(def.name, def);
     });
+  }
+
+  getOptions(): ComponentsOptions {
+    return this.options;
   }
 
   async loadComponent(name: string): Promise<ComponentType | undefined> {

@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { AlertType } from '@spryker-oryx/ui';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { ChipComponent } from './chip.component';
 import { chipComponent } from './chip.def';
@@ -17,25 +18,29 @@ describe('ChipComponent', () => {
   });
 
   describe(`when appearance is provided`, () => {
-    Object.values(['default', 'success', 'info', 'warning', 'error']).forEach(
-      (appearance) => {
-        describe(`and the appearance is "${appearance}"`, () => {
-          beforeEach(async () => {
-            element = await fixture(
-              html`<oryx-chip .appearance=${appearance}></oryx-chip>`
-            );
-          });
-
-          it('passes the a11y audit', async () => {
-            await expect(element).shadowDom.to.be.accessible(a11yConfig);
-          });
-
-          it('should reflect the type attribute', () => {
-            expect(element?.getAttribute('appearance')).toBe(appearance);
-          });
+    [
+      'default',
+      AlertType.Info,
+      AlertType.Success,
+      AlertType.Warning,
+      AlertType.Error,
+    ].forEach((appearance) => {
+      describe(`and the appearance is "${appearance}"`, () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-chip .appearance=${appearance}></oryx-chip>`
+          );
         });
-      }
-    );
+
+        it('passes the a11y audit', async () => {
+          await expect(element).shadowDom.to.be.accessible(a11yConfig);
+        });
+
+        it('should reflect the type attribute', () => {
+          expect(element?.getAttribute('appearance')).toBe(appearance);
+        });
+      });
+    });
   });
 
   describe(`when invert is provided`, () => {

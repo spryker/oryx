@@ -1,19 +1,24 @@
 {
   "name": "libs",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "",
   "private": true,
   "author": "",
   "scripts": {
     "prerelease": "npm run pack",
+    "prerelease-from-tag": "npm run pack",
+    "prerelease-tag": "npm run pack",
+    "prerelease-branch": "npm run pack",
+    "prerelease-from-packages": "npm run pack",
     "release": "lerna publish --yes",
     "release-from-tag": "npm run release -- --conventional-graduate",
     "release-tag": "npm run release -- --conventional-prerelease --dist-tag $RELEASE_TAG --preid $RELEASE_TAG",
     "release-branch": "node ../tools/release/release.js",
+    "release-from-packages": "lerna publish from-package --yes",
     "pack": "run-s pack:*",
     "prepack:libs": "npm run clean:dist",
     "pack:libs": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/pack-lib.js",
-    "pack:files": "node ../tools/utils/multi-copy.js LICENSE '../dist/libs/*/*'",
+    "pack:files": "node ../tools/utils/multi-copy.js ../LICENSE '../dist/libs/*/*'",
     "postversion": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/update-lib.js",
     "clean:dist": "rm -rf */dist"
   }

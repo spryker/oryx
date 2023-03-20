@@ -1,9 +1,8 @@
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 import { Pagination, ProductList } from '../models';
 
 export interface ProductListPageService {
-  get(): Observable<NullableGeneric<ProductList>>;
+  get(): Observable<ProductList | undefined>;
   getPagination(): Observable<Pagination | undefined>;
 }
 

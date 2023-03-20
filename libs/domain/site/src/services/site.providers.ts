@@ -1,11 +1,15 @@
-import { ErrorHandler, injectEnv } from '@spryker-oryx/core';
+import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
-import { componentsProvider } from './components.provider';
 import { CountryService, DefaultCountryService } from './country';
-import { CurrencyService, DefaultCurrencyService } from './currency';
+import {
+  CurrencyService,
+  CurrentCurrencyInterceptor,
+  DefaultCurrencyService,
+} from './currency';
 import { SiteErrorHandler } from './error-handling';
 import { DefaultLocaleService, LocaleService } from './locale';
+import { AcceptLanguageInterceptor } from './locale/accept-language.interceptor';
 import {
   DefaultNotificationService,
   NotificationService,
@@ -26,7 +30,6 @@ declare global {
 }
 
 export const siteProviders: Provider[] = [
-  componentsProvider,
   {
     provide: 'SCOS_BASE_URL',
     useFactory: () => injectEnv('SCOS_BASE_URL', ''),
@@ -77,4 +80,17 @@ export const siteProviders: Provider[] = [
     useClass: DefaultSalutationService,
   },
   ...storeNormalizer,
+  {
+    provide: HttpInterceptor,
+    useClass: AcceptLanguageInterceptor,
+  },
+  {
+    provide: HttpInterceptor,
+    useClass: CurrentCurrencyInterceptor,
+  },
+  // TODO: uncomment when CORs header issue is fixed
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: StoreInterceptor,
+  // },
 ];

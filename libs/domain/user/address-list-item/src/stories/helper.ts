@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { AddressListItemOptions } from '../address-list-item.model';
 
 export const renderSelector = (
