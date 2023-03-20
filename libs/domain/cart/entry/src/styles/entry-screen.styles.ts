@@ -24,7 +24,7 @@ const smallScreen = css`
     justify-items: start;
   }
 
-  span.price {
+  .entry-price {
     font-size: var(--oryx-typography-h3-size);
     font-weight: var(--oryx-typography-h3-weight);
     line-height: var(--oryx-typography-h3-line);

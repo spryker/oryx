@@ -4,6 +4,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductService } from '@spryker-oryx/product';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType, Size } from '@spryker-oryx/ui';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import {
   asyncState,
   hydratable,
@@ -107,7 +108,7 @@ export class CartEntriesComponent extends CartComponentMixin(
     const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
     this.cartService.deleteEntry({ groupKey }).subscribe(() => {
       if (this.componentOptions.notifyOnRemove) {
-        this.notify('cart.confirm-removed-<item>', sku);
+        this.notify('cart.confirm-removed', sku);
       }
     });
   }
@@ -136,8 +137,8 @@ export class CartEntriesComponent extends CartComponentMixin(
 
       <oryx-button
         slot="footer-more"
-        type="primary"
-        size=${Size.Sm}
+        .type=${ButtonType.Critical}
+        .size=${Size.Sm}
         @click=${() => this.removeEntry(groupKey)}
       >
         <button value="remove">${i18n(`cart.entry.remove`)}</button>
@@ -146,6 +147,8 @@ export class CartEntriesComponent extends CartComponentMixin(
   }
 
   protected resetConfirmation(): void {
+    console.log(this.entries);
+    this.requestUpdate();
     this.removeGroupKey = undefined;
   }
 

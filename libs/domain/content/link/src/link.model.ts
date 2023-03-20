@@ -32,4 +32,6 @@ export interface ContentLinkOptions {
    * we must avoid this behaviour.
    */
   multiLine?: boolean;
+
+  transparent?: boolean;
 }

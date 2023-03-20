@@ -44,6 +44,10 @@ const pricing = css`
     grid-column: initial;
   }
 
+  oryx-product-price::part(original) {
+    grid-column: 2;
+  }
+
   .item-price oryx-product-price {
     gap: inherit;
   }
@@ -103,5 +107,10 @@ export const cartEntryStyles = css`
     grid-row: 2;
     grid-column: 2;
     justify-content: start;
+  }
+
+  oryx-product-title {
+    --oryx-link-color: currentColor;
+    --oryx-link-color-hover: currentColor;
   }
 `;

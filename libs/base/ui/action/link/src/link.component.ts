@@ -15,6 +15,7 @@ export class LinkComponent
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ reflect: true }) icon?: Icons | string;
   @property({ reflect: true }) multiLine?: boolean;
+  @property({ reflect: true }) transparent?: boolean;
 
   protected render(): TemplateResult {
     return html`

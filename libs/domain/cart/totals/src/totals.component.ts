@@ -15,7 +15,6 @@ import {
 import { styles } from './totals.styles';
 
 @defaultOptions({
-  discountRowsAppearance: DiscountRowsAppearance.Inline,
   enableDiscounts: true,
   enableExpense: true,
   enableSubtotal: true,

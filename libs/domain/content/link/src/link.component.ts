@@ -58,6 +58,8 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
   }
 
   protected override render(): TemplateResult {
+    const { disabled, icon, multiLine, transparent } =
+      this.componentOptions ?? {};
     return html`${asyncValue(this.data$, ([options, link]) => {
       if (!link) {
         return html``;
@@ -66,16 +68,17 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
       if (options.button) {
         return html`<oryx-button
           part="wrapper"
-          icon="${ifDefined(options.icon?.trim())}"
+          icon="${ifDefined(icon?.trim())}"
         >
           ${this.renderLink(link, options)}
         </oryx-button>`;
       }
 
       return html`<oryx-link
-        icon="${ifDefined(options.icon?.trim())}"
-        ?disabled=${options?.disabled}
-        ?multiLine=${options.multiLine}
+        icon="${ifDefined(icon?.trim())}"
+        ?disabled=${disabled}
+        ?multiLine=${multiLine}
+        ?transparent=${transparent}
       >
         ${this.renderLink(link, options)}
       </oryx-link>`;

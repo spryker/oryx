@@ -9,6 +9,15 @@ export const linkStyles = css`
     color: var(--oryx-link-color, var(--oryx-color-primary-300));
   }
 
+  :host([transparent]) ::slotted(a) {
+    display: contents;
+  }
+
+  :host([transparent]),
+  :host([transparent]) ::slotted(a:hover) {
+    color: currentColor;
+  }
+
   oryx-icon,
   ::slotted(oryx-icon) {
     position: absolute;

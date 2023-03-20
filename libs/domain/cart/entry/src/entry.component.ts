@@ -5,7 +5,11 @@ import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
-import { NotificationService, PricingService } from '@spryker-oryx/site';
+import {
+  NotificationService,
+  PricingService,
+  SemanticLinkType,
+} from '@spryker-oryx/site';
 import { Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
@@ -71,9 +75,17 @@ export class CartEntryComponent extends CartComponentMixin(
     if (!this.entry) return;
 
     return html`
-      <oryx-product-media
-        .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
-      ></oryx-product-media>
+      <oryx-content-link
+        .options=${{
+          type: SemanticLinkType.Product,
+          id: this.entry.sku,
+          transparent: true,
+        }}
+      >
+        <oryx-product-media
+          .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
+        ></oryx-product-media>
+      </oryx-content-link>
 
       ${this.renderDetails()} ${this.renderActions()} ${this.renderPricing()}
     `;
@@ -81,7 +93,7 @@ export class CartEntryComponent extends CartComponentMixin(
 
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
-      <oryx-product-title></oryx-product-title>
+      <oryx-product-title .options=${{ link: true }}></oryx-product-title>
 
       ${when(
         this.componentOptions?.enableSku,
@@ -108,18 +120,27 @@ export class CartEntryComponent extends CartComponentMixin(
   }
 
   protected renderPricing(): TemplateResult | void {
+    if (this.readonly) {
+      return html`
+        <section class="pricing">
+          ${i18n('cart.entry.<quantity>-items', {
+            quantity: this.entry?.quantity,
+          })}
+          <span class="entry-price">${this.formattedPrice}</span>
+        </section>
+      `;
+    }
+
     return html`
       <section class="pricing">
-        ${this.readonly
-          ? html`this.entry?.quantity`
-          : html`<oryx-cart-quantity-input
-              .min=${Number(!this.componentOptions?.removeByQuantity)}
-              .max=${this.available ?? Infinity}
-              .value=${this.entry?.quantity}
-              .decreaseIcon=${this.decreaseIcon}
-              submitOnChange
-              @submit=${this.onSubmit}
-            ></oryx-cart-quantity-input>`}
+        <oryx-cart-quantity-input
+          .min=${Number(!this.componentOptions?.removeByQuantity)}
+          .max=${this.available ?? Infinity}
+          .value=${this.entry?.quantity}
+          .decreaseIcon=${this.decreaseIcon}
+          submitOnChange
+          @submit=${this.onSubmit}
+        ></oryx-cart-quantity-input>
         <span class="entry-price">${this.formattedPrice}</span>
         <div class="item-price">
           <span>${i18n('cart.entry.item-price')}</span>
@@ -129,39 +150,6 @@ export class CartEntryComponent extends CartComponentMixin(
         </div>
       </section>
     `;
-  }
-
-  // TODO
-  protected onRequestRemove(): void {
-    // this.requestRemove = true;
-    // if (this.componentOptions.silentRemove) {
-    //   this.onRemove();
-    //   return;
-    // }
-    // if (!this.requiresConfirmation) {
-    //   this.requiresConfirmation = true;
-    // } else {
-    //   this.shadowRoot?.querySelector<ModalComponent>('oryx-modal')?.open();
-    // }
-  }
-
-  protected renderConfirmation(): TemplateResult {
-    return html`<oryx-modal
-      open
-      enableFooter
-      enableCloseButtonInHeader
-      heading=${i18n('cart.entry.confirmation.heading')}
-    >
-      ${i18n(`cart.entry.confirm-remove-<item>`, { item: '"entry name"' })}
-      <oryx-button
-        slot="footer-more"
-        type="primary"
-        size="small"
-        @click=${this.onRemove}
-      >
-        <button value="remove">${i18n(`cart.entry.remove`)}</button>
-      </oryx-button>
-    </oryx-modal>`;
   }
 
   protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {
@@ -199,133 +187,4 @@ export class CartEntryComponent extends CartComponentMixin(
       return 'trash';
     }
   }
-
-  // <!-- ?disabled=${this.disabled || this.options?.disabled} -->
-
-  //
-  // protected options$ = new ContentController(this).getOptions();
-
-  // protected triggerConfirmationRequired$ = new BehaviorSubject(false);
-  // protected confirmation$ = combineLatest([
-  //   this.triggerConfirmationRequired$,
-  //   this.options$,
-  // ]).pipe(
-  //   map(([confirmationRequired, entry]) => ({ confirmationRequired, entry }))
-  // );
-
-  // protected triggerShowOptions$ = new Subject<boolean>();
-  // protected showOptions$ = merge(
-  //   this.triggerShowOptions$,
-  //   this.options$.pipe(
-  //     take(1),
-  //     map(({ defaultExpandedOptions }) => !!defaultExpandedOptions)
-  //   )
-  // );
-
-  // protected toggleOptions(e: CustomEvent): void {
-  //   this.triggerShowOptions$.next(e.detail.state);
-  // }
-
-  // protected dispatchRemoveEvent(): void {
-  //   this.dispatchEvent(
-  //     new CustomEvent(REMOVE_EVENT, { bubbles: true, composed: true })
-  //   );
-  // }
-
-  // protected onQuantityChange(
-  //   e: CustomEvent<QuantityEventDetail>,
-  //   isInstant: boolean
-  // ): void {
-  //   if (e.detail.quantity === 0) {
-  //     e.stopPropagation();
-
-  //     if (isInstant) {
-  //       this.dispatchRemoveEvent();
-  //       return;
-  //     }
-
-  //     this.triggerConfirmationRequired$.next(true);
-  //   }
-  // }
-
-  // protected onCancelRemoving(): void {
-  //   this.triggerConfirmationRequired$.next(false);
-  // }
-
-  // protected override render(): TemplateResult {
-  //   return html`${asyncValue(this.options$, (entry) => {
-  //     const { hidePreview, silentRemove, selectedProductOptions } = entry;
-
-  //     const hasOptions = !!selectedProductOptions?.length;
-
-  //     return html`
-  //       ${asyncValue(this.confirmation$, ({ confirmationRequired, entry }) => {
-  //         if (entry.readonly) {
-  //           return html``;
-  //         }
-
-  //         return html`${when(
-  //           confirmationRequired,
-  //           () => html`
-  //             <cart-entry-confirmation
-  //               .options=${entry}
-  //               @remove=${(): void =>
-  //                 this.onRemove(entry.silentRemove || confirmationRequired)}
-  //               @cancel=${this.onCancelRemoving}
-  //             ></cart-entry-confirmation>
-  //           `,
-  //           () => html`
-  //             <oryx-icon-button size="small">
-  //               <button
-  //                 @click=${(): void =>
-  //                   this.onRemove(entry.silentRemove || confirmationRequired)}
-  //                 aria-label="remove"
-  //               >
-  //                 <oryx-icon
-  //                   .type=${entry.removeButtonIcon ?? 'close'}
-  //                 ></oryx-icon>
-  //               </button>
-  //             </oryx-icon-button>
-  //           `
-  //         )}`;
-  //       })}
-
-  //       <div class="entry">
-  //         ${when(
-  //           !hidePreview,
-  //           () => html`
-  //             <oryx-product-media
-  //               .options=${{
-  //                 containerSize: ProductMediaContainerSize.Thumbnail,
-  //               }}
-  //             ></oryx-product-media>
-  //           `
-  //         )}
-
-  //         <section>
-  //           <cart-entry-content
-  //             .options=${entry}
-  //             ?disabled=${asyncValue(this.triggerConfirmationRequired$)}
-  //             @submit=${(e: CustomEvent): void =>
-  //               this.onQuantityChange(e, !!silentRemove)}
-  //           ></cart-entry-content>
-
-  //           ${when(
-  //             hasOptions,
-  //             () =>
-  //               html`
-  //                 <cart-entry-options
-  //                   .options=${entry}
-  //                   ?show-options=${asyncValue(this.showOptions$)}
-  //                   @toggle=${this.toggleOptions}
-  //                 ></cart-entry-options>
-  //               `
-  //           )}
-  //         </section>
-  //       </div>
-
-  //       <cart-entry-totals .options=${entry}></cart-entry-totals>
-  //     `;
-  //   })}`;
-  // }
 }
