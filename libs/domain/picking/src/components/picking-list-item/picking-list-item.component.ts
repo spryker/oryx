@@ -68,7 +68,7 @@ export class PickingListItemComponent
     );
   }
 
-  protected override render(): TemplateResult | undefined {
+  protected override render(): TemplateResult | void {
     if (!this.pickingList) return;
 
     return html`
