@@ -28,11 +28,16 @@ export const linkStyles = css`
 
   ::slotted(a) {
     border-radius: var(--oryx-border-radius-large);
-    padding: 4px 8px;
     text-decoration: none;
     outline: 0;
     border: solid 1px transparent;
     color: currentColor;
+  }
+
+  ::slotted(*),
+  oryx-icon,
+  ::slotted(oryx-icon) {
+    padding: 4px 8px;
   }
 
   :host(:not([multiLine])) ::slotted(a) {
