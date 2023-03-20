@@ -1,5 +1,56 @@
 import { css } from 'lit';
 
+const pricing = css`
+  section.pricing {
+    display: grid;
+    grid-row: 1 / span 2;
+    grid-column: 3;
+    justify-items: end;
+    padding-inline-end: 20px;
+  }
+
+  oryx-product-price,
+  oryx-product-price::part(original) {
+    // font-weight: inherit;
+    color: inherit;
+    // font-size: 0.857rem;
+  }
+
+  oryx-product-price {
+    display: contents;
+  }
+
+  .entry-price {
+    font-size: var(--oryx-typography-h6-size);
+    font-weight: var(--oryx-typography-h6-weight);
+    line-height: var(--oryx-typography-h6-line);
+  }
+
+  .item-price {
+    font-size: var(--oryx-typography-small-size);
+    font-weight: var(--oryx-typography-small-weight);
+    line-height: var(--oryx-typography-small-line);
+    color: var(--oryx-color-neutral-300);
+    display: grid;
+    align-items: center;
+    grid-auto-flow: column;
+    gap: 4px;
+  }
+
+  oryx-product-price,
+  oryx-product-price::part(sales),
+  oryx-product-price::part(original) {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    grid-column: initial;
+  }
+
+  .item-price oryx-product-price {
+    gap: inherit;
+  }
+`;
+
 export const cartEntryStyles = css`
   :host {
     --image-fit: cover;
@@ -9,10 +60,6 @@ export const cartEntryStyles = css`
     grid-template-rows: auto 1fr;
     column-gap: 16px;
     padding-block: 20px 28px;
-  }
-
-  :host {
-    border-bottom: 1px solid var(--oryx-color-canvas-300);
   }
 
   .product {
@@ -37,49 +84,19 @@ export const cartEntryStyles = css`
     grid-column: 2;
   }
 
-  .details,
-  .price {
+  section {
     display: grid;
   }
 
-  .actions,
-  oryx-product-price {
+  ${pricing}
+
+  section.actions {
     display: grid;
     grid-auto-flow: column;
   }
 
-  oryx-product-price,
-  oryx-product-price::part(original) {
-    font-weight: inherit;
-    color: inherit;
-    font-size: 0.857rem;
-  }
-
-  oryx-product-price {
-    display: contents;
-  }
-
-  oryx-product-media,
-  .price {
+  oryx-product-media {
     grid-row: 1 / span 2;
-  }
-
-  .item-price {
-    color: var(--oryx-color-neutral-300);
-    display: grid;
-    align-items: center;
-    grid-auto-flow: column;
-    gap: 4px;
-  }
-
-  oryx-product-price::part(original) {
-    grid-column: 2;
-  }
-
-  .price {
-    grid-column: 3;
-    justify-items: end;
-    padding-inline-end: 20px;
   }
 
   oryx-cart-quantity-input {

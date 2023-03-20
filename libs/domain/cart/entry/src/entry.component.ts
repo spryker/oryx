@@ -5,7 +5,7 @@ import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
-import { PricingService } from '@spryker-oryx/site';
+import { NotificationService, PricingService } from '@spryker-oryx/site';
 import { Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
@@ -38,12 +38,14 @@ export class CartEntryComponent extends CartComponentMixin(
   @property() available?: number;
   @property({ type: Boolean }) readonly?: boolean;
 
-  @state() protected entry?: CartEntry;
+  @state() entry?: CartEntry;
 
   protected context = new ContextController(this);
   protected pricingService = resolve(PricingService);
 
   @state() formattedPrice?: string;
+
+  protected notificationService = resolve(NotificationService);
 
   protected willUpdate(
     changedProperties: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
@@ -72,44 +74,20 @@ export class CartEntryComponent extends CartComponentMixin(
       <oryx-product-media
         .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
       ></oryx-product-media>
-      <div class="details">
-        <oryx-product-title
-          .options=${{ tag: 'h3', smAppearance: 'h5', appearance: 'none' }}
-        ></oryx-product-title>
 
-        ${when(
-          this.componentOptions?.enableSku,
-          () => html`<oryx-product-id></oryx-product-id>`
-        )}
-      </div>
-
-      ${this.renderActions()}
-
-      <div class="price">
-        ${when(
-          !this.readonly,
-          () => html`<oryx-cart-quantity-input
-            .min=${!this.componentOptions?.removeByQuantity ? 1 : 0}
-            .max=${this.available ?? Infinity}
-            .value=${this.entry?.quantity}
-            .decreaseIcon=${this.decreaseIcon}
-            submitOnChange
-            @submit=${this.onSubmit}
-          ></oryx-cart-quantity-input>`,
-          () => this.entry?.quantity
-        )}
-
-        <oryx-heading tag="h6" sm-appearance="h3"
-          >${this.formattedPrice}</oryx-heading
-        >
-        <div class="item-price">
-          <span>${i18n('cart.entry.item-price')}</span>
-          <oryx-product-price
-            .options=${{ enableVatMessage: false }}
-          ></oryx-product-price>
-        </div>
-      </div>
+      ${this.renderDetails()} ${this.renderActions()} ${this.renderPricing()}
     `;
+  }
+
+  protected renderDetails(): TemplateResult | void {
+    return html`<section class="details">
+      <oryx-product-title></oryx-product-title>
+
+      ${when(
+        this.componentOptions?.enableSku,
+        () => html`<oryx-product-id></oryx-product-id>`
+      )}
+    </section>`;
   }
 
   protected renderActions(): TemplateResult | void {
@@ -117,7 +95,7 @@ export class CartEntryComponent extends CartComponentMixin(
 
     return html`
       <div class="actions">
-        <oryx-icon-button size=${Size.Md} @click=${this.onRequestRemove}>
+        <oryx-icon-button size=${Size.Md} @click=${this.onRemove}>
           <button aria-label="remove">
             <oryx-icon type="trash"></oryx-icon>
           </button>
@@ -129,8 +107,33 @@ export class CartEntryComponent extends CartComponentMixin(
     `;
   }
 
+  protected renderPricing(): TemplateResult | void {
+    return html`
+      <section class="pricing">
+        ${this.readonly
+          ? html`this.entry?.quantity`
+          : html`<oryx-cart-quantity-input
+              .min=${Number(!this.componentOptions?.removeByQuantity)}
+              .max=${this.available ?? Infinity}
+              .value=${this.entry?.quantity}
+              .decreaseIcon=${this.decreaseIcon}
+              submitOnChange
+              @submit=${this.onSubmit}
+            ></oryx-cart-quantity-input>`}
+        <span class="entry-price">${this.formattedPrice}</span>
+        <div class="item-price">
+          <span>${i18n('cart.entry.item-price')}</span>
+          <oryx-product-price
+            .options=${{ enableVatMessage: false }}
+          ></oryx-product-price>
+        </div>
+      </section>
+    `;
+  }
+
   // TODO
   protected onRequestRemove(): void {
+    // this.requestRemove = true;
     // if (this.componentOptions.silentRemove) {
     //   this.onRemove();
     //   return;
@@ -142,9 +145,33 @@ export class CartEntryComponent extends CartComponentMixin(
     // }
   }
 
+  protected renderConfirmation(): TemplateResult {
+    return html`<oryx-modal
+      open
+      enableFooter
+      enableCloseButtonInHeader
+      heading=${i18n('cart.entry.confirmation.heading')}
+    >
+      ${i18n(`cart.entry.confirm-remove-<item>`, { item: '"entry name"' })}
+      <oryx-button
+        slot="footer-more"
+        type="primary"
+        size="small"
+        @click=${this.onRemove}
+      >
+        <button value="remove">${i18n(`cart.entry.remove`)}</button>
+      </oryx-button>
+    </oryx-modal>`;
+  }
+
   protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {
     e.stopPropagation();
     this.dispatchSubmitEvent(e.detail.quantity);
+  }
+
+  protected onRemove(e: Event): void {
+    e.stopPropagation();
+    this.dispatchSubmitEvent(0);
   }
 
   protected dispatchSubmitEvent(quantity: number): void {

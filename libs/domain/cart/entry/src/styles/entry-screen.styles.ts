@@ -8,14 +8,26 @@ const smallScreen = css`
   }
 
   oryx-product-media,
-  .details {
+  section.details {
     margin-block-start: 16px;
   }
 
-  .price {
+  oryx-product-title {
+    font-size: var(--oryx-typography-h4-size);
+    font-weight: var(--oryx-typography-h4-weight);
+    line-height: var(--oryx-typography-h4-line);
+  }
+
+  section.pricing {
     grid-column: 2;
     grid-row: 2;
     justify-items: start;
+  }
+
+  span.price {
+    font-size: var(--oryx-typography-h3-size);
+    font-weight: var(--oryx-typography-h3-weight);
+    line-height: var(--oryx-typography-h3-line);
   }
 
   oryx-product-media {

@@ -1,10 +1,16 @@
 import { css } from 'lit';
 
 export const cartEntriesStyles = css`
-  section.entries {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--oryx-space-4);
+  h1 {
+    font-size: var(--oryx-typography-h3-size);
+    font-weight: var(--oryx-typography-h3-weight);
+    line-height: var(--oryx-typography-h3-line);
+
+    margin-block-end: 20px;
+  }
+
+  oryx-cart-entry:not(:last-child) {
+    border-bottom: 1px solid var(--oryx-color-canvas-500);
   }
 
   section.empty {

@@ -12,7 +12,7 @@ export const typographyTokens: ThemeToken = {
 
 export const typographySmallTokens: ThemeToken = {
   typography: {
-    h1: { size: '1.572em', line: '1.364em', weight: '600' },
+    h1: { size: '1.572em', line: '1.364em', weight: '600', align: 'center' },
     h2: { size: '1.286em', line: '1.44em', weight: '700' },
     h3: { size: '1.143em', line: '1.375em', weight: '600' },
     h4: { size: '1em', line: '1.572em', weight: '600' },
@@ -20,6 +20,7 @@ export const typographySmallTokens: ThemeToken = {
     h6: { size: '0.857em', line: '1.333em', weight: '600' },
     subtitle: { size: '0.857em', line: '1.333em', weight: '600' },
     caption: { size: '0.857em', line: '1.333em', weight: '600' },
+    small: { size: '0.857em', line: '1.333em', weight: '500' },
   },
 };
 
@@ -33,5 +34,6 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     h6: { size: '1.143em', line: '1.5em', weight: '500' },
     subtitle: { size: '0.857em', line: '1.333em', weight: '600' },
     caption: { size: '0.857em', line: '1.333em', weight: '600' },
+    small: { size: '0.857em', line: '1.333em', weight: '500' },
   },
 };

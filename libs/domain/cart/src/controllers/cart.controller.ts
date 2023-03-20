@@ -8,6 +8,7 @@ import {
   Cart,
   CartComponentAttributes,
   CartEntry,
+  CartQualifier,
   CartTotalCalculations,
   FormattedCartTotals,
   FormattedDiscount,
@@ -20,6 +21,14 @@ export class CartController {
 
   constructor(protected host: LitElement & CartComponentAttributes) {
     this.observe = new ObserveController(host);
+  }
+
+  isEmpty(data?: CartQualifier): Observable<boolean> {
+    return this.cartService.isEmpty(data);
+  }
+
+  isBusy(data?: CartQualifier): Observable<boolean> {
+    return this.cartService.isBusy(data);
   }
 
   getEntries(): Observable<CartEntry[]> {

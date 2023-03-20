@@ -26,6 +26,9 @@ export const headlineStyles = css`
     --caps: var(--oryx-typography-caption-size);
     --capw: var(--oryx-typography-caption-weight);
     --capl: var(--oryx-typography-caption-line);
+    --smalls: var(--oryx-typography-small-size);
+    --smallw: var(--oryx-typography-small-weight);
+    --smalll: var(--oryx-typography-small-line);
 
     display: var(--display, block);
   }
@@ -124,9 +127,17 @@ export const headlineStyles = css`
 
   .caption,
   ::slotted(.caption),
-  :host([as='.subtitle']) {
+  :host([as='.caption']) {
     --fs: var(--caps);
     --fw: var(--capw);
     --lh: var(--capl);
+  }
+
+  small,
+  ::slotted(small),
+  :host([as='small']) {
+    --fs: var(--smalls);
+    --fw: var(--smallw);
+    --lh: var(--smalll);
   }
 `;

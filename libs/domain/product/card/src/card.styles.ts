@@ -72,6 +72,18 @@ export const ProductCardStyles = css`
     background-color: var(--oryx-color-canvas-100);
   }
 
+  oryx-product-price::part(sales) {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 700;
+  }
+
+  oryx-product-price::part(original) {
+    font-size: var(--oryx-typography-small-size);
+    font-weight: var(--oryx-typography-small-weight);
+    line-height: var(--oryx-typography-small-line);
+  }
+
   oryx-product-price,
   oryx-cart-add {
     margin-block-start: 8px;

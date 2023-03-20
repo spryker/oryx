@@ -3,12 +3,12 @@ import { CartEntryOptions } from './entry.model';
 
 declare global {
   interface FeatureOptions {
-    'cart-entry'?: CartEntryOptions;
+    'oryx-cart-entry'?: CartEntryOptions;
   }
 }
 
 export const cartEntryComponent = componentDef({
-  name: 'cart-entry',
+  name: 'oryx-cart-entry',
   impl: () => import('./entry.component').then((m) => m.CartEntryComponent),
   stylesheets: [
     {

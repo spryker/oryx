@@ -16,6 +16,8 @@ export declare class CartMixinInterface implements CartComponentAttributes {
 
   protected cartController: CartController;
 
+  protected isEmpty?: boolean;
+  protected isBusy?: boolean;
   protected entries?: CartEntry[];
   protected totals?: FormattedCartTotals;
   protected totalQuantity?: number;
@@ -31,6 +33,12 @@ export const CartComponentMixin = <
     @property({ type: Object, reflect: true }) cart?: Cart;
 
     protected cartController = new CartController(this);
+
+    @asyncState()
+    protected isEmpty = valueType(this.cartController.isEmpty());
+
+    @asyncState()
+    protected isBusy = valueType(this.cartController.isBusy());
 
     @asyncState()
     protected entries = valueType(this.cartController.getEntries());

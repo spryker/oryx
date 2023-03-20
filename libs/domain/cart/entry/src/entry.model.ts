@@ -47,6 +47,16 @@ export interface CartEntryOptions {
    * Possible options: 'allowZero' | 'showBin'
    */
   removeByQuantity?: RemoveByQuantity;
+
+  /**
+   * Renders a notification when the cart entry is updated.
+   */
+  notifyOnUpdate?: boolean;
+
+  /**
+   * Renders a notification when the cart entry is removed.
+   */
+  notifyOnRemove?: boolean;
 }
 
 export enum RemoveByQuantity {

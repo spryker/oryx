@@ -47,7 +47,6 @@ export class RegistryController implements ReactiveController {
               this.toggleVisibility(key);
             }, mergedStrategy.autoCloseTime);
           }
-
           return {
             ...mergedStrategy,
             key,
