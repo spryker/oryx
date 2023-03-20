@@ -3,7 +3,14 @@ import { html } from 'lit';
 
 export const defaultPickingRoutes: RouteConfig[] = [
   { path: '/', render: () => html`<oryx-picking-lists></oryx-picking-lists>` },
-  { path: '/customer-note-info/:id', render: ({id}) => html`
+  { 
+    name: 'customer-note',
+    path: '/customer-note-info/:id', render: ({id}) => html`
     <oryx-customer-note .pickingId=${id}></oryx-customer-note>
   `},
+  { 
+    name: 'picking-items',
+    path: '/picking-list/picking/:id', 
+    render: ({id}) => html`${id}`
+  },
 ];

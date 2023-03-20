@@ -1,11 +1,4 @@
 import { componentDef } from '@spryker-oryx/core';
-// import { CartAddOptions } from './confirm-picking.model';
-
-// declare global {
-//   interface FeatureOptions {
-//     'oryx-cart-add'?: CartAddOptions;
-//   }
-// }
 
 export const customerNoteComponent = componentDef({
   name: 'oryx-customer-note',

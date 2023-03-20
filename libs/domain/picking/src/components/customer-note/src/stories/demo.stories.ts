@@ -6,7 +6,7 @@ export default {
   title: `${storybookPrefix}/Customer note`,
 } as Meta;
 
-const Template: Story<unknown> = (props): TemplateResult => {
+const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <oryx-customer-note></oryx-customer-note>
   `;

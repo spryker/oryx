@@ -5,6 +5,7 @@ import { property } from 'lit/decorators.js';
 import {
   BehaviorSubject,
   Observable,
+  of,
   switchMap,
 } from 'rxjs';
 import type { PickingListComponentProperties, PickingList } from '../models';
@@ -33,7 +34,8 @@ export const PickingListMixin = <
     protected pickingListId$ = new BehaviorSubject(this.pickingListId);
 
     protected pickingList$ = this.pickingListId$.pipe(
-      switchMap(id => this.pickingListService.getById(id))
+      // switchMap(id => this.pickingListService.getById(id))
+      switchMap(id => of([]))
     );
 
     @asyncState()
