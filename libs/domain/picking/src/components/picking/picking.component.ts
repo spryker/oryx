@@ -3,19 +3,23 @@ import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BehaviorSubject, distinctUntilChanged, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  switchMap,
+} from 'rxjs';
 import { ItemsFilters, ProductItemPickedEvent } from '../../models';
 import { PickingListService } from '../../services';
 
 export class PickingComponent extends LitElement {
-  @property({ attribute: 'picking-id' })
-  pickingId?: string;
+  @property({ attribute: 'picking-id' }) pickingId?: string;
 
-  @observe()
+  @observe('pickingId')
   protected pickingId$ = new BehaviorSubject(this.pickingId);
 
   protected pickingListService = resolve(PickingListService);
-
   protected pickingList$ = this.pickingId$.pipe(
     distinctUntilChanged(),
     switchMap((id) => this.pickingListService.getById(id ?? ''))
@@ -24,8 +28,13 @@ export class PickingComponent extends LitElement {
   @asyncState()
   protected pickingList = valueType(this.pickingList$);
 
-  protected tabs$ = this.pickingList$.pipe(
-    map((list) => [
+  protected pickingUpdate$ = new BehaviorSubject<string | null>(null);
+
+  protected tabs$ = combineLatest([
+    this.pickingList$,
+    this.pickingUpdate$,
+  ]).pipe(
+    map(([list]) => [
       {
         id: ItemsFilters.NotPicked,
         title: 'not-picked',
@@ -101,6 +110,8 @@ export class PickingComponent extends LitElement {
         item.status = ItemsFilters.Picked;
       }
     });
+
+    this.pickingUpdate$.next(detail.productId);
   }
 
   protected renderTabContents(): TemplateResult {
@@ -119,7 +130,7 @@ export class PickingComponent extends LitElement {
                     html`
                       <oryx-picking-product-card
                         .productItem=${item}
-                        .status=${item.status}
+                        .status=${tab.id}
                         @oryx.change-number-of-picked=${this
                           .changeNumberOfPicked}
                         @oryx.submit=${this.savePickingItem}

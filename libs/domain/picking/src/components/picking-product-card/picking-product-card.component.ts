@@ -3,7 +3,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ItemsFilters, PickingListItem, SummaryInfo } from '../../models';
 import { styles } from './picking-product-card.styles';
 
@@ -29,9 +29,7 @@ export class PickingProductCardComponent extends LitElement {
     this.isConfirmPickingDialogOpen$
   );
 
-  @asyncState() protected summaryInfo: SummaryInfo | undefined = valueType(
-    this.getSummaryInfo()
-  );
+  protected summaryInfo: SummaryInfo | undefined;
 
   protected productImage(image: string | null | undefined): string {
     return image || '/img/image-placeholder.svg';
@@ -107,40 +105,40 @@ export class PickingProductCardComponent extends LitElement {
     );
   }
 
-  protected getSummaryInfo(): Observable<SummaryInfo> {
+  protected getSummaryInfo(): SummaryInfo {
     if (!this.productItem?.numberOfNotPicked || !this.productItem?.quantity) {
-      return of({
+      return {
         main: '',
-      });
+      };
     }
 
     if (this.status === ItemsFilters.Picked) {
       const template = `${this.productItem?.numberOfPicked}/${this.productItem?.quantity}`;
 
       if (this.productItem?.numberOfPicked < this.productItem?.quantity) {
-        return of({ main: `${template} items picked` });
+        return { main: `${template} items picked` };
       }
 
-      return of({
+      return {
         main: template,
         additional: 'All items picked',
-      });
+      };
     } else if (this.status === ItemsFilters.NotFound) {
       const template = `${this.productItem?.numberOfNotPicked}/${this.productItem?.quantity}`;
 
       if (this.productItem?.numberOfNotPicked < this.productItem?.quantity) {
-        return of({ main: `${template} items not found` });
+        return { main: `${template} items not found` };
       }
 
-      return of({
+      return {
         main: template,
         additional: 'No items found',
-      });
+      };
     }
 
-    return of({
+    return {
       main: '',
-    });
+    };
   }
 
   protected override render(): TemplateResult {
@@ -207,6 +205,8 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected renderEditStatus(): TemplateResult {
+    this.summaryInfo = this.getSummaryInfo();
+
     return html` <div class="summary-info">
         <p>${this.summaryInfo?.main}</p>
         <p>${this.summaryInfo?.additional}</p>
