@@ -15,9 +15,13 @@ import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { formatTime } from '../../utilities';
+import { PickingListItemProps } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
-export class PickingListItemComponent extends LitElement {
+export class PickingListItemComponent
+  extends LitElement
+  implements PickingListItemProps
+{
   static styles = styles;
 
   protected pickingListService = resolve(PickingListService);

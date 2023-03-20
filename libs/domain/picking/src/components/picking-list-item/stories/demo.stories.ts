@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { TemplateResult } from 'lit/development';
 import { storybookPrefix } from '../../../../.constants';
 import { mockPickingListData } from '../../../mocks';
+import { PickingListItemProps } from '../picking-list-item.model';
 
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 
@@ -19,11 +20,9 @@ export default {
   },
 } as Meta;
 
-interface Props {
-  pickingListId: string;
-}
-
-const Template: Story<Props> = ({ pickingListId }): TemplateResult => {
+const Template: Story<PickingListItemProps> = ({
+  pickingListId,
+}): TemplateResult => {
   return html`
     <oryx-picking-list-item
       pickingListId=${pickingListId}
