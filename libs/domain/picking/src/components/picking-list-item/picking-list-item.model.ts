@@ -1,3 +1,3 @@
-export interface PickingListItemProps {
+export interface PickingListItemAttributes {
   pickingListId?: string;
 }
