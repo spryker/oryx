@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const styles = css`
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
   :host {
     display: block;
     font-family: var(--oryx-typography-font-face);
