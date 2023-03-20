@@ -68,28 +68,30 @@ export class PickingListItemComponent
     );
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | undefined {
+    if (!this.pickingList) return;
+
     return html`
       <oryx-card>
         <oryx-heading slot="heading">
           ${when(
-            this.pickingList?.createdAt,
-            () => html` <h2>${formatTime(this.pickingList!.createdAt!)}</h2> `
+            this.pickingList.createdAt,
+            () => html` <h2>${formatTime(this.pickingList!.createdAt)}</h2> `
           )}
-          <h4 class="identifier">${this.pickingList?.id}</h4>
+          <h4 class="identifier">${this.pickingList.id}</h4>
         </oryx-heading>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           <span
             >${i18n('picking.picking-list-item.{count}-items', {
-              count: this.pickingList?.items?.length,
+              count: this.pickingList.items.length,
             })}</span
           >
         </div>
 
         ${when(
-          this.pickingList?.cartNote,
+          this.pickingList.cartNote,
           () => html`
             <oryx-icon-button size=${Size.Sm}>
               <button
