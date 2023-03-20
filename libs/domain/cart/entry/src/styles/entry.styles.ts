@@ -69,6 +69,7 @@ export const cartEntryStyles = css`
     width: 87px;
     aspect-ratio: 1/1;
     margin-inline-start: 20px;
+    grid-row: 1 / span 2;
   }
 
   oryx-product-id {
@@ -93,16 +94,12 @@ export const cartEntryStyles = css`
     grid-auto-flow: column;
   }
 
-  oryx-product-media {
-    grid-row: 1 / span 2;
-  }
-
   oryx-cart-quantity-input {
     margin-block-end: 14px;
   }
 
   .actions {
-    padding-top: 14px;
+    padding-block-start: 14px;
     grid-row: 2;
     grid-column: 2;
     justify-content: start;
