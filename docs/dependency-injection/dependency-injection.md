@@ -1,37 +1,40 @@
 # What is Dependency Injection (DI)?
 
-Dependency injection (DI) is a design pattern that provide loosely-coupled, maintainable, and testable code. It improves modularity, maintainability, and testability, and is easily customizable and extensible.
+Dependency injection (DI) is a design pattern that provides loosely-coupled, maintainable, and testable code. It improves modularity, maintainability, and testability, and is easily customizable and extensible.
 
-# Service layer in Oryx
+In the context of Oryx, dependency injection allows users to customize logic deep inside the framework, which is particularly useful for projects with complex or rapidly-evolving requirements. Without DI, users would need to override large portions of the logic or create a lot of boilerplate code. By leveraging DI, users can override logic while still being able to upgrade to newer versions of Oryx going forward.
 
-In Oryx, dependency injection (DI) serves as the foundation for the business logic. By using DI to provide service layer, Oryx is designed to be easily customizable and extensible on every level, making it an ideal choice for projects with complex or rapidly-evolving requirements.
+One key advantage of using Oryx's DI implementation is that it is vanilla JavaScript and can be used in other frameworks as well. Although there are standard DI packages available, using Oryx's implementation ensures seamless integration and compatibility with its features.
 
-The goal of service layer in Oryx is to  abstracts all of the system functionality,  including query backend services,  data caching and reloading, state management, and reactivity.
+# Service Layer in Oryx
 
-DI is also utilized by many higher-level concepts in Oryx, ranging from adapters, normalizers,  HTTP interceptors, to authentication, product loading, cart management, and checkout process.
+The service layer in Oryx serves as the foundation for the business logic, with dependency injection (DI) playing a crucial role. By utilizing DI in the service layer, Oryx is designed to be easily customizable and extensible at every level, making it an ideal choice for projects with complex or rapidly-evolving requirements.
+
+The main objective of the service layer in Oryx is to abstract all of the system functionality, including querying backend services, data caching and reloading, state management, and reactivity.
+
+Moreover, DI is employed by many higher-level concepts in Oryx, ranging from adapters and normalizers to HTTP interceptors, authentication, product loading, cart management, and the checkout process.
 
 ## Npm package
 
-The @spryker-oryx/di package provides dependency injection to Oryx applications, including a variety of useful utilities to streamline working with the DI. This includes:
+The @spryker-oryx/di package provides dependency injection not only to Oryx applications but also to other packages and can even be used outside the Oryx framework. It includes a variety of useful utilities to streamline working with dependency injection, such as:
 
 - TypeScript models definitions (e.g. Providers)
 -  `Injector` - the implementation of a DI container in TypeScript
 -  Functions used to set up and manage injectors (`createInjector()`, `getInjector()`, etc.)
 -   Utilities that can be used to resolve dependencies (`inject` and `resolve`)
 
-In a typical Oryx application, much of the work related to setting up the DI container is handled automatically by the application orchestrator. However, the @spryker-oryx/di library provides a set of tools that can be used to further customize and fine-tune the DI as needed.
+In a typical Oryx application, the application orchestrator automatically handles much of the work related to setting up the DI container. Nevertheless, the @spryker-oryx/di library provides a set of tools that can be used to further customize and fine-tune the dependency injection as needed.
 
 # Using services
 
 ## inject vs resolve
 
-There are two primary methods for injecting services and dependencies into components: `inject` and `resolve`.
+There are two primary methods for injecting services and dependencies: 
+
+- `inject` – usually used inside services
+- `resolve` – usually used inside (web) components
 
 ### inject()
-
-The `inject` method is used to inject services from the current injector. This method can be used when the injection context is defined, such as in services at construction time or in provided factories that use `useFactory`.
-
-For example, consider the following code:
 
 ```ts
 export class MyService { 
@@ -39,13 +42,9 @@ export class MyService {
 }
 ```
 
-In this example, the `MyService` constructor injects an instance of `SomeOtherService` using the `inject()` utility.
+The `inject` method is used to inject services from the current injector. This method can be used when the injection context is defined, such as in services at construction time or in provided factories that use `useFactory`.
 
 ### resolve()
-
-The `resolve` method works similarly to `inject`, but it tries to resolve the current injector using context (by default `globalThis`). This method is suitable to use in components, especially in web components, where the injection context may not be defined at construction time.
-
-For example, consider the following code:
 
 ```ts
 export class MyComponent extends LitElement { 
@@ -53,31 +52,11 @@ export class MyComponent extends LitElement {
 }
 ```
 
-In this example, the `MyComponent` class uses the `resolve` utility to inject an instance of `MyService` into the component. Since `MyComponent` does not have an explicit injector defined at construction time, `resolve` uses the global context to resolve the injector.
+The `resolve` method works similarly to `inject`, but it tries to resolve the current injector using context (by default `globalThis`). This method is suitable to use in components, especially in web components, where the injection context may not be defined at construction time.
 
+### One container by default 
 
-## Injecting INJECTOR
-
-
-In some cases, dependencies may be optional or resolved at runtime, making it difficult to inject them directly into a service. In these situations, you can inject the current DI container using the `INJECTOR` token, like in the following example:
-
-
-```ts
-constructor(protected injector = inject(INJECTOR)) {}
-```
-
-
-With the `INJECTOR` token injected, you can use the injector's `inject` method to dynamically resolve dependencies at runtime. For example:
-
-```ts
-someServiceMethod(field) {
-	const template = this.injector.inject(`${FormFieldRenderer}-${field.type}`);
-}
-
-```
-
-In this example, the `inject` method is used to resolve a dependency based on a dynamic token that includes the field type. Since the field type is only known at runtime, it is not possible to inject the dependency directly. Instead, the `INJECTOR` token is injected, allowing the `inject` method to resolve the dependency dynamically.
-
+A typical Oryx application usually uses one global DI container, which is set up by the app orchestrator. This is currently the recommended approach for Oryx applications that utilize web components.
 
 # Defining services
 
@@ -91,6 +70,7 @@ Services are resolved using string tokens. For example:
 export const CartService = 'oryx.CartService';
 ```
 
+It is recommended to use a project-specific prefix for those tokens to minimize the risk of naming collisions with other services or libraries.
 
 ## Service Interface
 
@@ -129,19 +109,53 @@ export class DefaultCartService implements CartService {
 }
 ```
 
-
-
 # Providing services
 
-To be able to use and inject services, they must be provided in the DI container. Oryx provides several types of providers:
+To use and inject services, they must be provided in the DI container. Oryx offers several types of providers:
 
 -   `ClassProvider<T>`: Binds a token to a class constructor.
 -   `ValueProvider<T>`: Binds a token to a value.
 -   `FactoryProvider<T>`: Binds a token to a factory function.
 
-You can pass a list of providers as an argument to the `Injector` constructor or to the `Injector`'s `provide` method. However, it's important to note that providing services is only possible before the first usage of the DI container.
+You can pass a list of providers as an argument to the `Injector` constructor or to the Injector's `provide` method. However, it's important to note that providing services is only possible before the first usage of the DI container.
 
-In Oryx applications, providers are usually grouped into const arrays and passed to the app orchestrator either directly or as a part of feature definitions. By doing this, you can easily manage features with corresponding providers and their dependencies.
+In Oryx applications, providers are typically grouped into const arrays and passed to the app orchestrator either directly or as part of feature definitions. By doing this, you can easily manage features with corresponding providers and their dependencies.
+
+Here's an example describing how to use the app orchestrator to provide services as part of a feature:
+
+```ts
+export const app = appBuilder()
+  .withFeature(someFeature)
+  // ...
+  .withFeature({
+    providers: [{ provide: CartService, useClass: CustomizedCartService }],
+  })
+  // ...
+  .create();
+````
+
+In this example, customized cart service is provided by specifying the providers property within a feature object. This way, you can easily manage and extend the services provided by your Oryx application.
+
+# Injecting INJECTOR
+
+In some cases, dependencies may be optional or resolved at runtime, making it difficult to inject them directly into a service. In these situations, you can inject the current DI container using the `INJECTOR` token, like in the following example:
+
+
+```ts
+constructor(protected injector = inject(INJECTOR)) {}
+```
+
+
+With the `INJECTOR` token injected, you can use the injector's `inject` method to dynamically resolve dependencies at runtime. For example:
+
+```ts
+someServiceMethod(field) {
+	const template = this.injector.inject(`${FormFieldRenderer}-${field.type}`);
+}
+
+```
+
+In this example, the `inject` method is used to resolve a dependency based on a dynamic token that includes the field type. Since the field type is only known at runtime, it is not possible to inject the dependency directly. Instead, the `INJECTOR` token is injected, allowing the `inject` method to resolve the dependency dynamically.
 
 
 
