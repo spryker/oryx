@@ -1,4 +1,4 @@
-import { MenuListItem } from "@spryker-oryx/ui/menu-item";
+import { MenuListItem } from '@spryker-oryx/ui/menu-item';
 
 // export enum MenuItemTypes {
 //   Button = 'button',

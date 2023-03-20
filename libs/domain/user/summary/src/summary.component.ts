@@ -41,9 +41,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-menu-item
-        .items=${this.user ? this.componentOptions?.items : []}
-      >
+      <oryx-menu-item .items=${this.user ? this.componentOptions?.items : []}>
         <oryx-menu-item-button
           slot="trigger"
           .icon=${this.componentOptions?.icon}
