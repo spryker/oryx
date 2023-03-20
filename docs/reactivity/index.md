@@ -1,26 +1,20 @@
-# Fine-grained reactivity
+# Reactivity table of contents
 
-## Table of contents
+- [Reactivity](./reactivity.md)
 
-[Introduction](./introduction.md)
+- [Key concepts of Reactivity](./key-concepts-of-reactivity.md)
 
-- [What is reactivity?](./introduction.md#what-is-reactivity)
-- [Reactivity patterns in Oryx](./introduction.md#reactivity-patterns-in-oryx)
+    - [Reactive data streams](./key-concepts-of-reactivity.md#reactive-data-streams)
+    - [Application state](./key-concepts-of-reactivity.md#application-state)
+    - [Application layers](./key-concepts-of-reactivity.md#application-layers)
+    - [Updating data in the DOM]('./key-concepts-of-reactivity.md#updating-data-in-the-DOM')
 
-[Key Concepts of Reactivity](./key-concepts.md)
+- [Reactive components](./reactive-components.md)
 
-- [Working with reactive data streams](./key-concepts.md#working-with-reactive-data-streams)
-- [Application state](./key-concepts.md#application-state)
-- [Handling asynchronous data loading](./key-concepts.md#handling-asynchronous-data-loading)
-- [Propagating Updates in the DOM]('./key-concepts.md#propagating-updates-in-the-DOM')
+    - [Updating data in the DOM](./reactive-components.md#updating-data-in-the-DOM)
+    - [Multiple data streams](./reactive-components.md#multiple-data-streams)
 
-[Reactive components](./reactive-components.md)
+- [Integration of backend APIs](./integration-backend-api.md)
 
-- [Integrate with domain logic](./reactive-components.md#integrate-with-domain-logic)
-- [Update the DOM](./reactive-components.md#update-the-dom)
-- [Operate on multiple streams](./reactive-components.md#operate-on-multiple-streams)
-
-[Integrate backend APIs](./integrate-backend-api.md)
-
-- [Qualify the request](./integrate-backend-api.md#qualify-the-request)
-- [Designing the data model](./integrate-backend-api.md#designing-the-data-model)
+    - [Data models](./integrate-backend-api.md#data-models)
+    - [Qualification of requests](./integrate-backend-api.md#qualification-of-requests)
