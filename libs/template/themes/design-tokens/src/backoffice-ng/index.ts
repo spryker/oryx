@@ -1,30 +1,51 @@
 import { DesignToken } from '@spryker-oryx/core';
-import { backofficeTokens } from '@spryker-oryx/themes/design-tokens';
+import { Size } from '@spryker-oryx/utilities';
+import { darkColor } from './color-dark.tokens';
+import { color } from './color.tokens';
+import { darkTokens } from './other-dark';
+import { tokens } from './other.tokens';
+import {
+  typographyMediumAndLargerTokens,
+  typographySmallTokens,
+  typographyTokens,
+} from './typography.tokens';
+
+import { commonTokensSmall } from '../common-tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 
 export const backofficeNgTokens: DesignToken[] = [
-  ...backofficeTokens,
   {
-    card: {
-      header: {
-        padding: '14px 10px 10px',
-      },
-      body: {
-        padding: '9px 10px 16px',
-      },
-      footer: {
-        padding: '0 10px 12px',
-      },
+    color,
+    ...tokens,
+    ...typographyTokens,
+  },
+  {
+    media: {
+      mode: 'dark',
     },
-    modal: {
-      header: {
-        padding: '18px 30px',
-      },
-      body: {
-        padding: '18px 30px',
-      },
-      footer: {
-        padding: '0 30px',
-      },
+    color: darkColor,
+    ...darkTokens,
+  },
+  {
+    media: {
+      screen: Size.Lg,
     },
+    ...layoutTokens,
+    ...typographyMediumAndLargerTokens,
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...layoutMdTokens,
+    ...typographyMediumAndLargerTokens,
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...layoutSmTokens,
+    ...typographySmallTokens,
+    ...commonTokensSmall,
   },
 ];

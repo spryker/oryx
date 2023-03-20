@@ -71,17 +71,13 @@ export class PickingListItemComponent
   protected override render(): TemplateResult {
     return html`
       <oryx-card>
-        <div slot="heading">
+        <oryx-heading slot="heading">
           ${when(
             this.pickingList?.createdAt,
-            () => html`
-              <div class="time">
-                ${formatTime(this.pickingList!.createdAt!)}
-              </div>
-            `
+            () => html` <h2>${formatTime(this.pickingList!.createdAt!)}</h2> `
           )}
-          <div class="identifier">${this.pickingList?.id}</div>
-        </div>
+          <h4 class="identifier">${this.pickingList?.id}</h4>
+        </oryx-heading>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>

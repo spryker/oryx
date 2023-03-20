@@ -4,26 +4,13 @@ export const styles = css`
   [slot='heading'] {
     justify-content: space-between;
     align-items: baseline;
-    font-weight: 600;
     display: flex;
     width: 100%;
   }
 
-  [slot='heading'] div:only-child {
-    margin-inline-start: auto;
-  }
-
-  .time {
-    font-size: 16px;
-    line-height: 22px;
-    letter-spacing: 0.0133em;
-  }
-
-  .identifier {
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.01em;
+  [slot='heading'] h4 {
     color: var(--oryx-color-neutral-darker);
+    margin-inline-start: auto;
   }
 
   ::part(body) {
