@@ -1,12 +1,6 @@
 import { css } from 'lit';
 
 export const styles = css`
-  oryx-card {
-    --oryx-card-header-padding: 14px 10px 10px;
-    --oryx-card-body-padding: 9px 10px 16px;
-    --oryx-card-footer-padding: 0 10px 12px;
-  }
-
   [slot='heading'] {
     justify-content: space-between;
     align-items: baseline;
