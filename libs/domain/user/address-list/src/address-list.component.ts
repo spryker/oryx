@@ -40,6 +40,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
       this.selectedAddressId =
         this.addresses?.find((a) => this.isDefault(a))?.id ??
         this.addresses?.[0].id;
+      this.dispatchSelectedAddress(this.selectedAddressId);
     }
 
     super.willUpdate(changedProperties);
@@ -88,8 +89,11 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected onInput(ev: Event): void {
     const el = ev.target as HTMLInputElement;
+    this.dispatchSelectedAddress(el.value);
+  }
 
-    const address = this.addresses?.find((address) => address.id === el.value);
+  protected dispatchSelectedAddress(addressId?: string): void {
+    const address = this.addresses?.find((address) => address.id === addressId);
     if (address) {
       this.selectedAddressId = address.id;
       this.dispatchEvent(

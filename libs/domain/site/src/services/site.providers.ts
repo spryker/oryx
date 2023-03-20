@@ -20,7 +20,7 @@ import {
   DefaultSemanticLinkService,
   SemanticLinkService,
 } from './semantic-link';
-import { DefaultStoreService, StoreInterceptor, StoreService } from './store';
+import { DefaultStoreService, StoreService } from './store';
 
 declare global {
   interface AppEnvironment {
@@ -88,8 +88,9 @@ export const siteProviders: Provider[] = [
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
   },
-  {
-    provide: HttpInterceptor,
-    useClass: StoreInterceptor,
-  },
+  // TODO: uncomment when CORs header issue is fixed
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: StoreInterceptor,
+  // },
 ];
