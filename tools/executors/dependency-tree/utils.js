@@ -2,16 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDependencies = void 0;
 const findDependencies = (dependencies, project) => {
-    // filter out external dependencies
-    const deps = dependencies[project]
-        .filter((dep) => dep.target.match('^((?!npm:).)*$'))
-        .map((dep) => dep.target);
-    return [
-        ...new Set([
-            project,
-            ...deps.reduce((acc, dep) => [...acc, ...findDependencies(dependencies, dep)], []),
-        ]),
-    ];
+    const foundDependencies = { [project]: true };
+    const iterable = dependencies[project];
+    for (const dep of iterable) {
+        const isExist = foundDependencies[dep.target];
+        const isNpm = dep.target.match('^npm:.*$');
+        const isSprykerOryx = dep.target === 'spryker-oryx';
+        if (isNpm || isExist || isSprykerOryx) {
+            continue;
+        }
+        foundDependencies[dep.target] = true;
+        iterable.push(...dependencies[dep.target]);
+    }
+    return Object.keys(foundDependencies);
 };
 const stringifyDependencies = (dependencies, nodes) => dependencies
     .map((item) => `${nodes[item].data.root}/*`)

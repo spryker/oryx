@@ -75,4 +75,17 @@ export const siteProviders: Provider[] = [
     useClass: DefaultSalutationService,
   },
   ...storeNormalizer,
+  {
+    provide: HttpInterceptor,
+    useClass: AcceptLanguageInterceptor,
+  },
+  {
+    provide: HttpInterceptor,
+    useClass: CurrentCurrencyInterceptor,
+  },
+  // TODO: uncomment when CORs header issue is fixed
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: StoreInterceptor,
+  // },
 ];

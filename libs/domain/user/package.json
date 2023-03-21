@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/user",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "User features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE.md",

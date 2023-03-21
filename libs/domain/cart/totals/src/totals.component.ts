@@ -129,7 +129,11 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
     totals: FormattedCartTotals
   ): TemplateResult {
     return totals.calculations.taxTotal && !options.hideTaxAmount
-      ? this.renderSection('tax', 'Tax', String(totals.calculations.taxTotal))
+      ? this.renderSection(
+          'tax',
+          html`${i18n(['cart.totals.tax'])}`,
+          String(totals.calculations.taxTotal)
+        )
       : html``;
   }
 
@@ -147,7 +151,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
             <small class="delivery-message">
               ${ifDefined(options?.deliveryMessage)}
               <oryx-icon-button size=${Size.Sm}>
-                <a href="#" title=${i18n('cart.totals.delivery-message')}>
+                <a href="#" title="not yet implemented">
                   <oryx-icon type="info"></oryx-icon>
                 </a>
               </oryx-icon-button>
@@ -170,7 +174,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
           html`<small class="tax-message">
             ${totals.priceMode === PriceMode.GrossMode
               ? i18n('cart.totals.tax-included')
-              : i18n('cart.totals.tax-excluded')}
+              : i18n('cart.totals.tax-included')}
           </small>`
       )}`
     );

@@ -20,7 +20,10 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'oryx-site-notification-center',
+          type: 'oryx-site-currency-selector',
+          options: {
+            data: { rules: [{ style: 'margin-inline-start: auto' }] },
+          },
         },
       ],
       options: {

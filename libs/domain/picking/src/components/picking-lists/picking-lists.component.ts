@@ -7,7 +7,6 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { when } from 'lit/directives/when.js';
 import { switchMap } from 'rxjs';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
@@ -33,22 +32,19 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderPickingLists(): TemplateResult {
-    return html`
-      ${when(
-        this.pickingLists?.length,
-        () =>
-          html`${repeat(
-            this.pickingLists!,
-            (pl) => pl.id,
-            (pl) =>
-              html`<oryx-picking-list-item
-                .pickingListId=${pl.id}
-                @oryx.show-note=${this.openCustomerNoteModal}
-              ></oryx-picking-list-item>`
-          )}`,
-        this.renderFallback
-      )}
-    `;
+    if (!this.pickingLists?.length) {
+      return this.renderEmptyLists();
+    }
+
+    return html`${repeat(
+      this.pickingLists!,
+      (pl) => pl.id,
+      (pl) =>
+        html`<oryx-picking-list-item
+          .pickingListId=${pl.id}
+          @oryx.show-note=${this.openCustomerNoteModal}
+        ></oryx-picking-list-item>`
+    )}`;
   }
 
   protected renderCustomerNote(): TemplateResult {
@@ -76,7 +72,7 @@ export class PickingListsComponent extends LitElement {
     `;
   }
 
-  protected renderFallback(): TemplateResult {
+  protected renderEmptyLists(): TemplateResult {
     return html`<p>${i18n('picking.no-picking-lists-found')}</p>`;
   }
 
