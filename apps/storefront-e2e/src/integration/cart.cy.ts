@@ -176,7 +176,10 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
-  cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
+  cartTotals
+    .getDeliveryTotal()
+    .invoke('attr', 'title')
+    .should('contain', 'not yet implemented');
   cartTotals.getTotalPrice().should('contain.text', expectedData.totalPrice);
 
   // covers HRZ-1008
