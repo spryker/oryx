@@ -29,7 +29,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
       <section>
         <oryx-navigate-back></oryx-navigate-back>
         <oryx-image resource="user-note"></oryx-image>
-        <oryx-heading as-md="h2">
+        <oryx-heading as="h2" as-md="h4">
           <h4>${i18n('picking.customer-note')}</h4>
         </oryx-heading>
       </section>
