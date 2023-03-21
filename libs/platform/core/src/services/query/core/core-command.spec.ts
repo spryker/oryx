@@ -94,7 +94,7 @@ describe('Core Command', () => {
             expectObservable(secondExecution$).toBe('----a|', { a: '2_test' });
           }, 1);
 
-          expectObservable(firstExecution$).toBe('-|', { e: 'error' });
+          expectObservable(firstExecution$).toBe('-|');
         });
       });
     });
@@ -161,98 +161,6 @@ describe('Core Command', () => {
         });
       });
     });
-
-    // describe('Replace', () => {
-    //   it('should replace running command', async () => {
-    //     const command = createCommand({
-    //       action: (qualifier) => of(`${qualifier}_test`),
-    //       strategy: CommandStrategy.Replace,
-    //     });
-    //
-    //     let firstSubscriptionCompleted = false;
-    //     command.execute('1').subscribe({
-    //       error: () => {
-    //         firstSubscriptionCompleted = true;
-    //       },
-    //     });
-    //
-    //     await timer(50).pipe(take(1)).toPromise();
-    //
-    //     const result = await firstValueFrom(command.execute('2'));
-    //     expect(result).toEqual('2_test');
-    //     expect(firstSubscriptionCompleted).toBeTruthy();
-    //   });
-    // });
-    //
-    // describe('Override', () => {
-    //   it('should override running command', async () => {
-    //     const command = createCommand({
-    //       action: (qualifier) => of(`${qualifier}_test`),
-    //       strategy: CommandStrategy.Override,
-    //     });
-    //
-    //     let firstSubscriptionError = false;
-    //     command.execute('1').subscribe({
-    //       error: () => {
-    //         firstSubscriptionError = true;
-    //       },
-    //     });
-    //
-    //     await timer(50).pipe(take(1)).toPromise();
-    //
-    //     const result = await firstValueFrom(command.execute('2'));
-    //     expect(result).toEqual('2_test');
-    //     expect(firstSubscriptionError).toBeTruthy();
-    //   });
-    // });
-    //
-    // describe('Skip', () => {
-    //   it('should skip if a command is already running', async () => {
-    //     const command = createCommand({
-    //       action: (qualifier) => of(`${qualifier}_test`),
-    //       strategy: CommandStrategy.Skip,
-    //     });
-    //
-    //     let secondSubscriptionSkipped = false;
-    //     command.execute('1').subscribe();
-    //
-    //     const result = await firstValueFrom(
-    //       command.execute('2').pipe(
-    //         catchError(() => {
-    //           secondSubscriptionSkipped = true;
-    //           return EMPTY;
-    //         })
-    //       )
-    //     );
-    //
-    //     expect(result).toBeUndefined();
-    //     expect(secondSubscriptionSkipped).toBeTruthy();
-    //   });
-    // });
-    //
-    // describe('Cancel', () => {
-    //   it('should cancel if a command is already running', async () => {
-    //     const command = createCommand({
-    //       action: (qualifier) => of(`${qualifier}_test`),
-    //       strategy: CommandStrategy.Cancel,
-    //     });
-    //
-    //     let secondSubscriptionCancelled = false;
-    //     command.execute('1').subscribe();
-    //
-    //     const result = await firstValueFrom(
-    //       command.execute('2').pipe(
-    //         catchError(() => {
-    //           secondSubscriptionCancelled = true;
-    //           return EMPTY;
-    //         })
-    //       )
-    //     );
-    //
-    //     expect(result).toBeUndefined();
-    //     expect(secondSubscriptionCancelled).toBeTruthy();
-    //   });
-    // });
   });
 
   describe('Events', () => {
