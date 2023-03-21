@@ -1,3 +1,4 @@
+import { storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit';
 import { TemplateResult } from 'lit/development';
@@ -12,3 +13,9 @@ const Template: Story<unknown> = (): TemplateResult => {
 };
 
 export const Demo = Template.bind({});
+
+Demo.parameters = {
+  chromatic: {
+    viewports: [storybookDefaultViewports.mobile.min],
+  },
+};

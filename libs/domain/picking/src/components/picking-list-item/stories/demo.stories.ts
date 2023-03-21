@@ -3,7 +3,7 @@ import { html } from 'lit';
 import { TemplateResult } from 'lit/development';
 import { storybookPrefix } from '../../../../.constants';
 import { mockPickingListData } from '../../../mocks';
-import { PickingListItemProps } from '../picking-list-item.model';
+import { PickingListItemAttributes } from '../picking-list-item.model';
 
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 
@@ -20,7 +20,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<PickingListItemProps> = ({
+const Template: Story<PickingListItemAttributes> = ({
   pickingListId,
 }): TemplateResult => {
   return html`

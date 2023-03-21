@@ -1,4 +1,8 @@
-import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
+import {
+  generateVariantsMatrix,
+  storybookDefaultViewports,
+  Variant,
+} from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -56,3 +60,9 @@ const Template: Story<unknown> = (): TemplateResult => {
 };
 
 export const Variants = Template.bind({});
+
+Variants.parameters = {
+  chromatic: {
+    viewports: [storybookDefaultViewports.mobile.min],
+  },
+};
