@@ -35,7 +35,6 @@ async function vitestExecutor(options, context) {
             '**/stories/*.ts',
             '**/*.schema.ts',
             '**/*.styles.ts',
-            '**/components.provider.ts',
             '**/*.def.ts',
             '**/*.model.ts',
             '**/components.provider.ts',

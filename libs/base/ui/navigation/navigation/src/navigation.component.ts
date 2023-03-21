@@ -22,9 +22,11 @@ export class NavigationComponent extends LitElement {
     return html`
       <oryx-image resource="logo"></oryx-image>
       <slot></slot>
-      <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
-        <oryx-icon type="back" size=${Size.Md}></oryx-icon>
-      </button>
+      <oryx-icon-button size=${Size.Md}>
+        <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
+          <oryx-icon type="back"></oryx-icon>
+        </button>
+      </oryx-icon-button>
     `;
   }
 

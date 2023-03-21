@@ -6,6 +6,10 @@ import { FormControlOptions } from './form-control.model';
 import { VisibleFocusController } from './visible-focus.controller';
 
 export class FormControlController implements ReactiveController {
+  protected control?:
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement;
   protected visibleFocusController: VisibleFocusController;
   protected errorController: ErrorController;
 
@@ -36,7 +40,7 @@ export class FormControlController implements ReactiveController {
       if (e.target === this.host) {
         e.preventDefault();
       }
-      this.control.focus();
+      this.control?.focus();
     }
   }
 
@@ -67,6 +71,7 @@ export class FormControlController implements ReactiveController {
   protected controlAttrObserver?: MutationObserver;
 
   protected handleSlotChange(): void {
+    this.control = getControl(this.host);
     this.detectAutofill();
     this.toggleHasValueAttribute();
     this.addValidationListeners();
@@ -111,7 +116,7 @@ export class FormControlController implements ReactiveController {
 
       // try catch is needed here to avoid JSDOM tests error
       try {
-        if (this.control.matches(':-webkit-autofill')) {
+        if (this.control?.matches(':-webkit-autofill')) {
           this.host.toggleAttribute('has-value', true);
           clearInterval(interval);
         }
@@ -122,12 +127,12 @@ export class FormControlController implements ReactiveController {
   }
 
   protected toggleHasValueAttribute(): void {
-    this.host.toggleAttribute('has-value', !!this.control.value);
+    this.host.toggleAttribute('has-value', !!this.control?.value);
   }
 
   protected adjustAttributes(): void {
-    this.host.toggleAttribute('disabled', !!this.control.disabled);
-    this.host.toggleAttribute('required', !!this.control.required);
+    this.host.toggleAttribute('disabled', !!this.control?.disabled);
+    this.host.toggleAttribute('required', !!this.control?.required);
   }
 
   protected _attributes = ['required', 'disabled', 'readonly'];
@@ -143,16 +148,9 @@ export class FormControlController implements ReactiveController {
     this.controlAttrObserver = new MutationObserver((mutations, observer) => {
       this._listeners.forEach((listener) => listener(mutations, observer));
     });
-    this.controlAttrObserver.observe(this.control, {
+    this.controlAttrObserver.observe(this.control!, {
       attributeFilter: this._attributes,
     });
-  }
-
-  protected get control():
-    | HTMLInputElement
-    | HTMLSelectElement
-    | HTMLTextAreaElement {
-    return getControl(this.host);
   }
 
   constructor(protected host: FormControlOptions & LitElement) {

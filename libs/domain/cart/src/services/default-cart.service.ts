@@ -9,6 +9,7 @@ import {
   QueryState,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { LocaleChanged } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -69,7 +70,7 @@ export class DefaultCartService implements CartService {
 
   protected cartQuery$ = createQuery({
     loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
-    refreshOn: [CartEntryRemoved],
+    refreshOn: [CartEntryRemoved, LocaleChanged],
   });
 
   protected addEntryCommand$ = createCommand({
