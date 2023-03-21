@@ -58,7 +58,7 @@ export class TextComponent extends LitElement implements TextProperties {
           </oryx-icon-button>
         </slot>`
       )}
-      ${prehydrate(truncateFix, 'oryx-text')}
+      ${prehydrate(truncateFix, this.tagName.toLowerCase())}
     `;
   }
 
