@@ -1,9 +1,6 @@
 import { hydrateAllEvent } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import {
-  ComponentsRegistryService,
-  ContentMixin,
-} from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
@@ -20,7 +17,6 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   static styles = [siteLocaleSelectorStyles];
 
   protected currencyService = resolve(CurrencyService);
-  protected registry = resolve(ComponentsRegistryService);
 
   @asyncState()
   protected currencies = valueType(this.currencyService.getAll());
