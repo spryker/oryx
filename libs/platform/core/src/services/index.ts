@@ -2,6 +2,7 @@ export * from './context';
 export * from './error';
 export * from './feature-options';
 export * from './http';
+export * from './hydrate';
 export * from './providers';
 export * from './query';
 export * from './ssr-awaiter.service';

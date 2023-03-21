@@ -1,5 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import {
+  ComponentsRegistryService,
+  ContentMixin,
+} from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
@@ -16,6 +19,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   static styles = [siteLocaleSelectorStyles];
 
   protected localeService = resolve(LocaleService);
+  protected registry = resolve(ComponentsRegistryService);
 
   @asyncState()
   protected locales = valueType(this.localeService.getAll());
@@ -54,6 +58,12 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected onClick(locale: string): void {
+    document.dispatchEvent(
+      new CustomEvent('oryx.force', {
+        composed: true,
+        bubbles: true,
+      })
+    );
     this.localeService.set(locale);
   }
 

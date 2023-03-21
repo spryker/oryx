@@ -50,20 +50,14 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected layoutBuilder = resolve(LayoutBuilder);
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
-    switchMap(([uid, route], index) => {
-      /**
-       * Provides ability to rerender components for the same route pattern.
-       */
-      if (index > 0) {
-        this.isHydrated = true;
-      }
-
+    switchMap(([uid, route]) => {
       return (
         this.experienceService?.getComponent({ uid, route }) ||
         of({} as Component)
       );
     }),
     tap((component) => {
+      console.log(component);
       this.layoutUid = component?.id;
     }),
     map((component: Component) => component?.components ?? [])
@@ -75,12 +69,9 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected override render(): TemplateResult {
     if (!this.components) return html`Loading...`;
 
-    // TODO: fix any with TS 5. we add `hasSsr` prop in hydratable decorator
     return html`
       <slot></slot>
-      ${(this as any).hasSsr && this.isHydrated
-        ? html`${[...this.renderRoot.children]}`
-        : html`${this.renderComponents(this.components)}`}
+      ${this.renderComponents(this.components)}
     `;
   }
 

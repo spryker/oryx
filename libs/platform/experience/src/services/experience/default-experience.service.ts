@@ -1,8 +1,10 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
+import { ComponentsRegistryService } from '../registry';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
 import { ExperienceStaticService } from './static-data';
@@ -16,7 +18,9 @@ export class DefaultExperienceService implements ExperienceService {
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticService = inject(ExperienceStaticService)
+    protected staticService = inject(ExperienceStaticService),
+    protected routerS = inject(RouterService),
+    protected registry = inject(ComponentsRegistryService)
   ) {
     this.initStaticData();
   }

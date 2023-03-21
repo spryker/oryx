@@ -1,5 +1,6 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { locationEvent, StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { isServer } from 'lit';
 import {
   BehaviorSubject,
   combineLatest,
@@ -76,6 +77,15 @@ export class DefaultRouterService implements RouterService {
             PREVIOUS_PAGE,
             currentPage,
             StorageType.SESSION
+          );
+        }
+        if (!isServer) {
+          document.dispatchEvent(
+            new CustomEvent(locationEvent, {
+              composed: true,
+              bubbles: true,
+              detail: route,
+            })
           );
         }
         this.storeRoute(route);

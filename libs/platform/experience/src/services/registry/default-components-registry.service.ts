@@ -1,6 +1,4 @@
-import { AppRef, ComponentsPlugin } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { HYDRATE_ON_DEMAND } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html, unsafeStatic } from 'lit/static-html.js';
 import { ComponentMapping } from '../experience-tokens';
@@ -9,18 +7,15 @@ import { ComponentsRegistryService } from './components-registry.service';
 export class DefaultComponentsRegistryService
   implements ComponentsRegistryService
 {
-  protected readonly componentsPlugin: ComponentsPlugin;
   protected componentMapping?: ComponentMapping;
 
   constructor(
-    registeredComponents = inject<ComponentMapping[]>(ComponentMapping, []),
-    protected readonly appRef = inject(AppRef)
+    registeredComponents = inject<ComponentMapping[]>(ComponentMapping, [])
   ) {
     this.componentMapping = registeredComponents.reduce(
       (acc, components) => ({ ...acc, ...components }),
       {}
     );
-    this.componentsPlugin = this.appRef.requirePlugin(ComponentsPlugin);
   }
 
   resolveTag(type: string): string {
@@ -41,18 +36,5 @@ export class DefaultComponentsRegistryService
         )} uid=${uid} class=${styleClasses}></${unsafeStatic(
           component.tag ?? type
         )}>${null}`;
-  }
-
-  async hydrateOnDemand(element: HTMLElement): Promise<void> {
-    if (!element.hasAttribute('hydratable')) {
-      return;
-    }
-
-    if (!customElements.get(element.localName)) {
-      await this.componentsPlugin.loadComponent(element.localName);
-      customElements.upgrade(element);
-    }
-
-    (element as any)[HYDRATE_ON_DEMAND]?.();
   }
 }

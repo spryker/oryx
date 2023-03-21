@@ -11,12 +11,14 @@ const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
+export const hydratableAttribute = 'hydratable';
 
 export interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
   hasSsr: boolean;
+  [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
 
 const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
@@ -59,12 +61,17 @@ function hydratableClass<T extends Type<HTMLElement>>(
     hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
+    static properties = {
+      useRealRender: { type: Boolean, state: true },
+    };
+
     constructor(...args: any[]) {
       super(...args);
       this.hasSsr = !isServer && !!this.shadowRoot;
+      this.useRealRender = true;
 
       if (isServer) {
-        this.setAttribute('hydratable', mode ?? '');
+        this.setAttribute(hydratableAttribute, mode ?? '');
       }
 
       if (this.hasSsr) {
@@ -90,7 +97,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
       this[HYDRATING] = false;
     }
 
-    [HYDRATE_ON_DEMAND]() {
+    [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
+      if (skipMissMatch) {
+        this.useRealRender = false;
+      }
+
       const prototype = Array(this[HYDRATION_CALLS])
         .fill(null)
         .reduce(Object.getPrototypeOf, this);
@@ -113,14 +124,20 @@ function hydratableClass<T extends Type<HTMLElement>>(
     render(): TemplateResult {
       const states = this[asyncStates];
 
+      setTimeout(() => {
+        if (!this.useRealRender) this.useRealRender = true;
+      }, 0);
+
       if (this.hasSsr && states) {
-        return html`${whenState(Object.values(states).every(Boolean), () =>
-          super.render()
+        console.log(this.useRealRender, this.tagName);
+        return html`${whenState(
+          Object.values(states).every(Boolean) && this.useRealRender,
+          () => super.render()
         )}`;
       }
 
       return this.hasSsr || isServer
-        ? html`${whenState(true, () => super.render())}`
+        ? html`${whenState(this.useRealRender, () => super.render())}`
         : super.render();
     }
   };

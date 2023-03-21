@@ -3,6 +3,7 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
+  HydrateService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -10,7 +11,6 @@ import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
-import { initHydrateHooks } from './hydrate-hooks';
 
 declare global {
   function litElementHydrateSupport(param: {
@@ -48,6 +48,6 @@ export class RootPlugin
   }
 
   afterApply(): void {
-    initHydrateHooks();
+    resolve(HydrateService).initHydrateHooks();
   }
 }

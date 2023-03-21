@@ -1,5 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import {
+  ComponentsRegistryService,
+  ContentMixin,
+} from '@spryker-oryx/experience';
 import { CurrencyService, LocaleService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
@@ -16,6 +19,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   static styles = [siteLocaleSelectorStyles];
 
   protected currencyService = resolve(CurrencyService);
+  protected registry = resolve(ComponentsRegistryService);
 
   @asyncState()
   protected currencies = valueType(this.currencyService.getAll());
@@ -45,15 +49,15 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
         </oryx-button>
         ${repeat(
           this.currencies ?? [],
-          (locale) => locale.code,
-          (locale) =>
+          (currency) => currency.code,
+          (currency) =>
             html` <oryx-option
               close-popover
-              value=${locale.code}
-              ?active=${locale.code === this.current}
-              @click=${() => this.onClick(locale.code)}
+              value=${currency.code}
+              ?active=${currency.code === this.current}
+              @click=${() => this.onClick(currency.code)}
             >
-              ${this.getLabel(locale.code)}
+              ${this.getLabel(currency.code)}
             </oryx-option>`
         )}
       </oryx-dropdown>
@@ -61,13 +65,19 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   }
 
   protected onClick(locale: string): void {
+    document.dispatchEvent(
+      new CustomEvent('oryx.force', {
+        composed: true,
+        bubbles: true,
+      })
+    );
     this.currencyService.set(locale);
   }
 
   protected getLabel(code: string): string {
-    const languageNames = new Intl.DisplayNames([this.currentLocale ?? 'en'], {
+    const currencyNames = new Intl.DisplayNames([this.currentLocale ?? 'en'], {
       type: 'currency',
     });
-    return languageNames.of(code) ?? code;
+    return currencyNames.of(code) ?? code;
   }
 }
