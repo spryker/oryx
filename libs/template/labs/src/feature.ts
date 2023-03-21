@@ -1,6 +1,7 @@
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
+import { labsI18nFeature } from './i18n';
 export * from './components';
 
 // tmp solution until we've published our packages and we can pull this from core
@@ -14,7 +15,10 @@ export const labsComponents = Object.values(components);
  * and might even be broken as they're not thoroughly tested
  * and not covered with automated tests.
  */
-export const labsFeature: AppFeature = {
-  components: labsComponents,
-  providers: [cloudinaryImageConverter, bazaarVoiceComponentMapping],
-};
+export const labsFeature: AppFeature[] = [
+  {
+    components: labsComponents,
+    providers: [cloudinaryImageConverter, bazaarVoiceComponentMapping],
+  },
+  labsI18nFeature,
+];

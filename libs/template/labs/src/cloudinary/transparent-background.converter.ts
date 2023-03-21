@@ -27,6 +27,13 @@ const fetchUrl = `https://res.cloudinary.com/${
 export const cloudinaryImageConverter: Provider = {
   provide: DefaultProductMediaNormalizer,
   useValue: (image: ApiProductModel.Image) => {
+    if (!(<any>import.meta).env.ORYX_CLOUDINARY_ID) {
+      logMissingEnv();
+      return {
+        [Size.Xs]: image.externalUrlSmall,
+        [Size.Lg]: image.externalUrlLarge,
+      };
+    }
     return {
       [Size.Xs]: `${fetchUrl}/e_bgremoval/w_100,f_auto/${
         image.externalUrlSmall ?? image.externalUrlLarge
@@ -39,4 +46,11 @@ export const cloudinaryImageConverter: Provider = {
       }`,
     };
   },
+};
+
+let logged = 0;
+const logMissingEnv = (): void => {
+  if (logged > 0) return;
+  console.error('Missing ORYX_CLOUDINARY_ID environment variable');
+  logged++;
 };
