@@ -67,12 +67,14 @@ describe('PickingListCardComponent', () => {
         .toLowerCase();
 
       expect(
-        element.renderRoot.querySelector('.time')?.textContent?.trim()
+        element.renderRoot
+          .querySelector("[slot='heading'] span")
+          ?.textContent?.trim()
       ).toBe(formattedTime);
     });
 
     it('should render id', () => {
-      expect(element.renderRoot.querySelector('.identifier')?.textContent).toBe(
+      expect(element.renderRoot.querySelector('h4')?.textContent).toBe(
         pickingList.id
       );
     });

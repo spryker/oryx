@@ -1,0 +1,21 @@
+{
+  "root": "libs/template/labs",
+  "sourceRoot": "libs/template/labs/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/template/labs/**/*.ts"]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
+    }
+  },
+  "tags": ["layer:template"]
+}

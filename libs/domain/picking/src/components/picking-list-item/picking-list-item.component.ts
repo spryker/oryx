@@ -76,7 +76,8 @@ export class PickingListItemComponent
         <oryx-heading slot="heading">
           ${when(
             this.pickingList.createdAt,
-            () => html` <h2>${formatTime(this.pickingList!.createdAt)}</h2> `
+            () =>
+              html` <span>${formatTime(this.pickingList!.createdAt)}</span> `
           )}
           <h4 class="identifier">${this.pickingList.id}</h4>
         </oryx-heading>
