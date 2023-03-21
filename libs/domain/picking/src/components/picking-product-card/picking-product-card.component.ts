@@ -17,7 +17,7 @@ export class PickingProductCardComponent extends LitElement {
   @property() productItem?: PickingListItem;
   @property() status: string = ItemsFilters.Picked;
 
-  @state() isCorrectNumberOfPickedProvided?: boolean;
+  @state() isCorrectNumberOfPickedProvided?: boolean = true;
 
   protected currentNumberOfPicked$ = new BehaviorSubject(0);
   @asyncState()
@@ -96,6 +96,12 @@ export class PickingProductCardComponent extends LitElement {
 
   protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
     this.currentNumberOfPicked$.next(quantity);
+
+    if (this.productItem) {
+      this.isCorrectNumberOfPickedProvided =
+        0 <= quantity && quantity <= this.productItem.quantity;
+    }
+
     this.dispatchEvent(
       new CustomEvent(EVENT_CHANGE_NUMBER_OF_PICKED, {
         bubbles: true,
@@ -109,16 +115,16 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected getSummaryInfo(): SummaryInfo {
-    if (!this.productItem?.numberOfNotPicked || !this.productItem?.quantity) {
+    if (!this.productItem) {
       return {
         main: '',
       };
     }
 
     if (this.status === ItemsFilters.Picked) {
-      const template = `${this.productItem?.numberOfPicked}/${this.productItem?.quantity}`;
+      const template = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
 
-      if (this.productItem?.numberOfPicked < this.productItem?.quantity) {
+      if (this.productItem.numberOfPicked < this.productItem.quantity) {
         return { main: `${template} items picked` };
       }
 
@@ -127,9 +133,9 @@ export class PickingProductCardComponent extends LitElement {
         additional: 'All items picked',
       };
     } else if (this.status === ItemsFilters.NotFound) {
-      const template = `${this.productItem?.numberOfNotPicked}/${this.productItem?.quantity}`;
+      const template = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
 
-      if (this.productItem?.numberOfNotPicked < this.productItem?.quantity) {
+      if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
         return { main: `${template} items not found` };
       }
 
@@ -177,6 +183,7 @@ export class PickingProductCardComponent extends LitElement {
                     .max="${this.productItem?.quantity}"
                     .value="${this.productItem?.numberOfPicked}"
                     submitOnChange
+                    @update=${this.onChangeQuantity}
                     @submit=${this.onChangeQuantity}
                   ></oryx-cart-quantity-input>
 
@@ -191,7 +198,7 @@ export class PickingProductCardComponent extends LitElement {
                   <oryx-button>
                     <button
                       type="submit"
-                      ?disabled="${this.isCorrectNumberOfPickedProvided}"
+                      ?disabled="${!this.isCorrectNumberOfPickedProvided}"
                     >
                       <oryx-icon type="checkMark"></oryx-icon>
                       ${i18n('picking.product-card.done')}
