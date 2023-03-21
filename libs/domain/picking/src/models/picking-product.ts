@@ -5,3 +5,8 @@ export interface PickingProduct {
   image: string | null;
   imageLarge: string | null;
 }
+
+export interface ProductItemPickedEvent {
+  productId: string;
+  numberOfPicked: number;
+}

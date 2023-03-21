@@ -3,26 +3,38 @@ import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BehaviorSubject, distinctUntilChanged, map, switchMap } from 'rxjs';
-import { ItemsFilters } from '../../models';
+import {
+  BehaviorSubject,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  switchMap,
+} from 'rxjs';
+import { ItemsFilters, ProductItemPickedEvent } from '../../models';
 import { PickingListService } from '../../services';
 
 export class PickingComponent extends LitElement {
-  @property({ attribute: 'picking-id' })
-  pickingId?: string;
+  @property({ attribute: 'picking-id' }) pickingId?: string;
 
-  @observe()
+  @observe('pickingId')
   protected pickingId$ = new BehaviorSubject(this.pickingId);
 
   protected pickingListService = resolve(PickingListService);
-
   protected pickingList$ = this.pickingId$.pipe(
     distinctUntilChanged(),
     switchMap((id) => this.pickingListService.getById(id ?? ''))
   );
 
-  protected tabs$ = this.pickingList$.pipe(
-    map((list) => [
+  @asyncState()
+  protected pickingList = valueType(this.pickingList$);
+
+  protected pickingUpdate$ = new BehaviorSubject<string | null>(null);
+
+  protected tabs$ = combineLatest([
+    this.pickingList$,
+    this.pickingUpdate$,
+  ]).pipe(
+    map(([list]) => [
       {
         id: ItemsFilters.NotPicked,
         title: 'not-picked',
@@ -53,7 +65,52 @@ export class PickingComponent extends LitElement {
   @asyncState()
   protected tabs = valueType(this.tabs$);
 
+  protected changeNumberOfPicked(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    this.pickingList?.items.map((item) => {
+      if (
+        item.product.id === detail.productId &&
+        detail.numberOfPicked <= item.quantity &&
+        detail.numberOfPicked >= 0
+      ) {
+        item.numberOfPicked = detail.numberOfPicked;
+        item.numberOfNotPicked = item.quantity - item.numberOfPicked;
+      }
+    });
+  }
+
+  protected savePickingItem(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    if (!this.pickingList) {
+      return;
+    }
+
+    this.pickingList.items.map((item) => {
+      if (item.product.id === detail.productId) {
+        item.status = ItemsFilters.Picked;
+      }
+    });
+
+    this.pickingUpdate$.next(detail.productId);
+  }
+
+  protected editPickingItem(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    this.pickingList?.items.forEach((item) => {
+      if (item.product.id === detail.productId) {
+        item.status = ItemsFilters.NotPicked;
+      }
+    });
+
+    this.pickingUpdate$.next(detail.productId);
+  }
+
   protected override render(): TemplateResult {
+    console.log('render');
+
     return html`<oryx-tabs appearance="secondary">
       ${this.renderTabs()} ${this.renderTabContents()}
     </oryx-tabs>`;
@@ -75,16 +132,25 @@ export class PickingComponent extends LitElement {
     return this.tabs
       ? html`${repeat(
           this.tabs,
-          (tab) => html`<div slot="panels" id="tab-${tab.id}">
+          (tab) => html`<div
+            slot="panels"
+            id="tab-${tab.id}"
+            style="width: 100%"
+          >
             ${tab.items?.length
               ? repeat(
                   tab.items,
                   (item) =>
-                    html`<oryx-picking-product-card
-                      .productItem=${item.product}
-                    >
-                      ${item.product.sku} ${item.product.productName}
-                    </oryx-picking-product-card>`
+                    html`
+                      <oryx-picking-product-card
+                        .productItem=${item}
+                        .status=${tab.id}
+                        @oryx.change-number-of-picked=${this
+                          .changeNumberOfPicked}
+                        @oryx.submit=${this.savePickingItem}
+                        @oryx.edit=${this.editPickingItem}
+                      ></oryx-picking-product-card>
+                    `
                 )
               : this.renderFallback()}
           </div>`
