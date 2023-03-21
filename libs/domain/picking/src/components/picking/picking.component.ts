@@ -65,24 +65,6 @@ export class PickingComponent extends LitElement {
   @asyncState()
   protected tabs = valueType(this.tabs$);
 
-  protected override render(): TemplateResult {
-    return html`<oryx-tabs appearance="secondary">
-      ${this.renderTabs()} ${this.renderTabContents()}
-    </oryx-tabs>`;
-  }
-
-  protected renderTabs(): TemplateResult {
-    return this.tabs
-      ? html`${repeat(
-          this.tabs,
-          (tab) => html`<oryx-tab for="tab-${tab.id}">
-            ${i18n(`picking.${tab.title}`)}
-            <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
-          </oryx-tab>`
-        )}`
-      : html``;
-  }
-
   protected changeNumberOfPicked(event: Event): void {
     const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
 
@@ -114,6 +96,38 @@ export class PickingComponent extends LitElement {
     this.pickingUpdate$.next(detail.productId);
   }
 
+  protected editPickingItem(event: Event): void {
+    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+
+    this.pickingList?.items.forEach((item) => {
+      if (item.product.id === detail.productId) {
+        item.status = ItemsFilters.NotPicked;
+      }
+    });
+
+    this.pickingUpdate$.next(detail.productId);
+  }
+
+  protected override render(): TemplateResult {
+    console.log('render');
+
+    return html`<oryx-tabs appearance="secondary">
+      ${this.renderTabs()} ${this.renderTabContents()}
+    </oryx-tabs>`;
+  }
+
+  protected renderTabs(): TemplateResult {
+    return this.tabs
+      ? html`${repeat(
+          this.tabs,
+          (tab) => html`<oryx-tab for="tab-${tab.id}">
+            ${i18n(`picking.${tab.title}`)}
+            <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
+          </oryx-tab>`
+        )}`
+      : html``;
+  }
+
   protected renderTabContents(): TemplateResult {
     return this.tabs
       ? html`${repeat(
@@ -134,6 +148,7 @@ export class PickingComponent extends LitElement {
                         @oryx.change-number-of-picked=${this
                           .changeNumberOfPicked}
                         @oryx.submit=${this.savePickingItem}
+                        @oryx.edit=${this.editPickingItem}
                       ></oryx-picking-product-card>
                     `
                 )

@@ -83,6 +83,9 @@ export class PickingProductCardComponent extends LitElement {
       new CustomEvent(EVENT_EDIT, {
         bubbles: true,
         composed: true,
+        detail: {
+          productId: this.productItem?.product.id,
+        },
       })
     );
   }
