@@ -2,7 +2,11 @@ import { Observable } from 'rxjs';
 import { PickingList, PickingListQualifier } from '../models';
 
 export interface PickingListService {
-  get(qualifier?: PickingListQualifier): Observable<PickingList[]>;
+  get(): Observable<PickingList[]>;
+  setQualifier(
+    qualifier: PickingListQualifier
+  ): Observable<PickingListQualifier>;
+  getById(id: string): Observable<PickingList | null>;
   startPicking(pickingList: PickingList): Observable<PickingList>;
   updatePickingItems(pickingList: PickingList): Observable<PickingList>;
   finishPicking(pickingList: PickingList): Observable<PickingList>;
