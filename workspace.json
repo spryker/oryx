@@ -13,7 +13,6 @@
     "fulfillment": "apps/fulfillment",
     "i18n": "libs/platform/i18n",
     "indexed-db": "libs/platform/indexed-db",
-    "labs": "libs/template/labs",
     "offline": "libs/platform/offline",
     "order": "libs/domain/order",
     "picking": "libs/domain/picking",
