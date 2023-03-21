@@ -5,7 +5,8 @@ export class CartTotalsFragment {
   getDiscountsWrapper = () => this.getWrapper().find('.discount');
   getDiscountsTotal = () => this.getDiscountsWrapper().find('[slot="aside"]');
   getTaxTotal = () => this.getWrapper().contains('Tax').next();
-  getDeliveryTotal = () => this.getWrapper().contains('Delivery').next();
+  getDeliveryTotal = () =>
+    this.getWrapper().contains('Delivery').next().find('a');
   getTotalPrice = () => this.getWrapper().find('.summary');
   getTaxMessage = () => this.getWrapper().get('.tax-message');
 }
