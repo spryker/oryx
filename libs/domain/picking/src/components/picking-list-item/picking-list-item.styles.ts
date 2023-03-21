@@ -8,6 +8,12 @@ export const styles = css`
     width: 100%;
   }
 
+  [slot='heading'] span {
+    font-weight: var(--oryx-typography-h2-weight);
+    font-size: var(--oryx-typography-h2-size);
+    line-height: var(--oryx-typography-h2-line);
+  }
+
   [slot='heading'] h4 {
     color: var(--oryx-color-neutral-darker);
     margin-inline-start: auto;
