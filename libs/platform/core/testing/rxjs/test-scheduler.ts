@@ -1,6 +1,6 @@
 import { TestScheduler } from 'rxjs/testing';
 
-export const rxjsTestScheduler = () =>
+export const rxjsTestScheduler: () => TestScheduler = () =>
   new TestScheduler((actual, expected) => {
     try {
       expect(actual).toEqual(expected);
