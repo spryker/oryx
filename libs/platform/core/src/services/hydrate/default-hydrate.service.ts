@@ -24,17 +24,18 @@ export class DefaultHydrateService implements HydrateService {
     if (isServer) {
       return;
     }
-    let initialNav = true;
+    let initialEvent = true;
 
     document.addEventListener(locationHydrationEvent, () => {
-      if (!initialNav) {
-        const component = document
-          .querySelector(this.root)
-          ?.shadowRoot?.querySelector(`[route]`) as LitElement;
-
+      console.log('addEventListener');
+      if (!initialEvent) {
+        const queryRoot = document.querySelector(this.root);
+        const querySelector =
+          this.root === 'body' ? queryRoot : queryRoot?.shadowRoot;
+        const component = querySelector?.querySelector(`[route]`) as LitElement;
         this.hydrateOnDemand(component, true);
       }
-      initialNav = false;
+      initialEvent = false;
     });
   }
 
@@ -50,6 +51,7 @@ export class DefaultHydrateService implements HydrateService {
         if (parts.length > 1) {
           target = parts[0] === 'window' ? window : el;
         }
+
         target.addEventListener(mode, () => this.hydrateOnDemand(el));
       }
     });
