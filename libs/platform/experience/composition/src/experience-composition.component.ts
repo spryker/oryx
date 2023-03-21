@@ -44,9 +44,6 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
-
-  protected isHydrated = false;
-
   protected layoutBuilder = resolve(LayoutBuilder);
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
