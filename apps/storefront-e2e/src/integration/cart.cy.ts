@@ -176,8 +176,7 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
-  // should be fixed in https://spryker.atlassian.net/browse/HRZ-2353
-  // cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
+  cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
   cartTotals.getTotalPrice().should('contain.text', expectedData.totalPrice);
 
   // covers HRZ-1008

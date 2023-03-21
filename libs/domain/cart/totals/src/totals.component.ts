@@ -151,7 +151,7 @@ export class CartTotalsComponent extends CartComponentMixin<CartTotalsComponentO
             <small class="delivery-message">
               ${ifDefined(options?.deliveryMessage)}
               <oryx-icon-button size=${Size.Sm}>
-                <a href="#" title=${i18n('cart.totals.not-implemented-yet')}>
+                <a href="#" title="not yet implemented">
                   <oryx-icon type="info"></oryx-icon>
                 </a>
               </oryx-icon-button>
