@@ -1,4 +1,3 @@
-import { ContextController } from '@spryker-oryx/core';
 import { LitRouter } from '@spryker-oryx/router/lit';
 import { hydratable, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -8,8 +7,6 @@ import { styles } from './root-app.styles';
 @hydratable()
 export class RootAppComponent extends LitElement {
   static styles = styles;
-
-  protected context = new ContextController(this);
 
   @subscribe()
   protected dirSetup = new DirectionalityController(this).install();
