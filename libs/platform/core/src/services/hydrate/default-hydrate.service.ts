@@ -27,7 +27,6 @@ export class DefaultHydrateService implements HydrateService {
     let initialEvent = true;
 
     document.addEventListener(locationHydrationEvent, () => {
-      console.log('addEventListener');
       if (!initialEvent) {
         const queryRoot = document.querySelector(this.root);
         const querySelector =
