@@ -15,12 +15,12 @@ import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { formatTime } from '../../utilities';
-import { PickingListItemProps } from './picking-list-item.model';
+import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
 export class PickingListItemComponent
   extends LitElement
-  implements PickingListItemProps
+  implements PickingListItemAttributes
 {
   static styles = styles;
 
@@ -68,32 +68,30 @@ export class PickingListItemComponent
     );
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (!this.pickingList) return;
+
     return html`
       <oryx-card>
-        <div slot="heading">
+        <oryx-heading slot="heading">
           ${when(
-            this.pickingList?.createdAt,
-            () => html`
-              <div class="time">
-                ${formatTime(this.pickingList!.createdAt!)}
-              </div>
-            `
+            this.pickingList.createdAt,
+            () => html` <h2>${formatTime(this.pickingList!.createdAt)}</h2> `
           )}
-          <div class="identifier">${this.pickingList?.id}</div>
-        </div>
+          <h4 class="identifier">${this.pickingList.id}</h4>
+        </oryx-heading>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           <span
             >${i18n('picking.picking-list-item.{count}-items', {
-              count: this.pickingList?.items?.length,
+              count: this.pickingList.items.length,
             })}</span
           >
         </div>
 
         ${when(
-          this.pickingList?.cartNote,
+          this.pickingList.cartNote,
           () => html`
             <oryx-icon-button size=${Size.Sm}>
               <button
@@ -107,7 +105,7 @@ export class PickingListItemComponent
         )}
 
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Lg}>
-          <button :disabled=${this.isDisabled} @click=${this.startPicking}>
+          <button ?disabled=${this.isDisabled} @click=${this.startPicking}>
             ${i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>

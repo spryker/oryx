@@ -6,4 +6,8 @@ export const pickingListItemComponent = componentDef({
     import('./picking-list-item.component').then(
       (m) => m.PickingListItemComponent
     ),
+  schema: () =>
+    import('./picking-list-item.schema').then(
+      (m) => m.pickingListItemComponentSchema
+    ),
 });
