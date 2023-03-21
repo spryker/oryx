@@ -129,7 +129,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
       }, 0);
 
       if (this.hasSsr && states) {
-        console.log(this.useRealRender, this.tagName);
         return html`${whenState(
           Object.values(states).every(Boolean) && this.useRealRender,
           () => super.render()

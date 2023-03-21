@@ -57,7 +57,6 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       );
     }),
     tap((component) => {
-      console.log(component);
       this.layoutUid = component?.id;
     }),
     map((component: Component) => component?.components ?? [])
