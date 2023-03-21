@@ -12,8 +12,6 @@ interface Props {
   firstModalFullscreen?: boolean;
   secondModalFullscreen?: boolean;
 
-  footerButtonFullWidth?: boolean;
-
   firstModalHeader?: string;
   secondModalHeader?: string;
 
@@ -28,6 +26,9 @@ interface Props {
 
   firstModalPreventCloseByEscape?: boolean;
   secondModalPreventCloseByEscape?: boolean;
+
+  firstFooterButtonFullWidth?: boolean;
+  secondFooterButtonFullWidth?: boolean;
 }
 
 const generateContent = (times: number): TemplateResult => html`
@@ -65,7 +66,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       ?preventCloseByEscape=${props.firstModalPreventCloseByEscape}
       ?preventCloseByBackdrop=${props.firstModalPreventCloseByBackdrop}
       ?fullscreen=${props.firstModalFullscreen}
-      ?footerButtonFullWidth=${props.footerButtonFullWidth}
+      ?footerButtonFullWidth=${props.firstFooterButtonFullWidth}
       heading=${props.firstModalHeader}
       type=${props.firstModalType}
       @oryx.close=${console.log}
@@ -82,7 +83,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
           ?preventCloseByEscape=${props.secondModalPreventCloseByEscape}
           ?preventCloseByBackdrop=${props.secondModalPreventCloseByBackdrop}
           ?fullscreen=${props.secondModalFullscreen}
-          ?footerButtonFullWidth=${props.footerButtonFullWidth}
+          ?footerButtonFullWidth=${props.secondFooterButtonFullWidth}
           heading=${props.secondModalHeader}
           type=${props.secondModalType}
           enableFooter
@@ -99,13 +100,14 @@ export const ModalDemo = Template.bind({});
 ModalDemo.args = {
   enableNavigateBack: false,
   enableCloseButtonInHeader: false,
-  footerButtonFullWidth: false,
   firstModalFullscreen: false,
   secondModalFullscreen: false,
   firstModalPreventCloseByBackdrop: false,
   secondModalPreventCloseByBackdrop: false,
   firstModalPreventCloseByEscape: false,
   secondModalPreventCloseByEscape: false,
+  firstFooterButtonFullWidth: false,
+  secondFooterButtonFullWidth: false,
   firstModalHeader: 'First modal header',
   secondModalHeader: 'Second modal header',
   firstModalContent:
@@ -136,6 +138,14 @@ ModalDemo.argTypes = {
     control: { type: 'boolean' },
   },
   secondModalPreventCloseByEscape: {
+    table: { category: 'Second modal' },
+    control: { type: 'boolean' },
+  },
+  firstFooterButtonFullWidth: {
+    table: { category: 'First modal' },
+    control: { type: 'boolean' },
+  },
+  secondFooterButtonFullWidth: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },
