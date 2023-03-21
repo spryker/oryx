@@ -1,4 +1,4 @@
-import { firstValueFrom, of, Subject, throwError } from 'rxjs';
+import { firstValueFrom, Observable, of, Subject, throwError } from 'rxjs';
 import { describe } from 'vitest';
 import { CoreQuery } from './core-query';
 import { QueryManager } from './query-manager';
@@ -118,7 +118,8 @@ describe('CoreQuery', () => {
         const onErrorCallback = vi.fn();
         coreQuery = new CoreQuery(
           {
-            loader: (qualifier) => throwError(new Error('Invalid ID')),
+            loader: (qualifier) =>
+              throwError(new Error('Invalid ID')) as Observable<any>,
             onError: [onErrorCallback],
           },
           queryManager
