@@ -9,8 +9,8 @@ import { isServer, LitElement } from 'lit';
 import { AppRef, ComponentsPlugin } from '../../orchestration';
 import { HydrateService } from './hydrate.service';
 
-export const locationEvent = 'oryx.location';
-export const forceEvent = 'oryx.force';
+export const locationHydrationEvent = 'oryx.location';
+export const hydrateAllEvent = 'oryx.force-all';
 
 export class DefaultHydrateService implements HydrateService {
   constructor(
@@ -26,7 +26,7 @@ export class DefaultHydrateService implements HydrateService {
     }
     let initialNav = true;
 
-    document.addEventListener(locationEvent, () => {
+    document.addEventListener(locationHydrationEvent, () => {
       if (!initialNav) {
         const component = document
           .querySelector(this.root)
@@ -41,7 +41,7 @@ export class DefaultHydrateService implements HydrateService {
   initHydrateHooks(): void {
     this.treewalk(`[${hydratableAttribute}]`).forEach((el) => {
       const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
-      modes.push(`window:${forceEvent}`);
+      modes.push(`window:${hydrateAllEvent}`);
 
       for (let i = 0; i < modes.length; i++) {
         const parts = modes[i].split(':');

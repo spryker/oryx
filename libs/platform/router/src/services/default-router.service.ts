@@ -1,4 +1,8 @@
-import { locationEvent, StorageService, StorageType } from '@spryker-oryx/core';
+import {
+  locationHydrationEvent,
+  StorageService,
+  StorageType,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { isServer } from 'lit';
 import {
@@ -81,7 +85,7 @@ export class DefaultRouterService implements RouterService {
         }
         if (!isServer) {
           document.dispatchEvent(
-            new CustomEvent(locationEvent, {
+            new CustomEvent(locationHydrationEvent, {
               composed: true,
               bubbles: true,
               detail: route,

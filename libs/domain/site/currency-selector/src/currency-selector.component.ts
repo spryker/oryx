@@ -1,3 +1,4 @@
+import { hydrateAllEvent } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   ComponentsRegistryService,
@@ -66,7 +67,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
 
   protected onClick(locale: string): void {
     document.dispatchEvent(
-      new CustomEvent('oryx.force', {
+      new CustomEvent(hydrateAllEvent, {
         composed: true,
         bubbles: true,
       })
