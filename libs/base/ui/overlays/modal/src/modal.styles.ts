@@ -61,6 +61,7 @@ export const styles = css`
     padding: 0;
   }
 
+  ::slotted(oryx-button[full-width]),
   oryx-button[full-width] {
     width: 100%;
   }
