@@ -19,4 +19,20 @@ export interface CartEntriesOptions extends CartEntryOptions {
    * Emit removing immediately without confirmation.
    */
   silentRemove?: boolean;
+
+  /**
+   * Indicates whether the cart entry can be edited. In readonly mode,
+   * the quantity input and actions are hidden in the UI.
+   */
+  readonly?: boolean;
+
+  /**
+   * Renders a notification when the cart entry is updated.
+   */
+  notifyOnUpdate?: boolean;
+
+  /**
+   * Renders a notification when the cart entry is removed.
+   */
+  notifyOnRemove?: boolean;
 }

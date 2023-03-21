@@ -33,6 +33,7 @@ export class CartEntriesComponent extends CartComponentMixin(
 
   protected cartService = resolve(CartService);
   protected productService = resolve(ProductService);
+  protected notificationService = resolve(NotificationService);
 
   @state() removeGroupKey?: string;
 
@@ -40,8 +41,6 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected activeEntry = valueType(
     this.cartController.getEntry(this.removeGroupKey)
   );
-
-  protected notificationService = resolve(NotificationService);
 
   // TODO: implement loading state
   protected override render(): TemplateResult | void {
@@ -59,12 +58,11 @@ export class CartEntriesComponent extends CartComponentMixin(
         (entry) => entry.groupKey,
         (entry) =>
           html`
-              <oryx-cart-entry
-                .key=${entry.groupKey}
-                @entry.submit=${() => console.log('on submit...')}
-                ?readonly=${this.componentOptions.readonly}
-              ></<oryx-cart-entry>
-            `
+            <oryx-cart-entry
+              .key=${entry.groupKey}
+              ?readonly=${this.componentOptions.readonly}
+            ></oryx-cart-entry>
+          `
       )}
       ${when(this.removeGroupKey, () =>
         this.renderConfirmation(this.removeGroupKey)
@@ -74,15 +72,14 @@ export class CartEntriesComponent extends CartComponentMixin(
 
   constructor() {
     super();
-
-    this.addEventListener('submit', this.onUpdate as EventListener);
+    this.addEventListener('submit', this.onSubmit as EventListener);
   }
 
   /**
    * Handles updates on the entry. When the quantity is 0, the entry is going
    * to be removed unless the component options require to seek for confirmation first.
    */
-  protected onUpdate(ev: CustomEvent<CartEntryChangeEventDetail>): void {
+  protected onSubmit(ev: CustomEvent<CartEntryChangeEventDetail>): void {
     const { groupKey, quantity } = ev.detail;
 
     if (ev.detail.quantity === 0) {
@@ -147,7 +144,6 @@ export class CartEntriesComponent extends CartComponentMixin(
   }
 
   protected resetConfirmation(): void {
-    console.log(this.entries);
     this.requestUpdate();
     this.removeGroupKey = undefined;
   }

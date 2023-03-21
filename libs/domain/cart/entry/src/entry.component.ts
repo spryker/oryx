@@ -20,6 +20,7 @@ import { QuantityEventDetail } from '../../quantity-input/src';
 import { CartComponentMixin } from '../../src/mixins';
 import { CartEntry } from '../../src/models';
 import {
+  CartEntryAttributes,
   CartEntryChangeEventDetail,
   CartEntryOptions,
   RemoveByQuantity,
@@ -31,18 +32,20 @@ import { cartEntryStyles } from './styles';
  */
 @defaultOptions({
   removeByQuantity: RemoveByQuantity.ShowBin,
-  enableSku: true,
-})
-export class CartEntryComponent extends CartComponentMixin(
-  ContentMixin<CartEntryOptions>(LitElement)
-) {
+  enableId: true,
+  enablePreview: true,
+} as CartEntryOptions)
+export class CartEntryComponent
+  extends CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
+  implements CartEntryAttributes
+{
   static styles = [cartEntryStyles];
 
   @property() key?: string;
-  @property() available?: number;
   @property({ type: Boolean }) readonly?: boolean;
+  @property() available?: number;
 
-  @state() entry?: CartEntry;
+  @state() protected entry?: CartEntry;
 
   protected context = new ContextController(this);
   protected pricingService = resolve(PricingService);
@@ -75,10 +78,19 @@ export class CartEntryComponent extends CartComponentMixin(
     if (!this.entry) return;
 
     return html`
+      ${this.renderPreview()} ${this.renderDetails()} ${this.renderActions()}
+      ${this.renderPricing()}
+    `;
+  }
+
+  protected renderPreview(): TemplateResult | void {
+    if (!this.componentOptions?.enablePreview) return;
+
+    return html`
       <oryx-content-link
         .options=${{
           type: SemanticLinkType.Product,
-          id: this.entry.sku,
+          id: this.entry?.sku,
           transparent: true,
         }}
       >
@@ -86,8 +98,6 @@ export class CartEntryComponent extends CartComponentMixin(
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
       </oryx-content-link>
-
-      ${this.renderDetails()} ${this.renderActions()} ${this.renderPricing()}
     `;
   }
 
@@ -96,7 +106,7 @@ export class CartEntryComponent extends CartComponentMixin(
       <oryx-product-title .options=${{ link: true }}></oryx-product-title>
 
       ${when(
-        this.componentOptions?.enableSku,
+        this.componentOptions?.enableId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
     </section>`;
@@ -107,13 +117,15 @@ export class CartEntryComponent extends CartComponentMixin(
 
     return html`
       <div class="actions">
-        <oryx-icon-button size=${Size.Md} @click=${this.onRemove}>
+        <oryx-icon-button
+          size=${Size.Md}
+          @click=${this.onRemove}
+          ?disabled=${this.isBusy}
+        >
           <button aria-label="remove">
             <oryx-icon type="trash"></oryx-icon>
           </button>
-          <span style="display:var(--oryx-screen-small-inline, none)"
-            >${i18n('cart.remove')}</span
-          >
+          <span>${i18n('cart.remove')}</span>
         </oryx-icon-button>
       </div>
     `;
@@ -140,6 +152,7 @@ export class CartEntryComponent extends CartComponentMixin(
           .decreaseIcon=${this.decreaseIcon}
           submitOnChange
           @submit=${this.onSubmit}
+          ?disabled=${this.isBusy}
         ></oryx-cart-quantity-input>
         <span class="entry-price">${this.formattedPrice}</span>
         <div class="item-price">

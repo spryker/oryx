@@ -19,7 +19,7 @@ export const cartEntriesComponentSchema: ContentComponentSchema<CartEntriesCompo
       notifyOnRemove: {
         type: FormFieldType.Boolean,
       },
-      hidePreview: {
+      enablePreview: {
         type: FormFieldType.Boolean,
         width: 100,
       },

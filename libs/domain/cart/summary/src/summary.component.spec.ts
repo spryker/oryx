@@ -11,6 +11,9 @@ import { CartSummaryOptions } from './summary.model';
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn();
+  getEntries = vi.fn().mockReturnValue(of([]));
+  isEmpty = vi.fn().mockReturnValue(of(false));
+  isBusy = vi.fn().mockReturnValue(of(false));
 }
 
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
@@ -85,27 +88,44 @@ describe('CartSummaryComponent', () => {
         );
       });
 
-      it('should render the exact quantity mark', () => {
+      it('should default to max 99 items', () => {
         expect(element).toContainElement('mark');
         expect(element.renderRoot.querySelector('mark')?.textContent).toContain(
-          '100'
+          '99+'
         );
       });
     });
 
-    describe('and the maxVisibleQuantity option is set to 99', () => {
+    describe('and the maxVisibleQuantity option is set to 25', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-cart-summary
             uid="1"
-            .options=${{ maxVisibleQuantity: 99 } as CartSummaryOptions}
+            .options=${{ maxVisibleQuantity: 25 } as CartSummaryOptions}
           ></oryx-cart-summary>`
         );
       });
 
       it('should render 99+ in the quantity mark', () => {
         expect(element.renderRoot.querySelector('mark')?.textContent).toContain(
-          '99+'
+          '25+'
+        );
+      });
+    });
+
+    describe('and the maxVisibleQuantity option is undefined', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-cart-summary
+            uid="1"
+            .options=${{ maxVisibleQuantity: undefined } as CartSummaryOptions}
+          ></oryx-cart-summary>`
+        );
+      });
+
+      it('should render 99+ in the quantity mark', () => {
+        expect(element.renderRoot.querySelector('mark')?.textContent).toContain(
+          '100'
         );
       });
     });

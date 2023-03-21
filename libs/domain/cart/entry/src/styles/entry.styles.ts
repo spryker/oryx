@@ -58,7 +58,7 @@ export const cartEntryStyles = css`
     --image-fit: cover;
 
     display: grid;
-    grid-template-columns: 107px 1fr auto;
+    grid-template-columns: auto 1fr auto;
     grid-template-rows: auto 1fr;
     column-gap: 16px;
     padding-block: 20px 28px;
@@ -93,11 +93,6 @@ export const cartEntryStyles = css`
 
   ${pricing}
 
-  section.actions {
-    display: grid;
-    grid-auto-flow: column;
-  }
-
   oryx-cart-quantity-input {
     margin-block-end: 14px;
   }
@@ -112,5 +107,9 @@ export const cartEntryStyles = css`
   oryx-product-title {
     --oryx-link-color: currentColor;
     --oryx-link-color-hover: currentColor;
+  }
+
+  .actions oryx-icon-button span {
+    display: var(--oryx-screen-small-inline, none);
   }
 `;
