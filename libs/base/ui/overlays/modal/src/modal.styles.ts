@@ -60,4 +60,8 @@ export const styles = css`
   oryx-icon-button:first-child button {
     padding: 0;
   }
+
+  oryx-button[full-width] {
+    width: 100%;
+  }
 `;

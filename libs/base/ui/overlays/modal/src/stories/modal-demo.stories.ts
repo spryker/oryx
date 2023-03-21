@@ -12,6 +12,8 @@ interface Props {
   firstModalFullscreen?: boolean;
   secondModalFullscreen?: boolean;
 
+  footerButtonFullWidth?: boolean;
+
   firstModalHeader?: string;
   secondModalHeader?: string;
 
@@ -63,6 +65,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       ?preventCloseByEscape=${props.firstModalPreventCloseByEscape}
       ?preventCloseByBackdrop=${props.firstModalPreventCloseByBackdrop}
       ?fullscreen=${props.firstModalFullscreen}
+      ?footerButtonFullWidth=${props.footerButtonFullWidth}
       heading=${props.firstModalHeader}
       type=${props.firstModalType}
       @oryx.close=${console.log}
@@ -79,6 +82,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
           ?preventCloseByEscape=${props.secondModalPreventCloseByEscape}
           ?preventCloseByBackdrop=${props.secondModalPreventCloseByBackdrop}
           ?fullscreen=${props.secondModalFullscreen}
+          ?footerButtonFullWidth=${props.footerButtonFullWidth}
           heading=${props.secondModalHeader}
           type=${props.secondModalType}
           enableFooter
@@ -95,6 +99,7 @@ export const ModalDemo = Template.bind({});
 ModalDemo.args = {
   enableNavigateBack: false,
   enableCloseButtonInHeader: false,
+  footerButtonFullWidth: false,
   firstModalFullscreen: false,
   secondModalFullscreen: false,
   firstModalPreventCloseByBackdrop: false,
