@@ -3,14 +3,25 @@ import { PickingListService } from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  i18n,
+  isDefined,
+  observe,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject, distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { formatTime } from '../../utilities';
+import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
-export class PickingListItemComponent extends LitElement {
+export class PickingListItemComponent
+  extends LitElement
+  implements PickingListItemAttributes
+{
   static styles = styles;
 
   protected pickingListService = resolve(PickingListService);
@@ -20,14 +31,16 @@ export class PickingListItemComponent extends LitElement {
   @observe()
   protected pickingListId$ = new BehaviorSubject(this.pickingListId);
 
-  @state() isDisabled?: boolean;
+  // TODO: refactor this variable when start picking logic will be implemented (loading state should be the service area of responsibility)
+  @state()
+  protected isDisabled?: boolean;
 
   protected pickingList$ = this.pickingListId$
     .pipe(distinctUntilChanged())
     .pipe(
-      filter((pickingListId) => !!pickingListId),
+      filter(isDefined),
       switchMap((pickingListId) =>
-        this.pickingListService.getById(pickingListId!)
+        this.pickingListService.getById(pickingListId)
       )
     );
 
@@ -36,10 +49,7 @@ export class PickingListItemComponent extends LitElement {
 
   protected startPicking(): void {
     this.isDisabled = true;
-    // TODO: push to customer note page if this.pickingList?.cartNote exists
-    // else
-    // this.pickingListService.startPicking(this.pickingList$!);
-    // TODO: push to picking-items page
+    // TODO: implement start piking logic
 
     this.isDisabled = false;
   }
@@ -58,34 +68,33 @@ export class PickingListItemComponent extends LitElement {
     );
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (!this.pickingList) return;
+
     return html`
       <oryx-card>
-        <div slot="heading">
+        <oryx-heading slot="heading">
           ${when(
-            this.pickingList?.createdAt,
-            () => html`
-              <div class="time">
-                ${this.formatTime(this.pickingList!.createdAt!)}
-              </div>
-            `
+            this.pickingList.createdAt,
+            () =>
+              html` <span>${formatTime(this.pickingList!.createdAt)}</span> `
           )}
-          <div class="identifier">${this.pickingList?.id}</div>
-        </div>
+          <h4 class="identifier">${this.pickingList.id}</h4>
+        </oryx-heading>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           <span
             >${i18n('picking.picking-list-item.{count}-items', {
-              count: this.pickingList?.items?.length,
+              count: this.pickingList.items.length,
             })}</span
           >
         </div>
 
         ${when(
-          this.pickingList?.cartNote,
+          this.pickingList.cartNote,
           () => html`
-            <oryx-icon-button size=${Size.Lg}>
+            <oryx-icon-button size=${Size.Sm}>
               <button
                 aria-label="Show customer note"
                 @click=${this.showCustomerNote}
@@ -96,27 +105,12 @@ export class PickingListItemComponent extends LitElement {
           `
         )}
 
-        <oryx-button
-          slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Lg}
-          @click=${this.startPicking}
-        >
-          <button :disabled=${this.isDisabled}>
+        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Lg}>
+          <button ?disabled=${this.isDisabled} @click=${this.startPicking}>
             ${i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>
       </oryx-card>
     `;
-  }
-
-  protected formatTime(time: Date): string {
-    return time
-      .toLocaleString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
-      .toLowerCase();
   }
 }

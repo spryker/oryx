@@ -1,53 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ItemsFilters, PickingListService } from '@spryker-oryx/picking';
+import { PickingListService } from '@spryker-oryx/picking';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { mockPickingListData } from '../../mocks';
 import { PickingComponent } from './picking.component';
 import { pickingComponent } from './picking.def';
 
-const mockPickingList = {
-  id: 1,
-  status: 'ready-for-picking',
-  items: [
-    {
-      numberOfPicked: 0,
-      numberOfNotPicked: 0,
-      quantity: 5,
-      productId: 'product-1',
-      product: {
-        id: 'product-1',
-        productName: 'Mock Product 1',
-        sku: 'sku-1',
-        image: null,
-        imageLarge: null,
-      },
-      status: ItemsFilters.NotPicked,
-    },
-    {
-      numberOfPicked: 0,
-      numberOfNotPicked: 0,
-      quantity: 3,
-      productId: 'product-2',
-      product: {
-        id: 'product-2',
-        sku: 'sku-2',
-        productName: 'Mock Product 2',
-        image: null,
-        imageLarge: null,
-      },
-      status: ItemsFilters.NotPicked,
-    },
-  ],
-  cartNote: 'Note',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockPickingList));
+  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
 }
 
 describe('PickingComponent', () => {

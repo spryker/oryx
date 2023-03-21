@@ -1,35 +1,22 @@
 import { css } from 'lit';
 
 export const styles = css`
-  oryx-card {
-    --oryx-card-header-padding: 16px 10px 12px;
-    --oryx-card-body-padding: 9px 10px 12px;
-    --oryx-card-footer-padding: 0 10px 12px;
-  }
-
   [slot='heading'] {
     justify-content: space-between;
     align-items: baseline;
-    font-weight: 600;
     display: flex;
     width: 100%;
   }
 
-  [slot='heading'] div:only-child {
-    margin-inline-start: auto;
+  [slot='heading'] span {
+    font-weight: var(--oryx-typography-h2-weight);
+    font-size: var(--oryx-typography-h2-size);
+    line-height: var(--oryx-typography-h2-line);
   }
 
-  .time {
-    font-size: 16px;
-    line-height: 22px;
-    letter-spacing: 0.0133em;
-  }
-
-  .identifier {
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.01em;
+  [slot='heading'] h4 {
     color: var(--oryx-color-neutral-darker);
+    margin-inline-start: auto;
   }
 
   ::part(body) {
@@ -39,18 +26,23 @@ export const styles = css`
     letter-spacing: 0.005em;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    min-height: 48px;
+    min-height: 38px;
   }
 
   .total {
     color: var(--oryx-color-neutral-darker);
     display: flex;
     gap: 8px;
+    height: fit-content;
   }
 
   .total oryx-icon {
     display: inline;
+  }
+
+  oryx-icon-button {
+    align-items: start;
+    height: fit-content;
   }
 
   oryx-icon[type='info'] {

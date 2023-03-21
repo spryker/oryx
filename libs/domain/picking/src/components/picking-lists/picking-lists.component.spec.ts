@@ -10,39 +10,27 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
+import { mockPickingListData } from '../../mocks';
 import { PickingListsComponent } from './picking-lists.component';
 
 describe('PickingListsComponent', () => {
   let element: PickingListsComponent;
 
+  class MockPickingListService implements Partial<PickingListService> {
+    get = vi.fn().mockReturnValue(of(mockPickingListData));
+    setQualifier = vi.fn().mockReturnValue(of({}));
+  }
+
   beforeAll(async () => {
     await useComponent(pickingListsComponent);
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+    destroyInjector();
+  });
+
   describe('when picking lists is not empty', () => {
-    const mockPickingLists = [
-      {
-        id: 1,
-        status: 'ready-for-picking',
-        items: [],
-        cartNote: 'Note',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 2,
-        status: 'ready-for-picking',
-        items: [],
-        cartNote: 'Note',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
-
-    class MockPickingListService implements Partial<PickingListService> {
-      get = vi.fn().mockReturnValue(of(mockPickingLists));
-    }
-
     const getCustomerNoteModal = (): ModalComponent | null =>
       element.renderRoot.querySelector('oryx-modal');
 
@@ -56,11 +44,6 @@ describe('PickingListsComponent', () => {
         ],
       });
 
-      afterEach(() => {
-        vi.clearAllMocks();
-        destroyInjector();
-      });
-
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
     });
 
@@ -68,10 +51,10 @@ describe('PickingListsComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it(`should render ${mockPickingLists.length} picking lists`, () => {
+    it(`should render ${mockPickingListData.length} picking lists`, () => {
       expect(
         element.renderRoot.querySelectorAll('oryx-picking-list-item').length
-      ).toBe(mockPickingLists.length);
+      ).toBe(mockPickingListData.length);
     });
 
     it('should open customer note modal', () => {
@@ -156,7 +139,10 @@ describe('PickingListsComponent', () => {
   });
 
   describe('when picking lists list is empty', () => {
-    class MockPickingListService implements Partial<PickingListService> {
+    class OverrideMockPickingListService
+      extends MockPickingListService
+      implements Partial<PickingListService>
+    {
       get = vi.fn().mockReturnValue(of([]));
     }
 
@@ -165,17 +151,12 @@ describe('PickingListsComponent', () => {
         providers: [
           {
             provide: PickingListService,
-            useClass: MockPickingListService,
+            useClass: OverrideMockPickingListService,
           },
         ],
       });
 
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
-    });
-
-    afterEach(() => {
-      vi.clearAllMocks();
-      destroyInjector();
     });
 
     it('passes the a11y audit', async () => {

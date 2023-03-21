@@ -1,6 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 import { Deserializer } from 'jsonapi-serializer';
 import { map, Observable, of, switchMap } from 'rxjs';
+import { ProductEntity } from '../../entities';
 import {
   ItemsFilters,
   PickingList,
@@ -8,7 +9,6 @@ import {
   PickingListQualifier,
   PickingListStatus,
   PickingOrderItem,
-  PickingProduct,
 } from '../../models';
 import { PickingHttpService } from '../picking-http.service';
 import { PickingListAdapter } from './picking-list.adapter';
@@ -125,25 +125,27 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     );
   }
 
-  protected parseProducts(data: PickingListResponseData[]): PickingProduct[] {
+  protected parseProducts(data: PickingListResponseData[]): ProductEntity[] {
     const productsDeserialize = data
       .flatMap((item) => item.pickingListItems)
       .flatMap((item) => item.products);
 
-    const products: PickingProduct[] = productsDeserialize.map((product) => ({
-      id: product.id,
-      sku: product.sku,
-      productName: product.name,
-      image: product.productImages[0].externalUrlSmall,
-      imageLarge: product.productImages[0].externalUrlLarge,
-    }));
+    const products: ProductEntity[] = productsDeserialize.map((product) =>
+      ProductEntity.from({
+        id: product.id,
+        sku: product.sku,
+        productName: product.name,
+        image: product.productImages[0].externalUrlSmall,
+        imageLarge: product.productImages[0].externalUrlLarge,
+      })
+    );
 
     return products;
   }
 
   protected parsePickingList(
     data: PickingListResponseData,
-    products: PickingProduct[]
+    products: ProductEntity[]
   ): PickingList {
     const cardNote = data.pickingListItems[0].salesOrders[0].cartNote;
 

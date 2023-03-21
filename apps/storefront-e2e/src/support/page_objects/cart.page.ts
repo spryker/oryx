@@ -18,6 +18,8 @@ export class CartPage extends AbstractSFPage {
 
   getCartEntriesWrapper = () => cy.get('cart-entries');
 
+  getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
+
   getCartEntries = () =>
     this.getCartEntriesWrapper()
       .find('cart-entry')
