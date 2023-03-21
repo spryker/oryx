@@ -27,7 +27,7 @@ describe('DefaultI18nService', () => {
     });
 
     it('should call `I18nProcessor.interpolate()` with context converted to observable', () => {
-      rxjsTestScheduler.run(({ expectObservable }) => {
+      rxjsTestScheduler().run(({ expectObservable }) => {
         const { i18nService, i18nProcessor } = setup();
         const ctx = { ctx: true };
 
@@ -46,7 +46,7 @@ describe('DefaultI18nService', () => {
     });
 
     it('should return replayed result from `I18nProcessor.interpolate()`', () => {
-      rxjsTestScheduler.run(({ expectObservable, hot }) => {
+      rxjsTestScheduler().run(({ expectObservable, hot }) => {
         const obs1 = '-a---b---c--| ';
 
         // At first subscription observable is not replaying events
