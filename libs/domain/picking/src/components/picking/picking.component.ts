@@ -1,26 +1,11 @@
-import { resolve } from '@spryker-oryx/di';
-import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BehaviorSubject, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { map } from 'rxjs';
+import { PickingListMixin } from '../../mixins';
 import { ItemsFilters } from '../../models';
-import { PickingListService } from '../../services';
 
-export class PickingComponent extends LitElement {
-  @property({ attribute: 'picking-id' })
-  pickingId?: string;
-
-  @observe()
-  protected pickingId$ = new BehaviorSubject(this.pickingId);
-
-  protected pickingListService = resolve(PickingListService);
-
-  protected pickingList$ = this.pickingId$.pipe(
-    distinctUntilChanged(),
-    switchMap((id) => this.pickingListService.getById(id ?? ''))
-  );
-
+export class PickingComponent extends PickingListMixin(LitElement) {
   protected tabs$ = this.pickingList$.pipe(
     map((list) => [
       {
