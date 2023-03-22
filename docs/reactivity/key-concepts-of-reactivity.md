@@ -1,6 +1,6 @@
 # Key concepts of Reactivity
 
-## Ractive data streams
+## Reactive data streams
 
 Reactive data streams are a fundamental concept in Oryx. They play a crucial role in managing and manipulating data in real time. Oryx prefers [Observables](https://rxjs.dev/guide/observable) over [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) as they are more powerful and allow for continuous streams of data over time. This is particularly helpful in experiences that remain active during some time, for example, in a Single Page Application (SPA).
 
@@ -27,13 +27,13 @@ Oryx simplifies working with asynchronous application state and reactivity by ha
 
 Most of the application state is driven by loading data from backend APIs. Oryx provides the following standardized application layers:
 
-| LAYER      | PURPOSE      |
-| ---------- | ----------------------------------------- |
-| Component  | Renders application state inside UI elements.             |
+| LAYER      | PURPOSE                                                                                                                                                                                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Component  | Renders application state inside UI elements.                                                                                                                                                                                                                                                                                            |
 | Controller | Resolves application state for a given context, so that the component can be reused in different places. For example, a product title component can be used on the Product Details Page, product card, and in a cart entry. The controller resolves the product _sku_ from the context, so that the right product title can be resolved. |
-| Service    | Manages the application state for a certain application domain.       |
-| Adapter    | Loads the data from a specific backend API and convert it into the client model.       |
-| Http       | Wraps the native http fetch and provides additional utilities to integrate http headers like the authorization header.              |
+| Service    | Manages the application state for a certain application domain.                                                                                                                                                                                                                                                                          |
+| Adapter    | Loads the data from a specific backend API and convert it into the client model.                                                                                                                                                                                                                                                         |
+| Http       | Wraps the native http fetch and provides additional utilities to integrate http headers like the authorization header.                                                                                                                                                                                                                   |
 
 Some layers can be considered optional if you build your own domains or components. However, for Oryx, these layers are part of the recommended architecture. It increases separation of concerns and provides a clear and clean extension model. All application layers are customizable and allow for an alternative implementation.
 
@@ -60,7 +60,7 @@ sequenceDiagram
 
 Description:
 
-1. `ProductTitleComponent` is a web component that renders titles in the DOM. A title is typically an `<h1>` element, but this is configurable to make the component reusable in other contexts, for example, inside a cart entry component. The product title component relies on a controller to get the context and associated product data. The product title  `name` is mapped from the product data.
+1. `ProductTitleComponent` is a web component that renders titles in the DOM. A title is typically an `<h1>` element, but this is configurable to make the component reusable in other contexts, for example, inside a cart entry component. The product title component relies on a controller to get the context and associated product data. The product title `name` is mapped from the product data.
 2. `ProductController` uses finds out the relevant _context_ for the component and resolves the product qualifier (SKU) in order to make the right request. Whenever the product data is resolved, an update to the DOM is requested (this is actually done in the `AsyncStateController` which is left out on this diagram). The `ProductController` uses the `ProductService` to resolve the product data.
 3. `ProductService` is a business service that control the application state for the product. It will make sure that multiple requests for the same product will not result in multiple request to the backend. The `ProductService` delegates actual loading of the data to the `ProductAdapter`.
 4. `ProductAdapter` integrates with the backend, by creating an http request. The `ProductAdapter` knows the backend endpoint and it's contract so that it can create the right request. The `ProductAdapter` delegates actual http requests to the `HttpService`.  
