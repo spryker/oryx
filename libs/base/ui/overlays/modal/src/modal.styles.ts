@@ -61,8 +61,8 @@ export const styles = css`
     padding: 0;
   }
 
-  ::slotted(oryx-button[full-width]),
-  oryx-button[full-width] {
+  :host([footerButtonFullWidth]) footer oryx-button,
+  :host([footerButtonFullWidth]) ::slotted(oryx-button) {
     width: 100%;
   }
 `;

@@ -254,20 +254,6 @@ describe('Modal', () => {
     });
   });
 
-  describe('when footer button full width is enabled', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-modal enableFooter footerButtonFullWidth></oryx-modal>`
-      );
-    });
-
-    it('should add attribute to oryx-button', () => {
-      expect(
-        element.renderRoot.querySelector('oryx-button[full-width]')
-      ).not.toBeNull();
-    });
-  });
-
   describe('when go back button is enabled', () => {
     const callback = vi.fn();
     beforeEach(async () => {

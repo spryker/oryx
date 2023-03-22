@@ -63,7 +63,6 @@ export class PickingListsComponent extends LitElement {
           slot="footer"
           type=${ButtonType.Primary}
           size=${Size.Md}
-          full-width
         >
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
