@@ -1,7 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { when } from 'lit-html/directives/when.js';
+import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import {
   BehaviorSubject,
@@ -32,6 +33,8 @@ export class PickingComponent extends LitElement {
   protected pickingList = valueType(this.pickingList$);
 
   protected pickingUpdate$ = new BehaviorSubject<string | null>(null);
+
+  @state() isPickingComplete?: boolean = false;
 
   protected tabs$ = combineLatest([
     this.pickingList$,
@@ -157,7 +160,28 @@ export class PickingComponent extends LitElement {
   }
 
   protected renderFallback(): TemplateResult {
-    return html`<p>${i18n('picking.no-picking-items-found')}</p>`;
+    const pickedCount = this.pickingList?.items.filter(
+      (item) => item.status === ItemsFilters.Picked
+    );
+
+    this.isPickingComplete =
+      pickedCount?.length === this.pickingList?.items.length;
+
+    return html`
+      ${when(
+        this.isPickingComplete,
+        () =>
+          html`
+            <div class="picking-complete">
+              <div class="img-wrap">
+                <oryx-image resource="picking-items-processed"></oryx-image>
+              </div>
+              <h3 class="title-empty">Great job!</h3>
+              <p>All items are processed!</p>
+            </div>
+          `
+      )}
+    `;
   }
 }
 
