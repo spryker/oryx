@@ -18,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]))
+  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
 }
 
@@ -26,7 +26,7 @@ describe('PickingListItemComponent', () => {
   let element: PickingListItemComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
- 
+
   beforeAll(async () => {
     await useComponent(pickingListItemComponent);
   });
@@ -44,8 +44,12 @@ describe('PickingListItemComponent', () => {
         },
       ],
     });
-    service = testInjector.inject(PickingListService) as unknown as MockPickingListService;
-    routerService = testInjector.inject(RouterService) as unknown as MockRouterService;
+    service = testInjector.inject(
+      PickingListService
+    ) as unknown as MockPickingListService;
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
   });
 
   afterEach(() => {
@@ -112,11 +116,11 @@ describe('PickingListItemComponent', () => {
 
     describe('and picking is proceed', () => {
       beforeEach(async () => {
-        element.renderRoot.querySelector('oryx-button button')?.dispatchEvent(
-          new MouseEvent('click')
-        )
+        element.renderRoot
+          .querySelector('oryx-button button')
+          ?.dispatchEvent(new MouseEvent('click'));
       });
-  
+
       it('should perform redirect', () => {
         expect(routerService.navigate).toHaveBeenCalledWith(
           `/customer-note-info/${mockPickingListData[0].id}`
@@ -127,8 +131,10 @@ describe('PickingListItemComponent', () => {
 
   describe('when cart note is not provided', () => {
     beforeEach(async () => {
-      service.getById = vi.fn().mockReturnValue(of(mockPickingListData[1]))
-      service.startPicking = vi.fn().mockReturnValue(of(mockPickingListData[1]))
+      service.getById = vi.fn().mockReturnValue(of(mockPickingListData[1]));
+      service.startPicking = vi
+        .fn()
+        .mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
         html`<oryx-picking-list-item
@@ -143,13 +149,15 @@ describe('PickingListItemComponent', () => {
 
     describe('and picking is proceed', () => {
       beforeEach(async () => {
-        element.renderRoot.querySelector('oryx-button button')?.dispatchEvent(
-          new MouseEvent('click')
-        )
+        element.renderRoot
+          .querySelector('oryx-button button')
+          ?.dispatchEvent(new MouseEvent('click'));
       });
-  
+
       it('should start picking', () => {
-        expect(service.startPicking).toHaveBeenCalledWith(mockPickingListData[1]);
+        expect(service.startPicking).toHaveBeenCalledWith(
+          mockPickingListData[1]
+        );
       });
 
       it('should perform redirect', () => {
