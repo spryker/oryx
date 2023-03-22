@@ -31,7 +31,7 @@ describe('PickingListItemComponent', () => {
     await useComponent(pickingListItemComponent);
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
@@ -115,7 +115,7 @@ describe('PickingListItemComponent', () => {
     });
 
     describe('and picking is proceed', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         element.renderRoot
           .querySelector('oryx-button button')
           ?.dispatchEvent(new MouseEvent('click'));
@@ -148,7 +148,7 @@ describe('PickingListItemComponent', () => {
     });
 
     describe('and picking is proceed', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         element.renderRoot
           .querySelector('oryx-button button')
           ?.dispatchEvent(new MouseEvent('click'));

@@ -1,5 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { IconTypes } from '@spryker-oryx/themes/icons';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -24,9 +26,9 @@ export class NavigateBackComponent
     const link = this.link || this.fallbackUrl;
 
     return html`
-      <oryx-button type="text">
+      <oryx-button type=${ButtonType.Text}>
         <a href=${link}>
-          <oryx-icon type="backArrow"></oryx-icon>
+          <oryx-icon type="${IconTypes.BackArrow}"></oryx-icon>
           ${i18n('picking.button.back')}
         </a>
       </oryx-button>
