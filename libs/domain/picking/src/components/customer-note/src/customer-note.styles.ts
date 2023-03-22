@@ -19,7 +19,7 @@ export const styles = css`
 
   oryx-navigate-back {
     align-self: flex-start;
-    "margin-block-end: 40px;
+    margin-block-end: 40px;
   }
 
   oryx-image {
