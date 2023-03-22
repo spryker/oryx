@@ -174,8 +174,8 @@ export class PickingComponent extends LitElement {
               <div class="img-wrap">
                 <oryx-image resource="picking-items-processed"></oryx-image>
               </div>
-              <h3 class="title-empty">Great job!</h3>
-              <p>All items are processed!</p>
+              <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
+              <p>${i18n(`picking.all-items-are-processed`)}!</p>
             </div>
           `
       )}

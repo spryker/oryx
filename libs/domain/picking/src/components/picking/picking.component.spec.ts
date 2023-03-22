@@ -76,11 +76,19 @@ describe('PickingComponent', () => {
         element.renderRoot.querySelector('oryx-picking-product-card')
       ).toBeFalsy();
     });
+  });
 
-    it('should render fallback', () => {
+  describe('when all items are already picked', () => {
+    beforeEach(async () => {
+      service.getById.mockReturnValue(of(mockPickingListData[1]));
+
+      element = await fixture(html`<oryx-picking></oryx-picking>`);
+    });
+
+    it('should render success message', () => {
       expect(
-        element.renderRoot.querySelector('[slot="panels"] p')?.textContent
-      ).toBe(i18n('picking.no-picking-items-found'));
+        element.renderRoot.querySelector('.picking-complete p')?.textContent
+      ).toBe(i18n('picking.all-items-are-processed!'));
     });
   });
 });
