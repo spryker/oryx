@@ -13,7 +13,10 @@ import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { take } from 'rxjs';
-import { QuantityEventDetail } from '../../quantity-input/src';
+import {
+  QuantityEventDetail,
+  QuantityInputComponent,
+} from '../../quantity-input/src';
 import { CartComponentMixin } from '../../src/mixins';
 import { CartEntry } from '../../src/models';
 import {
@@ -159,6 +162,18 @@ export class CartEntryComponent
         </div>
       </section>
     `;
+  }
+
+  /**
+   * Forces a revert of the quantity, as the quantity input might be updated outside.
+   */
+  revert(): void {
+    const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
+      'oryx-cart-quantity-input'
+    );
+    if (el) {
+      el.value = this.entry?.quantity;
+    }
   }
 
   protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {

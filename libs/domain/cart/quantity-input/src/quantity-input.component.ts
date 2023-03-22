@@ -1,7 +1,7 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -44,6 +44,15 @@ export class QuantityInputComponent
   @property() increaseIcon?: IconTypes;
 
   protected inputRef = createRef<HTMLInputElement>();
+
+  protected willUpdate(
+    changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    if (changedProperties.has('value') && this.input) {
+      this.input.value = this.getValue();
+    }
+    super.willUpdate(changedProperties);
+  }
 
   protected override render(): TemplateResult {
     return html`
@@ -130,7 +139,7 @@ export class QuantityInputComponent
    * The step is configurable.
    */
   protected increase(): void {
-    this.input.stepUp();
+    this.input?.stepUp();
     this.onChange();
   }
 
@@ -141,7 +150,7 @@ export class QuantityInputComponent
    * The step is configurable.
    */
   protected decrease(): void {
-    this.input.stepDown();
+    this.input?.stepDown();
     this.onChange();
   }
 
@@ -160,7 +169,7 @@ export class QuantityInputComponent
    */
   protected onChange(): void {
     this.updateValue();
-    if (this.submitOnChange && this.input.validity.valid) {
+    if (this.submitOnChange && this.input?.validity.valid) {
       this.dispatch(SUBMIT_EVENT);
     } else {
       this.dispatch(UPDATE_EVENT);
@@ -168,12 +177,12 @@ export class QuantityInputComponent
   }
 
   protected updateValue(value?: string): void {
-    this.value = Number(value ?? this.input.value);
+    this.value = Number(value ?? this.input?.value);
     this.checkValidity();
   }
 
   protected checkValidity(): void {
-    this.hasError = !this.input.reportValidity();
+    this.hasError = !this.input?.reportValidity();
   }
 
   /**
@@ -187,7 +196,7 @@ export class QuantityInputComponent
     if (ev.key !== 'Enter') {
       return;
     }
-    if (this.input.validity.valid) {
+    if (this.input?.validity.valid) {
       this.dispatch(SUBMIT_EVENT);
     } else {
       this.checkValidity();
@@ -197,8 +206,8 @@ export class QuantityInputComponent
   protected dispatch<T extends QuantityEventDetail>(
     eventName: typeof UPDATE_EVENT | typeof SUBMIT_EVENT
   ): void {
-    const detail = { quantity: Number(this.input.value) } as T;
-    if (!this.input.validity.valid) {
+    const detail = { quantity: Number(this.input?.value) } as T;
+    if (!this.input?.validity.valid) {
       detail.isInvalid = true;
     }
     this.dispatchEvent(
@@ -206,8 +215,7 @@ export class QuantityInputComponent
     );
   }
 
-  protected get input(): HTMLInputElement {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.inputRef.value!;
+  protected get input(): HTMLInputElement | undefined {
+    return this.inputRef.value;
   }
 }

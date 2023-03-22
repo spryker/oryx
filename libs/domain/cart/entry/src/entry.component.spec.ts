@@ -117,7 +117,7 @@ describe('CartEntryComponent', () => {
           const quantityInput = element.shadowRoot?.querySelector(
             'oryx-cart-quantity-input'
           );
-          expect((quantityInput as QuantityInputComponent).max).toBe('3');
+          expect((quantityInput as QuantityInputComponent).max).toBe(3);
         });
       });
 

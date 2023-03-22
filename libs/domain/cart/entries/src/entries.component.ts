@@ -14,7 +14,10 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { CartEntryChangeEventDetail } from '../../entry/src';
+import {
+  CartEntryChangeEventDetail,
+  CartEntryComponent,
+} from '../../entry/src';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
 
@@ -66,7 +69,7 @@ export class CartEntriesComponent extends CartComponentMixin(
         (entry) =>
           html`
             <oryx-cart-entry
-              .key=${entry.groupKey}
+              key=${entry.groupKey}
               ?readonly=${this.componentOptions.readonly}
             ></oryx-cart-entry>
           `
@@ -92,7 +95,7 @@ export class CartEntriesComponent extends CartComponentMixin(
       }
     } else {
       this.cartService.updateEntry({ groupKey, quantity }).subscribe({
-        complete: () => {
+        next: () => {
           if (this.componentOptions.notifyOnUpdate) {
             const sku = this.entries?.find(
               (entry) => entry.groupKey === groupKey
@@ -108,7 +111,7 @@ export class CartEntriesComponent extends CartComponentMixin(
     this.removeGroupKey = undefined;
     const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
     this.cartService.deleteEntry({ groupKey }).subscribe({
-      complete: () => {
+      next: () => {
         if (this.componentOptions.notifyOnRemove) {
           this.notify('cart.confirm-removed', sku);
         }
@@ -150,6 +153,11 @@ export class CartEntriesComponent extends CartComponentMixin(
   }
 
   protected resetConfirmation(): void {
+    this.shadowRoot
+      ?.querySelector<CartEntryComponent>(
+        `oryx-cart-entry[key='${this.removeGroupKey}']`
+      )
+      ?.revert();
     this.removeGroupKey = undefined;
   }
 
