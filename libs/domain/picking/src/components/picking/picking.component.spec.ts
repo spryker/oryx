@@ -35,7 +35,7 @@ describe('PickingComponent', () => {
       PickingListService
     ) as unknown as MockPickingListService;
 
-    element = await fixture(html`<oryx-picking></oryx-picking>`);
+    element = await fixture(html`<oryx-picking .pickingListId=${mockPickingListData[0].id}></oryx-picking>`);
   });
 
   afterEach(() => {
@@ -68,7 +68,7 @@ describe('PickingComponent', () => {
     beforeEach(async () => {
       service.getById.mockReturnValue(of(null));
 
-      element = await fixture(html`<oryx-picking></oryx-picking>`);
+      element = await fixture(html`<oryx-picking .pickingListId=${mockPickingListData[0].id}></oryx-picking>`);
     });
 
     it('should not render product card', () => {

@@ -19,7 +19,7 @@ class MockRouterService implements Partial<RouterService> {
 
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockedPickingList));
-  startPicking = vi.fn();
+  startPicking = vi.fn().mockReturnValue(of(mockedPickingList));
 }
 
 describe('CustomerNoteComponent', () => {
@@ -38,6 +38,10 @@ describe('CustomerNoteComponent', () => {
           provide: RouterService,
           useClass: MockRouterService,
         },
+        {
+          provide: PickingListService,
+          useClass: MockPickingListService,
+        },
       ],
     });
     service = testInjector.inject(
@@ -47,7 +51,7 @@ describe('CustomerNoteComponent', () => {
       RouterService
     ) as unknown as MockRouterService;
     element = await fixture(
-      html`<oryx-customer-note picking-id="test"></oryx-customer-note>`
+      html`<oryx-customer-note pickingListId="test"></oryx-customer-note>`
     );
   });
 
