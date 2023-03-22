@@ -11,7 +11,7 @@ export const styles = css`
 
   section {
     position: sticky;
-    top: 30px;
+    inset-block-start: 30px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@ export const styles = css`
 
   oryx-navigate-back {
     align-self: flex-start;
-    margin-bottom: 40px;
+    "margin-block-end: 40px;
   }
 
   oryx-image {
@@ -41,6 +41,6 @@ export const styles = css`
 
   oryx-button {
     position: sticky;
-    bottom: 30px;
+    inset-block-end: 30px;
   }
 `;
