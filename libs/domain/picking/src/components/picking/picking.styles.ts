@@ -14,7 +14,7 @@ export const styles = css`
   .title-empty {
     font-size: 20px;
     line-height: 28px;
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
   .img-wrap {
