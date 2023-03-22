@@ -42,7 +42,7 @@ export class ProductTitleComponent extends ProductMixin(
     } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
-      ${options.linkType} ${this.product?.name}
+      ${this.product?.name}
     </oryx-content-link>`;
   }
 }

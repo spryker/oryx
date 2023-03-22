@@ -42,6 +42,11 @@ export class CartEntriesComponent extends CartComponentMixin(
     this.cartController.getEntry(this.removeGroupKey)
   );
 
+  connectedCallback(): void {
+    this.addEventListener('submit', this.onSubmit as EventListener);
+    super.connectedCallback();
+  }
+
   // TODO: implement loading state
   protected override render(): TemplateResult | void {
     if (this.isEmpty) {
@@ -50,7 +55,11 @@ export class CartEntriesComponent extends CartComponentMixin(
 
     return html`
       <oryx-heading>
-        <h1>${i18n('cart.totals.<count>-items', { count: 7 })}</h1>
+        <h1>
+          ${i18n('cart.totals.<count>-items', {
+            count: this.totalQuantity,
+          })}
+        </h1>
       </oryx-heading>
 
       ${repeat(
@@ -70,11 +79,6 @@ export class CartEntriesComponent extends CartComponentMixin(
     `;
   }
 
-  constructor() {
-    super();
-    this.addEventListener('submit', this.onSubmit as EventListener);
-  }
-
   /**
    * Handles updates on the entry. When the quantity is 0, the entry is going
    * to be removed unless the component options require to seek for confirmation first.
@@ -82,20 +86,22 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected onSubmit(ev: CustomEvent<CartEntryChangeEventDetail>): void {
     const { groupKey, quantity } = ev.detail;
 
-    if (ev.detail.quantity === 0) {
+    if (quantity === 0) {
       if (this.componentOptions?.silentRemove) {
-        this.removeEntry(ev.detail.groupKey);
+        this.removeEntry(groupKey);
       } else {
-        this.removeGroupKey = ev.detail.groupKey;
+        this.removeGroupKey = groupKey;
       }
     } else {
-      this.cartService.updateEntry({ groupKey, quantity }).subscribe(() => {
-        if (this.componentOptions.notifyOnUpdate) {
-          const sku = this.entries?.find(
-            (entry) => entry.groupKey === groupKey
-          )?.sku;
-          this.notify('cart.cart-entry-updated', sku);
-        }
+      this.cartService.updateEntry({ groupKey, quantity }).subscribe({
+        complete: () => {
+          if (this.componentOptions.notifyOnUpdate) {
+            const sku = this.entries?.find(
+              (entry) => entry.groupKey === groupKey
+            )?.sku;
+            this.notify('cart.cart-entry-updated', sku);
+          }
+        },
       });
     }
   }
@@ -144,7 +150,6 @@ export class CartEntriesComponent extends CartComponentMixin(
   }
 
   protected resetConfirmation(): void {
-    this.requestUpdate();
     this.removeGroupKey = undefined;
   }
 
