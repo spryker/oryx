@@ -1,6 +1,5 @@
 # Reactive components
 
-
 Components are organized by domains, for example components in a product domain, and can leverage domain logic to communicate with the associated backend API. Each domain is shipped with a domain service that provides an API to communicate with a backend API. For example, when rendering product data, `ProductService` can be used as follows:
 
 ```ts
@@ -45,7 +44,7 @@ The components provided in the Oryx libraries are built with Lit. Lit provides a
 
 The following example shows the usage of the `asyncState` decorator. The decorator subscribes to the assigned observable and requests an update to the component when needed. This means that component developers do not need to worry about how the reactive system works under the hood.
 
-Oryx components are build in TypeScript, and we provide types everywhere to increase the developer experience and avoid error upfront. The original type of the assigned observable needs to be adjusted. It's impossible to resolve a correct TypeScript type from the observable by using a decorator, which is why the `valueType` function is offered to project the observed type.
+Oryx components are build in TypeScript, and we provide types everywhere to increase the developer experience and avoid error upfront. The original type of the assigned observable needs to be adjusted. It's impossible to resolve a correct type from the observable by using a decorator, which is why the `valueType` function is used to resolve the observed type.
 
 ```ts
 export class ProductPriceComponent {
