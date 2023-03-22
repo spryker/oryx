@@ -182,7 +182,7 @@ export class CartEntryComponent
       <oryx-button
         slot="footer-more"
         .type=${ButtonType.Critical}
-        .size=${Size.Sm}
+        .size=${Size.Md}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
         <button value="remove">${i18n(`cart.entry.remove`)}</button>
