@@ -31,7 +31,7 @@ export const PickingListMixin = <
 >(
   superClass: T
 ): Type<PickingListMixinInterface> & T => {
-  class AddressMixinClass extends superClass {
+  class PickingListMixinClass extends superClass {
     protected pickingListService = resolve(PickingListService);
 
     @property() pickingListId?: string;
@@ -49,5 +49,6 @@ export const PickingListMixin = <
     protected pickingList = valueType(this.pickingList$);
   }
 
-  return AddressMixinClass as unknown as Type<PickingListMixinInterface> & T;
+  return PickingListMixinClass as unknown as Type<PickingListMixinInterface> &
+    T;
 };
