@@ -20,9 +20,11 @@ export class PreviewPlugin implements AppPlugin, AppPluginBeforeApply {
       return;
     }
 
-    if (!isServer) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      document.querySelector(root)!.outerHTML = `<${root}></${root}>`;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const rootElement = document.querySelector(root)!;
+
+    if (!isServer && rootElement.shadowRoot) {
+      rootElement.outerHTML = `<${root}></${root}>`;
     }
   }
 }
