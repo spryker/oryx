@@ -104,11 +104,6 @@ export const cartEntryStyles = css`
     justify-content: start;
   }
 
-  oryx-product-title {
-    --oryx-link-color: currentColor;
-    --oryx-link-color-hover: currentColor;
-  }
-
   .actions oryx-icon-button span {
     display: var(--oryx-screen-small-inline, none);
   }

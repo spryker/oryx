@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { LinkType } from './link.model';
+
+const isNeutral = unsafeCSS(`[linkType='${LinkType.Neutral}']`);
 
 export const linkStyles = css`
   :host {
@@ -9,12 +12,12 @@ export const linkStyles = css`
     color: var(--oryx-link-color, var(--oryx-color-primary-300));
   }
 
-  :host([transparent]) ::slotted(a) {
+  :host(${isNeutral}) ::slotted(a) {
     display: contents;
   }
 
-  :host([transparent]),
-  :host([transparent]) ::slotted(a:hover) {
+  :host(${isNeutral}),
+  :host(${isNeutral}) ::slotted(a:hover) {
     color: currentColor;
   }
 

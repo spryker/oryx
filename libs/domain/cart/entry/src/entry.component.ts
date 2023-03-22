@@ -11,6 +11,7 @@ import {
   SemanticLinkType,
 } from '@spryker-oryx/site';
 import { Size } from '@spryker-oryx/ui';
+import { LinkType } from '@spryker-oryx/ui/link';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -91,7 +92,7 @@ export class CartEntryComponent
         .options=${{
           type: SemanticLinkType.Product,
           id: this.entry?.sku,
-          transparent: true,
+          linkType: LinkType.Neutral,
         }}
       >
         <oryx-product-media
@@ -103,7 +104,9 @@ export class CartEntryComponent
 
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
-      <oryx-product-title .options=${{ link: true }}></oryx-product-title>
+      <oryx-product-title
+        .options=${{ linkType: LinkType.Neutral }}
+      ></oryx-product-title>
 
       ${when(
         this.componentOptions?.enableId,
