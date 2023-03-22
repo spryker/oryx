@@ -18,7 +18,6 @@ export class ProductTitleComponent extends ProductMixin(
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    const options = this.componentOptions ?? {};
     const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptions ?? {};
 
     return html`<oryx-heading
@@ -29,8 +28,15 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${options?.linkType ? this.renderLink() : html`${this.product?.name}`}
+      ${this.hasLink() ? this.renderLink() : html`${this.product?.name}`}
     </oryx-heading>`;
+  }
+
+  protected hasLink(): boolean {
+    return (
+      !!this.componentOptions?.linkType &&
+      this.componentOptions.linkType !== 'none'
+    );
   }
 
   protected renderLink(): TemplateResult {

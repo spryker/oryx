@@ -55,6 +55,8 @@ export class ProductPriceComponent extends ProductMixin(
   protected renderSalesPrice(): TemplateResult | void {
     const { originalPrice, salesPrice } = this.prices ?? {};
 
+    if (!salesPrice && !originalPrice) return;
+
     const hasDiscount = !!salesPrice && !!originalPrice;
 
     return html`<span part="sales" ?has-discount=${hasDiscount}
@@ -63,7 +65,11 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderTaxMessage(): TemplateResult | void {
-    if (!this.componentOptions?.enableVatMessage) return;
+    if (
+      !this.componentOptions?.enableVatMessage ||
+      (!this.prices?.salesPrice && !this.prices?.originalPrice)
+    )
+      return;
 
     return html`<span part="tax">
       ${i18n(
@@ -82,8 +88,9 @@ export class ProductPriceComponent extends ProductMixin(
       !this.componentOptions?.enableOriginalPrice ||
       !salesPrice ||
       !originalPrice
-    )
+    ) {
       return;
+    }
     return html`<span part="original">${originalPrice}</span>`;
   }
 

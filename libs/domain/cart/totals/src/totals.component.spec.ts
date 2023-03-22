@@ -87,7 +87,7 @@ describe('Cart totals component', () => {
     });
   });
 
-  describe.skip('options', () => {
+  describe('options', () => {
     const renderCartTotals = (
       options: CartTotalsComponentOptions = {}
     ): void => {
@@ -105,22 +105,22 @@ describe('Cart totals component', () => {
     });
 
     describe('subtotal', () => {
-      describe('when hideSubtotal is not set', () => {
+      describe('when enableSubtotal is not set', () => {
         renderCartTotals();
         it('should render the subtotal by default', () => {
           expect(element).toContainElement('.subtotal');
         });
       });
 
-      describe('when hideSubtotal is false', () => {
-        renderCartTotals({ enableSubtotal: false });
+      describe('when enableSubtotal is true', () => {
+        renderCartTotals({ enableSubtotal: true });
         it('should render the subtotal', () => {
           expect(element).toContainElement('.subtotal');
         });
       });
 
-      describe('when hideSubtotal is true', () => {
-        renderCartTotals({ enableSubtotal: true });
+      describe('when enableSubtotal is false', () => {
+        renderCartTotals({ enableSubtotal: false });
         it('should not render the subtotal', () => {
           expect(element).not.toContainElement('.subtotal');
         });
