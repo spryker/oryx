@@ -1,7 +1,6 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductService } from '@spryker-oryx/product';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType, Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -32,7 +31,6 @@ export class CartEntriesComponent extends CartComponentMixin(
   static styles = cartEntriesStyles;
 
   protected cartService = resolve(CartService);
-  protected productService = resolve(ProductService);
   protected notificationService = resolve(NotificationService);
 
   @state() removeGroupKey?: string;

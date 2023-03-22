@@ -8,6 +8,7 @@ import {
   Cart,
   CartComponentAttributes,
   CartEntry,
+  CartEntryQualifier,
   CartQualifier,
   CartTotalCalculations,
   FormattedCartTotals,
@@ -27,7 +28,7 @@ export class CartController {
     return this.cartService.isEmpty(data);
   }
 
-  isBusy(data?: CartQualifier): Observable<boolean> {
+  isBusy(data?: CartEntryQualifier): Observable<boolean> {
     return this.cartService.isBusy(data);
   }
 

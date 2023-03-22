@@ -21,11 +21,11 @@ export class CartSummaryComponent extends CartComponentMixin(
 ) {
   static styles = styles;
 
+  protected linkService = resolve(SemanticLinkService);
+
   @asyncState()
   protected link = valueType(
-    resolve(SemanticLinkService).get({
-      type: SemanticLinkType.Cart,
-    })
+    this.linkService.get({ type: SemanticLinkType.Cart })
   );
 
   protected override render(): TemplateResult {

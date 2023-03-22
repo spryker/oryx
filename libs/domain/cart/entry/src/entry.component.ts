@@ -5,11 +5,7 @@ import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
-import {
-  NotificationService,
-  PricingService,
-  SemanticLinkType,
-} from '@spryker-oryx/site';
+import { PricingService, SemanticLinkType } from '@spryker-oryx/site';
 import { Size } from '@spryker-oryx/ui';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { i18n } from '@spryker-oryx/utilities';
@@ -44,16 +40,13 @@ export class CartEntryComponent
 
   @property() key?: string;
   @property({ type: Boolean }) readonly?: boolean;
-  @property() available?: number;
+  @property({ type: Number }) available?: number;
 
   @state() protected entry?: CartEntry;
+  @state() protected formattedPrice?: string;
 
   protected context = new ContextController(this);
   protected pricingService = resolve(PricingService);
-
-  @state() formattedPrice?: string;
-
-  protected notificationService = resolve(NotificationService);
 
   protected willUpdate(
     changedProperties: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
