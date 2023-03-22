@@ -26,7 +26,7 @@ import { cartEntriesStyles } from './entries.styles';
   removeByQuantity: 'showBin',
   notifyOnUpdate: false,
   notifyOnRemove: true,
-} as CartEntriesOptions)
+})
 @hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin(
   ContentMixin<CartEntriesOptions>(LitElement)
@@ -70,7 +70,7 @@ export class CartEntriesComponent extends CartComponentMixin(
           html`
             <oryx-cart-entry
               key=${entry.groupKey}
-              ?readonly=${this.componentOptions.readonly}
+              ?readonly=${this.componentOptions?.readonly}
             ></oryx-cart-entry>
           `
       )}
@@ -87,16 +87,10 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected onSubmit(ev: CustomEvent<CartEntryChangeEventDetail>): void {
     const { groupKey, quantity } = ev.detail;
 
-    if (quantity === 0) {
-      if (this.componentOptions?.silentRemove) {
-        this.removeEntry(groupKey);
-      } else {
-        this.removeGroupKey = groupKey;
-      }
-    } else {
+    if (quantity !== 0) {
       this.cartService.updateEntry({ groupKey, quantity }).subscribe({
         next: () => {
-          if (this.componentOptions.notifyOnUpdate) {
+          if (this.componentOptions?.notifyOnUpdate) {
             const sku = this.entries?.find(
               (entry) => entry.groupKey === groupKey
             )?.sku;
@@ -105,7 +99,15 @@ export class CartEntriesComponent extends CartComponentMixin(
         },
         error: () => this.revertEntry(),
       });
+      return;
     }
+
+    if (quantity === 0 && this.componentOptions?.silentRemove) {
+      this.removeEntry(groupKey);
+      return;
+    }
+
+    this.removeGroupKey = groupKey;
   }
 
   protected removeEntry(groupKey: string): void {
@@ -113,7 +115,7 @@ export class CartEntriesComponent extends CartComponentMixin(
     const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
     this.cartService.deleteEntry({ groupKey }).subscribe({
       next: () => {
-        if (this.componentOptions.notifyOnRemove) {
+        if (this.componentOptions?.notifyOnRemove) {
           this.notify('cart.confirm-removed', sku);
         }
       },
