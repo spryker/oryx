@@ -1,12 +1,17 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMediaContainerSize,
 } from '@spryker-oryx/product';
-import { PricingService, SemanticLinkType } from '@spryker-oryx/site';
-import { Size } from '@spryker-oryx/ui';
+import {
+  NotificationService,
+  PricingService,
+  SemanticLinkType,
+} from '@spryker-oryx/site';
+import { AlertType, Size } from '@spryker-oryx/ui';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
@@ -19,9 +24,9 @@ import {
 } from '../../quantity-input/src';
 import { CartComponentMixin } from '../../src/mixins';
 import { CartEntry } from '../../src/models';
+import { CartService } from '../../src/services';
 import {
   CartEntryAttributes,
-  CartEntryChangeEventDetail,
   CartEntryOptions,
   RemoveByQuantity,
 } from './entry.model';
@@ -30,11 +35,7 @@ import { cartEntryStyles } from './styles';
 /**
  * Supports updating the quantity as well as removing the entry entirely.
  */
-@defaultOptions({
-  removeByQuantity: RemoveByQuantity.ShowBin,
-  enableId: true,
-  enablePreview: true,
-} as CartEntryOptions)
+
 export class CartEntryComponent
   extends CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
   implements CartEntryAttributes
@@ -47,7 +48,10 @@ export class CartEntryComponent
 
   @state() protected entry?: CartEntry;
   @state() protected formattedPrice?: string;
+  @state() protected requiresRemovalConfirmation?: boolean;
 
+  protected cartService = resolve(CartService);
+  protected notificationService = resolve(NotificationService);
   protected context = new ContextController(this);
   protected pricingService = resolve(PricingService);
 
@@ -77,6 +81,7 @@ export class CartEntryComponent
     return html`
       ${this.renderPreview()} ${this.renderDetails()} ${this.renderActions()}
       ${this.renderPricing()}
+      ${when(this.requiresRemovalConfirmation, () => this.renderConfirmation())}
     `;
   }
 
@@ -118,7 +123,7 @@ export class CartEntryComponent
       <div class="actions">
         <oryx-icon-button
           size=${Size.Md}
-          @click=${this.onRemove}
+          @click=${this.removeEntry}
           ?disabled=${this.isBusy}
         >
           <button aria-label="remove">
@@ -164,10 +169,32 @@ export class CartEntryComponent
     `;
   }
 
+  protected renderConfirmation(): TemplateResult | void {
+    return html`<oryx-modal
+      open
+      enableFooter
+      enableCloseButtonInHeader
+      heading=${i18n('cart.entry.confirm')}
+      @oryx.close=${this.revert}
+    >
+      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.entry?.sku })}
+
+      <oryx-button
+        slot="footer-more"
+        .type=${ButtonType.Critical}
+        .size=${Size.Sm}
+        @click=${(ev: Event) => this.removeEntry(ev, true)}
+      >
+        <button value="remove">${i18n(`cart.entry.remove`)}</button>
+      </oryx-button>
+    </oryx-modal>`;
+  }
+
   /**
    * Forces a revert of the quantity, as the quantity input might be updated outside.
    */
-  revert(): void {
+  protected revert(): void {
+    this.requiresRemovalConfirmation = false;
     const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
       'oryx-cart-quantity-input'
     );
@@ -176,31 +203,49 @@ export class CartEntryComponent
     }
   }
 
-  protected onSubmit(e: CustomEvent<QuantityEventDetail>): void {
-    e.stopPropagation();
-    this.dispatchSubmitEvent(e.detail.quantity);
+  protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
+    const { quantity } = ev.detail;
+    if (quantity > 0) {
+      this.updateEntry(quantity);
+    } else {
+      this.removeEntry(ev);
+    }
   }
 
-  protected onRemove(e: Event): void {
-    e.stopPropagation();
-    this.dispatchSubmitEvent(0);
+  protected updateEntry(quantity: number): void {
+    this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
+      next: () => {
+        if (this.componentOptions?.notifyOnUpdate) {
+          this.notify('cart.cart-entry-updated', this.entry?.sku);
+        }
+      },
+      error: () => this.revert(),
+    });
   }
 
-  protected dispatchSubmitEvent(quantity: number): void {
-    const { sku, groupKey } = this.entry ?? {};
-    if (!groupKey || !sku) return;
+  protected removeEntry(ev: Event, force?: boolean): void {
+    console.log(this.componentOptions?.confirmBeforeRemove, !force);
+    if (this.componentOptions?.confirmBeforeRemove && !force) {
+      this.requiresRemovalConfirmation = true;
+      return;
+    }
 
-    this.dispatchEvent(
-      new CustomEvent<CartEntryChangeEventDetail>('submit', {
-        detail: {
-          quantity: quantity ?? this.entry?.quantity,
-          groupKey,
-          sku,
-        },
-        composed: true,
-        bubbles: true,
-      })
-    );
+    this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
+      next: () => {
+        if (this.componentOptions?.notifyOnRemove) {
+          this.notify('cart.confirm-removed', this.entry?.sku);
+        }
+      },
+      error: () => this.revert(),
+    });
+  }
+
+  protected notify(token: string, sku?: string): void {
+    this.notificationService.push({
+      type: AlertType.Success,
+      content: i18n(token) as string,
+      subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
+    });
   }
 
   protected get decreaseIcon(): string | void {

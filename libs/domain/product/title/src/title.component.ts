@@ -35,7 +35,7 @@ export class ProductTitleComponent extends ProductMixin(
   protected hasLink(): boolean {
     return (
       !!this.componentOptions?.linkType &&
-      this.componentOptions.linkType !== 'none'
+      this.componentOptions?.linkType !== 'none'
     );
   }
 

@@ -79,7 +79,7 @@ export class ProductMediaComponent extends ProductMixin(
   protected getMediaSet(): ProductMediaSet | undefined {
     if (this.componentOptions?.mediaSet) {
       return this.product?.mediaSet?.find(
-        (set) => set.name === this.componentOptions.mediaSet
+        (set) => set.name === this.componentOptions?.mediaSet
       );
     } else {
       return this.product?.mediaSet?.[0];

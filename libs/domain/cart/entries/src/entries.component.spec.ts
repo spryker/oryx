@@ -4,14 +4,9 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import {
-  DefaultNotificationService,
-  NotificationService,
-  PricingService,
-} from '@spryker-oryx/site';
+import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { CartEntryComponent } from '../../entry/src';
 import { CartEntriesComponent } from './entries.component';
 import { cartEntriesComponent } from './entries.def';
 
@@ -20,8 +15,6 @@ class MockCartService implements Partial<CartService> {
   isEmpty = vi.fn().mockReturnValue(of(false));
   getCart = vi.fn().mockReturnValue(of());
   getEntries = vi.fn().mockReturnValue(of([]));
-  updateEntry = vi.fn().mockReturnValue(of(null));
-  deleteEntry = vi.fn().mockReturnValue(of(null));
 }
 
 class mockPricingService {
@@ -52,10 +45,6 @@ describe('CartEntriesComponent', () => {
         {
           provide: PricingService,
           useClass: mockPricingService,
-        },
-        {
-          provide: NotificationService,
-          useClass: DefaultNotificationService,
         },
       ],
     });
@@ -89,15 +78,6 @@ describe('CartEntriesComponent', () => {
 
     it('should render the entry', () => {
       expect(element).toContainElement('oryx-cart-entry');
-    });
-
-    it('should project the group key to the entry', () => {
-      const cartEntry = () =>
-        element.shadowRoot?.querySelector(
-          'oryx-cart-entry'
-        ) as CartEntryComponent;
-
-      expect(cartEntry().key).toBe('1');
     });
   });
 

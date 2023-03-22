@@ -7,6 +7,10 @@ const smallScreen = css`
     padding-block: 0;
   }
 
+  :host([readonly]) {
+    padding-block-end: 17px;
+  }
+
   oryx-product-media,
   section.details {
     margin-block-start: 16px;
@@ -18,12 +22,21 @@ const smallScreen = css`
     line-height: var(--oryx-typography-h4-line);
   }
 
+  :host([readonly]) :is(section.details, section.pricing) {
+    gap: 8px;
+  }
+
   section.pricing {
     grid-column: 2;
     grid-row: 2;
     justify-items: start;
   }
 
+  :host([readonly]) section.pricing {
+    margin-block-start: 8px;
+  }
+
+  .pricing,
   .entry-price {
     font-size: var(--oryx-typography-h3-size);
     font-weight: var(--oryx-typography-h3-weight);

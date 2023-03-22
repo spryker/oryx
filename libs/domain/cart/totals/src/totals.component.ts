@@ -109,7 +109,7 @@ export class CartTotalsComponent extends CartComponentMixin(
   protected renderExpense(): TemplateResult | void {
     const { calculations } = this.totals ?? {};
 
-    if (!this.componentOptions.enableExpense || !calculations?.expenseTotal)
+    if (!this.componentOptions?.enableExpense || !calculations?.expenseTotal)
       return;
 
     return this.renderSection(
@@ -156,7 +156,7 @@ export class CartTotalsComponent extends CartComponentMixin(
       html`${i18n('cart.totals.total')}`,
       html` ${this.totals?.calculations?.priceToPay}
       ${when(
-        this.componentOptions.enableTaxMessage,
+        this.componentOptions?.enableTaxMessage,
         () =>
           html`<small class="tax-message">
             ${this.totals?.priceMode === PriceMode.GrossMode

@@ -22,6 +22,12 @@ export interface CartEntryAttributes {
 }
 export interface CartEntryOptions {
   /**
+   * Indicates whether the cart entry can be edited. In readonly mode,
+   * the quantity input and actions are hidden in the UI.
+   */
+  readonly?: boolean;
+
+  /**
    * Indicates whether the product ID is rendered on the cart entry.
    */
   enableId?: boolean;
@@ -36,6 +42,21 @@ export interface CartEntryOptions {
    * Possible options: 'allowZero' | 'showBin'
    */
   removeByQuantity?: RemoveByQuantity;
+
+  /**
+   * Renders a notification when the cart entry is updated.
+   */
+  notifyOnUpdate?: boolean;
+
+  /**
+   * Renders a notification when the cart entry is removed.
+   */
+  notifyOnRemove?: boolean;
+
+  /**
+   * Emit removing immediately without confirmation.
+   */
+  confirmBeforeRemove?: boolean;
 }
 
 export enum RemoveByQuantity {

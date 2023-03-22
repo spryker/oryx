@@ -1,30 +1,18 @@
-import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
-import { resolve } from '@spryker-oryx/di';
+import { CartComponentMixin } from '@spryker-oryx/cart';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { NotificationService } from '@spryker-oryx/site';
-import { AlertType, Size } from '@spryker-oryx/ui';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  asyncState,
-  hydratable,
-  i18n,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { when } from 'lit/directives/when.js';
-import {
-  CartEntryChangeEventDetail,
-  CartEntryComponent,
-} from '../../entry/src';
+import { RemoveByQuantity } from '../../entry/src';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
 
 @defaultOptions({
-  silentRemove: false,
-  removeByQuantity: 'showBin',
-  notifyOnUpdate: false,
+  removeByQuantity: RemoveByQuantity.ShowBin,
+  enableId: true,
+  enablePreview: true,
+  confirmBeforeRemove: true,
+  notifyOnUpdate: true,
   notifyOnRemove: true,
 })
 @hydratable('window:load')
@@ -32,21 +20,6 @@ export class CartEntriesComponent extends CartComponentMixin(
   ContentMixin<CartEntriesOptions>(LitElement)
 ) {
   static styles = cartEntriesStyles;
-
-  protected cartService = resolve(CartService);
-  protected notificationService = resolve(NotificationService);
-
-  @state() removeGroupKey?: string;
-
-  @asyncState()
-  protected activeEntry = valueType(
-    this.cartController.getEntry(this.removeGroupKey)
-  );
-
-  connectedCallback(): void {
-    this.addEventListener('submit', this.onSubmit as EventListener);
-    super.connectedCallback();
-  }
 
   // TODO: implement loading state
   protected override render(): TemplateResult | void {
@@ -69,105 +42,13 @@ export class CartEntriesComponent extends CartComponentMixin(
         (entry) =>
           html`
             <oryx-cart-entry
-              key=${entry.groupKey}
+              .key=${entry.groupKey}
+              .options=${this.componentOptions}
               ?readonly=${this.componentOptions?.readonly}
             ></oryx-cart-entry>
           `
       )}
-      ${when(this.removeGroupKey, () =>
-        this.renderConfirmation(this.removeGroupKey)
-      )}
     `;
-  }
-
-  /**
-   * Handles updates on the entry. When the quantity is 0, the entry is going
-   * to be removed unless the component options require to seek for confirmation first.
-   */
-  protected onSubmit(ev: CustomEvent<CartEntryChangeEventDetail>): void {
-    const { groupKey, quantity } = ev.detail;
-
-    if (quantity !== 0) {
-      this.cartService.updateEntry({ groupKey, quantity }).subscribe({
-        next: () => {
-          if (this.componentOptions?.notifyOnUpdate) {
-            const sku = this.entries?.find(
-              (entry) => entry.groupKey === groupKey
-            )?.sku;
-            this.notify('cart.cart-entry-updated', sku);
-          }
-        },
-        error: () => this.revertEntry(),
-      });
-      return;
-    }
-
-    if (quantity === 0 && this.componentOptions?.silentRemove) {
-      this.removeEntry(groupKey);
-      return;
-    }
-
-    this.removeGroupKey = groupKey;
-  }
-
-  protected removeEntry(groupKey: string): void {
-    this.removeGroupKey = undefined;
-    const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
-    this.cartService.deleteEntry({ groupKey }).subscribe({
-      next: () => {
-        if (this.componentOptions?.notifyOnRemove) {
-          this.notify('cart.confirm-removed', sku);
-        }
-      },
-      error: () => this.revertEntry(),
-    });
-  }
-
-  protected notify(token: string, sku?: string): void {
-    this.notificationService.push({
-      type: AlertType.Success,
-      content: i18n(token) as string,
-      subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
-    });
-  }
-
-  protected renderConfirmation(groupKey?: string): TemplateResult | void {
-    if (!groupKey) return;
-
-    const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
-
-    return html`<oryx-modal
-      open
-      enableFooter
-      enableCloseButtonInHeader
-      heading=${i18n('cart.entry.confirm')}
-      @oryx.close=${this.resetConfirmation}
-    >
-      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku })}
-
-      <oryx-button
-        slot="footer-more"
-        .type=${ButtonType.Critical}
-        .size=${Size.Sm}
-        @click=${() => this.removeEntry(groupKey)}
-      >
-        <button value="remove">${i18n(`cart.entry.remove`)}</button>
-      </oryx-button>
-    </oryx-modal>`;
-  }
-
-  protected resetConfirmation(): void {
-    this.revertEntry();
-    this.removeGroupKey = undefined;
-  }
-
-  protected revertEntry(): void {
-    this.shadowRoot
-      ?.querySelector<CartEntryComponent>(
-        `oryx-cart-entry[key='${this.removeGroupKey}']`
-      )
-      ?.revert();
-    this.removeGroupKey = undefined;
   }
 
   // TODO: we like to remove this, since this should be content managed

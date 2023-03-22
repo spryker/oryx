@@ -22,6 +22,8 @@ class MockCartService implements Partial<CartService> {
   isEmpty = vi.fn().mockReturnValue(of(false));
   getCart = vi.fn().mockReturnValue(of());
   getEntries = vi.fn().mockReturnValue(of([]));
+  updateEntry = vi.fn().mockReturnValue(of(null));
+  deleteEntry = vi.fn().mockReturnValue(of(null));
 }
 
 class MockSemanticLinkService implements Partial<SemanticLinkService> {

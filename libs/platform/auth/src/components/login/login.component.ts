@@ -122,7 +122,7 @@ export class AuthLoginComponent
         return EMPTY;
       }
       if (this.componentOptions?.redirectUrl) {
-        return of(this.componentOptions.redirectUrl);
+        return of(this.componentOptions?.redirectUrl);
       }
       return this.routerService
         .previousRoute()
