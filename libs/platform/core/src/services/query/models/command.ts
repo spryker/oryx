@@ -13,7 +13,7 @@ export enum CommandStrategy {
   Parallel = 'parallel',
 
   /**
-   * Next command replaces previous one. Result from new command will be propagated to new command.
+   * Next command cancels previous one.
    */
   Replace = 'replace',
 
