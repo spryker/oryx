@@ -12,8 +12,11 @@ import {
 } from 'rxjs';
 import { ItemsFilters, ProductItemPickedEvent } from '../../models';
 import { PickingListService } from '../../services';
+import { styles } from './picking.styles';
 
 export class PickingComponent extends LitElement {
+  static styles = styles;
+
   @property({ attribute: 'picking-id' }) pickingId?: string;
 
   @observe('pickingId')
@@ -71,6 +74,7 @@ export class PickingComponent extends LitElement {
     this.pickingList?.items.map((item) => {
       if (
         item.product.id === detail.productId &&
+        detail.numberOfPicked &&
         detail.numberOfPicked <= item.quantity &&
         detail.numberOfPicked >= 0
       ) {
@@ -83,11 +87,7 @@ export class PickingComponent extends LitElement {
   protected savePickingItem(event: Event): void {
     const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
 
-    if (!this.pickingList) {
-      return;
-    }
-
-    this.pickingList.items.map((item) => {
+    this.pickingList?.items.map((item) => {
       if (item.product.id === detail.productId) {
         item.status = ItemsFilters.Picked;
       }
@@ -109,8 +109,6 @@ export class PickingComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    console.log('render');
-
     return html`<oryx-tabs appearance="secondary">
       ${this.renderTabs()} ${this.renderTabContents()}
     </oryx-tabs>`;
@@ -135,7 +133,7 @@ export class PickingComponent extends LitElement {
           (tab) => html`<div
             slot="panels"
             id="tab-${tab.id}"
-            style="width: 100%"
+            class="tab-panels"
           >
             ${tab.items?.length
               ? repeat(

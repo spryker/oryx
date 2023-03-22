@@ -4,7 +4,12 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject } from 'rxjs';
-import { ItemsFilters, PickingListItem, SummaryInfo } from '../../models';
+import {
+  ItemsFilters,
+  PickingListItem,
+  ProductItemPickedEvent,
+  SummaryInfo,
+} from '../../models';
 import { styles } from './picking-product-card.styles';
 
 export const EVENT_CHANGE_NUMBER_OF_PICKED = 'oryx.change-number-of-picked';
@@ -39,55 +44,31 @@ export class PickingProductCardComponent extends LitElement {
     e.preventDefault();
 
     if (this.productItem?.numberOfPicked === this.productItem?.quantity) {
-      this.dispatchEvent(
-        new CustomEvent(EVENT_SUBMIT, {
-          bubbles: true,
-          composed: true,
-          detail: {
-            productId: this.productItem?.product.id,
-          },
-        })
-      );
+      this.dispatchPickingEvents(EVENT_SUBMIT, {
+        productId: this.productItem?.product.id,
+      } as ProductItemPickedEvent);
     } else {
       this.isConfirmPickingDialogOpen$.next(true);
     }
   }
 
   protected confirmPartialPicking(): void {
-    this.dispatchEvent(
-      new CustomEvent(EVENT_CHANGE_NUMBER_OF_PICKED, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          productId: this.productItem?.product.id,
-          numberOfPicked: this.currentNumberOfPicked,
-        },
-      })
-    );
+    this.dispatchPickingEvents(EVENT_CHANGE_NUMBER_OF_PICKED, {
+      productId: this.productItem?.product.id,
+      numberOfPicked: this.currentNumberOfPicked,
+    } as ProductItemPickedEvent);
 
-    this.dispatchEvent(
-      new CustomEvent(EVENT_SUBMIT, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          productId: this.productItem?.product.id,
-        },
-      })
-    );
+    this.dispatchPickingEvents(EVENT_SUBMIT, {
+      productId: this.productItem?.product.id,
+    } as ProductItemPickedEvent);
 
     this.isConfirmPickingDialogOpen$.next(false);
   }
 
   protected editProductPicking(): void {
-    this.dispatchEvent(
-      new CustomEvent(EVENT_EDIT, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          productId: this.productItem?.product.id,
-        },
-      })
-    );
+    this.dispatchPickingEvents(EVENT_EDIT, {
+      productId: this.productItem?.product.id,
+    } as ProductItemPickedEvent);
   }
 
   protected onModalClose(): void {
@@ -102,16 +83,10 @@ export class PickingProductCardComponent extends LitElement {
         0 <= quantity && quantity <= this.productItem.quantity;
     }
 
-    this.dispatchEvent(
-      new CustomEvent(EVENT_CHANGE_NUMBER_OF_PICKED, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          productId: this.productItem?.product.id,
-          numberOfPicked: this.currentNumberOfPicked,
-        },
-      })
-    );
+    this.dispatchPickingEvents(EVENT_CHANGE_NUMBER_OF_PICKED, {
+      productId: this.productItem?.product.id,
+      numberOfPicked: this.currentNumberOfPicked,
+    } as ProductItemPickedEvent);
   }
 
   protected getSummaryInfo(): SummaryInfo {
@@ -125,29 +100,46 @@ export class PickingProductCardComponent extends LitElement {
       const template = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
 
       if (this.productItem.numberOfPicked < this.productItem.quantity) {
-        return { main: `${template} items picked` };
+        return {
+          main: `${template} ${i18n('picking.product-card.items-picked')}`,
+        };
       }
 
       return {
         main: template,
-        additional: 'All items picked',
+        additional: `${i18n('picking.product-card.all-items-picked')}`,
       };
     } else if (this.status === ItemsFilters.NotFound) {
       const template = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
 
       if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
-        return { main: `${template} items not found` };
+        return {
+          main: `${template} ${i18n('picking.product-card.items-not-found')}`,
+        };
       }
 
       return {
         main: template,
-        additional: 'No items found',
+        additional: `${i18n('picking.product-card.no-items-found')}`,
       };
     }
 
     return {
       main: '',
     };
+  }
+
+  protected dispatchPickingEvents(
+    event: string,
+    productItem: ProductItemPickedEvent
+  ): void {
+    this.dispatchEvent(
+      new CustomEvent(event, {
+        bubbles: true,
+        composed: true,
+        detail: productItem,
+      })
+    );
   }
 
   protected override render(): TemplateResult {

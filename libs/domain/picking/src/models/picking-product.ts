@@ -8,5 +8,5 @@ export interface PickingProduct {
 
 export interface ProductItemPickedEvent {
   productId: string;
-  numberOfPicked: number;
+  numberOfPicked?: number;
 }
