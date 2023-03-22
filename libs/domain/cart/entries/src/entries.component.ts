@@ -109,10 +109,12 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected removeEntry(groupKey: string): void {
     this.removeGroupKey = undefined;
     const sku = this.entries?.find((entry) => entry.groupKey === groupKey)?.sku;
-    this.cartService.deleteEntry({ groupKey }).subscribe(() => {
-      if (this.componentOptions.notifyOnRemove) {
-        this.notify('cart.confirm-removed', sku);
-      }
+    this.cartService.deleteEntry({ groupKey }).subscribe({
+      complete: () => {
+        if (this.componentOptions.notifyOnRemove) {
+          this.notify('cart.confirm-removed', sku);
+        }
+      },
     });
   }
 
