@@ -6,7 +6,10 @@ import { property } from 'lit/decorators.js';
 import { NavigateBackAttributes } from './navigate-back.model';
 import { styles } from './navigate-back.styles';
 
-export class NavigateBackComponent extends LitElement implements NavigateBackAttributes {
+export class NavigateBackComponent
+  extends LitElement
+  implements NavigateBackAttributes
+{
   static styles = styles;
 
   @property()
@@ -15,9 +18,7 @@ export class NavigateBackComponent extends LitElement implements NavigateBackAtt
   protected routerService = resolve(RouterService);
 
   @asyncState()
-  protected link = valueType(
-    this.routerService.previousRoute()
-  );
+  protected link = valueType(this.routerService.previousRoute());
 
   protected override render(): TemplateResult {
     const link = this.link || this.fallbackUrl;

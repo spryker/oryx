@@ -1,14 +1,20 @@
 import { resolve, Type } from '@spryker-oryx/di';
-import { asyncState, observe, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  isDefined,
+  observe,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
   BehaviorSubject,
+  distinctUntilChanged,
+  filter,
   Observable,
-  of,
   switchMap,
 } from 'rxjs';
-import type { PickingListComponentProperties, PickingList } from '../models';
+import type { PickingList, PickingListComponentProperties } from '../models';
 import { PickingListService } from '../services';
 
 export declare class PickingListMixinInterface
@@ -34,8 +40,9 @@ export const PickingListMixin = <
     protected pickingListId$ = new BehaviorSubject(this.pickingListId);
 
     protected pickingList$ = this.pickingListId$.pipe(
-      // switchMap(id => this.pickingListService.getById(id))
-      switchMap(id => of([]))
+      distinctUntilChanged(),
+      filter(isDefined),
+      switchMap((id) => this.pickingListService.getById(id!))
     );
 
     @asyncState()

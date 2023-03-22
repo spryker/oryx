@@ -28,7 +28,9 @@ describe('NavigateBackComponent', () => {
         },
       ],
     });
-    routerService = testInjector.inject(RouterService) as unknown as MockRouterService;
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
     element = await fixture(html`<oryx-navigate-back></oryx-navigate-back>`);
   });
 

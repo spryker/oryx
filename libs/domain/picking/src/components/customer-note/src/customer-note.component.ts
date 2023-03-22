@@ -1,10 +1,10 @@
+import { resolve } from '@spryker-oryx/di';
+import { PickingListMixin } from '@spryker-oryx/picking';
+import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { PickingListMixin } from '@spryker-oryx/picking';
-import { styles } from './customer-note.styles';
-import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
 import { tap } from 'rxjs';
+import { styles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
   static styles = styles;
@@ -17,11 +17,16 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
       return;
     }
 
-    this.pickingListService.startPicking(this.pickingList).pipe(
-      tap(() => {
-        this.routerService.go(`/picking-list/picking/${this.pickingList.id}`)
-      })
-    ).subscribe()
+    this.pickingListService
+      .startPicking(this.pickingList)
+      .pipe(
+        tap(() => {
+          this.routerService.navigate(
+            `/picking-list/picking/${this.pickingList.id}`
+          );
+        })
+      )
+      .subscribe();
   }
 
   protected override render(): TemplateResult {
@@ -33,11 +38,8 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
           <h4>${i18n('picking.customer-note')}</h4>
         </oryx-heading>
       </section>
-      
-      <p>
-        ${this.pickingList?.cartNote}
-        <!-- Please only ripe bananas, and the largest pumpkins available. Ring the bell at Thompson. Head to the 4th floor.  -->
-      </p>
+
+      <p>${this.pickingList?.cartNote}</p>
 
       <oryx-button>
         <button @click=${this.onProceed}>

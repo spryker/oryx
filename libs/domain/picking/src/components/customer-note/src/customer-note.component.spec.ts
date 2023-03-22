@@ -10,21 +10,21 @@ import { customerNoteComponent } from './customer-note.def';
 
 const mockedPickingList = {
   id: 'test',
-  cartNote: 'test note'
-}
+  cartNote: 'test note',
+};
 
 class MockRouterService implements Partial<RouterService> {
-  go = vi.fn();
+  navigate = vi.fn();
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockedPickingList))
-  startPicking = vi.fn()
+  getById = vi.fn().mockReturnValue(of(mockedPickingList));
+  startPicking = vi.fn();
 }
 
 describe('CustomerNoteComponent', () => {
   let element: CustomerNoteComponent;
-  let service: PickingListService;
+  let service: MockPickingListService;
   let routerService: MockRouterService;
 
   beforeAll(async () => {
@@ -40,9 +40,15 @@ describe('CustomerNoteComponent', () => {
         },
       ],
     });
-    service = testInjector.inject(PickingListService) as unknown as MockPickingListService;
-    routerService = testInjector.inject(RouterService) as unknown as MockRouterService;
-    element = await fixture(html`<oryx-customer-note pickingListId="test"></oryx-customer-note>`);
+    service = testInjector.inject(
+      PickingListService
+    ) as unknown as MockPickingListService;
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
+    element = await fixture(
+      html`<oryx-customer-note picking-id="test"></oryx-customer-note>`
+    );
   });
 
   afterEach(() => {
@@ -61,9 +67,9 @@ describe('CustomerNoteComponent', () => {
 
   describe('when picking is proceed', () => {
     beforeEach(() => {
-      element.renderRoot.querySelector('button')?.dispatchEvent(
-        new MouseEvent('click')
-      )
+      element.renderRoot
+        .querySelector('button')
+        ?.dispatchEvent(new MouseEvent('click'));
     });
 
     it('should start picking with current picking list', () => {
@@ -71,7 +77,9 @@ describe('CustomerNoteComponent', () => {
     });
 
     it('should navigate by route with picking list id', () => {
-      expect(routerService.go).toHaveBeenCalledWith(expect.stringContaining(mockedPickingList.id));
+      expect(routerService.navigate).toHaveBeenCalledWith(
+        expect.stringContaining(mockedPickingList.id)
+      );
     });
   });
 });

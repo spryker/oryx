@@ -1,3 +1,3 @@
 export interface PickingListComponentProperties {
-    pickingListId?: string;
+  pickingListId?: string;
 }
