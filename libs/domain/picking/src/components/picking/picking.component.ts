@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import {
   BehaviorSubject,
@@ -33,8 +33,6 @@ export class PickingComponent extends LitElement {
   protected pickingList = valueType(this.pickingList$);
 
   protected pickingUpdate$ = new BehaviorSubject<string | null>(null);
-
-  @state() isPickingComplete?: boolean = false;
 
   protected tabs$ = combineLatest([
     this.pickingList$,
@@ -164,12 +162,12 @@ export class PickingComponent extends LitElement {
       (item) => item.status === ItemsFilters.Picked
     );
 
-    this.isPickingComplete =
+    const isPickingComplete =
       pickedCount?.length === this.pickingList?.items.length;
 
     return html`
       ${when(
-        this.isPickingComplete,
+        isPickingComplete,
         () =>
           html`
             <div class="picking-complete">
