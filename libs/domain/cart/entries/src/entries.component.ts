@@ -103,6 +103,7 @@ export class CartEntriesComponent extends CartComponentMixin(
             this.notify('cart.cart-entry-updated', sku);
           }
         },
+        error: () => this.revertEntry(),
       });
     }
   }
@@ -116,6 +117,7 @@ export class CartEntriesComponent extends CartComponentMixin(
           this.notify('cart.confirm-removed', sku);
         }
       },
+      error: () => this.revertEntry(),
     });
   }
 
@@ -153,6 +155,11 @@ export class CartEntriesComponent extends CartComponentMixin(
   }
 
   protected resetConfirmation(): void {
+    this.revertEntry();
+    this.removeGroupKey = undefined;
+  }
+
+  protected revertEntry(): void {
     this.shadowRoot
       ?.querySelector<CartEntryComponent>(
         `oryx-cart-entry[key='${this.removeGroupKey}']`
