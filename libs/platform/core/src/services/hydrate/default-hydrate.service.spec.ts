@@ -1,18 +1,20 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import {
+  createInjector,
+  destroyInjector,
+  Injector,
+  INJECTOR,
+} from '@spryker-oryx/di';
 import {
   HYDRATE_ON_DEMAND,
   PatchableLitElement,
 } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { of } from 'rxjs';
 import { AppRef } from '../../orchestration';
-import {
-  DefaultHydrateService,
-  hydrateAllEvent,
-  locationHydrationEvent,
-} from './default-hydrate.service';
-import { HydrateService } from './hydrate.service';
+import { DefaultHydrateService } from './default-hydrate.service';
+import { HydrateInitializer, HydrateService } from './hydrate.service';
 
 vi.mock('lit', async () => {
   const actual = (await vi.importActual('lit')) as Record<string, unknown>;
@@ -47,9 +49,12 @@ const mockApp = {
   findPlugin: vi.fn().mockReturnValue(mockComponentsPlugin),
 };
 
+const mockAInitializer = vi.fn().mockReturnValue(of(null));
+const mockBInitializer = vi.fn().mockReturnValue(of(null));
+
 describe('DefaultHydrateService', () => {
   let service: HydrateService;
-  let element: any;
+  let injector: Injector;
 
   beforeEach(async () => {
     const testInjector = createInjector({
@@ -62,10 +67,19 @@ describe('DefaultHydrateService', () => {
           provide: AppRef,
           useValue: mockApp,
         },
+        {
+          provide: HydrateInitializer,
+          useValue: mockAInitializer,
+        },
+        {
+          provide: HydrateInitializer,
+          useValue: mockBInitializer,
+        },
       ],
     });
     service = testInjector.inject(HydrateService);
-    element = await fixture(html`
+    injector = testInjector.inject(INJECTOR);
+    await fixture(html`
       <mock-a hydratable="click"></mock-a>
       <mock-b></mock-b>
       <mock-c hydratable="click,focusin"></mock-c>
@@ -78,26 +92,9 @@ describe('DefaultHydrateService', () => {
     destroyInjector();
   });
 
-  it('should add router listeners and hydrate proper component when it is needed', async () => {
-    const mockRouter = document.querySelector(
-      'mock-router '
-    ) as PatchableLitElement;
-
-    document.dispatchEvent(
-      new CustomEvent(locationHydrationEvent, {
-        composed: true,
-        bubbles: true,
-      })
-    );
-    // Skip initial event
-    expect(mockRouter[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-    document.dispatchEvent(
-      new CustomEvent(locationHydrationEvent, {
-        composed: true,
-        bubbles: true,
-      })
-    );
-    expect(mockRouter[HYDRATE_ON_DEMAND]).toHaveBeenCalledWith(true);
+  it('should call hydration initializers on construction time', () => {
+    expect(mockAInitializer).toHaveBeenCalledWith(service, injector);
+    expect(mockBInitializer).toHaveBeenCalledWith(service, injector);
   });
 
   describe('initHydrateHooks', () => {
@@ -117,28 +114,6 @@ describe('DefaultHydrateService', () => {
       expect(mockC[HYDRATE_ON_DEMAND]).toHaveBeenCalledTimes(2);
 
       expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-    });
-
-    it('should add force all listener and call `HYDRATE_ON_DEMAND` for all components when listener has been triggered', () => {
-      const mockA = document.querySelector('mock-a') as PatchableLitElement;
-      const mockC = document.querySelector('mock-c') as PatchableLitElement;
-      const mockB = document.querySelector('mock-b') as PatchableLitElement;
-      service.initHydrateHooks();
-
-      expect(mockC[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-      expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-      expect(mockA[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-
-      document.dispatchEvent(
-        new CustomEvent(hydrateAllEvent, {
-          composed: true,
-          bubbles: true,
-        })
-      );
-
-      expect(mockC[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
-      expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
-      expect(mockA[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
     });
 
     it('should call loadComponent from component plugin for initialization component', async () => {

@@ -1,4 +1,3 @@
-import { hydrateAllEvent } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { CurrencyService, LocaleService } from '@spryker-oryx/site';
@@ -62,12 +61,6 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   }
 
   protected onClick(locale: string): void {
-    document.dispatchEvent(
-      new CustomEvent(hydrateAllEvent, {
-        composed: true,
-        bubbles: true,
-      })
-    );
     this.currencyService.set(locale);
   }
 

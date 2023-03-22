@@ -1,4 +1,3 @@
-import { hydrateAllEvent } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/site';
@@ -55,12 +54,6 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected onClick(locale: string): void {
-    document.dispatchEvent(
-      new CustomEvent(hydrateAllEvent, {
-        composed: true,
-        bubbles: true,
-      })
-    );
     this.localeService.set(locale);
   }
 

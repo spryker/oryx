@@ -1,47 +1,46 @@
-import { inject } from '@spryker-oryx/di';
+import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   hydratableAttribute,
   HYDRATE_ON_DEMAND,
   PatchableLitElement,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { isServer, LitElement } from 'lit';
+import { LitElement } from 'lit';
+import { Subscription } from 'rxjs';
 import { AppRef, ComponentsPlugin } from '../../orchestration';
-import { HydrateService } from './hydrate.service';
+import { HydrateInitializer, HydrateService } from './hydrate.service';
 
-export const locationHydrationEvent = 'oryx.location';
-export const hydrateAllEvent = 'oryx.force-all';
+export class DefaultHydrateService implements HydrateService, OnDestroy {
+  protected subscription = new Subscription();
 
-export class DefaultHydrateService implements HydrateService {
   constructor(
     protected componentsPlugin = inject(AppRef).findPlugin(ComponentsPlugin),
-    protected root = rootInjectable.get()
+    protected root = rootInjectable.get(),
+    protected injector = inject(INJECTOR)
   ) {
-    this.initLocationHydration();
+    this.initialize();
   }
 
-  protected initLocationHydration(): void {
-    if (isServer) {
+  protected initialize(): void {
+    const initializers = this.injector.inject(HydrateInitializer, null);
+
+    if (!initializers) {
       return;
     }
-    let initialEvent = true;
 
-    document.addEventListener(locationHydrationEvent, () => {
-      if (!initialEvent) {
-        const queryRoot = document.querySelector(this.root);
-        const querySelector =
-          this.root === 'body' ? queryRoot : queryRoot?.shadowRoot;
-        const component = querySelector?.querySelector(`[route]`) as LitElement;
-        this.hydrateOnDemand(component, true);
-      }
-      initialEvent = false;
-    });
+    for (const initializer of initializers) {
+      this.subscription.add(initializer(this, this.injector).subscribe());
+    }
   }
 
-  initHydrateHooks(): void {
+  initHydrateHooks(immediate?: boolean): void {
     this.treewalk(`[${hydratableAttribute}]`).forEach((el) => {
+      if (immediate) {
+        this.hydrateOnDemand(el, true);
+        return;
+      }
+
       const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
-      modes.push(`window:${hydrateAllEvent}`);
 
       for (let i = 0; i < modes.length; i++) {
         const parts = modes[i].split(':');
@@ -73,6 +72,10 @@ export class DefaultHydrateService implements HydrateService {
     }
 
     (element as PatchableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
+  }
+
+  onDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   protected treewalk(
