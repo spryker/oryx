@@ -1,12 +1,7 @@
 import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import {
-  pickingListCardComponent,
-  pickingListListComponent,
-  navigateBackComponent,
-  customerNoteComponent
-} from './components';
+import * as components from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
 import {
@@ -18,6 +13,8 @@ import {
   PickingListService,
 } from './services';
 
+export const pickingComponents = Object.values(components);
+
 export interface PickingFeatureConfig extends PickingConfig {
   noDefaultRoutes?: boolean;
 }
@@ -28,7 +25,7 @@ export class PickingFeature implements AppFeature {
 
   constructor(config?: PickingFeatureConfig) {
     this.providers = this.getProviders(config);
-    this.components = this.getComponents();
+    this.components = pickingComponents;
   }
 
   protected getProviders(config?: PickingFeatureConfig): Provider[] {
@@ -40,15 +37,6 @@ export class PickingFeature implements AppFeature {
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
-    ];
-  }
-
-  protected getComponents(): ComponentsInfo {
-    return [
-      pickingListCardComponent, 
-      pickingListListComponent,
-      navigateBackComponent,
-      customerNoteComponent
     ];
   }
 }
