@@ -38,15 +38,16 @@ export const styles = css`
     color: var(--oryx-color-ink);
   }
 
-  .image {
+  oryx-image {
+    display: block;
+    fill: var(--oryx-color-ink);
     height: 106px;
     margin-block-start: 5px;
     object-fit: cover;
-    max-width: 182px;
+  }
 
-    &__fade {
-      opacity: 0.4;
-    }
+  .image-fade {
+    opacity: 0.4;
   }
 
   oryx-cart-quantity-input {

@@ -52,8 +52,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       if (
         item.product.id === detail.productId &&
         detail.numberOfPicked &&
-        detail.numberOfPicked <= item.quantity &&
-        detail.numberOfPicked >= 0
+        detail.numberOfPicked <= item.quantity
       ) {
         item.numberOfPicked = detail.numberOfPicked;
         item.numberOfNotPicked = item.quantity - item.numberOfPicked;
