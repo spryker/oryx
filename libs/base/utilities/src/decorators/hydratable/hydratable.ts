@@ -11,62 +11,73 @@ const DEFER_HYDRATION = Symbol('deferHydration');
 const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
+export const hydratableAttribute = 'hydratable';
 
-export interface PatchableLitElement extends LitElement {
+interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
+}
+
+export interface HydratableLitElement extends LitElement {
+  [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
 
 const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
   condition ? trueCase() : noChange;
 
 export const hydratable =
-  (mode?: string[] | string) =>
+  (prop?: string | string[]) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
-      ? legacyCustomElement(classOrDescriptor, mode)
-      : standardCustomElement(classOrDescriptor as ClassDescriptor, mode);
+      ? legacyCustomElement(classOrDescriptor, prop)
+      : standardCustomElement(classOrDescriptor as ClassDescriptor, prop);
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  mode?: string[] | string
+  prop?: string | string[]
 ) => {
-  return hydratableClass(clazz, mode);
+  return hydratableClass(clazz, prop);
 };
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  mode?: string[] | string
+  prop?: string | string[]
 ) => {
   const { kind, elements } = descriptor;
   return {
     kind,
     elements,
     finisher(clazz: Constructor<PatchableLitElement>) {
-      return hydratableClass(clazz, mode);
+      return hydratableClass(clazz, prop);
     },
   };
 };
 
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string[] | string
+  mode?: string | string[]
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
+    private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
-    protected hasSsr?: boolean;
+
+    static properties = {
+      useRealRender: { type: Boolean, state: true },
+    };
 
     constructor(...args: any[]) {
-      super();
-      this.hasSsr = !isServer && this.shadowRoot;
+      super(...args);
+      this.hasSsr = !isServer && !!this.shadowRoot;
+      this.useRealRender = true;
+
       if (isServer) {
-        this.setAttribute('hydratable', mode ?? '');
+        this.setAttribute(hydratableAttribute, mode ?? '');
       }
+
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
-        return;
       }
     }
 
@@ -88,7 +99,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
       this[HYDRATING] = false;
     }
 
-    [HYDRATE_ON_DEMAND]() {
+    [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
+      if (skipMissMatch) {
+        this.useRealRender = false;
+      }
+
       const prototype = Array(this[HYDRATION_CALLS])
         .fill(null)
         .reduce(Object.getPrototypeOf, this);
@@ -111,14 +126,19 @@ function hydratableClass<T extends Type<HTMLElement>>(
     render(): TemplateResult {
       const states = this[asyncStates];
 
+      setTimeout(() => {
+        if (!this.useRealRender) this.useRealRender = true;
+      }, 0);
+
       if (this.hasSsr && states) {
-        return html`${whenState(Object.values(states).every(Boolean), () =>
-          super.render()
+        return html`${whenState(
+          Object.values(states).every(Boolean) && this.useRealRender,
+          () => super.render()
         )}`;
       }
 
       return this.hasSsr || isServer
-        ? html`${whenState(true, () => super.render())}`
+        ? html`${whenState(this.useRealRender, () => super.render())}`
         : super.render();
     }
   };

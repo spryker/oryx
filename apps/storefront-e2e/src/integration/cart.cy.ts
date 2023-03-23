@@ -100,9 +100,12 @@ describe('Cart suite', () => {
         firstEntry.getQuantityInput().getInput().type('{selectall}2');
         cy.get('body').click();
 
-        firstEntry.getQuantityInput().getInput().should('have.value', 2);
-        firstEntry.getTotalPrice().should('contain.text', '598.55');
-        cartTotals.getTotalPrice().should('contain.text', '598.55');
+        cartPage.getCartEntries().then((entries) => {
+          const firstEntry = entries[0];
+          firstEntry.getQuantityInput().getInput().should('have.value', 2);
+          firstEntry.getTotalPrice().should('contain.text', '598.55');
+          cartTotals.getTotalPrice().should('contain.text', '598.55');
+        });
       });
     });
 
