@@ -3,8 +3,10 @@ const libsVersion = require('../../libs/package.json').version;
 const labsVersion  = require('../../libs/template/labs/package.json').version;
 
 function main() {
+  console.log('Checking the version of the labs package');
   setLabsVersion(getNewLabsVersion());
 
+  console.log('Releasing labs package');
   publishToNpm();
 }
 
@@ -29,12 +31,31 @@ function getUndottedLibsVersion(libsVersion) {
 }
 
 function setLabsVersion(labsVersion) {
-  runCmd(`npm --prefix ./libs/template/labs version ${labsVersion}`);
-  runCmd(`npm --prefix ./dist/libs/template/labs version ${labsVersion}`);
+  try {
+    runCmd(`npm --prefix ./libs/template/labs version ${labsVersion}`);
+  } catch (e) {
+    console.log('Failed to set labs version')
+
+    throw e;
+  }
+
+  try {
+    runCmd(`npm --prefix ./dist/libs/template/labs version ${labsVersion}`);
+  } catch (e) {
+    console.log('Failed to set labs version inside dist')
+
+    throw e;
+  }
 }
 
 function publishToNpm() {
-  runCmd(`npm --prefix ./dist/libs/template/labs publish`);
+  try {
+    runCmd(`npm --prefix ./dist/libs/template/labs publish`);
+  } catch (e) {
+    console.log('Failed to publish labs package')
+
+    throw e;
+  }
 }
 
 function runCmd(command, options = {}) {
