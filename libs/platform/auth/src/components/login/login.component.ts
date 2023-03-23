@@ -168,7 +168,7 @@ export class AuthLoginComponent
         `
       )}
 
-      <form @submit=${this.login}>
+      <form @submit=${this.login} method="post">
         <oryx-input
           .label=${i18n('user.login.email')}
           required
