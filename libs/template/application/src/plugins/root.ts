@@ -3,7 +3,7 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
-  HydrateService,
+  HydrationService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -48,6 +48,6 @@ export class RootPlugin
   }
 
   afterApply(): void {
-    resolve(HydrateService).initHydrateHooks();
+    resolve(HydrationService).initHydrateHooks();
   }
 }

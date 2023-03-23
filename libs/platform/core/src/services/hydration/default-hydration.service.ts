@@ -8,9 +8,9 @@ import {
 import { LitElement } from 'lit';
 import { Subscription } from 'rxjs';
 import { AppRef, ComponentsPlugin } from '../../orchestration';
-import { HydrateInitializer, HydrateService } from './hydrate.service';
+import { HydrationService, HydrationTrigger } from './hydrate.service';
 
-export class DefaultHydrateService implements HydrateService, OnDestroy {
+export class DefaultHydrationService implements HydrationService, OnDestroy {
   protected subscription = new Subscription();
 
   constructor(
@@ -22,7 +22,7 @@ export class DefaultHydrateService implements HydrateService, OnDestroy {
   }
 
   protected initialize(): void {
-    const initializers = this.injector.inject(HydrateInitializer, null);
+    const initializers = this.injector.inject(HydrationTrigger, null);
 
     if (!initializers) {
       return;

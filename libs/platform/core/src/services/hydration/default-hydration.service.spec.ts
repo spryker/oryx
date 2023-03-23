@@ -8,8 +8,8 @@ import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { AppRef } from '../../orchestration';
-import { DefaultHydrateService } from './default-hydrate.service';
-import { HydrateInitializer, HydrateService } from './hydrate.service';
+import { DefaultHydrationService } from './default-hydrate.service';
+import { HydrationService, HydrationTrigger } from './hydrate.service';
 
 @customElement('mock-a')
 class MockA extends LitElement {
@@ -42,31 +42,31 @@ const mockApp = {
 const mockAInitializer = vi.fn().mockReturnValue(of(null));
 const mockBInitializer = vi.fn().mockReturnValue(of(null));
 
-describe('DefaultHydrateService', () => {
-  let service: HydrateService;
+describe('DefaultHydrationService', () => {
+  let service: HydrationService;
 
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: HydrateService,
-          useClass: DefaultHydrateService,
+          provide: HydrationService,
+          useClass: DefaultHydrationService,
         },
         {
           provide: AppRef,
           useValue: mockApp,
         },
         {
-          provide: HydrateInitializer,
+          provide: HydrationTrigger,
           useFactory: mockAInitializer,
         },
         {
-          provide: HydrateInitializer,
+          provide: HydrationTrigger,
           useFactory: mockBInitializer,
         },
       ],
     });
-    service = testInjector.inject(HydrateService);
+    service = testInjector.inject(HydrationService);
     await fixture(html`
       <mock-a hydratable="click"></mock-a>
       <mock-b></mock-b>

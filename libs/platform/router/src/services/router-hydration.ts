@@ -1,11 +1,11 @@
-import { HydrateInitializer } from '@spryker-oryx/core';
+import { HydrationTrigger } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { map, Observable, skip, take } from 'rxjs';
 import { RouterService } from './router.service';
 
 export const routerHydration = {
-  provide: HydrateInitializer,
+  provide: HydrationTrigger,
   useFactory: (): Observable<HTMLElement> =>
     inject(RouterService)
       .currentRoute()

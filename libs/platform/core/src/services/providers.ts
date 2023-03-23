@@ -11,7 +11,7 @@ import {
   HttpHandler,
   HttpService,
 } from './http';
-import { DefaultHydrateService, HydrateService } from './hydrate';
+import { DefaultHydrationService, HydrationService } from './hydrationon';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import {
@@ -59,7 +59,7 @@ export const coreProviders: Provider[] = [
     useClass: DefaultQueryService,
   },
   {
-    provide: HydrateService,
-    useClass: DefaultHydrateService,
+    provide: HydrationService,
+    useClass: DefaultHydrationService,
   },
 ];
