@@ -161,3 +161,13 @@ jobs:
           cmd: npx nx run-many --target=build --all --parallel=2
           affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}
+  test-pr-title:
+    permissions:
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        with:
+          preset: conventional-changelog-conventionalcommits@5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
