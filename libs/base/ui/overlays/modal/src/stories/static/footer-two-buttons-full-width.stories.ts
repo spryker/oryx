@@ -15,8 +15,14 @@ const Template: Story = (): TemplateResult => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
       </p>
+      <oryx-button slot="footer">
+        <button>Save</button>
+      </oryx-button>
+      <oryx-button slot="footer">
+        <button>Edit</button>
+      </oryx-button>
     </oryx-modal>
   `;
 };
 
-export const FooterButtonFullWidth = Template.bind({});
+export const FooterTwoButtonsFullWidth = Template.bind({});
