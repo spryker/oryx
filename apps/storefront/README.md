@@ -1,5 +1,5 @@
 ## Oryx Storefront
-asd 
+
 Composable Storefront boilerplate. This code is used by developers and the CI to test the storefront.
 
 ## Quickstart
