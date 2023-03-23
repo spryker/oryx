@@ -116,11 +116,11 @@
       "@spryker-oryx/push-notification": [
         "libs/platform/push-notification/src/index.ts"
       ],
-      "@spryker-oryx/push-notification/web": [
-        "libs/platform/push-notification/web/index.ts"
-      ],
       "@spryker-oryx/push-notification/*": [
         "libs/platform/push-notification/*/index.ts"
+      ],
+      "@spryker-oryx/push-notification/web": [
+        "libs/platform/push-notification/web/index.ts"
       ],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
