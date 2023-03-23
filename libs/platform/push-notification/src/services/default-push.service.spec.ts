@@ -49,7 +49,7 @@ describe('PushService', () => {
       expect(provider.getSubscription).toHaveBeenCalled();
     });
 
-    it('should send subscription', async () => {
+    it('should return subscription', async () => {
       const subscription = '1234';
       const callback = vi.fn();
       provider.getSubscription.mockReturnValue(of(subscription));
