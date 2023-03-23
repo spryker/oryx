@@ -12,7 +12,6 @@ import {
   fromEvent,
   map,
   Observable,
-  ReplaySubject,
   shareReplay,
   Subject,
   takeUntil,
@@ -28,15 +27,11 @@ export const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
 interface ExperiencePreviewData {
   type?: string;
-  structure?: {
-    id: string;
-    type: string;
-    components: Component[];
-  };
+  structure?: Component;
   content?: any;
   interaction?: any;
   options?: any;
-  route?: any;
+  route?: string;
 }
 export type ExperiencePreviewEvent = MessageEvent<ExperiencePreviewData>;
 
@@ -47,7 +42,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   ) {
     super();
 
-    this.dataClient.sendStatic(this.staticService.getData());
+    this.dataClient.sendStatic(this.staticComponents);
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
 
     this.structureDataEvent$.subscribe();
@@ -62,8 +57,11 @@ export class PreviewExperienceService extends DefaultExperienceService {
       });
   }
 
-  protected initStaticData(): void {
-    // TODO: we don't want load data in preview mode
+  protected initStaticData(): Component[] {
+    return this.staticData.map((component) => {
+      this.processComponentAndSave(component, () => ({}));
+      return component as Component;
+    });
   }
 
   protected destroy$ = new Subject<void>();
@@ -79,33 +77,9 @@ export class PreviewExperienceService extends DefaultExperienceService {
   protected structureDataEvent$ = this.experiencePreviewEvent$.pipe(
     map((data) => data.data?.structure),
     filter(isDefined),
-    tap((structure: any) => {
-      // TODO: refactoring
-      if (structure.meta) {
-        if (!this.dataRoutes[structure.meta.route]) {
-          this.dataRoutes[structure.meta.route] = new ReplaySubject<string>(1);
-        }
-        this.dataRoutes[structure.meta.route].next(structure.id);
-      }
-
-      if (!this.dataComponent[structure.id]) {
-        this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
-      }
-
-      this.dataComponent[structure.id].next(structure);
-
-      if (Array.isArray(structure.components)) {
-        structure.components.forEach((item: Component) => {
-          if (item.id) {
-            if (!this.dataComponent[item.id]) {
-              this.dataComponent[item.id] = new ReplaySubject<Component>(1);
-            }
-
-            this.dataComponent[item.id].next(item);
-          }
-        });
-        this.processComponent(structure);
-      }
+    tap((structure) => {
+      this.storeData('dataRoutes', structure.meta?.route, structure.id);
+      this.processComponentAndSave(structure);
     })
   );
 
@@ -117,10 +91,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      if (!this.dataContent[content.id]) {
-        this.dataContent[content.id] = new ReplaySubject<any>(1);
-      }
-      this.dataContent[content.id].next(content);
+      this.storeData('dataContent', content.id, content);
     })
   );
 
@@ -132,10 +103,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      if (!this.dataOptions[options.id]) {
-        this.dataOptions[options.id] = new ReplaySubject<any>(1);
-      }
-      this.dataOptions[options.id].next(options);
+      this.storeData('dataOptions', options.id, options);
     })
   );
 
