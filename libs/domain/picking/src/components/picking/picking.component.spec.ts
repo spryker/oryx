@@ -90,7 +90,11 @@ describe('PickingComponent', () => {
     beforeEach(async () => {
       service.getById.mockReturnValue(of(mockPickingListData[1]));
 
-      element = await fixture(html`<oryx-picking></oryx-picking>`);
+      element = await fixture(
+        html`<oryx-picking
+          .pickingListId=${mockPickingListData[1].id}
+        ></oryx-picking>`
+      );
     });
 
     it('should render success message', () => {
