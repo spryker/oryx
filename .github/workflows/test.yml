@@ -161,3 +161,8 @@ jobs:
           cmd: npx nx run-many --target=build --all --parallel=2
           affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}
+  test-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: conventional-pr-title
+        uses: aslafy-z/conventional-pr-title-action@v2.2.0
