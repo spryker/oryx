@@ -40,8 +40,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
     super();
 
     this.dataClient.sendStatic(this.staticData);
-    this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
     merge(
+      this.dataClient.initialize(),
       this.structureDataEvent$,
       this.contentDataEvent$,
       this.optionsDataEvent$,
