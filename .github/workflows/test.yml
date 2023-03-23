@@ -170,4 +170,4 @@ jobs:
         with:
           preset: conventional-changelog-conventionalcommits@5.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
