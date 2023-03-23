@@ -7,6 +7,7 @@ function noopFactoryDecorator() {
 
 export const HYDRATE_ON_DEMAND = '';
 export const HYDRATING = '';
+export const hydratableAttribute = '';
 
 export const hydratable = noopFactoryDecorator;
 

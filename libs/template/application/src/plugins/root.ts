@@ -3,6 +3,7 @@ import {
   AppPluginAfterApply,
   AppPluginBeforeApply,
   ErrorService,
+  HydrationService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -10,7 +11,6 @@ import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
 import 'lit/experimental-hydrate-support.js';
-import { initHydrateHooks } from './hydrate-hooks';
 
 declare global {
   function litElementHydrateSupport(param: {
@@ -27,7 +27,7 @@ export class RootPlugin
     return RootPluginName;
   }
 
-  beforeApply(): void | Promise<void> {
+  beforeApply(): void {
     try {
       hydrateShadowRoots(document.body);
     } catch (e) {
@@ -38,7 +38,7 @@ export class RootPlugin
     globalThis.litElementHydrateSupport?.({ LitElement });
   }
 
-  apply(): void | Promise<void> {
+  apply(): void {
     // TODO - remove when we have app initializers
     resolve(ErrorService).initialize();
 
@@ -47,7 +47,7 @@ export class RootPlugin
     }
   }
 
-  afterApply(): void | Promise<void> {
-    initHydrateHooks(rootInjectable.get());
+  afterApply(): void {
+    resolve(HydrationService).initHydrateHooks();
   }
 }
