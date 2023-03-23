@@ -1,7 +1,6 @@
 import { HydrateInitializer } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { rootInjectable } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
 import { map, Observable, skip, take } from 'rxjs';
 import { RouterService } from './router.service';
 
@@ -19,7 +18,8 @@ export const routerHydration = {
           const querySelector =
             root === 'body' ? queryRoot : queryRoot?.shadowRoot;
 
-          return querySelector?.querySelector('[route]') as LitElement;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return querySelector!.querySelector('[route]')!;
         })
       ),
 };
