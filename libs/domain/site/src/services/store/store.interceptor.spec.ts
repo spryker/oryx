@@ -98,7 +98,9 @@ describe('StoreInterceptor', () => {
       await nextFrame();
       expect(fromFetch).toHaveBeenCalledWith(
         testCase.url,
-        testCase.shouldIntercept ? { headers: { 'X-Store': STORE } } : options
+        testCase.shouldIntercept
+          ? { headers: new Headers({ 'X-Store': STORE }) }
+          : options
       );
     });
   });

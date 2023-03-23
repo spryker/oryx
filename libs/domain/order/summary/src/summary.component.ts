@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderMixin } from '@spryker-oryx/order';
-import { LocaleService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,

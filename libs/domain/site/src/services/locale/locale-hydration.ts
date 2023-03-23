@@ -1,7 +1,7 @@
 import { HydrationTrigger } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, skip, take } from 'rxjs';
-import { LocaleService } from './locale.service';
 
 export const localeHydration = {
   provide: HydrationTrigger,

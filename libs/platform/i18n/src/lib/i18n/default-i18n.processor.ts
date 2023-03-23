@@ -1,5 +1,4 @@
 import { inject } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/site';
 import { DefaultI18nInjectable, I18nContext } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -10,6 +9,7 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs';
+import { LocaleService } from '../locale';
 import { GlobalizeService } from './globalize.service';
 import { I18nLoader } from './i18n.loader';
 import { I18nProcessor } from './i18n.processor';
