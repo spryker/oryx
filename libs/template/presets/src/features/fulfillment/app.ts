@@ -1,6 +1,7 @@
 import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
+import { PushNotificationFeature } from '@spryker-oryx/push-notification';
 import { RouterFeature } from '@spryker-oryx/router';
 import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
@@ -31,6 +32,7 @@ export function fulfillmentFeatures(
     {
       resources: fulfillmentResources,
     },
+    new PushNotificationFeature(),
     new RouterFeature(),
     new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),
