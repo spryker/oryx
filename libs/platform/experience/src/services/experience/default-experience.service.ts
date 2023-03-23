@@ -21,16 +21,39 @@ export class DefaultExperienceService implements ExperienceService {
     protected http = inject(HttpService),
     protected staticData = inject(ExperienceStaticData, []).flat()
   ) {
-    this.staticData = this.initStaticData();
+    this.initStaticData();
   }
 
-  protected initStaticData(): Component[] {
-    return this.staticData.map((component) => {
-      this.processComponent(component);
-      this.storeData('dataRoutes', component.meta?.route, component.id);
+  protected initStaticData(): void {
+    this.staticData = this.processStaticData();
+  }
 
+  protected processStaticData(shouldStore = true): Component[] {
+    return this.staticData.map((component) => {
+      this.processComponent(component, shouldStore);
+
+      if (shouldStore) {
+        this.storeData('dataRoutes', component.meta?.route, component.id);
+      }
       return component as Component;
     });
+  }
+
+  protected processComponent(
+    _component: Component | StaticComponent,
+    shouldStore = true
+  ): void {
+    const components = [_component];
+
+    for (const component of components) {
+      component.id ??= this.getAutoId();
+
+      if (shouldStore) {
+        this.storeData('dataComponent', component.id, component);
+      }
+
+      components.push(...(component.components ?? []));
+    }
   }
 
   protected storeData(
@@ -49,22 +72,6 @@ export class DefaultExperienceService implements ExperienceService {
     }
 
     dataStore[byKey].next(data);
-  }
-
-  protected processComponent(
-    _component: Component | StaticComponent,
-    shouldStore = true
-  ): void {
-    const components = [_component];
-
-    for (const component of components) {
-      component.id ??= this.getAutoId();
-
-      if (shouldStore) {
-        this.storeData('dataComponent', component.id, component);
-      }
-      components.push(...(component.components ?? []));
-    }
   }
 
   getComponent({ uid, route }: ComponentQualifier): Observable<Component> {

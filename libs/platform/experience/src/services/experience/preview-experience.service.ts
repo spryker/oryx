@@ -44,24 +44,16 @@ export class PreviewExperienceService extends DefaultExperienceService {
 
     this.dataClient.sendStatic(this.staticData);
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
-
-    this.structureDataEvent$.subscribe();
-    this.contentDataEvent$.subscribe();
-    this.optionsDataEvent$.subscribe();
-    this.routeDataEvent$.subscribe();
+    this.structureDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
+    this.contentDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
+    this.optionsDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
+    this.routeDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
 
     this.routerService
       .getEvents(RouterEventType.NavigationEnd)
       .subscribe((event: RouterEvent) => {
         this.routeChangeHandler(event.route);
       });
-  }
-
-  protected initStaticData(): Component[] {
-    return this.staticData.map((component) => {
-      this.processComponent(component, false);
-      return component as Component;
-    });
   }
 
   protected destroy$ = new Subject<void>();
@@ -118,6 +110,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
     map((data) => data.data.interaction),
     filter(isDefined)
   );
+
+  protected initStaticData(): void {
+    this.staticData = this.processStaticData(false);
+  }
 
   protected reloadComponent(uid: string): void {
     postMessage({
