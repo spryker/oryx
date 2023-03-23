@@ -1,5 +1,5 @@
+import { PushProvider } from '@spryker-oryx/push-notification';
 import { from, map, Observable, of, switchMap } from 'rxjs';
-import { PushProvider } from '../push-provider.service';
 
 export interface WebPushProviderOptions {
   /**
@@ -40,9 +40,7 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
 
   deleteSubscription(): Observable<boolean> {
     return this.getExistingSubscription().pipe(
-      switchMap((subscription) =>
-        subscription ? subscription.unsubscribe() : of(true)
-      )
+      switchMap((subscription) => subscription?.unsubscribe() ?? of(true))
     );
   }
 

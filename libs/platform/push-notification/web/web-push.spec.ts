@@ -1,6 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
-import { PushProvider } from '../';
+import { PushProvider } from '@spryker-oryx/push-notification';
+import { from, lastValueFrom, map, of } from 'rxjs';
 import { WebPushProvider } from './web-push';
 
 class PushManagerMock
@@ -19,25 +19,28 @@ class PushSubscriptionMock
 }
 
 const mockServiceWorker = {
-  ready: new Promise<any>((resolve) =>
-    resolve({ pushManager: new PushManagerMock() })
-  ),
+  ready: of({ pushManager: new PushManagerMock() }),
 };
 
-Object.defineProperty(navigator, 'serviceWorker', {
-  value: mockServiceWorker,
-  configurable: true,
-});
+const callback = vi.fn();
 
 describe('WebPushProvider', () => {
   async function getPushManager() {
-    const serviceWorker = await navigator.serviceWorker.ready;
-    return serviceWorker.pushManager as unknown as PushManagerMock;
+    return await lastValueFrom(
+      from(navigator.serviceWorker.ready).pipe(
+        map(
+          (serviceWorker) =>
+            serviceWorker.pushManager as unknown as PushManagerMock
+        )
+      )
+    );
   }
 
   let provider: WebPushProvider;
 
   beforeEach(() => {
+    vi.stubGlobal('navigator', { serviceWorker: mockServiceWorker });
+
     const testInjector = createInjector({
       providers: [
         {
@@ -52,6 +55,7 @@ describe('WebPushProvider', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    vi.unstubAllGlobals();
     destroyInjector();
   });
 
@@ -80,15 +84,14 @@ describe('WebPushProvider', () => {
 
       pushManager.subscription.toJSON.mockReturnValue(mockSubscription);
       pushManager.getSubscription.mockReturnValue(of(undefined));
+      provider.getSubscription().subscribe(callback);
 
-      provider.getSubscription().subscribe((subscription) => {
-        expect(pushManager.subscribe).toHaveBeenCalledWith({
-          userVisibleOnly: true,
-        });
-        expect(subscription).toEqual(mockSubscription);
-        // Should be a different object then original subscription
-        expect(subscription).not.toEqual(pushManager.subscription);
+      expect(pushManager.subscribe).toHaveBeenCalledWith({
+        userVisibleOnly: true,
       });
+      expect(callback).toHaveBeenCalledWith(mockSubscription);
+      // Should be a different object then original subscription
+      expect(callback).not.toHaveBeenCalledWith(pushManager.subscription);
     });
 
     describe('when using app server key', () => {
@@ -111,14 +114,13 @@ describe('WebPushProvider', () => {
       });
 
       it('should use app server key to create subscription if configured', async () => {
-        provider.getSubscription().subscribe(() => {
-          expect(
-            pushManager.subscribe,
-            'applicationServerKey should be URL-safe without base64 padding'
-          ).toHaveBeenCalledWith({
-            applicationServerKey: 'mock-app%26-server%20key',
-            userVisibleOnly: true,
-          });
+        provider.getSubscription().subscribe(callback);
+        expect(
+          pushManager.subscribe,
+          'applicationServerKey should be URL-safe without base64 padding'
+        ).toHaveBeenCalledWith({
+          applicationServerKey: 'mock-app%26-server%20key',
+          userVisibleOnly: true,
         });
       });
     });
@@ -142,10 +144,9 @@ describe('WebPushProvider', () => {
         pushManager = await getPushManager();
       });
       it('should use custom userVisibleOnly flag', async () => {
-        provider.getSubscription().subscribe(() => {
-          expect(pushManager.subscribe).toHaveBeenCalledWith({
-            userVisibleOnly: false,
-          });
+        provider.getSubscription().subscribe(callback);
+        expect(pushManager.subscribe).toHaveBeenCalledWith({
+          userVisibleOnly: false,
         });
       });
     });
@@ -157,10 +158,9 @@ describe('WebPushProvider', () => {
       pushSubscription.toJSON.mockReturnValue(mockSubscription);
       pushManager.getSubscription.mockReturnValue(of(pushSubscription));
 
-      provider.getSubscription().subscribe((subscription) => {
-        expect(pushManager.subscribe).not.toHaveBeenCalled();
-        expect(subscription).toEqual(mockSubscription);
-      });
+      provider.getSubscription().subscribe(callback);
+      expect(pushManager.subscribe).not.toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(mockSubscription);
     });
   });
 
@@ -175,17 +175,15 @@ describe('WebPushProvider', () => {
       it('should cancel existing subscription and return Promise of `true` if successful', () => {
         pushSubscription.unsubscribe.mockReturnValue(of(true));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBeTruthy();
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(true);
       });
 
       it('should cancel existing subscription and return Promise of `false` if unsuccessful', () => {
         pushSubscription.unsubscribe.mockReturnValue(of(false));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBe(false);
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(false);
       });
     });
 
@@ -193,9 +191,8 @@ describe('WebPushProvider', () => {
       it('should return Promise of `true`', () => {
         pushManager.getSubscription.mockReturnValue(of(null));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBeTruthy();
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(true);
       });
     });
   });

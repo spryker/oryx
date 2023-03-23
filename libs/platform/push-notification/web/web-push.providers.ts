@@ -1,5 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
-import { PushProvider } from '../push-provider.service';
+import { PushProvider } from '@spryker-oryx/push-notification';
 import { WebPushProvider } from './web-push';
 
 export const webPushProviders: Provider[] = [
