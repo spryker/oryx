@@ -147,7 +147,7 @@ describe('DefaultExperienceService', () => {
     });
   });
 
-  describe('getOptions', () => {
+  describe('getContent', () => {
     it('should return mock data', () => {
       const callback = vi.fn();
       http.flush(mockComponentData);

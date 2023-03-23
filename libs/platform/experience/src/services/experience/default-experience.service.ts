@@ -93,6 +93,7 @@ export class DefaultExperienceService implements ExperienceService {
       .get<Component>(componentsUrl)
       .pipe(
         tap((component) => {
+          console.log(uid, component);
           this.dataComponent[uid].next(component);
           this.processComponentAndSave(component);
         }),
