@@ -26,7 +26,7 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected initStaticData(): Component[] {
     return this.staticData.map((component) => {
-      this.processComponentAndSave(component);
+      this.processComponent(component);
       this.storeData('dataRoutes', component.meta?.route, component.id);
 
       return component as Component;
@@ -51,18 +51,18 @@ export class DefaultExperienceService implements ExperienceService {
     dataStore[byKey].next(data);
   }
 
-  protected processComponentAndSave(
+  protected processComponent(
     _component: Component | StaticComponent,
-    cb = (component: Component) => {
-      this.storeData('dataComponent', component.id, component);
-    }
+    shouldStore = true
   ): void {
     const components = [_component];
 
     for (const component of components) {
       component.id ??= this.getAutoId();
 
-      cb(component as Component);
+      if (shouldStore) {
+        this.storeData('dataComponent', component.id, component);
+      }
       components.push(...(component.components ?? []));
     }
   }
@@ -93,7 +93,7 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((component) => {
           this.dataComponent[uid].next(component);
-          this.processComponentAndSave(component);
+          this.processComponent(component);
         }),
         catchError(() => {
           this.dataComponent[uid].next({ id: uid, type: '' });
@@ -132,7 +132,7 @@ export class DefaultExperienceService implements ExperienceService {
             return;
           }
           const component = components[0];
-          this.processComponentAndSave(component);
+          this.processComponent(component);
           this.storeData('dataRoutes', route, component.id);
         })
       )

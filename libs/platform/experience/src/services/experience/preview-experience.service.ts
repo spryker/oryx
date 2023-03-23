@@ -59,7 +59,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
 
   protected initStaticData(): Component[] {
     return this.staticData.map((component) => {
-      this.processComponentAndSave(component, () => ({}));
+      this.processComponent(component, false);
       return component as Component;
     });
   }
@@ -79,7 +79,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined),
     tap((structure) => {
       this.storeData('dataRoutes', structure.meta?.route, structure.id);
-      this.processComponentAndSave(structure);
+      this.processComponent(structure);
     })
   );
 
