@@ -11,7 +11,7 @@ import {
   HttpHandler,
   HttpService,
 } from './http';
-import { DefaultHydrationService, HydrationService } from './hydrationon';
+import { DefaultHydrationService, HydrationService } from './hydration';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import {

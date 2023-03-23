@@ -8,7 +8,7 @@ import {
 import { LitElement } from 'lit';
 import { Subscription } from 'rxjs';
 import { AppRef, ComponentsPlugin } from '../../orchestration';
-import { HydrationService, HydrationTrigger } from './hydrate.service';
+import { HydrationService, HydrationTrigger } from './hydration.service';
 
 export class DefaultHydrationService implements HydrationService, OnDestroy {
   protected subscription = new Subscription();

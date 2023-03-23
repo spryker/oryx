@@ -8,8 +8,8 @@ import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { AppRef } from '../../orchestration';
-import { DefaultHydrationService } from './default-hydrate.service';
-import { HydrationService, HydrationTrigger } from './hydrate.service';
+import { DefaultHydrationService } from './default-hydration.service';
+import { HydrationService, HydrationTrigger } from './hydration.service';
 
 @customElement('mock-a')
 class MockA extends LitElement {
