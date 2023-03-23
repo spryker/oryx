@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Locale } from '../../models';
+import { Locale } from '../models';
 
 export interface LocaleService {
   getAll(): Observable<Locale[]>;

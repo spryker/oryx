@@ -1,4 +1,3 @@
-import { LocaleService } from '@spryker-oryx/site';
 import { DefaultI18nInjectable } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -8,6 +7,7 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
+import { LocaleService } from '../locale';
 import { DefaultI18nProcessor } from './default-i18n.processor';
 import { GlobalizeService } from './globalize.service';
 import { I18nLoader } from './i18n.loader';

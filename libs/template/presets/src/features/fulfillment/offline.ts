@@ -1,4 +1,5 @@
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
+import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import {
   IndexedDbFeature,
   IndexedDbFeatureConfig,
@@ -8,7 +9,11 @@ import {
   OfflineServiceWorkerFeature,
 } from '@spryker-oryx/offline';
 import { OfflinePickingFeature } from '@spryker-oryx/picking/offline';
-import { fulfillmentFeatures, FulfillmentFeaturesConfig } from './app';
+import {
+  defaultFulfillmentI18nConfig,
+  fulfillmentFeatures,
+  FulfillmentFeaturesConfig,
+} from './app';
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
   indexedDb?: IndexedDbFeatureConfig;
@@ -26,12 +31,14 @@ export const defaultOfflineFulfillmentConfig: SharedOfflineFulfillmentFeaturesCo
 export function offlineFulfillmentFeatures(
   config?: OfflineFulfillmentFeaturesConfig
 ): AppFeature[] {
+  config = {
+    ...defaultOfflineFulfillmentConfig,
+    ...config,
+  };
+
   return [
     ...fulfillmentFeatures(config),
-    new IndexedDbFeature({
-      ...defaultOfflineFulfillmentConfig.indexedDb,
-      ...config?.indexedDb,
-    }),
+    new IndexedDbFeature(config?.indexedDb),
     new OfflineFeature(),
     new OfflinePickingFeature(),
   ];
@@ -39,17 +46,22 @@ export function offlineFulfillmentFeatures(
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OfflineServiceWorkerFulfillmentFeaturesConfig
-  extends SharedOfflineFulfillmentFeaturesConfig {}
+  extends SharedOfflineFulfillmentFeaturesConfig {
+  i18n?: I18nFeatureOptions;
+}
 
 export function offlineServiceWorkerFulfillmentFeatures(
   config?: OfflineServiceWorkerFulfillmentFeaturesConfig
 ): AppFeature[] {
+  config = {
+    ...defaultOfflineFulfillmentConfig,
+    ...config,
+  };
+
   return [
     coreFeature,
-    new IndexedDbFeature({
-      ...defaultOfflineFulfillmentConfig.indexedDb,
-      ...config?.indexedDb,
-    }),
+    new I18nFeature(config?.i18n ?? defaultFulfillmentI18nConfig),
+    new IndexedDbFeature(config?.indexedDb),
     new OfflineServiceWorkerFeature(),
     new OfflinePickingFeature(),
   ];

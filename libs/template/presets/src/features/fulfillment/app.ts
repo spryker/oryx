@@ -1,5 +1,6 @@
 import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
+import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
@@ -11,17 +12,6 @@ import {
   FulfillmentRootFeatureConfig,
 } from './feature';
 
-export const fulfillmentResources: Resources = {
-  graphics: {
-    ...resourceGraphics,
-  },
-};
-
-export interface FulfillmentFeaturesConfig {
-  fulfillmentRoot?: FulfillmentRootFeatureConfig;
-  picking?: PickingFeatureConfig;
-}
-
 export function fulfillmentFeatures(
   config?: FulfillmentFeaturesConfig
 ): AppFeature[] {
@@ -29,14 +19,27 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
-    {
-      resources: fulfillmentResources,
-    },
-    new WebPushNotificationFeature(),
     new RouterFeature(),
+    new I18nFeature(config?.i18n ?? defaultFulfillmentI18nConfig),
+    new WebPushNotificationFeature(),
+    { resources: fulfillmentResources },
     new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),
   ];
 }
 
+export interface FulfillmentFeaturesConfig {
+  fulfillmentRoot?: FulfillmentRootFeatureConfig;
+  picking?: PickingFeatureConfig;
+  i18n?: I18nFeatureOptions;
+}
+
 export const fulfillmentTheme = { ...theme };
+
+export const fulfillmentResources: Resources = {
+  graphics: { ...resourceGraphics },
+};
+
+export const defaultFulfillmentI18nConfig: I18nFeatureOptions = {
+  locale: { defaultLocale: 'en' },
+};

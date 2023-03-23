@@ -1,5 +1,6 @@
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
 import {
@@ -9,8 +10,11 @@ import {
   DefaultCurrencyService,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
-import { DefaultLocaleService, localeHydration, LocaleService } from './locale';
-import { AcceptLanguageInterceptor } from './locale/accept-language.interceptor';
+import {
+  AcceptLanguageInterceptor,
+  localeHydration,
+  SapiLocaleAdapter,
+} from './locale';
 import {
   DefaultNotificationService,
   NotificationService,
@@ -61,8 +65,8 @@ export const siteProviders: Provider[] = [
     useClass: DefaultCurrencyService,
   },
   {
-    provide: LocaleService,
-    useClass: DefaultLocaleService,
+    provide: LocaleAdapter,
+    useClass: SapiLocaleAdapter,
   },
   {
     provide: PricingService,
