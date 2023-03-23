@@ -1,6 +1,5 @@
 import { RouteConfig } from '@lit-labs/router';
 import { html } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export const defaultPickingRoutes: RouteConfig[] = [
   {
@@ -10,9 +9,12 @@ export const defaultPickingRoutes: RouteConfig[] = [
   {
     path: '/picking-list/picking/:id',
     render: ({ id }) =>
-      html`<oryx-picking
-        picking-id="${ifDefined(id)}"
-        mode-light
-      ></oryx-picking>`,
+      html`<oryx-picking .pickingListId="${id}" mode-light></oryx-picking>`,
+  },
+  {
+    path: '/customer-note-info/:id',
+    render: ({ id }) => html`
+      <oryx-customer-note .pickingListId=${id} mode-light></oryx-customer-note>
+    `,
   },
 ];

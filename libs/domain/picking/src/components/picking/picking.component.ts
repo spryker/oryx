@@ -1,36 +1,13 @@
-import { resolve } from '@spryker-oryx/di';
-import { asyncState, i18n, observe, valueType } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import {
-  BehaviorSubject,
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
+import { PickingListMixin } from '../../mixins';
 import { ItemsFilters, ProductItemPickedEvent } from '../../models';
-import { PickingListService } from '../../services';
 import { styles } from './picking.styles';
-
-export class PickingComponent extends LitElement {
+export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
-
-  @property({ attribute: 'picking-id' }) pickingId?: string;
-
-  @observe('pickingId')
-  protected pickingId$ = new BehaviorSubject(this.pickingId);
-
-  protected pickingListService = resolve(PickingListService);
-  protected pickingList$ = this.pickingId$.pipe(
-    distinctUntilChanged(),
-    switchMap((id) => this.pickingListService.getById(id ?? ''))
-  );
-
-  @asyncState()
-  protected pickingList = valueType(this.pickingList$);
 
   protected pickingUpdate$ = new BehaviorSubject<string | null>(null);
 
@@ -76,8 +53,7 @@ export class PickingComponent extends LitElement {
       if (
         item.product.id === detail.productId &&
         detail.numberOfPicked &&
-        detail.numberOfPicked <= item.quantity &&
-        detail.numberOfPicked >= 0
+        detail.numberOfPicked <= item.quantity
       ) {
         item.numberOfPicked = detail.numberOfPicked;
         item.numberOfNotPicked = item.quantity - item.numberOfPicked;

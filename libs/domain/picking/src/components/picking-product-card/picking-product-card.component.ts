@@ -5,16 +5,15 @@ import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BehaviorSubject } from 'rxjs';
 import {
+  EVENT_CHANGE_NUMBER_OF_PICKED,
+  EVENT_EDIT,
+  EVENT_SUBMIT,
   ItemsFilters,
   PickingListItem,
   ProductItemPickedEvent,
   SummaryInfo,
 } from '../../models';
 import { styles } from './picking-product-card.styles';
-
-export const EVENT_CHANGE_NUMBER_OF_PICKED = 'oryx.change-number-of-picked';
-export const EVENT_SUBMIT = 'oryx.submit';
-export const EVENT_EDIT = 'oryx.edit';
 
 export class PickingProductCardComponent extends LitElement {
   static styles = styles;
@@ -24,9 +23,7 @@ export class PickingProductCardComponent extends LitElement {
 
   @state() isCorrectNumberOfPickedProvided?: boolean = true;
 
-  protected currentNumberOfPicked$ = new BehaviorSubject(0);
-  @asyncState()
-  protected currentNumberOfPicked = valueType(this.currentNumberOfPicked$);
+  @state() currentNumberOfPicked = 0;
 
   protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
   @asyncState()
@@ -76,7 +73,7 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
-    this.currentNumberOfPicked$.next(quantity);
+    this.currentNumberOfPicked = quantity;
 
     if (this.productItem) {
       this.isCorrectNumberOfPickedProvided =
@@ -152,18 +149,18 @@ export class PickingProductCardComponent extends LitElement {
         this.productItem,
         () => html`
           <oryx-card>
-            <div slot="heading" class="title">
+            <oryx-heading slot="heading" class="title">
               ${this.productItem?.orderItem?.name}
-            </div>
-            <div class="subtitle">
-              <span>${this.productItem?.orderItem.sku}</span>
-            </div>
+            </oryx-heading>
+            <div class="subtitle">${this.productItem?.orderItem.sku}</div>
 
-            <img
-              src="${this.productImage(this.productItem?.product?.image)}"
+            <oryx-image
+              .src="${this.productItem?.product?.image}"
               alt="${ifDefined(this.productItem?.orderItem?.name)}"
-              class="image"
-            />
+              class="${this.status === ItemsFilters.NotFound
+                ? 'image-fade'
+                : ''}"
+            ></oryx-image>
 
             ${when(
               this.status === ItemsFilters.NotPicked,
@@ -180,16 +177,13 @@ export class PickingProductCardComponent extends LitElement {
                   ></oryx-cart-quantity-input>
 
                   <div class="edit-quantity-info">
-                    <span
-                      >${i18n('picking.product-card.of')}
-                      ${this.productItem?.quantity}
-                      ${i18n('picking.product-card.items')}</span
-                    >
+                    ${i18n('picking.product-card.of')}
+                    ${this.productItem?.quantity}
+                    ${i18n('picking.product-card.items')}
                   </div>
 
                   <oryx-button>
                     <button
-                      type="submit"
                       ?disabled="${!this.isCorrectNumberOfPickedProvided}"
                     >
                       <oryx-icon type="checkMark"></oryx-icon>
