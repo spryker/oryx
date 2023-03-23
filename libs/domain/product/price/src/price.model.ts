@@ -5,9 +5,9 @@ export interface ProductPriceOptions {
   enableOriginalPrice?: boolean;
 
   /**
-   * Indicates whether to show VAT message for the price.
+   * Indicates whether to show tax message for the price.
    */
-  enableVatMessage?: boolean;
+  enableTaxMessage?: boolean;
 
   /**
    * Indicates whether to render a sales label in the price component.

@@ -37,7 +37,8 @@ const pricing = css`
 
   oryx-product-price,
   oryx-product-price::part(sales),
-  oryx-product-price::part(original) {
+  oryx-product-price::part(original),
+  oryx-product-price::part(tax) {
     font-size: inherit;
     font-weight: inherit;
     line-height: inherit;
@@ -74,10 +75,6 @@ export const cartEntryStyles = css`
     aspect-ratio: 1/1;
     margin-inline-start: 20px;
     grid-row: 1 / span 2;
-  }
-
-  oryx-product-id {
-    font-size: 0.857rem;
   }
 
   .details {

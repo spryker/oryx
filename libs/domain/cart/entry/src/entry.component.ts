@@ -162,7 +162,7 @@ export class CartEntryComponent
         <div class="item-price">
           <span>${i18n('cart.entry.item-price')}</span>
           <oryx-product-price
-            .options=${{ enableVatMessage: false }}
+            .options=${{ enableTaxMessage: false }}
           ></oryx-product-price>
         </div>
       </section>
@@ -224,7 +224,6 @@ export class CartEntryComponent
   }
 
   protected removeEntry(ev: Event, force?: boolean): void {
-    console.log(this.componentOptions?.confirmBeforeRemove, !force);
     if (this.componentOptions?.confirmBeforeRemove && !force) {
       this.requiresRemovalConfirmation = true;
       return;

@@ -65,6 +65,7 @@ export class OrderEntriesComponent extends OrderMixin(
   }
 
   protected renderEntries(): TemplateResult {
+    console.log(this.order?.items);
     return this.order
       ? html`${repeat(
           this.order.items.slice(
@@ -74,10 +75,10 @@ export class OrderEntriesComponent extends OrderMixin(
               : this.componentOptions?.limit
           ),
           (entry) =>
-            html`<cart-entry
+            html`<oryx-cart-entry
+              .key=${entry.uuid}
+              readonly
               .options=${{
-                ...entry,
-                readonly: true,
                 productOptions: false,
                 calculations: {
                   unitPrice: entry.unitPrice,
@@ -85,7 +86,7 @@ export class OrderEntriesComponent extends OrderMixin(
                   sumPriceToPayAggregation: entry.sumPriceToPayAggregation,
                 },
               }}
-            ></cart-entry>`
+            ></oryx-cart-entry>`
         )}`
       : html``;
   }

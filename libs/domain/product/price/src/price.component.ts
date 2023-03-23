@@ -28,7 +28,7 @@ import { ProductPriceStyles } from './price.styles';
  */
 @defaultOptions({
   enableOriginalPrice: true,
-  enableVatMessage: true,
+  enableTaxMessage: true,
 })
 @hydratable(['mouseover', 'focusin'])
 export class ProductPriceComponent extends ProductMixin(
@@ -66,7 +66,7 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected renderTaxMessage(): TemplateResult | void {
     if (
-      !this.componentOptions?.enableVatMessage ||
+      !this.componentOptions?.enableTaxMessage ||
       (!this.prices?.salesPrice && !this.prices?.originalPrice)
     )
       return;
