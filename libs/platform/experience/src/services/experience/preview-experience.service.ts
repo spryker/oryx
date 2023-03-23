@@ -1,9 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  RouterEvent,
-  RouterEventType,
-  RouterService,
-} from '@spryker-oryx/router';
+import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -11,6 +7,7 @@ import {
   filter,
   fromEvent,
   map,
+  merge,
   Observable,
   shareReplay,
   Subject,
@@ -44,16 +41,19 @@ export class PreviewExperienceService extends DefaultExperienceService {
 
     this.dataClient.sendStatic(this.staticData);
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
-    this.structureDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
-    this.contentDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
-    this.optionsDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
-    this.routeDataEvent$.pipe(takeUntil(this.destroy$)).subscribe();
-
-    this.routerService
-      .getEvents(RouterEventType.NavigationEnd)
-      .subscribe((event: RouterEvent) => {
-        this.routeChangeHandler(event.route);
-      });
+    merge(
+      this.structureDataEvent$,
+      this.contentDataEvent$,
+      this.optionsDataEvent$,
+      this.routeDataEvent$,
+      this.routerService.getEvents(RouterEventType.NavigationEnd).pipe(
+        tap((event) => {
+          this.routeChangeHandler(event.route);
+        })
+      )
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   protected destroy$ = new Subject<void>();
