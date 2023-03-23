@@ -13,11 +13,13 @@ export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
 
-export interface PatchableLitElement extends LitElement {
+interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
   new (...args: any[]): PatchableLitElement;
   _$needsHydration?: boolean;
-  hasSsr: boolean;
+}
+
+export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
 
@@ -58,7 +60,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 ): any {
   return class extends (target as any) {
     [DEFER_HYDRATION] = false;
-    hasSsr?: boolean;
+    private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
     static properties = {

@@ -1,13 +1,8 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  createInjector,
-  destroyInjector,
-  Injector,
-  INJECTOR,
-} from '@spryker-oryx/di';
-import {
+  HydratableLitElement,
   HYDRATE_ON_DEMAND,
-  PatchableLitElement,
 } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
@@ -15,11 +10,6 @@ import { of } from 'rxjs';
 import { AppRef } from '../../orchestration';
 import { DefaultHydrateService } from './default-hydrate.service';
 import { HydrateInitializer, HydrateService } from './hydrate.service';
-
-vi.mock('lit', async () => {
-  const actual = (await vi.importActual('lit')) as Record<string, unknown>;
-  return { ...actual, isServer: false };
-});
 
 @customElement('mock-a')
 class MockA extends LitElement {
@@ -54,7 +44,6 @@ const mockBInitializer = vi.fn().mockReturnValue(of(null));
 
 describe('DefaultHydrateService', () => {
   let service: HydrateService;
-  let injector: Injector;
 
   beforeEach(async () => {
     const testInjector = createInjector({
@@ -69,16 +58,15 @@ describe('DefaultHydrateService', () => {
         },
         {
           provide: HydrateInitializer,
-          useValue: mockAInitializer,
+          useFactory: mockAInitializer,
         },
         {
           provide: HydrateInitializer,
-          useValue: mockBInitializer,
+          useFactory: mockBInitializer,
         },
       ],
     });
     service = testInjector.inject(HydrateService);
-    injector = testInjector.inject(INJECTOR);
     await fixture(html`
       <mock-a hydratable="click"></mock-a>
       <mock-b></mock-b>
@@ -93,15 +81,15 @@ describe('DefaultHydrateService', () => {
   });
 
   it('should call hydration initializers on construction time', () => {
-    expect(mockAInitializer).toHaveBeenCalledWith(service, injector);
-    expect(mockBInitializer).toHaveBeenCalledWith(service, injector);
+    expect(mockAInitializer).toHaveBeenCalled();
+    expect(mockBInitializer).toHaveBeenCalled();
   });
 
   describe('initHydrateHooks', () => {
     it('should add proper listeners depends on `hydratable` attribute and call `HYDRATE_ON_DEMAND` when these listeners has been triggered', () => {
-      const mockA = document.querySelector('mock-a') as PatchableLitElement;
-      const mockC = document.querySelector('mock-c') as PatchableLitElement;
-      const mockB = document.querySelector('mock-b') as PatchableLitElement;
+      const mockA = document.querySelector('mock-a') as HydratableLitElement;
+      const mockC = document.querySelector('mock-c') as HydratableLitElement;
+      const mockB = document.querySelector('mock-b') as HydratableLitElement;
       service.initHydrateHooks();
 
       mockA.click();
@@ -117,7 +105,7 @@ describe('DefaultHydrateService', () => {
     });
 
     it('should call loadComponent from component plugin for initialization component', async () => {
-      const mockA = document.querySelector('mock-a') as PatchableLitElement;
+      const mockA = document.querySelector('mock-a') as HydratableLitElement;
       service.initHydrateHooks();
       vi.spyOn(window.customElements, 'get').mockReturnValue(undefined);
       vi.spyOn(window.customElements, 'upgrade');
@@ -134,8 +122,8 @@ describe('DefaultHydrateService', () => {
 
   describe('hydrateOnDemand', () => {
     it('should call proper methods', async () => {
-      const mockA = document.querySelector('mock-a') as PatchableLitElement;
-      vi.spyOn(window.customElements, 'get').mockReturnValue(mockA);
+      const mockA = document.querySelector('mock-a') as HydratableLitElement;
+      vi.spyOn(window.customElements, 'get').mockReturnValue(MockA);
       await service.hydrateOnDemand(mockA);
       expect(mockA[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
       expect(mockComponentsPlugin.loadComponent).not.toHaveBeenCalled();
@@ -151,7 +139,7 @@ describe('DefaultHydrateService', () => {
     });
 
     it('should do nothing if component does not have hydratable attribute', async () => {
-      const mockB = document.querySelector('mock-b') as PatchableLitElement;
+      const mockB = document.querySelector('mock-b') as HydratableLitElement;
       vi.spyOn(window.customElements, 'get').mockReturnValue(undefined);
       await service.hydrateOnDemand(mockB);
       expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();

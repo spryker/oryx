@@ -1,8 +1,8 @@
 import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   hydratableAttribute,
+  HydratableLitElement,
   HYDRATE_ON_DEMAND,
-  PatchableLitElement,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -29,7 +29,17 @@ export class DefaultHydrateService implements HydrateService, OnDestroy {
     }
 
     for (const initializer of initializers) {
-      this.subscription.add(initializer(this, this.injector).subscribe());
+      this.subscription.add(
+        initializer.subscribe((value) => {
+          if (value instanceof HTMLElement) {
+            this.hydrateOnDemand(value, true);
+
+            return;
+          }
+
+          this.initHydrateHooks(true);
+        })
+      );
     }
   }
 
@@ -71,7 +81,7 @@ export class DefaultHydrateService implements HydrateService, OnDestroy {
       customElements.upgrade(element);
     }
 
-    (element as PatchableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
+    (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
   }
 
   onDestroy(): void {

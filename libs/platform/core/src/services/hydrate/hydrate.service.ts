@@ -1,4 +1,3 @@
-import { Injector } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 
 export const HydrateService = 'oryx.HydrateService';
@@ -9,10 +8,7 @@ export interface HydrateService {
   initHydrateHooks(immediate?: boolean): void;
 }
 
-export type HydrateInitializer = (
-  service: HydrateService,
-  injector: Injector
-) => Observable<unknown>;
+export type HydrateInitializer = Observable<HTMLElement | unknown>;
 
 declare global {
   interface InjectionTokensContractMap {
