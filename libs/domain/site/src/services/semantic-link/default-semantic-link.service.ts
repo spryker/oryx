@@ -7,7 +7,6 @@ import {
 
 export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
-    // TODO: PLP link generation with search params
     [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
       `/search${
         link.params

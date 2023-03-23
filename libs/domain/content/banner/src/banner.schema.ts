@@ -1,10 +1,10 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { BannerComponent } from './banner.component';
 
 export const bannerComponentSchema: ContentComponentSchema<BannerComponent> = {
   name: 'Image banner',
-  group: 'Content',
+  group: ComponentGroup.Content,
   icon: '<path d="M2 14H22L16 3L11 11L7 7.5L2 14Z" /><path d="M2 19C2 19.5523 2.44772 20 3 20H21C21.5523 20 22 19.5523 22 19V18C22 17.4477 21.5523 17 21 17H3C2.44772 17 2 17.4477 2 18V19Z" />',
   content: {
     title: {

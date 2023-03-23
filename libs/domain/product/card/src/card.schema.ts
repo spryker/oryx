@@ -1,11 +1,11 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { ProductCardComponent } from './card.component';
 
 export const productCardComponentSchema: ContentComponentSchema<ProductCardComponent> =
   {
     name: 'Product card',
-    group: 'Product',
+    group: ComponentGroup.Product,
     options: {
       sku: {
         label: 'SKU',

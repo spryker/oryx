@@ -1,10 +1,10 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { OrderEntriesComponent } from './entries.component';
 
 export const orderEntriesSchema: ContentComponentSchema<OrderEntriesComponent> =
   {
     name: 'Order Entries',
-    group: 'Order',
+    group: ComponentGroup.Order,
     options: {
       limit: {
         label: 'Limit',

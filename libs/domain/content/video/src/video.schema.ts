@@ -1,4 +1,4 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { VideoAspectRatio, VideoPreload } from '@spryker-oryx/ui/video';
 import { ContentVideoComponent } from './video.component';
@@ -6,7 +6,7 @@ import { ContentVideoComponent } from './video.component';
 export const videoComponentSchema: ContentComponentSchema<ContentVideoComponent> =
   {
     name: 'Video',
-    group: 'Content',
+    group: ComponentGroup.Content,
     options: {
       src: {
         type: FormFieldType.Text,

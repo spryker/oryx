@@ -1,4 +1,4 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { SiteNotificationCenterComponent } from './notification-center.component';
 
@@ -6,7 +6,7 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
   {
     type: 'oryx-site-notification-center',
     name: 'Site Notification Center',
-    group: 'Site',
+    group: ComponentGroup.Site,
     options: {
       position: {
         type: 'select',

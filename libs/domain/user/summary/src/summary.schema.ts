@@ -1,11 +1,11 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { UserSummaryComponent } from './summary.component';
 
 export const userSummaryComponentSchema: ContentComponentSchema<UserSummaryComponent> =
   {
     name: 'User summary',
-    group: 'User',
+    group: ComponentGroup.User,
     options: {
       // url: {
       //   type: FormFieldType.Text,
