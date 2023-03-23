@@ -154,61 +154,59 @@ export class AuthLoginComponent
   }
 
   protected override render(): TemplateResult {
-    return html`<form @submit=${this.login}>
-      <oryx-card>
-        <oryx-heading slot="heading" as="h5">
-          <h1>${this.heading ?? i18n('user.login')}</h1>
-        </oryx-heading>
+    return html` <oryx-card>
+      <oryx-heading slot="heading" as="h5">
+        <h1>${this.heading ?? i18n('user.login')}</h1>
+      </oryx-heading>
 
-        ${when(
-          this.hasError,
-          () => html`
-            <oryx-notification type="error">
-              ${i18n('user.login.not-valid')}
-            </oryx-notification>
-          `
-        )}
+      ${when(
+        this.hasError,
+        () => html`
+          <oryx-notification type="error">
+            ${i18n('user.login.not-valid')}
+          </oryx-notification>
+        `
+      )}
 
-        <div class="login-form">
-          <oryx-input
-            .label=${i18n('user.login.email')}
+      <form @submit=${this.login}>
+        <oryx-input
+          .label=${i18n('user.login.email')}
+          required
+          ?hasError="${this.hasError}"
+        >
+          <input
+            type="email"
+            name=${this.emailName}
             required
-            ?hasError="${this.hasError}"
-          >
-            <input
-              type="email"
-              name=${this.emailName}
-              required
-              placeholder=${i18n('user.login.email')}
-              ${ref(this.emailInputRef)}
-            />
-          </oryx-input>
+            placeholder=${i18n('user.login.email')}
+            ${ref(this.emailInputRef)}
+          />
+        </oryx-input>
 
-          <oryx-password-input
-            .strategy="${this.componentOptions?.passwordVisibility}"
-            .label=${i18n('login.password')}
+        <oryx-password-input
+          .strategy="${this.componentOptions?.passwordVisibility}"
+          .label=${i18n('login.password')}
+          required
+          ?hasError="${this.hasError}"
+        >
+          <input
+            type="password"
+            name=${this.passwordName}
             required
-            ?hasError="${this.hasError}"
-          >
-            <input
-              type="password"
-              name=${this.passwordName}
-              required
-              placeholder=${i18n('login.password')}
-              ${ref(this.passwordInputRef)}
-            />
-          </oryx-password-input>
+            placeholder=${i18n('login.password')}
+            ${ref(this.passwordInputRef)}
+          />
+        </oryx-password-input>
 
-          ${this.renderLoginOptions()}
+        ${this.renderLoginOptions()}
 
-          <oryx-button size=${Size.Sm}>
-            <button ?disabled=${this.isLoading} @click=${this.login}>
-              ${i18n('user.login')}
-            </button>
-          </oryx-button>
-        </div>
-      </oryx-card>
-    </form>`;
+        <oryx-button size=${Size.Sm}>
+          <button ?disabled=${this.isLoading} @click=${this.login}>
+            ${i18n('user.login')}
+          </button>
+        </oryx-button>
+      </form>
+    </oryx-card>`;
   }
 
   protected renderLoginOptions(): TemplateResult | void {
