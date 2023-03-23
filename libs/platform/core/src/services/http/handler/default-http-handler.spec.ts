@@ -1,7 +1,7 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { SpyInstance } from 'vitest';
+import { Mock } from 'vitest';
 import { RequestOptions } from '../http.model';
 import { DefaultHttpHandler } from './default-http-handler';
 import {
@@ -71,6 +71,25 @@ export class InterceptorC implements HttpInterceptor {
   }
 }
 
+export class InterceptorD implements HttpInterceptor {
+  intercept(
+    url: string,
+    options: RequestOptions,
+    handle: HttpHandlerFn
+  ): Observable<Response> {
+    options = {
+      ...options,
+      c: 'c',
+    } as RequestOptions;
+
+    return handle(`${url}+D`, options);
+  }
+
+  shouldInterceptRequest(): boolean {
+    return false;
+  }
+}
+
 describe('DefaultHttpHandler', () => {
   let handler: HttpHandler;
 
@@ -80,9 +99,7 @@ describe('DefaultHttpHandler', () => {
   });
 
   beforeEach(() => {
-    (fromFetch as unknown as SpyInstance).mockReturnValue(
-      of(mockFromFetchResult)
-    );
+    (fromFetch as Mock).mockReturnValue(of(mockFromFetchResult));
   });
 
   describe('when interceptors are not defined', () => {
@@ -115,15 +132,15 @@ describe('DefaultHttpHandler', () => {
             useClass: DefaultHttpHandler,
           },
           {
-            provide: `${HttpInterceptor}A`,
+            provide: HttpInterceptor,
             useClass: InterceptorA,
           },
           {
-            provide: `${HttpInterceptor}B`,
+            provide: HttpInterceptor,
             useClass: InterceptorB,
           },
           {
-            provide: `${HttpInterceptor}C`,
+            provide: HttpInterceptor,
             useClass: InterceptorC,
           },
         ],
@@ -147,6 +164,30 @@ describe('DefaultHttpHandler', () => {
         a: 'a',
         b: 'b',
       });
+    });
+  });
+
+  describe('when should skip request interceptor', () => {
+    beforeEach(() => {
+      const testInjector = createInjector({
+        providers: [
+          {
+            provide: HttpHandler,
+            useClass: DefaultHttpHandler,
+          },
+          {
+            provide: HttpInterceptor,
+            useClass: InterceptorD,
+          },
+        ],
+      });
+
+      handler = testInjector.inject(HttpHandler);
+    });
+
+    it('should not provide request transformation', () => {
+      handler.handle(mockUrl, mockOptions);
+      expect(fromFetch).toHaveBeenCalledWith(mockUrl, mockOptions);
     });
   });
 });

@@ -1,6 +1,12 @@
 import { css } from 'lit';
 
 export const styles = css`
+  :host {
+    --oryx-card-header-padding: var(--oryx-modal-header-padding);
+    --oryx-card-body-padding: var(--oryx-modal-body-padding);
+    --oryx-card-footer-padding: var(--oryx-modal-footer-padding);
+  }
+
   dialog {
     overscroll-behavior: none;
     padding: 0;

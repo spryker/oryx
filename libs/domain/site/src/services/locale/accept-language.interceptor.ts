@@ -22,10 +22,6 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (!this.shouldInterceptRequest(url)) {
-      return handle(url, options);
-    }
-
     return this.injector
       .inject(LocaleService)
       .get()
@@ -49,8 +45,9 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     };
   }
 
-  protected shouldInterceptRequest(url: string): boolean {
-    if (!url.startsWith(this.SCOS_BASE_URL)) return false;
+  shouldInterceptRequest(url: string): boolean {
+    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
+      return false;
 
     const path = url.substring(this.SCOS_BASE_URL.length);
 
