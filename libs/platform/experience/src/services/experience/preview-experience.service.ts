@@ -42,7 +42,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   ) {
     super();
 
-    this.dataClient.sendStatic(this.staticComponents);
+    this.dataClient.sendStatic(this.staticData);
     this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
 
     this.structureDataEvent$.subscribe();

@@ -11,7 +11,6 @@ type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
 export class DefaultExperienceService implements ExperienceService {
   protected autoComponentId = 0;
-  protected staticComponents: Component[] = [];
   protected dataRoutes: DataStore<string> = {};
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
@@ -22,7 +21,7 @@ export class DefaultExperienceService implements ExperienceService {
     protected http = inject(HttpService),
     protected staticData = inject(ExperienceStaticData, []).flat()
   ) {
-    this.staticComponents = this.initStaticData();
+    this.staticData = this.initStaticData();
   }
 
   protected initStaticData(): Component[] {
