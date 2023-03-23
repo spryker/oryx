@@ -162,9 +162,12 @@ jobs:
           affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}
   test-pr-title:
+    permissions:
+      statuses: write
     runs-on: ubuntu-latest
     steps:
-      - name: conventional-pr-title
-        uses: aslafy-z/conventional-pr-title-action@v2.2.0
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        with:
+          preset: conventional-changelog-conventionalcommits@5.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
