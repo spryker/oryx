@@ -41,13 +41,11 @@ export class StoreInterceptor implements HttpInterceptor {
     options: RequestOptions,
     store: string
   ): RequestOptions {
-    return {
-      ...options,
-      headers: {
-        ...options.headers,
-        'X-Store': store,
-      } as HeadersInit,
-    };
+    const headers = new Headers(options.headers);
+
+    headers.set('X-Store', store);
+
+    return { ...options, headers };
   }
 
   shouldInterceptRequest(url: string): boolean {

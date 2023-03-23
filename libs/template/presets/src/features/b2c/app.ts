@@ -41,7 +41,10 @@ export const b2cResources: Resources = {
 export const b2cFeatures: AppFeature[] = [
   uiFeature,
   coreFeature,
+  new SapiAuthFeature(),
+  new SapiAuthComponentsFeature(),
   new RouterFeature(),
+  new I18nFeature(),
   cartFeature,
   checkoutFeature,
   orderFeature,
@@ -55,9 +58,6 @@ export const b2cFeatures: AppFeature[] = [
   siteFeature,
   applicationFeature,
   userFeature,
-  new SapiAuthFeature(),
-  new SapiAuthComponentsFeature(),
-  new I18nFeature(),
   isServer ? { providers: coreServerProviders } : {},
   {
     resources: b2cResources,
