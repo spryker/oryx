@@ -1,7 +1,7 @@
-import { TransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { DefaultTransformerService } from './default-transformer.service';
+import { TransformerService } from './transformer.service';
 
 const mockATransformer = vi.fn();
 const mockBTransformer = vi.fn();
