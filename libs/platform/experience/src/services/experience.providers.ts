@@ -1,4 +1,4 @@
-import { AppInitializer, injectEnv } from '@spryker-oryx/core';
+import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   BreakpointService,
@@ -54,9 +54,5 @@ export const experiencePreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,
-  },
-  {
-    provide: AppInitializer,
-    useExisting: ExperienceDataClientService,
   },
 ];
