@@ -19,6 +19,7 @@ import { styles } from './entries.styles';
   threshold: 3,
   enableItemImage: true,
   enableItemId: true,
+  enableItemPrice: false,
 } as OrderEntriesOptions)
 @hydratable('window:load')
 export class OrderEntriesComponent extends OrderMixin(
