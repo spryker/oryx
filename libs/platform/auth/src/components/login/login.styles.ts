@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
-  .login-form {
+  form {
     display: flex;
     flex-direction: column;
     gap: 18px;
