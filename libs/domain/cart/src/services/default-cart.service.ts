@@ -59,13 +59,6 @@ export class DefaultCartService implements CartService {
 
   protected cartsQuery$ = createQuery({
     loader: () => this.adapter.getAll(),
-    onLoad: [
-      ({ data: carts }) => {
-        carts?.forEach((cart) => {
-          this.cartQuery$.set({ data: cart, qualifier: { cartId: cart.id } });
-        });
-      },
-    ],
     resetOn: [this.identity.get().pipe(skip(1))],
   });
 

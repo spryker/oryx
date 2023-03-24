@@ -30,7 +30,8 @@ export class DefaultCartAdapter implements CartAdapter {
           identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Customers}/${identity.userId}/${ApiCartModel.UrlParts.Carts}`
             : ApiCartModel.UrlParts.GuestCarts,
-          !identity.isAuthenticated
+          !identity.isAuthenticated,
+          false
         );
 
         return this.http
@@ -145,11 +146,17 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  protected generateUrl(path: string, isAnonymous: boolean): string {
+  protected generateUrl(
+    path: string,
+    isAnonymous: boolean,
+    withItems = true
+  ): string {
     const includes = isAnonymous
       ? [ApiCartModel.Includes.GuestCartItems]
       : [ApiCartModel.Includes.Items];
 
-    return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
+    return `${this.SCOS_BASE_URL}/${path}${
+      withItems ? `?include=${includes.join(',')}` : ''
+    }`;
   }
 }
