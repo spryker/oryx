@@ -21,6 +21,7 @@ import { styles } from './totals.styles';
   enableTaxAmount: true,
   enableDelivery: true,
   enableTaxMessage: true,
+  deliveryMessage: 'not yet implemented',
 } as CartTotalsComponentOptions)
 @hydratable('window:load')
 export class CartTotalsComponent extends CartComponentMixin(

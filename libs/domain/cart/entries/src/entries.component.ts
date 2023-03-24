@@ -11,9 +11,6 @@ import { cartEntriesStyles } from './entries.styles';
   removeByQuantity: RemoveByQuantity.ShowBin,
   enableId: true,
   enablePreview: true,
-  confirmBeforeRemove: true,
-  notifyOnUpdate: false,
-  notifyOnRemove: false,
 })
 @hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin(
