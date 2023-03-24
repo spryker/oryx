@@ -13,7 +13,7 @@ export const cartEntryComponentSchema: ContentComponentSchema<CartEntryComponent
         type: FormFieldType.Boolean,
         width: 100,
       },
-      enablePreview: {
+      enableItemImage: {
         type: FormFieldType.Boolean,
         width: 100,
       },

@@ -5,25 +5,15 @@ import { CartEntriesOptions } from '../entries.model';
 
 export default {
   title: `${storybookPrefix}/Entries`,
-  args: {
-    readonly: false,
-    collapsible: false,
-    expanded: false,
-    hideItemsCount: false,
-    silentRemove: false,
-  },
+  // parameters: {
+  //   chromatic: { disableSnapshot: true },
+  // }
 } as Meta;
 
-const Template: Story<CartEntriesOptions> = (
-  options: CartEntriesOptions
-): TemplateResult => {
+const Template: Story<CartEntriesOptions> = (): TemplateResult => {
   return html`<oryx-cart-entries
-    .options=${{ ...options, cartId: 'multiple' }}
+    .options=${{ cartId: 'multiple' }}
   ></oryx-cart-entries>`;
 };
 
 export const Demo = Template.bind({});
-
-Demo.parameters = {
-  chromatic: { disableSnapshot: true },
-};

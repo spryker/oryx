@@ -17,8 +17,9 @@ import { styles } from './entries.styles';
 @defaultOptions({
   limit: 5,
   threshold: 3,
-  enablePreview: true,
-})
+  enableItemImage: true,
+  enableItemId: true,
+} as OrderEntriesOptions)
 @hydratable('window:load')
 export class OrderEntriesComponent extends OrderMixin(
   ContentMixin<OrderEntriesOptions>(LitElement)

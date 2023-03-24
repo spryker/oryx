@@ -9,9 +9,10 @@ import { cartEntriesStyles } from './entries.styles';
 
 @defaultOptions({
   removeByQuantity: RemoveByQuantity.ShowBin,
-  enableId: true,
-  enablePreview: true,
-})
+  enableItemId: true,
+  enableItemImage: true,
+  enableItemPrice: true,
+} as CartEntriesOptions)
 @hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin(
   ContentMixin<CartEntriesOptions>(LitElement)

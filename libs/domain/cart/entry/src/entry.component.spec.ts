@@ -241,7 +241,7 @@ describe('CartEntryComponent', () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
               quantity="1"
-              .options=${{ removeByQuantity: RemoveByQuantity.AllowZero }}
+              .options=${{ removeByQuantity: RemoveByQuantity.Allowed }}
             ></oryx-cart-entry>`);
           });
 

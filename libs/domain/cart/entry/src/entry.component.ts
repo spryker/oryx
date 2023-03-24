@@ -36,9 +36,10 @@ import { cartEntryStyles } from './styles';
  */
 @defaultOptions({
   removeByQuantity: RemoveByQuantity.ShowBin,
-  enablePreview: true,
-  enableId: true,
-})
+  enableItemImage: true,
+  enableItemId: true,
+  enableItemPrice: true,
+} as CartEntryOptions)
 export class CartEntryComponent
   extends CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
   implements CartEntryAttributes
@@ -91,7 +92,7 @@ export class CartEntryComponent
   }
 
   protected renderPreview(): TemplateResult | void {
-    if (!this.componentOptions?.enablePreview) return;
+    if (!this.componentOptions?.enableItemImage) return;
 
     return html`
       <oryx-content-link
@@ -115,7 +116,7 @@ export class CartEntryComponent
       ></oryx-product-title>
 
       ${when(
-        this.componentOptions?.enableId,
+        this.componentOptions?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
     </section>`;
@@ -141,35 +142,38 @@ export class CartEntryComponent
   }
 
   protected renderPricing(): TemplateResult | void {
-    if (this.readonly) {
-      return html`
-        <section class="pricing">
-          ${i18n('cart.entry.<quantity>-items', {
-            quantity: this.quantity,
-          })}
-          <span class="entry-price">${this.formattedPrice}</span>
-        </section>
-      `;
-    }
-
-    return html`
-      <section class="pricing">
-        <oryx-cart-quantity-input
-          .min=${Number(!this.componentOptions?.removeByQuantity)}
+    const qtyTemplate = this.readonly
+      ? i18n('cart.entry.<quantity>-items', {
+          quantity: this.quantity,
+        })
+      : html`<oryx-cart-quantity-input
+          .min=${Number(
+            this.componentOptions?.removeByQuantity ===
+              RemoveByQuantity.NotAllowed
+          )}
           .max=${this.available ?? Infinity}
           .value=${this.quantity}
           .decreaseIcon=${this.decreaseIcon}
           submitOnChange
           @submit=${this.onSubmit}
           ?disabled=${this.isBusy}
-        ></oryx-cart-quantity-input>
+        ></oryx-cart-quantity-input>`;
+
+    return html`
+      <section class="pricing">
+        ${qtyTemplate}
         <span class="entry-price">${this.formattedPrice}</span>
-        <div class="item-price">
-          <span>${i18n('cart.entry.item-price')}</span>
-          <oryx-product-price
-            .options=${{ enableTaxMessage: false }}
-          ></oryx-product-price>
-        </div>
+
+        ${when(
+          this.componentOptions?.enableItemPrice,
+          () =>
+            html` <div class="item-price">
+              <span>${i18n('cart.entry.item-price')}</span
+              ><oryx-product-price
+                .options=${{ enableTaxMessage: false }}
+              ></oryx-product-price>
+            </div>`
+        )}
       </section>
     `;
   }

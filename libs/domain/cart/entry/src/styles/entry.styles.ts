@@ -22,6 +22,7 @@ const pricing = css`
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);
     line-height: var(--oryx-typography-h6-line);
+    align-self: end;
   }
 
   .item-price {
