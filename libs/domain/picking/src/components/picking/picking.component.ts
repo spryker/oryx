@@ -31,21 +31,21 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       {
         id: ItemsFilters.NotPicked,
         title: 'not-picked',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) => item.status === ItemsFilters.NotPicked
         ),
       },
       {
         id: ItemsFilters.Picked,
         title: 'picked',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) => item.numberOfPicked && item.status === ItemsFilters.Picked
         ),
       },
       {
         id: ItemsFilters.NotFound,
         title: 'not-found',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) =>
             item.status === ItemsFilters.Picked &&
             (item.numberOfNotPicked || item.numberOfPicked < item.quantity)
