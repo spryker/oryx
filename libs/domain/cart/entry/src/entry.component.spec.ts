@@ -138,8 +138,8 @@ describe('CartEntryComponent', () => {
     });
 
     describe('options', () => {
-      describe('enablePreview', () => {
-        describe('when enablePreview is not provided', () => {
+      describe('enableItemImage', () => {
+        describe('when enableItemImage is not provided', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry></oryx-cart-entry>`);
           });
@@ -149,11 +149,11 @@ describe('CartEntryComponent', () => {
           });
         });
 
-        describe('when enablePreview is false', () => {
+        describe('when enableItemImage is false', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
-              .options=${{ enablePreview: false }}
+              .options=${{ enableItemImage: false }}
             ></oryx-cart-entry>`);
           });
           it('should not render product-media', () => {
@@ -161,11 +161,11 @@ describe('CartEntryComponent', () => {
           });
         });
 
-        describe('when enablePreview is true', () => {
+        describe('when enableItemImage is true', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
-              .options=${{ enablePreview: true }}
+              .options=${{ enableItemImage: true }}
             ></oryx-cart-entry>`);
           });
           it('should not render product-media', () => {
@@ -175,14 +175,14 @@ describe('CartEntryComponent', () => {
       });
 
       describe('enableId', () => {
-        describe('when enableId is not provided', () => {
+        describe('when enableItemId is not provided', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
             ></oryx-cart-entry>`);
           });
 
-          it('should render product-media by default', () => {
+          it('should render enableItemId by default', () => {
             expect(element).toContainElement('oryx-product-id');
           });
         });
@@ -191,23 +191,61 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
-              .options=${{ enableId: false }}
+              .options=${{ enableItemId: false }}
             ></oryx-cart-entry>`);
           });
-          it('should not render product-media', () => {
+          it('should not render enableItemId', () => {
             expect(element).not.toContainElement('oryx-product-id');
           });
         });
 
-        describe('when enableId is true', () => {
+        describe('when enableItemId is true', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
-              .options=${{ enableId: true }}
+              .options=${{ enableItemId: true }}
             ></oryx-cart-entry>`);
           });
-          it('should not render product-media', () => {
+          it('should render enableItemId', () => {
             expect(element).toContainElement('oryx-product-id');
+          });
+        });
+      });
+
+      describe('enableItemPrice', () => {
+        describe('when enableItemPrice is not provided', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+            ></oryx-cart-entry>`);
+          });
+
+          it('should render enableItemPrice by default', () => {
+            expect(element).toContainElement('oryx-product-price');
+          });
+        });
+
+        describe('when enableItemPrice is false', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemPrice: false }}
+            ></oryx-cart-entry>`);
+          });
+          it('should not render enableItemPrice', () => {
+            expect(element).not.toContainElement('oryx-product-price');
+          });
+        });
+
+        describe('when enableItemPrice is true', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemPrice: true }}
+            ></oryx-cart-entry>`);
+          });
+          it('should render enableItemPrice', () => {
+            expect(element).toContainElement('oryx-product-price');
           });
         });
       });
@@ -217,6 +255,24 @@ describe('CartEntryComponent', () => {
           element.shadowRoot?.querySelector(
             'oryx-cart-quantity-input'
           ) as QuantityInputComponent;
+
+        describe('when removeByQuantity is Not Allowed', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              quantity="1"
+              .options=${{ removeByQuantity: RemoveByQuantity.NotAllowed }}
+            ></oryx-cart-entry>`);
+          });
+
+          it('should set the min property of the quantity input to 1', () => {
+            expect(quantityInput().min).toBe(1);
+          });
+
+          it('should not have a decreaseIcon icon', () => {
+            expect(quantityInput().decreaseIcon).toBeUndefined();
+          });
+        });
 
         describe('when removeByQuantity is ShowBin', () => {
           beforeEach(async () => {
@@ -236,7 +292,7 @@ describe('CartEntryComponent', () => {
           });
         });
 
-        describe('when removeByQuantity is AllowZero', () => {
+        describe('when removeByQuantity is Allowed', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
@@ -247,24 +303,6 @@ describe('CartEntryComponent', () => {
 
           it('should set the min property of the quantity input to 0', () => {
             expect(quantityInput().min).toBe(0);
-          });
-
-          it('should not have a decreaseIcon icon', () => {
-            expect(quantityInput().decreaseIcon).toBeUndefined();
-          });
-        });
-
-        describe('when removeByQuantity is undefined', () => {
-          beforeEach(async () => {
-            element = await fixture(html` <oryx-cart-entry
-              key="1"
-              quantity="1"
-              .options=${{ removeByQuantity: undefined }}
-            ></oryx-cart-entry>`);
-          });
-
-          it('should set the min property of the quantity input to 1', () => {
-            expect(quantityInput().min).toBe(1);
           });
 
           it('should not have a decreaseIcon icon', () => {
