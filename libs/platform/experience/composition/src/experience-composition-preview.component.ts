@@ -1,16 +1,7 @@
-import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
-import { asyncValue, subscribe } from '@spryker-oryx/utilities';
+import { asyncState, subscribe, valueType } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import {
-  combineLatest,
-  filter,
-  map,
-  merge,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
+import { Component, PreviewExperienceService } from '../../src/services';
 import { compositionStyles } from './composition.styles';
 import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
@@ -79,10 +70,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
 
   // TODO: temporary solution, hiding header and footer for header or footer editing
   // The whole override may be dropped when we will have proper template extensibility mechanism
-  protected override components$: Observable<Component[]> = combineLatest([
-    this.uid$,
-    this.route$,
-  ]).pipe(
+  protected override components$ = combineLatest([this.uid$, this.route$]).pipe(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     tap(([uid, route]) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
@@ -116,16 +104,21 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       }
       return component;
     }),
+    tap((component) => {
+      this.layoutUid = component?.id;
+    }),
     map((component: Component) => component?.components ?? [])
   );
 
+  @asyncState()
+  protected components = valueType(this.components$);
+
   protected override render(): TemplateResult {
+    if (!this.components) return html`Loading...`;
+
     return html`
-      ${asyncValue(
-        this.components$,
-        (components) => html` ${this.renderComponents(components)} `,
-        () => html`Loading...`
-      )}
+      <slot></slot>
+      ${this.renderComponents(this.components)}
     `;
   }
 }

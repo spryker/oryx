@@ -1,15 +1,13 @@
-import { injectEnv, SsrOptions } from '@spryker-oryx/core';
+import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   BreakpointService,
   DefaultBreakpointService,
   DefaultExperienceDataClientService,
   DefaultExperienceService,
-  DefaultExperienceStaticService,
   DefaultLayoutBuilder,
   ExperienceDataClientService,
   ExperienceService,
-  ExperienceStaticService,
   LayoutBuilder,
   PreviewExperienceService,
 } from './experience';
@@ -46,10 +44,6 @@ export const experienceProviders: Provider[] = [
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
   },
-  {
-    provide: ExperienceStaticService,
-    useClass: DefaultExperienceStaticService,
-  },
 ];
 
 export const experiencePreviewProviders: Provider[] = [
@@ -60,11 +54,5 @@ export const experiencePreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,
-  },
-  {
-    provide: SsrOptions,
-    useValue: {
-      initialNavigation: true,
-    },
   },
 ];

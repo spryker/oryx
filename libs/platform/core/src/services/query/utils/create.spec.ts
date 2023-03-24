@@ -1,7 +1,6 @@
-import { createCommand, createEffect, createQuery } from './create';
-
-import { QueryOptions } from '@spryker-oryx/core';
 import { of } from 'rxjs';
+import { QueryOptions } from '../models';
+import { createCommand, createEffect, createQuery } from './create';
 
 vi.mock('@spryker-oryx/di', () => ({
   inject: vi.fn().mockReturnValue({
