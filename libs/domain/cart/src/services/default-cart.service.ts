@@ -19,6 +19,7 @@ import {
   Observable,
   of,
   scan,
+  shareReplay,
   skip,
   startWith,
   switchMap,
@@ -162,7 +163,8 @@ export class DefaultCartService implements CartService {
             filter(Boolean),
             startWith(null)
           )
-    )
+    ),
+    shareReplay(1)
   );
 
   protected isBusy$ = combineLatest([
