@@ -14,8 +14,6 @@ import {
   Observable,
   ReplaySubject,
   shareReplay,
-  Subject,
-  takeUntil,
   tap,
 } from 'rxjs';
 import { ExperienceDataClientService } from './data-client';
@@ -48,7 +46,6 @@ export class PreviewExperienceService extends DefaultExperienceService {
     super();
 
     this.dataClient.sendStatic(this.staticService.getData());
-    this.dataClient.initialize().pipe(takeUntil(this.destroy$)).subscribe();
 
     this.structureDataEvent$.subscribe();
     this.contentDataEvent$.subscribe();
@@ -66,7 +63,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
     // TODO: we don't want load data in preview mode
   }
 
-  protected destroy$ = new Subject<void>();
+  /**
+   * Temporary flag for storing the information about header/footer editing
+   */
+  headerEdit$ = new BehaviorSubject<boolean>(false);
 
   protected experiencePreviewEvent$ =
     typeof window !== 'undefined'
@@ -192,14 +192,5 @@ export class PreviewExperienceService extends DefaultExperienceService {
 
   getInteractionData(): Observable<any> {
     return this.interactionDataEvent$;
-  }
-
-  /**
-   * Temporary flag for storing the information about header/footer editing
-   */
-  public headerEdit$ = new BehaviorSubject<boolean>(false);
-
-  onDestroy(): void {
-    this.destroy$.next();
   }
 }

@@ -1,3 +1,4 @@
+export * from './app-initializer';
 export * from './context';
 export * from './error';
 export * from './feature-options';

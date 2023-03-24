@@ -1,5 +1,6 @@
-import { CoreCommand, CoreQuery } from '@spryker-oryx/core';
 import { of, Subject, take } from 'rxjs';
+import { CoreCommand } from './core-command';
+import { CoreQuery } from './core-query';
 import { CoreQueryManager } from './core-query-manager';
 
 describe('CoreQueryManager', () => {

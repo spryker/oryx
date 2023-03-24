@@ -1,12 +1,15 @@
-import {
-  DefaultErrorService,
-  ErrorHandler,
-  ErrorService,
-} from '@spryker-oryx/core';
+import { DefaultErrorService } from './default-error.service';
+import { ErrorHandler } from './error-handler';
+import { ErrorService } from './error.service';
+
+vi.mock('lit', async () => ({
+  ...((await vi.importActual('lit')) as Array<unknown>),
+  isServer: false,
+}));
 
 describe('DefaultHttpService', () => {
   //TODO: use global interface that contains "onDestroy" method when it will be implemented
-  let service: ErrorService & { onDestroy(): void };
+  let service: ErrorService;
 
   class TestErrorHandler implements ErrorHandler {
     handle = vi.fn();

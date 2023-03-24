@@ -1,46 +1,48 @@
-import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
+import { inject, INJECTOR } from '@spryker-oryx/di';
 import {
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
-import { Subscription } from 'rxjs';
-import { AppRef, ComponentsPlugin } from '../../orchestration';
+import { isServer, LitElement } from 'lit';
+import { merge, Observable, tap } from 'rxjs';
+import { AppRef } from '../../orchestration/app';
+import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
 
-export class DefaultHydrationService implements HydrationService, OnDestroy {
-  protected subscription = new Subscription();
-
+export class DefaultHydrationService implements HydrationService {
   constructor(
     protected componentsPlugin = inject(AppRef).findPlugin(ComponentsPlugin),
     protected root = rootInjectable.get(),
     protected injector = inject(INJECTOR)
-  ) {
-    this.initialize();
-  }
+  ) {}
 
-  protected initialize(): void {
+  initialize(): Observable<unknown> | void {
     const initializers = this.injector.inject(HydrationTrigger, null);
+    const observables = [];
 
-    if (!initializers) {
+    if (!initializers || isServer) {
       return;
     }
 
     for (const initializer of initializers) {
-      this.subscription.add(
-        initializer.subscribe((value) => {
-          if (value instanceof HTMLElement) {
-            this.hydrateOnDemand(value, true);
+      observables.push(
+        initializer.pipe(
+          tap((value) => {
+            if (value instanceof HTMLElement) {
+              this.hydrateOnDemand(value, true);
 
-            return;
-          }
+              return;
+            }
 
-          this.initHydrateHooks(true);
-        })
+            this.initHydrateHooks(true);
+          })
+        )
       );
     }
+
+    return merge(...observables);
   }
 
   initHydrateHooks(immediate?: boolean): void {
@@ -82,10 +84,6 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
     }
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
-  }
-
-  onDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   protected treewalk(

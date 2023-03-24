@@ -1,10 +1,9 @@
-import { Observable } from 'rxjs';
+import { AppInitializer } from '@spryker-oryx/core';
 import { StaticComponent } from '../static-data';
 
 export const ExperienceDataClientService = 'oryx.ExperienceDataClientService';
 
-export interface ExperienceDataClientService {
-  initialize(): Observable<unknown>;
+export interface ExperienceDataClientService extends AppInitializer {
   sendStatic(data: StaticComponent[]): void;
 }
 
