@@ -187,7 +187,7 @@ describe('AuthLoginComponent', () => {
     };
 
     const submit = async (): Promise<void> => {
-      element.shadowRoot?.querySelector('button')?.click();
+      element.shadowRoot?.querySelector('form')?.submit();
       await nextFrame();
     };
 
