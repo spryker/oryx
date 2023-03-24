@@ -7,7 +7,7 @@ import {
   ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
@@ -77,11 +77,10 @@ describe('ExperienceDataClientService', () => {
       };
       const app = getService<MockApp>(AppRef);
       mockAppFn.getResources.mockReturnValue(mockResources);
-      (
-        getInjector()
-          .inject(ExperienceDataClientService)
-          .initialize() as Observable<unknown>
-      ).subscribe();
+      getInjector()
+        .inject(ExperienceDataClientService)
+        .initialize()
+        .subscribe();
       await nextFrame();
       expect(app.findPlugin).toHaveBeenCalledWith(ResourcePlugin);
       expect(mockAppFn.getResources).toHaveBeenCalled();
@@ -109,11 +108,10 @@ describe('ExperienceDataClientService', () => {
       getService<MockFeatureOptionsService>(
         FeatureOptionsService
       ).getFeatureOptions.mockReturnValue(mockFeatureOptions);
-      (
-        getInjector()
-          .inject(ExperienceDataClientService)
-          .initialize() as Observable<unknown>
-      ).subscribe();
+      getInjector()
+        .inject(ExperienceDataClientService)
+        .initialize()
+        .subscribe();
       postMessage(
         {
           type: MessageType.ComponentType,
@@ -158,11 +156,10 @@ describe('ExperienceDataClientService', () => {
         'oryx.SuggestionService'
       );
       suggestionService.get.mockReturnValue(of(mockSuggestions));
-      (
-        getInjector()
-          .inject(ExperienceDataClientService)
-          .initialize() as Observable<unknown>
-      ).subscribe();
+      getInjector()
+        .inject(ExperienceDataClientService)
+        .initialize()
+        .subscribe();
       postMessage(
         {
           type: MessageType.Query,
@@ -193,11 +190,10 @@ describe('ExperienceDataClientService', () => {
       mockAppFn.getComponentSchemas.mockReturnValue(
         of([mockSchemaA, mockSchemaB])
       );
-      (
-        getInjector()
-          .inject(ExperienceDataClientService)
-          .initialize() as Observable<unknown>
-      ).subscribe();
+      getInjector()
+        .inject(ExperienceDataClientService)
+        .initialize()
+        .subscribe();
       await nextFrame();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {

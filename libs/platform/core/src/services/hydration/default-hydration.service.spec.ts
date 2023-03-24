@@ -6,15 +6,10 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { DefaultHydrationService } from './default-hydration.service';
 import { HydrationService, HydrationTrigger } from './hydration.service';
-
-vi.mock('lit', async () => ({
-  ...((await vi.importActual('lit')) as Array<unknown>),
-  isServer: false,
-}));
 
 @customElement('mock-a')
 class MockA extends LitElement {
@@ -86,7 +81,6 @@ describe('DefaultHydrationService', () => {
   });
 
   it('should call hydration initializers on construction time', () => {
-    (service.initialize() as Observable<unknown>).subscribe();
     expect(mockAInitializer).toHaveBeenCalled();
     expect(mockBInitializer).toHaveBeenCalled();
   });

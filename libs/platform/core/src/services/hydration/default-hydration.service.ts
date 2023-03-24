@@ -5,44 +5,43 @@ import {
   HYDRATE_ON_DEMAND,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { isServer, LitElement } from 'lit';
-import { merge, Observable, tap } from 'rxjs';
+import { LitElement } from 'lit';
+import { Subscription } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
 
 export class DefaultHydrationService implements HydrationService {
+  protected subscription = new Subscription();
+
   constructor(
     protected componentsPlugin = inject(AppRef).findPlugin(ComponentsPlugin),
     protected root = rootInjectable.get(),
     protected injector = inject(INJECTOR)
-  ) {}
+  ) {
+    this.initialize();
+  }
 
-  initialize(): Observable<unknown> | void {
+  protected initialize(): void {
     const initializers = this.injector.inject(HydrationTrigger, null);
-    const observables = [];
 
-    if (!initializers || isServer) {
+    if (!initializers) {
       return;
     }
 
     for (const initializer of initializers) {
-      observables.push(
-        initializer.pipe(
-          tap((value) => {
-            if (value instanceof HTMLElement) {
-              this.hydrateOnDemand(value, true);
+      this.subscription.add(
+        initializer.subscribe((value) => {
+          if (value instanceof HTMLElement) {
+            this.hydrateOnDemand(value, true);
 
-              return;
-            }
+            return;
+          }
 
-            this.initHydrateHooks(true);
-          })
-        )
+          this.initHydrateHooks(true);
+        })
       );
     }
-
-    return merge(...observables);
   }
 
   initHydrateHooks(immediate?: boolean): void {
@@ -84,6 +83,10 @@ export class DefaultHydrationService implements HydrationService {
     }
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
+  }
+
+  onDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   protected treewalk(

@@ -75,12 +75,4 @@ export const coreProviders: Provider[] = [
     provide: AppInitializer,
     useExisting: ErrorService,
   },
-  {
-    provide: AppInitializer,
-    useExisting: ErrorService,
-  },
-  {
-    provide: AppInitializer,
-    useExisting: HydrationService,
-  },
 ];
