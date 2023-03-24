@@ -8,7 +8,6 @@ vi.mock('lit', async () => ({
 }));
 
 describe('DefaultHttpService', () => {
-  //TODO: use global interface that contains "onDestroy" method when it will be implemented
   let service: ErrorService;
 
   class TestErrorHandler implements ErrorHandler {
