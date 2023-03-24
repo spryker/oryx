@@ -1,11 +1,11 @@
-import { nextFrame } from '@open-wc/testing-helpers';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { finalize, interval, tap } from 'rxjs';
+import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { finalize, of, tap } from 'rxjs';
 import { AppInitializer, AppInitializerService } from './app-initializer';
 import { DefaultAppInitializerService } from './default-app-initializer';
 
 const obsSubscribed = vi.fn();
 const obsComplete = vi.fn();
+const promiseResolve = vi.fn();
 
 const mockAInitializer = {
   initialize: vi.fn(),
@@ -13,16 +13,20 @@ const mockAInitializer = {
 const mockBInitializer = {
   initialize: vi
     .fn()
-    .mockReturnValue(
-      interval(10).pipe(tap(obsSubscribed), finalize(obsComplete))
-    ),
+    .mockReturnValue(of(null).pipe(tap(obsSubscribed), finalize(obsComplete))),
+};
+const mockCInitializer = {
+  initialize: vi.fn().mockResolvedValue(promiseResolve()),
+};
+const mockDInitializer = {
+  initialize: vi.fn().mockRejectedValue('rejected'),
 };
 
 describe('DefaultAppInitializerService', () => {
-  let service: AppInitializerService;
+  let testInjector: Injector;
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    testInjector = createInjector({
       providers: [
         {
           provide: AppInitializerService,
@@ -36,9 +40,12 @@ describe('DefaultAppInitializerService', () => {
           provide: AppInitializer,
           useValue: mockBInitializer,
         },
+        {
+          provide: AppInitializer,
+          useValue: mockCInitializer,
+        },
       ],
     });
-    service = testInjector.inject(AppInitializerService);
   });
 
   afterEach(() => {
@@ -46,23 +53,24 @@ describe('DefaultAppInitializerService', () => {
     destroyInjector();
   });
 
-  describe('initialize', () => {
-    it('should call initializers and subscribe to observables', async () => {
-      service.initialize();
-      expect(mockAInitializer.initialize).toHaveBeenCalled();
-      expect(mockBInitializer.initialize).toHaveBeenCalled();
-      await nextFrame();
-      expect(obsSubscribed).toHaveBeenCalled();
-    });
+  it('should call initializers and subscribe to observables', async () => {
+    await testInjector.inject(AppInitializerService).initialize();
+    expect(mockAInitializer.initialize).toHaveBeenCalled();
+    expect(mockBInitializer.initialize).toHaveBeenCalled();
+    expect(mockCInitializer.initialize).toHaveBeenCalled();
+    expect(obsSubscribed).toHaveBeenCalled();
+    expect(obsComplete).toHaveBeenCalled();
+    expect(promiseResolve).toHaveBeenCalled();
   });
 
-  describe('onDestroy', () => {
-    it('should unsubscribe from observables', async () => {
-      service.initialize();
-      await nextFrame();
-      expect(obsSubscribed).toHaveBeenCalled();
-      service.onDestroy();
-      expect(obsComplete).toHaveBeenCalled();
+  it('should throw error if some promises will be rejected', async () => {
+    testInjector.provide({
+      provide: AppInitializer,
+      useValue: mockDInitializer,
     });
+
+    await expect(() =>
+      testInjector.inject(AppInitializerService).initialize()
+    ).rejects.toThrow('rejected');
   });
 });
