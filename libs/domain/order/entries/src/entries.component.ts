@@ -17,6 +17,7 @@ import { styles } from './entries.styles';
 @defaultOptions({
   limit: 5,
   threshold: 3,
+  enablePreview: true,
 })
 @hydratable('window:load')
 export class OrderEntriesComponent extends OrderMixin(
@@ -77,15 +78,11 @@ export class OrderEntriesComponent extends OrderMixin(
           (entry) =>
             html`<oryx-cart-entry
               .key=${entry.uuid}
+              .sku=${entry.sku}
+              .quantity=${entry.quantity}
+              .price=${entry.sumPrice}
+              .options=${this.componentOptions}
               readonly
-              .options=${{
-                productOptions: false,
-                calculations: {
-                  unitPrice: entry.unitPrice,
-                  sumPrice: entry.sumPrice,
-                  sumPriceToPayAggregation: entry.sumPriceToPayAggregation,
-                },
-              }}
             ></oryx-cart-entry>`
         )}`
       : html``;

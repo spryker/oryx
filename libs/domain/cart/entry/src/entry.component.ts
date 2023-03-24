@@ -17,13 +17,12 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { take } from 'rxjs';
+import { first } from 'rxjs';
 import {
   QuantityEventDetail,
   QuantityInputComponent,
 } from '../../quantity-input/src';
 import { CartComponentMixin } from '../../src/mixins';
-import { CartEntry } from '../../src/models';
 import { CartService } from '../../src/services';
 import {
   CartEntryAttributes,
@@ -42,42 +41,44 @@ export class CartEntryComponent
 {
   static styles = [cartEntryStyles];
 
-  @property() key?: string;
-  @property({ type: Boolean }) readonly?: boolean;
+  @property() sku?: string;
+  @property({ type: Number }) quantity?: number;
+  @property({ type: Number }) price?: number;
   @property({ type: Number }) available?: number;
 
-  @state() protected entry?: CartEntry;
+  @property() key?: string;
+  @property({ type: Boolean }) readonly?: boolean;
+
   @state() protected formattedPrice?: string;
   @state() protected requiresRemovalConfirmation?: boolean;
 
-  protected cartService = resolve(CartService);
-  protected notificationService = resolve(NotificationService);
-  protected context = new ContextController(this);
-  protected pricingService = resolve(PricingService);
-
   protected willUpdate(
-    changedProperties: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
+    props: PropertyValueMap<CartEntryAttributes> | Map<PropertyKey, unknown>
   ): void {
-    this.entry = this.entries?.find((entry) => entry.groupKey === this.key);
-    if (this.entry) {
-      this.context.provide(ProductContext.SKU, this.entry.sku);
-
-      this.pricingService
-        .format(this.entry?.calculations?.sumPrice)
-        .pipe(take(1))
-        .subscribe((formatted) => {
-          if (formatted) {
-            this.formattedPrice = formatted;
-          }
-        });
+    if (props.has('sku')) {
+      this.context.provide(ProductContext.SKU, this.sku);
     }
-
-    super.willUpdate(changedProperties);
+    if (props.has('price')) {
+      this.formatPrice();
+    }
+    super.willUpdate(props);
   }
 
-  protected override render(): TemplateResult | void {
-    if (!this.entry) return;
+  protected formatPrice(): void {
+    this.pricingService
+      .format(this.price)
+      .pipe(first(Boolean))
+      .subscribe((formatted) => (this.formattedPrice = formatted));
+  }
 
+  protected pricingService = resolve(PricingService);
+  protected context = new ContextController(this);
+
+  // required for editing
+  protected cartService = resolve(CartService);
+  protected notificationService = resolve(NotificationService);
+
+  protected override render(): TemplateResult | void {
     return html`
       ${this.renderPreview()} ${this.renderDetails()} ${this.renderActions()}
       ${this.renderPricing()}
@@ -92,7 +93,7 @@ export class CartEntryComponent
       <oryx-content-link
         .options=${{
           type: SemanticLinkType.Product,
-          id: this.entry?.sku,
+          id: this.sku,
           linkType: LinkType.Neutral,
         }}
       >
@@ -105,6 +106,7 @@ export class CartEntryComponent
 
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
+      ${this.sku}
       <oryx-product-title
         .options=${{ linkType: LinkType.Neutral }}
       ></oryx-product-title>
@@ -140,7 +142,7 @@ export class CartEntryComponent
       return html`
         <section class="pricing">
           ${i18n('cart.entry.<quantity>-items', {
-            quantity: this.entry?.quantity,
+            quantity: this.quantity,
           })}
           <span class="entry-price">${this.formattedPrice}</span>
         </section>
@@ -152,7 +154,7 @@ export class CartEntryComponent
         <oryx-cart-quantity-input
           .min=${Number(!this.componentOptions?.removeByQuantity)}
           .max=${this.available ?? Infinity}
-          .value=${this.entry?.quantity}
+          .value=${this.quantity}
           .decreaseIcon=${this.decreaseIcon}
           submitOnChange
           @submit=${this.onSubmit}
@@ -177,7 +179,7 @@ export class CartEntryComponent
       heading=${i18n('cart.entry.confirm')}
       @oryx.close=${this.revert}
     >
-      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.entry?.sku })}
+      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
 
       <oryx-button
         slot="footer-more"
@@ -199,7 +201,7 @@ export class CartEntryComponent
       'oryx-cart-quantity-input'
     );
     if (el) {
-      el.value = this.entry?.quantity;
+      el.value = this.quantity;
     }
   }
 
@@ -216,7 +218,7 @@ export class CartEntryComponent
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
         if (this.componentOptions?.notifyOnUpdate) {
-          this.notify('cart.cart-entry-updated', this.entry?.sku);
+          this.notify('cart.cart-entry-updated', this.sku);
         }
       },
       error: () => this.revert(),
@@ -232,7 +234,7 @@ export class CartEntryComponent
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
         if (this.componentOptions?.notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.entry?.sku);
+          this.notify('cart.confirm-removed', this.sku);
         }
       },
       error: () => this.revert(),
@@ -250,7 +252,7 @@ export class CartEntryComponent
   protected get decreaseIcon(): string | void {
     if (
       this.componentOptions?.removeByQuantity === RemoveByQuantity.ShowBin &&
-      this.entry?.quantity === 1
+      this.quantity === 1
     ) {
       return 'trash';
     }

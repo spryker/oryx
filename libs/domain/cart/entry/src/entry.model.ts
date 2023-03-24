@@ -1,12 +1,20 @@
 import { ProductAvailability } from '@spryker-oryx/product';
 
 export interface CartEntryAttributes {
-  options?: CartEntryOptions;
-
   /**
    * The entry key represents the unique identifier of the cart entry.
    */
   key?: string;
+
+  /**
+   * The sku represents the product or service for the cart entry.
+   */
+  sku?: string;
+
+  /**
+   * The price represents the non formatted price for the cart entry's SKU.
+   */
+  price?: number;
 
   /**
    * Indicates whether the cart entry can be edited. In readonly mode,
