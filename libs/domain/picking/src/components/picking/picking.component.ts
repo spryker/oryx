@@ -134,12 +134,12 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderFallback(): TemplateResult {
-    const pickedCount = this.pickingList?.items.filter(
+    const pickedItems = this.pickingList?.items.filter(
       (item) => item.status === ItemsFilters.Picked
     );
 
     const isPickingComplete =
-      pickedCount?.length === this.pickingList?.items.length;
+      pickedItems?.length === this.pickingList?.items.length;
 
     return html`
       ${when(
