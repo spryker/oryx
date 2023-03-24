@@ -5,7 +5,9 @@ export const dryLogic = (): ((
   fn?: (host: LitElement) => void | Promise<void>
 ) => void) => {
   let lastNode: Element | null = document.body;
-  const scriptFns: { [tag: string]: any } = {};
+  const scriptFns: {
+    [tag: string]: (host: LitElement) => void | Promise<void>;
+  } = {};
 
   function findNext(
     selector: string,
@@ -46,6 +48,6 @@ export const dryLogic = (): ((
       scriptFns[tag] = fn;
     }
     lastNode = findNext(tag, lastNode) as Element | null;
-    scriptFns[tag]!(lastNode);
+    scriptFns[tag](lastNode as LitElement);
   };
 };

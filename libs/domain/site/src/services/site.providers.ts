@@ -3,12 +3,13 @@ import { Provider } from '@spryker-oryx/di';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
 import {
+  currencyHydration,
   CurrencyService,
   CurrentCurrencyInterceptor,
   DefaultCurrencyService,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
-import { DefaultLocaleService, LocaleService } from './locale';
+import { DefaultLocaleService, localeHydration, LocaleService } from './locale';
 import { AcceptLanguageInterceptor } from './locale/accept-language.interceptor';
 import {
   DefaultNotificationService,
@@ -88,6 +89,8 @@ export const siteProviders: Provider[] = [
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
   },
+  localeHydration,
+  currencyHydration,
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,
