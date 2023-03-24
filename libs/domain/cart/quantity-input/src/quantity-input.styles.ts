@@ -40,6 +40,7 @@ export const styles = css`
     margin: 0;
     height: 42px;
     box-sizing: border-box;
+    transition: var(--oryx-transition-time);
   }
 
   button:nth-of-type(1) {
