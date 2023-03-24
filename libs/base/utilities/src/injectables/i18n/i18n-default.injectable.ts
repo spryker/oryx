@@ -6,8 +6,8 @@ export interface DefaultI18nInjectableOptions {
 }
 
 export class DefaultI18nInjectable implements I18nInjectable {
-  protected tokenPropStart = this.options?.tokenPropStart ?? '\\{';
-  protected tokenPropEnd = this.options?.tokenPropEnd ?? '\\}';
+  protected tokenPropStart = this.options?.tokenPropStart ?? '\\<';
+  protected tokenPropEnd = this.options?.tokenPropEnd ?? '\\>';
   protected tokenPropRegex = new RegExp(
     `${this.tokenPropStart}([^${this.tokenPropEnd}]+)${this.tokenPropEnd}`,
     'g'
