@@ -66,7 +66,6 @@ export class OrderEntriesComponent extends OrderMixin(
   }
 
   protected renderEntries(): TemplateResult {
-    console.log(this.order?.items);
     return this.order
       ? html`${repeat(
           this.order.items.slice(

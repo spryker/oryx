@@ -84,9 +84,7 @@ describe('CartEntryComponent', () => {
     describe('readonly', () => {
       describe('when readonly is false', () => {
         beforeEach(async () => {
-          element = await fixture(
-            html` <oryx-cart-entry key="1"></oryx-cart-entry>`
-          );
+          element = await fixture(html` <oryx-cart-entry></oryx-cart-entry>`);
         });
 
         it('should render quantity input', () => {
@@ -143,9 +141,7 @@ describe('CartEntryComponent', () => {
       describe('enablePreview', () => {
         describe('when enablePreview is not provided', () => {
           beforeEach(async () => {
-            element = await fixture(html` <oryx-cart-entry
-              key="1"
-            ></oryx-cart-entry>`);
+            element = await fixture(html` <oryx-cart-entry></oryx-cart-entry>`);
           });
 
           it('should render product-media by default', () => {
@@ -182,7 +178,7 @@ describe('CartEntryComponent', () => {
         describe('when enableId is not provided', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
-              key="1"
+              quantity="1"
             ></oryx-cart-entry>`);
           });
 
@@ -194,7 +190,7 @@ describe('CartEntryComponent', () => {
         describe('when enableId is false', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
-              key="1"
+              quantity="1"
               .options=${{ enableId: false }}
             ></oryx-cart-entry>`);
           });
@@ -206,7 +202,7 @@ describe('CartEntryComponent', () => {
         describe('when enableId is true', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
-              key="1"
+              quantity="1"
               .options=${{ enableId: true }}
             ></oryx-cart-entry>`);
           });
@@ -226,6 +222,7 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
+              quantity="1"
               .options=${{ removeByQuantity: RemoveByQuantity.ShowBin }}
             ></oryx-cart-entry>`);
           });
@@ -243,6 +240,7 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
+              quantity="1"
               .options=${{ removeByQuantity: RemoveByQuantity.AllowZero }}
             ></oryx-cart-entry>`);
           });
@@ -260,6 +258,7 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               key="1"
+              quantity="1"
               .options=${{ removeByQuantity: undefined }}
             ></oryx-cart-entry>`);
           });

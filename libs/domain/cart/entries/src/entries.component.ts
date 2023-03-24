@@ -12,8 +12,8 @@ import { cartEntriesStyles } from './entries.styles';
   enableId: true,
   enablePreview: true,
   confirmBeforeRemove: true,
-  notifyOnUpdate: true,
-  notifyOnRemove: true,
+  notifyOnUpdate: false,
+  notifyOnRemove: false,
 })
 @hydratable('window:load')
 export class CartEntriesComponent extends CartComponentMixin(

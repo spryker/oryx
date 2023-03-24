@@ -1,6 +1,6 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMediaContainerSize,
@@ -34,7 +34,11 @@ import { cartEntryStyles } from './styles';
 /**
  * Supports updating the quantity as well as removing the entry entirely.
  */
-
+@defaultOptions({
+  removeByQuantity: RemoveByQuantity.ShowBin,
+  enablePreview: true,
+  enableId: true,
+})
 export class CartEntryComponent
   extends CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
   implements CartEntryAttributes
@@ -106,7 +110,6 @@ export class CartEntryComponent
 
   protected renderDetails(): TemplateResult | void {
     return html`<section class="details">
-      ${this.sku}
       <oryx-product-title
         .options=${{ linkType: LinkType.Neutral }}
       ></oryx-product-title>
