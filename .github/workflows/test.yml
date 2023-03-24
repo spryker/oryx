@@ -162,7 +162,6 @@ jobs:
           affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}
   test-pr-title:
-
     permissions:
       statuses: write
     runs-on: ubuntu-latest
