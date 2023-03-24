@@ -119,6 +119,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                 () => html`
                   ${repeat(
                     tab.items,
+                    (item) => item.product.id,
                     (item) =>
                       html`
                         <oryx-picking-product-card

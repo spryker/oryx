@@ -18,13 +18,10 @@ export class PickingProductCardComponent extends LitElement {
   static styles = styles;
 
   @property() productItem?: PickingListItem;
-
   @property() status?: string;
 
-  @state() isCorrectNumberOfPickedProvided?: boolean = true;
-
+  @state() isCorrectNumberOfPickedProvided = true;
   @state() currentNumberOfPicked?: number;
-
   @state() pickedDataEvent?: ProductItemPickedEvent;
 
   protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
@@ -135,15 +132,6 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected renderPickingProduct(): TemplateResult {
-    // ${console.log(
-    //   'product id',
-    //   this.productItem?.product.id,
-    //   'currentNumberOfPicked',
-    //   this.currentNumberOfPicked,
-    //   'number of picked',
-    //   this.productItem?.numberOfPicked
-    // )}
-
     if (this.productItem && this.currentNumberOfPicked) {
       this.isCorrectNumberOfPickedProvided =
         0 <= this.currentNumberOfPicked &&
@@ -174,8 +162,8 @@ export class PickingProductCardComponent extends LitElement {
                 <form class="edit-quantity" @submit=${this.onSubmit}>
                   <oryx-cart-quantity-input
                     min="0"
-                    max="${ifDefined(this.productItem?.quantity)}"
-                    value="${ifDefined(this.productItem?.numberOfPicked)}"
+                    .max="${this.productItem?.quantity}"
+                    .value="${this.productItem?.numberOfPicked}"
                     @update=${this.onChangeQuantity}
                   ></oryx-cart-quantity-input>
 
