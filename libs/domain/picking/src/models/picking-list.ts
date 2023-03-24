@@ -55,3 +55,9 @@ export interface SummaryInfo {
   main: string;
   additional?: string;
 }
+
+export interface PickingTab {
+  id: ItemsFilters;
+  title: string;
+  items: PickingListItem[];
+}
