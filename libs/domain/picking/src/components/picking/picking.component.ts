@@ -31,21 +31,21 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       {
         id: ItemsFilters.NotPicked,
         title: 'not-picked',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) => item.status === ItemsFilters.NotPicked
         ),
       },
       {
         id: ItemsFilters.Picked,
         title: 'picked',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) => item.numberOfPicked && item.status === ItemsFilters.Picked
         ),
       },
       {
         id: ItemsFilters.NotFound,
         title: 'not-found',
-        items: this.items.filter(
+        items: this.items?.filter(
           (item) =>
             item.status === ItemsFilters.Picked &&
             (item.numberOfNotPicked || item.numberOfPicked < item.quantity)
@@ -140,7 +140,28 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderFallback(): TemplateResult {
-    return html`<p>${i18n('picking.no-picking-items-found')}</p>`;
+    const pickedItems = this.pickingList?.items.filter(
+      (item) => item.status === ItemsFilters.Picked
+    );
+
+    const isPickingComplete =
+      pickedItems?.length === this.pickingList?.items.length;
+
+    return html`
+      ${when(
+        isPickingComplete,
+        () =>
+          html`
+            <div class="picking-complete">
+              <div class="img-wrap">
+                <oryx-image resource="picking-items-processed"></oryx-image>
+              </div>
+              <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
+              <p>${i18n(`picking.all-items-are-processed`)}!</p>
+            </div>
+          `
+      )}
+    `;
   }
 }
 
