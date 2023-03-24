@@ -51,7 +51,7 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   const interval = setInterval(() => {
-    if (!customElements.get('cart-entry')) {
+    if (!customElements.get('oryx-cart-entry')) {
       return;
     }
 
@@ -68,54 +68,62 @@ const Template: Story<unknown> = (): TemplateResult => {
 
   return html`
     <p>Entry</p>
-    <cart-entry .options=${createEntry()}></cart-entry>
+    <oryx-cart-entry .options=${createEntry()}></oryx-cart-entry>
 
     <p>Expanded options</p>
-    <cart-entry
+    <oryx-cart-entry
       .options=${createEntry({ defaultExpandedOptions: true })}
-    ></cart-entry>
+    ></oryx-cart-entry>
 
     <p>Without options</p>
-    <cart-entry .options=${createEntry({}, false)}></cart-entry>
+    <oryx-cart-entry .options=${createEntry({}, false)}></oryx-cart-entry>
 
     <p>Without preview</p>
-    <cart-entry .options=${createEntry({ hidePreview: true })}></cart-entry>
+    <oryx-cart-entry
+      .options=${createEntry({ hidePreview: true })}
+    ></oryx-cart-entry>
 
     <p>Multiple quantity</p>
-    <cart-entry .options=${createEntry({ quantity: 3 })}></cart-entry>
+    <oryx-cart-entry .options=${createEntry({ quantity: 3 })}></oryx-cart-entry>
 
     <p>Custom remove button</p>
-    <cart-entry
+    <oryx-cart-entry
       .options=${createEntry({ removeButtonIcon: 'trash' as any })}
-    ></cart-entry>
+    ></oryx-cart-entry>
 
     <p>With confirmation</p>
-    <cart-entry
+    <oryx-cart-entry
       class="with-confirmation"
       .options=${createEntry()}
-    ></cart-entry>
+    ></oryx-cart-entry>
 
     <p>Disabled</p>
-    <cart-entry .options=${createEntry({ disabled: true })}></cart-entry>
+    <oryx-cart-entry
+      .options=${createEntry({ disabled: true })}
+    ></oryx-cart-entry>
 
     <p>Updated</p>
-    <cart-entry .options=${createEntry({ updating: true })}></cart-entry>
+    <oryx-cart-entry
+      .options=${createEntry({ updating: true })}
+    ></oryx-cart-entry>
 
     <p>Allow zero quantity</p>
-    <cart-entry
+    <oryx-cart-entry
       .options=${createEntry({ removeByQuantity: RemoveByQuantity.AllowZero })}
-    ></cart-entry>
+    ></oryx-cart-entry>
 
     <p>Allow zero quantity with bin</p>
-    <cart-entry
+    <oryx-cart-entry
       .options=${createEntry({
         removeByQuantity: RemoveByQuantity.ShowBin,
         quantity: 1,
       })}
-    ></cart-entry>
+    ></oryx-cart-entry>
 
     <p>Readonly</p>
-    <cart-entry .options=${createEntry({ readonly: true })}></cart-entry>
+    <oryx-cart-entry
+      .options=${createEntry({ readonly: true })}
+    ></oryx-cart-entry>
   `;
 };
 

@@ -67,12 +67,12 @@ class FakeEntriesComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html` <cart-entry
+    return html` <oryx-cart-entry
       .options=${{ ...this.props, ...this.entry }}
       @oryx.remove=${(): void => console.log('remove')}
       @oryx.update=${(e: CustomEvent): void =>
         this.updateEntry(e.detail.quantity)}
-    ></cart-entry>`;
+    ></oryx-cart-entry>`;
   }
 }
 

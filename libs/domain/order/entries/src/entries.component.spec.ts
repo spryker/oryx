@@ -198,7 +198,7 @@ describe('OrderEntriesComponent', () => {
     });
 
     it('should not render content', () => {
-      expect(element).not.toContainElement('cart-entry');
+      expect(element).not.toContainElement('oryx-cart-entry');
     });
   });
 });
