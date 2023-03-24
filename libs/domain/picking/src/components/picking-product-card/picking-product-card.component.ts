@@ -18,11 +18,12 @@ export class PickingProductCardComponent extends LitElement {
   static styles = styles;
 
   @property() productItem?: PickingListItem;
+
   @property() status?: string;
 
   @state() isCorrectNumberOfPickedProvided?: boolean = true;
 
-  @state() currentNumberOfPicked = this.productItem?.numberOfPicked ?? 0;
+  @state() currentNumberOfPicked?: number;
 
   @state() pickedDataEvent?: ProductItemPickedEvent;
 
@@ -37,8 +38,17 @@ export class PickingProductCardComponent extends LitElement {
   protected onSubmit(e: SubmitEvent): void {
     e.preventDefault();
 
-    if (this.currentNumberOfPicked === this.productItem?.quantity) {
-      this.dispatchPickingEvents(EVENT_SUBMIT, this.pickedDataEvent);
+    this.currentNumberOfPicked =
+      this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
+
+    if (
+      this.currentNumberOfPicked &&
+      this.currentNumberOfPicked === this.productItem?.quantity
+    ) {
+      this.dispatchPickingEvents(EVENT_SUBMIT, {
+        productId: this.productItem?.product.id,
+        numberOfPicked: this.currentNumberOfPicked,
+      });
     } else {
       this.isConfirmPickingDialogOpen$.next(true);
     }
@@ -65,17 +75,6 @@ export class PickingProductCardComponent extends LitElement {
 
   protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
     this.currentNumberOfPicked = quantity;
-
-    if (this.productItem) {
-      this.isCorrectNumberOfPickedProvided =
-        0 <= this.currentNumberOfPicked &&
-        this.currentNumberOfPicked <= this.productItem.quantity;
-
-      this.pickedDataEvent = {
-        productId: this.productItem?.product.id,
-        numberOfPicked: this.currentNumberOfPicked,
-      };
-    }
   }
 
   protected getSummaryInfo(): SummaryInfo {
@@ -136,6 +135,21 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected renderPickingProduct(): TemplateResult {
+    // ${console.log(
+    //   'product id',
+    //   this.productItem?.product.id,
+    //   'currentNumberOfPicked',
+    //   this.currentNumberOfPicked,
+    //   'number of picked',
+    //   this.productItem?.numberOfPicked
+    // )}
+
+    if (this.productItem && this.currentNumberOfPicked) {
+      this.isCorrectNumberOfPickedProvided =
+        0 <= this.currentNumberOfPicked &&
+        this.currentNumberOfPicked <= this.productItem.quantity;
+    }
+
     return html`
       ${when(
         this.productItem,
@@ -159,10 +173,9 @@ export class PickingProductCardComponent extends LitElement {
               () => html`
                 <form class="edit-quantity" @submit=${this.onSubmit}>
                   <oryx-cart-quantity-input
-                    ref="numberOfPickedInput"
                     min="0"
-                    .max="${this.productItem?.quantity}"
-                    .value="${this.currentNumberOfPicked}"
+                    max="${ifDefined(this.productItem?.quantity)}"
+                    value="${ifDefined(this.productItem?.numberOfPicked)}"
                     @update=${this.onChangeQuantity}
                   ></oryx-cart-quantity-input>
 

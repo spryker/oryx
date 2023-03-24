@@ -1,5 +1,6 @@
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { take, tap } from 'rxjs';
@@ -60,12 +61,12 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       (item) => item.product.id === detail.productId
     );
 
-    this.items[productIndex].status = ItemsFilters.Picked;
-
     this.items[productIndex].numberOfPicked = detail.numberOfPicked;
     this.items[productIndex].numberOfNotPicked =
       this.items[productIndex].quantity -
       this.items[productIndex].numberOfPicked;
+
+    this.items[productIndex].status = ItemsFilters.Picked;
 
     this.items = [...this.items];
   }
@@ -102,31 +103,39 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderTabContents(tabs: PickingTab[]): TemplateResult {
-    return tabs
-      ? html`${repeat(
-          tabs,
-          (tab) => html`<div
-            slot="panels"
-            id="tab-${tab.id}"
-            class="tab-panels"
-          >
-            ${tab.items?.length
-              ? repeat(
-                  tab.items,
-                  (item) =>
-                    html`
-                      <oryx-picking-product-card
-                        .productItem=${item}
-                        .status=${tab.id}
-                        @oryx.submit=${this.savePickingItem}
-                        @oryx.edit=${this.editPickingItem}
-                      ></oryx-picking-product-card>
-                    `
-                )
-              : this.renderFallback()}
-          </div>`
-        )}`
-      : html``;
+    return html`
+      ${when(
+        tabs.length,
+        () =>
+          html`${repeat(
+            tabs,
+            (tab) => html`<div
+              slot="panels"
+              id="tab-${tab.id}"
+              class="tab-panels"
+            >
+              ${when(
+                tab.items?.length,
+                () => html`
+                  ${repeat(
+                    tab.items,
+                    (item) =>
+                      html`
+                        <oryx-picking-product-card
+                          .productItem=${item}
+                          .status=${tab.id}
+                          @oryx.submit=${this.savePickingItem}
+                          @oryx.edit=${this.editPickingItem}
+                        ></oryx-picking-product-card>
+                      `
+                  )}
+                `,
+                () => this.renderFallback()
+              )}
+            </div>`
+          )}`
+      )}
+    `;
   }
 
   protected renderFallback(): TemplateResult {
