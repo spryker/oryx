@@ -167,7 +167,7 @@ export class CartEntryComponent
         ${when(
           this.componentOptions?.enableItemPrice,
           () =>
-            html` <div class="item-price">
+            html`<div class="item-price">
               <span>${i18n('cart.entry.item-price')}</span
               ><oryx-product-price
                 .options=${{ enableTaxMessage: false }}

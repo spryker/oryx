@@ -12,4 +12,10 @@ export const cartTotalsComponent = componentDef({
   impl: () => import('./totals.component').then((m) => m.CartTotalsComponent),
   schema: () =>
     import('./totals.schema').then((m) => m.cartTotalsComponentSchema),
+  stylesheets: [
+    {
+      rules: () =>
+        import('./styles/screen.styles').then((m) => m.cartTotalsScreenStyles),
+    },
+  ],
 });

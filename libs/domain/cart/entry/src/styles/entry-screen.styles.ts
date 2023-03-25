@@ -36,7 +36,6 @@ const smallScreen = css`
     margin-block-start: 8px;
   }
 
-  .pricing,
   .entry-price {
     font-size: var(--oryx-typography-h3-size);
     font-weight: var(--oryx-typography-h3-weight);

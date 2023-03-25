@@ -152,20 +152,23 @@ export class CartTotalsComponent extends CartComponentMixin(
   }
 
   protected renderSummary(): TemplateResult | void {
-    return this.renderSection(
-      'summary',
-      html`${i18n('cart.totals.total')}`,
-      html` ${this.totals?.calculations?.priceToPay}
-      ${when(
-        this.componentOptions?.enableTaxMessage,
-        () =>
-          html`<small class="tax-message">
-            ${this.totals?.priceMode === PriceMode.GrossMode
-              ? i18n('cart.totals.tax-included')
-              : i18n('cart.totals.tax-included')}
-          </small>`
-      )}`
-    );
+    return html`<oryx-heading class="summary">
+      <h4>${i18n('cart.totals.total')}</h4>
+      <span class="summary-price">
+        <span class="price-total">
+          ${this.totals?.calculations?.priceToPay}
+        </span>
+        ${when(
+          this.componentOptions?.enableTaxMessage,
+          () =>
+            html`<span class="tax-message">
+              ${this.totals?.priceMode === PriceMode.GrossMode
+                ? i18n('cart.totals.tax-included')
+                : i18n('cart.totals.tax-included')}
+            </span>`
+        )}
+      </span>
+    </oryx-heading>`;
   }
 
   protected renderSection(

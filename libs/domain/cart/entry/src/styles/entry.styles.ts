@@ -66,11 +66,6 @@ export const cartEntryStyles = css`
     padding-block: 20px 28px;
   }
 
-  .product {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-  }
-
   oryx-product-media {
     width: 87px;
     aspect-ratio: 1/1;
@@ -83,6 +78,14 @@ export const cartEntryStyles = css`
     gap: 4px;
     grid-row: 1;
     grid-column: 2;
+    color: var(--oryx-color-neutral-400);
+  }
+
+  oryx-product-id {
+    color: var(--oryx-color-neutral-300);
+    font-size: var(--oryx-typography-small-size);
+    font-weight: var(--oryx-typography-small-weight);
+    line-height: var(--oryx-typography-small-line);
   }
 
   section {
