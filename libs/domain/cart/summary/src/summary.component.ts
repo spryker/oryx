@@ -53,10 +53,10 @@ export class CartSummaryComponent extends CartComponentMixin(
     const quantity =
       this.totalQuantity &&
       this.componentOptions?.maxVisibleQuantity &&
-      this.totalQuantity > this.componentOptions?.maxVisibleQuantity
+      +this.totalQuantity > this.componentOptions?.maxVisibleQuantity
         ? `${this.componentOptions?.maxVisibleQuantity}+`
         : Number(this.totalQuantity);
-    if (this.totalQuantity) {
+    if (Number(this.totalQuantity)) {
       return html`<mark>${quantity}</mark>`;
     }
   }

@@ -91,13 +91,15 @@ export class OrderEntriesComponent extends OrderMixin(
 
   protected renderButton(): TemplateResult | void {
     if (this.hasThreshold || !this.order) return;
-    return html`<button @click=${this.toggleShowMore}>
-      ${this.showAllEntries ? '-' : '+'}${this.order.items.length -
-      (this.componentOptions?.limit ?? 0)}
-      ${i18n(
-        this.showAllEntries ? 'order.less-products' : 'order.more-products'
-      )}
-    </button>`;
+    return html`<oryx-button type="text"
+      ><button @click=${this.toggleShowMore}>
+        ${this.showAllEntries ? '-' : '+'}${this.order.items.length -
+        (this.componentOptions?.limit ?? 0)}
+        ${i18n(
+          this.showAllEntries ? 'order.less-products' : 'order.more-products'
+        )}
+      </button></oryx-button
+    >`;
   }
 
   protected toggleShowMore(): void {

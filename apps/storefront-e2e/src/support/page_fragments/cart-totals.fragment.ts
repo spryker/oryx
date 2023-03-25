@@ -1,5 +1,5 @@
 export class CartTotalsFragment {
-  getWrapper = () => cy.get('cart-totals');
+  getWrapper = () => cy.get('oryx-cart-totals');
   getSubtotalText = () => this.getWrapper().contains('Subtotal');
   getSubtotalPrice = () => this.getSubtotalText().next();
   getDiscountsWrapper = () => this.getWrapper().find('.discount');
