@@ -14,20 +14,10 @@ export class CartEntryFragment {
   getDefaultImage = () =>
     this.getWrapper().find('oryx-product-media').find('oryx-icon');
   getSKU = () => this.getWrapper().find('oryx-product-id').shadow();
-  getPrice = () =>
-    this.getWrapper()
-      .find('.col cart-entry-price')
-      .eq(0)
-      .find('[part="price"]');
-  getSubtotal = () =>
-    this.getWrapper()
-      .find('.col cart-entry-price')
-      .eq(1)
-      .find('[part="price"]');
-  getTotalPrice = () =>
-    this.getWrapper().find('cart-entry-totals').find('[part="price"]');
+  getPrice = () => this.getWrapper().find('oryx-product-price');
+  getSubtotal = () => this.getWrapper().find('.entry-price');
   getRemoveBtn = () => this.getWrapper().find('[aria-label="remove"]');
-  getConfirmRemoveBtn = () => this.getWrapper().contains('Delete product(s)');
+  // getConfirmRemoveBtn = () => this.getWrapper().contains('Delete product(s)');
   getQuantityInput = () =>
     new QuantityInputFragment(
       this.getWrapper().find('oryx-cart-quantity-input')

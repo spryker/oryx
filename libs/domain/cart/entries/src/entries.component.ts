@@ -37,17 +37,18 @@ export class CartEntriesComponent extends CartComponentMixin(
       ${repeat(
         this.entries ?? [],
         (entry) => entry.groupKey,
-        (entry) =>
-          html`
+        (entry) => {
+          return html`
             <oryx-cart-entry
               .sku=${entry.sku}
               .quantity=${entry.quantity}
-              .price=${entry.calculations?.sumPrice}
+              .price=${entry.calculations?.sumPriceToPayAggregation}
               .key=${entry.groupKey}
               .options=${this.componentOptions}
               ?readonly=${this.componentOptions?.readonly}
             ></oryx-cart-entry>
-          `
+          `;
+        }
       )}
     `;
   }

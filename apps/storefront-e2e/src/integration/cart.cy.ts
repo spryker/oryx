@@ -84,7 +84,7 @@ describe('Cart suite', () => {
         firstEntry.getQuantityInput().increase();
 
         firstEntry.getQuantityInput().getInput().should('have.value', 2);
-        firstEntry.getTotalPrice().should('contain.text', '598.55');
+        firstEntry.getSubtotal().should('contain.text', '598.55');
         cartTotals.getTotalPrice().should('contain.text', '598.55');
       });
     });
@@ -103,7 +103,7 @@ describe('Cart suite', () => {
         cartPage.getCartEntries().then((entries) => {
           const firstEntry = entries[0];
           firstEntry.getQuantityInput().getInput().should('have.value', 2);
-          firstEntry.getTotalPrice().should('contain.text', '598.55');
+          firstEntry.getSubtotal().should('contain.text', '598.55');
           cartTotals.getTotalPrice().should('contain.text', '598.55');
         });
       });
@@ -146,7 +146,7 @@ function checkCartEntryPrices(
   entry.getPrice().should('contain.text', productData.currentPrice);
   entry.getSubtotal().should('contain.text', productData.currentPrice);
   entry
-    .getTotalPrice()
+    .getSubtotal()
     .should(
       'contain.text',
       isDiscounted
