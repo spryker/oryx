@@ -4,7 +4,7 @@ export class CartTotalsFragment {
   getSubtotalPrice = () => this.getSubtotalText().next();
   getDiscountsWrapper = () => this.getWrapper().find('.discount');
   getDiscountsTotal = () => this.getDiscountsWrapper().find('[slot="aside"]');
-  getTaxTotal = () => this.getWrapper().contains('Tax').next();
+  getTaxTotal = () => this.getWrapper().find('.tax');
   getDeliveryTotal = () =>
     this.getWrapper().contains('Delivery').next().find('a');
   getTotalPrice = () => this.getWrapper().find('.summary');

@@ -63,7 +63,6 @@ describe('Cart suite', () => {
       });
 
       checkCartTotals({
-        subtotalText: '2 items',
         subtotalPrice: '242.78',
         discountsTotal: '-24.28',
         taxTotal: '14.29',
@@ -156,7 +155,6 @@ function checkCartEntryPrices(
 }
 
 interface CartTotalsExpectedData {
-  subtotalText: string;
   subtotalPrice: string;
   discountsTotal?: string;
   taxTotal: string;
