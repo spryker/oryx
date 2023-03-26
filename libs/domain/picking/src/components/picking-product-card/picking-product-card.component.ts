@@ -1,9 +1,8 @@
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject } from 'rxjs';
 import {
   EVENT_EDIT,
   EVENT_SUBMIT,
@@ -24,12 +23,6 @@ export class PickingProductCardComponent extends LitElement {
   @state() currentNumberOfPicked?: number;
   @state() pickedDataEvent?: ProductItemPickedEvent;
 
-  protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
-  @asyncState()
-  protected isConfirmPickingDialogOpen = valueType(
-    this.isConfirmPickingDialogOpen$
-  );
-
   protected summaryInfo: SummaryInfo | undefined;
 
   protected onSubmit(e: SubmitEvent): void {
@@ -38,36 +31,16 @@ export class PickingProductCardComponent extends LitElement {
     this.currentNumberOfPicked =
       this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
 
-    if (
-      this.currentNumberOfPicked &&
-      this.currentNumberOfPicked === this.productItem?.quantity
-    ) {
-      this.dispatchPickingEvents(EVENT_SUBMIT, {
-        productId: this.productItem?.product.id,
-        numberOfPicked: this.currentNumberOfPicked,
-      });
-    } else {
-      this.isConfirmPickingDialogOpen$.next(true);
-    }
-  }
-
-  protected confirmPartialPicking(): void {
     this.dispatchPickingEvents(EVENT_SUBMIT, {
       productId: this.productItem?.product.id,
       numberOfPicked: this.currentNumberOfPicked,
-    } as ProductItemPickedEvent);
-
-    this.isConfirmPickingDialogOpen$.next(false);
+    });
   }
 
   protected editProductPicking(): void {
     this.dispatchPickingEvents(EVENT_EDIT, {
       productId: this.productItem?.product.id,
     } as ProductItemPickedEvent);
-  }
-
-  protected onModalClose(): void {
-    this.isConfirmPickingDialogOpen$.next(false);
   }
 
   protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
@@ -128,7 +101,7 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`${this.renderPickingProduct()} ${this.renderConfirmationModal()}`;
+    return html`${this.renderPickingProduct()}`;
   }
 
   protected renderPickingProduct(): TemplateResult {
@@ -205,43 +178,5 @@ export class PickingProductCardComponent extends LitElement {
           ${i18n('picking.product-card.edit-items')}
         </button>
       </oryx-button>`;
-  }
-
-  protected renderConfirmationModal(): TemplateResult {
-    return html`
-      <oryx-modal
-        ?open=${this.isConfirmPickingDialogOpen}
-        enableFooter
-        preventclosebybackdrop
-        @oryx.close=${this.onModalClose}
-      >
-        <div slot="heading">
-          ${i18n('picking.product-card.confirm-picking')}
-        </div>
-
-        <span>
-          You only picked
-          <span class="bold-text"
-            >${this.currentNumberOfPicked} out of
-            ${this.productItem?.quantity}</span
-          >
-          items. Do you really want to complete the pick?
-        </span>
-
-        <div slot="footer">
-          <oryx-button outline type="secondary">
-            <button @click=${this.onModalClose}>
-              ${i18n('picking.product-card.cancel')}
-            </button>
-          </oryx-button>
-
-          <oryx-button type="primary">
-            <button @click=${this.confirmPartialPicking}>
-              ${i18n('picking.product-card.confirm')}
-            </button>
-          </oryx-button>
-        </div>
-      </oryx-modal>
-    `;
   }
 }

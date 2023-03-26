@@ -1,12 +1,18 @@
-import { i18n, subscribe } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  i18n,
+  subscribe,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { take, tap } from 'rxjs';
+import { BehaviorSubject, take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
+  PartialPicking,
   PickingListItem,
   PickingTab,
   ProductItemPickedEvent,
@@ -14,6 +20,15 @@ import {
 import { styles } from './picking.styles';
 export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
+
+  protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
+  @asyncState()
+  protected isConfirmPickingDialogOpen = valueType(
+    this.isConfirmPickingDialogOpen$
+  );
+
+  @state()
+  protected partialPicking: PartialPicking | undefined;
 
   @state()
   protected items: PickingListItem[] = [];
@@ -61,14 +76,23 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       (item) => item.product.id === detail.productId
     );
 
-    this.items[productIndex].numberOfPicked = detail.numberOfPicked;
-    this.items[productIndex].numberOfNotPicked =
-      this.items[productIndex].quantity -
-      this.items[productIndex].numberOfPicked;
+    if (
+      !(
+        detail.numberOfPicked &&
+        detail.numberOfPicked === this.items[productIndex].quantity
+      )
+    ) {
+      this.partialPicking = {
+        productId: detail.productId,
+        currentNumberOfPicked: detail.numberOfPicked,
+        quantity: this.items[productIndex].quantity,
+      };
 
-    this.items[productIndex].status = ItemsFilters.Picked;
+      this.isConfirmPickingDialogOpen$.next(true);
+      return;
+    }
 
-    this.items = [...this.items];
+    this.updatePickingItem(productIndex, detail.numberOfPicked);
   }
 
   protected editPickingItem(event: Event): void {
@@ -82,12 +106,31 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.items = [...this.items];
   }
 
+  protected onModalClose(): void {
+    this.isConfirmPickingDialogOpen$.next(false);
+  }
+
+  protected confirmPartialPicking(): void {
+    const productIndex = this.pickingList?.items.findIndex(
+      (item) => item.product.id === this.partialPicking?.productId
+    );
+
+    this.updatePickingItem(
+      productIndex,
+      this.partialPicking?.currentNumberOfPicked
+    );
+
+    this.partialPicking = undefined;
+    this.isConfirmPickingDialogOpen$.next(false);
+  }
+
   protected override render(): TemplateResult {
     const tabs = this.buildTabs();
 
     return html`<oryx-tabs appearance="secondary">
-      ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
-    </oryx-tabs>`;
+        ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
+      </oryx-tabs>
+      ${this.renderConfirmationModal()}`;
   }
 
   protected renderTabs(tabs: PickingTab[]): TemplateResult {
@@ -162,6 +205,57 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           `
       )}
     `;
+  }
+
+  protected renderConfirmationModal(): TemplateResult {
+    return html`
+      <oryx-modal
+        ?open=${this.isConfirmPickingDialogOpen}
+        enableFooter
+        preventclosebybackdrop
+      >
+        <div slot="heading">
+          ${i18n('picking.product-card.confirm-picking')}
+        </div>
+
+        <span>
+          You only picked
+          <span class="bold-text">
+            ${this.partialPicking?.currentNumberOfPicked} out of
+            ${this.partialPicking?.quantity}
+          </span>
+          items. Do you really want to complete the pick?
+        </span>
+
+        <div slot="footer">
+          <oryx-button outline type="secondary">
+            <button @click=${this.onModalClose}>
+              ${i18n('picking.product-card.cancel')}
+            </button>
+          </oryx-button>
+
+          <oryx-button type="primary">
+            <button @click=${this.confirmPartialPicking}>
+              ${i18n('picking.product-card.confirm')}
+            </button>
+          </oryx-button>
+        </div>
+      </oryx-modal>
+    `;
+  }
+
+  private updatePickingItem(
+    productIndex: number,
+    numberOfPicked?: number
+  ): void {
+    this.items[productIndex].numberOfPicked = numberOfPicked ?? 0;
+    this.items[productIndex].numberOfNotPicked =
+      this.items[productIndex].quantity -
+      this.items[productIndex].numberOfPicked;
+
+    this.items[productIndex].status = ItemsFilters.Picked;
+
+    this.items = [...this.items];
   }
 }
 

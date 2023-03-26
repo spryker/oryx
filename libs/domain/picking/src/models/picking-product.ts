@@ -7,8 +7,8 @@ export interface PickingProduct {
 }
 
 export interface ProductItemPickedEvent {
-  productId: string;
-  numberOfPicked: number;
+  productId?: string;
+  numberOfPicked?: number;
 }
 
 export const EVENT_CHANGE_NUMBER_OF_PICKED = 'oryx.change-number-of-picked';

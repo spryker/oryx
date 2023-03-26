@@ -61,3 +61,9 @@ export interface PickingTab {
   title: string;
   items: PickingListItem[];
 }
+
+export interface PartialPicking {
+  productId?: string;
+  currentNumberOfPicked?: number;
+  quantity?: number;
+}
