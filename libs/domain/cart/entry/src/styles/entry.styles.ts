@@ -82,10 +82,13 @@ export const cartEntryStyles = css`
   }
 
   oryx-product-id {
-    color: var(--oryx-color-neutral-300);
     font-size: var(--oryx-typography-small-size);
     font-weight: var(--oryx-typography-small-weight);
     line-height: var(--oryx-typography-small-line);
+  }
+
+  oryx-product-id::part(prefix) {
+    color: var(--oryx-color-neutral-300);
   }
 
   section {
