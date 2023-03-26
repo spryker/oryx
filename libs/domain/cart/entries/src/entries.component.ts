@@ -1,9 +1,9 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
+import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { RemoveByQuantity } from '../../entry/src';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
 
