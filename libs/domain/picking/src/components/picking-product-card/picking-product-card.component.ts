@@ -31,10 +31,12 @@ export class PickingProductCardComponent extends LitElement {
     this.currentNumberOfPicked =
       this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
 
-    this.dispatchPickingEvents(EVENT_SUBMIT, {
-      productId: this.productItem?.product.id,
-      numberOfPicked: this.currentNumberOfPicked,
-    });
+    if (this.productItem?.product.id) {
+      this.dispatchPickingEvents(EVENT_SUBMIT, {
+        productId: this.productItem.product.id,
+        numberOfPicked: this.currentNumberOfPicked,
+      });
+    }
   }
 
   protected editProductPicking(): void {

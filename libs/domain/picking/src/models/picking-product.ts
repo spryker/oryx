@@ -7,7 +7,7 @@ export interface PickingProduct {
 }
 
 export interface ProductItemPickedEvent {
-  productId?: string;
+  productId: string;
   numberOfPicked?: number;
 }
 

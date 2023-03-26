@@ -63,7 +63,7 @@ export interface PickingTab {
 }
 
 export interface PartialPicking {
-  productId?: string;
+  productId: string;
   currentNumberOfPicked?: number;
   quantity?: number;
 }
