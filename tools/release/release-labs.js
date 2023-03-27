@@ -69,7 +69,7 @@ function publishToNpm() {
 
 function pushToGit() {
   try {
-    runCmd(`git push origin HEAD --tags --dry-run`);
+    runCmd(`git push origin HEAD --tags`);
   } catch (e) {
     throw e;
   }
