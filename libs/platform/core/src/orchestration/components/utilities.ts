@@ -25,7 +25,6 @@ export function componentExtender<T extends Type<HTMLElement>>(
     }
 
     whenShadowAttached(): Promise<ShadowRoot> {
-      console.log('whenShadowAttached');
       return this._attachedShadow.asPromise();
     }
 
