@@ -61,7 +61,7 @@ function setLabsVersion(labsVersion) {
 
 function publishToNpm() {
   try {
-    runCmd(`npm publish ../dist/libs/template/labs`);
+    runCmd(`npm publish ../dist/libs/template/labs --access=public`);
   } catch (e) {
     throw e;
   }
