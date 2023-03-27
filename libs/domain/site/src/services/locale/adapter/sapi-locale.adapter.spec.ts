@@ -48,11 +48,10 @@ describe('SapiLocaleAdapter', () => {
 
       it('should return fallback language', () => {
         const cb = vi.fn();
-        vi.spyOn(navigator, 'language', 'get').mockReturnValue('mock-locale');
 
         adapter.getDefault().subscribe(cb);
 
-        expect(cb).toHaveBeenCalledWith('mock-locale');
+        expect(cb).toHaveBeenCalledWith('en');
       });
     });
   });
@@ -79,13 +78,10 @@ describe('SapiLocaleAdapter', () => {
 
       it('should return fallback locale', () => {
         const cb = vi.fn();
-        vi.spyOn(navigator, 'language', 'get').mockReturnValue('mock-locale');
 
         adapter.getAll().subscribe(cb);
 
-        expect(cb).toHaveBeenCalledWith([
-          { name: 'mock-locale', code: 'mock-locale' },
-        ]);
+        expect(cb).toHaveBeenCalledWith([{ name: 'en', code: 'en' }]);
       });
     });
   });
