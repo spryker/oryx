@@ -8,7 +8,6 @@ import {
   Cart,
   CartComponentAttributes,
   CartEntry,
-  CartEntryQualifier,
   CartQualifier,
   CartTotalCalculations,
   FormattedCartTotals,
@@ -24,16 +23,28 @@ export class CartController {
     this.observe = new ObserveController(host);
   }
 
-  isEmpty(data?: CartQualifier): Observable<boolean> {
-    return this.cartService.isEmpty(data);
+  protected get cartQualifier(): Observable<CartQualifier | undefined> {
+    return this.observe
+      .get('cartId')
+      .pipe(switchMap((cartId) => of(cartId ? { cartId } : undefined)));
   }
 
-  isBusy(data?: CartEntryQualifier): Observable<boolean> {
-    return this.cartService.isBusy(data);
+  isEmpty(): Observable<boolean> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.isEmpty(qualifier))
+    );
+  }
+
+  isBusy(): Observable<boolean> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.isBusy(qualifier))
+    );
   }
 
   getEntries(): Observable<CartEntry[]> {
-    return this.cartService.getEntries();
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getEntries(qualifier))
+    );
   }
 
   getEntry(groupKey?: string): Observable<CartEntry | undefined> {
@@ -46,8 +57,8 @@ export class CartController {
    * Returns the cumulated quantities of all cart entries.
    */
   getTotalQuantity(): Observable<number | null> {
-    return this.observe.get('cartId').pipe(
-      switchMap((cartId) => this.cartService.getCart({ cartId })),
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getCart(qualifier)),
       map((cart) => this.cumulateQuantity(cart))
     );
   }
@@ -55,9 +66,9 @@ export class CartController {
   getTotals(): Observable<FormattedCartTotals | null> {
     return combineLatest([
       this.observe.get('cart'),
-      this.observe
-        .get('cartId')
-        .pipe(switchMap((cartId) => this.cartService.getCart({ cartId }))),
+      this.cartQualifier.pipe(
+        switchMap((qualifier) => this.cartService.getCart(qualifier))
+      ),
     ]).pipe(
       map(([cart, cartFromId]) => cart ?? cartFromId),
       switchMap((cart) =>

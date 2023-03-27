@@ -8,9 +8,7 @@ export default {
 } as Meta;
 
 const Template: Story<CartEntriesOptions> = (): TemplateResult => {
-  return html`<oryx-cart-entries
-    .options=${{ cartId: 'multiple' }}
-  ></oryx-cart-entries>`;
+  return html`<oryx-cart-entries cartId="multiple"></oryx-cart-entries>`;
 };
 
 export const Demo = Template.bind({});
