@@ -5,7 +5,7 @@ import { asyncValue } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';
-import { ContentLinkOptions, LinkType } from './link.model';
+import { ContentLinkOptions, ContentLinkType } from './link.model';
 import { styles } from './link.styles';
 
 export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
@@ -21,7 +21,7 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
     switchMap((options) => {
       return combineLatest([
         this.options$,
-        ...(!options.type || options.type === LinkType.RawUrl
+        ...(!options.type || options.type === ContentLinkType.RawUrl
           ? [of(options.id)]
           : [
               this.semanticLinkService.get({
@@ -34,7 +34,7 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
     })
   );
 
-  protected getRel(options: ContentLinkOptions): string | null {
+  protected getRel(options: ContentLinkOptions): string | undefined {
     return [options?.noopener && 'noopener', options?.nofollow && 'nofollow']
       .filter((rel) => !!rel)
       .join(' ');
@@ -59,23 +59,24 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
 
   protected override render(): TemplateResult {
     return html`${asyncValue(this.data$, ([options, link]) => {
+      const { disabled, icon, multiLine, linkType } =
+        this.componentOptions ?? {};
+
       if (!link) {
         return html``;
       }
 
       if (options.button) {
-        return html`<oryx-button
-          part="wrapper"
-          icon="${ifDefined(options.icon?.trim())}"
-        >
+        return html`<oryx-button part="wrapper" .icon=${icon}>
           ${this.renderLink(link, options)}
         </oryx-button>`;
       }
 
       return html`<oryx-link
-        icon="${ifDefined(options.icon?.trim())}"
-        ?disabled=${options?.disabled}
-        ?multiLine=${options.multiLine}
+        .icon=${icon}
+        ?disabled=${disabled}
+        ?multiLine=${multiLine}
+        .linkType=${linkType}
       >
         ${this.renderLink(link, options)}
       </oryx-link>`;

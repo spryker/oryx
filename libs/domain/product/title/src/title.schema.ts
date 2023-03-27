@@ -1,6 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { LinkType } from '@spryker-oryx/ui/link';
 import { ProductTitleComponent } from './title.component';
 
 const tagOptions = [
@@ -22,7 +23,16 @@ export const productTitleSchema: ContentComponentSchema<ProductTitleComponent> =
     options: {
       tag: { type: FormFieldType.Select, options: tagOptions },
       maxLines: { type: FormFieldType.Number },
-      link: { type: FormFieldType.Boolean, width: 100 },
+      linkType: {
+        type: FormFieldType.Select,
+        options: [
+          { value: 'none' },
+          { value: LinkType.Link },
+          { value: LinkType.ExternalLink },
+          { value: LinkType.Neutral },
+        ],
+        width: 100,
+      },
       as: {
         type: FormFieldType.Select,
         options: [...tagOptions, { value: 'hide' }],

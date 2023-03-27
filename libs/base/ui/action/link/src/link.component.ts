@@ -11,7 +11,7 @@ export class LinkComponent
 {
   static styles = linkStyles;
 
-  @property({ reflect: true }) linkType?: LinkType;
+  @property({ reflect: true, attribute: 'link-type' }) linkType?: LinkType;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ reflect: true }) icon?: Icons | string;
   @property({ reflect: true }) multiLine?: boolean;
