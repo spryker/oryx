@@ -21,7 +21,7 @@ export const styles = css`
     padding: 100px 16% 30px;
   }
 
-  .bold-text {
+  .picked-items-info {
     font-weight: 600;
   }
 

@@ -1,14 +1,9 @@
-import {
-  asyncState,
-  i18n,
-  subscribe,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BehaviorSubject, take, tap } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
@@ -21,14 +16,11 @@ import { styles } from './picking.styles';
 export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
-  protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
-  @asyncState()
-  protected isConfirmPickingDialogOpen = valueType(
-    this.isConfirmPickingDialogOpen$
-  );
+  @state()
+  protected isConfirmPickingDialogOpen = false;
 
   @state()
-  protected partialPicking: PartialPicking | undefined;
+  protected partialPicking: PartialPicking | null = null;
 
   @state()
   protected items: PickingListItem[] = [];
@@ -88,7 +80,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         quantity: this.items[productIndex].quantity,
       };
 
-      this.isConfirmPickingDialogOpen$.next(true);
+      this.isConfirmPickingDialogOpen = true;
       return;
     }
 
@@ -107,7 +99,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected onModalClose(): void {
-    this.isConfirmPickingDialogOpen$.next(false);
+    this.isConfirmPickingDialogOpen = false;
   }
 
   protected confirmPartialPicking(): void {
@@ -120,8 +112,8 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       this.partialPicking?.currentNumberOfPicked
     );
 
-    this.partialPicking = undefined;
-    this.isConfirmPickingDialogOpen$.next(false);
+    this.partialPicking = null;
+    this.isConfirmPickingDialogOpen = false;
   }
 
   protected override render(): TemplateResult {
@@ -147,37 +139,29 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   protected renderTabContents(tabs: PickingTab[]): TemplateResult {
     return html`
-      ${when(
-        tabs.length,
-        () =>
-          html`${repeat(
-            tabs,
-            (tab) => html`<div
-              slot="panels"
-              id="tab-${tab.id}"
-              class="tab-panels"
-            >
-              ${when(
-                tab.items?.length,
-                () => html`
-                  ${repeat(
-                    tab.items,
-                    (item) => item.product.id,
-                    (item) =>
-                      html`
-                        <oryx-picking-product-card
-                          .productItem=${item}
-                          .status=${tab.id}
-                          @oryx.submit=${this.savePickingItem}
-                          @oryx.edit=${this.editPickingItem}
-                        ></oryx-picking-product-card>
-                      `
-                  )}
-                `,
-                () => this.renderFallback()
+      ${repeat(
+        tabs,
+        (tab) => html`<div slot="panels" id="tab-${tab.id}" class="tab-panels">
+          ${when(
+            tab.items?.length,
+            () => html`
+              ${repeat(
+                tab.items,
+                (item) => item.product.id,
+                (item) =>
+                  html`
+                    <oryx-picking-product-card
+                      .productItem=${item}
+                      .status=${tab.id}
+                      @oryx.submit=${this.savePickingItem}
+                      @oryx.edit=${this.editPickingItem}
+                    ></oryx-picking-product-card>
+                  `
               )}
-            </div>`
-          )}`
+            `,
+            () => this.renderFallback()
+          )}
+        </div>`
       )}
     `;
   }
@@ -219,27 +203,29 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         </div>
 
         <span>
-          You only picked
-          <span class="bold-text">
-            ${this.partialPicking?.currentNumberOfPicked} out of
+          ${i18n('picking.product-card.you-only-picked')}
+          <span class="picked-items-info">
+            ${this.partialPicking?.currentNumberOfPicked}
+            ${i18n('picking.product-card.-out-of')}
             ${this.partialPicking?.quantity}
           </span>
-          items. Do you really want to complete the pick?
+          ${i18n('picking.product-card.items')}.
+          ${i18n(
+            'picking.product-card.do-you-really-want-to-complete-the-pick?'
+          )}
         </span>
 
-        <div slot="footer">
-          <oryx-button outline type="secondary">
-            <button @click=${this.onModalClose}>
-              ${i18n('picking.product-card.cancel')}
-            </button>
-          </oryx-button>
+        <oryx-button slot="footer" outline type="secondary">
+          <button @click=${this.onModalClose}>
+            ${i18n('picking.product-card.cancel')}
+          </button>
+        </oryx-button>
 
-          <oryx-button type="primary">
-            <button @click=${this.confirmPartialPicking}>
-              ${i18n('picking.product-card.confirm')}
-            </button>
-          </oryx-button>
-        </div>
+        <oryx-button slot="footer" type="primary">
+          <button @click=${this.confirmPartialPicking}>
+            ${i18n('picking.product-card.confirm')}
+          </button>
+        </oryx-button>
       </oryx-modal>
     `;
   }
