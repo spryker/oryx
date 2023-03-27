@@ -9,11 +9,7 @@ import {
   OfflineServiceWorkerFeature,
 } from '@spryker-oryx/offline';
 import { OfflinePickingFeature } from '@spryker-oryx/picking/offline';
-import {
-  defaultFulfillmentI18nConfig,
-  fulfillmentFeatures,
-  FulfillmentFeaturesConfig,
-} from './app';
+import { fulfillmentFeatures, FulfillmentFeaturesConfig } from './app';
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
   indexedDb?: IndexedDbFeatureConfig;
@@ -60,7 +56,7 @@ export function offlineServiceWorkerFulfillmentFeatures(
 
   return [
     coreFeature,
-    new I18nFeature(config?.i18n ?? defaultFulfillmentI18nConfig),
+    new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new OfflineServiceWorkerFeature(),
     new OfflinePickingFeature(),

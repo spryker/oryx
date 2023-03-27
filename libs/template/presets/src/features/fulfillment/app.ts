@@ -20,7 +20,7 @@ export function fulfillmentFeatures(
     cartFeature,
     coreFeature,
     new RouterFeature(),
-    new I18nFeature(config?.i18n ?? defaultFulfillmentI18nConfig),
+    new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
     { resources: fulfillmentResources },
     new FulfillmentRootFeature(config?.fulfillmentRoot),
@@ -38,8 +38,4 @@ export const fulfillmentTheme = { ...theme };
 
 export const fulfillmentResources: Resources = {
   graphics: { ...resourceGraphics },
-};
-
-export const defaultFulfillmentI18nConfig: I18nFeatureOptions = {
-  locale: { defaultLocale: 'en' },
 };

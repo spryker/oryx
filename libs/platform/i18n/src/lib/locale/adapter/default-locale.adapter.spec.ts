@@ -55,13 +55,12 @@ describe('DefaultLocaleAdapter', () => {
 
   describe('getDefault() method', () => {
     describe('without config', () => {
-      it('should return navigator.language value', () => {
+      it('should return `en` value', () => {
         const callback = vi.fn();
-        vi.spyOn(navigator, 'language', 'get').mockReturnValue('mock-locale');
 
         getAdapter().getDefault().subscribe(callback);
 
-        expect(callback).toHaveBeenCalledWith('mock-locale');
+        expect(callback).toHaveBeenCalledWith('en');
       });
     });
 

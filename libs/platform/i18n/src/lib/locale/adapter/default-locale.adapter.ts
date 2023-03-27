@@ -21,7 +21,7 @@ export class DefaultLocaleAdapter implements LocaleAdapter {
   }
 
   protected getFallbackLang(): string {
-    return navigator.language;
+    return 'en';
   }
 }
 

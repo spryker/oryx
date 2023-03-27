@@ -1,6 +1,6 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject, Injector } from '@spryker-oryx/di';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, from, of } from 'rxjs';
 import { LocaleAdapter } from './adapter';
 import { DefaultLocaleService } from './default-locale.service';
 import { LocaleChanged } from './state';
@@ -59,14 +59,22 @@ describe('DefaultLocaleService', () => {
       expect(cb).toHaveBeenCalledWith('mock-locale');
     });
 
-    it('should emit LocaleChanged query with locale', () => {
+    it('should not emit LocaleChanged query with locale initially', () => {
       adapter.getDefault.mockReturnValue(of('mock-locale'));
+
+      getService().get().subscribe();
+
+      expect(testInjector.inject(MockQueryService).emit).not.toHaveBeenCalled();
+    });
+
+    it('should emit LocaleChanged query with changed locale', () => {
+      adapter.getDefault.mockReturnValue(from(['mock-locale', 'new-locale']));
 
       getService().get().subscribe();
 
       expect(testInjector.inject(MockQueryService).emit).toHaveBeenCalledWith({
         type: LocaleChanged,
-        data: 'mock-locale',
+        data: 'new-locale',
       });
     });
   });

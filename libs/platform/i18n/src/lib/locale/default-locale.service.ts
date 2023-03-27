@@ -8,7 +8,6 @@ import {
   ReplaySubject,
   shareReplay,
   takeUntil,
-  tap,
 } from 'rxjs';
 import { Locale } from '../models';
 import { DefaultLocaleAdapter, LocaleAdapter } from './adapter';
@@ -30,9 +29,14 @@ export class DefaultLocaleService implements LocaleService {
       this.setActive$
     ).pipe(
       distinctUntilChanged(),
-      tap((locale) =>
-        this.queryService.emit({ type: LocaleChanged, data: locale })
-      ),
+      map((locale, i) => {
+        // Use map to access index and emit LocaleChanged only after first value
+        if (i !== 0) {
+          this.queryService.emit({ type: LocaleChanged, data: locale });
+        }
+
+        return locale;
+      }),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
 
