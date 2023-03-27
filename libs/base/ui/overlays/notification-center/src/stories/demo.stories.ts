@@ -97,7 +97,6 @@ const Template: Story<NotificationCenterComponentAttributes> = (
       <oryx-notification-center
         position=${ifDefined(props.position)}
         ?stackable=${props.stackable}
-        .defaultAutoCloseTime=${props.defaultAutoCloseTime ?? 8 * 1000}
       ></oryx-notification-center>
     </div>
   `;

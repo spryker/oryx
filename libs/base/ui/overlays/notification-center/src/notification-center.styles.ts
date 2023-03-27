@@ -113,9 +113,9 @@ export const notificationCenterBaseStyles = css`
     transition: all var(--oryx-transition-time) var(--delay) ease;
   }
 
-  /* since there's no support... */
   :host([stackable]:hover) oryx-notification[visible]:nth-of-type(n + 1) {
     --delay: 0s;
+
     margin-block-start: 10px;
     max-height: 200px;
     margin-inline: 0;

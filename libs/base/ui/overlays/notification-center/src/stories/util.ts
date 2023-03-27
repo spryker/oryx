@@ -31,6 +31,7 @@ export const generateRandomNotification = (options: {
   scheme?: Scheme;
   closable?: boolean;
   autoClose?: boolean;
+  defaultAutoCloseTime?: number;
 }): Notification => {
   const type = options.type ?? types[getRandomIndex(types.length)];
   const scheme = options.scheme ?? schemes[getRandomIndex(schemes.length)];
@@ -42,6 +43,7 @@ export const generateRandomNotification = (options: {
     closable: options.closable,
     content: type ? 'Title' : 'Custom content',
     autoClose: options.autoClose,
+    autoCloseTime: (options.defaultAutoCloseTime ?? 1) * 1000,
   };
 };
 
