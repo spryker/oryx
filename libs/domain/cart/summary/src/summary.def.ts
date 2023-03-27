@@ -10,6 +10,8 @@ declare global {
 export const cartSummaryComponent = componentDef({
   name: 'oryx-cart-summary',
   impl: () => import('./summary.component').then((m) => m.CartSummaryComponent),
+  schema: () =>
+    import('./summary.schema').then((m) => m.cartSummaryComponentSchema),
   stylesheets: [
     {
       rules: () =>

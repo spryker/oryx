@@ -1,48 +1,53 @@
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
-import { mockCartProviders } from '@spryker-oryx/cart/mocks';
-import * as core from '@spryker-oryx/core';
+import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ProductContext, ProductService } from '@spryker-oryx/product';
+import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { siteProviders } from '@spryker-oryx/site';
-import { IconComponent } from '@spryker-oryx/ui/icon';
+import {
+  PricingService,
+  SemanticLinkService,
+  siteProviders,
+} from '@spryker-oryx/site';
 import { html } from 'lit';
-import { of } from 'rxjs';
-import { SpyInstance } from 'vitest';
-import { CartEntryOptionsComponent } from './components';
-import { CartEntryContentComponent } from './components/content';
+import { BehaviorSubject, of } from 'rxjs';
+import { QuantityInputComponent } from '../../quantity-input/src';
+import { CartService } from '../../src/services';
 import { CartEntryComponent } from './entry.component';
 import { cartEntryComponent } from './entry.def';
+import { RemoveByQuantity } from './entry.model';
 
-const mockContext = {
-  get: vi.fn().mockReturnValue(of('mockSku')),
-  provide: vi.fn(),
-};
-vi.spyOn(core, 'ContextController') as SpyInstance;
-(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
+class MockCartService implements Partial<CartService> {
+  isBusy = vi.fn().mockReturnValue(of(false));
+  isEmpty = vi.fn().mockReturnValue(of(false));
+  getCart = vi.fn().mockReturnValue(of());
+  getEntries = vi.fn().mockReturnValue(of([]));
+  updateEntry = vi.fn().mockReturnValue(of(null));
+  deleteEntry = vi.fn().mockReturnValue(of(null));
+}
+
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/cart'));
+}
+
+class mockPricingService {
+  format = vi.fn().mockReturnValue(of());
+}
 
 describe('CartEntryComponent', () => {
   let element: CartEntryComponent;
-  const product = MockProductService.mockProducts[0];
-  const sku = product.sku as string;
+  let service: MockCartService;
 
-  const options = { sku, quantity: 1 };
-
-  const getPart = <T = Element>(selector: string): T => {
-    return element.renderRoot.querySelector(selector) as unknown as T;
-  };
+  const entry = { groupKey: '1', sku: '1', quantity: 1 };
 
   beforeAll(async () => {
     await useComponent(cartEntryComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         ...siteProviders,
-        ...mockCartProviders,
         {
           provide: ProductService,
           useClass: MockProductService,
@@ -51,281 +56,311 @@ describe('CartEntryComponent', () => {
           provide: ContextService,
           useClass: DefaultContextService,
         },
+        {
+          provide: CartService,
+          useClass: MockCartService,
+        },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
+        {
+          provide: PricingService,
+          useClass: mockPricingService,
+        },
       ],
     });
-    element = await fixture(html` <cart-entry
-      .options=${options}
-    ></cart-entry>`);
+
+    service = testInjector.inject(CartService) as unknown as MockCartService;
   });
 
-  afterEach(() => {
-    destroyInjector();
-    vi.clearAllMocks();
-  });
+  afterEach(() => destroyInjector());
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
-  });
-
-  describe('providing the context', () => {
-    const sku = 'sku';
-
-    it('should provide sku from the options', async () => {
-      await fixture(html`<cart-entry .options="${{ sku }}"></cart-entry>`);
-
-      expect(mockContext.provide).toHaveBeenCalledWith(ProductContext.SKU, sku);
-    });
-  });
-
-  describe('"hidePreview" option', () => {
-    describe('when option is not provided', () => {
-      it('should render product-media', () => {
-        expect(element).toContainElement('oryx-product-media');
-      });
-    });
-
-    describe('when option is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(html` <cart-entry
-          .options=${{ sku, hidePreview: true }}
-        ></cart-entry>`);
-      });
-      it('should not render product-media', () => {
-        expect(element).not.toContainElement('oryx-product-media');
-      });
-    });
-  });
-
-  describe('"removeButtonIcon" option', () => {
-    describe('when option is not provided', () => {
-      it('should set default icon type', () => {
-        expect(getPart<IconComponent>('oryx-icon-button oryx-icon').type).toBe(
-          'close'
-        );
-      });
-    });
-
-    describe('when option is provided', () => {
-      const removeButtonIcon = 'trash';
-
-      beforeEach(async () => {
-        element = await fixture(html` <cart-entry
-          .options=${{ sku, removeButtonIcon }}
-        ></cart-entry>`);
-      });
-      it('should set custom icon type', () => {
-        expect(getPart<IconComponent>('oryx-icon-button oryx-icon').type).toBe(
-          removeButtonIcon
-        );
-      });
-    });
-  });
-
-  describe('when no "selectedProductOptions"', () => {
-    it('should not render the section', () => {
-      expect(element).not.toContainElement('cart-entry-options');
-    });
-  });
-
-  describe('when "selectedProductOptions" is provided', () => {
+  describe('when cart entries are loaded', () => {
     beforeEach(async () => {
-      element = await fixture(html` <cart-entry
-        .options=${{ ...options, selectedProductOptions: [{}] }}
-      ></cart-entry>`);
+      service.getEntries.mockReturnValue(of([entry]));
     });
 
-    it('should render the section', () => {
-      expect(element).toContainElement('cart-entry-options');
-    });
-
-    describe('when options toggled', () => {
-      beforeEach(() => {
-        getPart('cart-entry-options')?.dispatchEvent(
-          new CustomEvent('toggle', { detail: { state: true } })
-        );
-      });
-
-      it('should set "show-options" attribute', async () => {
-        await elementUpdated(element);
-        expect(
-          getPart<CartEntryOptionsComponent>('cart-entry-options').hasAttribute(
-            'show-options'
-          )
-        ).toBe(true);
-      });
-    });
-  });
-
-  describe('when quantity is submitted', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      element = await fixture(html` <cart-entry
-        .options=${options}
-        @oryx.remove=${callback}
-      ></cart-entry>`);
-
-      getPart('cart-entry-content')?.dispatchEvent(
-        new CustomEvent('submit', { detail: { quantity: 2 } })
-      );
-    });
-
-    it('should not dispatch @oryx.remove event', () => {
-      expect(callback).not.toHaveBeenCalled();
-    });
-
-    describe('and quantity equals to 0', () => {
-      const callback = vi.fn();
-
-      beforeEach(async () => {
-        element = await fixture(html` <cart-entry
-          .options=${options}
-          @oryx.remove=${callback}
-        ></cart-entry>`);
-
-        getPart('cart-entry-content')?.dispatchEvent(
-          new CustomEvent('submit', { detail: { quantity: 0 } })
-        );
-      });
-
-      it('should set "disabled" attribute', () => {
-        expect(element).toContainElement('cart-entry-content[disabled]');
-      });
-
-      it('should not dispatch @oryx.remove event', () => {
-        expect(callback).not.toHaveBeenCalled();
-      });
-
-      describe('when "silentRemove" option provided', () => {
-        const callback = vi.fn();
-
+    describe('readonly', () => {
+      describe('when readonly is false', () => {
         beforeEach(async () => {
-          element = await fixture(html` <cart-entry
-            .options=${{ ...options, silentRemove: true }}
-            @oryx.remove=${callback}
-          ></cart-entry>`);
-
-          getPart('cart-entry-content')?.dispatchEvent(
-            new CustomEvent('submit', { detail: { quantity: 0 } })
-          );
+          element = await fixture(html` <oryx-cart-entry></oryx-cart-entry>`);
         });
 
-        it('should dispatch @oryx.remove event', () => {
-          expect(callback).toHaveBeenCalled();
-        });
-      });
-    });
-  });
-
-  describe('removing', () => {
-    describe('when confirmation is not required', () => {
-      const callback = vi.fn();
-
-      beforeEach(async () => {
-        element = await fixture(html` <cart-entry
-          .options=${options}
-          @oryx.remove=${callback}
-        ></cart-entry>`);
-      });
-
-      it('should render the button', () => {
-        expect(element).toContainElement('oryx-icon-button button');
-      });
-
-      it('should not render the confirmation', () => {
-        expect(element).not.toContainElement('cart-entry-confirmation');
-      });
-
-      describe('and the button is clicked', () => {
-        beforeEach(() => {
-          getPart<HTMLButtonElement>('oryx-icon-button button')?.click();
-        });
-
-        it('should render the confirmation', () => {
-          expect(element).toContainElement('cart-entry-confirmation');
-        });
-
-        it('should not dispatch @oryx.remove event', () => {
-          expect(callback).not.toHaveBeenCalled();
+        it('should render quantity input', () => {
+          expect(element).toContainElement('oryx-cart-quantity-input');
         });
       });
 
-      describe('and the button is clicked with "silentRemove"', () => {
+      describe('when readonly is true', () => {
         beforeEach(async () => {
-          element = await fixture(html` <cart-entry
-            .options=${{ ...options, silentRemove: true }}
-            @oryx.remove=${callback}
-          ></cart-entry>`);
-
-          getPart<HTMLButtonElement>('oryx-icon-button button')?.click();
+          element = await fixture(html`<oryx-cart-entry
+            readonly
+          ></oryx-cart-entry>`);
         });
 
-        it('should dispatch @oryx.remove event', () => {
-          expect(callback).toHaveBeenCalled();
+        it('should not render quantity input', () => {
+          expect(element).not.toContainElement('oryx-cart-quantity-input');
         });
       });
     });
 
-    describe('when confirmation is required', () => {
-      const callback = vi.fn();
+    describe('available', () => {
+      describe('when there is a quantity of 3 available', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html` <oryx-cart-entry sku="1"></oryx-cart-entry>`
+          );
+        });
 
+        it('should set the max property of the quantity input to 3', () => {
+          const quantityInput = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          expect((quantityInput as QuantityInputComponent).max).toBe(3);
+        });
+      });
+
+      describe('when availability is set to isNeverOutOfStock', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html` <oryx-cart-entry sku="2"></oryx-cart-entry>`
+          );
+        });
+
+        it('should set the max property to Infinity', () => {
+          const quantityInput = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          expect((quantityInput as QuantityInputComponent).max).toBe(Infinity);
+        });
+      });
+
+      describe('when available is not provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html` <oryx-cart-entry sku="3"></oryx-cart-entry>`
+          );
+        });
+
+        it('should set the max property to Infinity', () => {
+          const quantityInput = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          expect((quantityInput as QuantityInputComponent).max).toBe(Infinity);
+        });
+      });
+    });
+
+    describe('options', () => {
+      describe('enableItemImage', () => {
+        describe('when enableItemImage is not provided', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry></oryx-cart-entry>`);
+          });
+
+          it('should render product-media by default', () => {
+            expect(element).toContainElement('oryx-product-media');
+          });
+        });
+
+        describe('when enableItemImage is false', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              .options=${{ enableItemImage: false }}
+            ></oryx-cart-entry>`);
+          });
+          it('should not render product-media', () => {
+            expect(element).not.toContainElement('oryx-product-media');
+          });
+        });
+
+        describe('when enableItemImage is true', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              .options=${{ enableItemImage: true }}
+            ></oryx-cart-entry>`);
+          });
+          it('should not render product-media', () => {
+            expect(element).toContainElement('oryx-product-media');
+          });
+        });
+      });
+
+      describe('enableId', () => {
+        describe('when enableItemId is not provided', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+            ></oryx-cart-entry>`);
+          });
+
+          it('should render enableItemId by default', () => {
+            expect(element).toContainElement('oryx-product-id');
+          });
+        });
+
+        describe('when enableId is false', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemId: false }}
+            ></oryx-cart-entry>`);
+          });
+          it('should not render enableItemId', () => {
+            expect(element).not.toContainElement('oryx-product-id');
+          });
+        });
+
+        describe('when enableItemId is true', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemId: true }}
+            ></oryx-cart-entry>`);
+          });
+          it('should render enableItemId', () => {
+            expect(element).toContainElement('oryx-product-id');
+          });
+        });
+      });
+
+      describe('enableItemPrice', () => {
+        describe('when enableItemPrice is not provided', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+            ></oryx-cart-entry>`);
+          });
+
+          it('should render enableItemPrice by default', () => {
+            expect(element).toContainElement('oryx-product-price');
+          });
+        });
+
+        describe('when enableItemPrice is false', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemPrice: false }}
+            ></oryx-cart-entry>`);
+          });
+          it('should not render enableItemPrice', () => {
+            expect(element).not.toContainElement('oryx-product-price');
+          });
+        });
+
+        describe('when enableItemPrice is true', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              .options=${{ enableItemPrice: true }}
+            ></oryx-cart-entry>`);
+          });
+          it('should render enableItemPrice', () => {
+            expect(element).toContainElement('oryx-product-price');
+          });
+        });
+      });
+
+      describe('removeByQuantity', () => {
+        const quantityInput = () =>
+          element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          ) as QuantityInputComponent;
+
+        describe('when removeByQuantity is Not Allowed', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              quantity="1"
+              .options=${{ removeByQuantity: RemoveByQuantity.NotAllowed }}
+            ></oryx-cart-entry>`);
+          });
+
+          it('should set the min property of the quantity input to 1', () => {
+            expect(quantityInput().min).toBe(1);
+          });
+
+          it('should not have a decreaseIcon icon', () => {
+            expect(quantityInput().decreaseIcon).toBeUndefined();
+          });
+        });
+
+        describe('when removeByQuantity is ShowBin', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              quantity="1"
+              .options=${{ removeByQuantity: RemoveByQuantity.ShowBin }}
+            ></oryx-cart-entry>`);
+          });
+
+          it('should set the min property of the quantity input to 0', () => {
+            expect(quantityInput().min).toBe(0);
+          });
+
+          it('should have a decreaseIcon icon (trash)', () => {
+            expect(quantityInput().decreaseIcon).toBe('trash');
+          });
+        });
+
+        describe('when removeByQuantity is Allowed', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              key="1"
+              quantity="1"
+              .options=${{ removeByQuantity: RemoveByQuantity.Allowed }}
+            ></oryx-cart-entry>`);
+          });
+
+          it('should set the min property of the quantity input to 0', () => {
+            expect(quantityInput().min).toBe(0);
+          });
+
+          it('should not have a decreaseIcon icon', () => {
+            expect(quantityInput().decreaseIcon).toBeUndefined();
+          });
+        });
+      });
+    });
+
+    describe('and the cart is busy', () => {
+      const isBusy$ = new BehaviorSubject(true);
       beforeEach(async () => {
-        element = await fixture(html` <cart-entry
-          .options=${{ ...options }}
-          @oryx.remove=${callback}
-        ></cart-entry>`);
+        service.getEntries.mockReturnValue(of([entry]));
+        service.isBusy.mockReturnValue(isBusy$);
 
-        getPart<HTMLButtonElement>('oryx-icon-button button')?.click();
+        element = await fixture(html` <oryx-cart-entry
+          key="1"
+          .options=${{ removeByQuantity: RemoveByQuantity.ShowBin }}
+        ></oryx-cart-entry>`);
       });
 
-      it('should not render the button', () => {
-        expect(element).not.toContainElement('oryx-icon-button button');
+      it('should disable the oryx-cart-quantity-input', () => {
+        expect(element).toContainElement('oryx-cart-quantity-input[disabled]');
       });
 
-      it('should render the confirmation', () => {
-        expect(element).toContainElement('cart-entry-confirmation');
+      it('should disable the actions', () => {
+        expect(element).toContainElement('oryx-icon-button[disabled]');
       });
 
-      describe('and removing is confirmed', () => {
+      describe('and when the cart is no longer busy', () => {
         beforeEach(() => {
-          getPart('cart-entry-confirmation')?.dispatchEvent(
-            new CustomEvent('remove')
+          isBusy$.next(false);
+        });
+        it('should enable the oryx-cart-quantity-input', () => {
+          expect(element).toContainElement(
+            'oryx-cart-quantity-input:not([disabled])'
           );
         });
 
-        it('should dispatch @oryx.remove event', () => {
-          expect(callback).toHaveBeenCalled();
+        it('should enable the actions', () => {
+          expect(element).toContainElement('oryx-icon-button:not([disabled])');
         });
       });
-
-      describe('and removing is cancelled', () => {
-        beforeEach(() => {
-          getPart('cart-entry-confirmation')?.dispatchEvent(
-            new CustomEvent('cancel')
-          );
-        });
-
-        it('should remove "disabled" attribute', () => {
-          expect(
-            getPart<CartEntryContentComponent>(
-              'cart-entry-content'
-            ).hasAttribute('disabled')
-          ).toBe(false);
-        });
-      });
-    });
-  });
-
-  describe('when the entry is readonly', () => {
-    beforeEach(async () => {
-      element = await fixture(html` <cart-entry
-        .options=${{ ...options, readonly: true }}
-      ></cart-entry>`);
-    });
-
-    it('should not render confirmation part', () => {
-      expect(element).not.toContainElement('oryx-icon-button');
-      expect(element).not.toContainElement('cart-entry-confirmation');
     });
   });
 });
