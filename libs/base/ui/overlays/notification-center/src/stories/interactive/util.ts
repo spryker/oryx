@@ -1,12 +1,12 @@
 import { NotificationComponent } from '@spryker-oryx/ui/notification';
 import {
+  Notification,
   NotificationCenterComponent,
   NotificationService,
-  NotificationStrategy,
 } from '../../index';
 import { generateNotification } from '../util';
 
-export const open = (strategy: NotificationStrategy = {}): string =>
+export const open = (strategy: Notification = {}): string =>
   new NotificationService().getCenter().open(generateNotification(strategy));
 export const getNotification = (
   center: NotificationCenterComponent,

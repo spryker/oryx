@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Schemes } from '../../../notification/src';
+import { Scheme } from '../../../notification/src';
 import {
   NotificationCenterComponentAttributes,
   NotificationPosition,
@@ -16,6 +16,9 @@ export default {
   args: {
     position: NotificationPosition.TopEnd,
     stackable: true,
+    closable: true,
+    autoClose: true,
+    defaultAutoCloseTime: 8,
   },
   argTypes: {
     position: {
@@ -39,9 +42,11 @@ export default {
       ],
       table: { category: 'Demo' },
     },
+    closable: { table: { category: 'Demo' } },
+    autoClose: { table: { category: 'Demo' } },
     scheme: {
       control: { type: 'radio' },
-      options: [Schemes.LIGHT, Schemes.DARK],
+      options: [Scheme.Light, Scheme.Dark],
       table: { category: 'Demo' },
     },
   },
@@ -49,7 +54,8 @@ export default {
 
 interface DemoProps {
   type?: AlertType;
-  scheme?: Schemes;
+  scheme?: Scheme;
+  closable?: boolean;
 }
 
 const service = new NotificationService();
@@ -60,13 +66,13 @@ const Template: Story<NotificationCenterComponentAttributes> = (
   const pushSticky = (): void => {
     service
       .getCenter('#parent-with-sticky', props.position)
-      .open(generateRandomNotification(props.type, props.scheme));
+      .open(generateRandomNotification(props));
   };
 
   const pushStatic = (): void => {
     service
       .getCenter('#parent-with-static')
-      .open(generateRandomNotification(props.type, props.scheme));
+      .open(generateRandomNotification(props));
   };
 
   return html`
@@ -91,6 +97,7 @@ const Template: Story<NotificationCenterComponentAttributes> = (
       <oryx-notification-center
         position=${ifDefined(props.position)}
         ?stackable=${props.stackable}
+        .defaultAutoCloseTime=${props.defaultAutoCloseTime ?? 8 * 1000}
       ></oryx-notification-center>
     </div>
   `;

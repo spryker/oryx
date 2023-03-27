@@ -1,143 +1,110 @@
 import { LitElement, ReactiveController } from 'lit';
-import { Schemes } from '../../notification/src';
-import {
-  NotificationRegistry,
-  NotificationStrategy,
-} from './notification-center.model';
+import { NotificationRegistry } from './notification-center.model';
 
-const defaultStrategy: NotificationStrategy = {
-  scheme: Schemes.LIGHT,
-  autoClose: true,
-  autoCloseTime: 8000,
-  closable: true,
-  floating: true,
-};
+import { AlertType } from '@spryker-oryx/ui';
+import { Notification } from '../../notification';
 
-const createKey = (registry: NotificationRegistry[]): string => {
-  return String(
-    Number(
-      registry
-        .filter(({ key }) => !!key)
-        .sort((a, b) => Number(b.key) - Number(a.key))[0]?.key || Date.now()
-    ) + 1
-  );
-};
+const DESTROY_DELAY_TIME = 600;
 
 export class RegistryController implements ReactiveController {
-  private _registry: NotificationRegistry[] = [];
-  private _delayedCallbacks: { [key: string]: ReturnType<typeof setTimeout> } =
-    {};
+  protected items: NotificationRegistry[] = [];
+  protected autoCloseQueue: {
+    [key: string]: {
+      autoCloseTime?: number;
+      timeout: ReturnType<typeof setTimeout>;
+    };
+  } = {};
 
-  set registry(newRegistry: NotificationRegistry[]) {
-    //need to add keys and delayed callback to the new Notification items
-    const newRegistryWithParams: NotificationRegistry[] = newRegistry.map(
-      (item): NotificationRegistry => {
-        if (!item.key) {
-          //get last key or generate new one
-          const key = createKey(this.registry);
+  getItems(): NotificationRegistry[] {
+    return this.items;
+  }
 
-          const mergedStrategy = {
-            ...defaultStrategy,
-            ...item,
-          };
-
-          //add auto-close handler
-          if (mergedStrategy.autoClose) {
-            this._delayedCallbacks[key] = setTimeout(() => {
-              this.toggleVisibility(key);
-            }, mergedStrategy.autoCloseTime);
-          }
-
-          return {
-            ...mergedStrategy,
-            key,
-            visible: false,
-          };
-        }
-
-        return item;
-      }
-    );
-
-    this._registry = newRegistryWithParams;
+  add(item: Notification): void {
+    const strategy = this.resolveStrategy(item);
+    const registryItem: NotificationRegistry = {
+      key: Date.now(),
+      ...strategy,
+    };
+    if (registryItem.autoClose) {
+      this.scheduleAutoClosing(registryItem);
+    }
+    this.items.unshift(registryItem);
     this.host.requestUpdate();
+    setTimeout(() => {
+      registryItem.visible = true;
+      this.host.requestUpdate();
+    }, 0);
   }
 
-  get registry(): NotificationRegistry[] {
-    return this._registry;
+  protected scheduleAutoClosing(item: NotificationRegistry): void {
+    // const key = item.key as string;
+    this.autoCloseQueue[item.key] = {
+      autoCloseTime: item.autoCloseTime,
+      timeout: setTimeout(() => {
+        this.destroy(item.key);
+      }, item.autoCloseTime),
+    };
   }
 
-  preventAutoClose(targetKey: string): void {
-    if (this.notificationIsVisible(targetKey)) {
-      clearTimeout(this._delayedCallbacks[targetKey]);
-      return;
+  protected resolveStrategy(item: Notification): Notification {
+    const strategy = { floating: true, closable: true, ...item };
+
+    if (strategy.autoClose === undefined) {
+      strategy.autoClose =
+        strategy.type === AlertType.Info || AlertType.Success === strategy.type;
     }
 
-    this.toggleVisibility(targetKey);
-  }
-
-  handleNotificationClose(key: string): void {
-    this.removeFromRegistry(key, true);
-  }
-
-  handleTransitionEnd(key: string): void {
-    if (!this.notificationIsVisible(key)) {
-      this.removeFromRegistry(key);
+    if (!strategy.closable && !strategy.autoClose) {
+      strategy.closable = true;
     }
-  }
-
-  protected removeFromRegistry(targetKey: string, force = false): void {
-    if (force) {
-      //should clear the delayed callback
-      this.preventAutoClose(targetKey);
-    }
-    this.registry = this.registry.filter(({ key }) => targetKey !== key);
-  }
-
-  protected toggleVisibility(targetKey: string): void {
-    this.registry = this.registry.map((item) => {
-      if (item.key === targetKey) {
-        return {
-          ...item,
-          visible: !item.visible,
-          _mounted: true,
-        };
-      }
-
-      return item;
-    });
-  }
-
-  protected notificationIsVisible(targetKey: string): boolean {
-    return Boolean(
-      (
-        this.registry.find(
-          ({ key }) => key === targetKey
-        ) as NotificationRegistry
-      )?.visible
-    );
-  }
-
-  //need to set visible attr to true for new notifications to run animation
-  protected ensureNotificationMountedState(): void {
-    if (this.registry.some(({ key, _mounted }) => key && !_mounted)) {
-      setTimeout(() => {
-        this.registry = this.registry.map((strategy) => ({
-          ...strategy,
-          visible: true,
-          _mounted: true,
-        }));
-      }, 0);
-    }
+    return strategy;
   }
 
   constructor(public host: LitElement) {
     this.host.addController(this);
   }
 
-  hostUpdated(): void {
-    this.ensureNotificationMountedState();
+  hostConnected?(): void {
+    this.host.addEventListener('oryx.close', (ev: any) =>
+      this.onClose(ev.detail.key)
+    );
+    this.host.addEventListener('mouseenter', () => this.onMouseEnter());
+    this.host.addEventListener('mouseleave', () => this.continueAutoClose());
   }
 
-  hostConnected?(): void;
+  protected onClose(key: number): void {
+    this.destroy(key);
+  }
+
+  protected onMouseEnter(): void {
+    Object.keys(this.autoCloseQueue).forEach((key) => {
+      clearTimeout(this.autoCloseQueue[Number(key)].timeout);
+    });
+  }
+
+  protected continueAutoClose(): void {
+    Object.keys(this.autoCloseQueue).forEach((key) => {
+      this.autoCloseQueue[Number(key)].timeout = setTimeout(() => {
+        this.destroy(Number(key));
+      }, this.autoCloseQueue[Number(key)].autoCloseTime);
+    });
+  }
+
+  protected destroy(key: number): void {
+    const item = this.items.find((item) => item.key === key);
+    if (!item) return;
+    item.visible = false;
+    this.host.requestUpdate();
+    setTimeout(() => {
+      this.remove(item);
+    }, DESTROY_DELAY_TIME);
+  }
+
+  protected remove(item: NotificationRegistry): void {
+    const index = this.items.indexOf(item, 0);
+    if (index > -1) {
+      this.items.splice(index, 1);
+    }
+    this.host.requestUpdate();
+  }
 }

@@ -1,6 +1,11 @@
-import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { notificationComponent } from '@spryker-oryx/ui';
+import {
+  CLOSE_EVENT,
+  NotificationComponent,
+  NotificationEvent,
+} from '../../notification/src';
 import { NotificationCenterComponent } from './notification-center.component';
 import { notificationCenterComponent } from './notification-center.def';
 
@@ -8,39 +13,79 @@ describe('NotificationCenterComponent', () => {
   let element: NotificationCenterComponent;
 
   beforeAll(async () => {
+    vi.useFakeTimers();
     await useComponent([notificationCenterComponent, notificationComponent]);
   });
 
-  describe('handle notification', () => {
+  afterEach(() => {
+    vi.clearAllTimers();
+  });
+
+  describe('when notification are provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-notification-center></oryx-notification-center>
       `);
-    });
-
-    it('should open new notification', async () => {
       element.open({});
       await element.updateComplete;
-      await elementUpdated(element);
-      expect(element.registry.length).toBe(1);
-      // Has <style>...</style> as a children
-      expect(element.renderRoot.children.length).toBe(2);
     });
 
-    it('should close notification by clicking on close button', async () => {
-      element.open({});
-      await element.updateComplete;
-      await elementUpdated(element);
+    it('should render a notification', () => {
+      expect(
+        element.renderRoot.querySelectorAll('oryx-notification').length
+      ).toBe(1);
+    });
 
-      const notification = element.renderRoot?.children[0];
-      notification?.shadowRoot?.querySelector('button')?.click();
+    describe('when multiple notifications are provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-notification-center></oryx-notification-center>
+        `);
+        element.open({});
+        element.open({});
+        vi.advanceTimersByTime(10);
+        await element.updateComplete;
+      });
 
-      await element.updateComplete;
-      await elementUpdated(element);
+      it('should open two notifications', () => {
+        expect(
+          element.renderRoot.querySelectorAll('oryx-notification[visible]')
+            .length
+        ).toBe(2);
+      });
 
-      expect(element.registry.length).toBe(0);
-      // Has <style>...</style> as a children
-      expect(element.renderRoot.children.length).toBe(1);
+      describe('and the close event is dispatched', () => {
+        beforeEach(async () => {
+          const key =
+            element.shadowRoot?.querySelector<NotificationComponent>(
+              'oryx-notification'
+            )?.key;
+          element.dispatchEvent(
+            new CustomEvent<NotificationEvent>(CLOSE_EVENT, {
+              detail: { key },
+              composed: true,
+              bubbles: true,
+            })
+          );
+          vi.advanceTimersByTime(1);
+        });
+
+        it('should have an invisible notification', () => {
+          expect(element).toContainElement('oryx-notification:not([visible])');
+        });
+
+        describe('and when the delay is passed', () => {
+          beforeEach(async () => {
+            vi.advanceTimersByTime(600);
+          });
+
+          it('should have only one notification left', () => {
+            expect(
+              element.shadowRoot?.querySelectorAll('oryx-notification').length
+            ).toBe(1);
+          });
+        });
+      });
     });
   });
 });
