@@ -1,4 +1,4 @@
-import { FeatureOptions } from '../../services';
+import { FeatureOptions } from '../../services/feature-options';
 import { ComponentsInfo, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
 import { Theme, ThemePlugin } from '../theme';

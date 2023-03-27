@@ -2,7 +2,6 @@ import {
   AppPlugin,
   AppPluginAfterApply,
   AppPluginBeforeApply,
-  ErrorService,
   HydrationService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
@@ -39,9 +38,6 @@ export class RootPlugin
   }
 
   apply(): void {
-    // TODO - remove when we have app initializers
-    resolve(ErrorService).initialize();
-
     if (!document.querySelector(rootInjectable.get())?.shadowRoot) {
       resolve(RouterService).go(window.location.pathname);
     }

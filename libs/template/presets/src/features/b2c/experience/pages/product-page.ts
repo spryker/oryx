@@ -12,7 +12,10 @@ export const ProductPage: StaticComponent = {
           type: 'experience-composition',
           options: { data: { rules: [{ padding: '30px 0' }] } },
           components: [
-            { type: 'oryx-product-labels' },
+            {
+              type: 'oryx-product-labels',
+              options: { data: { excluded: 'sale %' } },
+            },
             { type: 'oryx-product-images' },
             { type: 'oryx-product-description' },
             { type: 'oryx-product-attributes' },
@@ -42,10 +45,9 @@ export const ProductPage: StaticComponent = {
             { type: 'oryx-product-average-rating' },
             { type: 'oryx-product-id' },
             {
-              type: 'oryx-product-labels',
-              options: { data: { included: 'sale %', invert: true } },
+              type: 'oryx-product-price',
+              options: { data: { enableSalesLabel: true } },
             },
-            { type: 'oryx-product-price' },
             { type: 'oryx-cart-add' },
           ],
         },

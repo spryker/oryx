@@ -1,20 +1,53 @@
-import { CartEntry } from '@spryker-oryx/cart';
 import { ProductAvailability } from '@spryker-oryx/product';
-import { Icons } from '@spryker-oryx/ui/icon';
 
-export interface CartEntryProperties {
-  options?: CartEntryOptions;
-}
-export interface CartEntryOptions extends CartEntry {
+export interface CartEntryAttributes {
   /**
-   * Makes the options section expanded by default.
+   * The entry key represents the unique identifier of the cart entry.
    */
-  defaultExpandedOptions?: boolean;
+  key?: string;
+
+  /**
+   * The sku represents the product or service for the cart entry.
+   */
+  sku?: string;
+
+  /**
+   * The number of items for the cart entry.
+   */
+  quantity?: number;
+
+  /**
+   * The price represents the non formatted price for the cart entry's SKU.
+   */
+  price?: number;
+
+  /**
+   * Indicates whether the cart entry can be edited. In readonly mode,
+   * the quantity input and actions are hidden in the UI.
+   */
+  readonly?: boolean;
+}
+export interface CartEntryOptions {
+  /**
+   * Indicates whether the cart entry can be edited. In readonly mode,
+   * the quantity input and actions are hidden in the UI.
+   */
+  readonly?: boolean;
+
+  /**
+   * Indicates whether the product ID is rendered on the cart entry.
+   */
+  enableItemId?: boolean;
 
   /**
    * Control showing product preview inside entry.
    */
-  hidePreview?: boolean;
+  enableItemImage?: boolean;
+
+  /**
+   * Control showing product price inside entry.
+   */
+  enableItemPrice?: boolean;
 
   /**
    * Allow to remove entry when quantity is set to 0.
@@ -23,31 +56,19 @@ export interface CartEntryOptions extends CartEntry {
   removeByQuantity?: RemoveByQuantity;
 
   /**
+   * Renders a notification when the cart entry is updated.
+   */
+  notifyOnUpdate?: boolean;
+
+  /**
+   * Renders a notification when the cart entry is removed.
+   */
+  notifyOnRemove?: boolean;
+
+  /**
    * Emit removing immediately without confirmation.
    */
-  silentRemove?: boolean;
-
-  /**
-   * Custom icon for remove entry button.
-   *
-   * @default 'close'
-   */
-  removeButtonIcon?: Icons;
-
-  /**
-   * Indicates that all types of interactions are disabled
-   */
-  disabled?: boolean;
-
-  /**
-   * Indicates that entry is updating
-   */
-  updating?: boolean;
-
-  /**
-   * Makes the entry readonly that prevents any interaction with it
-   */
-  readonly?: boolean;
+  confirmBeforeRemove?: boolean;
 }
 
 export enum RemoveByQuantity {
@@ -59,17 +80,14 @@ export enum RemoveByQuantity {
   /**
    * Allows to remove the product from cart when the quantity becomes zero.
    */
-  AllowZero = 'allowZero',
+  Allowed = 'allowed',
+
+  /**
+   * Not allowed to remove the item by zero quantity.
+   */
+  NotAllowed = 'not-allowed',
 }
 
 export interface CartEntryCompositionOptions extends CartEntryOptions {
-  showOptions?: boolean;
-  confirmationRequired?: boolean;
   availability?: ProductAvailability;
 }
-
-export interface CartEntryPrice {
-  price?: number;
-}
-
-export const REMOVE_EVENT = 'oryx.remove';

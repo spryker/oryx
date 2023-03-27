@@ -81,7 +81,7 @@ describe('ProductPriceComponent', () => {
 
   describe('when no price is provided', () => {
     beforeEach(async () => {
-      vi.spyOn(mockProductService, 'get').mockImplementationOnce(() => of());
+      vi.spyOn(mockProductService, 'get').mockImplementation(() => of());
       element = await fixture(
         html`<oryx-product-price sku="123"></oryx-product-price>`
       );
@@ -92,7 +92,7 @@ describe('ProductPriceComponent', () => {
     });
   });
 
-  describe('when a default price is provided', () => {
+  describe('when only a default price is provided', () => {
     beforeEach(async () => {
       vi.spyOn(mockProductService, 'get').mockImplementation(() =>
         of({ price: { defaultPrice: mockEurNet } })
@@ -106,12 +106,12 @@ describe('ProductPriceComponent', () => {
       expect(element).toContainElement('span[part="sales"]');
     });
 
-    it(`should render the vat`, () => {
-      expect(element).toContainElement('span[part="vat"]');
+    it(`should render the tax`, () => {
+      expect(element).toContainElement('span[part="tax"]');
     });
   });
 
-  describe('when an original price is provided', () => {
+  describe('when only an original price is provided', () => {
     beforeEach(async () => {
       vi.spyOn(mockProductService, 'get').mockImplementation(() =>
         of({ price: { originalPrice: mockEurNet } })
@@ -122,11 +122,11 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the original price`, () => {
-      expect(element).toContainElement('span[part="original"]');
+      expect(element).toContainElement('span[part="sales"]');
     });
 
-    it(`should render the vat`, () => {
-      expect(element).toContainElement('span[part="vat"]');
+    it(`should render the tax`, () => {
+      expect(element).toContainElement('span[part="tax"]');
     });
   });
 
@@ -144,12 +144,12 @@ describe('ProductPriceComponent', () => {
       expect(element).toContainElement('span[part="sales"]');
     });
 
-    it(`should render the original price`, () => {
-      expect(element).toContainElement('span[part="original"]');
+    it(`should render the tax`, () => {
+      expect(element).toContainElement('span[part="tax"]');
     });
 
-    it(`should render the vat`, () => {
-      expect(element).toContainElement('span[part="vat"]');
+    it(`should render the original price`, () => {
+      expect(element).toContainElement('span[part="original"]');
     });
   });
 
@@ -164,7 +164,7 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the tax excluded message`, () => {
-      const vat = element.shadowRoot?.querySelector('span[part="vat"]');
+      const vat = element.shadowRoot?.querySelector('span[part="tax"]');
       expect(vat?.textContent).toContain('Tax excluded');
     });
   });
@@ -182,7 +182,7 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the tax included message`, () => {
-      const vat = element.shadowRoot?.querySelector('span[part="vat"]');
+      const vat = element.shadowRoot?.querySelector('span[part="tax"]');
       expect(vat?.textContent).toContain('Tax included');
     });
   });

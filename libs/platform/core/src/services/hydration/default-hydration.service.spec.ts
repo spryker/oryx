@@ -7,7 +7,7 @@ import {
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
-import { AppRef } from '../../orchestration';
+import { AppRef } from '../../orchestration/app';
 import { DefaultHydrationService } from './default-hydration.service';
 import { HydrationService, HydrationTrigger } from './hydration.service';
 

@@ -69,7 +69,11 @@ export const styles = css`
 
   .discount oryx-heading[slot='aside'],
   .discounts span:last-child {
-    color: var(--oryx-color-highlight-300);
+    color: var(--oryx-color-highlight-400);
     white-space: nowrap;
+  }
+
+  .summary-price {
+    display: grid;
   }
 `;

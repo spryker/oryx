@@ -1,9 +1,10 @@
+import { OnDestroy } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 
 export const HydrationService = 'oryx.HydrationService';
 export const HydrationTrigger = 'oryx.HydrationTrigger*';
 
-export interface HydrationService {
+export interface HydrationService extends OnDestroy {
   hydrateOnDemand(element: HTMLElement, skipMissMatch?: boolean): Promise<void>;
   initHydrateHooks(immediate?: boolean): void;
 }

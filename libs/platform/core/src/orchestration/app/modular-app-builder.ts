@@ -1,5 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
-import { FeatureOptions } from '../../services';
+import { FeatureOptions } from '../../services/feature-options';
 import {
   ComponentsInfo,
   ComponentsOptions,
@@ -16,7 +16,6 @@ import {
   AppFeature,
   ModularAppBuilderOptions,
 } from './app.model';
-
 /**
  * Creates application with additional modular methods.
  */

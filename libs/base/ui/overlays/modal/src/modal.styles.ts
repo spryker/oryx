@@ -60,4 +60,9 @@ export const styles = css`
   oryx-icon-button:first-child button {
     padding: 0;
   }
+
+  :host([footerButtonFullWidth]) footer oryx-button,
+  :host([footerButtonFullWidth]) ::slotted(oryx-button) {
+    width: 100%;
+  }
 `;

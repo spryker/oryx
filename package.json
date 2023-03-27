@@ -17,6 +17,7 @@
     "sf:e2e:headless:ci": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless-ci\"",
     "sf:e2e:headless:ci:affected": "npx nx print-affected --select=projects | grep -E -v 'storefront' && echo 'nothing changed, skip' || npm run sf:e2e:headless:ci",
     "release": "run-s release:*",
+    "release-labs": "cd libs && npm run release-labs",
     "release:libs": "cd libs && npm run release",
     "release-from-tag": "run-s release-from-tag:*",
     "release-from-tag:libs": "cd libs && npm run release-from-tag",

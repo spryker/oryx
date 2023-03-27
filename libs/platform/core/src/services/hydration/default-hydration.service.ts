@@ -1,4 +1,4 @@
-import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
+import { inject, INJECTOR } from '@spryker-oryx/di';
 import {
   hydratableAttribute,
   HydratableLitElement,
@@ -7,10 +7,11 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { Subscription } from 'rxjs';
-import { AppRef, ComponentsPlugin } from '../../orchestration';
+import { AppRef } from '../../orchestration/app';
+import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
 
-export class DefaultHydrationService implements HydrationService, OnDestroy {
+export class DefaultHydrationService implements HydrationService {
   protected subscription = new Subscription();
 
   constructor(
