@@ -125,7 +125,7 @@ describe('DefaultLocaleService', () => {
         const date = Date.now();
         const cb = vi.fn();
 
-        getService().formatDate(date, true).subscribe(cb);
+        getService().formatDate(date, true, true).subscribe(cb);
 
         expect(cb).toHaveBeenCalledWith(
           Intl.DateTimeFormat('de-DE', {

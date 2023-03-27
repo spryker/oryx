@@ -50,7 +50,7 @@ export class OrderSummaryComponent extends OrderMixin(
           <div class="title">${i18n('order.date')}:</div>
           <div>
             ${asyncValue(
-              this.locale.formatDate(this.order?.createdAt ?? '', true)
+              this.locale.formatDate(this.order?.createdAt ?? '', true, true)
             )}
           </div>
         </div>

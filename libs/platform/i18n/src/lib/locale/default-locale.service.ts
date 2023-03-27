@@ -57,21 +57,34 @@ export class DefaultLocaleService implements LocaleService {
     this.setActive$.next(value);
   }
 
-  formatDate(stamp: string | number, showTime = false): Observable<string> {
+  formatDate(
+    stamp: string | number | Date,
+    showTime = false,
+    showDate = false
+  ): Observable<string> {
+    let template = {};
+
+    if (showDate) {
+      template = {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      };
+    }
+
+    if (showTime) {
+      template = {
+        ...template,
+        hour: '2-digit',
+        minute: '2-digit',
+      };
+    }
+
     return this.get().pipe(
       map((locale) =>
-        Intl.DateTimeFormat(
-          locale.replace('_', '-'),
-          showTime
-            ? {
-                hour: '2-digit',
-                minute: '2-digit',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-              }
-            : undefined
-        ).format(new Date(stamp))
+        Intl.DateTimeFormat(locale.replace('_', '-'), template).format(
+          stamp instanceof Date ? stamp : new Date(stamp)
+        )
       )
     );
   }

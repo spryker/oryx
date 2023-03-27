@@ -1,15 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { i18n } from '@spryker-oryx/utilities';
+import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
-import { formatTime } from '../../utilities';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -24,6 +24,7 @@ export class PickingListItemComponent
   protected isDisabled?: boolean;
 
   protected routerService = resolve(RouterService);
+  protected localeService = resolve(LocaleService);
 
   protected startPicking(): void {
     if (this.pickingList?.cartNote) {
@@ -64,7 +65,17 @@ export class PickingListItemComponent
         <oryx-heading slot="heading">
           ${when(
             this.pickingList?.createdAt,
-            () => html` <span>${formatTime(this.pickingList.createdAt)}</span> `
+            () =>
+              html`
+                <span
+                  >${asyncValue(
+                    this.localeService.formatDate(
+                      this.pickingList.createdAt,
+                      true
+                    )
+                  )}</span
+                >
+              `
           )}
           <h4 class="identifier">${this.pickingList.id}</h4>
         </oryx-heading>
