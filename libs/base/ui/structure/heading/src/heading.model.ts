@@ -85,4 +85,5 @@ export const enum HeadingTag {
   H6 = 'h6',
   Caption = 'caption',
   Subtitle = 'subtitle',
+  Small = 'small',
 }
