@@ -10,8 +10,8 @@ export interface SiteNotificationCenterOptions {
   enableStacking?: boolean;
 
   /**
-   * The default timeout (in seconds) that is used to close notifications that can be closed
+   * The timeout (in seconds) that is used to close notifications that can be closed
    * automatically and have not provided a timeout.
    */
-  defaultAutoCloseTime?: number;
+  autoCloseTime?: number;
 }

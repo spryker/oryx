@@ -20,7 +20,7 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
           { value: NotificationPosition.BottomEnd },
         ],
       },
-      defaultAutoCloseTime: { type: FormFieldType.Number },
+      autoCloseTime: { type: FormFieldType.Number },
       enableStacking: { type: FormFieldType.Boolean },
     },
   };
