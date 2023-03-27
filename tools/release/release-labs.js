@@ -61,7 +61,7 @@ function setLabsVersion(labsVersion) {
 
 function publishToNpm() {
   try {
-    runCmd(`npm publish ../dist/libs/template/labs`);
+    runCmd(`npm publish ../dist/libs/template/labs --access=public`);
   } catch (e) {
     throw e;
   }
@@ -69,7 +69,7 @@ function publishToNpm() {
 
 function pushToGit() {
   try {
-    runCmd(`git push origin HEAD --tags --dry-run`);
+    runCmd(`git push origin HEAD --tags`);
   } catch (e) {
     throw e;
   }
