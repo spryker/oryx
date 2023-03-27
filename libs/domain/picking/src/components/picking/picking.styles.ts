@@ -29,14 +29,4 @@ export const styles = css`
     font-size: 18px;
     font-weight: 600;
   }
-
-  oryx-modal [slot='footer'] {
-    width: 100%;
-    display: flex;
-    gap: 10px;
-  }
-
-  oryx-modal oryx-button {
-    width: 100%;
-  }
 `;
