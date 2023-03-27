@@ -14,7 +14,7 @@ import {
   observe,
   valueType,
 } from '@spryker-oryx/utilities';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -44,48 +44,10 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
-  protected hasSSR = false;
-  protected isHydrated = false;
-
   protected layoutBuilder = resolve(LayoutBuilder);
 
-  constructor() {
-    super();
-    this.hasSSR = !!this.renderRoot;
-  }
-
-  protected isEmpty(): boolean {
-    /**
-     * Lit is using adoptedStyleSheets native feature for the styles are specified by
-     * static 'styles' property:
-     * https://www.w3.org/TR/cssom-1/#extensions-to-the-document-or-shadow-root-interface
-     * That is not yet supported by safari:
-     * https://caniuse.com/mdn-api_document_adoptedstylesheets
-     *
-     * In result safari uses the common approach and just creates bunch of <style> elements
-     * inside components, that makes them not empty
-     *
-     * To overcome this limitation need to check presence of any other elements
-     * inside component, except for style elements
-     */
-    return !this.renderRoot.querySelector(':not(slot, style)');
-  }
-
-  protected shouldRenderChildren(): boolean {
-    return (
-      !!this.renderRoot && !this.isEmpty() && !isServer && !this.isHydrated
-    );
-  }
-
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
-    switchMap(([uid, route], index) => {
-      /**
-       * Provides ability to rerender components for the same route pattern.
-       */
-      if (index > 0) {
-        this.isHydrated = true;
-      }
-
+    switchMap(([uid, route]) => {
       return (
         this.experienceService?.getComponent({ uid, route }) ||
         of({} as Component)
@@ -100,24 +62,12 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   @asyncState()
   protected components = valueType(this.components$);
 
-  // Can be safely used any time on or after calling getUpdateComplete().
-  hydrateOnDemand(): void {
-    if (!this.isHydrated) {
-      this.isHydrated = true;
-      this.requestUpdate();
-    }
-  }
-
   protected override render(): TemplateResult {
     if (!this.components) return html`Loading...`;
 
     return html`
       <slot></slot>
-      ${this.shouldRenderChildren()
-        ? html` ${[...this.renderRoot.children]}`
-        : this.components
-        ? html` ${this.renderComponents(this.components)} `
-        : html``}
+      ${this.renderComponents(this.components)}
     `;
   }
 
@@ -175,6 +125,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       component.id,
       this.getLayoutClasses(component)
     );
+
     if (
       this.componentOptions?.rules?.[0].layout === CompositionLayout.Tabular
     ) {

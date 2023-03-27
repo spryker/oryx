@@ -17,4 +17,10 @@ export interface LinkComponentAttributes {
 export const enum LinkType {
   Link = 'link',
   ExternalLink = 'external',
+
+  /**
+   * clears the styling of the link component states, such has the color on
+   * hover, active and focus state.
+   */
+  Neutral = 'neutral',
 }

@@ -178,9 +178,10 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <footer slot="footer">
               <slot name="footer">
-                <oryx-button type="secondary" outline size="sm">
+                <oryx-button type="secondary" outline .size=${Size.Md}>
                   <button value="cancel">Cancel</button>
                 </oryx-button>
+                <slot name="footer-more"></slot>
               </slot>
             </footer>
           `

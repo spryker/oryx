@@ -20,18 +20,11 @@ export const CheckoutPage: StaticComponent = {
       type: 'experience-composition',
       components: [
         {
-          type: 'cart-entries',
-          options: {
-            data: {
-              collapsible: true,
-              readonly: true,
-              defaultExpandedOptions: false,
-              expanded: false,
-            },
-          },
+          type: 'oryx-checkout-composition',
         },
         {
-          type: 'oryx-checkout-composition',
+          type: 'oryx-cart-entries',
+          options: { data: { readonly: true } },
         },
       ],
       options: { data: { rules: [{ gap: '20px', layout: 'list' }] } },
@@ -52,7 +45,10 @@ export const CheckoutPage: StaticComponent = {
           ],
         },
       },
-      components: [{ type: 'cart-totals' }, { type: 'checkout-place-order' }],
+      components: [
+        { type: 'oryx-cart-totals' },
+        { type: 'checkout-place-order' },
+      ],
     },
   ],
 };

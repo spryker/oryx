@@ -1,10 +1,6 @@
-import {
-  provideCommand,
-  provideEffect,
-  provideQuery,
-} from '@spryker-oryx/core';
 import { CommandOptions, EffectDefinition, QueryOptions } from '../models';
 import { COMMAND_TOKEN, EFFECT_TOKEN, QUERY_TOKEN } from '../query.service';
+import { provideCommand, provideEffect, provideQuery } from './provide';
 
 describe('provideQuery', () => {
   it('should provide a factory for a query with the given id', () => {

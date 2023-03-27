@@ -9,19 +9,10 @@ export const CartPage: StaticComponent = {
     },
   },
   components: [
-    {
-      type: 'cart-entries',
-      options: {
-        data: {
-          defaultExpandedOptions: true,
-          removeByQuantity: 'showBin',
-          silentRemove: true,
-        },
-      },
-    },
+    { type: 'oryx-cart-entries' },
     {
       type: 'experience-composition',
-      components: [{ type: 'cart-totals' }, { type: 'checkout-link' }],
+      components: [{ type: 'oryx-cart-totals' }, { type: 'checkout-link' }],
       options: {
         data: {
           rules: [

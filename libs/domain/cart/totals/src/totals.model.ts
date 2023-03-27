@@ -2,26 +2,22 @@ export interface CartTotalsComponentOptions {
   /**
    * Indicates whether to render the subtotals.
    */
-  hideSubtotal?: boolean;
+  enableSubtotal?: boolean;
 
   /**
    * Indicates whether to render the tax.
    */
-  hideTaxAmount?: boolean;
+  enableTaxAmount?: boolean;
 
   /**
    * Indicates whether to render the tax included/excluded message.
-   *
-   * @default false
    */
-  hideTaxMessage?: boolean;
+  enableTaxMessage?: boolean;
 
   /**
    * Indicates whether to render the discounts.
-   *
-   * @default false
    */
-  hideDiscounts?: boolean;
+  enableDiscounts?: boolean;
 
   /**
    * @default DiscountRowsAppearance.Inline
@@ -30,17 +26,13 @@ export interface CartTotalsComponentOptions {
 
   /**
    * Indicate whether to render the delivery.
-   *
-   * @default false
    */
-  hideDelivery?: boolean;
+  enableDelivery?: boolean;
 
   /**
    * Indicate whether to render the expense.
-   *
-   * @default false
    */
-  hideExpense?: boolean;
+  enableExpense?: boolean;
 
   /**
    * Provides a static message next to the delivery link.

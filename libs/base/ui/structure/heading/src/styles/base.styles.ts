@@ -26,6 +26,9 @@ export const headlineStyles = css`
     --caps: var(--oryx-typography-caption-size);
     --capw: var(--oryx-typography-caption-weight);
     --capl: var(--oryx-typography-caption-line);
+    --smalls: var(--oryx-typography-small-size);
+    --smallw: var(--oryx-typography-small-weight);
+    --smalll: var(--oryx-typography-small-line);
 
     display: var(--display, block);
   }
@@ -43,7 +46,7 @@ export const headlineStyles = css`
     margin-block: 0;
   }
 
-  :host([style*='--max-lines']) > *,
+  :host([style*='--max-lines']) > *:not(style),
   :host([style*='--max-lines']) ::slotted(*) {
     max-height: calc(var(--_line-height) * var(--max-lines));
     transition: max-height 2s;
@@ -124,9 +127,17 @@ export const headlineStyles = css`
 
   .caption,
   ::slotted(.caption),
-  :host([as='.subtitle']) {
+  :host([as='.caption']) {
     --fs: var(--caps);
     --fw: var(--capw);
     --lh: var(--capl);
+  }
+
+  small,
+  ::slotted(small),
+  :host([as='small']) {
+    --fs: var(--smalls);
+    --fw: var(--smallw);
+    --lh: var(--smalll);
   }
 `;

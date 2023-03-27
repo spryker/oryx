@@ -5,6 +5,13 @@ export const defaultPickingRoutes: RouteConfig[] = [
   { path: '/', render: () => html`<oryx-picking-lists></oryx-picking-lists>` },
   {
     path: '/picking-list/picking/:id',
-    render: ({ id }) => html`<oryx-picking picking-id="${id}"></oryx-picking>`,
+    render: ({ id }) =>
+      html`<oryx-picking .pickingListId="${id}"></oryx-picking>`,
+  },
+  {
+    path: '/customer-note-info/:id',
+    render: ({ id }) => html`
+      <oryx-customer-note .pickingListId=${id}></oryx-customer-note>
+    `,
   },
 ];
