@@ -21,7 +21,9 @@ export const HeaderTemplate: StaticComponent = {
         },
         {
           type: 'oryx-site-currency-selector',
-          options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
+          options: {
+            data: { rules: [{ style: 'margin-inline-start: auto' }] },
+          },
         },
         { type: 'oryx-site-locale-selector' },
       ],

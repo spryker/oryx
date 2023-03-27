@@ -8,7 +8,7 @@ export interface ComponentsRegistryService {
     uid: string,
     layoutClasses?: string
   ): TemplateResult | undefined;
-  hydrateOnDemand(element: HTMLElement): Promise<void>;
+  resolveTag(type: string): string;
 }
 
 declare global {

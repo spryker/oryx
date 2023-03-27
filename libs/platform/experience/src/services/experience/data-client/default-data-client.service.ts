@@ -38,7 +38,7 @@ export class DefaultExperienceDataClientService
     switchMap((componentPlugin) => componentPlugin!.getComponentSchemas()),
     tap((schemas) => {
       postMessage({
-        type: MessageType.Schemas,
+        type: MessageType.ComponentSchemas,
         data: schemas as ContentComponentSchema[],
       });
     })

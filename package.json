@@ -13,7 +13,7 @@
     "build-storybook": "nx run storybook:build",
     "build:executors": "tsc --project ./tools/tsconfig.tools.json",
     "sf:e2e:open": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e\"",
-    "sf:e2e:headless": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-ssr\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless\"",
+    "sf:e2e:headless": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless\"",
     "sf:e2e:headless:ci": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless-ci\"",
     "sf:e2e:headless:ci:affected": "npx nx print-affected --select=projects | grep -E -v 'storefront' && echo 'nothing changed, skip' || npm run sf:e2e:headless:ci",
     "release": "run-s release:*",
@@ -117,11 +117,11 @@
     "vite-plugin-checker": "^0.4.9",
     "vite-plugin-istanbul": "^3.0.0",
     "vite-plugin-pwa": "~0.12.0",
-    "vite-plugin-static-copy": "^0.7.0",
+    "vite-plugin-static-copy": "^0.13.1",
     "vite-tsconfig-paths": "^3.5.0",
     "vitest": "^0.28.5",
     "wait-on": "^7.0.1",
-    "webpack": "^5.64.4",
+    "webpack": "^5.76.2",
     "webpack-assets-manifest": "^5.1.0"
   },
   "dependencies": {

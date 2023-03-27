@@ -1,8 +1,19 @@
+import { nextFrame } from '@open-wc/testing-helpers';
+import {
+  DefaultHttpHandler,
+  HttpHandler,
+  HttpInterceptor,
+} from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { firstValueFrom, of } from 'rxjs';
+import { of } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
 import { CurrencyService } from './currency.service';
 import { CurrentCurrencyInterceptor } from './current-currency.interceptor';
+
+vi.mock('rxjs/fetch', () => ({
+  fromFetch: vi.fn(),
+}));
 
 class MockCurrencyService implements Partial<CurrencyService> {
   get = vi.fn();
@@ -13,11 +24,10 @@ describe('CurrentCurrencyInterceptor', () => {
 
   let interceptor: CurrentCurrencyInterceptor;
   let currencyService: CurrencyService;
-  let handleMock: Mock;
-  let testInjector;
+  let handler: HttpHandler;
 
   beforeEach(() => {
-    testInjector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: 'SCOS_BASE_URL',
@@ -28,15 +38,18 @@ describe('CurrentCurrencyInterceptor', () => {
           useClass: MockCurrencyService,
         },
         {
-          provide: 'interceptor',
+          provide: HttpInterceptor,
           useClass: CurrentCurrencyInterceptor,
+        },
+        {
+          provide: HttpHandler,
+          useClass: DefaultHttpHandler,
         },
       ],
     });
 
-    interceptor = testInjector.inject('interceptor');
+    handler = testInjector.inject(HttpHandler);
     currencyService = testInjector.inject(CurrencyService);
-    handleMock = vi.fn();
   });
 
   afterEach(() => {
@@ -75,21 +88,17 @@ describe('CurrentCurrencyInterceptor', () => {
     it(`${testName}: ${testCase.url}`, async () => {
       const options = {};
       const currency = 'USD';
+      const expectedUrl = new URL(testCase.url);
+      expectedUrl.searchParams.set('currency', currency);
+
       (currencyService.get as Mock).mockReturnValue(of(currency));
+      (fromFetch as Mock).mockReturnValue(of(null));
 
-      handleMock.mockImplementation((url, options) => {
-        if (testCase.shouldIntercept) {
-          const expectedUrl = new URL(testCase.url);
-          expectedUrl.searchParams.set('currency', currency);
-          expect(url).toBe(expectedUrl.toString());
-        } else {
-          expect(url).toBe(testCase.url);
-        }
-        return of(null);
-      });
-
-      await firstValueFrom(
-        interceptor.intercept(testCase.url, options, handleMock)
+      handler.handle(testCase.url, options).subscribe();
+      await nextFrame();
+      expect(fromFetch).toHaveBeenCalledWith(
+        testCase.shouldIntercept ? expectedUrl.toString() : testCase.url,
+        options
       );
     });
   });

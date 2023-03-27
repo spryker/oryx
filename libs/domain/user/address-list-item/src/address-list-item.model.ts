@@ -17,3 +17,6 @@ export interface AddressListItemAttributes {
 
 export const EDIT_EVENT = 'oryx.edit';
 export const REMOVE_EVENT = 'oryx.remove';
+export interface RemoveEvent {
+  groupKey: string;
+}

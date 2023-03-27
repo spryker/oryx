@@ -20,10 +20,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (!this.shouldInterceptRequest(url)) {
-      return handle(url, options);
-    }
-
     return this.authTokenService.getToken().pipe(
       take(1),
       map((token) => this.addBearerAuthHeader(token, options)),
@@ -32,7 +28,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
     );
   }
 
-  protected shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest(url: string): boolean {
     return !this.config?.baseUrl || url.startsWith(this.config.baseUrl);
   }
 

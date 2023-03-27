@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { ContentLinkOptions, LinkType } from '../link.model';
+import { ContentLinkOptions, ContentLinkType } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
@@ -16,7 +16,7 @@ const Template: Story<ContentLinkOptions> = (options): TemplateResult => {
 export const LinkDemo = Template.bind({});
 
 LinkDemo.args = {
-  type: LinkType.RawUrl,
+  type: ContentLinkType.RawUrl,
   id: '?path=/story/content-link--link-demo',
   text: 'Link',
   label: 'link',
@@ -33,7 +33,7 @@ LinkDemo.argTypes = {
   },
   type: {
     options: [
-      LinkType.RawUrl,
+      ContentLinkType.RawUrl,
       SemanticLinkType.Page,
       SemanticLinkType.Category,
       SemanticLinkType.Product,

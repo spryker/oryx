@@ -2,8 +2,11 @@ import { RouteConfig } from '@lit-labs/router';
 import { LitRouter } from '@spryker-oryx/router/lit';
 import { LitElement, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
+import { styles } from './fulfillment-root.styles';
 
 export class FulfillmentRootComponent extends LitElement {
+  static styles = styles;
+
   @property({ type: Array }) declare extraRoutes?: RouteConfig[];
 
   router = new LitRouter(this, this.extraRoutes ?? []);

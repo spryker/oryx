@@ -17,16 +17,16 @@ const renderRow = (
 ): TemplateResult => html`
   <div class="row">
     <h3>No options</h3>
-    <cart-totals .cartId=${id}></cart-totals>
+    <oryx-cart-totals .cartId=${id}></oryx-cart-totals>
     <h3>${message ?? id}</h3>
-    <cart-totals .cartId=${id} .options=${options}></cart-totals>
+    <oryx-cart-totals .cartId=${id} .options=${options}></oryx-cart-totals>
   </div>
 `;
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
-    ${renderRow({ hideSubtotal: true }, 'gross', 'hide subtotals')}
-    ${renderRow({ hideDiscounts: true }, 'discount', 'hide discount')}
+    ${renderRow({ enableSubtotal: true }, 'gross', 'hide subtotals')}
+    ${renderRow({ enableDiscounts: true }, 'discount', 'hide discount')}
     ${renderRow(
       { discountRowsAppearance: DiscountRowsAppearance.Expanded },
       'discount',
@@ -47,10 +47,10 @@ const Template: Story<unknown> = (): TemplateResult => {
       'discount',
       'no discount rows'
     )}
-    ${renderRow({ hideTaxAmount: true }, 'tax', 'tax amount')}
+    ${renderRow({ enableTaxAmount: true }, 'tax', 'tax amount')}
     ${renderRow({ hideTaxMessage: true }, 'net', 'tax message')}
-    ${renderRow({ hideExpense: true }, 'expense')}
-    ${renderRow({ hideDelivery: true }, 'gross', 'delivery')}
+    ${renderRow({ enableExpense: true }, 'expense')}
+    ${renderRow({ enableDelivery: true }, 'gross', 'delivery')}
 
     <style>
       .row {
