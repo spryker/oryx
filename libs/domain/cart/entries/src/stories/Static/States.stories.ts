@@ -13,18 +13,22 @@ const Template: Story<unknown> = (): TemplateResult => {
     <oryx-cart-entries></oryx-cart-entries>
 
     <h3>Empty cart</h3>
-    <oryx-cart-entries .options=${{ cartId: 'empty' }}></oryx-cart-entries>
+    <oryx-cart-entries cartId="empty"></oryx-cart-entries>
 
     <h3>Multiple entries</h3>
-    <oryx-cart-entries .options=${{ cartId: 'multiple' }}></oryx-cart-entries>
+    <oryx-cart-entries cartId="multiple"></oryx-cart-entries>
 
     <h3>Readonly</h3>
     <oryx-cart-entries
-      .options=${{ cartId: 'multiple', readonly: true }}
+      cartId="multiple"
+      .options=${{ readonly: true }}
     ></oryx-cart-entries>
 
     <h3>Collapsible</h3>
-    <oryx-cart-entries .options=${{ collapsible: true }}></oryx-cart-entries>
+    <oryx-cart-entries
+      cartId="multiple"
+      .options=${{ collapsible: true }}
+    ></oryx-cart-entries>
 
     <h3>Expanded with single entry</h3>
     <oryx-cart-entries
@@ -33,13 +37,14 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <h3>Expanded with multiple entries</h3>
     <oryx-cart-entries
-      .options=${{ cartId: 'multiple', collapsible: true, expanded: true }}
+      cartId="multiple"
+      .options=${{ collapsible: true, expanded: true }}
     ></oryx-cart-entries>
 
     <h3>Expanded with readonly</h3>
     <oryx-cart-entries
+      cartId="multiple"
       .options=${{
-        cartId: 'multiple',
         collapsible: true,
         readonly: true,
         expanded: true,
