@@ -1,11 +1,11 @@
-import { NotificationStrategy } from '@spryker-oryx/ui/notification-center';
+import { Notification } from '@spryker-oryx/ui/notification';
 import { Observable } from 'rxjs';
 
 export const NotificationService = 'oryx.NotificationService';
 
 export interface NotificationService {
-  get(): Observable<NotificationStrategy | null>;
-  push(strategy: NotificationStrategy): Observable<void>;
+  get(): Observable<Notification | null>;
+  push(strategy: Notification): Observable<void>;
 }
 
 declare global {
