@@ -16,12 +16,6 @@ export interface NotificationCenterComponentAttributes {
    * doesn't hover over the center.
    */
   stackable?: boolean;
-
-  /**
-   * The default timeout (in seconds) that is used to close notifications that can be closed
-   * automatically and have not provided a timeout.
-   */
-  defaultAutoCloseTime?: number;
 }
 
 export const enum NotificationPosition {

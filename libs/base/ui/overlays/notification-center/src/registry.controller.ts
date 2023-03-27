@@ -4,7 +4,12 @@ import { NotificationRegistry } from './notification-center.model';
 import { AlertType } from '@spryker-oryx/ui';
 import { Notification } from '../../notification';
 
-const DESTROY_DELAY_TIME = 600;
+const AUTO_REMOVE_TIME = 8000;
+/**
+ * The time that is take before the notification is removed from the DOM. During this
+ * time the notification is marked not `visible`, so that the UI can play a remove effect.
+ */
+const DESTROY_DELAY_TIME = 1000;
 
 export class RegistryController implements ReactiveController {
   protected items: NotificationRegistry[] = [];
@@ -19,11 +24,19 @@ export class RegistryController implements ReactiveController {
     return this.items;
   }
 
-  add(item: Notification): void {
-    const strategy = this.resolveStrategy(item);
+  add(notification: Notification): void {
+    const defaultOptions = {
+      floating: true,
+      closable: true,
+      autoClose:
+        notification.type === AlertType.Info ||
+        notification.type === AlertType.Success,
+    };
+
     const registryItem: NotificationRegistry = {
       key: Date.now(),
-      ...strategy,
+      ...defaultOptions,
+      ...notification,
     };
     if (registryItem.autoClose) {
       this.scheduleAutoClosing(registryItem);
@@ -37,27 +50,12 @@ export class RegistryController implements ReactiveController {
   }
 
   protected scheduleAutoClosing(item: NotificationRegistry): void {
-    // const key = item.key as string;
     this.autoCloseQueue[item.key] = {
       autoCloseTime: item.autoCloseTime,
       timeout: setTimeout(() => {
         this.destroy(item.key);
-      }, item.autoCloseTime),
+      }, item.autoCloseTime ?? AUTO_REMOVE_TIME),
     };
-  }
-
-  protected resolveStrategy(item: Notification): Notification {
-    const strategy = { floating: true, closable: true, ...item };
-
-    if (strategy.autoClose === undefined) {
-      strategy.autoClose =
-        strategy.type === AlertType.Info || AlertType.Success === strategy.type;
-    }
-
-    if (!strategy.closable && !strategy.autoClose) {
-      strategy.closable = true;
-    }
-    return strategy;
   }
 
   constructor(public host: LitElement) {
@@ -65,8 +63,8 @@ export class RegistryController implements ReactiveController {
   }
 
   hostConnected?(): void {
-    this.host.addEventListener('oryx.close', (ev: any) =>
-      this.onClose(ev.detail.key)
+    this.host.addEventListener('oryx.close', (e: any) =>
+      this.onClose(e.detail.key)
     );
     this.host.addEventListener('mouseenter', () => this.onMouseEnter());
     this.host.addEventListener('mouseleave', () => this.continueAutoClose());

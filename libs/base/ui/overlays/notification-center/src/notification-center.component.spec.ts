@@ -76,7 +76,7 @@ describe('NotificationCenterComponent', () => {
 
         describe('and when the delay is passed', () => {
           beforeEach(async () => {
-            vi.advanceTimersByTime(600);
+            vi.advanceTimersByTime(1000);
           });
 
           it('should have only one notification left', () => {

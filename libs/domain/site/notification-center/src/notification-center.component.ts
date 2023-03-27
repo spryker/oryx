@@ -11,11 +11,12 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { tap } from 'rxjs';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
-@defaultOptions({
+const options = {
   position: NotificationPosition.BottomStart,
   enableStacking: true,
   defaultAutoCloseTime: 8,
-} as SiteNotificationCenterOptions)
+};
+@defaultOptions(options)
 @hydratable('window:oryx-notify')
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(
   LitElement
@@ -31,13 +32,9 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
       if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
         await customElements.whenDefined('oryx-notification-center');
       }
-      if (
-        !notification.autoCloseTime &&
-        this.componentOptions?.defaultAutoCloseTime
-      ) {
-        notification.autoCloseTime =
-          this.componentOptions.defaultAutoCloseTime * 1000;
-      }
+      notification.autoCloseTime ??=
+        (this.componentOptions.defaultAutoCloseTime ??
+          options.defaultAutoCloseTime) * 1000;
       this.centerRef.value?.open(notification);
     })
   );

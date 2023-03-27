@@ -71,17 +71,6 @@ describe('RegistryController', () => {
     });
   });
 
-  describe('when the notification is not closable and autoclose is false', () => {
-    beforeEach(async () => {
-      element.controller.add({ autoClose: false, closable: false });
-    });
-
-    it('should set it to closable by default', async () => {
-      const entries = element.controller.getItems();
-      expect(entries[0]?.closable).toBe(true);
-    });
-  });
-
   describe('when the notification type is success', () => {
     beforeEach(async () => {
       element.controller.add({ type: AlertType.Success });
@@ -150,7 +139,7 @@ describe('RegistryController', () => {
 
     describe('and when the DESTROY_DELAY_TIME time is passed by', () => {
       beforeEach(async () => {
-        vi.advanceTimersByTime(1600);
+        vi.advanceTimersByTime(2000);
       });
 
       it('should remove the item', async () => {
