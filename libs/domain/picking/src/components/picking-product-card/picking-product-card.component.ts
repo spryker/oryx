@@ -31,17 +31,15 @@ export class PickingProductCardComponent extends LitElement {
     this.currentNumberOfPicked =
       this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
 
-    if (this.productItem?.product.id) {
-      this.dispatchPickingEvents(EVENT_SUBMIT, {
-        productId: this.productItem.product.id,
-        numberOfPicked: this.currentNumberOfPicked,
-      });
-    }
+    this.dispatchPickingEvents(EVENT_SUBMIT, {
+      productId: this.productItem!.product.id,
+      numberOfPicked: this.currentNumberOfPicked,
+    });
   }
 
   protected editProductPicking(): void {
     this.dispatchPickingEvents(EVENT_EDIT, {
-      productId: this.productItem?.product.id,
+      productId: this.productItem!.product.id,
     } as ProductItemPickedEvent);
   }
 
@@ -173,18 +171,43 @@ export class PickingProductCardComponent extends LitElement {
   }
 
   protected renderEditStatus(): TemplateResult {
-    this.summaryInfo = this.getSummaryInfo();
+    let text = '';
+    let label = '';
+    let subtext = '';
 
-    return html` <div class="summary-info">
-        <p>${this.summaryInfo?.main}</p>
-        <p>${this.summaryInfo?.additional}</p>
+    if (!this.productItem) {
+      return html``;
+    }
+
+    if (this.status === ItemsFilters.Picked) {
+      text = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
+
+      if (this.productItem.numberOfPicked < this.productItem.quantity) {
+        label = i18n('picking.product-card.items-picked') as string;
+      } else {
+        subtext = i18n('picking.product-card.all-items-picked') as string;
+      }
+    } else if (this.status === ItemsFilters.NotFound) {
+      text = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
+
+      if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
+        label = i18n('picking.product-card.items-not-found') as string;
+      } else {
+        subtext = i18n('picking.product-card.no-items-found') as string;
+      }
+    }
+
+    return html`
+      <div class="summary-info">
+        <p>${text} ${label}</p>
+        ${when(subtext, () => html`<p>${subtext}</p>`)}
       </div>
-
       <oryx-button>
         <button @click=${this.editProductPicking}>
           <oryx-icon type="edit"></oryx-icon>
           ${i18n('picking.product-card.edit-items')}
         </button>
-      </oryx-button>`;
+      </oryx-button>
+    `;
   }
 }

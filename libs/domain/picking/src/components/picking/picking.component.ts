@@ -167,28 +167,23 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderFallback(): TemplateResult {
-    const pickedItems = this.pickingList?.items.filter(
-      (item) => item.status === ItemsFilters.Picked
-    );
-
-    const isPickingComplete =
-      pickedItems?.length === this.pickingList?.items.length;
-
-    return html`
-      ${when(
-        isPickingComplete,
-        () =>
-          html`
-            <div class="picking-complete">
-              <div class="img-wrap">
-                <oryx-image resource="picking-items-processed"></oryx-image>
-              </div>
-              <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
-              <p>${i18n(`picking.all-items-are-processed`)}!</p>
-            </div>
-          `
-      )}
-    `;
+    if (
+      this.pickingList?.items.every(
+        (item) => item.status === ItemsFilters.Picked
+      )
+    ) {
+      return html`
+        <div class="picking-complete">
+          <div class="img-wrap">
+            <oryx-image resource="picking-items-processed"></oryx-image>
+          </div>
+          <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
+          <p>${i18n(`picking.all-items-are-processed`)}!</p>
+        </div>
+      `;
+    } else {
+      return html``;
+    }
   }
 
   protected renderConfirmationModal(): TemplateResult {
