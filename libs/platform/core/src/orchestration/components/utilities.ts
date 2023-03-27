@@ -5,11 +5,12 @@ import {
   ComponentImplStrategy,
   ObservableShadow,
 } from './components.model';
+import { isServer } from 'lit';
 
 /**
  * Used for observing shadow DOM content.
  */
-export function observableShadow<T extends Type<HTMLElement>>(
+export function componentExtender<T extends Type<HTMLElement>>(
   componentType: T,
   name: string
 ): T & Type<ObservableShadow> {
@@ -24,6 +25,7 @@ export function observableShadow<T extends Type<HTMLElement>>(
     }
 
     whenShadowAttached(): Promise<ShadowRoot> {
+      console.log('whenShadowAttached');
       return this._attachedShadow.asPromise();
     }
 
@@ -32,6 +34,11 @@ export function observableShadow<T extends Type<HTMLElement>>(
     ): ReturnType<HTMLElement['attachShadow']> {
       const shadowRoot = super.attachShadow(...args);
       this._attachedShadow.resolve(shadowRoot);
+
+      if (isServer) {
+        this.setAttribute('defined', '');
+      }
+
       return shadowRoot;
     }
   };

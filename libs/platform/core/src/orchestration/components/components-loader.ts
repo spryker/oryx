@@ -13,12 +13,11 @@ import {
 import {
   ComponentsPluginError,
   isComponentImplStrategy,
-  observableShadow,
+  componentExtender,
 } from './utilities';
 
 interface ComponentMap {
-  observableType: ObservableType;
-  componentType: ComponentType & ComponentStatic;
+  extendedClass: ObservableType;
   themes?: (ThemeData | ThemeStylesheets)[] | null;
 }
 export class ComponentsLoader {
@@ -91,27 +90,31 @@ export class ComponentsLoader {
     meta: ComponentImplMeta
   ): Promise<ComponentType | undefined> {
     const def = this.findComponentDefBy(name);
-    const observableType = await this.loadComponentDef(def, meta);
+    const extendedClass = await this.loadComponentDef(def, meta);
 
     // If component not yet loaded - skip definition
-    if (!observableType) {
+    if (!extendedClass) {
       return;
     }
 
     this.useComponent(name, true);
 
-    return observableType;
+    return extendedClass;
   }
 
   protected useComponent(name: string, noWarn = false): void {
     const existingType = customElements.get(name);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { observableType, componentType } = this.componentMap.get(name)!;
+    const { extendedClass } = this.componentMap.get(name)!;
 
     if (existingType) {
       if (!noWarn) {
         this.logger.warn(
-          `Component '${name}' already defined as '${existingType.name}', skipping definition of '${componentType.name}'!`
+          `Component '${name}' already defined as '${
+            existingType.name
+          }', skipping definition of '${
+            Object.getPrototypeOf(extendedClass).name
+          }'!`
         );
       }
 
@@ -119,7 +122,7 @@ export class ComponentsLoader {
     }
 
     this.extendComponent(name);
-    customElements.define(name, observableType, this.options.elementOptions);
+    customElements.define(name, extendedClass, this.options.elementOptions);
   }
 
   /**
@@ -152,33 +155,32 @@ export class ComponentsLoader {
   ): Promise<ComponentType | void> {
     if (this.componentMap.has(def.name)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return this.componentMap.get(def.name)!.observableType;
+      return this.componentMap.get(def.name)!.extendedClass;
     }
 
-    const [componentType, themes] = await Promise.all([
+    const [componentClass, themes] = await Promise.all([
       this.loadComponentImpl(def, meta),
       this.theme?.resolve(def),
     ]);
 
-    if (!componentType) {
+    if (!componentClass) {
       return;
     }
 
-    const observableType = observableShadow(componentType, def.name);
+    const extendedClass = componentExtender(componentClass, def.name);
 
     this.componentMap.set(def.name, {
-      observableType,
+      extendedClass,
       themes,
-      componentType,
     });
 
-    return observableType;
+    return extendedClass;
   }
 
   getComponentClass(
     tag: string
   ): (ComponentType & ComponentStatic) | undefined {
-    return this.componentMap.get(tag)?.componentType;
+    return Object.getPrototypeOf(this.componentMap.get(tag)?.extendedClass);
   }
 
   async getComponentSchemas(): Promise<Record<string, any>[]> {
