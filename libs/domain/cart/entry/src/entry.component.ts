@@ -4,6 +4,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMediaContainerSize,
+  ProductService,
 } from '@spryker-oryx/product';
 import {
   NotificationService,
@@ -13,11 +14,11 @@ import {
 import { AlertType, Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { i18n } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { first } from 'rxjs';
+import { filter, first, map, switchMap } from 'rxjs';
 import {
   QuantityEventDetail,
   QuantityInputComponent,
@@ -49,7 +50,6 @@ export class CartEntryComponent
   @property() sku?: string;
   @property({ type: Number }) quantity?: number;
   @property({ type: Number }) price?: number;
-  @property({ type: Number }) available?: number;
 
   @property() key?: string;
   @property({ type: Boolean }) readonly?: boolean;
@@ -76,10 +76,28 @@ export class CartEntryComponent
       .subscribe((formatted) => (this.formattedPrice = formatted));
   }
 
+  protected productService = resolve(ProductService);
   protected pricingService = resolve(PricingService);
   protected context = new ContextController(this);
 
-  // required for editing
+  @asyncState()
+  protected availableQuantity = valueType(
+    this.context.get(ProductContext.SKU).pipe(
+      filter(Boolean),
+      switchMap((sku) =>
+        this.productService
+          .get({ sku: sku as string })
+          .pipe(
+            map((product) =>
+              product?.availability?.isNeverOutOfStock
+                ? Infinity
+                : product?.availability?.quantity ?? Infinity
+            )
+          )
+      )
+    )
+  );
+
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
 
@@ -151,7 +169,7 @@ export class CartEntryComponent
             this.componentOptions?.removeByQuantity ===
               RemoveByQuantity.NotAllowed
           )}
-          .max=${this.available ?? Infinity}
+          .max=${this.availableQuantity}
           .value=${this.quantity}
           .decreaseIcon=${this.decreaseIcon}
           submitOnChange

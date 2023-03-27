@@ -26,12 +26,6 @@ export interface CartEntryAttributes {
    * the quantity input and actions are hidden in the UI.
    */
   readonly?: boolean;
-
-  /**
-   * Indicates the available order quantity. The value can be used to not oversell and
-   * limit the quantity that can be added in the entry.
-   */
-  available?: number;
 }
 export interface CartEntryOptions {
   /**

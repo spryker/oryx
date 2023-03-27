@@ -109,7 +109,7 @@ describe('CartEntryComponent', () => {
       describe('when there is a quantity of 3 available', () => {
         beforeEach(async () => {
           element = await fixture(
-            html` <oryx-cart-entry key="1" available="3"></oryx-cart-entry>`
+            html` <oryx-cart-entry sku="1"></oryx-cart-entry>`
           );
         });
 
@@ -121,10 +121,25 @@ describe('CartEntryComponent', () => {
         });
       });
 
+      describe('when availability is set to isNeverOutOfStock', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html` <oryx-cart-entry sku="2"></oryx-cart-entry>`
+          );
+        });
+
+        it('should set the max property to Infinity', () => {
+          const quantityInput = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          expect((quantityInput as QuantityInputComponent).max).toBe(Infinity);
+        });
+      });
+
       describe('when available is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html` <oryx-cart-entry key="1"></oryx-cart-entry>`
+            html` <oryx-cart-entry sku="3"></oryx-cart-entry>`
           );
         });
 
