@@ -5,7 +5,7 @@ import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
-import { SiteNavigationItemOptions } from './navigation-item.model';
+import { NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
 import { styles } from './navigation-item.styles';
 
 @hydratable('window:load')
@@ -39,14 +39,36 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   // }
 
   protected resolveLabel(): string {
-
+    return '';
   }
 
   protected resolveUrl(): string {
-
+    return '';
   }
 
-  protected renderTriggersContent
+  protected get icon(): TemplateResult {
+    if (!this.componentOptions?.icon){
+      return html``;
+    }
+
+    return html`<oryx-icon
+      .type=${this.componentOptions?.icon}
+    ></oryx-icon>`;
+  }
+
+  protected renderTriggersContent(): TemplateResult {
+    if (this.componentOptions?.triggerType === NavigationTriggerType.Icon) {
+      return html`
+        <oryx-icon-button slot="trigger">
+          ${when(
+            this.isLink,
+            () => html`<a href=${this.componentOptions.url!}>${icon}</a>`,
+            () => html`<button @click=${this.onClick}>${icon}</button>`
+          )}
+        </oryx-icon-button>
+      `;
+    }
+  }
 
   protected renderTrigger(): TemplateResult {
     // const icon = html`<oryx-icon
@@ -73,7 +95,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected renderMenuItemsList(): TemplateResult {
-    if (!this.items) {
+    if (!this.items?.length) {
       return html``;
     }
 
