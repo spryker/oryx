@@ -17,12 +17,14 @@ export interface QueryOptions<
   onError?: QueryEventHandler<ValueType, Qualifier>[];
 
   /**
-   * Query is not cached between subscriptions.
+   * Query is not cached between subscriptions
+   * (experimental)
    */
   volatile?: boolean;
 
   /**
    * Query is active (refreshing) even without active subscriptions
+   * (experimental)
    */
   permanent?: boolean;
 }

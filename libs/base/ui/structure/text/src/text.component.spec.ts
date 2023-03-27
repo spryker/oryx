@@ -1,10 +1,5 @@
 // organize-imports-ignore
-import {
-  nextFrame,
-  elementUpdated,
-  fixture,
-  html,
-} from '@open-wc/testing-helpers';
+import { nextFrame, fixture, html } from '@open-wc/testing-helpers';
 import './ponyfill';
 import { wait } from '@spryker-oryx/utilities';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -29,6 +24,17 @@ const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
             Letraset sheets containing Lorem Ipsum passages, and more recently
             with desktop publishing software like Aldus PageMaker including
             versions of Lorem Ipsum.`;
+
+vi.mock('@spryker-oryx/utilities', async () => {
+  const utils = (await vi.importActual(
+    '@spryker-oryx/utilities'
+  )) as Array<unknown>;
+
+  return {
+    ...utils,
+    hydratable: () => (clazz: HTMLElement) => clazz,
+  };
+});
 
 describe('TextComponent', () => {
   let element: TextComponent;

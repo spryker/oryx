@@ -4,7 +4,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { isServer, LitElement } from 'lit';
-import { PatchableLitElement, ssrStyleShim } from '../../index';
+import { ssrStyleShim } from '../../index';
 
 export const ssrShim =
   (features: string[] | string) =>
@@ -32,7 +32,7 @@ const standardCustomElement = (
   return {
     kind,
     elements,
-    finisher(clazz: Constructor<PatchableLitElement>) {
+    finisher(clazz: Constructor<LitElement>) {
       return shimClass(clazz, features);
     },
   };

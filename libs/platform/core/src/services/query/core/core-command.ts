@@ -49,14 +49,14 @@ export class CoreCommand<
 
   protected executeQueueStrategy(qualifier: Qualifier): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
-    if (this.currentResult) {
-      concat(this.currentResult, this.getStream(result, qualifier)).subscribe();
+    if (!this.currentResult) {
       this.currentResult = result;
-    } else {
       this.getStream(result, qualifier).subscribe();
+    } else {
+      const oldResult = this.currentResult;
       this.currentResult = result;
+      concat(oldResult, this.getStream(result, qualifier)).subscribe();
     }
-
     return result;
   }
 
@@ -72,12 +72,12 @@ export class CoreCommand<
     qualifier: Qualifier
   ): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
-    if (this.currentSubscription) {
-      this.currentSubscription.unsubscribe();
+    if (this.currentSubscription && !this.currentSubscription.closed) {
       if (this.options.strategy === CommandStrategy.Override) {
-        this.currentResult?.error('Command cancelled');
+        this.currentResult!.error('Command cancelled');
       }
-      this.currentResult?.complete();
+      this.currentSubscription.unsubscribe();
+      this.currentResult!.complete();
     }
     this.currentResult = result;
     this.currentSubscription = this.getStream(result, qualifier).subscribe();
@@ -86,7 +86,7 @@ export class CoreCommand<
 
   protected executeSkipStrategy(qualifier: Qualifier): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
-    if (!this.currentResult?.closed) {
+    if (this.currentResult && !this.currentResult?.closed) {
       if (this.options.strategy === CommandStrategy.Cancel) {
         result.error('Command cancelled');
       }

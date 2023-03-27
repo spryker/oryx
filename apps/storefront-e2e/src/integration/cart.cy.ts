@@ -100,9 +100,12 @@ describe('Cart suite', () => {
         firstEntry.getQuantityInput().getInput().type('{selectall}2');
         cy.get('body').click();
 
-        firstEntry.getQuantityInput().getInput().should('have.value', 2);
-        firstEntry.getTotalPrice().should('contain.text', '598.55');
-        cartTotals.getTotalPrice().should('contain.text', '598.55');
+        cartPage.getCartEntries().then((entries) => {
+          const firstEntry = entries[0];
+          firstEntry.getQuantityInput().getInput().should('have.value', 2);
+          firstEntry.getTotalPrice().should('contain.text', '598.55');
+          cartTotals.getTotalPrice().should('contain.text', '598.55');
+        });
       });
     });
 
@@ -176,8 +179,10 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
-  // should be fixed in https://spryker.atlassian.net/browse/HRZ-2353
-  // cartTotals.getDeliveryTotal().should('contain.text', 'not yet implemented');
+  cartTotals
+    .getDeliveryTotal()
+    .invoke('attr', 'title')
+    .should('contain', 'not yet implemented');
   cartTotals.getTotalPrice().should('contain.text', expectedData.totalPrice);
 
   // covers HRZ-1008
