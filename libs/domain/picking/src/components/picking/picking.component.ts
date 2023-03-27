@@ -5,7 +5,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { take, tap } from 'rxjs';
+import { catchError, of, take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
@@ -124,8 +124,20 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected finishPicking(): void {
     this.pickingList.status = PickingListStatus.PickingFinished;
 
-    this.pickingListService.finishPicking(this.pickingList);
-    this.routerService.navigate(`/`);
+    // ToDo: update this logic after Bapi is fully integrated in fulfillment app
+    this.pickingListService
+      .finishPicking(this.pickingList)
+      .pipe(
+        tap(() => {
+          this.routerService.navigate(`/`);
+        }),
+        catchError(() => {
+          this.routerService.navigate(`/`);
+
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   protected override render(): TemplateResult {
