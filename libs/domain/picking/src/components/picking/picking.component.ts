@@ -1,3 +1,5 @@
+import { resolve } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import {
   asyncState,
   i18n,
@@ -14,12 +16,15 @@ import {
   ItemsFilters,
   PartialPicking,
   PickingListItem,
+  PickingListStatus,
   PickingTab,
   ProductItemPickedEvent,
 } from '../../models';
 import { styles } from './picking.styles';
 export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
+
+  protected routerService = resolve(RouterService);
 
   protected isConfirmPickingDialogOpen$ = new BehaviorSubject(false);
   @asyncState()
@@ -124,6 +129,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.isConfirmPickingDialogOpen$.next(false);
   }
 
+  protected finishPicking(): void {
+    this.pickingList.status = PickingListStatus.PickingFinished;
+
+    this.pickingListService.finishPicking(this.pickingList);
+    this.routerService.navigate(`/`);
+  }
+
   protected override render(): TemplateResult {
     const tabs = this.buildTabs();
 
@@ -201,6 +213,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
               </div>
               <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
               <p>${i18n(`picking.all-items-are-processed`)}!</p>
+            </div>
+            <div class="submit-wrapper scroll-shadow">
+              <oryx-button type="primary" outline="true">
+                <button @click=${this.finishPicking}>
+                  ${i18n('picking.finish-picking')}
+                </button>
+              </oryx-button>
             </div>
           `
       )}
