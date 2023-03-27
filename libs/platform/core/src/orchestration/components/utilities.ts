@@ -1,11 +1,11 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/di';
+import { isServer } from 'lit';
 import {
   ComponentDefImpl,
   ComponentImplStrategy,
   ObservableShadow,
 } from './components.model';
-import { isServer } from 'lit';
 
 /**
  * Used for observing shadow DOM content.

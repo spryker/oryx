@@ -11,9 +11,9 @@ import {
   ObservableType,
 } from './components.model';
 import {
+  componentExtender,
   ComponentsPluginError,
   isComponentImplStrategy,
-  componentExtender,
 } from './utilities';
 
 interface ComponentMap {
