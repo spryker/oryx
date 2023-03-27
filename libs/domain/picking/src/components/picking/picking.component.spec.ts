@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
+import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -11,6 +12,10 @@ import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+}
+
+class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
 }
 
 describe('PickingComponent', () => {
@@ -27,6 +32,10 @@ describe('PickingComponent', () => {
         {
           provide: PickingListService,
           useClass: MockPickingListService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
         },
       ],
     });
