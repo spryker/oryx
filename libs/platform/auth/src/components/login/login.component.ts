@@ -68,7 +68,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         return EMPTY;
       }
       if (this.componentOptions?.redirectUrl) {
-        return of(this.componentOptions.redirectUrl);
+        return of(this.componentOptions?.redirectUrl);
       }
       return this.routerService
         .previousRoute()

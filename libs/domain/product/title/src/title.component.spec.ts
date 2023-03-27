@@ -3,6 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { LinkType } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { ProductTitleComponent } from './title.component';
@@ -46,38 +47,68 @@ describe('ProductTitleComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('when a the link option is true', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-product-title
-          sku="1"
-          .options=${{ link: true }}
-        ></oryx-product-title>`
-      );
-    });
-
-    it('should render the oryx-heading component', () => {
-      expect(element).toContainElement('oryx-heading');
-    });
-
-    it('should wrap the element inside a link', () => {
-      expect(element).toContainElement('oryx-content-link');
-    });
-  });
-
-  describe('when a the link option is not true', () => {
+  describe('when the linkType is undefined', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-product-title sku="1"></oryx-product-title>`
       );
     });
 
-    it('should render the oryx-heading component', () => {
+    it('should render a heading', () => {
       expect(element).toContainElement('oryx-heading');
     });
 
-    it('should not wrap the element inside a link', () => {
+    it('should not render a link', () => {
       expect(element).not.toContainElement('oryx-content-link');
+    });
+  });
+
+  describe(`when a the link option is 'none'`, () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-title
+          sku="1"
+          .options=${{ linkType: 'none' }}
+        ></oryx-product-title>`
+      );
+    });
+
+    it('should render a heading', () => {
+      expect(element).toContainElement('oryx-heading');
+    });
+
+    it('should not render a link', () => {
+      expect(element).not.toContainElement('oryx-content-link');
+    });
+  });
+
+  describe('when the linkType is Link', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-title
+          sku="1"
+          .options=${{ linkType: LinkType.Link }}
+        ></oryx-product-title>`
+      );
+    });
+
+    it('should render a heading with a link', () => {
+      expect(element).toContainElement('oryx-heading oryx-content-link');
+    });
+  });
+
+  describe('when the linkType is ExternalLink', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-title
+          sku="1"
+          .options=${{ linkType: LinkType.ExternalLink }}
+        ></oryx-product-title>`
+      );
+    });
+
+    it('should render a heading with a link', () => {
+      expect(element).toContainElement('oryx-heading oryx-content-link');
     });
   });
 });

@@ -35,7 +35,9 @@ export class OrderTotalsComponent extends OrderMixin(ContentMixin(LitElement)) {
     if (!this.order) {
       return html``;
     }
-    return html`<cart-totals .cart=${this.buildCart()}></cart-totals>`;
+    return html`<oryx-cart-totals
+      .cart=${this.buildCart()}
+    ></oryx-cart-totals>`;
   }
 
   protected formatDiscounts(

@@ -67,6 +67,12 @@ const smallScreen = css`
     --fw: var(--capw);
     --lh: var(--capl);
   }
+
+  :host([as-sm='small']) {
+    --fs: var(--smalls);
+    --fw: var(--smallw);
+    --lh: var(--smalll);
+  }
 `;
 
 const mediumScreen = css`
@@ -134,6 +140,12 @@ const mediumScreen = css`
     --fw: var(--capw);
     --lh: var(--capl);
   }
+
+  :host([as-md='small']) {
+    --fs: var(--smalls);
+    --fw: var(--smallw);
+    --lh: var(--smalll);
+  }
 `;
 
 const largeScreen = css`
@@ -200,6 +212,12 @@ const largeScreen = css`
     --fs: var(--caps);
     --fw: var(--capw);
     --lh: var(--capl);
+  }
+
+  :host([as-lg='small']) {
+    --fs: var(--smalls);
+    --fw: var(--smallw);
+    --lh: var(--smalll);
   }
 `;
 

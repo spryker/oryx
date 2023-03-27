@@ -6,7 +6,7 @@ export const styles = css`
     margin: 0 20px;
   }
 
-  .title {
+  [slot='heading'] {
     width: 100%;
     text-align: center;
     overflow: hidden;
@@ -24,11 +24,11 @@ export const styles = css`
     color: var(--oryx-color-neutral-400);
   }
 
-  .edit-quantity {
+  form {
     margin-block-start: 7px;
   }
 
-  .edit-quantity-info {
+  form div {
     margin-block-start: 14px;
     margin-block-end: 9px;
     font-weight: 600;
