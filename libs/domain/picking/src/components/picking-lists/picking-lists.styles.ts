@@ -6,8 +6,4 @@ export const styles = css`
     display: grid;
     gap: 34px;
   }
-
-  oryx-modal oryx-button {
-    width: 100%;
-  }
 `;
