@@ -14,6 +14,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
   @property({ type: Boolean, reflect: true }) fullscreen?: boolean;
+  @property({ type: Boolean }) footerButtonFullWidth?: boolean;
   @property() heading?: string;
   @property({ type: Boolean }) preventCloseByEscape?: boolean;
   @property({ type: Boolean }) preventCloseByBackdrop?: boolean;

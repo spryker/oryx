@@ -211,6 +211,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         ?open=${this.isConfirmPickingDialogOpen}
         enableFooter
         preventclosebybackdrop
+        footerButtonFullWidth
       >
         <div slot="heading">
           ${i18n('picking.product-card.confirm-picking')}
