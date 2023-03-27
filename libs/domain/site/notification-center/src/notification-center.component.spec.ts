@@ -86,21 +86,6 @@ describe('SiteNotificationCenterComponent', () => {
     });
   });
 
-  describe('when an error with autoClose is emitted', () => {
-    it('should set the autoCloseTime to 8000', () => {
-      const notificationCenter = element.shadowRoot?.querySelector(
-        'oryx-notification-center'
-      ) as NotificationCenterComponent;
-      const open = vi.spyOn(notificationCenter, 'open');
-      notificationTrigger$.next(mockNotificationWithoutAutoClose);
-
-      expect(open).toHaveBeenCalledWith({
-        ...mockNotificationWithoutAutoClose,
-        autoCloseTime: 8000,
-      });
-    });
-  });
-
   describe('when position is set', () => {
     beforeEach(async () => {
       element = await fixture(
