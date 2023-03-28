@@ -66,8 +66,6 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       );
     }
 
-    await this.preloadComponents();
-
     this.observe(rootElement);
   }
 
