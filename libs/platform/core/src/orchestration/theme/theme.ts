@@ -1,5 +1,6 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { iconInjectable, rootInjectable } from '@spryker-oryx/utilities';
+import { css, isServer } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
@@ -69,8 +70,20 @@ export class ThemePlugin
   async resolve(
     componentDef: ComponentDef
   ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
+    const componentOptions =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      this.app!.findPlugin(ComponentsPlugin)!.getOptions();
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
+
+    if (!isServer && !componentOptions.preload) {
+      implementations.push(css`
+        *:not(:defined),
+        *:not([defined]) {
+          display: none;
+        }
+      `);
+    }
 
     for (const styles of stylesheets) {
       if (!styles.theme) {

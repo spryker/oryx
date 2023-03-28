@@ -1,7 +1,12 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
+import { isServer } from 'lit';
 import { AppPlugin } from '../app';
 import { ComponentsLoader } from './components-loader';
-import { ComponentImplMeta, ObservableShadowElement } from './components.model';
+import {
+  ComponentImplMeta,
+  ComponentsOptions,
+  ObservableShadowElement,
+} from './components.model';
 import { isObservableShadowElement } from './utilities';
 
 export class ComponentsObserver
@@ -12,6 +17,10 @@ export class ComponentsObserver
     this.handleMutations.bind(this)
   );
   protected readonly implMetaInDom: ComponentImplMeta = { foundInDom: true };
+
+  constructor(protected options: ComponentsOptions) {
+    super(options);
+  }
 
   destroy(): void {
     this.observer.disconnect();
@@ -37,17 +46,26 @@ export class ComponentsObserver
     nodes.forEach((node) => this.checkNode(node));
   }
 
+  protected addDefinedAttribute(element: HTMLElement): void {
+    if (!isServer && !this.options.preload) {
+      element.setAttribute('defined', '');
+    }
+  }
+
   protected checkNode(node: Node): void {
     if (isNodeElement(node)) {
       const tag = this.processName(node.nodeName);
 
       if (node.shadowRoot) {
         this.observe(node.shadowRoot);
+        this.addDefinedAttribute(node);
       } else if (isObservableShadowElement(node)) {
         this.observeShadow(node);
+        this.addDefinedAttribute(node);
       } else {
         this.tryLoadAndDefineComponent(tag, this.implMetaInDom).then(() => {
           customElements.upgrade(node);
+          this.addDefinedAttribute(node);
           this.maybeObserveShadow(node);
         });
       }

@@ -1,6 +1,5 @@
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/di';
-import { isServer } from 'lit';
 import {
   ComponentDefImpl,
   ComponentImplStrategy,
@@ -33,10 +32,6 @@ export function componentExtender<T extends Type<HTMLElement>>(
     ): ReturnType<HTMLElement['attachShadow']> {
       const shadowRoot = super.attachShadow(...args);
       this._attachedShadow.resolve(shadowRoot);
-
-      if (isServer) {
-        this.setAttribute('defined', '');
-      }
 
       return shadowRoot;
     }
