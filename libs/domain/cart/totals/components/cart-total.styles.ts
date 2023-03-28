@@ -12,6 +12,7 @@ const cartTotalRules = css`
 
   span {
     ${headingUtil(HeadingTag.H6)};
+
     padding-block: var(--oryx-space-2);
   }
 `;
