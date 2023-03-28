@@ -58,10 +58,8 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     ];
   }
 
-  protected savePickingItem(event: Event): void {
-    const { productId, numberOfPicked } = (
-      event as CustomEvent<ProductItemPickedEvent>
-    ).detail;
+  protected savePickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+    const { productId, numberOfPicked } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
       (item) => item.product.id === productId
@@ -82,8 +80,8 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.updatePickingItem(productIndex, numberOfPicked);
   }
 
-  protected editPickingItem(event: Event): void {
-    const { productId } = (event as CustomEvent<ProductItemPickedEvent>).detail;
+  protected editPickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+    const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
       (item) => item.product.id === productId
