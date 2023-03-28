@@ -1,11 +1,7 @@
 import { componentDef } from '@spryker-oryx/core';
 
-const stylesheets = [
-  {
-    rules: () =>
-      import('./screen.styles').then((m) => m.cartTotalsScreenStyles),
-  },
-];
+const rules = () =>
+  import('./cart-total.styles').then((m) => m.cartTotalsStyles);
 
 export const cartTotalsSubtotalComponent = componentDef({
   name: 'oryx-cart-totals-subtotal',
@@ -15,7 +11,7 @@ export const cartTotalsSubtotalComponent = componentDef({
     import('./cart-total.schema').then(
       (m) => m.cartTotalsSubtotalComponentSchema
     ),
-  stylesheets,
+  stylesheets: [{ rules }],
 });
 
 export const cartTotalsDiscountComponent = componentDef({
@@ -27,9 +23,10 @@ export const cartTotalsDiscountComponent = componentDef({
       (m) => m.cartTotalsDiscountComponentSchema
     ),
   stylesheets: [
+    { rules },
     {
       rules: () =>
-        import('./screen.styles').then((m) => m.cartTotalsDiscountScreenStyles),
+        import('./cart-total.styles').then((m) => m.cartTotalsDiscountStyles),
     },
   ],
 });
@@ -42,7 +39,7 @@ export const cartTotalsExpenseComponent = componentDef({
     import('./cart-total.schema').then(
       (m) => m.cartTotalsExpenseComponentSchema
     ),
-  stylesheets,
+  stylesheets: [{ rules }],
 });
 
 export const cartTotalsTaxComponent = componentDef({
@@ -51,7 +48,7 @@ export const cartTotalsTaxComponent = componentDef({
     import('./cart-total.component').then((m) => m.CartTotalsTaxComponent),
   schema: () =>
     import('./cart-total.schema').then((m) => m.cartTotalsTaxComponentSchema),
-  stylesheets,
+  stylesheets: [{ rules }],
 });
 
 export const cartTotalsDeliveryComponent = componentDef({
@@ -62,7 +59,7 @@ export const cartTotalsDeliveryComponent = componentDef({
     import('./cart-total.schema').then(
       (m) => m.cartTotalsDeliveryComponentSchema
     ),
-  stylesheets,
+  stylesheets: [{ rules }],
 });
 
 export const cartTotalsTotalComponent = componentDef({
@@ -72,9 +69,10 @@ export const cartTotalsTotalComponent = componentDef({
   schema: () =>
     import('./cart-total.schema').then((m) => m.cartTotalsTotalComponentSchema),
   stylesheets: [
+    { rules },
     {
       rules: () =>
-        import('./screen.styles').then((m) => m.cartTotalsTotalScreenStyles),
+        import('./cart-total.styles').then((m) => m.cartTotalsTotalStyles),
     },
   ],
 });

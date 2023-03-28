@@ -14,7 +14,7 @@ export const CartPage: StaticComponent = {
       type: 'experience-composition',
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-cart-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
             { type: 'oryx-cart-totals-discount' },
@@ -23,24 +23,7 @@ export const CartPage: StaticComponent = {
             { type: 'oryx-cart-totals-delivery' },
             { type: 'oryx-cart-totals-total' },
           ],
-          options: {
-            data: {
-              rules: [
-                {
-                  sticky: true,
-                  top: '108px',
-                  padding: '20px 0',
-                  layout: 'list',
-                  maxWidth: true,
-                  gap: '0',
-                  radius: '4px',
-                  background: 'var(--oryx-color-canvas-200)',
-                },
-              ],
-            },
-          },
         },
-        { type: 'oryx-cart-totals' },
         { type: 'checkout-link' },
       ],
       options: {

@@ -1,11 +1,4 @@
 import { componentDef } from '@spryker-oryx/core';
-import { CartTotalsComponentOptions } from './totals.model';
-
-declare global {
-  interface FeatureOptions {
-    'oryx-cart-totals'?: CartTotalsComponentOptions;
-  }
-}
 
 export const cartTotalsComponent = componentDef({
   name: 'oryx-cart-totals',
@@ -13,10 +6,7 @@ export const cartTotalsComponent = componentDef({
   schema: () =>
     import('./totals.schema').then((m) => m.cartTotalsComponentSchema),
   stylesheets: [
-    {
-      rules: () =>
-        import('./styles/screen.styles').then((m) => m.cartTotalsScreenStyles),
-    },
+    { rules: () => import('./totals.styles').then((m) => m.totalStyles) },
   ],
 });
 

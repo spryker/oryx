@@ -1,9 +1,22 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { ThemeStylesheets } from '@spryker-oryx/core';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-const smallScreen = css`
+const cartTotalRules = css`
+  :host {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: var(--oryx-space-4);
+  }
+
+  span {
+    ${headingUtil(HeadingTag.H6)};
+    padding-block: var(--oryx-space-2);
+  }
+`;
+
+const smallScreenRules = css`
   :host {
     display: flex;
     justify-content: space-between;
@@ -16,23 +29,20 @@ const smallScreen = css`
   }
 `;
 
-const mediumPlusScreen = css`
-  :host {
-    display: flex;
-    justify-content: space-between;
-    padding-inline: var(--oryx-space-4);
+export const cartTotalsStyles: ThemeStylesheets = [
+  cartTotalRules,
+  { media: smScreen, css: smallScreenRules },
+];
+
+const cartTotalsDiscountRules = css`
+  oryx-collapsible {
     padding-block: var(--oryx-space-2);
+    box-sizing: border-box;
+    width: 100%;
   }
 
   span {
-    ${headingUtil(HeadingTag.H6)};
-  }
-`;
-
-export const cartTotalsDiscountStyles = css`
-  oryx-collapsible {
-    box-sizing: border-box;
-    width: 100%;
+    padding-block: 0;
   }
 
   ul {
@@ -53,22 +63,11 @@ export const cartTotalsDiscountStyles = css`
   }
 `;
 
-export const cartTotalsDiscountScreenStyles: ThemeStylesWithMedia[] = [
-  { media: smScreen, css: smallScreen },
-  { media: smScreen, css: cartTotalsDiscountStyles },
-  { media: mdScreen, css: cartTotalsDiscountStyles },
-  { media: mdScreen, css: mediumPlusScreen },
-  { media: lgScreen, css: cartTotalsDiscountStyles },
-  { media: lgScreen, css: mediumPlusScreen },
+export const cartTotalsDiscountStyles: ThemeStylesheets = [
+  cartTotalsDiscountRules,
 ];
 
-export const cartTotalsScreenStyles: ThemeStylesWithMedia[] = [
-  { media: smScreen, css: smallScreen },
-  { media: mdScreen, css: mediumPlusScreen },
-  { media: lgScreen, css: mediumPlusScreen },
-];
-
-const cartTotalsTotalStyles = css`
+const cartTotalsTotalRules = css`
   :host {
     display: flex;
     flex-wrap: wrap;
@@ -76,6 +75,14 @@ const cartTotalsTotalStyles = css`
     padding-inline: var(--oryx-space-4);
     padding-block-start: var(--oryx-space-2);
     border-block-start: solid 1px var(--oryx-color-canvas-500);
+  }
+
+  span:not(:last-child) {
+    padding-block-end: 0;
+  }
+
+  span:last-child {
+    padding-block-start: 0;
   }
 
   span:first-child {
@@ -95,7 +102,7 @@ const cartTotalsTotalStyles = css`
   }
 `;
 
-const cartTotalsTotalSmStyles = css`
+const cartTotalsTotalSmallStyles = css`
   :host {
     display: flex;
     flex-wrap: wrap;
@@ -122,8 +129,7 @@ const cartTotalsTotalSmStyles = css`
   }
 `;
 
-export const cartTotalsTotalScreenStyles: ThemeStylesWithMedia[] = [
-  { media: smScreen, css: cartTotalsTotalSmStyles },
-  { media: mdScreen, css: cartTotalsTotalStyles },
-  { media: lgScreen, css: cartTotalsTotalStyles },
+export const cartTotalsTotalStyles: ThemeStylesheets = [
+  cartTotalsTotalRules,
+  { media: smScreen, css: cartTotalsTotalSmallStyles },
 ];

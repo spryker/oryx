@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const styles = css`
+export const totalStyles = css`
   h2 {
     ${headingUtil(HeadingTag.H3)};
 
@@ -9,7 +9,7 @@ export const styles = css`
     display: var(--oryx-screen-small-hide, block);
   }
 
-  section {
+  experience-composition {
     display: grid;
     background-color: var(--oryx-color-canvas-200);
     padding-block: var(--oryx-space-4);
