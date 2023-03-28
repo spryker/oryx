@@ -69,6 +69,7 @@ const mockCartTotals: CartTotals = {
   grandTotal: 149867,
   priceToPay: 150867,
   taxTotal: 1000,
+  expenseTotal: 100,
 };
 
 const mockCartTotalsWithTax: CartTotals = {

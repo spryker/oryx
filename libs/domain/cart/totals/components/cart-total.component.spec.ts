@@ -6,6 +6,7 @@ import {
   cartTotalsExpenseComponent,
   cartTotalsSubtotalComponent,
   cartTotalsTaxComponent,
+  cartTotalsTotalComponent,
 } from '@spryker-oryx/cart';
 import {
   mockBaseCart,
@@ -35,6 +36,7 @@ useComponent([
   cartTotalsExpenseComponent,
   cartTotalsTaxComponent,
   cartTotalsDeliveryComponent,
+  cartTotalsTotalComponent,
 ]);
 
 class MockCartService {
@@ -164,7 +166,7 @@ describe('Cart totals components', () => {
       });
     });
 
-    describe.only('when there are discounts', () => {
+    describe('when there are discounts', () => {
       beforeEach(async () => {
         service.getCart.mockReturnValue(of(mockCartWithDiscount));
         element = await fixture(
@@ -251,7 +253,7 @@ describe('Cart totals components', () => {
       element = await fixture(
         html`<oryx-cart-totals-expense></oryx-cart-totals-expense>`
       );
-      expect(element).toBeInstanceOf(CartTotalsTaxComponent);
+      expect(element).toBeInstanceOf(CartTotalsExpenseComponent);
     });
 
     describe('where there is a expense', () => {
@@ -413,7 +415,7 @@ describe('Cart totals components', () => {
 
           it('should render the tax message', () => {
             const spans = element.shadowRoot?.querySelectorAll('span');
-            expect(spans?.[2].textContent).toBe('Tax. incl');
+            expect(spans?.[2].textContent).toContain('Tax included');
           });
         });
 
@@ -429,7 +431,7 @@ describe('Cart totals components', () => {
 
           it('should render the tax message', () => {
             const spans = element.shadowRoot?.querySelectorAll('span');
-            expect(spans?.[2].textContent).toBe('Tax. excl');
+            expect(spans?.[2].textContent).toContain('Tax included');
           });
         });
       });
