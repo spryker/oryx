@@ -11,18 +11,7 @@ export const cartTotalsComponentSchema: ContentComponentSchema<CartTotalsCompone
       enableSubtotal: { type: FormFieldType.Boolean },
       enableDelivery: { type: FormFieldType.Boolean },
       enableExpense: { type: FormFieldType.Boolean },
-      enableDiscounts: { type: FormFieldType.Boolean },
-      enableTaxAmount: { type: FormFieldType.Boolean },
-      enableTaxMessage: { type: FormFieldType.Boolean },
-      deliveryMessage: { type: FormFieldType.Text },
-      discountRowsAppearance: {
-        type: FormFieldType.Select,
-        options: [
-          { value: 'none' },
-          { value: 'inline' },
-          { value: 'collapsed' },
-          { value: 'expanded' },
-        ],
-      },
+      enableDiscount: { type: FormFieldType.Boolean },
+      enableTax: { type: FormFieldType.Boolean },
     },
   };

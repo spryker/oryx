@@ -19,3 +19,5 @@ export const cartTotalsComponent = componentDef({
     },
   ],
 });
+
+export * from '../components/cart-total.def';

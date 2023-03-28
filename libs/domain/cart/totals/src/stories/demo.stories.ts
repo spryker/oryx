@@ -7,9 +7,9 @@ export default {
   title: `${storybookPrefix}/Cart totals`,
   args: {
     enableSubtotal: false,
-    enableTaxAmount: false,
+    enableTax: false,
     hideTaxMessage: false,
-    enableDiscounts: false,
+    enableDiscount: false,
     collapsibleDiscounts: true,
     collapseDiscounts: false,
     enableDelivery: false,

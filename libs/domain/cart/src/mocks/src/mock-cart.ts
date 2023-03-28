@@ -68,6 +68,7 @@ const mockCartTotals: CartTotals = {
   subtotal: 161942,
   grandTotal: 149867,
   priceToPay: 150867,
+  taxTotal: 1000,
 };
 
 const mockCartTotalsWithTax: CartTotals = {
@@ -123,6 +124,7 @@ export const mockNetCart: Cart = {
   ...mockBaseCart,
   id: 'net',
   priceMode: PriceMode.NetMode,
+  totals: mockFullCartTotals,
 };
 
 export const mockCartWithTax: Cart = {

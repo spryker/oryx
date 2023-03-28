@@ -26,7 +26,7 @@ const renderRow = (
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     ${renderRow({ enableSubtotal: true }, 'gross', 'hide subtotals')}
-    ${renderRow({ enableDiscounts: true }, 'discount', 'hide discount')}
+    ${renderRow({ enableDiscount: true }, 'discount', 'hide discount')}
     ${renderRow(
       { discountRowsAppearance: DiscountRowsAppearance.Expanded },
       'discount',
@@ -47,7 +47,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       'discount',
       'no discount rows'
     )}
-    ${renderRow({ enableTaxAmount: true }, 'tax', 'tax amount')}
+    ${renderRow({ enableTax: true }, 'tax', 'tax amount')}
     ${renderRow({ hideTaxMessage: true }, 'net', 'tax message')}
     ${renderRow({ enableExpense: true }, 'expense')}
     ${renderRow({ enableDelivery: true }, 'gross', 'delivery')}

@@ -5,29 +5,9 @@ export interface CartTotalsComponentOptions {
   enableSubtotal?: boolean;
 
   /**
-   * Indicates whether to render the tax.
-   */
-  enableTaxAmount?: boolean;
-
-  /**
-   * Indicates whether to render the tax included/excluded message.
-   */
-  enableTaxMessage?: boolean;
-
-  /**
    * Indicates whether to render the discounts.
    */
-  enableDiscounts?: boolean;
-
-  /**
-   * @default DiscountRowsAppearance.Inline
-   */
-  discountRowsAppearance?: DiscountRowsAppearance;
-
-  /**
-   * Indicate whether to render the delivery.
-   */
-  enableDelivery?: boolean;
+  enableDiscount?: boolean;
 
   /**
    * Indicate whether to render the expense.
@@ -35,31 +15,12 @@ export interface CartTotalsComponentOptions {
   enableExpense?: boolean;
 
   /**
-   * Provides a static message next to the delivery link.
+   * Indicates whether to render the tax.
    */
-  deliveryMessage?: string;
-}
-
-export const enum DiscountRowsAppearance {
-  /**
-   * Indicates to not render discount rows at all.
-   */
-  None = 'none',
+  enableTax?: boolean;
 
   /**
-   * Indicates whether to render discount rows inline.
+   * Indicate whether to render the delivery.
    */
-  Inline = 'inline',
-
-  /**
-   * Indicates whether to use a collapsible UI for the discount rows and
-   * have the rows collapsed by default.
-   */
-  Collapsed = 'collapsed',
-
-  /**
-   * Indicates whether to use a collapsible UI for the discount rows and
-   * have the rows expanded by default.
-   */
-  Expanded = 'expanded',
+  enableDelivery?: boolean;
 }
