@@ -53,46 +53,6 @@ export class PickingProductCardComponent extends LitElement {
     }
   }
 
-  protected getSummaryInfo(): SummaryInfo {
-    if (!this.productItem) {
-      return {
-        main: '',
-      };
-    }
-
-    if (this.status === ItemsFilters.Picked) {
-      const template = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
-
-      if (this.productItem.numberOfPicked < this.productItem.quantity) {
-        return {
-          main: `${template} ${i18n('picking.product-card.items-picked')}`,
-        };
-      }
-
-      return {
-        main: template,
-        additional: `${i18n('picking.product-card.all-items-picked')}`,
-      };
-    } else if (this.status === ItemsFilters.NotFound) {
-      const template = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
-
-      if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
-        return {
-          main: `${template} ${i18n('picking.product-card.items-not-found')}`,
-        };
-      }
-
-      return {
-        main: template,
-        additional: `${i18n('picking.product-card.no-items-found')}`,
-      };
-    }
-
-    return {
-      main: '',
-    };
-  }
-
   protected dispatchPickingEvents(
     event: string,
     productItem?: ProductItemPickedEvent
@@ -116,20 +76,16 @@ export class PickingProductCardComponent extends LitElement {
         this.productItem,
         () => html`
           <oryx-card>
-            ${when(
-              this.productItem?.orderItem,
-              () =>
-                html`
-                  <oryx-heading slot="heading"
-                    >${this.productItem?.orderItem.name}
-                  </oryx-heading>
-                  <div class="subtitle">${this.productItem?.orderItem.sku}</div>
-                `
-            )}
+            <oryx-heading slot="heading"
+              >${this.productItem?.orderItem.name}
+            </oryx-heading>
+            <oryx-heading>
+              <h4>${this.productItem?.orderItem.sku}</h4>
+            </oryx-heading>
 
             <oryx-image
-              .src="${this.productItem?.product?.image}"
-              alt="${ifDefined(this.productItem?.orderItem?.name)}"
+              .src="${this.productItem?.product.image}"
+              alt="${ifDefined(this.productItem?.orderItem.name)}"
               class="${classMap({
                 'image-fade': this.status === ItemsFilters.NotFound,
               })}"
