@@ -41,7 +41,7 @@ jobs:
       - name: Install Deps
         run: npm ci
       - name: Build Labs package
-        run: nx run labs:build
+        run: npx nx run labs:build
       - name: Fix js extension
         run: node tools/post-build/add-js-extension.js
       - name: Release labs

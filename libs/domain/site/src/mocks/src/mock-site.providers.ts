@@ -1,19 +1,23 @@
 import { ErrorHandler } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
+  DefaultLocaleService,
+  LocaleAdapter,
+  LocaleService,
+} from '@spryker-oryx/i18n';
+import {
   CountryService,
   CurrencyService,
   DefaultCountryService,
   DefaultCurrencyService,
-  DefaultLocaleService,
   DefaultNotificationService,
   DefaultPricingService,
   DefaultSalutationService,
   DefaultSemanticLinkService,
-  LocaleService,
   NotificationService,
   PricingService,
   SalutationService,
+  SapiLocaleAdapter,
   SemanticLinkService,
   SiteErrorHandler,
   StoreService,
@@ -48,6 +52,10 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: LocaleService,
     useClass: DefaultLocaleService,
+  },
+  {
+    provide: LocaleAdapter,
+    useClass: SapiLocaleAdapter,
   },
   {
     provide: PricingService,

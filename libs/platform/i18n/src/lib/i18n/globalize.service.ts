@@ -9,8 +9,8 @@ export type GlobalizeCldrImporter = () => object;
 export class GlobalizeService {
   private static MinimalCldrImporters: readonly GlobalizeCldrImporter[] = [
     // TODO: fix to import json files from node_modules when vite 4 will be released
-    () => import('./importers/likely-subtags').then((m) => m.default),
-    () => import('./importers/plurals').then((m) => m.default),
+    () => import('../importers/likely-subtags').then((m) => m.default),
+    () => import('../importers/plurals').then((m) => m.default),
   ];
 
   protected loadStatus?: Promise<object[]>;

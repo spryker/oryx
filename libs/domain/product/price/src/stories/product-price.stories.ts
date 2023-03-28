@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { ProductComponentProperties } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { LocaleService } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
