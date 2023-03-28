@@ -23,6 +23,7 @@ const mediumPlusScreen = css`
     padding-inline: var(--oryx-space-4);
     padding-block: var(--oryx-space-2);
   }
+
   span {
     ${headingUtil(HeadingTag.H6)};
   }
@@ -84,10 +85,12 @@ const cartTotalsTotalStyles = css`
   span:nth-child(2) {
     ${headingUtil(HeadingTag.H3)};
   }
+
   .tax-message {
+    ${headingUtil(HeadingTag.H6)};
+
     flex: 100%;
     text-align: end;
-    ${headingUtil(HeadingTag.H6)};
     color: var(--oryx-color-neutral-300);
   }
 `;
@@ -109,10 +112,12 @@ const cartTotalsTotalSmStyles = css`
   span:nth-child(2) {
     ${headingUtil(HeadingTag.H1)};
   }
+
   .tax-message {
+    ${headingUtil(HeadingTag.H4)};
+
     flex: 100%;
     text-align: end;
-    ${headingUtil(HeadingTag.H4)};
     color: var(--oryx-color-neutral-300);
   }
 `;
