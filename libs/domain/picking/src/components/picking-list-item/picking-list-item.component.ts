@@ -69,10 +69,7 @@ export class PickingListItemComponent
               html`
                 <span
                   >${asyncValue(
-                    this.localeService.formatDate(
-                      this.pickingList.createdAt,
-                      true
-                    )
+                    this.localeService.formatTime(this.pickingList.createdAt)
                   )}</span
                 >
               `

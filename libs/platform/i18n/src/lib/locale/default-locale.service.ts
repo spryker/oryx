@@ -57,34 +57,35 @@ export class DefaultLocaleService implements LocaleService {
     this.setActive$.next(value);
   }
 
-  formatDate(
-    stamp: string | number | Date,
-    showTime = false,
-    showDate = false
-  ): Observable<string> {
-    let template = {};
-
-    if (showDate) {
-      template = {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-      };
-    }
-
-    if (showTime) {
-      template = {
-        ...template,
-        hour: '2-digit',
-        minute: '2-digit',
-      };
-    }
-
+  formatDate(stamp: string | number): Observable<string> {
     return this.get().pipe(
       map((locale) =>
-        Intl.DateTimeFormat(locale.replace('_', '-'), template).format(
-          stamp instanceof Date ? stamp : new Date(stamp)
-        )
+        Intl.DateTimeFormat(locale.replace('_', '-')).format(new Date(stamp))
+      )
+    );
+  }
+
+  formatTime(stamp: string | number | Date): Observable<string> {
+    return this.get().pipe(
+      map((locale) =>
+        Intl.DateTimeFormat(locale.replace('_', '-'), {
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(stamp instanceof Date ? stamp : new Date(stamp))
+      )
+    );
+  }
+
+  formatDateTime(stamp: string | number | Date): Observable<string> {
+    return this.get().pipe(
+      map((locale) =>
+        Intl.DateTimeFormat(locale.replace('_', '-'), {
+          hour: '2-digit',
+          minute: '2-digit',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        }).format(stamp instanceof Date ? stamp : new Date(stamp))
       )
     );
   }
