@@ -48,7 +48,7 @@ jobs:
       - name: Fix js extension
         run: node tools/post-build/add-js-extension.js
       - name: Install verdaccio
-        run: npm i verdaccio
+        run: npm i -g verdaccio
       - name: Run verdaccio
         run: verdaccio
       - name: Set npm registry for @spryker-oryx to verdaccio
