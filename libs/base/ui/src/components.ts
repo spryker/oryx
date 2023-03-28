@@ -15,8 +15,6 @@ export * from '../form/radio/src/radio.def';
 export * from '../form/select/src/select.def';
 export * from '../form/tag/src/component';
 export * from '../graphical/components';
-export * from '../navigation/menu-item-button/src/menu-item-button.def';
-export * from '../navigation/menu-item/src/menu-item.def';
 export * from '../navigation/navigation-item/src/component';
 export * from '../navigation/navigation/src/component';
 export * from '../navigation/page-navigation-item/src/component';

@@ -26,6 +26,7 @@ export const enum NavigationTriggerBehavior {
 export const enum NavigationContentContainer {
     Modal = 'modal',
     Dropdown = 'dropdown',
+    Navigation = 'navigation',
 }
 
 export interface NavigationListItem {

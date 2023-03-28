@@ -1,22 +1,48 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { Component, ContentMixin, defaultOptions, ExperienceService } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
+import { asyncState, hydratable, observe, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-import { of, switchMap } from 'rxjs';
-import { NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
+import { async, BehaviorSubject, map, of, switchMap } from 'rxjs';
+import { NavigationContentContainer, NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
 import { styles } from './navigation-item.styles';
 
+@defaultOptions({
+  triggerType: NavigationTriggerType.StorefrontButton,
+  contentContainer: NavigationContentContainer.Dropdown,
+})
 @hydratable('window:load')
 export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItemOptions>(
   LitElement
 ) {
   static styles = styles;
 
+  protected experienceService = resolve(ExperienceService);
+
+  @property() uid = '';
+
+  @observe()
+  protected uid$ = new BehaviorSubject(this.uid);
+
+  protected components$ = this.uid$.pipe(
+    switchMap(uid => this.experienceService.getComponent({ uid })),
+    map((component: Component) => component?.components ?? [])
+  );
+
   @asyncState()
-  protected link = valueType(this.options$.pipe(
+  protected components = valueType(this.components$);
+
+  @asyncState()
+  protected url = valueType(this.options$.pipe(
     switchMap(({url}) => {
+      if (!url) {
+        return of();
+      }
+
       if (typeof url !== 'object'){
         return of(url);
       }
@@ -24,8 +50,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       return resolve(SemanticLinkService).get(url);
     }))
   );
-
-  // @property({ type: Array }) items?: MenuListItem[];
 
   // protected onClick(): void {
   //   if (this.eventName) {
@@ -39,11 +63,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   // }
 
   protected resolveLabel(): string {
-    return '';
-  }
-
-  protected resolveUrl(): string {
-    return '';
+    return this.componentOptions?.label ?? '';
   }
 
   protected get icon(): TemplateResult {
@@ -56,70 +76,113 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     ></oryx-icon>`;
   }
 
-  protected renderTriggersContent(): TemplateResult {
-    if (this.componentOptions?.triggerType === NavigationTriggerType.Icon) {
-      return html`
-        <oryx-icon-button slot="trigger">
-          ${when(
-            this.isLink,
-            () => html`<a href=${this.componentOptions.url!}>${icon}</a>`,
-            () => html`<button @click=${this.onClick}>${icon}</button>`
-          )}
-        </oryx-icon-button>
-      `;
-    }
+  protected renderIconButton(): TemplateResult {
+    return html`
+      <oryx-icon-button slot="trigger">
+        ${when(
+          this.url,
+          () => html`<a href=${this.url!}>${this.icon}</a>`,
+          () => html`<button>${this.icon}</button>`
+        )}
+      </oryx-icon-button>
+    `;
+  }
+
+  protected renderButton(): TemplateResult {
+    return html`
+      <oryx-button slot="trigger">
+        ${when(
+          this.url,
+          () => html`<a href=${this.url!}>
+            ${this.icon}
+            ${this.resolveLabel()}
+          </a>`,
+          () => html`<button>
+            ${this.icon}
+            ${this.resolveLabel()}
+          </button>`
+        )}
+      </oryx-button>
+    `;
+  }
+
+  protected renderCustomButton(): TemplateResult {
+    return html`
+      <oryx-site-navigation-button 
+        slot="trigger"
+        url=${ifDefined(this.url)}
+        icon=${ifDefined(this.componentOptions?.icon)}
+        text=${this.resolveLabel()}
+        badge=${ifDefined(this.componentOptions?.badge)}
+      ></oryx-site-navigation-button>
+    `;
   }
 
   protected renderTrigger(): TemplateResult {
-    // const icon = html`<oryx-icon
-    //   .type=${this.componentOptions?.icon}
-    // ></oryx-icon>`;
-
-    // if (this.componentOptions?.type === MenuItemTypes.Icon) {
-    //   return html`
-    //     <oryx-icon-button slot="trigger">
-    //       ${when(
-    //         this.isLink,
-    //         () => html`<a href=${this.componentOptions.url!}>${icon}</a>`,
-    //         () => html`<button @click=${this.onClick}>${icon}</button>`
-    //       )}
-    //     </oryx-icon-button>
-    //   `;
-    // }
-
-    return html`<slot
-      name="trigger"
-      slot="trigger"
-      @click=${this.onClick}
-    ></slot>`;
+    switch(this.componentOptions?.triggerType) {
+      case NavigationTriggerType.Icon:
+        return this.renderIconButton();
+      case NavigationTriggerType.Button:
+        return this.renderButton();
+      case NavigationTriggerType.StorefrontButton:
+      default:
+        return this.renderCustomButton();
+    }
   }
 
-  protected renderMenuItemsList(): TemplateResult {
-    if (!this.items?.length) {
-      return html``;
-    }
+  protected renderContentNavigation(): TemplateResult {
+    return this.renderTrigger();
+  }
 
+  protected renderContentModal(): TemplateResult {
     return html`
-      ${this.items.map(
-        (item) => html` <oryx-button type="text">
-          <a href=${item.link} close-popover>
-            ${when(
-              !!item.icon,
-              () => html`<oryx-icon .type=${item.icon}></oryx-icon>`
-            )}
-            ${item.title}
-          </a>
-        </oryx-button>`
-      )}
+      ${this.renderTrigger()} 
+      <oryx-modal>
+        <!-- menuitems -->
+        <!-- components -->
+      </oryx-modal>
     `;
   }
 
-  protected override render(): TemplateResult {
+  protected renderContentDropdown(): TemplateResult {
     return html`
       <oryx-dropdown position="start" vertical-align>
-        ${this.renderTrigger()} ${this.renderMenuItemsList()}
-        <slot></slot>
+        ${this.renderTrigger()} 
+        <!-- menuitems -->
+        <!-- components -->
       </oryx-dropdown>
     `;
+  }
+
+  // protected renderMenuItemsList(): TemplateResult {
+  //   if (!this.items?.length) {
+  //     return html``;
+  //   }
+
+  //   return html`
+  //     ${this.items.map(
+  //       (item) => html` <oryx-button type="text">
+  //         <a href=${item.link} close-popover>
+  //           ${when(
+  //             !!item.icon,
+  //             () => html`<oryx-icon .type=${item.icon}></oryx-icon>`
+  //           )}
+  //           ${item.title}
+  //         </a>
+  //       </oryx-button>`
+  //     )}
+  //   `;
+  // }
+
+  protected override render(): TemplateResult {
+    switch(this.componentOptions?.contentContainer) {
+      case NavigationContentContainer.Dropdown:
+        return this.renderContentDropdown();
+      case NavigationContentContainer.Modal:
+        return this.renderContentModal();
+      case NavigationContentContainer.Navigation:
+      default:
+        return this.renderContentNavigation();
+    }
   }
 }

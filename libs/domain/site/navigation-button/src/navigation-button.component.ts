@@ -3,12 +3,12 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { MenuItemButtonAttributes } from './menu-item-button.model';
-import { styles } from './menu-item-button.styles';
+import { NavigationButtonAttributes } from './navigation-button.model';
+import { styles } from './navigation-button.styles';
 
-export class MenuItemButtonComponent
+export class NavigationButtonComponent
   extends LitElement
-  implements MenuItemButtonAttributes
+  implements NavigationButtonAttributes
 {
   static styles = styles;
 
@@ -22,7 +22,7 @@ export class MenuItemButtonComponent
       <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
         <slot name="text">${this.text}</slot>
       </oryx-heading>
-      <slot></slot>
+      ${when(this.badge, () => html`<mark>${this.badge}</mark>`)}
     `;
 
     return html`
