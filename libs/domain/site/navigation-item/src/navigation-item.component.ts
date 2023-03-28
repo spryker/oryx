@@ -21,18 +21,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 ) {
   static styles = styles;
 
-  protected experienceService = resolve(ExperienceService);
-
-  @property() uid = '';
-
-  @observe()
-  protected uid$ = new BehaviorSubject(this.uid);
-
-  protected components$ = this.uid$.pipe(
-    switchMap(uid => this.experienceService.getComponent({ uid })),
-    map((component: Component) => component?.components ?? [])
-  );
-
   @asyncState()
   protected components = valueType(this.components$);
 
