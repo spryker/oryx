@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { LitElement, ReactiveController } from 'lit';
 import { Observable, of, tap } from 'rxjs';
 

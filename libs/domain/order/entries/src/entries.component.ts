@@ -60,7 +60,7 @@ export class OrderEntriesComponent extends OrderMixin(
     return html`<oryx-heading .as=${HeadingTag.H6}>
       <h3>
         ${i18n('order.Products')}
-        ${i18n('order.(<count> items)', {
+        ${i18n('order.(<count>-items)', {
           count: this.order?.items.length ?? 0,
         })}
       </h3>

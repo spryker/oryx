@@ -12,8 +12,8 @@ import { i18nInjectable, InferI18nContext } from '../../injectables';
  * will be converted to a capitalized readable text
  * (for ex.: `cart.add-to-cart` -> `Add to cart`).
  *
- * If context is needed for a token use `{` and `}` to mark a prop in the last part of the token
- * (for ex.: to have `count` prop in context use it in token like `cart.{count}-items-in-cart`
+ * If context is needed for a token use `<` and `>` to mark a prop in the last part of the token
+ * (for ex.: to have `count` prop in context use it in token like `cart.<count>-items-in-cart`
  * which will produce a readable string as `5 items in cart` when `count=5`)
  *
  * @example
@@ -27,7 +27,7 @@ import { i18nInjectable, InferI18nContext } from '../../injectables';
  * ```
  * With context object:
  * ```ts
- * <div>${i18n('cart.{count}-items-in-cart', { count: 10 })}</div>
+ * <div>${i18n('cart.<count>-items-in-cart', { count: 10 })}</div>
  * ```
  */
 export function i18n<T extends string | readonly string[]>(

@@ -40,15 +40,11 @@ export class AnonTokenInterceptor implements HttpInterceptor {
       return options;
     }
 
-    options = {
-      ...options,
-      headers: {
-        ...options.headers,
-        [this.headerName]: token.token,
-      },
-    };
+    const headers = new Headers(options.headers);
 
-    return options;
+    headers.set(this.headerName, token.token);
+
+    return { ...options, headers };
   }
 }
 

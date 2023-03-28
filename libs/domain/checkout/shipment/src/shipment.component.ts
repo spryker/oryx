@@ -7,7 +7,8 @@ import {
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
-import { LocaleService, PricingService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/i18n';
+import { PricingService } from '@spryker-oryx/site';
 import {
   asyncValue,
   hydratable,
