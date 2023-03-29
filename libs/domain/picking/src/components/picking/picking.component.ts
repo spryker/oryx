@@ -1,9 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { catchError, of, take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
@@ -174,9 +176,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                     ></oryx-picking-product-card>
                   `
               )}
-              ${this.renderFinishButton()}
+              ${this.renderFinishButton(true)}
             `,
-            () => html`${this.renderPlaceholderComplete()} `
+            () => this.renderPlaceholderComplete()
           )}
         </div>`
       )}
@@ -184,42 +186,40 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderPlaceholderComplete(): TemplateResult {
-    if (this.items?.every((item) => item.status === ItemsFilters.Picked)) {
-      return html`
-        <div class="picking-complete">
-          <div class="img-wrap">
-            <oryx-image resource="picking-items-processed"></oryx-image>
-          </div>
-          <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
-          <p>${i18n(`picking.all-items-are-processed`)}!</p>
-        </div>
-        <div class="submit-wrapper">
-          <oryx-button type="primary" outline="true">
-            <button @click=${this.finishPicking}>
-              ${i18n('picking.finish-picking')}
-            </button>
-          </oryx-button>
-        </div>
-      `;
-    } else {
+    if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
       return html``;
     }
+
+    return html`
+      <div class="picking-complete">
+        <div class="img-wrap">
+          <oryx-image resource="picking-items-processed"></oryx-image>
+        </div>
+        <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
+        <p>${i18n(`picking.all-items-are-processed`)}!</p>
+      </div>
+      ${this.renderFinishButton()}
+    `;
   }
 
-  protected renderFinishButton(): TemplateResult {
-    if (this.items?.every((item) => item.status === ItemsFilters.Picked)) {
-      return html`
-        <div class="submit-wrapper scroll-shadow">
-          <oryx-button type="primary" outline="true">
-            <button @click=${this.finishPicking}>
-              ${i18n('picking.finish-picking')}
-            </button>
-          </oryx-button>
-        </div>
-      `;
-    } else {
+  protected renderFinishButton(hasShadow?: boolean): TemplateResult {
+    if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
       return html``;
     }
+
+    return html`
+      <div
+        class="submit-wrapper ${classMap({
+          'scroll-shadow': hasShadow ?? false,
+        })}"
+      >
+        <oryx-button type=${ButtonType.Primary} outline="true">
+          <button @click=${this.finishPicking}>
+            ${i18n('picking.finish-picking')}
+          </button>
+        </oryx-button>
+      </div>
+    `;
   }
 
   protected renderConfirmationModal(): TemplateResult {
