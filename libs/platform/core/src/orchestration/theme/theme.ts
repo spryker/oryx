@@ -70,16 +70,12 @@ export class ThemePlugin
   async resolve(
     componentDef: ComponentDef
   ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
-    const componentOptions =
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      this.app!.findPlugin(ComponentsPlugin)!.getOptions();
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
 
-    if (!isServer && !componentOptions.preload) {
+    if (!isServer) {
       implementations.push(css`
-        *:not(:defined),
-        *:not([defined]) {
+        :not([defer-hydration]):not([hydratable]):not(:defined) {
           display: none;
         }
       `);

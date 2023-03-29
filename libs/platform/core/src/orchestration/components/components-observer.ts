@@ -1,5 +1,4 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { isServer } from 'lit';
 import { AppPlugin } from '../app';
 import { ComponentsLoader } from './components-loader';
 import {
@@ -46,26 +45,18 @@ export class ComponentsObserver
     nodes.forEach((node) => this.checkNode(node));
   }
 
-  protected addDefinedAttribute(element: HTMLElement): void {
-    if (!isServer && !this.options.preload) {
-      element.setAttribute('defined', '');
-    }
-  }
-
   protected checkNode(node: Node): void {
+    console.log('checkNode');
     if (isNodeElement(node)) {
       const tag = this.processName(node.nodeName);
 
       if (node.shadowRoot) {
         this.observe(node.shadowRoot);
-        this.addDefinedAttribute(node);
       } else if (isObservableShadowElement(node)) {
         this.observeShadow(node);
-        this.addDefinedAttribute(node);
       } else {
         this.tryLoadAndDefineComponent(tag, this.implMetaInDom).then(() => {
           customElements.upgrade(node);
-          this.addDefinedAttribute(node);
           this.maybeObserveShadow(node);
         });
       }
