@@ -102,10 +102,19 @@ describe('SiteLocaleSelectorComponent', () => {
       expect(element).toContainElement('button');
     });
 
-    it('should render the options', () => {
-      expect(element).toContainElement('oryx-option[value=en');
-      expect(element).toContainElement('oryx-option[value=de');
-      expect(element).toContainElement('oryx-option[value=es');
+    it('should render the english option in its native locale', () => {
+      const en = element.shadowRoot?.querySelector('oryx-option[value=en');
+      expect(en?.textContent).toContain('English');
+    });
+
+    it('should render the Deutch option in its native locale', () => {
+      const en = element.shadowRoot?.querySelector('oryx-option[value=de');
+      expect(en?.textContent).toContain('Deutsch');
+    });
+
+    it('should render the Spanish option in its native locale', () => {
+      const en = element.shadowRoot?.querySelector('oryx-option[value=es');
+      expect(en?.textContent).toContain('español');
     });
 
     describe('and when a locale is selected', () => {
