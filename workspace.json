@@ -23,6 +23,7 @@
     "search": "libs/domain/search",
     "site": "libs/domain/site",
     "storefront": "apps/storefront",
+    "storefront-test": "apps/storefront-test",
     "storefront-e2e": "apps/storefront-e2e",
     "storybook": "apps/storybook",
     "themes": "libs/template/themes",

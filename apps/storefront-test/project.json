@@ -1,0 +1,65 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/storefront-test/src",
+  "tags": ["type:app"],
+  "targets": {
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev",
+        "cwd": "apps/storefront-test"
+      }
+    },
+    "serve-ssr": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run dev:ssr",
+        "cwd": "apps/storefront-test"
+      }
+    },
+    "serve-prod": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx build-client storefront-test",
+          "nx build-ssr storefront-test",
+          "npm run dev:ssr --omit=dev"
+        ],
+        "cwd": "apps/storefront-test",
+        "parallel": false
+      }
+    },
+    "build-client": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build:client",
+        "cwd": "apps/storefront-test"
+      }
+    },
+    "build-ssr": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build:ssr",
+        "cwd": "apps/storefront-test"
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "apps/storefront-test"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/storefront-test/**/*.ts"]
+      }
+    },
+    "deps": {
+      "executor": "./tools/executors/dependency-tree:deps"
+    }
+  }
+}

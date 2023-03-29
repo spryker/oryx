@@ -53,11 +53,9 @@ jobs:
         run: nohup verdaccio &
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
-
-
-#      - name: Release from packages
-#        if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
-#        run: npm run release-from-packages
+      - name: Release from packages
+        run: npm run release-from-packages
+      -
 #      - name: Release Error Log
 #        if: failure()
 #        run: cat libs/lerna-debug.log
