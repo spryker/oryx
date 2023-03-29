@@ -108,8 +108,10 @@ describe('PickingComponent', () => {
 
     it('should render success message', () => {
       expect(
-        element.renderRoot.querySelector('.picking-complete p')?.textContent
-      ).toBe(i18n('picking.all-items-are-processed!'));
+        element.renderRoot
+          .querySelector('.submit-wrapper button')
+          ?.textContent?.trim()
+      ).toBe(i18n('picking.finish-picking'));
     });
   });
 });

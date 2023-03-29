@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -175,12 +174,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                     ></oryx-picking-product-card>
                   `
               )}
-              ${this.renderFinishButton(true)}
+              ${this.renderFinishButton()}
             `,
-            () =>
-              html`
-                ${this.renderPlaceholderComplete()} ${this.renderFinishButton()}
-              `
+            () => html`${this.renderPlaceholderComplete()} `
           )}
         </div>`
       )}
@@ -188,7 +184,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderPlaceholderComplete(): TemplateResult {
-    if (this.items.every((item) => item.status === ItemsFilters.Picked)) {
+    if (this.items?.every((item) => item.status === ItemsFilters.Picked)) {
       return html`
         <div class="picking-complete">
           <div class="img-wrap">
@@ -197,20 +193,23 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
           <p>${i18n(`picking.all-items-are-processed`)}!</p>
         </div>
+        <div class="submit-wrapper">
+          <oryx-button type="primary" outline="true">
+            <button @click=${this.finishPicking}>
+              ${i18n('picking.finish-picking')}
+            </button>
+          </oryx-button>
+        </div>
       `;
     } else {
       return html``;
     }
   }
 
-  protected renderFinishButton(hasShadow?: boolean): TemplateResult {
-    if (this.items.every((item) => item.status === ItemsFilters.Picked)) {
+  protected renderFinishButton(): TemplateResult {
+    if (this.items?.every((item) => item.status === ItemsFilters.Picked)) {
       return html`
-        <div
-          class="submit-wrapper ${classMap({
-            'scroll-shadow': hasShadow ?? false,
-          })}"
-        >
+        <div class="submit-wrapper scroll-shadow">
           <oryx-button type="primary" outline="true">
             <button @click=${this.finishPicking}>
               ${i18n('picking.finish-picking')}
