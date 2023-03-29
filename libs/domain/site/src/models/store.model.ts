@@ -1,3 +1,5 @@
+import { Locale } from '@spryker-oryx/i18n';
+
 export interface Country {
   /**
    * 2 digit country code
@@ -23,11 +25,6 @@ export interface Country {
 }
 
 export interface Currency {
-  name: string;
-  code: string;
-}
-
-export interface Locale {
   name: string;
   code: string;
 }

@@ -22,9 +22,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected routerService = resolve(RouterService);
 
   @state()
-  protected isConfirmPickingDialogOpen = false;
-
-  @state()
   protected partialPicking: PartialPicking | null = null;
 
   @state()
@@ -66,37 +63,33 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     ];
   }
 
-  protected savePickingItem(event: Event): void {
-    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+  protected savePickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+    const { productId, numberOfPicked } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === detail.productId
+      (item) => item.product.id === productId
     );
 
     if (
-      !(
-        detail.numberOfPicked &&
-        detail.numberOfPicked === this.items[productIndex].quantity
-      )
+      !(numberOfPicked && numberOfPicked === this.items[productIndex].quantity)
     ) {
       this.partialPicking = {
-        productId: detail.productId,
-        currentNumberOfPicked: detail.numberOfPicked,
+        productId: productId,
+        currentNumberOfPicked: numberOfPicked,
         quantity: this.items[productIndex].quantity,
       };
 
-      this.isConfirmPickingDialogOpen = true;
       return;
     }
 
-    this.updatePickingItem(productIndex, detail.numberOfPicked);
+    this.updatePickingItem(productIndex, numberOfPicked);
   }
 
-  protected editPickingItem(event: Event): void {
-    const detail = (event as CustomEvent<ProductItemPickedEvent>).detail;
+  protected editPickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+    const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === detail.productId
+      (item) => item.product.id === productId
     );
     this.items[productIndex].status = ItemsFilters.NotPicked;
 
@@ -104,7 +97,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected onModalClose(): void {
-    this.isConfirmPickingDialogOpen = false;
+    this.partialPicking = null;
   }
 
   protected confirmPartialPicking(): void {
@@ -118,7 +111,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     );
 
     this.partialPicking = null;
-    this.isConfirmPickingDialogOpen = false;
   }
 
   protected finishPicking(): void {
@@ -204,6 +196,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
           <p>${i18n(`picking.all-items-are-processed`)}!</p>
         </div>
+        <<<<<<< HEAD
         <div class="submit-wrapper scroll-shadow">
           <oryx-button type="primary" outline="true">
             <button @click=${this.finishPicking}>
@@ -211,6 +204,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
             </button>
           </oryx-button>
         </div>
+        ======= >>>>>>> development
       `;
     } else {
       return html``;
@@ -220,7 +214,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected renderConfirmationModal(): TemplateResult {
     return html`
       <oryx-modal
-        ?open=${this.isConfirmPickingDialogOpen}
+        ?open=${this.partialPicking}
         enableFooter
         preventclosebybackdrop
         footerButtonFullWidth

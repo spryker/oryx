@@ -16,14 +16,6 @@ export const styles = css`
     -webkit-box-orient: vertical;
   }
 
-  .subtitle {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.01em;
-    color: var(--oryx-color-neutral-400);
-  }
-
   form {
     margin-block-start: 7px;
   }
