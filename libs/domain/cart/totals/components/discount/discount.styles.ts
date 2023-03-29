@@ -13,6 +13,7 @@ const cartTotalsDiscountRules = css`
   }
 
   ul {
+    grid-column: 1 / span 2;
     list-style: none;
     padding: 0;
     margin: var(--oryx-space-2) 0 0 0;

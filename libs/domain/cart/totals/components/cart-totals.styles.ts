@@ -5,8 +5,10 @@ import { css } from 'lit';
 
 const cartTotalRules = css`
   :host {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    // display: flex;
+    // justify-content: space-between;
     padding-inline: var(--oryx-space-4);
   }
 

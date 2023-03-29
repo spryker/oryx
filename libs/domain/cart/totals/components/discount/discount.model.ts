@@ -5,10 +5,6 @@ export interface CartTotalsDiscountOptions {
   discountRowsAppearance?: DiscountRowsAppearance;
 }
 
-export interface CartTotalsTotalOptions {
-  enableTaxMessage?: boolean;
-}
-
 export const enum DiscountRowsAppearance {
   /**
    * Indicates to not render discount rows at all.
