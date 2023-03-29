@@ -24,7 +24,7 @@ class MockPickingListService implements Partial<PickingListService> {
 }
 
 class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of('01:23'));
+  formatTime = vi.fn().mockReturnValue(of('01:23'));
 }
 
 describe('PickingListItemComponent', () => {
@@ -84,7 +84,7 @@ describe('PickingListItemComponent', () => {
     });
 
     it('should perform time formatting', () => {
-      expect(localeService.formatDate).toHaveBeenCalledWith(
+      expect(localeService.formatTime).toHaveBeenCalledWith(
         mockPickingListData[0].createdAt,
         true
       );
