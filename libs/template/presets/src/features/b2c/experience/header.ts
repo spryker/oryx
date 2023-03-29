@@ -85,6 +85,9 @@ export const HeaderTemplate: StaticComponent = {
               url: {
                 type: 'login', 
               },
+              items: [
+                {urls, }
+              ]
             },
           },
           components: [{
