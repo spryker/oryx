@@ -85,8 +85,7 @@ describe('PickingListItemComponent', () => {
 
     it('should perform time formatting', () => {
       expect(localeService.formatTime).toHaveBeenCalledWith(
-        mockPickingListData[0].createdAt,
-        true
+        mockPickingListData[0].createdAt
       );
     });
 

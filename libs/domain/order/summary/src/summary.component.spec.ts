@@ -48,7 +48,7 @@ const setupControllerSpies = (): void => {
 setupControllerSpies();
 
 class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of('mockdate'));
+  formatDateTime = vi.fn().mockReturnValue(of('mockdate'));
 }
 
 describe('OrderSummaryComponent', () => {
