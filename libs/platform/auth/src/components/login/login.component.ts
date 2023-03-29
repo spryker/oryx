@@ -4,12 +4,7 @@ import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { Size } from '@spryker-oryx/ui';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import {
-  FormAssociatedElement,
-  hydratable,
-  i18n,
-  subscribe,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DirectiveResult } from 'lit/directive.js';
@@ -27,12 +22,8 @@ import { styles } from './login.styles';
   passwordVisibility: PasswordVisibilityStrategy.Mousedown,
 })
 @hydratable(['mouseover', 'focus'])
-export class AuthLoginComponent
-  extends ContentMixin<LoginOptions>(LitElement)
-  implements FormAssociatedElement
-{
+export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   static styles = styles;
-  static formAssociated = true;
 
   @property() heading?: DirectiveResult | string;
   @property() isLoading?: boolean;
@@ -43,39 +34,6 @@ export class AuthLoginComponent
 
   @state() protected isDisabled = false;
 
-  private internals =
-    typeof this.attachInternals === 'function' ? this.attachInternals() : null;
-
-  get form(): HTMLFormElement | null {
-    return this.internals?.form ?? null;
-  }
-
-  get validity(): ValidityState {
-    return (
-      this.internals?.validity ?? {
-        badInput: false,
-        customError: false,
-        patternMismatch: false,
-        rangeOverflow: false,
-        rangeUnderflow: false,
-        stepMismatch: false,
-        tooLong: false,
-        tooShort: false,
-        typeMismatch: false,
-        valid: true,
-        valueMissing: false,
-      }
-    );
-  }
-
-  get validationMessage(): string {
-    return this.internals?.validationMessage ?? '';
-  }
-
-  get willValidate(): boolean {
-    return this.internals?.willValidate ?? false;
-  }
-
   protected emailInputRef = createRef<HTMLInputElement>();
   protected passwordInputRef = createRef<HTMLInputElement>();
   protected rememberInputRef = createRef<HTMLInputElement>();
@@ -84,20 +42,8 @@ export class AuthLoginComponent
   protected routerService = resolve(RouterService);
   protected authLoginStrategy = resolve(
     AuthLoginStrategy,
-    new DefaultAuthLoginStrategy(this)
+    new DefaultAuthLoginStrategy()
   );
-
-  protected validationError?: string;
-
-  @subscribe()
-  protected validationError$ = this.i18nService
-    .translate('auth.email-and/or-password-is-required')
-    .pipe(
-      tap((errorMsg) => {
-        this.validationError = errorMsg;
-        this.updateValidity();
-      })
-    );
 
   protected doLogin$ = new Subject<LoginRequest>();
 
@@ -122,7 +68,7 @@ export class AuthLoginComponent
         return EMPTY;
       }
       if (this.componentOptions?.redirectUrl) {
-        return of(this.componentOptions.redirectUrl);
+        return of(this.componentOptions?.redirectUrl);
       }
       return this.routerService
         .previousRoute()
@@ -130,28 +76,6 @@ export class AuthLoginComponent
     }),
     tap((redirectUrl) => this.routerService.navigate(redirectUrl))
   );
-
-  checkValidity(): boolean {
-    return this.internals?.checkValidity() ?? true;
-  }
-
-  reportValidity(): boolean {
-    return this.internals?.reportValidity() ?? true;
-  }
-
-  formDisabledCallback(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-  }
-
-  formStateRestoreCallback(state: unknown): void {
-    if (state instanceof FormData) {
-      this.setState(state);
-    }
-  }
-
-  formResetCallback(): void {
-    this.setState(new FormData());
-  }
 
   protected override render(): TemplateResult {
     return html`<oryx-card>
@@ -168,7 +92,7 @@ export class AuthLoginComponent
         `
       )}
 
-      <div class="login-form">
+      <form @submit=${this.login}>
         <oryx-input
           .label=${i18n('user.login.email')}
           required
@@ -201,11 +125,9 @@ export class AuthLoginComponent
         ${this.renderLoginOptions()}
 
         <oryx-button size=${Size.Sm}>
-          <button ?disabled=${this.isLoading} @click=${this.login}>
-            ${i18n('user.login')}
-          </button>
+          <button ?disabled=${this.isLoading}>${i18n('user.login')}</button>
         </oryx-button>
-      </div>
+      </form>
     </oryx-card>`;
   }
 
@@ -253,62 +175,6 @@ export class AuthLoginComponent
     const rememberMe = this.rememberInputRef.value?.checked ?? false;
 
     return { email, password, rememberMe };
-  }
-
-  protected setState(data: FormData): void {
-    if (this.emailInputRef.value) {
-      this.emailInputRef.value.value = String(data.get(this.emailName) ?? '');
-    }
-    if (this.passwordInputRef.value) {
-      this.passwordInputRef.value.value = String(
-        data.get(this.passwordName) ?? ''
-      );
-    }
-    if (this.rememberInputRef.value) {
-      this.rememberInputRef.value.checked = data.has(this.rememberMeName);
-    }
-
-    this.updateFormValue();
-  }
-
-  protected updateFormValue(): void {
-    if (!this.internals) {
-      return this.updateValidity();
-    }
-
-    const data = this.getState();
-    const formData = new FormData();
-
-    formData.set(this.emailName, data.email);
-    formData.set(this.passwordName, data.password);
-
-    if (this.componentOptions?.enableRememberMe && data.rememberMe) {
-      formData.set(this.rememberMeName, 'true');
-    }
-
-    this.internals.setFormValue(formData);
-
-    this.updateValidity();
-  }
-
-  protected updateValidity(): void {
-    const data = this.getState();
-
-    const valueMissing = !data.email || !data.password;
-
-    if (!this.internals) {
-      return;
-    }
-
-    if (!valueMissing) {
-      return this.internals.setValidity({});
-    }
-
-    this.internals.setValidity(
-      { valueMissing },
-      this.validationError,
-      !data.email ? this.emailInputRef.value : this.passwordInputRef.value
-    );
   }
 }
 

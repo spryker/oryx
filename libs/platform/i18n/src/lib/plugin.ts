@@ -4,8 +4,7 @@ import {
   I18nInjectable,
   Injectable,
 } from '@spryker-oryx/utilities';
-import { I18nServiceInjectableAdapter } from './i18n-service-injectable.adapter';
-import { I18nService } from './i18n.service';
+import { I18nService, I18nServiceInjectableAdapter } from './i18n';
 
 export class I18nPlugin implements AppPlugin {
   constructor(
@@ -16,7 +15,7 @@ export class I18nPlugin implements AppPlugin {
   ) {}
 
   getName(): string {
-    return 'fes$i18n';
+    return 'oryx$i18n';
   }
 
   apply(app: App): void | Promise<void> {

@@ -1,5 +1,7 @@
-export interface ErrorService {
-  initialize(): void;
+import { OnDestroy } from '@spryker-oryx/di';
+import { AppInitializer } from '../app-initializer';
+
+export interface ErrorService extends AppInitializer, OnDestroy {
   dispatchError(error: ErrorEvent | PromiseRejectionEvent): void;
 }
 

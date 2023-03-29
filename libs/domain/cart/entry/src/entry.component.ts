@@ -1,170 +1,285 @@
-import { QuantityEventDetail } from '@spryker-oryx/cart/quantity-input';
 import { ContextController } from '@spryker-oryx/core';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { resolve } from '@spryker-oryx/di';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMediaContainerSize,
+  ProductService,
 } from '@spryker-oryx/product';
-import { Size } from '@spryker-oryx/ui';
-import { asyncValue, subscribe } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
 import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  merge,
-  Subject,
-  take,
-  tap,
-} from 'rxjs';
-import { CartEntryOptions, REMOVE_EVENT } from './entry.model';
-import { baseStyles, styles } from './styles';
+  NotificationService,
+  PricingService,
+  SemanticLinkType,
+} from '@spryker-oryx/site';
+import { AlertType, Size } from '@spryker-oryx/ui';
+import { ButtonType } from '@spryker-oryx/ui/button';
+import { LinkType } from '@spryker-oryx/ui/link';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { filter, first, map, switchMap } from 'rxjs';
+import {
+  QuantityEventDetail,
+  QuantityInputComponent,
+} from '../../quantity-input/src';
+import { CartComponentMixin } from '../../src/mixins';
+import { CartService } from '../../src/services';
+import {
+  CartEntryAttributes,
+  CartEntryOptions,
+  RemoveByQuantity,
+} from './entry.model';
+import { cartEntryStyles } from './styles';
 
-export class CartEntryComponent extends ComponentMixin<CartEntryOptions>() {
-  static styles = [baseStyles, styles];
+/**
+ * Supports updating the quantity as well as removing the entry entirely.
+ */
+@defaultOptions({
+  removeByQuantity: RemoveByQuantity.ShowBin,
+  enableItemImage: true,
+  enableItemId: true,
+  enableItemPrice: true,
+} as CartEntryOptions)
+export class CartEntryComponent
+  extends CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
+  implements CartEntryAttributes
+{
+  static styles = [cartEntryStyles];
 
+  @property() sku?: string;
+  @property({ type: Number }) quantity?: number;
+  @property({ type: Number }) price?: number;
+
+  @property() key?: string;
+  @property({ type: Boolean }) readonly?: boolean;
+
+  @state() protected formattedPrice?: string;
+  @state() protected requiresRemovalConfirmation?: boolean;
+
+  protected willUpdate(
+    props: PropertyValueMap<CartEntryAttributes> | Map<PropertyKey, unknown>
+  ): void {
+    if (props.has('sku')) {
+      this.context.provide(ProductContext.SKU, this.sku);
+    }
+    if (props.has('price')) {
+      this.formatPrice();
+    }
+    super.willUpdate(props);
+  }
+
+  protected formatPrice(): void {
+    this.pricingService
+      .format(this.price)
+      .pipe(first(Boolean))
+      .subscribe((formatted) => (this.formattedPrice = formatted));
+  }
+
+  protected productService = resolve(ProductService);
+  protected pricingService = resolve(PricingService);
   protected context = new ContextController(this);
-  protected options$ = new ContentController(this).getOptions();
 
-  protected triggerConfirmationRequired$ = new BehaviorSubject(false);
-  protected confirmation$ = combineLatest([
-    this.triggerConfirmationRequired$,
-    this.options$,
-  ]).pipe(
-    map(([confirmationRequired, entry]) => ({ confirmationRequired, entry }))
-  );
-
-  protected triggerShowOptions$ = new Subject<boolean>();
-  protected showOptions$ = merge(
-    this.triggerShowOptions$,
-    this.options$.pipe(
-      take(1),
-      map(({ defaultExpandedOptions }) => !!defaultExpandedOptions)
+  @asyncState()
+  protected availableQuantity = valueType(
+    this.context.get(ProductContext.SKU).pipe(
+      filter(Boolean),
+      switchMap((sku) =>
+        this.productService
+          .get({ sku: sku as string })
+          .pipe(
+            map((product) =>
+              product?.availability?.isNeverOutOfStock
+                ? Infinity
+                : product?.availability?.quantity ?? Infinity
+            )
+          )
+      )
     )
   );
 
-  @subscribe()
-  protected sku$ = this.options$.pipe(
-    tap(({ sku }) => {
-      this.context.provide(ProductContext.SKU, sku);
-    })
-  );
+  protected cartService = resolve(CartService);
+  protected notificationService = resolve(NotificationService);
 
-  protected toggleOptions(e: CustomEvent): void {
-    this.triggerShowOptions$.next(e.detail.state);
+  protected override render(): TemplateResult | void {
+    return html`
+      ${this.renderPreview()} ${this.renderDetails()} ${this.renderActions()}
+      ${this.renderPricing()}
+      ${when(this.requiresRemovalConfirmation, () => this.renderConfirmation())}
+    `;
   }
 
-  protected dispatchRemoveEvent(): void {
-    this.dispatchEvent(
-      new CustomEvent(REMOVE_EVENT, { bubbles: true, composed: true })
+  protected renderPreview(): TemplateResult | void {
+    if (!this.componentOptions?.enableItemImage) return;
+
+    return html`
+      <oryx-content-link
+        .options=${{
+          type: SemanticLinkType.Product,
+          id: this.sku,
+          linkType: LinkType.Neutral,
+        }}
+      >
+        <oryx-product-media
+          .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
+        ></oryx-product-media>
+      </oryx-content-link>
+    `;
+  }
+
+  protected renderDetails(): TemplateResult | void {
+    return html`<section class="details">
+      <oryx-product-title
+        .options=${{ linkType: LinkType.Neutral }}
+      ></oryx-product-title>
+
+      ${when(
+        this.componentOptions?.enableItemId,
+        () => html`<oryx-product-id></oryx-product-id>`
+      )}
+    </section>`;
+  }
+
+  protected renderActions(): TemplateResult | void {
+    if (this.readonly) return;
+
+    return html`
+      <div class="actions">
+        <oryx-icon-button
+          size=${Size.Md}
+          @click=${this.removeEntry}
+          ?disabled=${this.isBusy}
+        >
+          <button aria-label="remove">
+            <oryx-icon type="trash"></oryx-icon>
+          </button>
+          <span>${i18n('cart.remove')}</span>
+        </oryx-icon-button>
+      </div>
+    `;
+  }
+
+  protected renderPricing(): TemplateResult | void {
+    const qtyTemplate = this.readonly
+      ? i18n('cart.entry.<quantity>-items', {
+          quantity: this.quantity,
+        })
+      : html`<oryx-cart-quantity-input
+          .min=${Number(
+            this.componentOptions?.removeByQuantity ===
+              RemoveByQuantity.NotAllowed
+          )}
+          .max=${this.availableQuantity}
+          .value=${this.quantity}
+          .decreaseIcon=${this.decreaseIcon}
+          submitOnChange
+          @submit=${this.onSubmit}
+          ?disabled=${this.isBusy}
+        ></oryx-cart-quantity-input>`;
+
+    return html`
+      <section class="pricing">
+        ${qtyTemplate}
+        <span class="entry-price">${this.formattedPrice}</span>
+
+        ${when(
+          this.componentOptions?.enableItemPrice,
+          () =>
+            html`<div class="item-price">
+              <span>${i18n('cart.entry.item-price')}</span
+              ><oryx-product-price
+                .options=${{ enableTaxMessage: false }}
+              ></oryx-product-price>
+            </div>`
+        )}
+      </section>
+    `;
+  }
+
+  protected renderConfirmation(): TemplateResult | void {
+    return html`<oryx-modal
+      open
+      enableFooter
+      enableCloseButtonInHeader
+      heading=${i18n('cart.entry.confirm')}
+      @oryx.close=${this.revert}
+    >
+      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
+
+      <oryx-button
+        slot="footer-more"
+        .type=${ButtonType.Critical}
+        .size=${Size.Md}
+        @click=${(ev: Event) => this.removeEntry(ev, true)}
+      >
+        <button value="remove">${i18n(`cart.entry.remove`)}</button>
+      </oryx-button>
+    </oryx-modal>`;
+  }
+
+  /**
+   * Forces a revert of the quantity, as the quantity input might be updated outside.
+   */
+  protected revert(): void {
+    this.requiresRemovalConfirmation = false;
+    const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
+      'oryx-cart-quantity-input'
     );
-  }
-
-  protected onQuantityChange(
-    e: CustomEvent<QuantityEventDetail>,
-    isInstant: boolean
-  ): void {
-    if (e.detail.quantity === 0) {
-      e.stopPropagation();
-
-      if (isInstant) {
-        this.dispatchRemoveEvent();
-        return;
-      }
-
-      this.triggerConfirmationRequired$.next(true);
+    if (el) {
+      el.value = this.quantity;
     }
   }
 
-  protected onRemove(instant: boolean): void {
-    if (instant) {
-      this.dispatchRemoveEvent();
-      this.triggerConfirmationRequired$.next(false);
+  protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
+    const { quantity } = ev.detail;
+    if (quantity > 0) {
+      this.updateEntry(quantity);
+    } else {
+      this.removeEntry(ev);
+    }
+  }
+
+  protected updateEntry(quantity: number): void {
+    this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
+      next: () => {
+        if (this.componentOptions?.notifyOnUpdate) {
+          this.notify('cart.cart-entry-updated', this.sku);
+        }
+      },
+      error: () => this.revert(),
+    });
+  }
+
+  protected removeEntry(ev: Event, force?: boolean): void {
+    if (this.componentOptions?.confirmBeforeRemove && !force) {
+      this.requiresRemovalConfirmation = true;
       return;
     }
 
-    this.triggerConfirmationRequired$.next(true);
+    this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
+      next: () => {
+        if (this.componentOptions?.notifyOnRemove) {
+          this.notify('cart.confirm-removed', this.sku);
+        }
+      },
+      error: () => this.revert(),
+    });
   }
 
-  protected onCancelRemoving(): void {
-    this.triggerConfirmationRequired$.next(false);
+  protected notify(token: string, sku?: string): void {
+    this.notificationService.push({
+      type: AlertType.Success,
+      content: i18n(token) as string,
+      subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
+    });
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.options$, (entry) => {
-      const { hidePreview, silentRemove, selectedProductOptions } = entry;
-
-      const hasOptions = !!selectedProductOptions?.length;
-
-      return html`
-        ${asyncValue(this.confirmation$, ({ confirmationRequired, entry }) => {
-          if (entry.readonly) {
-            return html``;
-          }
-
-          return html`${when(
-            confirmationRequired,
-            () => html`
-              <cart-entry-confirmation
-                .options=${entry}
-                @remove=${(): void =>
-                  this.onRemove(entry.silentRemove || confirmationRequired)}
-                @cancel=${this.onCancelRemoving}
-              ></cart-entry-confirmation>
-            `,
-            () => html`
-              <oryx-icon-button size=${Size.Sm}>
-                <button
-                  @click=${(): void =>
-                    this.onRemove(entry.silentRemove || confirmationRequired)}
-                  aria-label="remove"
-                >
-                  <oryx-icon
-                    .type=${entry.removeButtonIcon ?? 'close'}
-                  ></oryx-icon>
-                </button>
-              </oryx-icon-button>
-            `
-          )}`;
-        })}
-
-        <div class="entry">
-          ${when(
-            !hidePreview,
-            () => html`
-              <oryx-product-media
-                .options=${{
-                  containerSize: ProductMediaContainerSize.Thumbnail,
-                }}
-              ></oryx-product-media>
-            `
-          )}
-
-          <section>
-            <cart-entry-content
-              .options=${entry}
-              ?disabled=${asyncValue(this.triggerConfirmationRequired$)}
-              @submit=${(e: CustomEvent): void =>
-                this.onQuantityChange(e, !!silentRemove)}
-            ></cart-entry-content>
-
-            ${when(
-              hasOptions,
-              () =>
-                html`
-                  <cart-entry-options
-                    .options=${entry}
-                    ?show-options=${asyncValue(this.showOptions$)}
-                    @toggle=${this.toggleOptions}
-                  ></cart-entry-options>
-                `
-            )}
-          </section>
-        </div>
-
-        <cart-entry-totals .options=${entry}></cart-entry-totals>
-      `;
-    })}`;
+  protected get decreaseIcon(): string | void {
+    if (
+      this.componentOptions?.removeByQuantity === RemoveByQuantity.ShowBin &&
+      this.quantity === 1
+    ) {
+      return 'trash';
+    }
   }
 }

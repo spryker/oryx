@@ -1,13 +1,9 @@
-import {
-  DefaultQueryService,
-  provideCommand,
-  provideEffect,
-  provideQuery,
-  QueryService,
-} from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { firstValueFrom, of } from 'rxjs';
 import { Mock } from 'vitest';
+import { DefaultQueryService } from './default-query.service';
+import { QueryService } from './query.service';
+import { provideCommand, provideEffect, provideQuery } from './utils';
 
 describe('DefaultQueryService', () => {
   let service: DefaultQueryService;

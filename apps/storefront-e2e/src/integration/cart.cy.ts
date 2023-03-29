@@ -63,7 +63,6 @@ describe('Cart suite', () => {
       });
 
       checkCartTotals({
-        subtotalText: '2 items',
         subtotalPrice: '242.78',
         discountsTotal: '-24.28',
         taxTotal: '14.29',
@@ -84,7 +83,7 @@ describe('Cart suite', () => {
         firstEntry.getQuantityInput().increase();
 
         firstEntry.getQuantityInput().getInput().should('have.value', 2);
-        firstEntry.getTotalPrice().should('contain.text', '598.55');
+        firstEntry.getSubtotal().should('contain.text', '598.55');
         cartTotals.getTotalPrice().should('contain.text', '598.55');
       });
     });
@@ -100,9 +99,12 @@ describe('Cart suite', () => {
         firstEntry.getQuantityInput().getInput().type('{selectall}2');
         cy.get('body').click();
 
-        firstEntry.getQuantityInput().getInput().should('have.value', 2);
-        firstEntry.getTotalPrice().should('contain.text', '598.55');
-        cartTotals.getTotalPrice().should('contain.text', '598.55');
+        cartPage.getCartEntries().then((entries) => {
+          const firstEntry = entries[0];
+          firstEntry.getQuantityInput().getInput().should('have.value', 2);
+          firstEntry.getSubtotal().should('contain.text', '598.55');
+          cartTotals.getTotalPrice().should('contain.text', '598.55');
+        });
       });
     });
 
@@ -141,9 +143,8 @@ function checkCartEntryPrices(
   isDiscounted = false
 ) {
   entry.getPrice().should('contain.text', productData.currentPrice);
-  entry.getSubtotal().should('contain.text', productData.currentPrice);
   entry
-    .getTotalPrice()
+    .getSubtotal()
     .should(
       'contain.text',
       isDiscounted
@@ -153,7 +154,6 @@ function checkCartEntryPrices(
 }
 
 interface CartTotalsExpectedData {
-  subtotalText: string;
   subtotalPrice: string;
   discountsTotal?: string;
   taxTotal: string;
@@ -177,9 +177,8 @@ function checkCartTotals(expectedData: CartTotalsExpectedData) {
   }
 
   cartTotals
-    .getDeliveryTotal()
-    .invoke('attr', 'title')
-    .should('contain', 'not yet implemented');
+    .getDeliveryTotalMessage()
+    .should('contain.text', 'not yet implemented');
   cartTotals.getTotalPrice().should('contain.text', expectedData.totalPrice);
 
   // covers HRZ-1008

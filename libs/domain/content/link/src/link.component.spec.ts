@@ -3,11 +3,12 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { SemanticLinkType, siteProviders } from '@spryker-oryx/site';
+import { LinkComponent } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
-import { ContentLinkOptions, LinkType } from './link.model';
+import { ContentLinkOptions, ContentLinkType } from './link.model';
 
 class MockService {
   getOptions(): Observable<ContentLinkOptions> {
@@ -19,7 +20,7 @@ describe('ContentLinkComponent', () => {
   let element: ContentLinkComponent;
   const options = {
     text: 'test',
-    type: LinkType.RawUrl,
+    type: ContentLinkType.RawUrl,
     id: 'test',
   };
 
@@ -70,7 +71,7 @@ describe('ContentLinkComponent', () => {
         expectation: 'a[href="/test"]',
       },
       {
-        type: LinkType.RawUrl,
+        type: ContentLinkType.RawUrl,
         expectation: 'a[href="test"]',
       },
     ].forEach(({ type, expectation }) => {
@@ -203,7 +204,9 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should pass the icon to oryx-link', () => {
-      expect(element).toContainElement('oryx-link[icon]');
+      const iconEl =
+        element.shadowRoot?.querySelector<LinkComponent>('oryx-link');
+      expect(iconEl?.icon).toBe('test');
     });
   });
 

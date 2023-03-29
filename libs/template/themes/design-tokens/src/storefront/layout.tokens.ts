@@ -32,7 +32,7 @@ export const layoutMdTokens: ThemeToken = {
 export const layoutSmTokens: ThemeToken = {
   layout: {
     container: {
-      padding: '10px',
+      padding: '0px',
     },
     cols: '4',
     factor: '4',

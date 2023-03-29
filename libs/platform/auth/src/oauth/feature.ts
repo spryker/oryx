@@ -2,10 +2,10 @@ import { AppFeature, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import {
   AuthService,
-  AuthTokenInterceptor,
   AuthTokenInterceptorConfig,
   AuthTokenService,
 } from '../services';
+import { OauthTokenInterceptor } from './oauth-token.interceptor';
 import { OauthService, OauthServiceConfig } from './oauth.service';
 import {
   DefaultOauthProviderFactoryService,
@@ -27,7 +27,7 @@ export class OauthFeature implements AppFeature {
       { provide: OauthServiceConfig, useFactory: () => configFactory() },
       { provide: AuthService, useFactory: () => inject(OauthService) },
       { provide: AuthTokenService, useFactory: () => inject(OauthService) },
-      { provide: HttpInterceptor, useClass: AuthTokenInterceptor },
+      { provide: HttpInterceptor, useClass: OauthTokenInterceptor },
       {
         provide: AuthTokenInterceptorConfig,
         useFactory: () => configFactory().tokenInterceptor,

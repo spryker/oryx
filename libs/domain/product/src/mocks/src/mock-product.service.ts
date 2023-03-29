@@ -93,6 +93,11 @@ export class MockProductService implements Partial<ProductService> {
         color: 'Color',
       },
       labels: [newLabel, saleLabel],
+      availability: {
+        quantity: 3,
+        isNeverOutOfStock: false,
+        availability: true,
+      },
     },
     {
       sku: '2',
@@ -125,6 +130,11 @@ export class MockProductService implements Partial<ProductService> {
         color: 'Color',
       },
       labels: [newLabel],
+      availability: {
+        isNeverOutOfStock: true,
+        quantity: 0,
+        availability: false,
+      },
     },
     {
       sku: '3',

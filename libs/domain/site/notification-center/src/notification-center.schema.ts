@@ -1,4 +1,5 @@
 import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
+import { FormFieldType } from '@spryker-oryx/form';
 import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { SiteNotificationCenterComponent } from './notification-center.component';
 
@@ -9,7 +10,7 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
     group: ComponentGroup.Site,
     options: {
       position: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [
           { value: NotificationPosition.TopStart },
           { value: NotificationPosition.TopCenter },
@@ -19,9 +20,7 @@ export const siteNotificationCenterSchema: ContentComponentSchema<SiteNotificati
           { value: NotificationPosition.BottomEnd },
         ],
       },
-      maxWidth: { type: 'text' },
-      marginBlock: { type: 'text' },
-      marginInline: { type: 'text' },
-      enableStacking: { type: 'boolean' },
+      autoCloseTime: { type: FormFieldType.Number },
+      enableStacking: { type: FormFieldType.Boolean },
     },
   };
