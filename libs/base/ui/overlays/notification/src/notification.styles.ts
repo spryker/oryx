@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { Schemes } from './notification.model';
+import { Scheme } from './notification.model';
 
 export const notificationStyles = css`
   :host {
@@ -11,16 +11,21 @@ export const notificationStyles = css`
     padding-inline: 22px 15px;
     border-radius: var(--oryx-border-radius-small);
     line-height: 24px;
-    border-inline-start: 6px solid red;
+    border-inline-start: 6px solid transparent;
     box-sizing: border-box;
   }
 
-  :host([scheme='${unsafeCSS(Schemes.LIGHT)}']) {
+  :host([scheme='${unsafeCSS(Scheme.Light)}']),
+  :host(:not([scheme])) {
     background: var(--oryx-color-canvas-100);
   }
 
-  :host([scheme='${unsafeCSS(Schemes.DARK)}']) {
+  :host([scheme='${unsafeCSS(Scheme.Dark)}']) {
     background: var(--oryx-color-canvas-200);
+  }
+
+  oryx-icon-button {
+    grid-column: 3;
   }
 
   :host([floating]) {

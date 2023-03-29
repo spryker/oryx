@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderMixin } from '@spryker-oryx/order';
-import { LocaleService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,
@@ -50,7 +50,7 @@ export class OrderSummaryComponent extends OrderMixin(
           <div class="title">${i18n('order.date')}:</div>
           <div>
             ${asyncValue(
-              this.locale.formatDate(this.order?.createdAt ?? '', true)
+              this.locale.formatDateTime(this.order?.createdAt ?? '')
             )}
           </div>
         </div>

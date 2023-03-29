@@ -1,0 +1,167 @@
+import { i18n } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import {
+  EVENT_EDIT,
+  EVENT_SUBMIT,
+  ItemsFilters,
+  PickingListItem,
+  ProductItemPickedEvent,
+  SummaryInfo,
+} from '../../models';
+import { styles } from './picking-product-card.styles';
+
+export class PickingProductCardComponent extends LitElement {
+  static styles = styles;
+
+  @property() productItem?: PickingListItem;
+  @property() status?: string;
+
+  @state() isCorrectNumberOfPickedProvided = true;
+  @state() currentNumberOfPicked?: number;
+
+  protected summaryInfo: SummaryInfo | undefined;
+
+  protected onSubmit(e: SubmitEvent): void {
+    e.preventDefault();
+
+    this.currentNumberOfPicked =
+      this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
+
+    this.dispatchPickingEvents(EVENT_SUBMIT, {
+      productId: this.productItem!.product.id,
+      numberOfPicked: this.currentNumberOfPicked,
+    });
+  }
+
+  protected editProductPicking(): void {
+    this.dispatchPickingEvents(EVENT_EDIT, {
+      productId: this.productItem!.product.id,
+    } as ProductItemPickedEvent);
+  }
+
+  protected onChangeQuantity({ detail: { quantity } }: CustomEvent): void {
+    this.currentNumberOfPicked = quantity;
+
+    if (this.productItem && this.currentNumberOfPicked) {
+      this.isCorrectNumberOfPickedProvided =
+        0 <= this.currentNumberOfPicked &&
+        this.currentNumberOfPicked <= this.productItem.quantity;
+    }
+  }
+
+  protected dispatchPickingEvents(
+    event: string,
+    productItem?: ProductItemPickedEvent
+  ): void {
+    this.dispatchEvent(
+      new CustomEvent(event, {
+        bubbles: true,
+        composed: true,
+        detail: productItem,
+      })
+    );
+  }
+
+  protected override render(): TemplateResult {
+    return html`${this.renderPickingProduct()}`;
+  }
+
+  protected renderPickingProduct(): TemplateResult {
+    if (!this.productItem) {
+      return html``;
+    }
+
+    const quantityForm = html`
+      <form @submit=${this.onSubmit}>
+        <oryx-cart-quantity-input
+          min="0"
+          .max="${this.productItem.quantity}"
+          .value="${this.productItem.numberOfPicked}"
+          @update=${this.onChangeQuantity}
+        ></oryx-cart-quantity-input>
+
+        <div>
+          ${i18n('picking.product-card.of')} ${this.productItem.quantity}
+          ${i18n('picking.product-card.items')}
+        </div>
+
+        <oryx-button>
+          <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
+            <oryx-icon type="checkMark"></oryx-icon>
+            ${i18n('picking.product-card.done')}
+          </button>
+        </oryx-button>
+      </form>
+    `;
+
+    return html`
+      <oryx-card>
+        <oryx-heading slot="heading"
+          >${this.productItem.orderItem.name}
+        </oryx-heading>
+        <oryx-heading>
+          <h4>${this.productItem.orderItem.sku}</h4>
+        </oryx-heading>
+
+        <oryx-image
+          .src="${this.productItem.product.image}"
+          alt="${ifDefined(this.productItem.orderItem.name)}"
+          class="${classMap({
+            'image-fade': this.status === ItemsFilters.NotFound,
+          })}"
+        ></oryx-image>
+
+        ${when(
+          this.status === ItemsFilters.NotPicked,
+          () => quantityForm,
+          () => this.renderEditStatus()
+        )}
+      </oryx-card>
+    `;
+  }
+
+  protected renderEditStatus(): TemplateResult {
+    let text = '';
+    let label = '';
+    let subtext = '';
+
+    if (!this.productItem) {
+      return html``;
+    }
+
+    if (this.status === ItemsFilters.Picked) {
+      text = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
+
+      if (this.productItem.numberOfPicked < this.productItem.quantity) {
+        label = i18n('picking.product-card.items-picked') as string;
+      } else {
+        subtext = i18n('picking.product-card.all-items-picked') as string;
+      }
+    } else if (this.status === ItemsFilters.NotFound) {
+      text = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
+
+      if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
+        label = i18n('picking.product-card.items-not-found') as string;
+      } else {
+        subtext = i18n('picking.product-card.no-items-found') as string;
+      }
+    }
+
+    return html`
+      <div class="summary-info">
+        <p>${text} ${label}</p>
+        ${when(subtext, () => html`<p>${subtext}</p>`)}
+      </div>
+      <oryx-button>
+        <button @click=${this.editProductPicking}>
+          <oryx-icon type="edit"></oryx-icon>
+          ${i18n('picking.product-card.edit-items')}
+        </button>
+      </oryx-button>
+    `;
+  }
+}

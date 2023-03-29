@@ -1,7 +1,7 @@
 import { App, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { I18nInjectable, Injectable } from '@spryker-oryx/utilities';
-import { I18nService } from './i18n.service';
+import { I18nService } from './i18n';
 import { I18nPlugin } from './plugin';
 
 describe('I18nPlugin', () => {
@@ -89,7 +89,7 @@ describe('I18nPlugin', () => {
     it('should return i18n plugin name', () => {
       const plugin = new I18nPlugin();
 
-      expect(plugin.getName()).toBe('fes$i18n');
+      expect(plugin.getName()).toBe('oryx$i18n');
     });
   });
 });

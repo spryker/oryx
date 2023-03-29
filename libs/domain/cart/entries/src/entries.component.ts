@@ -1,169 +1,68 @@
-import { CartComponentMixin, CartEntry, CartService } from '@spryker-oryx/cart';
-import { resolve } from '@spryker-oryx/di';
-import { ContentController } from '@spryker-oryx/experience';
-import { ProductService } from '@spryker-oryx/product';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { CartComponentMixin } from '@spryker-oryx/cart';
+import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CartEntriesOptions } from './entries.model';
-import { styles } from './entries.styles';
+import { cartEntriesStyles } from './entries.styles';
 
-interface EntriesData {
-  entries: CartEntry[];
-  loading: boolean;
-  currentlyUpdated: string | null;
-  options: Partial<CartEntriesOptions>;
-}
-
+@defaultOptions({
+  removeByQuantity: RemoveByQuantity.ShowBin,
+  enableItemId: true,
+  enableItemImage: true,
+  enableItemPrice: true,
+} as CartEntriesOptions)
 @hydratable('window:load')
-export class CartEntriesComponent extends CartComponentMixin<CartEntriesOptions>() {
-  static styles = styles;
+export class CartEntriesComponent extends CartComponentMixin(
+  ContentMixin<CartEntriesOptions>(LitElement)
+) {
+  static styles = cartEntriesStyles;
 
-  protected cartService = resolve(CartService);
-  protected productService = resolve(ProductService);
-  protected contentController = new ContentController(this);
+  // TODO: implement loading state
+  protected override render(): TemplateResult | void {
+    if (this.isEmpty) {
+      return this.renderEmpty();
+    }
 
-  protected options$ = this.contentController.getOptions();
+    return html`
+      <oryx-heading>
+        <h1>
+          ${i18n('cart.totals.<count>-items', {
+            count: this.totalQuantity,
+          })}
+        </h1>
+      </oryx-heading>
 
-  protected currentlyUpdated$ = new BehaviorSubject<string | null>(null);
-
-  protected loading$ = this.cartService.isBusy();
-
-  protected entries$ = this.options$.pipe(
-    switchMap(({ cartId }) =>
-      this.cartService.getEntries({ cartId }).pipe(
-        switchMap(
-          (entries) =>
-            entries?.reduce(
-              (acc$, entry) =>
-                acc$.pipe(
-                  switchMap((acc) =>
-                    this.productService
-                      .get({ sku: entry.sku })
-                      .pipe(
-                        map((product) => [
-                          ...acc,
-                          { ...entry, availability: product?.availability },
-                        ])
-                      )
-                  )
-                ),
-              of([] as CartEntry[])
-            ) ?? of([])
-        ),
-        tap(() => {
-          this.currentlyUpdated$.next(null);
-        })
-      )
-    )
-  );
-
-  protected entriesData$ = combineLatest([
-    this.entries$,
-    this.loading$,
-    this.currentlyUpdated$,
-    this.options$,
-  ]).pipe(
-    map(([entries, loading, currentlyUpdated, options]) => ({
-      entries,
-      loading,
-      currentlyUpdated,
-      options,
-    }))
-  );
-
-  protected onUpdate(e: CustomEvent, { groupKey, sku }: CartEntry): void {
-    this.currentlyUpdated$.next(groupKey);
-    this.cartService.updateEntry({
-      groupKey,
-      quantity: e.detail.quantity,
-    });
+      ${repeat(
+        this.entries ?? [],
+        (entry) => entry.groupKey,
+        (entry) => {
+          return html`
+            <oryx-cart-entry
+              .sku=${entry.sku}
+              .quantity=${entry.quantity}
+              .price=${entry.calculations?.sumPriceToPayAggregation}
+              .key=${entry.groupKey}
+              .options=${this.componentOptions}
+              ?readonly=${this.componentOptions?.readonly}
+            ></oryx-cart-entry>
+          `;
+        }
+      )}
+    `;
   }
 
-  protected onRemove({ groupKey }: CartEntry): void {
-    this.cartService.deleteEntry({ groupKey });
-  }
-
+  // TODO: we like to remove this, since this should be content managed
   protected renderEmpty(): TemplateResult {
     return html`
-      <section>
+      <section class="empty">
         <oryx-icon type="cart"></oryx-icon>
         <p>Your shopping cart is empty</p>
-        <oryx-button>
+        <oryx-button size="large">
           <button>Shop now</button>
         </oryx-button>
       </section>
-    `;
-  }
-
-  protected renderEntries(entriesData: EntriesData): TemplateResult {
-    const { entries, loading, currentlyUpdated, options } = entriesData;
-
-    return html` ${repeat(
-      entries,
-      (entry) => entry.groupKey,
-      (entry) => html`
-        <cart-entry
-          ?inert=${loading}
-          .options=${{
-            ...options,
-            ...entry,
-            disabled: loading,
-            updating: entry.groupKey === currentlyUpdated,
-          }}
-          @submit=${(e: CustomEvent): void => this.onUpdate(e, entry)}
-          @oryx.remove=${(): void => this.onRemove(entry)}
-        ></cart-entry>
-      `
-    )}`;
-  }
-
-  protected renderItemsCount(entriesData: EntriesData): TemplateResult {
-    const { options, entries } = entriesData;
-
-    if (options.hideItemsCount) {
-      return html``;
-    }
-
-    const count = entries.reduce((acc, { quantity }) => quantity + acc, 0);
-
-    return html`
-      <oryx-chip>${count} ${count === 1 ? 'item' : 'items'}</oryx-chip>
-    `;
-  }
-
-  protected renderCollapsibleContainer(
-    entriesData: EntriesData
-  ): TemplateResult {
-    const { options } = entriesData;
-
-    return html`
-      <oryx-collapsible ?open=${options.expanded}>
-        <span slot="header">
-          Products in the order ${this.renderItemsCount(entriesData)}
-        </span>
-
-        ${this.renderEntries(entriesData)}
-      </oryx-collapsible>
-    `;
-  }
-
-  protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(this.entriesData$, (entriesData) => {
-        const { entries, options } = entriesData;
-
-        if (!entries.length) {
-          return this.renderEmpty();
-        }
-
-        if (options?.collapsible) {
-          return this.renderCollapsibleContainer(entriesData);
-        }
-
-        return this.renderEntries(entriesData);
-      })}
     `;
   }
 }

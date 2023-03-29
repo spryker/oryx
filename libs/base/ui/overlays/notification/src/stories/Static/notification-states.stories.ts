@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
-import { Schemes } from '../../notification.model';
+import { Scheme } from '../../notification.model';
 import { bodyBackgroundColor } from '../util';
 
 const alertTypes = [
@@ -28,22 +28,25 @@ const longTitle =
 const longText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
-const getNotification = (
-  type: AlertType,
-  scheme: Schemes,
-  closable = false,
-  floating = false,
-  subtext?: string,
-  title = type
-): TemplateResult => {
+const getNotification = (props: {
+  type?: AlertType;
+  scheme?: Scheme;
+  closable?: boolean;
+  floating?: boolean;
+  subtext?: string;
+  title?: string;
+}): TemplateResult => {
   return html`<oryx-notification
-    type=${type}
-    scheme=${scheme}
-    ?closable=${closable}
-    ?floating=${floating}
+    .type=${props.type}
+    .scheme=${props.scheme}
+    ?closable=${props.closable}
+    ?floating=${props.floating}
   >
-    ${title}
-    ${when(subtext, () => html`<span slot="subtext">${subtext}</span>`)}
+    ${props.title ?? props.type ?? 'title'}
+    ${when(
+      props.subtext,
+      () => html`<span slot="subtext">${props.subtext}</span>`
+    )}
   </oryx-notification>`;
 };
 
@@ -86,25 +89,40 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
     </style>
 
     <div class="wrapper">
-      ${Object.values(Schemes).map(
+      ${[Scheme.Light, Scheme.Dark].map(
         (scheme) => html`
           <section>
             <h3>Closable (${scheme})</h3>
-            ${alertTypes.map((type) => getNotification(type, scheme, true))}
+            ${getNotification({ scheme, closable: true })}
+            ${alertTypes.map((type) =>
+              getNotification({ type, scheme, closable: true })
+            )}
 
             <h3>Subtext (${scheme})</h3>
+            ${getNotification({ scheme, subtext: 'subtext' })}
             ${alertTypes.map((type) =>
-              getNotification(type, scheme, false, false, `subtext`)
+              getNotification({ type, scheme, subtext: 'subtext' })
             )}
 
             <h3>Floating (${scheme})</h3>
+            ${getNotification({ scheme, floating: true })}
             ${alertTypes.map((type) =>
-              getNotification(type, scheme, false, true)
+              getNotification({ type, scheme, floating: true })
             )}
 
             <h3>Long text (${scheme})</h3>
+            ${getNotification({
+              scheme,
+              title: longTitle,
+              subtext: longText,
+            })}
             ${alertTypes.map((type) =>
-              getNotification(type, scheme, false, false, longText, longTitle)
+              getNotification({
+                type,
+                scheme,
+                title: longTitle,
+                subtext: longText,
+              })
             )}
 
             <h3>Custom content (${scheme})</h3>

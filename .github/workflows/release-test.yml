@@ -1,14 +1,6 @@
 name: Release test Workflow
 
 on:
-  # Triggers the workflow after the Test Workflow has completed
-  # workflow_run:
-  #   workflows: ['Test Workflow']
-  #   types:
-  #     - completed
-  #   branches:
-  #     - 'release/*'
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:

@@ -52,6 +52,7 @@ export class PickingListsComponent extends LitElement {
       <oryx-modal
         ?open=${this.customerNote}
         enableFooter
+        footerButtonFullWidth
         @oryx.close=${this.closeCustomerNoteModal}
       >
         <oryx-heading slot="heading">

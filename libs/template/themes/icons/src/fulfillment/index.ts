@@ -29,4 +29,8 @@ export const fulfillmentIcons: ThemeIcons = {
   [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
   [IconTypes.Visible]: () => import('./icons/visible').then((s) => s.default),
+  /** Alias to minus */
+  [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
+  /** Alias to add */
+  [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
 };

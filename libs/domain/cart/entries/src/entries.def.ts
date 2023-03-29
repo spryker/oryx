@@ -1,13 +1,34 @@
 import { componentDef } from '@spryker-oryx/core';
+import { Size } from '@spryker-oryx/utilities';
+import { css } from 'lit';
 import { CartEntriesOptions } from './entries.model';
 
 declare global {
   interface FeatureOptions {
-    'cart-entries'?: CartEntriesOptions;
+    'oryx-cart-entries'?: CartEntriesOptions;
   }
 }
 
 export const cartEntriesComponent = componentDef({
-  name: 'cart-entries',
+  name: 'oryx-cart-entries',
   impl: () => import('./entries.component').then((m) => m.CartEntriesComponent),
+  schema: () =>
+    import('./entries.schema').then((m) => m.cartEntriesComponentSchema),
+  stylesheets: [
+    {
+      rules: [
+        {
+          media: { screen: Size.Sm },
+          css: css`
+            oryx-cart-entry:first-child {
+              border-top: 1px solid var(--oryx-color-canvas-500);
+            }
+            oryx-cart-entry:last-child {
+              border-bottom: 1px solid var(--oryx-color-canvas-500);
+            }
+          `,
+        },
+      ],
+    },
+  ],
 });

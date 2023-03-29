@@ -1,11 +1,7 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const styles = css`
   :host {
-    --oryx-icon-size: 16px;
-
     display: inline-flex;
   }
 
@@ -18,6 +14,7 @@ export const styles = css`
     appearance: textfield;
     text-align: center;
     font-weight: 600;
+    height: 38px;
   }
 
   oryx-input {
@@ -34,7 +31,6 @@ export const styles = css`
   button {
     display: flex;
     align-items: center;
-    padding: 10px;
     cursor: pointer;
     background: var(--oryx-color-canvas-200);
     color: var(--oryx-color-neutral-300);
@@ -42,6 +38,9 @@ export const styles = css`
     outline: none;
     border-radius: var(--oryx-border-radius-small);
     margin: 0;
+    height: 42px;
+    box-sizing: border-box;
+    transition: var(--oryx-transition-time);
   }
 
   button:nth-of-type(1) {
@@ -77,11 +76,13 @@ export const styles = css`
     pointer-events: none;
   }
 
-  :host(:not(:focus-within)) button:hover,
-  button:active,
-  oryx-input:hover,
-  oryx-input:active {
+  button:hover,
+  button:active {
     z-index: 1;
+  }
+
+  oryx-input:focus-within {
+    z-index: 2;
   }
 
   oryx-input:not([hasError]):hover,
@@ -101,18 +102,3 @@ export const styles = css`
     content: '';
   }
 `;
-
-// TODO: consider moving this to global design tokens instead
-// alternatively, we could make it inline in the definition
-const smallScreen = css`
-  :host {
-    --oryx-icon-size: 22px;
-  }
-`;
-
-export const screenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
-];

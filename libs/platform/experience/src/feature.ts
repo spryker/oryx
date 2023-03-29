@@ -1,6 +1,7 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import * as components from './components';
+import { PreviewPlugin } from './plugins';
 import { defaultExperienceRoutes } from './routes';
 import { experiencePreviewProviders, experienceProviders } from './services';
 
@@ -24,4 +25,5 @@ export const experiencePreviewFeature: AppFeature = {
     components.experiencePreviewCompositionComponent,
     components.layoutComponent,
   ],
+  plugins: [new PreviewPlugin()],
 };

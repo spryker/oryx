@@ -9,7 +9,7 @@ import {
   QueryState,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { LocaleChanged } from '@spryker-oryx/site';
+import { LocaleChanged } from '@spryker-oryx/i18n';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -19,6 +19,7 @@ import {
   Observable,
   of,
   scan,
+  shareReplay,
   skip,
   startWith,
   switchMap,
@@ -162,7 +163,8 @@ export class DefaultCartService implements CartService {
             filter(Boolean),
             startWith(null)
           )
-    )
+    ),
+    shareReplay(1)
   );
 
   protected isBusy$ = combineLatest([

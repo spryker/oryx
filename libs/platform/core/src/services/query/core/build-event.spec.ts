@@ -1,4 +1,4 @@
-import { QueryEvent } from '@spryker-oryx/core';
+import { QueryEvent } from '../models';
 import { buildEvent } from './build-event';
 
 describe('buildEvent', () => {

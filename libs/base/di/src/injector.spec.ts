@@ -159,4 +159,61 @@ describe('Injector', () => {
       expect(result[1]).toBe('valueB');
     });
   });
+
+  describe('existing provider', () => {
+    beforeEach(() => {
+      injector.provide({
+        provide: 'service',
+        useClass: MockImplementation,
+      });
+      injector.provide({
+        provide: 'myValue',
+        useValue: 'test',
+      });
+      injector.provide({
+        provide: 'myFactory',
+        useFactory: () => 'testFactory',
+      });
+    });
+
+    it('should properly resolve any providers', () => {
+      injector.provide({
+        provide: 'existingA',
+        useExisting: 'service',
+      });
+      injector.provide({
+        provide: 'existingB',
+        useExisting: 'myValue',
+      });
+      injector.provide({
+        provide: 'existingC',
+        useExisting: 'myFactory',
+      });
+      const serviceA = injector.inject('existingA');
+      const serviceB = injector.inject('existingB');
+      const serviceC = injector.inject('existingC');
+      expect(serviceA).toBeInstanceOf(MockImplementation);
+      expect(serviceB).toBe('test');
+      expect(serviceC).toBe('testFactory');
+    });
+
+    it('should properly resolve multi providers', () => {
+      injector.provide({
+        provide: `multi*`,
+        useExisting: 'service',
+      });
+      injector.provide({
+        provide: `multi*`,
+        useExisting: 'myValue',
+      });
+      injector.provide({
+        provide: `multi*`,
+        useExisting: 'myFactory',
+      });
+      const service = injector.inject('multi*');
+      expect(service[0]).toBeInstanceOf(MockImplementation);
+      expect(service[1]).toBe('test');
+      expect(service[2]).toBe('testFactory');
+    });
+  });
 });

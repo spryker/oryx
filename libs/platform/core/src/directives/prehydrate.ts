@@ -24,7 +24,9 @@ class PrehydrateDirective extends Directive {
       return html``;
     }
     if (components[tag]) {
-      return html`${unsafeHTML(`<script>__dryFn('${tag}');</script>`)}`;
+      return html`${unsafeHTML(
+        `<script>try{__dryFn('${tag}')}catch{}</script>`
+      )}`;
     }
     const first = Object.keys(components).length == 0;
     components[tag] = true;

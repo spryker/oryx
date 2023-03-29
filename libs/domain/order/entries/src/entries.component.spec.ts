@@ -59,7 +59,7 @@ describe('OrderEntriesComponent', () => {
   };
 
   const getItems = (): NodeList => {
-    return element.shadowRoot?.querySelectorAll('cart-entry') as NodeList;
+    return element.shadowRoot?.querySelectorAll('oryx-cart-entry') as NodeList;
   };
 
   beforeAll(async () => {
@@ -91,7 +91,7 @@ describe('OrderEntriesComponent', () => {
 
   describe('when order data is available', () => {
     it('should render its contents', () => {
-      expect(element).toContainElement('cart-entry');
+      expect(element).toContainElement('oryx-cart-entry');
     });
 
     describe('when order items are above the threshold', () => {
@@ -198,7 +198,7 @@ describe('OrderEntriesComponent', () => {
     });
 
     it('should not render content', () => {
-      expect(element).not.toContainElement('cart-entry');
+      expect(element).not.toContainElement('oryx-cart-entry');
     });
   });
 });

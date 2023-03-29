@@ -1,5 +1,5 @@
 import { ContentLinkOptions } from '@spryker-oryx/content/link';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable } from '@spryker-oryx/utilities';
@@ -8,6 +8,9 @@ import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
 
+@defaultOptions({
+  linkType: 'none',
+})
 @hydratable(['mouseover', 'focusin'])
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
@@ -15,7 +18,6 @@ export class ProductTitleComponent extends ProductMixin(
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    const options = this.componentOptions ?? {};
     const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptions ?? {};
 
     return html`<oryx-heading
@@ -26,8 +28,15 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${options?.link ? this.renderLink() : html`${this.product?.name}`}
+      ${this.hasLink() ? this.renderLink() : html`${this.product?.name}`}
     </oryx-heading>`;
+  }
+
+  protected hasLink(): boolean {
+    return (
+      !!this.componentOptions?.linkType &&
+      this.componentOptions?.linkType !== 'none'
+    );
   }
 
   protected renderLink(): TemplateResult {
@@ -35,6 +44,7 @@ export class ProductTitleComponent extends ProductMixin(
       type: SemanticLinkType.Product,
       id: this.product?.sku,
       multiLine: true,
+      linkType: this.componentOptions?.linkType,
     } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
