@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import {
   pickingListItemComponent,
   PickingListService,
@@ -22,10 +23,15 @@ class MockPickingListService implements Partial<PickingListService> {
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
 }
 
+class MockLocaleService implements Partial<LocaleService> {
+  formatTime = vi.fn().mockReturnValue(of('01:23'));
+}
+
 describe('PickingListItemComponent', () => {
   let element: PickingListItemComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
+  let localeService: MockLocaleService;
 
   beforeAll(async () => {
     await useComponent(pickingListItemComponent);
@@ -42,6 +48,10 @@ describe('PickingListItemComponent', () => {
           provide: RouterService,
           useClass: MockRouterService,
         },
+        {
+          provide: LocaleService,
+          useClass: MockLocaleService,
+        },
       ],
     });
     service = testInjector.inject(
@@ -50,6 +60,9 @@ describe('PickingListItemComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+    localeService = testInjector.inject(
+      LocaleService
+    ) as unknown as MockLocaleService;
   });
 
   afterEach(() => {
@@ -70,20 +83,18 @@ describe('PickingListItemComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render time', () => {
-      const formattedTime = mockPickingListData[0].createdAt
-        .toLocaleString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true,
-        })
-        .toLowerCase();
+    it('should perform time formatting', () => {
+      expect(localeService.formatTime).toHaveBeenCalledWith(
+        mockPickingListData[0].createdAt
+      );
+    });
 
+    it('should render time', () => {
       expect(
         element.renderRoot
           .querySelector("[slot='heading'] span")
           ?.textContent?.trim()
-      ).toBe(formattedTime);
+      ).toBe('01:23');
     });
 
     it('should render id', () => {

@@ -104,9 +104,23 @@ describe('DefaultLocaleService', () => {
     });
   });
 
-  describe('when formatting a date', () => {
+  describe('when formatting a date and time', () => {
     beforeEach(() => {
       adapter.getDefault.mockReturnValue(of('de_DE'));
+    });
+
+    it('should return a locale formatted time', () => {
+      const date = Date.now();
+      const cb = vi.fn();
+
+      getService().formatTime(date).subscribe(cb);
+
+      expect(cb).toHaveBeenCalledWith(
+        Intl.DateTimeFormat('de-DE', {
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(date)
+      );
     });
 
     it('should return a locale formatted date', () => {
@@ -120,23 +134,21 @@ describe('DefaultLocaleService', () => {
       );
     });
 
-    describe('and showTime is true', () => {
-      it('should return a locale formatted date with time', () => {
-        const date = Date.now();
-        const cb = vi.fn();
+    it('should return a locale formatted date and time', () => {
+      const date = Date.now();
+      const cb = vi.fn();
 
-        getService().formatDate(date, true).subscribe(cb);
+      getService().formatDateTime(date).subscribe(cb);
 
-        expect(cb).toHaveBeenCalledWith(
-          Intl.DateTimeFormat('de-DE', {
-            hour: '2-digit',
-            minute: '2-digit',
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          }).format(date)
-        );
-      });
+      expect(cb).toHaveBeenCalledWith(
+        Intl.DateTimeFormat('de-DE', {
+          hour: '2-digit',
+          minute: '2-digit',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        }).format(date)
+      );
     });
   });
 });
