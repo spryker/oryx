@@ -18,9 +18,9 @@ export class DefaultLocaleService implements LocaleService {
   protected setActive$ = new ReplaySubject<string>(1);
   protected active$;
   protected all$;
-  private dateFormat$: Observable<Intl.DateTimeFormat>;
-  private timeFormat$: Observable<Intl.DateTimeFormat>;
-  private dateTimeFormat$: Observable<Intl.DateTimeFormat>;
+  protected dateFormat$: Observable<Intl.DateTimeFormat>;
+  protected timeFormat$: Observable<Intl.DateTimeFormat>;
+  protected dateTimeFormat$: Observable<Intl.DateTimeFormat>;
 
   constructor(
     protected adapter = inject(LocaleAdapter, null) ??
@@ -90,7 +90,9 @@ export class DefaultLocaleService implements LocaleService {
 
   formatDate(stamp: string | number | Date): Observable<string> {
     return this.dateFormat$.pipe(
-      map((dateFormat) => dateFormat.format(new Date(stamp)))
+      map((dateFormat) =>
+        dateFormat.format(stamp instanceof Date ? stamp : new Date(stamp))
+      )
     );
   }
 
