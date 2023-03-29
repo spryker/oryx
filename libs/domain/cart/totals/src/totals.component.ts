@@ -1,8 +1,9 @@
 import { ContentMixin } from '@spryker-oryx/experience';
-import { i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { CartComponentMixin } from '../../src/mixins/cart.mixin';
 
+@hydratable('window:load')
 export class CartTotalsComponent extends CartComponentMixin(
   ContentMixin(LitElement)
 ) {
