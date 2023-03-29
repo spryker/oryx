@@ -1,11 +1,7 @@
 import { isNodeElement } from '@spryker-oryx/core/utilities';
 import { AppPlugin } from '../app';
 import { ComponentsLoader } from './components-loader';
-import {
-  ComponentImplMeta,
-  ComponentsOptions,
-  ObservableShadowElement,
-} from './components.model';
+import { ComponentImplMeta, ObservableShadowElement } from './components.model';
 import { isObservableShadowElement } from './utilities';
 
 export class ComponentsObserver
@@ -16,10 +12,6 @@ export class ComponentsObserver
     this.handleMutations.bind(this)
   );
   protected readonly implMetaInDom: ComponentImplMeta = { foundInDom: true };
-
-  constructor(protected options: ComponentsOptions) {
-    super(options);
-  }
 
   destroy(): void {
     this.observer.disconnect();
@@ -46,7 +38,6 @@ export class ComponentsObserver
   }
 
   protected checkNode(node: Node): void {
-    console.log('checkNode');
     if (isNodeElement(node)) {
       const tag = this.processName(node.nodeName);
 
