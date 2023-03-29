@@ -57,7 +57,7 @@ export class DefaultLocaleService implements LocaleService {
     this.setActive$.next(value);
   }
 
-  formatDate(stamp: string | number): Observable<string> {
+  formatDate(stamp: string | number | Date): Observable<string> {
     return this.get().pipe(
       map((locale) =>
         Intl.DateTimeFormat(locale.replace('_', '-')).format(new Date(stamp))
