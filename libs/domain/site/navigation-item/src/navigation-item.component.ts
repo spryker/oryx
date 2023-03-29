@@ -1,19 +1,19 @@
 import { resolve } from '@spryker-oryx/di';
-import { Component, ContentMixin, defaultOptions, ExperienceService } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { asyncState, hydratable, observe, valueType } from '@spryker-oryx/utilities';
+import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-import { async, BehaviorSubject, map, of, switchMap } from 'rxjs';
-import { NavigationContentContainer, NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
+import { of, switchMap } from 'rxjs';
+import { NavigationContentBehavior, NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
+import { ComponentsController } from './controllers';
 import { styles } from './navigation-item.styles';
 
 @defaultOptions({
   triggerType: NavigationTriggerType.StorefrontButton,
-  contentContainer: NavigationContentContainer.Dropdown,
+  contentBehavior: NavigationContentBehavior.Navigation,
 })
 @hydratable('window:load')
 export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItemOptions>(
@@ -21,16 +21,14 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 ) {
   static styles = styles;
 
+  protected componentsController = new ComponentsController(this);
+
   @asyncState()
-  protected components = valueType(this.components$);
+  protected components = valueType(this.componentsController.getComponents());
 
   @asyncState()
   protected url = valueType(this.options$.pipe(
     switchMap(({url}) => {
-      if (!url) {
-        return of();
-      }
-
       if (typeof url !== 'object'){
         return of(url);
       }
@@ -127,7 +125,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       ${this.renderTrigger()} 
       <oryx-modal>
         <!-- menuitems -->
-        <!-- components -->
+        ${this.componentsController.resolveComponents(this.components)}
       </oryx-modal>
     `;
   }
@@ -137,7 +135,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-dropdown position="start" vertical-align>
         ${this.renderTrigger()} 
         <!-- menuitems -->
-        <!-- components -->
+        
+        ${this.componentsController.resolveComponents(this.components)}
       </oryx-dropdown>
     `;
   }
@@ -163,12 +162,12 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   // }
 
   protected override render(): TemplateResult {
-    switch(this.componentOptions?.contentContainer) {
-      case NavigationContentContainer.Dropdown:
+    switch(this.componentOptions?.contentBehavior) {
+      case NavigationContentBehavior.Dropdown:
         return this.renderContentDropdown();
-      case NavigationContentContainer.Modal:
+      case NavigationContentBehavior.Modal:
         return this.renderContentModal();
-      case NavigationContentContainer.Navigation:
+      case NavigationContentBehavior.Navigation:
       default:
         return this.renderContentNavigation();
     }

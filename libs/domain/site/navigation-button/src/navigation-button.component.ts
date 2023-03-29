@@ -15,6 +15,7 @@ export class NavigationButtonComponent
   @property() url?: string;
   @property() icon?: string;
   @property() text?: string;
+  @property() badge?: string;
 
   protected override render(): TemplateResult {
     const innerContent = html`

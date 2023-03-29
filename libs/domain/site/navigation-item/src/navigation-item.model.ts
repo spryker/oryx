@@ -7,7 +7,7 @@ export interface SiteNavigationItemOptions {
     url?: string | SemanticLink;
     triggerType?: NavigationTriggerType;
     triggerBehavior?: NavigationTriggerBehavior;
-    contentContainer?: NavigationContentContainer;
+    contentBehavior?: NavigationContentBehavior;
     items?: NavigationListItem[];
 }
 
@@ -23,7 +23,7 @@ export const enum NavigationTriggerBehavior {
     Hover = 'hover',
 }
 
-export const enum NavigationContentContainer {
+export const enum NavigationContentBehavior {
     Modal = 'modal',
     Dropdown = 'dropdown',
     Navigation = 'navigation',
