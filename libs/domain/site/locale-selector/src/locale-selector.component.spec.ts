@@ -103,17 +103,17 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should render the english option in its native locale', () => {
-      const en = element.shadowRoot?.querySelector('oryx-option[value=en');
+      const en = element.shadowRoot?.querySelector('oryx-option[value=en]');
       expect(en?.textContent).toContain('English');
     });
 
     it('should render the Deutch option in its native locale', () => {
-      const en = element.shadowRoot?.querySelector('oryx-option[value=de');
+      const en = element.shadowRoot?.querySelector('oryx-option[value=de]');
       expect(en?.textContent).toContain('Deutsch');
     });
 
     it('should render the Spanish option in its native locale', () => {
-      const en = element.shadowRoot?.querySelector('oryx-option[value=es');
+      const en = element.shadowRoot?.querySelector('oryx-option[value=es]');
       expect(en?.textContent).toContain('español');
     });
 
