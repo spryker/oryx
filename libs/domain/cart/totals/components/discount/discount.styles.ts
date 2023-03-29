@@ -3,26 +3,35 @@ import { css } from 'lit';
 
 const cartTotalsDiscountRules = css`
   oryx-collapsible {
-    padding-block: var(--oryx-space-2);
+    padding-block: var(--oryx-space-2) var(--oryx-space);
     box-sizing: border-box;
     width: 100%;
   }
 
-  span {
+  span:has(+ ul),
+  ul span {
     padding-block: 0;
+  }
+
+  span > ul {
+    padding-block: var(--oryx-space-2);
   }
 
   ul {
     grid-column: 1 / span 2;
     list-style: none;
     padding: 0;
-    margin: var(--oryx-space-2) 0 0 0;
+    margin: var(--oryx-space) 0 0 0;
     color: var(--oryx-color-neutral-300);
   }
 
   li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+  }
+
+  li:not(:last-child) {
+    margin-block-end: 10px;
   }
 
   span:nth-child(2) {

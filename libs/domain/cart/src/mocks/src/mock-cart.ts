@@ -93,6 +93,17 @@ const mockDiscounts: CartDiscount[] = [
     amount: 12075,
   },
 ];
+
+const mockMultipleDiscounts: CartDiscount[] = [
+  {
+    displayName: '€5 every tuesday and wednesday for buying 5 items',
+    amount: 12075,
+  },
+  {
+    displayName: 'Happy birthday!',
+    amount: 1000,
+  },
+];
 /**
  * The base cart is in gross mode and contains a single product.
  */
@@ -145,6 +156,13 @@ export const mockCartWithDiscount: Cart = {
   id: 'discount',
   totals: mockCartTotalsWithDiscount,
   discounts: mockDiscounts,
+};
+
+export const mockCartWithMultipleDiscount: Cart = {
+  ...mockBaseCart,
+  id: 'discount-multi-rows',
+  totals: mockCartTotalsWithDiscount,
+  discounts: mockMultipleDiscounts,
 };
 
 export const mockCartWithoutDiscountRows: Cart = {

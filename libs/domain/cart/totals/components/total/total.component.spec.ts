@@ -108,7 +108,7 @@ describe('CartTotalsTotalComponent', () => {
 
         it('should render the tax message', () => {
           const spans = element.shadowRoot?.querySelectorAll('span');
-          expect(spans?.[2].textContent).toContain('Tax included');
+          expect(spans?.[2].textContent).toContain('Tax excluded');
         });
       });
     });

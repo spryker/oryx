@@ -7,7 +7,9 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`<oryx-cart-totals-discount></oryx-cart-totals-discount>`;
+  return html`<oryx-cart-totals-discount
+    cartId="discount-multi-rows"
+  ></oryx-cart-totals-discount>`;
 };
 
 export const demo = Template.bind({});

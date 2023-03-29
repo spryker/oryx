@@ -7,8 +7,6 @@ const cartTotalRules = css`
   :host {
     display: grid;
     grid-template-columns: 1fr max-content;
-    // display: flex;
-    // justify-content: space-between;
     padding-inline: var(--oryx-space-4);
   }
 
