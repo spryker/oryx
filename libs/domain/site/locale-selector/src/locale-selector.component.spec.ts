@@ -75,7 +75,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
   });
 
-  describe('when there multiple only one locales', () => {
+  describe('when there is only one locale', () => {
     beforeEach(async () => {
       service.getAll.mockReturnValue(of([{ code: 'en' } as Locale]));
       element = await fixture(
@@ -88,7 +88,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
   });
 
-  describe('when there are more only one locales', () => {
+  describe('when there are more then one locale', () => {
     beforeEach(async () => {
       service.getAll.mockReturnValue(
         of([{ code: 'en' }, { code: 'de' }, { code: 'es' }] as Locale[])

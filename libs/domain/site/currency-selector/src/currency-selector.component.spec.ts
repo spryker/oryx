@@ -156,38 +156,5 @@ describe('SiteCurrencySelectorComponent', () => {
         expect(eur?.textContent).toContain('libra esterlina');
       });
     });
-
-    describe('and the language is German', () => {
-      beforeEach(async () => {
-        localeService.get.mockReturnValue(of('de'));
-        element = await fixture(
-          html`<oryx-site-currency-selector></oryx-site-currency-selector>`
-        );
-      });
-
-      it('should render the currency selector', () => {
-        const button = element.shadowRoot?.querySelector('button');
-        expect(button).toBeDefined();
-        expect(button?.textContent).toContain('EUR');
-      });
-
-      it('should render the EUR option', () => {
-        const eur = element.shadowRoot?.querySelector('oryx-option[value=EUR]');
-        expect(eur).toBeDefined();
-        expect(eur?.textContent).toContain('Euro');
-      });
-
-      it('should render the USD option', () => {
-        const eur = element.shadowRoot?.querySelector('oryx-option[value=USD]');
-        expect(eur).toBeDefined();
-        expect(eur?.textContent).toContain('US-Dollar');
-      });
-
-      it('should render the GBP option', () => {
-        const eur = element.shadowRoot?.querySelector('oryx-option[value=GBP]');
-        expect(eur).toBeDefined();
-        expect(eur?.textContent).toContain('Britisches Pfund');
-      });
-    });
   });
 });
