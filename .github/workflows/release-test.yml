@@ -50,7 +50,7 @@ jobs:
       - name: Install verdaccio
         run: npm i -g verdaccio
       - name: Run verdaccio
-        run: verdaccio
+        run: nohup verdaccio &
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
 
