@@ -69,7 +69,6 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
-        // { type: 'oryx-user-summary' },
         {
           type: 'oryx-site-navigation-item',
           options: {
@@ -85,21 +84,24 @@ export const HeaderTemplate: StaticComponent = {
               url: {
                 type: 'login', 
               },
-              items: [
-                {urls, }
-              ]
             },
           },
-          components: [{
+          components: [
+            {
+              type: 'oryx-auth-login',
+            },
+            {
+            
             type: 'oryx-auth-logout',
           }]
         },
-        // {
-        //   type: 'oryx-cart-summary',
-        //   options: {
-        //     data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
-        //   },
-        // },
+        { type: 'oryx-user-summary' },
+        {
+          type: 'oryx-cart-summary',
+          options: {
+            data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
+          },
+        },
       ],
       options: {
         data: {

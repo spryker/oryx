@@ -28,9 +28,6 @@ export class CartSummaryComponent extends CartComponentMixin(
     this.linkService.get({ type: SemanticLinkType.Cart })
   );
 
-  @asyncState()
-  protected quantity = valueType(this.quantity$);
-
   protected override render(): TemplateResult {
     return html`
       <oryx-button>
@@ -42,13 +39,6 @@ export class CartSummaryComponent extends CartComponentMixin(
           </oryx-heading>
         </a>
       </oryx-button>
-
-      <!-- <oryx-menu-item>
-        <oryx-menu-item-button slot="trigger" icon="cart" .url=${this.link}>
-          ${when(this.quantity, () => html`<mark>${this.quantity}</mark>`)}
-          <span slot="text">${i18n(['cart', 'cart.summary.heading'])}</span>
-        </oryx-menu-item-button>
-      </oryx-menu-item> -->
     `;
   }
 

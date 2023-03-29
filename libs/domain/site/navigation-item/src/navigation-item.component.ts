@@ -8,7 +8,6 @@ import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
 import { NavigationContentBehavior, NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
-import { ComponentsController } from './controllers';
 import { styles } from './navigation-item.styles';
 
 @defaultOptions({
@@ -20,11 +19,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   LitElement
 ) {
   static styles = styles;
-
-  protected componentsController = new ComponentsController(this);
-
-  @asyncState()
-  protected components = valueType(this.componentsController.getComponents());
 
   @asyncState()
   protected url = valueType(this.options$.pipe(
@@ -49,6 +43,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     //     })
     //   );
     // }
+  }
+
+  protected renderComposition(): TemplateResult {
+    return html`<experience-composition .uid=${this.uid}></experience-composition>`;
   }
 
   protected resolveLabel(): string {
@@ -133,7 +131,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseByBackdrop
       >
         <!-- menuitems -->
-        ${this.componentsController.resolveComponents(this.components)}
+        ${this.renderComposition()}
       </oryx-modal>
     `;
   }
@@ -143,7 +141,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-dropdown position="start" vertical-align>
         ${this.renderTrigger()} 
         <!-- menuitems -->
-        ${this.componentsController.resolveComponents(this.components)}
+        ${this.renderComposition()}
       </oryx-dropdown>
     `;
   }

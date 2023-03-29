@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,
   hydratable,
@@ -8,24 +9,13 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { when } from 'lit-html/directives/when.js';
-import { customElement } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import { UserService } from '../../src/services';
 import { UserSummaryOptions } from './summary.model';
 import { styles } from './summary.styles';
 
-@customElement('oryx-account-summary-content')
-export class UserSummaryContentComponent extends LitElement {
-  protected override render(): TemplateResult {
-    return html`<oryx-auth-logout></oryx-auth-logout>`;
-  }
-}
-
 @hydratable('window:load')
-@defaultOptions({
-  icon: 'user',
-})
 export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
   LitElement
 ) {
@@ -39,35 +29,60 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
     resolve(SemanticLinkService).get({ type: SemanticLinkType.Login })
   );
 
-  protected override render(): TemplateResult {
-    return html`
-      <oryx-menu-item .items=${this.user ? this.componentOptions?.items : []}>
-        <oryx-menu-item-button
-          slot="trigger"
-          .icon=${this.componentOptions?.icon}
-          url=${ifDefined(this.url)}
-        >
-          <span slot="text"
-            >${when(
-              this.user,
-              () => html`${this.user?.firstName}`,
-              () => html`${i18n('user.login')}`
-            )}</span
-          >
-        </oryx-menu-item-button>
-
+  protected renderTriggerButton(isAuthenticated: boolean): TemplateResult {
+    const innerContent = html`<oryx-icon type="user"></oryx-icon>
+      <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>
         ${when(
-          this.user,
-          () => html`
-            <oryx-account-summary-content></oryx-account-summary-content>
-            <!-- <oryx-auth-logout></oryx-auth-logout> -->
-          `
+          isAuthenticated,
+          () => this.user?.firstName,
+          () => i18n('user.login')
         )}
-      </oryx-menu-item>
+      </oryx-heading>`;
+
+    return html`
+      <oryx-button slot="trigger">
+        ${when(
+          isAuthenticated,
+          () => html`<button class="trigger">${innerContent}</button>`,
+          () =>
+            html`<a href=${ifDefined(this.link)} class="trigger">
+              ${innerContent}
+            </a>`
+        )}
+      </oryx-button>
     `;
   }
 
-  protected get url(): string | void {
-    return !this.user ? this.link : undefined;
+  protected renderDropdown(): TemplateResult {
+    return html`
+      ${when(this.options?.items?.length, () =>
+        this.options!.items!.map(
+          (item) => html`
+            <oryx-button type="text">
+              <a href=${item.link} class="dropdown-link" close-popover>
+                ${when(
+                  item.icon,
+                  () => html`<oryx-icon type=${item.icon}></oryx-icon>`
+                )}
+                ${item.title}
+              </a>
+            </oryx-button>
+          `
+        )
+      )}
+      <oryx-auth-logout></oryx-auth-logout>
+    `;
+  }
+
+  protected override render(): TemplateResult {
+    if (!this.user) {
+      return this.renderTriggerButton(false);
+    }
+
+    return html`
+      <oryx-dropdown position="start" vertical-align>
+        ${this.renderTriggerButton(true)} ${this.renderDropdown()}
+      </oryx-dropdown>
+    `;
   }
 }
