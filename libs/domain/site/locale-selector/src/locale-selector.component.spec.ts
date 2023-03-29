@@ -98,11 +98,11 @@ describe('SiteLocaleSelectorComponent', () => {
       );
     });
 
-    it('should show the locale selector', () => {
+    it('should render the locale selector', () => {
       expect(element).toContainElement('button');
     });
 
-    it('should show the options', () => {
+    it('should render the options', () => {
       expect(element).toContainElement('oryx-option[value=en');
       expect(element).toContainElement('oryx-option[value=de');
       expect(element).toContainElement('oryx-option[value=es');
@@ -110,12 +110,6 @@ describe('SiteLocaleSelectorComponent', () => {
 
     describe('and when a locale is selected', () => {
       beforeEach(async () => {
-        service.getAll.mockReturnValue(
-          of([{ code: 'en' }, { code: 'de' }, { code: 'es' }] as Locale[])
-        );
-        element = await fixture(
-          html`<oryx-site-locale-selector></oryx-site-locale-selector>`
-        );
         const de = element.shadowRoot?.querySelector('oryx-option[value=de]');
         de?.dispatchEvent(new Event('click'));
       });
