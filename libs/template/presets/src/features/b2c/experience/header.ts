@@ -70,27 +70,27 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         // { type: 'oryx-user-summary' },
-        // {
-        //   type: 'oryx-site-navigation-item',
-        //   options: {
-        //     data: {
-        //       triggerType: 'button',
-        //       // triggerEvent: 'hover',
-        //       // contentBehavior: 'modal', //popover, sidenav, navigation, etc.
+        {
+          type: 'oryx-site-navigation-item',
+          options: {
+            data: {
+              // triggerType: 'button',
+              // triggerEvent: 'hover',
+              contentBehavior: 'dropdown', //popover, sidenav, navigation, etc.
         
-        //       label: 'label',
-        //       // badge: 'CURRENT_CART.ITEMS_COUNT'
-        //       icon: 'user',
+              label: 'label',
+              // badge: 'CURRENT_CART.ITEMS_COUNT'
+              icon: 'user',
         
-        //       url: {
-        //         type: 'login', 
-        //       },
-        //     },
-        //   },
-        //   components: [{
-        //     type: 'oryx-auth-logout',
-        //   }]
-        // },
+              url: {
+                type: 'login', 
+              },
+            },
+          },
+          components: [{
+            type: 'oryx-auth-logout',
+          }]
+        },
         // {
         //   type: 'oryx-cart-summary',
         //   options: {

@@ -37,16 +37,19 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     }))
   );
 
-  // protected onClick(): void {
-  //   if (this.eventName) {
-  //     this.dispatchEvent(
-  //       new CustomEvent(this.eventName, {
-  //         bubbles: true,
-  //         composed: true,
-  //       })
-  //     );
-  //   }
-  // }
+  protected onTriggerClick(): void {
+    if (this.componentOptions?.contentBehavior === NavigationContentBehavior.Modal) {
+      this.renderRoot.querySelector('oryx-modal')?.toggleAttribute('open', true);
+    }
+    // if (this.eventName) {
+    //   this.dispatchEvent(
+    //     new CustomEvent(this.eventName, {
+    //       bubbles: true,
+    //       composed: true,
+    //     })
+    //   );
+    // }
+  }
 
   protected resolveLabel(): string {
     return this.componentOptions?.label ?? '';
@@ -64,7 +67,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderIconButton(): TemplateResult {
     return html`
-      <oryx-icon-button slot="trigger">
+      <oryx-icon-button slot="trigger" @click=${this.onTriggerClick}>
         ${when(
           this.url,
           () => html`<a href=${this.url!}>${this.icon}</a>`,
@@ -76,7 +79,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderButton(): TemplateResult {
     return html`
-      <oryx-button slot="trigger">
+      <oryx-button slot="trigger" @click=${this.onTriggerClick}>
         ${when(
           this.url,
           () => html`<a href=${this.url!}>
@@ -100,6 +103,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         icon=${ifDefined(this.componentOptions?.icon)}
         text=${this.resolveLabel()}
         badge=${ifDefined(this.componentOptions?.badge)}
+        @click=${this.onTriggerClick}
       ></oryx-site-navigation-button>
     `;
   }
@@ -123,7 +127,11 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected renderContentModal(): TemplateResult {
     return html`
       ${this.renderTrigger()} 
-      <oryx-modal>
+      <oryx-modal
+        enableCloseButtonInHeader
+        enableCloseByEscape
+        enableCloseByBackdrop
+      >
         <!-- menuitems -->
         ${this.componentsController.resolveComponents(this.components)}
       </oryx-modal>
@@ -135,7 +143,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-dropdown position="start" vertical-align>
         ${this.renderTrigger()} 
         <!-- menuitems -->
-        
         ${this.componentsController.resolveComponents(this.components)}
       </oryx-dropdown>
     `;
