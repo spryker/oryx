@@ -177,10 +177,12 @@ export class ComponentsLoader {
     return extendedClass;
   }
 
-  getComponentClass(
-    tag: string
-  ): (ComponentType & ComponentStatic) | undefined {
-    return Object.getPrototypeOf(this.componentMap.get(tag)?.extendedClass);
+  getComponentClass(tag: string): (ComponentType & ComponentStatic) | void {
+    const component = this.componentMap.get(tag);
+
+    if (component) {
+      return Object.getPrototypeOf(component.extendedClass);
+    }
   }
 
   async getComponentSchemas(): Promise<Record<string, any>[]> {
