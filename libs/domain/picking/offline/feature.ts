@@ -5,14 +5,14 @@ import { provideSyncActionsHandler } from '@spryker-oryx/offline';
 import {
   PickingHttpDefaultService,
   PickingHttpService,
-  PickingListAdapter, PickingListDefaultAdapter,
+  PickingListAdapter,
+  PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
 } from '@spryker-oryx/picking';
 import { OfflineDemoDataPlugin } from './demo-data-plugin';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import {
-  PickingListOfflineAdapter,
   PickingListOnlineAdapter,
   PickingListOnlineDefaultAdapter,
   PickingSyncAction,
