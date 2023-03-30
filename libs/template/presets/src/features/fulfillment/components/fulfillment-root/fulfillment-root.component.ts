@@ -6,7 +6,7 @@ import { LitRouter } from '@spryker-oryx/router/lit';
 import { subscribe } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
-import { combineLatest, of, switchMap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { styles } from './fulfillment-root.styles';
 
 export class FulfillmentRootComponent extends LitElement {
@@ -28,18 +28,17 @@ export class FulfillmentRootComponent extends LitElement {
     this.authService.isAuthenticated(),
     this.routerService.currentRoute(),
   ]).pipe(
-    switchMap(([authenticated, currentRoute]) => {
+    tap(([authenticated, currentRoute]) => {
       if (
         !authenticated &&
         currentRoute !== '/login' &&
         !currentRoute.startsWith('/oauth')
       ) {
-        return this.authService.login();
+        this.authService.login();
       }
       if (authenticated && currentRoute.startsWith('/login')) {
         this.routerService.navigate('/');
       }
-      return of(null);
     })
   );
 
