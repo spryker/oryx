@@ -1,10 +1,16 @@
 import { Observable, Subscription } from 'rxjs';
+import { Signal } from './core';
 import { SignalConsumer, StateSignal } from './core/signals';
 
-class SignalFromObservable<T> extends StateSignal<T | undefined> {
+export interface ConnectableSignal<T> extends Signal<T> {
+  connect(): void;
+  disconnect(): void;
+}
+
+class SignalObservable<T> extends StateSignal<T | undefined> {
   subscription?: Subscription;
 
-  constructor(protected obs: Observable<T>) {
+  constructor(protected observable: Observable<T>) {
     super(undefined);
   }
 
@@ -20,7 +26,7 @@ class SignalFromObservable<T> extends StateSignal<T | undefined> {
 
   connect() {
     if (!this.subscription) {
-      this.subscription = this.obs.subscribe((value) => this.set(value));
+      this.subscription = this.observable.subscribe((value) => this.set(value));
     }
   }
 
@@ -30,21 +36,21 @@ class SignalFromObservable<T> extends StateSignal<T | undefined> {
   }
 }
 
-export interface ConnectableSignal<T> {
-  (): T;
-  connect(): void;
-  disconnect(): void;
-  version: number;
-}
-
+/** Creates a signal from an observable.
+ *
+ * TODO: We could consider:
+ * - accepting also promises
+ * - exposing set() method to allow reusing signal for different observables/promises
+ *
+ * */
 export function signalFrom<T>(
   observable$: Observable<T>
 ): ConnectableSignal<T | undefined> {
-  const obsSignal = new SignalFromObservable(observable$);
+  const obsSignal = new SignalObservable(observable$);
 
   const signal = () => obsSignal.value;
   signal.connect = () => obsSignal.connect();
   signal.disconnect = () => obsSignal.disconnect();
 
-  return signal as any;
+  return signal as ConnectableSignal<T | undefined>;
 }
