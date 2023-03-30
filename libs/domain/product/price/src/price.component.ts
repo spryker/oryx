@@ -8,6 +8,11 @@ import { combineLatest, Observable, switchMap } from 'rxjs';
 import { ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
+interface Prices {
+  original?: string | null;
+  sales?: string | null;
+}
+
 /**
  * Renders the (formatted) product price.
  *
@@ -37,7 +42,7 @@ export class ProductPriceComponent extends ProductMixin(
     this.productController
       .getProduct()
       .pipe(switchMap((product) => this.formatPrices(product?.price))),
-    {} as { originalPrice?: string | null; salesPrice?: string | null }
+    {} as Prices
   );
 
   protected override render(): TemplateResult | void {
@@ -48,21 +53,21 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const { originalPrice, salesPrice } = this.prices();
+    const { original, sales } = this.prices();
 
-    if (!salesPrice && !originalPrice) return;
+    if (!sales && !original) return;
 
-    const hasDiscount = !!salesPrice && !!originalPrice;
+    const hasDiscount = !!sales && !!original;
 
     return html`<span part="sales" ?has-discount=${hasDiscount}
-      >${salesPrice ?? originalPrice}</span
+      >${sales ?? original}</span
     >`;
   }
 
   protected renderTaxMessage(): TemplateResult | void {
     if (
       !this.$options().enableTaxMessage ||
-      (!this.prices().salesPrice && !this.prices().originalPrice)
+      (!this.prices().sales && !this.prices().original)
     )
       return;
 
@@ -78,11 +83,11 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
-    const { originalPrice, salesPrice } = this.prices();
-    if (!this.$options().enableOriginalPrice || !salesPrice || !originalPrice) {
+    const { original, sales } = this.prices();
+    if (!this.$options().enableOriginalPrice || !sales || !original) {
       return;
     }
-    return html`<span part="original">${originalPrice}</span>`;
+    return html`<span part="original">${original}</span>`;
   }
 
   protected renderSalesLabel(): TemplateResult | void {
@@ -100,11 +105,9 @@ export class ProductPriceComponent extends ProductMixin(
    * Formats the given product prices and emits an object containing the formatted
    * sales price and original price.
    */
-  protected formatPrices(
-    price?: ProductPrices
-  ): Observable<{ originalPrice: string | null; salesPrice: string | null }> {
-    const salesPrice = this.pricingService.format(price?.defaultPrice);
-    const originalPrice = this.pricingService.format(price?.originalPrice);
-    return combineLatest({ salesPrice, originalPrice });
+  protected formatPrices(price?: ProductPrices): Observable<Prices> {
+    const original = this.pricingService.format(price?.defaultPrice);
+    const sales = this.pricingService.format(price?.originalPrice);
+    return combineLatest({ sales, original });
   }
 }
