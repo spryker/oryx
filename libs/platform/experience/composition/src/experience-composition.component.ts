@@ -57,7 +57,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
     switchMap(([uid, route]) =>
       this.experienceService
-        ?.getComponent({ uid, route })
+        .getComponent({ uid, route })
         .pipe(catchError(() => of({} as Component)))
     ),
     tap((component) => {
