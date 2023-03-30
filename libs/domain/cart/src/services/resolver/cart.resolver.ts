@@ -1,11 +1,12 @@
 import { CartService } from '@spryker-oryx/cart';
-import { resolve } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
 import {
+  ResolvedToken,
   Resolver,
-  ResolversResult,
   TokenResolver,
-} from '../token-resolver.service';
+  TokenResourceResolver,
+} from '@spryker-oryx/core';
+import { Provider, resolve } from '@spryker-oryx/di';
+import { map, of } from 'rxjs';
 
 interface CartResolvers {
   SUMMARY: Resolver;
@@ -15,7 +16,7 @@ export class CartResolver implements TokenResolver {
   protected cartService$ = resolve(CartService);
 
   protected resolvers = {
-    SUMMARY: (): ResolversResult => {
+    SUMMARY: (): ResolvedToken => {
       return this.cartService$.getCart().pipe(
         map((cart) => {
           const quantity = cart?.products?.reduce(
@@ -34,10 +35,15 @@ export class CartResolver implements TokenResolver {
     },
   };
 
-  resolve(resolver: string): Observable<string | null> {
+  resolve(resolver: string): ResolvedToken {
     if (!(resolver in this.resolvers)) {
       return of(null);
     }
     return this.resolvers[resolver as keyof CartResolvers]();
   }
 }
+
+export const CartResourceResolver: Provider = {
+  provide: `${TokenResourceResolver}CART`,
+  useClass: CartResolver,
+};

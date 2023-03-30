@@ -1,11 +1,12 @@
-import { resolve } from '@spryker-oryx/di';
-import { UserService } from '@spryker-oryx/user';
-import { map, Observable, of } from 'rxjs';
 import {
+  ResolvedToken,
   Resolver,
-  ResolversResult,
   TokenResolver,
-} from '../token-resolver.service';
+  TokenResourceResolver,
+} from '@spryker-oryx/core';
+import { Provider, resolve } from '@spryker-oryx/di';
+import { UserService } from '@spryker-oryx/user';
+import { map, of } from 'rxjs';
 
 interface UserResolvers {
   NAME: Resolver;
@@ -16,14 +17,19 @@ export class UserResolver implements TokenResolver {
 
   protected resolvers: UserResolvers = {
     // TODO: drop hardcoded fallback string
-    NAME: (): ResolversResult =>
+    NAME: (): ResolvedToken =>
       this.user$.pipe(map((user) => user?.firstName ?? 'login')),
   };
 
-  resolve(resolver: string): Observable<string | null> {
+  resolve(resolver: string): ResolvedToken {
     if (!(resolver in this.resolvers)) {
       return of(null);
     }
     return this.resolvers[resolver as keyof UserResolvers]();
   }
 }
+
+export const UserResourceResolver: Provider = {
+  provide: `${TokenResourceResolver}USER`,
+  useClass: UserResolver,
+};

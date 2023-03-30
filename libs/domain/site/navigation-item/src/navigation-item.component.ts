@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
-import { TokenResolverService } from '../../src/services/token-resolver';
+import { TokenResolverService } from '../../../../platform/core/src/services/token-resolver';
 import {
   NavigationContentBehavior,
   NavigationTriggerType,

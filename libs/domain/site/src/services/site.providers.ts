@@ -26,10 +26,6 @@ import {
   SemanticLinkService,
 } from './semantic-link';
 import { DefaultStoreService, StoreService } from './store';
-import {
-  DefaultTokenResolverService,
-  TokenResolverService,
-} from './token-resolver';
 
 declare global {
   interface AppEnvironment {
@@ -96,10 +92,6 @@ export const siteProviders: Provider[] = [
   {
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
-  },
-  {
-    provide: TokenResolverService,
-    useClass: DefaultTokenResolverService,
   },
   localeHydration,
   currencyHydration,
