@@ -1,15 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
+import { ProductMixin } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import {
-  asyncState,
+  computed,
   hydratable,
   i18n,
-  valueType,
+  signal,
+  SignalController,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { combineLatest, Observable, switchMap } from 'rxjs';
 import { ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
@@ -38,11 +38,14 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected pricingService = resolve(PricingService);
 
-  @asyncState()
-  protected prices = valueType(
-    this.productController
-      .getProduct()
-      .pipe(switchMap((product) => this.formatPrices(product?.price)))
+  protected singalController = new SignalController(this);
+
+  salesPrice = computed(() =>
+    signal(this.pricingService.format(this.productS()?.price?.defaultPrice))()
+  );
+
+  originalPrice = computed(() =>
+    signal(this.pricingService.format(this.productS()?.price?.originalPrice))()
   );
 
   protected override render(): TemplateResult | void {
@@ -53,7 +56,8 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const { originalPrice, salesPrice } = this.prices ?? {};
+    const originalPrice = this.originalPrice();
+    const salesPrice = this.salesPrice();
 
     if (!salesPrice && !originalPrice) return;
 
@@ -66,15 +70,15 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected renderTaxMessage(): TemplateResult | void {
     if (
-      !this.componentOptions?.enableTaxMessage ||
-      (!this.prices?.salesPrice && !this.prices?.originalPrice)
+      !this.componentOptionsS().enableTaxMessage ||
+      (!this.salesPrice() && !this.originalPrice())
     )
       return;
 
     return html`<span part="tax">
       ${i18n(
         `product.price.${
-          this.product?.price?.originalPrice?.isNet
+          this.productS()?.price?.originalPrice?.isNet
             ? 'tax-excluded'
             : 'tax-included'
         }`
@@ -83,19 +87,18 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
-    const { originalPrice, salesPrice } = this.prices ?? {};
     if (
-      !this.componentOptions?.enableOriginalPrice ||
-      !salesPrice ||
-      !originalPrice
+      !this.componentOptionsS().enableOriginalPrice ||
+      !this.salesPrice() ||
+      !this.originalPrice()
     ) {
       return;
     }
-    return html`<span part="original">${originalPrice}</span>`;
+    return html`<span part="original">${this.originalPrice()}</span>`;
   }
 
   protected renderSalesLabel(): TemplateResult | void {
-    if (!this.componentOptions?.enableSalesLabel) return;
+    if (!this.componentOptionsS().enableSalesLabel) return;
 
     return html`
       <oryx-product-labels
@@ -103,17 +106,5 @@ export class ProductPriceComponent extends ProductMixin(
         .options=${{ included: 'sale %', invert: true }}
       ></oryx-product-labels>
     `;
-  }
-
-  /**
-   * Formats the given product prices and emits an object containing the formatted
-   * sales price and original price.
-   */
-  protected formatPrices(
-    price?: ProductPrices
-  ): Observable<{ originalPrice: string | null; salesPrice: string | null }> {
-    const salesPrice = this.pricingService.format(price?.defaultPrice);
-    const originalPrice = this.pricingService.format(price?.originalPrice);
-    return combineLatest({ salesPrice, originalPrice });
   }
 }

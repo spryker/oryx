@@ -2,7 +2,11 @@ import { ContentLinkOptions } from '@spryker-oryx/content/link';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable } from '@spryker-oryx/utilities';
+import {
+  computed,
+  hydratable,
+  SignalController,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
@@ -17,8 +21,16 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
+  protected singalController = new SignalController(this);
+
+  protected hasLink = computed(
+    () =>
+      !!this.componentOptionsS().linkType &&
+      this.componentOptionsS().linkType !== 'none'
+  );
+
   protected override render(): TemplateResult | void {
-    const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptions ?? {};
+    const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptionsS();
 
     return html`<oryx-heading
       .tag=${tag}
@@ -28,27 +40,20 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${this.hasLink() ? this.renderLink() : html`${this.product?.name}`}
+      ${this.hasLink() ? this.renderLink() : html`${this.productS()?.name}`}
     </oryx-heading>`;
-  }
-
-  protected hasLink(): boolean {
-    return (
-      !!this.componentOptions?.linkType &&
-      this.componentOptions?.linkType !== 'none'
-    );
   }
 
   protected renderLink(): TemplateResult {
     const options = {
       type: SemanticLinkType.Product,
-      id: this.product?.sku,
+      id: this.productS()?.sku,
       multiLine: true,
-      linkType: this.componentOptions?.linkType,
+      linkType: this.componentOptionsS().linkType,
     } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
-      ${this.product?.name}
+      ${this.productS()?.name}
     </oryx-content-link>`;
   }
 }
