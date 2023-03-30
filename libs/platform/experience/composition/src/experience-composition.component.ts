@@ -18,7 +18,15 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { BehaviorSubject, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable()
@@ -27,13 +35,13 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 ) {
   static styles = [compositionStyles];
 
-  @property()
+  @property({ reflect: true })
   uid = '';
 
   @observe()
   protected uid$ = new BehaviorSubject<string>(this.uid);
 
-  @property()
+  @property({ reflect: true })
   protected route = '';
 
   @observe()
@@ -47,12 +55,11 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   protected layoutBuilder = resolve(LayoutBuilder);
 
   protected components$ = combineLatest([this.uid$, this.route$]).pipe(
-    switchMap(([uid, route]) => {
-      return (
-        this.experienceService?.getComponent({ uid, route }) ||
-        of({} as Component)
-      );
-    }),
+    switchMap(([uid, route]) =>
+      this.experienceService
+        ?.getComponent({ uid, route })
+        .pipe(catchError(() => of({} as Component)))
+    ),
     tap((component) => {
       this.layoutUid = component?.id;
     }),
