@@ -28,7 +28,7 @@ export const mockPickingListData: PickingList[] = [
           productName: 'productName',
           id: '1',
           sku: '111',
-          image: '',
+          image: '/image/test.jpg',
           imageLarge: '',
         },
         status: ItemsFilters.NotPicked,

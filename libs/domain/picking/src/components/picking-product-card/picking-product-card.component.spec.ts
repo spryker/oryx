@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { destroyInjector } from '@spryker-oryx/di';
 import {
@@ -6,6 +7,7 @@ import {
   PickingListItem,
   pickingProductCardComponent,
 } from '@spryker-oryx/picking';
+import { ImageComponent } from '@spryker-oryx/ui/image';
 import { html } from 'lit';
 import { mockPickingListData } from '../../mocks';
 import { PickingProductCardComponent } from './picking-product-card.component';
@@ -23,7 +25,7 @@ describe.only('PickingProductCardComponent', () => {
     destroyInjector();
   });
 
-  describe('when a product provided with status not picked', () => {
+  describe('when a product provided with status NotPicked', () => {
     beforeEach(async () => {
       element = await fixture(
         html`
@@ -57,6 +59,143 @@ describe.only('PickingProductCardComponent', () => {
           .querySelector('oryx-image')
           ?.classList.value.includes('image-fade')
       ).toBe(false);
+
+      expect(
+        (element.shadowRoot?.querySelector('oryx-image') as ImageComponent).src
+      ).toBe(productItem.product.image);
+    });
+
+    it('should render quantity input', () => {
+      expect(
+        (
+          element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          ) as QuantityInputComponent
+        ).max
+      ).toBe(productItem.quantity);
+
+      expect(
+        (
+          element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          ) as QuantityInputComponent
+        ).value
+      ).toBe(productItem.numberOfPicked);
+    });
+
+    describe('when the quantity is enabled', () => {
+      it('should enable the button', () => {
+        expect(
+          element.shadowRoot
+            ?.querySelector('oryx-button button')
+            ?.hasAttribute('disabled')
+        ).toBe(false);
+      });
+
+      describe('and when an update is dispatched with an invalid quantity', () => {
+        beforeEach(() => {
+          const input = element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          );
+          input?.dispatchEvent(
+            new CustomEvent<unknown>('update', {
+              detail: { quantity: 30 },
+            })
+          );
+        });
+
+        it('should disable the button', () => {
+          expect(
+            element.shadowRoot
+              ?.querySelector('oryx-button button')
+              ?.hasAttribute('disabled')
+          ).toBe(true);
+        });
+      });
+    });
+
+    // describe('when user submit a quantity', () => {
+    //   let spy: SpyInstance<Event[]>;
+
+    //   beforeEach(() => {
+    //     const button = element.shadowRoot?.querySelector(
+    //       'oryx-button button'
+    //     ) as HTMLButtonElement;
+    //     button.click();
+    //   });
+
+    //   it('should dispatch submit event', () => {
+
+    //     const open = vi.spyOn(element, 'open');
+
+    //     expect(spy).toHaveBeenCalledWith();
+    //   });
+    // });
+  });
+
+  describe('when a product provided with status Picked', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`
+          <oryx-picking-product-card
+            .productItem="${productItem}"
+            status="${ItemsFilters.Picked}"
+          ></oryx-picking-product-card>
+        `
+      );
+    });
+
+    it('should not render quantity input', () => {
+      expect(
+        element.shadowRoot?.querySelector(
+          'oryx-cart-quantity-input'
+        ) as QuantityInputComponent
+      ).to.not.exist;
+    });
+
+    it('should render summary info', () => {
+      expect(element.shadowRoot?.querySelector('.summary-info')).to.exist;
+    });
+
+    it('should render edit button', () => {
+      expect(
+        element.shadowRoot
+          ?.querySelector('oryx-button button')
+          ?.textContent?.trim()
+      ).toBe('Edit items');
+    });
+  });
+
+  describe('when a product provided with status Not Found', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`
+          <oryx-picking-product-card
+            .productItem="${productItem}"
+            status="${ItemsFilters.NotFound}"
+          ></oryx-picking-product-card>
+        `
+      );
+    });
+
+    it('should not render quantity input', () => {
+      expect(
+        element.shadowRoot?.querySelector(
+          'oryx-cart-quantity-input'
+        ) as QuantityInputComponent
+      ).to.not.exist;
+    });
+
+    it('should render summary info', () => {
+      expect(element.shadowRoot?.querySelector('.summary-info')).to.exist;
+    });
+
+    it('should render edit button', () => {
+      expect(
+        element.shadowRoot
+          ?.querySelector('oryx-button button')
+          ?.textContent?.trim()
+      ).toBe('Edit items');
     });
   });
 });
