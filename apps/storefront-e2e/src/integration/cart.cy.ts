@@ -1,5 +1,6 @@
 import { ProductStorage } from '../data-storages/product.storage';
 import { CartPage } from '../support/page_objects/cart.page';
+import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
 
 const cartPage = new CartPage();
@@ -13,6 +14,45 @@ describe('Cart', () => {
     scosApi.guestCarts.get();
   });
 
+  describe('when user goes to pdp', () => {
+    const productData = ProductStorage.getProductByEq(2);
+    const pdp = new ProductDetailsPage(productData);
+
+    beforeEach(() => {
+      pdp.visit();
+    });
+
+    describe('and adds items to the cart from pdp', () => {
+      beforeEach(() => {
+        pdp.hydrateAddToCart();
+        pdp.addItemsToTheCart(1);
+      });
+
+      describe('and clicks on the Cart button in the header', () => {
+        beforeEach(() => {
+          pdp.header.getCartSummary().click();
+        });
+
+        it('should render added product as a cart entry and display correct totals', () => {
+          cartPage
+            .getCartEntriesHeading()
+            .should('contain.text', 'My cart (one item)');
+          checkCartEntry({
+            quantity: 1,
+            subTotal: '€62.77',
+            originalPrice: '€70.00',
+            salesPrice: '€62.77',
+          });
+          checkCartTotals({
+            subTotal: '€62.77',
+            taxTotal: '€4.11',
+            totalPrice: '€62.77',
+          });
+        });
+      });
+    });
+  });
+
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
@@ -20,18 +60,18 @@ describe('Cart', () => {
       });
 
       it('should render an empty message', () => {
-        cartPage.getCartTotals().getCartSummaryQuantity().should('not.exist');
         cartPage
           .getCartEntriesWrapper()
           .contains('Your shopping cart is empty')
           .should('be.visible');
+
+        cartPage.getCartEntriesHeading().should('not.exist');
+
+        // and should not show cart summary
+        cartPage.getCartTotals().getCartSummaryQuantity().should('not.exist');
+        // and should not show cart totals
         cartPage.getCartTotals().getWrapper().should('not.be.visible');
       });
-
-      // TODO: navigate back and forth to product page and add item to cart
-      // describe('and when an item is added', () => {
-      //   it('should render the cart entries and totals', () => {});
-      // });
     });
 
     describe('and there is an item in cart', () => {
@@ -40,13 +80,10 @@ describe('Cart', () => {
         cartPage.visit();
       });
 
-      it('should render the cart content', () => {
-        cartPage.getCartTotals().getWrapper().should('be.visible');
-        // check cart summary whether the badge is updated accordingly
-        // cartPage
-        //   .getCartTotals()
-        //   .getCartSummaryQuantity()
-        //   .should('have.value', '1');
+      it('should render the cart entries and totals', () => {
+        cartPage
+          .getCartEntriesHeading()
+          .should('contain.text', 'My cart (one item)');
         checkCartEntry({
           quantity: 1,
           subTotal: '€62.77',
@@ -60,7 +97,7 @@ describe('Cart', () => {
         });
       });
 
-      describe('and when the quantity is increased by input enter', () => {
+      describe('and the quantity is increased by input enter', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0]
@@ -71,11 +108,9 @@ describe('Cart', () => {
         });
 
         it('should update the cart totals', () => {
-          // check cart summary whether the badge is updated accordingly
-          // cartPage
-          //   .getCartTotals()
-          //   .getCartSummaryQuantity()
-          //   .should('have.value', '5');
+          cartPage
+            .getCartEntriesHeading()
+            .should('contain.text', 'My cart (5 items)');
           checkCartEntry({
             quantity: 5,
             subTotal: '€282.46',
@@ -91,7 +126,7 @@ describe('Cart', () => {
         });
       });
 
-      describe('and when the quantity is increased by input change', () => {
+      describe('and the quantity is increased by input change', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getQuantityInput().getInput().type('{selectall}2');
@@ -100,6 +135,9 @@ describe('Cart', () => {
 
         it('should update the cart totals after blur', () => {
           // quantity updated, but not yet recalculated prices
+          cartPage
+            .getCartEntriesHeading()
+            .should('contain.text', 'My cart (one item)');
           checkCartEntry({
             quantity: 2,
             subTotal: '€62.77',
@@ -113,6 +151,9 @@ describe('Cart', () => {
           cy.get('body').click();
 
           // after blur the quantity the prices will be recalculated
+          cartPage
+            .getCartEntriesHeading()
+            .should('contain.text', 'My cart (2 items)');
           checkCartEntry({
             quantity: 2,
             subTotal: '€112.99',
@@ -126,7 +167,7 @@ describe('Cart', () => {
         });
       });
 
-      describe('and when the quantity is changed to 0', () => {
+      describe('and the quantity is changed to 0', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0]
@@ -179,6 +220,8 @@ function checkCartTotals(totals: {
   taxTotal?: string;
   totalPrice?: string;
 }) {
+  cartTotals.getWrapper().should('be.visible');
+
   if (totals.subTotal) {
     cartTotals.getSubtotalPrice().should('contain.text', totals.subTotal);
   }
@@ -195,12 +238,12 @@ function checkCartTotals(totals: {
     cartTotals.getTotalPrice().should('contain.text', totals.totalPrice);
   }
 
-  // // covers HRZ-1008
   if (totals.taxTotal) {
     cartTotals.getTaxTotalPrice().should('contain.text', totals.taxTotal);
   }
-  // cartTotals
-  //   .getTaxMessage()
-  //   .should('be.visible')
-  //   .and('contain.text', 'Tax included');
+
+  cartTotals
+    .getTaxMessage()
+    .should('be.visible')
+    .and('contain.text', 'Tax included');
 }
