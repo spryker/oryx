@@ -15,7 +15,7 @@ export declare class ProductMixinInterface
 {
   sku?: string;
   product?: Product | null;
-  productS: Signal<Product | null>;
+  $product: Signal<Product | null>;
 
   protected productController: ProductController;
 }
@@ -33,7 +33,7 @@ export const ProductMixin = <
     @asyncState()
     protected product = valueType(this.productController.getProduct());
 
-    protected productS = signal(this.productController.getProduct(), null);
+    protected $product = signal(this.productController.getProduct(), null);
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;

@@ -18,13 +18,11 @@ export class ProductTitleComponent extends ProductMixin(
   static styles = styles;
 
   protected hasLink = computed(
-    () =>
-      !!this.componentOptionsS().linkType &&
-      this.componentOptionsS().linkType !== 'none'
+    () => !!this.$options().linkType && this.$options().linkType !== 'none'
   );
 
   protected override render(): TemplateResult | void {
-    const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptionsS();
+    const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
 
     return html`<oryx-heading
       .tag=${tag}
@@ -34,20 +32,20 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${this.hasLink() ? this.renderLink() : html`${this.productS()?.name}`}
+      ${this.hasLink() ? this.renderLink() : html`${this.$product()?.name}`}
     </oryx-heading>`;
   }
 
   protected renderLink(): TemplateResult {
     const options = {
       type: SemanticLinkType.Product,
-      id: this.productS()?.sku,
+      id: this.$product()?.sku,
       multiLine: true,
-      linkType: this.componentOptionsS().linkType,
+      linkType: this.$options().linkType,
     } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
-      ${this.productS()?.name}
+      ${this.$product()?.name}
     </oryx-content-link>`;
   }
 }

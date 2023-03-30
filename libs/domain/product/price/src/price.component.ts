@@ -61,7 +61,7 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected renderTaxMessage(): TemplateResult | void {
     if (
-      !this.componentOptionsS().enableTaxMessage ||
+      !this.$options().enableTaxMessage ||
       (!this.prices().salesPrice && !this.prices().originalPrice)
     )
       return;
@@ -69,7 +69,7 @@ export class ProductPriceComponent extends ProductMixin(
     return html`<span part="tax">
       ${i18n(
         `product.price.${
-          this.productS()?.price?.originalPrice?.isNet
+          this.$product()?.price?.originalPrice?.isNet
             ? 'tax-excluded'
             : 'tax-included'
         }`
@@ -79,18 +79,14 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected renderOriginalPrice(): TemplateResult | void {
     const { originalPrice, salesPrice } = this.prices();
-    if (
-      !this.componentOptionsS().enableOriginalPrice ||
-      !salesPrice ||
-      !originalPrice
-    ) {
+    if (!this.$options().enableOriginalPrice || !salesPrice || !originalPrice) {
       return;
     }
     return html`<span part="original">${originalPrice}</span>`;
   }
 
   protected renderSalesLabel(): TemplateResult | void {
-    if (!this.componentOptionsS().enableSalesLabel) return;
+    if (!this.$options().enableSalesLabel) return;
 
     return html`
       <oryx-product-labels
