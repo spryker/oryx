@@ -13,7 +13,7 @@ describe('SignalProducer', () => {
 
   beforeEach(() => {
     producer = new SignalProducer<number>();
-    consumer = new SignalConsumer(() => {});
+    consumer = new SignalConsumer(() => undefined);
   });
 
   describe('accessed', () => {
