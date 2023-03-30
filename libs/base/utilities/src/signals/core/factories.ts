@@ -17,14 +17,14 @@ export function createSignal<T = unknown>(initialValue: T): SettableSignal<T> {
   const signal = () => coreSignal.value;
   signal.set = (value: T) => coreSignal.set(value);
 
-  return signal as any;
+  return signal as SettableSignal<T>;
 }
 
 export function computed<T>(computation: () => T): Signal<T> {
   const coreComputed = new Computed(computation);
   const computed = () => coreComputed.value;
 
-  return computed as any;
+  return computed as Signal<T>;
 }
 
 export function effect(fn: () => void): Effect {
