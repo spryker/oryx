@@ -12,7 +12,7 @@ import { html } from 'lit';
 import { mockPickingListData } from '../../mocks';
 import { PickingProductCardComponent } from './picking-product-card.component';
 
-describe.only('PickingProductCardComponent', () => {
+describe('PickingProductCardComponent', () => {
   let element: PickingProductCardComponent;
   const productItem: PickingListItem = mockPickingListData[0].items[0];
 
