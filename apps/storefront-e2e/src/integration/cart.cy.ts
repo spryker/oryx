@@ -14,26 +14,23 @@ describe('Cart', () => {
     scosApi.guestCarts.get();
   });
 
-  describe('when user goes to pdp', () => {
-    const productData = ProductStorage.getProductByEq(2);
-    const pdp = new ProductDetailsPage(productData);
+  describe('when the cart page is not visited', () => {
+    describe('and items are added to cart on the product page', () => {
+      const productData = ProductStorage.getProductByEq(2);
+      const pdp = new ProductDetailsPage(productData);
 
-    beforeEach(() => {
-      pdp.visit();
-    });
-
-    describe('and adds items to the cart from pdp', () => {
       beforeEach(() => {
+        pdp.visit();
         pdp.hydrateAddToCart();
         pdp.addItemsToTheCart(1);
       });
 
-      describe('and clicks on the Cart button in the header', () => {
+      describe('and the user navigates to the cart page', () => {
         beforeEach(() => {
           pdp.header.getCartSummary().click();
         });
 
-        it('should render added product as a cart entry and display correct totals', () => {
+        it('should render the cart page with the newly added entries', () => {
           cartPage
             .getCartEntriesHeading()
             .should('contain.text', 'My cart (one item)');
@@ -66,10 +63,6 @@ describe('Cart', () => {
           .should('be.visible');
 
         cartPage.getCartEntriesHeading().should('not.exist');
-
-        // and should not show cart summary
-        cartPage.getCartTotals().getCartSummaryQuantity().should('not.exist');
-        // and should not show cart totals
         cartPage.getCartTotals().getWrapper().should('not.be.visible');
       });
     });
@@ -94,6 +87,18 @@ describe('Cart', () => {
           subTotal: '€62.77',
           taxTotal: '€4.11',
           totalPrice: '€62.77',
+        });
+      });
+
+      describe('and the entry decrease button is clicked', () => {
+        beforeEach(() => {
+          cartPage.getCartEntries().then((entries) => {
+            entries[0].getQuantityInput().decrease();
+          });
+        });
+
+        it('should have an empty cart', () => {
+          checkEmptyCart();
         });
       });
 
@@ -178,11 +183,19 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          cartPage
-            .getCartEntriesWrapper()
-            .contains('Your shopping cart is empty')
-            .should('be.visible');
-          cartPage.getCartTotals().getWrapper().should('not.be.visible');
+          checkEmptyCart();
+        });
+      });
+
+      describe('and the entry is removed', () => {
+        beforeEach(() => {
+          cartPage.getCartEntries().then((entries) => {
+            entries[0].getRemoveBtn().click();
+          });
+        });
+
+        it('should have an empty cart', () => {
+          checkEmptyCart();
         });
       });
     });
@@ -246,4 +259,12 @@ function checkCartTotals(totals: {
     .getTaxMessage()
     .should('be.visible')
     .and('contain.text', 'Tax included');
+}
+
+function checkEmptyCart() {
+  cartPage
+    .getCartEntriesWrapper()
+    .contains('Your shopping cart is empty')
+    .should('be.visible');
+  cartPage.getCartTotals().getWrapper().should('not.be.visible');
 }
