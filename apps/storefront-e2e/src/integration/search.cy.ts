@@ -24,7 +24,9 @@ describe('Search suite', () => {
       .shadow()
       .should('contain.text', 'Sony NEX-VG20EH');
 
-    search.getViewAllBtn().scrollIntoView().should('be.visible');
+    search.getSearchResultsWrapper().find('div').scrollTo('bottom');
+
+    search.getViewAllBtn().should('be.visible');
 
     search.clearSearch();
   });
