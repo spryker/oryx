@@ -2,7 +2,7 @@ import { isObservable, Observable } from 'rxjs';
 import { createSignal, SettableSignal } from './core/factories';
 import { ConnectableSignal, signalFrom } from './signal-from';
 
-export function signal<T, K>(
+export function signal<T, K = undefined>(
   observable: Observable<T>,
   initialValue?: K
 ): ConnectableSignal<T | K>;
