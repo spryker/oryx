@@ -14,8 +14,4 @@ export const defaultPickingRoutes: RouteConfig[] = [
       <oryx-customer-note .pickingListId=${id}></oryx-customer-note>
     `,
   },
-  {
-    path: '/login',
-    render: () => html`<oryx-auth-login></oryx-auth-login>`,
-  },
 ];
