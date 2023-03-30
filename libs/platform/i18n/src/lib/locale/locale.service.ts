@@ -5,7 +5,9 @@ export interface LocaleService {
   getAll(): Observable<Locale[]>;
   get(): Observable<string>;
   set(value: string): void;
-  formatDate(stamp: string | number, showTime?: boolean): Observable<string>;
+  formatDate(stamp: string | number | Date): Observable<string>;
+  formatTime(stamp: string | number | Date): Observable<string>;
+  formatDateTime(stamp: string | number | Date): Observable<string>;
 }
 
 export const LocaleService = 'oryx.LocaleService';
