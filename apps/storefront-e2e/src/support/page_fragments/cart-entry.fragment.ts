@@ -14,8 +14,10 @@ export class CartEntryFragment {
   getDefaultImage = () =>
     this.getWrapper().find('oryx-product-media').find('oryx-icon');
   getSKU = () => this.getWrapper().find('oryx-product-id').shadow();
-  getPrice = () =>
+  getSalesPrice = () =>
     this.getWrapper().find('oryx-product-price').find('[part="sales"]');
+  getOriginalPrice = () =>
+    this.getWrapper().find('oryx-product-price').find('[part="original"]');
   getSubtotal = () => this.getWrapper().find('.entry-price');
   getRemoveBtn = () => this.getWrapper().find('[aria-label="remove"]');
   getQuantityInput = () =>

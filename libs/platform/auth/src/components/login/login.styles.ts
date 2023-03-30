@@ -1,3 +1,4 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
@@ -14,5 +15,9 @@ export const styles = css`
 
   .options oryx-link {
     margin-inline-start: auto;
+  }
+
+  h1 {
+    ${headingUtil(HeadingTag.H5)};
   }
 `;
