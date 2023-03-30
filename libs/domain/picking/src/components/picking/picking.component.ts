@@ -6,8 +6,8 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { catchError, of, take, tap } from 'rxjs';
 import { when } from 'lit/directives/when.js';
+import { catchError, of, take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
