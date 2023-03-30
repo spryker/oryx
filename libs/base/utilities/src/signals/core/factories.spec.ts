@@ -94,4 +94,3 @@ describe('diamond dependency', () => {
     expect(e()).toBe(13);
   });
 });
-

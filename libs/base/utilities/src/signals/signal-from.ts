@@ -3,15 +3,15 @@ import { Signal } from './core';
 import { SignalConsumer, StateSignal } from './core/signals';
 
 export interface ConnectableSignal<T> extends Signal<T> {
-  connect(): void;
+  connect(): ConnectableSignal<T>;
   disconnect(): void;
 }
 
-class SignalObservable<T> extends StateSignal<T | undefined> {
+class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
   subscription?: Subscription;
 
-  constructor(protected observable: Observable<T>) {
-    super(undefined);
+  constructor(protected observable: Observable<T>, initialValue?: K) {
+    super(initialValue as K);
   }
 
   watch(sniffer: SignalConsumer) {
@@ -43,14 +43,21 @@ class SignalObservable<T> extends StateSignal<T | undefined> {
  * - exposing set() method to allow reusing signal for different observables/promises
  *
  * */
-export function signalFrom<T>(
-  observable$: Observable<T>
-): ConnectableSignal<T | undefined> {
-  const obsSignal = new SignalObservable(observable$);
+export function signalFrom<T, K = undefined>(
+  observable$: Observable<T>,
+  initialValue?: K
+): ConnectableSignal<T | K> {
+  const obsSignal = new SignalObservable(observable$, initialValue);
 
   const signal = () => obsSignal.value;
-  signal.connect = () => obsSignal.connect();
+  signal.connect = () => {
+    obsSignal.connect();
+    return signal;
+  };
   signal.disconnect = () => obsSignal.disconnect();
 
-  return signal as ConnectableSignal<T | undefined>;
+  signal.valueOf = () => obsSignal.value;
+  signal.toString = () => String(obsSignal.value);
+
+  return signal as ConnectableSignal<T | K>;
 }

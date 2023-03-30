@@ -3,6 +3,7 @@ import { Computed, Effect, StateSignal } from './signals';
 export interface Signal<T = unknown> {
   (): T;
   version: number;
+  valueOf(): T;
 }
 
 export interface SettableSignal<T = unknown> extends Signal<T> {
@@ -10,17 +11,22 @@ export interface SettableSignal<T = unknown> extends Signal<T> {
 }
 
 export function createSignal<T = unknown>(initialValue: T): SettableSignal<T> {
-  const coreSignal = new StateSignal(initialValue);
+  const instance = new StateSignal(initialValue);
 
-  const signal = () => coreSignal.value;
-  signal.set = (value: T) => coreSignal.set(value);
+  const signal = () => instance.value;
+  signal.set = (value: T) => instance.set(value);
+  signal.valueOf = () => instance.value;
+  signal.toString = () => String(instance.value);
 
   return signal as SettableSignal<T>;
 }
 
 export function computed<T>(computation: () => T): Signal<T> {
-  const coreComputed = new Computed(computation);
-  const computed = () => coreComputed.value;
+  const instance = new Computed(computation);
+
+  const computed = () => instance.value;
+  computed.valueOf = () => instance.value;
+  computed.toString = () => String(instance.value);
 
   return computed as Signal<T>;
 }
