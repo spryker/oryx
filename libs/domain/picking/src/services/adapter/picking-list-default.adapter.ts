@@ -135,8 +135,12 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
         id: product.id,
         sku: product.sku,
         productName: product.name,
-        image: product.productImages[0].externalUrlSmall,
-        imageLarge: product.productImages[0].externalUrlLarge,
+        image:
+          product.concreteProductImageSets.imageSets[0].images[0]
+            .externalUrlSmall,
+        imageLarge:
+          product.concreteProductImageSets.imageSets[0].images[0]
+            .externalUrlLarge,
       })
     );
 
@@ -224,13 +228,20 @@ interface PickingListResponseShipment extends ResourceObject {
 interface PickingListResponseProduct extends ResourceObject {
   sku: string;
   name: string;
-  productImages: PickingListResponseProductImage[];
+  concreteProductImageSets: {
+    imageSets: PickingListResponseProductImage[];
+  };
 }
 
 interface PickingListResponseProductImage extends ResourceObject {
-  productImageKey: string;
-  externalUrlSmall: string;
-  externalUrlLarge: string;
+  name: string;
+  locale: string;
+  images: [
+    {
+      externalUrlSmall: string;
+      externalUrlLarge: string;
+    }
+  ];
 }
 
 interface ResourceObject {
