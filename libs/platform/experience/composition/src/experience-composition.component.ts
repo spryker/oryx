@@ -36,16 +36,16 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   static styles = [compositionStyles];
 
   @property({ reflect: true })
-  uid = '';
+  uid?: string;
 
   @observe()
-  protected uid$ = new BehaviorSubject<string>(this.uid);
+  protected uid$ = new BehaviorSubject<string | undefined>(this.uid);
 
   @property({ reflect: true })
-  protected route = '';
+  protected route?: string;
 
   @observe()
-  protected route$ = new BehaviorSubject<string>(this.route);
+  protected route$ = new BehaviorSubject<string | undefined>(this.route);
 
   @state()
   layoutUid = '';
