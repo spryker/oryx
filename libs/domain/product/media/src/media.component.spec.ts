@@ -65,12 +65,18 @@ describe('ProductMediaComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render the oryx-image element with src', () => {
-      expect(element).toContainElement('oryx-image[src]');
+    it('should have oryx-image element with src property', () => {
+      const image = element.renderRoot.querySelector('oryx-image');
+
+      expect(element).toContainElement(`oryx-image`);
+      expect(image).toHaveProperty('src');
     });
 
-    it('should not render a srcset attribute', () => {
-      expect(element).not.toContainElement('oryx-image[srcset]');
+    it('should have oryx-image element without srcset property', () => {
+      const image = element.renderRoot.querySelector('oryx-image');
+
+      expect(element).toContainElement(`oryx-image`);
+      expect(image).toHaveProperty('srcset', undefined);
     });
   });
 
@@ -92,8 +98,11 @@ describe('ProductMediaComponent', () => {
         );
       });
 
-      it('should not render a srcset', () => {
-        expect(element).not.toContainElement('oryx-image[srcset]');
+      it('should have oryx-image element without srcset property', () => {
+        const image = element.renderRoot.querySelector('oryx-image');
+
+        expect(element).toContainElement(`oryx-image`);
+        expect(image).toHaveProperty('srcset', undefined);
       });
     });
 
@@ -122,11 +131,17 @@ describe('ProductMediaComponent', () => {
       });
 
       it('should render the img element', () => {
-        expect(element).toContainElement('oryx-image[src="a.jpg"]');
+        const image = element.renderRoot.querySelector('oryx-image');
+
+        expect(element).toContainElement(`oryx-image`);
+        expect(image).toHaveProperty('src', 'a.jpg');
       });
 
       it('should render a srcset with the density', () => {
-        expect(element).toContainElement('oryx-image[srcset="b.jpg 2x"]');
+        const image = element.renderRoot.querySelector('oryx-image');
+
+        expect(element).toContainElement(`oryx-image`);
+        expect(image).toHaveProperty('srcset', 'b.jpg 2x');
       });
     });
   });
@@ -247,7 +262,10 @@ describe('ProductMediaComponent', () => {
         });
 
         it('should reflect the product name on the alt attribute', () => {
-          expect(element).toContainElement(`oryx-image[alt="Sample product"]`);
+          const image = element.renderRoot.querySelector('oryx-image');
+
+          expect(element).toContainElement(`oryx-image`);
+          expect(image).toHaveProperty('alt', 'Sample product');
         });
       });
 
@@ -261,8 +279,11 @@ describe('ProductMediaComponent', () => {
           );
         });
 
-        it('should reflect the alt property on the alt attribute', () => {
-          expect(element).toContainElement(`oryx-image[alt="custom-alt"]`);
+        it('should reflect the alt property on the alt property', () => {
+          const image = element.renderRoot.querySelector('oryx-image');
+
+          expect(element).toContainElement(`oryx-image`);
+          expect(image).toHaveProperty('alt', 'custom-alt');
         });
       });
     });
@@ -276,7 +297,10 @@ describe('ProductMediaComponent', () => {
         });
 
         it('should lazy load the image', () => {
-          expect(element).toContainElement(`oryx-image[loading="lazy"]`);
+          const image = element.renderRoot.querySelector('oryx-image');
+
+          expect(element).toContainElement(`oryx-image`);
+          expect(image).toHaveProperty('loading', 'lazy');
         });
       });
 
@@ -291,7 +315,10 @@ describe('ProductMediaComponent', () => {
         });
 
         it('should load the image immediately', () => {
-          expect(element).toContainElement(`oryx-image[loading="eager"]`);
+          const image = element.renderRoot.querySelector('oryx-image');
+
+          expect(element).toContainElement(`oryx-image`);
+          expect(image).toHaveProperty('loading', 'eager');
         });
       });
     });
