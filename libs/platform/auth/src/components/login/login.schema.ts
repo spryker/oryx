@@ -1,4 +1,7 @@
-import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
+import {
+  ComponentGroup,
+  ContentComponentSchema,
+} from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { AuthLoginComponent } from './login.component';

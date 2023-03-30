@@ -7,9 +7,11 @@ export const navigationButtonComponent = componentDef({
       (m) => m.NavigationButtonComponent
     ),
   stylesheets: [
-      {
-        rules: () =>
-          import('./navigation-button.styles').then((m) => m.navigationButtonScreenStyles),
-      },
-    ],
+    {
+      rules: () =>
+        import('./navigation-button.styles').then(
+          (m) => m.navigationButtonScreenStyles
+        ),
+    },
+  ],
 });

@@ -1,4 +1,4 @@
-import { ContextServiceFallback } from '@spryker-oryx/core';x
+import { ContextServiceFallback } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { map } from 'rxjs';

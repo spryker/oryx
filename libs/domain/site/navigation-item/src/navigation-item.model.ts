@@ -1,36 +1,36 @@
-import { SemanticLink } from "@spryker-oryx/site";
+import { SemanticLink } from '@spryker-oryx/site';
 
 export interface SiteNavigationItemOptions {
-    icon?: string;
-    label?: string;
-    badge?: string;
-    url?: string | SemanticLink;
-    triggerType?: NavigationTriggerType;
-    triggerBehavior?: NavigationTriggerBehavior;
-    contentBehavior?: NavigationContentBehavior;
-    items?: NavigationListItem[];
+  icon?: string;
+  label?: string;
+  badge?: string;
+  url?: string | SemanticLink;
+  triggerType?: NavigationTriggerType;
+  triggerBehavior?: NavigationTriggerBehavior;
+  contentBehavior?: NavigationContentBehavior;
+  items?: NavigationListItem[];
 }
 
 export const enum NavigationTriggerType {
-    Button = 'button',
-    Icon = 'icon',
-    //TODO: find better name
-    StorefrontButton = "storefront-button"
+  Button = 'button',
+  Icon = 'icon',
+  //TODO: find better name
+  StorefrontButton = 'storefront-button',
 }
 
 export const enum NavigationTriggerBehavior {
-    Click = 'click',
-    Hover = 'hover',
+  Click = 'click',
+  Hover = 'hover',
 }
 
 export const enum NavigationContentBehavior {
-    Modal = 'modal',
-    Dropdown = 'dropdown',
-    Navigation = 'navigation',
+  Modal = 'modal',
+  Dropdown = 'dropdown',
+  Navigation = 'navigation',
 }
 
 export interface NavigationListItem {
-    url: string;
-    title: string;
-    icon?: string;
+  url: string;
+  title: string;
+  icon?: string;
 }

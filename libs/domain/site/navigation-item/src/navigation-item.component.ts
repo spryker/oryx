@@ -7,7 +7,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
-import { NavigationContentBehavior, NavigationTriggerType, SiteNavigationItemOptions } from './navigation-item.model';
+import { TokenResolverService } from '../../src/services/token-resolver';
+import {
+  NavigationContentBehavior,
+  NavigationTriggerType,
+  SiteNavigationItemOptions,
+} from './navigation-item.model';
 import { styles } from './navigation-item.styles';
 
 @defaultOptions({
@@ -20,20 +25,54 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 ) {
   static styles = styles;
 
-  @asyncState()
-  protected url = valueType(this.options$.pipe(
-    switchMap(({url}) => {
-      if (typeof url !== 'object'){
-        return of(url);
-      }
+  protected tokenResolver = resolve(TokenResolverService);
 
-      return resolve(SemanticLinkService).get(url);
-    }))
+  @asyncState()
+  protected label = valueType(
+    this.options$.pipe(
+      switchMap(({ label }) => {
+        if (!label) {
+          return of();
+        }
+
+        return this.tokenResolver.resolve(label);
+      })
+    )
+  );
+
+  @asyncState()
+  protected badge = valueType(
+    this.options$.pipe(
+      switchMap(({ badge }) => {
+        if (!badge) {
+          return of();
+        }
+
+        return this.tokenResolver.resolve(badge);
+      })
+    )
+  );
+
+  @asyncState()
+  protected url = valueType(
+    this.options$.pipe(
+      switchMap(({ url }) => {
+        if (typeof url !== 'object') {
+          return of(url);
+        }
+
+        return resolve(SemanticLinkService).get(url);
+      })
+    )
   );
 
   protected onTriggerClick(): void {
-    if (this.componentOptions?.contentBehavior === NavigationContentBehavior.Modal) {
-      this.renderRoot.querySelector('oryx-modal')?.toggleAttribute('open', true);
+    if (
+      this.componentOptions?.contentBehavior === NavigationContentBehavior.Modal
+    ) {
+      this.renderRoot
+        .querySelector('oryx-modal')
+        ?.toggleAttribute('open', true);
     }
     // if (this.eventName) {
     //   this.dispatchEvent(
@@ -46,21 +85,18 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected renderComposition(): TemplateResult {
-    return html`<experience-composition .uid=${this.uid}></experience-composition>`;
-  }
-
-  protected resolveLabel(): string {
-    return this.componentOptions?.label ?? '';
+    return html`<experience-composition
+      .uid=${this.uid}
+      close-popover
+    ></experience-composition>`;
   }
 
   protected get icon(): TemplateResult {
-    if (!this.componentOptions?.icon){
+    if (!this.componentOptions?.icon) {
       return html``;
     }
 
-    return html`<oryx-icon
-      .type=${this.componentOptions?.icon}
-    ></oryx-icon>`;
+    return html`<oryx-icon .type=${this.componentOptions?.icon}></oryx-icon>`;
   }
 
   protected renderIconButton(): TemplateResult {
@@ -80,14 +116,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-button slot="trigger" @click=${this.onTriggerClick}>
         ${when(
           this.url,
-          () => html`<a href=${this.url!}>
-            ${this.icon}
-            ${this.resolveLabel()}
-          </a>`,
-          () => html`<button>
-            ${this.icon}
-            ${this.resolveLabel()}
-          </button>`
+          () => html`<a href=${this.url!}> ${this.icon} ${this.label} </a>`,
+          () => html`<button>${this.icon} ${this.label}</button>`
         )}
       </oryx-button>
     `;
@@ -95,19 +125,19 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderCustomButton(): TemplateResult {
     return html`
-      <oryx-site-navigation-button 
+      <oryx-site-navigation-button
         slot="trigger"
         url=${ifDefined(this.url)}
         icon=${ifDefined(this.componentOptions?.icon)}
-        text=${this.resolveLabel()}
-        badge=${ifDefined(this.componentOptions?.badge)}
+        text=${this.label}
+        badge=${this.badge}
         @click=${this.onTriggerClick}
       ></oryx-site-navigation-button>
     `;
   }
 
   protected renderTrigger(): TemplateResult {
-    switch(this.componentOptions?.triggerType) {
+    switch (this.componentOptions?.triggerType) {
       case NavigationTriggerType.Icon:
         return this.renderIconButton();
       case NavigationTriggerType.Button:
@@ -124,7 +154,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderContentModal(): TemplateResult {
     return html`
-      ${this.renderTrigger()} 
+      ${this.renderTrigger()}
       <oryx-modal
         enableCloseButtonInHeader
         enableCloseByEscape
@@ -139,7 +169,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected renderContentDropdown(): TemplateResult {
     return html`
       <oryx-dropdown position="start" vertical-align>
-        ${this.renderTrigger()} 
+        ${this.renderTrigger()}
         <!-- menuitems -->
         ${this.renderComposition()}
       </oryx-dropdown>
@@ -167,7 +197,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   // }
 
   protected override render(): TemplateResult {
-    switch(this.componentOptions?.contentBehavior) {
+    switch (this.componentOptions?.contentBehavior) {
       case NavigationContentBehavior.Dropdown:
         return this.renderContentDropdown();
       case NavigationContentBehavior.Modal:

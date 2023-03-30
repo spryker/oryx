@@ -1,4 +1,7 @@
-import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
+import {
+  ComponentGroup,
+  ContentComponentSchema,
+} from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { LinkType } from '@spryker-oryx/ui/link';

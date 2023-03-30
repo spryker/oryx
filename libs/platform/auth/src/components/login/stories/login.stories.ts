@@ -1,10 +1,11 @@
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../.constants';
 import { LoginOptions } from '../login.model';
 
 export default {
-  title: `Auth/Login`,
+  title: `${storybookPrefix}/Login`,
   argTypes: {
     strategy: {
       options: [
@@ -20,7 +21,7 @@ export default {
     disableRedirect: { type: 'boolean' },
     redirectUrl: { type: 'string' },
   },
-} as unknown as Meta;
+} as Meta;
 
 const Template: Story<LoginOptions> = (props): TemplateResult => {
   const options = {

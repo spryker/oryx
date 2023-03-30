@@ -73,27 +73,25 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-site-navigation-item',
           options: {
             data: {
-              // triggerType: 'button',
-              // triggerEvent: 'hover',
-              contentBehavior: 'dropdown', //popover, sidenav, navigation, etc.
-        
-              label: 'label',
-              // badge: 'CURRENT_CART.ITEMS_COUNT'
+              contentBehavior: 'dropdown',
+              label: 'USER.NAME',
               icon: 'user',
-        
+            },
+          },
+          components: [{ type: 'oryx-auth-button' }],
+        },
+        {
+          type: 'oryx-site-navigation-item',
+          options: {
+            data: {
+              label: 'cart',
+              badge: 'CART.SUMMARY',
+              icon: 'cart',
               url: {
-                type: 'login', 
+                type: 'cart',
               },
             },
           },
-          components: [
-            {
-              type: 'oryx-auth-login',
-            },
-            {
-            
-            type: 'oryx-auth-logout',
-          }]
         },
         { type: 'oryx-user-summary' },
         {

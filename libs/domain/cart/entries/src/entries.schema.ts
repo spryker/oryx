@@ -1,4 +1,7 @@
-import { ComponentGroup, ContentComponentSchema } from '@spryker-oryx/experience';
+import {
+  ComponentGroup,
+  ContentComponentSchema,
+} from '@spryker-oryx/experience';
 import { cartEntryComponentSchema } from '../../entry/src/entry.schema';
 import { CartEntriesComponent } from './entries.component';
 

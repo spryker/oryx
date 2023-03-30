@@ -1,17 +1,14 @@
 import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { LogoutOptions } from '../logout.model';
+import { storybookPrefix } from '../../../../.constants';
+import { AuthButtonOptions } from '../button.model';
 
 export default {
-  title: `Auth/Logout`,
-} as unknown as Meta;
+  title: `${storybookPrefix}/Button`,
+} as Meta;
 
-const Template: Story<LogoutOptions> = (props): TemplateResult => {
-  const options = {
-    redirectUrl: props.redirectUrl,
-  };
-
+const Template: Story<AuthButtonOptions> = (options): TemplateResult => {
   const pageReload: () => void = () => {
     window.setTimeout(() => {
       window.location.reload();
@@ -38,12 +35,9 @@ const Template: Story<LogoutOptions> = (props): TemplateResult => {
     </oryx-button>
 
     <div @click=${pageReload}>
-      <oryx-auth-logout .options=${options}></oryx-auth-logout>
+      <oryx-auth-button .options=${options}></oryx-auth-button>
     </div>
   `;
 };
 
-export const Logout = Template.bind({});
-Logout.args = {
-  redirectUrl: '',
-};
+export const Demo = Template.bind({});
