@@ -101,8 +101,9 @@ export class ProductPriceComponent extends ProductMixin(
    * sales price and original price.
    */
   protected formatPrices(price?: ProductPrices): Observable<Prices> {
-    const original = this.pricingService.format(price?.defaultPrice);
-    const sales = this.pricingService.format(price?.originalPrice);
-    return combineLatest({ sales, original });
+    return combineLatest({
+      sales: this.pricingService.format(price?.originalPrice),
+      original: this.pricingService.format(price?.defaultPrice),
+    });
   }
 }

@@ -25,7 +25,7 @@ export class ProductDescriptionComponent extends ProductMixin(
         .hideToggle=${!enableToggle}
         .defaultExpanded=${expandInitially}
       >
-        ${unsafeHTML(this.convert(this.product?.description))}
+        ${unsafeHTML(this.convert(this.$product()?.description))}
       </oryx-text>
     `;
   }
