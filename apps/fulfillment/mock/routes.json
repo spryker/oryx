@@ -1,0 +1,4 @@
+{
+  "/picking-orders?filter[order.ids]=:id": "/orders/:id",
+  "/picking-orders/:id": "/orders/:id"
+}

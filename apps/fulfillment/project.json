@@ -65,6 +65,13 @@
         }
       }
     },
+    "mock": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node mock/index.js",
+        "cwd": "apps/fulfillment"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

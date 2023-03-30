@@ -15,7 +15,7 @@ import { PickingListAdapter } from './picking-list.adapter';
 
 export class PickingListDefaultAdapter implements PickingListAdapter {
   constructor(
-    protected pickingHttpSerivce = inject(PickingHttpService),
+    protected pickingHttpService = inject(PickingHttpService),
     protected deserializer = new Deserializer({
       keyForAttribute: 'camelCase',
     })
@@ -24,7 +24,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   get(qualifier: PickingListQualifier): Observable<PickingList[]> {
     const query = this.getPickingListQuery(qualifier);
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .get<GetPickingListResponse>(`/picking-lists${query}`)
       .pipe(switchMap((res) => this.parsePickingLists(res)));
   }
@@ -37,7 +37,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       },
     };
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .patch<PatchPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
         map(({ data: [updatedPickingListData] }) => ({
@@ -67,7 +67,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       })),
     };
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .patch<PatchPickingListResponse>(
         `/picking-lists/${pickingList.id}/picking-list-items`,
         body
@@ -128,7 +128,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   protected parseProducts(data: PickingListResponseData[]): ProductEntity[] {
     const productsDeserialize = data
       .flatMap((item) => item.pickingListItems)
-      .flatMap((item) => item.products);
+      .flatMap((item) => item.concreteProducts);
 
     const products: ProductEntity[] = productsDeserialize.map((product) =>
       ProductEntity.from({
@@ -153,7 +153,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       (item) => {
         // Use first element(products[0]) from products because it will be only ONE by pickinglist item
         const product = products.find(
-          (prod) => prod.sku === item.products[0].sku
+          (prod) => prod.sku === item.concreteProducts[0].sku
         );
 
         if (!product) {
@@ -206,7 +206,7 @@ interface PickingListResponseItem extends ResourceObject {
   numberOfPicked: number;
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
-  products: PickingListResponseProduct[];
+  concreteProducts: PickingListResponseProduct[];
   quantity: number;
   salesOrders: PickingListResponseOrder[];
   shipments: PickingListResponseShipment[];
