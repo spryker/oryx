@@ -12,6 +12,7 @@ import {
 import { AppFeature, ComponentsInfo, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import urlJoin from 'url-join';
 import { BapiIdentityService } from './bapi-identity.service';
 import { defaultBapiRoutes } from './routes';
 
@@ -34,10 +35,10 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
           clientId: 'frontend',
           grantType: 'authorization_code',
           authUrl: new URL('/login', globalThis.location.origin).toString(),
-          tokenUrl: new URL(
-            '/token',
-            injectEnv('ORYX_FULFILLMENT_BACKEND_URL')
-          ).toString(),
+          tokenUrl: urlJoin(
+            injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
+            '/token'
+          ),
           redirectUrl: new URL(
             '/oauth/cb/spryker',
             globalThis.location.origin
@@ -76,10 +77,10 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
         provide: CodeGrantAuthLoginStrategyConfig,
         useFactory: () =>
           ({
-            loginUrl: new URL(
-              '/authorize',
-              injectEnv('ORYX_FULFILLMENT_BACKEND_URL')
-            ).toString(),
+            loginUrl: urlJoin(
+              injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
+              '/authorize'
+            ),
           } as CodeGrantAuthLoginStrategyConfig),
       },
     ];
