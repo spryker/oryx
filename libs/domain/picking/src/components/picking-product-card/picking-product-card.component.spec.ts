@@ -53,7 +53,7 @@ describe.only('PickingProductCardComponent', () => {
       );
     });
 
-    it('should not render oryx-image with the image-fade class when status is not NotFound', () => {
+    it('should not render oryx-image with the image-fade class', () => {
       expect(
         element.renderRoot
           .querySelector('oryx-image')
@@ -114,23 +114,77 @@ describe.only('PickingProductCardComponent', () => {
       });
     });
 
-    // describe('when user submit a quantity', () => {
-    //   let spy: SpyInstance<Event[]>;
+    describe('when user submit a quantity', () => {
+      const spy = vi.fn();
 
-    //   beforeEach(() => {
-    //     const button = element.shadowRoot?.querySelector(
-    //       'oryx-button button'
-    //     ) as HTMLButtonElement;
-    //     button.click();
-    //   });
+      beforeEach(async () => {
+        const el = await fixture(
+          html`
+            <oryx-picking-product-card
+              .productItem="${productItem}"
+              status="${ItemsFilters.NotPicked}"
+            ></oryx-picking-product-card>
+          `
+        );
 
-    //   it('should dispatch submit event', () => {
+        el.addEventListener('oryx.submit', spy);
 
-    //     const open = vi.spyOn(element, 'open');
+        const button = el.shadowRoot?.querySelector(
+          'oryx-button button'
+        ) as HTMLButtonElement;
+        button.click();
+      });
 
-    //     expect(spy).toHaveBeenCalledWith();
-    //   });
-    // });
+      it('should dispatch submit event', () => {
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    describe('when user wants to edit a product', () => {
+      const spy = vi.fn();
+
+      beforeEach(async () => {
+        const el = await fixture(
+          html`
+            <oryx-picking-product-card
+              .productItem="${productItem}"
+              status="${ItemsFilters.Picked}"
+            ></oryx-picking-product-card>
+          `
+        );
+
+        el.addEventListener('oryx.edit', spy);
+
+        const button = el.shadowRoot?.querySelector(
+          'oryx-button button'
+        ) as HTMLButtonElement;
+        button.click();
+      });
+
+      it('should dispatch edit event', () => {
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    describe('when a product is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`
+            <oryx-picking-product-card
+              status="${ItemsFilters.NotPicked}"
+            ></oryx-picking-product-card>
+          `
+        );
+      });
+
+      it('should not render form quantity input', async () => {
+        expect(
+          element.shadowRoot?.querySelector(
+            'oryx-cart-quantity-input'
+          ) as QuantityInputComponent
+        ).to.not.exist;
+      });
+    });
   });
 
   describe('when a product provided with status Picked', () => {
@@ -176,6 +230,18 @@ describe.only('PickingProductCardComponent', () => {
           ></oryx-picking-product-card>
         `
       );
+    });
+
+    it('should render oryx-image with the image-fade class', () => {
+      expect(
+        element.renderRoot
+          .querySelector('oryx-image')
+          ?.classList.value.includes('image-fade')
+      ).toBe(true);
+
+      expect(
+        (element.shadowRoot?.querySelector('oryx-image') as ImageComponent).src
+      ).toBe(productItem.product.image);
     });
 
     it('should not render quantity input', () => {
