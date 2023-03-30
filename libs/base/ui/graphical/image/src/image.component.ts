@@ -15,11 +15,11 @@ export class ImageComponent
     super();
   }
 
-  @property() src?: string;
-  @property() srcset?: string;
-  @property() alt?: string;
-  @property() resource?: string;
-  @property() loading?: LoadingStrategy;
+  @property({ reflect: true }) src?: string;
+  @property({ reflect: true }) srcset?: string;
+  @property({ reflect: true }) alt?: string;
+  @property({ reflect: true }) resource?: string;
+  @property({ reflect: true }) loading?: LoadingStrategy;
 
   @state() failed?: string;
 

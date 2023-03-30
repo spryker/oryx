@@ -10,7 +10,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { CartSummaryOptions } from './summary.model';
 import { styles } from './summary.styles';
 

@@ -11,7 +11,7 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
   protected parameterName = 'currency';
 
   protected includedEndpoints = [
-    'concreete-product',
+    'concrete-products',
     'catalog-search',
     'catalog-search-suggestions',
   ];

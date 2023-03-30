@@ -50,3 +50,20 @@ export interface PickingMeasurementUnit {
   name: string;
   code: string;
 }
+
+export interface SummaryInfo {
+  main: string;
+  additional?: string;
+}
+
+export interface PickingTab {
+  id: ItemsFilters;
+  title: string;
+  items: PickingListItem[];
+}
+
+export interface PartialPicking {
+  productId: string;
+  currentNumberOfPicked?: number;
+  quantity?: number;
+}
