@@ -1,5 +1,6 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { iconInjectable, rootInjectable } from '@spryker-oryx/utilities';
+import { css, isServer } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
@@ -71,6 +72,14 @@ export class ThemePlugin
   ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
+
+    if (!isServer) {
+      implementations.push(css`
+        :not([defer-hydration]):not([hydratable]):not(:defined) {
+          display: none;
+        }
+      `);
+    }
 
     for (const styles of stylesheets) {
       if (!styles.theme) {

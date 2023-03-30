@@ -58,7 +58,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected getLabel(code: string): string {
-    const languageNames = new Intl.DisplayNames([this.current ?? 'en'], {
+    const languageNames = new Intl.DisplayNames([code], {
       type: 'language',
     });
     return languageNames.of(code) ?? code;

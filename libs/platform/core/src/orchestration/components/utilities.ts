@@ -9,7 +9,7 @@ import {
 /**
  * Used for observing shadow DOM content.
  */
-export function observableShadow<T extends Type<HTMLElement>>(
+export function componentExtender<T extends Type<HTMLElement>>(
   componentType: T,
   name: string
 ): T & Type<ObservableShadow> {
@@ -32,6 +32,7 @@ export function observableShadow<T extends Type<HTMLElement>>(
     ): ReturnType<HTMLElement['attachShadow']> {
       const shadowRoot = super.attachShadow(...args);
       this._attachedShadow.resolve(shadowRoot);
+
       return shadowRoot;
     }
   };

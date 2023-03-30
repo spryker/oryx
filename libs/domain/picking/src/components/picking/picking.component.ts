@@ -3,11 +3,11 @@ import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { catchError, of, take, tap } from 'rxjs';
+import { when } from 'lit/directives/when.js';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
