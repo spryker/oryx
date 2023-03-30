@@ -1,20 +1,22 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductLabel, ProductMixin } from '@spryker-oryx/product';
-import { hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-hydratable(['mouseover', 'focusin']);
+@hydratable(['mouseover', 'focusin'])
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {
   static styles = [labelStyles];
 
+  protected $labels = computed(() => this.filterLabels());
+
   protected override render(): TemplateResult {
-    const labels = this.filterLabels();
+    const labels = this.$labels();
 
     return html`${when(labels, () =>
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -36,8 +38,8 @@ export class ProductLabelsComponent extends ProductMixin(
    * The labels and in/exclusions are case insensitive.
    */
   protected filterLabels(): ProductLabel[] | undefined {
-    const options = this.componentOptions;
-    const labels = this.product?.labels;
+    const options = this.$options();
+    const labels = this.$product()?.labels;
 
     if (!options || !labels) return labels;
 
