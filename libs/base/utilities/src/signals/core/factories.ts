@@ -12,8 +12,6 @@ export interface SettableSignal<T = unknown> extends Signal<T> {
 export function createSignal<T = unknown>(initialValue: T): SettableSignal<T> {
   const coreSignal = new StateSignal(initialValue);
 
-  // const signal = Object.assign(() => coreSignal.value, coreSignal);
-
   const signal = () => coreSignal.value;
   signal.set = (value: T) => coreSignal.set(value);
 

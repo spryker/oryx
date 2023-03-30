@@ -27,7 +27,7 @@ export class SignalProducer<T> {
 export class SignalConsumer {
   protected versions = new Map<SignalProducer<any>, number>();
   protected unusedVersions: Map<SignalProducer<any>, unknown> | undefined;
-  protected prev: any;
+  protected prev: SignalConsumer | undefined;
   public isConnected = false;
 
   constructor(public notify: () => void) {}
