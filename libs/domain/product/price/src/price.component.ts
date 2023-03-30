@@ -2,12 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import {
-  hydratable,
-  i18n,
-  signal,
-  SignalController,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import { ProductPriceOptions } from './price.model';
@@ -35,8 +30,6 @@ export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
   static styles = ProductPriceStyles;
-
-  protected singalController = new SignalController(this);
 
   protected pricingService = resolve(PricingService);
 

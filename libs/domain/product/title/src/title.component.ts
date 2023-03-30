@@ -2,11 +2,7 @@ import { ContentLinkOptions } from '@spryker-oryx/content/link';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import {
-  computed,
-  hydratable,
-  SignalController,
-} from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
@@ -20,8 +16,6 @@ export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {
   static styles = styles;
-
-  protected singalController = new SignalController(this);
 
   protected hasLink = computed(
     () =>
