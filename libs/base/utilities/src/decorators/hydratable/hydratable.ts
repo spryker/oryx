@@ -65,13 +65,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
-    private [SIGNAL_META]: {
+    private [SIGNAL_META]!: {
       effectRuns: number;
       renderRuns: number;
       effect?: Effect;
-    } = {
-      effectRuns: 0,
-      renderRuns: 0,
     };
 
     static properties = {
@@ -87,6 +84,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
+
+        this[SIGNAL_META] = {
+          effectRuns: 0,
+          renderRuns: 0,
+        };
       }
 
       if (this.hasSsr) {
