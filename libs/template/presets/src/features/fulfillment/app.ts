@@ -1,3 +1,7 @@
+import {
+  BapiAuthComponentsFeature,
+  BapiAuthFeature,
+} from '@spryker-oryx/application';
 import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
@@ -22,6 +26,8 @@ export function fulfillmentFeatures(
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
+    new BapiAuthFeature(),
+    new BapiAuthComponentsFeature(),
     { resources: fulfillmentResources },
     new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),

@@ -20,6 +20,9 @@ export class CodeGrantAuthLoginStrategy implements AuthLoginStrategy {
         method: this.config.loginMethod ?? 'POST',
         credentials: 'omit',
         body,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       })
       .pipe(switchMap((response) => this.redirectWith(response)));
   }

@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -7,7 +8,10 @@ import { OauthService } from '../../oauth.service';
 export class OauthHandlerComponent extends LitElement {
   @property() providerId?: string;
 
-  constructor(protected oauthService = resolve(OauthService)) {
+  constructor(
+    protected oauthService = resolve(OauthService),
+    protected routerService = resolve(RouterService)
+  ) {
     super();
   }
 
@@ -18,7 +22,12 @@ export class OauthHandlerComponent extends LitElement {
       throw new Error(`OauthHandlerComponent: Unknown Oauth provider ID!`);
     }
 
-    this.oauthService.handleCallback(this.providerId);
+    const subscription = this.oauthService
+      .handleCallback(this.providerId)
+      .subscribe(() => {
+        this.routerService.navigate('/');
+        subscription.unsubscribe();
+      });
   }
 
   protected render(): unknown {

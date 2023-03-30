@@ -55,7 +55,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     }),
     switchMap((request) =>
       this.authLoginStrategy.login(request).pipe(
-        catchError(() => {
+        catchError((e) => {
+          console.error(e);
           this.isLoading = false;
           this.hasError = true;
           return EMPTY;
