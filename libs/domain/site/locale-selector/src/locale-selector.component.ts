@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { LocaleService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -58,7 +58,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   }
 
   protected getLabel(code: string): string {
-    const languageNames = new Intl.DisplayNames([this.current ?? 'en'], {
+    const languageNames = new Intl.DisplayNames([code], {
       type: 'language',
     });
     return languageNames.of(code) ?? code;

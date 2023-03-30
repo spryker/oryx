@@ -9,7 +9,8 @@ import {
 } from '@spryker-oryx/checkout/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LocaleService, PricingService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/i18n';
+import { PricingService } from '@spryker-oryx/site';
 import { radioComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';

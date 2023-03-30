@@ -127,6 +127,15 @@ export const baseStyles = css`
   oryx-icon-button[slot='suffix'] {
     display: none;
   }
+
+  oryx-product-price,
+  oryx-product-price::part(sales),
+  oryx-product-price::part(original) {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    grid-column: initial;
+  }
 `;
 
 const smallScreen = css`

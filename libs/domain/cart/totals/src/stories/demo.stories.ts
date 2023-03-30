@@ -6,14 +6,14 @@ import { CartTotalsComponentOptions } from '../totals.model';
 export default {
   title: `${storybookPrefix}/Cart totals`,
   args: {
-    hideSubtotal: false,
-    hideTaxAmount: false,
+    enableSubtotal: false,
+    enableTaxAmount: false,
     hideTaxMessage: false,
-    hideDiscounts: false,
+    enableDiscounts: false,
     collapsibleDiscounts: true,
     collapseDiscounts: false,
-    hideDelivery: false,
-    hideExpense: false,
+    enableDelivery: false,
+    enableExpense: false,
   } as CartTotalsComponentOptions,
   argTypes: {
     deliveryMessage: { control: { type: 'text' } },
@@ -23,7 +23,7 @@ export default {
 const Template: Story<CartTotalsComponentOptions> = (
   options: CartTotalsComponentOptions
 ): TemplateResult => {
-  return html`<cart-totals .options=${options}></cart-totals>`;
+  return html`<oryx-cart-totals .options=${options}></oryx-cart-totals>`;
 };
 
 export const cartTotalsDemo = Template.bind({});

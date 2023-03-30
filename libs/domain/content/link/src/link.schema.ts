@@ -1,5 +1,6 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
+import { LinkType } from '@spryker-oryx/ui/link';
 import { ContentLinkComponent } from './link.component';
 
 export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
@@ -59,6 +60,14 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
       id: {
         label: 'Raw URL | Product/Category/Page ID',
         type: FormFieldType.Text,
+      },
+      linkType: {
+        type: FormFieldType.Select,
+        options: [
+          { value: LinkType.Link },
+          { value: LinkType.ExternalLink },
+          { value: LinkType.Neutral },
+        ],
       },
       icon: {
         label: 'Icon',

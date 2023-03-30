@@ -79,7 +79,7 @@ For example, the following code shows how to disable the tax row in the cart tot
 ```ts
 export const app = appBuilder()
   .withOptions({
-    'cart-totals': {
+    'oryx-cart-totals': {
       enableTax: false,
     },
   })

@@ -14,7 +14,6 @@
     "globalize": "^1.7.0",
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/di": "latest",
-    "@spryker-oryx/site": "latest",
     "@spryker-oryx/utilities": "latest"
   },
   "peerDependencies": {

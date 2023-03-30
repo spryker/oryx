@@ -12,7 +12,7 @@ export const typographyTokens: ThemeToken = {
 
 export const typographySmallTokens: ThemeToken = {
   typography: {
-    h1: { size: '1.375em', line: '1.364em' },
+    h1: { size: '1.375em', line: '1.364em', align: 'center' },
     h2: { size: '1.125em', line: '1.444em' },
     h3: { size: '1em', line: '1.375em' },
     h4: { size: '0.875em', line: '1.571em' },

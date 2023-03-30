@@ -109,7 +109,7 @@ export class RenderSuggestionController {
         <oryx-product-title .sku=${product.sku}></oryx-product-title>
         <oryx-product-price
           .sku=${product.sku}
-          .options=${{ enableVatMessage: false }}
+          .options=${{ enableTaxMessage: false }}
         ></oryx-product-price>
       </oryx-content-link>
     `;

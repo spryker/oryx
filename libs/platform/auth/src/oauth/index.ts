@@ -1,6 +1,7 @@
 export * from './components';
 export * from './config.model';
 export * from './feature';
+export * from './oauth-token.interceptor';
 export * from './oauth.service';
 export * from './provider-factory.service';
 export * from './provider.model';
