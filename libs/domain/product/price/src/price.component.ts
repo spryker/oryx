@@ -5,13 +5,8 @@ import { PricingService } from '@spryker-oryx/site';
 import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable, switchMap } from 'rxjs';
-import { ProductPriceOptions } from './price.model';
+import { Prices, ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
-
-interface Prices {
-  original?: string | null;
-  sales?: string | null;
-}
 
 /**
  * Renders the (formatted) product price.
@@ -42,7 +37,7 @@ export class ProductPriceComponent extends ProductMixin(
     this.productController
       .getProduct()
       .pipe(switchMap((product) => this.formatPrices(product?.price))),
-    {} as Prices
+    {}
   );
 
   protected override render(): TemplateResult | void {
