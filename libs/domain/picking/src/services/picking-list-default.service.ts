@@ -3,6 +3,7 @@ import { PickingListOnlineAdapter } from '@spryker-oryx/picking/offline';
 import { BehaviorSubject, map, Observable, shareReplay, switchMap } from 'rxjs';
 import { PickingList, PickingListQualifier } from '../models';
 import { PickingListService } from './picking-list.service';
+import {PickingListAdapter} from "./adapter";
 
 export class PickingListDefaultService implements PickingListService {
   protected pickingListsQualifier$ = new BehaviorSubject<PickingListQualifier>(
@@ -14,7 +15,7 @@ export class PickingListDefaultService implements PickingListService {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  constructor(protected adapter = inject(PickingListOnlineAdapter)) {}
+  constructor(protected adapter = inject(PickingListAdapter)) {}
 
   setQualifier(
     qualifier: PickingListQualifier

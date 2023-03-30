@@ -5,7 +5,7 @@ import { provideSyncActionsHandler } from '@spryker-oryx/offline';
 import {
   PickingHttpDefaultService,
   PickingHttpService,
-  PickingListAdapter,
+  PickingListAdapter, PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
 } from '@spryker-oryx/picking';
@@ -31,7 +31,7 @@ export class OfflinePickingFeature implements AppFeature {
         PickingSyncActionHandlerService
       ),
       { provide: PickingListService, useClass: PickingListDefaultService },
-      { provide: PickingListAdapter, useClass: PickingListOfflineAdapter },
+      { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       {
         provide: PickingListOnlineAdapter,
         useClass: PickingListOnlineDefaultAdapter,
