@@ -81,10 +81,6 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
               injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
               '/authorize'
             ),
-            redirectUrl: new URL(
-              '/oauth/cb/spryker',
-              globalThis.location.origin
-            ).toString(),
           } as CodeGrantAuthLoginStrategyConfig),
       },
     ];

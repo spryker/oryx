@@ -121,6 +121,7 @@ export class OauthCodeGrantProvider implements OauthProvider {
     const authUrl = new URL(this.config.authUrl);
     authUrl.searchParams.set('client_id', this.config.clientId);
     authUrl.searchParams.set('response_type', 'code');
+    authUrl.searchParams.set('redirect_uri', this.config.redirectUrl);
 
     const scope = this.getScopeFor(request);
 
