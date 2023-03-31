@@ -150,6 +150,12 @@
         "libs/domain/site/locale-selector/index.ts"
       ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/navigation-button": [
+        "libs/domain/site/navigation-button/index.ts"
+      ],
+      "@spryker-oryx/site/navigation-item": [
+        "libs/domain/site/navigation-item/index.ts"
+      ],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
       ],
@@ -187,12 +193,6 @@
       "@spryker-oryx/ui/input": ["libs/base/ui/form/input/index.ts"],
       "@spryker-oryx/ui/input-list": ["libs/base/ui/form/input-list/index.ts"],
       "@spryker-oryx/ui/link": ["libs/base/ui/action/link/index.ts"],
-      "@spryker-oryx/ui/menu-item": [
-        "libs/base/ui/navigation/menu-item/index.ts"
-      ],
-      "@spryker-oryx/ui/menu-item-button": [
-        "libs/base/ui/navigation/menu-item-button/index.ts"
-      ],
       "@spryker-oryx/ui/modal": ["libs/base/ui/overlays/modal/index.ts"],
       "@spryker-oryx/ui/multi-range": [
         "libs/base/ui/form/multi-range/index.ts"
