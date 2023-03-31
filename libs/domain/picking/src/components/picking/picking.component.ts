@@ -185,9 +185,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     `;
   }
 
-  protected renderPlaceholderComplete(): TemplateResult {
+  protected renderPlaceholderComplete(): TemplateResult | void {
     if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
-      return html``;
+      return;
     }
 
     return html`
@@ -202,9 +202,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     `;
   }
 
-  protected renderFinishButton(hasShadow?: boolean): TemplateResult {
+  protected renderFinishButton(hasShadow?: boolean): TemplateResult | void {
     if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
-      return html``;
+      return;
     }
 
     return html`
@@ -213,7 +213,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           'scroll-shadow': hasShadow ?? false,
         })}"
       >
-        <oryx-button type=${ButtonType.Primary} outline="true">
+        <oryx-button type=${ButtonType.Primary} outline>
           <button @click=${this.finishPicking}>
             ${i18n('picking.finish-picking')}
           </button>

@@ -18,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('PickingComponent', () => {
+describe.only('PickingComponent', () => {
   let element: PickingComponent;
   let service: MockPickingListService;
 
@@ -106,12 +106,16 @@ describe('PickingComponent', () => {
       );
     });
 
+    it('should render finish button', () => {
+      expect(
+        element.renderRoot.querySelector('.submit-wrapper button')?.textContent
+      ).toContain(i18n('picking.finish-picking'));
+    });
+
     it('should render success message', () => {
       expect(
-        element.renderRoot
-          .querySelector('.submit-wrapper button')
-          ?.textContent?.trim()
-      ).toBe(i18n('picking.finish-picking'));
+        element.renderRoot.querySelector('.picking-complete p')?.textContent
+      ).toContain(i18n('picking.all-items-are-processed'));
     });
   });
 });
