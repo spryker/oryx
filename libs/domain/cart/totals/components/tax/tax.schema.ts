@@ -1,6 +1,9 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import {
+  ComponentGroup,
+  ContentComponentSchema,
+} from '@spryker-oryx/experience';
 
 export const cartTotalsTaxComponentSchema: ContentComponentSchema = {
   name: 'Cart totals tax',
-  group: 'Cart',
+  group: ComponentGroup.Cart,
 };
