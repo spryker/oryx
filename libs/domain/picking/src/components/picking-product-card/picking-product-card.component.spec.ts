@@ -1,7 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { destroyInjector } from '@spryker-oryx/di';
 import {
   ItemsFilters,
   PickingListItem,
@@ -22,7 +21,6 @@ describe('PickingProductCardComponent', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-    destroyInjector();
   });
 
   describe('when a product provided with status NotPicked', () => {
@@ -43,22 +41,16 @@ describe('PickingProductCardComponent', () => {
 
     it('should render name and sku', () => {
       expect(
-        element.renderRoot
-          .querySelector("[slot='heading']")
-          ?.textContent?.trim()
-      ).toBe(productItem.orderItem.name);
+        element.renderRoot.querySelector("[slot='heading']")?.textContent
+      ).toContain(productItem.orderItem.name);
 
-      expect(element.renderRoot.querySelector('h4')?.textContent?.trim()).toBe(
+      expect(element.renderRoot.querySelector('h4')?.textContent).toContain(
         productItem.orderItem.sku
       );
     });
 
     it('should not render oryx-image with the image-fade class', () => {
-      expect(
-        element.renderRoot
-          .querySelector('oryx-image')
-          ?.classList.value.includes('image-fade')
-      ).toBe(false);
+      expect(element).not.toContainElement('oryx-image.image-fade');
 
       expect(
         (element.shadowRoot?.querySelector('oryx-image') as ImageComponent).src
@@ -85,11 +77,9 @@ describe('PickingProductCardComponent', () => {
 
     describe('when the quantity is enabled', () => {
       it('should enable the button', () => {
-        expect(
-          element.shadowRoot
-            ?.querySelector('oryx-button button')
-            ?.hasAttribute('disabled')
-        ).toBe(false);
+        expect(element.shadowRoot).not.toContainElement(
+          'oryx-button button[disabled]'
+        );
       });
 
       describe('and when an update is dispatched with an invalid quantity', () => {
@@ -105,11 +95,7 @@ describe('PickingProductCardComponent', () => {
         });
 
         it('should disable the button', () => {
-          expect(
-            element.shadowRoot
-              ?.querySelector('oryx-button button')
-              ?.hasAttribute('disabled')
-          ).toBe(true);
+          expect(element).toContainElement('oryx-button button[disabled]');
         });
       });
     });
@@ -118,18 +104,19 @@ describe('PickingProductCardComponent', () => {
       const spy = vi.fn();
 
       beforeEach(async () => {
-        const el = await fixture(
+        element = await fixture(
           html`
             <oryx-picking-product-card
               .productItem="${productItem}"
               status="${ItemsFilters.NotPicked}"
+              @oryx.submit=${spy}
             ></oryx-picking-product-card>
           `
         );
 
-        el.addEventListener('oryx.submit', spy);
+        element.addEventListener('oryx.submit', spy);
 
-        const button = el.shadowRoot?.querySelector(
+        const button = element.shadowRoot?.querySelector(
           'oryx-button button'
         ) as HTMLButtonElement;
         button.click();
@@ -144,18 +131,19 @@ describe('PickingProductCardComponent', () => {
       const spy = vi.fn();
 
       beforeEach(async () => {
-        const el = await fixture(
+        const element = await fixture(
           html`
             <oryx-picking-product-card
               .productItem="${productItem}"
               status="${ItemsFilters.Picked}"
+              @oryx.edit=${spy}
             ></oryx-picking-product-card>
           `
         );
 
-        el.addEventListener('oryx.edit', spy);
+        element.addEventListener('oryx.edit', spy);
 
-        const button = el.shadowRoot?.querySelector(
+        const button = element.shadowRoot?.querySelector(
           'oryx-button button'
         ) as HTMLButtonElement;
         button.click();
@@ -178,11 +166,7 @@ describe('PickingProductCardComponent', () => {
       });
 
       it('should not render form quantity input', async () => {
-        expect(
-          element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
-          ) as QuantityInputComponent
-        ).to.not.exist;
+        expect(element).not.toContainElement('oryx-cart-quantity-input');
       });
     });
   });
@@ -200,11 +184,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(
-        element.shadowRoot?.querySelector(
-          'oryx-cart-quantity-input'
-        ) as QuantityInputComponent
-      ).to.not.exist;
+      expect(element).not.toContainElement('oryx-cart-quantity-input');
     });
 
     it('should render summary info', () => {
@@ -213,10 +193,8 @@ describe('PickingProductCardComponent', () => {
 
     it('should render edit button', () => {
       expect(
-        element.shadowRoot
-          ?.querySelector('oryx-button button')
-          ?.textContent?.trim()
-      ).toBe('Edit items');
+        element.shadowRoot?.querySelector('oryx-button button')?.textContent
+      ).toContain('Edit items');
     });
   });
 
@@ -233,11 +211,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should render oryx-image with the image-fade class', () => {
-      expect(
-        element.renderRoot
-          .querySelector('oryx-image')
-          ?.classList.value.includes('image-fade')
-      ).toBe(true);
+      expect(element).toContainElement('oryx-image.image-fade');
 
       expect(
         (element.shadowRoot?.querySelector('oryx-image') as ImageComponent).src
@@ -245,23 +219,17 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(
-        element.shadowRoot?.querySelector(
-          'oryx-cart-quantity-input'
-        ) as QuantityInputComponent
-      ).to.not.exist;
+      expect(element).not.toContainElement('oryx-cart-quantity-input');
     });
 
     it('should render summary info', () => {
-      expect(element.shadowRoot?.querySelector('.summary-info')).to.exist;
+      expect(element).toContainElement('.summary-info');
     });
 
     it('should render edit button', () => {
       expect(
-        element.shadowRoot
-          ?.querySelector('oryx-button button')
-          ?.textContent?.trim()
-      ).toBe('Edit items');
+        element.shadowRoot?.querySelector('oryx-button button')?.textContent
+      ).toContain('Edit items');
     });
   });
 });
