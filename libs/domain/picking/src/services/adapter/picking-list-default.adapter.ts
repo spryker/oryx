@@ -21,7 +21,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     })
   ) {}
 
-  get(qualifier: PickingListQualifier): Observable<PickingList[]> {
+  get(qualifier?: PickingListQualifier): Observable<PickingList[]> {
     const query = this.getPickingListQuery(qualifier);
 
     return this.pickingHttpService
@@ -82,7 +82,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
   }
 
-  protected getPickingListQuery(qualifier: PickingListQualifier): string {
+  protected getPickingListQuery(qualifier?: PickingListQualifier): string {
+    if (!qualifier) return '';
+
     let query = '';
 
     if (qualifier.id) {
