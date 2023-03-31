@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: cd apps/testfront && npm i && cd ../..
       - name: Run testfront
-        run: npm run tesfront
+        run: npm run testfront
       - name: Wait a bit
         run: wait 10
       - name: Run e2e
