@@ -2,8 +2,6 @@ import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
-export const styles = css``;
-
 const smallScreen = css`
   :host {
     display: block;
