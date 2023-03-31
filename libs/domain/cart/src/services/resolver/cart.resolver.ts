@@ -1,4 +1,3 @@
-import { CartService } from '..';
 import {
   ResolvedToken,
   Resolver,
@@ -7,6 +6,7 @@ import {
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
 import { map, of } from 'rxjs';
+import { CartService } from '..';
 
 interface CartResolvers {
   SUMMARY: Resolver;

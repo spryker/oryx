@@ -1,3 +1,4 @@
+import { TokenResolverService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -7,7 +8,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
-import { TokenResolverService } from '@spryker-oryx/core';
 import {
   NavigationContentBehavior,
   NavigationTriggerType,
@@ -160,8 +160,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected renderContentDropdown(): TemplateResult {
     return html`
       <oryx-dropdown position="start" vertical-align>
-        ${this.renderTrigger()}
-        ${this.renderComposition()}
+        ${this.renderTrigger()} ${this.renderComposition()}
       </oryx-dropdown>
     `;
   }
