@@ -11,14 +11,14 @@ export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {
   protected override render(): TemplateResult | void {
-    const reviewCount = this.componentOptions?.enableCount
+    const reviewCount = this.$options().enableCount
       ? this.$product()?.reviewCount ?? 0
       : undefined;
 
     return html`
       <oryx-rating
         readonly
-        .size=${this.componentOptions?.size}
+        .size=${this.$options().size}
         .value=${this.$product()?.averageRating}
         .reviewCount=${reviewCount}
       ></oryx-rating>

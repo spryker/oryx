@@ -20,7 +20,7 @@ export class ProductAttributesComponent extends ProductMixin(
     if (!attributes || !attributeNames) return;
 
     return html`
-      <ul style="--column-count: ${this.componentOptions?.columnCount}">
+      <ul style="--column-count: ${this.$options().columnCount}">
         ${Object.keys(attributes ?? {}).map(
           (key) => html`<li>
             <div>${attributeNames?.[key]}</div>
