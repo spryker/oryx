@@ -88,13 +88,14 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
 
   protected applyThemes(name: string): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { componentType, themes } = this.componentMap.get(name)!;
+    const { extendedClass, themes } = this.componentMap.get(name)!;
+    const componentClass = Object.getPrototypeOf(extendedClass);
 
     if (!themes || !this.theme) {
       return;
     }
 
-    const base = componentType.styles ?? [];
+    const base = componentClass.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
     const isThemeData = (
       theme: ThemeData | ThemeStylesheets
@@ -127,12 +128,12 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       innerTheme = [...innerTheme, ...this.theme.normalizeStyles(styles)];
     }
 
-    componentType.styles = innerTheme;
+    componentClass.styles = innerTheme;
 
     // eslint-disable-next-line no-prototype-builtins
-    if (componentType.hasOwnProperty('finalized')) {
-      componentType.elementStyles = componentType.finalizeStyles?.(
-        componentType.styles
+    if (componentClass.hasOwnProperty('finalized')) {
+      componentClass.elementStyles = componentClass.finalizeStyles?.(
+        componentClass.styles
       );
     }
   }

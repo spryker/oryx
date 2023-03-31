@@ -8,7 +8,8 @@ export class SearchFragment {
   getClearButton = () => this.getWrapper().contains('Clear');
   getSearchResultsWrapper = () => this.getWrapper().find('[slot="option"]');
   getEmptySearchResults = () => this.getWrapper().find('[slot="empty"]');
-
+  getSearchResultsContainer = () =>
+    this.getWrapper().find('[slot="option"] div');
   getSearchSuggestions = () =>
     this.getSearchResultsWrapper().find('section:first-of-type li');
 
