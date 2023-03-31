@@ -12,15 +12,17 @@ import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  finishPicking = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe.only('PickingComponent', () => {
+describe('PickingComponent', () => {
   let element: PickingComponent;
   let service: MockPickingListService;
+  let routerService: MockRouterService;
 
   beforeAll(async () => {
     await useComponent(pickingComponent);
@@ -43,6 +45,10 @@ describe.only('PickingComponent', () => {
     service = testInjector.inject(
       PickingListService
     ) as unknown as MockPickingListService;
+
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
 
     element = await fixture(
       html`<oryx-picking
@@ -70,11 +76,9 @@ describe.only('PickingComponent', () => {
       3
     );
 
-    expect(
-      element.renderRoot.querySelector(
-        '#tab-not_picked[slot="panels"] oryx-picking-product-card'
-      )
-    ).not.toBeFalsy();
+    expect(element).toContainElement(
+      '#tab-not_picked[slot="panels"] oryx-picking-product-card'
+    );
   });
 
   describe('when there is no picking list', () => {
@@ -98,6 +102,7 @@ describe.only('PickingComponent', () => {
   describe('when all items are already picked', () => {
     beforeEach(async () => {
       service.getById.mockReturnValue(of(mockPickingListData[1]));
+      service.finishPicking.mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
         html`<oryx-picking
@@ -116,6 +121,16 @@ describe.only('PickingComponent', () => {
       expect(
         element.renderRoot.querySelector('.picking-complete p')?.textContent
       ).toContain(i18n('picking.all-items-are-processed'));
+    });
+
+    it('should perform redirect after click', () => {
+      const button = element.renderRoot.querySelector(
+        '.submit-wrapper button'
+      ) as HTMLButtonElement;
+      button.click();
+
+      expect(service.finishPicking).toHaveBeenCalled();
+      expect(routerService.navigate).toHaveBeenCalledWith(`/`);
     });
   });
 });
