@@ -2,7 +2,7 @@ import { ContentLinkOptions } from '@spryker-oryx/content/link';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
@@ -17,8 +17,12 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
+  protected hasLink = computed(
+    () => !!this.$options().linkType && this.$options().linkType !== 'none'
+  );
+
   protected override render(): TemplateResult | void {
-    const { tag, as, asLg, asMd, asSm, maxLines } = this.componentOptions ?? {};
+    const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
 
     return html`<oryx-heading
       .tag=${tag}
@@ -28,27 +32,20 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${this.hasLink() ? this.renderLink() : html`${this.product?.name}`}
+      ${this.hasLink() ? this.renderLink() : html`${this.$product()?.name}`}
     </oryx-heading>`;
-  }
-
-  protected hasLink(): boolean {
-    return (
-      !!this.componentOptions?.linkType &&
-      this.componentOptions?.linkType !== 'none'
-    );
   }
 
   protected renderLink(): TemplateResult {
     const options = {
       type: SemanticLinkType.Product,
-      id: this.product?.sku,
+      id: this.$product()?.sku,
       multiLine: true,
-      linkType: this.componentOptions?.linkType,
+      linkType: this.$options().linkType,
     } as ContentLinkOptions;
 
     return html`<oryx-content-link .options=${options}>
-      ${this.product?.name}
+      ${this.$product()?.name}
     </oryx-content-link>`;
   }
 }

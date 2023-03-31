@@ -17,7 +17,7 @@ export class ProductDescriptionComponent extends ProductMixin(
       truncateAfter = 0,
       enableToggle,
       expandInitially,
-    } = this.componentOptions ?? {};
+    } = this.$options();
 
     return html`
       <oryx-text
@@ -25,7 +25,7 @@ export class ProductDescriptionComponent extends ProductMixin(
         .hideToggle=${!enableToggle}
         .defaultExpanded=${expandInitially}
       >
-        ${unsafeHTML(this.convert(this.product?.description))}
+        ${unsafeHTML(this.convert(this.$product()?.description))}
       </oryx-text>
     `;
   }

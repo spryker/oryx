@@ -50,8 +50,8 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
               .flat()
               .filter((product) => {
                 if (productIds.has(product.id)) return false;
-
                 productIds.add(product.id);
+
                 return true;
               }),
           };
