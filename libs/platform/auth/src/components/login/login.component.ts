@@ -80,9 +80,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   protected override render(): TemplateResult {
     return html`<oryx-card>
-      <oryx-heading slot="heading" as="h5">
-        <h1>${this.heading ?? i18n('user.login')}</h1>
-      </oryx-heading>
+      <h1 slot="heading">${this.heading ?? i18n('user.login')}</h1>
 
       ${when(
         this.hasError,

@@ -17,9 +17,7 @@ export class CartPage extends AbstractSFPage {
   }
 
   getCartEntriesWrapper = () => cy.get('oryx-cart-entries');
-
   getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
-
   getCartEntries = () =>
     this.getCartEntriesWrapper()
       .find('oryx-cart-entry')
@@ -28,7 +26,8 @@ export class CartPage extends AbstractSFPage {
           $elements.toArray().map(($el) => new CartEntryFragment($el))
         );
       });
-
+  getCartEntriesHeading = () =>
+    this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
   getCheckoutBtn = () => cy.contains('oryx-content-link', 'Checkout').find('a');
 }
