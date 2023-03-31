@@ -65,6 +65,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     static properties = {
       useRealRender: { type: Boolean, state: true },
+      test: { type: Boolean, state: true },
     };
 
     constructor(...args: any[]) {
@@ -133,7 +134,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (this.hasSsr && states) {
         return html`${whenState(
           Object.values(states).every(Boolean) && this.useRealRender,
-          () => super.render()
+          () => {
+            console.log(this.tagName);
+            return super.render();
+          }
         )}`;
       }
 

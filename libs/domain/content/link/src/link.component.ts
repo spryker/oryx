@@ -1,13 +1,14 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { ContentLinkOptions, ContentLinkType } from './link.model';
 import { styles } from './link.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
   LitElement
 ) {

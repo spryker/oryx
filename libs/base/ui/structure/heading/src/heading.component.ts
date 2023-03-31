@@ -1,10 +1,11 @@
-import { ssrShim } from '@spryker-oryx/utilities';
+import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headlineStyles } from './styles/base.styles';
 
 @ssrShim('style')
+@hydratable(['mouseover', 'focusin'])
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headlineStyles;
 
@@ -33,7 +34,7 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   }
 
   protected override render(): TemplateResult {
-    return html`${this.renderTag(html`<slot></slot>`)}`;
+    return html`<slot></slot>`;
   }
 
   /**

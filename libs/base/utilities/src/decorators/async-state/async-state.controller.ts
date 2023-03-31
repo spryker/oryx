@@ -8,6 +8,7 @@ interface ObservablesData {
   observable$?: Observable<unknown>;
   subscription?: Subscription;
   value?: unknown;
+  index?: number;
 }
 
 export const asyncStates = 'data-async-states';
@@ -17,11 +18,13 @@ export class AsyncStateController implements ReactiveController {
   // TODO: temporary solution should be solved with proper hook provided from lit
   protected context = resolve('FES.ContextService', null);
   protected isConnected = false;
+  protected withRoot = false;
 
   constructor(
     protected host: LitElement & { [asyncStates]?: Record<string, boolean> }
   ) {
     host.addController(this);
+    this.withRoot = !!host.shadowRoot;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (this.context as any)?.rendered$?.subscribe?.(() => {
@@ -47,7 +50,7 @@ export class AsyncStateController implements ReactiveController {
 
     if (!isObservable(value)) {
       // shortcut for primitive values
-      this.observables.set(key, { value });
+      this.observables.set(key, { value, index: 0 });
       if (oldValue !== value && !isServer) {
         this.host.requestUpdate(key, oldValue);
       }
@@ -79,13 +82,21 @@ export class AsyncStateController implements ReactiveController {
 
     data.subscription = data.observable$.subscribe((value) => {
       const oldValue = data.value;
+      let index = data.index ?? 0;
 
       this.host[asyncStates]![key] = true;
 
       if (oldValue !== value) {
         data.value = value;
+
+        if (index === 0 && !isServer && this.withRoot) {
+          console.log('we here');
+          return;
+        }
         this.host.requestUpdate(key, oldValue);
       }
+
+      index = index + 1;
     });
   }
 
