@@ -52,6 +52,6 @@ jobs:
       - name: Run testfront
         run: npm run testfront
       - name: Wait a bit
-        run: wait 10
+        run: sleep 10
       - name: Run e2e
         run: npm run release-test:e2e
