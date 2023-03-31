@@ -1,44 +1,26 @@
-import { CartService } from '@spryker-oryx/cart';
-import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { CartComponentMixin } from '@spryker-oryx/cart';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { combineLatest } from 'rxjs';
+import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './link.styles';
 
 @hydratable(['window:load'])
-export class CheckoutLinkComponent extends ComponentMixin() {
+export class CheckoutLinkComponent extends CartComponentMixin(LitElement) {
   static styles = styles;
 
-  protected contentController = new ContentController(this);
+  protected override render(): TemplateResult | void {
+    if (this.isEmpty) return;
 
-  protected cartService = resolve(CartService);
+    const linkOptions = {
+      type: SemanticLinkType.Checkout,
+      loading: this.isBusy,
+      button: true,
+    };
 
-  protected data$ = combineLatest([
-    this.cartService.isEmpty(),
-    this.cartService.isBusy(),
-  ]);
-
-  protected override render(): TemplateResult {
     return html`
-      ${asyncValue(this.data$, ([isEmptyCart, loading]) => {
-        if (isEmptyCart) {
-          return html``;
-        }
-
-        return html`
-          <oryx-content-link
-            .options="${{
-              type: SemanticLinkType.Checkout,
-              disabled: loading,
-              button: true,
-            }}"
-          >
-            Checkout
-          </oryx-content-link>
-        `;
-      })}
+      <oryx-content-link .options=${linkOptions}>
+        ${i18n('cart.checkout')}
+      </oryx-content-link>
     `;
   }
 }
