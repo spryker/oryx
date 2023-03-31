@@ -27,16 +27,6 @@ exports.createMockServer = function createMockServer() {
 
   router.post('/authorize', mapRequestToGet);
   router.post('/token', mapRequestToGet);
-  router.post('/push-token', mapRequestToGet);
-
-  router.get('/picking-orders', (req, res) => {
-    res.send({
-      data: [...db.orders],
-      links: {
-        self: `/picking-orders`,
-      },
-    });
-  });
 
   router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
     const { id } = req.params;

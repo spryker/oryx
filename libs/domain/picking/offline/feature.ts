@@ -6,13 +6,13 @@ import {
   PickingHttpDefaultService,
   PickingHttpService,
   PickingListAdapter,
-  PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
 } from '@spryker-oryx/picking';
 import { OfflineDemoDataPlugin } from './demo-data-plugin';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import {
+  PickingListOfflineAdapter,
   PickingListOnlineAdapter,
   PickingListOnlineDefaultAdapter,
   PickingSyncAction,
@@ -31,7 +31,7 @@ export class OfflinePickingFeature implements AppFeature {
         PickingSyncActionHandlerService
       ),
       { provide: PickingListService, useClass: PickingListDefaultService },
-      { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
+      { provide: PickingListAdapter, useClass: PickingListOfflineAdapter },
       {
         provide: PickingListOnlineAdapter,
         useClass: PickingListOnlineDefaultAdapter,
