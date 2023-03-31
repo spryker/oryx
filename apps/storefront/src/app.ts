@@ -7,20 +7,4 @@ export const app = appBuilder()
   .withFeature(labsFeature)
   .withTheme(b2cTheme)
   .withEnvironment(import.meta.env)
-  .withOptions({
-    'oryx-user-summary': {
-      items: [
-        {
-          link: '/add',
-          title: 'link 1',
-          icon: 'add',
-        },
-        {
-          link: '/trash',
-          title: 'link 2',
-          icon: 'trash',
-        },
-      ],
-    },
-  })
   .create();

@@ -5,7 +5,7 @@ import {
   TokenResourceResolver,
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
-import { UserService } from '@spryker-oryx/user';
+import { UserService } from '..';
 import { map, of } from 'rxjs';
 
 interface UserResolvers {

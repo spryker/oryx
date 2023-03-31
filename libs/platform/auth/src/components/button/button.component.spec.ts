@@ -3,16 +3,11 @@ import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { AuthButtonComponent } from './button.component';
 import { authButtonComponent } from './button.def';
-
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
-  get = vi.fn().mockReturnValue(of('/login'));
-}
 
 class MockAuthService implements Partial<AuthService> {
   logout = vi.fn().mockReturnValue(of(null));
@@ -48,10 +43,6 @@ describe('AuthButtonComponent', () => {
         {
           provide: RouterService,
           useClass: MockRouterService,
-        },
-        {
-          provide: SemanticLinkService,
-          useClass: MockSemanticLinkService,
         },
       ],
     });

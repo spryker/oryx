@@ -8,5 +8,4 @@ export const siteNavigationItemSchema: ContentComponentSchema<SiteNavigationItem
   {
     name: 'Navigation item',
     group: ComponentGroup.Site,
-    options: {},
   };

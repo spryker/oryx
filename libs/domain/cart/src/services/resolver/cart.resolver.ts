@@ -1,4 +1,4 @@
-import { CartService } from '@spryker-oryx/cart';
+import { CartService } from '..';
 import {
   ResolvedToken,
   Resolver,

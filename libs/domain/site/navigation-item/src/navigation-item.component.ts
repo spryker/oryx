@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
-import { TokenResolverService } from '../../../../platform/core/src/services/token-resolver';
+import { TokenResolverService } from '@spryker-oryx/core';
 import {
   NavigationContentBehavior,
   NavigationTriggerType,
@@ -74,14 +74,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         .querySelector('oryx-modal')
         ?.toggleAttribute('open', true);
     }
-    // if (this.eventName) {
-    //   this.dispatchEvent(
-    //     new CustomEvent(this.eventName, {
-    //       bubbles: true,
-    //       composed: true,
-    //     })
-    //   );
-    // }
   }
 
   protected renderComposition(): TemplateResult {
@@ -160,7 +152,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseByEscape
         enableCloseByBackdrop
       >
-        <!-- menuitems -->
         ${this.renderComposition()}
       </oryx-modal>
     `;
@@ -170,31 +161,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-dropdown position="start" vertical-align>
         ${this.renderTrigger()}
-        <!-- menuitems -->
         ${this.renderComposition()}
       </oryx-dropdown>
     `;
   }
-
-  // protected renderMenuItemsList(): TemplateResult {
-  //   if (!this.items?.length) {
-  //     return html``;
-  //   }
-
-  //   return html`
-  //     ${this.items.map(
-  //       (item) => html` <oryx-button type="text">
-  //         <a href=${item.link} close-popover>
-  //           ${when(
-  //             !!item.icon,
-  //             () => html`<oryx-icon .type=${item.icon}></oryx-icon>`
-  //           )}
-  //           ${item.title}
-  //         </a>
-  //       </oryx-button>`
-  //     )}
-  //   `;
-  // }
 
   protected override render(): TemplateResult {
     switch (this.componentOptions?.contentBehavior) {

@@ -1,7 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import {
   asyncState,
   hydratable,
@@ -23,11 +22,6 @@ export class AuthButtonComponent extends ContentMixin<AuthButtonOptions>(
   protected routerService = resolve(RouterService);
 
   @asyncState()
-  protected loginUrl = valueType(
-    resolve(SemanticLinkService).get({ type: SemanticLinkType.Login })
-  );
-
-  @asyncState()
   protected isAuthenticated = valueType(this.authService.isAuthenticated());
 
   protected override render(): TemplateResult | void {
@@ -43,7 +37,7 @@ export class AuthButtonComponent extends ContentMixin<AuthButtonOptions>(
 
   protected onClick(): void {
     if (!this.isAuthenticated) {
-      this.routerService.navigate(this.loginUrl!);
+      this.routerService.navigate('/login');
       return;
     }
 
