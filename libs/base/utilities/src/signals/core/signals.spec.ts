@@ -58,6 +58,149 @@ describe('SignalProducer', () => {
   });
 });
 
+describe('SignalConsumer', () => {
+  let consumer: SignalConsumer;
+  let producer: SignalProducer<number>;
+  let notify: Mock;
+
+  beforeEach(() => {
+    notify = vi.fn();
+    consumer = new SignalConsumer(notify);
+    producer = new SignalProducer<number>();
+  });
+
+  describe('install / uninstall', () => {
+    it('should pick up the producer when revealed between install and uninstall', () => {
+      const notifySpy = vi.spyOn(consumer, 'notify');
+      const testProducer = new SignalProducer<number>();
+
+      consumer.install();
+      testProducer.accessed();
+      consumer.uninstall();
+
+      expect(notifySpy).toHaveBeenCalledTimes(0);
+
+      consumer.start();
+      testProducer.changed();
+      consumer.stop();
+      expect(notifySpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not pick up the producer when revealed outside install and uninstall', () => {
+      const notifySpy = vi.spyOn(consumer, 'notify');
+      const testProducer = new SignalProducer<number>();
+
+      testProducer.accessed();
+
+      consumer.install();
+      consumer.uninstall();
+      testProducer.changed();
+
+      consumer.start();
+      expect(notifySpy).toHaveBeenCalledTimes(0);
+      consumer.stop();
+    });
+  });
+
+  describe('run', () => {
+    it('should call the provided function and return its result', () => {
+      const fn = vi.fn(() => 42);
+      const result = consumer.run(fn);
+
+      expect(result).toBe(42);
+      expect(fn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should properly install and uninstall the consumer around the function call', () => {
+      const installSpy = vi.spyOn(consumer, 'install');
+      const uninstallSpy = vi.spyOn(consumer, 'uninstall');
+
+      consumer.run(() => undefined);
+
+      expect(installSpy).toHaveBeenCalledTimes(1);
+      expect(uninstallSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('reveal', () => {
+    it('should trigger the notify function when the producer changes if connected', () => {
+      consumer.start();
+      consumer.reveal(producer);
+      producer.changed();
+
+      expect(notify).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not trigger the notify function when the producer changes if not connected', () => {
+      consumer.reveal(producer);
+      producer.changed();
+
+      expect(notify).toHaveBeenCalledTimes(0);
+    });
+
+    it('should make the consumer stale when the producer changes if not connected', () => {
+      consumer.reveal(producer);
+      producer.changed();
+
+      expect(consumer.isStale()).toBe(true);
+    });
+  });
+
+  describe('isStale', () => {
+    it('should return true when any version is not equal to the corresponding producer version', () => {
+      consumer.reveal(producer);
+      producer.changed();
+
+      expect(consumer.isStale()).toBe(true);
+    });
+
+    it('should return false when all versions match the corresponding producer versions', () => {
+      consumer.reveal(producer);
+
+      expect(consumer.isStale()).toBe(false);
+    });
+  });
+
+  describe('start / stop', () => {
+    it('should watch all producers when starting and not already connected', () => {
+      const watchSpy = vi.spyOn(producer, 'watch');
+      consumer.reveal(producer);
+      consumer.start();
+
+      expect(consumer.isConnected).toBe(true);
+      expect(watchSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should unwatch all producers when stopping and connected', () => {
+      const unwatchSpy = vi.spyOn(producer, 'unwatch');
+      consumer.reveal(producer);
+      consumer.start();
+      consumer.stop();
+
+      expect(consumer.isConnected).toBe(false);
+      expect(unwatchSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not watch the producers when starting if already connected', () => {
+      const watchSpy = vi.spyOn(producer, 'watch');
+      consumer.reveal(producer);
+      consumer.start();
+      watchSpy.mockClear();
+      consumer.start();
+
+      expect(watchSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should not unwatch the producers when stopping if not connected', () => {
+      const unwatchSpy = vi.spyOn(producer, 'unwatch');
+      consumer.reveal(producer);
+      consumer.stop();
+
+      expect(unwatchSpy).toHaveBeenCalledTimes(0);
+    });
+  });
+});
+
 describe('StateSignal', () => {
   let stateSignal: StateSignal<number>;
 

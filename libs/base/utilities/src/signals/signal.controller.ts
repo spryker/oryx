@@ -1,20 +1,20 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { SignalConsumer } from './core';
 
-const singnalControllerMark = Symbol.for('SignalController');
+const signalControllerMark = Symbol.for('SignalController');
 
 export class SignalController implements ReactiveController {
   protected consumer!: SignalConsumer;
 
   constructor(
     protected host: ReactiveControllerHost & {
-      [singnalControllerMark]?: SignalController;
+      [signalControllerMark]?: SignalController;
     }
   ) {
     // to avoid adding the same controller twice
-    if (this.host[singnalControllerMark]) return;
+    if (this.host[signalControllerMark]) return;
 
-    this.host[singnalControllerMark] = this;
+    this.host[signalControllerMark] = this;
     this.host.addController(this);
     this.consumer = new SignalConsumer(() => this.host.requestUpdate());
   }

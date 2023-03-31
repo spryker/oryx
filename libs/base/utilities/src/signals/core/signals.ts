@@ -49,8 +49,8 @@ export class SignalConsumer {
     currentConsumer = this.prev;
     this.prev = undefined;
 
-    if (this.isConnected) {
-      for (const producer of this.unusedVersions!.keys()) {
+    if (this.isConnected && this.unusedVersions) {
+      for (const producer of this.unusedVersions.keys()) {
         producer.unwatch(this);
       }
       this.unusedVersions = undefined;
@@ -67,7 +67,7 @@ export class SignalConsumer {
 
   reveal(producer: SignalProducer<any>): void {
     if (this.isConnected) {
-      if (!this.unusedVersions!.has(producer) && !this.versions.has(producer)) {
+      if (!this.unusedVersions?.has(producer) && !this.versions.has(producer)) {
         producer.watch(this);
       }
       this.unusedVersions?.delete(producer);
