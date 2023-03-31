@@ -4,7 +4,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
@@ -76,17 +76,27 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     }
   }
 
+  protected override render(): TemplateResult {
+    switch (this.componentOptions?.contentBehavior) {
+      case NavigationContentBehavior.Dropdown:
+        return this.renderContentDropdown();
+      case NavigationContentBehavior.Modal:
+        return this.renderContentModal();
+      case NavigationContentBehavior.Navigation:
+      default:
+        return this.renderContentNavigation();
+    }
+  }
+
   protected renderComposition(): TemplateResult {
     return html`<experience-composition
-      .uid=${this.uid}
+      uid=${ifDefined(this.uid)}
       close-popover
     ></experience-composition>`;
   }
 
-  protected get icon(): TemplateResult {
-    if (!this.componentOptions?.icon) {
-      return html``;
-    }
+  protected get icon(): TemplateResult | void {
+    if (!this.componentOptions?.icon) return;
 
     return html`<oryx-icon .type=${this.componentOptions?.icon}></oryx-icon>`;
   }
@@ -119,10 +129,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-site-navigation-button
         slot="trigger"
-        url=${ifDefined(this.url)}
-        icon=${ifDefined(this.componentOptions?.icon)}
-        text=${this.label}
-        badge=${this.badge}
+        .url=${this.url}
+        .icon=${this.componentOptions?.icon}
+        .text=${this.label}
+        .badge=${this.badge}
         @click=${this.onTriggerClick}
       ></oryx-site-navigation-button>
     `;
@@ -163,17 +173,5 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         ${this.renderTrigger()} ${this.renderComposition()}
       </oryx-dropdown>
     `;
-  }
-
-  protected override render(): TemplateResult {
-    switch (this.componentOptions?.contentBehavior) {
-      case NavigationContentBehavior.Dropdown:
-        return this.renderContentDropdown();
-      case NavigationContentBehavior.Modal:
-        return this.renderContentModal();
-      case NavigationContentBehavior.Navigation:
-      default:
-        return this.renderContentNavigation();
-    }
   }
 }
