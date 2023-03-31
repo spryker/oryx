@@ -11,7 +11,6 @@ import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductMediaOptions } from './media.model';
 
 @defaultOptions({
@@ -61,10 +60,10 @@ export class ProductMediaComponent extends ProductMixin(
 
   protected renderImage(src: string, srcSet?: string): TemplateResult | void {
     return html`<oryx-image
-      src=${src}
-      srcset=${ifDefined(srcSet)}
-      alt=${ifDefined(this.componentOptions?.alt || this.product?.name)}
-      loading=${ifDefined(this.componentOptions?.loading)}
+      .src=${src}
+      .srcset=${srcSet}
+      .alt=${this.componentOptions?.alt || this.product?.name}
+      .loading=${this.componentOptions?.loading}
     ></oryx-image>`;
   }
 

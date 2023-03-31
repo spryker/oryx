@@ -55,6 +55,7 @@ const listLayout = css`
     flex-direction: column;
   }
 
+  :host([layout='list']),
   :host([layout='list']) ::slotted(*) {
     width: 100%;
   }

@@ -46,7 +46,17 @@ export const CheckoutPage: StaticComponent = {
         },
       },
       components: [
-        { type: 'oryx-cart-totals' },
+        {
+          type: 'oryx-cart-totals',
+          components: [
+            { type: 'oryx-cart-totals-subtotal' },
+            { type: 'oryx-cart-totals-discount' },
+            { type: 'oryx-cart-totals-expense' },
+            { type: 'oryx-cart-totals-tax' },
+            { type: 'oryx-cart-totals-delivery' },
+            { type: 'oryx-cart-totals-total' },
+          ],
+        },
         { type: 'checkout-place-order' },
       ],
     },

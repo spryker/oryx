@@ -67,7 +67,7 @@ describe('CurrentCurrencyInterceptor', () => {
       shouldIntercept: false,
     },
     {
-      url: `${SCOS_BASE_URL}/concreete-product/some-product-id`,
+      url: `${SCOS_BASE_URL}/concrete-products/some-product-id`,
       shouldIntercept: true,
     },
     {
