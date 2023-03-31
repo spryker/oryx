@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { combineLatest, map, Observable } from 'rxjs';
-import { CurrencyService, LocaleService } from '..';
+import { CurrencyService } from '../currency';
 import { PriceValue, PricingService } from './pricing.service';
 
 export class DefaultPricingService implements PricingService {

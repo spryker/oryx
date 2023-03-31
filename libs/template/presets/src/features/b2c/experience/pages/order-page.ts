@@ -16,8 +16,15 @@ export const OrderPage: StaticComponent = {
       components: [
         { type: 'oryx-order-entries' },
         {
-          type: 'oryx-order-totals',
-          options: { data: { rules: [{ maxWidth: true }] } },
+          type: 'oryx-cart-totals',
+          components: [
+            { type: 'oryx-cart-totals-subtotal' },
+            { type: 'oryx-cart-totals-discount' },
+            { type: 'oryx-cart-totals-expense' },
+            { type: 'oryx-cart-totals-tax' },
+            { type: 'oryx-cart-totals-delivery' },
+            { type: 'oryx-cart-totals-total' },
+          ],
         },
       ],
     },

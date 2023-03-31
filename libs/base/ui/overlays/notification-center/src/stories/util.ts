@@ -1,6 +1,5 @@
 import { AlertType } from '@spryker-oryx/ui';
-import { Schemes } from '@spryker-oryx/ui/notification';
-import { NotificationStrategy } from '../index';
+import { Notification, Scheme } from '@spryker-oryx/ui/notification';
 import { TAG_NAME } from '../tag';
 
 const types = [
@@ -9,15 +8,15 @@ const types = [
   AlertType.Warning,
   AlertType.Error,
 ];
-const schemes = Object.values(Schemes);
+const schemes = [Scheme.Light, Scheme.Dark];
 
 const getRandomIndex = (limit: number): number =>
   Math.ceil(Math.random() * limit);
 const getRandom = (): boolean => !!Math.round(Math.random());
 
 export const generateNotification = (
-  strategy: NotificationStrategy = {}
-): NotificationStrategy => {
+  strategy: Notification = {}
+): Notification => {
   return {
     type: AlertType.Info,
     content: 'Title',
@@ -27,20 +26,24 @@ export const generateNotification = (
   };
 };
 
-export const generateRandomNotification = (
-  demoType?: AlertType,
-  demoScheme?: Schemes
-): NotificationStrategy => {
-  const type = demoType ?? types[getRandomIndex(types.length)];
-  const scheme = demoScheme ?? schemes[getRandomIndex(schemes.length)];
+export const generateRandomNotification = (options: {
+  type?: AlertType;
+  scheme?: Scheme;
+  closable?: boolean;
+  autoClose?: boolean;
+  defaultAutoCloseTime?: number;
+}): Notification => {
+  const type = options.type ?? types[getRandomIndex(types.length)];
+  const scheme = options.scheme ?? schemes[getRandomIndex(schemes.length)];
 
   return {
     ...(type ? { type } : {}),
     ...(scheme ? { scheme } : {}),
     ...(getRandom() ? { subtext: 'Sub text' } : {}),
-    closable: getRandom(),
+    closable: options.closable,
     content: type ? 'Title' : 'Custom content',
-    autoClose: false,
+    autoClose: options.autoClose,
+    autoCloseTime: (options.defaultAutoCloseTime ?? 1) * 1000,
   };
 };
 

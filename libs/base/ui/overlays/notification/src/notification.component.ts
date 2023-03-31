@@ -1,29 +1,30 @@
 import { AlertType, Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { CLOSE_EVENT, Schemes } from './notification.model';
+import {
+  CLOSE_EVENT,
+  NotificationComponentAttributes,
+  NotificationEvent,
+  Scheme,
+} from './notification.model';
 import { notificationStyles } from './notification.styles';
 
-export class NotificationComponent extends LitElement {
+export class NotificationComponent
+  extends LitElement
+  implements NotificationComponentAttributes
+{
   static styles = [notificationStyles];
 
+  @property() key?: string;
   @property({ type: String, reflect: true }) type = AlertType.Info;
   @property({ type: Boolean }) closable = false;
   @property({ type: Boolean }) floating = false;
-  @property({ type: String, reflect: true }) scheme?: Schemes;
+  @property({ type: String, reflect: true }) scheme?: Scheme;
   @property() subtext?: string;
+  @property({ type: Boolean }) visible = true;
 
   //translation
   @property() closeButtonAriaLabel = 'close the notification';
-
-  protected dispatchCloseEvent(): void {
-    this.dispatchEvent(
-      new CustomEvent(CLOSE_EVENT, {
-        composed: true,
-        bubbles: true,
-      })
-    );
-  }
 
   protected override render(): TemplateResult {
     return html`
@@ -44,12 +45,19 @@ export class NotificationComponent extends LitElement {
     if (!this.closable) return;
 
     return html`<oryx-icon-button size=${Size.Sm}>
-      <button
-        aria-label=${this.closeButtonAriaLabel}
-        @click="${this.dispatchCloseEvent}"
-      >
+      <button aria-label=${this.closeButtonAriaLabel} @click=${this.onClose}>
         <oryx-icon type="close"></oryx-icon>
       </button>
     </oryx-icon-button>`;
+  }
+
+  protected onClose(): void {
+    this.dispatchEvent(
+      new CustomEvent<NotificationEvent>(CLOSE_EVENT, {
+        detail: { key: this.key },
+        composed: true,
+        bubbles: true,
+      })
+    );
   }
 }

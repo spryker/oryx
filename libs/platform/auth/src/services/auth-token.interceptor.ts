@@ -40,15 +40,11 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       return options;
     }
 
-    options = {
-      ...options,
-      headers: {
-        ...options.headers,
-        [this.headerName]: `Bearer ${token.token}`,
-      } as HeadersInit,
-    };
+    const headers = new Headers(options.headers);
 
-    return options;
+    headers.set(this.headerName, `Bearer ${token.token}`);
+
+    return { ...options, headers };
   }
 }
 

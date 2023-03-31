@@ -8,8 +8,8 @@ export const mockPickingListData: PickingList[] = [
   {
     id: 'withCartNote',
     status: PickingListStatus.ReadyForPicking,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-03-01'),
+    updatedAt: new Date('2023-03-01'),
     cartNote: 'Mock cart note',
     items: [
       {
@@ -38,8 +38,8 @@ export const mockPickingListData: PickingList[] = [
   {
     id: 'withoutCartNote',
     status: PickingListStatus.ReadyForPicking,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-03-01'),
+    updatedAt: new Date('2023-03-01'),
     items: [],
   },
 ];

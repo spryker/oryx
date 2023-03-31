@@ -5,11 +5,11 @@ import {
   HttpInterceptor,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
-import { LocaleService } from './locale.service';
 
 vi.mock('rxjs/fetch', () => ({
   fromFetch: vi.fn(),
@@ -97,7 +97,7 @@ describe('AcceptLanguageInterceptor', () => {
       expect(fromFetch).toHaveBeenCalledWith(
         testCase.url,
         testCase.shouldIntercept
-          ? { headers: { 'Accept-Language': locale } }
+          ? { headers: new Headers({ 'Accept-Language': locale }) }
           : options
       );
     });

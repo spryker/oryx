@@ -26,13 +26,10 @@ export class ProductDetailsPage extends AbstractSFPage {
   }
 
   hydrateAddToCart = () => {
-    cy.intercept(`**/concrete-products/${this.productId}?*`).as(
-      'productRequest'
-    );
-
     this.getQuantityComponent().getInput().click();
-
-    cy.wait('@productRequest');
+    // the only way to check for hydration now
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(2000);
   };
 
   getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');
