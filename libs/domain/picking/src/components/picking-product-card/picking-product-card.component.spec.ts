@@ -114,8 +114,6 @@ describe('PickingProductCardComponent', () => {
           `
         );
 
-        element.addEventListener('oryx.submit', spy);
-
         const button = element.shadowRoot?.querySelector(
           'oryx-button button'
         ) as HTMLButtonElement;
@@ -141,8 +139,6 @@ describe('PickingProductCardComponent', () => {
           `
         );
 
-        element.addEventListener('oryx.edit', spy);
-
         const button = element.shadowRoot?.querySelector(
           'oryx-button button'
         ) as HTMLButtonElement;
@@ -165,7 +161,7 @@ describe('PickingProductCardComponent', () => {
         );
       });
 
-      it('should not render form quantity input', async () => {
+      it('should not render form quantity input', () => {
         expect(element).not.toContainElement('oryx-cart-quantity-input');
       });
     });
