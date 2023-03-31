@@ -3,7 +3,7 @@ import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators';
+import { state } from 'lit/decorators.js';
 import { catchError, of, tap } from 'rxjs';
 import { styles } from './customer-note.styles';
 
