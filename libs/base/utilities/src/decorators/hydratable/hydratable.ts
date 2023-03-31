@@ -5,6 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
+import { Effect, effect, SignalController } from '../../signals';
 import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
@@ -12,6 +13,7 @@ const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
+const SIGNAL_META = Symbol('signalMeta');
 
 interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
@@ -63,21 +65,44 @@ function hydratableClass<T extends Type<HTMLElement>>(
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
+    private [SIGNAL_META]!: {
+      effectRuns: number;
+      renderRuns: number;
+      effect?: Effect;
+    };
+
     static properties = {
       useRealRender: { type: Boolean, state: true },
     };
 
     constructor(...args: any[]) {
       super(...args);
+      new SignalController(this as any);
+
       this.hasSsr = !isServer && !!this.shadowRoot;
       this.useRealRender = true;
 
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
+
+        this[SIGNAL_META] = {
+          effectRuns: 0,
+          renderRuns: 0,
+        };
       }
 
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
+      }
+    }
+
+    willUpdate(_changedProperties: PropertyValues): void {
+      super.willUpdate(_changedProperties);
+      if (isServer) {
+        this[SIGNAL_META].effect = effect(() => {
+          this[SIGNAL_META].effectRuns++;
+          this.render();
+        });
       }
     }
 
@@ -124,6 +149,13 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     render(): TemplateResult {
+      if (isServer) {
+        this[SIGNAL_META].renderRuns++;
+        if (this[SIGNAL_META].renderRuns > this[SIGNAL_META].effectRuns) {
+          this[SIGNAL_META].effect?.stop();
+        }
+      }
+
       const states = this[asyncStates];
 
       setTimeout(() => {
