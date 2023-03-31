@@ -47,7 +47,11 @@ jobs:
         run: npm config set @spryker-oryx:registry http://localhost:4873
       - name: Release from packages
         run: npm run release-from-packages
-      -
-#      - name: Release Error Log
-#        if: failure()
-#        run: cat libs/lerna-debug.log
+      - name: Install dependencies
+        run: cd apps/testfront && npm i && cd ../..
+      - name: Run testfront
+        run: npm run tesfront
+      - name: Wait a bit
+        run: wait 10
+      - name: Run e2e
+        run: npm run release-test:e2e

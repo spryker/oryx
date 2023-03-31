@@ -1,0 +1,15 @@
+{
+  "name": "fes-storefront",
+  "type": "module",
+  "scripts": {
+    "dev": "vite -c vite.config.ts",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@spryker-oryx/presets": "latest"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "vite-plugin-static-copy": "^0.13.0"
+  }
+}
