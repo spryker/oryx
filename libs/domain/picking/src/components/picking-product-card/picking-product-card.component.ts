@@ -100,8 +100,8 @@ export class PickingProductCardComponent extends LitElement {
 
     return html`
       <oryx-card>
-        <oryx-heading slot="heading"
-          >${this.productItem.orderItem.name}
+        <oryx-heading slot="heading">
+          ${this.productItem.orderItem.name}
         </oryx-heading>
         <oryx-heading>
           <h4>${this.productItem.orderItem.sku}</h4>

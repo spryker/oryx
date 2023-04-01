@@ -14,3 +14,8 @@ export interface ProductPriceOptions {
    */
   enableSalesLabel?: boolean;
 }
+
+export interface Prices {
+  original?: string | null;
+  sales?: string | null;
+}
