@@ -8,7 +8,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydratable, hydrationRerender } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ProductMediaOptions } from './media.model';
@@ -29,7 +29,8 @@ export class ProductMediaComponent extends ProductMixin(
   willUpdate(changedProperties: PropertyValues): void {
     if (
       changedProperties.has('product') ||
-      changedProperties.has('componentOptions')
+      changedProperties.has('componentOptions') ||
+      changedProperties.has(hydrationRerender)
     ) {
       const { mediaIndex = 0, containerSize } = this.componentOptions;
       const productMedia = this.getMediaSet()?.media[mediaIndex];
@@ -43,13 +44,16 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.sources?.[0]?.url) return this.renderImage('');
+    const src = this.sources?.[0]?.url;
+    console.log(this.product, src, 'srcsrcsrcsrcsrc');
+    if (!src) return this.renderImage('');
 
-    if (this.isVideo(this.sources[0]?.url)) {
-      return this.renderVideo(this.sources[0]?.url);
+    if (this.isVideo(src)) {
+      return this.renderVideo(src);
     }
 
-    return this.renderImage(this.sources[0]?.url, this.getSrcSet(this.sources));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.renderImage(src, this.getSrcSet(this.sources!));
   }
 
   protected isVideo(url: string): boolean {
@@ -68,7 +72,7 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected renderVideo(src: string): TemplateResult | void {
-    return html`<oryx-video url=${src}></oryx-video>`;
+    return html`<oryx-video .url=${src}></oryx-video>`;
   }
 
   /**

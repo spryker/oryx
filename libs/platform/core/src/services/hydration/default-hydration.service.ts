@@ -1,5 +1,6 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import {
+  deferHydrationAttribute,
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
@@ -10,42 +11,6 @@ import { Subscription } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
-
-const treewalk = (rootNode = document.body as HTMLElement): HTMLElement[] => {
-  const arr: HTMLElement[] = [];
-
-  const traverser = (node: HTMLElement): void => {
-    // 1. decline all nodes that are not elements
-    if (node.nodeType !== Node.ELEMENT_NODE) {
-      return;
-    }
-
-    // 3. loop through the children
-    const children = node.children as unknown as HTMLElement[];
-    if (children.length) {
-      for (const child of children) {
-        traverser(child);
-      }
-    }
-
-    // 4. check for shadow DOM, and loop through it's children
-    const shadowRoot = node.shadowRoot;
-    if (shadowRoot) {
-      if (!node.matches(rootNode.tagName.toLowerCase())) {
-        arr.unshift(node);
-      }
-
-      const shadowChildren = shadowRoot.children as unknown as HTMLElement[];
-      for (const shadowChild of shadowChildren) {
-        traverser(shadowChild);
-      }
-    }
-  };
-
-  traverser(rootNode);
-
-  return arr;
-};
 
 export class DefaultHydrationService implements HydrationService {
   protected subscription = new Subscription();
@@ -98,11 +63,15 @@ export class DefaultHydrationService implements HydrationService {
         }
 
         target.addEventListener(mode, async () => {
-          const test = treewalk(el);
-          const promises = test.map((eee) => this.hydrateOnDemand(eee));
+          const childs = this.treewalk(
+            `[${deferHydrationAttribute}]`,
+            el,
+            false
+          );
+          const promises = childs.map((childEl) =>
+            this.hydrateOnDemand(childEl)
+          );
           await Promise.all(promises);
-          console.log(promises, 'SHOULD RESOLVE', test);
-
           this.hydrateOnDemand(el);
         });
       }
@@ -121,11 +90,11 @@ export class DefaultHydrationService implements HydrationService {
     }
 
     if (!customElements.get(element.localName)) {
-      console.log('weh ere', element.localName);
+      // console.log('weh ere', element.localName);
       await this.componentsPlugin?.loadComponent(element.localName);
       customElements.upgrade(element);
     }
-    console.log('oh no', element.localName);
+    // console.log('oh no', element.localName);
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
   }
@@ -136,41 +105,36 @@ export class DefaultHydrationService implements HydrationService {
 
   protected treewalk(
     selector: string,
-    rootNode = document.body as HTMLElement
+    rootNode = document.body,
+    includeRoot = true
   ): HTMLElement[] {
-    const arr: HTMLElement[] = [];
+    const nodes: Element[] = [rootNode];
+    const elements: HTMLElement[] = [];
 
-    const traverser = (node: HTMLElement): void => {
-      // 1. decline all nodes that are not elements
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+
       if (node.nodeType !== Node.ELEMENT_NODE) {
-        return;
+        continue;
       }
 
-      // 2. add the node to the array, if it matches the selector
+      if (node.children.length) {
+        nodes.push(...node.children);
+      }
+
+      if (node.shadowRoot?.children.length) {
+        nodes.push(...node.shadowRoot.children);
+      }
+
       if (node.matches(selector)) {
-        arr.push(node);
-      }
-
-      // 3. loop through the children
-      const children = node.children as unknown as HTMLElement[];
-      if (children.length) {
-        for (const child of children) {
-          traverser(child);
+        if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
+          continue;
         }
+
+        elements.push(node as HTMLElement);
       }
+    }
 
-      // 4. check for shadow DOM, and loop through it's children
-      const shadowRoot = node.shadowRoot;
-      if (shadowRoot) {
-        const shadowChildren = shadowRoot.children as unknown as HTMLElement[];
-        for (const shadowChild of shadowChildren) {
-          traverser(shadowChild);
-        }
-      }
-    };
-
-    traverser(rootNode);
-
-    return arr;
+    return elements;
   }
 }

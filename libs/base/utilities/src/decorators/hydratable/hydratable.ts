@@ -12,6 +12,8 @@ const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
+export const deferHydrationAttribute = 'defer-hydration';
+export const hydrationRerender = Symbol('hydrationRerender');
 
 interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
@@ -59,18 +61,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
   mode?: string | string[]
 ): any {
   return class extends (target as any) {
+    static properties = {
+      [hydrationRerender]: { type: Boolean, state: true },
+    };
+
     [DEFER_HYDRATION] = false;
+    [hydrationRerender] = true;
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
-
-    static properties = {
-      useRealRender: { type: Boolean, state: true },
-    };
 
     constructor(...args: any[]) {
       super(...args);
       this.hasSsr = !isServer && !!this.shadowRoot;
-      this.useRealRender = true;
 
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
@@ -119,7 +121,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       }
 
       this[DEFER_HYDRATION] = false;
-      this.removeAttribute('defer-hydration');
+      this.removeAttribute(deferHydrationAttribute);
       prototype.connectedCallback.call(this);
     }
 
@@ -127,18 +129,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
       const states = this[asyncStates];
 
       setTimeout(() => {
-        if (!this.useRealRender) this.useRealRender = true;
+        if (!this[hydrationRerender]) this[hydrationRerender] = true;
       }, 0);
 
       if (this.hasSsr && states) {
         return html`${whenState(
-          Object.values(states).every(Boolean) && this.useRealRender,
+          Object.values(states).every(Boolean) && this[hydrationRerender],
           () => super.render()
         )}`;
       }
 
       return this.hasSsr || isServer
-        ? html`${whenState(this.useRealRender, () => super.render())}`
+        ? html`${whenState(this[hydrationRerender], () => super.render())}`
         : super.render();
     }
   };

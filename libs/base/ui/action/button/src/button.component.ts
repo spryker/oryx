@@ -19,7 +19,6 @@ export class ButtonComponent
   @property({ type: Boolean, reflect: true }) outline?: boolean;
 
   protected override render(): TemplateResult {
-    console.log('render BUTTON');
     return html`<slot ?inert=${this.loading}></slot>`;
   }
 }

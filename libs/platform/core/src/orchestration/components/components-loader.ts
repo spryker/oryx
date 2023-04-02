@@ -98,6 +98,7 @@ export class ComponentsLoader {
     }
 
     this.useComponent(name, true);
+    await customElements.whenDefined(name);
 
     return extendedClass;
   }
