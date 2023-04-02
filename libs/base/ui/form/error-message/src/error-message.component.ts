@@ -1,7 +1,9 @@
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { errorStyles } from './error-message.styles';
 
+@hydratable()
 export class ErrorMessageComponent extends LitElement {
   static styles = [errorStyles];
 

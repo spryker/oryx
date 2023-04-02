@@ -5,11 +5,47 @@ import {
   HYDRATE_ON_DEMAND,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { isServer, LitElement } from 'lit';
 import { Subscription } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
+
+const treewalk = (rootNode = document.body as HTMLElement): HTMLElement[] => {
+  const arr: HTMLElement[] = [];
+
+  const traverser = (node: HTMLElement): void => {
+    // 1. decline all nodes that are not elements
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+
+    // 3. loop through the children
+    const children = node.children as unknown as HTMLElement[];
+    if (children.length) {
+      for (const child of children) {
+        traverser(child);
+      }
+    }
+
+    // 4. check for shadow DOM, and loop through it's children
+    const shadowRoot = node.shadowRoot;
+    if (shadowRoot) {
+      if (!node.matches(rootNode.tagName.toLowerCase())) {
+        arr.unshift(node);
+      }
+
+      const shadowChildren = shadowRoot.children as unknown as HTMLElement[];
+      for (const shadowChild of shadowChildren) {
+        traverser(shadowChild);
+      }
+    }
+  };
+
+  traverser(rootNode);
+
+  return arr;
+};
 
 export class DefaultHydrationService implements HydrationService {
   protected subscription = new Subscription();
@@ -25,7 +61,7 @@ export class DefaultHydrationService implements HydrationService {
   protected initialize(): void {
     const initializers = this.injector.inject(HydrationTrigger, null);
 
-    if (!initializers) {
+    if (!initializers || isServer) {
       return;
     }
 
@@ -61,7 +97,14 @@ export class DefaultHydrationService implements HydrationService {
           target = parts[0] === 'window' ? window : el;
         }
 
-        target.addEventListener(mode, () => this.hydrateOnDemand(el));
+        target.addEventListener(mode, async () => {
+          const test = treewalk(el);
+          const promises = test.map((eee) => this.hydrateOnDemand(eee));
+          await Promise.all(promises);
+          console.log(promises, 'SHOULD RESOLVE', test);
+
+          this.hydrateOnDemand(el);
+        });
       }
     });
 
@@ -78,9 +121,11 @@ export class DefaultHydrationService implements HydrationService {
     }
 
     if (!customElements.get(element.localName)) {
+      console.log('weh ere', element.localName);
       await this.componentsPlugin?.loadComponent(element.localName);
       customElements.upgrade(element);
     }
+    console.log('oh no', element.localName);
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
   }

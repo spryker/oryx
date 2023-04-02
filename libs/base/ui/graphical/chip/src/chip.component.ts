@@ -1,9 +1,11 @@
 import { AlertType } from '@spryker-oryx/ui';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ChipAttributes } from './chip.model';
 import { chipBaseStyle } from './chip.styles';
 
+hydratable();
 export class ChipComponent extends LitElement implements ChipAttributes {
   static styles = chipBaseStyle;
 

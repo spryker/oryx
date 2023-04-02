@@ -84,7 +84,16 @@ export class AsyncStateController implements ReactiveController {
 
       if (oldValue !== value) {
         data.value = value;
-        this.host.requestUpdate(key, oldValue);
+
+        if (!isServer) {
+          customElements
+            .whenDefined(this.host.tagName.toLowerCase())
+            .then(() => {
+              this.host.requestUpdate(key, oldValue);
+            });
+        } else {
+          this.host.requestUpdate(key, oldValue);
+        }
       }
     });
   }

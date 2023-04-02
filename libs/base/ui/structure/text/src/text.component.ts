@@ -10,7 +10,7 @@ import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable()
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
