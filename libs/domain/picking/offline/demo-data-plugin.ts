@@ -188,35 +188,40 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
         id: 'product-1',
         sku: 'sku-1',
         productName: 'Mock product #1',
-        image: null,
+        image:
+          'https://images.icecat.biz/img/gallery_mediums/27290499_3126.jpg',
         imageLarge: null,
       },
       {
         id: 'product-2',
         sku: 'sku-2',
         productName: 'Mock product #2',
-        image: null,
+        image:
+          'https://images.icecat.biz/img/gallery_mediums/img_26516355_medium_1480608118_2679_31221.jpg',
         imageLarge: null,
       },
       {
         id: 'product-3',
         sku: 'sku-3',
         productName: 'Mock product #3',
-        image: null,
+        image:
+          'https://images.icecat.biz/img/gallery_mediums/29658415_0865.jpg',
         imageLarge: null,
       },
       {
         id: 'product-4',
         sku: 'sku-4',
         productName: 'Mock product #4',
-        image: null,
+        image:
+          'https://images.icecat.biz/img/gallery_mediums/29911081_1039.jpg',
         imageLarge: null,
       },
       {
         id: 'product-5',
         sku: 'sku-5',
         productName: 'Mock product #5',
-        image: null,
+        image:
+          'https://q-techno.com.ua/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/7/c712853fa438b0f176360220488b0011.jpg',
         imageLarge: null,
       },
     ];
