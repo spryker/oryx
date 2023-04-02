@@ -13,7 +13,7 @@ import {
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
 
-@hydratable('window:load')
+@hydratable()
 export class NotificationCenterComponent
   extends LitElement
   implements NotificationCenterComponentAttributes

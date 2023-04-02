@@ -6,7 +6,7 @@ import {
   HYDRATE_ON_DEMAND,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { isServer, LitElement } from 'lit';
+import { LitElement } from 'lit';
 import { Subscription } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { ComponentsPlugin } from '../../orchestration/components';
@@ -26,7 +26,7 @@ export class DefaultHydrationService implements HydrationService {
   protected initialize(): void {
     const initializers = this.injector.inject(HydrationTrigger, null);
 
-    if (!initializers || isServer) {
+    if (!initializers) {
       return;
     }
 
@@ -90,11 +90,9 @@ export class DefaultHydrationService implements HydrationService {
     }
 
     if (!customElements.get(element.localName)) {
-      // console.log('weh ere', element.localName);
       await this.componentsPlugin?.loadComponent(element.localName);
       customElements.upgrade(element);
     }
-    // console.log('oh no', element.localName);
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
   }

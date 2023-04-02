@@ -8,7 +8,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { hydratable, hydrationRerender } from '@spryker-oryx/utilities';
+import { hydratable, hydrationRender } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ProductMediaOptions } from './media.model';
@@ -30,7 +30,7 @@ export class ProductMediaComponent extends ProductMixin(
     if (
       changedProperties.has('product') ||
       changedProperties.has('componentOptions') ||
-      changedProperties.has(hydrationRerender)
+      changedProperties.has(hydrationRender)
     ) {
       const { mediaIndex = 0, containerSize } = this.componentOptions;
       const productMedia = this.getMediaSet()?.media[mediaIndex];
@@ -45,7 +45,7 @@ export class ProductMediaComponent extends ProductMixin(
 
   protected override render(): TemplateResult | void {
     const src = this.sources?.[0]?.url;
-    console.log(this.product, src, 'srcsrcsrcsrcsrc');
+
     if (!src) return this.renderImage('');
 
     if (this.isVideo(src)) {

@@ -13,7 +13,7 @@ export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
-export const hydrationRerender = Symbol('hydrationRerender');
+export const hydrationRender = Symbol('hydrationRender');
 
 interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
@@ -62,11 +62,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
 ): any {
   return class extends (target as any) {
     static properties = {
-      [hydrationRerender]: { type: Boolean, state: true },
+      [hydrationRender]: { type: Boolean, state: true },
     };
 
     [DEFER_HYDRATION] = false;
-    [hydrationRerender] = true;
+    [hydrationRender] = true;
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
@@ -129,18 +129,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
       const states = this[asyncStates];
 
       setTimeout(() => {
-        if (!this[hydrationRerender]) this[hydrationRerender] = true;
+        if (!this[hydrationRender]) this[hydrationRender] = true;
       }, 0);
 
       if (this.hasSsr && states) {
         return html`${whenState(
-          Object.values(states).every(Boolean) && this[hydrationRerender],
+          Object.values(states).every(Boolean) && this[hydrationRender],
           () => super.render()
         )}`;
       }
 
       return this.hasSsr || isServer
-        ? html`${whenState(this[hydrationRerender], () => super.render())}`
+        ? html`${whenState(this[hydrationRender], () => super.render())}`
         : super.render();
     }
   };
