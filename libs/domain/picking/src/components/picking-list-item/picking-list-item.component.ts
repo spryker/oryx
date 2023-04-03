@@ -74,7 +74,7 @@ export class PickingListItemComponent
                 >
               `
           )}
-          <h4 class="identifier">${this.pickingList.id}</h4>
+          <h6 class="identifier">${this.pickingList.id}</h6>
         </oryx-heading>
 
         <div class="total">
