@@ -30,8 +30,12 @@ export class TextComponent extends LitElement implements TextProperties {
   protected resizeObserver?: ResizeObserver;
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    if (changedProperties.has('truncateAfter') && this.truncateAfter) {
-      this.style.setProperty('--line-clamp', String(this.truncateAfter));
+    if (changedProperties.has('truncateAfter')) {
+      if (this.truncateAfter) {
+        this.style.setProperty('--line-clamp', String(this.truncateAfter));
+      } else {
+        this.style.removeProperty('--line-clamp');
+      }
     }
 
     super.willUpdate(changedProperties);
