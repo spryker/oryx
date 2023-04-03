@@ -11,7 +11,7 @@ export const iconButtonStyles = css`
 
   ::slotted(*:first-child) {
     cursor: pointer;
-    background: transparent;
+    background: var(--oryx-color-canvas-100);
     border: solid transparent 1px;
     border-radius: 50%;
     outline: none;

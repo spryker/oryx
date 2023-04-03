@@ -111,9 +111,4 @@ export const cartEntryStyles = css`
   .actions oryx-icon-button span {
     display: var(--oryx-screen-small-inline, none);
   }
-
-  /* TODO: consider moving this out as a generic rule */
-  *:not(:defined) {
-    display: none;
-  }
 `;

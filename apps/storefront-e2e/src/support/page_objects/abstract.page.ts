@@ -20,7 +20,7 @@ export abstract class AbstractSFPage {
 
   /**
    * Method should contain a check that will be TRUE
-   * when concrete page was successfully renderred in SPA mode
+   * when concrete page was successfully rendered in SPA mode
    *
    * It might be a simple element.should('be.visible') check
    * or something more complicated, like API requests interception
@@ -30,7 +30,7 @@ export abstract class AbstractSFPage {
 
   /**
    * Method should contain a check that will be TRUE
-   * when concrete page was successfully renderred in SSR mode
+   * when concrete page was successfully rendered in SSR mode
    *
    * It might be a simple element.should('be.visible') check
    * or something more complicated, like API requests interception

@@ -33,7 +33,7 @@ export class SearchFragment {
     this.getTypeahead().should('not.have.attr', 'defer-hydration');
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    this.getInput().type(text, { delay: 100, force: true });
+    this.getInput().type(text, { delay: 10, force: true });
 
     cy.wait('@searchQuery');
   };
