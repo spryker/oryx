@@ -9,8 +9,7 @@ import {
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
+import { html, LitElement, TemplateResult } from 'lit';
 import { ProductMediaOptions } from './media.model';
 
 @defaultOptions({
@@ -23,39 +22,21 @@ export class ProductMediaComponent extends ProductMixin(
 ) {
   protected imageService = resolve(ProductImageService);
 
-  @state()
-  protected sources?: ImageSource[];
-
-  willUpdate(changedProperties: PropertyValues): void {
-    if (
-      changedProperties.has('product') ||
-      changedProperties.has('componentOptions')
-    ) {
-      const { mediaIndex = 0, containerSize } = this.componentOptions;
-      const productMedia = this.getMediaSet()?.media[mediaIndex];
-      this.sources = this.imageService.resolveSources(
-        productMedia,
-        containerSize
-      );
-    }
-
-    super.willUpdate(changedProperties);
-  }
-
   protected override render(): TemplateResult | void {
-    if (!this.sources?.[0]?.url) return this.renderImage('');
+    const { mediaIndex = 0, containerSize } = this.$options();
+    const sources = this.imageService.resolveSources(
+      this.getMediaSet()?.media[mediaIndex],
+      containerSize
+    );
 
-    if (this.isVideo(this.sources[0]?.url)) {
-      return this.renderVideo(this.sources[0]?.url);
+    const url = sources?.[0]?.url;
+    if (!url) return this.renderImage('');
+
+    if (this.isVideo(url)) {
+      return html`<oryx-video url=${url}></oryx-video>`;
+    } else {
+      return this.renderImage(url, this.getSrcSet(sources));
     }
-
-    return this.renderImage(this.sources[0]?.url, this.getSrcSet(this.sources));
-  }
-
-  protected isVideo(url: string): boolean {
-    const videoRegex =
-      /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|vimeo\.com\/|(?:https?:\/\/.*\.(?:mp4|avi|mov|wmv|flv|webm)))/;
-    return videoRegex.test(url);
   }
 
   protected renderImage(src: string, srcSet?: string): TemplateResult | void {
@@ -67,21 +48,17 @@ export class ProductMediaComponent extends ProductMixin(
     ></oryx-image>`;
   }
 
-  protected renderVideo(src: string): TemplateResult | void {
-    return html`<oryx-video url=${src}></oryx-video>`;
-  }
-
   /**
    * Resolves the media set. When there's no mediaSet index provided, the first
    * media set is returned.
    */
   protected getMediaSet(): ProductMediaSet | undefined {
-    if (this.componentOptions?.mediaSet) {
-      return this.product?.mediaSet?.find(
-        (set) => set.name === this.componentOptions?.mediaSet
-      );
+    const { mediaSet } = this.$options();
+    const medias = this.$product()?.mediaSet;
+    if (mediaSet) {
+      return medias?.find((set) => set.name === mediaSet);
     } else {
-      return this.product?.mediaSet?.[0];
+      return medias?.[0];
     }
   }
 
@@ -104,5 +81,11 @@ export class ProductMediaComponent extends ProductMixin(
         .filter((s) => s)
         .join(',') || undefined
     );
+  }
+
+  protected isVideo(url: string): boolean {
+    const videoRegex =
+      /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|vimeo\.com\/|(?:https?:\/\/.*\.(?:mp4|avi|mov|wmv|flv|webm)))/;
+    return videoRegex.test(url);
   }
 }
