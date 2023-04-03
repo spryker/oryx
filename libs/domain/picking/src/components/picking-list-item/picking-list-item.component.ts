@@ -5,11 +5,15 @@ import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncValue, i18n } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  asyncValue,
+  i18n,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of, tap } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -19,9 +23,16 @@ export class PickingListItemComponent
 {
   static styles = styles;
 
-  // TODO: refactor this variable when start picking logic will be implemented (loading state should be the service area of responsibility)
-  @state()
-  protected startPickingLoading?: boolean;
+  protected isStartPickingLoading$ = this.pickingList$.pipe(
+    switchMap((pickingList) =>
+      pickingList
+        ? this.pickingListService.isStartPickingLoading(pickingList.id)
+        : of(false)
+    )
+  );
+
+  @asyncState()
+  protected isStartPickingLoading = valueType(this.isStartPickingLoading$);
 
   protected routerService = resolve(RouterService);
   protected localeService = resolve(LocaleService);
@@ -32,20 +43,13 @@ export class PickingListItemComponent
       return;
     }
 
-    this.startPickingLoading = true;
-
     this.pickingListService
       .startPicking(this.pickingList)
       .pipe(
         tap(() => {
-          this.startPickingLoading = false;
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
           );
-        }),
-        catchError(() => {
-          this.startPickingLoading = false;
-          return of(null);
         })
       )
       .subscribe();
@@ -108,7 +112,7 @@ export class PickingListItemComponent
           slot="footer"
           type=${ButtonType.Primary}
           size=${Size.Lg}
-          ?loading=${this.startPickingLoading}
+          ?loading=${this.isStartPickingLoading}
         >
           <button @click=${this.startPicking}>
             ${i18n('picking.picking-list-item.start-picking')}

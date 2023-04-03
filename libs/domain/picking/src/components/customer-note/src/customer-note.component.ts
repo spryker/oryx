@@ -1,10 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
-import { catchError, of, tap } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { styles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
@@ -12,8 +11,16 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
-  @state()
-  protected startPickingLoading?: boolean;
+  protected isStartPickingLoading$ = this.pickingList$.pipe(
+    switchMap((pickingList) =>
+      pickingList
+        ? this.pickingListService.isStartPickingLoading(pickingList.id)
+        : of(false)
+    )
+  );
+
+  @asyncState()
+  protected isStartPickingLoading = valueType(this.isStartPickingLoading$);
 
   protected onProceed(): void {
     //TODO: provide more complex validation
@@ -21,21 +28,14 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
       return;
     }
 
-    this.startPickingLoading = true;
-
     this.pickingListService
       .startPicking(this.pickingList)
       .pipe(
-        tap(() => {
-          this.startPickingLoading = false;
+        tap(() =>
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
-          );
-        }),
-        catchError(() => {
-          this.startPickingLoading = false;
-          return of(null);
-        })
+          )
+        )
       )
       .subscribe();
   }
@@ -52,7 +52,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
       <p>${this.pickingList?.cartNote}</p>
 
-      <oryx-button ?loading=${this.startPickingLoading}>
+      <oryx-button ?loading=${this.isStartPickingLoading}>
         <button @click=${this.onProceed}>
           ${i18n('picking.proceed-to-picking')}
         </button>

@@ -1,5 +1,13 @@
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, map, Observable, shareReplay, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { PickingList, PickingListQualifier } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
@@ -14,7 +22,13 @@ export class PickingListDefaultService implements PickingListService {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
+  protected isStartPickingLoading$ = new BehaviorSubject<string | null>(null);
+
   constructor(protected adapter = inject(PickingListAdapter)) {}
+
+  protected setStartPickingLoading(pickingListId: string | null): void {
+    this.isStartPickingLoading$.next(pickingListId);
+  }
 
   setQualifier(
     qualifier: PickingListQualifier
@@ -37,8 +51,24 @@ export class PickingListDefaultService implements PickingListService {
     );
   }
 
-  startPicking(pickingList: PickingList): Observable<PickingList> {
-    return this.adapter.startPicking(pickingList);
+  startPicking(pickingList: PickingList): Observable<PickingList | null> {
+    return this.isStartPickingLoading(pickingList.id).pipe(
+      filter((isLoading) => !isLoading),
+      tap(() => this.setStartPickingLoading(pickingList.id)),
+      switchMap(() => this.adapter.startPicking(pickingList)),
+      tap(() => this.setStartPickingLoading(null))
+      // catchError(() => {
+      //   this.setStartPickingLoading(null)
+      //   return of(null)
+      // }),
+    );
+  }
+
+  isStartPickingLoading(pickingListId: string): Observable<boolean> {
+    console.log('pickingListId', pickingListId);
+    return this.isStartPickingLoading$.pipe(
+      map((loadingPickingListId) => loadingPickingListId === pickingListId)
+    );
   }
 
   updatePickingItems(pickingList: PickingList): Observable<PickingList> {
