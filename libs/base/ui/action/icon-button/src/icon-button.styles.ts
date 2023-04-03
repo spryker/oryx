@@ -10,6 +10,7 @@ export const iconButtonStyles = css`
   }
 
   ::slotted(*:first-child) {
+    box-sizing: border-box;
     cursor: pointer;
     background: var(--oryx-color-canvas-100);
     border: solid transparent 1px;
@@ -51,17 +52,20 @@ export const iconButtonStyles = css`
     --oryx-icon-size: var(--oryx-icon-size-small);
 
     padding: 3px;
+    height: 24px;
   }
 
   :host([size='md']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-medium);
 
     padding: 5px;
+    height: 32px;
   }
 
   :host([size='lg']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-large);
 
     padding: 6px;
+    height: 38px;
   }
 `;

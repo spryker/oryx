@@ -50,23 +50,6 @@ export const tokens: ThemeToken = {
       small: '16px',
     },
   },
-  modal: {
-    header: {
-      padding: '18px 30px',
-    },
-    body: {
-      padding: '18px 30px',
-    },
-    footer: {
-      padding: '0 30px',
-    },
-    min: {
-      width: 'min(100vw, 400px)',
-    },
-    background: {
-      color: 'rgb(0 0 0 / 50%)',
-    },
-  },
   form: {
     label: {
       transform: 'uppercase',
