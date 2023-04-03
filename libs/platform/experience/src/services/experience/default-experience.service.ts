@@ -1,6 +1,14 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
+import {
+  Observable,
+  of,
+  ReplaySubject,
+  switchMap,
+  take,
+  tap,
+  throwError,
+} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
@@ -87,7 +95,9 @@ export class DefaultExperienceService implements ExperienceService {
       return this.getComponentByRoute(route);
     }
 
-    throw new Error('Invalid qualifier for getComponent');
+    return throwError(() => {
+      return new Error('Invalid qualifier for getComponent');
+    });
   }
 
   protected reloadComponent(uid: string): void {

@@ -3,12 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import {
-  asyncState,
-  hydratable,
-  i18n,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { computed, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { CartSummaryOptions } from './summary.model';
@@ -23,8 +18,7 @@ export class CartSummaryComponent extends CartComponentMixin(
 
   protected linkService = resolve(SemanticLinkService);
 
-  @asyncState()
-  protected link = valueType(
+  protected link = signal(
     this.linkService.get({ type: SemanticLinkType.Cart })
   );
 
@@ -42,6 +36,14 @@ export class CartSummaryComponent extends CartComponentMixin(
     `;
   }
 
+  protected quantity = computed(() =>
+    this.$totalQuantity() &&
+    this.$options().maxVisibleQuantity &&
+    this.$totalQuantity() > this.$options().maxVisibleQuantity!
+      ? `${this.$options().maxVisibleQuantity}+`
+      : this.$totalQuantity()
+  );
+
   /**
    * Renders the quantity of the total cart items.
    *
@@ -50,14 +52,8 @@ export class CartSummaryComponent extends CartComponentMixin(
    * "99+".
    */
   protected renderMark(): TemplateResult | void {
-    const quantity =
-      this.totalQuantity &&
-      this.componentOptions?.maxVisibleQuantity &&
-      this.totalQuantity > this.componentOptions?.maxVisibleQuantity
-        ? `${this.componentOptions?.maxVisibleQuantity}+`
-        : Number(this.totalQuantity);
-    if (Number(this.totalQuantity)) {
-      return html`<mark>${quantity}</mark>`;
+    if (Number(this.$totalQuantity())) {
+      return html`<mark>${this.quantity()}</mark>`;
     }
   }
 }
