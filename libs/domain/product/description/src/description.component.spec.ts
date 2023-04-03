@@ -41,9 +41,6 @@ describe('ProductDescriptionComponent', () => {
   });
 
   describe('when the component is rendered', () => {
-    const oneLineBreak = `with one
-    line break`;
-
     const options: ProductDescriptionOptions = {
       truncateAfter: 3,
       expandInitially: false,
@@ -53,7 +50,7 @@ describe('ProductDescriptionComponent', () => {
     beforeEach(async () => {
       element = await fixture(
         html` <oryx-product-description
-          .product=${{ description: oneLineBreak }}
+          sku="6"
           .options=${options}
         ></oryx-product-description>`
       );
@@ -61,7 +58,7 @@ describe('ProductDescriptionComponent', () => {
 
     it('should slot the product description into the oryx-text component', () => {
       expect(element.shadowRoot?.querySelector('oryx-text p')?.innerHTML).toBe(
-        'with one<br>line break'
+        'Lorem ipsum dolor<br>sit amet.'
       );
     });
 
