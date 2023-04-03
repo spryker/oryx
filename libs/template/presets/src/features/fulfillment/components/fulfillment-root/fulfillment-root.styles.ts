@@ -8,7 +8,7 @@ export const styles = css`
     box-sizing: border-box;
 
     display: block;
-    max-width: 390px;
+    max-width: var(--oryx-layout-container-width);
     margin: auto;
   }
 `;

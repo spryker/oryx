@@ -3,7 +3,7 @@ import { ThemeToken } from '@spryker-oryx/core';
 export const layoutTokens: ThemeToken = {
   layout: {
     container: {
-      width: '1000px',
+      width: '390px',
       padding: '10px',
     },
     cols: '12',
