@@ -4,6 +4,7 @@ import {
   ResolvedToken,
   TokenResolver,
   TokenResourceResolver,
+  TokenResourceResolvers,
 } from './token-resolver.service';
 
 const tokenRE = /^[A-Z]+\.[A-Z]+$/;
@@ -16,7 +17,7 @@ export class DefaultTokenService implements TokenResolver {
   }
 
   protected getResolverKey(resourceResolver: string): string {
-    return `${TokenResourceResolver}${resourceResolver}`;
+    return `${TokenResourceResolvers}${resourceResolver}`;
   }
 
   protected getResolver(resourceResolver: string): TokenResourceResolver {
