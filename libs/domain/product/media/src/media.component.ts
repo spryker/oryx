@@ -27,7 +27,6 @@ export class ProductMediaComponent extends ProductMixin(
   protected sources?: ImageSource[];
 
   willUpdate(changedProperties: PropertyValues): void {
-    console.log(changedProperties, 'changedProperties');
     if (
       changedProperties.has('product') ||
       changedProperties.has('componentOptions')
