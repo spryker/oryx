@@ -8,7 +8,7 @@ export interface PickingListService {
   ): Observable<PickingListQualifier>;
   getById(id: string): Observable<PickingList | null>;
   startPicking(pickingList: PickingList): Observable<PickingList | null>;
-  isStartPickingLoading(pickingListId: string): Observable<boolean>;
+  getPickingInProgressId(): Observable<string | null>;
   updatePickingItems(pickingList: PickingList): Observable<PickingList>;
   finishPicking(pickingList: PickingList): Observable<PickingList>;
 }

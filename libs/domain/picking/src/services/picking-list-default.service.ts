@@ -1,9 +1,10 @@
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
-  filter,
+  catchError,
   map,
   Observable,
+  of,
   shareReplay,
   switchMap,
   tap,
@@ -22,13 +23,9 @@ export class PickingListDefaultService implements PickingListService {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  protected isStartPickingLoading$ = new BehaviorSubject<string | null>(null);
+  protected pickingInProgressId$ = new BehaviorSubject<string | null>(null);
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
-
-  protected setStartPickingLoading(pickingListId: string | null): void {
-    this.isStartPickingLoading$.next(pickingListId);
-  }
 
   setQualifier(
     qualifier: PickingListQualifier
@@ -52,18 +49,18 @@ export class PickingListDefaultService implements PickingListService {
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {
-    return this.isStartPickingLoading(pickingList.id).pipe(
-      filter((isLoading) => !isLoading),
-      tap(() => this.setStartPickingLoading(pickingList.id)),
-      switchMap(() => this.adapter.startPicking(pickingList)),
-      tap(() => this.setStartPickingLoading(null))
+    this.pickingInProgressId$.next(pickingList.id);
+    return this.adapter.startPicking(pickingList).pipe(
+      catchError(() => {
+        this.pickingInProgressId$.next(null);
+        return of(null);
+      }),
+      tap(() => this.pickingInProgressId$.next(null))
     );
   }
 
-  isStartPickingLoading(pickingListId: string): Observable<boolean> {
-    return this.isStartPickingLoading$.pipe(
-      map((loadingPickingListId) => loadingPickingListId === pickingListId)
-    );
+  getPickingInProgressId(): Observable<string | null> {
+    return this.pickingInProgressId$;
   }
 
   updatePickingItems(pickingList: PickingList): Observable<PickingList> {

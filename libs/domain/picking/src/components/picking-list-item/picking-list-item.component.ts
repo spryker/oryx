@@ -5,15 +5,10 @@ import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  asyncState,
-  asyncValue,
-  i18n,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { of, switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -22,17 +17,6 @@ export class PickingListItemComponent
   implements PickingListItemAttributes
 {
   static styles = styles;
-
-  protected isStartPickingLoading$ = this.pickingList$.pipe(
-    switchMap((pickingList) =>
-      pickingList
-        ? this.pickingListService.isStartPickingLoading(pickingList.id)
-        : of(false)
-    )
-  );
-
-  @asyncState()
-  protected isStartPickingLoading = valueType(this.isStartPickingLoading$);
 
   protected routerService = resolve(RouterService);
   protected localeService = resolve(LocaleService);
@@ -112,9 +96,13 @@ export class PickingListItemComponent
           slot="footer"
           type=${ButtonType.Primary}
           size=${Size.Lg}
-          ?loading=${this.isStartPickingLoading}
+          ?loading=${this.pickingInProgressId === this.pickingList.id}
         >
-          <button @click=${this.startPicking}>
+          <button
+            ?disabled=${this.pickingInProgressId &&
+            this.pickingInProgressId !== this.pickingList.id}
+            @click=${this.startPicking}
+          >
             ${i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>
