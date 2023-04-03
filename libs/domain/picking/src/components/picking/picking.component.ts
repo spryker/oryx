@@ -41,7 +41,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     return [
       {
         id: ItemsFilters.NotPicked,
-        title: 'not-picked',
+        title: 'not-Picked',
         items: this.items?.filter(
           (item) => item.status === ItemsFilters.NotPicked
         ),
@@ -55,7 +55,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       },
       {
         id: ItemsFilters.NotFound,
-        title: 'not-found',
+        title: 'not-Found',
         items: this.items?.filter(
           (item) =>
             item.status === ItemsFilters.Picked &&
@@ -163,19 +163,21 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           ${when(
             tab.items?.length,
             () => html`
-              ${repeat(
-                tab.items,
-                (item) => item.product.id,
-                (item) =>
-                  html`
-                    <oryx-picking-product-card
-                      .productItem=${item}
-                      .status=${tab.id}
-                      @oryx.submit=${this.savePickingItem}
-                      @oryx.edit=${this.editPickingItem}
-                    ></oryx-picking-product-card>
-                  `
-              )}
+              <div class="list-container">
+                ${repeat(
+                  tab.items,
+                  (item) => item.product.id,
+                  (item) =>
+                    html`
+                      <oryx-picking-product-card
+                        .productItem=${item}
+                        .status=${tab.id}
+                        @oryx.submit=${this.savePickingItem}
+                        @oryx.edit=${this.editPickingItem}
+                      ></oryx-picking-product-card>
+                    `
+                )}
+              </div>
               ${this.renderFinishButton(true)}
             `,
             () => this.renderPlaceholderComplete()
@@ -209,7 +211,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
     return html`
       <div
-        class="submit-wrapper ${classMap({
+        class="submit-wrapper${classMap({
           'scroll-shadow': hasShadow ?? false,
         })}"
       >
