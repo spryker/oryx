@@ -3,18 +3,18 @@ import { css } from 'lit';
 export const styles = css`
   [slot='heading'] {
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     display: flex;
     width: 100%;
   }
 
   [slot='heading'] span {
-    font-weight: var(--oryx-typography-h2-weight);
-    font-size: var(--oryx-typography-h2-size);
-    line-height: var(--oryx-typography-h2-line);
+    font-weight: var(--oryx-typography-h3-weight);
+    font-size: var(--oryx-typography-h3-size);
+    line-height: var(--oryx-typography-h3-line);
   }
 
-  [slot='heading'] h4 {
+  [slot='heading'] h6 {
     color: var(--oryx-color-neutral-darker);
     margin-inline-start: auto;
   }
@@ -32,8 +32,10 @@ export const styles = css`
   .total {
     color: var(--oryx-color-neutral-darker);
     display: flex;
+    align-items: center;
     gap: 8px;
-    height: fit-content;
+    height: 24px;
+    width: 100%;
   }
 
   .total oryx-icon {
@@ -41,12 +43,7 @@ export const styles = css`
   }
 
   oryx-icon-button {
-    align-items: start;
-    height: fit-content;
-  }
-
-  oryx-icon[type='info'] {
-    color: var(--oryx-color-primary-300);
+    margin-inline-start: auto;
   }
 
   oryx-button {
