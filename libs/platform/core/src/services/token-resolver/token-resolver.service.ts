@@ -12,7 +12,7 @@ export interface TokenResourceResolver {
 }
 
 export const TokenResolver = 'oryx.TokenResolver';
-export const TokenResourceResolver = 'oryx.TokenResourceResolver*';
+export const TokenResourceResolvers = 'oryx.TokenResourceResolvers*';
 
 declare global {
   interface InjectionTokensContractMap {

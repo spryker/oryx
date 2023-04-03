@@ -19,10 +19,7 @@ import {
 import { DefaultHydrationService, HydrationService } from './hydration';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
-import {
-  DefaultTokenResolverService,
-  TokenResolverService,
-} from './token-resolver';
+import { DefaultTokenService, TokenResolver } from './token-resolver';
 import {
   DefaultJsonAPITransformerService,
   DefaultTransformerService,
@@ -80,7 +77,7 @@ export const coreProviders: Provider[] = [
     useExisting: ErrorService,
   },
   {
-    provide: TokenResolverService,
-    useClass: DefaultTokenResolverService,
+    provide: TokenResolver,
+    useClass: DefaultTokenService,
   },
 ];

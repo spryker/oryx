@@ -1,8 +1,8 @@
 import {
   ResolvedToken,
   Resolver,
-  TokenResolver,
   TokenResourceResolver,
+  TokenResourceResolvers,
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
 import { map, of } from 'rxjs';
@@ -12,7 +12,7 @@ interface UserResolvers {
   NAME: Resolver;
 }
 
-export class UserResolver implements TokenResolver {
+export class UserResolver implements TokenResourceResolver {
   protected user$ = resolve(UserService).getUser();
 
   protected resolvers: UserResolvers = {
@@ -30,6 +30,6 @@ export class UserResolver implements TokenResolver {
 }
 
 export const UserResourceResolver: Provider = {
-  provide: `${TokenResourceResolver}USER`,
+  provide: `${TokenResourceResolvers}USER`,
   useClass: UserResolver,
 };

@@ -8,7 +8,7 @@ import {
 
 const tokenRE = /^[A-Z]+\.[A-Z]+$/;
 
-export class DefaultTokenResolverService implements TokenResolver {
+export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
 
   protected isToken(resolver: string): boolean {
