@@ -112,7 +112,7 @@ export class TextComponent extends LitElement implements TextProperties {
     this.style.setProperty('--lines-count', String(linesCount));
   }
 
-  protected toggle(): void {
+  toggle(): void {
     this.toggleAttribute('initialized', true);
 
     this.truncated = !this.truncated;
