@@ -20,6 +20,7 @@ class MockRouterService implements Partial<RouterService> {
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockedPickingList));
   startPicking = vi.fn().mockReturnValue(of(mockedPickingList));
+  isStartPickingLoading = vi.fn().mockReturnValue(of(false));
 }
 
 describe('CustomerNoteComponent', () => {

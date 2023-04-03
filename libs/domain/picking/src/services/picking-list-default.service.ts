@@ -57,15 +57,10 @@ export class PickingListDefaultService implements PickingListService {
       tap(() => this.setStartPickingLoading(pickingList.id)),
       switchMap(() => this.adapter.startPicking(pickingList)),
       tap(() => this.setStartPickingLoading(null))
-      // catchError(() => {
-      //   this.setStartPickingLoading(null)
-      //   return of(null)
-      // }),
     );
   }
 
   isStartPickingLoading(pickingListId: string): Observable<boolean> {
-    console.log('pickingListId', pickingListId);
     return this.isStartPickingLoading$.pipe(
       map((loadingPickingListId) => loadingPickingListId === pickingListId)
     );
