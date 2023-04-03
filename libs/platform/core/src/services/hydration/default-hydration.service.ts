@@ -68,10 +68,14 @@ export class DefaultHydrationService implements HydrationService {
             el,
             false
           );
-          const promises = childs.map((childEl) =>
-            this.hydrateOnDemand(childEl)
-          );
-          await Promise.all(promises);
+
+          if (childs.length) {
+            const promises = childs.map((childEl) =>
+              this.hydrateOnDemand(childEl)
+            );
+            await Promise.all(promises);
+          }
+
           this.hydrateOnDemand(el);
         });
       }

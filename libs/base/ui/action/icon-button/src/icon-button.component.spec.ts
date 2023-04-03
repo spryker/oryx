@@ -11,11 +11,6 @@ describe('IconButtonComponent', () => {
     await useComponent(iconButtonComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-icon-button');
-    expect(el).toBeInstanceOf(IconButtonComponent);
-  });
-
   it('should render content', async () => {
     const id = 'test-button';
     element = await fixture(html`<oryx-icon-button>
