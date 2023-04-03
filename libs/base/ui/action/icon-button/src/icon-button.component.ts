@@ -1,4 +1,3 @@
-import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Size } from '../../../src/utilities/model';
