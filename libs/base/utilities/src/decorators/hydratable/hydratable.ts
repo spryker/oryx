@@ -128,7 +128,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
       if (skipMissMatch) {
-        this.useRealRender = false;
+        this[hydrationRender] = false;
       }
 
       const prototype = Array(this[HYDRATION_CALLS])
