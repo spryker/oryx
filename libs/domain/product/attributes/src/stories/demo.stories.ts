@@ -8,6 +8,7 @@ import { ProductAttributesOptions } from '../attributes.model';
 export default {
   title: `${storybookPrefix}/Attributes`,
   args: {
+    columnCount: 2,
     sku: MockProductService.mockProducts[0].sku,
   },
   argTypes: {
@@ -33,4 +34,4 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   ></oryx-product-attributes>`;
 };
 
-export const ProductAttributesDemo = Template.bind({});
+export const Demo = Template.bind({});

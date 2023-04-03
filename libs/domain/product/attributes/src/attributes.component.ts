@@ -20,14 +20,14 @@ export class ProductAttributesComponent extends ProductMixin(
     if (!attributes || !attributeNames) return;
 
     return html`
-      <ul style="--column-count: ${this.$options().columnCount}">
-        ${Object.keys(attributes ?? {}).map(
-          (key) => html`<li>
-            <div>${attributeNames?.[key]}</div>
-            <div>${attributes?.[key]}</div>
-          </li>`
+      <dl style="--column-count: ${this.$options().columnCount}">
+        ${Object.keys(attributes).map(
+          (key) => html`
+            <dt>${attributeNames?.[key]}</dt>
+            <dd>${attributes?.[key]}</dd>
+          `
         )}
-      </ul>
+      </dl>
     `;
   }
 }
