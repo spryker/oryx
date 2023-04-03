@@ -146,7 +146,6 @@ export class MockProductService implements Partial<ProductService> {
         },
       ],
       averageRating: undefined,
-      reviewCount: 0,
 
       attributes: {
         brand: 'Brand3',
