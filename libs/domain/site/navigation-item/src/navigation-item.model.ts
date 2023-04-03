@@ -6,9 +6,10 @@ export interface SiteNavigationItemOptions {
   badge?: string;
   url?: string | SemanticLink;
   triggerType?: NavigationTriggerType;
-  triggerBehavior?: NavigationTriggerBehavior;
   contentBehavior?: NavigationContentBehavior;
-  items?: NavigationListItem[];
+  //TODO: Implement or drop later
+  // triggerBehavior?: NavigationTriggerBehavior;
+  // items?: NavigationListItem[];
 }
 
 export const enum NavigationTriggerType {

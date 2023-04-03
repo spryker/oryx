@@ -1,4 +1,4 @@
-import { TokenResolverService } from '@spryker-oryx/core';
+import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -25,7 +25,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 ) {
   static styles = styles;
 
-  protected tokenResolver = resolve(TokenResolverService);
+  protected tokenResolver = resolve(TokenResolver);
 
   @asyncState()
   protected label = valueType(
@@ -35,7 +35,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
           return of();
         }
 
-        return this.tokenResolver.resolve(label);
+        return this.tokenResolver.resolveToken(label);
       })
     )
   );
@@ -48,7 +48,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
           return of();
         }
 
-        return this.tokenResolver.resolve(badge);
+        return this.tokenResolver.resolveToken(badge);
       })
     )
   );

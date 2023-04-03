@@ -1,26 +1,26 @@
 import { resolve } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
+  ResolvedToken,
   TokenResolver,
-  TokenResolverService,
   TokenResourceResolver,
 } from './token-resolver.service';
 
 const tokenRE = /^[A-Z]+\.[A-Z]+$/;
 
-export class DefaultTokenResolverService implements TokenResolverService {
-  protected resolvers = new Map<string, TokenResolver>();
+export class DefaultTokenResolverService implements TokenResolver {
+  protected resolvers = new Map<string, TokenResourceResolver>();
 
   protected isToken(resolver: string): boolean {
     return tokenRE.test(resolver);
   }
 
-  protected getResolverKey(tokenResolver: string): string {
-    return `${TokenResourceResolver}${tokenResolver}`;
+  protected getResolverKey(resourceResolver: string): string {
+    return `${TokenResourceResolver}${resourceResolver}`;
   }
 
-  protected getResolver(tokenResolver: string): TokenResolver {
-    const key = this.getResolverKey(tokenResolver);
+  protected getResolver(resourceResolver: string): TokenResourceResolver {
+    const key = this.getResolverKey(resourceResolver);
     if (!this.resolvers.has(key)) {
       this.resolvers.set(key, resolve(key));
     }
@@ -28,13 +28,13 @@ export class DefaultTokenResolverService implements TokenResolverService {
     return this.resolvers.get(key)!;
   }
 
-  resolve(token: string): Observable<string | null> {
+  resolveToken(token: string): ResolvedToken {
     if (!this.isToken(token)) {
       return of(token);
     }
 
-    const [tokenResolver, resolver] = token.split('.');
+    const [resourceResolver, resolver] = token.split('.');
 
-    return this.getResolver(tokenResolver).resolve(resolver);
+    return this.getResolver(resourceResolver).resolve(resolver);
   }
 }
