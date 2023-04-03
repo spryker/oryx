@@ -186,4 +186,51 @@ describe('ProductPriceComponent', () => {
       expect(vat?.textContent).toContain('Tax included');
     });
   });
+
+  describe('enableSalesLabel', () => {
+    describe('when the enableSalesLabel is true', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-price
+            sku="1"
+            .options=${{ enableSalesLabel: true }}
+          ></oryx-product-price>`
+        );
+      });
+
+      it('should render the oryx-product-labels', () => {
+        expect(element).toContainElement('oryx-product-labels');
+      });
+    });
+
+    describe('when enableSalesLabel is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-price
+            sku="1"
+            .options=${{ enableSalesLabel: false }}
+          ></oryx-product-price>`
+        );
+      });
+
+      it('should render the oryx-product-labels', () => {
+        expect(element).not.toContainElement('oryx-product-labels');
+      });
+    });
+
+    describe('when enableSalesLabel is false', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-price
+            sku="1"
+            .options=${{ enableSalesLabel: false }}
+          ></oryx-product-price>`
+        );
+      });
+
+      it('should render the oryx-product-labels', () => {
+        expect(element).not.toContainElement('oryx-product-labels');
+      });
+    });
+  });
 });

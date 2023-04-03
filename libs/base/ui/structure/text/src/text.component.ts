@@ -16,15 +16,10 @@ export class TextComponent extends LitElement implements TextProperties {
 
   protected resizeObserver?: ResizeObserver;
 
-  @property({ type: Boolean })
-  hideToggle = false;
-  @property({ type: Boolean, reflect: true })
-  truncated = false;
-  @property({ type: Boolean })
-  defaultExpanded?: boolean;
-
-  @property({ type: Boolean, reflect: true })
-  truncation = false;
+  @property({ type: Boolean }) hideToggle = false;
+  @property({ type: Boolean, reflect: true }) truncated = false;
+  @property({ type: Boolean }) defaultExpanded?: boolean;
+  @property({ type: Boolean, reflect: true }) truncation = false;
 
   @property() readMoreLabel = 'Read more';
 
