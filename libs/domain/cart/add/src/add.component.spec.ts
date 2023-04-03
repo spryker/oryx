@@ -8,20 +8,29 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
+import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { delay, map, of } from 'rxjs';
+import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
 class MockCartService implements Partial<CartService> {
+  getCart = vi.fn().mockReturnValue(of());
+  isBusy = vi.fn().mockReturnValue(of(false));
+  isEmpty = vi.fn().mockReturnValue(of(false));
   addEntry = vi.fn().mockReturnValue(of(null).pipe(delay(1)));
   getEntries = vi.fn().mockReturnValue(of([]));
+}
+
+class MockPricingService implements Partial<PricingService> {
+  format = vi.fn().mockReturnValue(of('price'));
 }
 
 describe('CartAddComponent', () => {
   let element: CartAddComponent;
   let service: Partial<MockCartService>;
+  let productService: Partial<MockProductService>;
 
   beforeAll(async () => {
     await useComponent([
@@ -42,10 +51,17 @@ describe('CartAddComponent', () => {
           provide: ProductService,
           useClass: MockProductService,
         },
+        {
+          provide: PricingService,
+          useClass: MockPricingService,
+        },
       ],
     });
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
+    productService = testInjector.inject(
+      ProductService
+    ) as unknown as MockProductService;
   });
 
   afterEach(() => {
@@ -157,25 +173,9 @@ describe('CartAddComponent', () => {
           });
         });
 
-        it('should have the button in disabled state', () => {
-          expect(element).toContainElement('button[disabled]');
-        });
-
-        it('should have the oryx-button in loading state', () => {
-          expect(element).toContainElement('oryx-button[loading]');
-        });
-
         describe('and after the item is added', () => {
           beforeEach(async () => {
             await nextFrame();
-          });
-
-          it('should no longer have the button in disabled state', () => {
-            expect(element).toContainElement('button[disabled]');
-          });
-
-          it('should no longer have the oryx-button in loading state', () => {
-            expect(element).toContainElement('oryx-button:not([loading])');
           });
 
           it('should have the oryx-button in confirmed state', () => {
@@ -190,6 +190,39 @@ describe('CartAddComponent', () => {
             it('should no longer have the oryx-button in confirmed state', () => {
               expect(element).toContainElement('oryx-button:not([confirmed])');
             });
+          });
+        });
+      });
+    });
+
+    describe('when the cart is loaded', () => {
+      const busy$ = new BehaviorSubject(false);
+
+      beforeEach(async () => {
+        service.isBusy?.mockReturnValue(busy$);
+        element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
+      });
+
+      it('should not have the oryx-button in loading state', () => {
+        expect(element).toContainElement('oryx-button:not([loading])');
+      });
+
+      describe('and when the cart becomes busy', () => {
+        beforeEach(() => {
+          busy$.next(true);
+        });
+
+        it('should change the oryx-button in loading state', () => {
+          expect(element).toContainElement('oryx-button[loading]');
+        });
+
+        describe('and when the cart is no longer busy', () => {
+          beforeEach(async () => {
+            busy$.next(false);
+          });
+
+          it('should no longer have the oryx-button in loading state', () => {
+            expect(element).toContainElement('oryx-button:not([loading])');
           });
         });
       });
@@ -296,78 +329,24 @@ describe('CartAddComponent', () => {
           });
 
           describe('and when the sku has changed', () => {
+            const quantity = () =>
+              element.shadowRoot?.querySelector(
+                'oryx-cart-quantity-input'
+              ) as QuantityInputComponent;
+
             beforeEach(async () => {
+              vi.spyOn(quantity(), 'reset');
               element.sku = '2';
-              element.requestUpdate();
+              element.requestUpdate('sku');
               await nextFrame();
             });
 
             it('should reset the quantity', () => {
-              const quantity = element.shadowRoot?.querySelector(
-                'oryx-cart-quantity-input'
-              ) as QuantityInputComponent;
-              expect(quantity.value).toBe(1);
-            });
-
-            describe('and when the item is added to cart', () => {
-              beforeEach(() => {
-                const button = element.shadowRoot?.querySelector(
-                  'button'
-                ) as HTMLButtonElement;
-                button.click();
-              });
-
-              it('should call "addEntry" cart service method', async () => {
-                expect(service.addEntry).toHaveBeenNthCalledWith(2, {
-                  sku: '2',
-                  quantity: 1,
-                });
-              });
+              expect(quantity()?.reset).toHaveBeenCalled();
             });
           });
         });
       });
-    });
-  });
-
-  describe('when an unexpected error happens while adding to cart', () => {
-    class MockCartService {
-      getEntries = vi.fn().mockReturnValue(of([]));
-      addEntry = vi.fn().mockReturnValue(
-        of(null).pipe(
-          delay(1),
-          map(() => {
-            throw new Error();
-          })
-        )
-      );
-    }
-
-    beforeEach(async () => {
-      destroyInjector();
-      createInjector({
-        providers: [
-          { provide: CartService, useClass: MockCartService },
-          {
-            provide: ProductService,
-            useClass: MockProductService,
-          },
-        ],
-      });
-
-      element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
-
-      const button = element.renderRoot.querySelector('button');
-      button?.click();
-    });
-
-    it('should start loading', async () => {
-      expect(element).toContainElement('oryx-button[loading]');
-    });
-
-    it('should continue to unloading afterwards', async () => {
-      await nextFrame();
-      expect(element).toContainElement('oryx-button:not([loading])');
     });
   });
 });

@@ -21,16 +21,12 @@ export class CartEntriesComponent extends CartComponentMixin(
 
   // TODO: implement loading state
   protected override render(): TemplateResult | void {
-    if (this.isEmpty) {
-      return this.renderEmpty();
-    }
+    if (this.$isEmpty()) return this.renderEmpty();
 
     return html`
       <oryx-heading>
         <h1>
-          ${i18n('cart.totals.<count>-items', {
-            count: this.totalQuantity,
-          })}
+          ${i18n('cart.totals.<count>-items', { count: this.$totalQuantity() })}
         </h1>
       </oryx-heading>
 
@@ -44,8 +40,8 @@ export class CartEntriesComponent extends CartComponentMixin(
               .quantity=${entry.quantity}
               .price=${entry.calculations?.sumPriceToPayAggregation}
               .key=${entry.groupKey}
-              .options=${this.componentOptions}
-              ?readonly=${this.componentOptions?.readonly}
+              .options=${this.$options()}
+              ?readonly=${this.$options().readonly}
             ></oryx-cart-entry>
           `;
         }

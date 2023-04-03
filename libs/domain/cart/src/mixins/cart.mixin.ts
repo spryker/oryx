@@ -25,7 +25,7 @@ export declare class CartMixinInterface implements CartComponentAttributes {
   protected $isEmpty: Signal<boolean>;
   protected $isBusy: Signal<boolean>;
   protected $entries: Signal<CartEntry[]>;
-  protected $totals: Signal<FormattedCartTotals>;
+  protected $totals: Signal<FormattedCartTotals | null>;
   protected $totalQuantity: Signal<number>;
 }
 

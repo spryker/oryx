@@ -6,7 +6,8 @@ import { CartAddOptions } from '../add.model';
 
 export default {
   title: `${storybookPrefix}/Add to cart`,
-} as unknown as Meta;
+  args: { hideQuantityInput: false },
+} as Meta;
 
 type Props = ProductComponentProperties & CartAddOptions;
 
@@ -14,17 +15,9 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <oryx-cart-add
       sku="1"
-      .options=${{
-        hideQuantityInput: props.hideQuantityInput,
-        disabled: props.disabled,
-      }}
+      .options=${{ hideQuantityInput: props.hideQuantityInput }}
     ></oryx-cart-add>
   `;
 };
 
 export const Demo = Template.bind({});
-
-Demo.args = {
-  hideQuantityInput: false,
-  disabled: false,
-};
