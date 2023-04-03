@@ -128,11 +128,11 @@ export class DefaultHydrationService implements HydrationService {
         nodes.push(...node.shadowRoot.children);
       }
 
-      if (node.matches(selector)) {
-        if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
-          continue;
-        }
+      if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
+        continue;
+      }
 
+      if (node.matches(selector)) {
         elements.push(node as HTMLElement);
       }
     }
