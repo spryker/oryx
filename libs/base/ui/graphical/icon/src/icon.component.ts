@@ -1,6 +1,6 @@
 import { hydratable, iconInjectable } from '@spryker-oryx/utilities';
-import { html, LitElement, svg, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues, svg, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { Size } from '../../../src/utilities';
 import { IconProperties, Icons } from './icon.model';
@@ -20,17 +20,23 @@ export class IconComponent extends LitElement implements IconProperties {
   @property({ reflect: true }) size?: Size;
   @property() sprite?: string;
 
-  render(): TemplateResult {
-    const customRender = this.iconResolver?.render(
-      this.type as string,
-      this.spriteUrl
-    );
+  @state() protected renderer?: TemplateResult;
 
+  protected willUpdate(changedProperties: PropertyValues): void {
+    if (changedProperties.has('type')) {
+      this.renderer = this.iconResolver?.render(
+        this.type as string,
+        this.spriteUrl
+      );
+    }
+  }
+
+  render(): TemplateResult {
     return html`
       <slot>
         ${when(this.type, () =>
-          customRender
-            ? customRender
+          this.renderer
+            ? this.renderer
             : svg`
                 <svg viewBox="0 0 24 24">
                   <use href="${this.spriteUrl}" />
