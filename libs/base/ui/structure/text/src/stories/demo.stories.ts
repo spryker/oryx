@@ -22,7 +22,7 @@ interface Props extends TextProperties {
 const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <oryx-text
-      .style=${`--line-clamp: ${props.truncateAfter ?? 0}`}
+      .truncateAfter=${props.truncateAfter ?? 0}
       .hideToggle=${!!props.hideToggle}
       ?defaultExpanded=${props.defaultExpanded}
       >${unsafeHTML(props.text)}</oryx-text
