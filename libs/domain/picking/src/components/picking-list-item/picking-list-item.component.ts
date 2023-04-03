@@ -96,11 +96,11 @@ export class PickingListItemComponent
           slot="footer"
           type=${ButtonType.Primary}
           size=${Size.Lg}
-          ?loading=${this.pickingInProgressId === this.pickingList.id}
+          ?loading=${this.upcomingPickingListId === this.pickingList.id}
         >
           <button
-            ?disabled=${this.pickingInProgressId &&
-            this.pickingInProgressId !== this.pickingList.id}
+            ?disabled=${this.upcomingPickingListId &&
+            this.upcomingPickingListId !== this.pickingList.id}
             @click=${this.startPicking}
           >
             ${i18n('picking.picking-list-item.start-picking')}

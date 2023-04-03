@@ -13,6 +13,7 @@ import { pickingComponent } from './picking.def';
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   finishPicking = vi.fn();
+  getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
 class MockRouterService implements Partial<RouterService> {

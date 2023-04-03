@@ -41,10 +41,12 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
       <p>${this.pickingList?.cartNote}</p>
 
-      <oryx-button ?loading=${this.pickingInProgressId === this.pickingList.id}>
+      <oryx-button
+        ?loading=${this.upcomingPickingListId === this.pickingList.id}
+      >
         <button
-          ?disabled=${this.pickingInProgressId &&
-          this.pickingInProgressId !== this.pickingList.id}
+          ?disabled=${this.upcomingPickingListId &&
+          this.upcomingPickingListId !== this.pickingList.id}
           @click=${this.onProceed}
         >
           ${i18n('picking.proceed-to-picking')}

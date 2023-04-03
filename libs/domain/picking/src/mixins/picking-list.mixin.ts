@@ -24,7 +24,7 @@ export declare class PickingListMixinInterface
   pickingListId?: string;
   protected pickingList$: Observable<PickingList>;
   protected pickingList: PickingList;
-  protected pickingInProgressId: string | null;
+  protected upcomingPickingListId: string | null;
 }
 
 export const PickingListMixin = <
@@ -50,8 +50,8 @@ export const PickingListMixin = <
     protected pickingList = valueType(this.pickingList$);
 
     @asyncState()
-    protected pickingInProgressId = valueType(
-      this.pickingListService.getPickingInProgressId()
+    protected upcomingPickingListId = valueType(
+      this.pickingListService.getUpcomingPickingListId()
     );
   }
 

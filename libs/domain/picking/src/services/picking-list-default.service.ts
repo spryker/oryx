@@ -23,7 +23,7 @@ export class PickingListDefaultService implements PickingListService {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  protected pickingInProgressId$ = new BehaviorSubject<string | null>(null);
+  protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
 
@@ -49,18 +49,18 @@ export class PickingListDefaultService implements PickingListService {
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {
-    this.pickingInProgressId$.next(pickingList.id);
+    this.upcomingPickingListId$.next(pickingList.id);
     return this.adapter.startPicking(pickingList).pipe(
       catchError(() => {
-        this.pickingInProgressId$.next(null);
+        this.upcomingPickingListId$.next(null);
         return of(null);
       }),
-      tap(() => this.pickingInProgressId$.next(null))
+      tap(() => this.upcomingPickingListId$.next(null))
     );
   }
 
-  getPickingInProgressId(): Observable<string | null> {
-    return this.pickingInProgressId$;
+  getUpcomingPickingListId(): Observable<string | null> {
+    return this.upcomingPickingListId$;
   }
 
   updatePickingItems(pickingList: PickingList): Observable<PickingList> {
