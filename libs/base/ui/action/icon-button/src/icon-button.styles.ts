@@ -10,6 +10,7 @@ export const iconButtonStyles = css`
   }
 
   ::slotted(*:first-child) {
+    box-sizing: border-box;
     cursor: pointer;
     background: transparent;
     border: solid transparent 1px;
