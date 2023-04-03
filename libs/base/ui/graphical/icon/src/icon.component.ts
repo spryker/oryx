@@ -29,6 +29,7 @@ export class IconComponent extends LitElement implements IconProperties {
         this.spriteUrl
       );
     }
+    super.willUpdate(changedProperties);
   }
 
   render(): TemplateResult {

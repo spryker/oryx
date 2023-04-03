@@ -1,7 +1,7 @@
 import { prehydrate } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/ui';
-import { hydratable, throttle } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult } from 'lit';
+import { hydratable, ssrShim, throttle } from '@spryker-oryx/utilities';
+import { LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
@@ -10,11 +10,10 @@ import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
+@ssrShim('style')
 @hydratable()
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
-
-  protected resizeObserver?: ResizeObserver;
 
   @property({ type: Boolean })
   hideToggle = false;
@@ -22,15 +21,37 @@ export class TextComponent extends LitElement implements TextProperties {
   truncated = false;
   @property({ type: Boolean })
   defaultExpanded?: boolean;
-
   @property({ type: Boolean, reflect: true })
   truncation = false;
-
+  @property({ type: Number, reflect: true })
+  truncateAfter?: number;
   @property() readMoreLabel = 'Read more';
 
-  disconnectedCallback(): void {
-    this.resizeObserver?.disconnect();
+  protected resizeObserver?: ResizeObserver;
 
+  protected willUpdate(changedProperties: PropertyValues): void {
+    if (changedProperties.has('truncateAfter') && this.truncateAfter) {
+      this.style.setProperty('--line-clamp', String(this.truncateAfter));
+    }
+
+    super.willUpdate(changedProperties);
+  }
+
+  protected updated(changedProperties: PropertyValues): void {
+    if (
+      changedProperties.has('truncateAfter') &&
+      this.truncateAfter &&
+      !this.resizeObserver
+    ) {
+      this.setup();
+    }
+
+    super.updated(changedProperties);
+  }
+
+  disconnectedCallback(): void {
+    this.resizeObserver?.unobserve(this.container);
+    this.resizeObserver?.disconnect();
     super.disconnectedCallback();
   }
 
@@ -39,14 +60,10 @@ export class TextComponent extends LitElement implements TextProperties {
     return this.containerRef?.value as HTMLElement;
   }
 
-  protected get shouldBeTruncated(): boolean {
-    return !!Number(getComputedStyle(this).getPropertyValue('--line-clamp'));
-  }
-
   protected override render(): TemplateResult {
     return html`
       <div ${ref(this.containerRef)}>
-        <slot @slotchange=${this.setup.bind(this)}></slot>
+        <slot></slot>
       </div>
       ${when(
         !this.hideToggle,
@@ -63,7 +80,7 @@ export class TextComponent extends LitElement implements TextProperties {
   }
 
   protected setup(): void {
-    if (!this.shouldBeTruncated) {
+    if (!this.truncateAfter) {
       return;
     }
 
@@ -72,15 +89,15 @@ export class TextComponent extends LitElement implements TextProperties {
 
     this.resizeObserver = new ResizeObserver(
       throttle(
-        () => window.requestAnimationFrame(this.onResize.bind(this)),
+        () => window.requestAnimationFrame(() => this.normalizeText()),
         100
       )
     );
     this.resizeObserver.observe(this.container);
   }
 
-  protected onResize(): void {
-    if (!this.shouldBeTruncated) {
+  protected normalizeText(): void {
+    if (!this.truncateAfter) {
       this.truncation = false;
     }
 
