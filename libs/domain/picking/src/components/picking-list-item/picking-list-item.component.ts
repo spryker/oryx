@@ -79,26 +79,23 @@ export class PickingListItemComponent
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
-          <span
-            >${i18n('picking.picking-list-item.<count>-items', {
-              count: this.pickingList?.items.length,
-            })}</span
-          >
+          ${i18n('picking.picking-list-item.<count>-items', {
+            count: this.pickingList?.items.length,
+          })}
+          ${when(
+            this.pickingList?.cartNote,
+            () => html`
+              <oryx-icon-button size=${Size.Md}>
+                <button
+                  aria-label="Show customer note"
+                  @click=${this.showCustomerNote}
+                >
+                  <oryx-icon type=${IconTypes.Info}></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            `
+          )}
         </div>
-
-        ${when(
-          this.pickingList?.cartNote,
-          () => html`
-            <oryx-icon-button size=${Size.Sm}>
-              <button
-                aria-label="Show customer note"
-                @click=${this.showCustomerNote}
-              >
-                <oryx-icon type=${IconTypes.Info}></oryx-icon>
-              </button>
-            </oryx-icon-button>
-          `
-        )}
 
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Lg}>
           <button ?disabled=${this.isDisabled} @click=${this.startPicking}>
