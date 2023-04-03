@@ -9,7 +9,6 @@ import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -34,17 +33,12 @@ export class PickingListItemComponent
 
     this.isDisabled = true;
 
-    this.pickingListService
-      .startPicking(this.pickingList)
-      .pipe(
-        tap(() => {
-          this.isDisabled = false;
-          this.routerService.navigate(
-            `/picking-list/picking/${this.pickingList.id}`
-          );
-        })
-      )
-      .subscribe();
+    this.pickingListService.startPicking(this.pickingList).subscribe(() => {
+      this.isDisabled = false;
+      this.routerService.navigate(
+        `/picking-list/picking/${this.pickingList.id}`
+      );
+    });
   }
 
   protected showCustomerNote(): void {

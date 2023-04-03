@@ -2,7 +2,6 @@ import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import {
-  PickingList,
   PickingListAdapter,
   PickingListQualifier,
   PickingListStatus,
@@ -106,7 +105,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
     );
   }
 
-  startPicking(pickingList: PickingList): Observable<PickingListEntity> {
+  startPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
     return this.indexedDbService.getDb().pipe(
       combineLatestWith(
         this.indexedDbService.getStore(PickingListEntity),
@@ -142,7 +141,9 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
     );
   }
 
-  updatePickingItems(pickingList: PickingList): Observable<PickingList> {
+  updatePickingItems(
+    pickingList: PickingListEntity
+  ): Observable<PickingListEntity> {
     return this.indexedDbService.getDb().pipe(
       combineLatestWith(
         this.indexedDbService.getStore(PickingListEntity),
@@ -176,7 +177,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
     );
   }
 
-  finishPicking(pickingList: PickingList): Observable<PickingListEntity> {
+  finishPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
     return this.indexedDbService.getDb().pipe(
       combineLatestWith(
         this.indexedDbService.getStore(PickingListEntity),
