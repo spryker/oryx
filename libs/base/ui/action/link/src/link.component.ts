@@ -1,4 +1,3 @@
-import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -6,7 +5,6 @@ import { Icons } from '../../../graphical/icon';
 import { LinkComponentAttributes, LinkType } from './link.model';
 import { linkStyles } from './link.styles';
 
-@hydratable()
 export class LinkComponent
   extends LitElement
   implements LinkComponentAttributes

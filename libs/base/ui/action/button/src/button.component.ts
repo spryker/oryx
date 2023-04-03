@@ -1,11 +1,9 @@
-import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Size } from '../../../src/utilities';
 import { ButtonComponentAttributes, ButtonType } from './button.model';
 import { buttonStyles } from './styles';
 
-@hydratable()
 export class ButtonComponent
   extends LitElement
   implements ButtonComponentAttributes

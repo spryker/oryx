@@ -12,6 +12,11 @@ describe('LinkComponent', () => {
     await useComponent(linkComponent);
   });
 
+  it('is defined', () => {
+    const el = document.createElement('oryx-link');
+    expect(el).toBeInstanceOf(LinkComponent);
+  });
+
   describe('link type', () => {
     const types: LinkType[] = [LinkType.Link, LinkType.ExternalLink];
     Object.values(types).forEach((type) => {

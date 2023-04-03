@@ -5,7 +5,6 @@ import { Size } from '../../../src/utilities/model';
 import { IconButtonProperties } from './icon-button.model';
 import { iconButtonStyles } from './icon-button.styles';
 
-@hydratable()
 export class IconButtonComponent
   extends LitElement
   implements IconButtonProperties

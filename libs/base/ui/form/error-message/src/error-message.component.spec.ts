@@ -11,6 +11,11 @@ describe('ErrorMessageComponent', () => {
     await useComponent(errorMessageComponent);
   });
 
+  it('is defined', () => {
+    const el = document.createElement('oryx-error-message');
+    expect(el).toBeInstanceOf(ErrorMessageComponent);
+  });
+
   describe('when a message is provided', () => {
     beforeEach(async () => {
       element = await fixture(
