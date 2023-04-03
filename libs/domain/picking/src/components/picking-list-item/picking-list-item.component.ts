@@ -62,20 +62,18 @@ export class PickingListItemComponent
 
     return html`
       <oryx-card>
-        <oryx-heading slot="heading">
-          ${when(
-            this.pickingList?.createdAt,
-            () =>
-              html`
-                <span
-                  >${asyncValue(
-                    this.localeService.formatTime(this.pickingList.createdAt)
-                  )}</span
-                >
-              `
-          )}
-          <h6 class="identifier">${this.pickingList.id}</h6>
-        </oryx-heading>
+        ${when(
+          this.pickingList?.createdAt,
+          () =>
+            html`
+              <h3 slot="heading">
+                ${asyncValue(
+                  this.localeService.formatTime(this.pickingList.createdAt)
+                )}
+              </h3>
+            `
+        )}
+        <span slot="heading" class="identifier">${this.pickingList.id}</span>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>

@@ -21,6 +21,12 @@ export const backofficeNgTokens: DesignToken[] = [
       typographyTokens.typography,
       typographySmallTokens.typography
     ),
+    layout: {
+      container: {
+        width: '390px',
+        padding: '10px',
+      },
+    },
   },
   {
     media: {
