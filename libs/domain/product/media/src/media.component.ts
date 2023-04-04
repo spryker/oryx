@@ -4,11 +4,10 @@ import {
   ImageSource,
   ProductImageService,
   ProductMediaContainerSize,
-  ProductMediaSet,
   ProductMixin,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductMediaOptions } from './media.model';
 
@@ -52,7 +51,7 @@ export class ProductMediaComponent extends ProductMixin(
    * Resolves the media set. When there's no mediaSet index provided, the first
    * media set is returned.
    */
-  protected getMediaSet(): ProductMediaSet | undefined {
+  protected getMediaSet = computed(() => {
     const { mediaSet } = this.$options();
     const medias = this.$product()?.mediaSet;
     if (mediaSet) {
@@ -60,7 +59,7 @@ export class ProductMediaComponent extends ProductMixin(
     } else {
       return medias?.[0];
     }
-  }
+  });
 
   /**
    * Returns a list of srcset's that contain the url for each provided media
