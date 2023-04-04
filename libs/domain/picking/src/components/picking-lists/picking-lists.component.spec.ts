@@ -12,17 +12,30 @@ import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { PickingListsComponent } from './picking-lists.component';
+class MockPickingListService implements Partial<PickingListService> {
+  get = vi.fn().mockReturnValue(of(mockPickingListData));
+}
 
 describe('PickingListsComponent', () => {
   let element: PickingListsComponent;
-
-  class MockPickingListService implements Partial<PickingListService> {
-    get = vi.fn().mockReturnValue(of(mockPickingListData));
-    setQualifier = vi.fn().mockReturnValue(of({}));
-  }
+  let service: MockPickingListService;
 
   beforeAll(async () => {
     await useComponent(pickingListsComponent);
+  });
+
+  beforeEach(async () => {
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: PickingListService,
+          useClass: MockPickingListService,
+        },
+      ],
+    });
+
+    service = testInjector.inject(PickingListService) as unknown as MockPickingListService;
+    element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
   });
 
   afterEach(() => {
@@ -33,19 +46,6 @@ describe('PickingListsComponent', () => {
   describe('when picking lists is not empty', () => {
     const getCustomerNoteModal = (): ModalComponent | null =>
       element.renderRoot.querySelector('oryx-modal');
-
-    beforeEach(async () => {
-      createInjector({
-        providers: [
-          {
-            provide: PickingListService,
-            useClass: MockPickingListService,
-          },
-        ],
-      });
-
-      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
-    });
 
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
@@ -139,23 +139,8 @@ describe('PickingListsComponent', () => {
   });
 
   describe('when picking lists list is empty', () => {
-    class OverrideMockPickingListService
-      extends MockPickingListService
-      implements Partial<PickingListService>
-    {
-      get = vi.fn().mockReturnValue(of([]));
-    }
-
     beforeEach(async () => {
-      createInjector({
-        providers: [
-          {
-            provide: PickingListService,
-            useClass: OverrideMockPickingListService,
-          },
-        ],
-      });
-
+      service.get = vi.fn().mockReturnValue(of([]));
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
     });
 

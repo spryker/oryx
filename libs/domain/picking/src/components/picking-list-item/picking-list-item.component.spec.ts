@@ -19,7 +19,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  get = vi.fn().mockReturnValue(of(mockPickingListData));
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
 }
 
@@ -140,7 +140,6 @@ describe('PickingListItemComponent', () => {
 
   describe('when cart note is not provided', () => {
     beforeEach(async () => {
-      service.getById = vi.fn().mockReturnValue(of(mockPickingListData[1]));
       service.startPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));
