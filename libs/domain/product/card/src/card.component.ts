@@ -1,4 +1,3 @@
-import { ContextController } from '@spryker-oryx/core';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
@@ -26,8 +25,6 @@ export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
   static styles = [ProductCardStyles];
-
-  protected context = new ContextController(this);
 
   protected override render(): TemplateResult | void {
     const product = this.$product();
