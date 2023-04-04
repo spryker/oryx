@@ -19,6 +19,7 @@
     "release-test:e2e": "npx nx run storefront-e2e:e2e:headless",
     "testfront": "cd apps/testfront && npm run dev &",
     "release": "run-s release:*",
+    "release-minor": "cd libs && npm run release-minor",
     "release-labs": "cd libs && npm run release-labs",
     "release:libs": "cd libs && npm run release",
     "release-from-tag": "run-s release-from-tag:*",
