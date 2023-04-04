@@ -46,7 +46,7 @@ jobs:
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
       - name: Release from packages
-        run: npm run release-from-packages
+        run: npm run release-minor
       - name: Install dependencies
         run: cd apps/testfront && npm i && cd ../..
       - name: Run testfront

@@ -1,25 +1,20 @@
-import { defineConfig } from 'vite';
-import { viteStaticCopy } from "vite-plugin-static-copy";
+import { join } from 'path';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { viteConfig } from './vite.config.common.js';
 
-export default defineConfig({
-  root: './src',
-  envDir: '../',
-  envPrefix: ['FES', 'SCOS', 'STORE'],
-  build: {
-    outDir: '../dist/client',
-    emptyOutDir: true,
-  },
-  server: {
-    port: 3001,
-  },
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: '../src/assets/addresses',
-          dest: '../../dist/client/assets',
-        },
-      ],
-    }),
-  ],
+export default defineConfig((config) => {
+  return {
+    root: viteConfig.index,
+    envDir: viteConfig.root,
+    envPrefix: viteConfig.envPrefix,
+    build: {
+      outDir: join(
+        viteConfig.build.outDirRoot,
+        viteConfig.build.index
+      ),
+      emptyOutDir: true,
+    },
+    publicDir: '../../../libs/template/presets/public',
+    plugins: [splitVendorChunkPlugin()],
+  };
 });
