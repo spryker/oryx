@@ -9,7 +9,7 @@ export const styles = css`
   .list-container {
     position: relative;
     height: 100%;
-    padding: 25px 20px;
+    padding: 25px 0;
     display: grid;
     gap: 20px 0;
     grid-auto-rows: max-content;
