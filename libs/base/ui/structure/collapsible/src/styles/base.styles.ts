@@ -55,7 +55,7 @@ export const collapsibleBaseStyle = css`
   :is(oryx-icon-button, oryx-button) {
     display: flex;
     align-items: center;
-    color: var(--oryx-color-primary-300);
+    color: var(--oryx-color-neutral-400);
   }
 
   :host(:not(${inlineSelector})) :is(oryx-icon-button, oryx-button) {

@@ -3,7 +3,7 @@ import { ThemeToken } from '@spryker-oryx/core';
 export const typographyTokens: ThemeToken = {
   typography: {
     font: {
-      face: '"Montserrat", sans-serif',
+      face: `'Montserrat', sans-serif`,
       size: '14px',
       weight: '500',
       line: '22px',

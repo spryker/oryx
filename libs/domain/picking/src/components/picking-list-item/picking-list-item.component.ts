@@ -54,43 +54,38 @@ export class PickingListItemComponent
 
     return html`
       <oryx-card>
-        <oryx-heading slot="heading">
-          ${when(
-            this.pickingList?.createdAt,
-            () =>
-              html`
-                <span
-                  >${asyncValue(
-                    this.localeService.formatTime(this.pickingList.createdAt)
-                  )}</span
-                >
-              `
-          )}
-          <h4 class="identifier">${this.pickingList.id}</h4>
-        </oryx-heading>
+        ${when(
+          this.pickingList?.createdAt,
+          () =>
+            html`
+              <h3 slot="heading">
+                ${asyncValue(
+                  this.localeService.formatTime(this.pickingList.createdAt)
+                )}
+              </h3>
+            `
+        )}
+        <span slot="heading" class="identifier">${this.pickingList.id}</span>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
-          <span
-            >${i18n('picking.picking-list-item.<count>-items', {
-              count: this.pickingList?.items.length,
-            })}</span
-          >
+          ${i18n('picking.picking-list-item.<count>-items', {
+            count: this.pickingList?.items.length,
+          })}
+          ${when(
+            this.pickingList?.cartNote,
+            () => html`
+              <oryx-icon-button size=${Size.Md}>
+                <button
+                  aria-label="Show customer note"
+                  @click=${this.showCustomerNote}
+                >
+                  <oryx-icon type=${IconTypes.Info}></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            `
+          )}
         </div>
-
-        ${when(
-          this.pickingList?.cartNote,
-          () => html`
-            <oryx-icon-button size=${Size.Sm}>
-              <button
-                aria-label="Show customer note"
-                @click=${this.showCustomerNote}
-              >
-                <oryx-icon type=${IconTypes.Info}></oryx-icon>
-              </button>
-            </oryx-icon-button>
-          `
-        )}
 
         <oryx-button
           slot="footer"
