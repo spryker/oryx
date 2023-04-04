@@ -38,9 +38,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     };
 
     return this.pickingHttpService
-      .patch<PatchPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
+      .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
-        map(({ data: [updatedPickingListData] }) => ({
+        map(({ data: updatedPickingListData }) => ({
           ...pickingList,
           status: updatedPickingListData.status as PickingListStatus,
           createdAt: new Date(updatedPickingListData.createdAt),
@@ -68,7 +68,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     };
 
     return this.pickingHttpService
-      .patch<PatchPickingListResponse>(
+      .patch<FinishPickingListResponse>(
         `/picking-lists/${pickingList.id}/picking-list-items`,
         body
       )
@@ -83,24 +83,25 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   }
 
   protected getPickingListQuery(qualifier?: PickingListQualifier): string {
-    if (!qualifier) return '';
+    const params = new URLSearchParams({
+      include:
+        'picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets',
+    });
 
-    let query = '';
-
-    if (qualifier.id) {
-      return `/${qualifier.id}`;
+    if (qualifier?.id) {
+      return `/${qualifier.id}?${params.toString()}`;
     }
 
-    if (qualifier.status) {
-      query += `?filter[picking-lists.status]=${qualifier.status}`;
+    if (qualifier?.status) {
+      params.set('filter[picking-lists.status]', qualifier.status);
     }
 
     if (
-      qualifier.limit !== undefined ||
-      qualifier.offset !== undefined ||
-      qualifier.orderReferences !== undefined ||
-      qualifier.sortBy !== undefined ||
-      qualifier.sortDesc !== undefined
+      qualifier?.limit !== undefined ||
+      qualifier?.offset !== undefined ||
+      qualifier?.orderReferences !== undefined ||
+      qualifier?.sortBy !== undefined ||
+      qualifier?.sortDesc !== undefined
     ) {
       throw new Error(
         `PickingListDefaultAdapter: Unsupported qualifier: ${JSON.stringify(
@@ -111,7 +112,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
     }
 
-    return query;
+    return `?${params.toString()}`;
   }
 
   protected async parsePickingLists(
@@ -253,7 +254,12 @@ interface LinksObject {
   self: string;
 }
 
-interface PatchPickingListResponse {
+interface StartPickingListResponse {
+  data: PatchPickingListData;
+  links: LinksObject;
+}
+
+interface FinishPickingListResponse {
   data: PatchPickingListData[];
   links: LinksObject;
 }
