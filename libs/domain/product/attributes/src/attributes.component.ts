@@ -1,12 +1,13 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
 import { ProductAttributeStyles } from './attributes.styles';
 
+@ssrShim('style')
 @defaultOptions({ columnCount: '2' })
-@hydratable(['mouseover', 'focusin'])
+@hydratable()
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {

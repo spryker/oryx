@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const ProductAttributeStyles = css`
   dl {
     column-count: var(--column-count);
+    margin: 0;
   }
 
   dl > * {
