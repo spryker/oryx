@@ -8,5 +8,7 @@ export const styles = css`
     box-sizing: border-box;
     min-height: 100vh;
     display: block;
+    max-width: var(--oryx-layout-container-width);
+    margin: auto;
   }
 `;
