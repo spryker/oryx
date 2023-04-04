@@ -9,7 +9,6 @@ import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -34,17 +33,12 @@ export class PickingListItemComponent
 
     this.isDisabled = true;
 
-    this.pickingListService
-      .startPicking(this.pickingList)
-      .pipe(
-        tap(() => {
-          this.isDisabled = false;
-          this.routerService.navigate(
-            `/picking-list/picking/${this.pickingList.id}`
-          );
-        })
-      )
-      .subscribe();
+    this.pickingListService.startPicking(this.pickingList).subscribe(() => {
+      this.isDisabled = false;
+      this.routerService.navigate(
+        `/picking-list/picking/${this.pickingList.id}`
+      );
+    });
   }
 
   protected showCustomerNote(): void {
@@ -62,43 +56,38 @@ export class PickingListItemComponent
 
     return html`
       <oryx-card>
-        <oryx-heading slot="heading">
-          ${when(
-            this.pickingList?.createdAt,
-            () =>
-              html`
-                <span
-                  >${asyncValue(
-                    this.localeService.formatTime(this.pickingList.createdAt)
-                  )}</span
-                >
-              `
-          )}
-          <h4 class="identifier">${this.pickingList.id}</h4>
-        </oryx-heading>
+        ${when(
+          this.pickingList?.createdAt,
+          () =>
+            html`
+              <h3 slot="heading">
+                ${asyncValue(
+                  this.localeService.formatTime(this.pickingList.createdAt)
+                )}
+              </h3>
+            `
+        )}
+        <span slot="heading" class="identifier">${this.pickingList.id}</span>
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
-          <span
-            >${i18n('picking.picking-list-item.<count>-items', {
-              count: this.pickingList?.items.length,
-            })}</span
-          >
+          ${i18n('picking.picking-list-item.<count>-items', {
+            count: this.pickingList?.items.length,
+          })}
+          ${when(
+            this.pickingList?.cartNote,
+            () => html`
+              <oryx-icon-button size=${Size.Md}>
+                <button
+                  aria-label="Show customer note"
+                  @click=${this.showCustomerNote}
+                >
+                  <oryx-icon type=${IconTypes.Info}></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            `
+          )}
         </div>
-
-        ${when(
-          this.pickingList?.cartNote,
-          () => html`
-            <oryx-icon-button size=${Size.Sm}>
-              <button
-                aria-label="Show customer note"
-                @click=${this.showCustomerNote}
-              >
-                <oryx-icon type=${IconTypes.Info}></oryx-icon>
-              </button>
-            </oryx-icon-button>
-          `
-        )}
 
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Lg}>
           <button ?disabled=${this.isDisabled} @click=${this.startPicking}>
