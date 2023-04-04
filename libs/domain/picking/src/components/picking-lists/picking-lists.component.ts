@@ -20,7 +20,7 @@ export class PickingListsComponent extends LitElement {
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
   });
-   
+
   @asyncState()
   protected pickingLists = valueType(this.pickingLists$);
 

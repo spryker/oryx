@@ -11,7 +11,6 @@ import {
   BehaviorSubject,
   distinctUntilChanged,
   filter,
-  map,
   Observable,
   switchMap,
 } from 'rxjs';
@@ -43,8 +42,7 @@ export const PickingListMixin = <
     protected pickingList$ = this.pickingListId$.pipe(
       distinctUntilChanged(),
       filter(isDefined),
-      switchMap((id) => this.pickingListService.get({id})),
-      map(data => data?.length ? data[0] : null)
+      switchMap((id) => this.pickingListService.getById(id))
     );
 
     @asyncState()

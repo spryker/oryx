@@ -34,7 +34,9 @@ describe('PickingListsComponent', () => {
       ],
     });
 
-    service = testInjector.inject(PickingListService) as unknown as MockPickingListService;
+    service = testInjector.inject(
+      PickingListService
+    ) as unknown as MockPickingListService;
     element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
   });
 

@@ -3,6 +3,7 @@ import { PickingList, PickingListQualifier } from '../models';
 
 export interface PickingListService {
   get(qualifier: PickingListQualifier): Observable<PickingList[]>;
+  getById(id: string): Observable<PickingList | null>;
   startPicking(pickingList: PickingList): Observable<PickingList>;
   updatePickingItems(pickingList: PickingList): Observable<PickingList>;
   finishPicking(pickingList: PickingList): Observable<PickingList>;

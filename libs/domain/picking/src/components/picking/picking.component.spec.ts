@@ -11,7 +11,7 @@ import { PickingComponent } from './picking.component';
 import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of(mockPickingListData));
+  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   finishPicking = vi.fn();
 }
 
@@ -51,9 +51,7 @@ describe('PickingComponent', () => {
     ) as unknown as MockRouterService;
 
     element = await fixture(
-      html`<oryx-picking
-        .pickingListId=${mockPickingListData[0].id}
-      ></oryx-picking>`
+      html`<oryx-picking pickingListId="id"></oryx-picking>`
     );
   });
 
@@ -83,26 +81,27 @@ describe('PickingComponent', () => {
 
   describe('when there is no picking list', () => {
     beforeEach(async () => {
+      service.getById = vi.fn().mockReturnValue(of(null));
+
       element = await fixture(
-        html`<oryx-picking
-          pickingListId="fakeId"
-        ></oryx-picking>`
+        html`<oryx-picking pickingListId="id"></oryx-picking>`
       );
     });
 
     it('should not render product card', () => {
-      expect(element).toContainElement('oryx-picking-product-card');
+      expect(element).not.toContainElement('oryx-picking-product-card');
     });
   });
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[1]));
+      service.getById = vi.fn().mockReturnValue(of(mockPickingListData[1]));
+      service.finishPicking = vi
+        .fn()
+        .mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
-        html`<oryx-picking
-          .pickingListId=${mockPickingListData[1].id}
-        ></oryx-picking>`
+        html`<oryx-picking pickingListId="id"></oryx-picking>`
       );
     });
 
