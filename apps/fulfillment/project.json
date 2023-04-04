@@ -34,6 +34,34 @@
         }
       }
     },
+    "build-netlify": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/apps/fulfillment"],
+      "options": {
+        "commands": [
+          "npx nx run fulfillment:init-env:netlify-test",
+          "npx nx build fulfillment"
+        ],
+        "parallel": false
+      }
+    },
+    "init-env": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cp .env.template .env",
+        "cwd": "apps/fulfillment"
+      },
+      "configurations": {
+        "mock": {
+          "command": "cp .env.mock .env",
+          "cwd": "apps/fulfillment"
+        },
+        "netlify-test": {
+          "command": "cp .env.netlify-test .env",
+          "cwd": "apps/fulfillment"
+        }
+      }
+    },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
