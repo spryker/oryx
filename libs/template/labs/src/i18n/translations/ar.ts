@@ -16,4 +16,13 @@ export default {
   'tax-excluded': 'لا تشمل الضرائب',
   password: 'كلمة المرور',
   'remember-me': 'تذكرني',
+
+  shape: 'شكل',
+  brand: 'ماركة',
+  color: 'لون',
+  width: 'عرض',
+  processor_cores: 'المعالج_كورات',
+  flash_memory: 'ذاكرة متنقله',
+  protection_feature: 'حماية_ميزة',
+  internal_ram: 'داخلي_رام',
 };
