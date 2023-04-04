@@ -39,6 +39,19 @@ export const siteNavigationItemSchema: ContentComponentSchema<SiteNavigationItem
           },
         ],
       },
+      triggerBehavior: {
+        type: FormFieldType.Select,
+        options: [
+          {
+            value: 'click',
+            text: 'Click',
+          },
+          {
+            value: 'hover',
+            text: 'Hover',
+          },
+        ],
+      },
       contentBehavior: {
         type: FormFieldType.Select,
         options: [

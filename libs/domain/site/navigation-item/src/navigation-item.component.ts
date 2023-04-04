@@ -2,7 +2,12 @@ import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  hydratable,
+  queryFirstFocusable,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
@@ -10,6 +15,7 @@ import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
 import {
   NavigationContentBehavior,
+  NavigationTriggerBehavior,
   NavigationTriggerType,
   SiteNavigationItemOptions,
 } from './navigation-item.model';
@@ -17,6 +23,7 @@ import { styles } from './navigation-item.styles';
 
 @defaultOptions({
   triggerType: NavigationTriggerType.StorefrontButton,
+  triggerBehavior: NavigationTriggerBehavior.Click,
   contentBehavior: NavigationContentBehavior.Navigation,
 })
 @hydratable('window:load')
@@ -76,6 +83,23 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     }
   }
 
+  protected onTriggerHover(e: MouseEvent): void {
+    if (
+      this.componentOptions?.triggerBehavior !== NavigationTriggerBehavior.Hover
+    ) {
+      return;
+    }
+
+    //imitate mousedown behavior
+    const trigger = e.target as HTMLElement;
+    //focus focusable part of the trigger
+    (
+      (trigger.querySelector('a, button') ||
+        queryFirstFocusable(trigger)) as HTMLElement
+    )?.focus();
+    this.onTriggerClick();
+  }
+
   protected override render(): TemplateResult {
     switch (this.componentOptions?.contentBehavior) {
       case NavigationContentBehavior.Dropdown:
@@ -103,7 +127,11 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderIconButton(): TemplateResult {
     return html`
-      <oryx-icon-button slot="trigger" @click=${this.onTriggerClick}>
+      <oryx-icon-button
+        slot="trigger"
+        @click=${this.onTriggerClick}
+        @mouseenter=${this.onTriggerHover}
+      >
         ${when(
           this.url,
           () => html`<a href=${this.url!}>${this.icon}</a>`,
@@ -115,7 +143,11 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected renderButton(): TemplateResult {
     return html`
-      <oryx-button slot="trigger" @click=${this.onTriggerClick}>
+      <oryx-button
+        slot="trigger"
+        @click=${this.onTriggerClick}
+        @mouseenter=${this.onTriggerHover}
+      >
         ${when(
           this.url,
           () => html`<a href=${this.url!}> ${this.icon} ${this.label} </a>`,
@@ -134,6 +166,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         .text=${this.label}
         .badge=${this.badge}
         @click=${this.onTriggerClick}
+        @mouseenter=${this.onTriggerHover}
       ></oryx-site-navigation-button>
     `;
   }
