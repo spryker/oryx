@@ -1,5 +1,14 @@
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, map, Observable, shareReplay, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { PickingList, PickingListQualifier } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
@@ -13,6 +22,8 @@ export class PickingListDefaultService implements PickingListService {
     switchMap((qualifier) => this.adapter.get(qualifier)),
     shareReplay({ bufferSize: 1, refCount: true })
   );
+
+  protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
 
@@ -37,8 +48,19 @@ export class PickingListDefaultService implements PickingListService {
     );
   }
 
-  startPicking(pickingList: PickingList): Observable<PickingList> {
-    return this.adapter.startPicking(pickingList);
+  startPicking(pickingList: PickingList): Observable<PickingList | null> {
+    this.upcomingPickingListId$.next(pickingList.id);
+    return this.adapter.startPicking(pickingList).pipe(
+      catchError(() => {
+        this.upcomingPickingListId$.next(null);
+        return of(null);
+      }),
+      tap(() => this.upcomingPickingListId$.next(null))
+    );
+  }
+
+  getUpcomingPickingListId(): Observable<string | null> {
+    return this.upcomingPickingListId$;
   }
 
   updatePickingItems(pickingList: PickingList): Observable<PickingList> {

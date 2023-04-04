@@ -21,6 +21,7 @@ class MockRouterService implements Partial<RouterService> {
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
 class MockLocaleService implements Partial<LocaleService> {

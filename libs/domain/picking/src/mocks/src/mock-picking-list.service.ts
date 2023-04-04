@@ -24,4 +24,8 @@ export class MockPickingListService implements Partial<PickingListService> {
   ): Observable<PickingListQualifier> {
     return of(qualifier);
   }
+
+  getUpcomingPickingListId(): Observable<string | null> {
+    return of(null);
+  }
 }
