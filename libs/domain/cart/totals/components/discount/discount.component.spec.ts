@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
   mockCartWithDiscount,
-  mockCartWithoutDiscountRows,
+  mockCartWithoutDiscount,
   mockEmptyCart,
 } from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -79,18 +79,17 @@ describe('CartTotalsDiscountComponent', () => {
     });
   });
 
-  describe('when there are no discount rows', () => {
+  describe('when there is no discount', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of(mockCartWithoutDiscountRows));
+      service.getCart.mockReturnValue(of(mockCartWithoutDiscount));
       element = await fixture(
         html`<oryx-cart-totals-discount></oryx-cart-totals-discount>`
       );
     });
 
-    it('should render label and subtotal', () => {
+    it('should not render discounts', () => {
       const spans = element.shadowRoot?.querySelectorAll('span');
-      expect(spans?.[0].textContent).toBe('Discount');
-      expect(spans?.[1].textContent).toBe('price');
+      expect(spans?.length).toBe(0);
     });
 
     it('should not render discounts rows', () => {
@@ -108,8 +107,8 @@ describe('CartTotalsDiscountComponent', () => {
 
     it('should render label and subtotal', () => {
       const spans = element.shadowRoot?.querySelectorAll('span');
-      expect(spans?.[0].textContent).toBe('Discount');
-      expect(spans?.[1].textContent).toBe('price');
+      expect(spans?.[0].textContent).toContain('1 discounts');
+      expect(spans?.[1].textContent).toContain('price');
     });
 
     describe('and the discountRowsAppearance in None', () => {

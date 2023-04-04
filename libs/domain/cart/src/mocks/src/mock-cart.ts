@@ -165,10 +165,9 @@ export const mockCartWithMultipleDiscount: Cart = {
   discounts: mockMultipleDiscounts,
 };
 
-export const mockCartWithoutDiscountRows: Cart = {
+export const mockCartWithoutDiscount: Cart = {
   ...mockBaseCart,
   id: 'discount-no-rows',
-  totals: mockCartTotalsWithDiscount,
   discounts: [],
 };
 

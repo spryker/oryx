@@ -6,5 +6,9 @@ export const styles = css`
     font-size: var(--oryx-typography-font-size);
     font-weight: var(--oryx-typography-font-weight);
     box-sizing: border-box;
+
+    display: block;
+    max-width: var(--oryx-layout-container-width);
+    margin: auto;
   }
 `;
