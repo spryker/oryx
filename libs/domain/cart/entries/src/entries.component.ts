@@ -31,7 +31,7 @@ export class CartEntriesComponent extends CartComponentMixin(
       </oryx-heading>
 
       ${repeat(
-        this.entries ?? [],
+        this.$entries() ?? [],
         (entry) => entry.groupKey,
         (entry) => {
           return html`

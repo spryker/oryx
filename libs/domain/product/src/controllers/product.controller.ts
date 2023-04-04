@@ -34,7 +34,6 @@ export class ProductController {
         if (!sku) {
           return of(undefined);
         }
-        console.log('where is my sku???', sku);
         return (
           this.productService
             ?.get({ sku })

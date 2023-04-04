@@ -1,5 +1,5 @@
 import { Type } from '@spryker-oryx/di';
-import { asyncState, signal, Signal, valueType } from '@spryker-oryx/utilities';
+import { signal, Signal } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { CartController } from '../controllers';
@@ -15,12 +15,6 @@ export declare class CartMixinInterface implements CartComponentAttributes {
   cart?: Cart;
 
   protected cartController: CartController;
-
-  protected isEmpty?: boolean;
-  protected isBusy?: boolean;
-  protected entries?: CartEntry[];
-  protected totals?: FormattedCartTotals;
-  protected totalQuantity?: number;
 
   protected $isEmpty: Signal<boolean>;
   protected $isBusy: Signal<boolean>;
@@ -39,21 +33,6 @@ export const CartComponentMixin = <
     @property({ type: Object, reflect: true }) cart?: Cart;
 
     protected cartController = new CartController(this);
-
-    @asyncState()
-    protected isEmpty = valueType(this.cartController.isEmpty());
-
-    @asyncState()
-    protected isBusy = valueType(this.cartController.isBusy());
-
-    @asyncState()
-    protected entries = valueType(this.cartController.getEntries());
-
-    @asyncState()
-    protected totals = valueType(this.cartController.getTotals());
-
-    @asyncState()
-    protected totalQuantity = valueType(this.cartController.getTotalQuantity());
 
     protected $isEmpty = signal(this.cartController.isEmpty(), false);
     protected $isBusy = signal(this.cartController.isBusy(), false);
