@@ -2,13 +2,24 @@ import { css } from 'lit';
 
 export const styles = css`
   .tab-panels {
+    min-height: 100vh;
     width: 100%;
+  }
+
+  .list-container {
+    position: relative;
+    height: 100%;
+    padding: 25px 0;
+    display: grid;
+    gap: 20px 0;
+    grid-auto-rows: max-content;
   }
 
   .picking-complete {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
   }
 
   .title-empty {
