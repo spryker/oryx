@@ -35,10 +35,7 @@ export class DefaultLocaleService implements LocaleService {
       map((locale, i) => {
         // Use map to access index and emit LocaleChanged only after first value
         if (i !== 0) {
-          // TODO: drop this as soon as we have improved interceptor logic
-          setTimeout(() => {
-            this.queryService.emit({ type: LocaleChanged, data: locale });
-          });
+          this.queryService.emit({ type: LocaleChanged, data: locale });
         }
 
         return locale;
