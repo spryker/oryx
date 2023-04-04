@@ -130,40 +130,6 @@ const Template: Story = (): TemplateResult => {
         `;
       })}
 
-      <h3>oryx-icon element</h3>
-      ${variations.map(({ name, state, lightDomState }) => {
-        const isDisabled = name === 'disabled';
-
-        return html`
-            <h4>${name}</h4>
-
-          ${sizes.map(
-            (size) => html`
-              <oryx-icon-button size=${size}>
-                <oryx-icon
-                  class="${state} ${lightDomState}"
-                  type=${icon}
-                  ?disabled=${isDisabled}
-                ></oryx-icon>
-              </oryx-icon-button>
-            `
-          )}
-          ${sizes.map(
-            (size) => html`
-              <oryx-icon-button size="${size}">
-                <oryx-icon
-                  class="${state} ${lightDomState}"
-                  type=${icon}
-                  ?disabled=${isDisabled}
-                ></oryx-icon>
-                label
-              </oryx-icon-button>
-            `
-          )}
-        </section>
-      `;
-      })}
-
       <h3>text inside element</h3>
       ${variations.map(({ name, state, lightDomState }) => {
         const isDisabled = name === 'disabled';
