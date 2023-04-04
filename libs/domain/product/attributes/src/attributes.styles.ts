@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const ProductAttributeStyles = css`
+export const productAttributeStyles = css`
   dl {
     column-count: var(--column-count);
     margin: 0;

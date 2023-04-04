@@ -3,7 +3,7 @@ import { ProductMixin } from '@spryker-oryx/product';
 import { hydratable, i18n, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
-import { ProductAttributeStyles } from './attributes.styles';
+import { productAttributeStyles } from './attributes.styles';
 
 @ssrShim('style')
 @defaultOptions({ columnCount: '2' })
@@ -11,7 +11,7 @@ import { ProductAttributeStyles } from './attributes.styles';
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {
-  static styles = [ProductAttributeStyles];
+  static styles = [productAttributeStyles];
 
   protected override render(): TemplateResult | void {
     const { attributeNames: names, attributes: values } = this.$product() ?? {};
