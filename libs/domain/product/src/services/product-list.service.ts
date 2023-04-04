@@ -8,7 +8,7 @@ export interface ProductListService {
     qualifier: ProductListQualifier
   ): Observable<QueryState<ProductList | undefined>>;
 
-  getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
+  // getSearchParams(qualifier: ProductListQualifier): Record<string, string>;
 }
 
 export const ProductListService = 'oryx.ProductListService';

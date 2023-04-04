@@ -30,7 +30,7 @@ export class ProductMediaComponent extends ProductMixin(
     );
 
     const url = sources?.[0]?.url;
-    if (!url) return this.renderImage('');
+    if (!url) return this.renderImage();
 
     if (this.isVideo(url)) {
       return html`<oryx-video url=${url}></oryx-video>`;
@@ -39,7 +39,7 @@ export class ProductMediaComponent extends ProductMixin(
     }
   }
 
-  protected renderImage(src: string, srcSet?: string): TemplateResult | void {
+  protected renderImage(src?: string, srcSet?: string): TemplateResult | void {
     return html`<oryx-image
       .src=${src}
       .srcset=${srcSet}
