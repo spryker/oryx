@@ -90,15 +90,13 @@ describe('PickingListItemComponent', () => {
     });
 
     it('should render time', () => {
-      expect(
-        element.renderRoot
-          .querySelector("[slot='heading'] span")
-          ?.textContent?.trim()
-      ).toBe('01:23');
+      expect(element.renderRoot.querySelector('h3')?.textContent?.trim()).toBe(
+        '01:23'
+      );
     });
 
     it('should render id', () => {
-      expect(element.renderRoot.querySelector('h4')?.textContent).toBe(
+      expect(element.renderRoot.querySelector('.identifier')?.textContent).toBe(
         mockPickingListData[0].id
       );
     });
