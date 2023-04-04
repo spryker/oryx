@@ -5,6 +5,7 @@ import {
   backofficeNgTheme,
   backofficeResources,
   backofficeTheme,
+  fulfillmentTheme,
 } from '@spryker-oryx/presets';
 
 export const theme = {
@@ -13,6 +14,7 @@ export const theme = {
     b2c: [b2cTheme],
     backoffice: [backofficeTheme],
     'backoffice-ng': [backofficeNgTheme],
+    fulfillment: [fulfillmentTheme],
   },
 };
 

@@ -1,5 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { LocaleChanged } from '@spryker-oryx/i18n';
+import { CurrencyChanged } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
 import { ProductList, ProductListQualifier } from '../models';
 import { ProductListAdapter } from './adapter';
@@ -10,6 +12,7 @@ export class DefaultProductListService implements ProductListService {
   protected productListQuery = createQuery({
     loader: (q: ProductListQualifier) => this.adapter.get(q),
     onLoad: [ProductsLoaded],
+    refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
   protected readonly productListSearchParams: Array<

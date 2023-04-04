@@ -8,7 +8,8 @@ export class SearchFragment {
   getClearButton = () => this.getWrapper().contains('Clear');
   getSearchResultsWrapper = () => this.getWrapper().find('[slot="option"]');
   getEmptySearchResults = () => this.getWrapper().find('[slot="empty"]');
-
+  getSearchResultsContainer = () =>
+    this.getWrapper().find('[slot="option"] div');
   getSearchSuggestions = () =>
     this.getSearchResultsWrapper().find('section:first-of-type li');
 
@@ -20,13 +21,19 @@ export class SearchFragment {
 
   search = (text: string) => {
     cy.intercept(
-      `**/catalog-search-suggestions?q=${encodeURIComponent(text)}*`
+      `**/catalog-search-suggestions?q=${encodeURIComponent(text).replace(
+        /%20/g,
+        '+'
+      )}*`
     ).as('searchQuery');
 
-    this.getWrapper().trigger('focusin');
-    cy.waitUpdateComplete(this.getTypeahead()).should('be.true');
-
-    this.getInput().type(text, { delay: 100 });
+    this.getWrapper().click();
+    this.getTypeahead().click();
+    this.getWrapper().should('not.have.attr', 'defer-hydration');
+    this.getTypeahead().should('not.have.attr', 'defer-hydration');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    this.getInput().type(text, { delay: 10, force: true });
 
     cy.wait('@searchQuery');
   };

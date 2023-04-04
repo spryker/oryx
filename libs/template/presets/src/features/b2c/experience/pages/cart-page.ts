@@ -4,31 +4,35 @@ export const CartPage: StaticComponent = {
   type: 'Page',
   meta: { title: 'Cart Page', route: '/cart' },
   options: {
-    data: { rules: [{ layout: 'two-column', container: 'true' }] },
+    data: {
+      rules: [{ layout: 'two-column', container: 'true', padding: '30px 0 0' }],
+    },
   },
   components: [
-    {
-      type: 'cart-entries',
-      options: {
-        data: {
-          defaultExpandedOptions: true,
-          removeByQuantity: 'showBin',
-          silentRemove: true,
-          rules: [{ padding: '30px 0' }],
-        },
-      },
-    },
+    { type: 'oryx-cart-entries' },
     {
       type: 'experience-composition',
-      components: [{ type: 'cart-totals' }, { type: 'checkout-link' }],
+      components: [
+        {
+          type: 'oryx-cart-totals',
+          components: [
+            { type: 'oryx-cart-totals-subtotal' },
+            { type: 'oryx-cart-totals-discount' },
+            { type: 'oryx-cart-totals-expense' },
+            { type: 'oryx-cart-totals-tax' },
+            { type: 'oryx-cart-totals-delivery' },
+            { type: 'oryx-cart-totals-total' },
+          ],
+        },
+        { type: 'checkout-link' },
+      ],
       options: {
         data: {
           rules: [
             {
               sticky: true,
-              top: '78px',
+              top: '108px',
               maxWidth: true,
-              padding: '30px 0',
               layout: 'list',
               gap: '20px',
             },

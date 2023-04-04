@@ -48,7 +48,7 @@ export class DefaultCheckoutOrchestrationService
 {
   protected stepsData: Map<CheckoutStepType, StepData> = new Map();
 
-  protected validityTrigger$ = new BehaviorSubject(null);
+  protected validityTrigger$ = new Subject();
 
   protected validityLogic$ = this.validityTrigger$.pipe(
     switchMap(() => this.collectValidity()),

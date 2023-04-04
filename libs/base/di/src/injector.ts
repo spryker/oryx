@@ -1,6 +1,7 @@
 import { InferInjectType, setCurrentInjector } from './inject';
 import {
   ClassProvider,
+  ExistingProvider,
   FactoryProvider,
   Provider,
   ValueProvider,
@@ -24,6 +25,10 @@ function isClassProvider(provider?: Provider): provider is ClassProvider {
 
 function isFactoryProvider(provider?: Provider): provider is FactoryProvider {
   return (provider as FactoryProvider)?.useFactory !== undefined;
+}
+
+function isExistingProvider(provider?: Provider): provider is ExistingProvider {
+  return (provider as ExistingProvider)?.useExisting !== undefined;
 }
 
 interface ProviderMap {
@@ -125,10 +130,13 @@ export class Injector {
       const restoreInjector = setCurrentInjector(this);
 
       if (isClassProvider(providerInstance.provider)) {
-        // eslint-disable-next-line new-cap
         providerInstance.instance = new providerInstance.provider.useClass();
       } else if (isFactoryProvider(providerInstance.provider)) {
         providerInstance.instance = providerInstance.provider.useFactory();
+      } else if (isExistingProvider(providerInstance.provider)) {
+        providerInstance.instance = this.getInstance(
+          providerInstance.provider.useExisting
+        );
       } else {
         throw new Error(`Invalid provider for ${token}`);
       }

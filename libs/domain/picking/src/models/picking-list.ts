@@ -9,6 +9,12 @@ export interface PickingList {
   updatedAt: Date;
 }
 
+export enum ItemsFilters {
+  NotPicked = 'not_picked',
+  Picked = 'picked',
+  NotFound = 'not_found',
+}
+
 export enum PickingListStatus {
   ReadyForPicking = 'ready-for-picking',
   PickingStarted = 'picking-started',
@@ -21,6 +27,7 @@ export interface PickingListItem {
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
   product: PickingProduct;
+  status: ItemsFilters;
 }
 
 export interface PickingOrderItem {
@@ -42,4 +49,21 @@ export interface PickingAmountSalesUnit {
 export interface PickingMeasurementUnit {
   name: string;
   code: string;
+}
+
+export interface SummaryInfo {
+  main: string;
+  additional?: string;
+}
+
+export interface PickingTab {
+  id: ItemsFilters;
+  title: string;
+  items: PickingListItem[];
+}
+
+export interface PartialPicking {
+  productId: string;
+  currentNumberOfPicked?: number;
+  quantity?: number;
 }

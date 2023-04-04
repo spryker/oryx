@@ -93,6 +93,11 @@ export class MockProductService implements Partial<ProductService> {
         color: 'Color',
       },
       labels: [newLabel, saleLabel],
+      availability: {
+        quantity: 3,
+        isNeverOutOfStock: false,
+        availability: true,
+      },
     },
     {
       sku: '2',
@@ -125,6 +130,11 @@ export class MockProductService implements Partial<ProductService> {
         color: 'Color',
       },
       labels: [newLabel],
+      availability: {
+        isNeverOutOfStock: true,
+        quantity: 0,
+        availability: false,
+      },
     },
     {
       sku: '3',
@@ -205,7 +215,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '6',
       name: 'Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6 Sample product no. 6',
-      description: 'Lorem ipsum dolor sit amet.',
+      description: 'Lorem ipsum dolor\nsit amet.',
       price: {
         defaultPrice: {
           value: 1879,
@@ -223,7 +233,7 @@ export class MockProductService implements Partial<ProductService> {
     {
       sku: '7',
       name: 'Sample product no. 7',
-      description: 'Lorem ipsum dolor sit amet.',
+      description: 'Lorem ipsum dolor sit amet',
       price: {
         defaultPrice: {
           value: 1900,

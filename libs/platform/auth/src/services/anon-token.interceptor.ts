@@ -20,10 +20,6 @@ export class AnonTokenInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (!this.shouldInterceptRequest(url)) {
-      return handle(url, options);
-    }
-
     return this.authTokenService.getToken().pipe(
       take(1),
       map((token) => this.addAnonHeader(token, options)),
@@ -32,7 +28,7 @@ export class AnonTokenInterceptor implements HttpInterceptor {
     );
   }
 
-  protected shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest(url: string): boolean {
     return !this.config.baseUrl || url.startsWith(this.config.baseUrl);
   }
 
@@ -44,15 +40,11 @@ export class AnonTokenInterceptor implements HttpInterceptor {
       return options;
     }
 
-    options = {
-      ...options,
-      headers: {
-        ...options.headers,
-        [this.headerName]: token.token,
-      },
-    };
+    const headers = new Headers(options.headers);
 
-    return options;
+    headers.set(this.headerName, token.token);
+
+    return { ...options, headers };
   }
 }
 

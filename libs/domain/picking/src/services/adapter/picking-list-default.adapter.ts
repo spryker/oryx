@@ -2,6 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import { Deserializer } from 'jsonapi-serializer';
 import { map, Observable, of, switchMap } from 'rxjs';
 import {
+  ItemsFilters,
   PickingList,
   PickingListItem,
   PickingListQualifier,
@@ -14,16 +15,16 @@ import { PickingListAdapter } from './picking-list.adapter';
 
 export class PickingListDefaultAdapter implements PickingListAdapter {
   constructor(
-    protected pickingHttpSerivce = inject(PickingHttpService),
+    protected pickingHttpService = inject(PickingHttpService),
     protected deserializer = new Deserializer({
       keyForAttribute: 'camelCase',
     })
   ) {}
 
-  get(qualifier: PickingListQualifier): Observable<PickingList[]> {
+  get(qualifier?: PickingListQualifier): Observable<PickingList[]> {
     const query = this.getPickingListQuery(qualifier);
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .get<GetPickingListResponse>(`/picking-lists${query}`)
       .pipe(switchMap((res) => this.parsePickingLists(res)));
   }
@@ -36,7 +37,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       },
     };
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .patch<PatchPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
         map(({ data: [updatedPickingListData] }) => ({
@@ -58,6 +59,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       data: pickingList.items.map((item) => ({
         id: item.orderItem.uuid,
         type: 'picking-list-items',
+        status: item.status,
         attributes: {
           numberOfPicked: item.numberOfPicked,
           numberOfNotPicked: item.numberOfNotPicked,
@@ -65,7 +67,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       })),
     };
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .patch<PatchPickingListResponse>(
         `/picking-lists/${pickingList.id}/picking-list-items`,
         body
@@ -80,7 +82,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
   }
 
-  protected getPickingListQuery(qualifier: PickingListQualifier): string {
+  protected getPickingListQuery(qualifier?: PickingListQualifier): string {
+    if (!qualifier) return '';
+
     let query = '';
 
     if (qualifier.id) {
@@ -126,7 +130,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   protected parseProducts(data: PickingListResponseData[]): PickingProduct[] {
     const productsDeserialize = data
       .flatMap((item) => item.pickingListItems)
-      .flatMap((item) => item.products);
+      .flatMap((item) => item.concreteProducts);
 
     const products: PickingProduct[] = productsDeserialize.map((product) => ({
       id: product.id,
@@ -149,7 +153,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       (item) => {
         // Use first element(products[0]) from products because it will be only ONE by pickinglist item
         const product = products.find(
-          (prod) => prod.sku === item.products[0].sku
+          (prod) => prod.sku === item.concreteProducts[0].sku
         );
 
         if (!product) {
@@ -164,6 +168,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
           orderItem: item.orderItem,
           product: product,
           type: 'picking-list-items',
+          status: item.numberOfPicked
+            ? ItemsFilters.Picked
+            : ItemsFilters.NotPicked,
         };
       }
     );
@@ -199,7 +206,7 @@ interface PickingListResponseItem extends ResourceObject {
   numberOfPicked: number;
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
-  products: PickingListResponseProduct[];
+  concreteProducts: PickingListResponseProduct[];
   quantity: number;
   salesOrders: PickingListResponseOrder[];
   shipments: PickingListResponseShipment[];

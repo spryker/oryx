@@ -1,5 +1,5 @@
 import { RouteParams, RouterService } from '@spryker-oryx/router';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 
 export class MockRouterService implements Partial<RouterService> {
   params$ = new ReplaySubject<RouteParams>(1);
@@ -24,5 +24,9 @@ export class MockRouterService implements Partial<RouterService> {
 
   getPathId(id: string): string | undefined {
     return undefined;
+  }
+
+  previousRoute(): Observable<string | null> {
+    return of(null);
   }
 }

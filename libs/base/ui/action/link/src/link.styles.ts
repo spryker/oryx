@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { LinkType } from './link.model';
+
+const isNeutral = unsafeCSS(`[link-type='${LinkType.Neutral}']`);
 
 export const linkStyles = css`
   :host {
@@ -6,7 +9,14 @@ export const linkStyles = css`
 
     display: inline-flex;
     align-items: center;
+  }
+
+  :host(:not(${isNeutral})) {
     color: var(--oryx-link-color, var(--oryx-color-primary-300));
+  }
+
+  :host(${isNeutral}) ::slotted(a) {
+    display: contents;
   }
 
   oryx-icon,
@@ -19,11 +29,16 @@ export const linkStyles = css`
 
   ::slotted(a) {
     border-radius: var(--oryx-border-radius-large);
-    padding: 4px 8px;
     text-decoration: none;
     outline: 0;
     border: solid 1px transparent;
     color: currentColor;
+  }
+
+  ::slotted(*),
+  oryx-icon,
+  ::slotted(oryx-icon) {
+    padding: 4px 8px;
   }
 
   :host(:not([multiLine])) ::slotted(a) {
@@ -37,7 +52,7 @@ export const linkStyles = css`
     color: var(--oryx-color-neutral-300);
   }
 
-  :host(:hover:not([disabled])) {
+  :host(:hover:not([disabled]):not(${isNeutral})) {
     color: var(--oryx-link-color-hover, var(--oryx-color-primary-400));
   }
 

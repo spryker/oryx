@@ -16,17 +16,18 @@ export class CartPage extends AbstractSFPage {
     this.waitForLoadedSSR();
   }
 
-  getCartEntriesWrapper = () => cy.get('cart-entries');
-
+  getCartEntriesWrapper = () => cy.get('oryx-cart-entries');
+  getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
   getCartEntries = () =>
     this.getCartEntriesWrapper()
-      .find('cart-entry')
+      .find('oryx-cart-entry')
       .then(($elements) => {
         return cy.wrap(
           $elements.toArray().map(($el) => new CartEntryFragment($el))
         );
       });
-
+  getCartEntriesHeading = () =>
+    this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
   getCheckoutBtn = () => cy.contains('oryx-content-link', 'Checkout').find('a');
 }

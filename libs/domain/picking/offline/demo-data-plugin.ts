@@ -3,14 +3,11 @@ import {
   ExecPlugin,
   InjectionPlugin,
 } from '@spryker-oryx/core';
+import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
-import { PickingListStatus } from '@spryker-oryx/picking';
-import { Transaction } from 'dexie';
-import {
-  PickingListEntity,
-  PickingListSerialized,
-  PickingProductEntity,
-} from './entities';
+import { map, switchMap, withLatestFrom } from 'rxjs';
+import { PickingListEntity, PickingProductEntity } from './entities';
+import { PickingListOnlineAdapter } from './services';
 
 export class OfflineDemoDataPlugin extends ExecPlugin {
   constructor() {
@@ -28,200 +25,60 @@ export class OfflineDemoDataPlugin extends ExecPlugin {
 
       const dexieIdbService = injector.inject(DexieIndexedDbService);
 
-      dexieIdbService.onPopulate((tx) => this.populateDb(tx, dexieIdbService));
+      dexieIdbService.onPopulate(() =>
+        setTimeout(() => this.populateDb(injector))
+      );
     });
   }
 
-  protected async populateDb(
-    tx: Transaction,
-    dexieIdbService: DexieIndexedDbService
-  ): Promise<void> {
-    const mockPickingLists: PickingListSerialized[] = [
-      {
-        id: 'picking-list-1',
-        status: PickingListStatus.ReadyForPicking,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        cartNote: 'Mock cart note',
-        items: [
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 5,
-            productId: 'product-1',
-            orderItem: {
-              amount: '5',
-              quantity: 5,
-              idSalesOrderItem: 1,
-              name: 'Mock order 1',
-              sku: 'sku-1',
-              uuid: 'order-1',
-            },
-          },
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 3,
-            productId: 'product-2',
-            orderItem: {
-              amount: '5',
-              idSalesOrderItem: 1,
-              name: 'Mock order 1',
-              quantity: 3,
-              sku: 'sku-2',
-              uuid: 'order-1',
-            },
-          },
-        ],
-        itemsCount: 1,
-        localStatus: PickingListStatus.ReadyForPicking,
-        orderReferences: ['order-1'],
-        productSkus: ['product-1', 'product-2'],
-        requestedDeliveryDate: new Date(),
-      },
-      {
-        id: 'picking-list-2',
-        status: PickingListStatus.ReadyForPicking,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        items: [
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 1,
-            productId: 'product-3',
-            orderItem: {
-              amount: '2',
-              quantity: 2,
-              idSalesOrderItem: 2,
-              name: 'Mock order 2',
-              sku: 'sku-2',
-              uuid: 'order-2',
-            },
-          },
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 7,
-            productId: 'product-5',
-            orderItem: {
-              amount: '7',
-              quantity: 7,
-              idSalesOrderItem: 2,
-              name: 'Mock order 2',
-              sku: 'sku-2',
-              uuid: 'order-2',
-            },
-          },
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 3,
-            productId: 'product-1',
-            orderItem: {
-              amount: '3',
-              quantity: 3,
-              idSalesOrderItem: 2,
-              name: 'Mock order 2',
-              sku: 'sku-2',
-              uuid: 'order-2',
-            },
-          },
-        ],
-        itemsCount: 1,
-        localStatus: PickingListStatus.ReadyForPicking,
-        orderReferences: ['order-2'],
-        productSkus: ['product-3', 'product-5', 'product-1'],
-        requestedDeliveryDate: new Date(),
-      },
-      {
-        id: 'picking-list-3',
-        status: PickingListStatus.PickingStarted,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        items: [
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 5,
-            productId: 'product-1',
-            orderItem: {
-              amount: '5',
-              quantity: 5,
-              idSalesOrderItem: 1,
-              name: 'Mock order 1',
-              sku: 'sku-1',
-              uuid: 'order-1',
-            },
-          },
-          {
-            numberOfPicked: 0,
-            numberOfNotPicked: 0,
-            quantity: 3,
-            productId: 'product-2',
-            orderItem: {
-              amount: '5',
-              idSalesOrderItem: 1,
-              name: 'Mock order 1',
-              quantity: 3,
-              sku: 'sku-2',
-              uuid: 'order-1',
-            },
-          },
-        ],
-        itemsCount: 1,
-        localStatus: PickingListStatus.PickingStarted,
-        orderReferences: ['order-1'],
-        productSkus: ['product-1', 'product-2'],
-        requestedDeliveryDate: new Date(),
-      },
-    ];
-    const mockProducts: PickingProductEntity[] = [
-      {
-        id: 'product-1',
-        sku: 'sku-1',
-        productName: 'Mock product #1',
-        image: null,
-        imageLarge: null,
-      },
-      {
-        id: 'product-2',
-        sku: 'sku-2',
-        productName: 'Mock product #2',
-        image: null,
-        imageLarge: null,
-      },
-      {
-        id: 'product-3',
-        sku: 'sku-3',
-        productName: 'Mock product #3',
-        image: null,
-        imageLarge: null,
-      },
-      {
-        id: 'product-4',
-        sku: 'sku-4',
-        productName: 'Mock product #4',
-        image: null,
-        imageLarge: null,
-      },
-      {
-        id: 'product-5',
-        sku: 'sku-5',
-        productName: 'Mock product #5',
-        image: null,
-        imageLarge: null,
-      },
-    ];
+  protected async populateDb(injector: Injector): Promise<void> {
+    const onlineAdapter = injector.inject(PickingListOnlineAdapter);
+    const dexieIdbService = injector.inject(DexieIndexedDbService);
 
-    const pickingListTable = tx.table<PickingListSerialized>(
-      dexieIdbService.getStoreName(PickingListEntity)
-    );
-    const productTable = tx.table<PickingProductEntity>(
-      dexieIdbService.getStoreName(PickingProductEntity)
-    );
+    onlineAdapter
+      .get()
+      .pipe(
+        map((pl) => {
+          const productIds = new Set<string>();
 
-    await pickingListTable.bulkAdd(mockPickingLists);
-    await productTable.bulkAdd(mockProducts);
+          return {
+            pickingLists: pl,
+            products: pl
+              .map((pickingList) =>
+                pickingList.items.map((item) => item.product)
+              )
+              .flat()
+              .filter((product) => {
+                if (productIds.has(product.id)) return false;
+                productIds.add(product.id);
+
+                return true;
+              }),
+          };
+        }),
+        withLatestFrom(
+          dexieIdbService.getStore(PickingListEntity),
+          dexieIdbService.getStore(PickingProductEntity),
+          dexieIdbService.getDb()
+        ),
+        switchMap(
+          ([
+            { pickingLists, products },
+            pickingListsStore,
+            productStore,
+            db,
+          ]) => {
+            return db.transaction(
+              'readwrite',
+              [pickingListsStore, productStore],
+              () => {
+                pickingListsStore.bulkAdd(pickingLists);
+                productStore.bulkAdd(products);
+              }
+            );
+          }
+        )
+      )
+      .subscribe();
   }
 }

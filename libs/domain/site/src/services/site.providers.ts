@@ -1,10 +1,20 @@
-import { ErrorHandler, injectEnv } from '@spryker-oryx/core';
+import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
-import { CurrencyService, DefaultCurrencyService } from './currency';
+import {
+  currencyHydration,
+  CurrencyService,
+  CurrentCurrencyInterceptor,
+  DefaultCurrencyService,
+} from './currency';
 import { SiteErrorHandler } from './error-handling';
-import { DefaultLocaleService, LocaleService } from './locale';
+import {
+  AcceptLanguageInterceptor,
+  localeHydration,
+  SapiLocaleAdapter,
+} from './locale';
 import {
   DefaultNotificationService,
   NotificationService,
@@ -55,8 +65,8 @@ export const siteProviders: Provider[] = [
     useClass: DefaultCurrencyService,
   },
   {
-    provide: LocaleService,
-    useClass: DefaultLocaleService,
+    provide: LocaleAdapter,
+    useClass: SapiLocaleAdapter,
   },
   {
     provide: PricingService,
@@ -75,4 +85,19 @@ export const siteProviders: Provider[] = [
     useClass: DefaultSalutationService,
   },
   ...storeNormalizer,
+  {
+    provide: HttpInterceptor,
+    useClass: AcceptLanguageInterceptor,
+  },
+  {
+    provide: HttpInterceptor,
+    useClass: CurrentCurrencyInterceptor,
+  },
+  localeHydration,
+  currencyHydration,
+  // TODO: uncomment when CORs header issue is fixed
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: StoreInterceptor,
+  // },
 ];

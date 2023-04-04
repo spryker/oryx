@@ -14,6 +14,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
   @property({ type: Boolean, reflect: true }) fullscreen?: boolean;
+  @property({ type: Boolean }) footerButtonFullWidth?: boolean;
   @property() heading?: string;
   @property({ type: Boolean }) preventCloseByEscape?: boolean;
   @property({ type: Boolean }) preventCloseByBackdrop?: boolean;
@@ -177,9 +178,10 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <footer slot="footer">
               <slot name="footer">
-                <oryx-button type="secondary" outline size="sm">
+                <oryx-button type="secondary" outline .size=${Size.Md}>
                   <button value="cancel">Cancel</button>
                 </oryx-button>
+                <slot name="footer-more"></slot>
               </slot>
             </footer>
           `

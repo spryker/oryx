@@ -68,6 +68,8 @@ const mockCartTotals: CartTotals = {
   subtotal: 161942,
   grandTotal: 149867,
   priceToPay: 150867,
+  taxTotal: 1000,
+  expenseTotal: 100,
 };
 
 const mockCartTotalsWithTax: CartTotals = {
@@ -89,6 +91,17 @@ const mockDiscounts: CartDiscount[] = [
   {
     displayName: '€5 every tuesday and wednesday for buying 5 items',
     amount: 12075,
+  },
+];
+
+const mockMultipleDiscounts: CartDiscount[] = [
+  {
+    displayName: '€5 every tuesday and wednesday for buying 5 items',
+    amount: 12075,
+  },
+  {
+    displayName: 'Happy birthday!',
+    amount: 1000,
   },
 ];
 /**
@@ -123,6 +136,7 @@ export const mockNetCart: Cart = {
   ...mockBaseCart,
   id: 'net',
   priceMode: PriceMode.NetMode,
+  totals: mockFullCartTotals,
 };
 
 export const mockCartWithTax: Cart = {
@@ -144,10 +158,16 @@ export const mockCartWithDiscount: Cart = {
   discounts: mockDiscounts,
 };
 
-export const mockCartWithoutDiscountRows: Cart = {
+export const mockCartWithMultipleDiscount: Cart = {
+  ...mockBaseCart,
+  id: 'discount-multi-rows',
+  totals: mockCartTotalsWithDiscount,
+  discounts: mockMultipleDiscounts,
+};
+
+export const mockCartWithoutDiscount: Cart = {
   ...mockBaseCart,
   id: 'discount-no-rows',
-  totals: mockCartTotalsWithDiscount,
   discounts: [],
 };
 

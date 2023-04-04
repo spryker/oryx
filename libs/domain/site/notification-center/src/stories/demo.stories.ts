@@ -3,8 +3,8 @@ import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 
 import {
+  Notification,
   NotificationPosition,
-  NotificationStrategy,
 } from '@spryker-oryx/ui/notification-center';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -23,7 +23,7 @@ export default {
         NotificationPosition.BottomCenter,
         NotificationPosition.BottomEnd,
       ],
-      control: { type: 'radio' },
+      control: { type: 'select' },
       description: 'Position in which to display site error notifications.',
     },
     type: {
@@ -44,7 +44,7 @@ export default {
   },
 } as Meta;
 
-const emitMessage = (option: NotificationStrategy): void => {
+const emitMessage = (option: Notification): void => {
   resolve(NotificationService).push(option);
 };
 

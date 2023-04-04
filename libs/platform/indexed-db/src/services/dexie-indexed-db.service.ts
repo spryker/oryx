@@ -1,5 +1,5 @@
 import { injectEnv } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { InferType, inject } from '@spryker-oryx/di';
 import { IndexedDbEntities } from '@spryker-oryx/indexed-db';
 import { isDefined } from '@spryker-oryx/utilities';
 import { Dexie, Table, Transaction } from 'dexie';
@@ -117,7 +117,7 @@ export class DexieIndexedDbService implements IndexedDbService<OryxDexieDb> {
 
   getStore<TEntity extends IndexedDbEntityType>(
     entityType: TEntity
-  ): Observable<Table<TEntity>> {
+  ): Observable<Table<InferType<TEntity>>> {
     return this.getDb().pipe(
       map((db) => db.table(this.getStoreName(entityType)))
     );

@@ -2,6 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   combineLatest,
+  defer,
   map,
   Observable,
   shareReplay,
@@ -12,7 +13,7 @@ import { StoreService } from './store.service';
 
 export class DefaultStoreService implements StoreService {
   protected activeStore$ = new BehaviorSubject<string | undefined>(this.store);
-  protected stores$ = this.adapter.get().pipe(shareReplay(1));
+  protected stores$ = defer(() => this.adapter.get()).pipe(shareReplay(1));
   protected store$ = combineLatest([this.stores$, this.activeStore$]).pipe(
     map(([stores, activeStore]) =>
       activeStore

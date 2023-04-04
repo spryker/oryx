@@ -1,7 +1,8 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
-  .login-form {
+  form {
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -14,5 +15,9 @@ export const styles = css`
 
   .options oryx-link {
     margin-inline-start: auto;
+  }
+
+  h1 {
+    ${headingUtil(HeadingTag.H5)};
   }
 `;

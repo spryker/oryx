@@ -22,19 +22,12 @@ export class ProductDetailsPage extends AbstractSFPage {
   }
 
   waitForLoadedSPA(): void {
-    cy.intercept(`**/concrete-products/${this.productId}?*`).as(
-      'productRequest'
-    );
-
-    cy.wait('@productRequest');
+    this.waitForLoadedSSR();
   }
 
   hydrateAddToCart = () => {
-    this.getAddToCartWrapper().trigger('focusin');
-    // I can't find another way to detect the end of hydration
-    // waitUpdateComplete - does not work, even if the promise is resolved to true
-    //
-    // cy.waitUpdateComplete(this.getAddToCartWrapper())
+    this.getQuantityComponent().getInput().click();
+    // the only way to check for hydration now
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
   };

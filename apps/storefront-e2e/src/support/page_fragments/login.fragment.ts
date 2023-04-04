@@ -15,8 +15,8 @@ export class LoginFragment {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
 
-    this.getEmailInput().type(user.email, { delay: 100 });
-    this.getPasswordInput().type(user.password, { delay: 100 });
+    this.getEmailInput().type(user.email, { delay: 10, force: true });
+    this.getPasswordInput().type(user.password, { delay: 10, force: true });
     this.getRememberMeCheckbox().click();
     this.getLoginButton().click();
   };

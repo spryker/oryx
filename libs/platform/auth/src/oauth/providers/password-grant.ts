@@ -10,6 +10,7 @@ import {
   throwError,
 } from 'rxjs';
 import { OauthProviderConfigBase, OauthProviderRequest } from '../config.model';
+import { OauthTokenInterceptor } from '../oauth-token.interceptor';
 import { OauthProvider } from '../provider.model';
 import { OauthResponseSuccess } from '../response.model';
 
@@ -98,6 +99,7 @@ export class OauthPasswordGrantProvider implements OauthProvider {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          [OauthTokenInterceptor.HEADER_NAME]: 'password',
         },
       })
       .pipe(switchMap((response) => this.updateToken(response)));

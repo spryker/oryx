@@ -113,6 +113,15 @@
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
       "@spryker-oryx/product/title": ["libs/domain/product/title/index.ts"],
+      "@spryker-oryx/push-notification": [
+        "libs/platform/push-notification/src/index.ts"
+      ],
+      "@spryker-oryx/push-notification/*": [
+        "libs/platform/push-notification/*/index.ts"
+      ],
+      "@spryker-oryx/push-notification/web": [
+        "libs/platform/push-notification/web/index.ts"
+      ],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
@@ -134,6 +143,12 @@
       ],
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/currency-selector": [
+        "libs/domain/site/currency-selector/index.ts"
+      ],
+      "@spryker-oryx/site/locale-selector": [
+        "libs/domain/site/locale-selector/index.ts"
+      ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"

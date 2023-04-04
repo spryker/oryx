@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderMixin } from '@spryker-oryx/order';
-import { LocaleService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   asyncState,
@@ -34,9 +34,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderDetails(): TemplateResult {
-    return html`<oryx-heading .as=${HeadingTag.H3}>
-        <h2>${i18n('order.order-details')}</h2>
-      </oryx-heading>
+    return html`<h2>${i18n('order.order-details')}</h2>
       <div class="details-container">
         <div class="details summary">
           <div>
@@ -50,7 +48,7 @@ export class OrderSummaryComponent extends OrderMixin(
           <div class="title">${i18n('order.date')}:</div>
           <div>
             ${asyncValue(
-              this.locale.formatDate(this.order?.createdAt ?? '', true)
+              this.locale.formatDateTime(this.order?.createdAt ?? '')
             )}
           </div>
         </div>
@@ -78,11 +76,13 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.payment')}:</div>
       <div>${this.order?.payments[0].paymentProvider}</div>
-      </div>
-      <div class="title">${i18n('order.email')}:</div>
-      <div>${this.order?.billingAddress?.email}</div>
-      <div class="title">${i18n('order.payment')}:</div>
-      <div>${this.order?.payments[0].paymentProvider}</div>
+      ${when(
+        this.order?.billingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.billingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 
@@ -100,11 +100,13 @@ export class OrderSummaryComponent extends OrderMixin(
       )}
       <div class="title">${i18n('order.shipping-method')}:</div>
       <div>${this.order?.shipments[0].shipmentMethodName}</div>
-      </div>
-      <div class="title">${i18n('order.email')}:</div>
-      <div>${this.order?.shippingAddress?.email}</div>
-      <div class="title">${i18n('order.shipping-method')}:</div>
-      <div>${this.order?.shipments[0].shipmentMethodName}</div>
+      ${when(
+        this.order?.shippingAddress?.email,
+        () => html`
+          <div class="title">${i18n('order.email')}:</div>
+          <div>${this.order?.shippingAddress?.email}</div>
+        `
+      )}
       <hr />`;
   }
 

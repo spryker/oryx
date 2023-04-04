@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { combineLatest, map, Observable } from 'rxjs';
-import { CurrencyService, LocaleService } from '..';
+import { CurrencyService } from '../currency';
 import { PriceValue, PricingService } from './pricing.service';
 
 export class DefaultPricingService implements PricingService {
@@ -12,9 +13,7 @@ export class DefaultPricingService implements PricingService {
       this.currencyService.get(),
       this.localeService.get(),
     ]).pipe(
-      map(([currency, locale]) =>
-        this.formatPrice(price, currency, locale.replace('_', '-'))
-      )
+      map(([currency, locale]) => this.formatPrice(price, currency, locale))
     );
   }
 
@@ -31,7 +30,7 @@ export class DefaultPricingService implements PricingService {
     const value = isComplexPrice ? price.value : price;
 
     if (isComplexPrice && price.currency !== currency) {
-      throw new Error(`Price error: ${price.currency} is invalid currency`);
+      return null;
     }
 
     if (isNaN(+value)) {
