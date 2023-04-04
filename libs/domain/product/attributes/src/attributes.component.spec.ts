@@ -37,11 +37,11 @@ describe('Product attributes', () => {
   });
 
   it('should have colum count style defined', () => {
-    const columCount = window
-      .getComputedStyle(element)
-      .getPropertyValue('--column-count');
-
-    expect(columCount).toBe('3');
+    expect(
+      element.shadowRoot
+        ?.querySelector('ul')
+        ?.style.getPropertyValue('--column-count')
+    ).toBe('3');
   });
 
   it('should render attributes', () => {

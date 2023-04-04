@@ -52,14 +52,6 @@ export const tokens: ThemeToken = {
       small: '16px',
     },
   },
-  modal: {
-    min: {
-      width: 'min(100vw, 400px)',
-    },
-    background: {
-      color: 'rgb(0 0 0 / 50%)',
-    },
-  },
   required: {
     asterisk: {
       color: 'var(--oryx-color-primary-300)',

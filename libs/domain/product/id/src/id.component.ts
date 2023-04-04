@@ -11,7 +11,7 @@ export class ProductIdComponent extends ProductMixin(
   ContentMixin<ProductIdOptions>(LitElement)
 ) {
   protected override render(): TemplateResult {
-    return html`<span part="prefix">${this.componentOptions?.prefix}</span
-      >${this.product?.sku}`;
+    return html`<span part="prefix">${this.$options()?.prefix}</span>
+      ${this.$product()?.sku}`;
   }
 }

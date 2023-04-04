@@ -1,8 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, ssrShim, subscribe } from '@spryker-oryx/utilities';
+import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { tap } from 'rxjs';
 import { ProductAttributesOptions } from './attributes.model';
 import { ProductAttributeStyles } from './attributes.styles';
 
@@ -14,22 +13,18 @@ export class ProductAttributesComponent extends ProductMixin(
 ) {
   static styles = [ProductAttributeStyles];
 
-  @subscribe()
-  protected stylesSetter$ = this.options$.pipe(
-    tap((options) => {
-      if (options.columnCount) {
-        this.style.setProperty('--column-count', options.columnCount);
-      }
-    })
-  );
+  protected override render(): TemplateResult | void {
+    const attributes = this.$product()?.attributes;
+    const attributeNames = this.$product()?.attributeNames;
 
-  protected override render(): TemplateResult {
+    if (!attributes || !attributeNames) return;
+
     return html`
-      <ul>
-        ${Object.keys(this.product?.attributes ?? {}).map(
+      <ul style="--column-count: ${this.$options().columnCount}">
+        ${Object.keys(attributes ?? {}).map(
           (key) => html`<li>
-            <div>${this.product?.attributeNames?.[key]}</div>
-            <div>${this.product?.attributes?.[key]}</div>
+            <div>${attributeNames?.[key]}</div>
+            <div>${attributes?.[key]}</div>
           </li>`
         )}
       </ul>

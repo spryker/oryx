@@ -12,7 +12,20 @@ export const CartPage: StaticComponent = {
     { type: 'oryx-cart-entries' },
     {
       type: 'experience-composition',
-      components: [{ type: 'oryx-cart-totals' }, { type: 'checkout-link' }],
+      components: [
+        {
+          type: 'oryx-cart-totals',
+          components: [
+            { type: 'oryx-cart-totals-subtotal' },
+            { type: 'oryx-cart-totals-discount' },
+            { type: 'oryx-cart-totals-expense' },
+            { type: 'oryx-cart-totals-tax' },
+            { type: 'oryx-cart-totals-delivery' },
+            { type: 'oryx-cart-totals-total' },
+          ],
+        },
+        { type: 'checkout-link' },
+      ],
       options: {
         data: {
           rules: [

@@ -1,9 +1,12 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
   h2 {
+    ${headingUtil(HeadingTag.H3)};
+
     margin: 32px 0;
   }
 

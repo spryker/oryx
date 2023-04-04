@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
+import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -11,11 +12,17 @@ import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  finishPicking = vi.fn();
+}
+
+class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
 }
 
 describe('PickingComponent', () => {
   let element: PickingComponent;
   let service: MockPickingListService;
+  let routerService: MockRouterService;
 
   beforeAll(async () => {
     await useComponent(pickingComponent);
@@ -28,12 +35,20 @@ describe('PickingComponent', () => {
           provide: PickingListService,
           useClass: MockPickingListService,
         },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
       ],
     });
 
     service = testInjector.inject(
       PickingListService
     ) as unknown as MockPickingListService;
+
+    routerService = testInjector.inject(
+      RouterService
+    ) as unknown as MockRouterService;
 
     element = await fixture(
       html`<oryx-picking
@@ -61,11 +76,9 @@ describe('PickingComponent', () => {
       3
     );
 
-    expect(
-      element.renderRoot.querySelector(
-        '#tab-not_picked[slot="panels"] oryx-picking-product-card'
-      )
-    ).not.toBeFalsy();
+    expect(element).toContainElement(
+      '#tab-not_picked[slot="panels"] oryx-picking-product-card'
+    );
   });
 
   describe('when there is no picking list', () => {
@@ -89,6 +102,7 @@ describe('PickingComponent', () => {
   describe('when all items are already picked', () => {
     beforeEach(async () => {
       service.getById.mockReturnValue(of(mockPickingListData[1]));
+      service.finishPicking.mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
         html`<oryx-picking
@@ -97,10 +111,26 @@ describe('PickingComponent', () => {
       );
     });
 
+    it('should render finish button', () => {
+      expect(
+        element.renderRoot.querySelector('.submit-wrapper button')?.textContent
+      ).toContain(i18n('picking.finish-picking'));
+    });
+
     it('should render success message', () => {
       expect(
         element.renderRoot.querySelector('.picking-complete p')?.textContent
-      ).toBe(i18n('picking.all-items-are-processed!'));
+      ).toContain(i18n('picking.all-items-are-processed'));
+    });
+
+    it('should perform redirect after click', () => {
+      const button = element.renderRoot.querySelector(
+        '.submit-wrapper button'
+      ) as HTMLButtonElement;
+      button.click();
+
+      expect(service.finishPicking).toHaveBeenCalled();
+      expect(routerService.navigate).toHaveBeenCalledWith(`/`);
     });
   });
 });
