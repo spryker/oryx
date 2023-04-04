@@ -36,7 +36,10 @@ export class FulfillmentRootComponent extends LitElement {
       ) {
         this.authService.login();
       }
-      if (authenticated && currentRoute.startsWith('/login')) {
+      if (
+        authenticated &&
+        (currentRoute.startsWith('/login') || currentRoute.startsWith('/oauth'))
+      ) {
         this.routerService.navigate('/');
       }
     })

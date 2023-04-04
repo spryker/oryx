@@ -22,12 +22,7 @@ export class OauthHandlerComponent extends LitElement {
       throw new Error(`OauthHandlerComponent: Unknown Oauth provider ID!`);
     }
 
-    const subscription = this.oauthService
-      .handleCallback(this.providerId)
-      .subscribe(() => {
-        this.routerService.navigate('/');
-        subscription.unsubscribe();
-      });
+    this.oauthService.handleCallback(this.providerId);
   }
 
   protected render(): unknown {
