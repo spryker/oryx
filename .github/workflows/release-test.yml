@@ -43,25 +43,25 @@ jobs:
         run: npm i -g verdaccio
       - name: Debug
         run: |
-          CONFIG_FILE="${VERDACCIO_CONFIG:-$HOME/.config/verdaccio/config.yaml}"
-
-          if [ ! -f "$CONFIG_FILE" ]; then
-              echo "Creating Verdaccio config file: $CONFIG_FILE"
-              mkdir -p $(dirname "$CONFIG_FILE")
-              touch "$CONFIG_FILE"
-              echo "auth:\n  htpasswd:\n    file: /path/to/htpasswd\n  auth: false" > "$CONFIG_FILE"
+          if [ ! -f "$VERDACCIO_CONFIG" ]; then
+            echo "Creating Verdaccio config file: $VERDACCIO_CONFIG"
+            mkdir -p $(dirname "$VERDACCIO_CONFIG")
+            touch "$VERDACCIO_CONFIG"
+            echo "auth:\n  htpasswd:\n    file: /path/to/htpasswd\n  auth: false" > "$VERDACCIO_CONFIG"
           fi
 
-          if grep -q "auth: false" "$CONFIG_FILE"; then
-              echo "Authentication is already disabled for Verdaccio."
-              exit 0
+          if grep -q "auth: false" "$VERDACCIO_CONFIG"; then
+            echo "Authentication is already disabled for Verdaccio."
+            exit 0
           fi
 
-          if grep -q "auth:" "$CONFIG_FILE"; then
-              sed -i 's/auth:/auth:\n  auth: false/' "$CONFIG_FILE"
+          if grep -q "auth:" "$VERDACCIO_CONFIG"; then
+            sed -i 's/auth:/auth:\n  auth: false/' "$VERDACCIO_CONFIG"
           else
-              echo "auth:\n  auth: false" >> "$CONFIG_FILE"
+            echo "auth:\n  auth: false" >> "$VERDACCIO_CONFIG"
           fi
+        env:
+          VERDACCIO_CONFIG: -$HOME/.config/verdaccio/config.yaml
       - name: Run verdaccio
         run: nohup verdaccio &
 #      - name: Add user to verdaccio
