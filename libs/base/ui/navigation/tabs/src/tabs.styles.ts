@@ -16,6 +16,13 @@ export const baseStyles = css`
     cursor: pointer;
   }
 
+  :host([sticky]) slot:not([name]) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    background-color: var(--oryx-color-canvas-100);
+  }
+
   slot:not([name])::-webkit-scrollbar {
     display: none;
   }
