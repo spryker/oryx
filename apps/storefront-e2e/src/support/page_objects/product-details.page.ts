@@ -54,8 +54,8 @@ export class ProductDetailsPage extends AbstractSFPage {
   getAddToCartBtn = () => this.getAddToCartWrapper().contains('Add to cart');
   getImages = () => this.getWrapper().find('oryx-product-media');
   getDescription = () => this.getWrapper().find('oryx-product-description');
-  getAttributes = () =>
-    this.getWrapper().find('oryx-product-attributes').find('li');
+  getAttributeTerms = () =>
+    this.getWrapper().find('oryx-product-attributes').find('dt');
 
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {

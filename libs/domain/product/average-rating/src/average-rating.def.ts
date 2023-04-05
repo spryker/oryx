@@ -13,4 +13,6 @@ export const productAverageRatingComponent = componentDef({
     import('./average-rating.component').then(
       (m) => m.ProductAverageRatingComponent
     ),
+  schema: () =>
+    import('./average-rating.schema').then((m) => m.productAverageRatingSchema),
 });
