@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/content",
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "description": "Content features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@spryker-oryx/core": "latest",
-    "@spryker-oryx/experience": "latest",
     "@spryker-oryx/di": "latest",
+    "@spryker-oryx/experience": "latest",
     "@spryker-oryx/site": "latest",
     "@spryker-oryx/utilities": "latest"
   },
