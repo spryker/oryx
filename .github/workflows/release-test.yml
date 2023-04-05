@@ -45,22 +45,22 @@ jobs:
         run: |
           CONFIG_FILE="${VERDACCIO_CONFIG:-$HOME/.config/verdaccio/config.yaml}"
 
-          if [ ! -f "$VERDACCIO_CONFIG" ]; then
-              echo "Creating Verdaccio config file: $VERDACCIO_CONFIG"
-              mkdir -p $(dirname "$VERDACCIO_CONFIG")
-              touch "$VERDACCIO_CONFIG"
-              echo "auth:\n  htpasswd:\n    file: /path/to/htpasswd\n  auth: false" > "$VERDACCIO_CONFIG"
+          if [ ! -f "$CONFIG_FILE" ]; then
+              echo "Creating Verdaccio config file: $CONFIG_FILE"
+              mkdir -p $(dirname "$CONFIG_FILE")
+              touch "$CONFIG_FILE"
+              echo "auth:\n  htpasswd:\n    file: /path/to/htpasswd\n  auth: false" > "$CONFIG_FILE"
           fi
 
           if grep -q "auth: false" "$CONFIG_FILE"; then
-            echo "Authentication is already disabled for Verdaccio."
-            exit 0
+              echo "Authentication is already disabled for Verdaccio."
+              exit 0
           fi
 
           if grep -q "auth:" "$CONFIG_FILE"; then
-            sed -i 's/auth:/auth:\n  auth: false/' "$CONFIG_FILE"
+              sed -i 's/auth:/auth:\n  auth: false/' "$CONFIG_FILE"
           else
-            echo "auth:\n  auth: false" >> "$CONFIG_FILE"
+              echo "auth:\n  auth: false" >> "$CONFIG_FILE"
           fi
       - name: Run verdaccio
         run: nohup verdaccio &
