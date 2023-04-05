@@ -1,2 +1,2 @@
 export * from './login';
-export * from './login-button';
+export * from './login-link';

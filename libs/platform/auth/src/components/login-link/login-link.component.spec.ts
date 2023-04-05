@@ -6,8 +6,8 @@ import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { LoginButtonComponent } from './login-button.component';
-import { loginButtonComponent } from './login-button.def';
+import { LoginLinkComponent } from './login-link.component';
+import { loginLinkComponent } from './login-link.def';
 
 class MockAuthService implements Partial<AuthService> {
   logout = vi.fn().mockReturnValue(of(null));
@@ -18,8 +18,8 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('LoginButtonComponent', () => {
-  let element: LoginButtonComponent;
+describe('LoginLinkComponent', () => {
+  let element: LoginLinkComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
 
@@ -30,7 +30,7 @@ describe('LoginButtonComponent', () => {
   };
 
   beforeAll(async () => {
-    await useComponent(loginButtonComponent);
+    await useComponent(loginLinkComponent);
   });
 
   beforeEach(async () => {
@@ -55,7 +55,7 @@ describe('LoginButtonComponent', () => {
     ) as unknown as MockRouterService;
 
     element = await fixture(
-      html`<oryx-auth-login-button></oryx-auth-login-button>`
+      html`<oryx-auth-login-link></oryx-auth-login-link>`
     );
   });
 
@@ -89,7 +89,7 @@ describe('LoginButtonComponent', () => {
     beforeEach(async () => {
       authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
       element = await fixture(
-        html`<oryx-auth-login-button></oryx-auth-login-button>`
+        html`<oryx-auth-login-link></oryx-auth-login-link>`
       );
     });
 
@@ -105,10 +105,10 @@ describe('LoginButtonComponent', () => {
 
     describe('and logout is not enabled', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-auth-login-button
+        element = await fixture(html`<oryx-auth-login-link
           .options=${{ enableLogout: false }}
         >
-        </oryx-auth-login-button>`);
+        </oryx-auth-login-link>`);
       });
 
       it('should not render the button', () => {
@@ -133,10 +133,10 @@ describe('LoginButtonComponent', () => {
         const logoutRedirectUrl = '/test';
 
         beforeEach(async () => {
-          element = await fixture(html`<oryx-auth-login-button
+          element = await fixture(html`<oryx-auth-login-link
             .options=${{ logoutRedirectUrl }}
           >
-          </oryx-auth-login-button>`);
+          </oryx-auth-login-link>`);
           clickButton();
         });
 

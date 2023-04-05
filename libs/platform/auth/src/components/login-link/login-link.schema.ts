@@ -1,8 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { LoginButtonComponent } from './login-button.component';
+import { LoginLinkComponent } from './login-link.component';
 
-export const loginButtonComponentSchema: ContentComponentSchema<LoginButtonComponent> =
+export const loginLinkComponentSchema: ContentComponentSchema<LoginLinkComponent> =
   {
     name: 'Login button',
     group: 'Auth',

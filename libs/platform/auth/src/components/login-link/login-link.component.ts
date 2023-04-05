@@ -9,14 +9,14 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AuthService } from '../../services/auth.service';
-import { LoginButtonOptions } from './login-button.model';
-import { styles } from './login-button.styles';
+import { LoginLinkOptions } from './login-link.model';
+import { styles } from './login-link.styles';
 
 @defaultOptions({
   enableLogout: true,
 })
 @hydratable('window:load')
-export class LoginButtonComponent extends ContentMixin<LoginButtonOptions>(
+export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {
   static styles = styles;
@@ -56,4 +56,4 @@ export class LoginButtonComponent extends ContentMixin<LoginButtonOptions>(
   }
 }
 
-export default LoginButtonComponent;
+export default LoginLinkComponent;

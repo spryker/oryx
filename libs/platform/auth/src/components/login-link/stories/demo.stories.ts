@@ -5,10 +5,10 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../../../.constants';
-import { LoginButtonOptions } from '../login-button.model';
+import { LoginLinkOptions } from '../login-link.model';
 
 export default {
-  title: `${storybookPrefix}/Button`,
+  title: `${storybookPrefix}/Login Link`,
   args: {
     enableLogout: true,
   },
@@ -22,7 +22,7 @@ const toggleLogin = () => {
     .subscribe((isAuthenticated) => service.setAuthenticated(!isAuthenticated));
 };
 
-const Template: Story<LoginButtonOptions> = (options): TemplateResult => {
+const Template: Story<LoginLinkOptions> = (options): TemplateResult => {
   return html`
     <oryx-button size=${Size.Sm} @click=${toggleLogin}>
       <button style="margin-bottom: 16px" type="submit">
@@ -31,7 +31,7 @@ const Template: Story<LoginButtonOptions> = (options): TemplateResult => {
     </oryx-button>
 
     <div @click=${toggleLogin}>
-      <oryx-auth-login-button .options=${options}></oryx-auth-login-button>
+      <oryx-auth-login-link .options=${options}></oryx-auth-login-link>
     </div>
   `;
 };
