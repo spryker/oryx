@@ -61,7 +61,7 @@ jobs:
             echo "auth:\n  auth: false" >> "$VERDACCIO_CONFIG"
           fi
         env:
-          VERDACCIO_CONFIG: -$HOME/.config/verdaccio/config.yaml
+          VERDACCIO_CONFIG: $HOME/.config/verdaccio/config.yaml
       - name: Run verdaccio
         run: nohup verdaccio &
 #      - name: Add user to verdaccio
