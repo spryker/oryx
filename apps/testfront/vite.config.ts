@@ -8,10 +8,7 @@ export default defineConfig((config) => {
     envDir: viteConfig.root,
     envPrefix: viteConfig.envPrefix,
     build: {
-      outDir: join(
-        viteConfig.build.outDirRoot,
-        viteConfig.build.index
-      ),
+      outDir: join(viteConfig.build.outDirRoot, viteConfig.build.index),
       emptyOutDir: true,
     },
     publicDir: '../../../libs/template/presets/public',

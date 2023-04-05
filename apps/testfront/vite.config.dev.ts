@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
-import { viteConfig } from './vite.config.common.js';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig({
   root: viteConfig.index,

@@ -17,10 +17,7 @@ export default defineConfig((config) => {
         name: viteConfig.ssr.namespace,
       },
       emptyOutDir: true,
-      outDir: join(
-        viteConfig.build.outDirRoot,
-        viteConfig.build.ssr
-      ),
+      outDir: join(viteConfig.build.outDirRoot, viteConfig.build.ssr),
       ssr: viteConfig.ssr.entry,
       rollupOptions: {
         output: {

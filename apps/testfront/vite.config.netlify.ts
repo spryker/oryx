@@ -12,10 +12,7 @@ export default defineConfig({
       fileName: 'index',
     },
     emptyOutDir: true,
-    outDir: join(
-      viteConfig.build.outDirRoot,
-      'functions/ssr'
-    ),
+    outDir: join(viteConfig.build.outDirRoot, 'functions/ssr'),
     rollupOptions: {
       external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
