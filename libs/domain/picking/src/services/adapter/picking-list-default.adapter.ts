@@ -85,7 +85,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   protected getPickingListQuery(qualifier?: PickingListQualifier): string {
     const params = new URLSearchParams({
       include:
-        'picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets',
+        'picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets',
     });
 
     if (qualifier?.id) {
@@ -214,7 +214,7 @@ interface PickingListResponseItem extends ResourceObject {
   concreteProducts: PickingListResponseProduct[];
   quantity: number;
   salesOrders: PickingListResponseOrder[];
-  shipments: PickingListResponseShipment[];
+  salesShipments: PickingListResponseShipment[];
 }
 
 interface PickingListResponseOrder extends ResourceObject {

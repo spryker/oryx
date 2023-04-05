@@ -44,7 +44,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/f7917e23-aaea-5a02-878e-4fdc84eb4b59?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/f7917e23-aaea-5a02-878e-4fdc84eb4b59?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -82,7 +82,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/25332065-e158-574c-b3cb-55fe14901d37?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/25332065-e158-574c-b3cb-55fe14901d37?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -112,7 +112,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/d5bf20f1-7f36-568d-85b5-e4502acbcc82?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/d5bf20f1-7f36-568d-85b5-e4502acbcc82?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -150,12 +150,12 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/37cb241e-f18a-5768-985c-a2d7aff4875e?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists/37cb241e-f18a-5768-985c-a2d7aff4875e?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       }
     ],
     "links": {
-      "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+      "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-lists?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
     },
     "included": [
       {
@@ -176,7 +176,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/803?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/803?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -197,7 +197,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/804?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/804?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -216,7 +216,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/136_24425591?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/136_24425591?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -224,15 +224,15 @@
         "id": "DE--16",
         "attributes": { "cartNote": null, "orderReference": "DE--16" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--16?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--16?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
-        "type": "shipments",
+        "type": "sales-shipments",
         "id": 18,
         "attributes": { "requestedDeliveryDate": "" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/18?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/18?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -258,10 +258,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--16" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 18 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 18 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/1a8ae12a-9f99-5fb9-a0f4-3d589cff8ed6?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/1a8ae12a-9f99-5fb9-a0f4-3d589cff8ed6?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -287,10 +289,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--16" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 18 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 18 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/a580c269-9047-599f-960d-8210b2da959d?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/a580c269-9047-599f-960d-8210b2da959d?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -316,10 +320,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--16" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 18 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 18 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/db552558-be28-56d2-8517-9e093d38fa64?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/db552558-be28-56d2-8517-9e093d38fa64?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -340,7 +346,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/811?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/811?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -361,7 +367,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/812?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/812?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -380,7 +386,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/138_30657838?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/138_30657838?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -406,10 +412,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--16" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 18 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 18 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/2ad0c2ce-9c8c-555f-b3f8-c6c3d4d0edfb?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/2ad0c2ce-9c8c-555f-b3f8-c6c3d4d0edfb?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -430,7 +438,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/497?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/497?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -451,7 +459,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/498?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/498?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -467,7 +475,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/035_17360369?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/035_17360369?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -475,15 +483,15 @@
         "id": "DE--17",
         "attributes": { "cartNote": null, "orderReference": "DE--17" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--17?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--17?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
-        "type": "shipments",
+        "type": "sales-shipments",
         "id": 19,
         "attributes": { "requestedDeliveryDate": "2023-12-21" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/19?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/19?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -509,10 +517,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--17" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 19 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 19 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/354b23e0-8266-5fe8-a1b7-90eeba244fe2?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/354b23e0-8266-5fe8-a1b7-90eeba244fe2?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -538,10 +548,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--17" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 19 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 19 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/b999b572-9848-591c-9f33-a80176b00895?include=picking-list-items,concrete-products,sales-orders,shipments,concerete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/b999b572-9848-591c-9f33-a80176b00895?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concerete-product-image-sets"
         }
       },
       {
@@ -567,10 +579,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--17" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 19 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 19 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/e1052469-668c-51a8-afe6-9c80efa19a36?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/e1052469-668c-51a8-afe6-9c80efa19a36?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -596,10 +610,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--17" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 19 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 19 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/da666c7b-75a3-540b-9803-705ea2a0c8b8?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/da666c7b-75a3-540b-9803-705ea2a0c8b8?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -625,10 +641,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--17" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 19 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 19 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/9a95b1a0-a99e-5aae-afc3-de3ad089c2dc?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/9a95b1a0-a99e-5aae-afc3-de3ad089c2dc?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -636,15 +654,15 @@
         "id": "DE--18",
         "attributes": { "cartNote": null, "orderReference": "DE--18" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--18?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--18?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
-        "type": "shipments",
+        "type": "sales-shipments",
         "id": 20,
         "attributes": { "requestedDeliveryDate": "2023-12-21" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/20?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/20?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -670,10 +688,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--18" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 20 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 20 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/5f96193e-7a24-5294-9996-7a6772a8bfb1?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/5f96193e-7a24-5294-9996-7a6772a8bfb1?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -699,10 +719,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--18" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 20 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 20 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/e0764ebe-2b70-5dd1-b237-0ec77bd1aaa3?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/e0764ebe-2b70-5dd1-b237-0ec77bd1aaa3?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -728,10 +750,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--18" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 20 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 20 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/b6498eff-71ee-5f34-906f-6879e46fc141?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/b6498eff-71ee-5f34-906f-6879e46fc141?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -739,15 +763,15 @@
         "id": "DE--19",
         "attributes": { "cartNote": null, "orderReference": "DE--19" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--19?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--19?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
-        "type": "shipments",
+        "type": "sales-shipments",
         "id": 21,
         "attributes": { "requestedDeliveryDate": "2023-12-21" },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/21?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/shipments/21?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -773,10 +797,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--19" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 21 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 21 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/80839794-a5dc-58e7-b95f-55667543258f?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/80839794-a5dc-58e7-b95f-55667543258f?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -802,10 +828,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--19" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 21 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 21 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/c3d7aa66-72bb-5d29-8a35-8d440910f4f6?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/c3d7aa66-72bb-5d29-8a35-8d440910f4f6?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -831,10 +859,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--19" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 21 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 21 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/20415014-987d-528d-b22e-35aeba72f03a?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/20415014-987d-528d-b22e-35aeba72f03a?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -855,7 +885,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/637?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/637?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -876,7 +906,7 @@
           ]
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/638?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/product-images/638?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -892,7 +922,7 @@
           }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/086_30521602?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/concrete-products/086_30521602?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -918,10 +948,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--19" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 21 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 21 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/0d760b3e-1fba-53a8-88cc-5ff924ad9a54?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/0d760b3e-1fba-53a8-88cc-5ff924ad9a54?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       },
       {
@@ -947,10 +979,12 @@
           "sales-orders": {
             "data": [{ "type": "sales-orders", "id": "DE--19" }]
           },
-          "shipments": { "data": [{ "type": "shipments", "id": 21 }] }
+          "sales-shipments": {
+            "data": [{ "type": "sales-shipments", "id": 21 }]
+          }
         },
         "links": {
-          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/70f8e9e3-c2c7-5841-a85c-39c209e65f7f?include=picking-list-items,concrete-products,sales-orders,shipments,concrete-product-image-sets"
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/picking-list-items/70f8e9e3-c2c7-5841-a85c-39c209e65f7f?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
       }
     ]
