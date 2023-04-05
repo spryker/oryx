@@ -43,6 +43,8 @@ jobs:
         run: npm i -g verdaccio
       - name: Run verdaccio first time to generate config
         run: verdaccio &
+      - name: Debug
+        run: which verdaccio
       - name: Wait for verdaccio to start up
         run: |
           while ! nc -z localhost 4873; do
