@@ -116,22 +116,10 @@ describe('ProductImagesComponent', () => {
   });
 
   describe('options', () => {
-    describe('when options is not provided', () => {
+    describe('when options are not provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-product-images
-            sku="1"
-            .options=${{
-              imageLayout: '',
-              navigationLayout: '',
-              navigationPosition: '',
-              imageObjectFit: '',
-              navigationObjectFit: '',
-              imageHeight: '',
-              navigationHeight: '',
-              imageColumns: '',
-            }}
-          ></oryx-product-images>`
+          html`<oryx-product-images sku="1"></oryx-product-images>`
         );
       });
 

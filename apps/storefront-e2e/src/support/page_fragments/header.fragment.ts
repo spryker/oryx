@@ -16,7 +16,8 @@ export class HeaderFragment {
   getUserSummaryMenu = () => this.getUserSummary().find('oryx-dropdown');
   getOpenUserMenuButton = () =>
     this.getUserSummaryMenu().find('oryx-button').eq(0);
-  getLogoutButton = () => this.getUserSummaryMenu().find('oryx-auth-logout');
+  getLogoutButton = () =>
+    this.getUserSummaryMenu().find('oryx-auth-login-link');
 
   getCartSummary = () => cy.get('oryx-cart-summary');
   getCartCount = () => this.getCartSummary().find('mark');

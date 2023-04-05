@@ -29,7 +29,7 @@ describe('SSR suite', () => {
 
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
-    pdp.getAttributes().should('have.length', 6);
+    pdp.getAttributeTerms().should('have.length', 6);
   });
 
   it('must render Contact us page', () => {

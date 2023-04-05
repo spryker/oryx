@@ -7,6 +7,7 @@ import {
 } from './adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
+import { CartResourceResolver } from './resolver';
 
 export const cartProviders: Provider[] = [
   {
@@ -17,6 +18,7 @@ export const cartProviders: Provider[] = [
     provide: CartService,
     useClass: DefaultCartService,
   },
+  CartResourceResolver,
   ...cartNormalizer,
   ...cartsNormalizer,
 ];

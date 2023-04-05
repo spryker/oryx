@@ -8,9 +8,9 @@ import {
   EVENT_EDIT,
   EVENT_SUBMIT,
   ItemsFilters,
-  PickingListItem,
   ProductItemPickedEvent,
   SummaryInfo,
+  type PickingListItem,
 } from '../../models';
 import { styles } from './picking-product-card.styles';
 

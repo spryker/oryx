@@ -38,9 +38,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     };
 
     return this.pickingHttpService
-      .patch<PatchPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
+      .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
-        map(({ data: [updatedPickingListData] }) => ({
+        map(({ data: updatedPickingListData }) => ({
           ...pickingList,
           status: updatedPickingListData.status as PickingListStatus,
           createdAt: new Date(updatedPickingListData.createdAt),
@@ -68,7 +68,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     };
 
     return this.pickingHttpService
-      .patch<PatchPickingListResponse>(
+      .patch<FinishPickingListResponse>(
         `/picking-lists/${pickingList.id}/picking-list-items`,
         body
       )
@@ -83,24 +83,25 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   }
 
   protected getPickingListQuery(qualifier?: PickingListQualifier): string {
-    if (!qualifier) return '';
+    const params = new URLSearchParams({
+      include:
+        'picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets',
+    });
 
-    let query = '';
-
-    if (qualifier.id) {
-      return `/${qualifier.id}`;
+    if (qualifier?.id) {
+      return `/${qualifier.id}?${params.toString()}`;
     }
 
-    if (qualifier.status) {
-      query += `?filter[picking-lists.status]=${qualifier.status}`;
+    if (qualifier?.status) {
+      params.set('filter[picking-lists.status]', qualifier.status);
     }
 
     if (
-      qualifier.limit !== undefined ||
-      qualifier.offset !== undefined ||
-      qualifier.orderReferences !== undefined ||
-      qualifier.sortBy !== undefined ||
-      qualifier.sortDesc !== undefined
+      qualifier?.limit !== undefined ||
+      qualifier?.offset !== undefined ||
+      qualifier?.orderReferences !== undefined ||
+      qualifier?.sortBy !== undefined ||
+      qualifier?.sortDesc !== undefined
     ) {
       throw new Error(
         `PickingListDefaultAdapter: Unsupported qualifier: ${JSON.stringify(
@@ -111,7 +112,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
     }
 
-    return query;
+    return `?${params.toString()}`;
   }
 
   protected async parsePickingLists(
@@ -136,8 +137,12 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       id: product.id,
       sku: product.sku,
       productName: product.name,
-      image: product.productImages[0].externalUrlSmall,
-      imageLarge: product.productImages[0].externalUrlLarge,
+      image:
+        product.concreteProductImageSets[0].imageSets[0].images[0]
+          .externalUrlSmall,
+      imageLarge:
+        product.concreteProductImageSets[0].imageSets[0].images[0]
+          .externalUrlLarge,
     }));
 
     return products;
@@ -209,7 +214,7 @@ interface PickingListResponseItem extends ResourceObject {
   concreteProducts: PickingListResponseProduct[];
   quantity: number;
   salesOrders: PickingListResponseOrder[];
-  shipments: PickingListResponseShipment[];
+  salesShipments: PickingListResponseShipment[];
 }
 
 interface PickingListResponseOrder extends ResourceObject {
@@ -224,13 +229,20 @@ interface PickingListResponseShipment extends ResourceObject {
 interface PickingListResponseProduct extends ResourceObject {
   sku: string;
   name: string;
-  productImages: PickingListResponseProductImage[];
+  concreteProductImageSets: {
+    imageSets: PickingListResponseProductImage[];
+  }[];
 }
 
 interface PickingListResponseProductImage extends ResourceObject {
-  productImageKey: string;
-  externalUrlSmall: string;
-  externalUrlLarge: string;
+  name: string;
+  locale: string;
+  images: [
+    {
+      externalUrlSmall: string;
+      externalUrlLarge: string;
+    }
+  ];
 }
 
 interface ResourceObject {
@@ -242,7 +254,12 @@ interface LinksObject {
   self: string;
 }
 
-interface PatchPickingListResponse {
+interface StartPickingListResponse {
+  data: PatchPickingListData;
+  links: LinksObject;
+}
+
+interface FinishPickingListResponse {
   data: PatchPickingListData[];
   links: LinksObject;
 }

@@ -70,7 +70,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
           `
         )
       )}
-      <oryx-auth-logout></oryx-auth-logout>
+      <oryx-auth-login-link></oryx-auth-login-link>
     `;
   }
 

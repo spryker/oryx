@@ -1,21 +1,11 @@
-import { ContextController } from '@spryker-oryx/core';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import {
-  ProductContext,
-  ProductMediaContainerSize,
-  ProductMixin,
-} from '@spryker-oryx/product';
+import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { Size } from '@spryker-oryx/ui';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import {
-  hydratable,
-  observe,
-  ssrShim,
-  subscribe,
-} from '@spryker-oryx/utilities';
+import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, tap } from 'rxjs';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
@@ -36,54 +26,43 @@ export class ProductCardComponent extends ProductMixin(
 ) {
   static styles = [ProductCardStyles];
 
-  protected context = new ContextController(this);
+  protected override render(): TemplateResult | void {
+    const product = this.$product();
+    if (!product) return;
 
-  @observe()
-  protected sku$ = new BehaviorSubject(this.sku);
-
-  @subscribe()
-  protected skuSubscriber$ = combineLatest([
-    this.contentController.getOptions(),
-    this.sku$,
-  ]).pipe(
-    tap(([options, propSku]) => {
-      this.context.provide(ProductContext.SKU, options.sku ?? propSku);
-      if (options.titleLineClamp) {
-        this.toggleAttribute('has-line-clamp', true);
-        this.style.setProperty(
-          '--oryx-product-title-max-lines',
-          String(options.titleLineClamp)
-        );
-      }
-    })
-  );
-
-  protected override render(): TemplateResult {
-    if (!this.product) return html``;
-
-    return html` <oryx-content-link
-      .options="${{
+    const { titleLineClamp } = this.$options();
+    const style = titleLineClamp
+      ? `--oryx-product-title-max-lines:${titleLineClamp}`
+      : undefined;
+    return html`<oryx-content-link
+      .options=${{
         type: SemanticLinkType.Product,
-        id: this.product.sku,
+        id: product.sku,
         multiLine: true,
-        label: this.product.name,
-      }}"
+        label: product.name,
+      }}
     >
       ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
-      <div class="popover">${this.renderTitle()}</div>
+      <div
+        class="popover"
+        ?has-line-clamp=${titleLineClamp}
+        style=${ifDefined(style)}
+      >
+        ${this.renderTitle()}
+      </div>
       ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
     </oryx-content-link>`;
   }
 
   protected renderLabels(): TemplateResult | void {
-    if (this.componentOptions?.enableLabels) {
+    if (this.$options().enableLabels) {
       return html`<oryx-product-labels></oryx-product-labels>`;
     }
   }
 
   // TODO: move to wishlist component
   protected renderWishlist(): TemplateResult | void {
-    if (this.componentOptions?.enableWishlist) {
+    if (this.$options().enableWishlist) {
       return html`<div class="actions">
         <oryx-icon-button>
           <button
@@ -99,7 +78,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderMedia(): TemplateResult | void {
-    if (this.componentOptions?.enableMedia) {
+    if (this.$options().enableMedia) {
       return html`
         <oryx-product-media
           .options=${{
@@ -111,7 +90,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderTitle(): TemplateResult | void {
-    if (this.componentOptions?.enableTitle) {
+    if (this.$options().enableTitle) {
       return html`<oryx-product-title
         .options="${{ tag: HeadingTag.Caption }}"
       ></oryx-product-title>`;
@@ -119,7 +98,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderRating(): TemplateResult | void {
-    if (this.componentOptions?.enableRating) {
+    if (this.$options().enableRating) {
       return html`<oryx-product-average-rating
         .options=${{ size: Size.Sm, enableCount: false }}
       ></oryx-product-average-rating>`;
@@ -127,7 +106,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderPrice(): TemplateResult | void {
-    if (this.componentOptions?.enablePrice) {
+    if (this.$options().enablePrice) {
       return html`<oryx-product-price
         .options=${{ enableVatMessage: false }}
       ></oryx-product-price>`;
@@ -135,7 +114,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderAddToCart(): TemplateResult | void {
-    if (this.componentOptions?.enableAddToCart) {
+    if (this.$options().enableAddToCart) {
       return html`<oryx-cart-add
         tabindex="-1"
         .options="${{
