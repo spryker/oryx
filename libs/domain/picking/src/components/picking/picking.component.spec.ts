@@ -11,8 +11,8 @@ import { PickingComponent } from './picking.component';
 import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
-  finishPicking = vi.fn();
+  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
@@ -82,7 +82,7 @@ describe('PickingComponent', () => {
 
   describe('when there is no picking list', () => {
     beforeEach(async () => {
-      service.getById = vi.fn().mockReturnValue(of(null));
+      service.get = vi.fn().mockReturnValue(of([]));
 
       element = await fixture(
         html`<oryx-picking pickingListId="id"></oryx-picking>`
@@ -96,7 +96,7 @@ describe('PickingComponent', () => {
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.getById = vi.fn().mockReturnValue(of(mockPickingListData[1]));
+      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));

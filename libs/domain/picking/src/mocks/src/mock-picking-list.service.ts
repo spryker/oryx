@@ -15,11 +15,6 @@ export class MockPickingListService implements Partial<PickingListService> {
     return of(filteredData);
   }
 
-  getById(id: string): Observable<PickingList | null> {
-    const list = mockPickingListData.find((list) => id === list.id);
-    return of(list ?? null);
-  }
-
   startPicking(pickingList: PickingList): Observable<PickingList> {
     return of(pickingList);
   }

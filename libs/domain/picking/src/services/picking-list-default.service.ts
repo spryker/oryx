@@ -1,12 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  BehaviorSubject,
-  catchError,
-  map,
-  Observable,
-  of,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { PickingList, PickingListQualifier } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
@@ -18,10 +11,6 @@ export class PickingListDefaultService implements PickingListService {
 
   get(qualifier: PickingListQualifier): Observable<PickingList[]> {
     return this.adapter.get(qualifier);
-  }
-
-  getById(id: string): Observable<PickingList | null> {
-    return this.get({ id }).pipe(map((data) => data?.[0] ?? null));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {
