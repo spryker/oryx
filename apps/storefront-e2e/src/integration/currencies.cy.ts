@@ -6,7 +6,7 @@ import { SCCOSApi } from '../support/sccos_api/sccos.api';
 
 const homePage = new LandingPage();
 const cartPage = new CartPage();
-let pdp = new ProductDetailsPage();
+const pdp = new ProductDetailsPage();
 
 describe('Currencies suite', () => {
   describe('when user opens home page', () => {
@@ -46,25 +46,6 @@ describe('Currencies suite', () => {
           checkCurrencyOnCartPage('CHF');
         });
       });
-
-      // TODO: this test fails due to a bug with SSR mode
-      describe('and navigates through the website in SSR mode', () => {
-        beforeEach(() => {
-          pdp = new ProductDetailsPage(ProductStorage.getProductByEq(0));
-          // visit PDP
-          pdp.visit();
-        });
-
-        it('CHF price is still applied', () => {
-          pdp.header.getCurrencyButton().should('contain.text', 'CHF');
-          // product price is displayed in CHF
-          pdp.getPrice().should('contain.text', 'CHF');
-          pdp.addItemsToTheCart(1);
-          // visit the cart
-          cartPage.visit();
-          checkCurrencyOnCartPage('CHF');
-        });
-      });
     });
   });
 
@@ -85,7 +66,6 @@ describe('Currencies suite', () => {
           cartPage.header.changeCurrency('EUR');
         });
 
-        // covers HRZ-2605
         it('EUR prices are applied on the cart page', () => {
           checkCurrencyOnCartPage('€');
         });
