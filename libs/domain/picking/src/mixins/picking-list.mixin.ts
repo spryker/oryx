@@ -11,6 +11,7 @@ import {
   BehaviorSubject,
   distinctUntilChanged,
   filter,
+  map,
   Observable,
   switchMap,
 } from 'rxjs';
@@ -24,6 +25,7 @@ export declare class PickingListMixinInterface
   pickingListId?: string;
   protected pickingList$: Observable<PickingList>;
   protected pickingList: PickingList;
+  protected upcomingPickingListId: string | null;
 }
 
 export const PickingListMixin = <
@@ -42,11 +44,17 @@ export const PickingListMixin = <
     protected pickingList$ = this.pickingListId$.pipe(
       distinctUntilChanged(),
       filter(isDefined),
-      switchMap((id) => this.pickingListService.getById(id!))
+      switchMap((id) => this.pickingListService.get({ id })),
+      map((list) => list?.[0] ?? null)
     );
 
     @asyncState()
     protected pickingList = valueType(this.pickingList$);
+
+    @asyncState()
+    protected upcomingPickingListId = valueType(
+      this.pickingListService.getUpcomingPickingListId()
+    );
   }
 
   return PickingListMixinClass as unknown as Type<PickingListMixinInterface> &

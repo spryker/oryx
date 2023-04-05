@@ -1,7 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { Deserializer } from 'jsonapi-serializer';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { ProductEntity } from '../../entities';
 import {
   ItemsFilters,
   PickingList,
@@ -9,22 +8,23 @@ import {
   PickingListQualifier,
   PickingListStatus,
   PickingOrderItem,
+  PickingProduct,
 } from '../../models';
 import { PickingHttpService } from '../picking-http.service';
 import { PickingListAdapter } from './picking-list.adapter';
 
 export class PickingListDefaultAdapter implements PickingListAdapter {
   constructor(
-    protected pickingHttpSerivce = inject(PickingHttpService),
+    protected pickingHttpService = inject(PickingHttpService),
     protected deserializer = new Deserializer({
       keyForAttribute: 'camelCase',
     })
   ) {}
 
-  get(qualifier: PickingListQualifier): Observable<PickingList[]> {
+  get(qualifier?: PickingListQualifier): Observable<PickingList[]> {
     const query = this.getPickingListQuery(qualifier);
 
-    return this.pickingHttpSerivce
+    return this.pickingHttpService
       .get<GetPickingListResponse>(`/picking-lists${query}`)
       .pipe(switchMap((res) => this.parsePickingLists(res)));
   }
@@ -37,10 +37,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       },
     };
 
-    return this.pickingHttpSerivce
-      .patch<PatchPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
+    return this.pickingHttpService
+      .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
-        map(({ data: [updatedPickingListData] }) => ({
+        map(({ data: updatedPickingListData }) => ({
           ...pickingList,
           status: updatedPickingListData.status as PickingListStatus,
           createdAt: new Date(updatedPickingListData.createdAt),
@@ -67,8 +67,8 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       })),
     };
 
-    return this.pickingHttpSerivce
-      .patch<PatchPickingListResponse>(
+    return this.pickingHttpService
+      .patch<FinishPickingListResponse>(
         `/picking-lists/${pickingList.id}/picking-list-items`,
         body
       )
@@ -82,23 +82,26 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
   }
 
-  protected getPickingListQuery(qualifier: PickingListQualifier): string {
-    let query = '';
+  protected getPickingListQuery(qualifier?: PickingListQualifier): string {
+    const params = new URLSearchParams({
+      include:
+        'picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets',
+    });
 
-    if (qualifier.id) {
-      return `/${qualifier.id}`;
+    if (qualifier?.id) {
+      return `/${qualifier.id}?${params.toString()}`;
     }
 
-    if (qualifier.status) {
-      query += `?filter[picking-lists.status]=${qualifier.status}`;
+    if (qualifier?.status) {
+      params.set('filter[picking-lists.status]', qualifier.status);
     }
 
     if (
-      qualifier.limit !== undefined ||
-      qualifier.offset !== undefined ||
-      qualifier.orderReferences !== undefined ||
-      qualifier.sortBy !== undefined ||
-      qualifier.sortDesc !== undefined
+      qualifier?.limit !== undefined ||
+      qualifier?.offset !== undefined ||
+      qualifier?.orderReferences !== undefined ||
+      qualifier?.sortBy !== undefined ||
+      qualifier?.sortDesc !== undefined
     ) {
       throw new Error(
         `PickingListDefaultAdapter: Unsupported qualifier: ${JSON.stringify(
@@ -109,7 +112,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       );
     }
 
-    return query;
+    return `?${params.toString()}`;
   }
 
   protected async parsePickingLists(
@@ -125,27 +128,29 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     );
   }
 
-  protected parseProducts(data: PickingListResponseData[]): ProductEntity[] {
+  protected parseProducts(data: PickingListResponseData[]): PickingProduct[] {
     const productsDeserialize = data
       .flatMap((item) => item.pickingListItems)
-      .flatMap((item) => item.products);
+      .flatMap((item) => item.concreteProducts);
 
-    const products: ProductEntity[] = productsDeserialize.map((product) =>
-      ProductEntity.from({
-        id: product.id,
-        sku: product.sku,
-        productName: product.name,
-        image: product.productImages[0].externalUrlSmall,
-        imageLarge: product.productImages[0].externalUrlLarge,
-      })
-    );
+    const products: PickingProduct[] = productsDeserialize.map((product) => ({
+      id: product.id,
+      sku: product.sku,
+      productName: product.name,
+      image:
+        product.concreteProductImageSets[0].imageSets[0].images[0]
+          .externalUrlSmall,
+      imageLarge:
+        product.concreteProductImageSets[0].imageSets[0].images[0]
+          .externalUrlLarge,
+    }));
 
     return products;
   }
 
   protected parsePickingList(
     data: PickingListResponseData,
-    products: ProductEntity[]
+    products: PickingProduct[]
   ): PickingList {
     const cardNote = data.pickingListItems[0].salesOrders[0].cartNote;
 
@@ -153,7 +158,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       (item) => {
         // Use first element(products[0]) from products because it will be only ONE by pickinglist item
         const product = products.find(
-          (prod) => prod.sku === item.products[0].sku
+          (prod) => prod.sku === item.concreteProducts[0].sku
         );
 
         if (!product) {
@@ -206,10 +211,10 @@ interface PickingListResponseItem extends ResourceObject {
   numberOfPicked: number;
   numberOfNotPicked: number;
   orderItem: PickingOrderItem;
-  products: PickingListResponseProduct[];
+  concreteProducts: PickingListResponseProduct[];
   quantity: number;
   salesOrders: PickingListResponseOrder[];
-  shipments: PickingListResponseShipment[];
+  salesShipments: PickingListResponseShipment[];
 }
 
 interface PickingListResponseOrder extends ResourceObject {
@@ -224,13 +229,20 @@ interface PickingListResponseShipment extends ResourceObject {
 interface PickingListResponseProduct extends ResourceObject {
   sku: string;
   name: string;
-  productImages: PickingListResponseProductImage[];
+  concreteProductImageSets: {
+    imageSets: PickingListResponseProductImage[];
+  }[];
 }
 
 interface PickingListResponseProductImage extends ResourceObject {
-  productImageKey: string;
-  externalUrlSmall: string;
-  externalUrlLarge: string;
+  name: string;
+  locale: string;
+  images: [
+    {
+      externalUrlSmall: string;
+      externalUrlLarge: string;
+    }
+  ];
 }
 
 interface ResourceObject {
@@ -242,7 +254,12 @@ interface LinksObject {
   self: string;
 }
 
-interface PatchPickingListResponse {
+interface StartPickingListResponse {
+  data: PatchPickingListData;
+  links: LinksObject;
+}
+
+interface FinishPickingListResponse {
   data: PatchPickingListData[];
   links: LinksObject;
 }

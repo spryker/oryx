@@ -1,4 +1,6 @@
 export default {
+  'cart.totals.<count>-items':
+    'Mein Warenkorb ({count, plural, one {ein artikel} other {{count} artikel}})',
   'add-to-cart': 'In der Warnkorb',
   'cart.summary.heading': 'Warenkorb',
   login: 'Anmelden',

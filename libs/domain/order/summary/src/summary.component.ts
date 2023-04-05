@@ -34,9 +34,7 @@ export class OrderSummaryComponent extends OrderMixin(
   }
 
   protected renderDetails(): TemplateResult {
-    return html`<oryx-heading .as=${HeadingTag.H3}>
-        <h2>${i18n('order.order-details')}</h2>
-      </oryx-heading>
+    return html`<h2>${i18n('order.order-details')}</h2>
       <div class="details-container">
         <div class="details summary">
           <div>
