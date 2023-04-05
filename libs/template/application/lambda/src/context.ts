@@ -5,6 +5,7 @@ import {
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
+import { Headers } from 'node-fetch';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
@@ -29,9 +30,13 @@ export const serverContext = (options: ContextOptions): any => {
       process,
       buffer,
       exports: {},
+      Headers,
     },
   });
   window.setTimeout = setTimeout;
+  // added because of oauth, we probably should not require oauth in the ssr
+  window.TextEncoder = class {};
+  window.TextDecoder = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

@@ -1,5 +1,6 @@
 import { prehydrate } from '@spryker-oryx/core';
-import { throttle } from '@spryker-oryx/utilities';
+import { Size } from '@spryker-oryx/ui';
+import { hydratable, throttle } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -9,6 +10,7 @@ import { truncateFix } from './prehydrate';
 import { TextProperties } from './text.model';
 import { textStyles } from './text.styles';
 
+@hydratable(['mouseover', 'focusin'])
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
@@ -49,14 +51,14 @@ export class TextComponent extends LitElement implements TextProperties {
       ${when(
         !this.hideToggle,
         () => html` <slot name="toggle">
-          <oryx-icon-button size="small">
+          <oryx-icon-button size=${Size.Sm}>
             <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
               <oryx-icon type="dropdown"></oryx-icon>
             </button>
           </oryx-icon-button>
         </slot>`
       )}
-      ${prehydrate(truncateFix, 'oryx-text')}
+      ${prehydrate(truncateFix, this.tagName.toLowerCase())}
     `;
   }
 

@@ -21,7 +21,7 @@ describe('DrawerComponent', () => {
       new Event('submit', {
         cancelable: true,
       })
-    );
+    ) ?? true;
 
   beforeAll(async () => {
     await useComponent(drawerComponent);

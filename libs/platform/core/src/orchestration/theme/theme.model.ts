@@ -2,6 +2,11 @@ import { LazyLoadable, ScreenSize } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 
+export enum ColorMode {
+  Light = 'mode-light',
+  Dark = 'mode-dark',
+}
+
 export const enum ThemeStrategies {
   Replace = 'replace',
   ReplaceAll = 'replace-all',
@@ -21,7 +26,7 @@ export interface ThemeBreakpoints {
 }
 
 export interface ThemeMediaQueries {
-  [ThemeDefaultMedia.Mode]?: 'dark';
+  [ThemeDefaultMedia.Mode]?: 'dark' | 'light';
   [ThemeDefaultMedia.Screen]?: keyof ThemeBreakpoints;
 }
 
@@ -30,7 +35,9 @@ export interface ThemeStylesWithMedia {
   css: ThemeStyles;
 }
 
-export type ThemeStylesCollection = CSSResult | string | ThemeStylesWithMedia;
+export type ThemeStylesCollection =
+  | Exclude<ThemeStyles, CSSResult[]>
+  | ThemeStylesWithMedia;
 
 export type ThemeStylesheets = ThemeStyles | ThemeStylesCollection[];
 

@@ -43,7 +43,7 @@ export const ProductCardStyles = css`
   oryx-product-labels,
   .actions {
     grid-row: 1;
-    padding-top: 12px;
+    padding-block-start: 12px;
     z-index: 1;
   }
 
@@ -56,7 +56,7 @@ export const ProductCardStyles = css`
   }
 
   oryx-content-link > *:last-child {
-    margin-bottom: 16px;
+    margin-block-end: 16px;
   }
 
   :host([has-line-clamp]) .popover {
@@ -72,9 +72,21 @@ export const ProductCardStyles = css`
     background-color: var(--oryx-color-canvas-100);
   }
 
+  oryx-product-price::part(sales) {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 700;
+  }
+
+  oryx-product-price::part(original) {
+    font-size: var(--oryx-typography-small-size);
+    font-weight: var(--oryx-typography-small-weight);
+    line-height: var(--oryx-typography-small-line);
+  }
+
   oryx-product-price,
   oryx-cart-add {
-    margin-top: 8px;
+    margin-block-start: 8px;
   }
 
   oryx-cart-add {

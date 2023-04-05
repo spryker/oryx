@@ -1,62 +1,103 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, of, ReplaySubject, switchMap, take, tap } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {
+  Observable,
+  of,
+  ReplaySubject,
+  switchMap,
+  take,
+  tap,
+  throwError,
+} from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
-import { ExperienceStaticData } from './static-data';
+import { ExperienceStaticData, StaticComponent } from './static-data';
+
+type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
 export class DefaultExperienceService implements ExperienceService {
-  protected dataRoutes: Record<string, ReplaySubject<string>> = {};
-  protected dataComponent: Record<string, ReplaySubject<Component>> = {};
-  protected dataContent: Record<string, ReplaySubject<any>> = {};
-  protected dataOptions: Record<string, ReplaySubject<any>> = {};
   protected autoComponentId = 0;
+  protected dataRoutes: DataStore<string> = {};
+  protected dataComponent: DataStore<Component> = {};
+  protected dataContent: DataStore = {};
+  protected dataOptions: DataStore = {};
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, [])
+    protected staticData = inject(ExperienceStaticData, []).flat()
   ) {
     this.initStaticData();
   }
 
   protected initStaticData(): void {
-    this.staticData.flat().forEach((component) => {
-      component.id = component.id ?? this.getAutoId();
+    this.staticData = this.processStaticData();
+  }
 
-      if (!this.dataComponent[component.id]) {
-        this.dataComponent[component.id] = new ReplaySubject<Component>(1);
+  protected processStaticData(shouldStore = true): Component[] {
+    return this.staticData.map((component) => {
+      this.processComponent(component, shouldStore);
+
+      if (shouldStore) {
+        this.storeData('dataRoutes', component.meta?.route, component.id);
       }
-      this.dataComponent[component.id].next(component as Component);
-      if (component.meta?.route) {
-        if (!this.dataRoutes[component.meta.route]) {
-          this.dataRoutes[component.meta.route] = new ReplaySubject<string>(1);
-        }
-        this.dataRoutes[component.meta.route].next(component.id);
-      }
-      this.processComponent(component as Component);
+      return component as Component;
     });
   }
 
-  protected processComponent(component: Component): void {
-    const components = component?.components || [];
+  protected processComponent(
+    _component: Component | StaticComponent,
+    shouldStore = true
+  ): void {
+    const components = [_component];
 
-    component.id = component.id ?? this.getAutoId();
+    for (const component of components) {
+      component.id ??= this.getAutoId();
 
-    if (!this.dataComponent[component.id]) {
-      this.dataComponent[component.id] = new ReplaySubject<Component>(1);
+      if (shouldStore) {
+        this.storeData('dataComponent', component.id, component);
+      }
+
+      components.push(...(component.components ?? []));
     }
-    this.dataComponent[component.id].next(component);
-
-    components.forEach((component: Component) => {
-      this.processComponent(component);
-    });
   }
 
-  protected getAutoId(): string {
-    return `static${this.autoComponentId++}`;
+  protected storeData(
+    dataStoreKey: string,
+    byKey: keyof DataStore | undefined,
+    data: unknown
+  ): void {
+    if (!byKey) {
+      return;
+    }
+
+    const dataStore = this[dataStoreKey as keyof this] as unknown as DataStore;
+
+    if (!dataStore[byKey]) {
+      dataStore[byKey] = new ReplaySubject(1);
+    }
+
+    dataStore[byKey].next(data);
+  }
+
+  getComponent({ uid, route }: ComponentQualifier): Observable<Component> {
+    if (uid) {
+      if (!this.dataComponent[uid]) {
+        this.dataComponent[uid] = new ReplaySubject(1);
+        this.reloadComponent(uid);
+      }
+      return this.dataComponent[uid];
+    }
+
+    if (route) {
+      return this.getComponentByRoute(route);
+    }
+
+    return throwError(() => {
+      return new Error('Invalid qualifier for getComponent');
+    });
   }
 
   protected reloadComponent(uid: string): void {
@@ -67,17 +108,32 @@ export class DefaultExperienceService implements ExperienceService {
     this.http
       .get<Component>(componentsUrl)
       .pipe(
-        map((component) => {
+        tap((component) => {
           this.dataComponent[uid].next(component);
           this.processComponent(component);
-          return component;
         }),
         catchError(() => {
-          this.dataComponent[uid].next({ id: uid, type: '', components: [] });
+          this.dataComponent[uid].next({ id: uid, type: '' });
           return of({});
         })
       )
       .subscribe();
+  }
+
+  protected getComponentByRoute(route: string): Observable<Component> {
+    if (!this.dataRoutes[route]) {
+      this.dataRoutes[route] = new ReplaySubject(1);
+      this.reloadComponentByRoute(route);
+    }
+
+    return this.dataRoutes[route].pipe(
+      switchMap((uid: string) => {
+        if (!this.dataComponent[uid]) {
+          this.dataComponent[uid] = new ReplaySubject(1);
+        }
+        return this.dataComponent[uid];
+      })
+    );
   }
 
   protected reloadComponentByRoute(route: string): void {
@@ -88,33 +144,50 @@ export class DefaultExperienceService implements ExperienceService {
       .get<Component[]>(componentsUrl)
       .pipe(
         tap((components) => {
-          if (!components || !components.length) {
+          // TODO: why only first one
+          if (!components?.length) {
             return;
           }
           const component = components[0];
-          const componentId = component.id;
-          this.dataRoutes[route].next(componentId);
-          if (!this.dataComponent[componentId]) {
-            this.dataComponent[componentId] = new ReplaySubject<Component>(1);
-          }
-          this.dataComponent[componentId].next(component);
           this.processComponent(component);
+          this.storeData('dataRoutes', route, component.id);
         })
       )
       .subscribe();
   }
 
+  getContent({ uid }: { uid: string }): Observable<any> {
+    if (!this.dataContent[uid]) {
+      this.dataContent[uid] = new ReplaySubject(1);
+      this.reloadContent(uid);
+    }
+
+    return this.dataContent[uid];
+  }
+
   protected reloadContent(uid: string): void {
     this.getComponent({ uid: uid })
-      .pipe(take(1))
-      .subscribe((component) => {
-        const content = component?.content ?? {};
-        this.dataContent[uid].next(content);
-      });
+      .pipe(
+        take(1),
+        tap((component) => {
+          const content = component?.content ?? {};
+          this.dataContent[uid].next(content);
+        })
+      )
+      .subscribe();
+  }
+
+  getOptions({ uid }: { uid: string }): Observable<any> {
+    if (!this.dataOptions[uid]) {
+      this.dataOptions[uid] = new ReplaySubject(1);
+      this.reloadOptions(uid);
+    }
+
+    return this.dataOptions[uid];
   }
 
   protected reloadOptions(uid: string): void {
-    this.getComponent({ uid: uid })
+    this.getComponent({ uid })
       .pipe(take(1))
       .subscribe((component) => {
         const options = component?.options ?? {};
@@ -122,52 +195,7 @@ export class DefaultExperienceService implements ExperienceService {
       });
   }
 
-  getComponent({ uid, route }: ComponentQualifier): Observable<Component> {
-    if (uid) {
-      if (!this.dataComponent[uid]) {
-        this.dataComponent[uid] = new ReplaySubject<Component>(1);
-        this.reloadComponent(uid);
-      }
-      return this.dataComponent[uid];
-    }
-
-    if (route) {
-      return this.getComponentByRoute(route);
-    }
-
-    throw new Error('Invalid qualifier for getComponent');
-  }
-
-  protected getComponentByRoute(route: string): Observable<Component> {
-    if (!this.dataRoutes[route]) {
-      this.dataRoutes[route] = new ReplaySubject<string>(1);
-      this.reloadComponentByRoute(route);
-    }
-    return this.dataRoutes[route].pipe(
-      switchMap((uid: string) => {
-        if (!this.dataComponent[uid]) {
-          this.dataComponent[uid] = new ReplaySubject<Component>(1);
-        }
-        return this.dataComponent[uid];
-      })
-    );
-  }
-
-  getContent({ uid }: { uid: string }): Observable<any> {
-    if (!this.dataContent[uid]) {
-      this.dataContent[uid] = new ReplaySubject<any>(1);
-      this.reloadContent(uid);
-    }
-
-    return this.dataContent[uid];
-  }
-
-  getOptions({ uid }: { uid: string }): Observable<any> {
-    if (!this.dataOptions[uid]) {
-      this.dataOptions[uid] = new ReplaySubject<any>(1);
-      this.reloadOptions(uid);
-    }
-
-    return this.dataOptions[uid];
+  protected getAutoId(): string {
+    return `static${this.autoComponentId++}`;
   }
 }

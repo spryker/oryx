@@ -1,8 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { Size } from '@spryker-oryx/ui';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import {
@@ -13,6 +15,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
@@ -231,6 +234,13 @@ export class SearchBoxComponent
     `;
   }
 
+  protected i18nService = resolve(I18nService);
+
+  @asyncState()
+  protected placeholder = valueType(
+    this.i18nService.translate(['search', 'search.placeholder'])
+  );
+
   protected override render(): TemplateResult {
     return html`
       <form @submit=${this.onSubmit}>
@@ -238,8 +248,11 @@ export class SearchBoxComponent
           @oryx.typeahead=${this.onTypeahead}
           .clearIconPosition=${ClearIconPosition.NONE}
         >
-          <oryx-icon slot="prefix" type="search" size="medium"></oryx-icon>
-          <input ${ref(this.inputRef)} placeholder="Search" />
+          <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
+          <input
+            ${ref(this.inputRef)}
+            placeholder=${ifDefined(this.placeholder)}
+          />
           ${this.renderSuggestion(this.suggestion)}
           ${when(this.query, () =>
             this.queryControlsController.renderControls()

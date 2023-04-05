@@ -21,9 +21,8 @@ interface Props {
 }
 
 const Template: Story<Props> = (props): TemplateResult => {
-  const dataService = resolve(CheckoutDataService);
-  dataService.setGuestCheckout(props.behavior === 'guest');
   toggleBehavior(props.behavior);
+  resolve(CheckoutDataService).setGuestCheckout(props.behavior === 'guest');
   return html`<oryx-checkout-composition></oryx-checkout-composition>`;
 };
 

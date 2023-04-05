@@ -1,6 +1,6 @@
 export interface HeadingAttributes {
   /**
-   * Indicates the heading level that will be generated.
+   * Indicates the heading tag that will be generated.
    */
   tag?: HeadingTag;
 
@@ -23,18 +23,53 @@ export interface HeadingAttributes {
    *
    * The following example renders visually as an h3, while the semantic element is an `h1`.
    * ```html
-   * <oryx-heading appearance="h3">
+   * <oryx-heading as="h3">
+   *   <h1>Heading text</h1>
+   * </oryx-heading>
+   * ```
+   *
+   * The `as` attribute also supports to completely hide the heading, using the `hide` value.
+   *
+   * The `as` attribute can be used in combination with screen specific `as` attribute, to mimic or hide
+   * the heading on certain screens only.
+   */
+  as?: HeadingTag | 'hide';
+
+  /**
+   * Similar to the generic _as_ behavior you can mimic a certain style for large screen size.
+   *
+   * This can be used as an attribute (dash-case):
+   * ```html
+   * <oryx-heading as-lg="h3">
    *   <h1>Heading text</h1>
    * </oryx-heading>
    * ```
    */
-  appearance?: string;
+  asLg?: HeadingTag | 'hide' | 'show';
 
   /**
-   * Similar to the generic _appearance_ behaviour you can mimic a certain style for medium (and larger)
-   * screen size.
+   * Similar to the generic _as_ behavior you can mimic a certain style for medium screen size.
+   *
+   * This can be used as an attribute (dash-case):
+   * ```html
+   * <oryx-heading as-md="h3">
+   *   <h1>Heading text</h1>
+   * </oryx-heading>
+   * ```
    */
-  mdAppearance?: string;
+  asMd?: HeadingTag | 'hide' | 'show';
+
+  /**
+   * Similar to the generic _appearance_ behavior you can mimic a certain style for small screen size.
+   *
+   * This can be used as an attribute (dash-case):
+   * ```html
+   * <oryx-heading as-sm="h3">
+   *   <h1>Heading text</h1>
+   * </oryx-heading>
+   * ```
+   */
+  asSm?: HeadingTag | 'hide' | 'show';
 }
 
 /**
@@ -50,4 +85,5 @@ export const enum HeadingTag {
   H6 = 'h6',
   Caption = 'caption',
   Subtitle = 'subtitle',
+  Small = 'small',
 }

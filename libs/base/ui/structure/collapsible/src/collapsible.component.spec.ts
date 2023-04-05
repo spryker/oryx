@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { Size } from '@spryker-oryx/ui';
 import { CollapsibleComponent } from './collapsible.component';
 import { collapsibleComponent } from './collapsible.def';
 import {
@@ -38,7 +39,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe(Size.Md);
       });
     });
 
@@ -54,12 +55,24 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('medium');
+        expect(toggle?.getAttribute('size')).toBe(Size.Md);
       });
     });
   });
 
-  describe('When the appearance is inline', () => {
+  describe('when the appearance is inline', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-collapsible
+          .appearance=${CollapsibleAppearance.Inline}
+        ></oryx-collapsible>`
+      );
+    });
+
+    it('should set tabindex on summary', () => {
+      expect(element).toContainElement('summary[tabindex="-1"]');
+    });
+
     describe('and the TextButton toggle control type is provided', () => {
       beforeEach(async () => {
         element = await fixture(
@@ -72,7 +85,7 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
       });
     });
 
@@ -88,8 +101,20 @@ describe('CollapsibleComponent', () => {
 
       it('should have a medium sized oryx-icon-button', () => {
         const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe('small');
+        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
       });
+    });
+  });
+
+  describe('when is not tabbable', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-collapsible nonTabbable></oryx-collapsible>`
+      );
+    });
+
+    it('should set tabindex on summary', () => {
+      expect(element).toContainElement('summary[tabindex="-1"]');
     });
   });
 });

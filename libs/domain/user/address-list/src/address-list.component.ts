@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/ui';
 import { Address, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
@@ -33,12 +34,13 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected willUpdate(changedProperties: PropertyValues): void {
     if (
-      this.componentOptions.selectable &&
+      this.componentOptions?.selectable &&
       !this.addresses?.find((address) => address.id === this.selectedAddressId)
     ) {
       this.selectedAddressId =
         this.addresses?.find((a) => this.isDefault(a))?.id ??
         this.addresses?.[0].id;
+      this.dispatchSelectedAddress(this.selectedAddressId);
     }
 
     super.willUpdate(changedProperties);
@@ -65,7 +67,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
         .options=${this.componentOptions}
       >
         ${when(
-          this.componentOptions.selectable,
+          this.componentOptions?.selectable,
           () => html`<input
             name="address"
             type="radio"
@@ -80,15 +82,18 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected renderEmpty(): TemplateResult | void {
     return html`<slot name="empty">
-      <oryx-icon type="location" size="large"></oryx-icon>
+      <oryx-icon type="location" size=${Size.Lg}></oryx-icon>
       ${i18n('user.address.no-addresses')}
     </slot>`;
   }
 
   protected onInput(ev: Event): void {
     const el = ev.target as HTMLInputElement;
+    this.dispatchSelectedAddress(el.value);
+  }
 
-    const address = this.addresses?.find((address) => address.id === el.value);
+  protected dispatchSelectedAddress(addressId?: string): void {
+    const address = this.addresses?.find((address) => address.id === addressId);
     if (address) {
       this.selectedAddressId = address.id;
       this.dispatchEvent(

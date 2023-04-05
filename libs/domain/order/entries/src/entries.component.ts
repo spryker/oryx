@@ -17,7 +17,10 @@ import { styles } from './entries.styles';
 @defaultOptions({
   limit: 5,
   threshold: 3,
-})
+  enableItemImage: true,
+  enableItemId: true,
+  enableItemPrice: false,
+} as OrderEntriesOptions)
 @hydratable('window:load')
 export class OrderEntriesComponent extends OrderMixin(
   ContentMixin<OrderEntriesOptions>(LitElement)
@@ -54,10 +57,9 @@ export class OrderEntriesComponent extends OrderMixin(
   }
 
   protected renderHeading(): TemplateResult {
-    return html`<oryx-heading .appearance=${HeadingTag.H6}>
+    return html`<oryx-heading .as=${HeadingTag.H6}>
       <h3>
-        ${i18n('order.Products')}
-        ${i18n('order.(<count> items)', {
+        ${i18n('order.<count>-items', {
           count: this.order?.items.length ?? 0,
         })}
       </h3>
@@ -74,31 +76,29 @@ export class OrderEntriesComponent extends OrderMixin(
               : this.componentOptions?.limit
           ),
           (entry) =>
-            html`<cart-entry
-              .options=${{
-                ...entry,
-                readonly: true,
-                productOptions: false,
-                calculations: {
-                  unitPrice: entry.unitPrice,
-                  sumPrice: entry.sumPrice,
-                  sumPriceToPayAggregation: entry.sumPriceToPayAggregation,
-                },
-              }}
-            ></cart-entry>`
+            html`<oryx-cart-entry
+              .key=${entry.uuid}
+              .sku=${entry.sku}
+              .quantity=${entry.quantity}
+              .price=${entry.sumPrice}
+              .options=${this.componentOptions}
+              readonly
+            ></oryx-cart-entry>`
         )}`
       : html``;
   }
 
   protected renderButton(): TemplateResult | void {
     if (this.hasThreshold || !this.order) return;
-    return html`<button @click=${this.toggleShowMore}>
-      ${this.showAllEntries ? '-' : '+'}${this.order.items.length -
-      (this.componentOptions?.limit ?? 0)}
-      ${i18n(
-        this.showAllEntries ? 'order.less-products' : 'order.more-products'
-      )}
-    </button>`;
+    return html`<oryx-button type="text"
+      ><button @click=${this.toggleShowMore}>
+        ${this.showAllEntries ? '-' : '+'}${this.order.items.length -
+        (this.componentOptions?.limit ?? 0)}
+        ${i18n(
+          this.showAllEntries ? 'order.less-products' : 'order.more-products'
+        )}
+      </button></oryx-button
+    >`;
   }
 
   protected toggleShowMore(): void {

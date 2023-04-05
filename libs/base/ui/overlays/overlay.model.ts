@@ -1,8 +1,3 @@
-export interface Dialog {
-  open: boolean;
-  show(): void;
-  close(returnValue?: string): void;
-  showModal(): void;
-}
-
-export interface DialogElement extends Dialog, HTMLDialogElement {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Dialog
+  extends Pick<HTMLDialogElement, 'open' | 'show' | 'close' | 'showModal'> {}

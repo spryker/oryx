@@ -1,7 +1,10 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { HeadingAttributes } from '../heading.model';
+
+const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'];
 
 export default {
   title: `${storybookPrefix}/Structure/Heading`,
@@ -10,19 +13,27 @@ export default {
   },
   argTypes: {
     tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
       control: { type: 'select' },
+      options: tags,
     },
     maxLines: {
       control: { type: 'number' },
     },
-    appearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
+    as: {
       control: { type: 'select' },
+      options: tags,
     },
-    mdAppearance: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'],
+    asLg: {
       control: { type: 'select' },
+      options: tags,
+    },
+    asMd: {
+      control: { type: 'select' },
+      options: tags,
+    },
+    asSm: {
+      control: { type: 'select' },
+      options: tags,
     },
   },
 } as Meta;
@@ -31,10 +42,12 @@ const Template: Story<HeadingAttributes> = (
   props: HeadingAttributes
 ): TemplateResult => {
   return html`<oryx-heading
-    .tag=${props.tag}
-    .appearance=${props.appearance}
-    .mdAppearance=${props.mdAppearance}
-    .maxLines=${props.maxLines}
+    tag=${ifDefined(props.tag)}
+    as=${ifDefined(props.as)}
+    as-lg=${ifDefined(props.asLg)}
+    as-md=${ifDefined(props.asMd)}
+    as-sm=${ifDefined(props.asSm)}
+    maxLines=${ifDefined(props.maxLines)}
   >
     Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy
     wizards make toxic brew.

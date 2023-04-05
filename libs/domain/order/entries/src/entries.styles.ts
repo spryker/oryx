@@ -1,23 +1,19 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  h3 {
+    margin-block-end: 20px;
   }
 
-  h3 {
-    margin-bottom: 2px;
+  oryx-cart-entry:not(:last-child) {
+    border-block-end: 1px solid var(--oryx-color-canvas-500);
+  }
+
+  oryx-button {
+    margin-block-start: 10px;
   }
 
   button {
-    border: none;
-    background-color: transparent;
-    line-height: 22px;
     color: var(--oryx-color-primary-300);
-    font-weight: 500;
-    cursor: pointer;
-    outline: none;
   }
 `;

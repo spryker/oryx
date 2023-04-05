@@ -1,18 +1,18 @@
 import { css } from 'lit';
 
-export const styles = css`
-  :host,
-  oryx-collapsible::part(content) {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--oryx-space-4);
+export const cartEntriesStyles = css`
+  h1 {
+    font-size: var(--oryx-typography-h3-size);
+    font-weight: var(--oryx-typography-h3-weight);
+    line-height: var(--oryx-typography-h3-line);
+    margin-block-end: 20px;
   }
 
-  oryx-collapsible::part(content) {
-    padding-block: var(--oryx-space-4);
+  oryx-cart-entry:not(:last-child) {
+    border-block-end: 1px solid var(--oryx-color-canvas-500);
   }
 
-  section {
+  section.empty {
     --oryx-icon-size: 40px;
 
     display: flex;
@@ -33,5 +33,9 @@ export const styles = css`
 
   oryx-chip {
     margin-inline-start: var(--oryx-space-2);
+  }
+
+  oryx-heading {
+    text-align: var(--oryx-typography-h1-align);
   }
 `;

@@ -1,3 +1,4 @@
+import { AlertType, Size } from '@spryker-oryx/ui';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -45,24 +46,28 @@ export class SearchFacetValueNavigationComponent
   }
 
   protected override render(): TemplateResult {
-    return html` <oryx-collapsible ?open=${this.open}>
+    const allowClear = this.enableClearAction && this.selectedLength;
+
+    return html` <oryx-collapsible
+      ?open=${this.open}
+      ?nonTabbable=${allowClear}
+    >
       <span class="header" slot="header">
         <slot name="title">
           ${when(this.heading, () => html`${this.heading}`)}
           ${when(
             this.selectedLength,
-            () =>
-              html`<oryx-chip dense appearance="success"
-                >${this.selectedLength}</oryx-chip
-              >`
+            () => html` <oryx-chip dense appearance=${AlertType.Success}
+              >${this.selectedLength}</oryx-chip
+            >`
           )}
         </slot>
 
         ${when(
-          this.enableClearAction && this.selectedLength,
+          allowClear,
           () =>
             html`
-              <oryx-button type="text" size="small">
+              <oryx-button type="text" size=${Size.Sm}>
                 <button @click=${this.onClear}>
                   ${i18n('search.facet-value-navigation.clear')}
                 </button>
@@ -84,7 +89,7 @@ export class SearchFacetValueNavigationComponent
       ${when(
         this.enableToggle,
         () => html`<div class="controls">
-          <oryx-button type="text" size="large">
+          <oryx-button type="text" size=${Size.Lg}>
             <button @click=${this.onToggle}>
               ${when(
                 this._isShowed,

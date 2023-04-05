@@ -1,9 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  RouterEvent,
-  RouterEventType,
-  RouterService,
-} from '@spryker-oryx/router';
+import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -11,11 +7,14 @@ import {
   filter,
   fromEvent,
   map,
+  merge,
   Observable,
-  ReplaySubject,
   shareReplay,
+  Subject,
+  takeUntil,
   tap,
 } from 'rxjs';
+import { ExperienceDataClientService } from './data-client';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 import { postMessage } from './utilities';
@@ -25,37 +24,39 @@ export const POST_MESSAGE_TYPE = 'experience-builder-preview';
 
 interface ExperiencePreviewData {
   type?: string;
-  structure?: {
-    id: string;
-    type: string;
-    components: Component[];
-  };
+  structure?: Component;
   content?: any;
   interaction?: any;
   options?: any;
-  route?: any;
+  route?: string;
 }
 export type ExperiencePreviewEvent = MessageEvent<ExperiencePreviewData>;
 
 export class PreviewExperienceService extends DefaultExperienceService {
-  constructor(protected routerService = inject(RouterService)) {
+  constructor(
+    protected routerService = inject(RouterService),
+    protected dataClient = inject(ExperienceDataClientService)
+  ) {
     super();
 
-    this.structureDataEvent$.subscribe();
-    this.contentDataEvent$.subscribe();
-    this.optionsDataEvent$.subscribe();
-    this.routeDataEvent$.subscribe();
-
-    this.routerService
-      .getEvents(RouterEventType.NavigationEnd)
-      .subscribe((event: RouterEvent) => {
-        this.routeChangeHandler(event.route);
-      });
+    this.dataClient.sendStatic(this.staticData);
+    merge(
+      this.dataClient.initialize(),
+      this.structureDataEvent$,
+      this.contentDataEvent$,
+      this.optionsDataEvent$,
+      this.routeDataEvent$,
+      this.routerService.getEvents(RouterEventType.NavigationEnd).pipe(
+        tap((event) => {
+          this.routeChangeHandler(event.route);
+        })
+      )
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
-  protected initStaticData(): void {
-    // we don't want to use static data here yet
-  }
+  protected destroy$ = new Subject<void>();
 
   protected experiencePreviewEvent$ =
     typeof window !== 'undefined'
@@ -69,24 +70,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
     map((data) => data.data?.structure),
     filter(isDefined),
     tap((structure) => {
-      if (!this.dataComponent[structure.id]) {
-        this.dataComponent[structure.id] = new ReplaySubject<Component>(1);
-      }
-
-      this.dataComponent[structure.id].next(structure);
-
-      if (Array.isArray(structure.components)) {
-        structure.components.forEach((item: Component) => {
-          if (item.id) {
-            if (!this.dataComponent[item.id]) {
-              this.dataComponent[item.id] = new ReplaySubject<Component>(1);
-            }
-
-            this.dataComponent[item.id].next(item);
-          }
-        });
-        this.processComponent(structure);
-      }
+      this.storeData('dataRoutes', structure.meta?.route, structure.id);
+      this.processComponent(structure);
     })
   );
 
@@ -98,10 +83,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      if (!this.dataContent[content.id]) {
-        this.dataContent[content.id] = new ReplaySubject<any>(1);
-      }
-      this.dataContent[content.id].next(content);
+      this.storeData('dataContent', content.id, content);
     })
   );
 
@@ -113,10 +95,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      if (!this.dataOptions[options.id]) {
-        this.dataOptions[options.id] = new ReplaySubject<any>(1);
-      }
-      this.dataOptions[options.id].next(options);
+      this.storeData('dataOptions', options.id, options);
     })
   );
 
@@ -132,24 +111,35 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined)
   );
 
-  reloadComponent(id: string): void {
+  protected initStaticData(): void {
+    this.staticData = this.processStaticData(false);
+  }
+
+  protected reloadComponent(uid: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      structure: id,
+      structure: uid,
     });
   }
 
-  reloadContent(id: string): void {
+  protected reloadComponentByRoute(route: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      content: id,
+      route,
     });
   }
 
-  reloadOptions(id: string): void {
+  protected reloadContent(uid: string): void {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
-      options: id,
+      content: uid,
+    });
+  }
+
+  protected reloadOptions(uid: string): void {
+    postMessage({
+      type: REQUEST_MESSAGE_TYPE,
+      options: uid,
     });
   }
 
@@ -172,4 +162,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
    * Temporary flag for storing the information about header/footer editing
    */
   public headerEdit$ = new BehaviorSubject<boolean>(false);
+
+  onDestroy(): void {
+    this.destroy$.next();
+  }
 }

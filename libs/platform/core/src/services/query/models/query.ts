@@ -9,6 +9,7 @@ export interface QueryOptions<
 > {
   id?: string;
   loader: (qualifier: Qualifier) => Promise<ValueType> | Observable<ValueType>;
+
   resetOn?: QueryTrigger[];
   refreshOn?: QueryTrigger[];
 
@@ -16,12 +17,14 @@ export interface QueryOptions<
   onError?: QueryEventHandler<ValueType, Qualifier>[];
 
   /**
-   * Query is not cached between subscriptions.
+   * Query is not cached between subscriptions
+   * (experimental)
    */
   volatile?: boolean;
 
   /**
    * Query is active (refreshing) even without active subscriptions
+   * (experimental)
    */
   permanent?: boolean;
 }
@@ -44,4 +47,6 @@ export interface Query<
     qualifier?: Qualifier;
     optimistic?: boolean;
   }): void;
+  reset(qualifier?: Qualifier): void;
+  refresh(qualifier?: Qualifier): void;
 }

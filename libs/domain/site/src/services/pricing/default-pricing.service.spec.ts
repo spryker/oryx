@@ -1,5 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { CurrencyService, LocaleService } from '@spryker-oryx/site';
+import { LocaleService } from '@spryker-oryx/i18n';
+import { CurrencyService } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
 import { DefaultPricingService } from './default-pricing.service';
 import { Price, PricingService } from './pricing.service';
@@ -121,14 +122,10 @@ describe('DefaultPricingService', () => {
       });
 
       describe('and price currency is invalid', () => {
-        it('should throw currency error', () => {
+        it('should return null', () => {
           const cb = vi.fn();
-          service.format(mockUSD).subscribe({
-            error: cb,
-          });
-          expect(cb).toHaveBeenCalledWith(
-            Error(`Price error: ${mockUSD.currency} is invalid currency`)
-          );
+          service.format(mockUSD).subscribe(cb);
+          expect(cb).toHaveBeenCalledWith(null);
         });
       });
     });

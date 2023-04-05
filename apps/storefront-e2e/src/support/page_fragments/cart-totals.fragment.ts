@@ -1,0 +1,14 @@
+export class CartTotalsFragment {
+  getWrapper = () => cy.get('oryx-cart-totals');
+  getSubtotalText = () => this.getWrapper().find('oryx-cart-totals-subtotal');
+  getSubtotalPrice = () => this.getSubtotalText().find('span:nth-child(2)');
+  getDiscountsWrapper = () => this.getWrapper().find('.discount');
+  getDiscountsTotal = () => this.getDiscountsWrapper().find('[slot="aside"]');
+  getTaxTotalPrice = () =>
+    this.getWrapper().find('oryx-cart-totals-tax').find('span:nth-child(2)');
+  getTotalPrice = () =>
+    this.getWrapper().find('oryx-cart-totals-total').find('span:nth-child(2)');
+  getTaxMessage = () => this.getWrapper().get('.tax-message');
+  getCartSummary = () => cy.get('oryx-cart-summary');
+  getCartSummaryQuantity = () => this.getCartSummary().find('mark');
+}

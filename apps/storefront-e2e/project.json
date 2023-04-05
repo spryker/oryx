@@ -1,0 +1,36 @@
+{
+  "name": "storefront-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/storefront-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "browser": "chrome",
+        "cypressConfig": "apps/storefront-e2e/cypress.config.js",
+        "watch": true,
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "headless": {
+          "watch": false
+        },
+        "headless-ci": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/storefront-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": ["root"],
+  "implicitDependencies": ["storefront"]
+}

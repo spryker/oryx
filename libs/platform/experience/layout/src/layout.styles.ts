@@ -39,7 +39,7 @@ const stickyLayout = css`
   ::slotted(*[sticky]),
   ::slotted([class*='sticky']) {
     position: sticky;
-    top: var(--top, 0px);
+    inset-block-start: var(--top, 0px);
     max-height: calc(var(--height) - var(--top, 0px));
     z-index: var(--z-index, 1);
   }
@@ -55,6 +55,7 @@ const listLayout = css`
     flex-direction: column;
   }
 
+  :host([layout='list']),
   :host([layout='list']) ::slotted(*) {
     width: 100%;
   }
@@ -234,7 +235,7 @@ const carouselLayout = css`
     );
 
     grid-auto-flow: column;
-    overflow: auto;
+    overflow: auto hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: both mandatory;
     scroll-behavior: smooth;
@@ -246,7 +247,7 @@ const carouselLayout = css`
   }
 
   :host([vertical][layout='carousel']) {
-    overflow-x: initial;
+    overflow: hidden auto;
     grid-column: auto;
     grid-auto-flow: row;
     scroll-padding-block-start: var(--scroll-start, 0px);
@@ -266,7 +267,7 @@ const textLayout = css`
     column-count: var(--cols, 1);
   }
   :host([layout='text']) ::slotted(*:first-child) {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 `;
 

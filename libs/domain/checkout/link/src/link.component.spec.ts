@@ -10,8 +10,10 @@ import { CheckoutLinkComponent } from './link.component';
 import { checkoutLinkComponent } from './link.def';
 
 class MockCartService implements Partial<CartService> {
+  getCart = vi.fn().mockReturnValue(of());
+  getEntries = vi.fn().mockReturnValue(of([]));
   isEmpty = vi.fn();
-  getLoadingState = vi.fn().mockReturnValue(of(false));
+  isBusy = vi.fn().mockReturnValue(of(false));
 }
 
 class mockPricingService {
@@ -75,7 +77,7 @@ describe('CheckoutLinkComponent', () => {
 
   describe('when cart is loading', () => {
     beforeEach(async () => {
-      service.getLoadingState.mockReturnValue(of(true));
+      service.isBusy.mockReturnValue(of(true));
       service.isEmpty.mockReturnValue(of(false));
       element = await fixture(html` <checkout-link uid="1"></checkout-link>`);
     });
@@ -84,7 +86,7 @@ describe('CheckoutLinkComponent', () => {
       const contentLink = element.renderRoot.querySelector(
         'oryx-content-link'
       ) as ContentLinkComponent;
-      expect(contentLink?.options?.disabled).toBe(true);
+      expect(contentLink?.options?.loading).toBe(true);
     });
   });
 });

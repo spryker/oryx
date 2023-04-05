@@ -1,3 +1,4 @@
+import { Size } from '@spryker-oryx/ui';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { CollapseToggleController } from './navigation-collapse.controller';
@@ -21,9 +22,11 @@ export class NavigationComponent extends LitElement {
     return html`
       <oryx-image resource="logo"></oryx-image>
       <slot></slot>
-      <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
-        <oryx-icon type="back" size="medium"></oryx-icon>
-      </button>
+      <oryx-icon-button size=${Size.Md}>
+        <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
+          <oryx-icon type="back"></oryx-icon>
+        </button>
+      </oryx-icon-button>
     `;
   }
 

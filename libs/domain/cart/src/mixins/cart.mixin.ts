@@ -1,22 +1,68 @@
 import { Type } from '@spryker-oryx/di';
-import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
+import { asyncState, signal, Signal, valueType } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import type { Cart, CartComponentAttributes } from '../models';
+import { CartController } from '../controllers';
+import type {
+  Cart,
+  CartComponentAttributes,
+  CartEntry,
+  FormattedCartTotals,
+} from '../models';
 
-export const CartComponentMixin = <T>(): Type<
-  LitElement & ContentComponentProperties<T>
-> => {
-  class CartComponent
-    extends ComponentMixin<T>()
-    implements CartComponentAttributes
-  {
-    @property({ type: String }) cartId?: string;
-    @property({ type: Object }) cart?: Cart;
+export declare class CartMixinInterface implements CartComponentAttributes {
+  cartId?: string;
+  cart?: Cart;
+
+  protected cartController: CartController;
+
+  protected isEmpty?: boolean;
+  protected isBusy?: boolean;
+  protected entries?: CartEntry[];
+  protected totals?: FormattedCartTotals;
+  protected totalQuantity?: number;
+
+  protected $isEmpty: Signal<boolean>;
+  protected $isBusy: Signal<boolean>;
+  protected $entries: Signal<CartEntry[]>;
+  protected $totals: Signal<FormattedCartTotals>;
+  protected $totalQuantity: Signal<number>;
+}
+
+export const CartComponentMixin = <
+  T extends Type<LitElement & CartComponentAttributes>
+>(
+  superClass: T
+): Type<CartMixinInterface> & T => {
+  class CartMixinClass extends superClass {
+    @property({ reflect: true }) cartId?: string;
+    @property({ type: Object, reflect: true }) cart?: Cart;
+
+    protected cartController = new CartController(this);
+
+    @asyncState()
+    protected isEmpty = valueType(this.cartController.isEmpty());
+
+    @asyncState()
+    protected isBusy = valueType(this.cartController.isBusy());
+
+    @asyncState()
+    protected entries = valueType(this.cartController.getEntries());
+
+    @asyncState()
+    protected totals = valueType(this.cartController.getTotals());
+
+    @asyncState()
+    protected totalQuantity = valueType(this.cartController.getTotalQuantity());
+
+    protected $isEmpty = signal(this.cartController.isEmpty(), false);
+    protected $isBusy = signal(this.cartController.isBusy(), false);
+    protected $entries = signal(this.cartController.getEntries(), []);
+    protected $totals = signal(this.cartController.getTotals(), null);
+    protected $totalQuantity = signal(
+      this.cartController.getTotalQuantity(),
+      null
+    );
   }
-
-  return CartComponent as Type<LitElement & ContentComponentProperties<T>>;
+  return CartMixinClass as unknown as Type<CartMixinInterface> & T;
 };

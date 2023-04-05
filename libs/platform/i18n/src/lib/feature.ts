@@ -1,11 +1,10 @@
 import { AppFeature, AppPlugin } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { isDefined } from '@spryker-oryx/utilities';
-import { DefaultI18nLoaderConfig } from './default-i18n.loader';
+import { DefaultI18nLoaderConfig } from './i18n';
+import { DefaultLocaleAdapterConfig } from './locale';
 import { I18nPlugin } from './plugin';
 import { i18nProviders } from './providers';
-
-export type I18nFeatureOptions = DefaultI18nLoaderConfig;
 
 export class I18nFeature implements AppFeature {
   providers: Provider[];
@@ -15,6 +14,14 @@ export class I18nFeature implements AppFeature {
     this.providers = [
       ...i18nProviders,
       options && { provide: DefaultI18nLoaderConfig, useValue: options },
+      options?.locale && {
+        provide: DefaultLocaleAdapterConfig,
+        useValue: options.locale,
+      },
     ].filter(isDefined);
   }
+}
+
+export interface I18nFeatureOptions extends DefaultI18nLoaderConfig {
+  locale?: DefaultLocaleAdapterConfig;
 }

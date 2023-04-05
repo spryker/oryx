@@ -1,9 +1,9 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiCartModel } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';
@@ -11,15 +11,14 @@ import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 
-const mockAnonymousUser = {
-  id: 'userId',
-  anonymous: true,
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: false,
 };
 
-const mockUser = {
-  id: 'userId',
-  anonymous: false,
-  token: { accessToken: 'token' },
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
 };
 
 const mockTransformer = {
@@ -28,7 +27,9 @@ const mockTransformer = {
 };
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
+  get = vi
+    .fn<[], Observable<AuthIdentity>>()
+    .mockReturnValue(of(mockAnonymousUser));
 }
 
 describe('DefaultCartAdapter', () => {
@@ -106,7 +107,9 @@ describe('DefaultCartAdapter', () => {
         service.getAll().subscribe();
 
         expect(http.url).toBe(
-          `${mockApiUrl}/customers/${mockUser.id}/carts${requestIncludes(true)}`
+          `${mockApiUrl}/customers/${mockUser.userId}/carts${requestIncludes(
+            true
+          )}`
         );
       });
     });
@@ -188,10 +191,8 @@ describe('DefaultCartAdapter', () => {
   describe('addEntry should send `post` request', () => {
     const mockGuestAddEntryQualifier = {
       cartId: 'test',
-      attributes: {
-        sku: 'sku',
-        quantity: 1,
-      },
+      sku: 'sku',
+      quantity: 1,
     };
     const mockAddEntryQualifier = {
       ...mockGuestAddEntryQualifier,
@@ -214,7 +215,10 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'guest-cart-items',
-            attributes: mockGuestAddEntryQualifier.attributes,
+            attributes: {
+              sku: mockGuestAddEntryQualifier.sku,
+              quantity: mockGuestAddEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -241,7 +245,10 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'items',
-            attributes: mockAddEntryQualifier.attributes,
+            attributes: {
+              sku: mockAddEntryQualifier.sku,
+              quantity: mockAddEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -270,10 +277,8 @@ describe('DefaultCartAdapter', () => {
     const mockGuestUpdateEntryQualifier = {
       cartId: 'test',
       groupKey: 'groupKey',
-      attributes: {
-        sku: 'sku',
-        quantity: 1,
-      },
+      sku: 'sku',
+      quantity: 1,
     };
     const mockUpdateEntryQualifier = {
       ...mockGuestUpdateEntryQualifier,
@@ -298,7 +303,9 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'guest-cart-items',
-            attributes: mockGuestUpdateEntryQualifier.attributes,
+            attributes: {
+              quantity: mockGuestUpdateEntryQualifier.quantity,
+            },
           },
         });
       });
@@ -325,7 +332,7 @@ describe('DefaultCartAdapter', () => {
         expect(http.body).toEqual({
           data: {
             type: 'items',
-            attributes: mockUpdateEntryQualifier.attributes,
+            attributes: { quantity: mockUpdateEntryQualifier.quantity },
           },
         });
       });

@@ -1,47 +1,52 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Schemes, Types } from '../notification.model';
+import { NotificationComponentAttributes, Scheme } from '../notification.model';
 import { bodyBackgroundColor } from './util';
 
 interface Props {
-  type: string;
   title: string;
   subtext: string;
-  scheme: string;
-  floating: boolean;
-  closable: boolean;
   backgroundColor: string;
 }
 
 export default {
   title: `${storybookPrefix}/Overlays/Notification`,
   args: {
-    type: Types.INFO,
+    type: AlertType.Info,
     title: 'Title',
     subtext: 'Content text',
     backgroundColor: bodyBackgroundColor.options[0],
-    scheme: Schemes.LIGHT,
+    scheme: Scheme.Light,
     floating: false,
     closable: false,
   },
   argTypes: {
     backgroundColor: bodyBackgroundColor,
     type: {
-      options: Object.values(Types),
+      options: [
+        AlertType.Info,
+        AlertType.Success,
+        AlertType.Warning,
+        AlertType.Error,
+      ],
       control: { type: 'radio' },
     },
     scheme: {
-      options: Object.values(Schemes),
+      options: [Scheme.Light, Scheme.Dark],
       control: { type: 'radio' },
     },
+    title: { table: { category: 'demo' } },
+    subtext: { table: { category: 'demo' } },
   },
   parameters: {
     chromatic: { disableSnapshot: true },
   },
 } as Meta;
 
-const Template: Story<Props> = ({
+const Template: Story<NotificationComponentAttributes & Props> = ({
   type,
   subtext,
   title,
@@ -49,7 +54,7 @@ const Template: Story<Props> = ({
   floating,
   closable,
   backgroundColor,
-}: Props): TemplateResult => {
+}: NotificationComponentAttributes & Props): TemplateResult => {
   return html`
     <style>
       body {
@@ -57,8 +62,8 @@ const Template: Story<Props> = ({
       }
     </style>
     <oryx-notification
-      type="${type}"
-      scheme="${scheme}"
+      type="${ifDefined(type)}"
+      scheme="${ifDefined(scheme)}"
       ?floating="${floating}"
       ?closable="${closable}"
       @oryx.close=${(): void => console.log('close')}
@@ -69,4 +74,4 @@ const Template: Story<Props> = ({
     </oryx-notification>
   `;
 };
-export const NotificationDemo = Template.bind({});
+export const Demo = Template.bind({});

@@ -5,6 +5,8 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
+const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle', 'caption'];
+
 export default {
   title: `${storybookPrefix}/Title`,
   args: {
@@ -22,7 +24,23 @@ export default {
       table: { category: 'demo' },
     },
     tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle'],
+      options: tags,
+      control: { type: 'select' },
+    },
+    as: {
+      options: [...tags, 'hide', 'show'],
+      control: { type: 'select' },
+    },
+    asLg: {
+      options: [...tags, 'hide', 'show'],
+      control: { type: 'select' },
+    },
+    asMd: {
+      options: [...tags, 'hide', 'show'],
+      control: { type: 'select' },
+    },
+    asSm: {
+      options: [...tags, 'hide', 'show'],
       control: { type: 'select' },
     },
     maxLines: {

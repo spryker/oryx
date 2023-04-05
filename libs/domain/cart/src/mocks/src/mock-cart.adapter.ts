@@ -1,13 +1,13 @@
 import {
-  AddCartEntityProps,
+  AddCartEntryQualifier,
   Cart,
   CartAdapter,
   CartCalculations,
   CartEntry,
-  DeleteCartEntityProps,
-  GetCartProps,
+  CartEntryQualifier,
+  CartQualifier,
   ProductOption,
-  UpdateCartEntityProps,
+  UpdateCartEntryQualifier,
 } from '@spryker-oryx/cart';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
@@ -16,6 +16,7 @@ import {
   mockCartLarge,
   mockCartWithDiscount,
   mockCartWithExpense,
+  mockCartWithMultipleDiscount,
   mockCartWithMultipleProducts,
   mockCartWithTax,
   mockDefaultCart,
@@ -29,6 +30,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     mockNetCart,
     mockEmptyCart as Cart,
     mockCartWithExpense,
+    mockCartWithMultipleDiscount,
     mockCartWithDiscount,
     mockCartLarge,
     mockCartWithTax,
@@ -62,28 +64,27 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     return of(this.carts).pipe(take(1));
   }
 
-  get(data: GetCartProps): Observable<Cart> {
-    const cart = this.findCart(data.cartId);
+  get(data: CartQualifier): Observable<Cart> {
+    const cart = this.findCart(data.cartId!);
 
     return of(cart).pipe(delay(this.responseDelay));
   }
 
-  addEntry(data: AddCartEntityProps): Observable<Cart> {
+  addEntry(data: AddCartEntryQualifier): Observable<Cart> {
     const { cart, products, productIndex } = this.getInfo(
-      data.cartId,
-      data.attributes.sku
+      data.cartId!,
+      data.sku
     );
 
     if (products.length && productIndex >= 0) {
       const productFromCart = products[productIndex];
-      const quantity =
-        Number(productFromCart.quantity) + Number(data.attributes.quantity);
+      const quantity = Number(productFromCart.quantity) + Number(data.quantity);
 
       products.splice(productIndex, 1, {
         ...productFromCart,
         quantity,
         calculations: this.createCalculations(
-          data.attributes.sku,
+          data.sku,
           quantity,
           this.selectedProductOptions
         ),
@@ -91,13 +92,13 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     } else {
       products.push({
         ...mockCartEntry,
-        sku: data.attributes.sku,
-        groupKey: data.attributes.sku,
-        quantity: data.attributes.quantity,
+        sku: data.sku,
+        groupKey: data.sku,
+        quantity: data.quantity ?? 1,
         selectedProductOptions: this.selectedProductOptions,
         calculations: this.createCalculations(
-          data.attributes.sku,
-          data.attributes.quantity,
+          data.sku,
+          data.quantity ?? 1,
           this.selectedProductOptions
         ),
       });
@@ -115,18 +116,18 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     return this.applyCartChanges(mappedCart);
   }
 
-  updateEntry(data: UpdateCartEntityProps): Observable<Cart> {
+  updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
     const { cart, products, productIndex } = this.getInfo(
-      data.cartId,
-      data.groupKey
+      data.cartId!,
+      data.groupKey!
     );
 
     products.splice(productIndex, 1, {
       ...products[productIndex],
-      quantity: data.attributes.quantity,
+      quantity: data.quantity,
       calculations: this.createCalculations(
-        data.attributes.sku,
-        data.attributes.quantity,
+        products[productIndex].sku,
+        data.quantity,
         this.selectedProductOptions
       ),
     });
@@ -143,12 +144,12 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     return this.applyCartChanges(mappedCart);
   }
 
-  deleteEntry(data: DeleteCartEntityProps): Observable<null> {
+  deleteEntry(data: CartEntryQualifier): Observable<null> {
     return timer(this.responseDelay).pipe(
       tap(() => {
         const { cart, products, productIndex } = this.getInfo(
-          data.cartId,
-          data.groupKey
+          data.cartId!,
+          data.groupKey!
         );
 
         products.splice(productIndex, 1);

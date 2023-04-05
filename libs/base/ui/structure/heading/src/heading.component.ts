@@ -2,16 +2,30 @@ import { ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
-import { headlineStyles } from './heading.styles';
+import { headlineStyles } from './styles/base.styles';
 
 @ssrShim('style')
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headlineStyles;
 
-  @property() tag?: HeadingTag;
-  @property({ reflect: true }) appearance?: HeadingTag;
-  @property({ reflect: true, attribute: 'md-appearance' })
-  mdAppearance?: string;
+  @property({ reflect: true }) tag?: HeadingTag;
+  @property({ reflect: true }) as?: HeadingTag | 'hide';
+
+  @property({ reflect: true, attribute: 'as-lg' }) asLg?:
+    | HeadingTag
+    | 'hide'
+    | 'show';
+
+  @property({ reflect: true, attribute: 'as-md' }) asMd?:
+    | HeadingTag
+    | 'hide'
+    | 'show';
+
+  @property({ reflect: true, attribute: 'as-sm' }) asSm?:
+    | HeadingTag
+    | 'hide'
+    | 'show';
+
   @property() set maxLines(value: number) {
     if (value > 0) {
       this.style.setProperty('--max-lines', String(value));

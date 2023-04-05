@@ -1,3 +1,4 @@
+import { rootInjectable } from '@spryker-oryx/utilities';
 import { App, AppPlugin } from '../app';
 import {
   ThemeData,
@@ -27,14 +28,19 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
     programmaticLoad: true,
   };
   protected theme?: ThemePlugin;
-  rootSelector = '';
+  protected rootSelector = '';
 
   constructor(
-    componentsInfo: ComponentsInfo,
-    public options: ComponentsOptions
+    protected componentsInfo: ComponentsInfo,
+    protected options: ComponentsOptions
   ) {
-    super();
+    super(options);
     this.registerComponents(componentsInfo);
+    rootInjectable.inject(
+      typeof this.options.root === 'string'
+        ? this.options.root
+        : this.processDef(this.options.root).name
+    );
   }
 
   getName(): string {
@@ -44,10 +50,7 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
   async apply(app: App): Promise<void> {
     this.theme = app.findPlugin(ThemePlugin);
 
-    this.rootSelector =
-      typeof this.options.root === 'string'
-        ? this.options.root
-        : this.processDef(this.options.root).name;
+    const root = rootInjectable.get();
 
     if (this.options.preload) {
       await this.preloadComponents();
@@ -55,11 +58,11 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       return;
     }
 
-    const rootElement = document.querySelector?.(this.rootSelector);
+    const rootElement = document.querySelector?.(root);
 
     if (!rootElement) {
       throw new ComponentsPluginError(
-        `Cannot find root element by selector '${this.rootSelector}'!`
+        `Cannot find root element by selector '${root}'!`
       );
     }
 
@@ -75,19 +78,24 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
     });
   }
 
+  getOptions(): ComponentsOptions {
+    return this.options;
+  }
+
   async loadComponent(name: string): Promise<ComponentType | undefined> {
     return this.loadAndDefineComponent(name, this.implMetaProgrammatic);
   }
 
   protected applyThemes(name: string): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { componentType, themes } = this.componentMap.get(name)!;
+    const { extendedClass, themes } = this.componentMap.get(name)!;
+    const componentClass = Object.getPrototypeOf(extendedClass);
 
     if (!themes || !this.theme) {
       return;
     }
 
-    const base = componentType.styles ?? [];
+    const base = componentClass.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
     const isThemeData = (
       theme: ThemeData | ThemeStylesheets
@@ -120,12 +128,12 @@ export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
       innerTheme = [...innerTheme, ...this.theme.normalizeStyles(styles)];
     }
 
-    componentType.styles = innerTheme;
+    componentClass.styles = innerTheme;
 
     // eslint-disable-next-line no-prototype-builtins
-    if (componentType.hasOwnProperty('finalized')) {
-      componentType.elementStyles = componentType.finalizeStyles?.(
-        componentType.styles
+    if (componentClass.hasOwnProperty('finalized')) {
+      componentClass.elementStyles = componentClass.finalizeStyles?.(
+        componentClass.styles
       );
     }
   }

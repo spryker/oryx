@@ -7,6 +7,8 @@ import { combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
 import {
   Cart,
   CartComponentAttributes,
+  CartEntry,
+  CartQualifier,
   CartTotalCalculations,
   FormattedCartTotals,
   FormattedDiscount,
@@ -21,12 +23,42 @@ export class CartController {
     this.observe = new ObserveController(host);
   }
 
+  protected get cartQualifier(): Observable<CartQualifier | undefined> {
+    return this.observe
+      .get('cartId')
+      .pipe(switchMap((cartId) => of(cartId ? { cartId } : undefined)));
+  }
+
+  isEmpty(): Observable<boolean> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.isEmpty(qualifier))
+    );
+  }
+
+  isBusy(): Observable<boolean> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.isBusy(qualifier))
+    );
+  }
+
+  getEntries(): Observable<CartEntry[]> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getEntries(qualifier))
+    );
+  }
+
+  getEntry(groupKey?: string): Observable<CartEntry | undefined> {
+    return this.getEntries().pipe(
+      map((entries) => entries.find((entry) => entry.groupKey === groupKey))
+    );
+  }
+
   /**
    * Returns the cumulated quantities of all cart entries.
    */
   getTotalQuantity(): Observable<number | null> {
-    return this.observe.get('cartId').pipe(
-      switchMap((cartId) => this.cartService.getCart({ cartId })),
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getCart(qualifier)),
       map((cart) => this.cumulateQuantity(cart))
     );
   }
@@ -34,9 +66,9 @@ export class CartController {
   getTotals(): Observable<FormattedCartTotals | null> {
     return combineLatest([
       this.observe.get('cart'),
-      this.observe
-        .get('cartId')
-        .pipe(switchMap((cartId) => this.cartService.getCart({ cartId }))),
+      this.cartQualifier.pipe(
+        switchMap((qualifier) => this.cartService.getCart(qualifier))
+      ),
     ]).pipe(
       map(([cart, cartFromId]) => cart ?? cartFromId),
       switchMap((cart) =>
@@ -67,7 +99,7 @@ export class CartController {
   /**
    * Cumulates the quantities for all the cart entries.
    */
-  protected cumulateQuantity(cart: Cart | null): number | null {
+  protected cumulateQuantity(cart: Cart | undefined): number | null {
     return (
       cart?.products?.reduce((acc, { quantity }) => acc + quantity, 0) ?? null
     );

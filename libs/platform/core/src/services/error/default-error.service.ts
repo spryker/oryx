@@ -1,15 +1,16 @@
-import { inject, OnDestroy } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
+import { isServer } from 'lit';
 import { ErrorHandler } from './error-handler';
 import { ErrorService } from './error.service';
 
-export class DefaultErrorService implements ErrorService, OnDestroy {
+export class DefaultErrorService implements ErrorService {
   constructor(
     protected element: EventTarget = window,
     protected handler = inject(ErrorHandler, null)
   ) {}
 
   initialize(): void {
-    if (!this.handler) {
+    if (!this.handler || isServer) {
       return;
     }
 

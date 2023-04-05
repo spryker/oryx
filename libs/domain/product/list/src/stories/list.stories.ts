@@ -110,11 +110,17 @@ const Template: Story<ProductListQualifier> = (
       }
     </style>
 
-    <product-list
+    <oryx-product-list
       .options=${props}
       class="xs-container xs-layout-grid"
-    ></product-list>
+    ></oryx-product-list>
   `;
 };
 
 export const ProductDemo = Template.bind({});
+
+ProductDemo.parameters = {
+  chromatic: {
+    delay: 3000,
+  },
+};

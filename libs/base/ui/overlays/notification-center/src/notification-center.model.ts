@@ -1,32 +1,33 @@
-import { Schemes, Types } from '@spryker-oryx/ui/notification';
-import { TemplateResult } from 'lit';
+import { Notification } from '../../notification';
+export interface NotificationCenterComponentAttributes {
+  /**
+   * Enables to position of the notifications, i.e.:
+   * - top-start
+   * - top-center
+   * - top-end
+   * - bottom-start
+   * - bottom-center
+   * - bottom-end
+   */
+  position?: NotificationPosition;
 
-export enum Positions {
-  TOP_START = 'top-start',
-  TOP_END = 'top-end',
-  BOTTOM_START = 'bottom-start',
-  BOTTOM_END = 'bottom-end',
+  /**
+   * Enables stacking of multiple notifications by partially overlapping them in the UI as long as the user
+   * doesn't hover over the center.
+   */
+  stackable?: boolean;
 }
 
-export type NotificationStrategy = {
-  type?: Types;
-  scheme?: Schemes;
-  closable?: boolean;
-  floating?: boolean;
-  autoClose?: boolean;
-  autoCloseTime?: number;
-  content?: NotificationContent;
-  subtext?: NotificationContent;
-};
+export const enum NotificationPosition {
+  TopStart = 'top-start',
+  TopCenter = 'top-center',
+  TopEnd = 'top-end',
+  BottomStart = 'bottom-start',
+  BottomCenter = 'bottom-center',
+  BottomEnd = 'bottom-end',
+}
 
-export type NotificationRegistry = NotificationStrategy & {
-  key?: string;
+export type NotificationRegistry = Notification & {
+  key: number;
   visible?: boolean;
-  _mounted?: boolean;
 };
-
-export type NotificationContent =
-  | HTMLElement
-  | TemplateResult
-  | string
-  | number;

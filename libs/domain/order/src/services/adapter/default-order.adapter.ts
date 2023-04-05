@@ -18,7 +18,7 @@ export class DefaultOrderAdapter implements OrderAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
-        return identity.anonymous
+        return !identity.isAuthenticated
           ? of(null)
           : this.http
               .get<ApiOrderModel.Response>(

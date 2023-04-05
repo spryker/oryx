@@ -1,0 +1,22 @@
+{
+  "name": "@spryker-oryx/labs",
+  "version": "0.40.0",
+  "type": "module",
+  "author": "Spryker Systems GmbH",
+  "license": "See license in LICENSE",
+  "description": "Demo features that contribute to the main Oryx component library. Please keep in mind that these components are experimental and are not suitable for use in production environments.",
+  "dependencies": {
+    "lit": "^2.0.0",
+    "rxjs": "^7.5.0"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/di": "^0.4.0",
+    "@spryker-oryx/core": "^0.4.0",
+    "@spryker-oryx/experience": "^0.4.0",
+    "@spryker-oryx/i18n": "^0.4.0",
+    "@spryker-oryx/product": "^0.4.0",
+    "@spryker-oryx/utilities": "^0.4.0",
+    "@spryker-oryx/form": "^0.4.0",
+    "@spryker-oryx/ui": "^0.4.0"
+  }
+}

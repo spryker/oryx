@@ -11,7 +11,6 @@ import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductMediaOptions } from './media.model';
 
 @defaultOptions({
@@ -44,7 +43,7 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.sources?.[0]?.url) return;
+    if (!this.sources?.[0]?.url) return this.renderImage('');
 
     if (this.isVideo(this.sources[0]?.url)) {
       return this.renderVideo(this.sources[0]?.url);
@@ -61,10 +60,10 @@ export class ProductMediaComponent extends ProductMixin(
 
   protected renderImage(src: string, srcSet?: string): TemplateResult | void {
     return html`<oryx-image
-      src=${src}
-      srcset=${ifDefined(srcSet)}
-      alt=${ifDefined(this.componentOptions.alt || this.product?.name)}
-      loading=${ifDefined(this.componentOptions.loading)}
+      .src=${src}
+      .srcset=${srcSet}
+      .alt=${this.componentOptions?.alt || this.product?.name}
+      .loading=${this.componentOptions?.loading}
     ></oryx-image>`;
   }
 
@@ -77,9 +76,9 @@ export class ProductMediaComponent extends ProductMixin(
    * media set is returned.
    */
   protected getMediaSet(): ProductMediaSet | undefined {
-    if (this.componentOptions.mediaSet) {
+    if (this.componentOptions?.mediaSet) {
       return this.product?.mediaSet?.find(
-        (set) => set.name === this.componentOptions.mediaSet
+        (set) => set.name === this.componentOptions?.mediaSet
       );
     } else {
       return this.product?.mediaSet?.[0];

@@ -18,6 +18,10 @@ export const navigationStyles = css`
     overflow: hidden;
   }
 
+  ::slotted(*) {
+    text-decoration: none;
+  }
+
   oryx-image[resource='logo'] {
     display: block;
     fill: var(--oryx-color-ink);
@@ -43,35 +47,18 @@ export const navigationStyles = css`
     opacity: 0;
   }
 
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    padding: 0;
+  oryx-icon-button {
     position: absolute;
-    inset-inline-end: -15px;
-    bottom: 30px;
-    border-radius: 100%;
-    border: none;
+    inset-inline-end: -12px;
+    inset-block-end: 30px;
+  }
+
+  oryx-icon-button button {
     background-color: var(--oryx-color-canvas-100);
-    color: var(--oryx-color-neutral-300);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
-    transition: inherit;
-    cursor: pointer;
+    border-color: var(--oryx-color-neutral-200);
   }
 
-  button:hover {
-    background-color: var(--oryx-color-primary-300);
-    color: var(--oryx-color-canvas-100);
-  }
-
-  :host([collapsed]) button oryx-icon {
+  :host([collapsed]) oryx-icon-button oryx-icon {
     transform: rotate(180deg);
-  }
-
-  ::slotted(*) {
-    text-decoration: none;
   }
 `;

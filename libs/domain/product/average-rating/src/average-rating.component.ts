@@ -5,21 +5,21 @@ import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
-@defaultOptions({ enableCount: true, size: Size.large })
+@defaultOptions({ enableCount: true, size: Size.Lg })
 @hydratable(['mouseover', 'focusin'])
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {
-  protected override render(): TemplateResult {
-    const reviewCount = this.componentOptions?.enableCount
-      ? this.product?.reviewCount ?? 0
+  protected override render(): TemplateResult | void {
+    const reviewCount = this.$options().enableCount
+      ? this.$product()?.reviewCount ?? 0
       : undefined;
 
     return html`
       <oryx-rating
         readonly
-        .size=${this.componentOptions?.size}
-        .value=${this.product?.averageRating}
+        .size=${this.$options().size}
+        .value=${this.$product()?.averageRating}
         .reviewCount=${reviewCount}
       ></oryx-rating>
     `;

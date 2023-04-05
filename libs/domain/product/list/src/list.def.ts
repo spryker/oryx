@@ -8,6 +8,6 @@ declare global {
 }
 
 export const productListComponent = componentDef({
-  name: 'product-list',
+  name: 'oryx-product-list',
   impl: () => import('./list.component').then((m) => m.ProductListComponent),
 });

@@ -1,6 +1,8 @@
-import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { HeadingAttributes, HeadingTag } from '@spryker-oryx/ui/heading';
+import { LinkType } from '@spryker-oryx/ui/link';
 
-export interface ProductTitleOptions {
+export interface ProductTitleOptions
+  extends Pick<HeadingAttributes, 'as' | 'asLg' | 'asMd' | 'asSm'> {
   /**
    * Specifies the html tag that is used to render the title.
    *
@@ -10,10 +12,7 @@ export interface ProductTitleOptions {
    */
   tag?: HeadingTag;
 
-  /**
-   * Indicates whether to generate a link to the Product Detail Page.
-   */
-  link?: boolean;
+  linkType?: 'none' | LinkType;
 
   /**
    * Indicate the max number of lines that are used for the product title.

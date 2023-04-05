@@ -21,7 +21,8 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockExperienceDataClientService implements ExperienceDataClientService {
-  initialize = vi.fn();
+  initialize = vi.fn().mockReturnValue(of(null));
+  sendStatic = vi.fn();
 }
 
 describe('ExperiencePreviewService', () => {

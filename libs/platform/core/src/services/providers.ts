@@ -1,4 +1,9 @@
 import { Provider } from '@spryker-oryx/di';
+import {
+  AppInitializer,
+  AppInitializerService,
+  DefaultAppInitializerService,
+} from './app-initializer';
 import { ContextService, DefaultContextService } from './context';
 import { DefaultErrorService, ErrorService } from './error';
 import {
@@ -11,6 +16,7 @@ import {
   HttpHandler,
   HttpService,
 } from './http';
+import { DefaultHydrationService, HydrationService } from './hydration';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import {
@@ -56,5 +62,17 @@ export const coreProviders: Provider[] = [
   {
     provide: QueryService,
     useClass: DefaultQueryService,
+  },
+  {
+    provide: HydrationService,
+    useClass: DefaultHydrationService,
+  },
+  {
+    provide: AppInitializerService,
+    useClass: DefaultAppInitializerService,
+  },
+  {
+    provide: AppInitializer,
+    useExisting: ErrorService,
   },
 ];

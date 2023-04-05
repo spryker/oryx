@@ -1,0 +1,48 @@
+name: Release labs Workflow
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: 'Release NPM'
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GIT_USER: ${{ vars.GIT_USER }}
+      GIT_EMAIL: ${{ vars.GIT_EMAIL }}
+      RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+          ref: ${{ env.RELEASE_BRANCH }}
+          submodules: recursive
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-node-
+      - name: Auth NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+          npm whoami
+      - name: Auth Git
+        run: |
+          git config user.email "${{ env.GIT_EMAIL }}"
+          git config user.name "${{ env.GIT_USER }}"
+      - name: Install Deps
+        run: npm ci
+      - name: Build Labs package
+        run: npx nx run labs:build
+      - name: Fix js extension
+        run: node tools/post-build/add-js-extension.js
+      - name: Release labs
+        run: npm run release-labs

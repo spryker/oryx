@@ -1,12 +1,21 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 export const baseStyles = css`
+  :host([stretched]) {
+    --oryx-popover-width: auto;
+  }
+
   oryx-typeahead {
     --oryx-popover-maxheight: 480px;
     --oryx-popover-vertical-offset: 0;
-    --oryx-popover-distance: 62px;
+    --oryx-popover-distance: 48px;
+  }
+
+  :host([stretched]) [slot='option'] > * {
+    min-width: 530px;
+    display: flex;
   }
 
   [slot='option'] {
@@ -39,15 +48,16 @@ export const baseStyles = css`
   }
 
   ul:not(:last-child) {
-    margin-bottom: 20px;
+    margin-block-end: 20px;
   }
 
   section {
+    flex: 1 1 auto;
     padding: 20px;
   }
 
   section:first-child:not(:only-child) {
-    padding-bottom: 0;
+    padding-block-end: 20px;
   }
 
   [slot='empty'] {
@@ -81,11 +91,11 @@ export const baseStyles = css`
   }
 
   [slot='option']::before {
-    top: 0;
+    inset-block-start: 0;
   }
 
   [slot='option']::after {
-    bottom: 0;
+    inset-block-end: 0;
   }
 
   :host([scrollable-top]) [slot='option']::before,
@@ -110,41 +120,41 @@ export const baseStyles = css`
     --image-max-height: 50px;
 
     position: absolute;
-    top: 5px;
+    inset-block-start: 5px;
     inset-inline-start: 5px;
-  }
-`;
-
-const mediumScreen = css`
-  :host([stretched]) {
-    --oryx-popover-width: auto;
-  }
-
-  oryx-typeahead {
-    --oryx-popover-distance: 48px;
   }
 
   oryx-icon-button[slot='suffix'] {
     display: none;
   }
 
-  :host([stretched]) [slot='option'] > * {
-    min-width: 530px;
-    display: flex;
+  oryx-product-price,
+  oryx-product-price::part(sales),
+  oryx-product-price::part(original) {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    grid-column: initial;
+  }
+`;
+
+const smallScreen = css`
+  oryx-typeahead {
+    --oryx-popover-distance: 62px;
   }
 
-  section {
-    flex: 1 1 auto;
+  :host([stretched]) [slot='option'] > * {
+    min-width: initial;
   }
 
   section:first-child:not(:only-child) {
-    padding-bottom: 20px;
+    padding-block-end: 0;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];

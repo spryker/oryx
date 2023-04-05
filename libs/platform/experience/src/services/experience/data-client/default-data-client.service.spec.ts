@@ -22,6 +22,7 @@ const mockAppFn = {
 
 class MockApp implements Partial<App> {
   findPlugin = vi.fn().mockReturnValue(mockAppFn);
+  whenReady = vi.fn().mockReturnValue(of(null));
 }
 
 class MockFeatureOptionsService implements Partial<FeatureOptionsService> {
@@ -182,7 +183,7 @@ describe('ExperienceDataClientService', () => {
       );
     });
 
-    it('should send `MessageType.Schemas` post message', async () => {
+    it('should send `MessageType.ComponentSchemas` post message', async () => {
       const mockSchemaA = { b: 'b' };
       const mockSchemaB = { b: 'b' };
       const app = getService<MockApp>(AppRef);
@@ -196,7 +197,7 @@ describe('ExperienceDataClientService', () => {
       await nextFrame();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
-          type: MessageType.Schemas,
+          type: MessageType.ComponentSchemas,
           data: [mockSchemaA, mockSchemaB],
         },
         '*'

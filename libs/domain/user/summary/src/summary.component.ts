@@ -62,7 +62,7 @@ export class UserSummaryComponent extends ContentMixin<UserSummaryOptions>(
               <a href=${item.link} class="dropdown-link" close-popover>
                 ${when(
                   item.icon,
-                  () => html`<oryx-icon type="${item.icon}"></oryx-icon>`
+                  () => html`<oryx-icon type=${item.icon}></oryx-icon>`
                 )}
                 ${item.title}
               </a>

@@ -4,9 +4,9 @@ import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import * as experience from '@spryker-oryx/experience';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderService } from '@spryker-oryx/order';
 import { mockOrderProviders } from '@spryker-oryx/order/mocks';
-import { LocaleService } from '@spryker-oryx/site';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -48,7 +48,7 @@ const setupControllerSpies = (): void => {
 setupControllerSpies();
 
 class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of('mockdate'));
+  formatDateTime = vi.fn().mockReturnValue(of('mockdate'));
 }
 
 describe('OrderSummaryComponent', () => {

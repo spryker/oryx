@@ -1,22 +1,24 @@
 {
   "name": "@spryker-oryx/content",
   "type": "module",
-  "version": "0.1.0-rc.0",
+  "version": "0.4.0",
   "description": "Content features for Oryx applications",
   "author": "Spryker Systems GmbH",
-  "license": "See license in LICENSE.md",
+  "license": "See license in LICENSE",
   "files": [
     "**/*"
   ],
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/experience": "latest",
+    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/site": "latest",
+    "@spryker-oryx/utilities": "latest"
+  },
   "peerDependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/experience": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/site": "*",
-    "@spryker-oryx/utilities": "*",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

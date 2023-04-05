@@ -8,7 +8,9 @@ export const HomePage: StaticComponent = {
       type: 'oryx-content-video',
       options: {
         data: {
-          src: 'https://d3g7htsbjjywiv.cloudfront.net/assets/common/images/media-page/redesigned-footage/footage-sizzle.webm',
+          src: 'https://www.youtube.com/watch?v=m6pG6fubp9g&t=5s',
+          autoplay: true,
+          muted: true,
           rules: [{ height: '35vh' }],
         },
       },

@@ -1,0 +1,119 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "fulfillment",
+  "projectType": "application",
+  "sourceRoot": "apps/fulfillment/src",
+  "tags": ["type:app", "root"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/apps/fulfillment"],
+      "options": {
+        "command": "npx vite build",
+        "cwd": "apps/fulfillment"
+      },
+      "dependsOn": ["build-sw"]
+    },
+    "build-sw": {
+      "executor": "nx:run-commands",
+      "outputs": ["apps/fulfillment/dev-dist/sw"],
+      "options": {
+        "commands": [
+          "rm -rf dev-dist/sw",
+          "npx rollup --config rollup.sw.config.mjs"
+        ],
+        "parallel": false,
+        "cwd": "apps/fulfillment"
+      },
+      "configurations": {
+        "watch": {
+          "commands": [
+            "rm -rf dev-dist/sw",
+            "npx rollup --config rollup.sw.config.mjs --watch"
+          ]
+        }
+      }
+    },
+    "build-netlify": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/apps/fulfillment"],
+      "options": {
+        "commands": [
+          "npx nx run fulfillment:init-env:netlify-test",
+          "npx nx build fulfillment"
+        ],
+        "parallel": false
+      }
+    },
+    "init-env": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cp .env.template .env",
+        "cwd": "apps/fulfillment"
+      },
+      "configurations": {
+        "mock": {
+          "command": "cp .env.mock .env",
+          "cwd": "apps/fulfillment"
+        },
+        "netlify-test": {
+          "command": "cp .env.netlify-test .env",
+          "cwd": "apps/fulfillment"
+        }
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx vite", "npx nx run fulfillment:build-sw:watch"],
+        "parallel": true,
+        "cwd": "apps/fulfillment"
+      },
+      "configurations": {
+        "no-sw": {
+          "command": "NO_SW=true npx vite"
+        }
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite preview",
+        "cwd": "apps/fulfillment"
+      }
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "mock": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node mock/index.js",
+        "cwd": "apps/fulfillment"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/fulfillment/**/*.ts"]
+      }
+    },
+    "deps": {
+      "executor": "./tools/executors/dependency-tree:deps",
+      "configurations": {
+        "update": {
+          "update": true
+        }
+      }
+    }
+  }
+}

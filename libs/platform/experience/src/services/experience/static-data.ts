@@ -1,7 +1,7 @@
 import { Provider } from '@spryker-oryx/di';
 import { Component } from '@spryker-oryx/experience';
 
-export const ExperienceStaticData = 'oryx.ExperiencStaticData*';
+export const ExperienceStaticData = 'oryx.ExperienceStaticData*';
 
 export type StaticComponent = Omit<Component<unknown>, 'id' | 'components'> & {
   id?: string;

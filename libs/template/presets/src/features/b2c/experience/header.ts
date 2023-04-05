@@ -14,24 +14,29 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               type: 'rawUrl',
               id: '/contact',
-              text: 'Contact Page',
+              text: 'Contact Us',
               icon: 'mark',
             },
           },
         },
-        { type: 'site-notification-center' },
+        {
+          type: 'oryx-site-currency-selector',
+          options: {
+            data: { rules: [{ style: 'margin-inline-start: auto' }] },
+          },
+        },
+        { type: 'oryx-site-locale-selector' },
       ],
       options: {
         data: {
           rules: [
             {
-              layout: 'column',
-              container: true,
-              fullWidth: true,
+              layout: 'flex',
               background: 'var(--oryx-color-primary-500)',
-              gap: '40px',
+              container: true,
               maxWidth: true,
               padding: '10px 0',
+              gap: '10px',
             },
           ],
         },
@@ -65,9 +70,8 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         { type: 'oryx-user-summary' },
-        { type: 'auth-logout' },
         {
-          type: 'cart-summary',
+          type: 'oryx-cart-summary',
           options: {
             data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
           },

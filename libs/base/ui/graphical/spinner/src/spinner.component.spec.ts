@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { Size } from '@spryker-oryx/ui';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { spinnerComponent } from './component';
@@ -63,16 +64,15 @@ describe('Spinner', () => {
     });
 
     it('should set the icon size to medium', () => {
-      const defaultSizeIcon = element?.shadowRoot?.querySelector(
-        'oryx-icon[size="medium"]'
-      );
-      expect(defaultSizeIcon).not.toBeNull();
+      expect(element).toContainElement(`oryx-icon[size='${Size.Md}']`);
     });
   });
 
   describe('when size is set', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-spinner size="large"></oryx-spinner>`);
+      element = await fixture(
+        html`<oryx-spinner size=${Size.Lg}></oryx-spinner>`
+      );
     });
 
     it('passes the a11y audit', async () => {
@@ -80,10 +80,7 @@ describe('Spinner', () => {
     });
 
     it('should set the icon size to the given one', () => {
-      const defaultSizeIcon = element?.shadowRoot?.querySelector(
-        'oryx-icon[size="large"]'
-      );
-      expect(defaultSizeIcon).not.toBeNull();
+      expect(element).toContainElement(`oryx-icon[size='${Size.Lg}']`);
     });
   });
 });

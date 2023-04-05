@@ -1,16 +1,22 @@
 import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { mdScreen } from '@spryker-oryx/themes/breakpoints';
+import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
   h2 {
+    ${headingUtil(HeadingTag.H3)};
+
     margin: 32px 0;
   }
 
   .details-container {
     display: flex;
-    flex-direction: column;
     gap: 17px;
+  }
+
+  oryx-button {
+    align-self: end;
   }
 
   oryx-button button {
@@ -21,6 +27,7 @@ export const styles = css`
     gap: 8px;
     display: grid;
     grid-template-columns: max-content auto;
+    flex: 1;
   }
 
   .summary {
@@ -37,7 +44,7 @@ export const styles = css`
   }
 
   h3 {
-    margin-bottom: 4px;
+    margin-block-end: 4px;
   }
 
   hr,
@@ -47,7 +54,7 @@ export const styles = css`
 
   hr {
     border: none;
-    border-top: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-canvas-300);
     margin: 20px 0;
     outline: none;
   }
@@ -57,23 +64,19 @@ export const styles = css`
   }
 `;
 
-const mediumScreen = css`
+const smallScreen = css`
   .details-container {
-    flex-direction: row;
-  }
-
-  .details {
-    flex: 1;
+    flex-direction: column;
   }
 
   oryx-button {
-    align-self: end;
+    align-self: start;
   }
 `;
 
 export const screenStyles: ThemeStylesWithMedia[] = [
   {
-    media: mdScreen,
-    css: mediumScreen,
+    media: smScreen,
+    css: smallScreen,
   },
 ];
