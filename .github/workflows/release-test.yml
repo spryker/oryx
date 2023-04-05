@@ -70,7 +70,7 @@ jobs:
       - name: Release minor
         run: npm run release-minor
       - name: Install dependencies
-        run: cd apps/testfront && npm i && cd ../..
+        run: cd apps/testfront && npm i && npm list --depth=0 && cd ../..
       - name: Run testfront
         run: npm run testfront
       - name: Wait a bit
