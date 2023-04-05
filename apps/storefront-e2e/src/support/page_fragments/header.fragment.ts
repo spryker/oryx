@@ -1,6 +1,11 @@
 export class HeaderFragment {
   getWrapper = () => cy.get('[uid="header"]');
 
+  getLocaleSelector = () =>
+    this.getWrapper().find('oryx-site-locale-selector');
+  getLocaleButton = () =>
+    this.getLocaleSelector().find('oryx-button').find('button');
+
   getUserSummary = () => cy.get('oryx-user-summary');
   getUserSummaryHeading = () => this.getUserSummary().find('oryx-heading');
   getUserSummaryMenu = () => this.getUserSummary().find('oryx-dropdown');
@@ -21,5 +26,14 @@ export class HeaderFragment {
     this.getUserSummaryMenu().should('have.attr', 'open');
 
     this.getLogoutButton().click();
+  };
+
+  changeLocale = (locale: string) => {
+    // hydrate
+    this.getLocaleButton().click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    this.getLocaleButton().click();
+    this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
   };
 }
