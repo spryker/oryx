@@ -5,21 +5,18 @@ import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { mockPickingListData } from '../../mocks';
 import { CustomerNoteComponent } from './customer-note.component';
 import { customerNoteComponent } from './customer-note.def';
-
-const mockedPickingList = {
-  id: 'test',
-  cartNote: 'test note',
-};
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockedPickingList));
-  startPicking = vi.fn().mockReturnValue(of(mockedPickingList));
+  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
 describe('CustomerNoteComponent', () => {
@@ -51,7 +48,7 @@ describe('CustomerNoteComponent', () => {
       RouterService
     ) as unknown as MockRouterService;
     element = await fixture(
-      html`<oryx-customer-note pickingListId="test"></oryx-customer-note>`
+      html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
     );
   });
 
@@ -66,7 +63,9 @@ describe('CustomerNoteComponent', () => {
 
   it('should render customer note', () => {
     const customerNote = element.renderRoot.querySelector('p');
-    expect(customerNote?.textContent).toContain(mockedPickingList.cartNote);
+    expect(customerNote?.textContent).toContain(
+      mockPickingListData[0].cartNote
+    );
   });
 
   describe('when picking is proceed', () => {
@@ -77,12 +76,12 @@ describe('CustomerNoteComponent', () => {
     });
 
     it('should start picking with current picking list', () => {
-      expect(service.startPicking).toHaveBeenCalledWith(mockedPickingList);
+      expect(service.startPicking).toHaveBeenCalledWith(mockPickingListData[0]);
     });
 
     it('should navigate by route with picking list id', () => {
       expect(routerService.navigate).toHaveBeenCalledWith(
-        expect.stringContaining(mockedPickingList.id)
+        expect.stringContaining(mockPickingListData[0].id)
       );
     });
   });
