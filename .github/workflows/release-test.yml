@@ -48,7 +48,7 @@ jobs:
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
       - name: Debug
-        run: echo "//localhost:4873/:_authToken="fooBar"" >> ~/.npmrc
+        run: echo "//localhost:4873/:_authToken=$(echo -n user:password | openssl base64 | tr -d '\n')" > ~/.npmrc
       - name: Release minor
         run: npm run release-minor
       - name: Install dependencies
