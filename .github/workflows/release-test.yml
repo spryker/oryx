@@ -46,20 +46,9 @@ jobs:
           if [ ! -f "$VERDACCIO_CONFIG" ]; then
             echo "Creating Verdaccio config file: $VERDACCIO_CONFIG"
             mkdir -p $(dirname "$VERDACCIO_CONFIG")
-            touch "$VERDACCIO_CONFIG"
-            echo "auth:\n  htpasswd:\n    file: /path/to/htpasswd\n  auth: false" > "$VERDACCIO_CONFIG"
           fi
 
-          if grep -q "auth: false" "$VERDACCIO_CONFIG"; then
-            echo "Authentication is already disabled for Verdaccio."
-            exit 0
-          fi
-
-          if grep -q "auth:" "$VERDACCIO_CONFIG"; then
-            sed -i 's/auth:/auth:\n  auth: false/' "$VERDACCIO_CONFIG"
-          else
-            echo "auth:\n  auth: false" >> "$VERDACCIO_CONFIG"
-          fi
+          sed -i 's/\$authenticated/\$all/g' config.yaml
         env:
           VERDACCIO_CONFIG: $HOME/.config/verdaccio/config.yaml
       - name: Run verdaccio
