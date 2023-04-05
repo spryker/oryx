@@ -46,6 +46,7 @@ jobs:
           if [ ! -f "$VERDACCIO_CONFIG" ]; then
             echo "Creating Verdaccio config file: $VERDACCIO_CONFIG"
             mkdir -p $(dirname "$VERDACCIO_CONFIG")
+            touch "$VERDACCIO_CONFIG"
           fi
 
           sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
