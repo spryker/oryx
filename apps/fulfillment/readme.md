@@ -6,7 +6,7 @@
    Variables description:
    - `ORYX_FULFILLMENT_MOCK_PROXY_URL` - the URL where proxy routes will be redirected
    - `ORYX_FULFILLMENT_MOCK_PORT` - the port on which the mock server will run (mock server runs on `3000` port if this variable is not defined)
-2. Run `nx run fulfillment:serve` to start mock server.
+2. Run `nx run fulfillment:mock` to start mock server.
 
 ### Proxy
 
