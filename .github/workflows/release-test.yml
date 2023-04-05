@@ -51,7 +51,7 @@ jobs:
             sleep 1
           done
       - name: Stop verdaccio
-        run: kill -9 $(pgrep -f /opt/hostedtoolcache/node/18.15.0/x64/bin/verdaccio)
+        run: kill -9 $(lsof -ti :4873)
       - name: Disable auth for verdaccio
         run: |
           if [ ! -f "$VERDACCIO_CONFIG" ]; then
