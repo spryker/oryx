@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "0.6.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
@@ -20,9 +20,9 @@
   "dependencies": {
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/di": "latest",
+    "@spryker-oryx/ui": "latest",
     "@spryker-oryx/router": "latest",
     "@spryker-oryx/themes": "latest",
-    "@spryker-oryx/ui": "latest",
     "@spryker-oryx/utilities": "latest"
   },
   "peerDependencies": {

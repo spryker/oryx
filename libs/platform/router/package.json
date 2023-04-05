@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/router",
-  "version": "0.6.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Routing functionality for Oryx framework",
   "author": "Spryker Systems GmbH",
@@ -19,8 +19,8 @@
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "^2.2.3",
     "lit": "^2.4.0",
-    "rxjs": "7.5.6",
-    "tslib": "^2.4.1"
+    "tslib": "^2.4.1",
+    "rxjs": "7.5.6"
   },
   "peerDependenciesMeta": {
     "lit": {
