@@ -12,6 +12,7 @@ export default {
     activeTabIndex: 0,
     appearance: 'primary',
     shadow: false,
+    sticky: false,
     error: false,
   },
   argTypes: {
@@ -38,6 +39,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       activeTabIndex="${props.activeTabIndex}"
       appearance="${props.appearance}"
       ?shadow="${props.shadow}"
+      ?sticky="${props.sticky}"
     >
       ${[...Array(numberOfTabs).keys()].map((i) => {
         return html`<oryx-tab
@@ -51,6 +53,28 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
         return html`<div slot="panels" id="n${i + 1}">
           <p>Сontent for tab ${i + 1}</p>
 
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
+          <oryx-button size=${Size.Sm}>
+            <button>button for tab ${i + 1}</button>
+          </oryx-button>
           <oryx-button size=${Size.Sm}>
             <button>button for tab ${i + 1}</button>
           </oryx-button>

@@ -12,6 +12,7 @@ export class TabsComponent extends LitElement implements TabsProperties {
   @property({ type: String, reflect: true }) appearance =
     TabsAppearance.Primary;
   @property({ type: Boolean, reflect: true }) shadow = false;
+  @property({ type: Boolean, reflect: true }) sticky = false;
 
   @queryAssignedElements({ selector: 'oryx-tab' })
   tabs!: Array<TabComponent>;

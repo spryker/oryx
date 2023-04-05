@@ -137,7 +137,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected override render(): TemplateResult {
     const tabs = this.buildTabs();
 
-    return html`<oryx-tabs appearance="secondary">
+    return html`<oryx-tabs appearance="secondary" sticky shadow>
         ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
       </oryx-tabs>
       ${this.renderConfirmationModal()}`;

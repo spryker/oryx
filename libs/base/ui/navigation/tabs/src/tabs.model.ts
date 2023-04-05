@@ -19,6 +19,13 @@ export interface TabsProperties {
    * @defaults `TabsAppearance.Primary`
    */
   appearance: TabsAppearance;
+
+  /**
+   * Makes tabs sticky.
+   *
+   * @defaults `false`
+   */
+  sticky: boolean;
 }
 
 /**
