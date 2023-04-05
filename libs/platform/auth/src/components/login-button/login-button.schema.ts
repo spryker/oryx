@@ -4,7 +4,7 @@ import { LoginButtonComponent } from './login-button.component';
 
 export const loginButtonComponentSchema: ContentComponentSchema<LoginButtonComponent> =
   {
-    name: 'Auth button',
+    name: 'Login button',
     group: 'Auth',
     options: {
       logoutRedirectUrl: {
