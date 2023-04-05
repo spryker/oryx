@@ -10,6 +10,7 @@ import {
   combineLatest,
   map,
   Observable,
+  of,
   Subscription,
   switchMap,
   withLatestFrom,
@@ -37,7 +38,7 @@ export class OfflineDataPlugin extends ExecPlugin {
                 switchMap(() => this.populateDb(injector))
               );
             }
-            return this.clearDb(injector);
+            return of(undefined);
           })
         )
         .subscribe();
