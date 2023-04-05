@@ -1,10 +1,7 @@
 export interface PriceComponentAttributes {
   /**
    * The value property represents the price in cents. For example,
-   * if the price is €30.001, the value should be set to `3000.1`.
-   *
-   * Note that this property uses the smallest currency unit as the base unit
-   * for prices.
+   * if the price is €12.34, the value should be set to `1234`.
    */
   value: number;
 

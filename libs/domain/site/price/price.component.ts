@@ -13,15 +13,15 @@ export class PriceComponent
   protected pricingService = resolve(PricingService);
 
   // TODO: replace with new propertySignal when it's ready
-  protected currencyValue = signal(undefined as undefined | string);
-  @property() set currency(value: string) {
-    this.currencyValue.set(value);
-  }
-
-  // TODO: replace with new propertySignal when it's ready
   protected priceValue = signal(undefined as undefined | number);
   @property() set value(value: number) {
     this.priceValue.set(value);
+  }
+
+  // TODO: replace with new propertySignal when it's ready
+  protected currencyValue = signal(undefined as undefined | string);
+  @property() set currency(value: string) {
+    this.currencyValue.set(value);
   }
 
   // TODO: drop inner signal when observables are natively supported
