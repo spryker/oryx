@@ -1,10 +1,10 @@
 import {
-  authButtonComponent,
   authLoginComponent,
   AuthLoginStrategy,
   CodeGrantAuthLoginStrategy,
   CodeGrantAuthLoginStrategyConfig,
   IdentityService,
+  loginButtonComponent,
   OauthFeature,
   OauthFeatureConfig,
   oauthHandlerComponent,
@@ -94,7 +94,7 @@ export interface BapiAuthFeatureConfig extends OauthFeatureConfig {
 export class BapiAuthComponentsFeature implements AppFeature {
   components: ComponentsInfo = [
     authLoginComponent,
-    authButtonComponent,
+    loginButtonComponent,
     oauthHandlerComponent,
   ];
 }

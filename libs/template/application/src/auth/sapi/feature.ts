@@ -2,12 +2,12 @@ import {
   AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
-  authButtonComponent,
   authLoginComponent,
   AuthLoginStrategy,
   AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
+  loginButtonComponent,
   OauthFeature,
   OauthFeatureConfig,
   OauthService,
@@ -107,5 +107,5 @@ export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
 }
 
 export class SapiAuthComponentsFeature implements AppFeature {
-  components: ComponentsInfo = [authLoginComponent, authButtonComponent];
+  components: ComponentsInfo = [authLoginComponent, loginButtonComponent];
 }

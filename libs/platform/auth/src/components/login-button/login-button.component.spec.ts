@@ -18,7 +18,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('AuthButtonComponent', () => {
+describe('LoginButtonComponent', () => {
   let element: LoginButtonComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
