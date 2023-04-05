@@ -51,9 +51,9 @@ jobs:
 
           sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
         env:
-          VERDACCIO_CONFIG: $HOME/.config/verdaccio/config.yaml
+          VERDACCIO_CONFIG: /home/runner/.config/verdaccio/config.yaml
       - name: Debug
-        run: cat $HOME/.config/verdaccio/config.yaml
+        run: cat /home/runner/.config/verdaccio/config.yaml
       - name: Run verdaccio
         run: nohup verdaccio &
 #      - name: Add user to verdaccio
