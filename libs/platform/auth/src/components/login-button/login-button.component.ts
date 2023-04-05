@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import {
   asyncState,
@@ -9,11 +9,14 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AuthService } from '../../services/auth.service';
-import { AuthButtonOptions } from './button.model';
-import { styles } from './button.styles';
+import { LoginButtonOptions } from './login-button.model';
+import { styles } from './login-button.styles';
 
+@defaultOptions({
+  enableLogout: true,
+})
 @hydratable('window:load')
-export class AuthButtonComponent extends ContentMixin<AuthButtonOptions>(
+export class LoginButtonComponent extends ContentMixin<LoginButtonOptions>(
   LitElement
 ) {
   static styles = styles;
@@ -25,6 +28,10 @@ export class AuthButtonComponent extends ContentMixin<AuthButtonOptions>(
   protected isAuthenticated = valueType(this.authService.isAuthenticated());
 
   protected override render(): TemplateResult | void {
+    if (!this.componentOptions?.enableLogout && this.isAuthenticated) {
+      return;
+    }
+
     return html`
       <oryx-button type="text">
         <button @click=${this.onClick}>
@@ -49,4 +56,4 @@ export class AuthButtonComponent extends ContentMixin<AuthButtonOptions>(
   }
 }
 
-export default AuthButtonComponent;
+export default LoginButtonComponent;

@@ -2,13 +2,17 @@ import { Size } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { AuthButtonOptions } from '../button.model';
+import { LoginButtonOptions } from '../login-button.model';
 
 export default {
   title: `${storybookPrefix}/Button`,
+  args: {
+    enableLogout: true,
+    logoutRedirectUrl: '/',
+  },
 } as Meta;
 
-const Template: Story<AuthButtonOptions> = (options): TemplateResult => {
+const Template: Story<LoginButtonOptions> = (options): TemplateResult => {
   const pageReload: () => void = () => {
     window.setTimeout(() => {
       window.location.reload();
@@ -35,7 +39,7 @@ const Template: Story<AuthButtonOptions> = (options): TemplateResult => {
     </oryx-button>
 
     <div @click=${pageReload}>
-      <oryx-auth-button .options=${options}></oryx-auth-button>
+      <oryx-auth-login-button .options=${options}></oryx-auth-login-button>
     </div>
   `;
 };

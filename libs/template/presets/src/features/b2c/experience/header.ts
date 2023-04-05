@@ -78,7 +78,7 @@ export const HeaderTemplate: StaticComponent = {
               icon: 'user',
             },
           },
-          components: [{ type: 'oryx-auth-button' }],
+          components: [{ type: 'oryx-auth-login-button' }],
         },
         {
           type: 'oryx-site-navigation-item',

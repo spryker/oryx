@@ -6,8 +6,8 @@ import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { AuthButtonComponent } from './button.component';
-import { authButtonComponent } from './button.def';
+import { LoginButtonComponent } from './login-button.component';
+import { loginButtonComponent } from './login-button.def';
 
 class MockAuthService implements Partial<AuthService> {
   logout = vi.fn().mockReturnValue(of(null));
@@ -19,7 +19,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 describe('AuthButtonComponent', () => {
-  let element: AuthButtonComponent;
+  let element: LoginButtonComponent;
   let authService: MockAuthService;
   let routerService: MockRouterService;
 
@@ -30,7 +30,7 @@ describe('AuthButtonComponent', () => {
   };
 
   beforeAll(async () => {
-    await useComponent(authButtonComponent);
+    await useComponent(loginButtonComponent);
   });
 
   beforeEach(async () => {
@@ -54,7 +54,9 @@ describe('AuthButtonComponent', () => {
       RouterService
     ) as unknown as MockRouterService;
 
-    element = await fixture(html`<oryx-auth-button></oryx-auth-button>`);
+    element = await fixture(
+      html`<oryx-auth-login-button></oryx-auth-login-button>`
+    );
   });
 
   afterEach(() => {
@@ -77,7 +79,7 @@ describe('AuthButtonComponent', () => {
         clickButton();
       });
 
-      it('should navigate to login page', async () => {
+      it('should navigate to login page', () => {
         expect(routerService.navigate).toHaveBeenCalledWith('/login');
       });
     });
@@ -86,7 +88,9 @@ describe('AuthButtonComponent', () => {
   describe('when is authenticated', () => {
     beforeEach(async () => {
       authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
-      element = await fixture(html`<oryx-auth-button></oryx-auth-button>`);
+      element = await fixture(
+        html`<oryx-auth-login-button></oryx-auth-login-button>`
+      );
     });
 
     it('passes the a11y audit', async () => {
@@ -99,16 +103,29 @@ describe('AuthButtonComponent', () => {
       );
     });
 
+    describe('and logout is not enabled', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-auth-login-button
+          .options=${{ enableLogout: false }}
+        >
+        </oryx-auth-login-button>`);
+      });
+
+      it('should not render the button', () => {
+        expect(element).not.toContainElement('oryx-button');
+      });
+    });
+
     describe('and button is clicked', () => {
       beforeEach(() => {
         clickButton();
       });
 
-      it('should emit the logout', async () => {
+      it('should emit the logout', () => {
         expect(authService.logout).toHaveBeenCalled();
       });
 
-      it('should redirect to default route', async () => {
+      it('should redirect to default route', () => {
         expect(routerService.navigate).toHaveBeenCalledWith('/');
       });
 
@@ -116,14 +133,14 @@ describe('AuthButtonComponent', () => {
         const logoutRedirectUrl = '/test';
 
         beforeEach(async () => {
-          element = await fixture(html`<oryx-auth-button
+          element = await fixture(html`<oryx-auth-login-button
             .options=${{ logoutRedirectUrl }}
           >
-          </oryx-auth-button>`);
+          </oryx-auth-login-button>`);
           clickButton();
         });
 
-        it('should redirect to the route', async () => {
+        it('should redirect to the route', () => {
           expect(routerService.navigate).toHaveBeenCalledWith(
             logoutRedirectUrl
           );

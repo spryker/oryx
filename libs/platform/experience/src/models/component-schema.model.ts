@@ -1,7 +1,6 @@
 import { FormFieldDefinition } from '@spryker-oryx/form';
 import { LitElement } from 'lit';
 import { ContentMixinInterface } from '../mixins';
-import { ComponentGroup } from './component-group.model';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface FieldDefinition<K = string> extends FormFieldDefinition<K> {}
@@ -9,7 +8,7 @@ export interface FieldDefinition<K = string> extends FormFieldDefinition<K> {}
 export type ComponentSchema<Options, Content> = {
   type?: string;
   name: string;
-  group: ComponentGroup;
+  group: string;
   category?: string;
   content?: {
     [P in keyof Content]: Omit<FieldDefinition, 'id'>;

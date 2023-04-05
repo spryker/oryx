@@ -1,14 +1,11 @@
-import {
-  ComponentGroup,
-  ContentComponentSchema,
-} from '@spryker-oryx/experience';
+import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { SiteNavigationItemComponent } from './navigation-item.component';
 
 export const siteNavigationItemSchema: ContentComponentSchema<SiteNavigationItemComponent> =
   {
     name: 'Navigation item',
-    group: ComponentGroup.Site,
+    group: 'Site',
     options: {
       label: {
         type: FormFieldType.Text,
