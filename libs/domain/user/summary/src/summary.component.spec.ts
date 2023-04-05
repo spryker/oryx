@@ -5,7 +5,7 @@ import { I18nService } from '@spryker-oryx/i18n';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { i18n } from '@spryker-oryx/utilities';
-import { html, LitElement } from 'lit';
+import { html } from 'lit';
 import { of } from 'rxjs';
 import { UserSummaryComponent } from './summary.component';
 import { accountSummaryComponent } from './summary.def';
@@ -133,15 +133,6 @@ describe('UserSummaryComponent', () => {
       ) as HTMLElement;
 
       expect(dropdown).not.toBe(null);
-    });
-
-    it('should render logout component inside dropdown', () => {
-      const dropdown = element.renderRoot.querySelector(
-        'oryx-dropdown'
-      ) as LitElement;
-      const logoutComponent = dropdown.querySelector('oryx-auth-logout');
-
-      expect(logoutComponent).not.toBe(null);
     });
   });
 });

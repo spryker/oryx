@@ -188,8 +188,8 @@ export class Effect {
 
   start(): void {
     if (!this.consumer.isConnected) {
-      this.run();
       this.consumer.start();
+      this.run();
     }
   }
 

@@ -10,4 +10,5 @@ declare global {
 export const productPriceComponent = componentDef({
   name: 'oryx-product-price',
   impl: () => import('./price.component').then((m) => m.ProductPriceComponent),
+  schema: () => import('./price.schema').then((m) => m.productPriceSchema),
 });

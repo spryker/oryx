@@ -50,21 +50,13 @@ export class CartEntryComponent
   set quantity(value: number | undefined) {
     this.$quantity.set(value);
   }
-  @property({ type: Number }) set price(value: number) {
-    this.$price.set(value);
-  }
   @property() key?: string;
+  @property({ type: Number }) price?: number;
   @property({ type: Boolean }) readonly?: boolean;
 
   @state() protected requiresRemovalConfirmation?: boolean;
 
-  protected $price = signal(undefined as number | undefined);
   protected $quantity = signal(undefined as number | undefined);
-
-  protected $formattedPrice = computed(() =>
-    // TODO: we hope to improve it with computed natively supporting observables
-    signal(this.pricingService.format(this.$price()))()
-  );
 
   protected pricingService = resolve(PricingService);
   protected context = new ContextController(this);
@@ -157,8 +149,7 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <span class="entry-price">${this.$formattedPrice()}</span>
-
+        <oryx-price .value=${this.price}></oryx-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>

@@ -13,4 +13,6 @@ export const productDescriptionComponent = componentDef({
     import('./description.component').then(
       (m) => m.ProductDescriptionComponent
     ),
+  schema: () =>
+    import('./description.schema').then((m) => m.productDescriptionSchema),
 });

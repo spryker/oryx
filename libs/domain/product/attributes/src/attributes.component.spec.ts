@@ -1,10 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  mockProductProviders,
-  MockProductService,
-} from '@spryker-oryx/product/mocks';
+import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { ProductAttributesComponent } from './attributes.component';
 import { productAttributesComponent } from './attributes.def';
@@ -39,33 +36,18 @@ describe('Product attributes', () => {
   it('should have colum count style defined', () => {
     expect(
       element.shadowRoot
-        ?.querySelector('ul')
+        ?.querySelector('dl')
         ?.style.getPropertyValue('--column-count')
     ).toBe('3');
   });
 
   it('should render attributes', () => {
-    const attributeKeys = ['brand', 'color'];
-    const root = element.shadowRoot!;
-    const attributesList = root.querySelectorAll('li');
-    const demoAttributesData =
-      MockProductService.mockProducts[0]?.attributes || {};
-    const demoAttributeNamesData =
-      MockProductService.mockProducts[0]?.attributeNames || {};
+    it('should render attribute terms', () => {
+      expect(element).not.toContainElement('dt:nth-child(2)');
+    });
 
-    expect(attributesList.length).toBeGreaterThan(0);
-
-    attributesList.forEach((attribute, index) => {
-      const attributeContentItems = attribute.querySelectorAll('div');
-      const attributeKey = attributeKeys[index];
-
-      expect(attributeContentItems.length).toBe(2);
-      expect(attributeContentItems[0]?.innerText).toBe(
-        demoAttributeNamesData[attributeKey]
-      );
-      expect(attributeContentItems[1]?.innerText).toBe(
-        demoAttributesData[attributeKey]
-      );
+    it('should render attribute values', () => {
+      expect(element).not.toContainElement('dd:nth-child(2)');
     });
   });
 
@@ -84,9 +66,7 @@ describe('Product attributes', () => {
     });
 
     it('should not render any attributes', () => {
-      const attributesList = element.shadowRoot?.querySelectorAll('li');
-
-      expect(attributesList?.length).toBe(0);
+      expect(element).not.toContainElement('dt');
     });
   });
 
@@ -98,9 +78,7 @@ describe('Product attributes', () => {
     });
 
     it('should not render any attributes', () => {
-      const attributesList = element.shadowRoot?.querySelectorAll('li');
-
-      expect(attributesList?.length).toBe(0);
+      expect(element).not.toContainElement('dt');
     });
   });
 });

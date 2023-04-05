@@ -39,9 +39,8 @@ export class ContextController implements ReactiveController {
     ]).pipe(
       skip(1),
       tap(([overrideContext, context]) => {
-        if (overrideContext && !context) {
+        if (overrideContext)
           this.context?.provide(this.host, key, overrideContext);
-        }
       }),
       map(([overrideContext, context]) => overrideContext ?? context),
       distinctUntilChanged()
