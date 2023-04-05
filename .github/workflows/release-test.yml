@@ -49,7 +49,7 @@ jobs:
             sleep 1
           done
       - name: Stop verdaccio
-        run: kill -9 $(pgrep -f verdaccio)
+        run: pkill -f verdaccio
       - name: Disable auth for verdaccio
         run: |
           if [ ! -f "$VERDACCIO_CONFIG" ]; then
