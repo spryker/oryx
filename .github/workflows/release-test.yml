@@ -63,13 +63,13 @@ jobs:
           VERDACCIO_CONFIG: /home/runner/.config/verdaccio/config.yaml
       - name: Run verdaccio gain
         run: verdaccio &
-      - name: Add npm user to verdaccio
-        run: echo "//localhost:4873/:_authToken=$(echo -n user:password | openssl base64 | tr -d '\n')" >> ~/.npmrc
+#      - name: Add npm user to verdaccio
+#        run: echo "//localhost:4873/:_authToken=$(echo -n user:password | openssl base64 | tr -d '\n')" >> ~/.npmrc
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
       - name: Release minor
         run: npm run release-minor
-      - name: Install dependencies
+      - name: Install dependencies for testfront
         run: cd apps/testfront && npm i && npm list --depth=0 && cd ../..
       - name: Run testfront
         run: npm run testfront
