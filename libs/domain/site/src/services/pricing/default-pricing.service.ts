@@ -8,7 +8,13 @@ export class DefaultPricingService implements PricingService {
   protected currencyService = resolve(CurrencyService);
   protected localeService = resolve(LocaleService);
 
-  format(price?: PriceValue): Observable<string | null> {
+  format(price?: PriceValue, currency?: string): Observable<string | null> {
+    if (currency) {
+      return this.localeService
+        .get()
+        .pipe(map((locale) => this.formatPrice(price, currency, locale)));
+    }
+
     return combineLatest([
       this.currencyService.get(),
       this.localeService.get(),
