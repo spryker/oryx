@@ -52,6 +52,8 @@ jobs:
           sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
         env:
           VERDACCIO_CONFIG: $HOME/.config/verdaccio/config.yaml
+      - name: Debug
+        run: cat $HOME/.config/verdaccio/config.yaml
       - name: Run verdaccio
         run: nohup verdaccio &
 #      - name: Add user to verdaccio
@@ -61,9 +63,7 @@ jobs:
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
       - name: Debug
-        run: |
-          cat $HOME/.config/verdaccio/config.yaml
-          cat ~/.npmrc
+        run: cat $HOME/.config/verdaccio/config.yaml
 #      - name: Release minor
 #        run: npm run release-minor
 #      - name: Install dependencies
