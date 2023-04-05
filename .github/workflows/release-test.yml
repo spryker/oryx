@@ -48,7 +48,7 @@ jobs:
             mkdir -p $(dirname "$VERDACCIO_CONFIG")
           fi
 
-          sed -i 's/\$authenticated/\$all/g' config.yaml
+          sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
         env:
           VERDACCIO_CONFIG: $HOME/.config/verdaccio/config.yaml
       - name: Run verdaccio
