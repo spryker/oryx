@@ -51,13 +51,6 @@
         "cwd": "apps/testfront"
       }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/testfront/**/*.ts"]
-      }
-    },
     "deps": {
       "executor": "./tools/executors/dependency-tree:deps"
     }
