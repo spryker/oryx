@@ -24,6 +24,7 @@ export declare class PickingListMixinInterface
   pickingListId?: string;
   protected pickingList$: Observable<PickingList>;
   protected pickingList: PickingList;
+  protected upcomingPickingListId: string | null;
 }
 
 export const PickingListMixin = <
@@ -47,6 +48,11 @@ export const PickingListMixin = <
 
     @asyncState()
     protected pickingList = valueType(this.pickingList$);
+
+    @asyncState()
+    protected upcomingPickingListId = valueType(
+      this.pickingListService.getUpcomingPickingListId()
+    );
   }
 
   return PickingListMixinClass as unknown as Type<PickingListMixinInterface> &

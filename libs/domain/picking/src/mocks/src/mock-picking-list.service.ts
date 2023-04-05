@@ -31,4 +31,8 @@ export class MockPickingListService implements Partial<PickingListService> {
   finishPicking(pickingList: PickingList): Observable<PickingList> {
     return of(pickingList);
   }
+
+  getUpcomingPickingListId(): Observable<string | null> {
+    return of(null);
+  }
 }

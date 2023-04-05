@@ -20,11 +20,11 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
     this.pickingListService
       .startPicking(this.pickingList)
       .pipe(
-        tap(() => {
+        tap(() =>
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
-          );
-        })
+          )
+        )
       )
       .subscribe();
   }
@@ -41,7 +41,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
       <p>${this.pickingList?.cartNote}</p>
 
-      <oryx-button>
+      <oryx-button ?loading=${this.upcomingPickingListId}>
         <button @click=${this.onProceed}>
           ${i18n('picking.proceed-to-picking')}
         </button>
