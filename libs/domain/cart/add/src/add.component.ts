@@ -65,7 +65,7 @@ export class CartAddComponent extends ProductMixin(
   protected min = computed(() => {
     const value = 1;
     if (this.$product()) {
-      const el = this.shadowRoot
+      this.shadowRoot
         ?.querySelector<QuantityInputComponent>('oryx-cart-quantity-input')
         ?.reset();
     }
@@ -102,9 +102,11 @@ export class CartAddComponent extends ProductMixin(
     this.cartService
       .addEntry({ sku, quantity })
       .pipe(take(1))
-      .subscribe(() => {
-        this.confirmed = true;
-        setTimeout(() => (this.confirmed = false), 800);
+      .subscribe({
+        next: () => {
+          this.confirmed = true;
+          setTimeout(() => (this.confirmed = false), 800);
+        },
       });
   }
 }

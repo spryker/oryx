@@ -30,7 +30,6 @@ class MockPricingService implements Partial<PricingService> {
 describe('CartAddComponent', () => {
   let element: CartAddComponent;
   let service: Partial<MockCartService>;
-  let productService: Partial<MockProductService>;
 
   beforeAll(async () => {
     await useComponent([
@@ -59,9 +58,6 @@ describe('CartAddComponent', () => {
     });
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
-    productService = testInjector.inject(
-      ProductService
-    ) as unknown as MockProductService;
   });
 
   afterEach(() => {
@@ -160,7 +156,7 @@ describe('CartAddComponent', () => {
         });
       });
 
-      describe('when the item is added to cart', () => {
+      describe('when the item is added successfully to cart', () => {
         beforeEach(() => {
           const button = element.shadowRoot?.querySelector('button');
           button?.click();
@@ -173,7 +169,7 @@ describe('CartAddComponent', () => {
           });
         });
 
-        describe('and after the item is added', () => {
+        describe('and when the item is successfully added', () => {
           beforeEach(async () => {
             await nextFrame();
           });
@@ -193,6 +189,24 @@ describe('CartAddComponent', () => {
           });
         });
       });
+
+      // describe('when adding an item to cart throws an error', () => {
+      //   beforeEach(() => {
+      //     service.addEntry?.mockReturnValue(
+      //       throwError(() => new Error('Mock error'))
+      //     );
+      //     const button = element.shadowRoot?.querySelector('button');
+      //     button?.click();
+      //   });
+
+      //   beforeEach(async () => {
+      //     await nextFrame();
+      //   });
+
+      //   it('should not have the oryx-button in confirmed state', () => {
+      //     expect(element).not.toContainElement('oryx-button[confirmed]');
+      //   });
+      // });
     });
 
     describe('when the cart is loaded', () => {
