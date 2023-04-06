@@ -209,7 +209,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                     (item) =>
                       html`
                         <oryx-picking-product-card
-                          ${ref(this.productCardRef)}
+                          ${tab.id === ItemsFilters.NotPicked
+                            ? ref(this.productCardRef)
+                            : ''}
                           .productItem=${item}
                           .status=${tab.id}
                           @oryx.submit=${this.savePickingItem}
