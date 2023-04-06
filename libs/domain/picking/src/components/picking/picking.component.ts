@@ -2,6 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { TabComponent } from '@spryker-oryx/ui/tab';
+import { TabsAppearance } from '@spryker-oryx/ui/tabs';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -166,7 +167,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const tabs = this.buildTabs();
 
     return html`
-      <oryx-tabs appearance="secondary" sticky shadow>
+      <oryx-tabs appearance="${TabsAppearance.Secondary}" sticky shadow>
         ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
       </oryx-tabs>
       ${this.renderConfirmationModal()}
@@ -289,13 +290,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           )}
         </span>
 
-        <oryx-button slot="footer" outline type="secondary">
+        <oryx-button slot="footer" outline type="${ButtonType.Secondary}">
           <button @click=${this.onModalClose}>
             ${i18n('picking.product-card.cancel')}
           </button>
         </oryx-button>
 
-        <oryx-button slot="footer" type="primary">
+        <oryx-button slot="footer" type="${ButtonType.Primary}">
           <button @click=${this.confirmPartialPicking}>
             ${i18n('picking.product-card.confirm')}
           </button>
