@@ -26,7 +26,6 @@
     "storefront": "apps/storefront",
     "storefront-e2e": "apps/storefront-e2e",
     "storybook": "apps/storybook",
-    "testfront": "apps/testfront",
     "themes": "libs/template/themes",
     "ui": "libs/base/ui",
     "user": "libs/domain/user",
