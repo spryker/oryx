@@ -43,7 +43,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   );
 
   protected productCardRef: Ref<PickingProductCardComponent> = createRef();
-  protected tabRef: Ref<TabComponent> = createRef();
+  protected notPickedTabRef: Ref<TabComponent> = createRef();
 
   protected buildTabs(): PickingTab[] {
     return [
@@ -105,7 +105,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
     this.items = [...this.items];
 
-    this.tabRef.value?.dispatchEvent(
+    this.notPickedTabRef.value?.dispatchEvent(
       new CustomEvent('click', {
         composed: true,
         bubbles: true,
@@ -182,7 +182,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
             (tab) => html`
               <oryx-tab
                 for="tab-${tab.id}"
-                ${tab.id === ItemsFilters.NotPicked ? ref(this.tabRef) : ''}
+                ${tab.id === ItemsFilters.NotPicked
+                  ? ref(this.notPickedTabRef)
+                  : ''}
               >
                 ${i18n(`picking.${tab.title}`)}
                 <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
