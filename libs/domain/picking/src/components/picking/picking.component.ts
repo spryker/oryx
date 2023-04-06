@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { TabComponent } from '@spryker-oryx/ui/tab';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -41,6 +42,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   );
 
   protected productCardRef: Ref<PickingProductCardComponent> = createRef();
+  protected tabRef: Ref<TabComponent> = createRef();
 
   protected buildTabs(): PickingTab[] {
     return [
@@ -102,17 +104,12 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
     this.items = [...this.items];
 
-    const tabs = this.buildTabs();
-    this.renderRoot
-      .querySelectorAll('oryx-tab')
-      [
-        tabs.findIndex((tab) => tab.id === ItemsFilters.NotPicked)
-      ]?.dispatchEvent(
-        new CustomEvent('click', {
-          composed: true,
-          bubbles: true,
-        })
-      );
+    this.tabRef.value?.dispatchEvent(
+      new CustomEvent('click', {
+        composed: true,
+        bubbles: true,
+      })
+    );
 
     setTimeout(() => {
       window.scrollTo({
@@ -182,7 +179,10 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           ${repeat(
             tabs,
             (tab) => html`
-              <oryx-tab for="tab-${tab.id}">
+              <oryx-tab
+                for="tab-${tab.id}"
+                ${tab.id === ItemsFilters.NotPicked ? ref(this.tabRef) : ''}
+              >
                 ${i18n(`picking.${tab.title}`)}
                 <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
               </oryx-tab>
