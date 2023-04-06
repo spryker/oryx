@@ -14,21 +14,19 @@ describe('Locales suite', () => {
       homePage.visit();
     });
 
-    it('ENG is selected as a default locale', () => {
-      homePage.header.getLocaleButton().should('contain.text', 'ENG');
-      // and all texts on home page are displayed in ENG
-      // TODO
+    it('EN is selected as a default locale', () => {
+      homePage.header.getLocaleButton().should('contain.text', 'en');
+      homePage.getProductCardPrices().eq(0).checkCurrencyFormatting('en');
     });
 
     describe('and user changes the locale to DE', () => {
       beforeEach(() => {
-        homePage.header.changeLocale('DE');
+        homePage.header.changeLocale('de');
       });
 
-      it('DE is applied to texts on the home page', () => {
-        homePage.header.getLocaleButton().should('contain.text', 'DE');
-        // and all texts on home page are displayed in DE
-        // TODO
+      it('DE is applied to texts and currencies on the home page', () => {
+        homePage.header.getLocaleButton().should('contain.text', 'de');
+        homePage.getProductCardPrices().eq(0).checkCurrencyFormatting('de');
       });
 
       describe('and navigates through the website in SPA mode', () => {
@@ -37,13 +35,19 @@ describe('Locales suite', () => {
           homePage.getProductCards().eq(0).click();
         });
 
-        it('DE texts are still applied', () => {
+        it('DE texts and currencies are still applied', () => {
           // product description is displayed in DE
-          // TODO
+          pdp
+            .getDescriptionText()
+            .should(
+              'contain',
+              'Gear S2 X Atelier Mendini In einer wunderbaren'
+            );
+          pdp.getPrice().checkCurrencyFormatting('de');
           pdp.addItemsToTheCart(1);
           // go to the cart
           pdp.header.getCartSummary().click();
-          checkLocaleOnCartPage('DE');
+          checkCurrencyUsedOnCartPage('de');
         });
       });
     });
@@ -58,30 +62,29 @@ describe('Locales suite', () => {
 
     describe('and user changes the locale to DE', () => {
       beforeEach(() => {
-        cartPage.header.changeLocale('DE');
+        cartPage.header.changeLocale('de');
       });
 
-      describe('and user changes the locale back to ENG', () => {
+      describe('and user changes the locale back to EN', () => {
         beforeEach(() => {
-          cartPage.header.changeLocale('ENG');
+          cartPage.header.changeLocale('en');
         });
 
-        it('ENG tests are applied on the cart page', () => {
-          checkLocaleOnCartPage('ENG');
+        it('EN tests are applied on the cart page', () => {
+          checkCurrencyUsedOnCartPage('en');
         });
       });
     });
   });
 });
 
-function checkLocaleOnCartPage(locale: string) {
-  // TODO
-  // cartPage.getCartTotals().getSubtotalPrice().should('contain.text', locale);
-  // cartPage.getCartTotals().getTaxTotalPrice().should('contain.text', locale);
-  // cartPage.getCartTotals().getTotalPrice().should('contain.text', locale);
+function checkCurrencyUsedOnCartPage(locale: string) {
+  cartPage.getCartTotals().getSubtotalPrice().checkCurrencyFormatting(locale);
+  cartPage.getCartTotals().getTaxTotalPrice().checkCurrencyFormatting(locale);
+  cartPage.getCartTotals().getTotalPrice().checkCurrencyFormatting(locale);
 
-  // cartPage.getCartEntries().then((entries) => {
-  //   entries[0].getSubtotal().should('contain.text', locale);
-  //   entries[0].getSalesPrice().should('contain.text', locale);
-  // });
+  cartPage.getCartEntries().then((entries) => {
+    entries[0].getSubtotal().checkCurrencyFormatting(locale);
+    entries[0].getSalesPrice().checkCurrencyFormatting(locale);
+  });
 }

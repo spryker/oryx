@@ -1,8 +1,7 @@
 export class HeaderFragment {
   getWrapper = () => cy.get('[uid="header"]');
 
-  getLocaleSelector = () =>
-    this.getWrapper().find('oryx-site-locale-selector');
+  getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
   getLocaleButton = () =>
     this.getLocaleSelector().find('oryx-button').find('button');
 
@@ -29,11 +28,13 @@ export class HeaderFragment {
   };
 
   changeLocale = (locale: string) => {
+    cy.intercept('GET', '/concrete-products/*').as('productRequests');
     // hydrate
     this.getLocaleButton().click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     this.getLocaleButton().click();
     this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
+    cy.wait('@productRequests');
   };
 }
