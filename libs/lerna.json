@@ -34,8 +34,6 @@
       "contents": "dist",
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
-      "createRelease": "github",
-      "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
       "verifyAccess": false
     }
