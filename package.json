@@ -18,6 +18,7 @@
     "sf:e2e:headless:ci:affected": "npx nx print-affected --select=projects | grep -E -v 'storefront' && echo 'nothing changed, skip' || npm run sf:e2e:headless:ci",
     "release": "run-s release:*",
     "release-labs": "cd libs && npm run release-labs",
+    "release-patch": "cd libs && npm run release-patch",
     "release:libs": "cd libs && npm run release",
     "release-from-tag": "run-s release-from-tag:*",
     "release-from-tag:libs": "cd libs && npm run release-from-tag",
