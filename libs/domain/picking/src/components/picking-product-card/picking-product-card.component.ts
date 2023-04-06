@@ -9,7 +9,6 @@ import {
   EVENT_SUBMIT,
   ItemsFilters,
   ProductItemPickedEvent,
-  SummaryInfo,
   type PickingListItem,
 } from '../../models';
 import { styles } from './picking-product-card.styles';
@@ -22,8 +21,6 @@ export class PickingProductCardComponent extends LitElement {
 
   @state() isCorrectNumberOfPickedProvided = true;
   @state() currentNumberOfPicked?: number;
-
-  protected summaryInfo: SummaryInfo | undefined;
 
   protected onSubmit(e: SubmitEvent): void {
     e.preventDefault();
@@ -104,7 +101,7 @@ export class PickingProductCardComponent extends LitElement {
           ${this.productItem.orderItem.name}
         </oryx-heading>
         <oryx-heading>
-          <h4>${this.productItem.orderItem.sku}</h4>
+          <h6>${this.productItem.orderItem.sku}</h6>
         </oryx-heading>
 
         <oryx-image

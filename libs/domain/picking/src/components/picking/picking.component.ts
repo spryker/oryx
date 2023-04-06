@@ -3,6 +3,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { createRef, ref, Ref } from 'lit-html/directives/ref.js';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -17,7 +18,9 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '../../models';
+import { PickingProductCardComponent } from '../picking-product-card';
 import { styles } from './picking.styles';
+
 export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
@@ -36,6 +39,8 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       this.items = list?.items;
     })
   );
+
+  protected productCardRef: Ref<PickingProductCardComponent> = createRef();
 
   protected buildTabs(): PickingTab[] {
     return [
@@ -96,6 +101,32 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.items[productIndex].status = ItemsFilters.NotPicked;
 
     this.items = [...this.items];
+
+    const tabs = this.buildTabs();
+    this.renderRoot
+      .querySelectorAll('oryx-tab')
+      [
+        tabs.findIndex((tab) => tab.id === ItemsFilters.NotPicked)
+      ]?.dispatchEvent(
+        new CustomEvent('click', {
+          composed: true,
+          bubbles: true,
+        })
+      );
+
+    setTimeout(() => {
+      window.scrollTo({
+        left: 0,
+        top: this.productCardRef.value?.offsetTop,
+        behavior: 'smooth',
+      });
+
+      (
+        this.productCardRef.value?.renderRoot.querySelector(
+          'oryx-cart-quantity-input'
+        ) as HTMLElement
+      )?.focus();
+    }, 100);
   }
 
   protected onModalClose(): void {
@@ -137,21 +168,27 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected override render(): TemplateResult {
     const tabs = this.buildTabs();
 
-    return html`<oryx-tabs appearance="secondary" sticky shadow>
+    return html`
+      <oryx-tabs appearance="secondary" sticky shadow>
         ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
       </oryx-tabs>
-      ${this.renderConfirmationModal()}`;
+      ${this.renderConfirmationModal()}
+    `;
   }
 
   protected renderTabs(tabs: PickingTab[]): TemplateResult {
     return tabs
-      ? html`${repeat(
-          tabs,
-          (tab) => html`<oryx-tab for="tab-${tab.id}">
-            ${i18n(`picking.${tab.title}`)}
-            <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
-          </oryx-tab>`
-        )}`
+      ? html`
+          ${repeat(
+            tabs,
+            (tab) => html`
+              <oryx-tab for="tab-${tab.id}">
+                ${i18n(`picking.${tab.title}`)}
+                <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
+              </oryx-tab>
+            `
+          )}
+        `
       : html``;
   }
 
@@ -159,30 +196,33 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     return html`
       ${repeat(
         tabs,
-        (tab) => html`<div slot="panels" id="tab-${tab.id}" class="tab-panels">
-          ${when(
-            tab.items?.length,
-            () => html`
-              <div class="list-container">
-                ${repeat(
-                  tab.items,
-                  (item) => item.product.id,
-                  (item) =>
-                    html`
-                      <oryx-picking-product-card
-                        .productItem=${item}
-                        .status=${tab.id}
-                        @oryx.submit=${this.savePickingItem}
-                        @oryx.edit=${this.editPickingItem}
-                      ></oryx-picking-product-card>
-                    `
-                )}
-              </div>
-              ${this.renderFinishButton(true)}
-            `,
-            () => this.renderPlaceholderComplete()
-          )}
-        </div>`
+        (tab) => html`
+          <div slot="panels" id="tab-${tab.id}" class="tab-panels">
+            ${when(
+              tab.items?.length,
+              () => html`
+                <div class="list-container">
+                  ${repeat(
+                    tab.items,
+                    (item) => item.product.id,
+                    (item) =>
+                      html`
+                        <oryx-picking-product-card
+                          ${ref(this.productCardRef)}
+                          .productItem=${item}
+                          .status=${tab.id}
+                          @oryx.submit=${this.savePickingItem}
+                          @oryx.edit=${this.editPickingItem}
+                        ></oryx-picking-product-card>
+                      `
+                  )}
+                </div>
+                ${this.renderFinishButton(true)}
+              `,
+              () => this.renderPlaceholderComplete()
+            )}
+          </div>
+        `
       )}
     `;
   }
