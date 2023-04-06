@@ -31,9 +31,7 @@ describe('Cart', () => {
         });
 
         it('should render the cart page with the newly added entries', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', '1 items');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 1,
             subTotal: '€62.77',
@@ -74,9 +72,7 @@ describe('Cart', () => {
       });
 
       it('should render the cart entries and totals', () => {
-        cartPage
-          .getCartEntriesHeading()
-          .should('contain.text', '1 items');
+        cartPage.getCartEntriesHeading().should('contain.text', '1 items');
         checkCartEntry({
           quantity: 1,
           subTotal: '€62.77',
@@ -113,9 +109,7 @@ describe('Cart', () => {
         });
 
         it('should update the cart totals', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', '4 items');
+          cartPage.getCartEntriesHeading().should('contain.text', '4 items');
           checkCartEntry({
             quantity: 4,
             subTotal: '€225.97',
@@ -140,9 +134,7 @@ describe('Cart', () => {
 
         it('should update the cart totals after blur', () => {
           // quantity updated, but not yet recalculated prices
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', '1 items');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€62.77',
@@ -156,9 +148,7 @@ describe('Cart', () => {
           cy.get('body').click();
 
           // after blur the quantity the prices will be recalculated
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', '2 items');
+          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€112.99',
