@@ -47,7 +47,7 @@
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "npm run build",
+        "command": "npm run build:client",
         "cwd": "apps/testfront"
       }
     },
