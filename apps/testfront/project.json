@@ -2,57 +2,6 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/testfront/src",
-  "tags": ["type:app"],
-  "targets": {
-    "serve": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run dev",
-        "cwd": "apps/storefront"
-      }
-    },
-    "serve-ssr": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run dev:ssr",
-        "cwd": "apps/testfront"
-      }
-    },
-    "serve-prod": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "nx build-client testfront",
-          "nx build-ssr testfront",
-          "npm run dev:ssr --omit=dev"
-        ],
-        "cwd": "apps/testfront",
-        "parallel": false
-      }
-    },
-    "build-client": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run build:client",
-        "cwd": "apps/storefront"
-      }
-    },
-    "build-ssr": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run build:ssr",
-        "cwd": "apps/testfront"
-      }
-    },
-    "build": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "npm run build:client",
-        "cwd": "apps/testfront"
-      }
-    },
-    "deps": {
-      "executor": "./tools/executors/dependency-tree:deps"
-    }
+  "tags": ["type:app"]
   }
 }
