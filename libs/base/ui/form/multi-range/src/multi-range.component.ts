@@ -16,88 +16,49 @@ export class MultiRangeComponent
   @property({ type: Boolean }) disabled?: boolean;
   @property({ type: Number }) step = 1;
 
-  protected _min = 0;
-  @property({ type: Number })
-  get min(): number {
-    return this._min;
-  }
-  set min(value: number) {
-    const oldValue = this._min;
-    this._min = value >= this.max ? this.max - this.step : value;
-    this.requestUpdate('min', oldValue);
-  }
-
-  protected _max = 100;
-  @property({ type: Number })
-  get max(): number {
-    return this._max;
-  }
-  set max(value: number) {
-    const oldValue = this._max;
-    this._max = value <= this.min ? this.min + this.step : value;
-    this.requestUpdate('max', oldValue);
-  }
-
-  protected _minValue = 0;
-  @property({ type: Number })
-  get minValue(): number {
-    return this._minValue;
-  }
-  set minValue(value: number) {
-    const oldValue = this._minValue;
-    this._minValue =
-      value <= this.min
-        ? this.min
-        : value >= this.maxValue
-        ? this.maxValue - this.step
-        : value;
-    if (this.inputMinRef && this.inputMinRef.value) {
-      this.inputMinRef.value.value = String(this._minValue);
-    }
-    this.requestUpdate('minValue', oldValue);
-  }
-
-  protected _maxValue = 100;
-  @property({ type: Number })
-  get maxValue(): number {
-    return this._maxValue;
-  }
-  set maxValue(value: number) {
-    const oldValue = this._maxValue;
-    this._maxValue =
-      value >= this.max
-        ? this.max
-        : value <= this.minValue
-        ? this.minValue + this.step
-        : value;
-    if (this.inputMaxRef && this.inputMaxRef.value) {
-      this.inputMaxRef.value.value = String(this._maxValue);
-    }
-    this.requestUpdate('maxValue', oldValue);
-  }
+  @property({ type: Number }) min = 0;
+  @property({ type: Number }) max = 100;
+  @property({ type: Number }) minValue = 0;
+  @property({ type: Number }) maxValue = 100;
 
   update(changedProperties: PropertyValues): void {
+    if (
+      this.min >= this.max ||
+      this.minValue >= this.max ||
+      this.minValue >= this.maxValue ||
+      this.maxValue > this.max ||
+      this.minValue < this.min ||
+      this.step > this.max - this.min
+    ) {
+      console.error(
+        'MultiRangeComponent',
+        'Provided attributes has conflicting values. Check it, please'
+      );
+    }
+
     const calculatePercentage = (
       value: number,
       minValue: number,
       maxValue: number
     ) => ((value - minValue) / (maxValue - minValue)) * 100;
+
     const sliderMinPercentage = calculatePercentage(
       this.minValue,
       this.min,
       this.max
     );
+
     const sliderMaxPercentage = calculatePercentage(
       this.maxValue,
       this.min,
       this.max
     );
+
     this.style.setProperty('--_multi-range-min', `${sliderMinPercentage}%`);
     this.style.setProperty(
       '--_multi-range-max',
       `${100 - sliderMaxPercentage}%`
     );
-
     super.update(changedProperties);
   }
 
