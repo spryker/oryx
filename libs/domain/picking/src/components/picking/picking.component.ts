@@ -112,19 +112,19 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       })
     );
 
-    setTimeout(() => {
-      window.scrollTo({
-        left: 0,
-        top: this.productCardRef.value?.offsetTop,
-        behavior: 'smooth',
-      });
+    window.scrollTo({
+      left: 0,
+      top: this.productCardRef.value?.offsetTop,
+      behavior: 'smooth',
+    });
 
+    setTimeout(() => {
       (
         this.productCardRef.value?.renderRoot.querySelector(
           'oryx-cart-quantity-input'
         ) as HTMLElement
       )?.focus();
-    }, 100);
+    }, 0);
   }
 
   protected onModalClose(): void {
