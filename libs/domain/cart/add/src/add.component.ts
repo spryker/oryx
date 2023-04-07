@@ -12,7 +12,6 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { take } from 'rxjs';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -99,14 +98,11 @@ export class CartAddComponent extends ProductMixin(
       )?.value ??
       this.min();
 
-    this.cartService
-      .addEntry({ sku, quantity })
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.confirmed = true;
-          setTimeout(() => (this.confirmed = false), 800);
-        },
-      });
+    this.cartService.addEntry({ sku, quantity }).subscribe({
+      next: () => {
+        this.confirmed = true;
+        setTimeout(() => (this.confirmed = false), 800);
+      },
+    });
   }
 }
