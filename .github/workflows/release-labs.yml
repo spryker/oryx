@@ -15,6 +15,15 @@ jobs:
       GIT_EMAIL: ${{ vars.GIT_EMAIL }}
       RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+          ref: ${{ env.RELEASE_BRANCH }}
+          submodules: recursive
       - uses: ./.github/release/preparation
       - name: Install Deps
         run: npm ci
