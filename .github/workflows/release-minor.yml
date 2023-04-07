@@ -24,7 +24,7 @@ jobs:
           token: ${{ env.GH_TOKEN }}
           ref: ${{ env.RELEASE_BRANCH }}
           submodules: recursive
-      - uses: ./.github/release/preparation
+      - uses: ./.github/release-preparation
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2 --exclude storefront,fulfillment
       - name: Fix js extension

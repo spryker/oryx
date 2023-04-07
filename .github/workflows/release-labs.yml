@@ -24,7 +24,7 @@ jobs:
           token: ${{ env.GH_TOKEN }}
           ref: ${{ env.RELEASE_BRANCH }}
           submodules: recursive
-      - uses: ./.github/release/preparation
+      - uses: ./.github/release-preparation
       - name: Install Deps
         run: npm ci
       - name: Build Labs package
