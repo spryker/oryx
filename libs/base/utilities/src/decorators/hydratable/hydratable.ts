@@ -160,9 +160,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       const states = this[asyncStates];
 
-      setTimeout(() => {
-        if (!this[hydrationRender]) this[hydrationRender] = true;
-      }, 0);
+      if (this.hasSsr && !this[hydrationRender]) {
+        setTimeout(() => {
+          this[hydrationRender] = true;
+        }, 0);
+      }
 
       if (this.hasSsr && states) {
         return html`${whenState(

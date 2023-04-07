@@ -26,18 +26,17 @@ export class TextComponent extends LitElement implements TextProperties {
 
   protected willUpdate(changedProperties: PropertyValues): void {
     if (changedProperties.has('truncateAfter')) {
-      this.style.setProperty('--line-clamp', this.truncateAfter?.toString());
+      this.style.setProperty(
+        '--line-clamp',
+        this.truncateAfter?.toString() ?? null
+      );
     }
 
     super.willUpdate(changedProperties);
   }
 
   protected updated(changedProperties: PropertyValues): void {
-    if (
-      changedProperties.has('truncateAfter') &&
-      this.truncateAfter &&
-      !this.resizeObserver
-    ) {
+    if (changedProperties.has('truncateAfter')) {
       this.setup();
     }
 
@@ -75,7 +74,7 @@ export class TextComponent extends LitElement implements TextProperties {
   }
 
   protected setup(): void {
-    if (!this.truncateAfter) {
+    if (!this.truncateAfter && this.resizeObserver) {
       return;
     }
 
