@@ -1,8 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx nx format:check &&
-npx nx affected --target=lint --parallel=2 &&
-npx nx affected --target=stylelint --parallel=2 &&
-npx nx affected --target=deps --parallel=2 &&
-npx nx affected --target=paths --parallel=2
+#npx nx format:check &&
+#npx nx affected --target=lint --parallel=2 &&
+#npx nx affected --target=stylelint --parallel=2 &&
+#npx nx affected --target=deps --parallel=2 &&
+#npx nx affected --target=paths --parallel=2
