@@ -1,6 +1,7 @@
 {
   "packages": [
     "template/application",
+    "domain/push-notification",
     "platform/auth",
     "domain/cart",
     "domain/checkout",

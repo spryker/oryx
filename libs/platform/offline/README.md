@@ -1,9 +1,7 @@
-# offline
+# Oryx Offline package
 
-This library provides functionality for offline first application.
+Provides offline first capabilities for Oryx application.
 
-This library was generated with [Nx](https://nx.dev).
+## Installation
 
-## Running unit tests
-
-Run `nx test core` to execute your test suite with [Vitest](https://vitest.dev/) and code coverage by default. You can pass options `--watch`, `--dev`, `--related`, `--run` (using by default) to run [Vitest](https://vitest.dev/) in different modes.
+`npm install @spryker-oryx/offline`
