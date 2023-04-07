@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { storybookPrefix } from '../../../../../.constants';
+import { TextComponent } from '../../text.component';
 
 export default {
   title: `${storybookPrefix}/Structure/Text/Static`,
@@ -22,17 +23,10 @@ const text = unsafeHTML(`
 
 const Template: Story<unknown> = (): TemplateResult => {
   const toggle = (): void => {
-    // TODO: change props values and use `updateArgs({key: 'expanded'})` - but how?
-    document.querySelector('oryx-text')?.toggleAttribute('expanded');
+    document.querySelector<TextComponent>('oryx-text')?.toggle();
   };
   return html`
-    <style>
-      oryx-text {
-        --line-clamp: 3;
-      }
-    </style>
-
-    <oryx-text hideToggle>${text}</oryx-text>
+    <oryx-text .truncateAfter=${3} hideToggle>${text}</oryx-text>
     <button @click=${toggle}>toggle</button>
   `;
 };

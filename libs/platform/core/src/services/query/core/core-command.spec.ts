@@ -76,6 +76,30 @@ describe('Core Command', () => {
           });
         });
       });
+
+      it('should execute second command even when first execution errors', () => {
+        rxjsTestScheduler().run(({ cold, expectObservable }) => {
+          const command = createCommand({
+            action: (qualifier) => {
+              if (qualifier === '1') {
+                return throwError(() => new Error('testError'));
+              }
+              return cold('----a|', { a: 'test2' });
+            },
+            strategy: CommandStrategy.Parallel,
+          });
+
+          const firstExecution$ = command.execute('1');
+          const secondExecution$ = command.execute('2');
+
+          expectObservable(firstExecution$).toBe(
+            '#',
+            null,
+            new Error('testError')
+          );
+          expectObservable(secondExecution$).toBe('----a|', { a: 'test2' });
+        });
+      });
     });
 
     describe('Replace', () => {
