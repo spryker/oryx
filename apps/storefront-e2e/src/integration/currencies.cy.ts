@@ -61,6 +61,10 @@ describe('Currencies suite', () => {
         cartPage.header.changeCurrency('CHF');
       });
 
+      it('CHF prices are applied on the cart page', () => {
+        checkCurrencyOnCartPage('CHF');
+      });
+
       describe('and user changes the currency back to EUR', () => {
         beforeEach(() => {
           cartPage.header.changeCurrency('EUR');
