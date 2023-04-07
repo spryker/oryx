@@ -5,7 +5,7 @@ import { ErrorService } from './error.service';
 
 export class DefaultErrorService implements ErrorService {
   constructor(
-    protected element: EventTarget = window,
+    protected element: EventTarget = globalThis,
     protected handler = inject(ErrorHandler, null)
   ) {}
 
