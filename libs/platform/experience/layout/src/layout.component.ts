@@ -1,5 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
-import { asyncValue, ssrShim, subscribe } from '@spryker-oryx/utilities';
+import {
+  asyncValue,
+  hydratable,
+  ssrShim,
+  subscribe,
+} from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -17,6 +22,7 @@ import { LayoutAttributes } from './layout.model';
 import { layoutStyles } from './layout.styles';
 
 @ssrShim('style')
+@hydratable()
 export class LayoutComponent
   extends ComponentMixin<CompositionProperties>()
   implements LayoutAttributes

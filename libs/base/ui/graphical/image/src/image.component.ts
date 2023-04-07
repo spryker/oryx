@@ -1,10 +1,11 @@
-import { resourceInjectable } from '@spryker-oryx/utilities';
+import { hydratable, resourceInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ImageComponentAttributes, LoadingStrategy } from './image.model';
 import { styles } from './image.styles';
 
+@hydratable()
 export class ImageComponent
   extends LitElement
   implements ImageComponentAttributes
@@ -15,10 +16,10 @@ export class ImageComponent
     super();
   }
 
-  @property() src?: string;
+  @property({ reflect: true }) src?: string;
   @property() srcset?: string;
-  @property() alt?: string;
-  @property() resource?: string;
+  @property({ reflect: true }) alt?: string;
+  @property({ reflect: true }) resource?: string;
   @property() loading?: LoadingStrategy;
 
   @state() failed?: string;
