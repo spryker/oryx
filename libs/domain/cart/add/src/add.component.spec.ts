@@ -11,7 +11,7 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { BehaviorSubject, delay, of } from 'rxjs';
+import { BehaviorSubject, delay, of, switchMap, throwError } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
@@ -190,23 +190,28 @@ describe('CartAddComponent', () => {
         });
       });
 
-      // describe('when adding an item to cart throws an error', () => {
-      //   beforeEach(() => {
-      //     service.addEntry?.mockReturnValue(
-      //       throwError(() => new Error('Mock error'))
-      //     );
-      //     const button = element.shadowRoot?.querySelector('button');
-      //     button?.click();
-      //   });
+      describe('when adding an item to cart throws an error', () => {
+        beforeEach(async () => {
+          service?.addEntry?.mockReturnValue(
+            of(null).pipe(
+              delay(1),
+              switchMap(() => throwError(() => new Error('error')))
+            )
+          );
 
-      //   beforeEach(async () => {
-      //     await nextFrame();
-      //   });
+          element = await fixture(
+            html` <oryx-cart-add sku="1"></oryx-cart-add>`
+          );
+          const button = element.shadowRoot?.querySelector('button');
 
-      //   it('should not have the oryx-button in confirmed state', () => {
-      //     expect(element).not.toContainElement('oryx-button[confirmed]');
-      //   });
-      // });
+          button?.click();
+          await nextFrame();
+        });
+
+        it('should not have the oryx-button in confirmed state', async () => {
+          expect(element).toContainElement('oryx-button:not([confirmed])');
+        });
+      });
     });
 
     describe('when the cart is loaded', () => {
