@@ -64,6 +64,10 @@ export class ProductDetailsPage extends AbstractSFPage {
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {
       this.getAddToCartBtn().click();
+      // click on a button in loading and confirmed state does nothing
+      // so we have to wait will the button is active again
+      this.getAddToCartBtn().should('not.have.attr', 'loading')
+      this.getAddToCartBtn().should('not.have.attr', 'confirmed');
     } else {
       throw new Error('Add multiple items to the Cart is not implemented yet.');
     }
