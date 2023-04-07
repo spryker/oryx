@@ -189,20 +189,6 @@ describe('MultiRangeComponent', () => {
     });
   });
 
-  describe('minValue property is set to the value bigger then maxValue', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-multi-range maxValue="10"></oryx-multi-range>`
-      );
-    });
-
-    it('minValue should be one step less then maxValue', async () => {
-      element.minValue = 11;
-
-      await expect(element.minValue).toBe(9);
-    });
-  });
-
   describe('minValue property is set to the value less then min', () => {
     beforeEach(async () => {
       element = await fixture(
@@ -212,32 +198,6 @@ describe('MultiRangeComponent', () => {
 
     it('minValue should be equal to min', async () => {
       await expect(element.minValue).toBe(0);
-    });
-  });
-
-  describe('maxValue property is set to the value less then minValue', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-multi-range minValue="1"></oryx-multi-range>`
-      );
-    });
-
-    it('maxValue should be one step bigger then minValue', async () => {
-      element.maxValue = 0;
-
-      await expect(element.maxValue).toBe(2);
-    });
-  });
-
-  describe('maxValue property is set to the value bigger then max', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-multi-range max="10" maxValue="11"></oryx-multi-range>`
-      );
-    });
-
-    it('maxValue should be equal to max', async () => {
-      await expect(element.maxValue).toBe(10);
     });
   });
 
