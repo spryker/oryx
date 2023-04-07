@@ -65,12 +65,16 @@ describe('Locales suite', () => {
         cartPage.header.changeLocale('de');
       });
 
+      it('DE tests and currencies are applied', () => {
+        checkCurrencyUsedOnCartPage('de');
+      });
+
       describe('and user changes the locale back to EN', () => {
         beforeEach(() => {
           cartPage.header.changeLocale('en');
         });
 
-        it('EN tests are applied on the cart page', () => {
+        it('EN tests and currencies are applied', () => {
           checkCurrencyUsedOnCartPage('en');
         });
       });
