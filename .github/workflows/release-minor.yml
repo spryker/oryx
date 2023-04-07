@@ -1,15 +1,6 @@
-name: Release Workflow
+name: Release minor Workflow
 
 on:
-  # Triggers the workflow after the Test Workflow has completed
-  # workflow_run:
-  #   workflows: ['Test Workflow']
-  #   types:
-  #     - completed
-  #   branches:
-  #     - development
-  #     - 'release/*'
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -20,8 +11,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GIT_USER: ${{ secrets.GIT_USER }}
-      GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+      GIT_USER: ${{ vars.GIT_USER }}
+      GIT_EMAIL: ${{ vars.GIT_EMAIL }}
       RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
     steps:
       - uses: ./.github/release/preparation
@@ -29,12 +20,9 @@ jobs:
         run: npx nx run-many --target=build --all --parallel=2 --exclude storefront,fulfillment
       - name: Fix js extension
         run: node tools/post-build/add-js-extension.js
-      - name: Release Next
-        if: ${{ env.RELEASE_BRANCH == 'development' }}
-        run: RELEASE_TAG=next npm run release-tag
-      - name: Release Latest
+      - name: Release patch
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
-        run: npm run release-branch
+        run: npm run minor
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log

@@ -21,7 +21,7 @@ export class ProductDescriptionComponent extends ProductMixin(
 
     return html`
       <oryx-text
-        .style=${`--line-clamp: ${truncateAfter}`}
+        .truncateAfter=${truncateAfter}
         .hideToggle=${!enableToggle}
         .defaultExpanded=${expandInitially}
       >
