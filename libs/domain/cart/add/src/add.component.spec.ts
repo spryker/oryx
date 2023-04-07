@@ -11,7 +11,7 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { BehaviorSubject, delay, of, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, delay, Observer, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
@@ -192,12 +192,13 @@ describe('CartAddComponent', () => {
 
       describe('when adding an item to cart throws an error', () => {
         beforeEach(async () => {
-          service?.addEntry?.mockReturnValue(
-            of(null).pipe(
-              delay(1),
-              switchMap(() => throwError(() => new Error('error')))
-            )
-          );
+          service?.addEntry?.mockReturnValue({
+            subscribe: (callback: Partial<Observer<any>>) => {
+              // simulate observable that errors
+              callback.error?.(new Error('error'));
+              callback.complete?.();
+            },
+          });
 
           element = await fixture(
             html` <oryx-cart-add sku="1"></oryx-cart-add>`
