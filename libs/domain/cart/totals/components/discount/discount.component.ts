@@ -23,7 +23,9 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
     if (!calculations?.discountTotal) return;
 
     const heading = html`
-      <span>${i18n('cart.totals.discount')}</span>
+      <span>
+        ${i18n('cart.totals.<count>-discounts', { count: discounts?.length })}
+      </span>
       <span>${String(calculations.discountTotal)}</span>
     `;
 
@@ -53,7 +55,9 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
       appearance="${CollapsibleAppearance.Inline}"
       ?open=${discountRowsAppearance !== DiscountRowsAppearance.Collapsed}
     >
-      <span slot="header">${i18n('cart.totals.discount')}</span>
+      <span slot="header">
+        ${i18n('cart.totals.<count>-discounts', { count: discounts.length })}
+      </span>
       <span slot="aside">${calculations.discountTotal}</span>
       ${rows}
     </oryx-collapsible>`;

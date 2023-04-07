@@ -1,3 +1,4 @@
+import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { StaticComponent } from '@spryker-oryx/experience';
 
 export const OrderPage: StaticComponent = {
@@ -19,7 +20,14 @@ export const OrderPage: StaticComponent = {
           type: 'oryx-cart-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
-            { type: 'oryx-cart-totals-discount' },
+            {
+              type: 'oryx-cart-totals-discount',
+              options: {
+                data: {
+                  discountRowsAppearance: DiscountRowsAppearance.Collapsed,
+                },
+              },
+            },
             { type: 'oryx-cart-totals-expense' },
             { type: 'oryx-cart-totals-tax' },
             { type: 'oryx-cart-totals-delivery' },

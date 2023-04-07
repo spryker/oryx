@@ -34,10 +34,12 @@ export interface ProductMediaOptions {
 
   /**
    * The loading strategy is applied to the img element. The lazy loading
-   * strategy drives a boosted performance in most cases as it will start
-   * loading images only when they're in the viewport.
+   * strategy drives can boost performance as it will start loading images
+   * only when they're in the viewport. That being said, it defers loading
+   * till the layout shifting is done, which is why it's not a recommended
+   * if you now ahead of time that the image should be loaded.
    *
    * @default LoadingStrategy.Lazy
    */
-  loading: LoadingStrategy;
+  loading?: LoadingStrategy;
 }

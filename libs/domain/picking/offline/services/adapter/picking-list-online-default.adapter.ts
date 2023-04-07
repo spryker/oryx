@@ -38,6 +38,22 @@ export class PickingListOnlineDefaultAdapter
     return super.get(qualifier) as Observable<PickingListEntity[]>;
   }
 
+  startPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
+    return super.startPicking(pickingList) as Observable<PickingListEntity>;
+  }
+
+  updatePickingItems(
+    pickingList: PickingListEntity
+  ): Observable<PickingListEntity> {
+    return super.updatePickingItems(
+      pickingList
+    ) as Observable<PickingListEntity>;
+  }
+
+  finishPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
+    return super.finishPicking(pickingList) as Observable<PickingListEntity>;
+  }
+
   protected override async parsePickingLists(
     response: GetPickingListResponse
   ): Promise<PickingListEntity[]> {
@@ -63,7 +79,7 @@ export class PickingListOnlineDefaultAdapter
     return {
       ...pickingList,
       requestedDeliveryDate: new Date(
-        data.pickingListItems[0].shipments[0].requestedDeliveryDate
+        data.pickingListItems[0].salesShipments[0].requestedDeliveryDate
       ),
     };
   }

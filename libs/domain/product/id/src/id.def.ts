@@ -10,4 +10,5 @@ declare global {
 export const productIdComponent = componentDef({
   name: 'oryx-product-id',
   impl: () => import('./id.component').then((m) => m.ProductIdComponent),
+  schema: () => import('./id.schema').then((m) => m.productIdSchema),
 });

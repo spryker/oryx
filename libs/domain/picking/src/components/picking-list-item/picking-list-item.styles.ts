@@ -1,20 +1,21 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
-  [slot='heading'] {
+  oryx-heading {
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     display: flex;
     width: 100%;
   }
 
-  [slot='heading'] span {
-    font-weight: var(--oryx-typography-h2-weight);
-    font-size: var(--oryx-typography-h2-size);
-    line-height: var(--oryx-typography-h2-line);
+  h3 {
+    ${headingUtil(HeadingTag.H3)}
   }
 
-  [slot='heading'] h4 {
+  span.identifier {
+    ${headingUtil(HeadingTag.H6)}
+
     color: var(--oryx-color-neutral-darker);
     margin-inline-start: auto;
   }
@@ -32,21 +33,14 @@ export const styles = css`
   .total {
     color: var(--oryx-color-neutral-darker);
     display: flex;
+    align-items: center;
     gap: 8px;
-    height: fit-content;
-  }
-
-  .total oryx-icon {
-    display: inline;
+    height: 24px;
+    width: 100%;
   }
 
   oryx-icon-button {
-    align-items: start;
-    height: fit-content;
-  }
-
-  oryx-icon[type='info'] {
-    color: var(--oryx-color-primary-300);
+    margin-inline-start: auto;
   }
 
   oryx-button {

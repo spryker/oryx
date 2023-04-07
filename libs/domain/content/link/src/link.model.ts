@@ -20,6 +20,7 @@ export interface ContentLinkOptions {
   noopener?: boolean;
   nofollow?: boolean;
   disabled?: boolean;
+  loading?: boolean;
 
   /**
    * Indicates the appearance of the link. By default `oryx-link` is used as

@@ -10,4 +10,5 @@ declare global {
 export const productMediaComponent = componentDef({
   name: 'oryx-product-media',
   impl: () => import('./media.component').then((m) => m.ProductMediaComponent),
+  schema: () => import('./media.schema').then((m) => m.productMediaSchema),
 });

@@ -18,7 +18,7 @@ const pricing = css`
     display: contents;
   }
 
-  .entry-price {
+  oryx-price {
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);
     line-height: var(--oryx-typography-h6-line);
@@ -110,10 +110,5 @@ export const cartEntryStyles = css`
 
   .actions oryx-icon-button span {
     display: var(--oryx-screen-small-inline, none);
-  }
-
-  /* TODO: consider moving this out as a generic rule */
-  *:not(:defined) {
-    display: none;
   }
 `;

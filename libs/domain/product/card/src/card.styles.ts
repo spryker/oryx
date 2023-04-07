@@ -2,10 +2,10 @@ import { css } from 'lit';
 
 export const ProductCardStyles = css`
   :host {
-    --max-lines: var(--effect, var(--oryx-product-title-max-lines));
     --oryx-link-color: currentColor;
     --oryx-link-color-hover: currentColor;
 
+    align-self: stretch;
     flex: inherit;
     scroll-snap-align: inherit;
     display: grid;
@@ -59,7 +59,9 @@ export const ProductCardStyles = css`
     margin-block-end: 16px;
   }
 
-  :host([has-line-clamp]) .popover {
+  .popover[has-line-clamp] {
+    --max-lines: var(--effect, var(--oryx-product-title-max-lines));
+
     display: flex;
     align-items: end;
     grid-row: 1;

@@ -42,24 +42,27 @@ export class ProductImagesComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     if (!this.product) return;
 
+    const {
+      navigationPosition = defaultImagesOptions.navigationPosition,
+      navigationDisplay,
+      imageHeight = defaultImagesOptions.imageHeight,
+    } = this.$options();
+
     const media = this.resolveImages();
     const main = this.renderMainLayout(media);
     const navigation = this.renderNavigationLayout(media);
+    const isFloating =
+      navigationDisplay === ProductImagesNavigationDisplay.Floating;
 
     return html`
       <oryx-layout
-        navigation=${this.componentOptions?.navigationPosition ||
-        defaultImagesOptions.navigationPosition}
-        ?floating=${this.componentOptions?.navigationDisplay ===
-        ProductImagesNavigationDisplay.Floating}
-        style="--product-image-height: ${this.componentOptions?.imageHeight ||
-        defaultImagesOptions.imageHeight};"
+        navigation=${navigationPosition}
+        ?floating=${isFloating}
+        style="--product-image-height: ${imageHeight};"
       >
         ${when(
-          this.componentOptions?.navigationPosition ===
-            NavigationPosition.Top ||
-            this.componentOptions?.navigationPosition ===
-              NavigationPosition.Start,
+          navigationPosition === NavigationPosition.Top ||
+            navigationPosition === NavigationPosition.Start,
           () => html`${navigation}${main}`,
           () => html`${main}${navigation}`
         )}
@@ -69,19 +72,19 @@ export class ProductImagesComponent extends ProductMixin(
 
   protected renderMainLayout(media: ProductMedia[]): TemplateResult | void {
     const {
-      imageLayout: layout,
+      imageLayout = defaultImagesOptions.imageLayout,
       imageObjectFit: objectFit,
       imagesColumns: cols,
       scrollBehavior,
-    } = this.componentOptions ?? {};
+    } = this.$options();
 
-    if (!media.length || layout === ProductImagesMainLayout.None) {
+    if (!media.length || imageLayout === ProductImagesMainLayout.None) {
       return;
     }
 
     return html`<oryx-layout
       class="main"
-      layout=${layout || defaultImagesOptions.imageLayout}
+      layout=${imageLayout}
       style="--image-fit:${objectFit || defaultImagesOptions.imageObjectFit};
       --cols: ${cols || defaultImagesOptions.imageColumns}"
       behavior=${ifDefined(scrollBehavior)}
@@ -112,7 +115,7 @@ export class ProductImagesComponent extends ProductMixin(
       navigationHeight: height,
       navigationWidth: width,
       navigationObjectFit: objectFit,
-    } = this.componentOptions ?? {};
+    } = this.$options();
 
     if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
       return;
@@ -164,7 +167,7 @@ export class ProductImagesComponent extends ProductMixin(
 
   protected onMouseover(e: Event): void {
     if (
-      this.componentOptions?.navigationMouseEvent ===
+      this.$options().navigationMouseEvent ===
       ProductImagesNavigationMouseEvent.Mouseover
     ) {
       const target = e.target as HTMLInputElement;
@@ -183,12 +186,11 @@ export class ProductImagesComponent extends ProductMixin(
   }
 
   protected resolveImages(): ProductMedia[] {
+    const { mediaSet } = this.$options();
     return (
-      (!this.componentOptions?.mediaSet
+      (!mediaSet
         ? this.product?.mediaSet?.[0]
-        : this.product?.mediaSet?.find(
-            (set) => set.name === this.componentOptions?.mediaSet
-          )
+        : this.product?.mediaSet?.find((set) => set.name === mediaSet)
       )?.media ?? []
     );
   }

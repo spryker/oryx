@@ -15,27 +15,18 @@ import { textStyles } from './text.styles';
 export class TextComponent extends LitElement implements TextProperties {
   static override styles = textStyles;
 
-  @property({ type: Boolean })
-  hideToggle = false;
-  @property({ type: Boolean, reflect: true })
-  truncated = false;
-  @property({ type: Boolean })
-  defaultExpanded?: boolean;
-  @property({ type: Boolean, reflect: true })
-  truncation = false;
-  @property({ type: Number, reflect: true })
-  truncateAfter?: number;
+  @property({ type: Boolean }) hideToggle = false;
+  @property({ type: Boolean, reflect: true }) truncated = false;
+  @property({ type: Boolean }) defaultExpanded?: boolean;
+  @property({ type: Boolean, reflect: true }) truncation = false;
+  @property({ type: Number, reflect: true }) truncateAfter?: number;
   @property() readMoreLabel = 'Read more';
 
   protected resizeObserver?: ResizeObserver;
 
   protected willUpdate(changedProperties: PropertyValues): void {
     if (changedProperties.has('truncateAfter')) {
-      if (this.truncateAfter) {
-        this.style.setProperty('--line-clamp', String(this.truncateAfter));
-      } else {
-        this.style.removeProperty('--line-clamp');
-      }
+      this.style.setProperty('--line-clamp', this.truncateAfter?.toString());
     }
 
     super.willUpdate(changedProperties);

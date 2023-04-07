@@ -10,6 +10,8 @@ import { CheckoutLinkComponent } from './link.component';
 import { checkoutLinkComponent } from './link.def';
 
 class MockCartService implements Partial<CartService> {
+  getCart = vi.fn().mockReturnValue(of());
+  getEntries = vi.fn().mockReturnValue(of([]));
   isEmpty = vi.fn();
   isBusy = vi.fn().mockReturnValue(of(false));
 }
@@ -84,7 +86,7 @@ describe('CheckoutLinkComponent', () => {
       const contentLink = element.renderRoot.querySelector(
         'oryx-content-link'
       ) as ContentLinkComponent;
-      expect(contentLink?.options?.disabled).toBe(true);
+      expect(contentLink?.options?.loading).toBe(true);
     });
   });
 });
