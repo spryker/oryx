@@ -1,9 +1,19 @@
 export class HeaderFragment {
   getWrapper = () => cy.get('[uid="header"]');
 
+  getContactLink = () => this.getWrapper().find('oryx-content-link').find('a');
+
+  getCurrencySelector = () =>
+    this.getWrapper().find('oryx-site-currency-selector');
+  getCurrencyButton = () =>
+    this.getCurrencySelector().find('oryx-button').find('button');
+
   getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
   getLocaleButton = () =>
     this.getLocaleSelector().find('oryx-button').find('button');
+
+  getLogo = () =>
+    this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
 
   getUserSummary = () => cy.get('oryx-user-summary');
   getUserSummaryHeading = () => this.getUserSummary().find('oryx-heading');
@@ -15,10 +25,6 @@ export class HeaderFragment {
 
   getCartSummary = () => cy.get('oryx-cart-summary');
   getCartCount = () => this.getCartSummary().find('mark');
-
-  getLogo = () =>
-    this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
-  getContactLink = () => this.getWrapper().find('oryx-content-link').find('a');
 
   logout = () => {
     this.getOpenUserMenuButton().click();
@@ -36,5 +42,14 @@ export class HeaderFragment {
     this.getLocaleButton().click();
     this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
     cy.wait('@productRequests');
+  };
+
+  changeCurrency = (currency: string) => {
+    // hydrate
+    this.getCurrencyButton().click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    this.getCurrencyButton().click();
+    this.getCurrencySelector().find(`oryx-option[value="${currency}"]`).click();
   };
 }

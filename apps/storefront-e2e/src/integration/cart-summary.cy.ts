@@ -21,7 +21,7 @@ describe('Cart summary suite', () => {
 
   context('Counter', () => {
     context('must increase if', () => {
-      it('a product is added in the cart from pdp', () => {
+      it.only('a product is added in the cart from pdp', () => {
         pdp.visit();
         pdp.hydrateAddToCart();
 

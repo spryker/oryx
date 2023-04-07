@@ -50,8 +50,8 @@ export class ProductDetailsPage extends AbstractSFPage {
     return this.quantityInput
       ? this.quantityInput
       : new QuantityInputFragment(
-          this.getAddToCartWrapper().find('oryx-cart-quantity-input')
-        );
+        this.getAddToCartWrapper().find('oryx-cart-quantity-input')
+      );
   };
 
   getAddToCartBtn = () => this.getAddToCartWrapper().find('oryx-button');
