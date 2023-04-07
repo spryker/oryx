@@ -9,7 +9,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { of, switchMap } from 'rxjs';
