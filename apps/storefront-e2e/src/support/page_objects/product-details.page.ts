@@ -7,11 +7,13 @@ export class ProductDetailsPage extends AbstractSFPage {
   productId: string;
   quantityInput: QuantityInputFragment;
 
-  constructor(productData: TestProductData) {
+  constructor(productData?: TestProductData) {
     super();
 
-    this.productId = productData.id;
-    this.url += productData.id;
+    if (productData) {
+      this.productId = productData.id;
+      this.url += productData.id;
+    }
   }
 
   waitForLoadedSSR(): void {

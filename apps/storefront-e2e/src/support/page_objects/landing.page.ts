@@ -12,4 +12,7 @@ export class LandingPage extends AbstractSFPage {
   }
 
   getVideo = () => cy.get('oryx-video');
+  getProductCards = () => cy.get('oryx-product-card');
+  getProductCardPrices = () =>
+    this.getProductCards().find('oryx-product-price').find('span');
 }
