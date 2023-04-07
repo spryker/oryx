@@ -50,8 +50,8 @@ export class ProductDetailsPage extends AbstractSFPage {
     return this.quantityInput
       ? this.quantityInput
       : new QuantityInputFragment(
-        this.getAddToCartWrapper().find('oryx-cart-quantity-input')
-      );
+          this.getAddToCartWrapper().find('oryx-cart-quantity-input')
+        );
   };
 
   getAddToCartBtn = () => this.getAddToCartWrapper().find('oryx-button');
@@ -66,7 +66,7 @@ export class ProductDetailsPage extends AbstractSFPage {
       this.getAddToCartBtn().click();
       // click on a button in loading and confirmed state does nothing
       // so we have to wait will the button is active again
-      this.getAddToCartBtn().should('not.have.attr', 'loading')
+      this.getAddToCartBtn().should('not.have.attr', 'loading');
       this.getAddToCartBtn().should('not.have.attr', 'confirmed');
     } else {
       throw new Error('Add multiple items to the Cart is not implemented yet.');
