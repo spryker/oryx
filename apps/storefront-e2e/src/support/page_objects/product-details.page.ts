@@ -42,7 +42,8 @@ export class ProductDetailsPage extends AbstractSFPage {
   getRating = () =>
     this.getDetailsWrapper().find('oryx-product-average-rating');
   getSKU = () => this.getDetailsWrapper().find('oryx-product-id').shadow();
-  getPrice = () => this.getDetailsWrapper().find('oryx-product-price').shadow();
+  getPrice = () =>
+    this.getDetailsWrapper().find('oryx-product-price').find('[part="sales"]');
   getAddToCartWrapper = () => this.getDetailsWrapper().find('oryx-cart-add');
 
   getQuantityComponent = () => {
@@ -53,15 +54,20 @@ export class ProductDetailsPage extends AbstractSFPage {
         );
   };
 
-  getAddToCartBtn = () => this.getAddToCartWrapper().contains('Add to cart');
+  getAddToCartBtn = () => this.getAddToCartWrapper().find('oryx-button');
   getImages = () => this.getWrapper().find('oryx-product-media');
   getDescription = () => this.getWrapper().find('oryx-product-description');
+  getDescriptionText = () => this.getDescription().find('p');
   getAttributeTerms = () =>
     this.getWrapper().find('oryx-product-attributes').find('dt');
 
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {
       this.getAddToCartBtn().click();
+      // click on a button in loading and confirmed state does nothing
+      // so we have to wait will the button is active again
+      this.getAddToCartBtn().should('not.have.attr', 'loading');
+      this.getAddToCartBtn().should('not.have.attr', 'confirmed');
     } else {
       throw new Error('Add multiple items to the Cart is not implemented yet.');
     }

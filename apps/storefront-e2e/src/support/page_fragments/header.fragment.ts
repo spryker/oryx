@@ -8,6 +8,10 @@ export class HeaderFragment {
   getCurrencyButton = () =>
     this.getCurrencySelector().find('oryx-button').find('button');
 
+  getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
+  getLocaleButton = () =>
+    this.getLocaleSelector().find('oryx-button').find('button');
+
   getLogo = () =>
     this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
 
@@ -27,6 +31,17 @@ export class HeaderFragment {
     this.getUserSummaryMenu().should('have.attr', 'open');
 
     this.getLogoutButton().click();
+  };
+
+  changeLocale = (locale: string) => {
+    cy.intercept('GET', '/concrete-products/*').as('productRequests');
+    // hydrate
+    this.getLocaleButton().click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    this.getLocaleButton().click();
+    this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
+    cy.wait('@productRequests');
   };
 
   changeCurrency = (currency: string) => {
