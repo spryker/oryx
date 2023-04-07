@@ -31,7 +31,7 @@ jobs:
         run: node tools/post-build/add-js-extension.js
       - name: Release patch
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
-        run: npm run patch
+        run: npm run release-patch
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log
