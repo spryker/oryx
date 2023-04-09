@@ -4,6 +4,7 @@ export * from './error';
 export * from './feature-options';
 export * from './http';
 export * from './hydration';
+export * from './meta';
 export * from './providers';
 export * from './query';
 export * from './ssr-awaiter.service';
