@@ -31,9 +31,7 @@ describe('Cart', () => {
         });
 
         it('should render the cart page with the newly added entries', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (one item)');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 1,
             subTotal: '€62.77',
@@ -74,9 +72,7 @@ describe('Cart', () => {
       });
 
       it('should render the cart entries and totals', () => {
-        cartPage
-          .getCartEntriesHeading()
-          .should('contain.text', 'My cart (one item)');
+        cartPage.getCartEntriesHeading().should('contain.text', '1 items');
         checkCartEntry({
           quantity: 1,
           subTotal: '€62.77',
@@ -108,25 +104,23 @@ describe('Cart', () => {
             entries[0]
               .getQuantityInput()
               .getInput()
-              .type('{selectall}5{enter}');
+              .type('{selectall}4{enter}');
           });
         });
 
         it('should update the cart totals', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (5 items)');
+          cartPage.getCartEntriesHeading().should('contain.text', '4 items');
           checkCartEntry({
-            quantity: 5,
-            subTotal: '€282.46',
+            quantity: 4,
+            subTotal: '€225.97',
             originalPrice: '€70.00',
             salesPrice: '€62.77',
           });
           checkCartTotals({
-            subTotal: '€313.85',
-            discountsTotal: '-€31.39',
-            taxTotal: '€18.48',
-            totalPrice: '€282.46',
+            subTotal: '€251.08',
+            discountsTotal: '-€25.11',
+            taxTotal: '€14.78',
+            totalPrice: '€225.97',
           });
         });
       });
@@ -140,9 +134,7 @@ describe('Cart', () => {
 
         it('should update the cart totals after blur', () => {
           // quantity updated, but not yet recalculated prices
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (one item)');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€62.77',
@@ -156,9 +148,7 @@ describe('Cart', () => {
           cy.get('body').click();
 
           // after blur the quantity the prices will be recalculated
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (2 items)');
+          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€112.99',

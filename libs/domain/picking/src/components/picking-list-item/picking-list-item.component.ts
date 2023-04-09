@@ -7,8 +7,8 @@ import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
 
@@ -17,10 +17,6 @@ export class PickingListItemComponent
   implements PickingListItemAttributes
 {
   static styles = styles;
-
-  // TODO: refactor this variable when start picking logic will be implemented (loading state should be the service area of responsibility)
-  @state()
-  protected isDisabled?: boolean;
 
   protected routerService = resolve(RouterService);
   protected localeService = resolve(LocaleService);
@@ -31,14 +27,16 @@ export class PickingListItemComponent
       return;
     }
 
-    this.isDisabled = true;
-
-    this.pickingListService.startPicking(this.pickingList).subscribe(() => {
-      this.isDisabled = false;
-      this.routerService.navigate(
-        `/picking-list/picking/${this.pickingList.id}`
-      );
-    });
+    this.pickingListService
+      .startPicking(this.pickingList)
+      .pipe(
+        tap(() => {
+          this.routerService.navigate(
+            `/picking-list/picking/${this.pickingList.id}`
+          );
+        })
+      )
+      .subscribe();
   }
 
   protected showCustomerNote(): void {
@@ -89,8 +87,17 @@ export class PickingListItemComponent
           )}
         </div>
 
-        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Lg}>
-          <button ?disabled=${this.isDisabled} @click=${this.startPicking}>
+        <oryx-button
+          slot="footer"
+          type=${ButtonType.Primary}
+          size=${Size.Lg}
+          ?loading=${this.upcomingPickingListId === this.pickingList.id}
+        >
+          <button
+            ?disabled=${this.upcomingPickingListId &&
+            this.upcomingPickingListId !== this.pickingList.id}
+            @click=${this.startPicking}
+          >
             ${i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>

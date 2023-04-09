@@ -3,9 +3,10 @@ import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
 } from '@spryker-oryx/presets';
+import { fallbackEnv } from './fallback-env';
 
 appBuilder()
-  .withEnvironment(import.meta.env)
+  .withEnvironment({ ...fallbackEnv, ...(import.meta.env as AppEnvironment) })
   .withTheme(fulfillmentTheme)
   .withFeature(
     offlineFulfillmentFeatures({

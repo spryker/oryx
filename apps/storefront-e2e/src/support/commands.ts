@@ -14,6 +14,7 @@ declare global {
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestUserData): void;
       customerAddressesCleanup(sccosApi: SCCOSApi, user: TestUserData): void;
       disableAnimations(): void;
+      checkCurrencyFormatting(locale: string): void;
     }
   }
 }
@@ -79,3 +80,30 @@ Cypress.Commands.add('disableAnimations', () => {
     root.style.setProperty('--oryx-transition-time-long', 0);
   });
 });
+
+Cypress.Commands.add(
+  'checkCurrencyFormatting',
+  { prevSubject: true },
+  (subject, locale: string) => {
+    switch (locale) {
+      case 'en':
+        return cy
+          .wrap(subject)
+          .invoke('text')
+          .then((price) => {
+            const currencySymbolPosition = price.indexOf('€');
+            expect(currencySymbolPosition).to.eq(0);
+          });
+      case 'de':
+        return cy
+          .wrap(subject)
+          .invoke('text')
+          .then((price) => {
+            const currencySymbolPosition = price.indexOf('€');
+            expect(currencySymbolPosition).to.eq(price.length - 1);
+          });
+      default:
+        throw new Error(`locale "${locale}" is not supported`);
+    }
+  }
+);

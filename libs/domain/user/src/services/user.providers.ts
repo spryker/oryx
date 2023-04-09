@@ -16,6 +16,7 @@ import { AddressService } from './address.service';
 import { DefaultAddressFormService } from './default-address-form.service';
 import { DefaultAddressService } from './default-address.service';
 import { DefaultUserService } from './default-user.service';
+import { UserResourceResolver } from './resolver';
 import { UserService } from './user.service';
 
 export const userProviders: Provider[] = [
@@ -47,4 +48,5 @@ export const userProviders: Provider[] = [
   ...addressNormalizer,
   ...addressSerializers,
   ...userNormalizer,
+  UserResourceResolver,
 ];

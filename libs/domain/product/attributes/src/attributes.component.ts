@@ -1,33 +1,42 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, ssrShim } from '@spryker-oryx/utilities';
+import { hydratable, i18n, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
-import { ProductAttributeStyles } from './attributes.styles';
+import { productAttributeStyles } from './attributes.styles';
 
-@defaultOptions({ columnCount: '2' })
 @ssrShim('style')
-@hydratable(['mouseover', 'focusin'])
+@defaultOptions({ columnCount: '2' })
+@hydratable()
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {
-  static styles = [ProductAttributeStyles];
+  static styles = [productAttributeStyles];
 
   protected override render(): TemplateResult | void {
-    const attributes = this.$product()?.attributes;
-    const attributeNames = this.$product()?.attributeNames;
+    const { attributeNames: names, attributes: values } = this.$product() ?? {};
 
-    if (!attributes || !attributeNames) return;
+    if (!names || !values) return;
 
     return html`
-      <ul style="--column-count: ${this.$options().columnCount}">
-        ${Object.keys(attributes ?? {}).map(
-          (key) => html`<li>
-            <div>${attributeNames?.[key]}</div>
-            <div>${attributes?.[key]}</div>
-          </li>`
+      <dl style="--column-count: ${this.$options().columnCount}">
+        ${Object.keys(names).map(
+          (key) => html`
+            <dt>${this.getName(names, key)}</dt>
+            <dd>${values[key]}</dd>
+          `
         )}
-      </ul>
+      </dl>
     `;
+  }
+
+  protected getName(
+    names: Record<string, string>,
+    key: string
+  ): TemplateResult {
+    const name = names[key];
+    return name.startsWith('product.attribute.')
+      ? html`${i18n(name)}`
+      : html`${names[key]}`;
   }
 }

@@ -58,16 +58,10 @@ export class PickingListEntity implements PickingListOffline {
 
     this.items = this.items.map((item) => {
       const newItem = { ...item };
-
       const productKey: keyof PickingListItemOffline = 'product';
 
-      // Redefine `product` prop as non-enumerable so it's not stored in DB
-      Object.defineProperty(item, productKey, {
-        value: item[productKey],
-        enumerable: false,
-        configurable: true,
-        writable: true,
-      });
+      // Hide `product` prop so it's not stored in DB
+      Object.defineProperty(newItem, productKey, { enumerable: false });
 
       return newItem;
     });

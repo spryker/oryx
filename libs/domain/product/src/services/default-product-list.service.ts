@@ -15,43 +15,10 @@ export class DefaultProductListService implements ProductListService {
     refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
-  protected readonly productListSearchParams: Array<
-    keyof ProductListQualifier
-  > = [
-    'q',
-    'page',
-    'maxPrice',
-    'minPrice',
-    'minRating',
-    'ipp',
-    'brand',
-    'label',
-    'weight',
-    'color',
-    'category',
-    'sort',
-  ];
-
   constructor(protected adapter = inject(ProductListAdapter)) {}
 
   get(qualifier: ProductListQualifier): Observable<ProductList | undefined> {
     return this.productListQuery.get(qualifier);
-  }
-
-  getSearchParams(qualifier: ProductListQualifier): Record<string, string> {
-    return this.productListSearchParams.reduce(
-      (
-        params: Record<string | number, string>,
-        key: keyof ProductListQualifier
-      ) => {
-        if (qualifier[key]) {
-          params[key] = qualifier[key] as string;
-        }
-
-        return params;
-      },
-      {}
-    );
   }
 
   getState(

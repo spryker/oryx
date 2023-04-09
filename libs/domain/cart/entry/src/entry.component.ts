@@ -18,7 +18,7 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { filter, first, map, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import {
   QuantityEventDetail,
   QuantityInputComponent,
@@ -54,7 +54,6 @@ export class CartEntryComponent
   @property() key?: string;
   @property({ type: Boolean }) readonly?: boolean;
 
-  @state() protected formattedPrice?: string;
   @state() protected requiresRemovalConfirmation?: boolean;
 
   protected willUpdate(
@@ -63,17 +62,7 @@ export class CartEntryComponent
     if (props.has('sku')) {
       this.context.provide(ProductContext.SKU, this.sku);
     }
-    if (props.has('price')) {
-      this.formatPrice();
-    }
     super.willUpdate(props);
-  }
-
-  protected formatPrice(): void {
-    this.pricingService
-      .format(this.price)
-      .pipe(first(Boolean))
-      .subscribe((formatted) => (this.formattedPrice = formatted));
   }
 
   protected productService = resolve(ProductService);
@@ -180,7 +169,7 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <span class="entry-price">${this.formattedPrice}</span>
+        <oryx-price .value=${this.price}></oryx-price>
 
         ${when(
           this.componentOptions?.enableItemPrice,

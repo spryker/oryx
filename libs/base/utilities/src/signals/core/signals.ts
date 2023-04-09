@@ -1,5 +1,16 @@
 let currentConsumer: SignalConsumer | undefined = undefined;
 
+/**
+ *
+ *  SignalProducer represents a data source that can emit signals when its underlying value changes.
+ *  It is responsible for managing the list of subscribed consumers and notifying them of changes to the data.
+ *
+ *  Responsibilities:
+ *  1. Maintain a list of consumers: SignalProducer maintains a set of subscribed consumers.
+ *  2. Access tracking: The accessed() method is called whenever a consumer accesses the value of a SignalProducer.
+ *  3. Change notification: The changed() method is called when the underlying data of the SignalProducer changes.
+ *  4. Consumer subscription management: The watch() and unwatch() methods are used to manage the subscription of consumers.
+ */
 export class SignalProducer<T> {
   version = 0;
   protected consumers = new Set<SignalConsumer>();
@@ -24,6 +35,16 @@ export class SignalProducer<T> {
   }
 }
 
+/**
+ SignalConsumer manages connections to SignalProducer objects and responds to their data changes:
+
+ 1. Tracks producers: Maintains a map of connected SignalProducer objects and their version numbers.
+ 2. Manages connections: Connects to producers when their data is accessed, ensuring notifications are received.
+ 3. Detects stale data: Checks for version mismatches to determine if a consumer needs to react to changes.
+ 4. Handles notifications: Reacts to producer data changes using the provided notify() function.
+ 5. Controls connection lifecycle: Connects and disconnects from producers using start(), and stop() methods.
+ 6. Detecting producers: Runs a computation with producers detection using the run() or install()/uninstall() methods.
+ */
 export class SignalConsumer {
   protected versions = new Map<SignalProducer<any>, number>();
   protected unusedVersions: Map<SignalProducer<any>, unknown> | undefined;
@@ -88,7 +109,9 @@ export class SignalConsumer {
     if (!this.isConnected) {
       this.isConnected = true;
 
-      for (const [signal] of this.versions) {
+      if (this.isStale()) this.notify();
+
+      for (const signal of this.versions.keys()) {
         signal.watch(this);
       }
     }
@@ -105,6 +128,13 @@ export class SignalConsumer {
   }
 }
 
+/**
+ * StateSignal:
+ *
+ * 1. Maintains state.
+ * 2. Uses the set() method to update the state and triggers change notifications.
+ * 3. Exposes the state value through the value getter, registering data access.
+ */
 export class StateSignal<T> extends SignalProducer<T> {
   protected state: T;
 
@@ -126,6 +156,13 @@ export class StateSignal<T> extends SignalProducer<T> {
   }
 }
 
+/**
+ * Computed:
+ *
+ * 1. Stores computation, holds a computation function.
+ * 2. Utilizes a SignalConsumer to track and update its dependencies.
+ * 3. Recalculates the result when dependencies change or when value is accessed, but stale.
+ */
 export class Computed<T> extends SignalProducer<T> {
   protected result!: T;
 
@@ -142,26 +179,26 @@ export class Computed<T> extends SignalProducer<T> {
       this.version < 0 ||
       (!this.consumer.isConnected && this.consumer.isStale())
     ) {
-      this.compute();
+      this.compute(false);
     }
     return this.result;
   }
 
-  compute(): void {
+  compute(notify = true): void {
     const newValue = this.consumer.run(() => this.computation());
 
     if (this.result !== newValue) {
       this.result = newValue;
       this.version++;
-      this.changed();
+      if (notify) this.changed();
     }
   }
 
   watch(consumer: SignalConsumer): void {
     super.watch(consumer);
-    if (this.consumers.size === 1) {
+    if (!this.consumer.isConnected) {
       if (this.consumer.isStale()) {
-        this.compute();
+        this.compute(false);
       }
       this.consumer.start();
     }
@@ -175,6 +212,14 @@ export class Computed<T> extends SignalProducer<T> {
   }
 }
 
+/**
+ * Effect:
+ *
+ * 1. Runs side effects: Holds an effect function to be executed in response to dependency changes.
+ * 2. Manages dependencies: Utilizes a SignalConsumer to track and update its dependencies.
+ * 3. Executes effect: Runs the effect function when dependencies change.
+ * 4. Controls lifecycle: Starts and stops the effect with start() and stop() methods.
+ */
 export class Effect {
   protected consumer = new SignalConsumer(() => this.run());
 
@@ -188,8 +233,8 @@ export class Effect {
 
   start(): void {
     if (!this.consumer.isConnected) {
-      this.run();
       this.consumer.start();
+      this.run();
     }
   }
 

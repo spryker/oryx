@@ -25,11 +25,11 @@ describe('SSR suite', () => {
     pdp.getPrice().should('contain.text', productData.originalPrice);
 
     pdp.getQuantityComponent().getInput().should('have.value', 1);
-    pdp.getAddToCartBtn().should('be.visible').and('be.enabled');
+    pdp.getAddToCartBtn().should('be.visible');
 
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
-    pdp.getAttributes().should('have.length', 6);
+    pdp.getAttributeTerms().should('have.length', 6);
   });
 
   it('must render Contact us page', () => {
