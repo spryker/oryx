@@ -10,10 +10,6 @@ interface TitleAttributes {
   text: string;
 }
 
-interface TitleAttributes {
-  text: string;
-}
-
 interface MetaAttributes {
   charset?: string;
   content?: string;
