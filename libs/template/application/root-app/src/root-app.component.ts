@@ -20,14 +20,14 @@ const metas: TagDefinition[] = [
       content: 'width=device-width, initial-scale=1.0"',
     },
   },
-  {
-    name: 'link',
-    attrs: {
-      rel: 'icon',
-      href: './favicon.png',
-      sizes: '32x32',
-    },
-  },
+  // {
+  //   name: 'link',
+  //   attrs: {
+  //     rel: 'icon',
+  //     href: './favicon.png',
+  //     sizes: '32x32',
+  //   },
+  // },
   {
     name: 'link',
     attrs: {
