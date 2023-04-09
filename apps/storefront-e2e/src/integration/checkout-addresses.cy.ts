@@ -39,8 +39,8 @@ describe('User addresses', () => {
         });
 
         it('then default address form is shown', () => {
-          checkoutPage.getAddressForm().should('be.visible');
-          checkoutPage.getAddressesList().should('not.exist');
+          checkoutPage.addressForm.getAddressForm().should('be.visible');
+          checkoutPage.addressList.getAddressesList().should('not.exist');
         });
       });
     });
@@ -56,8 +56,8 @@ describe('User addresses', () => {
         });
 
         it('then the list of addresses is shown', () => {
-          checkoutPage.getAddressForm().should('not.exist');
-          checkoutPage.getAddressesList().should('be.visible');
+          checkoutPage.addressForm.getAddressForm().should('not.exist');
+          checkoutPage.addressList.getAddressesList().should('be.visible');
         });
       });
     });

@@ -42,7 +42,7 @@ describe('Checkout suite', () => {
       cy.location('pathname').should('be.eq', checkoutPage.url);
       cy.wait('@addresses');
 
-      checkoutPage.fillAddressForm();
+      checkoutPage.addressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')
@@ -97,8 +97,8 @@ describe('Checkout suite', () => {
       cy.location('pathname').should('be.eq', checkoutPage.url);
       checkoutPage.getCheckoutAsGuestBtn().click();
 
-      checkoutPage.fillUserContactForm();
-      checkoutPage.fillAddressForm();
+      checkoutPage.contactForm.fillContactForm();
+      checkoutPage.addressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')
