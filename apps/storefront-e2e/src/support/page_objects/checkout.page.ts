@@ -19,8 +19,10 @@ export class CheckoutPage extends AbstractSFPage {
 
   contactForm = new CheckoutContactFragment();
   addressForm = new CheckoutAddressFormFragment();
-  addressList = new CheckoutAddressListFragment();
+  addressList = new CheckoutAddressListFragment('checkout-address');
+  addressListInModal = new CheckoutAddressListFragment('oryx-modal');
 
+  getChangeAddressesButton = () => cy.get('oryx-checkout-manage-address');
   getCartTotals = new CartTotalsFragment();
   getPlaceOrderBtn = () => cy.get('checkout-place-order');
 }
