@@ -12,6 +12,8 @@ export class DefaultMetaService implements MetaService {
     const element = document.querySelector<HTMLElement>(tag.name);
 
     if (!element) {
+      this.addTag(tag);
+
       return;
     }
 
