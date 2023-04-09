@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { MetaService, TagAttributes, TagDefinition } from './meta.service';
 
 export class DefaultMetaService implements MetaService {
@@ -34,7 +33,7 @@ export class DefaultMetaService implements MetaService {
         continue;
       }
 
-      element.setAttribute(attr, value!);
+      element.setAttribute(attr, value);
     }
   }
 
