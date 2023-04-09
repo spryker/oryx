@@ -50,7 +50,9 @@ export class RootAppComponent extends LitElement {
   constructor() {
     super();
     // TODO: temporary will be done on orchestration side before components loading
-    resolve(MetaService).addTags(metas);
+    const meta = resolve(MetaService);
+    meta.addTags(metas);
+    meta.updateTag({ name: 'html', attrs: { lang: 'en' } });
   }
 
   @subscribe()
