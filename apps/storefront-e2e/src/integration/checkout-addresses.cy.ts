@@ -1,34 +1,80 @@
+import { ProductStorage } from "../test-data/product.storage";
 import { defaultUser } from "../support/commands"
+import { CartPage } from "../support/page_objects/cart.page";
+import { CheckoutPage } from "../support/page_objects/checkout.page";
 import { SCCOSApi } from "../support/sccos_api/sccos.api"
 
-describe('User addresses manipulations on Checkout page', () => {
+let api: SCCOSApi;
+
+const cartPage = new CartPage();
+const checkoutPage = new CheckoutPage();
+
+describe('User addresses', () => {
   beforeEach(() => {
-    const api = new SCCOSApi();
+    api = new SCCOSApi();
 
     cy.login(defaultUser);
+
+    cy.customerCartsCleanup(api, defaultUser);
     cy.customerAddressesCleanup(api, defaultUser);
+  });
 
-    api.addresses.post(defaultUser.id)
-    api.addresses.get(defaultUser.id)
+  describe('when user opens the cart page', () => {
+    beforeEach(() => {
+      const productData = ProductStorage.getProductByEq(0);
+
+      // get all customer carts
+      api.carts.customersGet(defaultUser.id).then(customerCartsResponse => {
+        // add 1 item to the first cart
+        api.cartItems.post(productData, 1, customerCartsResponse.body.data[0].id)
+      });
+
+      cartPage.visit();
+    });
+
+    describe('and he/she does not have addresses yet', () => {
+      describe('and he/she goes to chechout', () => {
+        beforeEach(() => {
+          cartPage.checkout();
+        });
+
+        it('then default address form is shown', () => {
+          checkoutPage.getAddressForm().should('be.visible');
+          checkoutPage.getAddressesList().should('not.exist');
+        });
+      });
+    });
+
+    describe('and he/she already has addresses', () => {
+      beforeEach(() => {
+        api.addresses.post(defaultUser.id);
+      });
+
+      describe('and he/she goes to chechout', () => {
+        beforeEach(() => {
+          cartPage.checkout();
+        });
+
+        it('then the list of addresses is shown', () => {
+          checkoutPage.getAddressForm().should('not.exist');
+          checkoutPage.getAddressesList().should('be.visible');
+        });
+      });
+    });
   })
 
-  it('must allow user to see a list of addresses', () => {
-    // check that new address is visible
-    // check that Change button is visible
-  })
-
-  it('must allow user to create new address if he already has one', () => {
+  xit('must allow user to create new address if he already has one', () => {
     // click on change button
     // add new address (set it both default and billing address)
     // check that it appeared in 2 lists
   })
 
-  it('must allow user to edit an existing address', () => {
+  xit('must allow user to edit an existing address', () => {
     // edit first address in the list
     // check that it was updated in 2 lists
   })
 
-  it('must allow user to delete existing address', () => {
+  xit('must allow user to delete existing address', () => {
     // delete first address in the list
     // check that it dissapeared from 2 lists
   })

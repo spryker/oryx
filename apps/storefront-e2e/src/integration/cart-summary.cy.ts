@@ -1,4 +1,4 @@
-import { ProductStorage } from '../data-storages/product.storage';
+import { ProductStorage } from '../test-data/product.storage';
 import { CartPage } from '../support/page_objects/cart.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';

@@ -1,4 +1,4 @@
-import { ProductStorage } from '../data-storages/product.storage';
+import { ProductStorage } from '../test-data/product.storage';
 import { defaultUser } from '../support/commands';
 import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
@@ -37,7 +37,7 @@ describe('Checkout suite', () => {
       cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
-      cartPage.getCheckoutBtn().click({ force: true });
+      cartPage.checkout();
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
       cy.wait('@addresses');
@@ -92,7 +92,7 @@ describe('Checkout suite', () => {
       cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
-      cartPage.getCheckoutBtn().click({ force: true });
+      cartPage.checkout();
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
       checkoutPage.getCheckoutAsGuestBtn().click();

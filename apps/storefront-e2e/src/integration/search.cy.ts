@@ -1,4 +1,4 @@
-import { ProductStorage } from '../data-storages/product.storage';
+import { ProductStorage } from '../test-data/product.storage';
 import { LandingPage } from '../support/page_objects/landing.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 

@@ -30,4 +30,8 @@ export class CartPage extends AbstractSFPage {
     this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
   getCheckoutBtn = () => cy.contains('oryx-content-link', 'Checkout').find('a');
+
+  checkout = () => {
+    this.getCheckoutBtn().click({ force: true });
+  }
 }

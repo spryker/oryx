@@ -1,10 +1,25 @@
+import { defaultAddress } from '../../test-data/default-address';
 import { TestProductData } from '../../types/product.type';
+
+export type ApiResponse<T> = {
+  data: T
+}
+
+export type ApiArrayResponse<T> = {
+  data: T[]
+}
+
+export type CartData = {
+  id: string,
+  attributes: {
+    name: string,
+  }
+}
 
 export class SCCOSApi {
   private anonymousHeader = 'X-Anonymous-Customer-Unique-Id';
   private customerUniqueId: number = Math.random();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private headers: any = {};
+  private headers = {};
   private apiUrl: string;
 
   constructor() {
@@ -61,7 +76,7 @@ export class SCCOSApi {
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
 
-        return cy.request({
+        return cy.request<ApiArrayResponse<CartData>>({
           method: 'GET',
           url: `${this.apiUrl}/customers/${customerId}/carts`,
           headers: this.headers,
@@ -177,20 +192,7 @@ export class SCCOSApi {
       const body = {
         "data": {
           "type": "addresses",
-          "attributes": {
-            "iso2Code": "DE",
-            "salutation": "Mr",
-            "firstName": "Test",
-            "lastName": "User",
-            "company": "123",
-            "address1": "Addr 1",
-            "address2": "123",
-            "zipCode": "ZIP",
-            "city": "City",
-            "phone": "1234567890",
-            "isDefaultShipping": true,
-            "isDefaultBilling": true
-          }
+          "attributes": defaultAddress
         }
       };
 

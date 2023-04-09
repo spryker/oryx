@@ -1,3 +1,4 @@
+import { defaultAddress } from '../../test-data/default-address';
 import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {
@@ -14,28 +15,21 @@ export class CheckoutPage extends AbstractSFPage {
   getCheckoutAsGuestBtn = () =>
     cy.contains('oryx-button', 'Checkout as a guest');
 
-  getCheckoutAddressWrapper = () => cy.get('checkout-address');
+  getAddressWrapper = () => cy.get('checkout-address');
+
+  // checkout address form
+  getAddressForm = () => cy.get('oryx-address-form');
   getPlaceOrderBtn = () => cy.get('checkout-place-order');
   getCountrySelect = () => cy.get('oryx-select[label="Country"]');
   getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
-  getFirstNameInput = () =>
-    this.getCheckoutAddressWrapper().find('input[name="firstName"]');
-  getLastNameInput = () =>
-    this.getCheckoutAddressWrapper().find('input[name="lastName"]');
+  getFirstNameInput = () => this.getAddressForm().find('input[name="firstName"]');
+  getLastNameInput = () => this.getAddressForm().find('input[name="lastName"]');
   getCompanyInput = () => cy.get('input[name="company"]');
   getAddress1Input = () => cy.get('input[name="address1"]');
   getAddress2Input = () => cy.get('input[name="address2"]');
   getZipInput = () => cy.get('input[name="zipCode"]');
   getCityInput = () => cy.get('input[name="city"]');
   getPhoneInput = () => cy.get('input[name="phone"]');
-
-  getCheckoutContactWrapper = () => cy.get('checkout-contact');
-  getGuestEmailInput = () =>
-    this.getCheckoutContactWrapper().find('input[name="email"]');
-  getGuestFirstNameInput = () =>
-    this.getCheckoutContactWrapper().find('input[name="firstName"]');
-  getGuestLastNameInput = () =>
-    this.getCheckoutContactWrapper().find('input[name="lastName"]');
 
   selectCoutry = (country: string) => {
     this.getCountrySelect().click();
@@ -59,17 +53,30 @@ export class CheckoutPage extends AbstractSFPage {
     cy.wait(2000);
     cy.disableAnimations();
 
-    this.selectCoutry('Germany');
-    this.selectSalutation('Mr');
-    this.getFirstNameInput().type('Test');
-    this.getLastNameInput().type('User');
-    this.getCompanyInput().type('Spryker');
-    this.getAddress1Input().type('Heidestraße 9-10');
-    this.getAddress2Input().type('appt 1');
-    this.getZipInput().type('10557');
-    this.getCityInput().type('Berlin');
-    this.getPhoneInput().type('+49 30 208498350');
+    this.selectCoutry(defaultAddress.iso2Code);
+    this.selectSalutation(defaultAddress.salutation);
+    this.getFirstNameInput().type(defaultAddress.firstName);
+    this.getLastNameInput().type(defaultAddress.lastName);
+    this.getCompanyInput().type(defaultAddress.company);
+    this.getAddress1Input().type(defaultAddress.address1);
+    this.getAddress2Input().type(defaultAddress.address2);
+    this.getZipInput().type(defaultAddress.zipCode);
+    this.getCityInput().type(defaultAddress.city);
+    this.getPhoneInput().type(defaultAddress.phone);
   };
+
+  // checkout address list
+  getAddressesList = () => cy.get('oryx-address-list');
+
+
+  // checkout contact 
+  getCheckoutContact = () => cy.get('checkout-contact');
+  getGuestEmailInput = () =>
+    this.getCheckoutContact().find('input[name="email"]');
+  getGuestFirstNameInput = () =>
+    this.getCheckoutContact().find('input[name="firstName"]');
+  getGuestLastNameInput = () =>
+    this.getCheckoutContact().find('input[name="lastName"]');
 
   fillUserContactForm = () => {
     this.getGuestFirstNameInput().type('Test');
