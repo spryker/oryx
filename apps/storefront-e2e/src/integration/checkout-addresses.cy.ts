@@ -1,5 +1,5 @@
 import { ProductStorage } from "../test-data/product.storage";
-import { defaultUser } from "../support/commands"
+import { defaultUser } from "../test-data/default-user";
 import { CartPage } from "../support/page_objects/cart.page";
 import { CheckoutPage } from "../support/page_objects/checkout.page";
 import { SCCOSApi } from "../support/sccos_api/sccos.api"
@@ -32,8 +32,8 @@ describe('User addresses', () => {
       cartPage.visit();
     });
 
-    describe('and he/she does not have addresses yet', () => {
-      describe('and he/she goes to chechout', () => {
+    describe('and user does not have addresses yet', () => {
+      describe('and user goes to chechout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
@@ -45,12 +45,12 @@ describe('User addresses', () => {
       });
     });
 
-    describe('and he/she already has addresses', () => {
+    describe('and user already has addresses', () => {
       beforeEach(() => {
         api.addresses.post(defaultUser.id);
       });
 
-      describe('and he/she goes to chechout', () => {
+      describe('and user goes to chechout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });

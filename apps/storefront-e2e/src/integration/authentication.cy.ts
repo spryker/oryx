@@ -1,4 +1,4 @@
-import { defaultUser } from '../support/commands';
+import { defaultUser } from "../test-data/default-user";
 import { LandingPage } from '../support/page_objects/landing.page';
 import { LoginPage } from '../support/page_objects/login.page';
 import { TestUserData } from '../types/user.type';
