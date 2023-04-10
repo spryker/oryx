@@ -24,10 +24,9 @@ export class MultiRangeComponent
   update(changedProperties: PropertyValues): void {
     if (
       this.min >= this.max ||
-      this.minValue >= this.max ||
+      this.minValue < this.min ||
       this.minValue >= this.maxValue ||
       this.maxValue > this.max ||
-      this.minValue < this.min ||
       this.step > this.max - this.min
     ) {
       console.error(
