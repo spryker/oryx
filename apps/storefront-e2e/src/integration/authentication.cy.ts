@@ -1,6 +1,6 @@
-import { defaultUser } from "../test-data/default-user";
 import { LandingPage } from '../support/page_objects/landing.page';
 import { LoginPage } from '../support/page_objects/login.page';
+import { defaultUser } from '../test-data/default-user';
 import { TestUserData } from '../types/user.type';
 
 const loginPage = new LoginPage();

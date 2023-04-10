@@ -1,10 +1,11 @@
-import { defaultAddress } from "../../../../src/test-data/default-address";
+import { defaultAddress } from '../../../../src/test-data/default-address';
 
 export class CheckoutAddressFormFragment {
   getAddressForm = () => cy.get('oryx-address-form');
   getCountrySelect = () => cy.get('oryx-select[label="Country"]');
   getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
-  getFirstNameInput = () => this.getAddressForm().find('input[name="firstName"]');
+  getFirstNameInput = () =>
+    this.getAddressForm().find('input[name="firstName"]');
   getLastNameInput = () => this.getAddressForm().find('input[name="lastName"]');
   getCompanyInput = () => cy.get('input[name="company"]');
   getAddress1Input = () => cy.get('input[name="address1"]');

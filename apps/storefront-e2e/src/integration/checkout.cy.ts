@@ -1,9 +1,9 @@
-import { ProductStorage } from '../test-data/product.storage';
-import { defaultUser } from "../test-data/default-user";
 import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { ThankYouPage } from '../support/page_objects/thank-you.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { defaultUser } from '../test-data/default-user';
+import { ProductStorage } from '../test-data/product.storage';
 
 let sccosApi: SCCOSApi;
 let thankYouPage: ThankYouPage;

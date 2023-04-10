@@ -28,5 +28,5 @@ export class CheckoutPage extends AbstractSFPage {
 
   openChangeAddressesModal = () => {
     this.getChangeAddressesButton().click();
-  }
+  };
 }

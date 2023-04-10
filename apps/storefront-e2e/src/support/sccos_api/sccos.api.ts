@@ -2,19 +2,19 @@ import { defaultAddress } from '../../test-data/default-address';
 import { TestProductData } from '../../types/product.type';
 
 export type ApiResponse<T> = {
-  data: T
-}
+  data: T;
+};
 
 export type ApiArrayResponse<T> = {
-  data: T[]
-}
+  data: T[];
+};
 
 export type CartData = {
-  id: string,
+  id: string;
   attributes: {
-    name: string,
-  }
-}
+    name: string;
+  };
+};
 
 export class SCCOSApi {
   private anonymousHeader = 'X-Anonymous-Customer-Unique-Id';
@@ -190,10 +190,10 @@ export class SCCOSApi {
     },
     post: (customerId: string) => {
       const body = {
-        "data": {
-          "type": "addresses",
-          "attributes": defaultAddress
-        }
+        data: {
+          type: 'addresses',
+          attributes: defaultAddress,
+        },
       };
 
       cy.log('SCCOSApi | Create customer address');

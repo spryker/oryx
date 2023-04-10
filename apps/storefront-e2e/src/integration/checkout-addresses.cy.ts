@@ -1,8 +1,8 @@
-import { ProductStorage } from "../test-data/product.storage";
-import { defaultUser } from "../test-data/default-user";
-import { CartPage } from "../support/page_objects/cart.page";
-import { CheckoutPage } from "../support/page_objects/checkout.page";
-import { SCCOSApi } from "../support/sccos_api/sccos.api"
+import { CartPage } from '../support/page_objects/cart.page';
+import { CheckoutPage } from '../support/page_objects/checkout.page';
+import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { defaultUser } from '../test-data/default-user';
+import { ProductStorage } from '../test-data/product.storage';
 
 let api: SCCOSApi;
 
@@ -24,9 +24,13 @@ describe('User addresses', () => {
       const productData = ProductStorage.getProductByEq(0);
 
       // get all customer carts
-      api.carts.customersGet(defaultUser.id).then(customerCartsResponse => {
+      api.carts.customersGet(defaultUser.id).then((customerCartsResponse) => {
         // add 1 item to the first cart
-        api.cartItems.post(productData, 1, customerCartsResponse.body.data[0].id)
+        api.cartItems.post(
+          productData,
+          1,
+          customerCartsResponse.body.data[0].id
+        );
       });
 
       cartPage.visit();
@@ -90,12 +94,22 @@ describe('User addresses', () => {
 
             it('edited address appears in both addresses lists', () => {
               checkAddressesListInModal(2);
-              checkoutPage.addressChangeModal.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
-              
+              checkoutPage.addressChangeModal
+                .getAddressListItem()
+                .eq(0)
+                .find('oryx-user-address')
+                .shadow()
+                .should('contain.text', newCompany);
+
               checkoutPage.addressChangeModal.closeModal();
-              
+
               checkCheckoutAddressesList(2);
-              checkoutPage.addressList.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
+              checkoutPage.addressList
+                .getAddressListItem()
+                .eq(0)
+                .find('oryx-user-address')
+                .shadow()
+                .should('contain.text', newCompany);
             });
           });
 
@@ -120,11 +134,15 @@ function checkCheckoutAddressesList(numberOfAddresses: number) {
   checkoutPage.addressForm.getAddressForm().should('not.exist');
   checkoutPage.getChangeAddressesButton().should('be.visible');
   checkoutPage.addressList.getAddressList().should('be.visible');
-  checkoutPage.addressList.getAddressListItem().should('have.length', numberOfAddresses);
+  checkoutPage.addressList
+    .getAddressListItem()
+    .should('have.length', numberOfAddresses);
 }
 
 function checkAddressesListInModal(numberOfAddresses: number) {
   checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
   checkoutPage.addressChangeModal.getAddressList().should('be.visible');
-  checkoutPage.addressChangeModal.getAddressListItem().should('have.length', numberOfAddresses);
+  checkoutPage.addressChangeModal
+    .getAddressListItem()
+    .should('have.length', numberOfAddresses);
 }

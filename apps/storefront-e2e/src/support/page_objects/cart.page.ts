@@ -33,5 +33,5 @@ export class CartPage extends AbstractSFPage {
 
   checkout = () => {
     this.getCheckoutBtn().click({ force: true });
-  }
+  };
 }
