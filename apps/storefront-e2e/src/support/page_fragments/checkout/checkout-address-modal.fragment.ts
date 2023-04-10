@@ -25,4 +25,10 @@ export class CheckoutAddressModalFragment {
     this.addAddressForm.fillAddressForm();
     this.getSaveAddressBtn().click();
   }
+
+  editCompanyInAddress = (newCompany: string) => {
+    this.getAddressListItem().eq(0).find('button').eq(0).click();
+    this.addAddressForm.getCompanyInput().clear().type(newCompany, { force: true });
+    this.getSaveAddressBtn().click();
+  }
 }

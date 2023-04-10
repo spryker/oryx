@@ -56,10 +56,7 @@ describe('User addresses', () => {
         });
 
         it('then the list of addresses is shown', () => {
-          checkoutPage.addressForm.getAddressForm().should('not.exist');
-          checkoutPage.getChangeAddressesButton().should('be.visible');
-          checkoutPage.addressList.getAddressList().should('be.visible');
-          checkoutPage.addressList.getAddressListItem().should('have.length', 1);
+          checkCheckoutAddressesList(1);
         });
 
         describe('and user wants to change addresses', () => {
@@ -68,49 +65,58 @@ describe('User addresses', () => {
           });
 
           it('then the addresses modal is open', () => {
-            checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
-            checkoutPage.addressChangeModal.getAddressList().should('be.visible');
-            checkoutPage.addressChangeModal.getAddressListItem().should('have.length', 1);
+            checkAddressesListInModal(1);
           });
 
           describe('and user adds new address', () => {
-            beforeEach('test', () => {
+            beforeEach(() => {
               checkoutPage.addressChangeModal.addAddress();
             });
 
-            it.only('new address appears in both addresses lists', () => {
-              // check new address in the modal list
-              checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
-              checkoutPage.addressChangeModal.getAddressList().should('be.visible');
-              checkoutPage.addressChangeModal.getAddressListItem().should('have.length', 2);
-
+            it('new address appears in both addresses lists', () => {
+              checkAddressesListInModal(2);
               checkoutPage.addressChangeModal.closeModal();
+              checkCheckoutAddressesList(2);
+            });
+          });
 
-              // check new address in the checkout list
-              checkoutPage.addressForm.getAddressForm().should('not.exist');
-              checkoutPage.getChangeAddressesButton().should('be.visible');
-              checkoutPage.addressList.getAddressList().should('be.visible');
-              checkoutPage.addressList.getAddressListItem().should('have.length', 2);
-            })
-          })
+          describe('and user edits existing address', () => {
+            const newCompany = 'Edited Company';
+
+            beforeEach(() => {
+              checkoutPage.addressChangeModal.editCompanyInAddress(newCompany);
+            });
+
+            it('edited address appears in both addresses lists', () => {
+              checkAddressesListInModal(1);
+              checkoutPage.addressChangeModal.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
+              
+              checkoutPage.addressChangeModal.closeModal();
+              
+              checkCheckoutAddressesList(1);
+              checkoutPage.addressList.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
+            });
+          });
         });
       });
     });
-  })
-
-  xit('must allow user to create new address if he already has one', () => {
-    // click on change button
-    // add new address (set it both default and billing address)
-    // check that it appeared in 2 lists
-  })
-
-  xit('must allow user to edit an existing address', () => {
-    // edit first address in the list
-    // check that it was updated in 2 lists
-  })
+  });
 
   xit('must allow user to delete existing address', () => {
     // delete first address in the list
     // check that it dissapeared from 2 lists
   })
-})
+});
+
+function checkCheckoutAddressesList(numberOfAddresses: number) {
+  checkoutPage.addressForm.getAddressForm().should('not.exist');
+  checkoutPage.getChangeAddressesButton().should('be.visible');
+  checkoutPage.addressList.getAddressList().should('be.visible');
+  checkoutPage.addressList.getAddressListItem().should('have.length', numberOfAddresses);
+}
+
+function checkAddressesListInModal(numberOfAddresses: number) {
+  checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
+  checkoutPage.addressChangeModal.getAddressList().should('be.visible');
+  checkoutPage.addressChangeModal.getAddressListItem().should('have.length', numberOfAddresses);
+}
