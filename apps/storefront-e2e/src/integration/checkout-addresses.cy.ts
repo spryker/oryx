@@ -61,6 +61,39 @@ describe('User addresses', () => {
           checkoutPage.addressList.getAddressList().should('be.visible');
           checkoutPage.addressList.getAddressListItem().should('have.length', 1);
         });
+
+        describe('and user wants to change addresses', () => {
+          beforeEach(() => {
+            checkoutPage.openChangeAddressesModal();
+          });
+
+          it('then the addresses modal is open', () => {
+            checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
+            checkoutPage.addressChangeModal.getAddressList().should('be.visible');
+            checkoutPage.addressChangeModal.getAddressListItem().should('have.length', 1);
+          });
+
+          describe('and user adds new address', () => {
+            beforeEach('test', () => {
+              checkoutPage.addressChangeModal.addAddress();
+            });
+
+            it.only('new address appears in both addresses lists', () => {
+              // check new address in the modal list
+              checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
+              checkoutPage.addressChangeModal.getAddressList().should('be.visible');
+              checkoutPage.addressChangeModal.getAddressListItem().should('have.length', 2);
+
+              checkoutPage.addressChangeModal.closeModal();
+
+              // check new address in the checkout list
+              checkoutPage.addressForm.getAddressForm().should('not.exist');
+              checkoutPage.getChangeAddressesButton().should('be.visible');
+              checkoutPage.addressList.getAddressList().should('be.visible');
+              checkoutPage.addressList.getAddressListItem().should('have.length', 2);
+            })
+          })
+        });
       });
     });
   })
