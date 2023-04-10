@@ -27,8 +27,16 @@ export class CheckoutAddressModalFragment {
   }
 
   editCompanyInAddress = (newCompany: string) => {
+    // edit icon-button click
     this.getAddressListItem().eq(0).find('button').eq(0).click();
     this.addAddressForm.getCompanyInput().clear().type(newCompany, { force: true });
     this.getSaveAddressBtn().click();
+  }
+
+  removeAddress = () => {
+    // remove icon-button click
+    this.getAddressListItem().eq(0).find('button').eq(1).click();
+    // remove button in remove address modal click
+    cy.get('oryx-user-address-remove').find('button').eq(1).click();
   }
 }

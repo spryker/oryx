@@ -48,6 +48,7 @@ describe('User addresses', () => {
     describe('and user already has addresses', () => {
       beforeEach(() => {
         api.addresses.post(defaultUser.id);
+        api.addresses.post(defaultUser.id);
       });
 
       describe('and user goes to chechout', () => {
@@ -56,7 +57,7 @@ describe('User addresses', () => {
         });
 
         it('then the list of addresses is shown', () => {
-          checkCheckoutAddressesList(1);
+          checkCheckoutAddressesList(2);
         });
 
         describe('and user wants to change addresses', () => {
@@ -65,7 +66,7 @@ describe('User addresses', () => {
           });
 
           it('then the addresses modal is open', () => {
-            checkAddressesListInModal(1);
+            checkAddressesListInModal(2);
           });
 
           describe('and user adds new address', () => {
@@ -74,9 +75,9 @@ describe('User addresses', () => {
             });
 
             it('new address appears in both addresses lists', () => {
-              checkAddressesListInModal(2);
+              checkAddressesListInModal(3);
               checkoutPage.addressChangeModal.closeModal();
-              checkCheckoutAddressesList(2);
+              checkCheckoutAddressesList(3);
             });
           });
 
@@ -88,24 +89,31 @@ describe('User addresses', () => {
             });
 
             it('edited address appears in both addresses lists', () => {
-              checkAddressesListInModal(1);
+              checkAddressesListInModal(2);
               checkoutPage.addressChangeModal.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
               
               checkoutPage.addressChangeModal.closeModal();
               
-              checkCheckoutAddressesList(1);
+              checkCheckoutAddressesList(2);
               checkoutPage.addressList.getAddressListItem().eq(0).find('oryx-user-address').shadow().should('contain.text', newCompany);
+            });
+          });
+
+          describe('and user removes existing address', () => {
+            beforeEach(() => {
+              checkoutPage.addressChangeModal.removeAddress();
+            });
+
+            it('removed address dissapeares in both address lists', () => {
+              checkAddressesListInModal(1);
+              checkoutPage.addressChangeModal.closeModal();
+              checkCheckoutAddressesList(1);
             });
           });
         });
       });
     });
   });
-
-  xit('must allow user to delete existing address', () => {
-    // delete first address in the list
-    // check that it dissapeared from 2 lists
-  })
 });
 
 function checkCheckoutAddressesList(numberOfAddresses: number) {
