@@ -1,16 +1,22 @@
 import {
+  createQuery,
   HttpHandlerFn,
   HttpInterceptor,
   RequestOptions,
 } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/i18n';
-import { map, Observable, switchMap, take } from 'rxjs';
+import { LocaleChanged, LocaleService } from '@spryker-oryx/i18n';
+import { map, Observable, switchMap } from 'rxjs';
 
 export class AcceptLanguageInterceptor implements HttpInterceptor {
   protected headerName = 'Accept-Language';
 
   protected excludedEndpoints = ['/store', '/token'];
+
+  protected localeQuery = createQuery({
+    loader: (q: unknown) => this.injector.inject(LocaleService).get(),
+    refreshOn: [LocaleChanged],
+  });
 
   constructor(
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
@@ -22,14 +28,10 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    return this.injector
-      .inject(LocaleService)
-      .get()
-      .pipe(
-        take(1),
-        map((locale) => this.addLanguageHeader(locale, options)),
-        switchMap((options) => handle(url, options))
-      );
+    return this.localeQuery.get({}).pipe(
+      map((locale) => this.addLanguageHeader(locale ?? 'en', options)),
+      switchMap((options) => handle(url, options))
+    );
   }
 
   protected addLanguageHeader(
