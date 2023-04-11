@@ -20,14 +20,14 @@ export async function createProdSever(
   });
 
   app.get('/*', async (req, res, next) => {
-    const url = generateUrl(req);
+    const route = generateUrl(req);
 
-    if (!url) {
+    if (!route) {
       return next();
     }
 
     try {
-      const html = await render({ route: url, template });
+      const html = await render({ route, template });
 
       res.status(200).end(html);
     } catch (e) {

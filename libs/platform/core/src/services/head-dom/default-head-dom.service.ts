@@ -50,9 +50,7 @@ export class DefaultHeadDOMService implements HeadDOMService {
       attrs += `[${attr}="${value}"]`;
     }
 
-    return document
-      .getElementsByTagName('head')[0]
-      .querySelector(`${definition.name}${attrs}`);
+    return document.head.querySelector(`${definition.name}${attrs}`);
   }
 
   protected setAttributes(

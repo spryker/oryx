@@ -121,7 +121,6 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected getComponentByRoute(route: string): Observable<Component> {
-    console.log(route);
     if (!this.dataRoutes[route]) {
       this.dataRoutes[route] = new ReplaySubject(1);
       this.reloadComponentByRoute(route);
