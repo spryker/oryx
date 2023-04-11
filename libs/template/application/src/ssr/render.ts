@@ -1,15 +1,25 @@
-// organize-imports-ignore
-import { App, ContextService, SSRAwaiterService } from '@spryker-oryx/core';
-import { getInjector } from '@spryker-oryx/di';
+import {
+  App,
+  ContextService,
+  HeadDOMService,
+  InjectionPlugin,
+  SSRAwaiterService,
+  ThemePlugin,
+} from '@spryker-oryx/core';
 import { TemplateResult } from 'lit';
-import { ServerContextService } from '@spryker-oryx/core/server';
+import {
+  ServerContextService,
+  ServerHeadDOMService,
+} from '@spryker-oryx/core/server';
 import { RouterService } from '@spryker-oryx/router';
 import { render as litRender } from '@lit-labs/ssr';
+// organize-imports-ignore
 import 'abort-controller/polyfill.js';
 
 export interface RenderAppConfig {
   route: Location;
   element: TemplateResult;
+  template: string;
 }
 
 let orchestrator: App | void;
@@ -22,12 +32,20 @@ export const renderApp = async (
     orchestrator = await app;
   }
 
-  globalThis.location = config.route;
+  const { route, element, template } = config;
 
-  const routerService = getInjector().inject(RouterService);
-  const awaiter = getInjector().inject(SSRAwaiterService);
-  const context = getInjector().inject(ContextService) as ServerContextService;
-  const ssrResult = litRender(config.element);
+  globalThis.location = route;
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  const injector = orchestrator.findPlugin(InjectionPlugin)!.getInjector();
+  const headDefinition = orchestrator
+    .findPlugin(ThemePlugin)!
+    .getHeadDefinition();
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
+  const routerService = injector.inject(RouterService);
+  const awaiter = injector.inject(SSRAwaiterService);
+  const headDom = injector.inject(HeadDOMService) as ServerHeadDOMService;
+  const context = injector.inject(ContextService) as ServerContextService;
+  const ssrResult = litRender(element);
 
   routerService.go(globalThis.location.pathname);
 
@@ -46,5 +64,10 @@ export const renderApp = async (
     context.fillStream(stream);
   }
   context.rendered();
-  return stream;
+
+  const html = template
+    .replace('</head>', `${headDom.getElements(headDefinition!)}\n</head>`)
+    .replace('<root-app></root-app>', stream);
+
+  return html;
 };

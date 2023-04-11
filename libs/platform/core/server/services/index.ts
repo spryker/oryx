@@ -1,4 +1,5 @@
 export * from './context';
+export * from './head-dom';
 export * from './http';
 export * from './json-api';
 export * from './providers';

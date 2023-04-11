@@ -9,7 +9,7 @@ export async function createProdSever(
   app: Express,
   config: ServerModeConfig
 ): Promise<void> {
-  const { indexPath, entryPath, component, namespace } = config;
+  const { indexPath, entryPath, namespace } = config;
 
   app.use('/assets', express.static(`${indexPath}/assets`));
 
@@ -25,11 +25,9 @@ export async function createProdSever(
     }
 
     try {
-      const indexFile = readFileSync(`${indexPath}/index.html`, 'utf-8');
-      const template = indexFile;
+      const template = readFileSync(`${indexPath}/index.html`, 'utf-8');
       const render = serverContext({ entry: entryPath, namespace });
-      const appHtml = await render({ route: url });
-      const html = template.replace(component, appHtml);
+      const html = await render({ route: url, template });
 
       res.status(200).end(html);
     } catch (e) {

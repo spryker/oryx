@@ -6,7 +6,6 @@ import {
 
 export class DefaultHeadDOMService implements HeadDOMService {
   addElements(definitions: ElementDefinition[]): void {
-    console.log(definitions);
     for (const definition of definitions) {
       if (definition.name === 'html') {
         this.updateElement(definition);
@@ -31,6 +30,7 @@ export class DefaultHeadDOMService implements HeadDOMService {
   }
 
   addElement(definition: ElementDefinition): void {
+    console.log(definition, this.getElement(definition));
     if (this.getElement(definition)) {
       return;
     }
@@ -50,26 +50,24 @@ export class DefaultHeadDOMService implements HeadDOMService {
       attrs += `[${attr}="${value}"]`;
     }
     console.log(`${definition.name}${attrs}`);
-    return document.querySelector(`${definition.name}${attrs}`);
+    return document
+      .getElementsByTagName('head')[0]
+      .querySelector(`${definition.name}${attrs}`);
   }
 
   protected setAttributes(
     attrs: ElementAttributes,
     element: HTMLElement
   ): void {
-    for (const [attr, value] of Object.entries(attrs)) {
-      if (attr === 'text') {
+    for (const [key, value] of Object.entries(attrs)) {
+      if (key === 'text' && value) {
         element.textContent = value;
 
         continue;
       }
 
-      element.setAttribute(attr, value);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      element.setAttribute(key, value!);
     }
-  }
-
-  protected getTags(selector: string): HTMLElement[] {
-    const nodes = document.querySelectorAll<HTMLElement>(selector);
-    return [...nodes];
   }
 }

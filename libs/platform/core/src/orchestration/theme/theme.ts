@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { HeadDOMService } from '../../services/head-dom';
+import { ElementDefinition, HeadDOMService } from '../../services/head-dom';
 import { App, AppPlugin } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
@@ -31,6 +31,7 @@ export const ThemePluginName = 'core$theme';
  */
 export class ThemePlugin extends ThemeTokens implements AppPlugin {
   protected icons: ThemeIcons = {};
+  protected headDefinition?: ElementDefinition[];
 
   constructor(protected themes: Theme[] = []) {
     super();
@@ -43,6 +44,10 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   getIcons(): ThemeIcons {
     return this.icons;
+  }
+
+  getHeadDefinition(): ElementDefinition[] | undefined {
+    return this.headDefinition;
   }
 
   getBreakpoints(): ThemeBreakpoints {
@@ -58,8 +63,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     const components = app.findPlugin(ComponentsPlugin)!;
     const injection = app.findPlugin(InjectionPlugin)!;
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
-    // Uses head of latest theme
-    const head = this.themes.at(-1)?.head;
+    const head = this.getHeadDefinition();
 
     if (head) {
       injection.getInjector().inject(HeadDOMService).addElements(head);
@@ -118,7 +122,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   protected propertiesCollector(themes: Theme[]): void {
-    for (const { breakpoints, icons } of themes) {
+    for (const { breakpoints, icons, head } of themes) {
       const sortableBP = Object.fromEntries(
         Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
       );
@@ -132,6 +136,10 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
         ...this.icons,
         ...icons,
       };
+
+      if (head) {
+        this.headDefinition = head;
+      }
     }
 
     if (Object.keys(this.icons).length) {

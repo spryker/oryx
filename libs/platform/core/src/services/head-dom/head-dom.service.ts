@@ -7,7 +7,7 @@ interface LinkAttributes {
 }
 
 interface TitleAttributes {
-  text: string;
+  text?: string;
 }
 
 interface MetaAttributes {
@@ -20,11 +20,12 @@ interface MetaAttributes {
   name?: string;
 }
 
-export type ElementAttributes =
-  | Record<string, string>
-  | MetaAttributes
-  | TitleAttributes
-  | LinkAttributes;
+export interface ElementAttributes
+  extends TitleAttributes,
+    MetaAttributes,
+    LinkAttributes {
+  [key: string]: string | undefined;
+}
 
 export interface ElementDefinition {
   name: string;

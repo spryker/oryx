@@ -8,7 +8,7 @@ export async function createDevSever(
   app: Express,
   config: ServerModeConfig
 ): Promise<void> {
-  const { indexPath, rootPath, entryPath, component } = config;
+  const { indexPath, rootPath, entryPath } = config;
   const vite = await createViteServer({
     root: indexPath,
     configFile: `${rootPath}/vite.config.ts`,
@@ -38,8 +38,7 @@ export async function createDevSever(
         indexFile
       );
       const { render } = await vite.ssrLoadModule(entryPath);
-      const appHtml = await render({ route: url });
-      const html = template.replace(component, appHtml);
+      const html = await render({ route: url, template });
 
       res.status(200).end(html);
     } catch (e) {
