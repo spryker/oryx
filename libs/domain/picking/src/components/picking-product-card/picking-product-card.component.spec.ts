@@ -44,7 +44,7 @@ describe('PickingProductCardComponent', () => {
         element.renderRoot.querySelector("[slot='heading']")?.textContent
       ).toContain(productItem.orderItem.name);
 
-      expect(element.renderRoot.querySelector('h4')?.textContent).toContain(
+      expect(element.renderRoot.querySelector('h6')?.textContent).toContain(
         productItem.orderItem.sku
       );
     });
