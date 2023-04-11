@@ -1,4 +1,4 @@
-import { HeadDOMService, TagAttributes, TagDefinition } from './meta.service';
+import { HeadDOMService, TagAttributes, TagDefinition } from './head-dom.service';
 
 export class DefaultHeadDOMService implements HeadDOMService {
   addTags(tags: TagDefinition[]): void {
