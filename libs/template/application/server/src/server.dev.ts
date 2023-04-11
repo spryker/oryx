@@ -17,6 +17,8 @@ export async function createDevSever(
     },
     appType: 'custom',
   });
+  const template = readFileSync(`${indexPath}/index.html`, 'utf-8');
+  const { render } = await vite.ssrLoadModule(entryPath);
 
   app.use(vite.middlewares);
 
@@ -32,12 +34,6 @@ export async function createDevSever(
     }
 
     try {
-      const indexFile = readFileSync(`${indexPath}/index.html`, 'utf-8');
-      const template = await vite.transformIndexHtml(
-        req.originalUrl,
-        indexFile
-      );
-      const { render } = await vite.ssrLoadModule(entryPath);
       const html = await render({ route: url, template });
 
       res.status(200).end(html);
