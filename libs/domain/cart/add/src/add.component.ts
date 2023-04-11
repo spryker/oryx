@@ -66,7 +66,7 @@ export class CartAddComponent extends ProductMixin(
     if (this.$product()) {
       this.shadowRoot
         ?.querySelector<QuantityInputComponent>('oryx-cart-quantity-input')
-        ?.reset();
+        ?.reset?.();
     }
     return value;
   });
