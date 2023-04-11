@@ -1,4 +1,4 @@
-import { MetaService, TagDefinition } from '@spryker-oryx/core';
+import { HeadDOMService, TagDefinition } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { LitRouter } from '@spryker-oryx/router/lit';
 import { hydratable, subscribe } from '@spryker-oryx/utilities';
@@ -50,7 +50,7 @@ export class RootAppComponent extends LitElement {
   constructor() {
     super();
     // TODO: temporary will be done on orchestration side before components loading
-    const meta = resolve(MetaService, null);
+    const meta = resolve(HeadDOMService, null);
     meta?.addTags(metas);
     meta?.updateTag({ name: 'html', attrs: { lang: 'en' } });
   }

@@ -1,6 +1,6 @@
-import { MetaService, TagAttributes, TagDefinition } from './meta.service';
+import { HeadDOMService, TagAttributes, TagDefinition } from './meta.service';
 
-export class DefaultMetaService implements MetaService {
+export class DefaultHeadDOMService implements HeadDOMService {
   addTags(tags: TagDefinition[]): void {
     for (const tag of tags) {
       this.addTag(tag);

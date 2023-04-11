@@ -1,4 +1,4 @@
-export const MetaService = 'oryx.MetaService';
+export const HeadDOMService = 'oryx.HeadDOMService';
 
 interface LinkAttributes {
   rel?: string;
@@ -31,7 +31,7 @@ export interface TagDefinition {
   attrs: TagAttributes;
 }
 
-export interface MetaService {
+export interface HeadDOMService {
   addTags(tags: TagDefinition[]): void;
   addTag(tag: TagDefinition): void;
   updateTag(tag: TagDefinition): void;
@@ -39,6 +39,6 @@ export interface MetaService {
 
 declare global {
   interface InjectionTokensContractMap {
-    [MetaService]: MetaService;
+    [HeadDOMService]: HeadDOMService;
   }
 }
