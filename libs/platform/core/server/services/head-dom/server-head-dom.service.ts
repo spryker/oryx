@@ -31,7 +31,7 @@ export class ServerHeadDOMService extends DefaultHeadDOMService {
         continue;
       }
 
-      stream += `\n<${name} ${this.getElementAttributes(attrs)} />`;
+      stream += `\n<${name}${this.getElementAttributes(attrs)} />`;
     }
 
     return stream;
