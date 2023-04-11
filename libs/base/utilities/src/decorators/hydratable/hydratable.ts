@@ -68,7 +68,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
     };
 
     [DEFER_HYDRATION] = false;
-    private [hydrationRender] = true;
+    private [hydrationRender] = false;
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
