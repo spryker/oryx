@@ -55,7 +55,7 @@
     --oryx-grid-carousel-items: 4;
     --oryx-grid-text-items: 2;
 
-    --__container-width: min(
+    --_container-width: min(
       var(--oryx-container-width),
       calc(100vw - (2 * var(--oryx-page-bleed, 0px)))
     );
@@ -64,21 +64,21 @@
 
 <style id="page-bleed">
   oryx-layout {
-    width: min(100%, calc(var(--__container-width)));
+    width: min(100%, calc(var(--_container-width)));
     margin-inline: auto;
   }
 
   oryx-layout:is([full-bleed], [bleed-out]) {
-    --__bleed: calc((100vw - var(--__container-width)) / 2);
+    --_bleed: calc((100vw - var(--_container-width)) / 2);
   }
   oryx-layout[full-bleed] {
     width: initial;
-    padding-inline: var(--__bleed);
-    scroll-padding-inline-start: var(--__bleed);
+    padding-inline: var(--_bleed);
+    scroll-padding-inline-start: var(--_bleed);
   }
   oryx-layout[bleed-out] {
-    margin-inline: var(--__bleed) 0;
-    padding-inline-end: var(--__bleed);
+    margin-inline: var(--_bleed) 0;
+    padding-inline-end: var(--_bleed);
   }
 </style>
 
@@ -86,13 +86,13 @@
   oryx-layout {
     --col-span: 1;
     --row-span: 1;
-    --__col: var(
+    --_item-size: var(
       --oryx-grid-item-size,
       min(
         100%,
         calc(
           (
-              var(--__container-width) -
+              var(--_container-width) -
                 (var(--oryx-grid-column-gap) * (var(--oryx-grid-columns) - 1))
             ) / var(--oryx-grid-columns) - var(--padding, 0px)
         )
@@ -100,15 +100,34 @@
     );
 
     display: grid;
-    grid-template-columns: repeat(auto-fill, var(--__col));
     gap: var(--oryx-grid-row-gap) var(--oryx-grid-column-gap);
+    align-items: start;
+    align-content: start;
     max-width: 100%;
+    max-height: 100%;
+  }
+
+  oryx-layout:not([vertical]) {
+    grid-template-columns: repeat(auto-fill, var(--_item-size));
+  }
+
+  oryx-layout[vertical] {
+    /* --_item-size: var(--oryx-grid-item-size, 50px); */
+    /* height: 100%; */
+  }
+
+  oryx-layout[layout='grid'][vertical] {
+    grid-template-rows: repeat(auto-fill, var(--_item-size));
+    grid-auto-columns: var(--_item-size);
+    grid-auto-flow: column;
   }
 
   oryx-layout > * {
     padding: var(--padding);
     grid-column: var(--col-pos, auto) / span var(--col-span);
     grid-row: var(--row-pos, auto) / span var(--row-span);
+    width: 100%;
+    height: 100%;
   }
 
   /* max width */
@@ -132,7 +151,7 @@
 
 <style id="carousel">
   oryx-layout:is([layout='carousel'], [layout-sm='carousel'], [layout-md='carousel'], [layout-lg='carousel']) {
-    grid-auto-columns: var(--__col);
+    grid-auto-columns: var(--_item-size);
     overflow: var(--_overflow, auto hidden);
     overscroll-behavior-x: contain;
     scroll-snap-type: both mandatory;
@@ -163,8 +182,8 @@
   [layout-sm*='split-column'],
   [layout-md*='split-column'],
   [layout-lg*='split-column'] {
-    --__split-col: calc(
-      (var(--__split-col-1) * (var(--__col) + var(--oryx-grid-column-gap))) -
+    --_split-col: calc(
+      (var(--_split-col-1) * (var(--_item-size) + var(--oryx-grid-column-gap))) -
         var(--oryx-grid-column-gap)
     );
   }
@@ -173,28 +192,28 @@
   [layout-sm='split-column-50'],
   [layout-md='split-column-50'],
   [layout-lg='split-column-50'] {
-    --__split-col-1: calc(var(--oryx-grid-columns) * 0.5);
+    --_split-col-1: calc(var(--oryx-grid-columns) * 0.5);
   }
 
   [layout='split-column-66'],
   [layout-sm='split-column-66'],
   [layout-md='split-column-66'],
   [layout-lg='split-column-66'] {
-    --__split-col-1: calc(var(--oryx-grid-columns) * 2 / 3);
+    --_split-col-1: calc(var(--oryx-grid-columns) * 2 / 3);
   }
 
   [layout='split-column-75'],
   [layout-sm='split-column-75'],
   [layout-md='split-column-75'],
   [layout-lg='split-column-75'] {
-    --__split-col-1: calc(var(--oryx-grid-columns) * 0.75);
+    --_split-col-1: calc(var(--oryx-grid-columns) * 0.75);
   }
 
   [layout='split-column-25'],
   [layout-sm='split-column-25'],
   [layout-md='split-column-25'],
   [layout-lg='split-column-25'] {
-    --__split-col-1: calc(var(--oryx-grid-columns) * 0.25);
+    --_split-col-1: calc(var(--oryx-grid-columns) * 0.25);
   }
 
   :is([layout='split-column-50'], [layout-sm='split-column-50'], [layout-md='split-column-50'], [layout-lg='split-column-50'], [layout='split-column-25'], [layout-sm='split-column-25'], [layout-md='split-column-25'], [layout-lg='split-column-25'])
@@ -230,8 +249,19 @@
     oryx-layout[layout='carousel']:not([layout-sm]),
     oryx-layout[layout-sm='carousel'] {
       --oryx-grid-columns: var(--oryx-grid-columns-carousel);
-      grid-auto-flow: column;
       grid-template-columns: initial;
+      grid-auto-flow: column;
+    }
+
+    /* oryx-layout[layout-sm='carousel']:not([vertical]),
+    oryx-layout[layout='carousel']:not([layout-sm]):not([vertical]) {
+      grid-auto-flow: column;
+    } */
+
+    oryx-layout[layout-sm='carousel'][vertical],
+    oryx-layout[layout='carousel']:not([layout-sm])[vertical] {
+      width: var(--oryx-grid-item-size, auto);
+      grid-auto-flow: initial;
     }
 
     oryx-layout[layout-sm]:not([layout-sm='carousel']) {
@@ -245,7 +275,7 @@
     oryx-layout[layout-sm*='split-column'],
     oryx-layout[layout*='split-column']:not([layout-sm]) {
       --oryx-grid-columns: var(--oryx-grid-columns-base);
-      grid-template-columns: var(--__split-col) auto;
+      grid-template-columns: var(--_split-col) auto;
     }
   }
 
@@ -266,8 +296,12 @@
     oryx-layout[layout-md='carousel'],
     oryx-layout[layout='carousel']:not([layout-md]) {
       --oryx-grid-columns: var(--oryx-grid-columns-carousel);
-      grid-auto-flow: column;
       grid-template-columns: initial;
+    }
+
+    oryx-layout[layout-md='carousel']:not([vertical]),
+    oryx-layout[layout='carousel']:not([layout-md]):not([vertical]) {
+      grid-auto-flow: column;
     }
 
     oryx-layout[layout-md]:not([layout-md='carousel']) {
@@ -281,7 +315,7 @@
     oryx-layout[layout-md*='split-column'],
     oryx-layout[layout*='split-column']:not([layout-md]) {
       --oryx-grid-columns: var(--oryx-grid-columns-base);
-      grid-template-columns: var(--__split-col) auto;
+      grid-template-columns: var(--_split-col) auto;
     }
   }
 
@@ -298,13 +332,17 @@
     oryx-layout[layout-lg='carousel'],
     oryx-layout[layout='carousel']:not([layout-lg]) {
       --oryx-grid-columns: var(--oryx-grid-columns-carousel);
-      grid-auto-flow: column;
       grid-template-columns: initial;
+    }
+
+    oryx-layout[layout-lg='carousel']:not([vertical]),
+    oryx-layout[layout='carousel']:not([layout-lg]):not([vertical]) {
+      grid-auto-flow: column;
     }
 
     oryx-layout[vertical][layout='carousel']:not([layout-lg]) {
       grid-auto-columns: 100%;
-      grid-auto-rows: var(--__col);
+      grid-auto-rows: var(--_item-size);
       grid-auto-flow: row;
     }
 
@@ -319,7 +357,7 @@
     oryx-layout[layout-lg*='split-column'],
     oryx-layout[layout*='split-column']:not([layout-lg]) {
       --oryx-grid-columns: var(--oryx-grid-columns-base);
-      grid-template-columns: var(--__split-col) auto;
+      grid-template-columns: var(--_split-col) auto;
     }
   }
 </style>
@@ -327,19 +365,41 @@
 <div>
   <h1>PDP</h1>
   <oryx-layout layout="split-column-66">
+    <!-- 
+
+      overall layout:
+      - justify-items: end to move the grid to the right (style="justify-items: end")
+      - floating means that both layouts are on the first row/column
+      - alignment (top/bottom) should influence render order and `align-items` (start vs end)
+
+      thumbs:
+      - width is used for --oryx-grid-item-size
+
+      main: 
+      - height is used for image height (used for main image height)
+      - --oryx-grid-columns = 1
+     -->
     <oryx-layout layout="list">
       <oryx-layout
         layout="carousel"
-        style="--oryx-grid-columns: 1; height: 200px"
+        style="--oryx-grid-columns: 1; grid-column: 1; grid-row: 1"
       >
-        <span>main 1</span>
+        <span style="height: 200px">main 1</span>
         <span>main 2</span>
         <span>main 3</span>
         <span>main 4</span>
       </oryx-layout>
       <oryx-layout
         layout="grid"
-        style="--oryx-grid-item-size: 40px; width: auto"
+        vertical
+        style="
+          --oryx-grid-item-size: 40px;
+          grid-column: 1;
+          grid-row: 1;
+          gap: 10px;
+          margin-inline: initial;
+          max-height: 200px;
+        "
       >
         <span>thumb 1</span>
         <span>thumb 2</span>
@@ -347,12 +407,11 @@
         <span>thumb 4</span>
         <span>thumb 5</span>
         <span>thumb 6</span>
-        <!-- <span>thumb 1</span>
+        <span>thumb 1</span>
         <span>thumb 2</span>
         <span>thumb 3</span>
         <span>thumb 4</span>
         <span>thumb 5</span>
-        <span>thumb 6</span> -->
       </oryx-layout>
     </oryx-layout>
     <span>
@@ -369,13 +428,13 @@
   <oryx-layout>
     <h3>best sale</h3>
   </oryx-layout>
-  <oryx-layout layout="carousel" style="height: 100px">
-    <span>thumb 1</span>
-    <span>thumb 2</span>
-    <span>thumb 3</span>
-    <span>thumb 4</span>
-    <span>thumb 5</span>
-    <span>thumb 6</span>
+  <oryx-layout layout="carousel" style="height: 100px; align-content: stretch">
+    <span>product 1</span>
+    <span>product 2</span>
+    <span>product 3</span>
+    <span>product 4</span>
+    <span>product 5</span>
+    <span>product 6</span>
   </oryx-layout>
 </div>
 
