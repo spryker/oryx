@@ -6,7 +6,14 @@ import {
 
 export class DefaultHeadDOMService implements HeadDOMService {
   addElements(definitions: ElementDefinition[]): void {
+    console.log(definitions);
     for (const definition of definitions) {
+      if (definition.name === 'html') {
+        this.updateElement(definition);
+
+        continue;
+      }
+
       this.addElement(definition);
     }
   }
@@ -24,9 +31,26 @@ export class DefaultHeadDOMService implements HeadDOMService {
   }
 
   addElement(definition: ElementDefinition): void {
+    if (this.getElement(definition)) {
+      return;
+    }
+
     const element = document.createElement(definition.name);
     this.setAttributes(definition.attrs, element);
     document.getElementsByTagName('head')[0].appendChild(element);
+  }
+
+  protected getElement(definition: ElementDefinition): HTMLElement | null {
+    let attrs = '';
+    for (const [attr, value] of Object.entries(definition.attrs)) {
+      if (attr === 'text') {
+        continue;
+      }
+
+      attrs += `[${attr}="${value}"]`;
+    }
+    console.log(`${definition.name}${attrs}`);
+    return document.querySelector(`${definition.name}${attrs}`);
   }
 
   protected setAttributes(

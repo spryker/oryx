@@ -1,6 +1,7 @@
 import { LazyLoadable, ScreenSize } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
+import { ElementDefinition } from '../../services';
 
 export enum ColorMode {
   Light = 'mode-light',
@@ -75,4 +76,5 @@ export interface Theme {
   breakpoints?: ThemeBreakpoints;
   icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
+  head?: ElementDefinition[];
 }
