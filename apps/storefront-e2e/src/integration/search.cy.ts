@@ -1,6 +1,6 @@
-import { ProductStorage } from '../data-storages/product.storage';
 import { LandingPage } from '../support/page_objects/landing.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
+import { ProductStorage } from '../test-data/product.storage';
 
 const landingPage = new LandingPage();
 const search = landingPage.search;
