@@ -114,13 +114,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       })
     );
 
-    if (await this.updateComplete) {
-      this.productCardRef.value?.scrollIntoView({
-        behavior: 'smooth',
-      });
+    await this.updateComplete;
 
-      this.productCardRef.value?.focusOnQuantityInput();
-    }
+    this.productCardRef.value?.scrollIntoView({
+      behavior: 'smooth',
+    });
+
+    this.productCardRef.value?.focusOnQuantityInput();
   }
 
   protected onModalClose(): void {
