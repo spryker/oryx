@@ -36,7 +36,7 @@ export class DefaultHeadDOMService implements HeadDOMService {
 
     const element = document.createElement(definition.name);
     this.setAttributes(definition.attrs, element);
-    document.getElementsByTagName('head')[0].appendChild(element);
+    document.head.appendChild(element);
   }
 
   protected getElement(definition: ElementDefinition): HTMLElement | null {
