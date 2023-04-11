@@ -12,20 +12,23 @@ export class CartTotalsTotalComponent extends CartComponentMixin(
   ContentMixin<CartTotalsTotalOptions>(LitElement)
 ) {
   protected override render(): TemplateResult | void {
-    if (!this.totals?.calculations.priceToPay) return;
+    const total = this.$totals()?.calculations?.priceToPay;
+    if (total) {
+      return html`
+        <span>${i18n('cart.totals.total')}</span>
+        <span>${total}</span>
+        ${this.renderTaxMessage()}
+      `;
+    }
+  }
 
-    const taxMessage = this.componentOptions?.enableTaxMessage
-      ? html`<span class="tax-message">
-          ${this.totals?.priceMode === PriceMode.GrossMode
-            ? i18n('cart.totals.tax-included')
-            : i18n('cart.totals.tax-excluded')}
-        </span>`
-      : html``;
-
-    return html`
-      <span>${i18n('cart.totals.total')}</span>
-      <span>${String(this.totals.calculations.priceToPay)}</span>
-      ${taxMessage}
-    `;
+  protected renderTaxMessage(): TemplateResult | void {
+    if (this.$options().enableTaxMessage) {
+      return html`<span class="tax-message">
+        ${this.$totals()?.priceMode === PriceMode.GrossMode
+          ? i18n('cart.totals.tax-included')
+          : i18n('cart.totals.tax-excluded')}
+      </span>`;
+    }
   }
 }
