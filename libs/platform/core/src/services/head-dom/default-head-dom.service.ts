@@ -30,7 +30,6 @@ export class DefaultHeadDOMService implements HeadDOMService {
   }
 
   addElement(definition: ElementDefinition): void {
-    console.log(definition, this.getElement(definition));
     if (this.getElement(definition)) {
       return;
     }
@@ -42,6 +41,7 @@ export class DefaultHeadDOMService implements HeadDOMService {
 
   protected getElement(definition: ElementDefinition): HTMLElement | null {
     let attrs = '';
+
     for (const [attr, value] of Object.entries(definition.attrs)) {
       if (attr === 'text') {
         continue;
@@ -49,7 +49,7 @@ export class DefaultHeadDOMService implements HeadDOMService {
 
       attrs += `[${attr}="${value}"]`;
     }
-    console.log(`${definition.name}${attrs}`);
+
     return document
       .getElementsByTagName('head')[0]
       .querySelector(`${definition.name}${attrs}`);
