@@ -68,7 +68,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
     };
 
     [DEFER_HYDRATION] = false;
-    private [hydrationRender] = false;
+    private [hydrationRender] = true;
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
@@ -95,6 +95,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
+        this[hydrationRender] = false;
       }
     }
 
@@ -173,7 +174,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
         )}`;
       }
 
-      return this.hasSsr || isServer
+      return this.hasSsr
         ? html`${whenState(this[hydrationRender], () => super.render())}`
         : super.render();
     }
