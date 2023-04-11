@@ -63,11 +63,19 @@ export const renderApp = async (
     stream += data;
     context.fillStream(stream);
   }
+
   context.rendered();
 
+  const component = element.strings[0];
+  const componentName = component.substring(
+    component.indexOf('<') + 1,
+    component.indexOf('>')
+  );
+  const htmlAttrs = headDefinition?.find((def) => def.name === 'html')?.attrs;
   const html = template
-    .replace('</head>', `${headDom.getElements(headDefinition!)}\n</head>`)
-    .replace('<root-app></root-app>', stream);
+    .replace('<html', `<html ${headDom.getElementAttributes(htmlAttrs ?? {})}`)
+    .replace('</head>', `${headDom.getElements(headDefinition ?? [])}\n</head>`)
+    .replace(`<${componentName}></${componentName}>`, stream);
 
   return html;
 };
