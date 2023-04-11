@@ -1,15 +1,14 @@
-import {PickingListsFragment} from "../support/page_fragments/picking-lists.fragment";
+import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 
-const pickingListsFragment = new PickingListsFragment()
+const pickingListsFragment = new PickingListsFragment();
 
 describe('Picking Lists', () => {
-
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit('/');
   });
 
   it('should display picking lists', () => {
-    pickingListsFragment.getWrapper().should('be.visible')
-    pickingListsFragment.getPickingListsItem().should('be.visible')
+    pickingListsFragment.getWrapper().should('be.visible');
+    pickingListsFragment.getPickingListsItem().should('be.visible');
   });
-})
+});
