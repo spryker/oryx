@@ -95,7 +95,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.updatePickingItem(productIndex, numberOfPicked);
   }
 
-  protected editPickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+  protected async editPickingItem(
+    event: CustomEvent<ProductItemPickedEvent>
+  ): Promise<void> {
     const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
@@ -112,19 +114,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       })
     );
 
-    window.scrollTo({
-      left: 0,
-      top: this.productCardRef.value?.offsetTop,
-      behavior: 'smooth',
-    });
+    if (await this.updateComplete) {
+      this.productCardRef.value?.scrollIntoView({
+        behavior: 'smooth',
+      });
 
-    setTimeout(() => {
-      (
-        this.productCardRef.value?.renderRoot.querySelector(
-          'oryx-cart-quantity-input'
-        ) as HTMLElement
-      )?.focus();
-    }, 0);
+      this.productCardRef.value?.focusOnQuantityInput();
+    }
   }
 
   protected onModalClose(): void {

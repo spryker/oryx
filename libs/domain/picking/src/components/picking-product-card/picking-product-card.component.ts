@@ -1,8 +1,10 @@
+import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import {
   EVENT_EDIT,
@@ -21,6 +23,8 @@ export class PickingProductCardComponent extends LitElement {
 
   @state() isCorrectNumberOfPickedProvided = true;
   @state() currentNumberOfPicked?: number;
+
+  protected quantityInputRef: Ref<QuantityInputComponent> = createRef();
 
   protected onSubmit(e: SubmitEvent): void {
     e.preventDefault();
@@ -63,6 +67,12 @@ export class PickingProductCardComponent extends LitElement {
     );
   }
 
+  public focusOnQuantityInput(): void {
+    setTimeout(() => {
+      this.quantityInputRef.value?.focus();
+    }, 0);
+  }
+
   protected override render(): TemplateResult {
     return html`${this.renderPickingProduct()}`;
   }
@@ -75,6 +85,7 @@ export class PickingProductCardComponent extends LitElement {
     const quantityForm = html`
       <form @submit=${this.onSubmit}>
         <oryx-cart-quantity-input
+          ${ref(this.quantityInputRef)}
           min="0"
           .max="${this.productItem.quantity}"
           .value="${this.productItem.numberOfPicked}"
