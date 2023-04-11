@@ -20,21 +20,21 @@ interface MetaAttributes {
   name?: string;
 }
 
-export type TagAttributes =
+export type ElementAttributes =
   | Record<string, string>
   | MetaAttributes
   | TitleAttributes
   | LinkAttributes;
 
-export interface TagDefinition {
+export interface ElementDefinition {
   name: string;
-  attrs: TagAttributes;
+  attrs: ElementAttributes;
 }
 
 export interface HeadDOMService {
-  addTags(tags: TagDefinition[]): void;
-  addTag(tag: TagDefinition): void;
-  updateTag(tag: TagDefinition): void;
+  addElements(definitions: ElementDefinition[]): void;
+  addElement(definition: ElementDefinition): void;
+  updateElement(definition: ElementDefinition): void;
 }
 
 declare global {

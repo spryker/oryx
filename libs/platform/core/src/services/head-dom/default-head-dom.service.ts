@@ -1,31 +1,38 @@
-import { HeadDOMService, TagAttributes, TagDefinition } from './head-dom.service';
+import {
+  ElementAttributes,
+  ElementDefinition,
+  HeadDOMService,
+} from './head-dom.service';
 
 export class DefaultHeadDOMService implements HeadDOMService {
-  addTags(tags: TagDefinition[]): void {
-    for (const tag of tags) {
-      this.addTag(tag);
+  addElements(definitions: ElementDefinition[]): void {
+    for (const definition of definitions) {
+      this.addElement(definition);
     }
   }
 
-  updateTag(tag: TagDefinition): void {
-    const element = document.querySelector<HTMLElement>(tag.name);
+  updateElement(definition: ElementDefinition): void {
+    const element = document.querySelector<HTMLElement>(definition.name);
 
     if (!element) {
-      this.addTag(tag);
+      this.addElement(definition);
 
       return;
     }
 
-    this.setAttributes(tag.attrs, element);
+    this.setAttributes(definition.attrs, element);
   }
 
-  addTag(tag: TagDefinition): void {
-    const element = document.createElement(tag.name);
-    this.setAttributes(tag.attrs, element);
+  addElement(definition: ElementDefinition): void {
+    const element = document.createElement(definition.name);
+    this.setAttributes(definition.attrs, element);
     document.getElementsByTagName('head')[0].appendChild(element);
   }
 
-  protected setAttributes(attrs: TagAttributes, element: HTMLElement): void {
+  protected setAttributes(
+    attrs: ElementAttributes,
+    element: HTMLElement
+  ): void {
     for (const [attr, value] of Object.entries(attrs)) {
       if (attr === 'text') {
         element.textContent = value;

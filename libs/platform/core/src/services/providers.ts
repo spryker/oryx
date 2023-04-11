@@ -1,5 +1,4 @@
 import { Provider } from '@spryker-oryx/di';
-import { isServer } from 'lit';
 import {
   AppInitializer,
   AppInitializerService,
@@ -82,11 +81,8 @@ export const coreProviders: Provider[] = [
     provide: TokenResolver,
     useClass: DefaultTokenService,
   },
-  // TODO: TEMPORARY
-  !isServer
-    ? {
-        provide: HeadDOMService,
-        useClass: DefaultHeadDOMService,
-      }
-    : ({} as Provider),
+  {
+    provide: HeadDOMService,
+    useClass: DefaultHeadDOMService,
+  },
 ];
