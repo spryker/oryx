@@ -174,7 +174,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
         )}`;
       }
 
-      return this.hasSsr
+      return this.hasSsr || isServer
         ? html`${whenState(this[hydrationRender], () => super.render())}`
         : super.render();
     }
