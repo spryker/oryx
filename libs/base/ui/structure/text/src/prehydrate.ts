@@ -13,7 +13,6 @@ export const truncateFix = async (host: LitElement): Promise<void> => {
     const height = container.getBoundingClientRect().height;
     container.style.lineHeight = lineHeight;
     const linesCount = Math.floor(height / factor);
-
     host.style.setProperty('--lines-count', String(linesCount));
 
     if (linesCount <= lineClampValue) {

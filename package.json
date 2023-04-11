@@ -21,6 +21,7 @@
     "release": "run-s release:*",
     "release-minor": "cd libs && npm run release-minor",
     "release-labs": "cd libs && npm run release-labs",
+    "release-patch": "cd libs && npm run release-patch",
     "release:libs": "cd libs && npm run release",
     "release-from-tag": "run-s release-from-tag:*",
     "release-from-tag:libs": "cd libs && npm run release-from-tag",

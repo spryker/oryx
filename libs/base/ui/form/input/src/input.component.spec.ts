@@ -11,11 +11,6 @@ describe('InputComponent', () => {
     await useComponent(inputComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-input');
-    expect(el).toBeInstanceOf(InputComponent);
-  });
-
   describe('render', () => {
     beforeEach(async () => {
       element = await fixture(

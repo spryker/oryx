@@ -3,14 +3,24 @@ import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import { css } from 'lit';
 
 const smallScreen = css`
-  :host,
-  oryx-menu-item-button {
+  :host {
     min-width: 59px;
+    min-height: 40px;
+  }
+
+  oryx-button {
+    --oryx-icon-size: 24px;
+  }
+
+  a,
+  button {
+    border-radius: 0;
   }
 
   mark {
     inset-block-start: 2px;
     inset-inline-end: 2px;
+    max-width: calc(100% - 4px);
   }
 `;
 
@@ -24,6 +34,7 @@ export const navigationButtonScreenStyles: ThemeStylesWithMedia[] = [
 export const styles = css`
   :host {
     min-width: 75px;
+    min-height: 75px;
     max-width: 154px;
     display: inline-flex;
     flex-direction: column;
@@ -31,12 +42,15 @@ export const styles = css`
   }
 
   oryx-button {
-    flex: 1 0 auto;
-  }
-
-  oryx-button > * {
     --oryx-icon-size: 32px;
 
+    flex: 1 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  a,
+  button {
     display: grid;
     justify-items: center;
     gap: 5px;
@@ -45,15 +59,20 @@ export const styles = css`
     box-sizing: border-box;
   }
 
-  oryx-button > :hover {
+  :is(a, button):hover {
     background-color: var(--oryx-color-primary-400);
     box-shadow: none;
   }
 
-  oryx-button > :focus-visible {
+  :is(a, button):focus-visible {
     border-color: var(--oryx-color-canvas-100);
     outline: solid 1px blue;
     outline-offset: -3px;
+  }
+
+  :is(a, button):active {
+    background-color: var(--oryx-color-primary-500);
+    box-shadow: none;
   }
 
   oryx-heading {
@@ -62,6 +81,7 @@ export const styles = css`
 
   mark {
     position: absolute;
+    box-sizing: border-box;
     line-height: 16px;
     min-width: 6px;
     padding: 1px 6px;
@@ -71,5 +91,9 @@ export const styles = css`
     color: var(--oryx-color-neutral-500);
     inset-block-start: 6px;
     inset-inline-end: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: calc(100% - 16px);
   }
 `;
