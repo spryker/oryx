@@ -11,4 +11,3 @@ export * from './ssr-awaiter.service';
 export * from './storage';
 export * from './token-resolver';
 export * from './transformer';
-export * from './head-dom';
