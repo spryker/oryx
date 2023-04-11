@@ -1,443 +1,717 @@
-<!-- 
-  API
-
-  - `--columns` – for custom grid size, overrides the system grid size
-  - `--child-columns` – the number of child columns inside the carousel. This is needed to 
-                    properly compute the grid size for each item. When items use col-span, 
-                    we should double the item count per span.
-  - `--scroll-start` 
- -->
-<style>
+<style id="demo">
   body {
-    /* background-color: black; */
-    /* color: gray; */
     padding: 0;
     margin: 0;
   }
 
+  h1,
+  h3 {
+    text-align: center;
+  }
+
   oryx-layout {
-    background-color: lightblue;
+    outline: solid 1px;
   }
 
-  oryx-layout > * {
-    border: solid 1px white;
+  body > oryx-layout {
+    margin-block: 20px;
   }
 
-  /* oryx-layout:not([only]),
-    h5:has(+ oryx-layout:not([only])),
-    h3:has(+ oryx-layout:not([only])) {
-      display: none !important;
-    } */
+  oryx-layout:not([layout='list']) {
+    background-color: lightgray;
+  }
 
+  [layout='list'] {
+    background-color: lightseagreen;
+  }
+
+  [layout='carousel'] {
+    background-color: lightcyan;
+  }
+
+  [layout='grid'] {
+    background-color: lightpink;
+  }
+
+  span {
+    /* border: solid 1px; */
+    outline: solid 1px;
+    /* box-sizing: border-box; */
+  }
+</style>
+
+<style id="app-tokens">
   :root {
-    --oryx-container-width: 1000px;
-    --oryx-container-bleed: 20px;
-    --oryx-grid-columns: 12;
+    --oryx-page-bleed: 20px;
+    --oryx-container-width: 800px;
+
+    --oryx-grid-columns-base: 12;
+    --oryx-grid-columns-carousel: 4;
+    --oryx-grid-columns-grid: 4;
+
     --oryx-grid-column-gap: 20px;
     --oryx-grid-row-gap: 5px;
     --oryx-grid-grid-items: 4;
     --oryx-grid-carousel-items: 4;
     --oryx-grid-text-items: 2;
+
+    --__container-width: min(
+      var(--oryx-container-width),
+      calc(100vw - (2 * var(--oryx-page-bleed, 0px)))
+    );
   }
 </style>
 
-<style>
-  /* container / bleed */
+<style id="page-bleed">
+  oryx-layout {
+    width: min(100%, calc(var(--__container-width)));
+    margin-inline: auto;
+  }
+
+  oryx-layout:is([full-bleed], [bleed-out]) {
+    --__bleed: calc((100vw - var(--__container-width)) / 2);
+  }
   oryx-layout[full-bleed] {
-    --__bleed: calc((100vw - var(--__width)) / 2);
+    width: initial;
+    padding-inline: var(--__bleed);
+    scroll-padding-inline-start: var(--__bleed);
   }
-  oryx-layout[full-bleed='both'] {
-    padding-inline-start: var(--__bleed);
-    max-width: initial;
-  }
-  oryx-layout[full-bleed='end'] {
+  oryx-layout[bleed-out] {
     margin-inline: var(--__bleed) 0;
     padding-inline-end: var(--__bleed);
   }
-  /* END container / bleed */
+</style>
 
-  /* Sticky: TODO */
-
+<style id="grid-system">
   oryx-layout {
-    --__width: min(
-      calc(100vw - (2 * var(--oryx-container-bleed))),
-      var(--oryx-container-width)
-    );
-    --__size: var(--columns, var(--__column-size, var(--oryx-grid-columns)));
-    --__factor: calc(var(--oryx-grid-columns) / var(--__size));
-
-    position: relative;
-    max-width: min(100vw, var(--__width));
-    display: grid;
-    gap: var(--oryx-grid-row-gap) var(--oryx-grid-column-gap);
-    align-items: var(--align-items, start);
-    margin-inline: auto;
-    grid-template-columns: repeat(
-      var(--__child-columns, var(--__size)),
-      calc(
-        (var(--__width) / (var(--oryx-grid-columns) / var(--__factor))) -
+    --col-span: 1;
+    --row-span: 1;
+    --__col: var(
+      --oryx-grid-item-size,
+      min(
+        100%,
+        calc(
           (
-            var(--oryx-grid-column-gap) -
-              (var(--oryx-grid-column-gap) / var(--__size))
-          )
+              var(--__container-width) -
+                (var(--oryx-grid-column-gap) * (var(--oryx-grid-columns) - 1))
+            ) / var(--oryx-grid-columns) - var(--padding, 0px)
+        )
       )
     );
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, var(--__col));
+    gap: var(--oryx-grid-row-gap) var(--oryx-grid-column-gap);
+    max-width: 100%;
   }
 
   oryx-layout > * {
-    box-sizing: border-box;
-    --span: 1;
-    grid-column: span min(var(--span), var(--__child-columns, var(--__size)));
+    padding: var(--padding);
+    grid-column: var(--col-pos, auto) / span var(--col-span);
+    grid-row: var(--row-pos, auto) / span var(--row-span);
   }
 
-  [layout='grid'] {
-    --__column-size: var(--oryx-grid-grid-items, 4);
-  }
-
-  [layout='list'] {
-    --oryx-grid-columns: 1;
-  }
-
-  /* carousel */
-  [layout='carousel'] {
-    --__child-columns: var(--child-columns, 24);
-    --__column-size: var(--oryx-grid-carousel-items, 4);
-  }
-
-  :is([layout='carousel'], [layout-sm='carousel'], [layout-md='carousel'], [layout-lg='carousel']) {
-    overscroll-behavior-x: contain;
-    scroll-snap-type: both mandatory;
-    scroll-behavior: smooth;
-    scroll-padding-inline-start: var(--scroll-start, 0px);
-    overflow: auto hidden;
-  }
-
-  :is([layout='carousel'], [layout-sm='carousel'], [layout-md='carousel'], [layout-lg='carousel'])::-webkit-scrollbar {
-    display: none;
-  }
-
-  :is([layout='carousel'], [layout-sm='carousel'], [layout-md='carousel'], [layout-lg='carousel'])
-    > * {
-    scroll-snap-align: start;
-  }
-
-  /* text layout */
-  oryx-layout[layout='text'] {
-    display: block;
-    --__column-size: var(--oryx-grid-text-items, 2);
-    column-count: var(--__size, 1);
-  }
-  [layout='text'] :is([layout='grid'], [layout='carousel']) {
-    --span: calc(var(--__column-size) / var(--oryx-grid-text-items, 2));
-  }
-  [layout='text'] :first-child {
-    margin-top: 0px;
-  }
-  /* END text layout */
-
-  /* oryx-layout :is(oryx-layout[layout="carousel"], oryx-layout[layout="grid"]) { */
-  oryx-layout oryx-layout {
-    --__child-columns: var(--span);
-  }
-
-  oryx-layout[layout='split-column(25/75)'] oryx-layout[layout='grid'] {
-    --__child-columns: calc(var(--span) / var(--__factor));
-  }
-
-  [layout='two-column'] {
-    --_first: 8;
-  }
-
-  [layout='split-column(25/75)'] > :nth-child(odd) {
-    --span: calc(var(--oryx-grid-columns) / 4);
-  }
-
-  [layout='split-column(25/75)'] > :nth-child(even) {
-    --span: calc(var(--oryx-grid-columns) / 4 * 3);
-  }
-
-  [layout='split-column(66/33)'] > :nth-child(odd) {
-    --span: calc(var(--oryx-grid-columns) / 3 * 2);
-  }
-
-  [layout='split-column(66/33)'] > :nth-child(even) {
-    --span: calc(var(--oryx-grid-columns) / 3);
-  }
-
-  oryx-layout:not([layout*='column']) oryx-layout[layout='text'] {
-    column-count: var(--span, var(--__size, 1));
+  /* max width */
+  oryx-layout[max-width],
+  oryx-layout > *[max-width] {
+    flex-grow: 1;
   }
 </style>
 
-<style>
-  @media (max-width: 500px) {
+<style id="column">
+  oryx-layout[layout='column'] {
+    --oryx-grid-columns: var(--oryx-grid-columns-base);
+  }
+</style>
+
+<style id="list">
+  oryx-layout[layout='list'] {
+    --oryx-grid-columns: 1;
+  }
+</style>
+
+<style id="carousel">
+  oryx-layout:is([layout='carousel'], [layout-sm='carousel'], [layout-md='carousel'], [layout-lg='carousel']) {
+    grid-auto-columns: var(--__col);
+    overflow: var(--_overflow, auto hidden);
+    overscroll-behavior-x: contain;
+    scroll-snap-type: both mandatory;
+    scroll-behavior: smooth;
+    /* scroll-padding-inline-start: var(--scroll-start, 0px); */
+  }
+  oryx-layout[vertical] {
+    --_overflow: hidden auto;
+  }
+
+  oryx-layout > * {
+    scroll-snap-align: start;
+  }
+
+  oryx-layout::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<style id="grid">
+  oryx-layout[layout='grid'] {
+    --oryx-grid-columns: var(--oryx-grid-columns-grid);
+  }
+</style>
+
+<style id="split-column">
+  [layout*='split-column'],
+  [layout-sm*='split-column'],
+  [layout-md*='split-column'],
+  [layout-lg*='split-column'] {
+    --__split-col: calc(
+      (var(--__split-col-1) * (var(--__col) + var(--oryx-grid-column-gap))) -
+        var(--oryx-grid-column-gap)
+    );
+  }
+
+  [layout='split-column-50'],
+  [layout-sm='split-column-50'],
+  [layout-md='split-column-50'],
+  [layout-lg='split-column-50'] {
+    --__split-col-1: calc(var(--oryx-grid-columns) * 0.5);
+  }
+
+  [layout='split-column-66'],
+  [layout-sm='split-column-66'],
+  [layout-md='split-column-66'],
+  [layout-lg='split-column-66'] {
+    --__split-col-1: calc(var(--oryx-grid-columns) * 2 / 3);
+  }
+
+  [layout='split-column-75'],
+  [layout-sm='split-column-75'],
+  [layout-md='split-column-75'],
+  [layout-lg='split-column-75'] {
+    --__split-col-1: calc(var(--oryx-grid-columns) * 0.75);
+  }
+
+  [layout='split-column-25'],
+  [layout-sm='split-column-25'],
+  [layout-md='split-column-25'],
+  [layout-lg='split-column-25'] {
+    --__split-col-1: calc(var(--oryx-grid-columns) * 0.25);
+  }
+
+  :is([layout='split-column-50'], [layout-sm='split-column-50'], [layout-md='split-column-50'], [layout-lg='split-column-50'], [layout='split-column-25'], [layout-sm='split-column-25'], [layout-md='split-column-25'], [layout-lg='split-column-25'])
+    > *:nth-child(odd),
+  :is([layout='split-column-50'], [layout-sm='split-column-50'], [layout-md='split-column-50'], [layout-lg='split-column-50'], [layout='split-column-66'], [layout-sm='split-column-66'], [layout-md='split-column-66'], [layout-lg='split-column-66'], [layout='split-column-75'], [layout-sm='split-column-75'], [layout-md='split-column-75'], [layout-lg='split-column-75'])
+    > *:nth-child(even) {
+    --_text-column-count: 1;
+  }
+</style>
+
+<style id="text">
+  oryx-layout[layout='text'] {
+    display: block;
+    column-count: var(--_text-column-count, var(--oryx-grid-text-items, 2));
+  }
+
+  [layout='text'] :first-child {
+    margin-top: 0px;
+  }
+</style>
+
+<style id="responsive">
+  @media (max-width: 767px) {
+    oryx-layout[layout-sm='free'],
+    oryx-layout[layout*='free']:not([layout-sm]) {
+      display: flex;
+    }
+
+    oryx-layout[layout-sm='grid'] {
+      --oryx-grid-columns: var(--oryx-grid-columns-grid);
+    }
+
+    oryx-layout[layout='carousel']:not([layout-sm]),
     oryx-layout[layout-sm='carousel'] {
-      --__child-columns: var(--child-columns, 24);
-      --__column-size: var(--oryx-grid-carousel-items, 4);
+      --oryx-grid-columns: var(--oryx-grid-columns-carousel);
+      grid-auto-flow: column;
+      grid-template-columns: initial;
+    }
+
+    oryx-layout[layout-sm]:not([layout-sm='carousel']) {
+      grid-auto-flow: initial;
     }
 
     oryx-layout[layout-sm='list'] {
       --oryx-grid-columns: 1;
     }
+
+    oryx-layout[layout-sm*='split-column'],
+    oryx-layout[layout*='split-column']:not([layout-sm]) {
+      --oryx-grid-columns: var(--oryx-grid-columns-base);
+      grid-template-columns: var(--__split-col) auto;
+    }
   }
 
-  @media (min-width: 501px) and (max-width: 800px) {
-    oryx-layout[layout-md='carousel'] {
-      --__child-columns: var(--child-columns, 24);
-      --__column-size: var(--oryx-grid-carousel-items, 4);
+  @media (min-width: 768px) and (max-width: 1023px) {
+    body {
+      background-color: aqua;
     }
+
+    oryx-layout[layout-md='free'],
+    oryx-layout[layout*='free']:not([layout-md]) {
+      display: flex;
+    }
+
+    oryx-layout[layout-md='grid'] {
+      --oryx-grid-columns: var(--oryx-grid-columns-grid);
+    }
+
+    oryx-layout[layout-md='carousel'],
+    oryx-layout[layout='carousel']:not([layout-md]) {
+      --oryx-grid-columns: var(--oryx-grid-columns-carousel);
+      grid-auto-flow: column;
+      grid-template-columns: initial;
+    }
+
+    oryx-layout[layout-md]:not([layout-md='carousel']) {
+      grid-auto-flow: initial;
+    }
+
     oryx-layout[layout-md='list'] {
       --oryx-grid-columns: 1;
     }
+
+    oryx-layout[layout-md*='split-column'],
+    oryx-layout[layout*='split-column']:not([layout-md]) {
+      --oryx-grid-columns: var(--oryx-grid-columns-base);
+      grid-template-columns: var(--__split-col) auto;
+    }
   }
 
-  @media (min-width: 801px) {
-    oryx-layout[layout-lg='carousel'] {
-      --__child-columns: var(--child-columns, 24);
-      --__column-size: var(--oryx-grid-carousel-items, 4);
+  @media (min-width: 1024px) {
+    oryx-layout[layout-lg='free'],
+    oryx-layout[layout*='free']:not([layout-lg]) {
+      display: flex;
     }
+
+    oryx-layout[layout-lg='grid'] {
+      --oryx-grid-columns: var(--oryx-grid-columns-grid);
+    }
+
+    oryx-layout[layout-lg='carousel'],
+    oryx-layout[layout='carousel']:not([layout-lg]) {
+      --oryx-grid-columns: var(--oryx-grid-columns-carousel);
+      grid-auto-flow: column;
+      grid-template-columns: initial;
+    }
+
+    oryx-layout[vertical][layout='carousel']:not([layout-lg]) {
+      grid-auto-columns: 100%;
+      grid-auto-rows: var(--__col);
+      grid-auto-flow: row;
+    }
+
+    oryx-layout[layout-lg]:not([layout-lg='carousel']) {
+      grid-auto-flow: initial;
+    }
+
     oryx-layout[layout-lg='list'] {
       --oryx-grid-columns: 1;
     }
-  }
 
-  oryx-layout:not([layout]) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: var(--align-items, start);
-  }
-
-  oryx-layout:not([layout]) * {
-    flex: 0 0 auto;
+    oryx-layout[layout-lg*='split-column'],
+    oryx-layout[layout*='split-column']:not([layout-lg]) {
+      --oryx-grid-columns: var(--oryx-grid-columns-base);
+      grid-template-columns: var(--__split-col) auto;
+    }
   }
 </style>
 
-<h3>Flex</h3>
-
-<oryx-layout>
-  <span>1</span>
-  <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-  <span>3</span>
-  <span style="height: 100px; align-self: center">4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h3>List</h3>
-
-<oryx-layout layout="list">
-  <span>1</span>
-  <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-  <span>3</span>
-  <span style="height: 100px; align-self: center">4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h3>Responsive</h3>
-
-<h5>grid on large screen, carousel on small screen</h5>
-<oryx-layout
-  layout-lg="grid"
-  layout-md="list"
-  layout-sm="carousel"
-  style="--child-columns: 6"
->
-  <span>1</span>
-  <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-  <span>3</span>
-  <span style="height: 100px; align-self: center">4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h3>Column</h3>
-
-<h5>12-columns</h5>
-<oryx-layout layout="column">
-  <span>1</span>
-  <span>2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>1</span>
-  <span>2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>1</span>
-  <span>2</span>
-  <span>3</span>
-  <span>12</span>
-</oryx-layout>
-
-<h5>Flexible width</h5>
-<oryx-layout style="--oryx-container-width: 400px; height: 100px">
-  <span>Login </span>
-</oryx-layout>
-
-<h3>Grid</h3>
-
-<h5>Grid</h5>
-<oryx-layout layout="grid">
-  <span>1</span>
-  <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-  <span>3</span>
-  <span style="height: 100px; align-self: center">4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h5>Grid, full-bleed="both"</h5>
-<oryx-layout layout="grid" full-bleed="both">
-  <span>1</span>
-  <span>2</span>
-  <span>3</span>
-  <span>4</span>
-</oryx-layout>
-
-<h5>Grid, with column span</h5>
-<oryx-layout layout="grid">
-  <span>1</span>
-  <span style="--span: 2">2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h5>Grid, with inner grid (with inner carousel)</h5>
-<oryx-layout layout="grid">
-  <span>1</span>
-  <span style="--span: 2">
-    <oryx-layout layout="grid">
-      <span>1 (1st level nested item)</span>
-      <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-      <span>3</span>
-      <span>4</span>
-      <span>5</span>
-      <span>6</span>
-      <span style="--span: 2">
-        <oryx-layout layout="carousel" style="--child-columns: 12">
-          <span>1 (2nd level nested item)</span>
-          <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>12</span>
-        </oryx-layout>
-      </span>
-      <span>8</span>
-      <span>9</span>
+<div>
+  <h1>PDP</h1>
+  <oryx-layout layout="split-column-66">
+    <oryx-layout layout="list">
+      <oryx-layout
+        layout="carousel"
+        style="--oryx-grid-columns: 1; height: 200px"
+      >
+        <span>main 1</span>
+        <span>main 2</span>
+        <span>main 3</span>
+        <span>main 4</span>
+      </oryx-layout>
+      <oryx-layout
+        layout="grid"
+        style="--oryx-grid-item-size: 40px; width: auto"
+      >
+        <span>thumb 1</span>
+        <span>thumb 2</span>
+        <span>thumb 3</span>
+        <span>thumb 4</span>
+        <span>thumb 5</span>
+        <span>thumb 6</span>
+        <!-- <span>thumb 1</span>
+        <span>thumb 2</span>
+        <span>thumb 3</span>
+        <span>thumb 4</span>
+        <span>thumb 5</span>
+        <span>thumb 6</span> -->
+      </oryx-layout>
     </oryx-layout>
-  </span>
+    <span>
+      <oryx-layout layout="list">
+        <span><h1>product title</h1></span>
+        <span>sku</span>
+        <span>rating</span>
+        <span>price</span>
+        <span>add to cart</span>
+      </oryx-layout>
+    </span>
+    <span style="--col-span: 2">description</span>
+  </oryx-layout>
+  <oryx-layout>
+    <h3>best sale</h3>
+  </oryx-layout>
+  <oryx-layout layout="carousel" style="height: 100px">
+    <span>thumb 1</span>
+    <span>thumb 2</span>
+    <span>thumb 3</span>
+    <span>thumb 4</span>
+    <span>thumb 5</span>
+    <span>thumb 6</span>
+  </oryx-layout>
+</div>
+
+<oryx-layout layout="carousel" vertical>
+  <span>1</span>
+  <span>2</span>
   <span>3</span>
   <span>4</span>
   <span>5</span>
   <span>6</span>
 </oryx-layout>
 
-<h5>Grid, with custom column size (3)</h5>
-<oryx-layout layout="grid" style="--columns: 3">
-  <span>1</span>
-  <span style="--span: 2">2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>5</span>
-</oryx-layout>
-
-<h5>Grid, with custom column size (7)</h5>
-<oryx-layout layout="grid" style="--columns: 6">
-  <span>1</span>
-  <span style="--span: 2">2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>5</span>
-</oryx-layout>
-
-<h5>Grid, with nested text</h5>
-<p>The text column size is inherited from the parent column span</p>
-<oryx-layout layout="grid">
-  <span>1</span>
-  <span style="--span: 2">
-    <oryx-layout layout="text">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        <mark>Laboro autem non sine causa;</mark> Nos paucis ad haec additis
-        finem faciamus aliquando; Duo Reges: constructio interrete.
-        <a href="http://loripsum.net/" target="_blank"
-          >Quare attende, quaeso.</a
-        >
-        Conferam avum tuum Drusum cum C. Si longus, levis dictata sunt.
-      </p>
-    </oryx-layout>
-  </span>
-  <span>3</span>
-  <span>4</span>
-  <span>5</span>
-  <span>6</span>
-</oryx-layout>
-
-<h3>Carousel</h3>
-<h5>Carousel, full-bleed="end"</h5>
-<oryx-layout layout="carousel" style="--child-columns: 12" full-bleed="end">
-  <span>1</span>
-  <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
-  <span>3</span>
-  <span>4</span>
+<oryx-layout layout="list" layout-lg="split-column-66" layout-sm="grid">
   <span>1</span>
   <span>2</span>
-  <span>3</span>
-  <span>4</span>
-  <span>1</span>
-  <span>2</span>
-  <span>3</span>
-  <span>12</span>
-</oryx-layout>
-
-<h5>Carousel, no bleed, some inner col-span</h5>
-<oryx-layout layout="carousel" style="--child-columns: 9">
-  <span>1</span>
-  <span style="--span: 2">2</span>
   <span>3</span>
   <span>4</span>
   <span>5</span>
   <span>6</span>
   <span>7</span>
   <span>8</span>
+  <span>9</span>
 </oryx-layout>
 
-<h3>Split column</h3>
-<h5>split-column(66/33)</h5>
-<oryx-layout layout="split-column(66/33)">
-  <span>1</span>
-  <span>2</span>
-  <span>
-    <oryx-layout layout="carousel" style="--child-columns: 9">
+<div>
+  <h1>header</h1>
+  <oryx-layout layout="list" full-bleed>
+    <oryx-layout layout="free">
+      <span>link</span>
+      <span>link</span>
+      <span style="margin-inline-start: auto">locale</span>
+      <span>currency</span>
+    </oryx-layout>
+    <oryx-layout layout="free" sticky style="z-index: 2; align-items: center">
+      <span style="height: 70px; width: 120px">logo</span>
+      <span max-width>search</span>
+      <span style="height: 70px">profile</span>
+      <span style="height: 70px">cart</span>
+    </oryx-layout>
+  </oryx-layout>
+</div>
+
+<div>
+  <h1>Cart page</h1>
+</div>
+
+<oryx-layout layout="split-column-66">
+  <oryx-layout layout="list">
+    <oryx-layout layout="list">
+      <h3>cart entries</h3>
       <span>1</span>
-      <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+    </oryx-layout>
+  </oryx-layout>
+  <oryx-layout layout="list">
+    <h3>cart totals</h3>
+    <oryx-layout layout="list">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+    </oryx-layout>
+  </oryx-layout>
+</oryx-layout>
+<h1>list</h1>
+
+<div>
+  <h1>PLP</h1>
+  <oryx-layout layout="split-column-25">
+    <oryx-layout layout="list">
+      <span>1</span>
+      <span>2</span>
       <span>3</span>
       <span>4</span>
       <span>5</span>
-      <span>6</span>
-      <span>7</span>
-      <span>8</span>
-      <span>9</span>
     </oryx-layout>
-  </span>
-  <span>4</span>
-</oryx-layout>
 
-<h5>split-column(25/75)</h5>
-<oryx-layout layout="split-column(25/75)">
+    <oryx-layout layout="grid">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+    </oryx-layout>
+  </oryx-layout>
+</div>
+
+<h1>Column based layouts</h1>
+<h2>12 column grid system</h2>
+<oryx-layout layout="column">
   <span>1</span>
   <span>2</span>
   <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+  <span>7</span>
+  <span>8</span>
+  <span>9</span>
+  <span>10</span>
+  <span>11</span>
+  <span>12</span>
+</oryx-layout>
+
+<h1>Page bleed</h1>
+<h3>Full-bleed</h3>
+<oryx-layout layout="grid" full-bleed>
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h3>full bleed</h3>
+<ul>
+  <li>Carousel leaks into the bleed both sides</li>
+</ul>
+<oryx-layout layout="carousel" full-bleed>
+  <span>1</span>
+  <span style="--col-span: 2">2</span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h3>bleed out</h3>
+<ul>
+  <li>Carousel leaks only into the bleed at the end</li>
+</ul>
+<oryx-layout layout="carousel" bleed-out>
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <span>4</span>
+  <span style="--col-span: 2">5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h1>Grid based layouts</h1>
+<h2>Standard grid</h2>
+<ul>
+  <li>supports items spanning columns (2nd item)</li>
+  <li>supports padding (5th item)</li>
+  <li>supports margin (6th item)</li>
+  <li>supports height (7th item)</li>
+</ul>
+<oryx-layout layout="grid" style="align-items: center">
+  <span>1</span>
+  <span style="--col-span: 2">2 (spanned)</span>
+  <span>3</span>
+  <span>4</span>
+  <span style="--padding: 20px">5</span>
+  <span style="margin: 10px">6</span>
+  <span style="height: 100px">7</span>
+</oryx-layout>
+
+<h2>Grid with nested grid</h2>
+<ul>
+  <li>supports nested grid (2nd item)</li>
+  <li>supports nested grid inside spanned item (6th item)</li>
+  <li>
+    supports spanning inside nested grid (4th item inside 2nd nested grid)
+  </li>
+</ul>
+<oryx-layout layout="grid">
+  <span>1</span>
   <span>
+    <oryx-layout layout="grid">
+      <span>1 (nested)</span>
+      <span>2 (nested)</span>
+      <span>3 (nested)</span>
+      <span>4 (nested)</span>
+    </oryx-layout>
+  </span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span style="--col-span: 3">
+    <oryx-layout layout="grid">
+      <span>1 (nested)</span>
+      <span>2 (nested)</span>
+      <span>3 (nested)</span>
+      <span style="--col-span: 2">4 (nested and spanned)</span>
+      <span>5 (nested)</span>
+      <span>6 (nested)</span>
+      <span style="--col-span: 2">
+        <oryx-layout layout="carousel">
+          <span>1 (nested)</span>
+          <span style="--col-span: 2">2 (nested and spanned)</span>
+          <span>3 (nested)</span>
+          <span>4 (nested)</span>
+          <span>5 (nested)</span>
+          <span>6 (nested)</span>
+        </oryx-layout>
+      </span>
+    </oryx-layout>
+  </span>
+</oryx-layout>
+
+<h1>Column based layouts</h1>
+<h2>12 column grid system</h2>
+<oryx-layout layout="column">
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+  <span>7</span>
+  <span>8</span>
+  <span>9</span>
+  <span>10</span>
+  <span>11</span>
+  <span>12</span>
+</oryx-layout>
+
+<h2>split-column (50/50)</h2>
+<oryx-layout layout="split-column-50">
+  <span>1</span>
+  <span>2</span>
+  <span>
+    <oryx-layout layout="grid">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span style="--col-span: 2">5 (spanned)</span>
+      <span>6</span>
+    </oryx-layout>
+  </span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>split-column (66/33)</h2>
+<oryx-layout layout="split-column-66">
+  <span>1</span>
+  <span>2</span>
+  <span>
+    <oryx-layout layout="grid">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span style="--col-span: 2">5 (spanned)</span>
+      <span>6</span>
+    </oryx-layout>
+  </span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>split-column (75/25)</h2>
+<oryx-layout layout="split-column-75">
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <oryx-layout layout="carousel">
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>4</span>
+    <span>5</span>
+    <span>6</span>
+  </oryx-layout>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>split-column (25/75)</h2>
+<oryx-layout layout="split-column-25">
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <oryx-layout layout="carousel">
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>4</span>
+    <span>5</span>
+    <span>6</span>
+  </oryx-layout>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>Carousel</h2>
+<oryx-layout layout="carousel">
+  <span>1</span>
+  <span style="--col-span: 2">2</span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>Grid with inner grid</h2>
+<oryx-layout layout="carousel">
+  <span>1</span>
+  <span style="--col-span: 2">
+    <oryx-layout layout="grid">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+    </oryx-layout>
+  </span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span>6</span>
+</oryx-layout>
+
+<h2>Grid with inner grid</h2>
+<p>Custom padding to demo non-broken layout</p>
+<oryx-layout layout="grid">
+  <span>1</span>
+  <span>2</span>
+  <span>3</span>
+  <span>4</span>
+  <span>5</span>
+  <span style="--col-span: 2; --padding: 10px">
     <oryx-layout layout="grid">
       <span>1</span>
       <span>2</span>
@@ -445,34 +719,33 @@
       <span>4</span>
       <span>5</span>
       <span>6</span>
-      <span>7</span>
-      <span>8</span>
-      <span>9</span>
-    </oryx-layout></span
-  >
+    </oryx-layout>
+  </span>
+  <span>7</span>
 </oryx-layout>
 
-<h5>split-column(25/75)</h5>
-<oryx-layout layout="split-column(25/75)">
+<h2>Grid with inner carousel</h2>
+<p>Custom padding to demo non-broken layout</p>
+<oryx-layout layout="grid">
   <span>1</span>
   <span>2</span>
   <span>3</span>
-  <span>
-    <oryx-layout layout="carousel" style="--child-columns: 9">
+  <span>4</span>
+  <span>5</span>
+  <span style="--col-span: 2; --padding: 10px">
+    <oryx-layout layout="carousel">
       <span>1</span>
-      <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
+      <span>2</span>
       <span>3</span>
       <span>4</span>
       <span>5</span>
       <span>6</span>
-      <span>7</span>
-      <span>8</span>
-      <span>9</span>
-    </oryx-layout></span
-  >
+    </oryx-layout>
+  </span>
+  <span>7</span>
 </oryx-layout>
 
-<h3>Text</h3>
+<h1>Text</h1>
 
 <oryx-layout layout="text">
   <p>
@@ -483,7 +756,7 @@
     Conferam avum tuum Drusum cum C. Si longus, levis dictata sunt.
   </p>
 
-  <oryx-layout layout="carousel" style="--child-columns: 9">
+  <oryx-layout layout="carousel">
     <span>1</span>
     <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
     <span>3</span>
@@ -530,7 +803,7 @@
 </oryx-layout>
 
 <h5>split-column(66/33)</h5>
-<oryx-layout layout="split-column(66/33)">
+<oryx-layout layout="split-column-66">
   <span>1</span>
   <span>2</span>
   <span>
@@ -545,7 +818,7 @@
         Conferam avum tuum Drusum cum C. Si longus, levis dictata sunt.
       </p>
 
-      <oryx-layout layout="carousel" style="--child-columns: 9">
+      <oryx-layout layout="carousel">
         <span>1</span>
         <span style="padding: 20px; margin: 10px; border-width: 10px">2</span>
         <span>3</span>
@@ -591,5 +864,14 @@
       </oryx-layout>
     </oryx-layout>
   </span>
-  <span>4</span>
+
+  <oryx-layout layout="text">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      <mark>Laboro autem non sine causa;</mark> Nos paucis ad haec additis finem
+      faciamus aliquando; Duo Reges: constructio interrete.
+      <a href="http://loripsum.net/" target="_blank">Quare attende, quaeso.</a>
+      Conferam avum tuum Drusum cum C. Si longus, levis dictata sunt.
+    </p>
+  </oryx-layout>
 </oryx-layout>
