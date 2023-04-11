@@ -3,15 +3,6 @@ description: 'Prepare environment and install dependencies before release'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        token: ${{ env.GH_TOKEN }}
-        ref: ${{ env.RELEASE_BRANCH }}
-        submodules: recursive
     - uses: actions/cache@v3
       with:
         path: ~/.npm
