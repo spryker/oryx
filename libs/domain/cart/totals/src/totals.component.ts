@@ -8,8 +8,9 @@ export class CartTotalsComponent extends CartComponentMixin(
   ContentMixin(LitElement)
 ) {
   protected override render(): TemplateResult | void {
-    if (!this.totals) return;
-    return html` <h2>${i18n('cart.totals.summary')}</h2>
-      <experience-composition .uid=${this.uid}></experience-composition>`;
+    if (this.$totals()) {
+      return html`<h2>${i18n('cart.totals.summary')}</h2>
+        <experience-composition .uid=${this.uid}></experience-composition>`;
+    }
   }
 }

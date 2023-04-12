@@ -17,27 +17,20 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
   ContentMixin<CartTotalsDiscountOptions>(LitElement)
 ) {
   protected override render(): TemplateResult | void {
-    const { discountRowsAppearance } = this.componentOptions ?? {};
-    const { calculations, discounts } = this.totals ?? {};
+    const totals = this.$totals();
 
-    if (!calculations?.discountTotal) return;
-
-    const heading = html`
-      <span>
-        ${i18n('cart.totals.<count>-discounts', { count: discounts?.length })}
-      </span>
-      <span>${String(calculations.discountTotal)}</span>
-    `;
+    if (!totals || !totals.calculations?.discountTotal) return;
+    const { discountRowsAppearance } = this.$options();
 
     if (
       discountRowsAppearance === DiscountRowsAppearance.None ||
-      !discounts?.length
+      !totals.discounts?.length
     ) {
-      return heading;
+      return this.renderHeading();
     }
 
     const rows = html`<ul>
-      ${discounts.map(
+      ${totals.discounts.map(
         ({ displayName, amount }) =>
           html`<li>
             <span>${displayName}</span>
@@ -47,7 +40,7 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
     </ul>`;
 
     if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
-      return html`${heading}${rows}`;
+      return html`${this.renderHeading()}${rows}`;
     }
 
     return html`<oryx-collapsible
@@ -56,10 +49,27 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
       ?open=${discountRowsAppearance !== DiscountRowsAppearance.Collapsed}
     >
       <span slot="header">
-        ${i18n('cart.totals.<count>-discounts', { count: discounts.length })}
+        ${i18n('cart.totals.<count>-discounts', {
+          count: totals.discounts.length,
+        })}
       </span>
-      <span slot="aside">${calculations.discountTotal}</span>
+      <span slot="aside">${totals.calculations.discountTotal}</span>
       ${rows}
     </oryx-collapsible>`;
+  }
+
+  protected renderHeading(): TemplateResult | void {
+    const totals = this.$totals();
+
+    if (totals) {
+      return html`
+        <span>
+          ${i18n('cart.totals.<count>-discounts', {
+            count: totals.discounts?.length,
+          })}
+        </span>
+        <span>${String(totals.calculations.discountTotal)}</span>
+      `;
+    }
   }
 }

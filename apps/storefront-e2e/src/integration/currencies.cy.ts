@@ -1,8 +1,8 @@
-import { ProductStorage } from '../data-storages/product.storage';
 import { CartPage } from '../support/page_objects/cart.page';
 import { LandingPage } from '../support/page_objects/landing.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { ProductStorage } from '../test-data/product.storage';
 
 const homePage = new LandingPage();
 const cartPage = new CartPage();

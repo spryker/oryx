@@ -95,6 +95,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
+        this[hydrationRender] = false;
       }
     }
 

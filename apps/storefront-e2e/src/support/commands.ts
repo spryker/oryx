@@ -19,13 +19,6 @@ declare global {
   }
 }
 
-export const defaultUser: TestUserData = {
-  id: 'DE--1',
-  name: 'Spencor',
-  email: 'spencor.hopkin@spryker.com',
-  password: 'change123',
-};
-
 Cypress.Commands.add('login', (user: TestUserData) => {
   const loginPage = new LoginPage();
 

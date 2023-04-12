@@ -1,134 +1,58 @@
-import { CartEntry, CartService } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import {
   QuantityEventDetail,
   QuantityInputComponent,
 } from '@spryker-oryx/cart/quantity-input';
 import { resolve } from '@spryker-oryx/di';
-import { ContentController } from '@spryker-oryx/experience';
-import {
-  Product,
-  ProductComponentMixin,
-  ProductController,
-} from '@spryker-oryx/product';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { ProductMixin } from '@spryker-oryx/product';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  asyncValue,
-  hydratable,
-  i18n,
-  subscribe,
-} from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { createRef, ref } from 'lit/directives/ref.js';
-import {
-  BehaviorSubject,
-  catchError,
-  combineLatest,
-  delay,
-  map,
-  of,
-  shareReplay,
-  Subject,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
+export class CartAddComponent extends ProductMixin(
+  CartComponentMixin(ContentMixin<CartAddOptions>(LitElement))
+) {
   static styles = styles;
+
+  @state() protected confirmed = false;
+  @state() protected isInvalid = false;
 
   protected cartService = resolve(CartService);
 
-  protected options$ = new ContentController(this).getOptions();
-  protected product$ = new ProductController(this).getProduct();
-
-  protected data$ = combineLatest([
-    this.options$,
-    this.product$,
-    this.cartService.getEntries(),
-  ]).pipe(shareReplay({ bufferSize: 1, refCount: true }));
-
-  protected min$ = this.data$.pipe(
-    map(([_, product, entries]) => this.calculateMin(product, entries)),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
-
-  protected max$ = this.data$.pipe(
-    map(([_, product, entries]) => this.calculateMax(product, entries)),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
-
-  protected isBusy$ = new BehaviorSubject(false);
-  protected isQuantityInvalid$ = new BehaviorSubject(false);
-  protected isConfirmed$ = new BehaviorSubject(false);
-  protected isDisabled$ = combineLatest([
-    this.min$.pipe(map((m) => m === 0)),
-    this.isBusy$,
-    this.isConfirmed$,
-    this.isQuantityInvalid$,
-  ]).pipe(map((a) => !!a.find((a) => !!a)));
-
-  protected triggerEntry$ = new Subject<number>();
-  protected quantityInputRef = createRef<QuantityInputComponent>();
-
-  @subscribe()
-  protected add$ = this.triggerEntry$.pipe(
-    tap(() => this.isBusy$.next(true)),
-    withLatestFrom(this.product$),
-    switchMap(([quantity, product]) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.cartService.addEntry({ sku: product!.sku!, quantity })
-    ),
-    tap(() => {
-      this.isBusy$.next(false);
-      this.isConfirmed$.next(true);
-    }),
-    delay(800),
-    tap(() => this.isConfirmed$.next(false)),
-    catchError(() => {
-      this.isBusy$.next(false);
-      return of(null);
-    })
-  );
-
-  protected override render(): TemplateResult {
-    return html` ${asyncValue(this.data$, ([options, product]) =>
-      product?.sku
-        ? html`${this.renderQuantity(options)} ${this.renderButton(options)}`
-        : html``
-    )}`;
+  protected override render(): TemplateResult | void {
+    if (!this.$product()?.sku) return;
+    if (this.$options().hideQuantityInput) {
+      return this.renderButton();
+    }
+    return html`${this.renderQuantity()} ${this.renderButton()}`;
   }
 
-  protected renderQuantity(options: Partial<CartAddOptions>): TemplateResult {
-    if (options.hideQuantityInput) {
-      return html``;
-    }
-
+  protected renderQuantity(): TemplateResult | void {
     return html`<oryx-cart-quantity-input
-      ${ref(this.quantityInputRef)}
-      .min=${asyncValue(this.min$)}
-      .value=${asyncValue(this.min$)}
-      .max=${asyncValue(this.max$)}
+      .min=${this.min()}
+      .max=${this.max()}
       @update=${this.onUpdate}
       @submit=${this.onSubmit}
     ></oryx-cart-quantity-input>`;
   }
 
-  protected renderButton(options: Partial<CartAddOptions>): TemplateResult {
+  protected renderButton(): TemplateResult | void {
     return html` <oryx-button
       size=${Size.Sm}
-      ?loading=${asyncValue(this.isBusy$)}
-      ?confirmed=${asyncValue(this.isConfirmed$)}
       type=${ButtonType.Primary}
-      ?outline=${options.outlined}
+      ?loading=${this.$isBusy()}
+      ?outline=${this.$options().outlined}
+      ?confirmed=${this.confirmed}
     >
       <button
-        ?disabled=${asyncValue(this.isDisabled$)}
-        ?inert=${asyncValue(this.isBusy$)}
+        ?disabled=${this.isInvalid || this.max() < this.min()}
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
@@ -137,47 +61,48 @@ export class CartAddComponent extends ProductComponentMixin<CartAddOptions>() {
     </oryx-button>`;
   }
 
-  /**
-   * Returns 0 when the max available quantity is smaller than the min order quantity.
-   */
-  protected calculateMin(
-    product: Product | undefined,
-    entries: CartEntry[]
-  ): number {
-    const maxAvailable = this.calculateMax(product, entries);
-    const minOrderQuantity = 1;
-    return maxAvailable !== undefined && maxAvailable < minOrderQuantity
-      ? 0
-      : minOrderQuantity;
-  }
+  protected min = computed(() => {
+    const value = 1;
+    if (this.$product()) {
+      this.shadowRoot
+        ?.querySelector<QuantityInputComponent>('oryx-cart-quantity-input')
+        ?.reset?.();
+    }
+    return value;
+  });
 
-  /**
-   * When the product has a maximum quantity defined, we take the cumulated quantity from
-   * the active cart, and subtract this number from the available quantity.
-   */
-  protected calculateMax(
-    product: Product | undefined,
-    entries: CartEntry[]
-  ): number | undefined {
-    const cumulatedEntryCount = entries
-      .filter((entry) => entry.sku === product?.sku)
-      .map((entry) => entry.quantity)
-      .reduce((a: number, b) => a + b, 0);
-    return product?.availability?.quantity
-      ? product?.availability?.quantity - cumulatedEntryCount
-      : undefined;
-  }
+  protected max = computed(() => {
+    const qty = this.$product()?.availability?.quantity;
+    return qty
+      ? qty -
+          this.$entries()
+            .filter((entry) => entry.sku === this.$product()?.sku)
+            .map((entry) => entry.quantity)
+            .reduce((a: number, b) => a + b, 0)
+      : 0;
+  });
 
   protected onUpdate(e: CustomEvent<QuantityEventDetail>): void {
-    this.isQuantityInvalid$.next(!!e.detail.isInvalid);
+    this.isInvalid = !!e.detail.isInvalid;
   }
 
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
     e.preventDefault();
-    this.triggerEntry$.next(
+    const sku = this.$product()?.sku;
+    if (!sku) return;
+
+    const quantity =
       (e as CustomEvent).detail?.quantity ??
-        this.quantityInputRef.value?.value ??
-        1
-    );
+      this.shadowRoot?.querySelector<QuantityInputComponent>(
+        'oryx-cart-quantity-input'
+      )?.value ??
+      this.min();
+
+    this.cartService.addEntry({ sku, quantity }).subscribe({
+      next: () => {
+        this.confirmed = true;
+        setTimeout(() => (this.confirmed = false), 800);
+      },
+    });
   }
 }
