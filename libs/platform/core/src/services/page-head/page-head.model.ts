@@ -4,7 +4,7 @@ interface LinkAttributes {
   sizes?: string;
 }
 
-interface TitleAttributes {
+interface TextAttributes {
   text?: string;
 }
 
@@ -19,7 +19,7 @@ interface MetaAttributes {
 }
 
 export interface ElementAttributes
-  extends TitleAttributes,
+  extends TextAttributes,
     MetaAttributes,
     LinkAttributes {
   [key: string]: string | undefined;

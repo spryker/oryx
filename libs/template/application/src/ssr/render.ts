@@ -71,10 +71,8 @@ export const renderApp = async (
     component.indexOf('<') + 1,
     component.indexOf('>')
   );
-  const htmlAttrs = headDefinition?.find((def) => def.name === 'html')?.attrs;
-  const html = template
-    .replace('<html', `<html ${headDom.getElementAttributes(htmlAttrs ?? {})}`)
-    .replace('</head>', `${headDom.getElements(headDefinition ?? [])}\n</head>`)
+  const html = headDom
+    .getTemplateHtml(template, headDefinition)
     .replace(`<${componentName}></${componentName}>`, stream);
 
   return html;

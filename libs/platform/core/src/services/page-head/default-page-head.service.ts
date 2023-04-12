@@ -2,10 +2,14 @@ import { ElementAttributes, ElementDefinition } from './page-head.model';
 import { PageHeadService } from './page-head.service';
 
 export class DefaultPageHeadService implements PageHeadService {
-  addElements(definitions: ElementDefinition[]): void {
+  addElements(definitions: ElementDefinition | ElementDefinition[]): void {
+    if (!Array.isArray(definitions)) {
+      definitions = [definitions];
+    }
+
     for (const definition of definitions) {
       if (definition.name === 'html') {
-        this.updateElement(definition);
+        this.updateHtmlElement(definition.attrs);
 
         continue;
       }
@@ -26,7 +30,24 @@ export class DefaultPageHeadService implements PageHeadService {
     this.setAttributes(definition.attrs, element);
   }
 
-  addElement(definition: ElementDefinition): void {
+  updateHtmlElement(attrs: ElementAttributes): void {
+    this.setAttributes(attrs, document.documentElement);
+  }
+
+  setAttributes(attrs: ElementAttributes, element: HTMLElement): void {
+    for (const [key, value] of Object.entries(attrs)) {
+      if (value === 'text') {
+        element.textContent = value;
+
+        continue;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      element.setAttribute(key, value!);
+    }
+  }
+
+  protected addElement(definition: ElementDefinition): void {
     if (this.getElement(definition)) {
       return;
     }
@@ -39,30 +60,14 @@ export class DefaultPageHeadService implements PageHeadService {
   protected getElement(definition: ElementDefinition): HTMLElement | null {
     let attrs = '';
 
-    for (const [attr, value] of Object.entries(definition.attrs)) {
-      if (attr === 'text') {
+    for (const [key, value] of Object.entries(definition.attrs)) {
+      if (key === 'text') {
         continue;
       }
 
-      attrs += `[${attr}="${value}"]`;
+      attrs += `[${key}="${value}"]`;
     }
 
     return document.head.querySelector(`${definition.name}${attrs}`);
-  }
-
-  protected setAttributes(
-    attrs: ElementAttributes,
-    element: HTMLElement
-  ): void {
-    for (const [key, value] of Object.entries(attrs)) {
-      if (key === 'text' && value) {
-        element.textContent = value;
-
-        continue;
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      element.setAttribute(key, value!);
-    }
   }
 }
