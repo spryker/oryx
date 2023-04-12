@@ -5,6 +5,7 @@
     "auth": "libs/platform/auth",
     "cart": "libs/domain/cart",
     "checkout": "libs/domain/checkout",
+    "cli": "libs/template/cli",
     "content": "libs/domain/content",
     "core": "libs/platform/core",
     "di": "libs/base/di",

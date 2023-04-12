@@ -1,0 +1,47 @@
+{
+  "root": "libs/template/cli",
+  "sourceRoot": "libs/template/cli/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/template/cli/**/*.ts"]
+      }
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths",
+      "configurations": {
+        "update": {
+          "update": true
+        }
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "NODE_ENV='development' npx tsx bin/cli.ts",
+        "cwd": "libs/template/cli"
+      },
+      "configurations": {
+        "watch": {
+          "command": "NODE_ENV='development' npx tsx watch bin/cli.ts",
+          "cwd": "libs/template/cli"
+        }
+      }
+    }
+  },
+  "tags": ["layer:template"]
+}

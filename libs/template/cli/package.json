@@ -1,0 +1,25 @@
+{
+  "name": "@spryker-oryx/cli",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "Spryker Systems GmbH",
+  "license": "See license in LICENSE",
+  "description": "Spryker Oryx CLI",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "bin": {
+    "oryx": "./bin/cli.js"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "picocolors": "^1.0.0",
+    "rxjs": "^7.5.0"
+  },
+  "peerDependencies": {
+    "@spryker-oryx/core": "^0.4.0",
+    "@spryker-oryx/di": "^0.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
