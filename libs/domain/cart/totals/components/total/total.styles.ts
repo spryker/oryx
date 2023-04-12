@@ -17,7 +17,7 @@ const cartTotalsTotalRules = css`
     padding-block-end: 0;
   }
 
-  span:last-child {
+  span:nth-child(3) {
     padding-block-start: 0;
   }
 

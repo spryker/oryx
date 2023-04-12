@@ -47,12 +47,6 @@ export class CartController {
     );
   }
 
-  getEntry(groupKey?: string): Observable<CartEntry | undefined> {
-    return this.getEntries().pipe(
-      map((entries) => entries.find((entry) => entry.groupKey === groupKey))
-    );
-  }
-
   /**
    * Returns the cumulated quantities of all cart entries.
    */
