@@ -1,27 +1,25 @@
+import { Cart, CartEntry, CartService } from '@spryker-oryx/cart';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  of,
-} from 'rxjs';
-import { CartResourceResolver, CartResolver } from './cart.resolver';
-import { Cart, CartEntry, CartService } from '@spryker-oryx/cart';
+import { of } from 'rxjs';
+import { CartResolver, CartResourceResolver } from './cart.resolver';
 
 const emptyCart = {};
 
 const smallCart = {
   products: [
-    {quantity: 1} as CartEntry,
-    {quantity: 2} as CartEntry,
-    {quantity: 3} as CartEntry,
-  ]
+    { quantity: 1 } as CartEntry,
+    { quantity: 2 } as CartEntry,
+    { quantity: 3 } as CartEntry,
+  ],
 };
 
 const bigCart = {
   products: [
-    {quantity: 50} as CartEntry,
-    {quantity: 50} as CartEntry,
-    {quantity: 50} as CartEntry,
-  ]
+    { quantity: 50 } as CartEntry,
+    { quantity: 50 } as CartEntry,
+    { quantity: 50 } as CartEntry,
+  ],
 };
 
 class MockCartService implements Partial<CartService> {
@@ -37,14 +35,16 @@ describe('CartResolver', () => {
       providers: [
         {
           provide: CartService,
-          useClass: MockCartService
+          useClass: MockCartService,
         },
-        CartResourceResolver
+        CartResourceResolver,
       ],
     });
 
     resolver = testInjector.inject(`${TokenResourceResolvers}CART`);
-    cartService = testInjector.inject(CartService) as unknown as MockCartService;
+    cartService = testInjector.inject(
+      CartService
+    ) as unknown as MockCartService;
   });
 
   afterEach(() => {
@@ -53,23 +53,31 @@ describe('CartResolver', () => {
   });
 
   describe('SUMMARY', () => {
-    const expectedResult = (description: string, expectation: null | string, cart: Partial<Cart> | null = null) => {
+    const expectedResult = (
+      description: string,
+      expectation: null | string,
+      cart: Partial<Cart> | null = null
+    ) => {
       describe(description, () => {
         const callback = vi.fn();
         beforeEach(() => {
-          cartService.getCart = vi.fn().mockReturnValue(of(cart))
+          cartService.getCart = vi.fn().mockReturnValue(of(cart));
           resolver.resolve('SUMMARY').subscribe(callback);
         });
-    
+
         it(`should return ${expectation}`, () => {
-          expect(callback).toHaveBeenCalledWith(expectation)
-        })
+          expect(callback).toHaveBeenCalledWith(expectation);
+        });
       });
     };
 
     expectedResult('when cart is not ready', null);
     expectedResult('when cart is empty', null, emptyCart);
     expectedResult('when cart is provided', '6', smallCart);
-    expectedResult('when cart`s summary quantity is bigger then 99', '99+', bigCart);
+    expectedResult(
+      'when cart`s summary quantity is bigger then 99',
+      '99+',
+      bigCart
+    );
   });
 });

@@ -3,12 +3,12 @@ import { of } from 'rxjs';
 
 describe('BaseResolver', () => {
   const resolvers: Record<string, Resolver> = {
-    TEST: () => of('test')
-  }
+    TEST: () => of('test'),
+  };
 
   const resolver = new (class extends BaseResolver<typeof resolvers> {
     protected resolvers = resolvers;
-  });
+  })();
 
   describe('when token is provided', () => {
     const callback = vi.fn();
@@ -32,7 +32,9 @@ describe('BaseResolver', () => {
     });
 
     it('should throw a console warning', () => {
-      expect(warn).toHaveBeenCalledWith(`Resolver ${fakeToken} is not supported`);
+      expect(warn).toHaveBeenCalledWith(
+        `Resolver ${fakeToken} is not supported`
+      );
     });
 
     it('should resolve token name as result', () => {

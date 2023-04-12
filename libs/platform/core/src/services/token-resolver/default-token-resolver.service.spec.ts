@@ -1,11 +1,16 @@
 import { createInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { ResolvedToken, TokenResolver, TokenResourceResolver, TokenResourceResolvers } from './token-resolver.service';
 import { DefaultTokenService } from './default-token-resolver.service';
+import {
+  ResolvedToken,
+  TokenResolver,
+  TokenResourceResolver,
+  TokenResourceResolvers,
+} from './token-resolver.service';
 
 class TestResolver implements TokenResourceResolver {
   resolve(resolver: string): ResolvedToken {
-    return of(resolver)
+    return of(resolver);
   }
 }
 
@@ -42,7 +47,7 @@ describe('DefaultTokenService', () => {
 
     it('should resolve string as result', () => {
       expect(callback).toHaveBeenCalledWith(notToken);
-    })
+    });
   });
 
   describe('when token for non-existent resolver provided', () => {
@@ -53,7 +58,7 @@ describe('DefaultTokenService', () => {
 
     it('should resolve token as result', () => {
       expect(callback).toHaveBeenCalledWith(incorrectResolver);
-    })
+    });
   });
 
   describe('when correct token provided', () => {
@@ -64,6 +69,6 @@ describe('DefaultTokenService', () => {
 
     it('should resolve the token', () => {
       expect(callback).toHaveBeenCalledWith('RESOLVED_VALUE');
-    })
+    });
   });
 });

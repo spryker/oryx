@@ -1,19 +1,18 @@
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  of,
-} from 'rxjs';
-import { UserResolver, UserResourceResolver } from './user.resolver';
 import { User, UserService } from '@spryker-oryx/user';
+import { BehaviorSubject } from 'rxjs';
+import { UserResolver, UserResourceResolver } from './user.resolver';
 
 const emptyUser = {};
 
 const userWithName = {
-  firstName: 'test'
+  firstName: 'test',
 };
 
+const userObservable = new BehaviorSubject<Partial<User> | null>(null);
 class MockUserService implements Partial<UserService> {
-  getUser = vi.fn().mockReturnValue(of(null));
+  getUser = vi.fn().mockReturnValue(userObservable);
 }
 
 describe('UserResolver', () => {
@@ -25,14 +24,16 @@ describe('UserResolver', () => {
       providers: [
         {
           provide: UserService,
-          useClass: MockUserService
+          useClass: MockUserService,
         },
-        UserResourceResolver
+        UserResourceResolver,
       ],
     });
 
     resolver = testInjector.inject(`${TokenResourceResolvers}USER`);
-    userService = testInjector.inject(UserService) as unknown as MockUserService;
+    userService = testInjector.inject(
+      UserService
+    ) as unknown as MockUserService;
   });
 
   afterEach(() => {
@@ -49,18 +50,22 @@ describe('UserResolver', () => {
       describe(description, () => {
         const callback = vi.fn();
         beforeEach(() => {
-          userService.getUser = vi.fn().mockReturnValue(of(user));
+          userObservable.next(user);
           resolver.resolve('NAME').subscribe(callback);
         });
-    
+
         it(`should return ${expectation}`, () => {
-          expect(callback).toHaveBeenCalledWith(expectation)
-        })
+          expect(callback).toHaveBeenCalledWith(expectation);
+        });
       });
     };
 
     expectedResult('when user is not ready', 'login');
     expectedResult('when user does not have firstName', 'login', emptyUser);
-    expectedResult('when user has firstName', userWithName.firstName, userWithName);
+    expectedResult(
+      'when user has firstName',
+      userWithName.firstName,
+      userWithName
+    );
   });
 });

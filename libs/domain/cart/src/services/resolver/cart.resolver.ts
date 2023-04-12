@@ -1,8 +1,8 @@
 import {
+  BaseResolver,
   ResolvedToken,
   Resolver,
   TokenResourceResolvers,
-  BaseResolver
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
 import { map } from 'rxjs';
@@ -10,7 +10,7 @@ import { CartService } from '..';
 
 export type CartResolvers = {
   SUMMARY: Resolver;
-}
+};
 
 export class CartResolver extends BaseResolver<CartResolvers> {
   protected cartService$ = resolve(CartService);

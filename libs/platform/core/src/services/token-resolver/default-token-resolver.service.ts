@@ -20,7 +20,9 @@ export class DefaultTokenService implements TokenResolver {
     return `${TokenResourceResolvers}${resourceResolver}`;
   }
 
-  protected getResolver(resourceResolver: string): TokenResourceResolver | undefined {
+  protected getResolver(
+    resourceResolver: string
+  ): TokenResourceResolver | undefined {
     const key = this.getResolverKey(resourceResolver);
     if (!this.resolvers.has(key)) {
       try {
@@ -31,7 +33,7 @@ export class DefaultTokenService implements TokenResolver {
       }
     }
 
-    return this.resolvers.get(key)
+    return this.resolvers.get(key);
   }
 
   resolveToken(token: string): ResolvedToken {
