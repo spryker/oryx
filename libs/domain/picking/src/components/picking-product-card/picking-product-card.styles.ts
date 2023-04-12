@@ -56,6 +56,10 @@ export const styles = css`
     color: var(--oryx-color-ink);
   }
 
+  p {
+    margin: 0;
+  }
+
   .bold-text {
     font-weight: 600;
   }

@@ -1,0 +1,36 @@
+{
+  "name": "fulfillment-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/fulfillment-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "browser": "chrome",
+        "cypressConfig": "apps/fulfillment-e2e/cypress.config.js",
+        "watch": true,
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "headless": {
+          "watch": false
+        },
+        "headless-ci": {
+          "cypressConfig": "apps/fulfillment-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/fulfillment-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": ["root"],
+  "implicitDependencies": ["fulfillment"]
+}
