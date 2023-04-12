@@ -11,4 +11,6 @@ export const productAttributesComponent = componentDef({
   name: 'oryx-product-attributes',
   impl: () =>
     import('./attributes.component').then((m) => m.ProductAttributesComponent),
+  schema: () =>
+    import('./attributes.schema').then((m) => m.productAttributesSchema),
 });

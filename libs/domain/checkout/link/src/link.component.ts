@@ -6,11 +6,11 @@ import { html, LitElement, TemplateResult } from 'lit';
 @hydratable(['window:load'])
 export class CheckoutLinkComponent extends CartComponentMixin(LitElement) {
   protected override render(): TemplateResult | void {
-    if (this.isEmpty) return;
+    if (this.$isEmpty()) return;
 
     const linkOptions = {
       type: SemanticLinkType.Checkout,
-      loading: this.isBusy,
+      loading: this.$isBusy(),
       button: true,
     };
 

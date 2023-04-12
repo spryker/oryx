@@ -63,10 +63,8 @@ describe('ProductDescriptionComponent', () => {
     });
 
     it('should pass the options to the oryx-text', () => {
-      expect(
-        Number(getComputedStyle(getText()).getPropertyValue('--line-clamp'))
-      ).toBe(options.truncateAfter);
       expect(getText().hideToggle).toBe(!options.enableToggle);
+      expect(getText().truncateAfter).toBe(options.truncateAfter);
       expect(getText().defaultExpanded).toBe(options.expandInitially);
     });
   });
@@ -81,9 +79,7 @@ describe('ProductDescriptionComponent', () => {
     });
 
     it('should set the default value', () => {
-      expect(getComputedStyle(getText()).getPropertyValue('--line-clamp')).toBe(
-        '3'
-      );
+      expect(getText().truncateAfter).toBe(3);
     });
   });
 });

@@ -13,7 +13,7 @@ import { styles } from './banner.styles';
 
 @defaultOptions({})
 @ssrShim('style')
-@hydratable('click')
+@hydratable(['mouseover', 'focusin'])
 export class BannerComponent extends ContentMixin<BannerOptions, BannerContent>(
   LitElement
 ) {

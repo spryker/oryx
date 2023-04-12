@@ -1,4 +1,4 @@
-import { ssrShim } from '@spryker-oryx/utilities';
+import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,20 +6,21 @@ import { VideoAspectRatio, VideoAttributes, VideoPreload } from './video.model';
 import { videoStyles } from './video.styles';
 
 @ssrShim('style')
+@hydratable()
 export default class VideoComponent
   extends LitElement
   implements VideoAttributes
 {
   static styles = [videoStyles];
 
-  @property() url?: string;
-  @property({ type: Boolean }) autoplay?: boolean;
-  @property({ type: Boolean }) controls?: boolean;
-  @property({ type: Boolean }) loop?: boolean;
-  @property({ type: Boolean }) muted?: boolean;
-  @property({ type: Boolean }) playsInline?: boolean;
-  @property() preload?: VideoPreload;
-  @property() set aspectRatio(value: VideoAspectRatio) {
+  @property({ reflect: true }) url?: string;
+  @property({ type: Boolean, reflect: true }) autoplay?: boolean;
+  @property({ type: Boolean, reflect: true }) controls?: boolean;
+  @property({ type: Boolean, reflect: true }) loop?: boolean;
+  @property({ type: Boolean, reflect: true }) muted?: boolean;
+  @property({ type: Boolean, reflect: true }) playsInline?: boolean;
+  @property({ reflect: true }) preload?: VideoPreload;
+  @property({ reflect: true }) set aspectRatio(value: VideoAspectRatio) {
     this.style.setProperty('--aspect-ratio', value);
     this.style.setProperty('height', value ? '' : 'var(--height)');
   }

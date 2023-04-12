@@ -25,7 +25,7 @@ export class CartSummaryComponent extends CartComponentMixin(
   protected override render(): TemplateResult {
     return html`
       <oryx-button>
-        <a href=${ifDefined(this.link)}>
+        <a href=${ifDefined(this.link())}>
           <oryx-icon type="cart"></oryx-icon>
           ${this.renderMark()}
           <oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}>

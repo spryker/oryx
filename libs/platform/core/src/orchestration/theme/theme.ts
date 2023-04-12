@@ -1,6 +1,11 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { iconInjectable, rootInjectable } from '@spryker-oryx/utilities';
-import { css, isServer } from 'lit';
+import {
+  deferHydrationAttribute,
+  hydratableAttribute,
+  iconInjectable,
+  rootInjectable,
+} from '@spryker-oryx/utilities';
+import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
 import { App, AppPlugin, AppPluginBeforeApply } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
@@ -74,8 +79,11 @@ export class ThemePlugin
     const implementations = [];
 
     if (!isServer) {
+      const hydratable = unsafeCSS(`[${hydratableAttribute}]`);
+      const deferHydration = unsafeCSS(`[${deferHydrationAttribute}]`);
+
       implementations.push(css`
-        :not([defer-hydration]):not([hydratable]):not(:defined) {
+        :not(${deferHydration}):not(${hydratable}):not(:defined) {
           display: none;
         }
       `);

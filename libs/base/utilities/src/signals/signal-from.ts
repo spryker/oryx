@@ -7,30 +7,30 @@ export interface ConnectableSignal<T> extends Signal<T> {
   disconnect(): void;
 }
 
-class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
+export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
   subscription?: Subscription;
 
   constructor(protected observable: Observable<T>, initialValue?: K) {
     super(initialValue as K);
   }
 
-  watch(sniffer: SignalConsumer) {
-    this.connect();
+  watch(sniffer: SignalConsumer): void {
+    if (this.consumers.size === 0) this.connect();
     super.watch(sniffer);
   }
 
-  unwatch(sniffer: SignalConsumer) {
-    this.disconnect();
+  unwatch(sniffer: SignalConsumer): void {
+    if (this.consumers.size === 1) this.disconnect();
     super.unwatch(sniffer);
   }
 
-  connect() {
+  connect(): void {
     if (!this.subscription) {
       this.subscription = this.observable.subscribe((value) => this.set(value));
     }
   }
 
-  disconnect() {
+  disconnect(): void {
     this.subscription?.unsubscribe();
     this.subscription = undefined;
   }

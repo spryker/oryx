@@ -11,6 +11,7 @@
     "experience": "libs/platform/experience",
     "form": "libs/base/form",
     "fulfillment": "apps/fulfillment",
+    "fulfillment-e2e": "apps/fulfillment-e2e",
     "i18n": "libs/platform/i18n",
     "indexed-db": "libs/platform/indexed-db",
     "labs": "libs/template/labs",

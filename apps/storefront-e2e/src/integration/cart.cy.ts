@@ -1,7 +1,7 @@
-import { ProductStorage } from '../data-storages/product.storage';
 import { CartPage } from '../support/page_objects/cart.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { ProductStorage } from '../test-data/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
@@ -25,15 +25,13 @@ describe('Cart', () => {
         pdp.addItemsToTheCart(1);
       });
 
-      describe('and the user navigates to the cart page', () => {
+      describe('and the user navigates to the cart page', () => {
         beforeEach(() => {
           pdp.header.getCartSummary().click();
         });
 
         it('should render the cart page with the newly added entries', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (one item)');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 1,
             subTotal: '€62.77',
@@ -74,9 +72,7 @@ describe('Cart', () => {
       });
 
       it('should render the cart entries and totals', () => {
-        cartPage
-          .getCartEntriesHeading()
-          .should('contain.text', 'My cart (one item)');
+        cartPage.getCartEntriesHeading().should('contain.text', '1 items');
         checkCartEntry({
           quantity: 1,
           subTotal: '€62.77',
@@ -113,9 +109,7 @@ describe('Cart', () => {
         });
 
         it('should update the cart totals', () => {
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (4 items)');
+          cartPage.getCartEntriesHeading().should('contain.text', '4 items');
           checkCartEntry({
             quantity: 4,
             subTotal: '€225.97',
@@ -140,9 +134,7 @@ describe('Cart', () => {
 
         it('should update the cart totals after blur', () => {
           // quantity updated, but not yet recalculated prices
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (one item)');
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€62.77',
@@ -156,9 +148,7 @@ describe('Cart', () => {
           cy.get('body').click();
 
           // after blur the quantity the prices will be recalculated
-          cartPage
-            .getCartEntriesHeading()
-            .should('contain.text', 'My cart (2 items)');
+          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
             subTotal: '€112.99',

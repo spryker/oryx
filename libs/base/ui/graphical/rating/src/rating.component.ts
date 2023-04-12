@@ -1,3 +1,4 @@
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -12,6 +13,7 @@ import {
 /** we'll have performance issues when someone accidentally uses a high scale */
 const MAX_SCALE = 25;
 
+@hydratable()
 export class RatingComponent extends LitElement implements RatingProperties {
   static styles = [
     ratingBaseStyles,

@@ -150,9 +150,16 @@
         "libs/domain/site/locale-selector/index.ts"
       ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/navigation-button": [
+        "libs/domain/site/navigation-button/index.ts"
+      ],
+      "@spryker-oryx/site/navigation-item": [
+        "libs/domain/site/navigation-item/index.ts"
+      ],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
       ],
+      "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
       "@spryker-oryx/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [

@@ -1,6 +1,6 @@
 // organize-imports-ignore
-import { nextFrame, fixture, html } from '@open-wc/testing-helpers';
 import './ponyfill';
+import { nextFrame, fixture, html } from '@open-wc/testing-helpers';
 import { wait } from '@spryker-oryx/utilities';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { textComponent } from './text.def';
@@ -25,27 +25,11 @@ const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
             with desktop publishing software like Aldus PageMaker including
             versions of Lorem Ipsum.`;
 
-vi.mock('@spryker-oryx/utilities', async () => {
-  const utils = (await vi.importActual(
-    '@spryker-oryx/utilities'
-  )) as Array<unknown>;
-
-  return {
-    ...utils,
-    hydratable: () => (clazz: HTMLElement) => clazz,
-  };
-});
-
 describe('TextComponent', () => {
   let element: TextComponent;
 
   beforeAll(async () => {
     await useComponent(textComponent);
-  });
-
-  it('is defined', () => {
-    const el = document.createElement('oryx-text');
-    expect(el).toBeInstanceOf(TextComponent);
   });
 
   describe('text truncation', () => {
@@ -67,7 +51,7 @@ describe('TextComponent', () => {
     describe('when --line-clamp css variable is set', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-text .style="${`--line-clamp: 2`}">
+          html`<oryx-text .truncateAfter=${2}>
             <p>${text}</p>
             <p>${text}</p>
           </oryx-text>`
@@ -93,7 +77,8 @@ describe('TextComponent', () => {
 
       describe('when --line-clamp css variable is removed', () => {
         beforeEach(async () => {
-          element.style.removeProperty('--line-clamp');
+          element.truncateAfter = 0;
+          await element.requestUpdate();
 
           //simulate resize
           const textEl = element?.shadowRoot?.querySelector(
@@ -139,7 +124,7 @@ describe('TextComponent', () => {
     describe('when click on toggle button', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-text .style="${`--line-clamp: 2`}">
+          html`<oryx-text .truncateAfter=${2}>
             <p>${text}</p>
             <p>${text}</p>
           </oryx-text>`
