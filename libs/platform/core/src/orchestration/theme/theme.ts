@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { ElementDefinition, HeadDOMService } from '../../services/head-dom';
+import { ElementDefinition, PageHeadService } from '../../services/page-head';
 import { App, AppPlugin } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import { InjectionPlugin } from '../injection';
@@ -66,7 +66,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     const head = this.getHeadDefinition();
 
     if (head) {
-      injection.getInjector().inject(HeadDOMService).addElements(head);
+      injection.getInjector().inject(PageHeadService).addElements(head);
     }
 
     if (typeof components.getOptions().root === 'string' && document.body) {

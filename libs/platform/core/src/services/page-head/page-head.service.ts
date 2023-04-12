@@ -1,8 +1,8 @@
-import { ElementDefinition } from './head-dom.model';
+import { ElementDefinition } from './page-head.model';
 
-export const HeadDOMService = 'oryx.HeadDOMService';
+export const PageHeadService = 'oryx.PageHeadService';
 
-export interface HeadDOMService {
+export interface PageHeadService {
   addElements(definitions: ElementDefinition[]): void;
   addElement(definition: ElementDefinition): void;
   updateElement(definition: ElementDefinition): void;
@@ -10,6 +10,6 @@ export interface HeadDOMService {
 
 declare global {
   interface InjectionTokensContractMap {
-    [HeadDOMService]: HeadDOMService;
+    [PageHeadService]: PageHeadService;
   }
 }

@@ -1,7 +1,7 @@
-import { ElementAttributes, ElementDefinition } from './head-dom.model';
-import { HeadDOMService } from './head-dom.service';
+import { ElementAttributes, ElementDefinition } from './page-head.model';
+import { PageHeadService } from './page-head.service';
 
-export class DefaultHeadDOMService implements HeadDOMService {
+export class DefaultPageHeadService implements PageHeadService {
   addElements(definitions: ElementDefinition[]): void {
     for (const definition of definitions) {
       if (definition.name === 'html') {

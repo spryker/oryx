@@ -10,7 +10,6 @@ import {
   DefaultFeatureOptionsService,
   FeatureOptionsService,
 } from './feature-options';
-import { DefaultHeadDOMService, HeadDOMService } from './head-dom';
 import {
   DefaultHttpHandler,
   DefaultHttpService,
@@ -18,6 +17,7 @@ import {
   HttpService,
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
+import { DefaultPageHeadService, PageHeadService } from './page-head';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import { DefaultTokenService, TokenResolver } from './token-resolver';
@@ -82,7 +82,7 @@ export const coreProviders: Provider[] = [
     useClass: DefaultTokenService,
   },
   {
-    provide: HeadDOMService,
-    useClass: DefaultHeadDOMService,
+    provide: PageHeadService,
+    useClass: DefaultPageHeadService,
   },
 ];

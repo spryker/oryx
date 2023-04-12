@@ -1,10 +1,10 @@
 import {
-  DefaultHeadDOMService,
+  DefaultPageHeadService,
   ElementAttributes,
   ElementDefinition,
 } from '@spryker-oryx/core';
 
-export class ServerHeadDOMService extends DefaultHeadDOMService {
+export class ServerPageHeadService extends DefaultPageHeadService {
   addElements(): void {
     //
   }

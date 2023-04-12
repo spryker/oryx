@@ -1,7 +1,7 @@
 import {
   App,
   ContextService,
-  HeadDOMService,
+  PageHeadService,
   InjectionPlugin,
   SSRAwaiterService,
   ThemePlugin,
@@ -9,7 +9,7 @@ import {
 import { TemplateResult } from 'lit';
 import {
   ServerContextService,
-  ServerHeadDOMService,
+  ServerPageHeadService,
 } from '@spryker-oryx/core/server';
 import { RouterService } from '@spryker-oryx/router';
 import { render as litRender } from '@lit-labs/ssr';
@@ -43,7 +43,7 @@ export const renderApp = async (
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
   const routerService = injector.inject(RouterService);
   const awaiter = injector.inject(SSRAwaiterService);
-  const headDom = injector.inject(HeadDOMService) as ServerHeadDOMService;
+  const headDom = injector.inject(PageHeadService) as ServerPageHeadService;
   const context = injector.inject(ContextService) as ServerContextService;
   const ssrResult = litRender(element);
 
