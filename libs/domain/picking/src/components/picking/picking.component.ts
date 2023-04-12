@@ -44,6 +44,11 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   protected productCardRef: Ref<PickingProductCardComponent> = createRef();
   protected notPickedTabRef: Ref<TabComponent> = createRef();
+  protected tabRefs: Ref<TabComponent>[] = [
+    this.notPickedTabRef,
+    createRef(),
+    createRef(),
+  ];
 
   protected buildTabs(): PickingTab[] {
     return [
@@ -163,7 +168,12 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const tabs = this.buildTabs();
 
     return html`
-      <oryx-tabs appearance="${TabsAppearance.Secondary}" sticky shadow>
+      <oryx-tabs
+        appearance="${TabsAppearance.Secondary}"
+        sticky
+        shadow
+        @click=${this.onTabChange}
+      >
         ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
       </oryx-tabs>
       ${this.renderConfirmationModal()}
@@ -175,13 +185,8 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       ? html`
           ${repeat(
             tabs,
-            (tab) => html`
-              <oryx-tab
-                for="tab-${tab.id}"
-                ${tab.id === ItemsFilters.NotPicked
-                  ? ref(this.notPickedTabRef)
-                  : ''}
-              >
+            (tab, index) => html`
+              <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
                 ${i18n(`picking.${tab.title}`)}
                 <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
               </oryx-tab>
@@ -303,6 +308,25 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         </oryx-button>
       </oryx-modal>
     `;
+  }
+
+  protected override updated(): void {
+    this.onTabChange();
+  }
+
+  protected onTabChange(): void {
+    for (let i = 0; i < this.tabRefs.length; i++) {
+      const tab = this.tabRefs[i].value;
+      if (!tab) {
+        continue;
+      }
+      const chip = tab.querySelector('oryx-chip');
+      if (tab.selected) {
+        chip?.setAttribute('appearance', 'success');
+      } else {
+        chip?.removeAttribute('appearance');
+      }
+    }
   }
 
   private updatePickingItem(

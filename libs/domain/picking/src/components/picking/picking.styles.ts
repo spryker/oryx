@@ -62,8 +62,4 @@ export const styles = css`
     font-size: 18px;
     font-weight: 600;
   }
-
-  oryx-tab[selected] oryx-chip {
-    background-color: var(--oryx-color-success-100);
-  }
 `;
