@@ -10,8 +10,6 @@ export async function createProdSever(
   config: ServerModeConfig
 ): Promise<void> {
   const { indexPath, entryPath, namespace } = config;
-  const template = readFileSync(`${indexPath}/index.html`, 'utf-8');
-  const render = serverContext({ entry: entryPath, namespace });
 
   app.use('/assets', express.static(`${indexPath}/assets`));
 
@@ -27,6 +25,8 @@ export async function createProdSever(
     }
 
     try {
+      const template = readFileSync(`${indexPath}/index.html`, 'utf-8');
+      const render = serverContext({ entry: entryPath, namespace });
       const html = await render({ route, template });
 
       res.status(200).end(html);
