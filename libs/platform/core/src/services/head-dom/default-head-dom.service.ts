@@ -1,8 +1,5 @@
-import {
-  ElementAttributes,
-  ElementDefinition,
-  HeadDOMService,
-} from './head-dom.service';
+import { ElementAttributes, ElementDefinition } from './head-dom.model';
+import { HeadDOMService } from './head-dom.service';
 
 export class DefaultHeadDOMService implements HeadDOMService {
   addElements(definitions: ElementDefinition[]): void {
