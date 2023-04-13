@@ -1,5 +1,11 @@
 import { Type } from '@spryker-oryx/di';
-import { asyncState, signal, Signal, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  signal,
+  Signal,
+  SignalController,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Observable } from 'rxjs';
@@ -55,6 +61,11 @@ export const ContentMixin = <
 
     protected $options = signal(this.contentController.getOptions(), {});
     protected $content = signal(this.contentController.getContent(), {});
+
+    constructor(...args: any[]) {
+      super(...args);
+      new SignalController(this);
+    }
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>

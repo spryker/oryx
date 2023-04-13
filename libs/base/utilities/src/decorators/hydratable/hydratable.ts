@@ -5,7 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
-import { Effect, effect, SignalController } from '../../signals';
+import { Effect, effect } from '../../signals';
 import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
