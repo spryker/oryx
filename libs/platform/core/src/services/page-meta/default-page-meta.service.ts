@@ -14,13 +14,7 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      if (this.get(definition)) {
-        continue;
-      }
-
-      const element = document.createElement(definition.name);
-      this.setAttributes(definition.attrs, element);
-      document.head.appendChild(element);
+      this.insert(definition);
     }
   }
 
@@ -28,7 +22,7 @@ export class DefaultPageMetaService implements PageMetaService {
     const element = document.querySelector<HTMLElement>(definition.name);
 
     if (!element) {
-      this.addElement(definition);
+      this.insert(definition);
 
       return;
     }
@@ -50,6 +44,16 @@ export class DefaultPageMetaService implements PageMetaService {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       element.setAttribute(key, value!);
     }
+  }
+
+  protected insert(definition: ElementDefinition): void {
+    if (this.get(definition)) {
+      return;
+    }
+
+    const element = document.createElement(definition.name);
+    this.setAttributes(definition.attrs, element);
+    document.head.appendChild(element);
   }
 
   protected get(definition: ElementDefinition): HTMLElement | null {
