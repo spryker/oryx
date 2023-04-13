@@ -16,10 +16,7 @@ export class ServerPageMetaService extends DefaultPageMetaService {
 
     for (const { name, attrs } of definitions) {
       if (name === 'html') {
-        this.template = this.template.replace(
-          '<html',
-          `<html ${this.setAttributes(attrs)}`
-        );
+        this.setHtmlAttributes(attrs);
 
         continue;
       }
@@ -36,7 +33,14 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     this.template = this.template.replace('</head>', `${stream}\n</head>`);
   }
 
-  setAttributes(attrs: ElementAttributes): string {
+  setHtmlAttributes(attrs: ElementAttributes): void {
+    this.template = this.template.replace(
+      '<html',
+      `<html ${this.setAttributes(attrs)}`
+    );
+  }
+
+  protected setAttributes(attrs: ElementAttributes): string {
     return Object.entries(attrs).reduce(
       (acc, [key, value]) => `${acc} ${key}="${value}"`,
       ''

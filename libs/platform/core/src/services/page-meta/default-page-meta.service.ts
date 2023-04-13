@@ -9,7 +9,7 @@ export class DefaultPageMetaService implements PageMetaService {
 
     for (const definition of definitions) {
       if (definition.name === 'html') {
-        this.setAttributes(definition.attrs);
+        this.setHtmlAttributes(definition.attrs);
 
         continue;
       }
@@ -30,9 +30,13 @@ export class DefaultPageMetaService implements PageMetaService {
     this.setAttributes(definition.attrs, element);
   }
 
-  setAttributes(
+  setHtmlAttributes(attrs: ElementAttributes): void {
+    this.setAttributes(attrs, document.documentElement);
+  }
+
+  protected setAttributes(
     attrs: ElementAttributes,
-    element = document.documentElement
+    element: HTMLElement
   ): void {
     for (const [key, value] of Object.entries(attrs)) {
       if (value === 'text') {
