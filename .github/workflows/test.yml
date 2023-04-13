@@ -26,7 +26,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Format
         run: npx nx format:check --verbose
@@ -37,7 +36,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Lint
         uses: ./.github/actions/run-optimal
@@ -52,7 +50,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Style Lint All
         uses: ./.github/actions/run-optimal
@@ -67,7 +64,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: TsConfig Paths
         uses: ./.github/actions/run-optimal
@@ -82,7 +78,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Unit Tests
         uses: ./.github/actions/run-optimal
@@ -102,7 +97,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Visual Regression Tests
         env:
@@ -118,7 +112,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Visual Regression Tests
         env:
@@ -134,7 +127,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Storefront E2E Tests
         uses: ./.github/actions/run-optimal
@@ -146,6 +138,23 @@ jobs:
           cmd: npm run sf:e2e:headless:ci
           affectedCmd: npm run sf:e2e:headless:ci:affected
           isDev: ${{ env.IS_DEV }}
+  test-e2e-fulfillment:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+      - uses: ./.github/actions/init
+      - name: Fulfillment E2E Tests
+        uses: ./.github/actions/run-optimal
+        env:
+          CYPRESS_RECORD_KEY_FA: ${{ secrets.CYPRESS_RECORD_KEY_FA }}
+        with:
+          cmd: npm run fa:e2e:headless:ci
+          affectedCmd: npm run fa:e2e:headless:ci:affected
+          isDev: ${{ env.IS_DEV }}
   test-build:
     runs-on: ubuntu-latest
     steps:
@@ -153,7 +162,6 @@ jobs:
         with:
           ref: ${{ env.GITHUB_REF }}
           fetch-depth: 0
-          submodules: recursive
       - uses: ./.github/actions/init
       - name: Build
         uses: ./.github/actions/run-optimal
