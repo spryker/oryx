@@ -7,7 +7,7 @@ import {
   TokenResourceResolvers,
 } from './token-resolver.service';
 
-const tokenRE = /^[A-Z]+\.[A-Z]+$/;
+const tokenRE = /^[A-Z_-]+\.[A-Z_-]+$/;
 
 export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
@@ -20,13 +20,20 @@ export class DefaultTokenService implements TokenResolver {
     return `${TokenResourceResolvers}${resourceResolver}`;
   }
 
-  protected getResolver(resourceResolver: string): TokenResourceResolver {
+  protected getResolver(
+    resourceResolver: string
+  ): TokenResourceResolver | undefined {
     const key = this.getResolverKey(resourceResolver);
     if (!this.resolvers.has(key)) {
-      this.resolvers.set(key, resolve(key));
+      try {
+        const resolver = resolve(key);
+        this.resolvers.set(key, resolver);
+      } catch {
+        //is handled in injector
+      }
     }
 
-    return this.resolvers.get(key)!;
+    return this.resolvers.get(key);
   }
 
   resolveToken(token: string): ResolvedToken {
@@ -35,7 +42,9 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     const [resourceResolver, resolver] = token.split('.');
+    const tokenResolver = this.getResolver(resourceResolver);
 
-    return this.getResolver(resourceResolver).resolve(resolver);
+    //if it is not possible to resolve the token -> return the token as result
+    return tokenResolver ? tokenResolver.resolve(resolver) : of(token);
   }
 }

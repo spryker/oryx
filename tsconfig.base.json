@@ -24,7 +24,6 @@
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
       ],
-      "@spryker-oryx/cart/summary": ["libs/domain/cart/summary/index.ts"],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
       "@spryker-oryx/checkout/address": [
@@ -261,7 +260,6 @@
         "libs/domain/user/contact-form/index.ts"
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
-      "@spryker-oryx/user/summary": ["libs/domain/user/summary/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
       "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
       "@spryker-oryx/utilities/no-lit": ["libs/base/utilities/no-lit/index.ts"]

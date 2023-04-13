@@ -5,7 +5,7 @@ import {
   ProductListQualifier,
   ProductListService,
 } from '@spryker-oryx/product';
-import { computed, hydratable, signal } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductListOptions } from './list.model';
 import { baseStyles } from './list.styles';
@@ -22,8 +22,8 @@ export class ProductListComponent extends ContentMixin<ProductListOptions>(
   protected list = computed(() => {
     const params = this.searchParams();
     return params
-      ? signal(this.productListService.get(params))()
-      : signal(this.productListPageService.get())();
+      ? this.productListService.get(params)
+      : this.productListPageService.get();
   });
 
   protected override render(): TemplateResult {
