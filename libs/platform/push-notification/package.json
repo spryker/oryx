@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/push-notification",
-  "version": "0.6.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
@@ -15,8 +15,8 @@
   "peerDependencies": {
     "dexie": "^3.2.2",
     "lit": "^2.4.0",
-    "rxjs": "^7.5.6",
-    "tslib": "^2.4.1"
+    "tslib": "^2.4.1",
+    "rxjs": "^7.5.6"
   },
   "publishConfig": {
     "access": "public"
