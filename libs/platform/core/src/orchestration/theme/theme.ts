@@ -7,10 +7,9 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { ElementDefinition, PageMetaService } from '../../services/page-meta';
+import { ElementDefinition } from '../../services/page-meta';
 import { App, AppPlugin } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
-import { InjectionPlugin } from '../injection';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
@@ -59,15 +58,8 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   async apply(app: App): Promise<void> {
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const components = app.findPlugin(ComponentsPlugin)!;
-    const injection = app.findPlugin(InjectionPlugin)!;
-    /* eslint-enable @typescript-eslint/no-non-null-assertion */
-    const head = this.getHeadDefinition();
-
-    if (head) {
-      injection.getInjector().inject(PageMetaService).add(head);
-    }
 
     if (typeof components.getOptions().root === 'string' && document.body) {
       const styles = document.createElement('style');

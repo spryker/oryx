@@ -85,4 +85,8 @@ export const coreProviders: Provider[] = [
     provide: PageMetaService,
     useClass: DefaultPageMetaService,
   },
+  {
+    provide: AppInitializer,
+    useExisting: PageMetaService,
+  },
 ];

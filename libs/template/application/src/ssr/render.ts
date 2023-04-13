@@ -35,12 +35,9 @@ export const renderApp = async (
   const { route, element, template } = config;
 
   globalThis.location = route;
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const injector = orchestrator.findPlugin(InjectionPlugin)!.getInjector();
-  const headDefinition = orchestrator
-    .findPlugin(ThemePlugin)!
-    .getHeadDefinition();
-  /* eslint-enable @typescript-eslint/no-non-null-assertion */
   const routerService = injector.inject(RouterService);
   const awaiter = injector.inject(SSRAwaiterService);
   const meta = injector.inject(PageMetaService) as ServerPageMetaService;
@@ -72,7 +69,7 @@ export const renderApp = async (
     component.indexOf('>')
   );
   const html = meta
-    .getTemplateHtml(template, headDefinition)
+    .getTemplateHtml(template)
     .replace(`<${componentName}></${componentName}>`, stream);
 
   return html;

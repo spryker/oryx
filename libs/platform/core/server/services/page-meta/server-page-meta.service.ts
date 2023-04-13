@@ -7,14 +7,15 @@ import {
 export class ServerPageMetaService extends DefaultPageMetaService {
   protected template = '';
 
-  add(definitions: ElementDefinition | ElementDefinition[]): void {
+  add(definitions: ElementDefinition | ElementDefinition[] = []): void {
     if (!Array.isArray(definitions)) {
       definitions = [definitions];
     }
 
+    this.meta.push(...definitions);
     let stream = ``;
 
-    for (const { name, attrs } of definitions) {
+    for (const { name, attrs } of this.meta) {
       if (name === 'html') {
         this.setHtmlAttributes(attrs);
 
@@ -47,12 +48,9 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     );
   }
 
-  getTemplateHtml(
-    template: string,
-    definitions: ElementDefinition | ElementDefinition[] = []
-  ): string {
+  getTemplateHtml(template: string): string {
     this.template = template;
-    this.add(definitions);
+    this.add();
     return this.template;
   }
 }
