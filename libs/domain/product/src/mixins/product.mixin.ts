@@ -28,11 +28,6 @@ export const ProductMixin = <
   superClass: T
 ): Type<ProductMixinInterface> & T => {
   class ProductMixinClass extends superClass {
-    constructor(...args: any[]) {
-      super(...args);
-      new SignalController(this);
-    }
-
     @property({ reflect: true }) sku?: string;
 
     protected productController = new ProductController(this);
@@ -41,6 +36,12 @@ export const ProductMixin = <
     protected product = valueType(this.productController.getProduct());
 
     protected $product = signal(this.productController.getProduct(), null);
+
+    constructor(...args: any[]) {
+      super(...args);
+      // add signal support for components using this mixin
+      new SignalController(this);
+    }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;

@@ -64,6 +64,7 @@ export const ContentMixin = <
 
     constructor(...args: any[]) {
       super(...args);
+      // add signal support for components using this mixin
       new SignalController(this);
     }
   }
