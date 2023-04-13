@@ -4,7 +4,6 @@ import {
   PageMetaService,
   InjectionPlugin,
   SSRAwaiterService,
-  ThemePlugin,
 } from '@spryker-oryx/core';
 import { TemplateResult } from 'lit';
 import {
@@ -13,6 +12,7 @@ import {
 } from '@spryker-oryx/core/server';
 import { RouterService } from '@spryker-oryx/router';
 import { render as litRender } from '@lit-labs/ssr';
+import { rootInjectable } from '@spryker-oryx/utilities';
 // organize-imports-ignore
 import 'abort-controller/polyfill.js';
 
@@ -63,14 +63,10 @@ export const renderApp = async (
 
   context.rendered();
 
-  const component = element.strings[0];
-  const componentName = component.substring(
-    component.indexOf('<') + 1,
-    component.indexOf('>')
-  );
+  const root = rootInjectable.get();
   const html = meta
     .getTemplateHtml(template)
-    .replace(`<${componentName}></${componentName}>`, stream);
+    .replace(`<${root}></${root}>`, stream);
 
   return html;
 };
