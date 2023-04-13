@@ -34,7 +34,8 @@
     "@spryker-oryx/site": "latest",
     "@spryker-oryx/themes": "latest",
     "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/user": "latest"
+    "@spryker-oryx/user": "latest",
+    "@spryker-oryx/push-notification": "latest"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
