@@ -24,11 +24,8 @@ export class PriceComponent
     this.currencyValue.set(value);
   }
 
-  // TODO: drop inner signal when observables are natively supported
   protected price = computed(() =>
-    signal(
-      this.pricingService.format(this.priceValue(), this.currencyValue())
-    )()
+    this.pricingService.format(this.priceValue(), this.currencyValue())
   );
 
   protected override render(): TemplateResult | void {

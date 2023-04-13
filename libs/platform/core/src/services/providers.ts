@@ -17,6 +17,7 @@ import {
   HttpService,
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
+import { DefaultPageMetaService, PageMetaService } from './page-meta';
 import { DefaultQueryService, QueryService } from './query';
 import { DefaultStorageService, StorageService } from './storage';
 import { DefaultTokenService, TokenResolver } from './token-resolver';
@@ -79,5 +80,13 @@ export const coreProviders: Provider[] = [
   {
     provide: TokenResolver,
     useClass: DefaultTokenService,
+  },
+  {
+    provide: PageMetaService,
+    useClass: DefaultPageMetaService,
+  },
+  {
+    provide: AppInitializer,
+    useExisting: PageMetaService,
   },
 ];
