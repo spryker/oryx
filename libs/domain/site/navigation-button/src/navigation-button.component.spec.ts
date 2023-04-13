@@ -6,6 +6,7 @@ import { NavigationButtonComponent } from './navigation-button.component';
 import { navigationButtonComponent } from './navigation-button.def';
 
 describe('NavigationButtonComponent', () => {
+  const testPlaceholder = 'test_placeholder';
   let element: NavigationButtonComponent;
 
   beforeAll(async () => {
@@ -14,7 +15,9 @@ describe('NavigationButtonComponent', () => {
 
   beforeEach(async () => {
     element = await fixture(html`
-      <oryx-site-navigation-button text="test"></oryx-site-navigation-button>
+      <oryx-site-navigation-button
+        text=${testPlaceholder}
+      ></oryx-site-navigation-button>
     `);
   });
 
@@ -22,23 +25,24 @@ describe('NavigationButtonComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should render oryx-heading', () => {
-    expect(element).toContainElement('oryx-heading');
+  it('should render oryx-heading with proper content', () => {
+    const heading = element.renderRoot.querySelector('oryx-heading');
+    expect(heading?.textContent).toContain(testPlaceholder);
   });
 
   it('should render button', () => {
     expect(element).toContainElement('button');
   });
 
-  describe('when text is not provided', () => {
+  describe('when content data is not provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-site-navigation-button></oryx-site-navigation-button>
       `);
     });
 
-    it('should not render oryx-heading', () => {
-      expect(element).not.toContainElement('oryx-heading');
+    it('should not render content parts', () => {
+      expect(element).not.toContainElement('oryx-heading, mark, oryx-icon');
     });
   });
 
@@ -58,24 +62,29 @@ describe('NavigationButtonComponent', () => {
   describe('when icon is provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <oryx-site-navigation-button icon="test"></oryx-site-navigation-button>
+        <oryx-site-navigation-button
+          icon=${testPlaceholder}
+        ></oryx-site-navigation-button>
       `);
     });
 
-    it('should render oryx-icon', () => {
-      expect(element).toContainElement('oryx-icon');
+    it('should render oryx-icon with proper type', () => {
+      expect(element).toContainElement(`oryx-icon[type=${testPlaceholder}]`);
     });
   });
 
   describe('when badge is provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <oryx-site-navigation-button badge="test"></oryx-site-navigation-button>
+        <oryx-site-navigation-button
+          badge=${testPlaceholder}
+        ></oryx-site-navigation-button>
       `);
     });
 
-    it('should render mark element', () => {
-      expect(element).toContainElement('mark');
+    it('should render mark element with proper content', () => {
+      const mark = element.renderRoot.querySelector('mark');
+      expect(mark?.textContent).toContain(testPlaceholder);
     });
   });
 });
