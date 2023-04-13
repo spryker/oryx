@@ -43,7 +43,7 @@ export const renderApp = async (
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
   const routerService = injector.inject(RouterService);
   const awaiter = injector.inject(SSRAwaiterService);
-  const headDom = injector.inject(PageMetaService) as ServerPageMetaService;
+  const meta = injector.inject(PageMetaService) as ServerPageMetaService;
   const context = injector.inject(ContextService) as ServerContextService;
   const ssrResult = litRender(element);
 
@@ -71,7 +71,7 @@ export const renderApp = async (
     component.indexOf('<') + 1,
     component.indexOf('>')
   );
-  const html = headDom
+  const html = meta
     .getTemplateHtml(template, headDefinition)
     .replace(`<${componentName}></${componentName}>`, stream);
 
