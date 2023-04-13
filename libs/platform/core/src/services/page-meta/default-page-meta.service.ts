@@ -14,7 +14,13 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      this.addElement(definition);
+      if (this.get(definition)) {
+        continue;
+      }
+
+      const element = document.createElement(definition.name);
+      this.setAttributes(definition.attrs, element);
+      document.head.appendChild(element);
     }
   }
 
@@ -30,7 +36,10 @@ export class DefaultPageMetaService implements PageMetaService {
     this.setAttributes(definition.attrs, element);
   }
 
-  setAttributes(attrs: ElementAttributes, element = document.documentElement): void {
+  setAttributes(
+    attrs: ElementAttributes,
+    element = document.documentElement
+  ): void {
     for (const [key, value] of Object.entries(attrs)) {
       if (value === 'text') {
         element.textContent = value;
@@ -43,17 +52,7 @@ export class DefaultPageMetaService implements PageMetaService {
     }
   }
 
-  protected addElement(definition: ElementDefinition): void {
-    if (this.getElement(definition)) {
-      return;
-    }
-
-    const element = document.createElement(definition.name);
-    this.setAttributes(definition.attrs, element);
-    document.head.appendChild(element);
-  }
-
-  protected getElement(definition: ElementDefinition): HTMLElement | null {
+  protected get(definition: ElementDefinition): HTMLElement | null {
     let attrs = '';
 
     for (const [key, value] of Object.entries(definition.attrs)) {
