@@ -1,11 +1,17 @@
 import { resolve } from '@spryker-oryx/di';
-import { computed, hydratable, signal } from '@spryker-oryx/utilities';
+import {
+  computed,
+  hydratable,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { PricingService } from '../src/services';
 import { PriceComponentAttributes } from './price.model';
 
 @hydratable()
+@signalAware()
 export class PriceComponent
   extends LitElement
   implements PriceComponentAttributes

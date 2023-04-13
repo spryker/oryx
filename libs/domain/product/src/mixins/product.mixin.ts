@@ -1,9 +1,11 @@
 import { Type } from '@spryker-oryx/di';
 import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
-import { asyncState, Signal, signal, valueType } from '@spryker-oryx/utilities';
+  asyncState,
+  Signal,
+  signal,
+  SignalController,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ProductController } from '../controllers';
@@ -34,23 +36,13 @@ export const ProductMixin = <
     protected product = valueType(this.productController.getProduct());
 
     protected $product = signal(this.productController.getProduct(), null);
+
+    constructor(...args: any[]) {
+      super(...args);
+      // add signal support for components using this mixin
+      new SignalController(this);
+    }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
-};
-
-/** @deprecated Use ProductMixin instead */
-export const ProductComponentMixin = <T>(): Type<
-  LitElement & ContentComponentProperties<T> & ProductComponentProperties
-> => {
-  class ProductComponent
-    extends ComponentMixin<T>()
-    implements ProductComponentProperties
-  {
-    @property({ reflect: true }) sku?: string;
-    @property({ type: Object, reflect: true }) product?: Product;
-  }
-  return ProductComponent as Type<
-    LitElement & ContentComponentProperties<T> & ProductComponentProperties
-  >;
 };
