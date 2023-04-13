@@ -1,15 +1,25 @@
-// organize-imports-ignore
-import { App, ContextService, SSRAwaiterService } from '@spryker-oryx/core';
-import { getInjector } from '@spryker-oryx/di';
+import {
+  App,
+  ContextService,
+  PageMetaService,
+  InjectionPlugin,
+  SSRAwaiterService,
+} from '@spryker-oryx/core';
 import { TemplateResult } from 'lit';
-import { ServerContextService } from '@spryker-oryx/core/server';
+import {
+  ServerContextService,
+  ServerPageMetaService,
+} from '@spryker-oryx/core/server';
 import { RouterService } from '@spryker-oryx/router';
 import { render as litRender } from '@lit-labs/ssr';
+import { rootInjectable } from '@spryker-oryx/utilities';
+// organize-imports-ignore
 import 'abort-controller/polyfill.js';
 
 export interface RenderAppConfig {
   route: Location;
   element: TemplateResult;
+  template: string;
 }
 
 let orchestrator: App | void;
@@ -22,12 +32,17 @@ export const renderApp = async (
     orchestrator = await app;
   }
 
-  globalThis.location = config.route;
+  const { route, element, template } = config;
 
-  const routerService = getInjector().inject(RouterService);
-  const awaiter = getInjector().inject(SSRAwaiterService);
-  const context = getInjector().inject(ContextService) as ServerContextService;
-  const ssrResult = litRender(config.element);
+  globalThis.location = route;
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const injector = orchestrator.findPlugin(InjectionPlugin)!.getInjector();
+  const routerService = injector.inject(RouterService);
+  const awaiter = injector.inject(SSRAwaiterService);
+  const meta = injector.inject(PageMetaService) as ServerPageMetaService;
+  const context = injector.inject(ContextService) as ServerContextService;
+  const ssrResult = litRender(element);
 
   routerService.go(globalThis.location.pathname);
 
@@ -45,6 +60,13 @@ export const renderApp = async (
     stream += data;
     context.fillStream(stream);
   }
+
   context.rendered();
-  return stream;
+
+  const root = rootInjectable.get();
+  const html = meta
+    .getTemplateHtml(template)
+    .replace(`<${root}></${root}>`, stream);
+
+  return html;
 };

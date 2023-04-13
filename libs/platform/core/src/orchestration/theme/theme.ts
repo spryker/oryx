@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { App, AppPlugin, AppPluginBeforeApply } from '../app';
+import { App, AppPlugin } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import { ThemeTokens } from './theme-tokens';
 import {
@@ -27,12 +27,8 @@ export const ThemePluginName = 'core$theme';
  * Resolves icons from theme options.
  * Resolves breakpoints for all themes.
  */
-export class ThemePlugin
-  extends ThemeTokens
-  implements AppPlugin, AppPluginBeforeApply
-{
+export class ThemePlugin extends ThemeTokens implements AppPlugin {
   protected icons: ThemeIcons = {};
-  protected app?: App;
 
   constructor(protected themes: Theme[] = []) {
     super();
@@ -55,16 +51,11 @@ export class ThemePlugin
     return resolveLazyLoadable(this.icons[icon]);
   }
 
-  beforeApply(app: App): void | Promise<void> {
-    this.app = app;
-  }
+  async apply(app: App): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const components = app.findPlugin(ComponentsPlugin)!;
 
-  async apply(): Promise<void> {
-    const componentOptions =
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      this.app!.findPlugin(ComponentsPlugin)!.getOptions();
-
-    if (typeof componentOptions.root === 'string' && document.body) {
+    if (typeof components.getOptions().root === 'string' && document.body) {
       const styles = document.createElement('style');
       const streamStyles = await this.getStylesFromTokens(this.themes, ':root');
       styles.innerHTML = streamStyles.styles as string;
