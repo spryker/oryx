@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/presets",
-  "version": "0.6.0",
+  "version": "0.5.0",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Presets for Oryx applications",
@@ -29,13 +29,13 @@
     "@spryker-oryx/order": "latest",
     "@spryker-oryx/picking": "latest",
     "@spryker-oryx/product": "latest",
-    "@spryker-oryx/push-notification": "latest",
     "@spryker-oryx/router": "latest",
     "@spryker-oryx/search": "latest",
     "@spryker-oryx/site": "latest",
     "@spryker-oryx/themes": "latest",
     "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/user": "latest"
+    "@spryker-oryx/user": "latest",
+    "@spryker-oryx/push-notification": "latest"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
