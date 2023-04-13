@@ -80,7 +80,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     constructor(...args: any[]) {
       super(...args);
-      new SignalController(this as any);
 
       this.hasSsr = !isServer && !!this.shadowRoot;
 
