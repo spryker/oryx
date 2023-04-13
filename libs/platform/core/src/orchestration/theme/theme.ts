@@ -7,7 +7,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { ElementDefinition } from '../../services/page-meta';
 import { App, AppPlugin } from '../app';
 import { ComponentDef, ComponentsPlugin } from '../components';
 import { ThemeTokens } from './theme-tokens';
@@ -30,7 +29,6 @@ export const ThemePluginName = 'core$theme';
  */
 export class ThemePlugin extends ThemeTokens implements AppPlugin {
   protected icons: ThemeIcons = {};
-  protected headDefinition?: ElementDefinition[];
 
   constructor(protected themes: Theme[] = []) {
     super();
@@ -43,10 +41,6 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   getIcons(): ThemeIcons {
     return this.icons;
-  }
-
-  getHeadDefinition(): ElementDefinition[] | undefined {
-    return this.headDefinition;
   }
 
   getBreakpoints(): ThemeBreakpoints {
@@ -114,7 +108,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   protected propertiesCollector(themes: Theme[]): void {
-    for (const { breakpoints, icons, head } of themes) {
+    for (const { breakpoints, icons } of themes) {
       const sortableBP = Object.fromEntries(
         Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
       );
@@ -128,10 +122,6 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
         ...this.icons,
         ...icons,
       };
-
-      if (head) {
-        this.headDefinition = head;
-      }
     }
 
     if (Object.keys(this.icons).length) {
