@@ -1,5 +1,6 @@
-import { SignalConsumer } from '@spryker-oryx/utilities';
-import { BehaviorSubject, of } from 'rxjs';
+import { wait } from '@spryker-oryx/utilities';
+import { BehaviorSubject, delay, of } from 'rxjs';
+import { SignalConsumer } from './core/signals';
 import { signalFrom, SignalObservable } from './signal-from';
 
 describe('signalFrom', () => {
@@ -11,16 +12,26 @@ describe('signalFrom', () => {
     expect(result).toHaveProperty('disconnect');
   });
 
-  it('should connect and update the value when the observable emits', () => {
+  it('should connect and update the value when the async observable emits', async () => {
     const observable = new BehaviorSubject(42);
-    const signal = signalFrom(observable);
-    expect(signal()).toBeUndefined();
+    const signal = signalFrom(observable.pipe(delay(0)));
+    expect(signal()).toBe(undefined);
     signal.connect();
+    await wait(0);
     expect(signal()).toBe(42);
     observable.next(43);
+    await wait(0);
     expect(signal()).toBe(43);
     signal.disconnect();
     observable.next(44);
+    expect(signal()).toBe(undefined);
+  });
+
+  it('should return synchronous emission without connect', () => {
+    const observable = new BehaviorSubject(42);
+    const signal = signalFrom(observable);
+    expect(signal()).toBe(42);
+    observable.next(43);
     expect(signal()).toBe(43);
   });
 });
