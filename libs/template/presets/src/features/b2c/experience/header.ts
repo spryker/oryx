@@ -76,7 +76,7 @@ export const HeaderTemplate: StaticComponent = {
               contentBehavior: 'dropdown',
               label: 'USER.NAME',
               icon: 'user',
-              rules: [{ width: '87px', maxWidth: true }]
+              rules: [{ width: '87px', maxWidth: true }],
             },
           },
           components: [{ type: 'oryx-auth-login-link' }],
@@ -91,7 +91,7 @@ export const HeaderTemplate: StaticComponent = {
               url: {
                 type: 'cart',
               },
-              rules: [{ maxWidth: false }]
+              rules: [{ maxWidth: false }],
             },
           },
         },
