@@ -1,13 +1,13 @@
 import {
-  DefaultPageHeadService,
+  DefaultPageMetaService,
   ElementAttributes,
   ElementDefinition,
 } from '@spryker-oryx/core';
 
-export class ServerPageHeadService extends DefaultPageHeadService {
+export class ServerPageMetaService extends DefaultPageMetaService {
   protected template = '';
 
-  addElements(definitions: ElementDefinition | ElementDefinition[]): void {
+  add(definitions: ElementDefinition | ElementDefinition[]): void {
     if (!Array.isArray(definitions)) {
       definitions = [definitions];
     }
@@ -16,7 +16,10 @@ export class ServerPageHeadService extends DefaultPageHeadService {
 
     for (const { name, attrs } of definitions) {
       if (name === 'html') {
-        this.updateHtmlElement(attrs);
+        this.template = this.template.replace(
+          '<html',
+          `<html ${this.setAttributes(attrs)}`
+        );
 
         continue;
       }
@@ -40,19 +43,12 @@ export class ServerPageHeadService extends DefaultPageHeadService {
     );
   }
 
-  updateHtmlElement(attrs: ElementAttributes): void {
-    this.template = this.template.replace(
-      '<html',
-      `<html ${this.setAttributes(attrs)}`
-    );
-  }
-
   getTemplateHtml(
     template: string,
     definitions: ElementDefinition | ElementDefinition[] = []
   ): string {
     this.template = template;
-    this.addElements(definitions);
+    this.add(definitions);
     return this.template;
   }
 }

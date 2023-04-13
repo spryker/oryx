@@ -1,15 +1,15 @@
-import { ElementAttributes, ElementDefinition } from './page-head.model';
-import { PageHeadService } from './page-head.service';
+import { ElementAttributes, ElementDefinition } from './page-meta.model';
+import { PageMetaService } from './page-meta.service';
 
-export class DefaultPageHeadService implements PageHeadService {
-  addElements(definitions: ElementDefinition | ElementDefinition[]): void {
+export class DefaultPageMetaService implements PageMetaService {
+  add(definitions: ElementDefinition | ElementDefinition[]): void {
     if (!Array.isArray(definitions)) {
       definitions = [definitions];
     }
 
     for (const definition of definitions) {
       if (definition.name === 'html') {
-        this.updateHtmlElement(definition.attrs);
+        this.setAttributes(definition.attrs);
 
         continue;
       }
@@ -18,7 +18,7 @@ export class DefaultPageHeadService implements PageHeadService {
     }
   }
 
-  updateElement(definition: ElementDefinition): void {
+  update(definition: ElementDefinition): void {
     const element = document.querySelector<HTMLElement>(definition.name);
 
     if (!element) {
@@ -30,11 +30,7 @@ export class DefaultPageHeadService implements PageHeadService {
     this.setAttributes(definition.attrs, element);
   }
 
-  updateHtmlElement(attrs: ElementAttributes): void {
-    this.setAttributes(attrs, document.documentElement);
-  }
-
-  setAttributes(attrs: ElementAttributes, element: HTMLElement): void {
+  setAttributes(attrs: ElementAttributes, element = document.documentElement): void {
     for (const [key, value] of Object.entries(attrs)) {
       if (value === 'text') {
         element.textContent = value;
