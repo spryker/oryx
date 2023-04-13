@@ -1,9 +1,15 @@
-import { wait } from '@spryker-oryx/utilities';
 import { BehaviorSubject, delay, of } from 'rxjs';
 import { SignalConsumer } from './core/signals';
 import { signalFrom, SignalObservable } from './signal-from';
 
 describe('signalFrom', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should return a ConnectableSignal for a given observable', () => {
     const observable = of(42);
     const result = signalFrom(observable);
@@ -12,15 +18,15 @@ describe('signalFrom', () => {
     expect(result).toHaveProperty('disconnect');
   });
 
-  it('should connect and update the value when the async observable emits', async () => {
+  it('should connect and update the value when the async observable emits', () => {
     const observable = new BehaviorSubject(42);
-    const signal = signalFrom(observable.pipe(delay(0)));
+    const signal = signalFrom(observable.pipe(delay(1)));
     expect(signal()).toBe(undefined);
     signal.connect();
-    await wait(0);
+    vi.advanceTimersByTime(1);
     expect(signal()).toBe(42);
     observable.next(43);
-    await wait(0);
+    vi.advanceTimersByTime(1);
     expect(signal()).toBe(43);
     signal.disconnect();
     observable.next(44);

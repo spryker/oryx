@@ -1,4 +1,3 @@
-import { wait } from '@spryker-oryx/utilities';
 import { BehaviorSubject, interval, of } from 'rxjs';
 import { computed, effect, signal } from './signal';
 
@@ -49,27 +48,36 @@ describe('computed', () => {
     expect(results).toEqual(values);
   });
 
-  it('should create a computed with a signal-based input', async () => {
-    const period = signal(100);
-    const c = computed(() => interval(period()));
-
-    const values: any[] = [];
-    const maxValues = 3;
-
-    const ef = effect(() => {
-      values.push(c());
+  describe('async observables in computed', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+    afterEach(() => {
+      vi.restoreAllMocks();
     });
 
-    await wait(100 * maxValues + 50);
+    it('should create a computed with a signal-based input', () => {
+      const period = signal(100);
+      const c = computed(() => interval(period()));
 
-    expect(values.length).toBe(maxValues + 1);
-    expect(values).toEqual([undefined, 0, 1, 2]);
+      const values: any[] = [];
+      const maxValues = 3;
 
-    period.set(200);
-    await wait(200 * maxValues + 50);
+      const ef = effect(() => {
+        values.push(c());
+      });
 
-    expect(values).toEqual([undefined, 0, 1, 2, undefined, 0, 1, 2]);
+      vi.advanceTimersByTime(100 * maxValues);
 
-    ef.stop();
+      expect(values.length).toBe(maxValues + 1);
+      expect(values).toEqual([undefined, 0, 1, 2]);
+
+      period.set(50);
+      vi.advanceTimersByTime(100 * maxValues);
+
+      expect(values).toEqual([undefined, 0, 1, 2, undefined, 0, 1, 2, 3, 4, 5]);
+
+      ef.stop();
+    });
   });
 });
