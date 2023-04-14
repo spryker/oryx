@@ -10,7 +10,12 @@ import {
 import { AlertType, Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { computed, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  computed,
+  hydratable,
+  i18n,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -46,17 +51,13 @@ export class CartEntryComponent
   static styles = [cartEntryStyles];
 
   @property() sku?: string;
-  @property({ type: Number })
-  set quantity(value: number | undefined) {
-    this.$quantity.set(value);
-  }
+  @signalProperty({ type: Number })
+  quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Boolean }) readonly?: boolean;
 
   @state() protected requiresRemovalConfirmation?: boolean;
-
-  protected $quantity = signal(undefined as number | undefined);
 
   protected pricingService = resolve(PricingService);
   protected context = new ContextController(this);
@@ -132,14 +133,14 @@ export class CartEntryComponent
   protected renderPricing(): TemplateResult | void {
     const qtyTemplate = this.readonly
       ? i18n('cart.entry.<quantity>-items', {
-          quantity: this.$quantity(),
+          quantity: this.quantity,
         })
       : html`<oryx-cart-quantity-input
           .min=${Number(
             this.$options().removeByQuantity === RemoveByQuantity.NotAllowed
           )}
           .max=${this.$availableQuantity()}
-          .value=${this.$quantity()}
+          .value=${this.quantity}
           .decreaseIcon=${this.decreaseIcon()}
           submitOnChange
           @submit=${this.onSubmit}
@@ -194,7 +195,7 @@ export class CartEntryComponent
       'oryx-cart-quantity-input'
     );
     if (el) {
-      el.value = this.$quantity();
+      el.value = this.quantity;
     }
   }
 
@@ -244,7 +245,7 @@ export class CartEntryComponent
 
   protected decreaseIcon = computed(() =>
     this.$options().removeByQuantity === RemoveByQuantity.ShowBin &&
-    this.$quantity() === 1
+    this.quantity === 1
       ? 'trash'
       : undefined
   );
