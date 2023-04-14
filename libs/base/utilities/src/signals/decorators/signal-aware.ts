@@ -16,7 +16,6 @@ const standardSignalAware = (descriptor: ClassDescriptor) => {
     elements,
     finisher(clazz: Type<ReactiveElement>) {
       (clazz as any).addInitializer((instance: ReactiveElement) => {
-        console.log('heyyyy!');
         new SignalController(instance);
       });
       return clazz;
