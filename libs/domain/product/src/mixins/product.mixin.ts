@@ -3,7 +3,7 @@ import {
   asyncState,
   Signal,
   signal,
-  SignalController,
+  signalAware,
   valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -27,6 +27,7 @@ export const ProductMixin = <
 >(
   superClass: T
 ): Type<ProductMixinInterface> & T => {
+  @signalAware()
   class ProductMixinClass extends superClass {
     @property({ reflect: true }) sku?: string;
 
@@ -36,12 +37,6 @@ export const ProductMixin = <
     protected product = valueType(this.productController.getProduct());
 
     protected $product = signal(this.productController.getProduct(), null);
-
-    constructor(...args: any[]) {
-      super(...args);
-      // add signal support for components using this mixin
-      new SignalController(this);
-    }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
