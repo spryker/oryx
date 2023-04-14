@@ -3,6 +3,8 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
+import { TabComponent } from '@spryker-oryx/ui/tab';
+import { tabsComponent } from '@spryker-oryx/ui/tabs';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -20,13 +22,15 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
+Element.prototype.scrollIntoView = vi.fn();
+
 describe('PickingComponent', () => {
   let element: PickingComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
 
   beforeAll(async () => {
-    await useComponent(pickingComponent);
+    await useComponent([pickingComponent, tabsComponent]);
   });
 
   beforeEach(async () => {
@@ -78,6 +82,18 @@ describe('PickingComponent', () => {
     expect(element).toContainElement(
       '#tab-not_picked[slot="panels"] oryx-picking-product-card'
     );
+  });
+
+  describe('when tab is selected', () => {
+    it('should update chip appearance', () => {
+      const tab = element.renderRoot.querySelectorAll(
+        'oryx-tab'
+      )[1] as TabComponent;
+      tab.click();
+      expect(
+        tab.querySelector('oryx-chip[appearance="success"]')
+      ).not.toBeFalsy();
+    });
   });
 
   describe('when there is no picking list', () => {

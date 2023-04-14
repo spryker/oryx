@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
@@ -46,6 +47,12 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected notPickedTabRef: Ref<TabComponent> = createRef();
   protected tabRefs: Ref<TabComponent>[] = [
     this.notPickedTabRef,
+    createRef(),
+    createRef(),
+  ];
+
+  protected chipRefs: Ref<ChipComponent>[] = [
+    createRef(),
     createRef(),
     createRef(),
   ];
@@ -188,7 +195,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
             (tab, index) => html`
               <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
                 ${i18n(`picking.${tab.title}`)}
-                <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
+                <oryx-chip dense ${ref(this.chipRefs[index])}
+                  >${tab.items?.length ?? '0'}</oryx-chip
+                >
               </oryx-tab>
             `
           )}
@@ -314,13 +323,18 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.onTabChange();
   }
 
+  protected async getUpdateComplete(): Promise<boolean> {
+    await super.getUpdateComplete();
+    return (await this.notPickedTabRef.value?.updateComplete) ?? false;
+  }
+
   protected onTabChange(): void {
     for (let i = 0; i < this.tabRefs.length; i++) {
       const tab = this.tabRefs[i].value;
       if (!tab) {
         continue;
       }
-      const chip = tab.querySelector('oryx-chip');
+      const chip = this.chipRefs[i].value;
       if (tab.selected) {
         chip?.setAttribute('appearance', 'success');
       } else {
