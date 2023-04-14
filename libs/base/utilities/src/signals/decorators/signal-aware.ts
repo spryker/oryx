@@ -1,15 +1,12 @@
 import { ReactiveElement } from '@lit/reactive-element';
 import { ClassDescriptor } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { SignalController } from './signal.controller';
+import { SignalController } from '../signal.controller';
 
 const legacySignalAware = (clazz: Type<ReactiveElement>) => {
-  return class extends clazz {
-    constructor(...args: any[]) {
-      super(...args);
-      new SignalController(this);
-    }
-  } as any;
+  (clazz as any).addInitializer((instance: ReactiveElement) => {
+    new SignalController(instance);
+  });
 };
 
 const standardSignalAware = (descriptor: ClassDescriptor) => {
@@ -19,6 +16,7 @@ const standardSignalAware = (descriptor: ClassDescriptor) => {
     elements,
     finisher(clazz: Type<ReactiveElement>) {
       (clazz as any).addInitializer((instance: ReactiveElement) => {
+        console.log('heyyyy!');
         new SignalController(instance);
       });
       return clazz;
