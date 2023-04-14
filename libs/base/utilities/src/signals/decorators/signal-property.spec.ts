@@ -31,14 +31,14 @@ describe('signalProperty', () => {
     });
 
     testElement.value = '1';
-    testElement.value = 2;
+    testElement.value = '2';
     testElement.value = '3';
 
     ef.stop();
 
     await 0;
 
-    expect(results).toEqual([undefined, '1', 2, '3']);
+    expect(results).toEqual([undefined, '1', '2', '3']);
   });
 
   afterEach(() => {
