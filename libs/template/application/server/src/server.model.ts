@@ -9,7 +9,6 @@ export interface ServerConfig {
   prod: ServerMode;
   dev: ServerMode;
   __dirname: string;
-  component: string;
   namespace?: string;
   port?: number;
 }
@@ -19,5 +18,4 @@ export interface ServerModeConfig {
   rootPath: string;
   entryPath: string;
   namespace?: string;
-  component: string;
 }

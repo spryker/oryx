@@ -1,18 +1,18 @@
 import {
+  BaseResolver,
   ResolvedToken,
   Resolver,
-  TokenResourceResolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { UserService } from '..';
 
-interface UserResolvers {
+export type UserResolvers = {
   NAME: Resolver;
-}
+};
 
-export class UserResolver implements TokenResourceResolver {
+export class UserResolver extends BaseResolver<UserResolvers> {
   protected user$ = resolve(UserService).getUser();
 
   protected resolvers: UserResolvers = {
@@ -20,13 +20,6 @@ export class UserResolver implements TokenResourceResolver {
     NAME: (): ResolvedToken =>
       this.user$.pipe(map((user) => user?.firstName ?? 'login')),
   };
-
-  resolve(resolver: string): ResolvedToken {
-    if (!(resolver in this.resolvers)) {
-      return of(null);
-    }
-    return this.resolvers[resolver as keyof UserResolvers]();
-  }
 }
 
 export const UserResourceResolver: Provider = {

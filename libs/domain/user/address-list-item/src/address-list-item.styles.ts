@@ -20,10 +20,6 @@ export const styles = css`
     overflow: initial;
   }
 
-  oryx-icon-button button {
-    padding: 10px;
-  }
-
   section,
   oryx-radio {
     padding: 12px 16px;

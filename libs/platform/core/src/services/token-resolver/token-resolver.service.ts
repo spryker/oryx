@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 export type ResolvedToken = Observable<string | null>;
-export type Resolver = (...args: string[]) => ResolvedToken;
+export type Resolver = () => ResolvedToken;
 
 export interface TokenResolver {
   resolveToken(token: string): ResolvedToken;

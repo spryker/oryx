@@ -20,7 +20,6 @@ export const generateModeConfig = (config: ServerConfig): ServerModeConfig => {
   const {
     isProd,
     [isProd ? 'prod' : 'dev']: { root, entry, index },
-    component,
     __dirname,
     namespace,
   } = config;
@@ -31,6 +30,5 @@ export const generateModeConfig = (config: ServerConfig): ServerModeConfig => {
     indexPath: join(rootPath, index),
     entryPath: join(rootPath, entry),
     namespace,
-    component,
   };
 };

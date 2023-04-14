@@ -9,6 +9,6 @@ export class CartTotalsFragment {
   getTotalPrice = () =>
     this.getWrapper().find('oryx-cart-totals-total').find('span:nth-child(2)');
   getTaxMessage = () => this.getWrapper().get('.tax-message');
-  getCartSummary = () => cy.get('oryx-cart-summary');
+  getCartSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(2)');
   getCartSummaryQuantity = () => this.getCartSummary().find('mark');
 }
