@@ -1,0 +1,57 @@
+import { IconTypes } from '@spryker-oryx/themes/icons';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../.constants';
+import { SiteNavigationItemOptions } from '../navigation-item.model';
+
+export const enum NavigationTriggerBehavior {
+  Click = 'click',
+  Hover = 'hover',
+}
+
+export const enum NavigationContentBehavior {
+  Modal = 'modal',
+  Dropdown = 'dropdown',
+  Navigation = 'navigation',
+}
+export default {
+  title: `${storybookPrefix}/Navigation Item`,
+  args: {
+    url: '',
+    icon: 'add',
+    label: 'label',
+    badge: '',
+    triggerType: 'storefront-button',
+    triggerBehavior: 'click',
+    contentBehavior: 'navigation',
+  },
+  argTypes: {
+    icon: {
+      options: ['', ...Object.values(IconTypes)],
+      control: { type: 'select' },
+    },
+    triggerType: {
+      options: ['button', 'icon', 'storefront-button'],
+      control: { type: 'select' },
+    },
+    triggerBehavior: {
+      options: ['click', 'hover'],
+      control: { type: 'select' },
+    },
+    contentBehavior: {
+      options: ['modal', 'dropdown', 'navigation'],
+      control: { type: 'select' },
+    },
+  },
+  parameters: { chromatic: { disableSnapshot: true } },
+} as Meta;
+
+const Template: Story<SiteNavigationItemOptions> = (
+  options
+): TemplateResult => {
+  return html` <oryx-site-navigation-item
+    .options=${options}
+  ></oryx-site-navigation-item>`;
+};
+
+export const Demo = Template.bind({});
