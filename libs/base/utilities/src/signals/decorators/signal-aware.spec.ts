@@ -1,7 +1,7 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { signal } from './signal';
+import { signal } from '../signal';
 import { signalAware } from './signal-aware';
 
 @customElement('mock-signal-aware-component')
