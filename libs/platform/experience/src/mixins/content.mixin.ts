@@ -3,7 +3,7 @@ import {
   asyncState,
   signal,
   Signal,
-  SignalController,
+  signalAware,
   valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -38,6 +38,7 @@ export const ContentMixin = <
 >(
   superClass: T
 ): Type<ContentMixinInterface<OptionsType, ContentType>> & T => {
+  @signalAware()
   class ContentMixinClass extends superClass {
     @property() uid?: string;
 
@@ -61,12 +62,6 @@ export const ContentMixin = <
 
     protected $options = signal(this.contentController.getOptions(), {});
     protected $content = signal(this.contentController.getContent(), {});
-
-    constructor(...args: any[]) {
-      super(...args);
-      // add signal support for components using this mixin
-      new SignalController(this);
-    }
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>
