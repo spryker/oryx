@@ -2,6 +2,7 @@ import {
   cancel,
   intro,
   isCancel,
+  log,
   outro,
   select,
   spinner,
@@ -84,10 +85,14 @@ Possible values: ${Object.values(OryxPreset).join(', ')}`
 
     if (!options.name) {
       options.name = await this.promptName();
+    } else {
+      log.info(`App name: ${c.bold(options.name)}`);
     }
 
     if (!options.preset) {
       options.preset = await this.promptPreset();
+    } else {
+      log.info(`Preset: ${c.bold(options.preset)}`);
     }
 
     if (fs.existsSync(options.name)) {

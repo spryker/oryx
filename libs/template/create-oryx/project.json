@@ -1,6 +1,6 @@
 {
-  "root": "libs/template/cli",
-  "sourceRoot": "libs/template/cli/src",
+  "root": "libs/template/create-oryx",
+  "sourceRoot": "libs/template/create-oryx/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -18,25 +18,17 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/template/cli/**/*.ts"]
-      }
-    },
-    "paths": {
-      "executor": "./tools/executors/components-library:paths",
-      "configurations": {
-        "update": {
-          "update": true
-        }
+        "lintFilePatterns": ["libs/template/create-oryx/**/*.ts"]
       }
     },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "NODE_ENV='development' npx tsx libs/template/cli/bin/cli.ts"
+        "command": "NODE_ENV='development' npx tsx libs/template/create-oryx/src/main.ts"
       },
       "configurations": {
         "watch": {
-          "command": "NODE_ENV='development' npx tsx watch libs/template/cli/bin/cli.ts"
+          "command": "NODE_ENV='development' npx tsx watch libs/template/create-oryx/src/main.ts"
         }
       }
     }

@@ -6,6 +6,7 @@
     "cart": "libs/domain/cart",
     "checkout": "libs/domain/checkout",
     "cli": "libs/template/cli",
+    "create-oryx": "libs/template/create-oryx",
     "content": "libs/domain/content",
     "core": "libs/platform/core",
     "di": "libs/base/di",

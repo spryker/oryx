@@ -1,4 +1,4 @@
-import { intro } from '@clack/prompts';
+import { intro, log, outro } from '@clack/prompts';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import c from 'picocolors';
 import { CliCommands } from '../commands';
@@ -19,20 +19,8 @@ export class HelpCliCommand implements CliCommand {
     return ['h'];
   }
 
-  getHelp(): string {
-    return `
-Show help for a command.
-Usage: ${c.bold('oryx help')} ${c.dim('[command]')}
-
-Aliases: ${c.bold('h')}
-
-Arguments:
-  ${c.dim('[command]')}  The command to show help for
-`;
-  }
-
   async execute(): Promise<void> {
-    const commandName = this.argsService.getPositional(1);
+    const commandName = this.argsService.getPositional(0);
 
     if (commandName) {
       this.showCommandHelp(commandName);
@@ -45,20 +33,22 @@ Arguments:
   protected showCommandsHelp(): void {
     intro(`Oryx CLI`);
 
-    console.log(`Available commands:
+    log.message(`Available commands:
 
-${this.getCliCommands()
+${this.getCliCommandsWithHelp()
   .map((command) => {
-    return `${c.bold(command.getName())}${
-      command.getAliases ? ` [${command.getAliases()}]` : ''
-    } ${c.dim(`oryx help ${command.getName()}`)}`;
+    return `${c.bold(command.getName())} ${c.dim(
+      `oryx help ${command.getName()}`
+    )}`;
   })
   .join('\n')}
 `);
+
+    outro();
   }
 
   protected showCommandHelp(commandName: string): void {
-    const command = this.getCliCommands().find(
+    const command = this.getCliCommandsWithHelp().find(
       (command) =>
         command.getName() === commandName ||
         command.getAliases?.().includes(commandName)
@@ -70,17 +60,16 @@ ${this.getCliCommands()
 
     intro(`Oryx command: ${command.getName()}`);
 
-    if (command.getHelp) {
-      console.log(command.getHelp());
-    } else {
-      console.log(
-        `Sorry, no help available for command '${command.getName()}'`
-      );
-    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    log.message(command.getHelp!());
+
+    outro();
   }
 
-  protected getCliCommands(): CliCommand[] {
+  protected getCliCommandsWithHelp(): CliCommand[] {
     // Inject commands here to avoid circular dependency
-    return this.injector.inject(CliCommands);
+    return this.injector
+      .inject(CliCommands)
+      .filter((command) => !!command.getHelp);
   }
 }
