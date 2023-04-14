@@ -70,7 +70,7 @@ describe('PickingComponent', () => {
   });
 
   it('should render tabs', () => {
-    expect(element.renderRoot.querySelector('oryx-tabs')).not.toBeFalsy();
+    expect(element.renderRoot.querySelector('oryx-tabs')).not.toBeNull();
     expect(element.renderRoot.querySelectorAll('oryx-tab').length).toBe(3);
   });
 
@@ -92,7 +92,7 @@ describe('PickingComponent', () => {
       tab.click();
       expect(
         tab.querySelector('oryx-chip[appearance="success"]')
-      ).not.toBeFalsy();
+      ).not.toBeNull();
     });
   });
 
