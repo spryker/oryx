@@ -8,11 +8,12 @@ export class CartTotalsSubtotalComponent extends CartComponentMixin(
   LitElement
 ) {
   protected override render(): TemplateResult | void {
-    if (!this.totals?.calculations.subtotal) return;
-
-    return html`
-      <span>${i18n('cart.totals.subtotal')}</span>
-      <span>${String(this.totals.calculations.subtotal)}</span>
-    `;
+    const subtotal = this.$totals()?.calculations?.subtotal;
+    if (subtotal) {
+      return html`
+        <span>${i18n('cart.totals.subtotal')}</span>
+        <span>${subtotal}</span>
+      `;
+    }
   }
 }

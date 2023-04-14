@@ -8,7 +8,7 @@ export async function createDevSever(
   app: Express,
   config: ServerModeConfig
 ): Promise<void> {
-  const { indexPath, rootPath, entryPath, component } = config;
+  const { indexPath, rootPath, entryPath } = config;
   const vite = await createViteServer({
     root: indexPath,
     configFile: `${rootPath}/vite.config.ts`,
@@ -25,21 +25,16 @@ export async function createDevSever(
   });
 
   app.get('/*', async (req, res, next) => {
-    const url = generateUrl(req);
+    const route = generateUrl(req);
 
-    if (!url) {
+    if (!route) {
       return next();
     }
 
     try {
-      const indexFile = readFileSync(`${indexPath}/index.html`, 'utf-8');
-      const template = await vite.transformIndexHtml(
-        req.originalUrl,
-        indexFile
-      );
+      const template = readFileSync(`${indexPath}/index.html`, 'utf-8');
       const { render } = await vite.ssrLoadModule(entryPath);
-      const appHtml = await render({ route: url });
-      const html = template.replace(component, appHtml);
+      const html = await render({ route, template });
 
       res.status(200).end(html);
     } catch (e) {

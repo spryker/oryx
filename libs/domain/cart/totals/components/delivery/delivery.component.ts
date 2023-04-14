@@ -7,11 +7,11 @@ export class CartTotalsDeliveryComponent extends CartComponentMixin(
   LitElement
 ) {
   protected override render(): TemplateResult | void {
-    if (!this.totals?.calculations) return;
-
-    return html`
-      <span>${i18n('cart.totals.delivery')}</span>
-      <span>Not implemented yet</span>
-    `;
+    if (this.$totals()) {
+      return html`
+        <span>${i18n('cart.totals.delivery')}</span>
+        <span>Not implemented yet</span>
+      `;
+    }
   }
 }

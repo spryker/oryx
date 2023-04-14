@@ -1,0 +1,21 @@
+name: 'Preparation for release Action'
+description: 'Prepare environment and install dependencies before release'
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: npm-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          npm-node-
+    - name: Auth NPM
+      run: |
+        echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+        npm whoami
+    - name: Auth Git
+      run: |
+        git config user.email "${{ env.GIT_EMAIL }}"
+        git config user.name "${{ env.GIT_USER }}"
+    - name: Install Deps
+      run: npm ci

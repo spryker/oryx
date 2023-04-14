@@ -5,7 +5,7 @@ import { Size } from '@spryker-oryx/ui';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
