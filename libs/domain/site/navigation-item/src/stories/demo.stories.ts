@@ -4,16 +4,6 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { SiteNavigationItemOptions } from '../navigation-item.model';
 
-export const enum NavigationTriggerBehavior {
-  Click = 'click',
-  Hover = 'hover',
-}
-
-export const enum NavigationContentBehavior {
-  Modal = 'modal',
-  Dropdown = 'dropdown',
-  Navigation = 'navigation',
-}
 export default {
   title: `${storybookPrefix}/Navigation Item`,
   args: {
