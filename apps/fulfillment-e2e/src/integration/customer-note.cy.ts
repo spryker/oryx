@@ -1,8 +1,8 @@
-import { CustomerNoteFragment } from '../support/page_fragments/customer-note.fragment';
+import { CustomerNoteModalFragment } from '../support/page_fragments/customer-note-modal.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
-const customerNoteFragment = new CustomerNoteFragment();
+const customerNoteFragment = new CustomerNoteModalFragment();
 
 describe('Customer note', () => {
   beforeEach(() => {

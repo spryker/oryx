@@ -1,4 +1,4 @@
-export class CustomerNoteFragment {
+export class CustomerNoteModalFragment {
   getWrapper = () => cy.get('oryx-modal');
 
   getModal = () => this.getWrapper().find('dialog');
