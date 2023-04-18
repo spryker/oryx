@@ -15,7 +15,7 @@ export class HeaderFragment {
   getLogo = () =>
     this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
 
-  getUserSummary = () => cy.get('oryx-user-summary');
+  getUserSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(1)');
   getUserSummaryHeading = () => this.getUserSummary().find('oryx-heading');
   getUserSummaryMenu = () => this.getUserSummary().find('oryx-dropdown');
   getOpenUserMenuButton = () =>
@@ -23,7 +23,7 @@ export class HeaderFragment {
   getLogoutButton = () =>
     this.getUserSummaryMenu().find('oryx-auth-login-link');
 
-  getCartSummary = () => cy.get('oryx-cart-summary');
+  getCartSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(2)');
   getCartCount = () => this.getCartSummary().find('mark');
 
   logout = () => {
