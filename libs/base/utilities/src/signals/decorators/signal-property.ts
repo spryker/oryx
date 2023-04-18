@@ -28,6 +28,7 @@ function createSignalPropertyDescriptor<T extends LitElement & SignalKeys>(
       } else {
         this[signalKey].set(value);
       }
+      (this as any).requestUpdate(propertyKey);
     },
     enumerable: true,
     configurable: true,
