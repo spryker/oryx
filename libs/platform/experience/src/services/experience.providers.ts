@@ -1,5 +1,6 @@
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { DefaultLayoutService, LayoutService } from '../../layout/src';
 import {
   BreakpointService,
   DefaultBreakpointService,
@@ -39,6 +40,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: LayoutBuilder,
     useClass: DefaultLayoutBuilder,
+  },
+  {
+    provide: LayoutService,
+    useClass: DefaultLayoutService,
   },
   {
     provide: ComponentsRegistryService,
