@@ -9,14 +9,34 @@ export class ServerPageMetaService extends DefaultPageMetaService {
   protected metas: ElementDefinition[] = [];
 
   add(definitions: ElementDefinition | ElementDefinition[] = []): void {
-    this.metas = Array.isArray(definitions) ? definitions : [definitions];
+    const metas = Array.isArray(definitions) ? definitions : [definitions];
+
+    for (const meta of metas) {
+      const duplicate = this.metas.find(
+        (_meta) => JSON.stringify(_meta) === JSON.stringify(meta)
+      );
+
+      if (!duplicate) {
+        this.metas.push(meta);
+      }
+    }
   }
 
   setHtmlAttributes(attrs: ElementAttributes): void {
-    this.template = this.template.replace(
-      '<html',
-      `<html ${this.setAttributes(attrs)}`
-    );
+    const htmlIndex = this.metas.findIndex((meta) => meta.name === 'html');
+
+    if (htmlIndex === -1) {
+      this.metas.push({ name: 'html', attrs });
+
+      return;
+    }
+
+    const html = this.metas[htmlIndex];
+
+    html.attrs = {
+      ...html.attrs,
+      ...attrs,
+    };
   }
 
   getTemplateHtml(template: string): string {
@@ -39,7 +59,10 @@ export class ServerPageMetaService extends DefaultPageMetaService {
       const tag = this.getTagName(name);
 
       if (tag === 'html') {
-        this.setHtmlAttributes(attrs);
+        this.template = this.template.replace(
+          '<html',
+          `<html ${this.setAttributes(attrs)}`
+        );
 
         continue;
       }
