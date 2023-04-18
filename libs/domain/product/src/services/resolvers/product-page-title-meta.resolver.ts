@@ -18,7 +18,11 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
   getScore(): Observable<number> {
     return this.context
       .get(document.body, ProductContext.SKU)
-      .pipe(map((sku) => (sku ? 2 : ResolverScore.NotUsed)));
+      .pipe(
+        map((sku) =>
+          sku ? ResolverScore.OverrideDefault : ResolverScore.NotUsed
+        )
+      );
   }
 
   resolve(): Observable<ElementResolver> {
