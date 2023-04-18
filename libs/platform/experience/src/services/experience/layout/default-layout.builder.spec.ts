@@ -134,24 +134,24 @@ describe('DefaultLayoutBuilder', () => {
   });
 
   describe('classes', () => {
-    describe('maxWidth', () => {
+    describe('bleed', () => {
       let layoutClasses: string | undefined;
 
-      describe('when a maxWidth is configured', () => {
+      describe('when a bleed is configured', () => {
         beforeEach(() => {
           layoutClasses = service.getLayoutClasses({
-            rules: [{ maxWidth: true }],
+            rules: [{ bleed: true }],
           });
         });
-        it('should add the maxWidth class', () => {
-          expect(layoutClasses).toContain('maxWidth');
+        it('should add the bleed class', () => {
+          expect(layoutClasses).toContain('bleed');
         });
       });
-      describe('when a maxWidth is not configured', () => {
+      describe('when a bleed is not configured', () => {
         beforeEach(() => {
           layoutClasses = service.getLayoutClasses({});
         });
-        it('should not add the maxWidth class', () => {
+        it('should not add the bleed class', () => {
           expect(layoutClasses).toBeUndefined();
         });
       });

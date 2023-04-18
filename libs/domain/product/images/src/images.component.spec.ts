@@ -210,7 +210,7 @@ describe('ProductImagesComponent', () => {
         );
       });
 
-      it('should set attribute on main layout', () => {
+      it('should set behavior attribute on main layout', () => {
         expect(element).toContainElement(
           `.main[behavior=${ProductImagesScrollBehavior.Smooth}]`
         );

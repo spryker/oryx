@@ -16,10 +16,6 @@ export class DefaultBreakpointService implements BreakpointService {
   }
 
   getMediaQuery(breakpoint: Breakpoint): string | void {
-    // if (breakpoint === this.getSmallest()) {
-    //   return;
-    // }
-
     return this.themePlugin?.generateMedia(
       `${ThemeDefaultMedia.Screen}.${breakpoint}`
     );
