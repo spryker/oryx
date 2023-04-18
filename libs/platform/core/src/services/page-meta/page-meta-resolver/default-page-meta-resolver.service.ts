@@ -62,7 +62,6 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
   initialize(): void {
     this.subscription.add(
       this.data$.subscribe((data) => {
-        console.log(data);
         this.meta.add(Object.values(data), true);
       })
     );
