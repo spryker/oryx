@@ -2,6 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import {
   computed,
   hydratable,
+  signalAware,
   signalProperty,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -19,6 +20,7 @@ import { styles } from './styles/base.styles';
 
 @ssrShim('style')
 @hydratable()
+@signalAware()
 export class LayoutComponent extends LitElement implements LayoutAttributes {
   static styles = styles;
 
