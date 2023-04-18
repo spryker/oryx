@@ -69,48 +69,18 @@ describe('DefaultPageMetaResolverService', () => {
     it('should call PageMetaService.add with proper data', async () => {
       mockResolverA.getScore.mockReturnValue(of(ResolverScore.Default));
       mockResolverA.resolve.mockReturnValue(
-        of([
-          {
-            title: 'A',
-          },
-          {
-            name: 'og:meta',
-            attrs: {
-              description: 'a',
-            },
-          },
-          {
-            link: 'a',
-          },
-          {
-            link: 'a',
-            id: 'link:a',
-          },
-        ])
+        of({
+          title: 'A',
+          'og:meta': 'a',
+        })
       );
       mockResolverB.getScore.mockReturnValue(of(2));
       mockResolverB.resolve.mockReturnValue(
-        of([
-          {
-            title: 'b',
-          },
-          {
-            name: 'og:meta',
-            attrs: {
-              description: 'b',
-            },
-          },
-          {
-            name: 'og:img',
-            attrs: {
-              description: 'a',
-            },
-          },
-          {
-            link: 'a',
-            id: 'link:a',
-          },
-        ])
+        of({
+          title: 'b',
+          'og:meta': 'b',
+          'og:img': 'a',
+        })
       );
       mockResolverC.getScore.mockReturnValue(of(ResolverScore.NotUsed));
       mockResolverC.resolve.mockReturnValue(
@@ -124,14 +94,8 @@ describe('DefaultPageMetaResolverService', () => {
 
       expect(mockMetaService.add).toHaveBeenCalledWith([
         { name: 'title', attrs: { text: 'b' } },
-        { name: 'og:meta', attrs: { description: 'b' } },
-        { name: 'link', attrs: { href: 'a' } },
-        {
-          name: 'link',
-          id: 'link:a',
-          attrs: { href: 'a' },
-        },
-        { name: 'og:img', attrs: { description: 'a' } },
+        { name: 'og:meta', attrs: { content: 'b' } },
+        { name: 'og:img', attrs: { content: 'a' } },
       ]);
     });
   });

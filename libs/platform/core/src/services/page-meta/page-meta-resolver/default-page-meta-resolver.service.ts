@@ -26,7 +26,7 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
         const _data = data
           .filter(([score]) => score > ResolverScore.NotUsed)
           .sort(([aScore], [bScore]) => aScore - bScore)
-          .reduce((acc, [score, elements]) => ({ ...acc, ...elements }), {});
+          .reduce((acc, [_, elements]) => ({ ...acc, ...elements }), {});
 
         return Object.entries(_data).map(([name, content]) => ({
           name,
