@@ -18,7 +18,13 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
   getScore(): Observable<number> {
     return this.router
       .currentQuery()
-      .pipe(map((query) => (query?.category ? ResolverScore.OverrideDefault : ResolverScore.NotUsed)));
+      .pipe(
+        map((query) =>
+          query?.category
+            ? ResolverScore.OverrideDefault
+            : ResolverScore.NotUsed
+        )
+      );
   }
 
   resolve(): Observable<ElementResolver> {
