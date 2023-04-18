@@ -12,7 +12,6 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
   protected routerService = resolve(RouterService);
 
   protected onProceed(): void {
-    console.log('this.pickingList', this.pickingList);
     //TODO: provide more complex validation
     if (!this.pickingList) {
       return;
