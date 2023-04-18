@@ -19,7 +19,6 @@ export const storefrontHandler = async (
     const {
       root = 'file:///var/task/dist/apps/storefront/functions/ssr/index.js',
       index = '../../client/index.html',
-      component = '<root-app></root-app>',
       entry = '../../server/render.js',
     } = context;
     const originalUrl = new URL(event.rawUrl);
@@ -29,8 +28,7 @@ export const storefrontHandler = async (
       root,
       entry,
     });
-    const appHtml = await render({ route: originalUrl });
-    const html = template.replace(component, appHtml);
+    const html = await render({ route: originalUrl, template });
 
     return {
       statusCode: 200,

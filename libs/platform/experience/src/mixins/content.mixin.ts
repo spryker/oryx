@@ -1,5 +1,11 @@
 import { Type } from '@spryker-oryx/di';
-import { asyncState, signal, Signal, valueType } from '@spryker-oryx/utilities';
+import {
+  asyncState,
+  signal,
+  Signal,
+  signalAware,
+  valueType,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Observable } from 'rxjs';
@@ -32,6 +38,7 @@ export const ContentMixin = <
 >(
   superClass: T
 ): Type<ContentMixinInterface<OptionsType, ContentType>> & T => {
+  @signalAware()
   class ContentMixinClass extends superClass {
     @property() uid?: string;
 
@@ -53,8 +60,8 @@ export const ContentMixin = <
     @asyncState()
     protected componentContent = valueType(this.content$);
 
-    protected $options = signal(this.options$, {});
-    protected $content = signal(this.content$, {});
+    protected $options = signal(this.contentController.getOptions(), {});
+    protected $content = signal(this.contentController.getContent(), {});
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>

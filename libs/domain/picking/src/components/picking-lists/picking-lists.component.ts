@@ -7,7 +7,6 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { switchMap } from 'rxjs';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
 
@@ -18,11 +17,9 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  protected pickingLists$ = this.pickingListService
-    .setQualifier({
-      status: PickingListStatus.ReadyForPicking,
-    })
-    .pipe(switchMap(() => this.pickingListService.get()));
+  protected pickingLists$ = this.pickingListService.get({
+    status: PickingListStatus.ReadyForPicking,
+  });
 
   @asyncState()
   protected pickingLists = valueType(this.pickingLists$);

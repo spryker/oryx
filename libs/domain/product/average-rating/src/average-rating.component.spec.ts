@@ -45,25 +45,32 @@ describe('Average Rating', () => {
         },
       ],
     });
-    element = await fixture(
-      html`<oryx-product-average-rating sku="1"></oryx-product-average-rating>`
-    );
   });
 
   afterEach(() => {
     destroyInjector();
   });
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
-  });
+  describe('when the product has a review count', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-average-rating
+          sku="1"
+        ></oryx-product-average-rating>`
+      );
+    });
 
-  it('should pass averageRating to oryx-rating', () => {
-    expect(getRating().value).toBe(getProduct('1').averageRating);
-  });
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
 
-  it('should pass reviewCount to oryx-rating', () => {
-    expect(getRating().reviewCount).toBe(getProduct('1').reviewCount);
+    it('should pass averageRating to oryx-rating', () => {
+      expect(getRating().value).toBe(getProduct('1').averageRating);
+    });
+
+    it('should pass reviewCount to oryx-rating', () => {
+      expect(getRating().reviewCount).toBe(getProduct('1').reviewCount);
+    });
   });
 
   describe('when product has no reviews', () => {
@@ -73,6 +80,10 @@ describe('Average Rating', () => {
           sku="3"
         ></oryx-product-average-rating>`
       );
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
     });
 
     it('should set default reviewCount for the oryx-rating', () => {

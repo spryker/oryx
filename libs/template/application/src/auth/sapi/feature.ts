@@ -4,10 +4,10 @@ import {
   AnonTokenInterceptorConfig,
   authLoginComponent,
   AuthLoginStrategy,
-  authLogoutComponent,
   AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
+  loginLinkComponent,
   OauthFeature,
   OauthFeatureConfig,
   OauthService,
@@ -21,8 +21,6 @@ import {
   injectEnv,
 } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
-import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { defaultSapiRoutes } from './routes';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**
@@ -59,11 +57,6 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
   ): Provider[] {
     return [
       ...super.getProviders(configFactory),
-      ...provideLitRoutes(() => ({
-        routes: configFactory().skipRoutes
-          ? []
-          : defaultSapiRoutes(configFactory().loginRoute),
-      })),
       {
         provide: AuthTokenService,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -107,5 +100,5 @@ export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
 }
 
 export class SapiAuthComponentsFeature implements AppFeature {
-  components: ComponentsInfo = [authLoginComponent, authLogoutComponent];
+  components: ComponentsInfo = [authLoginComponent, loginLinkComponent];
 }

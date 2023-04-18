@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/offline",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "type": "module",
   "description": "Functionality for offline first applications",
   "author": "Spryker Systems GmbH",
@@ -12,14 +12,14 @@
   "typings": "./src/index.d.ts",
   "dependencies": {
     "@spryker-oryx/core": "latest",
-    "@spryker-oryx/indexed-db": "latest",
     "@spryker-oryx/di": "latest",
+    "@spryker-oryx/indexed-db": "latest",
     "@spryker-oryx/utilities": "latest"
   },
   "peerDependencies": {
     "dexie": "^3.2.2",
-    "tslib": "^2.4.1",
-    "rxjs": "7.5.6"
+    "rxjs": "7.5.6",
+    "tslib": "^2.4.1"
   },
   "publishConfig": {
     "access": "public"

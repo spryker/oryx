@@ -24,7 +24,6 @@
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
       ],
-      "@spryker-oryx/cart/summary": ["libs/domain/cart/summary/index.ts"],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
       "@spryker-oryx/checkout/address": [
@@ -116,9 +115,6 @@
       "@spryker-oryx/push-notification": [
         "libs/platform/push-notification/src/index.ts"
       ],
-      "@spryker-oryx/push-notification/*": [
-        "libs/platform/push-notification/*/index.ts"
-      ],
       "@spryker-oryx/push-notification/web": [
         "libs/platform/push-notification/web/index.ts"
       ],
@@ -150,9 +146,16 @@
         "libs/domain/site/locale-selector/index.ts"
       ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/navigation-button": [
+        "libs/domain/site/navigation-button/index.ts"
+      ],
+      "@spryker-oryx/site/navigation-item": [
+        "libs/domain/site/navigation-item/index.ts"
+      ],
       "@spryker-oryx/site/notification-center": [
         "libs/domain/site/notification-center/index.ts"
       ],
+      "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
       "@spryker-oryx/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
@@ -257,7 +260,6 @@
         "libs/domain/user/contact-form/index.ts"
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
-      "@spryker-oryx/user/summary": ["libs/domain/user/summary/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
       "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
       "@spryker-oryx/utilities/no-lit": ["libs/base/utilities/no-lit/index.ts"]

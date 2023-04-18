@@ -1,4 +1,4 @@
-import { Mock } from 'vitest';
+import { afterEach, describe, Mock } from 'vitest';
 import {
   Computed,
   Effect,
@@ -313,5 +313,127 @@ describe('Effect', () => {
 
       expect(effectFn).toHaveBeenCalledTimes(1);
     });
+  });
+});
+
+describe('nested computed inside effect with conditional', () => {
+  let signal1: StateSignal<boolean>;
+  let signal3: StateSignal<number>;
+  let cmp: Computed<number>;
+  let effectFn: Mock;
+  let effect: Effect;
+  let value: number | undefined;
+
+  beforeEach(() => {
+    signal1 = new StateSignal<boolean>(false);
+    signal3 = new StateSignal<number>(0);
+    cmp = new Computed(() => signal3.value);
+    effectFn = vi.fn(() => {
+      if (signal1.value) {
+        value = cmp.value;
+      } else value = -1;
+    });
+    effect = new Effect(effectFn);
+  });
+
+  afterEach(() => {
+    effect.stop();
+  });
+
+  it('should react to signal3 changes when signal1 is true, then false, then true again', () => {
+    expect(effectFn).toHaveBeenCalledTimes(1);
+    expect(value).toBe(-1);
+
+    // Set signal1 to true, so the effect reacts to signal3 changes
+    signal1.set(true);
+    expect(effectFn).toHaveBeenCalledTimes(2); /// ????
+    expect(value).toBe(0);
+
+    signal3.set(2);
+    expect(effectFn).toHaveBeenCalledTimes(3);
+    expect(value).toBe(2);
+
+    // Set signal1 to false, so the effect stops reacting to signal3 changes
+    signal1.set(false);
+    expect(effectFn).toHaveBeenCalledTimes(4);
+    expect(value).toBe(-1);
+
+    signal3.set(3);
+    expect(effectFn).toHaveBeenCalledTimes(4);
+    expect(value).toBe(-1);
+
+    signal1.set(true);
+    expect(effectFn).toHaveBeenCalledTimes(5);
+    expect(value).toBe(3);
+
+    signal3.set(4);
+    expect(effectFn).toHaveBeenCalledTimes(6);
+    expect(value).toBe(4);
+  });
+});
+
+describe('nested computed inside effect with two levels and conditionals', () => {
+  let signal1: StateSignal<boolean>;
+  let signal2: StateSignal<boolean>;
+  let signal3: StateSignal<number>;
+  let cmp1: Computed<number>;
+  let cmp2: Computed<number>;
+  let effectFn: Mock;
+  let effect: Effect;
+  let value: number | undefined;
+
+  beforeEach(() => {
+    signal1 = new StateSignal<boolean>(false);
+    signal2 = new StateSignal<boolean>(false);
+    signal3 = new StateSignal<number>(0);
+    cmp1 = new Computed(() => signal3.value * 2);
+    cmp2 = new Computed(() => signal3.value * 3);
+    effectFn = vi.fn(() => {
+      if (signal1.value) {
+        value = cmp1.value;
+      } else if (signal2.value) {
+        value = cmp2.value;
+      } else {
+        value = -1;
+      }
+    });
+    effect = new Effect(effectFn);
+  });
+
+  afterEach(() => {
+    effect.stop();
+  });
+
+  it('should react to signal3 changes and conditionally use nested computed signals', () => {
+    expect(effectFn).toHaveBeenCalledTimes(1);
+    expect(value).toBe(-1);
+
+    // Set signal1 to true, so the effect reacts to signal3 changes using cmp1
+    signal1.set(true);
+    expect(effectFn).toHaveBeenCalledTimes(2);
+    expect(value).toBe(0);
+
+    signal3.set(2);
+    expect(effectFn).toHaveBeenCalledTimes(3);
+    expect(value).toBe(4);
+
+    // Set signal1 to false, and signal2 to true, so the effect reacts to signal3 changes using cmp2
+    signal1.set(false);
+    signal2.set(true);
+    expect(effectFn).toHaveBeenCalledTimes(5);
+    expect(value).toBe(6);
+
+    signal3.set(3);
+    expect(effectFn).toHaveBeenCalledTimes(6);
+    expect(value).toBe(9);
+
+    // Set signal2 to false, so the effect does not react to signal3 changes
+    signal2.set(false);
+    expect(effectFn).toHaveBeenCalledTimes(7);
+    expect(value).toBe(-1);
+
+    signal3.set(4);
+    expect(effectFn).toHaveBeenCalledTimes(7);
+    expect(value).toBe(-1);
   });
 });

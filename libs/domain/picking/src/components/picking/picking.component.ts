@@ -1,10 +1,14 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { ChipComponent } from '@spryker-oryx/ui/chip';
+import { TabComponent } from '@spryker-oryx/ui/tab';
+import { TabsAppearance } from '@spryker-oryx/ui/tabs';
 import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, take, tap } from 'rxjs';
@@ -17,7 +21,9 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '../../models';
+import { PickingProductCardComponent } from '../picking-product-card';
 import { styles } from './picking.styles';
+
 export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
@@ -37,11 +43,25 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     })
   );
 
+  protected productCardRef: Ref<PickingProductCardComponent> = createRef();
+  protected notPickedTabRef: Ref<TabComponent> = createRef();
+  protected tabRefs: Ref<TabComponent>[] = [
+    this.notPickedTabRef,
+    createRef(),
+    createRef(),
+  ];
+
+  protected chipRefs: Ref<ChipComponent>[] = [
+    createRef(),
+    createRef(),
+    createRef(),
+  ];
+
   protected buildTabs(): PickingTab[] {
     return [
       {
         id: ItemsFilters.NotPicked,
-        title: 'not-picked',
+        title: 'not-Picked',
         items: this.items?.filter(
           (item) => item.status === ItemsFilters.NotPicked
         ),
@@ -55,7 +75,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       },
       {
         id: ItemsFilters.NotFound,
-        title: 'not-found',
+        title: 'not-Found',
         items: this.items?.filter(
           (item) =>
             item.status === ItemsFilters.Picked &&
@@ -87,7 +107,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.updatePickingItem(productIndex, numberOfPicked);
   }
 
-  protected editPickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
+  protected async editPickingItem(
+    event: CustomEvent<ProductItemPickedEvent>
+  ): Promise<void> {
     const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
@@ -96,6 +118,21 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     this.items[productIndex].status = ItemsFilters.NotPicked;
 
     this.items = [...this.items];
+
+    this.notPickedTabRef.value?.dispatchEvent(
+      new CustomEvent('click', {
+        composed: true,
+        bubbles: true,
+      })
+    );
+
+    await this.updateComplete;
+
+    this.productCardRef.value?.scrollIntoView({
+      behavior: 'smooth',
+    });
+
+    this.productCardRef.value?.focusOnQuantityInput();
   }
 
   protected onModalClose(): void {
@@ -137,21 +174,34 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected override render(): TemplateResult {
     const tabs = this.buildTabs();
 
-    return html`<oryx-tabs appearance="secondary">
+    return html`
+      <oryx-tabs
+        appearance="${TabsAppearance.Secondary}"
+        sticky
+        shadow
+        @click=${this.onTabChange}
+      >
         ${this.renderTabs(tabs)} ${this.renderTabContents(tabs)}
       </oryx-tabs>
-      ${this.renderConfirmationModal()}`;
+      ${this.renderConfirmationModal()}
+    `;
   }
 
   protected renderTabs(tabs: PickingTab[]): TemplateResult {
     return tabs
-      ? html`${repeat(
-          tabs,
-          (tab) => html`<oryx-tab for="tab-${tab.id}">
-            ${i18n(`picking.${tab.title}`)}
-            <oryx-chip dense>${tab.items?.length ?? '0'}</oryx-chip>
-          </oryx-tab>`
-        )}`
+      ? html`
+          ${repeat(
+            tabs,
+            (tab, index) => html`
+              <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
+                ${i18n(`picking.${tab.title}`)}
+                <oryx-chip dense ${ref(this.chipRefs[index])}
+                  >${tab.items?.length ?? '0'}</oryx-chip
+                >
+              </oryx-tab>
+            `
+          )}
+        `
       : html``;
   }
 
@@ -159,28 +209,35 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     return html`
       ${repeat(
         tabs,
-        (tab) => html`<div slot="panels" id="tab-${tab.id}" class="tab-panels">
-          ${when(
-            tab.items?.length,
-            () => html`
-              ${repeat(
-                tab.items,
-                (item) => item.product.id,
-                (item) =>
-                  html`
-                    <oryx-picking-product-card
-                      .productItem=${item}
-                      .status=${tab.id}
-                      @oryx.submit=${this.savePickingItem}
-                      @oryx.edit=${this.editPickingItem}
-                    ></oryx-picking-product-card>
-                  `
-              )}
-              ${this.renderFinishButton(true)}
-            `,
-            () => this.renderPlaceholderComplete()
-          )}
-        </div>`
+        (tab) => html`
+          <div slot="panels" id="tab-${tab.id}" class="tab-panels">
+            ${when(
+              tab.items?.length,
+              () => html`
+                <div class="list-container">
+                  ${repeat(
+                    tab.items,
+                    (item) => item.product.id,
+                    (item) =>
+                      html`
+                        <oryx-picking-product-card
+                          ${tab.id === ItemsFilters.NotPicked
+                            ? ref(this.productCardRef)
+                            : ''}
+                          .productItem=${item}
+                          .status=${tab.id}
+                          @oryx.submit=${this.savePickingItem}
+                          @oryx.edit=${this.editPickingItem}
+                        ></oryx-picking-product-card>
+                      `
+                  )}
+                </div>
+                ${this.renderFinishButton(true)}
+              `,
+              () => this.renderPlaceholderComplete()
+            )}
+          </div>
+        `
       )}
     `;
   }
@@ -209,7 +266,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
     return html`
       <div
-        class="submit-wrapper ${classMap({
+        class="submit-wrapper${classMap({
           'scroll-shadow': hasShadow ?? false,
         })}"
       >
@@ -247,19 +304,43 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           )}
         </span>
 
-        <oryx-button slot="footer" outline type="secondary">
+        <oryx-button slot="footer" outline type="${ButtonType.Secondary}">
           <button @click=${this.onModalClose}>
             ${i18n('picking.product-card.cancel')}
           </button>
         </oryx-button>
 
-        <oryx-button slot="footer" type="primary">
+        <oryx-button slot="footer" type="${ButtonType.Primary}">
           <button @click=${this.confirmPartialPicking}>
             ${i18n('picking.product-card.confirm')}
           </button>
         </oryx-button>
       </oryx-modal>
     `;
+  }
+
+  protected override updated(): void {
+    this.onTabChange();
+  }
+
+  protected async getUpdateComplete(): Promise<boolean> {
+    await super.getUpdateComplete();
+    return (await this.notPickedTabRef.value?.updateComplete) ?? false;
+  }
+
+  protected onTabChange(): void {
+    for (let i = 0; i < this.tabRefs.length; i++) {
+      const tab = this.tabRefs[i].value;
+      if (!tab) {
+        continue;
+      }
+      const chip = this.chipRefs[i].value;
+      if (tab.selected) {
+        chip?.setAttribute('appearance', 'success');
+      } else {
+        chip?.removeAttribute('appearance');
+      }
+    }
   }
 
   private updatePickingItem(

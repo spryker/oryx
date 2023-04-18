@@ -5,7 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
-import { Effect, effect, SignalController } from '../../signals';
+import { Effect, effect } from '../../signals';
 import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
@@ -13,6 +13,8 @@ const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
+export const deferHydrationAttribute = 'defer-hydration';
+export const hydrationRender = Symbol('hydrationRender');
 const SIGNAL_META = Symbol('signalMeta');
 
 interface PatchableLitElement extends LitElement {
@@ -61,7 +63,12 @@ function hydratableClass<T extends Type<HTMLElement>>(
   mode?: string | string[]
 ): any {
   return class extends (target as any) {
+    static properties = {
+      [hydrationRender]: { type: Boolean, state: true },
+    };
+
     [DEFER_HYDRATION] = false;
+    private [hydrationRender] = true;
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
@@ -71,16 +78,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
       effect?: Effect;
     };
 
-    static properties = {
-      useRealRender: { type: Boolean, state: true },
-    };
-
     constructor(...args: any[]) {
       super(...args);
-      new SignalController(this as any);
 
       this.hasSsr = !isServer && !!this.shadowRoot;
-      this.useRealRender = true;
 
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
@@ -93,6 +94,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
+        this[hydrationRender] = false;
       }
     }
 
@@ -126,7 +128,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
       if (skipMissMatch) {
-        this.useRealRender = false;
+        this[hydrationRender] = false;
       }
 
       const prototype = Array(this[HYDRATION_CALLS])
@@ -144,7 +146,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       }
 
       this[DEFER_HYDRATION] = false;
-      this.removeAttribute('defer-hydration');
+      this.removeAttribute(deferHydrationAttribute);
       prototype.connectedCallback.call(this);
     }
 
@@ -158,19 +160,21 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       const states = this[asyncStates];
 
-      setTimeout(() => {
-        if (!this.useRealRender) this.useRealRender = true;
-      }, 0);
+      if (this.hasSsr && !this[hydrationRender]) {
+        setTimeout(() => {
+          this[hydrationRender] = true;
+        }, 0);
+      }
 
       if (this.hasSsr && states) {
         return html`${whenState(
-          Object.values(states).every(Boolean) && this.useRealRender,
+          Object.values(states).every(Boolean) && this[hydrationRender],
           () => super.render()
         )}`;
       }
 
       return this.hasSsr || isServer
-        ? html`${whenState(this.useRealRender, () => super.render())}`
+        ? html`${whenState(this[hydrationRender], () => super.render())}`
         : super.render();
     }
   };

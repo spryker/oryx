@@ -76,10 +76,10 @@ describe('diamond dependency', () => {
     const a = createSignal(1);
     const b = createSignal(2);
 
-    const c = computed(() => a() * 2);
-    const d = computed(() => b() * 3);
+    const c = computed(() => a() * 2); // 2
+    const d = computed(() => b() * 3); // 6
 
-    const e = computed(() => c() + d());
+    const e = computed(() => c() + d()); // 8
 
     expect(e()).toBe(8);
 

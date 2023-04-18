@@ -3,7 +3,6 @@ import { contentLinkComponent } from '@spryker-oryx/content';
 import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ProductContext } from '@spryker-oryx/product';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
@@ -58,51 +57,6 @@ describe('ProductCardComponent', () => {
     expect(element).toContainElement('oryx-icon-button');
   });
 
-  describe('should fill context with', () => {
-    const propSku = 'propSku';
-    const optionsSku = 'optionSku';
-
-    it('sku from the property', async () => {
-      await fixture(
-        html`<oryx-product-card sku="${propSku}"></oryx-product-card>`
-      );
-
-      expect(mockContext.provide).toHaveBeenCalledWith(
-        ProductContext.SKU,
-        propSku
-      );
-    });
-
-    it('sku from the options', async () => {
-      await fixture(
-        html`<oryx-product-card
-          .options="${{
-            sku: optionsSku,
-          }}"
-        ></oryx-product-card>`
-      );
-
-      expect(mockContext.provide).toHaveBeenCalledWith(
-        ProductContext.SKU,
-        optionsSku
-      );
-    });
-
-    it('sku from options if provided both', async () => {
-      await fixture(
-        html`<oryx-product-card
-          sku="${propSku}"
-          .options="${{ sku: optionsSku }}"
-        ></oryx-product-card>`
-      );
-
-      expect(mockContext.provide).toHaveBeenCalledWith(
-        ProductContext.SKU,
-        optionsSku
-      );
-    });
-  });
-
   describe('when enableTitle = false', () => {
     beforeEach(async () => {
       element = await fixture(html`
@@ -120,12 +74,12 @@ describe('ProductCardComponent', () => {
     });
   });
 
-  // TODO: find the reason why `element.style.getPropertyValue` is not available
   describe('title truncation', () => {
     it('should set default (1) --oryx-product-title-max-lines when option is not provided', () => {
-      expect(
-        element.style.getPropertyValue('--oryx-product-title-max-lines')
-      ).toBe('1');
+      const el = element.shadowRoot?.querySelector<HTMLElement>('.popover');
+      expect(el?.style.getPropertyValue('--oryx-product-title-max-lines')).toBe(
+        '1'
+      );
     });
 
     describe('when option is provided', () => {
@@ -142,9 +96,25 @@ describe('ProductCardComponent', () => {
       });
 
       it('should set the --oryx-product-title-max-lines css property', () => {
+        const el = element.shadowRoot?.querySelector<HTMLElement>('.popover');
         expect(
-          element.style.getPropertyValue('--oryx-product-title-max-lines')
+          el?.style.getPropertyValue('--oryx-product-title-max-lines')
         ).toBe(String(titleLineClamp));
+      });
+    });
+
+    describe('when option is not defined', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-product-card sku="1"></oryx-product-card>
+        `);
+      });
+
+      it('should fallback to 1', () => {
+        const el = element.shadowRoot?.querySelector<HTMLElement>('.popover');
+        expect(
+          el?.style.getPropertyValue('--oryx-product-title-max-lines')
+        ).toBe('1');
       });
     });
   });

@@ -1,0 +1,116 @@
+{
+  "id": "US",
+  "name": "United States",
+  "data": {
+    "options": [
+      {
+        "id": "salutation",
+        "label": "Salutation",
+        "type": "select",
+        "width": 100,
+        "required": true,
+        "options": [
+          {
+            "value": "Mr",
+            "text": "Mr"
+          },
+          {
+            "value": "Nrs",
+            "text": "Mrs"
+          },
+          {
+            "value": "Niss",
+            "text": "Miss"
+          },
+          {
+            "value": "Ms",
+            "text": "Ms"
+          },
+          {
+            "value": "Dr",
+            "text": "Dr"
+          }
+        ]
+      },
+      {
+        "id": "firstName",
+        "label": "First Name",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "lastName",
+        "label": "Last Name",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "company",
+        "label": "Company",
+        "type": "input",
+        "required": false,
+        "width": 100
+      },
+      {
+        "id": "address1",
+        "label": "Street Address or P.O. box",
+        "type": "input",
+        "required": true,
+        "width": 100
+      },
+      {
+        "id": "address2",
+        "label": "Apt, suite, unit, building, floor, etc.",
+        "type": "input",
+        "required": true,
+        "width": 100
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "input",
+        "required": true,
+        "width": 100
+      },
+      {
+        "id": "state",
+        "label": "State/Province",
+        "type": "select",
+        "options": [
+          {
+            "value": "TX",
+            "text": "Texas"
+          },
+          {
+            "value": "CA",
+            "text": "California"
+          },
+          {
+            "value": "NY",
+            "text": "New York"
+          }
+        ]
+      },
+      {
+        "id": "zipCode",
+        "label": "ZIP code",
+        "type": "input",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true,
+        "width": 100
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "type": "tel",
+        "required": false,
+        "width": 100
+      }
+    ]
+  }
+}

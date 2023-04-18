@@ -1,9 +1,9 @@
-import { ProductStorage } from '../data-storages/product.storage';
 import { CartPage } from '../support/page_objects/cart.page';
 import { ContactPage } from '../support/page_objects/contact.page';
 import { LandingPage } from '../support/page_objects/landing.page';
 import { LoginPage } from '../support/page_objects/login.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
+import { ProductStorage } from '../test-data/product.storage';
 
 describe('SSR suite', () => {
   it('must render Landing page', () => {
@@ -25,11 +25,11 @@ describe('SSR suite', () => {
     pdp.getPrice().should('contain.text', productData.originalPrice);
 
     pdp.getQuantityComponent().getInput().should('have.value', 1);
-    pdp.getAddToCartBtn().should('be.visible').and('be.enabled');
+    pdp.getAddToCartBtn().should('be.visible');
 
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
-    pdp.getAttributes().should('have.length', 6);
+    pdp.getAttributeTerms().should('have.length', 6);
   });
 
   it('must render Contact us page', () => {

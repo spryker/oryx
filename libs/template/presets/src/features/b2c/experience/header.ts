@@ -69,11 +69,30 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
-        { type: 'oryx-user-summary' },
         {
-          type: 'oryx-cart-summary',
+          type: 'oryx-site-navigation-item',
           options: {
-            data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
+            data: {
+              contentBehavior: 'dropdown',
+              label: 'USER.NAME',
+              icon: 'user',
+              rules: [{ width: '87px', maxWidth: true }],
+            },
+          },
+          components: [{ type: 'oryx-auth-login-link' }],
+        },
+        {
+          type: 'oryx-site-navigation-item',
+          options: {
+            data: {
+              label: 'cart',
+              badge: 'CART.SUMMARY',
+              icon: 'cart',
+              url: {
+                type: 'cart',
+              },
+              rules: [{ maxWidth: false }],
+            },
           },
         },
       ],

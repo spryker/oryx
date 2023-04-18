@@ -79,7 +79,7 @@ export class PickingListOnlineDefaultAdapter
     return {
       ...pickingList,
       requestedDeliveryDate: new Date(
-        data.pickingListItems[0].shipments[0].requestedDeliveryDate
+        data.pickingListItems[0].salesShipments[0].requestedDeliveryDate
       ),
     };
   }

@@ -3,6 +3,8 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
+import { TabComponent } from '@spryker-oryx/ui/tab';
+import { tabsComponent } from '@spryker-oryx/ui/tabs';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -11,13 +13,16 @@ import { PickingComponent } from './picking.component';
 import { pickingComponent } from './picking.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getById = vi.fn().mockReturnValue(of(mockPickingListData[0]));
-  finishPicking = vi.fn();
+  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
+  getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
+
+Element.prototype.scrollIntoView = vi.fn();
 
 describe('PickingComponent', () => {
   let element: PickingComponent;
@@ -25,7 +30,7 @@ describe('PickingComponent', () => {
   let routerService: MockRouterService;
 
   beforeAll(async () => {
-    await useComponent(pickingComponent);
+    await useComponent([pickingComponent, tabsComponent]);
   });
 
   beforeEach(async () => {
@@ -51,9 +56,7 @@ describe('PickingComponent', () => {
     ) as unknown as MockRouterService;
 
     element = await fixture(
-      html`<oryx-picking
-        .pickingListId=${mockPickingListData[0].id}
-      ></oryx-picking>`
+      html`<oryx-picking pickingListId="id"></oryx-picking>`
     );
   });
 
@@ -67,7 +70,7 @@ describe('PickingComponent', () => {
   });
 
   it('should render tabs', () => {
-    expect(element.renderRoot.querySelector('oryx-tabs')).not.toBeFalsy();
+    expect(element.renderRoot.querySelector('oryx-tabs')).not.toBeNull();
     expect(element.renderRoot.querySelectorAll('oryx-tab').length).toBe(3);
   });
 
@@ -81,33 +84,41 @@ describe('PickingComponent', () => {
     );
   });
 
+  describe('when tab is selected', () => {
+    it('should update chip appearance', () => {
+      const tab = element.renderRoot.querySelectorAll(
+        'oryx-tab'
+      )[1] as TabComponent;
+      tab.click();
+      expect(
+        tab.querySelector('oryx-chip[appearance="success"]')
+      ).not.toBeNull();
+    });
+  });
+
   describe('when there is no picking list', () => {
     beforeEach(async () => {
-      service.getById.mockReturnValue(of(null));
+      service.get = vi.fn().mockReturnValue(of([]));
 
       element = await fixture(
-        html`<oryx-picking
-          .pickingListId=${mockPickingListData[0].id}
-        ></oryx-picking>`
+        html`<oryx-picking pickingListId="id"></oryx-picking>`
       );
     });
 
     it('should not render product card', () => {
-      expect(
-        element.renderRoot.querySelector('oryx-picking-product-card')
-      ).toBeFalsy();
+      expect(element).not.toContainElement('oryx-picking-product-card');
     });
   });
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.getById.mockReturnValue(of(mockPickingListData[1]));
-      service.finishPicking.mockReturnValue(of(mockPickingListData[1]));
+      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.finishPicking = vi
+        .fn()
+        .mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
-        html`<oryx-picking
-          .pickingListId=${mockPickingListData[1].id}
-        ></oryx-picking>`
+        html`<oryx-picking pickingListId="id"></oryx-picking>`
       );
     });
 

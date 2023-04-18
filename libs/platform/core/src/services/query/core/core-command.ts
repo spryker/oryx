@@ -49,11 +49,17 @@ export class CoreCommand<
 
   protected executeQueueStrategy(qualifier: Qualifier): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
-    if (!this.currentResult) {
+    if (
+      !this.currentResult ||
+      this.currentResult.closed ||
+      // isStopped is deprecated in RxJS 7, but closed seems to not work properly?
+      // To recheck when migrating to RxJs 8
+      this.currentResult.isStopped
+    ) {
       this.currentResult = result;
       this.getStream(result, qualifier).subscribe();
     } else {
-      const oldResult = this.currentResult;
+      const oldResult = this.currentResult.pipe(catchError(() => EMPTY));
       this.currentResult = result;
       concat(oldResult, this.getStream(result, qualifier)).subscribe();
     }
