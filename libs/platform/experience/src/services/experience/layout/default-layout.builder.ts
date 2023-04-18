@@ -1,7 +1,5 @@
-import { ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  Breakpoint,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
@@ -10,52 +8,37 @@ import { Component } from '../models';
 import { BreakpointService } from './breakpoint.service';
 import { LayoutBuilder } from './layout.builder';
 
-type BreakpointStyles = {
-  [B in keyof ThemeBreakpoints]?: ThemeStyles;
-};
-
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(protected breakpointService = inject(BreakpointService)) {}
 
   collectStyles(components: Component[]): string {
-    const perBreakpoint: BreakpointStyles = {};
-
-    const add = (
-      id: string,
-      breakpoint: Breakpoint,
-      rules: string | undefined
-    ): void => {
-      if (!rules || rules === '') return;
-
-      if (!perBreakpoint[breakpoint]) {
-        perBreakpoint[breakpoint] = '';
-      }
-      perBreakpoint[breakpoint] += `[uid="${id}"]{${rules}}`;
-    };
-
-    components.forEach((component) => {
-      component.options?.data?.rules?.forEach((rule) => {
-        const styles = this.getLayoutStyles(rule);
-        const breakpoint =
-          rule.breakpoint ?? this.breakpointService.getSmallest();
-
-        if (breakpoint) {
-          add(component.id, breakpoint, styles);
-        }
-      });
-    });
-
-    return Object.keys(perBreakpoint)
-      .map((key) => {
-        const query = this.breakpointService.getMediaQuery(key as Breakpoint);
-        const stylesForBreakpoint = perBreakpoint[key as Breakpoint];
-        if (query) {
-          return `${query}{${stylesForBreakpoint}}\n`;
-        } else {
-          return `${stylesForBreakpoint}\n`;
-        }
-      })
+    return components
+      .map((component) =>
+        component.options?.data
+          ? this.createStylesFromOptions(component.id, component.options.data)
+          : ''
+      )
       .join('');
+  }
+
+  createStylesFromOptions(id: string, options: CompositionProperties): string {
+    return (
+      options?.rules
+        ?.map((rule) => {
+          const styles = this.getLayoutStyles(rule);
+          if (styles) {
+            const breakpoint = rule.breakpoint;
+            if (breakpoint) {
+              const query = this.breakpointService.getMediaQuery(breakpoint);
+              return `${query}{:not(experience-composition)[uid="${id}"] {${styles}}}\n`;
+            }
+            return `:not(experience-composition)[uid="${id}"] {${styles}}\n`;
+          } else {
+            return '';
+          }
+        })
+        .join('') ?? ''
+    );
   }
 
   getLayoutClasses(data?: CompositionProperties): string | undefined {
@@ -95,7 +78,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (required) classes.push(`${breakpoint}-${className}`);
     };
 
-    add('maxWidth', ruleSet.maxWidth);
+    add('bleed', ruleSet.bleed);
     add('sticky', ruleSet.sticky);
 
     return classes;
@@ -141,9 +124,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add(
       {
         '--cols': data.columnCount,
+        '--split-column-factor': data.splitColumnFactor,
         '--grid-column': data.gridColumn,
         '--grid-row': data.gridRow,
         '--span': data.span,
+        '--col-span': data.colSpan,
+        '--row-span': data.rowSpan,
         '--z-index': data.zIndex,
         '--rotate': data.rotate,
       },
@@ -151,10 +137,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     );
 
     add({
-      '--align-items': data.align,
-      '--gap': data.gap,
+      'align-items': data.align,
       '--top': data.top,
-      '--width': data.width,
+      width: data.width,
       '--height': data.height,
       margin: data.margin,
       border: data.border,
@@ -163,16 +148,37 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       overflow: data?.overflow,
     });
 
+    const gaps = data.gap?.split(' ');
+    add({ '--oryx-grid-gap-column': gaps?.[1] ?? gaps?.[0] });
+    add({ '--oryx-grid-gap-row': gaps?.[0] });
     add({ '--rotate': data.rotate }, { unit: 'deg' });
 
     if (data.padding) {
       add({
-        padding: data.padding,
+        'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
         '--scroll-start': this.findCssValue(data.padding, 'start'),
       });
+
+      if (!(data as any).layout) {
+        add({
+          'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
+        });
+      }
     }
 
     return rules;
+  }
+
+  protected findCssValues(
+    data: string,
+    startPos: 'start' | 'top',
+    endPos: 'end' | 'bottom'
+  ): string | undefined {
+    const start = this.findCssValue(data, startPos);
+    const end = this.findCssValue(data, endPos);
+    if (!start && !end) return;
+    if (start === end) return start;
+    return `${start ?? 'auto'} ${end ?? 'auto'}`;
   }
 
   /**

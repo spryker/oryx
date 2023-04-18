@@ -11,10 +11,7 @@ export const CartPage: StaticComponent = {
           splitColumnFactor: 0.66,
           padding: '30px 0 0',
         },
-        {
-          breakpoint: 'sm',
-          gap: '0',
-        },
+        { breakpoint: 'sm', gap: '0' },
       ],
     },
   },

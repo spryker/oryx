@@ -28,6 +28,8 @@ export interface LayoutBuilder {
    */
   collectStyles(components: Component[]): string;
 
+  createStylesFromOptions(id: string, options: CompositionProperties): string;
+
   /**
    * Generates an class list that is driven by layout properties on the
    * composition.
