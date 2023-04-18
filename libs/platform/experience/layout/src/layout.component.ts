@@ -46,7 +46,7 @@ export class LayoutComponent
   protected layoutService = resolve(LayoutService);
 
   protected layoutStyles = computed(() => {
-    const layouts: any = {};
+    const layouts: { [key: string]: CompositionLayout } = {};
     if (this.layoutSm) layouts.sm = this.layoutSm;
     if (this.layoutMd) layouts.md = this.layoutMd;
     if (this.layoutLg) layouts.lg = this.layoutLg;

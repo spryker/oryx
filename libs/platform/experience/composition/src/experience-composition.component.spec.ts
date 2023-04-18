@@ -27,8 +27,8 @@ class MockExperienceService implements Partial<ExperienceService> {
       type: '',
       components: this.components,
     });
-  getOptions = (): Observable<any> => of({});
-  getContent = (): Observable<any> => of({});
+  getOptions = <T>(): Observable<T> => of({} as T);
+  getContent = <T>(): Observable<T> => of({} as T);
 }
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
@@ -38,7 +38,7 @@ class MockLayoutBuilder implements Partial<LayoutBuilder> {
 }
 
 class MockSSRAwaiter {
-  getAwaiter(key: string): any {
+  getAwaiter(): unknown {
     return () => {
       //do nothing
     };

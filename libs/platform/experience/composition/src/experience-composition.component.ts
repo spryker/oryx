@@ -124,7 +124,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       >
         ${content}
       </oryx-layout>
-      ${this.addStyles(this.uid!, this.$options())} `;
+      ${this.addStyles(this.uid, this.$options())} `;
   }
 
   protected renderComponent(
@@ -170,11 +170,11 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   }
 
   protected addStyles(
-    id: string,
+    uid?: string,
     options?: CompositionProperties
   ): TemplateResult | void {
-    if (!options) return;
-    const styles = this.layoutBuilder.createStylesFromOptions(id, options);
+    if (!uid || !options) return;
+    const styles = this.layoutBuilder.createStylesFromOptions(uid, options);
     if (styles) {
       return html`${unsafeHTML(`<style>${styles}</style>`)}`;
     }

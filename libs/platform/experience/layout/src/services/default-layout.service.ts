@@ -41,12 +41,15 @@ export class DefaultLayoutService implements LayoutService {
     const layouts: { layout: CompositionLayout; screens?: string[] }[] = [];
     if (layout) layouts.push({ layout });
     if (responsiveLayouts) {
-      Object.keys(responsiveLayouts).forEach((key) => {
-        let layout = layouts.find((l) => l.layout === responsiveLayouts?.[key]);
-        if (!layout) {
-          layouts.push({ layout: responsiveLayouts?.[key]!, screens: [key] });
-        } else {
-          layout.screens?.push(key);
+      Object.keys(responsiveLayouts).forEach((size) => {
+        const responsiveLayout = responsiveLayouts[size];
+        if (responsiveLayout) {
+          const layout = layouts.find((l) => l.layout === responsiveLayout);
+          if (!layout) {
+            layouts.push({ layout: responsiveLayout, screens: [size] });
+          } else {
+            layout.screens?.push(size);
+          }
         }
       });
     }
@@ -67,16 +70,14 @@ export class DefaultLayoutService implements LayoutService {
         // only add the base styles if not done already
         if (!styles.styles && styles.base)
           result += this.createMediaQuery(size, styles.base.toString());
-        if (styles[size]?.base) {
-          result += this.createMediaQuery(
-            size,
-            styles[size]?.base?.toString()!
-          );
+        const stylePerSize = styles[size];
+        if (stylePerSize?.base) {
+          result += this.createMediaQuery(size, stylePerSize.base.toString());
         }
-        if (styles[size]?.styles) {
+        if (stylePerSize?.styles) {
           result += this.createMediaQuery(
             size,
-            styles[size]?.styles?.toString()!
+            stylePerSize?.styles?.toString()
           );
         }
       });
