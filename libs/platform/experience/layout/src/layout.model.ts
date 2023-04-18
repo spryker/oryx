@@ -1,7 +1,19 @@
+import { Size } from '@spryker-oryx/ui';
+import { CSSResult } from 'lit';
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
 } from '../../src/models';
+
+export type LayoutStyles = {
+  [key in Size]?: {
+    base?: CSSResult;
+    styles?: CSSResult;
+  };
+} & {
+  base?: CSSResult;
+  styles?: CSSResult;
+};
 
 /**
  * The Layout attributes are used to apply layout to a container element. The container
@@ -57,23 +69,10 @@ export interface LayoutAttributes {
   orientation?: CompositionLayoutOrientation;
 
   /**
-   * Indicates whether the layout is rendered inside a container. A container represents the
-   * maximum width of a centered global layout, so that the layout will look great on wider screens.
-   *
-   * The container size is configurable by a design token.
-   *
-   * If the container is combined with the `maxWidth` attribute, the full width of the page can
-   * be styled with a background. The content of the _container_ however will still be restricted
-   * to the container size.
+   * The bleed option can be used to use the page bleed. The page bleed is larger screen sizes not being used
+   * by content. With the bleed option, this space can still be used by styles such as background color.
    */
-  container?: boolean;
-
-  /**
-   * The max width can be used to take the maximum available horizontal space. This is useful in two cases:
-   * * when a layout is container-ed, the full width can be styled (eg background color)
-   * * when an item in a flex or column layout requires to use the available space
-   */
-  maxWidth?: boolean;
+  bleed?: boolean;
 
   /**
    * Indicates that the composition will stick on the screen at a certain position. The position
