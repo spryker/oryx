@@ -1,9 +1,9 @@
-import { ProductStorage } from '../data-storages/product.storage';
-import { defaultUser } from '../support/commands';
 import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { ThankYouPage } from '../support/page_objects/thank-you.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
+import { defaultUser } from '../test-data/default-user';
+import { ProductStorage } from '../test-data/product.storage';
 
 let sccosApi: SCCOSApi;
 let thankYouPage: ThankYouPage;
@@ -37,12 +37,12 @@ describe('Checkout suite', () => {
       cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
-      cartPage.getCheckoutBtn().click({ force: true });
+      cartPage.checkout();
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
       cy.wait('@addresses');
 
-      checkoutPage.fillAddressForm();
+      checkoutPage.addressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')
@@ -92,13 +92,13 @@ describe('Checkout suite', () => {
       cy.intercept('/customers/*/addresses').as('addresses');
 
       cartPage.visit();
-      cartPage.getCheckoutBtn().click({ force: true });
+      cartPage.checkout();
 
       cy.location('pathname').should('be.eq', checkoutPage.url);
       checkoutPage.getCheckoutAsGuestBtn().click();
 
-      checkoutPage.fillUserContactForm();
-      checkoutPage.fillAddressForm();
+      checkoutPage.contactForm.fillContactForm();
+      checkoutPage.addressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')

@@ -1,7 +1,7 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -45,13 +45,9 @@ export class QuantityInputComponent
 
   protected inputRef = createRef<HTMLInputElement>();
 
-  protected willUpdate(
-    changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
-  ): void {
-    if (changedProperties.has('value') && this.input) {
-      this.input.value = this.getValue();
-    }
-    super.willUpdate(changedProperties);
+  reset(): void {
+    if (!this.input) return;
+    this.input.value = this.min.toString();
   }
 
   protected override render(): TemplateResult {
@@ -74,7 +70,7 @@ export class QuantityInputComponent
           aria-label=${i18n('cart.quantity')}
           type="number"
           value=${this.getValue()}
-          min=${ifDefined(this.min)}
+          min=${this.min}
           max=${ifDefined(this.max)}
           step=${this.step}
           required
@@ -110,7 +106,7 @@ export class QuantityInputComponent
   }
 
   protected getValue(): string {
-    return this.value?.toString() ?? this.min?.toString() ?? '1';
+    return this.value?.toString() ?? this.min?.toString();
   }
 
   protected onFocus(): void {

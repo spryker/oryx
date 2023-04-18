@@ -69,37 +69,30 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
-        //TODO: uncomment and drop summary components from config
-        //when navigation items will be fully integrated with EB
-        // {
-        //   type: 'oryx-site-navigation-item',
-        //   options: {
-        //     data: {
-        //       contentBehavior: 'dropdown',
-        //       label: 'USER.NAME',
-        //       icon: 'user',
-        //     },
-        //   },
-        //   components: [{ type: 'oryx-auth-login-link' }],
-        // },
-        // {
-        //   type: 'oryx-site-navigation-item',
-        //   options: {
-        //     data: {
-        //       label: 'cart',
-        //       badge: 'CART.SUMMARY',
-        //       icon: 'cart',
-        //       url: {
-        //         type: 'cart',
-        //       },
-        //     },
-        //   },
-        // },
-        { type: 'oryx-user-summary' },
         {
-          type: 'oryx-cart-summary',
+          type: 'oryx-site-navigation-item',
           options: {
-            data: { maxVisibleQuantity: 99, rules: [{ maxWidth: false }] },
+            data: {
+              contentBehavior: 'dropdown',
+              label: 'USER.NAME',
+              icon: 'user',
+              rules: [{ width: '87px', maxWidth: true }],
+            },
+          },
+          components: [{ type: 'oryx-auth-login-link' }],
+        },
+        {
+          type: 'oryx-site-navigation-item',
+          options: {
+            data: {
+              label: 'cart',
+              badge: 'CART.SUMMARY',
+              icon: 'cart',
+              url: {
+                type: 'cart',
+              },
+              rules: [{ maxWidth: false }],
+            },
           },
         },
       ],
