@@ -2,12 +2,12 @@ import { css } from 'lit';
 
 export const baseStyles = css`
   :host {
-    --layout-cols: var(--cols);
-
+    --_col-span: var(--col-span);
     display: contents;
   }
 
+  ::slotted(oryx-layout),
   oryx-layout {
-    --cols: var(--layout-cols);
+    grid-column: var(--col-pos, auto) / span var(--_col-span);
   }
 `;
