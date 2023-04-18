@@ -29,7 +29,7 @@ export class DefaultLocaleMetaInitializer implements AppInitializer, OnDestroy {
 
   initialize(): void {
     if (!this.localeService?.get() || !this.metaService) {
-      return ;
+      return;
     }
 
     this.subscription.add(

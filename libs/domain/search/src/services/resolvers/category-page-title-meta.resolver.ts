@@ -4,10 +4,10 @@ import {
   ResolverScore,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { FacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { FacetListService } from '@spryker-oryx/search';
 import { map, Observable, switchMap } from 'rxjs';
-import { FacetValue } from '../../models';
+import { FacetListService } from '../facet-list.service';
 
 export class CategoryPageTitleMetaResolver implements PageMetaResolver {
   constructor(
