@@ -10,12 +10,6 @@ export class GlobalPageMetaResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver[]> {
     return of([
       {
-        name: 'html',
-        attrs: {
-          lang: 'en',
-        },
-      },
-      {
         name: 'meta',
         attrs: {
           charset: 'UTF-8',
