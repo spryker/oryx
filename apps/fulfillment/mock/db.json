@@ -89,7 +89,7 @@
         "type": "picking-lists",
         "id": "d5bf20f1-7f36-568d-85b5-e4502acbcc82",
         "attributes": {
-          "status": "picking-started",
+          "status": "ready-for-picking",
           "createdAt": "2023-02-26 19:35:44.000000",
           "updatedAt": "2023-02-27 09:13:32.000000"
         },
@@ -749,7 +749,10 @@
       {
         "type": "sales-orders",
         "id": "DE--19",
-        "attributes": { "cartNote": null, "orderReference": "DE--19" },
+        "attributes": {
+          "cartNote": "Some cart note",
+          "orderReference": "DE--19"
+        },
         "links": {
           "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/sales-orders/DE--19?include=picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets"
         }
