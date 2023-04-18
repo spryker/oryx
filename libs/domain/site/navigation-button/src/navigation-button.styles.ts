@@ -9,7 +9,7 @@ const smallScreen = css`
   }
 
   oryx-button {
-    --oryx-icon-size: 24px;
+    --oryx-icon-size: 20px;
   }
 
   a,
@@ -34,7 +34,7 @@ export const navigationButtonScreenStyles: ThemeStylesWithMedia[] = [
 export const styles = css`
   :host {
     min-width: 75px;
-    min-height: 75px;
+    min-height: 68px;
     max-width: 154px;
     display: inline-flex;
     flex-direction: column;

@@ -39,7 +39,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     this.options$.pipe(
       switchMap(({ label }) => {
         if (!label) {
-          return of();
+          return of(null);
         }
 
         return this.tokenResolver.resolveToken(label);
@@ -52,7 +52,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     this.options$.pipe(
       switchMap(({ badge }) => {
         if (!badge) {
-          return of();
+          return of(null);
         }
 
         return this.tokenResolver.resolveToken(badge);

@@ -34,7 +34,7 @@ describe('Authentication suite', () => {
       loginPage.header
         .getUserSummaryHeading()
         .should('not.contain', invalidUser.name);
-      loginPage.header.getUserSummaryHeading().should('contain', 'Login');
+      loginPage.header.getUserSummaryHeading().should('contain', 'login');
 
       loginPage.loginForm.getBEValidationError().should('be.visible');
     });
@@ -52,11 +52,11 @@ describe('Authentication suite', () => {
       landingPage.header.logout();
 
       cy.location('pathname').should('be.eq', landingPage.url);
-      landingPage.header.getUserSummaryHeading().should('contain', 'Login');
+      landingPage.header.getUserSummaryHeading().should('contain', 'login');
 
       // check that user is still logged out after page change
       loginPage.visit();
-      loginPage.header.getUserSummaryHeading().should('contain', 'Login');
+      loginPage.header.getUserSummaryHeading().should('contain', 'login');
     });
   });
 });
