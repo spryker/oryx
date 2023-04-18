@@ -1,5 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, StyleRuleSet } from '@spryker-oryx/experience';
+import {
+  ContentMixin,
+  LayoutBuilder,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,
@@ -7,6 +11,7 @@ import {
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
 import { baseStyles } from './list.styles';
 
@@ -18,6 +23,7 @@ export class ProductListComponent extends ContentMixin<ProductListOptions>(
 
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
+  protected layoutBuilder = resolve(LayoutBuilder);
 
   protected list = computed(() => {
     const params = this.searchParams();
@@ -27,11 +33,30 @@ export class ProductListComponent extends ContentMixin<ProductListOptions>(
   });
 
   protected override render(): TemplateResult {
-    const hasLayout = !!(this.$options() as any as { rules: StyleRuleSet[] })
-      ?.rules?.[0]?.layout;
-    return hasLayout
+    const rules = (this.$options() as any as { rules: StyleRuleSet[] }).rules;
+    const layout = rules?.find((rule) => !rule.breakpoint)?.layout;
+    const smLayout = rules?.find((rule) => rule.breakpoint === 'sm')?.layout;
+    const mdLayout = rules?.find((rule) => rule.breakpoint === 'md')?.layout;
+    const lgLayout = rules?.find((rule) => rule.breakpoint === 'lg')?.layout;
+
+    const bleed = rules?.find((rule) => !rule.breakpoint)?.bleed;
+    const sticky = rules?.find((rule) => !rule.breakpoint)?.sticky;
+
+    return layout || smLayout || mdLayout || lgLayout
       ? html`
-          <oryx-layout .uid=${this.uid}>${this.renderProducts()}</oryx-layout>
+          <oryx-layout
+            uid=${this.uid}
+            .layout=${layout}
+            .layoutSm=${smLayout}
+            .layoutMd=${mdLayout}
+            .layoutLg=${lgLayout}
+            ?bleed=${bleed}
+            ?sticky=${sticky}
+          >
+            ${this.renderProducts()}
+          </oryx-layout>
+
+          ${this.addStyles(this.uid!, this.$options())}
         `
       : this.renderProducts();
   }
@@ -77,4 +102,12 @@ export class ProductListComponent extends ContentMixin<ProductListOptions>(
 
     return Object.keys(params).length ? params : undefined;
   });
+
+  protected addStyles(id: string, options?: any): TemplateResult | void {
+    if (!options) return;
+    const styles = this.layoutBuilder.createStylesFromOptions(id, options);
+    if (styles) {
+      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
+    }
+  }
 }
