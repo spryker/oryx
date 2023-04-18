@@ -1,6 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 import {
   combineLatest,
+  defer,
   map,
   Observable,
   shareReplay,
@@ -15,41 +16,42 @@ import {
 } from './page-meta-resolver.service';
 
 export class DefaultPageMetaResolverService implements PageMetaResolverService {
-  protected data$ = combineLatest(
-    this.resolvers.map((resolver) =>
-      combineLatest([resolver.getScore(), resolver.resolve()]).pipe(
-        map(([score, elements]) => ({
-          score,
-          elements: (Array.isArray(elements) ? elements : [elements]).reduce(
-            this.resolversReducer,
-            {}
-          ),
-        }))
+  protected data$ = defer(() =>
+    combineLatest(
+      this.resolvers.map((resolver) =>
+        combineLatest([resolver.getScore(), resolver.resolve()]).pipe(
+          map(([score, elements]) => ({
+            score,
+            elements: (Array.isArray(elements) ? elements : [elements]).reduce(
+              this.resolversReducer,
+              {}
+            ),
+          }))
+        )
+      )
+    ).pipe(
+      map((data) =>
+        data
+          .filter(({ score }) => score !== -1)
+          .sort((a, b) => a.score - b.score)
+          .reduce<Record<string, ElementDefinition>>((acc, { elements }) => {
+            if (elements.html) {
+              acc.html = {
+                ...(acc.html ?? {}),
+                ...elements.html,
+                attrs: {
+                  ...(acc.html?.attrs ?? {}),
+                  ...elements.html.attrs,
+                },
+              };
+
+              delete elements.html;
+            }
+            return { ...acc, ...elements };
+          }, {})
       )
     )
-  ).pipe(
-    map((data) =>
-      data
-        .filter(({ score }) => score !== -1)
-        .sort((a, b) => a.score - b.score)
-        .reduce<Record<string, ElementDefinition>>((acc, { elements }) => {
-          if (elements.html) {
-            acc.html = {
-              ...(acc.html ?? {}),
-              ...elements.html,
-              attrs: {
-                ...(acc.html?.attrs ?? {}),
-                ...elements.html.attrs,
-              },
-            };
-
-            delete elements.html;
-          }
-          return { ...acc, ...elements };
-        }, {})
-    ),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   protected subscription = new Subscription();
 
   constructor(
@@ -60,6 +62,7 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
   initialize(): void {
     this.subscription.add(
       this.data$.subscribe((data) => {
+        console.log(data);
         this.meta.add(Object.values(data), true);
       })
     );
@@ -83,10 +86,12 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
     if (!element.name) {
       tagName = Object.keys(element).find((_el) =>
         ['link', 'style', 'title', 'script'].includes(_el)
-      );
-      const tagProperty = element[tagName as keyof ElementResolver];
+      ) as keyof ElementResolver;
+      const tagProperty = element[tagName];
       attrs =
         tagName === 'link' ? { href: tagProperty } : { text: tagProperty };
+
+      delete element[tagName];
     }
 
     return {
