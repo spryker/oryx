@@ -8,11 +8,9 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { ContentMixin } from '../../src/mixins';
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
-  CompositionProperties,
 } from '../../src/models';
 import { LayoutBuilder } from '../../src/services';
 import { LayoutAttributes } from './layout.model';
@@ -21,10 +19,7 @@ import { styles } from './styles/base.styles';
 
 @ssrShim('style')
 @hydratable()
-export class LayoutComponent
-  extends ContentMixin<CompositionProperties>(LitElement)
-  implements LayoutAttributes
-{
+export class LayoutComponent extends LitElement implements LayoutAttributes {
   static styles = styles;
 
   @signalProperty({ reflect: true }) layout?: CompositionLayout;
