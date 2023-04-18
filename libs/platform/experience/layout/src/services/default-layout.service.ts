@@ -98,6 +98,7 @@ export class DefaultLayoutService implements LayoutService {
         return from(
           import('../styles/free.styles').then((m) => resolve(m.styles))
         );
+
       case CompositionLayout.SplitColumn:
         return from(
           import('../styles/split-column.styles').then((m) => resolve(m.styles))

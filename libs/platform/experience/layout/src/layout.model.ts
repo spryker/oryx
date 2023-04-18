@@ -7,11 +7,27 @@ import {
 
 export type LayoutStyles = {
   [key in Size]?: {
+    /**
+     * The base layouts per screen size are loaded always when the layout is used. This allows
+     * to create screen size specific style rules.
+     */
     base?: CSSResult;
+
+    /**
+     * screen specific styles are only loaded if the layout is assigned to a specific screen size.
+     */
     styles?: CSSResult;
   };
 } & {
+  /**
+   * Base styles are loaded once when the layout is used in any of the breakpoints.
+   */
   base?: CSSResult;
+
+  /**
+   * The styles are loaded in case the layout is used as the default layout. The default layout
+   * can be overridden by specific layouts per breakpoint.
+   */
   styles?: CSSResult;
 };
 

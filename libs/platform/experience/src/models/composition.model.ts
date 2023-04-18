@@ -14,10 +14,10 @@ export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
 export enum CompositionLayout {
   List = 'list',
   Column = 'column',
-  TwoColumn = 'two-column',
+  SplitColumn = 'split-column',
   Carousel = 'carousel',
   Grid = 'grid',
-  Flex = 'flex',
+  Free = 'free',
   Text = 'text',
   Tabular = 'tabular',
 }
@@ -28,6 +28,7 @@ export const enum CompositionLayoutOrientation {
 }
 
 export interface StyleProperties {
+  sticky?: boolean;
   /**
    * The align property is applied to the child items as well as to the layout it self. This
    * allows to align the child items over the layout axis. In most layouts, this means that
@@ -44,6 +45,8 @@ export interface StyleProperties {
    * with the maximum available columns to span.
    */
   span?: number;
+  colSpan?: number;
+  rowSpan?: number;
 
   /**
    * Allows to specify the location of the grid row. This overrules the automated
@@ -78,6 +81,8 @@ export interface StyleProperties {
    * balanced layout, where nested layouts will reflect the parent column setup.
    */
   columnCount?: number;
+
+  splitColumnFactor?: number;
 
   /**
    * Sets the gaps (gutters) between rows and columns. The span is applied to all layouts.
