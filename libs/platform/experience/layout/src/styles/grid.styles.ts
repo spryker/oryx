@@ -6,6 +6,7 @@ export const styles: LayoutStyles = {
     :host {
       --oryx-grid-columns: var(--oryx-grid-columns-grid);
     }
+
     :host([layout='grid']) {
       grid-template-columns: repeat(auto-fill, var(--_item-size));
     }

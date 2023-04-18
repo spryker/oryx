@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const baseStyles = css`
   :host {
     --_col-span: var(--col-span);
+
     display: contents;
   }
 

@@ -32,9 +32,9 @@ export const styles = css`
   }
 
   ::slotted(*) {
-    // --padding: 0;
     --col-span: 1;
     --row-span: 1;
+
     padding: var(--padding);
     margin: var(--margin);
     grid-column: var(--col-pos, auto) / span var(--col-span);
@@ -46,6 +46,7 @@ export const styles = css`
 
   :host([bleed]) {
     --_bleed: calc((100vw - var(--_container-width)) / 2);
+
     padding-inline: var(--_bleed);
     margin-inline: 0;
     scroll-padding-inline-start: var(--_bleed);
@@ -55,7 +56,7 @@ export const styles = css`
   ::slotted(*[sticky]),
   ::slotted([class*='sticky']) {
     position: sticky;
-    inset-block-start: var(--top, 0px);
+    inset-block-start: var(--top, 0);
     max-height: calc(var(--height) - var(--top, 0px));
     z-index: var(--z-index, 1);
   }
