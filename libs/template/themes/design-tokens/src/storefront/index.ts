@@ -1,9 +1,9 @@
 import { DesignToken } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/utilities';
 import { commonTokensSmall } from '../common-tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 import { darkColor } from './color-dark.tokens';
 import { color } from './color.tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 import { darkTokens } from './other-dark';
 import { tokens } from './other.tokens';
 import {
@@ -17,6 +17,7 @@ export const storefrontTokens: DesignToken[] = [
     color,
     ...tokens,
     ...typographyTokens,
+    ...layoutTokens,
   },
   {
     media: {
@@ -44,7 +45,6 @@ export const storefrontTokens: DesignToken[] = [
     media: {
       screen: Size.Lg,
     },
-    ...layoutTokens,
     ...typographyMediumAndLargerTokens,
   },
 ];

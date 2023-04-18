@@ -11,13 +11,14 @@ import {
 } from './typography.tokens';
 
 import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const backofficeTokens: DesignToken[] = [
   {
     color,
     ...tokens,
     ...typographyTokens,
+    ...layoutTokens,
   },
   {
     media: {
@@ -28,10 +29,11 @@ export const backofficeTokens: DesignToken[] = [
   },
   {
     media: {
-      screen: Size.Lg,
+      screen: Size.Sm,
     },
-    ...layoutTokens,
-    ...typographyMediumAndLargerTokens,
+    ...layoutSmTokens,
+    ...typographySmallTokens,
+    ...commonTokensSmall,
   },
   {
     media: {
@@ -42,10 +44,8 @@ export const backofficeTokens: DesignToken[] = [
   },
   {
     media: {
-      screen: Size.Sm,
+      screen: Size.Lg,
     },
-    ...layoutSmTokens,
-    ...typographySmallTokens,
-    ...commonTokensSmall,
+    ...typographyMediumAndLargerTokens,
   },
 ];
