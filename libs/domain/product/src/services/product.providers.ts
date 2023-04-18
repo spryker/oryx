@@ -27,6 +27,7 @@ import {
   ProductLabelsNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
 
+import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   paginationNormalizer,
@@ -46,6 +47,7 @@ import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
+import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta-resolver';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
 
@@ -127,4 +129,8 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ProductContextFallback,
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageTitleMetaResolver,
+  },
 ];

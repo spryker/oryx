@@ -9,7 +9,7 @@ import {
 } from 'rxjs';
 import { ElementDefinition } from '../page-meta.model';
 import { PageMetaService } from '../page-meta.service';
-import { ElementResolver, ResolverScore } from './page-meta-resolver.model';
+import { ResolverScore } from './page-meta-resolver.model';
 import {
   PageMetaResolver,
   PageMetaResolverService,
@@ -19,37 +19,20 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
   protected data$ = defer(() =>
     combineLatest(
       this.resolvers.map((resolver) =>
-        combineLatest([resolver.getScore(), resolver.resolve()]).pipe(
-          map(([score, elements]) => ({
-            score,
-            elements: (Array.isArray(elements) ? elements : [elements]).reduce(
-              this.resolversReducer,
-              {}
-            ),
-          }))
-        )
+        combineLatest([resolver.getScore(), resolver.resolve()])
       )
     ).pipe(
-      map((data) =>
-        data
-          .filter(({ score }) => score > ResolverScore.NotUsed)
-          .sort((a, b) => a.score - b.score)
-          .reduce<Record<string, ElementDefinition>>((acc, { elements }) => {
-            if (elements.html) {
-              acc.html = {
-                ...(acc.html ?? {}),
-                ...elements.html,
-                attrs: {
-                  ...(acc.html?.attrs ?? {}),
-                  ...elements.html.attrs,
-                },
-              };
+      map((data) => {
+        const _data = data
+          .filter(([score]) => score > ResolverScore.NotUsed)
+          .sort(([aScore], [bScore]) => aScore - bScore)
+          .reduce((acc, [score, elements]) => ({ ...acc, ...elements }), {});
 
-              delete elements.html;
-            }
-            return { ...acc, ...elements };
-          }, {})
-      )
+        return Object.entries(_data).map(([name, content]) => ({
+          name,
+          attrs: { ...(name === 'title' ? { text: content } : { content }) },
+        })) as ElementDefinition[];
+      })
     )
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   protected subscription = new Subscription();
@@ -60,11 +43,7 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
   ) {}
 
   initialize(): void {
-    this.subscription.add(
-      this.data$.subscribe((data) => {
-        this.meta.add(Object.values(data));
-      })
-    );
+    this.subscription.add(this.data$.subscribe((data) => this.meta.add(data)));
   }
 
   onDestroy(): void {
@@ -72,38 +51,8 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
   }
 
   getTitle(): Observable<string | undefined> {
-    return this.data$.pipe(map((data) => data.title.attrs.text));
-  }
-
-  protected resolversReducer(
-    acc: Record<string, ElementDefinition>,
-    element: ElementResolver
-  ): Record<string, ElementDefinition> {
-    let tagName;
-    let attrs = {};
-
-    if (!element.name) {
-      tagName = Object.keys(element).find((_el) =>
-        ['link', 'style', 'title', 'script'].includes(_el)
-      ) as keyof ElementResolver;
-      const tagProperty = element[tagName];
-      attrs =
-        tagName === 'link' ? { href: tagProperty } : { text: tagProperty };
-
-      delete element[tagName];
-    }
-
-    return {
-      ...acc,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      [element.id ?? tagName ?? element.name!]: {
-        name: tagName || element.name,
-        ...element,
-        attrs: {
-          ...attrs,
-          ...element.attrs,
-        },
-      } as ElementDefinition,
-    };
+    return this.data$.pipe(
+      map((data) => data.find((el) => el.name === 'title')?.attrs.text)
+    );
   }
 }

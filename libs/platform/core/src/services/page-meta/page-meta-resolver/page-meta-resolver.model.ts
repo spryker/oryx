@@ -1,11 +1,6 @@
-import { ElementDefinition } from '../page-meta.model';
-
-export interface ElementResolver extends Partial<ElementDefinition> {
-  link?: string;
-  style?: string;
-  script?: string;
+export interface ElementResolver {
   title?: string;
-  id?: string;
+  [key: string]: string | undefined;
 }
 
 export const enum ResolverScore {

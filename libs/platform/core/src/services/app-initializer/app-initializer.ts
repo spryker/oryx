@@ -8,7 +8,7 @@ export interface AppInitializerService {
 }
 
 export interface AppInitializer {
-  initialize(): void | Observable<void> | Promise<void>;
+  initialize(): void | Observable<unknown> | Promise<unknown>;
 }
 
 declare global {

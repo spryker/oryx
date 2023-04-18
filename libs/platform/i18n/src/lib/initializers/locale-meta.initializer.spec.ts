@@ -1,10 +1,17 @@
 import { nextFrame } from '@open-wc/testing-helpers';
-import { PageMetaResolver } from '@spryker-oryx/core';
+import { PageMetaService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/i18n';
+import {
+  LocaleMetaAppInitializer,
+  LocaleMetaInitializer,
+  LocaleService,
+} from '@spryker-oryx/i18n';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { DirectionalityPageMetaResolver } from './directionality-page-meta-resolver';
+
+const mockMeta = {
+  setHtmlAttributes: vi.fn(),
+};
 
 const injectMockLocaleService = (lang?: string) => {
   class MockLocaleService implements Partial<LocaleService> {
@@ -18,15 +25,19 @@ const injectMockLocaleService = (lang?: string) => {
         useClass: MockLocaleService,
       },
       {
-        provide: `${PageMetaResolver}1`,
-        useClass: DirectionalityPageMetaResolver,
+        provide: LocaleMetaAppInitializer,
+        useClass: LocaleMetaInitializer,
+      },
+      {
+        provide: PageMetaService,
+        useValue: mockMeta,
       },
     ],
   });
 };
 
 describe('DirectionalityController', () => {
-  let service: PageMetaResolver;
+  let service: LocaleMetaInitializer;
 
   afterEach(() => {
     destroyInjector();
@@ -36,18 +47,15 @@ describe('DirectionalityController', () => {
   describe('when locale has language with LTR direction', () => {
     beforeEach(() => {
       injectMockLocaleService('de');
-      service = getInjector().inject(`${PageMetaResolver}1`);
+      service = getInjector().inject(LocaleMetaAppInitializer);
     });
 
     it('should return object with dir=ltr value', async () => {
-      const callback = vi.fn();
-      service.resolve().subscribe(callback);
+      service.initialize().subscribe();
       await nextFrame();
-      expect(callback).toHaveBeenCalledWith({
-        name: 'html',
-        attrs: {
-          dir: 'ltr',
-        },
+      expect(mockMeta.setHtmlAttributes).toHaveBeenCalledWith({
+        dir: 'ltr',
+        lang: 'de',
       });
     });
   });
@@ -55,18 +63,15 @@ describe('DirectionalityController', () => {
   describe('when locale has language with RTL direction', () => {
     beforeEach(async () => {
       injectMockLocaleService('ar');
-      service = getInjector().inject(`${PageMetaResolver}1`);
+      service = getInjector().inject(LocaleMetaAppInitializer);
     });
 
     it('should return object with dir=rtl value', async () => {
-      const callback = vi.fn();
-      service.resolve().subscribe(callback);
+      service.initialize().subscribe();
       await nextFrame();
-      expect(callback).toHaveBeenCalledWith({
-        name: 'html',
-        attrs: {
-          dir: 'rtl',
-        },
+      expect(mockMeta.setHtmlAttributes).toHaveBeenCalledWith({
+        dir: 'rtl',
+        lang: 'ar',
       });
     });
   });
@@ -74,14 +79,13 @@ describe('DirectionalityController', () => {
   describe('when locale language is not provided', () => {
     beforeEach(async () => {
       injectMockLocaleService();
-      service = getInjector().inject(`${PageMetaResolver}1`);
+      service = getInjector().inject(LocaleMetaAppInitializer);
     });
 
-    it('should return empty object', async () => {
-      const callback = vi.fn();
-      service.resolve().subscribe(callback);
+    it('should not call PageMetaService.setHtmlAttributes', async () => {
+      service.initialize().subscribe();
       await nextFrame();
-      expect(callback).toHaveBeenCalledWith({});
+      expect(mockMeta.setHtmlAttributes).not.toHaveBeenCalled();
     });
   });
 });

@@ -20,8 +20,6 @@ import { DefaultHydrationService, HydrationService } from './hydration';
 import {
   DefaultPageMetaResolverService,
   DefaultPageMetaService,
-  GlobalPageMetaResolver,
-  PageMetaResolver,
   PageMetaResolverService,
   PageMetaService,
 } from './page-meta';
@@ -99,9 +97,5 @@ export const coreProviders: Provider[] = [
   {
     provide: AppInitializer,
     useExisting: PageMetaResolverService,
-  },
-  {
-    provide: PageMetaResolver,
-    useClass: GlobalPageMetaResolver,
   },
 ];
