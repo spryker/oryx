@@ -31,6 +31,7 @@ export const styles = css`
     margin-inline: auto;
   }
 
+  *,
   ::slotted(*) {
     --col-span: 1;
     --row-span: 1;

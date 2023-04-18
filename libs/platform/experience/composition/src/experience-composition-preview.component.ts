@@ -1,14 +1,14 @@
 import { subscribe } from '@spryker-oryx/utilities';
 import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
 import { Component, PreviewExperienceService } from '../../src/services';
-import { compositionStyles } from './composition.styles';
+
 import { previewStyles } from './experience-composition-preview.style';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
-  static override styles = [compositionStyles, previewStyles];
+  static override styles = [previewStyles];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService

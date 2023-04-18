@@ -2,6 +2,7 @@ import {
   Component,
   CompositionProperties,
   StyleProperties,
+  StyleRuleSet,
 } from '@spryker-oryx/experience';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
@@ -28,7 +29,7 @@ export interface LayoutBuilder {
    */
   collectStyles(components: Component[]): string;
 
-  createStylesFromOptions(id: string, options: CompositionProperties): string;
+  createStylesFromOptions(id: string, rules?: StyleRuleSet[]): string;
 
   /**
    * Generates an class list that is driven by layout properties on the

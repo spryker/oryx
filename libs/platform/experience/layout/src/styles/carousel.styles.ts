@@ -1,6 +1,5 @@
 import { css } from 'lit';
 import { LayoutStyles } from '../layout.model';
-
 // TODO: support multi-row carousels by using template rows
 // grid-template-rows: repeat(2, auto);
 
@@ -22,6 +21,7 @@ export const styles: LayoutStyles = {
       overflow: hidden auto;
     }
 
+    *,
     ::slotted(*) {
       scroll-snap-align: start;
     }

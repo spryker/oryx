@@ -15,24 +15,27 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     return components
       .map((component) =>
         component.options?.data
-          ? this.createStylesFromOptions(component.id, component.options.data)
+          ? this.createStylesFromOptions(
+              component.id,
+              component.options.data.rules
+            )
           : ''
       )
       .join('');
   }
 
-  createStylesFromOptions(id: string, options: CompositionProperties): string {
+  createStylesFromOptions(id: string, rules?: StyleRuleSet[]): string {
     return (
-      options?.rules
+      rules
         ?.map((rule) => {
           const styles = this.getLayoutStyles(rule);
           if (styles) {
             const breakpoint = rule.breakpoint;
             if (breakpoint) {
               const query = this.breakpointService.getMediaQuery(breakpoint);
-              return `${query}{:not(experience-composition)[uid="${id}"] {${styles}}}\n`;
+              return `${query}{:host([uid="${id}"]), [uid="${id}"] {${styles}}}\n`;
             }
-            return `:not(experience-composition)[uid="${id}"] {${styles}}\n`;
+            return `:host([uid="${id}"]),[uid="${id}"] {${styles}}\n`;
           } else {
             return '';
           }

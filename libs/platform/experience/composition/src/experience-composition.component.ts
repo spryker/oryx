@@ -14,7 +14,7 @@ import {
   signal,
   subscribe,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { CSSResult, html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -27,13 +27,13 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { compositionStyles } from './composition.styles';
+import { LayoutMixin } from '../../layout/src';
 
 @hydratable()
-export class ExperienceCompositionComponent extends ContentMixin<CompositionProperties>(
-  LitElement
+export class ExperienceCompositionComponent extends LayoutMixin(
+  ContentMixin<CompositionProperties>(LitElement)
 ) {
-  static styles = [compositionStyles];
+  static styles: CSSResult[] = [];
 
   @property({ reflect: true }) uid?: string;
   @property({ reflect: true }) route?: string;
@@ -79,13 +79,8 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
   ): TemplateResult | void {
     if (!components) return;
 
-    if (this.hasLayout()) {
-      return this.renderLayout(
-        html` ${this.renderChildComponents(components)}`
-      );
-    } else {
-      return html`${this.renderChildComponents(components)}`;
-    }
+    return html`${this.renderChildComponents(components)}
+    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
   }
 
   protected renderChildComponents(
@@ -97,45 +92,6 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       (component, index) => this.renderComponent(component, index)
     )}
     ${this.addInlineStyles(components)} `;
-  }
-
-  protected hasLayout(): boolean {
-    if (!this.uid) return true;
-    return !!this.$options().rules?.filter((rule) => !!rule.layout).length;
-  }
-
-  protected renderLayout(content: TemplateResult): TemplateResult {
-    const rules = this.$options().rules;
-    const layout = rules?.find((rule) => !rule.breakpoint)?.layout;
-    const smLayout = rules?.find((rule) => rule.breakpoint === 'sm')?.layout;
-    const mdLayout = rules?.find((rule) => rule.breakpoint === 'md')?.layout;
-    const lgLayout = rules?.find((rule) => rule.breakpoint === 'lg')?.layout;
-    const isSticky = rules?.find((rule) => !!rule.sticky);
-    const bleed = rules?.find((rule) => !rule.breakpoint)?.bleed;
-
-    return html`<oryx-layout
-        uid=${this.uid}
-        .layout=${layout}
-        .layoutSm=${smLayout}
-        .layoutMd=${mdLayout}
-        .layoutLg=${lgLayout}
-        ?bleed=${bleed}
-        ?sticky=${isSticky}
-      >
-        ${content}
-      </oryx-layout>
-      ${this.addStyles(this.uid, this.$options())} `;
-  }
-
-  protected addStyles(
-    uid?: string,
-    options?: CompositionProperties
-  ): TemplateResult | void {
-    if (!uid || !options) return;
-    const styles = this.layoutBuilder.createStylesFromOptions(uid, options);
-    if (styles) {
-      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
-    }
   }
 
   protected renderComponent(

@@ -23,6 +23,18 @@ export class DefaultLayoutService implements LayoutService {
     responsiveLayouts?: { [key: string]: CompositionLayout | undefined }
   ): Observable<string> {
     const observables: Observable<string>[] = [];
+
+    if (layout || Object.keys(responsiveLayouts ?? {})?.length > 0) {
+      // all styles rely on a basic styles
+      observables.push(
+        from(
+          import('../styles/base.styles').then(
+            (m) => m.styles?.toString() ?? ''
+          )
+        )
+      );
+    }
+
     const layouts = this.resolveLayouts(layout, responsiveLayouts);
     layouts.forEach((layout) => {
       const styles = this.resolveStyles(layout);
