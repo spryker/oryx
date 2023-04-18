@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@spryker-oryx/core": "latest",
+    "@spryker-oryx/di": "latest",
     "@spryker-oryx/utilities": "latest"
   }
 }

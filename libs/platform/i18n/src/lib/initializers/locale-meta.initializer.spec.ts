@@ -50,7 +50,7 @@ describe('DefaultLocaleMetaInitializer', () => {
     });
 
     it('should return object with dir=ltr value', async () => {
-      service.initialize().subscribe();
+      service.initialize();
       await nextFrame();
       expect(mockMeta.setHtmlAttributes).toHaveBeenCalledWith({
         dir: 'ltr',
@@ -66,7 +66,7 @@ describe('DefaultLocaleMetaInitializer', () => {
     });
 
     it('should return object with dir=rtl value', async () => {
-      service.initialize().subscribe();
+      service.initialize();
       await nextFrame();
       expect(mockMeta.setHtmlAttributes).toHaveBeenCalledWith({
         dir: 'rtl',
@@ -82,7 +82,7 @@ describe('DefaultLocaleMetaInitializer', () => {
     });
 
     it('should not call PageMetaService.setHtmlAttributes', async () => {
-      service.initialize().subscribe();
+      service.initialize();
       await nextFrame();
       expect(mockMeta.setHtmlAttributes).not.toHaveBeenCalled();
     });

@@ -1,11 +1,11 @@
 import { AppInitializer, PageMetaService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { inject, OnDestroy } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { Observable, of, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 
 export const LocaleMetaInitializer = `${AppInitializer}LocaleMeta`;
 
-export class DefaultLocaleMetaInitializer implements AppInitializer {
+export class DefaultLocaleMetaInitializer implements AppInitializer, OnDestroy {
   constructor(
     protected localeService = inject(LocaleService, null),
     protected metaService = inject(PageMetaService, null)
@@ -25,20 +25,30 @@ export class DefaultLocaleMetaInitializer implements AppInitializer {
     'ur', // Urdu
     'yi', // Yiddish
   ];
+  protected subscription = new Subscription();
 
-  initialize(): Observable<string> {
+  initialize(): void {
     if (!this.localeService?.get() || !this.metaService) {
-      return of('');
+      return ;
     }
 
-    return this.localeService.get().pipe(
-      tap((lang: string) => {
-        this.metaService?.setHtmlAttributes({
-          lang,
-          dir: this.direction(lang),
-        });
-      })
+    this.subscription.add(
+      this.localeService
+        .get()
+        .pipe(
+          tap((lang: string) => {
+            this.metaService?.setHtmlAttributes({
+              lang,
+              dir: this.direction(lang),
+            });
+          })
+        )
+        .subscribe()
     );
+  }
+
+  onDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   protected direction(localeCode: string): string {
