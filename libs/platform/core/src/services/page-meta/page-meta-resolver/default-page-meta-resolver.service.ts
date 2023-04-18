@@ -9,8 +9,8 @@ import {
 } from 'rxjs';
 import { ElementDefinition } from '../page-meta.model';
 import { PageMetaService } from '../page-meta.service';
+import { ElementResolver, ResolverScore } from './page-meta-resolver.model';
 import {
-  ElementResolver,
   PageMetaResolver,
   PageMetaResolverService,
 } from './page-meta-resolver.service';
@@ -32,7 +32,7 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
     ).pipe(
       map((data) =>
         data
-          .filter(({ score }) => score !== -1)
+          .filter(({ score }) => score > ResolverScore.NotUsed)
           .sort((a, b) => a.score - b.score)
           .reduce<Record<string, ElementDefinition>>((acc, { elements }) => {
             if (elements.html) {

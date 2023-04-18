@@ -1,4 +1,8 @@
-import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
+import {
+  ElementResolver,
+  PageMetaResolver,
+  ResolverScore,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { map, Observable, of } from 'rxjs';
@@ -22,7 +26,7 @@ export class DirectionalityPageMetaResolver implements PageMetaResolver {
   ];
 
   getScore(): Observable<number> {
-    return of(0);
+    return of(ResolverScore.Default);
   }
 
   resolve(): Observable<ElementResolver> {

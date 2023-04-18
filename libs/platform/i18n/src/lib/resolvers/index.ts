@@ -1,1 +1,1 @@
-export * from './directionality-page-meta-resolver'
+export * from './directionality-page-meta-resolver';

@@ -3,6 +3,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { PageMetaService } from '../page-meta.service';
 import { DefaultPageMetaResolverService } from './default-page-meta-resolver.service';
+import { ResolverScore } from './page-meta-resolver.model';
 import {
   PageMetaResolver,
   PageMetaResolverService,
@@ -66,7 +67,7 @@ describe('DefaultPageMetaResolverService', () => {
 
   describe('initialize', () => {
     it('should call PageMetaService.add with proper data', async () => {
-      mockResolverA.getScore.mockReturnValue(of(1));
+      mockResolverA.getScore.mockReturnValue(of(ResolverScore.Default));
       mockResolverA.resolve.mockReturnValue(
         of([
           {
@@ -111,7 +112,7 @@ describe('DefaultPageMetaResolverService', () => {
           },
         ])
       );
-      mockResolverC.getScore.mockReturnValue(of(-1));
+      mockResolverC.getScore.mockReturnValue(of(ResolverScore.NotUsed));
       mockResolverC.resolve.mockReturnValue(
         of({
           title: 'C',
@@ -121,27 +122,24 @@ describe('DefaultPageMetaResolverService', () => {
       service.initialize();
       await nextFrame();
 
-      expect(mockMetaService.add).toHaveBeenCalledWith(
-        [
-          { name: 'title', attrs: { text: 'b' } },
-          { name: 'og:meta', attrs: { description: 'b' } },
-          { name: 'link', attrs: { href: 'a' } },
-          {
-            name: 'link',
-            id: 'link:a',
-            attrs: { href: 'a' },
-          },
-          { name: 'og:img', attrs: { description: 'a' } },
-        ],
-        true
-      );
+      expect(mockMetaService.add).toHaveBeenCalledWith([
+        { name: 'title', attrs: { text: 'b' } },
+        { name: 'og:meta', attrs: { description: 'b' } },
+        { name: 'link', attrs: { href: 'a' } },
+        {
+          name: 'link',
+          id: 'link:a',
+          attrs: { href: 'a' },
+        },
+        { name: 'og:img', attrs: { description: 'a' } },
+      ]);
     });
   });
 
   describe('getTitle', () => {
     it('should return title', async () => {
       const callback = vi.fn();
-      mockResolverA.getScore.mockReturnValue(of(1));
+      mockResolverA.getScore.mockReturnValue(of(ResolverScore.Default));
       mockResolverA.resolve.mockReturnValue(
         of({
           title: 'A',

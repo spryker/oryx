@@ -1,12 +1,10 @@
 import { Observable, of } from 'rxjs';
-import {
-  ElementResolver,
-  PageMetaResolver,
-} from './page-meta-resolver.service';
+import { ElementResolver, ResolverScore } from './page-meta-resolver.model';
+import { PageMetaResolver } from './page-meta-resolver.service';
 
 export class GlobalPageMetaResolver implements PageMetaResolver {
   getScore(): Observable<number> {
-    return of(0);
+    return of(ResolverScore.Default);
   }
 
   resolve(): Observable<ElementResolver[]> {
