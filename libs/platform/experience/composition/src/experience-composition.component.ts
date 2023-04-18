@@ -9,19 +9,19 @@ import {
   LayoutBuilder,
 } from '@spryker-oryx/experience';
 import {
-  asyncState,
   hydratable,
   observe,
-  valueType,
+  signal,
+  subscribe,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import {
   BehaviorSubject,
   catchError,
-  combineLatest,
+  filter,
   map,
   of,
   switchMap,
@@ -35,92 +35,96 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
 ) {
   static styles = [compositionStyles];
 
-  @property({ reflect: true })
-  uid?: string;
+  @property({ reflect: true }) uid?: string;
+  @property({ reflect: true }) route?: string;
 
   @observe()
   protected uid$ = new BehaviorSubject<string | undefined>(this.uid);
 
-  @property({ reflect: true })
-  protected route?: string;
-
   @observe()
   protected route$ = new BehaviorSubject<string | undefined>(this.route);
 
-  @state()
-  layoutUid = '';
+  @subscribe()
+  protected $uidFromRoute = this.route$.pipe(
+    filter((route) => !!route),
+    switchMap((route) =>
+      this.experienceService
+        .getComponent({ route })
+        .pipe(catchError(() => of({} as Component)))
+    ),
+    tap((component) => (this.uid = component.id))
+  );
+
+  protected components$ = this.uid$.pipe(
+    switchMap((uid) =>
+      this.experienceService
+        .getComponent({ uid })
+        .pipe(catchError(() => of({} as Component)))
+    ),
+    map((component: Component) => component?.components ?? [])
+  );
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
-  protected components$ = combineLatest([this.uid$, this.route$]).pipe(
-    switchMap(([uid, route]) =>
-      this.experienceService
-        .getComponent({ uid, route })
-        .pipe(catchError(() => of({} as Component)))
-    ),
-    tap((component) => {
-      this.layoutUid = component?.id;
-    }),
-    map((component: Component) => component?.components ?? [])
-  );
+  protected $components = signal(this.components$);
 
-  @asyncState()
-  protected components = valueType(this.components$);
-
-  protected override render(): TemplateResult {
-    if (!this.components) return html`Loading...`;
-
-    return html`
-      <slot></slot>
-      ${this.renderComponents(this.components)}
-    `;
+  protected override render(): TemplateResult | void {
+    return this.renderComponents(this.$components());
   }
 
   protected renderComponents(
+    components?: Component<CompositionProperties>[]
+  ): TemplateResult | void {
+    if (!components) return;
+
+    if (this.hasLayout()) {
+      return this.renderLayout(
+        html` ${this.renderChildComponents(components)}`
+      );
+    } else {
+      return html`${this.renderChildComponents(components)}`;
+    }
+  }
+
+  protected renderChildComponents(
     components: Component<CompositionProperties>[]
-  ): TemplateResult {
-    return html`
-      <oryx-layout
-        .uid=${this.layoutUid}
-        style="--item-count: ${components.length}"
+  ): TemplateResult | void {
+    return html`${repeat(
+      components,
+      (component) => component.id,
+      (component, index) => this.renderComponent(component, index)
+    )}
+    ${this.addInlineStyles(components)} `;
+  }
+
+  protected hasLayout(): boolean {
+    if (!this.uid) return true;
+    return !!this.$options().rules?.filter((rule) => !!rule.layout).length;
+  }
+
+  protected renderLayout(content: TemplateResult): TemplateResult {
+    const rules = this.$options().rules;
+    const layout = rules?.find((rule) => !rule.breakpoint)?.layout;
+    const smLayout = rules?.find((rule) => rule.breakpoint === 'sm')?.layout;
+    const mdLayout = rules?.find((rule) => rule.breakpoint === 'md')?.layout;
+    const lgLayout = rules?.find((rule) => rule.breakpoint === 'lg')?.layout;
+    const isSticky = rules?.find((rule) => !!rule.sticky);
+    const bleed = rules?.find((rule) => !rule.breakpoint)?.bleed;
+
+    return html`<oryx-layout
+        uid=${this.uid}
+        .layout=${layout}
+        .layoutSm=${smLayout}
+        .layoutMd=${mdLayout}
+        .layoutLg=${lgLayout}
+        ?bleed=${bleed}
+        ?sticky=${isSticky}
       >
-        ${components
-          ? repeat(
-              components,
-              (component) => component.id,
-              (component, index) => this.renderComponent(component, index)
-            )
-          : ``}
-        ${this.addInlineStyles(components)}
-        <style>
-          [layout='tabular']:not([orientation='vertical'])
-            input:not(:checked)
-            + label
-            + * {
-            display: none;
-          }
-          [layout='tabular'] input:checked + label {
-            color: var(--oryx-color-primary-300);
-            border-color: var(--oryx-color-primary-300);
-          }
-
-          [layout='tabular'][orientation='vertical'] *:not(input):not(label) {
-            transition: max-height 0.3s;
-            overflow: hidden;
-            max-height: 300px;
-          }
-
-          [layout='tabular'][orientation='vertical']
-            input:not(:checked)
-            + label
-            + * {
-            max-height: 0;
-          }
-        </style>
+        ${content}
       </oryx-layout>
-    `;
+      ${this.addStyles(this.uid!, this.$options())} `;
   }
 
   protected renderComponent(
@@ -132,10 +136,7 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       component.id,
       this.getLayoutClasses(component)
     );
-
-    if (
-      this.componentOptions?.rules?.[0].layout === CompositionLayout.Tabular
-    ) {
+    if (this.$options()?.rules?.[0].layout === CompositionLayout.Tabular) {
       return html`
         <input
           type="radio"
@@ -148,28 +149,35 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       `;
     }
 
-    return template;
+    return html`${template}`;
   }
 
   /**
-   * collects the inline styles for the list of components and writes them
+   * collects the inline styles for the components and writes them
    * in a `<style>` tag.
    * The styles are unique to the component and are not reusable, hence it's
    * ok to render them inline. Rendering them inline will improve loading them
    * as additional resources, which would cause a layout shift.
-   *
-   * TODO: move to layout!
    */
   protected addInlineStyles(
     components: Component[] | undefined
-  ): TemplateResult {
+  ): TemplateResult | void {
     if (!components) return html``;
     const styles = this.layoutBuilder.collectStyles(components);
-    if (styles !== '') {
+    if (styles) {
       return html`${unsafeHTML(`<style>${styles}</style>`)}`;
     }
+  }
 
-    return html``;
+  protected addStyles(
+    id: string,
+    options?: CompositionProperties
+  ): TemplateResult | void {
+    if (!options) return;
+    const styles = this.layoutBuilder.createStylesFromOptions(id, options);
+    if (styles) {
+      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
+    }
   }
 
   /**

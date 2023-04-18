@@ -1,5 +1,4 @@
-import { asyncState, subscribe, valueType } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { subscribe } from '@spryker-oryx/utilities';
 import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
 import { Component, PreviewExperienceService } from '../../src/services';
 import { compositionStyles } from './composition.styles';
@@ -105,20 +104,8 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       return component;
     }),
     tap((component) => {
-      this.layoutUid = component?.id;
+      this.uid = component?.id;
     }),
     map((component: Component) => component?.components ?? [])
   );
-
-  @asyncState()
-  protected components = valueType(this.components$);
-
-  protected override render(): TemplateResult {
-    if (!this.components) return html`Loading...`;
-
-    return html`
-      <slot></slot>
-      ${this.renderComponents(this.components)}
-    `;
-  }
 }
