@@ -21,10 +21,8 @@ export const HomePage: StaticComponent = {
         data: {
           rules: [
             {
-              container: true,
               layout: 'carousel',
-              padding: '30px 0',
-              gap: '20',
+              padding: '30 0',
             },
           ],
           category: '10',

@@ -22,7 +22,9 @@ export const HeaderTemplate: StaticComponent = {
         {
           type: 'oryx-site-currency-selector',
           options: {
-            data: { rules: [{ style: 'margin-inline-start: auto' }] },
+            data: {
+              rules: [{ style: 'margin-inline-start: auto' }],
+            },
           },
         },
         { type: 'oryx-site-locale-selector' },
@@ -31,12 +33,12 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'flex',
+              layout: 'free',
               background: 'var(--oryx-color-primary-500)',
-              container: true,
-              maxWidth: true,
               padding: '10px 0',
               gap: '10px',
+              align: 'center',
+              bleed: true,
             },
           ],
         },
@@ -51,12 +53,7 @@ export const HeaderTemplate: StaticComponent = {
           content: { data: { graphic: 'logo' } },
           options: {
             data: {
-              rules: [
-                {
-                  width: 'max-content',
-                  height: '42px',
-                },
-              ],
+              rules: [{ width: 'max-content', height: '42px' }],
               link: '/',
             },
           },
@@ -65,7 +62,7 @@ export const HeaderTemplate: StaticComponent = {
           type: 'search-box',
           options: {
             data: {
-              rules: [{ width: '100%', margin: '0 35px', maxWidth: true }],
+              rules: [{ margin: 'auto', width: '580px' }],
             },
           },
         },
@@ -76,7 +73,6 @@ export const HeaderTemplate: StaticComponent = {
               contentBehavior: 'dropdown',
               label: 'USER.NAME',
               icon: 'user',
-              rules: [{ width: '87px', maxWidth: true }],
             },
           },
           components: [{ type: 'oryx-auth-login-link' }],
@@ -88,10 +84,7 @@ export const HeaderTemplate: StaticComponent = {
               label: 'cart',
               badge: 'CART.SUMMARY',
               icon: 'cart',
-              url: {
-                type: 'cart',
-              },
-              rules: [{ maxWidth: false }],
+              url: { type: 'cart' },
             },
           },
         },
@@ -100,15 +93,14 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'flex',
-              container: true,
-              fullWidth: true,
+              layout: 'free',
               background: 'var(--oryx-color-primary-300)',
               align: 'center',
-              sticky: true,
               zIndex: '2',
-              maxWidth: true,
               padding: '5px 0',
+              gap: '5px',
+              bleed: true,
+              sticky: true,
             },
           ],
         },

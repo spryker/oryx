@@ -3,15 +3,19 @@ import { StaticComponent } from '@spryker-oryx/experience';
 export const LoginPage: StaticComponent = {
   type: 'Page',
   meta: { title: 'Login Page', route: '/login' },
+  options: {
+    data: {
+      rules: [{ layout: 'free', padding: '30px 0 0' }],
+    },
+  },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-auth-login',
       options: {
         data: {
-          rules: [{ container: true, margin: '30px 0' }],
+          rules: [{ width: '50%', margin: 'auto' }],
         },
       },
-      components: [{ type: 'oryx-auth-login' }],
     },
   ],
 };
