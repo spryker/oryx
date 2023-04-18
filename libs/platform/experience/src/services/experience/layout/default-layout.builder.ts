@@ -148,7 +148,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       overflow: data?.overflow,
     });
 
-    const gaps = data.gap?.split(' ');
+    const gaps = data.gap?.toString().split(' ');
     add({ '--oryx-grid-gap-column': gaps?.[1] ?? gaps?.[0] });
     add({ '--oryx-grid-gap-row': gaps?.[0] });
     add({ '--rotate': data.rotate }, { unit: 'deg' });
