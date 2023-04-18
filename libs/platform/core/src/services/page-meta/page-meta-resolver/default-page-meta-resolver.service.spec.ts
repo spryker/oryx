@@ -1,5 +1,5 @@
 import { nextFrame } from '@open-wc/testing-helpers';
-import { createInjector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { PageMetaService } from '../page-meta.service';
 import { DefaultPageMetaResolverService } from './default-page-meta-resolver.service';
@@ -58,6 +58,10 @@ describe('DefaultPageMetaResolverService', () => {
     });
 
     service = testInjector.inject(PageMetaResolverService);
+  });
+
+  afterEach(() => {
+    destroyInjector();
   });
 
   describe('initialize', () => {
@@ -131,6 +135,34 @@ describe('DefaultPageMetaResolverService', () => {
         ],
         true
       );
+    });
+  });
+
+  describe('getTitle', () => {
+    it('should return title', async () => {
+      const callback = vi.fn();
+      mockResolverA.getScore.mockReturnValue(of(1));
+      mockResolverA.resolve.mockReturnValue(
+        of({
+          title: 'A',
+        })
+      );
+      mockResolverB.getScore.mockReturnValue(of(3));
+      mockResolverB.resolve.mockReturnValue(
+        of({
+          title: 'B',
+        })
+      );
+      mockResolverC.getScore.mockReturnValue(of(2));
+      mockResolverC.resolve.mockReturnValue(
+        of({
+          title: 'C',
+        })
+      );
+
+      service.getTitle().subscribe(callback);
+      await nextFrame();
+      expect(callback).toHaveBeenCalledWith('B');
     });
   });
 });
