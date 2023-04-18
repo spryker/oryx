@@ -1,74 +1,28 @@
-import { AppInitializer } from '../app-initializer';
 import { ElementAttributes, ElementDefinition } from './page-meta.model';
 import { PageMetaService } from './page-meta.service';
 
-export class DefaultPageMetaService implements PageMetaService, AppInitializer {
-  protected meta: ElementDefinition[] = [
-    {
-      name: 'html',
-      attrs: {
-        lang: 'en',
-      },
-    },
-    {
-      name: 'meta',
-      attrs: {
-        charset: 'UTF-8',
-      },
-    },
-    {
-      name: 'meta',
-      attrs: {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1.0',
-      },
-    },
-    {
-      name: 'link',
-      attrs: {
-        rel: 'icon',
-        href: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABzElEQVR42mIYNiApKYENUG09wMgVhQEU7hi1bdu2bdtuwzqobdtt1AZFtEawiBYx1hsny3hxkox9M39GyTeeeefxXlijGWDGiGgGaLEEerE/7d27p0YxYie6SQa0VwzYjmmSAW2gUwg4hL2SAf3QSiHgCG5JBvRGT8WAt5IBXTBRMeAbtFIBZqyERiEgEWbJrbAabUMMOIsMWCUDlmNiiBeiL0iXDhiLAyEEdEAu/sPEbwxojfYwhBPQDldgDRIwB9X42KdPr7V8/zeScQ29wgnQ4DwmBli4Do/RtH//3nd89zOKcQytJXbDOlyCxk/ARJShac+eXXf43gPMhtjp2B1HYPaxcAu+ohGV+/btWcP3OkoehN1wHKcxExqPgEUoZNM/X7586boJE8bZNrnsaZiJX8jHaNfP2eRT5s2bs6Vv3953bbvJKB2gRTeswQts8Bgtr6EExZ5x0iEabMFHDLO9NxXVaMLrkIZugdExG2dtr2ejHnVYIrCIkCL24jN0LgH56BKpgC54gdYYhkr8hC5SARrsQS9Y8RdqsyCBiP7oYHu+FbsjHaDtDZdTsV+kAzQYDhMWY3lEA2wRfTAfRzEk4gG2CAtatYjnWzMHv6UnW2fOxQAAAABJRU5ErkJggg==',
-        sizes: '32x32',
-      },
-    },
-    {
-      name: 'link',
-      attrs: {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap',
-      },
-    },
-    {
-      name: 'title',
-      attrs: {
-        text: 'Composable Storefront',
-      },
-    },
-  ];
-
-  initialize(): void {
-    this.add();
-  }
-
-  add(definitions: ElementDefinition | ElementDefinition[] = []): void {
+export class DefaultPageMetaService implements PageMetaService {
+  add(
+    definitions: ElementDefinition | ElementDefinition[],
+    forceCreation?: boolean
+  ): void {
     if (!Array.isArray(definitions)) {
       definitions = [definitions];
     }
-    this.meta.push(...definitions);
 
-    for (const definition of this.meta) {
+    for (const definition of definitions) {
       if (definition.name === 'html') {
         this.setHtmlAttributes(definition.attrs);
 
         continue;
       }
 
-      this.insert(definition);
+      this.insert(definition, forceCreation);
     }
   }
 
   update(definition: ElementDefinition): void {
-    const element = document.querySelector<HTMLElement>(definition.name);
+    const element = document.head.querySelector<HTMLElement>(definition.name);
 
     if (!element) {
       this.insert(definition);
@@ -83,12 +37,18 @@ export class DefaultPageMetaService implements PageMetaService, AppInitializer {
     this.setAttributes(attrs, document.documentElement);
   }
 
+  protected getTagName(name: string): string {
+    return ['link', 'style', 'title', 'script', 'html', 'meta'].includes(name)
+      ? name
+      : 'meta';
+  }
+
   protected setAttributes(
     attrs: ElementAttributes,
     element: HTMLElement
   ): void {
     for (const [key, value] of Object.entries(attrs)) {
-      if (value === 'text') {
+      if (key === 'text' && value) {
         element.textContent = value;
 
         continue;
@@ -99,12 +59,27 @@ export class DefaultPageMetaService implements PageMetaService, AppInitializer {
     }
   }
 
-  protected insert(definition: ElementDefinition): void {
-    if (this.get(definition)) {
+  protected insert(
+    definition: ElementDefinition,
+    forceCreation?: boolean
+  ): void {
+    const existedEl = this.get(definition);
+
+    if (existedEl && !forceCreation) {
       return;
     }
 
-    const element = document.createElement(definition.name);
+    if (forceCreation) {
+      existedEl?.remove();
+    }
+
+    const name = this.getTagName(definition.name);
+    const element = document.createElement(name);
+
+    if (name === 'meta' && definition.name !== 'meta') {
+      definition.attrs.name = definition.name;
+    }
+
     this.setAttributes(definition.attrs, element);
     document.head.appendChild(element);
   }
@@ -120,6 +95,7 @@ export class DefaultPageMetaService implements PageMetaService, AppInitializer {
       attrs += `[${key}="${value}"]`;
     }
 
-    return document.head.querySelector(`${definition.name}${attrs}`);
+    const name = this.getTagName(definition.name);
+    return document.head.querySelector(`${name}${attrs}`);
   }
 }

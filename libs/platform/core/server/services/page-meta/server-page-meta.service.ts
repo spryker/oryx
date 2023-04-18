@@ -6,32 +6,10 @@ import {
 
 export class ServerPageMetaService extends DefaultPageMetaService {
   protected template = '';
+  protected metas: ElementDefinition[] = [];
 
   add(definitions: ElementDefinition | ElementDefinition[] = []): void {
-    if (!Array.isArray(definitions)) {
-      definitions = [definitions];
-    }
-
-    this.meta.push(...definitions);
-    let stream = ``;
-
-    for (const { name, attrs } of this.meta) {
-      if (name === 'html') {
-        this.setHtmlAttributes(attrs);
-
-        continue;
-      }
-
-      if (attrs.text) {
-        stream += `\n<${name}>${attrs.text}</${name}>`;
-
-        continue;
-      }
-
-      stream += `\n<${name}${this.setAttributes(attrs)} />`;
-    }
-
-    this.template = this.template.replace('</head>', `${stream}\n</head>`);
+    this.metas = Array.isArray(definitions) ? definitions : [definitions];
   }
 
   setHtmlAttributes(attrs: ElementAttributes): void {
@@ -41,6 +19,12 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     );
   }
 
+  getTemplateHtml(template: string): string {
+    this.template = template;
+    this.addTag();
+    return this.template;
+  }
+
   protected setAttributes(attrs: ElementAttributes): string {
     return Object.entries(attrs).reduce(
       (acc, [key, value]) => `${acc} ${key}="${value}"`,
@@ -48,9 +32,31 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     );
   }
 
-  getTemplateHtml(template: string): string {
-    this.template = template;
-    this.add();
-    return this.template;
+  protected addTag(): void {
+    let stream = ``;
+
+    for (const { name, attrs } of this.metas) {
+      const tag = this.getTagName(name);
+
+      if (tag === 'html') {
+        this.setHtmlAttributes(attrs);
+
+        continue;
+      }
+
+      if (attrs.text) {
+        stream += `\n<${tag}>${attrs.text}</${tag}>`;
+
+        continue;
+      }
+
+      if (tag === 'meta' && name !== 'meta') {
+        attrs.name = name;
+      }
+
+      stream += `\n<${tag}${this.setAttributes(attrs)} />`;
+    }
+
+    this.template = this.template.replace('</head>', `${stream}\n</head>`);
   }
 }
