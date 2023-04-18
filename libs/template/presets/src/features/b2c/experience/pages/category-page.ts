@@ -20,13 +20,7 @@ export const CategoryPage: StaticComponent = {
       type: 'search-facet-navigation',
       options: {
         data: {
-          rules: [
-            {
-              height: 'calc(100vh - 68px)',
-              sticky: true,
-              top: '108',
-            },
-          ],
+          rules: [{ sticky: true, top: '108' }],
         },
       },
     },
@@ -53,9 +47,8 @@ export const CategoryPage: StaticComponent = {
           },
         },
         {
-          type: 'experience-composition',
-          options: { data: { rules: [{ margin: 'auto', padding: '10px' }] } },
-          components: [{ type: 'oryx-search-pagination' }],
+          type: 'oryx-search-pagination',
+          options: { data: { rules: [{ margin: '0 auto 20px' }] } },
         },
       ],
     },

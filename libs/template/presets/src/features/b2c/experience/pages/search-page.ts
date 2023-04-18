@@ -9,7 +9,7 @@ export const SearchPage: StaticComponent = {
         {
           layout: 'split-column',
           splitColumnFactor: 0.25,
-          padding: '30 0',
+          padding: '30 0 0',
         },
         { breakpoint: 'md', splitColumnFactor: 0.33 },
       ],
@@ -20,13 +20,7 @@ export const SearchPage: StaticComponent = {
       type: 'search-facet-navigation',
       options: {
         data: {
-          rules: [
-            {
-              height: 'calc(100vh - 68px)',
-              sticky: true,
-              top: '108',
-            },
-          ],
+          rules: [{ sticky: true, top: '108' }],
         },
       },
     },
@@ -53,9 +47,8 @@ export const SearchPage: StaticComponent = {
           },
         },
         {
-          type: 'experience-composition',
-          options: { data: { rules: [{ margin: 'auto', padding: '10px' }] } },
-          components: [{ type: 'oryx-search-pagination' }],
+          type: 'oryx-search-pagination',
+          options: { data: { rules: [{ margin: '0 auto 20px' }] } },
         },
       ],
     },

@@ -9,7 +9,7 @@ export const ProductPage: StaticComponent = {
         {
           layout: 'split-column',
           splitColumnFactor: 0.66,
-          padding: '30 0',
+          padding: '30px 0 0',
         },
       ],
     },

@@ -32,7 +32,6 @@ export const FooterTemplate: StaticComponent = {
               top: '100%',
               background: 'var(--oryx-color-canvas-200)',
               padding: '30 0',
-              margin: '30px 0 0',
               bleed: true,
               sticky: true,
             },

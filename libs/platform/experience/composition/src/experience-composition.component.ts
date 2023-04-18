@@ -127,6 +127,17 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
       ${this.addStyles(this.uid, this.$options())} `;
   }
 
+  protected addStyles(
+    uid?: string,
+    options?: CompositionProperties
+  ): TemplateResult | void {
+    if (!uid || !options) return;
+    const styles = this.layoutBuilder.createStylesFromOptions(uid, options);
+    if (styles) {
+      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
+    }
+  }
+
   protected renderComponent(
     component: Component<CompositionProperties>,
     index: number
@@ -160,21 +171,10 @@ export class ExperienceCompositionComponent extends ContentMixin<CompositionProp
    * as additional resources, which would cause a layout shift.
    */
   protected addInlineStyles(
-    components: Component[] | undefined
+    components: Component[] | void
   ): TemplateResult | void {
-    if (!components) return html``;
+    if (!components) return;
     const styles = this.layoutBuilder.collectStyles(components);
-    if (styles) {
-      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
-    }
-  }
-
-  protected addStyles(
-    uid?: string,
-    options?: CompositionProperties
-  ): TemplateResult | void {
-    if (!uid || !options) return;
-    const styles = this.layoutBuilder.createStylesFromOptions(uid, options);
     if (styles) {
       return html`${unsafeHTML(`<style>${styles}</style>`)}`;
     }
