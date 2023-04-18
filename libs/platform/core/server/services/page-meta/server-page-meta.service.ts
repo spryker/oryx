@@ -21,7 +21,7 @@ export class ServerPageMetaService extends DefaultPageMetaService {
 
   getTemplateHtml(template: string): string {
     this.template = template;
-    this.addTag();
+    this.addTags();
     return this.template;
   }
 
@@ -32,7 +32,7 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     );
   }
 
-  protected addTag(): void {
+  protected addTags(): void {
     let stream = ``;
 
     for (const { name, attrs } of this.metas) {
