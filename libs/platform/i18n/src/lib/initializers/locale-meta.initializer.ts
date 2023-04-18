@@ -3,9 +3,9 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, of, tap } from 'rxjs';
 
-export const LocaleMetaAppInitializer = `${AppInitializer}LocaleMeta`;
+export const LocaleMetaInitializer = `${AppInitializer}LocaleMeta`;
 
-export class LocaleMetaInitializer implements AppInitializer {
+export class DefaultLocaleMetaInitializer implements AppInitializer {
   constructor(
     protected localeService = inject(LocaleService, null),
     protected metaService = inject(PageMetaService, null)

@@ -2,12 +2,11 @@ import { nextFrame } from '@open-wc/testing-helpers';
 import { PageMetaService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import {
-  LocaleMetaAppInitializer,
+  DefaultLocaleMetaInitializer,
   LocaleMetaInitializer,
   LocaleService,
 } from '@spryker-oryx/i18n';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 
 const mockMeta = {
   setHtmlAttributes: vi.fn(),
@@ -25,8 +24,8 @@ const injectMockLocaleService = (lang?: string) => {
         useClass: MockLocaleService,
       },
       {
-        provide: LocaleMetaAppInitializer,
-        useClass: LocaleMetaInitializer,
+        provide: LocaleMetaInitializer,
+        useClass: DefaultLocaleMetaInitializer,
       },
       {
         provide: PageMetaService,
@@ -36,8 +35,8 @@ const injectMockLocaleService = (lang?: string) => {
   });
 };
 
-describe('DirectionalityController', () => {
-  let service: LocaleMetaInitializer;
+describe('DefaultLocaleMetaInitializer', () => {
+  let service: DefaultLocaleMetaInitializer;
 
   afterEach(() => {
     destroyInjector();
@@ -47,7 +46,7 @@ describe('DirectionalityController', () => {
   describe('when locale has language with LTR direction', () => {
     beforeEach(() => {
       injectMockLocaleService('de');
-      service = getInjector().inject(LocaleMetaAppInitializer);
+      service = getInjector().inject(LocaleMetaInitializer);
     });
 
     it('should return object with dir=ltr value', async () => {
@@ -63,7 +62,7 @@ describe('DirectionalityController', () => {
   describe('when locale has language with RTL direction', () => {
     beforeEach(async () => {
       injectMockLocaleService('ar');
-      service = getInjector().inject(LocaleMetaAppInitializer);
+      service = getInjector().inject(LocaleMetaInitializer);
     });
 
     it('should return object with dir=rtl value', async () => {
@@ -79,7 +78,7 @@ describe('DirectionalityController', () => {
   describe('when locale language is not provided', () => {
     beforeEach(async () => {
       injectMockLocaleService();
-      service = getInjector().inject(LocaleMetaAppInitializer);
+      service = getInjector().inject(LocaleMetaInitializer);
     });
 
     it('should not call PageMetaService.setHtmlAttributes', async () => {
