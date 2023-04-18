@@ -2,10 +2,7 @@ import { ElementAttributes, ElementDefinition } from './page-meta.model';
 import { PageMetaService } from './page-meta.service';
 
 export class DefaultPageMetaService implements PageMetaService {
-  add(
-    definitions: ElementDefinition | ElementDefinition[],
-    forceCreation?: boolean
-  ): void {
+  add(definitions: ElementDefinition | ElementDefinition[]): void {
     if (!Array.isArray(definitions)) {
       definitions = [definitions];
     }
@@ -17,7 +14,7 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      this.insert(definition, forceCreation);
+      this.insert(definition);
     }
   }
 
@@ -59,17 +56,10 @@ export class DefaultPageMetaService implements PageMetaService {
     }
   }
 
-  protected insert(
-    definition: ElementDefinition,
-    forceCreation?: boolean
-  ): void {
+  protected insert(definition: ElementDefinition): void {
     const existedEl = this.get(definition);
 
-    if (existedEl && !forceCreation) {
-      return;
-    }
-
-    if (forceCreation) {
+    if (existedEl) {
       existedEl?.remove();
     }
 

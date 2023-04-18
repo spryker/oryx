@@ -64,7 +64,7 @@ describe('DefaultPageMetaService', () => {
       expect(document.documentElement).toHaveProperty('lang', 'en');
     });
 
-    it('should recreate element add attributes when force is true', () => {
+    it('should recreate element and add attributes when', () => {
       service.add({
         name: 'title',
         attrs: {
@@ -76,15 +76,12 @@ describe('DefaultPageMetaService', () => {
       expect(titles.length).toBe(1);
       expect(titles[0]?.textContent).toContain('a');
 
-      service.add(
-        {
-          name: 'title',
-          attrs: {
-            text: 'b',
-          },
+      service.add({
+        name: 'title',
+        attrs: {
+          text: 'b',
         },
-        true
-      );
+      });
 
       titles = document.head.querySelectorAll('title');
       expect(titles.length).toBe(1);
