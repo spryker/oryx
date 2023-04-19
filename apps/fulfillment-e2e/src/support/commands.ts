@@ -4,6 +4,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       clearIndexedDB(): void;
+      findByTestId(selector: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
@@ -18,3 +19,11 @@ Cypress.Commands.add('clearIndexedDB', () => {
     });
   });
 });
+
+Cypress.Commands.add(
+  'findByTestId',
+  { prevSubject: 'element' },
+  (subject, selector, ...args) => {
+    return cy.wrap(subject).find(`[data-testid=${selector}]`, ...args);
+  }
+);

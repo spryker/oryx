@@ -4,4 +4,8 @@ export class PickingFragment {
   getTabsList = () => this.getWrapper().find('oryx-tab');
   getTabCounter = (tab) => tab.find('oryx-chip');
   getProducts = () => this.getWrapper().find('oryx-picking-product-card');
+  getAllItemsDonePlaceholder = () =>
+    this.getWrapper().findByTestId('picking-complete-placeholder');
+  getFinishButton = () =>
+    this.getWrapper().findByTestId('picking-complete-finish-button');
 }
