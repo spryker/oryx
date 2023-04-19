@@ -44,21 +44,4 @@ export const styles = css`
     max-height: calc(100% - (var(--margin, 0px) * 2));
     box-sizing: border-box;
   }
-
-  :host([bleed]) {
-    --_bleed: calc((100vw - var(--_container-width)) / 2);
-
-    padding-inline: var(--_bleed);
-    margin-inline: 0;
-    scroll-padding-inline-start: var(--_bleed);
-  }
-
-  :host([sticky]),
-  ::slotted(*[sticky]),
-  ::slotted([class*='sticky']) {
-    position: sticky;
-    inset-block-start: var(--top, 0);
-    max-height: calc(var(--height, 100vh) - var(--top, 0px));
-    z-index: var(--z-index, 1);
-  }
 `;

@@ -1,13 +1,10 @@
-import { CompositionLayout } from '@spryker-oryx/experience';
 import { Observable } from 'rxjs';
+import { LayoutStyleSheets } from '../layout.model';
 
 export const LayoutService = 'oryx.LayoutService';
 
 export interface LayoutService {
-  getStyles(
-    layout?: CompositionLayout,
-    responsiveLayouts?: { [key: string]: CompositionLayout | undefined }
-  ): Observable<string>;
+  getStyles(sheets: LayoutStyleSheets): Observable<string>;
 }
 
 declare global {

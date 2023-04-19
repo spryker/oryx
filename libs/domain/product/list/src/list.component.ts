@@ -8,13 +8,16 @@ import {
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
+import { styles } from './list.styles';
 
 @hydratable()
 export class ProductListComponent extends LayoutMixin(
   ContentMixin<ProductListOptions>(LitElement)
 ) {
+  static styles = [styles];
+
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
 

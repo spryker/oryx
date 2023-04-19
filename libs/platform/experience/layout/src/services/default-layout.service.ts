@@ -1,10 +1,14 @@
 import { ThemeBreakpoints } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BreakpointService, CompositionLayout } from '@spryker-oryx/experience';
+import {
+  Breakpoint,
+  BreakpointService,
+  CompositionLayout,
+} from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/ui';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
-import { LayoutStyles } from '../layout.model';
+import { LayoutStyles, LayoutStyleSheets } from '../layout.model';
 import { LayoutService } from './layout.service';
 
 interface ResolvedLayout {
@@ -18,27 +22,22 @@ interface ResolvedLayout {
 export class DefaultLayoutService implements LayoutService {
   constructor(protected breakpointService = inject(BreakpointService)) {}
 
-  getStyles(
-    layout?: CompositionLayout,
-    responsiveLayouts?: { [key: string]: CompositionLayout | undefined }
-  ): Observable<string> {
+  getStyles(sheets: LayoutStyleSheets): Observable<string> {
     const observables: Observable<string>[] = [];
 
-    if (layout || Object.keys(responsiveLayouts ?? {})?.length > 0) {
-      // all styles rely on a basic styles
-      observables.push(
-        from(
-          import('../styles/base.styles').then(
-            (m) => m.styles?.toString() ?? ''
-          )
-        )
-      );
-    }
+    const keys = Object.keys(sheets);
 
-    const layouts = this.resolveLayouts(layout, responsiveLayouts);
-    layouts.forEach((layout) => {
-      const styles = this.resolveStyles(layout);
-      if (styles) observables.push(styles);
+    if (keys.length > 0) observables.push(this.resolveCommonStyles());
+
+    keys.forEach((key) => {
+      const styles = this.resolveStyles2(
+        key,
+        sheets[key].included,
+        sheets[key].excluded
+      );
+      if (styles) {
+        observables.push(styles);
+      }
     });
 
     return observables.length > 0
@@ -46,82 +45,91 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
-  protected resolveLayouts(
-    layout?: CompositionLayout,
-    responsiveLayouts?: { [key: string]: CompositionLayout | undefined }
-  ): ResolvedLayout[] {
-    const layouts: { layout: CompositionLayout; screens?: string[] }[] = [];
-    if (layout) layouts.push({ layout });
-    if (responsiveLayouts) {
-      Object.keys(responsiveLayouts).forEach((size) => {
-        const responsiveLayout = responsiveLayouts[size];
-        if (responsiveLayout) {
-          const layout = layouts.find((l) => l.layout === responsiveLayout);
-          if (!layout) {
-            layouts.push({ layout: responsiveLayout, screens: [size] });
-          } else {
-            layout.screens?.push(size);
-          }
-        }
-      });
-    }
-    return layouts;
+  protected resolveCommonStyles(): Observable<string> {
+    return from(
+      import('../styles/base.styles').then((m) => m.styles?.toString() ?? '')
+    );
   }
 
-  protected resolveStyles(layout: ResolvedLayout): Observable<string> | void {
-    const resolve = (styles: LayoutStyles): string => {
-      let result = '';
+  protected resolveStyles2(
+    layout: string,
+    included: Breakpoint[] = [],
+    excluded: Breakpoint[] = []
+  ): Observable<string> | void {
+    switch (layout) {
+      case 'bleed':
+        return from(
+          import('../styles/bleed.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
 
-      if (styles.styles) {
-        if (styles.base) result += styles.base.toString();
-        result += styles.styles.toString();
-      }
+      case 'sticky':
+        return from(
+          import('../styles/sticky.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
 
-      // TODO: resolve all sizes from breakpoint service
-      [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
-        // only add the base styles if not done already
-        if (!styles.styles && styles.base)
-          result += this.createMediaQuery(size, styles.base.toString());
-        const stylePerSize = styles[size];
-        if (stylePerSize?.base) {
-          result += this.createMediaQuery(size, stylePerSize.base.toString());
-        }
-        if (stylePerSize?.styles) {
-          result += this.createMediaQuery(
-            size,
-            stylePerSize?.styles?.toString()
-          );
-        }
-      });
-      return result;
-    };
-
-    switch (layout?.layout) {
       case CompositionLayout.Grid:
         return from(
-          import('../styles/grid.styles').then((m) => resolve(m.styles))
+          import('../styles/grid.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
         );
 
       case CompositionLayout.Carousel:
         return from(
-          import('../styles/carousel.styles').then((m) => resolve(m.styles))
+          import('../styles/carousel.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
         );
 
       case CompositionLayout.Free:
         return from(
-          import('../styles/free.styles').then((m) => resolve(m.styles))
+          import('../styles/free.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
         );
 
       case CompositionLayout.SplitColumn:
         return from(
-          import('../styles/split-column.styles').then((m) => resolve(m.styles))
+          import('../styles/split-column.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
         );
     }
   }
 
-  protected createMediaQuery(size: Size, content: string): string {
-    return `${this.breakpointService.getMediaQuery(
-      size as any as keyof ThemeBreakpoints
-    )} {${content}}`;
+  protected resolveStylesForBreakpoint(
+    style: LayoutStyles,
+    included: Breakpoint[],
+    excluded: Breakpoint[]
+  ): string {
+    let result = '';
+
+    if (style.base) result += style.base.toString();
+    if (style.styles && !included.length && !excluded.length) {
+      result += style.styles.toString();
+    }
+    [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
+      if (style[size]?.base) {
+        const mediaQuery = this.breakpointService.getMediaQuery(
+          size as any as keyof ThemeBreakpoints
+        );
+        result += `${mediaQuery} {${style[size]?.base?.toString()}}\n`;
+      }
+    });
+
+    if (included.length || excluded.length) {
+      // TODO: use a method that allows for both includes and excludes for an efficient query
+      const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
+      const styles = included
+        .map((size) => style[size]?.styles?.toString())
+        .join('\n');
+      result += `${mediaQuery} {${styles}}\n`;
+    }
+
+    return result;
   }
 }

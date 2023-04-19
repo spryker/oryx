@@ -1,6 +1,7 @@
 import { Size } from '@spryker-oryx/ui';
 import { CSSResult } from 'lit';
 import {
+  Breakpoint,
   CompositionLayout,
   CompositionLayoutOrientation,
 } from '../../src/models';
@@ -96,4 +97,13 @@ export interface LayoutAttributes {
    * the top can be configured to be 100%.
    */
   sticky?: boolean;
+}
+
+export interface LayoutStyleSheets {
+  [key: string]: LayoutStyle;
+}
+
+export interface LayoutStyle {
+  included?: Breakpoint[];
+  excluded?: Breakpoint[];
 }
