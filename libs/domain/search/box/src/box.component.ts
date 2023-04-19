@@ -50,7 +50,7 @@ import { baseStyles, searchboxStyles } from './styles';
   categoriesCount: 5,
   cmsCount: 0,
 })
-@hydratable('focusin')
+@hydratable(['mouseover', 'focusin'])
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties

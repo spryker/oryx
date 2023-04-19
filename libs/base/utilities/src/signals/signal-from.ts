@@ -14,6 +14,16 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
     super(initialValue as K);
   }
 
+  get value(): T | K {
+    this.accessed();
+    if (!this.subscription) {
+      let syncResult: T | undefined;
+      this.observable.subscribe((value) => (syncResult = value)).unsubscribe();
+      return syncResult ?? this.initialValue;
+    }
+    return this.state;
+  }
+
   watch(sniffer: SignalConsumer): void {
     if (this.consumers.size === 0) this.connect();
     super.watch(sniffer);

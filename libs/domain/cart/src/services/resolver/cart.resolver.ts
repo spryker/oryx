@@ -1,18 +1,18 @@
 import {
+  BaseResolver,
   ResolvedToken,
   Resolver,
-  TokenResourceResolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { CartService } from '..';
 
-interface CartResolvers {
+export type CartResolvers = {
   SUMMARY: Resolver;
-}
+};
 
-export class CartResolver implements TokenResourceResolver {
+export class CartResolver extends BaseResolver<CartResolvers> {
   protected cartService$ = resolve(CartService);
 
   protected resolvers = {
@@ -34,13 +34,6 @@ export class CartResolver implements TokenResourceResolver {
       );
     },
   };
-
-  resolve(resolver: string): ResolvedToken {
-    if (!(resolver in this.resolvers)) {
-      return of(null);
-    }
-    return this.resolvers[resolver as keyof CartResolvers]();
-  }
 }
 
 export const CartResourceResolver: Provider = {

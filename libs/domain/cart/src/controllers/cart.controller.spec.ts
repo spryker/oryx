@@ -106,6 +106,7 @@ describe('Cart controller', () => {
           ],
         } as unknown as Cart);
       });
+
       it('should cumulate the quantities', () => {
         new CartController(mockThis)
           .getTotalQuantity()

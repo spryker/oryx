@@ -1,7 +1,7 @@
 {
   "packages": [
     "template/application",
-    "domain/push-notification",
+    "platform/push-notification",
     "platform/auth",
     "domain/cart",
     "domain/checkout",
@@ -25,7 +25,7 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "0.5.0",
+  "version": "0.5.1",
   "npmClient": "npm",
   "command": {
     "publish": {
