@@ -1,7 +1,6 @@
-import { ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
+import { Breakpoint, ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  Breakpoint,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,

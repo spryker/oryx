@@ -55,29 +55,37 @@ export class ThemeTokens {
    * Value path should be separated by a dot. (e.g. `mode.dark` => `@media (prefers-color-scheme: dark)`)
    */
   generateMedia(value: string): string {
-    const path = value.split('.');
-    const isScreen = path[0] === ThemeDefaultMedia.Screen;
-    const mediaKey = getPropByPath(
-      this.mediaMapper,
-      isScreen ? ThemeDefaultMedia.Screen : value
-    );
+    console.log(value);
     const media = (expression: string): string => `@media ${expression}`;
+    const rule = this.generateMediaRule(value);
 
-    if (isScreen && this.breakpoints) {
-      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
-      let expression = dimension?.min?.toString()
-        ? `(${mediaKey.min}: ${dimension?.min}px)`
-        : '';
-      expression +=
-        dimension?.min?.toString() && dimension?.max?.toString() ? ' and ' : '';
-      expression += dimension?.max?.toString()
-        ? `(${mediaKey.max}: ${dimension?.max}px)`
-        : '';
+    return media(`(${rule})`);
+  }
 
-      return media(expression);
+  protected generateMediaRule(value: string): string {
+    const path = value.split('.');
+    const isScreen = path[0] === ThemeDefaultMedia.Screen || path.length === 1;
+    const mediaKey = getPropByPath(this.mediaMapper, value);
+
+    if (isScreen) {
+      return this.generateScreenMediaRule(path[1] ?? value);
     }
 
-    return media(`(${mediaKey})`);
+    return mediaKey;
+  }
+
+  protected generateScreenMediaRule(value: string): string {
+    const mediaKey = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
+    const dimension = this.breakpoints[value as keyof ThemeBreakpoints];
+    let expression = dimension?.min
+      ? `(${mediaKey.min}: ${dimension?.min}px)`
+      : '';
+    expression += dimension?.min && dimension?.max ? ' and ' : '';
+    expression += dimension?.max
+      ? `(${mediaKey.max}: ${dimension?.max}px)`
+      : '';
+
+    return expression;
   }
 
   protected async getStylesFromTokens(
