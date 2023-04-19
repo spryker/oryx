@@ -12,5 +12,9 @@ export const defaultBreakpoints: ThemeBreakpoints = {
   },
   [Size.Lg]: {
     min: 1024,
+    max: 1366,
+  },
+  xl: {
+    min: 1367,
   },
 };

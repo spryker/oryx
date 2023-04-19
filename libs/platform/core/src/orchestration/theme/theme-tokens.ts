@@ -58,28 +58,63 @@ export class ThemeTokens {
     const path = value.split('.');
     const isScreen = path[0] === ThemeDefaultMedia.Screen || path.length === 1;
     const mediaRule = getPropByPath(this.mediaMapper, value);
-    const media = (expression: string): string => `@media ${expression}`;
 
     if (isScreen) {
-      return media(this.generateScreenMediaRule(path[1] ?? value));
+      return this.generateScreenMedia(path[1] ?? value);
     }
 
-    return media(`(${mediaRule})`);
+    return `@media (${mediaRule})`;
   }
 
-  protected generateScreenMediaRule(value: string): string {
+  generateScreenMedia(value: string | string[]): string {
     const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
-    console.log(Object.keys(this.breakpoints));
-    const dimension = this.breakpoints[value as keyof ThemeBreakpoints];
-    let expression = dimension?.min
-      ? `(${mediaRule.min}: ${dimension?.min}px)`
-      : '';
-    expression += dimension?.min && dimension?.max ? ' and ' : '';
-    expression += dimension?.max
-      ? `(${mediaRule.max}: ${dimension?.max}px)`
-      : '';
+    const bpValues = Object.keys(this.breakpoints);
+    const steps = [];
+    let expression = '';
+    let separator = '';
+    let prevBpIndex = NaN;
 
-    return expression;
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+
+    for (const [index, bp] of value.entries()) {
+      const dimension = this.breakpoints[bp as keyof ThemeBreakpoints];
+      const currentIndex = bpValues.findIndex((_bp) => _bp === bp);
+      const isFirstStep = index === 0;
+      const isORStep = !isNaN(prevBpIndex) && currentIndex - prevBpIndex > 1;
+      const isExtendStep =
+        !isNaN(prevBpIndex) && currentIndex - prevBpIndex === 1;
+      prevBpIndex = bpValues.findIndex((_bp) => _bp === bp);
+
+      if (isFirstStep || isORStep) {
+        steps.push({
+          min: dimension?.min,
+          max: dimension?.max,
+        });
+
+        continue;
+      }
+
+      if (isExtendStep) {
+        const lastStep = steps.at(-1);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        lastStep!.max = dimension?.max;
+      }
+    }
+
+    for (const [index, step] of steps.entries()) {
+      if (index !== 0) {
+        separator = ',';
+      }
+
+      expression += separator ? `${separator} ` : '';
+      expression += step?.min ? `(${mediaRule.min}: ${step?.min}px)` : '';
+      expression += step?.min && step?.max ? ' and ' : '';
+      expression += step?.max ? `(${mediaRule.max}: ${step?.max}px)` : '';
+    }
+
+    return `@media ${expression}`;
   }
 
   protected async getStylesFromTokens(

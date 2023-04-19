@@ -12,8 +12,6 @@ export class DefaultBreakpointService implements BreakpointService {
 
   constructor(protected app = inject(AppRef)) {
     this.themePlugin = this.app.findPlugin(ThemePlugin);
-    console.log(this.themePlugin?.generateMedia(`sm`), 'hello MD rule');
-    console.log(this.themePlugin?.generateMedia(`md`), 'hello SM rule');
   }
 
   getMediaQuery(breakpoint: Breakpoint): string | void {
@@ -21,7 +19,7 @@ export class DefaultBreakpointService implements BreakpointService {
       return;
     }
 
-    return this.themePlugin?.generateMedia(breakpoint);
+    return this.themePlugin?.generateScreenMedia(breakpoint);
   }
 
   getSmallest(): Breakpoint | void {
