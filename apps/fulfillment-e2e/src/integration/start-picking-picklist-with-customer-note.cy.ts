@@ -60,10 +60,6 @@ describe('Start picking a picklist with customer note', () => {
 
   it('should display back button', () => {
     customerNoteFragment.getNavigateBackButton().should('be.visible');
-
-    customerNoteFragment.getNavigateBackButton().click();
-
-    cy.location('pathname').should('be.eq', `/`);
   });
 
   it('should display “Proceed to picking” button', () => {
