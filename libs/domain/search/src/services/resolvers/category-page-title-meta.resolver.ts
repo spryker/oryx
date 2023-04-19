@@ -18,7 +18,11 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
   getScore(): Observable<number> {
     return this.router
       .currentQuery()
-      .pipe(map((query) => (query?.category ? 2 : ResolverScore.NotUsed)));
+      .pipe(
+        map((query) =>
+          query?.category ? ResolverScore.Default : ResolverScore.NotUsed
+        )
+      );
   }
 
   resolve(): Observable<ElementResolver> {
@@ -30,12 +34,12 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
 
         return this.facets.get().pipe(
           map((facets) => {
-            const selectedId = Number(query.category);
+            const selectedId = String(query.category);
             const list = facets?.find((facet) => facet.parameter === 'category')
               ?.values as FacetValue[];
 
             for (const item of list) {
-              if (Number(item.value) === selectedId) {
+              if (String(item.value) === selectedId) {
                 return {
                   title: item.name,
                 };

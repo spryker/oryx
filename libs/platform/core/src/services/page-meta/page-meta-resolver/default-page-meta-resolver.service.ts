@@ -4,6 +4,7 @@ import {
   defer,
   map,
   Observable,
+  pairwise,
   shareReplay,
   Subscription,
 } from 'rxjs';
@@ -28,10 +29,16 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
           .sort(([aScore], [bScore]) => aScore - bScore)
           .reduce((acc, [_, elements]) => ({ ...acc, ...elements }), {});
 
-        return Object.entries(_data).map(([name, content]) => ({
-          name,
-          attrs: { ...(name === 'title' ? { text: content } : { content }) },
-        })) as ElementDefinition[];
+        return Object.entries(_data).map(([name, content]) => {
+          if (name === 'description' && (content as string)?.length > 400) {
+            content = `${(content as string).substring(0, 400)}...`;
+          }
+
+          return {
+            name,
+            attrs: { ...(name === 'title' ? { text: content } : { content }) },
+          };
+        }) as ElementDefinition[];
       })
     )
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
@@ -44,6 +51,19 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
 
   initialize(): void {
     this.subscription.add(this.data$.subscribe((data) => this.meta.add(data)));
+
+    this.subscription.add(
+      this.data$.pipe(pairwise()).subscribe(([oldData, newData]) => {
+        console.log(newData);
+        for (const key of Object.keys(newData)) {
+          console.log(key);
+          // delete oldData[key];
+        }
+        // console.log(, newData);
+
+        this.meta.add(newData);
+      })
+    );
   }
 
   onDestroy(): void {

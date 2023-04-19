@@ -46,7 +46,7 @@ describe('DefaultSuggestionService', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValue(of('sku'));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(2);
+      expect(callback).toHaveBeenCalledWith(ResolverScore.Default);
     });
 
     it('should return proper value if product is not exist', () => {
