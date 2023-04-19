@@ -69,6 +69,7 @@ export class ThemeTokens {
 
   protected generateScreenMediaRule(value: string): string {
     const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
+    console.log(Object.keys(this.breakpoints));
     const dimension = this.breakpoints[value as keyof ThemeBreakpoints];
     let expression = dimension?.min
       ? `(${mediaRule.min}: ${dimension?.min}px)`
