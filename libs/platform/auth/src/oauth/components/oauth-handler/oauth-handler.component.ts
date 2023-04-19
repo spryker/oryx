@@ -26,7 +26,7 @@ export class OauthHandlerComponent extends LitElement {
   }
 
   protected render(): unknown {
-    return html`${i18n('oauth.logging-you-in')}`;
+    return html`<oryx-spinner></oryx-spinner>${i18n('oauth.logging-you-in')}`;
   }
 }
 
