@@ -6,7 +6,7 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 
 export class CategoryPageTitleMetaResolver implements PageMetaResolver {
@@ -30,10 +30,13 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver> {
     return this.router.currentQuery().pipe(
       switchMap((query) => {
+        if (!query?.category) {
+          return of({});
+        }
+
         return this.facets.get().pipe(
           map((facets) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const selectedId = Number(query!.category!);
+            const selectedId = Number(query.category);
             const list = facets?.find((facet) => facet.parameter === 'category')
               ?.values as FacetValue[];
 
