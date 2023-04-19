@@ -131,8 +131,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         }
       });
 
-      console.log('layout options', layouts);
-
       const componentStyles = this.layoutBuilder.createStylesFromOptions(
         this.uid!,
         rules
