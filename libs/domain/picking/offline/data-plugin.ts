@@ -70,8 +70,6 @@ export class OfflineDataPlugin extends ExecPlugin {
 
     return onlineAdapter.get({}).pipe(
       map((pl) => {
-        const productIds = new Set<string>();
-
         return {
           pickingLists: pl,
           products: pl
