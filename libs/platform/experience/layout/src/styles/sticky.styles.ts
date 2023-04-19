@@ -2,7 +2,6 @@ import { css } from 'lit';
 import { LayoutStyles } from '../layout.model';
 
 export const styles: LayoutStyles = {
-  base: css``,
   styles: css`
     :host([sticky]),
     ::slotted(*[sticky]),
