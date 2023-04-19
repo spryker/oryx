@@ -56,14 +56,28 @@ export class ThemeTokens {
    */
   generateMedia(value: string): string {
     const path = value.split('.');
-    const isScreen = path[0] === ThemeDefaultMedia.Screen || path.length === 1;
-    const mediaRule = getPropByPath(this.mediaMapper, value);
+    const isScreen = path[0] === ThemeDefaultMedia.Screen;
+    const mediaKey = getPropByPath(
+      this.mediaMapper,
+      isScreen ? ThemeDefaultMedia.Screen : value
+    );
+    const media = (expression: string): string => `@media ${expression}`;
 
-    if (isScreen) {
-      return this.generateScreenMedia(path[1] ?? value);
+    if (isScreen && this.breakpoints) {
+      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
+      let expression = dimension?.min?.toString()
+        ? `(${mediaKey.min}: ${dimension?.min}px)`
+        : '';
+      expression +=
+        dimension?.min?.toString() && dimension?.max?.toString() ? ' and ' : '';
+      expression += dimension?.max?.toString()
+        ? `(${mediaKey.max}: ${dimension?.max}px)`
+        : '';
+
+      return media(expression);
     }
 
-    return `@media (${mediaRule})`;
+    return media(`(${mediaKey})`);
   }
 
   generateScreenMedia(value: string | string[]): string {

@@ -14,7 +14,4 @@ export const defaultBreakpoints: ThemeBreakpoints = {
     min: 1024,
     max: 1366,
   },
-  xl: {
-    min: 1367,
-  },
 };

@@ -2,6 +2,7 @@ import {
   AppRef,
   Breakpoint,
   ThemeBreakpoints,
+  ThemeDefaultMedia,
   ThemePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
@@ -19,7 +20,9 @@ export class DefaultBreakpointService implements BreakpointService {
       return;
     }
 
-    return this.themePlugin?.generateScreenMedia(breakpoint);
+    return this.themePlugin?.generateMedia(
+      `${ThemeDefaultMedia.Screen}.${breakpoint}`
+    );
   }
 
   getSmallest(): Breakpoint | void {

@@ -23,7 +23,6 @@ export interface ThemeBreakpoints {
   [Size.Sm]?: ScreenSize;
   [Size.Md]?: ScreenSize;
   [Size.Lg]?: ScreenSize;
-  xl?: ScreenSize;
 }
 
 export type Breakpoint = keyof ThemeBreakpoints;
