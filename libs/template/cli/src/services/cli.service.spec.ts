@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { CliCommand } from '../models';
 import { CliService } from './cli.service';
 

@@ -30,7 +30,7 @@ export class HelpCliCommand implements CliCommand {
     this.showCommandsHelp();
   }
 
-  protected showCommandsHelp(): void {
+  showCommandsHelp(): void {
     intro(`Oryx CLI`);
 
     log.message(`Available commands:
@@ -47,7 +47,7 @@ ${this.getCliCommandsWithHelp()
     outro();
   }
 
-  protected showCommandHelp(commandName: string): void {
+  showCommandHelp(commandName: string): void {
     const command = this.getCliCommandsWithHelp().find(
       (command) =>
         command.getName() === commandName ||

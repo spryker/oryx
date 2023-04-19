@@ -6,5 +6,6 @@ export default defineConfig({
   test: {
     ...config.test,
     environment: 'node',
+    setupFiles: [],
   },
 });

@@ -4,10 +4,13 @@ import c from 'picocolors';
 import url from 'url';
 import { CliCommand } from '../models';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const PackageRoot = path.resolve(__dirname, '../..');
-
 export class VersionCliCommand implements CliCommand {
+  protected packagePath = path.resolve(this.dirPath, '../..', 'package.json');
+
+  constructor(
+    protected dirPath = url.fileURLToPath(new URL('.', import.meta.url))
+  ) {}
+
   getName(): string {
     return 'version';
   }
@@ -33,9 +36,7 @@ Usage:
   }
 
   async getVersion(): Promise<string> {
-    const { version } = await import(
-      path.resolve(PackageRoot, './package.json')
-    );
+    const { version } = await import(this.packagePath);
 
     return version;
   }

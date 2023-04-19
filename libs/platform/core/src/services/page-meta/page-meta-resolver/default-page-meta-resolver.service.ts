@@ -39,7 +39,7 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
 
   constructor(
     protected meta = inject(PageMetaService),
-    protected resolvers = inject(PageMetaResolver)
+    protected resolvers = inject(PageMetaResolver, [] as PageMetaResolver[])
   ) {}
 
   initialize(): void {

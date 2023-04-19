@@ -1,5 +1,4 @@
 import {
-  cancel,
   intro,
   isCancel,
   log,
@@ -16,8 +15,6 @@ import url from 'url';
 import { CliCommand, CliCommandOption } from '../models';
 import { CliArgsService, NodeUtilService } from '../services';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-
 export class CreateCliCommand implements CliCommand {
   protected repoUrl = 'https://github.com/spryker/oryx/archive/refs/{ref}.zip';
   protected repoRefs = {
@@ -26,12 +23,13 @@ export class CreateCliCommand implements CliCommand {
   protected repoPaths = {
     [OryxTemplateRef.Latest]: 'oryx-development',
   };
-  protected packageRoot = path.resolve(__dirname, '../..');
-  protected repoPath = path.resolve(this.packageRoot, './repo');
+  protected packageRoot = path.resolve(this.dirPath, '../..');
+  protected repoPath = path.resolve(this.packageRoot, 'repo');
 
   constructor(
     protected argsService = inject(CliArgsService),
-    protected nodeUtilService = inject(NodeUtilService)
+    protected nodeUtilService = inject(NodeUtilService),
+    protected dirPath = url.fileURLToPath(new URL('.', import.meta.url))
   ) {}
 
   getName(): string {
@@ -95,7 +93,12 @@ Possible values: ${Object.values(OryxPreset).join(', ')}`
       log.info(`Preset: ${c.bold(options.preset)}`);
     }
 
-    if (fs.existsSync(options.name)) {
+    const config: CreateAppConfig = {
+      ...(options as Required<CreateAppOptions>),
+      path: path.resolve(process.cwd(), options.name),
+    };
+
+    if (fs.existsSync(config.path)) {
       throw new Error(
         `Directory '${options.name}' already exists!
 Please make sure to not use an existing directory name.`
@@ -103,7 +106,7 @@ Please make sure to not use an existing directory name.`
     }
 
     await this.dowloadTemplate();
-    await this.copyTemplate(options as Required<CreateAppOptions>);
+    await this.copyTemplate(config);
 
     outro(`Created Oryx App ${options.name}!`);
   }
@@ -117,7 +120,7 @@ Please make sure to not use an existing directory name.`
       return;
     }
 
-    const archivePath = path.resolve(this.packageRoot, `./template-${ref}.zip`);
+    const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
     if (!fs.existsSync(archivePath)) {
       const s = spinner();
@@ -142,7 +145,7 @@ Please make sure to not use an existing directory name.`
   }
 
   protected async copyTemplate(
-    options: Required<CreateAppOptions>,
+    options: CreateAppConfig,
     ref: OryxTemplateRef = OryxTemplateRef.Latest
   ): Promise<void> {
     const s = spinner();
@@ -157,14 +160,13 @@ Please make sure to not use an existing directory name.`
       );
     }
 
-    const appPath = path.resolve(process.cwd(), options.name);
     const templatePath = path.resolve(
       repoPath,
       'apps',
       this.getTemplateFolder(options.preset)
     );
 
-    await this.nodeUtilService.copyFolder(templatePath, appPath);
+    await this.nodeUtilService.copyFolder(templatePath, options.path);
 
     s.stop('Template copied!');
   }
@@ -187,7 +189,7 @@ Please make sure to not use an existing directory name.`
       text({
         message: `What is the name of your app? ${c.dim(`[--name, -n]`)}`,
         validate: (value) => {
-          if (!value) {
+          if (!value.trim()) {
             return 'Please enter a name';
           }
           return undefined;
@@ -219,22 +221,19 @@ Please make sure to not use an existing directory name.`
     );
   }
 
-  protected async promptValue<T>(
-    input: Promise<T | symbol>
-  ): Promise<Exclude<T, symbol>> {
+  protected async promptValue<T>(input: Promise<T | symbol>): Promise<T> {
     const value = await input;
-    this.handleCancel(value);
+
+    if (isCancel(value)) {
+      return Promise.reject('Operation cancelled.');
+    }
+
     return value;
   }
+}
 
-  protected handleCancel<T>(
-    value: T | symbol
-  ): asserts value is Exclude<T, symbol> {
-    if (isCancel(value)) {
-      cancel('Operation cancelled.');
-      process.exit(0);
-    }
-  }
+interface CreateAppConfig extends Required<CreateAppOptions> {
+  path: string;
 }
 
 export interface CreateAppOptions {

@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { CliCommand } from '../models';
 import { CliArgsService } from './cli-args.service';
 

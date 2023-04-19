@@ -1,7 +1,6 @@
 import { cancel } from '@clack/prompts';
 import { App, InjectionPlugin } from '@spryker-oryx/core';
 import { PromiseSubject } from '@spryker-oryx/core/utilities';
-import { vi } from 'vitest';
 import { CliPlugin } from './plugin';
 import { CliArgsService, CliService } from './services';
 
