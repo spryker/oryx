@@ -66,19 +66,31 @@ export class ThemeTokens {
     return `@media (${mediaRule})`;
   }
 
-  generateScreenMedia(value: string | string[]): string {
-    const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
+  generateScreenMedia(
+    include: string | string[],
+    exclude: string | string[] = []
+  ): string {
+    include = Array.isArray(include) ? include : [include];
+
+    if (exclude) {
+      exclude = Array.isArray(exclude) ? exclude : [exclude];
+    }
+
     const bpValues = Object.keys(this.breakpoints);
+    const values = exclude.length
+      ? bpValues.filter(
+          (bp) =>
+            !exclude.includes(bp) || (include.length && include.includes(bp))
+        )
+      : include;
+    const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
     const steps = [];
+
     let expression = '';
     let separator = '';
     let prevBpIndex = NaN;
 
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
-
-    for (const [index, bp] of value.entries()) {
+    for (const [index, bp] of values.entries()) {
       const dimension = this.breakpoints[bp as keyof ThemeBreakpoints];
       const currentIndex = bpValues.findIndex((_bp) => _bp === bp);
       const isFirstStep = index === 0;
@@ -97,9 +109,8 @@ export class ThemeTokens {
       }
 
       if (isExtendStep) {
-        const lastStep = steps.at(-1);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        lastStep!.max = dimension?.max;
+        steps.at(-1)!.max = dimension?.max;
       }
     }
 
