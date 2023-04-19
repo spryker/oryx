@@ -11,11 +11,6 @@ import { reduce } from 'rxjs/operators';
 import { LayoutStyles, LayoutStyleSheets } from '../layout.model';
 import { LayoutService } from './layout.service';
 
-interface ResolvedLayout {
-  layout: CompositionLayout;
-  screens?: string[];
-}
-
 // TODO: consider breaking up styles in plugins
 // this allows to add more layouts going forwards without breaking changes,
 // as well as customers can add layouts
@@ -115,15 +110,16 @@ export class DefaultLayoutService implements LayoutService {
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
       if (style[size]?.base) {
         const mediaQuery = this.breakpointService.getMediaQuery(
-          size as any as keyof ThemeBreakpoints
+          size as unknown as keyof ThemeBreakpoints
         );
         result += `${mediaQuery} {${style[size]?.base?.toString()}}\n`;
       }
     });
 
     if (included.length || excluded.length) {
-      // TODO: use a method that allows for both includes and excludes for an efficient query
       const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
+      // TODO: use a method that allows for both includes and excludes to
+      // build efficient media queries
       const styles = included
         .map((size) => style[size]?.styles?.toString())
         .join('\n');

@@ -68,7 +68,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutBuilder = resolve(LayoutBuilder);
 
     protected layoutStyles = computed(() => {
-      const rules = (this.$options() as any as { rules: StyleRuleSet[] }).rules;
+      const rules = (this.$options() as { rules: StyleRuleSet[] }).rules;
       this.layout = rules?.find((rule) => !rule.breakpoint)?.layout;
       this.layoutSm = rules?.find((rule) => rule.breakpoint === 'sm')?.layout;
       this.layoutMd = rules?.find((rule) => rule.breakpoint === 'md')?.layout;
@@ -81,11 +81,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.stickySm = rules?.find((rule) => rule.breakpoint === 'sm')?.sticky;
       this.stickyMd = rules?.find((rule) => rule.breakpoint === 'md')?.sticky;
       this.stickyLg = rules?.find((rule) => rule.breakpoint === 'lg')?.sticky;
-
-      // const layouts: { [key: string]: CompositionLayout } = {};
-      // if (this.layoutSm) layouts.sm = this.layoutSm;
-      // if (this.layoutMd) layouts.md = this.layoutMd;
-      // if (this.layoutLg) layouts.lg = this.layoutLg;
 
       const layouts: LayoutStyleSheets = {};
 
