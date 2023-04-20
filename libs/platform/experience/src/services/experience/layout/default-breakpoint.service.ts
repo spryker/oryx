@@ -19,7 +19,8 @@ export class DefaultBreakpointService implements BreakpointService {
       return;
     }
 
-    return this.themePlugin?.generateScreenMedia(breakpoint);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.themePlugin!.generateScreenMedia(breakpoint)!;
   }
 
   getSmallest(): Breakpoint | void {
