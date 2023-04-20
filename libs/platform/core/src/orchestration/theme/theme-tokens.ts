@@ -2,6 +2,7 @@ import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { getPropByPath } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import {
+  Breakpoint,
   ColorMode,
   DesignToken,
   Theme,
@@ -60,7 +61,8 @@ export class ThemeTokens {
     const mediaRule = getPropByPath(this.mediaMapper, value);
 
     if (isScreen) {
-      return this.generateScreenMedia(path[1] ?? value);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.generateScreenMedia(path[1] ?? value)!;
     }
 
     return `@media (${mediaRule})`;
@@ -69,7 +71,11 @@ export class ThemeTokens {
   generateScreenMedia(
     include: string | string[],
     exclude: string | string[] = []
-  ): string {
+  ): string | null {
+    if (!include.length && !exclude.length) {
+      return null;
+    }
+
     include = Array.isArray(include) ? include : [include];
 
     if (exclude) {
@@ -91,7 +97,7 @@ export class ThemeTokens {
     let prevBpIndex = NaN;
 
     for (const [index, bp] of values.entries()) {
-      const dimension = this.breakpoints[bp as keyof ThemeBreakpoints];
+      const dimension = this.breakpoints[bp as Breakpoint];
       const currentIndex = bpValues.findIndex((_bp) => _bp === bp);
       const isFirstStep = index === 0;
       const isORStep = !isNaN(prevBpIndex) && currentIndex - prevBpIndex > 1;

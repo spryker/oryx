@@ -401,5 +401,10 @@ describe('ThemePlugin', () => {
         `@media (min-width: ${breakpoints.sm.min}px) and (max-width: ${breakpoints.md.max}px)`
       );
     });
+
+    it('should return null if both parameters are empty arrays', () => {
+      const a = plugin.generateScreenMedia([], []);
+      expect(a).toBeNull();
+    });
   });
 });

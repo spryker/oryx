@@ -29,7 +29,7 @@ export type Breakpoint = keyof ThemeBreakpoints;
 
 export interface ThemeMediaQueries {
   [ThemeDefaultMedia.Mode]?: 'dark' | 'light';
-  [ThemeDefaultMedia.Screen]?: keyof ThemeBreakpoints;
+  [ThemeDefaultMedia.Screen]?: Breakpoint;
 }
 
 export interface ThemeStylesWithMedia {
