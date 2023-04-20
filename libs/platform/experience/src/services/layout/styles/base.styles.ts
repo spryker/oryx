@@ -7,9 +7,9 @@ export const styles = css`
       calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
     );
 
-    width: min(100%, calc(var(--_container-width)));
     display: grid;
-    margin-inline: auto;
     gap: var(--oryx-grid-gap-row) var(--oryx-grid-gap-column);
+    margin-inline: auto;
+    width: min(100%, calc(var(--_container-width)));
   }
 `;

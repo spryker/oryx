@@ -22,9 +22,7 @@ import { Type } from '@spryker-oryx/di';
 import { property } from 'lit/decorators.js';
 import { map } from 'rxjs';
 
-export declare class LayoutMixinInterface implements LayoutAttributes {
-  layout?: CompositionLayout;
-  bleed?: boolean;
+export declare class LayoutMixinInterface {
   protected layoutStyles: ConnectableSignal<string | undefined>;
 }
 

@@ -119,17 +119,15 @@ export class DefaultLayoutService implements LayoutService {
   ): string {
     let result = '';
 
-    // if (style.base) result += style.base.toString();
-
-    if (style.styles && !included.length && !excluded.length) {
-      result += style.styles.toString();
-    }
-
-    if (included.length || excluded.length) {
+    if (style.styles) {
       // TODO: use a method that allows for both includes and excludes to
       // build efficient media queries
-      const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
-      result += `${mediaQuery} {${style?.styles?.toString()}}\n`;
+      if (!included.length && !excluded.length) {
+        result += style.styles;
+      } else {
+        const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
+        result += `${mediaQuery} {${style?.styles}}\n`;
+      }
     }
 
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
