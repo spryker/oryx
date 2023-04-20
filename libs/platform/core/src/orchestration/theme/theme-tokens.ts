@@ -93,7 +93,6 @@ export class ThemeTokens {
     const steps = [];
 
     let expression = '';
-    let separator = '';
     let prevBpIndex = NaN;
 
     for (const [index, bp] of values.entries()) {
@@ -121,11 +120,7 @@ export class ThemeTokens {
     }
 
     for (const [index, step] of steps.entries()) {
-      if (index !== 0) {
-        separator = ',';
-      }
-
-      expression += separator ? `${separator} ` : '';
+      expression += index !== 0 ? `, ` : '';
       expression += step?.min ? `(${mediaRule.min}: ${step?.min}px)` : '';
       expression += step?.min && step?.max ? ' and ' : '';
       expression += step?.max ? `(${mediaRule.max}: ${step?.max}px)` : '';
