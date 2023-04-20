@@ -24,14 +24,14 @@ export class BapiPlugin implements AppPlugin {
           );
           if (
             !authenticated &&
-            currentRoute !== '/login' &&
+            currentRoute !== oauthConfig.loginRoute &&
             !currentRoute.startsWith(redirectUrl.pathname)
           ) {
             resolve(OauthService).login();
           }
           if (
             authenticated &&
-            (currentRoute.startsWith('/login') ||
+            (currentRoute.startsWith(oauthConfig.loginRoute) ||
               currentRoute.startsWith(redirectUrl.pathname))
           ) {
             resolve(RouterService).navigate('/');
