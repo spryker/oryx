@@ -83,7 +83,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           .map((rule) => rule.breakpoint!);
         layouts[this.layout] = {};
-        if (ex.length) {
+        if (ex?.length) {
           layouts[this.layout].excluded = ex;
         }
       }

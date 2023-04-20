@@ -18,10 +18,6 @@ export class DefaultBreakpointService implements BreakpointService {
     include: Breakpoint | Breakpoint[],
     exclude: Breakpoint | Breakpoint[] = []
   ): string | void {
-    // if (include === this.getSmallest()) {
-    //   return;
-    // }
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.themePlugin!.generateScreenMedia(include, exclude)!;
   }

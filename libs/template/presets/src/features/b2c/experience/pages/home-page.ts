@@ -19,7 +19,10 @@ export const HomePage: StaticComponent = {
       type: 'oryx-product-list',
       options: {
         data: {
-          rules: [{ layout: 'carousel', padding: '30 0' }],
+          rules: [
+            { layout: 'carousel', padding: '30 0' },
+            { layout: 'grid', breakpoint: 'lg' },
+          ],
           category: '10',
           sort: 'rating',
         },

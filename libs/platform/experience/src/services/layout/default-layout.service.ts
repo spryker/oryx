@@ -16,18 +16,18 @@ import { LayoutService } from './layout.service';
 export class DefaultLayoutService implements LayoutService {
   constructor(protected breakpointService = inject(BreakpointService)) {}
 
-  getStyles(sheets: ResponsiveLayoutInfo): Observable<string> {
+  getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
     const observables: Observable<string>[] = [];
 
-    const keys = Object.keys(sheets);
+    const keys = Object.keys(layoutInfo);
 
     if (keys.length > 0) observables.push(this.resolveCommonStyles());
 
     keys.forEach((key) => {
       const styles = this.resolveStyles(
         key,
-        sheets[key].included,
-        sheets[key].excluded
+        layoutInfo[key].included,
+        layoutInfo[key].excluded
       );
       if (styles) {
         observables.push(styles);
@@ -118,24 +118,25 @@ export class DefaultLayoutService implements LayoutService {
     excluded: Breakpoint[]
   ): string {
     let result = '';
-
     if (style.styles) {
-      // TODO: use a method that allows for both includes and excludes to
-      // build efficient media queries
-      if (!included.length && !excluded.length) {
-        result += style.styles;
+      const query = this.breakpointService.getMediaQuery(included, excluded);
+      if (query) {
+        result += `${query} {${style?.styles}}\n`;
       } else {
-        const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
-        result += `${mediaQuery} {${style?.styles}}\n`;
+        result += style?.styles;
       }
     }
 
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
       if (style[size]) {
-        const mediaQuery = this.breakpointService.getMediaQuery(
+        const query = this.breakpointService.getMediaQuery(
           size as unknown as keyof ThemeBreakpoints
         );
-        result += `${mediaQuery} {${style[size]?.toString()}}\n`;
+        if (query) {
+          result += `${query} {${style[size]}}\n`;
+        } else {
+          result += style[size];
+        }
       }
     });
 
