@@ -89,7 +89,7 @@ export class DefaultLayoutService implements LayoutService {
           )
         );
 
-      case CompositionLayout.Free:
+      case CompositionLayout.Flex:
         return ssrAwaiter(
           import('./styles/flex-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)

@@ -57,21 +57,35 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutService = resolve(LayoutService);
     protected layoutBuilder = resolve(LayoutBuilder);
 
+    protected layoutStyles = computed(() => {
+      const rules = (this.$options() as { rules: StyleRuleSet[] }).rules;
+
+      this.configureLayout(rules);
+      const componentStyles = this.collectStyles(rules);
+      const graph = this.getResponsiveLayouts(rules);
+
+      return this.layoutService
+        .getStyles(graph)
+        .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));
+    });
+
     protected getResponsiveLayouts(
       rules: StyleRuleSet[]
     ): ResponsiveLayoutInfo {
       const layouts: ResponsiveLayoutInfo = {};
 
       if (this.layout) {
-        layouts[this.layout] = {
-          excluded: rules
-            ?.filter(
-              (rule) =>
-                rule.breakpoint && rule.layout && rule.layout !== this.layout
-            )
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .map((rule) => rule.breakpoint!),
-        };
+        const ex = rules
+          ?.filter(
+            (rule) =>
+              rule.breakpoint && rule.layout && rule.layout !== this.layout
+          )
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          .map((rule) => rule.breakpoint!);
+        layouts[this.layout] = {};
+        if (ex.length) {
+          layouts[this.layout].excluded = ex;
+        }
       }
 
       if (this.bleed) {
@@ -107,26 +121,15 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
       return layouts;
     }
-
-    protected layoutStyles = computed(() => {
-      const rules = (this.$options() as { rules: StyleRuleSet[] }).rules;
-
-      this.configureLayout(rules);
-      const componentStyles = this.collectStyles(rules);
-      const graph = this.getResponsiveLayouts(rules);
-
-      return this.layoutService
-        .getStyles(graph)
-        .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));
-    });
-
     /**
      * Sets layout properties from the given rules. The layout rules are driven
      * by component options. If the layout has been set by the host, the rules will
      * be ignored.
      */
     protected configureLayout(rules: StyleRuleSet[]): void {
-      this.layout ??= rules?.find((rule) => !rule.breakpoint)?.layout;
+      if (rules?.find((rule) => !rule.breakpoint)?.layout) {
+        this.layout ??= rules?.find((rule) => !rule.breakpoint)?.layout;
+      }
       this.layoutSm ??= rules?.find((rule) => rule.breakpoint === 'sm')?.layout;
       this.layoutMd ??= rules?.find((rule) => rule.breakpoint === 'md')?.layout;
       this.layoutLg ??= rules?.find((rule) => rule.breakpoint === 'lg')?.layout;

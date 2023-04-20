@@ -15,7 +15,7 @@ export enum CompositionLayout {
   SplitColumn = 'split-column',
   Carousel = 'carousel',
   Grid = 'grid',
-  Free = 'free',
+  Flex = 'flex',
   Text = 'text',
   Tabular = 'tabular',
 }
