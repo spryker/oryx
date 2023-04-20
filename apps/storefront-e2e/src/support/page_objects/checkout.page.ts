@@ -6,6 +6,7 @@ import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {
   url = '/checkout';
+  anonymousUrl = '/checkout-login';
 
   waitForLoadedSPA(): void {
     this.getCartTotals.getTotalPrice().should('be.visible');
@@ -15,7 +16,7 @@ export class CheckoutPage extends AbstractSFPage {
     this.waitForLoadedSPA();
   }
 
-  getCheckoutAsGuestBtn = () => cy.get('checkout-guest').find('button');
+  getCheckoutAsGuestBtn = () => cy.get('oryx-checkout-guest').find('a');
 
   contactForm = new CheckoutContactFragment();
   addressForm = new CheckoutAddressFormFragment();

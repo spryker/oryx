@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -26,10 +27,15 @@ class MockCheckoutDataService implements Partial<CheckoutDataService> {
   getAddressDetails = vi.fn().mockReturnValue(of({}));
 }
 
+class MockAuthService implements Partial<AuthService> {
+  isAuthenticated = vi.fn().mockReturnValue(of(false));
+}
+
 describe('Checkout Guest', () => {
   let element: CheckoutGuestComponent;
   let routerService: MockRouterService;
   let checkoutDataService: MockCheckoutDataService;
+  let authService: MockAuthService;
 
   beforeAll(async () => {
     await useComponent(checkoutGuestComponent);
@@ -50,6 +56,10 @@ describe('Checkout Guest', () => {
           provide: CheckoutDataService,
           useClass: MockCheckoutDataService,
         },
+        {
+          provide: AuthService,
+          useClass: MockAuthService,
+        },
       ],
     });
 
@@ -60,6 +70,10 @@ describe('Checkout Guest', () => {
     checkoutDataService = testInjector.inject(
       CheckoutDataService
     ) as unknown as MockCheckoutDataService;
+
+    authService = testInjector.inject(
+      AuthService
+    ) as unknown as MockAuthService;
   });
 
   afterEach(() => {
@@ -95,6 +109,19 @@ describe('Checkout Guest', () => {
 
     it('should not redirect to the checkout page', () => {
       expect(routerService.navigate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when the user is authenticated', () => {
+    beforeEach(async () => {
+      authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
+      element = await fixture(
+        html`<oryx-checkout-guest></oryx-checkout-guest>`
+      );
+    });
+
+    it('should redirect to the checkout page', () => {
+      expect(routerService.navigate).toHaveBeenCalledWith(mockLink);
     });
   });
 

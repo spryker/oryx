@@ -1,3 +1,4 @@
+import { AuthService } from '@spryker-oryx/auth';
 import {
   CheckoutComponentMixin,
   CheckoutDataService,
@@ -15,18 +16,18 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin(LitElement) {
   static styles = [styles];
 
   protected checkoutDataService = resolve(CheckoutDataService);
+  protected authService = resolve(AuthService);
   protected linkService = resolve(SemanticLinkService);
 
   protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
+  protected isAuthenticated = signal(this.authService.isAuthenticated());
+
   protected checkoutRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Checkout })
   );
-  protected checkoutLoginRoute = signal(
-    this.linkService.get({ type: SemanticLinkType.CheckoutLogin })
-  );
 
   protected eff = effect(() => {
-    if (this.isGuest()) this.redirect();
+    if (this.isGuest() || this.isAuthenticated()) this.redirect();
   });
 
   protected override render(): TemplateResult | void {
@@ -44,7 +45,7 @@ export class CheckoutGuestComponent extends CheckoutComponentMixin(LitElement) {
   }
 
   protected redirect(): void {
-    const route = this.checkoutLoginRoute();
+    const route = this.checkoutRoute();
     if (route) {
       resolve(RouterService).navigate(route);
     }

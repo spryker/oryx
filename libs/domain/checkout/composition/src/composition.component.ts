@@ -43,14 +43,11 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
   protected steps$ = this.orchestrationService.getValidity();
 
   protected checkoutDataService = resolve(CheckoutDataService);
-  protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
-  protected isAuthenticated = signal(
-    this.checkoutDataService.isGuestCheckout()
-  );
+  protected authService = resolve(AuthService);
 
-  // protected checkoutRoute = signal(
-  //   resolve(SemanticLinkService).get({ type: SemanticLinkType.CheckoutLogin })
-  // );
+  protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
+  protected isAuthenticated = signal(this.authService.isAuthenticated());
+
   protected checkoutLoginRoute = signal(
     resolve(SemanticLinkService).get({ type: SemanticLinkType.CheckoutLogin })
   );
