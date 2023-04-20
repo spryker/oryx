@@ -11,6 +11,7 @@ import { Size } from '@spryker-oryx/ui';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
 
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { LayoutService } from './layout.service';
 
 export class DefaultLayoutService implements LayoutService {
@@ -55,56 +56,56 @@ export class DefaultLayoutService implements LayoutService {
   ): Observable<string> | void {
     switch (layout) {
       case 'bleed':
-        return from(
+        return ssrAwaiter(
           import('./styles/bleed.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case 'sticky':
-        return from(
+        return ssrAwaiter(
           import('./styles/sticky.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Column:
-        return from(
+        return ssrAwaiter(
           import('./styles/column-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Grid:
-        return from(
+        return ssrAwaiter(
           import('./styles/grid-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Carousel:
-        return from(
+        return ssrAwaiter(
           import('./styles/carousel-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Free:
-        return from(
+        return ssrAwaiter(
           import('./styles/flex-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitColumn:
-        return from(
+        return ssrAwaiter(
           import('./styles/split-column-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Text:
-        return from(
+        return ssrAwaiter(
           import('./styles/text-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
