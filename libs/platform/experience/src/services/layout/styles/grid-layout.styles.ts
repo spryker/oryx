@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { LayoutStyles } from '../../../../layout/src/layout.model';
+import { LayoutStyles } from '../layout.model';
 import { gridSystem } from './grid-system.styles';
 
 export const styles: LayoutStyles = {

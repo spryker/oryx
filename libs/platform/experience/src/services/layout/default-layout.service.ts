@@ -4,12 +4,13 @@ import {
   Breakpoint,
   BreakpointService,
   CompositionLayout,
+  LayoutStyles,
   ResponsiveLayoutInfo,
 } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/ui';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
-import { LayoutStyles } from '../../../layout/src/layout.model';
+
 import { LayoutService } from './layout.service';
 
 export class DefaultLayoutService implements LayoutService {
@@ -69,42 +70,42 @@ export class DefaultLayoutService implements LayoutService {
 
       case CompositionLayout.Column:
         return from(
-          import('./styles/column.styles').then((m) =>
+          import('./styles/column-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Grid:
         return from(
-          import('./styles/grid.styles').then((m) =>
+          import('./styles/grid-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Carousel:
         return from(
-          import('./styles/carousel.styles').then((m) =>
+          import('./styles/carousel-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Free:
         return from(
-          import('./styles/free.styles').then((m) =>
+          import('./styles/flex-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitColumn:
         return from(
-          import('./styles/split-column.styles').then((m) =>
+          import('./styles/split-column-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Text:
         return from(
-          import('./styles/text.styles').then((m) =>
+          import('./styles/text-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
@@ -132,11 +133,11 @@ export class DefaultLayoutService implements LayoutService {
     }
 
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
-      if (style[size]?.styles) {
+      if (style[size]) {
         const mediaQuery = this.breakpointService.getMediaQuery(
           size as unknown as keyof ThemeBreakpoints
         );
-        result += `${mediaQuery} {${style[size]?.styles?.toString()}}\n`;
+        result += `${mediaQuery} {${style[size]?.toString()}}\n`;
       }
     });
 

@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { LayoutStyles } from '../../../../layout/src/layout.model';
+import { LayoutStyles } from '../layout.model';
 import { gridSystem } from './grid-system.styles';
 
 export const styles: LayoutStyles = {
@@ -17,11 +17,9 @@ export const styles: LayoutStyles = {
       grid-template-columns: var(--_split-col) auto;
     }
   `,
-  sm: {
-    styles: css`
-      :host {
-        grid-template-columns: auto;
-      }
-    `,
-  },
+  sm: css`
+    :host {
+      grid-template-columns: auto;
+    }
+  `,
 };
