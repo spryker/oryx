@@ -5,7 +5,7 @@ import {
   ResolverScore,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { ProductContext } from '../product-context';
 import { ProductService } from '../product.service';
 
@@ -24,6 +24,10 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
   resolve(): Observable<ElementResolver> {
     return this.context.get(document.body, ProductContext.SKU).pipe(
       switchMap((sku) => {
+        if (!sku) {
+          return of({});
+        }
+
         return this.productService.get({ sku: sku as string }).pipe(
           map((product) => ({
             title: product?.name,
