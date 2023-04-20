@@ -1,7 +1,5 @@
-import { ThemeBreakpoints } from '@spryker-oryx/core';
+import { Breakpoint } from '@spryker-oryx/core';
 import { LayoutAttributes } from '../../layout/src';
-
-export type Breakpoint = keyof ThemeBreakpoints;
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];

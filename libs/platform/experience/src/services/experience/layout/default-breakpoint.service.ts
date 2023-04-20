@@ -1,11 +1,10 @@
 import {
   AppRef,
+  Breakpoint,
   ThemeBreakpoints,
-  ThemeDefaultMedia,
   ThemePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Breakpoint } from '../../../models';
 import { BreakpointService } from './breakpoint.service';
 
 export class DefaultBreakpointService implements BreakpointService {
@@ -20,9 +19,8 @@ export class DefaultBreakpointService implements BreakpointService {
       return;
     }
 
-    return this.themePlugin?.generateMedia(
-      `${ThemeDefaultMedia.Screen}.${breakpoint}`
-    );
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.themePlugin!.generateScreenMedia(breakpoint)!;
   }
 
   getSmallest(): Breakpoint | void {
