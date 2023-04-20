@@ -6,4 +6,11 @@ export const styles = css`
     display: grid;
     gap: 34px;
   }
+
+  .no-items-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
 `;
