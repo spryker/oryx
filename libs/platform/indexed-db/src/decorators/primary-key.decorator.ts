@@ -52,7 +52,7 @@ export function indexedDbPrimaryKey(options?: IndexedDbPrimaryKeyOptions): any {
     context: DecoratorContext | TargetContext,
     name?: PropertyKey
   ): DecoratorContext | void => {
-    const propName = (options?.propPath ?? name ?? context.name) as string;
+    const propName = (options?.propPath ?? name ?? context.key) as string;
     return name !== undefined
       ? addPrimaryKey(context as TargetContext, propName, options)
       : standardIndexedDbPrimaryKey(
