@@ -9,11 +9,17 @@ import {
   OauthFeatureConfig,
   oauthHandlerComponent,
 } from '@spryker-oryx/auth';
-import { AppFeature, ComponentsInfo, injectEnv } from '@spryker-oryx/core';
+import {
+  AppFeature,
+  AppPlugin,
+  ComponentsInfo,
+  injectEnv,
+} from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import urlJoin from 'url-join';
 import { BapiIdentityService } from './bapi-identity.service';
+import { BapiPlugin } from './plugin';
 import { defaultBapiRoutes } from './routes';
 
 /**
@@ -48,6 +54,8 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
       defaultProvider: 'spryker',
     };
   }
+
+  plugins: AppPlugin[] = [new BapiPlugin()];
 
   constructor(
     config:
