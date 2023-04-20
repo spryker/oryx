@@ -8,8 +8,16 @@ import {
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AddressService } from '@spryker-oryx/user';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import {
+  asyncValue,
+  effect,
+  hydratable,
+  i18n,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, map } from 'rxjs';
@@ -34,6 +42,28 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
 
   protected steps$ = this.orchestrationService.getValidity();
 
+  protected checkoutDataService = resolve(CheckoutDataService);
+  protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
+  protected isAuthenticated = signal(
+    this.checkoutDataService.isGuestCheckout()
+  );
+
+  // protected checkoutRoute = signal(
+  //   resolve(SemanticLinkService).get({ type: SemanticLinkType.CheckoutLogin })
+  // );
+  protected checkoutLoginRoute = signal(
+    resolve(SemanticLinkService).get({ type: SemanticLinkType.CheckoutLogin })
+  );
+
+  protected eff = effect(() => {
+    if (!this.isAuthenticated() && !this.isGuest()) {
+      const route = this.checkoutLoginRoute();
+      if (route) {
+        resolve(RouterService).navigate(route);
+      }
+    }
+  });
+
   protected checkout$ = combineLatest([
     this.isEmptyCart$,
     this.isAuthenticated$,
@@ -42,6 +72,18 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
     this.steps$,
     this.options$,
   ]);
+
+  protected renderLoginLink(): TemplateResult | void {
+    if (!this.isGuest()) return;
+
+    return html` <oryx-link @click=${() => this.setGuest(false)}>
+      <a href=${this.checkoutLoginRoute()}>${i18n('checkout.guest.login')}</a>
+    </oryx-link>`;
+  }
+
+  protected setGuest(value = true): void {
+    this.checkoutDataService.setGuestCheckout(value);
+  }
 
   protected override render(): TemplateResult {
     return html` ${asyncValue(
@@ -59,8 +101,6 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
         }
 
         return html`
-          <checkout-auth .options=${{ disableGuest: options.disableGuest }}>
-          </checkout-auth>
           ${when(
             isAuthenticated || isGuestCheckout,
             () =>
@@ -121,6 +161,7 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
           () =>
             html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
         )}
+        ${this.renderLoginLink()}
       </oryx-heading>
     `;
   }

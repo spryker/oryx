@@ -7,6 +7,8 @@ import {
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -39,6 +41,14 @@ class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of(null));
 }
 
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/checkout'));
+}
+
+class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
+}
+
 describe('CheckoutCompositionComponent', () => {
   let element: CheckoutCompositionComponent;
 
@@ -68,6 +78,14 @@ describe('CheckoutCompositionComponent', () => {
         {
           provide: AuthService,
           useClass: MockAuthService,
+        },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
         },
       ],
     });

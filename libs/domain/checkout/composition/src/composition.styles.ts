@@ -15,6 +15,7 @@ export const compositionStyles = css`
     display: flex;
     align-items: center;
     margin-block-end: 12px;
+    justify-content: space-between;
   }
 
   oryx-checkout-manage-address {

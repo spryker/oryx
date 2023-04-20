@@ -8,4 +8,8 @@ export default {
   'cart.confirm-removed': 'Item is successfully removed',
   'order.<count>-items':
     'Products ({count, plural, one {{count} item} other {{count} items}})',
+
+  'checkout.guest.checkout-without-account':
+    'You can checkout without creating an account. You will have a chance to create an account later.',
+  'checkout.guest.checkout-link': 'Checkout as a guest',
 };
