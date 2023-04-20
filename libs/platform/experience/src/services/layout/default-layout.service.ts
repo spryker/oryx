@@ -4,11 +4,12 @@ import {
   Breakpoint,
   BreakpointService,
   CompositionLayout,
+  ResponsiveLayoutInfo,
 } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/ui';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
-import { LayoutStyles, ResponsiveLayoutInfo } from '../layout.model';
+import { LayoutStyles } from '../../../layout/src/layout.model';
 import { LayoutService } from './layout.service';
 
 export class DefaultLayoutService implements LayoutService {
@@ -39,7 +40,7 @@ export class DefaultLayoutService implements LayoutService {
 
   protected resolveCommonStyles(): Observable<string> {
     return from(
-      import('../styles/base.styles').then((m) => m.styles?.toString() ?? '')
+      import('./styles/base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
 
@@ -54,56 +55,56 @@ export class DefaultLayoutService implements LayoutService {
     switch (layout) {
       case 'bleed':
         return from(
-          import('../styles/bleed.styles').then((m) =>
+          import('./styles/bleed.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case 'sticky':
         return from(
-          import('../styles/sticky.styles').then((m) =>
+          import('./styles/sticky.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Column:
         return from(
-          import('../styles/column.styles').then((m) =>
+          import('./styles/column.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Grid:
         return from(
-          import('../styles/grid.styles').then((m) =>
+          import('./styles/grid.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Carousel:
         return from(
-          import('../styles/carousel.styles').then((m) =>
+          import('./styles/carousel.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Free:
         return from(
-          import('../styles/free.styles').then((m) =>
+          import('./styles/free.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitColumn:
         return from(
-          import('../styles/split-column.styles').then((m) =>
+          import('./styles/split-column.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Text:
         return from(
-          import('../styles/text.styles').then((m) =>
+          import('./styles/text.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );

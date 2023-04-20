@@ -1,6 +1,5 @@
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { DefaultLayoutService, LayoutService } from '../../layout/src';
 import {
   BreakpointService,
   DefaultBreakpointService,
@@ -13,6 +12,7 @@ import {
   PreviewExperienceService,
 } from './experience';
 import { ContentBackendUrl } from './experience-tokens';
+import { DefaultLayoutService, LayoutService } from './layout';
 import {
   ComponentsRegistryService,
   DefaultComponentsRegistryService,

@@ -5,13 +5,11 @@ import {
   CompositionLayout,
   ContentMixin,
   LayoutBuilder,
-  StyleRuleSet,
-} from '@spryker-oryx/experience';
-import {
-  LayoutAttributes,
   LayoutService,
   ResponsiveLayoutInfo,
-} from '@spryker-oryx/experience/layout';
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
+import { LayoutAttributes } from '@spryker-oryx/experience/layout';
 import {
   computed,
   ConnectableSignal,

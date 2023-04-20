@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ResponsiveLayoutInfo } from '../layout.model';
+import { ResponsiveLayoutInfo } from './layout.model';
 
 export const LayoutService = 'oryx.LayoutService';
 
