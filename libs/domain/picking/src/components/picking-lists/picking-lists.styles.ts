@@ -12,5 +12,10 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     height: 100%;
+    margin: 45px;
+  }
+
+  .img-wrap {
+    padding: 16px 40px;
   }
 `;

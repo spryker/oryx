@@ -73,8 +73,10 @@ export class PickingListsComponent extends LitElement {
   protected renderEmptyLists(): TemplateResult {
     return html`
       <div class="no-items-fallback">
-        <h4>${i18n('picking.no-results-found')}</h4>
-        <div>
+        <oryx-heading as="h4">
+          ${i18n('picking.no-results-found')}
+        </oryx-heading>
+        <div class="img-wrap">
           <oryx-image resource="no-orders"></oryx-image>
         </div>
       </div>
