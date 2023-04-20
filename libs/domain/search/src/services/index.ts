@@ -1,5 +1,6 @@
 // organize-imports-ignore
 export * from './adapter';
+export * from './resolvers';
 export * from './suggestion';
 export * from './search.providers';
 export * from './default-facet-list.service';

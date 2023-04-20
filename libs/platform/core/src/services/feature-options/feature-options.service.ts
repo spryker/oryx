@@ -9,7 +9,8 @@ declare global {
 }
 
 export interface FeatureOptionsService {
-  getFeatureOptions(name: string): FeatureOptions;
+  getFeatureOptions<N extends keyof FeatureOptions>(name: N): FeatureOptions[N];
+  getFeatureOptions(name: string): object;
 }
 
 declare global {

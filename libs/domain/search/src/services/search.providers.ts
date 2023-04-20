@@ -1,3 +1,4 @@
+import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { facetProviders } from '../renderers';
 import {
@@ -8,6 +9,7 @@ import {
 import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
+import { CategoryPageTitleMetaResolver } from './resolvers';
 import { SortingService } from './sorting.service';
 import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
@@ -30,4 +32,8 @@ export const searchProviders: Provider[] = [
   },
   ...facetProviders,
   ...suggestionNormalizer,
+  {
+    provide: PageMetaResolver,
+    useClass: CategoryPageTitleMetaResolver,
+  },
 ];
