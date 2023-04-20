@@ -14,9 +14,16 @@ export class DefaultBreakpointService implements BreakpointService {
     this.themePlugin = this.app.findPlugin(ThemePlugin);
   }
 
-  getMediaQuery(breakpoint: Breakpoint): string | void {
+  getMediaQuery(
+    include: Breakpoint | Breakpoint[],
+    exclude: Breakpoint | Breakpoint[] = []
+  ): string | void {
+    // if (include === this.getSmallest()) {
+    //   return;
+    // }
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.themePlugin!.generateScreenMedia(breakpoint)!;
+    return this.themePlugin!.generateScreenMedia(include, exclude)!;
   }
 
   getSmallest(): Breakpoint | void {
