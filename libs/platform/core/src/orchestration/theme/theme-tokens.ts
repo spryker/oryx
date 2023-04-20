@@ -77,10 +77,7 @@ export class ThemeTokens {
     }
 
     include = Array.isArray(include) ? include : [include];
-
-    if (exclude) {
-      exclude = Array.isArray(exclude) ? exclude : [exclude];
-    }
+    exclude = Array.isArray(exclude) ? exclude : [exclude];
 
     const bpValues = Object.keys(this.breakpoints);
     const values = exclude.length
