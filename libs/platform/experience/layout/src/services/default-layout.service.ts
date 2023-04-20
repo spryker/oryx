@@ -8,16 +8,13 @@ import {
 import { Size } from '@spryker-oryx/ui';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
-import { LayoutStyles, LayoutStyleSheets } from '../layout.model';
+import { LayoutStyles, ResponsiveLayoutInfo } from '../layout.model';
 import { LayoutService } from './layout.service';
 
-// TODO: consider breaking up styles in plugins
-// this allows to add more layouts going forwards without breaking changes,
-// as well as customers can add layouts
 export class DefaultLayoutService implements LayoutService {
   constructor(protected breakpointService = inject(BreakpointService)) {}
 
-  getStyles(sheets: LayoutStyleSheets): Observable<string> {
+  getStyles(sheets: ResponsiveLayoutInfo): Observable<string> {
     const observables: Observable<string>[] = [];
 
     const keys = Object.keys(sheets);
@@ -25,7 +22,7 @@ export class DefaultLayoutService implements LayoutService {
     if (keys.length > 0) observables.push(this.resolveCommonStyles());
 
     keys.forEach((key) => {
-      const styles = this.resolveStyles2(
+      const styles = this.resolveStyles(
         key,
         sheets[key].included,
         sheets[key].excluded
@@ -46,7 +43,10 @@ export class DefaultLayoutService implements LayoutService {
     );
   }
 
-  protected resolveStyles2(
+  // TODO: consider breaking up styles in plugins
+  // this allows to add more layouts going forwards without breaking changes,
+  // as well as customers can add layouts
+  protected resolveStyles(
     layout: string,
     included: Breakpoint[] = [],
     excluded: Breakpoint[] = []
@@ -62,6 +62,13 @@ export class DefaultLayoutService implements LayoutService {
       case 'sticky':
         return from(
           import('../styles/sticky.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Column:
+        return from(
+          import('../styles/column.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
@@ -93,6 +100,13 @@ export class DefaultLayoutService implements LayoutService {
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
+
+      case CompositionLayout.Text:
+        return from(
+          import('../styles/text.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
     }
   }
 
@@ -103,28 +117,27 @@ export class DefaultLayoutService implements LayoutService {
   ): string {
     let result = '';
 
-    if (style.base) result += style.base.toString();
+    // if (style.base) result += style.base.toString();
+
     if (style.styles && !included.length && !excluded.length) {
       result += style.styles.toString();
     }
+
+    if (included.length || excluded.length) {
+      // TODO: use a method that allows for both includes and excludes to
+      // build efficient media queries
+      const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
+      result += `${mediaQuery} {${style?.styles?.toString()}}\n`;
+    }
+
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
-      if (style[size]?.base) {
+      if (style[size]?.styles) {
         const mediaQuery = this.breakpointService.getMediaQuery(
           size as unknown as keyof ThemeBreakpoints
         );
-        result += `${mediaQuery} {${style[size]?.base?.toString()}}\n`;
+        result += `${mediaQuery} {${style[size]?.styles?.toString()}}\n`;
       }
     });
-
-    if (included.length || excluded.length) {
-      const mediaQuery = this.breakpointService.getMediaQuery(included[0]);
-      // TODO: use a method that allows for both includes and excludes to
-      // build efficient media queries
-      const styles = included
-        .map((size) => style[size]?.styles?.toString())
-        .join('\n');
-      result += `${mediaQuery} {${styles}}\n`;
-    }
 
     return result;
   }

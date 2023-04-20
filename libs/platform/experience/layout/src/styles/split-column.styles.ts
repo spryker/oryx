@@ -1,8 +1,11 @@
 import { css } from 'lit';
 import { LayoutStyles } from '../layout.model';
+import { gridSystem } from './grid-system.styles';
 
 export const styles: LayoutStyles = {
-  base: css`
+  styles: css`
+    ${gridSystem}
+
     :host {
       --oryx-grid-columns: var(--oryx-grid-columns-base);
       --_col1: calc(var(--oryx-grid-columns) * var(--split-column-factor, 0.5));
@@ -15,7 +18,7 @@ export const styles: LayoutStyles = {
     }
   `,
   sm: {
-    base: css`
+    styles: css`
       :host {
         grid-template-columns: auto;
       }

@@ -12,7 +12,7 @@ export type LayoutStyles = {
      * The base layouts per screen size are loaded always when the layout is used. This allows
      * to create screen size specific style rules.
      */
-    base?: CSSResult;
+    // base?: CSSResult;
 
     /**
      * screen specific styles are only loaded if the layout is assigned to a specific screen size.
@@ -23,7 +23,7 @@ export type LayoutStyles = {
   /**
    * Base styles are loaded once when the layout is used in any of the breakpoints.
    */
-  base?: CSSResult;
+  // base?: CSSResult;
 
   /**
    * The styles are loaded in case the layout is used as the default layout. The default layout
@@ -99,11 +99,11 @@ export interface LayoutAttributes {
   sticky?: boolean;
 }
 
-export interface LayoutStyleSheets {
-  [key: string]: LayoutStyle;
+export interface ResponsiveLayoutInfo {
+  [key: string]: ResponsiveLayout;
 }
 
-export interface LayoutStyle {
+export interface ResponsiveLayout {
   included?: Breakpoint[];
   excluded?: Breakpoint[];
 }

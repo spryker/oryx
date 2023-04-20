@@ -1,5 +1,10 @@
-export * as bleed from './bleed.styles';
+export * as baseLayout from './base.styles';
+export * as bleedLayout from './bleed.styles';
 export * as carouselLayout from './carousel.styles';
+export * as columnLayout from './column.styles';
 export * as freeLayout from './free.styles';
+export * as gridSystemLayout from './grid-system.styles';
 export * as gridLayout from './grid.styles';
 export * as splitColumnLayout from './split-column.styles';
+export * as stickyLayout from './sticky.styles';
+export * as textLayout from './text.styles';

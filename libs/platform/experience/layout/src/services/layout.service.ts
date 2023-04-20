@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { LayoutStyleSheets } from '../layout.model';
+import { ResponsiveLayoutInfo } from '../layout.model';
 
 export const LayoutService = 'oryx.LayoutService';
 
 export interface LayoutService {
-  getStyles(sheets: LayoutStyleSheets): Observable<string>;
+  getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
 }
 
 declare global {
