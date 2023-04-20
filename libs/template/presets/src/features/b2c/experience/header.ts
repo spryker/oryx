@@ -33,7 +33,7 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'free',
+              layout: 'flex',
               background: 'var(--oryx-color-primary-500)',
               padding: '10px 0',
               gap: '10px',
@@ -93,7 +93,7 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'free',
+              layout: 'flex',
               background: 'var(--oryx-color-primary-300)',
               align: 'center',
               zIndex: '2',
