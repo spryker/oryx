@@ -70,13 +70,17 @@ export class OfflineDataPlugin extends ExecPlugin {
 
     return onlineAdapter.get({}).pipe(
       map((pl) => {
+        const productIds = new Set<string>();
         return {
           pickingLists: pl,
           products: pl
             .map((pickingList) => pickingList.items.map((item) => item.product))
             .flat()
-            .filter((product, i, arr) => {
-              return arr.findIndex((p) => p.id === product.id) === i;
+            .filter((product) => {
+              if (productIds.has(product.id)) return false;
+              productIds.add(product.id);
+
+              return true;
             }),
         };
       }),
