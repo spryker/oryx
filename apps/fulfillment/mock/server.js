@@ -3,7 +3,12 @@ const { readFileSync } = require('fs');
 const express = require('express');
 const jsonServer = require('json-server');
 const cors = require('cors');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const {
+  createProxyMiddleware,
+  responseInterceptor,
+  fixRequestBody,
+} = require('http-proxy-middleware');
+const bodyParser = require('body-parser');
 
 const db = require('./db.json');
 const routes = require('./routes.json');
@@ -18,6 +23,10 @@ exports.createMockServer = function createMockServer() {
 
   router.use(cors());
   router.use(corsMiddleware());
+  router.use(bodyParser.urlencoded({ extended: false }));
+
+  router.post('/authorize', fixOauthParams);
+  router.post('/token', fixOauthParams);
 
   if (PROXY_URL) {
     router.use(createProxyRouter(PROXY_URL, proxyRoutes, BASE_PATH));
@@ -78,6 +87,15 @@ exports.createMockServer = function createMockServer() {
   return server;
 };
 
+/** Removes `redirect_uri` param from request body until BAPI is fixed */
+function fixOauthParams(req, _, next) {
+  const { body } = req;
+
+  delete body.redirect_uri;
+
+  next();
+}
+
 function mapRequestToGet(req, _, next) {
   req.method = 'GET';
   next();
@@ -95,6 +113,22 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
       changeOrigin: true,
       xfwd: true,
       logLevel: 'debug',
+      selfHandleResponse: true,
+      onProxyReq: fixRequestBody,
+      onProxyRes: responseInterceptor(
+        async (responseBuffer, proxyRes, req, res) => {
+          if (req.url !== '/token') {
+            return responseBuffer;
+          }
+
+          const response = responseBuffer.toString('utf8');
+          const data = JSON.parse(response);
+          // Extract the token from possible array
+          const payload = Array.isArray(data) ? data[0] : data;
+
+          return JSON.stringify(payload);
+        }
+      ),
     });
 
     const fixProxyPath =
