@@ -11,16 +11,19 @@ describe('Fully pick a picking list', () => {
   describe('Picking all product items', () => {
     beforeEach(() => {
       [pickingFragment.getProducts()].forEach((product) => {
-        const oryxCartQuantity = product.find('oryx-cart-quantity-input');
-        const increaseButton = oryxCartQuantity.find('[part="increase"]');
+        const oryxCartQuantity =
+          pickingFragment.getProductQuantityInput(product);
+        const increaseButton =
+          pickingFragment.getQuantityIncreaseButton(oryxCartQuantity);
 
         increaseButton.click({ multiple: true });
       });
 
       [pickingFragment.getProducts()].forEach((product) => {
-        const doneButton = product.find('oryx-button').should('exist');
-
-        doneButton.click({ multiple: true });
+        pickingFragment
+          .getProductDoneButton(product)
+          .should('exist')
+          .click({ multiple: true });
       });
     });
 

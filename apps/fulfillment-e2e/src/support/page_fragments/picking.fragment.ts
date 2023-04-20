@@ -6,4 +6,8 @@ export class PickingFragment {
   getProducts = () => this.getWrapper().find('oryx-picking-product-card');
   getAllItemsDonePlaceholder = () => this.getWrapper().get('.picking-complete');
   getFinishButton = () => this.getWrapper().get('.submit-wrapper');
+  getProductDoneButton = (product) => product.find('oryx-button');
+  getProductQuantityInput = (product) =>
+    product.find('oryx-cart-quantity-input');
+  getQuantityIncreaseButton = (quantity) => quantity.find('[part="increase"]');
 }
