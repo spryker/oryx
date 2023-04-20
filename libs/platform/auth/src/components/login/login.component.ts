@@ -19,7 +19,7 @@ import { styles } from './login.styles';
 @defaultOptions({
   enableRememberMe: true,
   redirectUrl: '/',
-  passwordVisibility: PasswordVisibilityStrategy.Mousedown,
+  passwordVisibility: PasswordVisibilityStrategy.Click,
 })
 @hydratable(['mouseover', 'focus'])
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
