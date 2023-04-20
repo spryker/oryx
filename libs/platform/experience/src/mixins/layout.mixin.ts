@@ -1,6 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
 import {
-  Breakpoint,
   BreakpointService,
   CompositionLayout,
   ContentMixin,
@@ -18,6 +17,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
+import { Breakpoint } from '@spryker-oryx/core';
 import { Type } from '@spryker-oryx/di';
 import { property } from 'lit/decorators.js';
 import { map } from 'rxjs';

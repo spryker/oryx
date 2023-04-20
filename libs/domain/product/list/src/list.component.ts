@@ -1,6 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
-import { LayoutMixin } from '@spryker-oryx/experience/layout';
+import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,

@@ -27,7 +27,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { LayoutMixin } from '../../layout/src';
+import { LayoutMixin } from '../../layout';
 
 @hydratable()
 export class ExperienceCompositionComponent extends LayoutMixin(

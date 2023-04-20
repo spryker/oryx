@@ -169,25 +169,6 @@ const Template: Story<DemoProps & StyleRuleSet> = (
         align-items: center; */
       }
 
-      #item-${props.customItem} {
-        ${when(props.span, () => html`--span: ${props.span};`)};
-        ${when(
-        props.paddingInline,
-        () => html`--padding-inline: ${props.paddingInline};`
-      )};
-        ${when(
-        props.paddingBlock,
-        () => html`padding-block: ${props.paddingBlock};`
-      )};
-        ${when(
-        props.marginInline,
-        () => html`margin-inline: ${props.marginInline};`
-      )};
-        ${when(
-        props.marginBlock,
-        () => html`margin-block: ${props.marginBlock};`
-      )};
-      }
 
       #item-${props.customItem}  div {
         background: ${props.background};
@@ -197,3 +178,23 @@ const Template: Story<DemoProps & StyleRuleSet> = (
 };
 
 export const Demo = Template.bind({});
+
+// #item-${props.customItem} {
+//   ${when(props.span, () => html`--span: ${props.span};`)};
+//   ${when(
+//   props.paddingInline,
+//   () => html`--padding-inline: ${props.paddingInline};`
+// )};
+//   ${when(
+//   props.paddingBlock,
+//   () => html`padding-block: ${props.paddingBlock};`
+// )};
+//   ${when(
+//   props.marginInline,
+//   () => html`margin-inline: ${props.marginInline};`
+// )};
+//   ${when(
+//   props.marginBlock,
+//   () => html`margin-block: ${props.marginBlock};`
+// )};
+// }

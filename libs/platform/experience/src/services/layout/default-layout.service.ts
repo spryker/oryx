@@ -1,7 +1,6 @@
-import { ThemeBreakpoints } from '@spryker-oryx/core';
+import { Breakpoint, ThemeBreakpoints } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  Breakpoint,
   BreakpointService,
   CompositionLayout,
   LayoutStyles,

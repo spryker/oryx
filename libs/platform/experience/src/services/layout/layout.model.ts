@@ -1,6 +1,6 @@
+import { Breakpoint } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/ui';
 import { CSSResult } from 'lit';
-import { Breakpoint } from '../../models';
 
 export type LayoutStyles = {
   /**
