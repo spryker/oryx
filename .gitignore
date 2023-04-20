@@ -51,3 +51,6 @@ build-storybook.log
 # Ignoring env configuration
 **/.env*
 !**/.env.template
+
+
+/apps/storefront-e2e/cypress/downloads
