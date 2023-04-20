@@ -1,5 +1,4 @@
-import { ThemeBreakpoints } from '@spryker-oryx/core';
-import { Breakpoint } from '../../../models';
+import { Breakpoint, ThemeBreakpoints } from '@spryker-oryx/core';
 
 export const BreakpointService = 'oryx.BreakpointService';
 
