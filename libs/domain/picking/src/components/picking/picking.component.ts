@@ -248,7 +248,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     }
 
     return html`
-      <div class="picking-complete" data-testid="picking-complete-placeholder">
+      <div class="picking-complete">
         <div class="img-wrap">
           <oryx-image resource="picking-items-processed"></oryx-image>
         </div>
@@ -269,7 +269,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         class="submit-wrapper${classMap({
           'scroll-shadow': hasShadow ?? false,
         })}"
-        data-testid="picking-complete-finish-button"
       >
         <oryx-button type=${ButtonType.Primary} outline>
           <button @click=${this.finishPicking}>

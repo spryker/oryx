@@ -98,10 +98,7 @@ export class PickingProductCardComponent extends LitElement {
         </div>
 
         <oryx-button>
-          <button
-            ?disabled="${!this.isCorrectNumberOfPickedProvided}"
-            data-testid="product-card-done"
-          >
+          <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
             <oryx-icon type="checkMark"></oryx-icon>
             ${i18n('picking.product-card.done')}
           </button>

@@ -18,9 +18,7 @@ describe('Fully pick a picking list', () => {
       });
 
       [pickingFragment.getProducts()].forEach((product) => {
-        const doneButton = product
-          .findByTestId('product-card-done')
-          .should('exist');
+        const doneButton = product.find('oryx-button').should('exist');
 
         doneButton.click({ multiple: true });
       });
