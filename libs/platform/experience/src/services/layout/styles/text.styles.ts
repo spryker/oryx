@@ -10,7 +10,7 @@ export const styles: LayoutStyles = {
 
     :first-child,
     ::slotted(:first-child) {
-      margin-top: 0;
+      margin-block-start: 0;
     }
   `,
 };

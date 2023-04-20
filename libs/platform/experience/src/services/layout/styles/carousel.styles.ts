@@ -17,10 +17,10 @@ export const styles: LayoutStyles = {
       scroll-behavior: smooth;
       grid-auto-flow: column;
       grid-auto-columns: var(--_item-size);
-      scroll-padding-inline-start: var(--scroll-start, 0px);
+      scroll-padding-inline-start: var(--scroll-start, 0);
     }
 
-    oryx-layout([vertical]) {
+    :host([vertical]) {
       overflow: hidden auto;
     }
 
