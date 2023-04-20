@@ -1,5 +1,6 @@
 export * from './boolean-number.model';
 export * from './db-instance.model';
+export * from './decorators.model';
 export * from './entity-type.model';
 export * from './entity.model';
 export * from './foreign-key.model';

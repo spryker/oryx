@@ -1,7 +1,9 @@
 import {
+  DecoratorContext,
   IndexedDbIndex,
   IndexedDbVersioned,
   IndexedDbWithPropPath,
+  TargetContext,
 } from '../models';
 import { IndexedDbSchemaMetadata } from '../schema-metadata';
 
@@ -10,24 +12,51 @@ export type IndexedDbIndexOptions =
   | (IndexedDbVersioned & IndexedDbWithPropPath)
   | (IndexedDbIndex & IndexedDbWithPropPath);
 
-export function indexedDbIndex(
+function addIndexes(
+  context: DecoratorContext | TargetContext,
+  propPath: string,
   options?: IndexedDbIndexOptions
-): PropertyDecorator {
-  return (target, propName) => {
-    const propPath = options?.propPath ?? propName;
+): void {
+  if (typeof propPath === 'symbol') {
+    throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
+  }
 
-    if (typeof propPath === 'symbol') {
-      throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
-    }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  IndexedDbSchemaMetadata.add(context.constructor as any, {
+    indexes: [
+      {
+        ...options,
+        propPath,
+      },
+    ],
+  });
+}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    IndexedDbSchemaMetadata.add(target.constructor as any, {
-      indexes: [
-        {
-          ...options,
-          propPath,
-        },
-      ],
-    });
+const standardIndexedDbIndex = (
+  context: DecoratorContext,
+  key: string,
+  options?: IndexedDbIndexOptions
+): DecoratorContext => {
+  return {
+    ...context,
+    kind: 'field',
+    placement: 'own',
+    key,
+    initializer(this: TargetContext): void {
+      addIndexes(this, key, options);
+    },
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function indexedDbIndex(options?: IndexedDbIndexOptions): any {
+  return (
+    context: DecoratorContext | TargetContext,
+    name?: PropertyKey
+  ): DecoratorContext | void => {
+    const propName = (options?.propPath ?? name ?? context.name) as string;
+    return name !== undefined
+      ? addIndexes(context as TargetContext, propName, options)
+      : standardIndexedDbIndex(context as DecoratorContext, propName, options);
   };
 }
