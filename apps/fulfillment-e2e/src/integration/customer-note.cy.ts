@@ -4,7 +4,7 @@ import { PickingListsFragment } from '../support/page_fragments/picking-lists.fr
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteModalFragment();
 
-describe('Customer note', () => {
+describe('When the user opens customer note', () => {
   beforeEach(() => {
     cy.login();
     pickingListsFragment.getCustomerNoteButton().click();

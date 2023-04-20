@@ -26,6 +26,6 @@ export interface ElementAttributes
 }
 
 export interface ElementDefinition {
-  name: string;
+  name: 'link' | 'style' | 'title' | 'script' | 'html' | 'meta' | string;
   attrs: ElementAttributes;
 }
