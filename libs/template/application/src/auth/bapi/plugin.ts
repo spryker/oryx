@@ -14,7 +14,7 @@ export class BapiPlugin implements AppPlugin {
   apply(app: App): void | Promise<void> {
     this.subscription = combineLatest([
       resolve(OauthService).isAuthenticated(),
-      resolve(RouterService).currentRoute(),
+      resolve(RouterService).route(),
     ])
       .pipe(
         tap(([authenticated, currentRoute]) => {
