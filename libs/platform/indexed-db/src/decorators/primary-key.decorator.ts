@@ -32,16 +32,16 @@ function addPrimaryKey(
 
 const standardIndexedDbPrimaryKey = (
   context: DecoratorContext,
-  key: string,
+  propName: string,
   options?: IndexedDbPrimaryKeyOptions
 ): DecoratorContext => {
   return {
     ...context,
     kind: 'field',
-    placement: 'own',
-    key,
     initializer(this: TargetContext): void {
-      addPrimaryKey(this, key, options);
+      //TODO: drop after review
+      console.log(context, propName, options);
+      addPrimaryKey(this, propName, options);
     },
   };
 };

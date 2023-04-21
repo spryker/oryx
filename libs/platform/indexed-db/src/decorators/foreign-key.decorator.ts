@@ -34,16 +34,17 @@ function addForeignKeys(
 
 const standardIndexedDbForeignKey = (
   context: DecoratorContext,
-  key: string,
+  propName: string,
   options: IndexedDbForeignKeyOptions
 ): DecoratorContext => {
   return {
     ...context,
     kind: 'field',
-    placement: 'own',
-    key,
     initializer(this: TargetContext): void {
-      addForeignKeys(this, key, options);
+      //TODO: drop after review
+      console.log(context, propName, options);
+
+      addForeignKeys(this, propName, options);
     },
   };
 };

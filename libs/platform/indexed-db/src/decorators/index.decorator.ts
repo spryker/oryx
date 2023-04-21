@@ -34,16 +34,17 @@ function addIndexes(
 
 const standardIndexedDbIndex = (
   context: DecoratorContext,
-  key: string,
+  propName: string,
   options?: IndexedDbIndexOptions
 ): DecoratorContext => {
   return {
     ...context,
     kind: 'field',
-    placement: 'own',
-    key,
     initializer(this: TargetContext): void {
-      addIndexes(this, key, options);
+      //TODO: drop after review
+      console.log(context, propName, options);
+
+      addIndexes(this, propName, options);
     },
   };
 };

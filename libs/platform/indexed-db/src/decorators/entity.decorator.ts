@@ -1,9 +1,10 @@
-import { ClassContext, IndexedDbEntity } from '../models';
+import { ClassContext, IndexedDbEntity, TargetContext } from '../models';
 import {
   IndexedDbIndexMetadata,
   IndexedDbSchemaMetadata,
 } from '../schema-metadata';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addEntity(context: any, options?: IndexedDbEntity): void {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const indexes = options?.indexes?.map(
@@ -26,11 +27,18 @@ export function addEntity(context: any, options?: IndexedDbEntity): void {
 const standardIndexedDbEntity = (
   context: ClassContext,
   options: IndexedDbEntity
-): ClassContext => ({
-  ...context,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  finisher: (clazz: any) => addEntity(clazz, options),
-});
+): ClassContext => {
+  return {
+    ...context,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    finisher(this: TargetContext) {
+      //TODO: drop after review
+      console.log(context, options);
+
+      addEntity(this, options);
+    },
+  };
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbEntity(options: IndexedDbEntity): any {
