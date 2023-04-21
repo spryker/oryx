@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListStatus } from '@spryker-oryx/picking';
+import { PickingListStatus } from '../../models';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';

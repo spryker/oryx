@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListMixin } from '@spryker-oryx/picking';
+import { PickingListMixin } from '../../mixins';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';

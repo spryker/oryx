@@ -3,6 +3,7 @@
   "version": "0.5.1",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
+  "type": "module",
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
   "dependencies": {
@@ -12,7 +13,8 @@
     "@spryker-oryx/offline": "latest",
     "@spryker-oryx/router": "latest",
     "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/utilities": "latest"
+    "@spryker-oryx/utilities": "latest",
+    "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
     "dexie": "^3.2.2",
