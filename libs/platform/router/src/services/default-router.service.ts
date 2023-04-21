@@ -67,6 +67,10 @@ export class DefaultRouterService implements RouterService {
     return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
   }
 
+  route(): Observable<string> {
+    return this.router$;
+  }
+
   currentRoute(): Observable<string> {
     return this.router$.pipe(
       withLatestFrom(this.storedRoute$),

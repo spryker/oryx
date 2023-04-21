@@ -16,12 +16,15 @@ export class CodeGrantAuthLoginStrategy implements AuthLoginStrategy {
     body.set('password', request.password);
 
     return this.http
-      .request<CodeGrantAuthLoginResponse>(this.config.loginUrl, {
+      .request<CodeGrantAuthLoginResponse[]>(this.config.loginUrl, {
         method: this.config.loginMethod ?? 'POST',
         credentials: 'omit',
         body,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       })
-      .pipe(switchMap((response) => this.redirectWith(response)));
+      .pipe(switchMap((response) => this.redirectWith(response[0])));
   }
 
   protected getUrlParams(): URLSearchParams {

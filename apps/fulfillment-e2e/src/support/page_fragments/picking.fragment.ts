@@ -5,8 +5,13 @@ export class PickingFragment {
   getTab = (id) => this.getWrapper().find(`oryx-tab[for="${id}"]`);
   getTabCounter = (tab) => tab.find('oryx-chip');
   getProducts = () => this.getWrapper().find('oryx-picking-product-card');
+  getAllItemsDonePlaceholder = () => this.getWrapper().get('.picking-complete');
+  getFinishButton = () => this.getWrapper().get('.submit-wrapper');
+  getProductDoneButton = (product) => product.find('oryx-button');
+  getProductQuantityInput = (product) =>
+    product.find('oryx-cart-quantity-input');
+  getQuantityIncreaseButton = (quantity) => quantity.find('[part="increase"]');
   getTabContent = (tabId) => this.getWrapper().find(`[id="${tabId}"]`);
-
   getPartialPickingDialog = () => this.getWrapper().find('oryx-modal');
   getPartialPickingConfirmButton = () =>
     this.getPartialPickingDialog().find('button').contains('Confirm');
