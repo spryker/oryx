@@ -1,5 +1,6 @@
 import { SyncStatus } from '@spryker-oryx/offline';
 import { of } from 'rxjs';
+import { vi } from 'vitest';
 
 export const mockSync = {
   action: 'mock',
