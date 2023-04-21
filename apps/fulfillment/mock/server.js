@@ -119,6 +119,9 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
         async (responseBuffer, proxyRes, req, res) => {
           if (req.url !== '/token') {
             return responseBuffer;
+          } else if (res.statusCode === 201) {
+            // oauth4webapi and oauth spec only accepts 200, not 201
+            res.status(200);
           }
 
           const response = responseBuffer.toString('utf8');
