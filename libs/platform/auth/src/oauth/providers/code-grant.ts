@@ -82,13 +82,13 @@ export class OauthCodeGrantProvider implements OauthProvider {
 
   handleCallback(url: URL): Observable<void> {
     return this.tokenRequest(url).pipe(
-      switchMap((respose) => this.handleTokenResponse(respose))
+      switchMap((response) => this.handleTokenResponse(response))
     );
   }
 
   revoke(): Observable<void> {
     if (!this.config.revocationUrl) {
-      return of(undefined);
+      return this.updateState();
     }
 
     return this.revocationRequest().pipe(

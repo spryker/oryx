@@ -8,4 +8,5 @@ export * from './product-list-page.service';
 export * from './product-list.service';
 export * from './product.providers';
 export * from './product.service';
+export * from './resolvers';
 export * from './state';
