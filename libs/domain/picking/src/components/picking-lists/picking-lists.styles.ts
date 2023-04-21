@@ -13,9 +13,11 @@ export const styles = css`
     align-items: center;
     height: 100%;
     margin: 45px;
+    gap: 16px;
   }
 
-  .img-wrap {
-    padding: 16px 40px;
+  oryx-image {
+    margin-inline: 40px;
+    display: block;
   }
 `;
