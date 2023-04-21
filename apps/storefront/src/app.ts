@@ -8,9 +8,6 @@ if (import.meta.env.ORYX_LABS) {
   features.push(...labsFeature);
 }
 
-console.log(import.meta.env)
-console.log(features)
-
 export const app = appBuilder()
   .withFeature(features)
   .withTheme(b2cTheme)
