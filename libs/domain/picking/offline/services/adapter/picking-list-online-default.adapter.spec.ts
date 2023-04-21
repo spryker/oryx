@@ -1,13 +1,70 @@
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { PickingHttpService } from '@spryker-oryx/picking';
+import {
+  PickingHttpService,
+  PickingListDefaultAdapter,
+  PickingListStatus,
+} from '@spryker-oryx/picking';
 import { PickingListEntity } from '@spryker-oryx/picking/offline';
+import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
 import { PickingListOnlineDefaultAdapter } from './picking-list-online-default.adapter';
 import { PickingListOnlineAdapter } from './picking-list-online.adapter';
+
+const mockPickingListEntity = new PickingListEntity({
+  ...mockPickingListData[0],
+  itemsCount: 1,
+  orderReferences: [],
+  productSkus: [],
+  requestedDeliveryDate: new Date(),
+  localStatus: PickingListStatus.ReadyForPicking,
+  items: [],
+});
+
+const mockPickingListDataResponse = {
+  data: [
+    {
+      attributes: {
+        id: 'mock',
+        uuid: 'mock',
+        status: '',
+        pickingListItems: [
+          {
+            id: 'mock',
+            concreteProducts: [
+              {
+                id: 'mock',
+                sku: 'mock',
+                name: 'mock',
+                concreteProductImageSets: [
+                  {
+                    imageSets: [
+                      {
+                        images: [
+                          { externalUrlSmall: '', externalUrlLarge: '' },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            orderItem: { uuid: 'mock' },
+            salesShipments: [{ requestedDeliveryDate: '' }],
+            salesOrders: [{ cartNote: 'mock' }],
+          },
+        ],
+        createdAt: '',
+        updatedAt: '',
+      },
+    },
+  ],
+  included: [{ pickingListItems: [] }],
+  links: { self: 'mocklink' },
+};
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));
@@ -49,7 +106,7 @@ describe('PickingListOnlineAdapter', () => {
       PickingHttpService
     ) as unknown as HttpTestService;
 
-    http.flush({ data: [], included: [], links: { self: 'mocklink' } });
+    http.flush(mockPickingListDataResponse);
   });
 
   afterEach(() => {
@@ -62,15 +119,54 @@ describe('PickingListOnlineAdapter', () => {
   });
 
   describe('when get is called', () => {
-    it('should parse picking lists', async () => {
-      const callback = vi.fn();
+    const callback = vi.fn();
+    const spy = vi.spyOn(PickingListDefaultAdapter.prototype, 'get');
+    beforeEach(() => {
       adapter.get({}).subscribe(callback);
-
-      await nextTick(8);
+    });
+    it('should parse picking lists', async () => {
+      await nextTick(7);
 
       expect(callback).toHaveBeenCalled();
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
-      expect(mockTable.bulkGet).toHaveBeenCalledWith([]);
+      expect(mockTable.bulkGet).toHaveBeenCalledWith(['mock']);
+    });
+
+    it('should call super', () => {
+      expect(spy).toHaveBeenCalledWith({});
+    });
+  });
+
+  describe('when startPicking is called', () => {
+    it('should call super', () => {
+      const spy = vi.spyOn(PickingListDefaultAdapter.prototype, 'startPicking');
+      adapter.startPicking(mockPickingListEntity).subscribe();
+
+      expect(spy).toHaveBeenCalledWith(mockPickingListEntity);
+    });
+  });
+
+  describe('when updatePickingItems is called', () => {
+    it('should call super', () => {
+      const spy = vi.spyOn(
+        PickingListDefaultAdapter.prototype,
+        'updatePickingItems'
+      );
+      adapter.updatePickingItems(mockPickingListEntity).subscribe();
+
+      expect(spy).toHaveBeenCalledWith(mockPickingListEntity);
+    });
+  });
+
+  describe('when finishPicking is called', () => {
+    it('should call super', () => {
+      const spy = vi.spyOn(
+        PickingListDefaultAdapter.prototype,
+        'finishPicking'
+      );
+      adapter.finishPicking(mockPickingListEntity).subscribe();
+
+      expect(spy).toHaveBeenCalledWith(mockPickingListEntity);
     });
   });
 });

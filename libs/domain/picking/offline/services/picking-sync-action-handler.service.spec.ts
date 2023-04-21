@@ -6,7 +6,6 @@ import {
   PickingListEntity,
   PickingSyncAction,
 } from '@spryker-oryx/picking/offline';
-import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
 import { PickingListOnlineAdapter } from './adapter';
@@ -96,17 +95,32 @@ describe('PickingSyncActionHandlerService', () => {
   });
 
   describe('when finishPicking action is handled', () => {
-    it('should call online adapter', async () => {
-      const callback = vi.fn();
-
+    const callback = vi.fn();
+    beforeEach(() => {
       service.handleSync(mockSync).subscribe(callback);
-
-      await nextTick(2);
-
+    });
+    it('should call online adapter', () => {
       expect(callback).toHaveBeenCalled();
       expect(adapter.finishPicking).toHaveBeenCalledWith(mockSync.payload);
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
       expect(mockTable.update).toHaveBeenCalledWith(mockSync.payload.id, []);
+    });
+
+    describe('and store is not updated', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        mockTable.update.mockReturnValue(0);
+
+        service.handleSync(mockSync).subscribe({ error: callback });
+      });
+
+      it('should throw error', () => {
+        expect(callback).toHaveBeenCalledWith(
+          new Error(
+            `PickingSyncActionHandlerService: Could not update PickingList(mock) after finishing picking!`
+          )
+        );
+      });
     });
   });
 });

@@ -1,5 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
+import { mockSync } from '@spryker-oryx/offline/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
 import { of } from 'rxjs';
@@ -21,19 +22,6 @@ Object.assign(navigator, {
     ready: { sync: { register: vi.fn() } },
   },
 });
-
-const mockSync = {
-  action: 'mock',
-  id: 123,
-  prevSyncIds: [],
-  status: SyncStatus.Processing,
-  payload: {},
-  scheduledAt: new Date(),
-  retries: 0,
-  errors: [],
-  whenCompleted: vi.fn(),
-  cancel: vi.fn(),
-};
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));
