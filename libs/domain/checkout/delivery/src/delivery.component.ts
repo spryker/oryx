@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ComponentMixin } from '@spryker-oryx/experience';
-import { asyncValue, subscribe } from '@spryker-oryx/utilities';
+import { asyncValue, i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
@@ -56,8 +56,13 @@ export class CheckoutDeliveryComponent extends ComponentMixin() {
     }
   }
 
+  public heading(): TemplateResult {
+    return html`${i18n('checkout.<step>-delivery', { step: 1 })} `;
+  }
+
   protected override render(): TemplateResult {
     return html`
+      <h5>${this.heading()}</h5>
       ${asyncValue(
         this.isAuthenticated$,
         (isAuthenticated) =>

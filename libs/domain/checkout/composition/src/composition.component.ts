@@ -1,127 +1,58 @@
-import { AuthService } from '@spryker-oryx/auth';
 import { CartService } from '@spryker-oryx/cart';
 import {
-  CheckoutDataService,
+  CheckoutComponentMixin,
   CheckoutOrchestrationService,
-  CheckoutStep,
   CheckoutStepType,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
-import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
-import {
-  asyncValue,
-  effect,
-  hydratable,
-  i18n,
-  signal,
-} from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { computed, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest, map } from 'rxjs';
-import { CheckoutCompositionOptions } from './composition.model';
+import { map } from 'rxjs';
 import { compositionStyles } from './composition.styles';
 
 @hydratable('window:load')
-export class CheckoutCompositionComponent extends ComponentMixin<CheckoutCompositionOptions>() {
+export class CheckoutCompositionComponent extends CheckoutComponentMixin(
+  ContentMixin(LitElement)
+) {
   static styles = compositionStyles;
 
-  protected orchestrationService = resolve(CheckoutOrchestrationService);
-
-  protected options$ = new ContentController(this).getOptions();
-
-  protected isEmptyCart$ = resolve(CartService).isEmpty();
-
-  protected isAuthenticated$ = resolve(AuthService).isAuthenticated();
-  protected hasAddresses$ = resolve(AddressService)
-    .getAddresses()
-    .pipe(map((addresses) => !!addresses?.length));
-  protected isGuestCheckout$ = resolve(CheckoutDataService).isGuestCheckout();
-
-  protected steps$ = this.orchestrationService.getValidity();
-
-  protected checkoutDataService = resolve(CheckoutDataService);
-  protected authService = resolve(AuthService);
-
-  protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
-  protected isAuthenticated = signal(this.authService.isAuthenticated());
-
-  protected checkoutLoginRoute = signal(
-    resolve(SemanticLinkService).get({ type: SemanticLinkType.CheckoutLogin })
+  protected hasEmptyCart = computed(() => resolve(CartService).isEmpty());
+  protected hasAddresses = signal(
+    resolve(AddressService)
+      .getAddresses()
+      .pipe(map((addresses) => !!addresses?.length))
   );
 
-  protected eff = effect(() => {
-    if (!this.isAuthenticated() && !this.isGuest()) {
-      const route = this.checkoutLoginRoute();
-      if (route) {
-        resolve(RouterService).navigate(route);
-      }
-    }
-  });
+  protected orchestrationService = resolve(CheckoutOrchestrationService);
+  protected steps = signal(this.orchestrationService.getValidity());
 
-  protected checkout$ = combineLatest([
-    this.isEmptyCart$,
-    this.isAuthenticated$,
-    this.isGuestCheckout$,
-    this.hasAddresses$,
-    this.steps$,
-    this.options$,
-  ]);
+  protected override render(): TemplateResult | void {
+    if (!this.isAuthenticated() && !this.isGuest()) return;
 
-  protected renderLoginLink(): TemplateResult | void {
-    if (!this.isGuest()) return;
+    if (this.hasEmptyCart()) return html`empty...`;
 
-    return html` <oryx-link @click=${() => this.setGuest(false)}>
-      <a href=${this.checkoutLoginRoute()}>${i18n('checkout.guest.login')}</a>
-    </oryx-link>`;
+    return html`
+      <experience-composition .uid=${this.uid}></experience-composition>
+      ${this.steps()?.map((_, index) => html`${this.renderStep(index)}`)}
+    `;
   }
 
-  protected setGuest(value = true): void {
-    this.checkoutDataService.setGuestCheckout(value);
-  }
+  protected renderStep(index: number): TemplateResult | void {
+    let content: TemplateResult | void;
 
-  protected override render(): TemplateResult {
-    return html` ${asyncValue(
-      this.checkout$,
-      ([
-        isEmptyCart,
-        isAuthenticated,
-        isGuestCheckout,
-        hasAddresses,
-        steps,
-        options,
-      ]) => {
-        if (isEmptyCart) {
-          return html``;
-        }
+    const step = this.steps()?.[index];
 
-        return html`
-          ${when(
-            isAuthenticated || isGuestCheckout,
-            () =>
-              html`
-                ${steps.map(({ id }, index) => {
-                  return html`${this.renderStep(
-                    id,
-                    this.renderHeading(index, id, isAuthenticated, hasAddresses)
-                  )}`;
-                })}
-              `
-          )}
-        `;
-      }
-    )}`;
-  }
+    if (!step) return;
 
-  protected renderStep(
-    step: CheckoutStepType,
-    heading: TemplateResult
-  ): TemplateResult {
-    let content: TemplateResult = html``;
+    const heading = html`<h2>
+      ${this.renderHeading(index)}
+      ${when(index === 0, () => this.renderGuestLoginLink())}
+    </h2>`;
 
-    switch (step) {
+    switch (step.id) {
       case CheckoutStepType.Delivery:
         content = html` <checkout-delivery></checkout-delivery>`;
         break;
@@ -129,37 +60,37 @@ export class CheckoutCompositionComponent extends ComponentMixin<CheckoutComposi
         content = html`<checkout-shipment></checkout-shipment>`;
         break;
       case CheckoutStepType.Payment:
-        content = html`<checkout-payment></checkout-payment>`;
+        content = html` <checkout-payment></checkout-payment>`;
         break;
     }
 
-    return html`<section>${heading} ${content}</section>`;
+    return html`${heading}${content}`;
   }
 
-  protected renderHeading(
-    index: number,
-    step: CheckoutStepType,
-    isAuthenticated: boolean,
-    hasAddresses: boolean
-  ): TemplateResult {
-    return html`
-      <oryx-heading slot="header">
-        <h5>
-          ${asyncValue(
-            this.orchestrationService.getStep(step),
-            (step: Required<CheckoutStep> | null) =>
-              step
-                ? html`${i18n(step.label, { step: `${index + 1}.` })}`
-                : html``
-          )}
-        </h5>
-        ${when(
-          step === CheckoutStepType.Delivery && isAuthenticated && hasAddresses,
-          () =>
-            html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
-        )}
-        ${this.renderLoginLink()}
-      </oryx-heading>
-    `;
+  protected renderHeading(index: number): TemplateResult | void {
+    const step = this.steps()?.[index];
+    if (!step) return;
+    return html`${i18n(`checkout.steps.<step>-${step.id}`, {
+      step: index + 1,
+    })}`;
+  }
+
+  /**
+   * If guest checkout has been used, we offer a link back to authenticate.
+   */
+  protected renderGuestLoginLink(): TemplateResult | void {
+    console.log(this.isGuest());
+    console.log(this.isAuthenticated());
+    if (this.isAuthenticated() || !this.isGuest()) return;
+
+    return html`<oryx-link @click=${() => this.setGuest(false)}>
+      <a href=${this.routes.checkoutLogin()}
+        >${i18n('checkout.guest.back-to-login')}</a
+      >
+    </oryx-link>`;
+  }
+
+  protected setGuest(value = true): void {
+    this.checkoutDataService.setGuestCheckout(value);
   }
 }
