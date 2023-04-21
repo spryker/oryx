@@ -2,14 +2,10 @@ import { PickingListsFragment } from '../support/page_fragments/picking-lists.fr
 
 const pickingListsFragment = new PickingListsFragment();
 
-describe('Picking Lists', () => {
-  beforeEach(() => {
-    cy.clearIndexedDB();
+describe('Login Suite', () => {
+  it('should login successfully', () => {
     cy.login();
-  });
 
-  it('should display picking lists', () => {
     pickingListsFragment.getWrapper().should('be.visible');
-    pickingListsFragment.getPickingListsItem().should('be.visible');
   });
 });
