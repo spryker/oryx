@@ -26,7 +26,7 @@ export function addEntity(context: any, options?: IndexedDbEntity): void {
 
 const standardIndexedDbEntity = (
   context: ClassContext,
-  options: IndexedDbEntity
+  options?: IndexedDbEntity
 ): ClassContext => {
   return {
     ...context,
@@ -41,7 +41,7 @@ const standardIndexedDbEntity = (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function indexedDbEntity(options: IndexedDbEntity): any {
+export function indexedDbEntity(options?: IndexedDbEntity): any {
   return (context: any): ClassContext | void =>
     typeof context === 'function'
       ? addEntity(context, options)
