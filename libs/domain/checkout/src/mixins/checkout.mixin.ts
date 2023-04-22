@@ -47,6 +47,7 @@ export const CheckoutComponentMixin = <T extends Type<LitElement>>(
     protected isAuthenticated = signal(this.authService.isAuthenticated());
     protected isGuest = signal(this.checkoutDataService.isGuestCheckout());
 
+    // TODO: use effect once it is supporting component lifecycle
     @subscribe()
     protected redirect = combineLatest([
       this.checkoutDataService.isGuestCheckout(),

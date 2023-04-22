@@ -15,12 +15,5 @@ export const CheckoutAuthPage: StaticComponent = {
       ],
     },
   },
-  components: [
-    {
-      type: 'oryx-checkout-guest',
-    },
-    {
-      type: 'oryx-auth-login',
-    },
-  ],
+  components: [{ type: 'oryx-checkout-guest' }, { type: 'oryx-auth-login' }],
 };
