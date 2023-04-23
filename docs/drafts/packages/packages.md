@@ -94,3 +94,26 @@ All packages are distributed with the same version, to avoid complex dependency 
 ## Distribution
 
 Packages are distributed under the `@spryker-oryx` scope.
+
+## New package creation
+
+To create new package you can generate it:
+
+```
+nx g library
+```
+
+### What should be done before publishing
+
+Make sure before publishing:
+
+- Edit README, add description of the package and installation example
+- Add package into `libs/lerna.json`
+- Check `package.json`:
+  - Use `@spryker-oryx` namespace in package name
+  - Add `"type": "module"` so created package will be published as ES module
+  - Add short `description`
+  - Use "Spryker Systems GmbH" as an `author`
+  - Add "See license in LICENSE" note into `license`
+  - Add main entry point: `"main": "./src/index.js"`
+  - Add main entry point typings: `"typings": "./src/index.d.ts"`
