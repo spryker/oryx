@@ -6,6 +6,7 @@ export interface RouterService {
   previousRoute(): Observable<string | null>;
   navigate(route: string): void;
   getEvents(type: RouterEventType): Observable<RouterEvent>;
+  route(): Observable<string>;
   currentRoute(): Observable<string>;
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;

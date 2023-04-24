@@ -8,7 +8,7 @@ const customerNoteFragment = new CustomerNoteFragment();
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
-    cy.visit('/');
+    cy.login();
 
     pickingListsFragment.getIdentifier();
 
