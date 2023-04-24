@@ -24,9 +24,10 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         const meta: Record<string, string> = {
           ...defaultMeta,
         };
-        const setRobots = (by: string) => {
+
+        for (const by of ['follow', 'index']) {
           if (typeof meta?.[by] !== 'boolean') {
-            return;
+            continue;
           }
 
           const content = meta?.[by] ? by : `no${by}`;
@@ -34,14 +35,12 @@ export class ContentPageMetaResolver implements PageMetaResolver {
           if (meta.robots) {
             meta.robots = `${meta.robots},${content}`;
 
-            return;
+            continue;
           }
 
           meta.robots = content;
-        };
+        }
 
-        setRobots('follow');
-        setRobots('index');
         delete meta.route;
         delete meta.follow;
         delete meta.index;
