@@ -126,24 +126,24 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add(
       {
-        '--cols': data.columnCount,
+        // '--cols': data.columnCount,
         '--split-column-factor': data.splitColumnFactor,
-        '--grid-column': data.gridColumn,
-        '--grid-row': data.gridRow,
-        '--span': data.span,
+        '--col-pos': data.gridColumn,
+        '--row-pos': data.gridRow,
+        // '--span': data.span,
         '--col-span': data.colSpan,
         '--row-span': data.rowSpan,
-        '--z-index': data.zIndex,
-        '--rotate': data.rotate,
+        '--rotate': data.rotate, // TODO
+        'z-index': data.zIndex,
       },
       { omitUnit: true }
     );
 
     add({
       'align-items': data.align,
-      '--top': data.top,
+      '--top': data.top, // only used for sticky
+      '--height': data.height, // only used for sticky
       width: data.width,
-      '--height': data.height,
       margin: data.margin,
       border: data.border,
       'border-radius': data.radius,
@@ -152,9 +152,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     });
 
     const gaps = data.gap?.toString().split(' ');
-    add({ '--oryx-grid-gap-column': gaps?.[1] ?? gaps?.[0] });
-    add({ '--oryx-grid-gap-row': gaps?.[0] });
-    add({ '--rotate': data.rotate }, { unit: 'deg' });
+    add(
+      { '--oryx-grid-gap-column': gaps?.[1] ?? gaps?.[0] },
+      { omitUnit: true }
+    );
+    add({ '--oryx-grid-gap-row': gaps?.[0] }, { omitUnit: true });
+    add({ '--rotate': data.rotate }, { unit: 'deg' }); // TODO + duplicate
 
     if (data.padding) {
       add({
