@@ -26,7 +26,9 @@ export interface FieldOrMethodContext extends BaseFieldOrMethodContext {
   finisher?: (clazz: TargetContext) => TargetContext | void;
 }
 
-export interface TargetDecorator extends TargetContext, LitElement {}
+export interface TargetDecorator extends LitElement {
+  [key: string | symbol]: unknown;
+}
 
 export interface DecoratorContext extends BaseFieldOrMethodContext {
   finisher?: (
