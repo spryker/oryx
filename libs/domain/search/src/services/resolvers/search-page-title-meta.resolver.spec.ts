@@ -37,7 +37,7 @@ describe('DefaultSuggestionService', () => {
       const callback = vi.fn();
       mockRouter.currentQuery.mockReturnValue(of({ q: 'a' }));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith([true]);
+      expect(callback).toHaveBeenCalledWith(['a']);
     });
 
     it('should return proper value if category is not exist', () => {

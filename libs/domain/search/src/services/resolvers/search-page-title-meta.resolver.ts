@@ -8,9 +8,7 @@ export class SearchPageTitleMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.router
-        .currentQuery()
-        .pipe(map((query) => query?.q && query.q !== '^^')),
+      this.router.currentQuery().pipe(map((query) => query?.q)),
     ]);
   }
 
