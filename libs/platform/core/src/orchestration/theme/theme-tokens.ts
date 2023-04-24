@@ -2,6 +2,7 @@ import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { getPropByPath } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import {
+  Breakpoint,
   ColorMode,
   DesignToken,
   Theme,
@@ -56,28 +57,73 @@ export class ThemeTokens {
    */
   generateMedia(value: string): string {
     const path = value.split('.');
-    const isScreen = path[0] === ThemeDefaultMedia.Screen;
-    const mediaKey = getPropByPath(
-      this.mediaMapper,
-      isScreen ? ThemeDefaultMedia.Screen : value
-    );
-    const media = (expression: string): string => `@media ${expression}`;
+    const isScreen = path[0] === ThemeDefaultMedia.Screen || path.length === 1;
+    const mediaRule = getPropByPath(this.mediaMapper, value);
 
-    if (isScreen && this.breakpoints) {
-      const dimension = this.breakpoints[path[1] as keyof ThemeBreakpoints];
-      let expression = dimension?.min?.toString()
-        ? `(${mediaKey.min}: ${dimension?.min}px)`
-        : '';
-      expression +=
-        dimension?.min?.toString() && dimension?.max?.toString() ? ' and ' : '';
-      expression += dimension?.max?.toString()
-        ? `(${mediaKey.max}: ${dimension?.max}px)`
-        : '';
-
-      return media(expression);
+    if (isScreen) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.generateScreenMedia(path[1] ?? value)!;
     }
 
-    return media(`(${mediaKey})`);
+    return `@media (${mediaRule})`;
+  }
+
+  generateScreenMedia(
+    include: string | string[],
+    exclude: string | string[] = []
+  ): string | null {
+    if (!include.length && !exclude.length) {
+      return null;
+    }
+
+    include = Array.isArray(include) ? include : [include];
+    exclude = Array.isArray(exclude) ? exclude : [exclude];
+
+    const bpValues = Object.keys(this.breakpoints);
+    const values = exclude.length
+      ? bpValues.filter(
+          (bp) =>
+            !exclude.includes(bp) || (include.length && include.includes(bp))
+        )
+      : include;
+    const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
+    const steps = [];
+
+    let expression = '';
+    let prevBpIndex = NaN;
+
+    for (const [index, bp] of values.entries()) {
+      const dimension = this.breakpoints[bp as Breakpoint];
+      const currentIndex = bpValues.findIndex((_bp) => _bp === bp);
+      const isFirstStep = index === 0;
+      const isORStep = !isNaN(prevBpIndex) && currentIndex - prevBpIndex > 1;
+      const isExtendStep =
+        !isNaN(prevBpIndex) && currentIndex - prevBpIndex === 1;
+      prevBpIndex = bpValues.findIndex((_bp) => _bp === bp);
+
+      if (isFirstStep || isORStep) {
+        steps.push({
+          min: dimension?.min,
+          max: dimension?.max,
+        });
+
+        continue;
+      }
+
+      if (isExtendStep) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        steps.at(-1)!.max = dimension?.max;
+      }
+    }
+
+    for (const [index, step] of steps.entries()) {
+      expression += index !== 0 ? `, ` : '';
+      expression += step?.min ? `(${mediaRule.min}: ${step?.min}px)` : '';
+      expression += step?.min && step?.max ? ' and ' : '';
+      expression += step?.max ? `(${mediaRule.max}: ${step?.max}px)` : '';
+    }
+
+    return `@media ${expression}`;
   }
 
   protected async getStylesFromTokens(

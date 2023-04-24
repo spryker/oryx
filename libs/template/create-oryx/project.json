@@ -1,0 +1,37 @@
+{
+  "root": "libs/template/create-oryx",
+  "sourceRoot": "libs/template/create-oryx/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/template/create-oryx/**/*.ts"]
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "NODE_ENV='development' npx tsx libs/template/create-oryx/src/main.ts"
+      },
+      "configurations": {
+        "watch": {
+          "command": "NODE_ENV='development' npx tsx watch libs/template/create-oryx/src/main.ts"
+        }
+      }
+    }
+  },
+  "tags": ["layer:template"]
+}
