@@ -15,7 +15,7 @@ export const labsComponents = Object.values(components);
  * and might even be broken as they're not thoroughly tested
  * and not covered with automated tests.
  */
-export const labsFeature: AppFeature[] = [
+export const labsFeatures: AppFeature[] = [
   {
     components: labsComponents,
     providers: [cloudinaryImageConverter, bazaarVoiceComponentMapping],
