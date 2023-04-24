@@ -5,7 +5,7 @@ export const LoginPage: StaticComponent = {
   meta: { title: 'Login Page', route: '/login' },
   options: {
     data: {
-      rules: [{ layout: 'free', padding: '30px 0 0' }],
+      rules: [{ layout: 'flex', padding: '30px 0 0' }],
     },
   },
   components: [

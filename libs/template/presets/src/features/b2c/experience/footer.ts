@@ -27,7 +27,7 @@ export const FooterTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'free',
+              layout: 'flex',
               align: 'center',
               top: '100%',
               background: 'var(--oryx-color-canvas-200)',

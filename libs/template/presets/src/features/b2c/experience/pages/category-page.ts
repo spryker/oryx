@@ -32,7 +32,7 @@ export const CategoryPage: StaticComponent = {
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ layout: 'free' }] } },
+          options: { data: { rules: [{ layout: 'flex' }] } },
           components: [
             {
               type: 'search-product-sort',
