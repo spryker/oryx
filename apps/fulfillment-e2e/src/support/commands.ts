@@ -22,6 +22,7 @@ Cypress.Commands.add(
     loginPage.loginForm.login(user);
 
     cy.wait('@picking-lists');
+    cy.location('pathname').should('be.eq', `/`);
   }
 );
 
