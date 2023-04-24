@@ -1,9 +1,8 @@
+import { FieldOrMethodContext, TargetContext } from '@spryker-oryx/utilities';
 import {
-  DecoratorContext,
   IndexedDbIndex,
   IndexedDbVersioned,
   IndexedDbWithPropPath,
-  TargetContext,
 } from '../models';
 import { IndexedDbSchemaMetadata } from '../schema-metadata';
 
@@ -13,7 +12,7 @@ export type IndexedDbIndexOptions =
   | (IndexedDbIndex & IndexedDbWithPropPath);
 
 function addIndexes(
-  context: DecoratorContext | TargetContext,
+  target: TargetContext,
   propPath: string,
   options?: IndexedDbIndexOptions
 ): void {
@@ -22,7 +21,7 @@ function addIndexes(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IndexedDbSchemaMetadata.add(context.constructor as any, {
+  IndexedDbSchemaMetadata.add(target, {
     indexes: [
       {
         ...options,
@@ -33,18 +32,14 @@ function addIndexes(
 }
 
 const standardIndexedDbIndex = (
-  context: DecoratorContext,
+  context: FieldOrMethodContext,
   propName: string,
   options?: IndexedDbIndexOptions
-): DecoratorContext => {
+): FieldOrMethodContext => {
   return {
     ...context,
-    kind: 'field',
-    initializer(this: TargetContext): void {
-      //TODO: drop after review
-      console.log(context, propName, options);
-
-      addIndexes(this, propName, options);
+    finisher(clazz: any): void {
+      addIndexes(clazz, propName, options);
     },
   };
 };
@@ -52,12 +47,16 @@ const standardIndexedDbIndex = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbIndex(options?: IndexedDbIndexOptions): any {
   return (
-    context: DecoratorContext | TargetContext,
+    context: FieldOrMethodContext | TargetContext,
     name?: PropertyKey
-  ): DecoratorContext | void => {
+  ): FieldOrMethodContext | void => {
     const propName = (options?.propPath ?? name ?? context.key) as string;
     return name !== undefined
-      ? addIndexes(context as TargetContext, propName, options)
-      : standardIndexedDbIndex(context as DecoratorContext, propName, options);
+      ? addIndexes(context.constructor as TargetContext, propName, options)
+      : standardIndexedDbIndex(
+          context as FieldOrMethodContext,
+          propName,
+          options
+        );
   };
 }

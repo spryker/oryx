@@ -1,7 +1,6 @@
-import {
-  PickingListEntity,
-  PickingListOffline,
-} from '@spryker-oryx/picking/offline';
+import { getInjector } from '@spryker-oryx/di';
+import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
+import { PickingListAdapter } from '@spryker-oryx/picking/src/services';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -12,31 +11,22 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  const testOfflineData = {
-    items: [
-      {
-        productId: 'test',
-        product: {
-          id: 'test',
-          sku: 'test',
-          productName: 'test',
-          image: null,
-          imageLarge: null,
-        },
-      },
-    ],
-    itemsCount: 1,
-    orderReferences: ['test'],
-    productSkus: ['test'],
-    requestedDeliveryDate: new Date(),
-    localStatus: 'test',
-    id: 'test',
-    status: 'test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-  const entity = new PickingListEntity(testOfflineData as PickingListOffline);
-  return html` ${JSON.stringify(entity)} `;
+  return html`<div id="test-container"></div>`;
 };
 
 export const Demo = Template.bind({});
+
+Demo.play = (): void => {
+  const dexieIdbService = getInjector().inject(DexieIndexedDbService);
+  const adapter = getInjector().inject(PickingListAdapter);
+
+  dexieIdbService.getDb().subscribe(() => {
+    adapter
+      .get({})
+      .subscribe(
+        (e) =>
+          (document.getElementById('test-container')!.innerHTML =
+            JSON.stringify(e))
+      );
+  });
+};

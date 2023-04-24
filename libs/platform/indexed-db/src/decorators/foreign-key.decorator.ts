@@ -1,9 +1,5 @@
-import {
-  DecoratorContext,
-  IndexedDbForeignKey,
-  IndexedDbWithPropPath,
-  TargetContext,
-} from '../models';
+import { FieldOrMethodContext, TargetContext } from '@spryker-oryx/utilities';
+import { IndexedDbForeignKey, IndexedDbWithPropPath } from '../models';
 import { IndexedDbSchemaMetadata } from '../schema-metadata';
 
 export interface IndexedDbForeignKeyOptions
@@ -11,7 +7,7 @@ export interface IndexedDbForeignKeyOptions
     IndexedDbWithPropPath {}
 
 function addForeignKeys(
-  context: DecoratorContext | TargetContext,
+  target: TargetContext,
   propPath: string,
   options: IndexedDbForeignKeyOptions
 ): void {
@@ -20,9 +16,8 @@ function addForeignKeys(
       `A ${String(propPath)} cannot be used as a foreign key in IndexedDb!`
     );
   }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IndexedDbSchemaMetadata.add(context.constructor as any, {
+  IndexedDbSchemaMetadata.add(target, {
     foreignKeys: [
       {
         ...options,
@@ -33,18 +28,14 @@ function addForeignKeys(
 }
 
 const standardIndexedDbForeignKey = (
-  context: DecoratorContext,
+  context: FieldOrMethodContext,
   propName: string,
   options: IndexedDbForeignKeyOptions
-): DecoratorContext => {
+): FieldOrMethodContext => {
   return {
     ...context,
-    kind: 'field',
-    initializer(this: TargetContext): void {
-      //TODO: drop after review
-      console.log(context, propName, options);
-
-      addForeignKeys(this, propName, options);
+    finisher(clazz) {
+      addForeignKeys(clazz, propName, options);
     },
   };
 };
@@ -52,14 +43,14 @@ const standardIndexedDbForeignKey = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbForeignKey(options: IndexedDbForeignKeyOptions): any {
   return (
-    context: DecoratorContext | TargetContext,
+    context: FieldOrMethodContext | TargetContext,
     name?: PropertyKey
-  ): DecoratorContext | void => {
+  ): FieldOrMethodContext | void => {
     const propName = (options?.propPath ?? name ?? context.key) as string;
     return name !== undefined
-      ? addForeignKeys(context as TargetContext, propName, options)
+      ? addForeignKeys(context.constructor as TargetContext, propName, options)
       : standardIndexedDbForeignKey(
-          context as DecoratorContext,
+          context as FieldOrMethodContext,
           propName,
           options
         );

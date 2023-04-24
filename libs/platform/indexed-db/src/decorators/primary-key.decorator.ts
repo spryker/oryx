@@ -1,9 +1,5 @@
-import {
-  DecoratorContext,
-  IndexedDbPrimaryKey,
-  IndexedDbWithPropPath,
-  TargetContext,
-} from '../models';
+import { FieldOrMethodContext, TargetContext } from '@spryker-oryx/utilities';
+import { IndexedDbPrimaryKey, IndexedDbWithPropPath } from '../models';
 import { IndexedDbSchemaMetadata } from '../schema-metadata';
 
 export interface IndexedDbPrimaryKeyOptions
@@ -11,7 +7,7 @@ export interface IndexedDbPrimaryKeyOptions
     IndexedDbWithPropPath {}
 
 function addPrimaryKey(
-  context: DecoratorContext | TargetContext,
+  target: TargetContext,
   propPath: string,
   options?: IndexedDbPrimaryKeyOptions
 ): void {
@@ -22,7 +18,7 @@ function addPrimaryKey(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IndexedDbSchemaMetadata.add(context.constructor as any, {
+  IndexedDbSchemaMetadata.add(target, {
     primaryKey: {
       ...options,
       propPath,
@@ -31,17 +27,14 @@ function addPrimaryKey(
 }
 
 const standardIndexedDbPrimaryKey = (
-  context: DecoratorContext,
+  context: FieldOrMethodContext,
   propName: string,
   options?: IndexedDbPrimaryKeyOptions
-): DecoratorContext => {
+): FieldOrMethodContext => {
   return {
     ...context,
-    kind: 'field',
-    initializer(this: TargetContext): void {
-      //TODO: drop after review
-      console.log(context, propName, options);
-      addPrimaryKey(this, propName, options);
+    finisher(clazz) {
+      addPrimaryKey(clazz, propName, options);
     },
   };
 };
@@ -49,14 +42,14 @@ const standardIndexedDbPrimaryKey = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbPrimaryKey(options?: IndexedDbPrimaryKeyOptions): any {
   return (
-    context: DecoratorContext | TargetContext,
+    context: FieldOrMethodContext | TargetContext,
     name?: PropertyKey
-  ): DecoratorContext | void => {
+  ): FieldOrMethodContext | void => {
     const propName = (options?.propPath ?? name ?? context.key) as string;
     return name !== undefined
-      ? addPrimaryKey(context as TargetContext, propName, options)
+      ? addPrimaryKey(context.constructor as TargetContext, propName, options)
       : standardIndexedDbPrimaryKey(
-          context as DecoratorContext,
+          context as FieldOrMethodContext,
           propName,
           options
         );

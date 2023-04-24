@@ -1,11 +1,15 @@
-import { ClassContext, IndexedDbEntity, TargetContext } from '../models';
+import { ClassContext, TargetContext } from '@spryker-oryx/utilities';
+import { IndexedDbEntity } from '../models';
 import {
   IndexedDbIndexMetadata,
   IndexedDbSchemaMetadata,
 } from '../schema-metadata';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function addEntity(context: any, options?: IndexedDbEntity): void {
+export function addEntity(
+  target: TargetContext,
+  options?: IndexedDbEntity
+): void {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const indexes = options?.indexes?.map(
     (index) =>
@@ -18,7 +22,7 @@ export function addEntity(context: any, options?: IndexedDbEntity): void {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IndexedDbSchemaMetadata.add(context as any, {
+  IndexedDbSchemaMetadata.add(target, {
     ...options,
     indexes,
   });
@@ -30,20 +34,16 @@ const standardIndexedDbEntity = (
 ): ClassContext => {
   return {
     ...context,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    finisher(this: TargetContext) {
-      //TODO: drop after review
-      console.log(context, options);
-
-      addEntity(this, options);
+    finisher(clazz) {
+      addEntity(clazz, options);
     },
   };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbEntity(options?: IndexedDbEntity): any {
-  return (context: any): ClassContext | void =>
+  return (context: ClassContext | TargetContext): ClassContext | void =>
     typeof context === 'function'
       ? addEntity(context, options)
-      : standardIndexedDbEntity(context, options);
+      : standardIndexedDbEntity(context as ClassContext, options);
 }

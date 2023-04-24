@@ -9,6 +9,7 @@ import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { mockOrderFeature } from '@spryker-oryx/order/mocks';
 import { mockPickingFeature } from '@spryker-oryx/picking/src/mocks';
+import { offlineFulfillmentFeatures } from '@spryker-oryx/presets';
 import { mockProductFeature } from '@spryker-oryx/product/mocks';
 import { mockSearchFeature } from '@spryker-oryx/search/mocks';
 import { mockSiteFeature } from '@spryker-oryx/site/mocks';
@@ -69,5 +70,15 @@ if (isChromatic()) {
     ])
     .create();
 } else {
-  builder.withTheme(themes).withResources(resources).create();
+  builder
+    .withTheme(themes)
+    .withResources(resources)
+    .withFeature(
+      offlineFulfillmentFeatures({
+        picking: {
+          appVersion: '0.0.1',
+        },
+      })
+    )
+    .create();
 }
