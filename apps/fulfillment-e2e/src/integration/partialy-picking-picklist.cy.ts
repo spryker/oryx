@@ -32,7 +32,7 @@ const checkTabProductsCount = (tabAlias: string, count: number) => {
 
 it('should check partial picking', () => {
   cy.clearIndexedDB();
-  cy.visit('/');
+  cy.login();
 
   pickingListsFragment.getIdentifier();
 
@@ -60,7 +60,6 @@ it('should check partial picking', () => {
   // Setting initial number of products in each tab
   insideTab('@notPickedTabId', () => {
     pickingProductFragment.getWrapper().then((products) => {
-      console.log('products.length', products.length);
       cy.wrap(products.length).as('initialNotPickedListItemsNumber');
     });
   });
