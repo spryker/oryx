@@ -1,3 +1,4 @@
+import { nextFrame } from '@open-wc/testing-helpers';
 import { DefaultPageMetaService } from './default-page-meta.service';
 
 describe('DefaultPageMetaService', () => {
@@ -86,6 +87,32 @@ describe('DefaultPageMetaService', () => {
       titles = document.head.querySelectorAll('title');
       expect(titles.length).toBe(1);
       expect(titles[0]?.textContent).toContain('b');
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove proper tag from head of document', async () => {
+      service.add([
+        {
+          name: 'title',
+          attrs: {
+            text: 'Composable Storefront',
+          },
+        },
+      ]);
+      let title = document.head.querySelector('title');
+      expect(title).not.toBeNull();
+      service.remove([
+        {
+          name: 'title',
+          attrs: {
+            text: 'Composable Storefront',
+          },
+        },
+      ]);
+      title = document.head.querySelector('title');
+      await nextFrame();
+      expect(title).toBeNull();
     });
   });
 
