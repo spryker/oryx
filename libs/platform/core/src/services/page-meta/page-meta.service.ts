@@ -4,6 +4,7 @@ export const PageMetaService = 'oryx.PageMetaService';
 
 export interface PageMetaService {
   add(definitions: ElementDefinition | ElementDefinition[]): void;
+  remove(definitions: ElementDefinition | ElementDefinition[]): void;
   update(definition: ElementDefinition): void;
   setHtmlAttributes(attrs: ElementAttributes): void;
 }

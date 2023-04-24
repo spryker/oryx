@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 
 export class GlobalPageMetaResolver implements PageMetaResolver {
   getScore(): Observable<number> {
-    return of(ResolverScore.Default);
+    return of(ResolverScore.Fallback);
   }
 
   resolve(): Observable<ElementResolver> {
