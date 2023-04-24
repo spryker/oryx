@@ -9,7 +9,7 @@ import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ProductContext } from '../product-context';
 import { ProductService } from '../product.service';
 
-export class ProductPageTitleMetaResolver implements PageMetaResolver {
+export class ProductPageDescriptionMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
     protected router = inject(RouterService),
@@ -35,7 +35,9 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
         return this.productService
           .get({ sku: sku as string })
           .pipe(
-            map((product) => (product?.name ? { title: product.name } : {}))
+            map((product) =>
+              product?.description ? { description: product.description } : {}
+            )
           );
       })
     );

@@ -2,7 +2,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const SearchPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Search', route: '/search' },
+  meta: {
+    title: 'Search',
+    route: '/search',
+    description: 'Default Search Page Description',
+  },
   components: [
     {
       type: 'experience-composition',

@@ -3,7 +3,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
 import { ProductService } from '../product.service';
-import { ProductPageTitleMetaResolver } from './product-page-title-meta.resolver';
+import { ProductPageDescriptionMetaResolver } from './product-page-description-meta.resolver';
 
 const mockProductService = {
   get: vi.fn(),
@@ -17,15 +17,15 @@ const mockRouterService = {
   currentRoute: vi.fn(),
 };
 
-describe('ProductPageTitleMetaResolver', () => {
-  let service: ProductPageTitleMetaResolver;
+describe('ProductPageDescriptionMetaResolver', () => {
+  let service: ProductPageDescriptionMetaResolver;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: ProductPageTitleMetaResolver,
-          useClass: ProductPageTitleMetaResolver,
+          provide: ProductPageDescriptionMetaResolver,
+          useClass: ProductPageDescriptionMetaResolver,
         },
         {
           provide: ContextService,
@@ -42,7 +42,7 @@ describe('ProductPageTitleMetaResolver', () => {
       ],
     });
 
-    service = testInjector.inject(ProductPageTitleMetaResolver);
+    service = testInjector.inject(ProductPageDescriptionMetaResolver);
   });
 
   afterEach(() => {
@@ -70,18 +70,18 @@ describe('ProductPageTitleMetaResolver', () => {
   });
 
   describe('resolve', () => {
-    it('should return proper object with product title', () => {
+    it('should return proper object with product description', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValue(of('sku'));
       mockProductService.get.mockReturnValue(
         of({
-          name: 'Name A',
+          description: 'Name A',
         })
       );
       service.resolve().subscribe(callback);
       expect(mockProductService.get).toHaveBeenCalledWith({ sku: 'sku' });
       expect(callback).toHaveBeenCalledWith({
-        title: 'Name A',
+        description: 'Name A',
       });
     });
   });

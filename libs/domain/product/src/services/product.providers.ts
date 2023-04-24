@@ -46,6 +46,7 @@ import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 import { ProductService } from './product.service';
+import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
@@ -131,5 +132,9 @@ export const productProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ProductPageTitleMetaResolver,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ProductPageDescriptionMetaResolver,
   },
 ];

@@ -5,6 +5,8 @@ describe('Fully pick a picking list', () => {
   const pickingFragment = new PickingFragment();
 
   beforeEach(() => {
+    cy.clearIndexedDB();
+    cy.login();
     cy.visit(`/picking-list/picking/${pickingListId}`);
   });
 

@@ -16,11 +16,14 @@ const loginPage = new LoginPage();
 Cypress.Commands.add(
   'login',
   (user = { email: 'admin@spryker.com', password: 'change123' }) => {
-    cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
+    cy.intercept('POST', '**/token').as('token');
 
     loginPage.visit();
     loginPage.loginForm.login(user);
 
+    cy.wait('@token');
+
+    cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
     cy.wait('@picking-lists');
   }
 );
