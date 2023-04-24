@@ -5,12 +5,10 @@ import {
   IndexedDbSchemaMetadata,
 } from '../schema-metadata';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addEntity(
   target: TargetContext,
   options?: IndexedDbEntity
 ): void {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const indexes = options?.indexes?.map(
     (index) =>
       ({
@@ -21,7 +19,6 @@ export function addEntity(
       } as IndexedDbIndexMetadata)
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IndexedDbSchemaMetadata.add(target, {
     ...options,
     indexes,

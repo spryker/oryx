@@ -16,7 +16,7 @@ function addForeignKeys(
       `A ${String(propPath)} cannot be used as a foreign key in IndexedDb!`
     );
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   IndexedDbSchemaMetadata.add(target, {
     foreignKeys: [
       {

@@ -20,7 +20,6 @@ function addIndexes(
     throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IndexedDbSchemaMetadata.add(target, {
     indexes: [
       {
@@ -38,7 +37,7 @@ const standardIndexedDbIndex = (
 ): FieldOrMethodContext => {
   return {
     ...context,
-    finisher(clazz: any): void {
+    finisher(clazz): void {
       addIndexes(clazz, propName, options);
     },
   };
