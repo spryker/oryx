@@ -18,6 +18,16 @@ export class DefaultPageMetaService implements PageMetaService {
     }
   }
 
+  remove(definitions: ElementDefinition | ElementDefinition[]): void {
+    if (!Array.isArray(definitions)) {
+      definitions = [definitions];
+    }
+
+    for (const definition of definitions) {
+      this.deleteElement(definition);
+    }
+  }
+
   update(definition: ElementDefinition): void {
     const element = document.head.querySelector<HTMLElement>(definition.name);
 
@@ -32,6 +42,14 @@ export class DefaultPageMetaService implements PageMetaService {
 
   setHtmlAttributes(attrs: ElementAttributes): void {
     this.setAttributes(attrs, document.documentElement);
+  }
+
+  protected deleteElement(definition: ElementDefinition): void {
+    const existedEl = this.get(definition);
+
+    if (existedEl) {
+      existedEl?.remove();
+    }
   }
 
   protected getTagName(name: string): string {
@@ -57,12 +75,7 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected insert(definition: ElementDefinition): void {
-    const existedEl = this.get(definition);
-
-    if (existedEl) {
-      existedEl?.remove();
-    }
-
+    this.deleteElement(definition);
     const name = this.getTagName(definition.name);
     const element = document.createElement(name);
 

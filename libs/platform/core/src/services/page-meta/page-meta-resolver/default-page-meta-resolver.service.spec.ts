@@ -1,6 +1,6 @@
 import { nextFrame } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { PageMetaService } from '../page-meta.service';
 import { DefaultPageMetaResolverService } from './default-page-meta-resolver.service';
 import { ResolverScore } from './page-meta-resolver.model';
@@ -67,7 +67,7 @@ describe('DefaultPageMetaResolverService', () => {
 
   describe('initialize', () => {
     it('should call PageMetaService.add with proper data', async () => {
-      mockResolverA.getScore.mockReturnValue(of(ResolverScore.Default));
+      mockResolverA.getScore.mockReturnValue(of(1));
       mockResolverA.resolve.mockReturnValue(
         of({
           title: 'A',
@@ -103,7 +103,7 @@ describe('DefaultPageMetaResolverService', () => {
   describe('getTitle', () => {
     it('should return title', async () => {
       const callback = vi.fn();
-      mockResolverA.getScore.mockReturnValue(of(ResolverScore.Default));
+      mockResolverA.getScore.mockReturnValue(of(2));
       mockResolverA.resolve.mockReturnValue(
         of({
           title: 'A',
@@ -115,7 +115,9 @@ describe('DefaultPageMetaResolverService', () => {
           title: 'B',
         })
       );
-      mockResolverC.getScore.mockReturnValue(of(2));
+      mockResolverC.getScore.mockReturnValue(
+        combineLatest([of(true), of('asf')])
+      );
       mockResolverC.resolve.mockReturnValue(
         of({
           title: 'C',

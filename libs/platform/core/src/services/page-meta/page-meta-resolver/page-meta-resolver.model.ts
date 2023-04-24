@@ -4,7 +4,6 @@ export interface ElementResolver {
 }
 
 export const enum ResolverScore {
-  NotUsed = -1,
-  Fallback = 0,
-  Default = 1,
+  NotUsed = 0,
+  Fallback = -1,
 }

@@ -1,12 +1,8 @@
-import {
-  ElementResolver,
-  PageMetaResolver,
-  ResolverScore,
-} from '@spryker-oryx/core';
+import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 
 export class CategoryPageTitleMetaResolver implements PageMetaResolver {
@@ -15,26 +11,29 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
     protected facets = inject(FacetListService)
   ) {}
 
-  getScore(): Observable<number> {
-    return this.router
-      .currentQuery()
-      .pipe(
-        map((query) =>
-          query?.category ? ResolverScore.Default : ResolverScore.NotUsed
-        )
-      );
+  getScore(): Observable<unknown[]> {
+    return combineLatest([
+      this.router
+        .currentRoute()
+        .pipe(map((route) => route.includes('category'))),
+      this.router
+        .currentQuery()
+        .pipe(map(() => this.router.getPathId('category'))),
+    ]);
   }
 
   resolve(): Observable<ElementResolver> {
     return this.router.currentQuery().pipe(
-      switchMap((query) => {
-        if (!query?.category) {
+      switchMap(() => {
+        const categoryId = this.router.getPathId('category');
+
+        if (!categoryId) {
           return of({});
         }
 
         return this.facets.get().pipe(
           map((facets) => {
-            const selectedId = String(query.category);
+            const selectedId = String(categoryId);
             const list = facets?.find((facet) => facet.parameter === 'category')
               ?.values as FacetValue[];
 
@@ -50,9 +49,7 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
               }
             }
 
-            return {
-              title: 'Category page',
-            };
+            return {};
           })
         );
       })
