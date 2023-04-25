@@ -76,6 +76,6 @@ export const styles = css`
     border-radius: 2px;
     text-align: center;
     background: var(--oryx-color-secondary-300);
-    color: var(--oryx-color-neutral-500);
+    color: var(--oryx-color-accent-light-0, white);
   }
 `;

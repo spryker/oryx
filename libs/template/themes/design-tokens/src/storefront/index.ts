@@ -1,6 +1,6 @@
 import { DesignToken } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/utilities';
-import { darkColor } from './color-dark.tokens';
+import { colorFix, colorFixDark } from '../color-fix';
 import { color } from './color.tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
 import { darkTokens } from './other-dark';
@@ -13,7 +13,10 @@ import {
 
 export const storefrontTokens: DesignToken[] = [
   {
-    color,
+    color: {
+      ...color,
+      ...colorFix,
+    },
     ...tokens,
     ...typographyTokens,
   },
@@ -21,7 +24,10 @@ export const storefrontTokens: DesignToken[] = [
     media: {
       mode: 'dark',
     },
-    color: darkColor,
+    color: {
+      ...color,
+      ...colorFixDark,
+    },
     ...darkTokens,
   },
   {

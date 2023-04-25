@@ -1,5 +1,6 @@
 import { LazyLoadable, ScreenSize } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
+
 import { CSSResult } from 'lit';
 
 export const enum ThemeStrategies {
@@ -39,19 +40,17 @@ export interface ThemeData {
   strategy?: ThemeStrategies;
 }
 
-export type ThemeColors = {
-  100?: string;
-  200?: string;
-  300?: string;
-  400?: string;
-  500?: string;
-};
+// export type ThemeColors = {
+//   100?: string;
+//   200?: string;
+//   300?: string;
+//   400?: string;
+//   500?: string;
+// };
 
 export interface ThemeToken {
   [key: string]: ThemeToken | string;
 }
-
-export type ColorDesignTokens = Record<string, string | ThemeColors>;
 
 export type DesignToken = ThemeToken & {
   media?: ThemeMediaQueries;
@@ -69,3 +68,44 @@ export interface Theme {
   icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
 }
+
+// TODO: move the following to experience/color/color.model.ts
+export const enum ColorTone {
+  Canvas,
+  Background,
+  BackgroundSubtle,
+  ElementBackground,
+  ElementHover,
+  ElementActive,
+  Separator,
+  Border,
+  BorderHover,
+  Solid,
+  SolidHOver,
+  LowContrast,
+  HighContrast,
+}
+
+export const enum ColorMode {
+  Light = 'light',
+  Dark = 'dark',
+}
+
+export type Color = {
+  [mode in ColorMode]?: {
+    [tone in ColorTone]?: string;
+  };
+};
+
+export type ColorPalette = { [color: string]: Color };
+
+/** @deprecated */
+export type ThemeColors = {
+  100?: string;
+  200?: string;
+  300?: string;
+  400?: string;
+  500?: string;
+};
+
+export type ColorDesignTokens = Record<string, string | ThemeColors | Color>;

@@ -1,5 +1,6 @@
 import { ThemeBreakpoints, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { colorPalette } from '@spryker-oryx/themes/design-tokens';
 import {
   Breakpoint,
   CompositionProperties,
@@ -167,6 +168,45 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         padding: data.padding,
         '--scroll-start': this.findCssValue(data.padding, 'start'),
       });
+    }
+
+    // TODO: move logic out of layout builder to style or color builder
+    const colorize = (type: string, color: string): void => {
+      add({ [`--oryx-color-${type}-0`]: colorPalette?.[color]?.['dark']?.[0] });
+      let legacyType = type;
+      if (type === 'brand') legacyType = 'primary';
+      if (type === 'accent') legacyType = 'secondary';
+
+      add({
+        [`--oryx-color-${legacyType}-100`]:
+          colorPalette?.[color]?.['dark']?.[3],
+      });
+      add({
+        [`--oryx-color-${legacyType}-200`]:
+          colorPalette?.[color]?.['dark']?.[5],
+      });
+      add({
+        [`--oryx-color-${legacyType}-300`]:
+          colorPalette?.[color]?.['dark']?.[9],
+      });
+      add({
+        [`--oryx-color-${legacyType}-400`]:
+          colorPalette?.[color]?.['dark']?.[10],
+      });
+      add({
+        [`--oryx-color-${legacyType}-500`]:
+          colorPalette?.[color]?.['dark']?.[11],
+      });
+    };
+
+    if (data.primaryColor) {
+      colorize('brand', data.primaryColor);
+    }
+    if (data.secondaryColor) {
+      colorize('accent', data.secondaryColor);
+    }
+    if (data.neutralColor) {
+      colorize('neutral', data.neutralColor);
     }
 
     return rules;

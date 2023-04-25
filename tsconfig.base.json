@@ -202,6 +202,9 @@
       "@spryker-oryx/ui/select": ["libs/base/ui/form/select/index.ts"],
       "@spryker-oryx/ui/spinner": ["libs/base/ui/graphical/spinner/index.ts"],
       "@spryker-oryx/ui/swatch": ["libs/base/ui/graphical/swatch/index.ts"],
+      "@spryker-oryx/ui/color-palette": [
+        "libs/base/ui/graphical/color-palette/index.ts"
+      ],
       "@spryker-oryx/ui/tab": ["libs/base/ui/navigation/tab/index.ts"],
       "@spryker-oryx/ui/tabs": ["libs/base/ui/navigation/tabs/index.ts"],
       "@spryker-oryx/ui/tag": ["libs/base/ui/form/tag/index.ts"],

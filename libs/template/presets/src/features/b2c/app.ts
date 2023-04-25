@@ -23,7 +23,6 @@ import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { resourceGraphics } from '../../resources';
-import { StaticExperienceFeature } from './experience';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
@@ -58,7 +57,7 @@ export const b2cFeatures: AppFeature[] = [
   {
     resources: b2cResources,
   },
-  StaticExperienceFeature,
+  // StaticExperienceFeature,
 ];
 
 export const b2cTheme = { ...storefrontTheme };

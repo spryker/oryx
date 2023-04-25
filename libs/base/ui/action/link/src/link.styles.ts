@@ -6,7 +6,7 @@ export const linkStyles = css`
 
     display: inline-flex;
     align-items: center;
-    color: var(--oryx-link-color, var(--oryx-color-primary-300));
+    color: var(--oryx-color-brand-0, white);
   }
 
   oryx-icon,

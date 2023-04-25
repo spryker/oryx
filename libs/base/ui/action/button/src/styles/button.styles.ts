@@ -5,7 +5,7 @@ import { css } from 'lit';
 export const buttonStyles = css`
   :host {
     --oryx-icon-size: 13.3px;
-    --_color-text: var(--oryx-color-canvas-100);
+    --_color-text: var(--oryx-color-brand-0, white);
     --_color-accent: var(--oryx-color-primary-300);
     --_color-active: var(--oryx-color-primary-400);
 

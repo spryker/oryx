@@ -165,6 +165,10 @@ export interface StyleProperties {
    * Rounds the corners of an element's outer border edge.
    */
   radius?: string;
+
+  primaryColor?: string;
+  secondaryColor?: string;
+  neutralColor?: string;
 }
 
 export const enum LayoutAlign {

@@ -35,7 +35,7 @@ export const layoutSmTokens: ThemeToken = {
       padding: '10px',
     },
     cols: '4',
-    factor: '4',
+    factor: '2',
     column: {
       two: {
         span: '4',

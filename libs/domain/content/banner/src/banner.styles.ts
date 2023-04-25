@@ -5,13 +5,12 @@ export const styles = css`
     display: flex;
     overflow: hidden;
     position: relative;
-    color: white;
     width: var(--width, 100%);
     height: var(--height, 100%);
   }
 
   a {
-    color: white;
+    color: var(--oryx-color-brand-0, white);
   }
 
   img {

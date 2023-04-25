@@ -26,6 +26,7 @@ export const ProductCardStyles = css`
   oryx-content-link,
   oryx-content-link::part(link) {
     display: contents;
+    color: var(--oryx-color-ink);
   }
 
   oryx-content-link > * {

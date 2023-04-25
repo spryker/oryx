@@ -2,7 +2,6 @@ import { isFirefox, Size } from '@spryker-oryx/ui';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { property } from 'lit/decorators.js';
-import { DialogElement } from '../../overlay.model';
 import { fullscreenModalStyles } from './fullscreen-modal.styles';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
@@ -113,8 +112,8 @@ export class ModalComponent extends LitElement implements ModalProperties {
     );
   }
 
-  protected get dialog(): DialogElement {
-    return this.shadowRoot?.querySelector('dialog') as DialogElement;
+  get dialog(): HTMLDialogElement | null | undefined {
+    return this.shadowRoot?.querySelector('dialog');
   }
 
   protected override render(): TemplateResult {
