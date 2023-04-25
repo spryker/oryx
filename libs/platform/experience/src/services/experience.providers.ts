@@ -1,4 +1,4 @@
-import { injectEnv } from '@spryker-oryx/core';
+import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   BreakpointService,
@@ -17,6 +17,7 @@ import {
   ComponentsRegistryService,
   DefaultComponentsRegistryService,
 } from './registry';
+import { ContentPageMetaResolver } from './resolvers';
 
 declare global {
   interface AppEnvironment {
@@ -48,6 +49,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
+  },
+  {
+    provide: PageMetaResolver,
+    useClass: ContentPageMetaResolver,
   },
 ];
 

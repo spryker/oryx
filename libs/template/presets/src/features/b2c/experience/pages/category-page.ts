@@ -2,7 +2,13 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const CategoryPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Category Page', route: '/category/:id' },
+  meta: {
+    title: 'Category Page',
+    route: '/category/:id',
+    follow: true,
+    index: true,
+    description: 'Category Page Description',
+  },
   options: {
     data: {
       rules: [

@@ -3,7 +3,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const OrderPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Order Confirmation Page', route: '/order/:id' },
+  meta: {
+    title: 'Order Confirmation Page',
+    route: '/order/:id',
+    description: 'Order Page Description',
+  },
   components: [
     { type: 'oryx-order-confirmation-banner' },
     {

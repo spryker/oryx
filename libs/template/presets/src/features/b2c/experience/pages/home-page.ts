@@ -2,7 +2,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const HomePage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Home Page', route: '/' },
+  meta: {
+    title: 'Home Page',
+    route: '/',
+    description: 'Home Page Description',
+  },
   components: [
     {
       type: 'oryx-content-video',

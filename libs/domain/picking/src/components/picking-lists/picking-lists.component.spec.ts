@@ -151,9 +151,9 @@ describe('PickingListsComponent', () => {
     });
 
     it(`should render fallback text`, () => {
-      expect(element.renderRoot.querySelector('p')?.textContent).toBe(
-        i18n('picking.no-picking-lists-found')
-      );
+      expect(
+        element.renderRoot.querySelector('oryx-heading')?.textContent?.trim()
+      ).toBe(i18n('picking.no-results-found'));
     });
   });
 });

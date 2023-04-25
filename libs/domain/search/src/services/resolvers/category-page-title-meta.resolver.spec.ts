@@ -1,4 +1,3 @@
-import { ResolverScore } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
@@ -7,13 +6,15 @@ import { CategoryPageTitleMetaResolver } from './category-page-title-meta.resolv
 
 const mockRouter = {
   currentQuery: vi.fn(),
+  currentRoute: vi.fn(),
+  getPathId: vi.fn(),
 };
 
 const mockFacets = {
   get: vi.fn(),
 };
 
-describe('DefaultSuggestionService', () => {
+describe('CategoryPageTitleMetaResolver', () => {
   let service: CategoryPageTitleMetaResolver;
 
   beforeEach(() => {
@@ -46,15 +47,19 @@ describe('DefaultSuggestionService', () => {
     it('should return proper value if category exist', () => {
       const callback = vi.fn();
       mockRouter.currentQuery.mockReturnValue(of({ category: 4 }));
+      mockRouter.getPathId.mockReturnValue(true);
+      mockRouter.currentRoute.mockReturnValue(of('/category/'));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(2);
+      expect(callback).toHaveBeenCalledWith([true, true]);
     });
 
     it('should return proper value if category is not exist', () => {
       const callback = vi.fn();
-      mockRouter.currentQuery.mockReturnValue(of({ item: 'category' }));
+      mockRouter.currentQuery.mockReturnValue(of({ category: 4 }));
+      mockRouter.getPathId.mockReturnValue(false);
+      mockRouter.currentRoute.mockReturnValue(of('/category/'));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(ResolverScore.NotUsed);
+      expect(callback).toHaveBeenCalledWith([true, false]);
     });
   });
 
@@ -62,6 +67,7 @@ describe('DefaultSuggestionService', () => {
     it('should return proper object with category title', () => {
       const callback = vi.fn();
       mockRouter.currentQuery.mockReturnValue(of({ category: 4 }));
+      mockRouter.getPathId.mockReturnValue(4);
       mockFacets.get.mockReturnValue(
         of([
           {
@@ -76,23 +82,6 @@ describe('DefaultSuggestionService', () => {
       service.resolve().subscribe(callback);
       expect(callback).toHaveBeenCalledWith({
         title: 'NAME',
-      });
-    });
-
-    it('should return fallback object with category title', () => {
-      const callback = vi.fn();
-      mockRouter.currentQuery.mockReturnValue(of({ category: 4 }));
-      mockFacets.get.mockReturnValue(
-        of([
-          {
-            parameter: 'category',
-            values: [{ value: 1 }, { value: 2, children: [{ value: 3 }] }],
-          },
-        ])
-      );
-      service.resolve().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith({
-        title: 'Category page',
       });
     });
   });

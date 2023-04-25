@@ -1,3 +1,4 @@
+import { FieldOrMethodContext, TargetContext } from '@spryker-oryx/utilities';
 import {
   IndexedDbIndex,
   IndexedDbVersioned,
@@ -10,24 +11,51 @@ export type IndexedDbIndexOptions =
   | (IndexedDbVersioned & IndexedDbWithPropPath)
   | (IndexedDbIndex & IndexedDbWithPropPath);
 
-export function indexedDbIndex(
+function addIndexes(
+  target: TargetContext,
+  propPath: string,
   options?: IndexedDbIndexOptions
-): PropertyDecorator {
-  return (target, propName) => {
-    const propPath = options?.propPath ?? propName;
+): void {
+  if (typeof propPath === 'symbol') {
+    throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
+  }
 
-    if (typeof propPath === 'symbol') {
-      throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
-    }
+  IndexedDbSchemaMetadata.add(target, {
+    indexes: [
+      {
+        ...options,
+        propPath,
+      },
+    ],
+  });
+}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    IndexedDbSchemaMetadata.add(target.constructor as any, {
-      indexes: [
-        {
-          ...options,
-          propPath,
-        },
-      ],
-    });
+const standardIndexedDbIndex = (
+  context: FieldOrMethodContext,
+  propName: string,
+  options?: IndexedDbIndexOptions
+): FieldOrMethodContext => {
+  return {
+    ...context,
+    finisher(clazz): void {
+      addIndexes(clazz, propName, options);
+    },
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function indexedDbIndex(options?: IndexedDbIndexOptions): any {
+  return (
+    context: FieldOrMethodContext | TargetContext,
+    name?: PropertyKey
+  ): FieldOrMethodContext | void => {
+    const propName = (options?.propPath ?? name ?? context.key) as string;
+    return name !== undefined
+      ? addIndexes(context.constructor as TargetContext, propName, options)
+      : standardIndexedDbIndex(
+          context as FieldOrMethodContext,
+          propName,
+          options
+        );
   };
 }

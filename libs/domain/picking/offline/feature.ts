@@ -9,7 +9,7 @@ import {
   PickingListDefaultService,
   PickingListService,
 } from '@spryker-oryx/picking';
-import { OfflineDemoDataPlugin } from './demo-data-plugin';
+import { OfflineDataPlugin } from './data-plugin';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import {
   PickingListOfflineAdapter,
@@ -21,7 +21,7 @@ import {
 
 export class OfflinePickingFeature implements AppFeature {
   providers: Provider[] = this.getProviders();
-  plugins: AppPlugin[] = [new OfflineDemoDataPlugin()];
+  plugins: AppPlugin[] = [new OfflineDataPlugin()];
 
   protected getProviders(): Provider[] {
     return [

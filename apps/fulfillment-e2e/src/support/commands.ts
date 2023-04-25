@@ -1,12 +1,32 @@
+import { TestUserData } from '../types/user.type';
+import { LoginPage } from './page_objects/login.page';
 export {};
 
 declare global {
   namespace Cypress {
     interface Chainable {
+      login(user?: TestUserData): Chainable<void>;
       clearIndexedDB(): void;
     }
   }
 }
+
+const loginPage = new LoginPage();
+
+Cypress.Commands.add(
+  'login',
+  (user = { email: 'admin@spryker.com', password: 'change123' }) => {
+    cy.intercept('POST', '**/token').as('token');
+
+    loginPage.visit();
+    loginPage.loginForm.login(user);
+
+    cy.wait('@token');
+
+    cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
+    cy.wait('@picking-lists');
+  }
+);
 
 Cypress.Commands.add('clearIndexedDB', () => {
   cy.window().then((win) => {

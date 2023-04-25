@@ -1,5 +1,6 @@
-import { ContextService, ResolverScore } from '@spryker-oryx/core';
+import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
 import { ProductService } from '../product.service';
 import { ProductPageTitleMetaResolver } from './product-page-title-meta.resolver';
@@ -12,7 +13,11 @@ const mockContextService = {
   get: vi.fn(),
 };
 
-describe('DefaultSuggestionService', () => {
+const mockRouterService = {
+  currentRoute: vi.fn(),
+};
+
+describe('ProductPageTitleMetaResolver', () => {
   let service: ProductPageTitleMetaResolver;
 
   beforeEach(() => {
@@ -30,6 +35,10 @@ describe('DefaultSuggestionService', () => {
           provide: ProductService,
           useValue: mockProductService,
         },
+        {
+          provide: RouterService,
+          useValue: mockRouterService,
+        },
       ],
     });
 
@@ -45,15 +54,18 @@ describe('DefaultSuggestionService', () => {
     it('should return proper value if product exist', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValue(of('sku'));
+      mockRouterService.currentRoute.mockReturnValue(of('/product/saf'));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(2);
+      expect(callback).toHaveBeenCalledWith(['sku', true]);
     });
 
     it('should return proper value if product is not exist', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValue(of(undefined));
+      mockRouterService.currentRoute.mockReturnValue(of(''));
+
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(ResolverScore.NotUsed);
+      expect(callback).toHaveBeenCalledWith([undefined, false]);
     });
   });
 

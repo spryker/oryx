@@ -2,7 +2,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const ContactPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Contact Page', route: '/contact' },
+  meta: {
+    title: 'Contact Page',
+    route: '/contact',
+    description: 'Contact Page Description',
+  },
   options: {
     data: {
       rules: [

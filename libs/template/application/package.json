@@ -18,7 +18,8 @@
     "@spryker-oryx/utilities": "latest",
     "@webcomponents/template-shadowroot": "^0.1.0",
     "abort-controller": "^3.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "url-join": "^5.0.0"
   },
   "peerDependencies": {
     "@lit-labs/router": "^0.1.1",
