@@ -4,7 +4,10 @@ export const BreakpointService = 'oryx.BreakpointService';
 
 export interface BreakpointService {
   getBreakpoints(): ThemeBreakpoints;
-  getMediaQuery(breakpoint: Breakpoint): string | void;
+  getMediaQuery(
+    include: Breakpoint | Breakpoint[],
+    exclude?: Breakpoint | Breakpoint[]
+  ): string | void;
   getSmallest(): Breakpoint | void;
 }
 

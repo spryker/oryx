@@ -3,7 +3,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const CheckoutPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Checkout Page', route: '/checkout' },
+  meta: {
+    title: 'Checkout Page',
+    route: '/checkout',
+    description: 'Checkout Page Description',
+  },
   options: {
     data: {
       rules: [

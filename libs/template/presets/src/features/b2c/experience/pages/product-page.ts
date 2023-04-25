@@ -2,7 +2,11 @@ import { StaticComponent } from '@spryker-oryx/experience';
 
 export const ProductPage: StaticComponent = {
   type: 'Page',
-  meta: { title: 'Product Page', route: '/product/:sku' },
+  meta: {
+    title: 'Product Page',
+    route: '/product/:sku',
+    description: 'Default Product Page Description',
+  },
   components: [
     {
       type: 'experience-composition',

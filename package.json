@@ -165,6 +165,7 @@
     "rxjs": "7.5.6",
     "serverless-http": "^3.2.0",
     "tslib": "^2.3.0",
+    "url-join": "^5.0.0",
     "unzipper": "^0.10.11",
     "urlpattern-polyfill": "~4.0.3"
   },
