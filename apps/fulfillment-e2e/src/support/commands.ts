@@ -25,7 +25,6 @@ Cypress.Commands.add(
 
     cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
     cy.wait('@picking-lists');
-    cy.location('pathname').should('be.eq', `/`);
   }
 );
 

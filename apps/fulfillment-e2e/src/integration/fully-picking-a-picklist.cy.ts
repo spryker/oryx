@@ -1,15 +1,19 @@
 import { PickingProductFragment } from '../support/page_fragments/picking-product.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
+import { PickingPage } from '../support/page_objects/picking.page';
 
 describe('Fully pick a picking list', () => {
   const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
+
+  const pickingPage = new PickingPage(pickingListId);
+
   const pickingFragment = new PickingFragment();
   const pickingProductFragment = new PickingProductFragment();
 
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
-    cy.visit(`/picking-list/picking/${pickingListId}`);
+    pickingPage.visit();
 
     pickingFragment.getProducts().each((product) => {
       cy.wrap(product).within(() => {

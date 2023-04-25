@@ -1,13 +1,13 @@
 export class PickingProductFragment {
-  getWrapper = () => cy.get('oryx-picking-product-card');
-  getQuantityInput = () => this.getWrapper().find('oryx-cart-quantity-input');
-  getQuantityInputMinusButton = () =>
-    this.getQuantityInput().find('button').eq(0);
+  getProducts = () => cy.get('oryx-picking-product-card');
+  getQuantityInput = () => this.getProducts().find('oryx-cart-quantity-input');
+  getQuantityInputMinusButton = () => cy.get('button[aria-label="Decrease"]');
   getQuantityInputPlusButton = () => cy.get('button[aria-label="Increase"]');
   getSubmitButton = () => cy.get('oryx-button button');
 
   pickAllProductItems = () => {
     this.getQuantityInputPlusButton().then(($button) => {
+      // click button while it is active
       if ($button.attr('disabled')) {
         return;
       }
