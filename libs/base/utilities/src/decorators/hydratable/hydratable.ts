@@ -15,7 +15,7 @@ export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
 export const hydrationRender = Symbol('hydrationRender');
-const SIGNAL_META = Symbol('signalMeta');
+const SIGNAL_EFFECT = Symbol('signalEffect');
 
 interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
@@ -72,11 +72,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
     private hasSsr?: boolean;
     private [HYDRATION_CALLS] = 0;
 
-    private [SIGNAL_META]!: {
-      effectRuns: number;
-      renderRuns: number;
-      effect?: Effect;
-    };
+    private [SIGNAL_EFFECT]?: Effect;
 
     constructor(...args: any[]) {
       super(...args);
@@ -85,11 +81,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
-
-        this[SIGNAL_META] = {
-          effectRuns: 0,
-          renderRuns: 0,
-        };
       }
 
       if (this.hasSsr) {
@@ -101,9 +92,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
     willUpdate(_changedProperties: PropertyValues): void {
       super.willUpdate(_changedProperties);
       if (isServer) {
-        this[SIGNAL_META].effect = effect(() => {
-          this[SIGNAL_META].effectRuns++;
-          this.render();
+        this[SIGNAL_EFFECT] = effect(() => {
+          super.render();
         });
       }
     }
@@ -152,10 +142,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     render(): TemplateResult {
       if (isServer) {
-        this[SIGNAL_META].renderRuns++;
-        if (this[SIGNAL_META].renderRuns > this[SIGNAL_META].effectRuns) {
-          this[SIGNAL_META].effect?.stop();
-        }
+          this[SIGNAL_EFFECT]?.stop();
       }
 
       const states = this[asyncStates];
