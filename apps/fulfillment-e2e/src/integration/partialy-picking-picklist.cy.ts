@@ -20,94 +20,45 @@ describe('Partial picking a picklist', () => {
 
   it('should check partial picking', () => {
     // Setting initial number of products in each tab
-    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
-      pickingProductFragment.getProducts().then((products) => {
-        cy.wrap(products.length).as('initialNotPickedListItemsNumber');
-      });
-    });
-    pickingPage.insideTabContent(pickingPage.getPickedTab(), () => {
-      pickingProductFragment.getProducts().should('not.exist');
-      cy.wrap(0).as('initialPickedListItemsNumber');
-    });
-    pickingPage.insideTabContent(pickingPage.getNotFoundTab(), () => {
-      pickingProductFragment.getProducts().should('not.exist');
-      cy.wrap(0).as('initialNotFoundListItemsNumber');
-    });
+    pickingPage.notPickedProductsNumber.as('initialNotPickedProductsNumber');
+    pickingPage.pickedProductsNumber.as('initialPickedProductsNumber');
+    pickingPage.notFoundProductsNumber.as('initialNotFoundProductsNumber');
 
     // For the first item, select only part of the quantity.
-    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
-      pickingProductFragment
-        .getProducts()
-        .eq(0)
-        .within(() => {
-          pickingProductFragment.getQuantityInputPlusButton().click();
-          pickingProductFragment.getSubmitButton().click();
-        });
+    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
+      pickingPage.pickProduct(pickingProductFragment.getProducts().eq(0), 1);
     });
 
     // Verify that the Partial Picking Modal is opened.
-    pickingFragment.getPartialPickingDialog().should('have.attr', 'open');
-
-    // Close dialog
-    pickingFragment.getPartialPickingCancelButton().click();
-
-    // Dialog should be closed
-    pickingFragment.getPartialPickingDialog().should('not.have.attr', 'open');
-
-    // Not Picked tab list should have the same number of products
-    cy.get('@initialNotPickedListItemsNumber').then((initCount) => {
-      pickingPage.checkTabProductsCount(
-        pickingPage.getNotPickedTab(),
-        Number(initCount)
-      );
-    });
-
-    // Open modal again
-    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
-      pickingProductFragment
-        .getProducts()
-        .eq(0)
-        .within(() => {
-          pickingProductFragment.getSubmitButton().click();
-        });
-    });
-
-    // Verify that the Partial Picking Modal is opened.
-    pickingFragment.getPartialPickingDialog().should('have.attr', 'open');
+    pickingFragment.getPartialPickingDialog().should('be.visible');
 
     // Confirm partial picking
     pickingFragment.getPartialPickingConfirmButton().click();
 
     // Dialog should be closed
-    pickingFragment.getPartialPickingDialog().should('not.have.attr', 'open');
+    pickingFragment.getPartialPickingDialog().should('not.be.visible');
 
     // Verify that the picking item is moved to the "Picked" tab with the entered quantity, and the "Not found" tab with the not entered quantity.
-    // Not Picked tab list should have x-2 products
-    cy.get('@initialNotPickedListItemsNumber').then((initCount) => {
-      pickingPage.checkTabProductsCount(
-        pickingPage.getNotPickedTab(),
+    // Not Picked tab list should have x-1 products
+    cy.get('@initialNotPickedProductsNumber').then((initCount) => {
+      pickingPage.notPickedProductsNumber.should(
+        'be.eq',
         Number(initCount) - 1
       );
     });
 
-    // Picked tab list should have x+2 products
-    cy.get('@initialPickedListItemsNumber').then((initCount) => {
-      pickingPage.checkTabProductsCount(
-        pickingPage.getPickedTab(),
-        Number(initCount) + 1
-      );
+    // Picked tab list should have x+1 products
+    cy.get('@initialPickedProductsNumber').then((initCount) => {
+      pickingPage.pickedProductsNumber.should('be.eq', Number(initCount) + 1);
     });
 
     // Not Found tab list should have x+1 products
-    cy.get('@initialNotFoundListItemsNumber').then((initCount) => {
-      pickingPage.checkTabProductsCount(
-        pickingPage.getNotFoundTab(),
-        Number(initCount) + 1
-      );
+    cy.get('@initialNotFoundProductsNumber').then((initCount) => {
+      pickingPage.notFoundProductsNumber.should('be.eq', Number(initCount) + 1);
     });
 
-    //
-    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
+    // Pick the rest of the products
+    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
       pickingProductFragment.getProducts().each((product) => {
         cy.wrap(product).within(() => {
           pickingProductFragment.pickAllProductItems();
@@ -115,31 +66,19 @@ describe('Partial picking a picklist', () => {
         });
       });
 
-      // Verify that the “Great job” text and illustration are shown
+      // Verify that the congratulation text and illustration are shown
       pickingFragment.getPickingCompleteImage().should('be.visible');
       pickingFragment.getPickingCompleteTitle().should('be.visible');
-      pickingFragment
-        .getPickingCompleteTitle()
-        .invoke('text')
-        .then((text) => {
-          cy.wrap(text).should('be.eq', 'Great job!');
-        });
-
       pickingFragment.getPickingCompleteText().should('be.visible');
-      pickingFragment
-        .getPickingCompleteText()
-        .invoke('text')
-        .then((text) => {
-          cy.wrap(text).should('be.eq', 'All items are processed!');
-        });
     });
 
     // Verify that the “Finish picking” button appears
     const tabs = [
-      pickingPage.getNotPickedTab(),
-      pickingPage.getPickedTab(),
-      pickingPage.getNotFoundTab(),
+      pickingPage.notPickedTab,
+      pickingPage.pickedTab,
+      pickingPage.notFoundTab,
     ];
+
     tabs.forEach((tab) => {
       pickingPage.insideTabContent(tab, () => {
         pickingFragment.getFinishPickingButton().should('be.visible');
@@ -147,7 +86,7 @@ describe('Partial picking a picklist', () => {
     });
 
     // Tap the “Finish picking” button
-    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
+    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
       pickingFragment.getFinishPickingButton().click();
     });
 

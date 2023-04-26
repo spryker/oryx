@@ -26,7 +26,7 @@ describe('Fully pick a picking list', () => {
   it('must have all products on picked tab after done all of them', () => {
     pickingFragment.getProducts().then((products) => {
       pickingFragment
-        .getTabCounter(pickingFragment.getTabsList().eq(1))
+        .getTabCounter(pickingPage.pickedTab)
         .should('contain.text', products.length);
     });
 
