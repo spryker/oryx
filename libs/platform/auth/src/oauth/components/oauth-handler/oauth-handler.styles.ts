@@ -22,18 +22,13 @@ export const styles = css`
     z-index: -1;
   }
 
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .text {
+  oryx-heading {
     margin-top: 43px;
   }
 
-  .logo {
+  oryx-image {
     height: 82px;
+    display: flex;
   }
 
   h3 {
@@ -42,7 +37,9 @@ export const styles = css`
     font-weight: 600;
   }
 
-  .spinner {
+  oryx-spinner {
+    flex-basis: 0;
     margin-top: 134px;
+    color: var(--oryx-color-canvas-100);
   }
 `;

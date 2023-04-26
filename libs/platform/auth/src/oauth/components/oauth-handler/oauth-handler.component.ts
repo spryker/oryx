@@ -30,21 +30,9 @@ export class OauthHandlerComponent extends LitElement {
 
   protected render(): unknown {
     return html`
-      <div class="logo">
-        <oryx-image
-          resource="logo"
-          style="color: var(--oryx-color-canvas-100);"
-        ></oryx-image>
-      </div>
-      <div class="text">
-        <oryx-heading><h3>${i18n('oauth.logging-you-in')}</h3></oryx-heading>
-      </div>
-      <div class="spinner">
-        <oryx-spinner
-          style="color: var(--oryx-color-canvas-100);"
-          size="xl"
-        ></oryx-spinner>
-      </div>
+      <oryx-image resource="logo"></oryx-image>
+      <oryx-heading><h3>${i18n('oauth.logging-you-in')}</h3></oryx-heading>
+      <oryx-spinner></oryx-spinner>
     `;
   }
 }
