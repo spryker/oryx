@@ -9,7 +9,7 @@ import { styles } from './oauth-handler.styles';
 export class OauthHandlerComponent extends LitElement {
   @property() providerId?: string;
 
-  static styles = [styles];
+  static styles = styles;
 
   constructor(
     protected oauthService = resolve(OauthService),
