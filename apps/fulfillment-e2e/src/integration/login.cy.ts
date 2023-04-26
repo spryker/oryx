@@ -1,8 +1,6 @@
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
-import { LoginPage } from '../support/page_objects/login.page';
 
 const pickingListsFragment = new PickingListsFragment();
-const loginPage = new LoginPage();
 
 describe('Login Suite', () => {
   describe('when logged out', () => {
