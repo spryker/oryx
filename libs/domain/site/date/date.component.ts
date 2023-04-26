@@ -1,0 +1,35 @@
+import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
+import {
+  computed,
+  hydratable,
+  i18n,
+  signalAware,
+  signalProperty,
+} from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { DateComponentAttributes } from './date.model';
+
+@hydratable()
+@signalAware()
+export class DateComponent
+  extends LitElement
+  implements DateComponentAttributes
+{
+  protected localeService = resolve(LocaleService);
+
+  @signalProperty() stamp?: string | number | Date;
+  @signalProperty() i18nToken?: string;
+
+  protected date = computed(() =>
+    this.stamp ? this.localeService.formatDate(this.stamp) : undefined
+  );
+
+  protected override render(): TemplateResult | void {
+    if (this.i18nToken) {
+      return html`${i18n(this.i18nToken, { date: this.date() })}`;
+    } else {
+      return html`${this.date()}`;
+    }
+  }
+}
