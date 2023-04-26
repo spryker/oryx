@@ -26,7 +26,7 @@
     "base/utilities",
     "template/cli"
   ],
-  "version": "0.6.0",
+  "version": "0.7.0",
   "npmClient": "npm",
   "command": {
     "publish": {
