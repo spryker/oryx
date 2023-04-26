@@ -9,7 +9,6 @@ import {
 } from '@spryker-oryx/checkout/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/i18n';
 import { PricingService } from '@spryker-oryx/site';
 import { radioComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
@@ -26,10 +25,6 @@ class MockPricingService implements Partial<PricingService> {
   format = vi.fn().mockReturnValue(of('mockprice'));
 }
 
-class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of('mockdate'));
-}
-
 class MockOrchestrationService
   implements Partial<CheckoutOrchestrationService>
 {
@@ -40,7 +35,6 @@ class MockOrchestrationService
 describe('Checkout Shipment Selector component', () => {
   let element: CheckoutShipmentComponent;
   let shipmentService: MockShipmentService;
-  let localeService: MockLocaleService;
 
   const getElement = async () => {
     element = await fixture(html`<checkout-shipment></checkout-shipment>`);
@@ -62,10 +56,6 @@ describe('Checkout Shipment Selector component', () => {
           useClass: MockShipmentService,
         },
         {
-          provide: LocaleService,
-          useClass: MockLocaleService,
-        },
-        {
           provide: CheckoutOrchestrationService,
           useClass: MockOrchestrationService,
         },
@@ -75,9 +65,6 @@ describe('Checkout Shipment Selector component', () => {
     shipmentService = testInjector.inject(
       CheckoutShipmentService
     ) as unknown as MockShipmentService;
-    localeService = testInjector.inject(
-      LocaleService
-    ) as unknown as MockLocaleService;
   });
 
   afterEach(() => {
@@ -138,10 +125,8 @@ describe('Checkout Shipment Selector component', () => {
         await getElement();
       });
 
-      it('should format the delivery time', () => {
-        expect(localeService.formatDate).toHaveBeenLastCalledWith(
-          mockDeliveryTimeShipmentMethod[0].shipmentMethods[0].deliveryTime
-        );
+      it('should have an delivery time', () => {
+        expect(element).toContainElement('oryx-date');
       });
     });
 

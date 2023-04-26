@@ -30,11 +30,6 @@ export const styles = css`
     margin-inline-start: auto;
   }
 
-  small {
-    font-weight: 600;
-    color: var(--oryx-color-neutral-200);
-  }
-
   p {
     margin: 0;
   }
