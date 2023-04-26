@@ -52,7 +52,9 @@ describe('CheckoutLinkComponent', () => {
   describe('when cart is empty', () => {
     beforeEach(async () => {
       service.isEmpty.mockReturnValue(of(true));
-      element = await fixture(html`<checkout-link uid="1"></checkout-link>`);
+      element = await fixture(
+        html`<oryx-checkout-link uid="1"></oryx-checkout-link>`
+      );
     });
 
     it(`should not render the link`, () => {
@@ -63,7 +65,9 @@ describe('CheckoutLinkComponent', () => {
   describe('when cart is not empty', () => {
     beforeEach(async () => {
       service.isEmpty.mockReturnValue(of(false));
-      element = await fixture(html`<checkout-link uid="1"></checkout-link>`);
+      element = await fixture(
+        html`<oryx-checkout-link uid="1"></oryx-checkout-link>`
+      );
     });
 
     it('passes the a11y audit', async () => {
@@ -79,7 +83,9 @@ describe('CheckoutLinkComponent', () => {
     beforeEach(async () => {
       service.isBusy.mockReturnValue(of(true));
       service.isEmpty.mockReturnValue(of(false));
-      element = await fixture(html` <checkout-link uid="1"></checkout-link>`);
+      element = await fixture(
+        html` <oryx-checkout-link uid="1"></oryx-checkout-link>`
+      );
     });
 
     it(`should pass the option to content link`, () => {

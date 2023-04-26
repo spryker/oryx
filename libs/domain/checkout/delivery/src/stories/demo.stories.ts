@@ -37,7 +37,7 @@ class FakeOrchestrator extends ComponentMixin<Props>() {
 const Template: Story<Props> = (props): TemplateResult => {
   return html`
     <fake-orchestrator .options=${props}></fake-orchestrator>
-    <checkout-delivery></checkout-delivery>
+    <oryx-checkout-delivery></oryx-checkout-delivery>
   `;
 };
 

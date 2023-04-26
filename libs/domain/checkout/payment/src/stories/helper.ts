@@ -11,5 +11,5 @@ export const renderSelector = (type: PaymentProviderType): TemplateResult => {
     CheckoutPaymentService
   ) as unknown as MockPaymentService;
   paymentService.changeProviderType(type);
-  return html`<checkout-payment></checkout-payment>`;
+  return html`<oryx-checkout-payment></oryx-checkout-payment>`;
 };

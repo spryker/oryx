@@ -1,3 +1,4 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
@@ -7,6 +8,10 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  h3 {
+    ${headingUtil(HeadingTag.H5)}
   }
 
   .no-methods {

@@ -58,7 +58,9 @@ describe('CheckoutContactComponent', () => {
     });
 
     dataService = testInjector.inject(CheckoutDataService);
-    element = await fixture(html`<checkout-contact></checkout-contact>`);
+    element = await fixture(
+      html`<oryx-checkout-contact></oryx-checkout-contact>`
+    );
   });
 
   afterEach(() => {
@@ -107,7 +109,9 @@ describe('CheckoutContactComponent', () => {
     let submitResult: boolean;
 
     beforeEach(async () => {
-      element = await fixture(html`<checkout-contact></checkout-contact>`);
+      element = await fixture(
+        html`<oryx-checkout-contact></oryx-checkout-contact>`
+      );
       setFakeValue();
       submitResult = element.submit();
     });

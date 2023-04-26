@@ -1,5 +1,5 @@
 export class CheckoutContactFragment {
-  getWrapper = () => cy.get('checkout-contact');
+  getWrapper = () => cy.get('oryx-checkout-contact');
   getEmailInput = () => this.getWrapper().find('[name="email"]');
   getFirstNameInput = () => this.getWrapper().find('[name="firstName"]');
   getLastNameInput = () => this.getWrapper().find('[name="lastName"]');

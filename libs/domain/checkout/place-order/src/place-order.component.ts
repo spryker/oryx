@@ -1,58 +1,31 @@
-import { AuthService } from '@spryker-oryx/auth';
-import { CheckoutDataService, CheckoutService } from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin } from '@spryker-oryx/experience';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map } from 'rxjs';
+import { CheckoutMixin } from '@spryker-oryx/checkout';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 
 @hydratable('window:load')
-export class CheckoutPlaceOrderComponent extends ComponentMixin() {
-  protected checkout = resolve(CheckoutService);
+export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
+  protected isBusy = signal(false);
 
-  protected isGuestCheckout$ = resolve(CheckoutDataService).isGuestCheckout();
-  protected isAuthenticated$ = resolve(AuthService).isAuthenticated();
-  protected showPlaceOrderButton$ = combineLatest([
-    this.isGuestCheckout$,
-    this.isAuthenticated$,
-  ]).pipe(
-    map(
-      ([isGuestCheckout, isAuthenticated]) => isGuestCheckout || isAuthenticated
-    )
-  );
+  protected override render(): TemplateResult | void {
+    if (this.isEmpty()) return;
 
-  protected isBusy$ = new BehaviorSubject(false);
+    return html`<oryx-button
+      ?inert=${this.isBusy()}
+      ?loading=${this.isBusy()}
+      @click="${this.onClick}"
+    >
+      <button>${i18n('checkout.place-order')}</button>
+    </oryx-button>`;
+  }
 
-  submit(): void {
-    this.isBusy$.next(true);
-    this.checkout.placeOrder().subscribe({
-      complete: () => {
-        this.isBusy$.next(false);
-      },
+  protected onClick(): void {
+    this.isBusy.set(true);
+    this.checkoutService.placeOrder().subscribe({
+      complete: () => this.isBusy.set(false),
       error: (error) => {
-        this.isBusy$.next(false);
+        this.isBusy.set(false);
         throw error;
       },
     });
-  }
-
-  protected override render(): TemplateResult {
-    return html`${asyncValue(
-      this.showPlaceOrderButton$,
-      (showPlaceOrderButton) => {
-        if (!showPlaceOrderButton) {
-          return html``;
-        }
-
-        return html`<oryx-button
-          ?loading=${asyncValue(this.isBusy$)}
-          @click="${this.submit}"
-        >
-          <button ?inert=${asyncValue(this.isBusy$)}>
-            ${i18n('checkout.place-order')}
-          </button>
-        </oryx-button>`;
-      }
-    )}`;
   }
 }

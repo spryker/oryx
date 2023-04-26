@@ -1,5 +1,5 @@
 import {
-  CheckoutComponentMixin,
+  CheckoutMixin,
   CheckoutOrchestrationService,
   CheckoutShipmentService,
   CheckoutStepType,
@@ -25,7 +25,7 @@ import { styles } from './shipment.styles';
 
 @signalAware()
 @hydratable('window:load')
-export class CheckoutShipmentComponent extends CheckoutComponentMixin(
+export class CheckoutShipmentComponent extends CheckoutMixin(
   ContentMixin(LitElement)
 ) {
   static styles = styles;
@@ -54,7 +54,7 @@ export class CheckoutShipmentComponent extends CheckoutComponentMixin(
 
     if (!carriers?.length) return this.renderEmpty();
 
-    return html` <h3>${i18n('checkout.steps.shipment')}</h3>
+    return html`<h3>${i18n('checkout.steps.shipment')}</h3>
       ${carriers.map(
         (carrier) => html`
           ${when(carriers.length > 1, () => html`<p>${carrier.name}</p>`)}

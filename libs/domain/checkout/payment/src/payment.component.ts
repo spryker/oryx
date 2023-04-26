@@ -53,7 +53,7 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
   }
 
   protected override render(): TemplateResult {
-    return html`${asyncValue(
+    return html` ${asyncValue(
       combineLatest([
         this.methods$,
         this.selectedPaymentMethod$,
@@ -61,16 +61,17 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
       ]),
       ([methods, selectedPaymentMethod, currentMethod]) =>
         methods?.length
-          ? html`${methods.map((method, i) =>
-              this.renderMethod(
-                method,
-                currentMethod
-                  ? currentMethod === method.id
-                  : !selectedPaymentMethod
-                  ? i === 0
-                  : selectedPaymentMethod === method.id
-              )
-            )}`
+          ? html` <h3>${i18n('checkout.steps.payment')}</h3>
+              ${methods.map((method, i) =>
+                this.renderMethod(
+                  method,
+                  currentMethod
+                    ? currentMethod === method.id
+                    : !selectedPaymentMethod
+                    ? i === 0
+                    : selectedPaymentMethod === method.id
+                )
+              )}`
           : this.renderEmpty()
     )}`;
   }

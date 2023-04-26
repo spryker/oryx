@@ -1,53 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { AuthService } from '@spryker-oryx/auth';
-import { CartService } from '@spryker-oryx/cart';
-import {
-  CheckoutDataService,
-  CheckoutOrchestrationService,
-} from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
-import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { mockCheckoutProviders } from '../../src/mocks/src';
 import { CheckoutCompositionComponent } from './composition.component';
 import { checkoutCompositionComponent } from './composition.def';
-
-class MockCartService implements Partial<CartService> {
-  isEmpty = vi.fn().mockReturnValue(of(true));
-}
-
-class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  isGuestCheckout = vi.fn().mockReturnValue(of(false));
-  setIsGuestCheckout = vi.fn();
-
-  getContactDetails = vi.fn().mockReturnValue(of({}));
-  getAddressDetails = vi.fn().mockReturnValue(of({}));
-}
-
-class MockCheckoutOrchestrationService
-  implements Partial<CheckoutOrchestrationService>
-{
-  getValidity = vi.fn().mockReturnValue(of([{}]));
-}
-
-class MockAuthService implements Partial<AuthService> {
-  isAuthenticated = vi.fn().mockReturnValue(of(false));
-}
-
-class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi.fn().mockReturnValue(of(null));
-}
-
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
-  get = vi.fn().mockReturnValue(of('/checkout'));
-}
-
-class MockRouterService implements Partial<RouterService> {
-  navigate = vi.fn();
-}
 
 describe('CheckoutCompositionComponent', () => {
   let element: CheckoutCompositionComponent;
@@ -58,36 +15,7 @@ describe('CheckoutCompositionComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: [
-        {
-          provide: CartService,
-          useClass: MockCartService,
-        },
-        {
-          provide: AddressService,
-          useClass: MockAddressService,
-        },
-        {
-          provide: CheckoutDataService,
-          useClass: MockCheckoutDataService,
-        },
-        {
-          provide: CheckoutOrchestrationService,
-          useClass: MockCheckoutOrchestrationService,
-        },
-        {
-          provide: AuthService,
-          useClass: MockAuthService,
-        },
-        {
-          provide: SemanticLinkService,
-          useClass: MockSemanticLinkService,
-        },
-        {
-          provide: RouterService,
-          useClass: MockRouterService,
-        },
-      ],
+      providers: [...mockCheckoutProviders],
     });
 
     element = await fixture(

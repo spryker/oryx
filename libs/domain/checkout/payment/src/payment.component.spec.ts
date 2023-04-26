@@ -34,7 +34,9 @@ describe('Checkout Payment Selector component', () => {
   let paymentService: MockPaymentService;
 
   const getElement = async () => {
-    element = await fixture(html`<checkout-payment></checkout-payment>`);
+    element = await fixture(
+      html`<oryx-checkout-payment></oryx-checkout-payment>`
+    );
   };
 
   beforeAll(async () => {

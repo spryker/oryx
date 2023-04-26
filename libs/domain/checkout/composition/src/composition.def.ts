@@ -6,4 +6,6 @@ export const checkoutCompositionComponent = componentDef({
     import('./composition.component').then(
       (m) => m.CheckoutCompositionComponent
     ),
+  schema: () =>
+    import('./composition.schema').then((m) => m.checkoutCompositionSchema),
 });

@@ -13,7 +13,7 @@ interface Props {
 
 const Template: Story<Props> = (props): TemplateResult => {
   toggleBehavior(props.behavior);
-  return html` <checkout-delivery></checkout-delivery> `;
+  return html` <oryx-checkout-delivery></oryx-checkout-delivery> `;
 };
 
 export const Guest = Template.bind({});

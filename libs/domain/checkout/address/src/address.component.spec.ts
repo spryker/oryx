@@ -72,7 +72,9 @@ describe('CheckoutAddressComponent', () => {
       AddressService
     ) as unknown as MockAddressService;
     dataService = testInjector.inject(CheckoutDataService);
-    element = await fixture(html`<checkout-address></checkout-address>`);
+    element = await fixture(
+      html`<oryx-checkout-address></oryx-checkout-address>`
+    );
   });
 
   afterEach(() => {
@@ -87,7 +89,9 @@ describe('CheckoutAddressComponent', () => {
   describe('when user has no address', () => {
     beforeEach(async () => {
       addressService.getAddresses = vi.fn().mockReturnValue(of(null));
-      element = await fixture(html`<checkout-address></checkout-address>`);
+      element = await fixture(
+        html`<oryx-checkout-address></oryx-checkout-address>`
+      );
     });
 
     it('should render address form component', () => {
@@ -98,7 +102,9 @@ describe('CheckoutAddressComponent', () => {
       let submitResult: boolean;
 
       beforeEach(async () => {
-        element = await fixture(html`<checkout-address></checkout-address>`);
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
+        );
         submitResult = element.submit();
       });
 
@@ -115,7 +121,9 @@ describe('CheckoutAddressComponent', () => {
       const reportCallback = vi.fn();
 
       beforeEach(async () => {
-        element = await fixture(html`<checkout-address></checkout-address>`);
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
+        );
         (
           element.renderRoot
             .querySelector('oryx-address-form')
@@ -134,7 +142,9 @@ describe('CheckoutAddressComponent', () => {
       let submitResult: boolean;
 
       beforeEach(async () => {
-        element = await fixture(html`<checkout-address></checkout-address>`);
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
+        );
         setFakeValue();
         submitResult = element.submit();
       });
@@ -154,7 +164,9 @@ describe('CheckoutAddressComponent', () => {
   describe('when user has address', () => {
     beforeEach(async () => {
       addressService.getAddresses = vi.fn().mockReturnValue(of([{}]));
-      element = await fixture(html`<checkout-address></checkout-address>`);
+      element = await fixture(
+        html`<oryx-checkout-address></oryx-checkout-address>`
+      );
     });
 
     it('should render address list component', () => {
@@ -166,7 +178,9 @@ describe('CheckoutAddressComponent', () => {
 
       beforeEach(async () => {
         addressService.getAddresses = vi.fn().mockReturnValue(of([{}]));
-        element = await fixture(html`<checkout-address></checkout-address>`);
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
+        );
         submitResult = element.submit();
       });
 
@@ -185,7 +199,9 @@ describe('CheckoutAddressComponent', () => {
 
       beforeEach(async () => {
         addressService.getAddresses = vi.fn().mockReturnValue(of([{}]));
-        element = await fixture(html`<checkout-address></checkout-address>`);
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
+        );
         element.renderRoot.querySelector('oryx-address-list')?.dispatchEvent(
           new CustomEvent('oryx.select', {
             detail: { address: formData },

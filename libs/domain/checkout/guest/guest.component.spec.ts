@@ -6,7 +6,11 @@ import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { mockCheckoutProviders } from '../src/mocks/src';
+import {
+  MockAuthService,
+  MockCheckoutDataService,
+  mockCheckoutProviders,
+} from '../src/mocks/src';
 import { CheckoutDataService } from '../src/services';
 import { CheckoutGuestComponent } from './guest.component';
 import { checkoutGuestComponent } from './guest.def';
@@ -17,8 +21,8 @@ describe('Checkout Guest', () => {
   let element: CheckoutGuestComponent;
   let routerService: RouterService;
   let linkService: SemanticLinkService;
-  let checkoutDataService: CheckoutDataService;
-  let authService: AuthService;
+  let checkoutDataService: MockCheckoutDataService;
+  let authService: MockAuthService;
 
   beforeAll(async () => {
     await useComponent(checkoutGuestComponent);
@@ -30,8 +34,9 @@ describe('Checkout Guest', () => {
     });
 
     routerService = testInjector.inject(RouterService);
-    checkoutDataService = testInjector.inject(CheckoutDataService);
-    authService = testInjector.inject(AuthService);
+    checkoutDataService =
+      testInjector.inject<MockCheckoutDataService>(CheckoutDataService);
+    authService = testInjector.inject<MockAuthService>(AuthService);
     linkService = testInjector.inject(SemanticLinkService);
     // linkService.get = vi.fn().mockReturnValue(of(mockLink));
   });
@@ -48,7 +53,7 @@ describe('Checkout Guest', () => {
 
   describe('when the isGuestCheckout() emits true', () => {
     beforeEach(async () => {
-      checkoutDataService.isGuestCheckout = vi.fn().mockReturnValue(of(true));
+      checkoutDataService.isGuestCheckout.mockReturnValue(of(true));
       linkService.get = vi.fn().mockReturnValue(of(mockLink));
       element = await fixture(
         html`<oryx-checkout-guest></oryx-checkout-guest>`
@@ -75,7 +80,7 @@ describe('Checkout Guest', () => {
 
   describe('when the user is authenticated', () => {
     beforeEach(async () => {
-      authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
+      authService.isAuthenticated.mockReturnValue(of(true));
       linkService.get = vi.fn().mockReturnValue(of(mockLink));
       element = await fixture(
         html`<oryx-checkout-guest></oryx-checkout-guest>`

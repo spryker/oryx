@@ -27,9 +27,10 @@ export const CheckoutPage: StaticComponent = {
         {
           type: 'oryx-checkout-composition',
           components: [
-            { type: 'checkout-delivery' },
+            { type: 'oryx-checkout-guest' },
+            { type: 'oryx-checkout-delivery' },
             { type: 'oryx-checkout-shipment' },
-            { type: 'checkout-payment' },
+            { type: 'oryx-checkout-payment' },
           ],
           options: { data: { rules: [{ layout: 'list' }] } },
         },
@@ -75,7 +76,7 @@ export const CheckoutPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'checkout-place-order' },
+        { type: 'oryx-checkout-place-order' },
       ],
     },
   ],

@@ -9,9 +9,11 @@ import {
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import {
+  MockAuthService,
   MockCheckoutDataService,
   MockCheckoutOrchestrationService,
   mockCheckoutProviders,
@@ -19,11 +21,15 @@ import {
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
 
+class MockAddressService implements Partial<AddressService> {
+  getAddresses = vi.fn().mockReturnValue(of([]));
+}
+
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
   let orchestrationService: MockCheckoutOrchestrationService;
   let checkoutDataService: MockCheckoutDataService;
-  let authService: AuthService;
+  let authService: MockAuthService;
 
   beforeAll(async () => {
     await useComponent(checkoutDeliveryComponent);
@@ -31,7 +37,13 @@ describe('CheckoutDeliveryComponent', () => {
 
   beforeEach(async () => {
     const injector = createInjector({
-      providers: [...mockCheckoutProviders],
+      providers: [
+        ...mockCheckoutProviders,
+        {
+          provide: AddressService,
+          useClass: MockAddressService,
+        },
+      ],
     });
 
     orchestrationService = injector.inject<MockCheckoutOrchestrationService>(
@@ -39,10 +51,11 @@ describe('CheckoutDeliveryComponent', () => {
     );
     checkoutDataService =
       injector.inject<MockCheckoutDataService>(CheckoutDataService);
+    authService = injector.inject<MockAuthService>(AuthService);
 
-    authService = injector.inject(AuthService);
-
-    element = await fixture(html`<checkout-delivery></checkout-delivery>`);
+    element = await fixture(
+      html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+    );
   });
 
   afterEach(() => {
@@ -57,11 +70,13 @@ describe('CheckoutDeliveryComponent', () => {
   describe('when user is authenticated', () => {
     beforeEach(async () => {
       authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
-      element = await fixture(html`<checkout-delivery></checkout-delivery>`);
+      element = await fixture(
+        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+      );
     });
 
     it('should not render contact details', () => {
-      expect(element).not.toContainElement('checkout-contact');
+      expect(element).not.toContainElement('oryx-checkout-contact');
     });
   });
 
@@ -70,13 +85,17 @@ describe('CheckoutDeliveryComponent', () => {
     let addressElement: (HTMLElement & CheckoutForm) | null;
     const subject = new BehaviorSubject<CheckoutTrigger | null>(null);
     beforeEach(async () => {
-      orchestrationService.getTrigger = vi.fn().mockReturnValue(subject);
+      orchestrationService.getTrigger.mockReturnValue(subject);
       checkoutDataService.isGuestCheckout.mockReturnValue(of(true));
-      // checkoutDataService.isGuestCheckout = vi.fn().mockReturnValue(of(true));
-      // orchestrationService.report = vi.fn();
-      element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-      contactElement = element.renderRoot.querySelector('checkout-contact');
-      addressElement = element.renderRoot.querySelector('checkout-address');
+      element = await fixture(
+        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+      );
+      contactElement = element.renderRoot.querySelector(
+        'oryx-checkout-contact'
+      );
+      addressElement = element.renderRoot.querySelector(
+        'oryx-checkout-address'
+      );
       if (contactElement && addressElement) {
         contactElement.submit = vi.fn().mockReturnValue(true);
         addressElement.submit = vi.fn().mockReturnValue(true);
@@ -84,7 +103,7 @@ describe('CheckoutDeliveryComponent', () => {
     });
 
     it('should render contact details', () => {
-      expect(element).toContainElement('checkout-contact');
+      expect(element).toContainElement('oryx-checkout-contact');
     });
 
     describe('and the CheckoutTrigger.Report is triggered', () => {
