@@ -27,10 +27,11 @@ export const CheckoutPage: StaticComponent = {
         {
           type: 'oryx-checkout-composition',
           components: [
-            { type: 'checkout-delivery', name: 'test', options: {} },
-            { type: 'checkout-shipment' },
+            { type: 'checkout-delivery' },
+            { type: 'oryx-checkout-shipment' },
+            { type: 'checkout-payment' },
           ],
-          options: { data: { rules: [{ layout: 'tabular' }] } },
+          options: { data: { rules: [{ layout: 'list' }] } },
         },
         {
           type: 'oryx-cart-entries',

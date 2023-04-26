@@ -24,7 +24,7 @@ export const styles = css`
     padding: var(--oryx-space-4);
   }
 
-  .price {
+  oryx-price {
     font-weight: 600;
     font-size: 16px;
     margin-inline-start: auto;

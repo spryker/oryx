@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import {
+  CheckoutDataService,
   CheckoutForm,
   CheckoutOrchestrationService,
   CheckoutStepType,
@@ -8,74 +9,38 @@ import {
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
+import {
+  MockCheckoutDataService,
+  MockCheckoutOrchestrationService,
+  mockCheckoutProviders,
+} from '../../src/mocks/src';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
-
-class MockCheckoutOrchestrationService
-  implements Partial<CheckoutOrchestrationService>
-{
-  trigger$ = new BehaviorSubject<any>(null);
-  getTrigger = vi.fn().mockReturnValue(this.trigger$);
-  report = vi.fn();
-  submit = vi.fn();
-}
-
-class MockAuthService implements Partial<AuthService> {
-  isAuthenticated = vi.fn().mockReturnValue(of(false));
-}
-
-const setupFakeComponents = (): void => {
-  class FakeComponent extends LitElement implements CheckoutForm {
-    submit = vi.fn().mockReturnValue(true);
-
-    render(): TemplateResult {
-      return html``;
-    }
-  }
-
-  customElements.define('checkout-contact', FakeComponent);
-
-  customElements.define('checkout-address', class extends FakeComponent {});
-};
-
-type FormElement = LitElement & CheckoutForm;
 
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
   let orchestrationService: MockCheckoutOrchestrationService;
-  let authService: MockAuthService;
-  let contactElement: FormElement;
-  let addressElement: FormElement;
-
-  setupFakeComponents();
+  let checkoutDataService: MockCheckoutDataService;
+  let authService: AuthService;
 
   beforeAll(async () => {
     await useComponent(checkoutDeliveryComponent);
   });
 
   beforeEach(async () => {
-    const testInjector = createInjector({
-      providers: [
-        {
-          provide: AuthService,
-          useClass: MockAuthService,
-        },
-        {
-          provide: CheckoutOrchestrationService,
-          useClass: MockCheckoutOrchestrationService,
-        },
-      ],
+    const injector = createInjector({
+      providers: [...mockCheckoutProviders],
     });
 
-    orchestrationService = testInjector.inject(
+    orchestrationService = injector.inject<MockCheckoutOrchestrationService>(
       CheckoutOrchestrationService
-    ) as unknown as MockCheckoutOrchestrationService;
+    );
+    checkoutDataService =
+      injector.inject<MockCheckoutDataService>(CheckoutDataService);
 
-    authService = testInjector.inject(
-      AuthService
-    ) as unknown as MockAuthService;
+    authService = injector.inject(AuthService);
 
     element = await fixture(html`<checkout-delivery></checkout-delivery>`);
   });
@@ -89,10 +54,9 @@ describe('CheckoutDeliveryComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('when user is authorized', () => {
+  describe('when user is authenticated', () => {
     beforeEach(async () => {
-      authService.isAuthenticated.mockReturnValue(of(true));
-
+      authService.isAuthenticated = vi.fn().mockReturnValue(of(true));
       element = await fixture(html`<checkout-delivery></checkout-delivery>`);
     });
 
@@ -101,90 +65,87 @@ describe('CheckoutDeliveryComponent', () => {
     });
   });
 
-  describe('when check is triggered', () => {
+  describe('when guest user is supported', () => {
+    let contactElement: (HTMLElement & CheckoutForm) | null;
+    let addressElement: (HTMLElement & CheckoutForm) | null;
+    const subject = new BehaviorSubject<CheckoutTrigger | null>(null);
     beforeEach(async () => {
+      orchestrationService.getTrigger = vi.fn().mockReturnValue(subject);
+      checkoutDataService.isGuestCheckout.mockReturnValue(of(true));
+      // checkoutDataService.isGuestCheckout = vi.fn().mockReturnValue(of(true));
+      // orchestrationService.report = vi.fn();
       element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-
-      contactElement = element.renderRoot.querySelector(
-        'checkout-contact'
-      ) as FormElement;
-      addressElement = element.renderRoot.querySelector(
-        'checkout-address'
-      ) as FormElement;
-
-      orchestrationService.trigger$.next(CheckoutTrigger.Check);
+      contactElement = element.renderRoot.querySelector('checkout-contact');
+      addressElement = element.renderRoot.querySelector('checkout-address');
+      if (contactElement && addressElement) {
+        contactElement.submit = vi.fn().mockReturnValue(true);
+        addressElement.submit = vi.fn().mockReturnValue(true);
+      }
     });
 
-    it('should check forms validity', () => {
-      expect(contactElement.submit).toHaveBeenCalled();
-      expect(addressElement.submit).toHaveBeenCalled();
+    it('should render contact details', () => {
+      expect(element).toContainElement('checkout-contact');
     });
 
-    it('should report valid state', () => {
-      expect(orchestrationService.report).toHaveBeenCalledWith(
-        CheckoutStepType.Delivery,
-        true
-      );
-    });
+    describe('and the CheckoutTrigger.Report is triggered', () => {
+      describe('and both forms are valid', () => {
+        beforeEach(async () => {
+          subject.next(CheckoutTrigger.Report);
+        });
 
-    describe('and first form is invalid', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-
-        contactElement = element.renderRoot.querySelector(
-          'checkout-contact'
-        ) as FormElement;
-        contactElement.submit = vi.fn().mockReturnValue(false);
-
-        orchestrationService.trigger$.next(CheckoutTrigger.Check);
+        it('should submit both forms', () => {
+          expect(contactElement?.submit).toHaveBeenCalled();
+          expect(addressElement?.submit).toHaveBeenCalled();
+        });
       });
 
-      it('should report invalid state', () => {
-        expect(orchestrationService.report).toHaveBeenCalledWith(
-          CheckoutStepType.Delivery,
-          false
-        );
-      });
-    });
-  });
+      describe('and the contact form is invalid', () => {
+        beforeEach(async () => {
+          if (contactElement) {
+            contactElement.submit = vi.fn().mockReturnValue(false);
+          }
+          subject.next(CheckoutTrigger.Report);
+        });
 
-  describe('when report is triggered', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-
-      contactElement = element.renderRoot.querySelector(
-        'checkout-contact'
-      ) as FormElement;
-      addressElement = element.renderRoot.querySelector(
-        'checkout-address'
-      ) as FormElement;
-
-      orchestrationService.trigger$.next(CheckoutTrigger.Report);
-    });
-
-    it('should submit the forms with param', () => {
-      expect(contactElement.submit).toHaveBeenCalledWith(true);
-      expect(addressElement.submit).toHaveBeenCalledWith(true);
-    });
-
-    describe('and first form is invalid', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<checkout-delivery></checkout-delivery>`);
-
-        contactElement = element.renderRoot.querySelector(
-          'checkout-contact'
-        ) as FormElement;
-        addressElement = element.renderRoot.querySelector(
-          'checkout-address'
-        ) as FormElement;
-        contactElement.submit = vi.fn().mockReturnValue(false);
-
-        orchestrationService.trigger$.next(CheckoutTrigger.Report);
+        it('should not submit the address form', () => {
+          expect(contactElement?.submit).toHaveBeenCalled();
+          expect(addressElement?.submit).not.toHaveBeenCalled();
+        });
       });
 
-      it('should submit only the first form', () => {
-        expect(contactElement.submit).toHaveBeenCalled();
-        expect(addressElement.submit).not.toHaveBeenCalled();
+      it('should not report the form state', () => {
+        expect(orchestrationService.report).not.toHaveBeenCalled();
+      });
+
+      describe('and the CheckoutTrigger.Check is triggered', () => {
+        describe('and both forms are valid', () => {
+          beforeEach(async () => {
+            subject.next(CheckoutTrigger.Check);
+          });
+
+          it('should report the form state', () => {
+            expect(orchestrationService.report).toHaveBeenCalledWith(
+              CheckoutStepType.Delivery,
+              true
+            );
+          });
+        });
+
+        describe('and the contact form is invalid', () => {
+          beforeEach(async () => {
+            if (contactElement) {
+              contactElement.submit = vi.fn().mockReturnValue(false);
+            }
+            subject.next(CheckoutTrigger.Check);
+          });
+
+          it('should report the form state', () => {
+            expect(orchestrationService.report).toHaveBeenCalledWith(
+              CheckoutStepType.Delivery,
+              false
+            );
+          });
+        });
       });
     });
   });

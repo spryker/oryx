@@ -1,4 +1,5 @@
 import {
+  CheckoutComponentMixin,
   CheckoutOrchestrationService,
   CheckoutShipmentService,
   CheckoutStepType,
@@ -6,92 +7,78 @@ import {
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { PricingService } from '@spryker-oryx/site';
 import {
   asyncValue,
+  effect,
   hydratable,
   i18n,
+  signal,
+  signalAware,
   subscribe,
 } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { tap } from 'rxjs';
 import { styles } from './shipment.styles';
 
+@signalAware()
 @hydratable('window:load')
-export class CheckoutShipmentComponent extends ComponentMixin() {
+export class CheckoutShipmentComponent extends CheckoutComponentMixin(
+  ContentMixin(LitElement)
+) {
   static styles = styles;
 
   protected shipmentService = resolve(CheckoutShipmentService);
-  protected priceService = resolve(PricingService);
-  protected localeService = resolve(LocaleService);
   protected orchestrationService = resolve(CheckoutOrchestrationService);
+  protected localeService = resolve(LocaleService);
 
-  protected carriers$ = this.shipmentService.getCarriers();
-  protected currentMethod$ = new BehaviorSubject<string | number | null>(null);
-  protected selectedShipmentMethod$ =
-    this.shipmentService.getSelectedShipmentMethod();
+  protected carriers = signal(this.shipmentService.getCarriers());
+  protected selected = signal(this.shipmentService.getSelectedShipmentMethod());
 
+  // TODO: consider moving to effect whenever component life cycle is supported
   @subscribe()
-  protected submitTrigger$ = this.orchestrationService
+  protected triggerValidation = this.orchestrationService
     .getTrigger(CheckoutStepType.Shipping)
-    .pipe(
-      switchMap((trigger) => {
-        return this.submit().pipe(
-          tap((valid) => {
-            if (trigger === CheckoutTrigger.Check) {
-              this.orchestrationService.report(
-                CheckoutStepType.Shipping,
-                valid
-              );
-            }
-          })
-        );
-      })
-    );
+    .pipe(tap((trigger) => this.report(trigger)));
 
-  submit(): Observable<boolean> {
-    const selected = this.renderRoot.querySelector(
-      'input[checked]'
-    ) as HTMLInputElement;
-
-    if (selected) {
-      return this.shipmentService
-        .setShipmentMethod(parseInt(selected.value))
-        .pipe(map(() => true));
+  protected eff = effect(() => {
+    if (!this.selected() && this.carriers()?.length) {
+      this.select(Number(this.carriers()?.[0]?.shipmentMethods?.[0].id));
     }
+  });
 
-    return of(false);
+  protected override render(): TemplateResult | void {
+    const carriers = this.carriers();
+
+    if (!carriers?.length) return this.renderEmpty();
+
+    return html` <h3>${i18n('checkout.steps.shipment')}</h3>
+      ${carriers.map(
+        (carrier) => html`
+          ${when(carriers.length > 1, () => html`<p>${carrier.name}</p>`)}
+          ${carrier.shipmentMethods.map((method, i) =>
+            this.renderMethod(method)
+          )}
+        `
+      )}`;
   }
 
-  protected renderMethod(
-    method: ShipmentMethod,
-    selected = false
-  ): TemplateResult {
-    return html`<oryx-tile ?selected="${selected}">
+  protected renderMethod(method: ShipmentMethod): TemplateResult {
+    const isSelected = Number(method.id) === this.selected();
+    return html`<oryx-tile ?selected="${isSelected}">
       <oryx-radio>
         <input
           name="shipment-method"
           type="radio"
           value="${method.id}"
-          ?checked="${selected}"
-          @change="${(e: Event) => this.onChange(e, method.id)}"
+          ?checked="${isSelected}"
+          @change="${this.onChange}"
         />
         <div>
           <span>${method.name}</span>
-          <span class="price">
-            ${asyncValue(this.priceService.format(method.price))}
-          </span>
+          <oryx-price .value=${method.price}></oryx-price>
         </div>
         ${when(
           method.deliveryTime,
@@ -107,9 +94,24 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
     </oryx-tile>`;
   }
 
-  protected onChange(e: Event, methodId: string | number): void {
-    this.currentMethod$.next(methodId);
-    this.orchestrationService.report(CheckoutStepType.Shipping, true);
+  protected report(action: CheckoutTrigger): void {
+    if (action === CheckoutTrigger.Check) {
+      this.orchestrationService.report(
+        CheckoutStepType.Shipping,
+        !!this.selected()
+      );
+    }
+  }
+
+  protected onChange(e: Event): void {
+    const id = (e.target as HTMLInputElement).value;
+    if (id) this.select(Number(id));
+  }
+
+  protected select(methodId?: number): void {
+    if (methodId && methodId !== this.selected()) {
+      this.shipmentService.setShipmentMethod(methodId);
+    }
   }
 
   protected renderEmpty(): TemplateResult {
@@ -117,34 +119,5 @@ export class CheckoutShipmentComponent extends ComponentMixin() {
       <p class="no-methods">
         ${i18n('checkout.no-shipment-methods-available')}
       </p>`;
-  }
-
-  protected override render(): TemplateResult {
-    return html`${asyncValue(
-      combineLatest([
-        this.carriers$,
-        this.selectedShipmentMethod$,
-        this.currentMethod$,
-      ]),
-      ([carriers, selectedShipmentMethod, currentMethod]) =>
-        !carriers?.length
-          ? this.renderEmpty()
-          : html`${carriers.map(
-              (carrier, i) => html`${when(
-                carriers.length > 1,
-                () => html`<p>${carrier.name}</p>`
-              )}
-              ${carrier.shipmentMethods.map((item, j) =>
-                this.renderMethod(
-                  item,
-                  currentMethod
-                    ? currentMethod === item.id
-                    : selectedShipmentMethod === 0
-                    ? i === 0 && j === 0
-                    : selectedShipmentMethod == item.id
-                )
-              )}`
-            )}`
-    )}`;
   }
 }

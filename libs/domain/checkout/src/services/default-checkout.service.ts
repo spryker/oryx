@@ -15,7 +15,6 @@ import {
   switchMap,
   take,
   tap,
-  throwError,
 } from 'rxjs';
 import {
   Checkout,
@@ -57,14 +56,7 @@ export class DefaultCheckoutService implements CheckoutService {
           validity.every(({ validity }) => validity === Validity.Valid)
         ),
         switchMap((canCheckout) =>
-          canCheckout
-            ? this.preparePayload()
-            : throwError(
-                () =>
-                  new Error(
-                    'Cannot checkout, check your cart value limits and validations'
-                  )
-              )
+          canCheckout ? this.preparePayload() : of()
         ),
         switchMap((payload) =>
           this.adapter.placeOrder({ attributes: payload })

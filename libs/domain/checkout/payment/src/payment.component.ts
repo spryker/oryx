@@ -15,15 +15,7 @@ import {
   subscribe,
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
@@ -40,33 +32,24 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
     .getPayment()
     .pipe(map((method) => method?.id));
 
+  // TODO: consider moving to effect whenever component life cycle is supported
   @subscribe()
-  protected submitTrigger$ = this.orchestrationService
+  protected triggerValidation = this.orchestrationService
     .getTrigger(CheckoutStepType.Payment)
-    .pipe(
-      switchMap((trigger) => {
-        return this.submit().pipe(
-          tap((valid) => {
-            if (trigger === CheckoutTrigger.Check) {
-              this.orchestrationService.report(CheckoutStepType.Payment, valid);
-            }
-          })
-        );
-      })
-    );
+    .pipe(tap((trigger) => this.submit(trigger)));
 
-  submit(): Observable<boolean> {
-    const selected = this.renderRoot.querySelector(
-      'input[checked]'
-    ) as HTMLInputElement;
+  submit(action: CheckoutTrigger): void {
+    const selected =
+      this.renderRoot.querySelector<HTMLInputElement>('input[checked]');
 
     if (selected) {
-      return this.service
-        .setPaymentMethod(selected.value)
-        .pipe(map(() => true));
+      // TODO: avoid subscribing
+      this.service.setPaymentMethod(selected.value).subscribe();
     }
 
-    return of(false);
+    if (action === CheckoutTrigger.Check) {
+      this.orchestrationService.report(CheckoutStepType.Payment, !!selected);
+    }
   }
 
   protected override render(): TemplateResult {
@@ -105,7 +88,7 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
           .value="${method.id}"
           @change="${() => {
             this.currentMethod$.next(method.id);
-            this.orchestrationService.report(CheckoutStepType.Payment, true);
+            // this.orchestrationService.report(CheckoutStepType.Payment, true);
           }}"
         />
         ${method.name}

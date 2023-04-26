@@ -1,15 +1,9 @@
 import { Observable } from 'rxjs';
-import {
-  CheckoutStep,
-  CheckoutStepType,
-  CheckoutTrigger,
-  ValidityReport,
-} from '../models';
+import { CheckoutStepType, CheckoutTrigger, ValidityReport } from '../models';
 
 export interface CheckoutOrchestrationService {
-  getTrigger(step: CheckoutStepType): Observable<CheckoutTrigger | null>;
+  getTrigger(step: CheckoutStepType): Observable<CheckoutTrigger>;
   getValidity(): Observable<ValidityReport[]>;
-  getStep(step: CheckoutStepType): Observable<Required<CheckoutStep> | null>;
   report(step: CheckoutStepType, isValid: boolean): void;
   submit(step?: CheckoutStepType): Observable<ValidityReport[]>;
 }

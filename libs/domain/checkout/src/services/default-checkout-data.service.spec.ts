@@ -23,7 +23,7 @@ class MockStorageService implements Partial<StorageService> {
   remove = vi.fn();
 }
 
-class MockIdenityService implements Partial<IdentityService> {
+class MockIdentityService implements Partial<IdentityService> {
   _identity = new BehaviorSubject<any>(undefined);
   get = () => this._identity;
 }
@@ -42,7 +42,7 @@ describe('DefaultCheckoutDataService', () => {
         },
         {
           provide: IdentityService,
-          useClass: MockIdenityService,
+          useClass: MockIdentityService,
         },
         {
           provide: CheckoutDataService,
@@ -265,7 +265,7 @@ describe('DefaultCheckoutDataService', () => {
     it('should reset the state', async () => {
       const identityService = testInjector.inject(
         IdentityService
-      ) as MockIdenityService;
+      ) as MockIdentityService;
 
       service.setPayment(mockNormalizedPaymentMethods[0]);
       service.setGuestCheckout();

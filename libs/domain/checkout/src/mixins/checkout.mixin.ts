@@ -10,10 +10,11 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { combineLatest, tap } from 'rxjs';
-import { CheckoutDataService } from '../services';
+import { CheckoutDataService, CheckoutOrchestrationService } from '../services';
 
 export declare class CheckoutMixinInterface {
   protected checkoutDataService: CheckoutDataService;
+  protected orchestrationService: CheckoutOrchestrationService;
 
   protected routes: {
     checkout: ConnectableSignal<string | undefined>;
@@ -29,9 +30,10 @@ export const CheckoutComponentMixin = <T extends Type<LitElement>>(
 ): Type<CheckoutMixinInterface> & T => {
   @signalAware()
   class CheckoutMixinClass extends superClass {
-    protected checkoutDataService = resolve(CheckoutDataService);
     protected authService = resolve(AuthService);
     protected linkService = resolve(SemanticLinkService);
+    protected checkoutDataService = resolve(CheckoutDataService);
+    protected orchestrationService = resolve(CheckoutOrchestrationService);
 
     protected routes = {
       checkout: signal(
@@ -54,6 +56,7 @@ export const CheckoutComponentMixin = <T extends Type<LitElement>>(
       this.authService.isAuthenticated(),
     ]).pipe(
       tap(([isGuest, isAuthenticated]) => {
+        // console.log('guest', isGuest, isAuthenticated);
         const route =
           isGuest || isAuthenticated
             ? this.routes.checkout()

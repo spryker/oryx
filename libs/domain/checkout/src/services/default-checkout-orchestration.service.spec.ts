@@ -4,6 +4,7 @@ import {
   CheckoutTrigger,
   DefaultCheckoutOrchestrationService,
   Validity,
+  ValidityReport,
 } from '@spryker-oryx/checkout';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { firstValueFrom, Observable, take } from 'rxjs';
@@ -55,37 +56,66 @@ describe('DefaultCheckoutOrchestrationService', () => {
       }));
   });
 
-  describe('getValidity', () => {
-    it('should return an observable', () => {
-      expect(service.getValidity()).toBeInstanceOf(Observable);
+  describe('when multiple steps are registered', () => {
+    beforeEach(async () => {
+      service.getTrigger(CheckoutStepType.Delivery);
+      service.getTrigger(CheckoutStepType.Shipping);
+      service.getTrigger(CheckoutStepType.Payment);
     });
 
-    it('should be invalid by default', async () => {
-      const validity = await firstValueFrom(service.getValidity());
+    describe('and getValidity() is triggered', () => {
+      let validity: ValidityReport[];
+      beforeEach(async () => {
+        service
+          .getValidity()
+          .pipe(take(1))
+          .subscribe((v) => (validity = v));
+      });
 
-      expect(validity[0].validity).toEqual(Validity.Invalid);
+      it('should return invalid for each step', () => {
+        expect(validity?.[0].validity).toEqual(Validity.Invalid);
+        expect(validity?.[1].validity).toEqual(Validity.Invalid);
+        expect(validity?.[2].validity).toEqual(Validity.Invalid);
+      });
+    });
+
+    describe('and report is being triggered on the first step', () => {
+      beforeEach(async () => {
+        service.report(CheckoutStepType.Delivery, true);
+      });
+
+      it('should change validity status', async () => {
+        const validity = await firstValueFrom(service.getValidity());
+
+        expect(validity[0].validity).toEqual(Validity.Valid);
+      });
+    });
+
+    describe('and report is being triggered on the 2nd step', () => {
+      beforeEach(async () => {
+        service.report(CheckoutStepType.Shipping, true);
+      });
+
+      it('should change validity status', async () => {
+        const validity = await firstValueFrom(service.getValidity());
+
+        expect(validity[1].validity).toEqual(Validity.Valid);
+      });
     });
   });
 
-  describe('getStep', () => {
-    it('should return an observable with step details', async () => {
-      const { label, id } =
-        (await firstValueFrom(service.getStep(CheckoutStepType.Delivery))) ??
-        {};
-      expect(label).toBe('checkout.delivery-address');
-      expect(id).toBe(CheckoutStepType.Delivery);
-    });
-  });
+  describe('when no steps are registered', () => {
+    describe('and getValidity() is triggered', () => {
+      let validity: ValidityReport[];
+      beforeEach(async () => {
+        service
+          .getValidity()
+          .pipe(take(1))
+          .subscribe((v) => (validity = v));
+      });
 
-  describe('report', () => {
-    it('should change validity status', async () => {
-      service.report(CheckoutStepType.Delivery, true);
-
-      const validity = await firstValueFrom(service.getValidity());
-
-      expect(validity[0]).toEqual({
-        id: CheckoutStepType.Delivery,
-        validity: Validity.Valid,
+      it('should not return any steps', () => {
+        expect(validity).toBeUndefined();
       });
     });
   });
