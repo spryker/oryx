@@ -1,8 +1,6 @@
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
-import { LoginPage } from '../support/page_objects/login.page';
 
 const pickingListsFragment = new PickingListsFragment();
-const loginPage = new LoginPage();
 
 describe('Login Suite', () => {
   describe('when logged out', () => {
@@ -22,7 +20,7 @@ describe('Login Suite', () => {
 
       cy.login();
       cy.then(() => expect(isLoadingPage).to.be.true);
-      pickingListsFragment.getPickingListsItem().should('have.length', 2);
+      cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
     });
   });
