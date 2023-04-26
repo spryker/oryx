@@ -7,8 +7,21 @@ export interface ConnectableSignal<T> extends Signal<T> {
   disconnect(): void;
 }
 
+export let _resolvingSignals: number | undefined = undefined;
+
+export function resolvingSignals(): () => void | boolean {
+  _resolvingSignals = 1;
+
+  return () => {
+    const res = (_resolvingSignals ?? 1) > 1;
+    _resolvingSignals = undefined;
+    return res;
+  };
+}
+
 export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
   subscription?: Subscription;
+  protected resolving?: boolean;
 
   constructor(protected observable: Observable<T>, initialValue?: K) {
     super(initialValue as K);
@@ -26,6 +39,9 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
 
   watch(sniffer: SignalConsumer): void {
     if (this.consumers.size === 0) this.connect();
+    if (_resolvingSignals && this.resolving) {
+      _resolvingSignals++;
+    }
     super.watch(sniffer);
   }
 
@@ -36,7 +52,18 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
 
   connect(): void {
     if (!this.subscription) {
-      this.subscription = this.observable.subscribe((value) => this.set(value));
+      this.resolving = true;
+      this.subscription = this.observable.subscribe((value) => {
+        if (!this.resolving) {
+          this.set(value);
+        } else {
+          this.resolving = false;
+          if (!this.set(value) && _resolvingSignals) {
+            // force trigger change for resolving signals
+            this.changed();
+          }
+        }
+      });
     }
   }
 

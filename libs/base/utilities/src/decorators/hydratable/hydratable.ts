@@ -5,7 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
-import { Effect, effect } from '../../signals';
+import { Effect, effect, resolvingSignals } from '../../signals';
 import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
@@ -140,10 +140,26 @@ function hydratableClass<T extends Type<HTMLElement>>(
       prototype.connectedCallback.call(this);
     }
 
-    render(): TemplateResult {
+    protected signalResolver() {
       if (isServer) {
-          this[SIGNAL_EFFECT]?.stop();
+        this[SIGNAL_EFFECT]?.stop();
       }
+
+      this[SIGNAL_EFFECT] = effect(() => {
+        const hasResolving = resolvingSignals();
+        super.render();
+        if (hasResolving()) {
+          console.log('effect hold', this.tagName);
+          this[hydrationRender] = false;
+          this[SIGNAL_EFFECT]?.stop();
+        } else {
+          this[hydrationRender] = true;
+        }
+      });
+    }
+
+    render(): TemplateResult {
+      this.signalResolver();
 
       const states = this[asyncStates];
 

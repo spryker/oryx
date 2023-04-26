@@ -143,11 +143,12 @@ export class StateSignal<T> extends SignalProducer<T> {
     this.state = initialValue;
   }
 
-  set(value: T): void {
+  /** returns false if set was not effective (value is the same) */
+  set(value: T): boolean | void {
     if (value !== this.state) {
       this.state = value;
       this.changed();
-    }
+    } else return false;
   }
 
   get value(): T {
