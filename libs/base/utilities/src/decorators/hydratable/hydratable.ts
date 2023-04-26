@@ -143,6 +143,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
     protected signalResolver() {
       if (isServer) {
         this[SIGNAL_EFFECT]?.stop();
+        return;
       }
 
       this[SIGNAL_EFFECT] = effect(() => {
