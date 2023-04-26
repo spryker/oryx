@@ -57,7 +57,7 @@ function standardSignalProperty<T extends LitElement>(
   const { elements } = protoOrDescriptor;
   const propertyKey = protoOrDescriptor.key as keyof T;
 
-  return {
+  const descriptor = {
     kind: 'method',
     elements,
     key: propertyKey,
@@ -66,6 +66,7 @@ function standardSignalProperty<T extends LitElement>(
       propertyKey as string
     ),
   };
+  return property({ ...options, noAccessor: true })(descriptor);
 }
 
 export function signalProperty(options?: PropertyDeclaration) {
