@@ -1,7 +1,7 @@
 export default {
   'cart.totals.<count>-items':
     'Mein Warenkorb ({count, plural, one {ein artikel} other {{count} artikel}})',
-  'add-to-cart': 'In der Warnkorb',
+  'add-to-cart': 'In den Warenkorb',
   'cart.summary.heading': 'Warenkorb',
   login: 'Anmelden',
   logout: 'Ausloggen',
@@ -15,7 +15,7 @@ export default {
   price: 'Preis',
   quantity: 'Menge',
   'tax-included': 'Steuern inklusive',
-  'tax-excluded': 'Steuer ausgeschlossen',
+  'tax-excluded': 'Steuern exclusive',
   password: 'Passwort',
-  'remember-me': 'Mch erinnern',
+  'remember-me': 'Mich erinnern',
 };
