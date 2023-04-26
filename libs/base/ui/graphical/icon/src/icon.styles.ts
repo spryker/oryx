@@ -3,7 +3,6 @@ import { css, unsafeCSS } from 'lit';
 
 const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
 const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
-const xLargeSize = unsafeCSS(`[size='${Size.Xl}']`);
 
 export const styles = css`
   :host {
@@ -32,9 +31,5 @@ export const styles = css`
 
   :host(${smallSize}) {
     --_margin: 4px;
-  }
-
-  :host(${xLargeSize}) {
-    --_margin: -8px;
   }
 `;

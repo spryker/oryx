@@ -21,7 +21,6 @@ const Template: Story<unknown> = (): TemplateResult => {
     </style>
     <h1>Icon size by attribute</h1>
     <div class="icon-set">
-      <oryx-icon type=${icon} size=${Size.Xl}></oryx-icon>
       <oryx-icon type=${icon} size=${Size.Lg}></oryx-icon>
       <oryx-icon type=${icon} size=${Size.Md}></oryx-icon>
       <oryx-icon type=${icon} size=${Size.Sm}></oryx-icon>

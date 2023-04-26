@@ -8,6 +8,7 @@ export const styles = css`
     justify-content: center;
     height: 100vh;
     color: var(--oryx-color-canvas-100);
+    --oryx-icon-size: 32px;
   }
 
   :host:before {

@@ -31,7 +31,7 @@ export const SpinnerDemo = Template.bind({});
 
 SpinnerDemo.argTypes = {
   size: {
-    options: [Size.Xl, Size.Lg, Size.Md, Size.Sm],
+    options: [Size.Lg, Size.Md, Size.Sm],
     control: { type: 'select' },
   },
   icon: {
