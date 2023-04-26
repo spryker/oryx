@@ -44,7 +44,7 @@ IconDemo.argTypes = {
     control: { type: 'color' },
   },
   size: {
-    options: [Size.Lg, Size.Md, Size.Sm],
+    options: [Size.Xl, Size.Lg, Size.Md, Size.Sm],
     control: { type: 'radio' },
   },
 };

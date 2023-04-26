@@ -3,6 +3,7 @@ import { css, unsafeCSS } from 'lit';
 
 const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
 const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
+const xLargeSize = unsafeCSS(`[size='${Size.Xl}']`);
 
 export const styles = css`
   :host {
@@ -10,7 +11,7 @@ export const styles = css`
     --_margin: 0px;
 
     display: flex;
-    height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
+    height: var(--oryx-icon-size, var(--oryx-icon-size-xlarge, 32px));
     aspect-ratio: 1 / 1;
     justify-content: center;
     color: var(--oryx-icon-color, inherit);
@@ -31,5 +32,9 @@ export const styles = css`
 
   :host(${smallSize}) {
     --_margin: 4px;
+  }
+
+  :host(${xLargeSize}) {
+    --_margin: -8px;
   }
 `;
