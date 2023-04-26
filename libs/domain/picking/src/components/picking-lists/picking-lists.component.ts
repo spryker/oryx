@@ -1,5 +1,4 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListStatus } from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -7,6 +6,7 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
 
