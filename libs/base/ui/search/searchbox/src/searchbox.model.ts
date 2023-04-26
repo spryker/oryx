@@ -1,4 +1,6 @@
-export interface SearchOptions {
+export interface SearchAttributes {
+  open?: boolean;
+  backIcon?: string;
   searchIcon?: string;
   searchIconPosition?: SearchIconPosition;
   clearIcon?: string;
@@ -11,19 +13,19 @@ export interface SearchEvent {
 }
 
 export const enum SearchIconPosition {
-  PREFIX = 'PREFIX',
-  SUFFIX = 'SUFFIX',
-  NONE = 'NONE',
+  Prefix = 'prefix',
+  Suffix = 'suffix',
+  None = 'none',
 }
 
 export const enum ClearIconPosition {
-  AFTER = 'AFTER',
-  SUFFIX = 'SUFFIX',
-  NONE = 'NONE',
+  After = 'after',
+  Suffix = 'suffix',
+  None = 'none',
 }
 
 export const enum ClearIconAppearance {
-  HOVER = 'HOVER',
-  TOGGLE = 'TOGGLE',
-  SHOW = 'SHOW',
+  Hover = 'hover',
+  Toggle = 'toggle',
+  Show = 'show',
 }

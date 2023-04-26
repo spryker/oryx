@@ -1,0 +1,45 @@
+import {
+  initMutationObserverForComponent,
+  storybookDefaultViewports,
+} from '@spryker-oryx/ui';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../../.constants';
+
+export default {
+  title: `${storybookPrefix}/Search/Searchbox/Static`,
+  parameters: {
+    chromatic: {
+      delay: 3000,
+      viewports: [storybookDefaultViewports.mobile.min],
+    },
+  },
+} as Meta;
+
+const Template: Story = (): TemplateResult => {
+  return html`
+    <h2>Trigger</h2>
+    <oryx-search>
+      <input placeholder="Search..." />
+    </oryx-search>
+
+    <h2>Opened</h2>
+    <oryx-search open>
+      <input placeholder="Search..." />
+    </oryx-search>
+
+    <h2>Opened with value</h2>
+    <oryx-search open>
+      <input placeholder="Search..."/ value="Value">
+    </oryx-search>
+
+    <script>
+      ${initMutationObserverForComponent({
+        targetComponent: 'oryx-search',
+        targetSelector: '.control',
+        sourceSelector: 'input',
+      })};
+    </script>
+  `;
+};
+export const VariantsSmallScreen = Template.bind({});

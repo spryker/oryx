@@ -9,45 +9,82 @@ import { css } from 'lit';
 export const baseStyles = [
   ...inputBaseStyles,
   css`
-    .search,
-    .clear {
+    [class$='-button'] {
       cursor: pointer;
     }
 
-    .clear[type='remove'] {
+    .clear-button[type='remove'] {
       --oryx-icon-size: var(--oryx-icon-size-medium);
     }
 
-    .clear {
+    .clear-button {
       opacity: 0;
       z-index: 1;
       transition: opacity var(--oryx-transition-time, 0.3s);
       align-self: center;
     }
 
-    :host(:not([has-value])) [appearance='SHOW'] {
+    :host(:not([has-value])) [appearance='show'] {
       display: none;
     }
 
-    :host([has-value]) .clear:not([appearance='HOVER']),
-    :host([has-value]) .clear[appearance='HOVER']:hover {
+    :host([has-value]) .clear-button:not([appearance='hover']),
+    :host([has-value]) .clear-button[appearance='hover']:hover {
       opacity: 1;
     }
 
-    .clear:not([appearance='SHOW']) + oryx-icon {
+    .clear-button:not([appearance='show']) + oryx-icon {
       position: absolute;
     }
 
-    :host([has-value]) .clear[appearance='TOGGLE'] + .search,
-    :host([has-value]) .clear[appearance='HOVER']:hover + .search {
+    :host([has-value]) .clear-button[appearance='toggle'] + [class$='-button'],
+    :host([has-value])
+      .clear-button[appearance='hover']:hover
+      + [class$='-button'] {
       opacity: 0;
+    }
+
+    .back-button {
+      display: none;
+    }
+
+    slot[name='trigger'] {
+      display: none;
     }
   `,
 ];
 
 const smallScreen = css`
-  .clear[type='remove'] {
+  .clear-button[type='remove'] {
     --oryx-icon-size: var(--oryx-icon-size-large);
+  }
+
+  :host([open]) label {
+    display: block;
+  }
+
+  label {
+    position: absolute;
+    display: none;
+    inset-inline-start: calc(var(--floating-paddings, 20px) / 2);
+    width: calc(100vw - var(--floating-paddings, 20px));
+    transform: translateY(calc(-50% + var(--floating-offset, 16px)));
+  }
+
+  slot[name='label'] {
+    display: none;
+  }
+
+  .back-button + .search-button {
+    display: none;
+  }
+
+  .back-button {
+    display: block;
+  }
+
+  slot[name='trigger'] {
+    display: block;
   }
 `;
 

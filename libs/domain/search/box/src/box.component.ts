@@ -246,7 +246,7 @@ export class SearchBoxComponent
       <form @submit=${this.onSubmit}>
         <oryx-typeahead
           @oryx.typeahead=${this.onTypeahead}
-          .clearIconPosition=${ClearIconPosition.NONE}
+          .clearIconPosition=${ClearIconPosition.None}
         >
           <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
           <input

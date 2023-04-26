@@ -8,8 +8,8 @@ import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
 import {
   ClearIconAppearance,
+  SearchAttributes,
   SearchEvent,
-  SearchOptions,
 } from '../../../../search/searchbox';
 import {
   FilterStrategyType,
@@ -21,7 +21,7 @@ export default {
   title: `${storybookPrefix}/Form/Select`,
 } as Meta;
 
-interface Props extends TypeaheadOptions, SearchOptions, AffixOptions {
+interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
   searchIcon?: string;
   maxHeight?: string;
   dataSet?: 'branches' | 'states';
@@ -125,7 +125,7 @@ SelectDemo.parameters = {
 SelectDemo.args = {
   maxHeight: '300px',
   clearIcon: IconTypes.Remove,
-  clearIconAppearance: ClearIconAppearance.HOVER,
+  clearIconAppearance: ClearIconAppearance.Hover,
   prefixFill: false,
   suffixFill: false,
   floatLabel: false,
@@ -151,15 +151,15 @@ SelectDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIconPosition: {
-    options: ['PREFIX', 'SUFFIX', 'NONE'],
+    options: ['prefix', 'suffix', 'none'],
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   clearIconAppearance: {
     options: [
-      ClearIconAppearance.HOVER,
-      ClearIconAppearance.TOGGLE,
-      ClearIconAppearance.SHOW,
+      ClearIconAppearance.Hover,
+      ClearIconAppearance.Toggle,
+      ClearIconAppearance.Show,
     ],
     control: { type: 'select' },
     table: { category: 'Layout' },

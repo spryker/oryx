@@ -92,11 +92,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the searchIconPosition is PREFIX', () => {
+      describe('when the searchIconPosition is Prefix', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .searchIconPosition=${SearchIconPosition.PREFIX}
+              .searchIconPosition=${SearchIconPosition.Prefix}
               label="some label"
             ></oryx-search>`
           );
@@ -133,11 +133,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the searchIconPosition is SUFFIX', () => {
+      describe('when the searchIconPosition is Suffix', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .searchIconPosition=${SearchIconPosition.SUFFIX}
+              .searchIconPosition=${SearchIconPosition.Suffix}
               label="some label"
             ></oryx-search>`
           );
@@ -174,11 +174,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the searchIconPosition is NONE', () => {
+      describe('when the searchIconPosition is None', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .searchIconPosition=${SearchIconPosition.NONE}
+              .searchIconPosition=${SearchIconPosition.None}
               label="some label"
             ></oryx-search>`
           );
@@ -388,11 +388,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the position is AFTER', () => {
+      describe('when the position is After', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .clearIconPosition=${ClearIconPosition.AFTER}
+              .clearIconPosition=${ClearIconPosition.After}
               label="some label"
             ></oryx-search>`
           );
@@ -417,11 +417,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the position is SUFFIX', () => {
+      describe('when the position is Suffix', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .clearIconPosition=${ClearIconPosition.SUFFIX}
+              .clearIconPosition=${ClearIconPosition.Suffix}
               label="some label"
             ></oryx-search>`
           );
@@ -446,11 +446,11 @@ describe('SearchComponent', () => {
         });
       });
 
-      describe('when the position is NONE', () => {
+      describe('when the position is None', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .clearIconPosition=${ClearIconPosition.NONE}
+              .clearIconPosition=${ClearIconPosition.None}
               label="some label"
             ></oryx-search>`
           );
@@ -501,7 +501,7 @@ describe('SearchComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search
-              .clearIconAppearance=${ClearIconAppearance.HOVER}
+              .clearIconAppearance=${ClearIconAppearance.Hover}
               label="some label"
             ></oryx-search>`
           );

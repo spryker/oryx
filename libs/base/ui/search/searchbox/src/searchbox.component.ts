@@ -9,17 +9,18 @@ import { SearchboxController } from './searchbox.controller';
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  SearchAttributes,
   SearchIconPosition,
-  SearchOptions,
 } from './searchbox.model';
 import { baseStyles } from './searchbox.styles';
 
 export class SearchboxComponent
   extends LitElement
-  implements SearchOptions, FormControlOptions, AffixOptions
+  implements SearchAttributes, FormControlOptions, AffixOptions
 {
   static override styles = baseStyles;
 
+  @property({ reflect: true, type: Boolean }) open?: boolean;
   @property() label?: string;
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;
@@ -42,6 +43,7 @@ export class SearchboxComponent
         before: this.searchController.renderPrefix(),
         after: this.searchController.renderSuffix(),
       })}
+      ${this.searchController.renderTrigger()}
     `;
   }
 }
