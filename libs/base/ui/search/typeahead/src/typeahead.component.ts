@@ -30,6 +30,7 @@ export class TypeaheadComponent
 {
   static styles = baseStyles;
 
+  @property({ reflect: true, attribute: 'not-floated' }) notFloated = true;
   @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;

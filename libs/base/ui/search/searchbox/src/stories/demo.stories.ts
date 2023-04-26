@@ -34,6 +34,7 @@ const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
         clearIconAppearance=${options.clearIconAppearance}
         ?prefixFill=${options.prefixFill}
         ?suffixFill=${options.suffixFill}
+        ?not-floated=${options.notFloated}
       >
         <input
           placeholder="Search..."
@@ -59,6 +60,7 @@ SearchboxDemo.args = {
   suffixFill: false,
   disabled: false,
   readonly: false,
+  notFloated: false,
 };
 
 SearchboxDemo.argTypes = {

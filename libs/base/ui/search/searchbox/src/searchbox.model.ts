@@ -1,5 +1,9 @@
 export interface SearchAttributes {
   open?: boolean;
+  /**
+   * Prevent floating behaviour on small screens
+   */
+  notFloated?: boolean;
   backIcon?: string;
   searchIcon?: string;
   searchIconPosition?: SearchIconPosition;

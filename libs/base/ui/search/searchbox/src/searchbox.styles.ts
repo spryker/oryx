@@ -63,7 +63,7 @@ const smallScreen = css`
     display: block;
   }
 
-  label {
+  :host(:not([not-floated])) label {
     position: absolute;
     display: none;
     inset-inline-start: calc(var(--floating-paddings, 20px) / 2);
@@ -71,19 +71,12 @@ const smallScreen = css`
     transform: translateY(calc(-50% + var(--floating-offset, 16px)));
   }
 
-  slot[name='label'] {
+  :host(:not([not-floated]))
+    :is(slot[name='label'], .back-button + .search-button) {
     display: none;
   }
 
-  .back-button + .search-button {
-    display: none;
-  }
-
-  .back-button {
-    display: block;
-  }
-
-  slot[name='trigger'] {
+  :host(:not([not-floated])) :is(.back-button, slot[name='trigger']) {
     display: block;
   }
 `;

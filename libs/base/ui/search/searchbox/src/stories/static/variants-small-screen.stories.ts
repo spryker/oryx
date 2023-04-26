@@ -33,6 +33,11 @@ const Template: Story = (): TemplateResult => {
       <input placeholder="Search..."/ value="Value">
     </oryx-search>
 
+    <h2>Not floated</h2>
+    <oryx-search not-floated>
+      <input placeholder="Search..."/ value="Value">
+    </oryx-search>
+
     <script>
       ${initMutationObserverForComponent({
         targetComponent: 'oryx-search',
