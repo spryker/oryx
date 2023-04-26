@@ -16,6 +16,9 @@ export interface Component<C = CompositionProperties> {
   meta?: {
     route?: string;
     title?: string;
+    description?: string;
+    follow?: boolean;
+    index?: boolean;
     [key: string]: any;
   };
   components?: Component[];

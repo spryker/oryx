@@ -303,4 +303,108 @@ describe('ThemePlugin', () => {
       });
     });
   });
+
+  describe('generateScreenMedia', () => {
+    const breakpoints = {
+      xs: {
+        min: 0,
+        max: 399,
+      },
+      [Size.Sm]: {
+        min: 400,
+        max: 599,
+      },
+      [Size.Md]: {
+        min: 600,
+        max: 999,
+      },
+      [Size.Lg]: {
+        min: 1000,
+        max: 1200,
+      },
+      xl: {
+        min: 1201,
+      },
+    };
+    const mockABreakpointsTheme = {
+      breakpoints,
+      ...mockATheme,
+    } as Theme;
+    const plugin = new ThemePlugin([mockABreakpointsTheme]);
+
+    it('should not include media with 0 start point', () => {
+      const a = plugin.generateScreenMedia('xs');
+      expect(a).toBe(`@media (max-width: ${breakpoints.xs.max}px)`);
+    });
+
+    it('should generate proper media for single media', () => {
+      const a = plugin.generateScreenMedia('md');
+      expect(a).toBe(
+        `@media (min-width: ${breakpoints.md.min}px) and (max-width: ${breakpoints.md.max}px)`
+      );
+    });
+
+    it('should not include media with max value without end point', () => {
+      const a = plugin.generateScreenMedia('xl');
+      expect(a).toBe(`@media (min-width: ${breakpoints.xl.min}px)`);
+    });
+
+    it('should generate proper media for array of medias', () => {
+      const a = plugin.generateScreenMedia(['xs', 'sm']);
+      expect(a).toBe(`@media (max-width: ${breakpoints.sm.max}px)`);
+      const b = plugin.generateScreenMedia(['sm', 'md']);
+      expect(b).toBe(
+        `@media (min-width: ${breakpoints.sm.min}px) and (max-width: ${breakpoints.md.max}px)`
+      );
+      const c = plugin.generateScreenMedia(['sm', 'lg']);
+      expect(c).toBe(
+        `@media (min-width: ${breakpoints.sm.min}px) and (max-width: ${breakpoints.sm.max}px), (min-width: ${breakpoints.lg.min}px) and (max-width: ${breakpoints.lg.max}px)`
+      );
+      const d = plugin.generateScreenMedia(['xs', 'sm', 'lg', 'xl']);
+      expect(d).toBe(
+        `@media (max-width: ${breakpoints.sm.max}px), (min-width: ${breakpoints.lg.min}px)`
+      );
+      const e = plugin.generateScreenMedia(['xs', 'md', 'xl']);
+      expect(e).toBe(
+        `@media (max-width: ${breakpoints.xs.max}px), (min-width: ${breakpoints.md.min}px) and (max-width: ${breakpoints.md.max}px), (min-width: ${breakpoints.xl.min}px)`
+      );
+      const g = plugin.generateScreenMedia(['md', 'lg']);
+      expect(g).toBe(
+        `@media (min-width: ${breakpoints.md.min}px) and (max-width: ${breakpoints.lg.max}px)`
+      );
+    });
+
+    it('should exclude proper media from array of medias', () => {
+      const a = plugin.generateScreenMedia([], ['lg']);
+      expect(a).toBe(
+        `@media (max-width: ${breakpoints.md.max}px), (min-width: ${breakpoints.xl.min}px)`
+      );
+      const b = plugin.generateScreenMedia([], ['xs', 'sm', 'xl']);
+      expect(b).toBe(
+        `@media (min-width: ${breakpoints.md.min}px) and (max-width: ${breakpoints.lg.max}px)`
+      );
+      const c = plugin.generateScreenMedia([], ['xs', 'md', 'xl']);
+      expect(c).toBe(
+        `@media (min-width: ${breakpoints.sm.min}px) and (max-width: ${breakpoints.sm.max}px), (min-width: ${breakpoints.lg.min}px) and (max-width: ${breakpoints.lg.max}px)`
+      );
+    });
+
+    it('should generate proper media with both values', () => {
+      const a = plugin.generateScreenMedia(['sm'], ['sm', 'xl']);
+      expect(a).toBe(`@media (max-width: ${breakpoints.lg.max}px)`);
+      const b = plugin.generateScreenMedia(['sm', 'md'], ['sm', 'lg']);
+      expect(b).toBe(
+        `@media (max-width: ${breakpoints.md.max}px), (min-width: ${breakpoints.xl.min}px)`
+      );
+      const c = plugin.generateScreenMedia(['sm'], ['xs', 'sm', 'lg', 'xl']);
+      expect(c).toBe(
+        `@media (min-width: ${breakpoints.sm.min}px) and (max-width: ${breakpoints.md.max}px)`
+      );
+    });
+
+    it('should return null if both parameters are empty arrays', () => {
+      const a = plugin.generateScreenMedia([], []);
+      expect(a).toBeNull();
+    });
+  });
 });

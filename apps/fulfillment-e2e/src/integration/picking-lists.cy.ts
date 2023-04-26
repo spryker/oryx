@@ -5,7 +5,7 @@ const pickingListsFragment = new PickingListsFragment();
 describe('Picking Lists', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
-    cy.visit('/');
+    cy.login();
   });
 
   it('should display picking lists', () => {

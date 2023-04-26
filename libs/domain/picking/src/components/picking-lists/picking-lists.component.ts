@@ -71,7 +71,14 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderEmptyLists(): TemplateResult {
-    return html`<p>${i18n('picking.no-picking-lists-found')}</p>`;
+    return html`
+      <div class="no-items-fallback">
+        <oryx-heading as="h4">
+          ${i18n('picking.no-results-found')}
+        </oryx-heading>
+        <oryx-image resource="no-orders"></oryx-image>
+      </div>
+    `;
   }
 
   protected openCustomerNoteModal(event: CustomEvent): void {
