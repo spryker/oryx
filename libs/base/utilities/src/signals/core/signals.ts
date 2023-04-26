@@ -213,6 +213,10 @@ export class Computed<T> extends SignalProducer<T> {
   }
 }
 
+export interface EffectOptions {
+  autoStart?: boolean;
+}
+
 /**
  * Effect:
  *
@@ -224,12 +228,15 @@ export class Computed<T> extends SignalProducer<T> {
 export class Effect {
   protected consumer = new SignalConsumer(() => this.run());
 
-  constructor(protected effect: () => void) {
-    this.start();
+  constructor(
+    protected effect: (effect: Effect) => void,
+    protected options?: EffectOptions
+  ) {
+    if (options?.autoStart !== false) this.start();
   }
 
   protected run(): void {
-    this.consumer.run(this.effect);
+    this.consumer.run(() => this.effect(this));
   }
 
   start(): void {

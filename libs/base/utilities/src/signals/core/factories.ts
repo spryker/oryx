@@ -1,4 +1,4 @@
-import { Computed, Effect, StateSignal } from './signals';
+import { Computed, Effect, EffectOptions, StateSignal } from './signals';
 
 export interface Signal<T = unknown> {
   (): T;
@@ -31,6 +31,9 @@ export function computed<T>(computation: () => T): Signal<T> {
   return computed as Signal<T>;
 }
 
-export function effect(fn: () => void): Effect {
-  return new Effect(fn);
+export function effect(
+  fn: (effect: Effect) => void,
+  options?: EffectOptions
+): Effect {
+  return new Effect(fn, options);
 }
