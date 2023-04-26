@@ -26,6 +26,7 @@ export class DateComponent
   );
 
   protected override render(): TemplateResult | void {
+    if (!this.date()) return;
     if (this.i18nToken) {
       return html`${i18n(this.i18nToken, { date: this.date() })}`;
     } else {

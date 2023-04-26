@@ -80,18 +80,38 @@ describe('DateComponent', () => {
     beforeEach(async () => {
       localeService.get.mockReturnValue(of('en'));
       localeService.formatDate.mockReturnValue('formatted-date');
-      element = await fixture(
-        html`<oryx-date
-          .stamp=${new Date('2023-04-26')}
-          i18nToken="my.custom-<date>-date"
-        ></oryx-date>`
-      );
     });
 
-    it('should render the token', () => {
-      expect(element.shadowRoot?.textContent?.trim()).toBe(
-        'Custom formatted-date date'
-      );
+    describe('and there is a date available', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-date
+            .stamp=${new Date('2023-04-26')}
+            i18nToken="my.custom-<date>-date"
+          ></oryx-date>`
+        );
+      });
+
+      it('should render the token', () => {
+        expect(element.shadowRoot?.textContent?.trim()).toBe(
+          'Custom formatted-date date'
+        );
+      });
+    });
+
+    describe('and there is no date available', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-date
+            .stamp=${null}
+            i18nToken="my.custom-<date>-date"
+          ></oryx-date>`
+        );
+      });
+
+      it('should not render the token', () => {
+        expect(element.shadowRoot?.textContent?.trim()).toBe('');
+      });
     });
   });
 });

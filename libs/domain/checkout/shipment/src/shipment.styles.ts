@@ -30,7 +30,7 @@ export const styles = css`
     margin-inline-start: auto;
   }
 
-  small {
+  oryx-date {
     font-weight: 600;
     color: var(--oryx-color-neutral-200);
   }
