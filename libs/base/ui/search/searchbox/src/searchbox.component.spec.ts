@@ -32,9 +32,7 @@ describe('SearchComponent', () => {
         });
 
         it('should render the default search icon', () => {
-          expect(
-            getShadowElementBySelector(element, 'oryx-icon.search[type=search]')
-          ).not.toBeNull();
+          expect(element).toContainElement('.search-button[type=search]');
         });
       });
 
@@ -54,12 +52,9 @@ describe('SearchComponent', () => {
         });
 
         it('should render the custom search icon', () => {
-          expect(
-            getShadowElementBySelector(
-              element,
-              'oryx-icon.search[type=custom-search-icon]'
-            )
-          ).not.toBeNull();
+          expect(element).toContainElement(
+            '.search-button[type=custom-search-icon]'
+          );
         });
       });
     });
@@ -68,7 +63,7 @@ describe('SearchComponent', () => {
       const searchIcon = (slot: string): Element | undefined => {
         return queryFirstAssigned(element, {
           slot,
-          selector: '.search',
+          selector: '.search-button',
           flatten: true,
         });
       };
@@ -189,27 +184,21 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the search icon in the prefix slot', () => {
-          expect(
-            getShadowElementBySelector(
-              element,
-              'slot[name=prefix] .search oryx-icon'
-            )
-          ).toBeNull();
+          expect(element).not.toContainElement(
+            'slot[name=prefix] .search-button oryx-icon'
+          );
         });
 
         it('should not render the search icon in the suffix slot', () => {
-          expect(
-            getShadowElementBySelector(
-              element,
-              'slot[name=suffix] .search oryx-icon'
-            )
-          ).toBeNull();
+          expect(element).not.toContainElement(
+            'slot[name=suffix] .search-button oryx-icon'
+          );
         });
       });
     });
 
     const searchIcon = (): HTMLElement | null | undefined =>
-      getShadowElementBySelector(element, '.search');
+      getShadowElementBySelector(element, '.search-button');
 
     const itShouldDispatchSearchEvent = (value: string): void => {
       it(`should dispatch search event (${value})`, () =>
@@ -322,9 +311,7 @@ describe('SearchComponent', () => {
         });
 
         it('should render the default clear icon', () => {
-          expect(
-            getShadowElementBySelector(element, 'oryx-icon.clear[type=remove]')
-          ).not.toBeNull();
+          expect(element).toContainElement('.clear-button[type=remove]');
         });
       });
 
@@ -344,12 +331,9 @@ describe('SearchComponent', () => {
         });
 
         it('should render the custom clear icon', () => {
-          expect(
-            getShadowElementBySelector(
-              element,
-              'oryx-icon.clear[type=custom-clear-icon]'
-            )
-          ).not.toBeNull();
+          expect(element).toContainElement(
+            '.clear-button[type=custom-clear-icon]'
+          );
         });
       });
     });
@@ -358,7 +342,7 @@ describe('SearchComponent', () => {
       const clearIcon = (slot: string): Element | undefined => {
         return queryFirstAssigned(element, {
           slot,
-          selector: '.clear',
+          selector: '.clear-button',
           flatten: true,
         });
       };
@@ -374,9 +358,7 @@ describe('SearchComponent', () => {
         });
 
         it('should render the clear icon after the input control', () => {
-          expect(
-            getShadowElementBySelector(element, 'slot:not([name]) + .clear')
-          ).not.toBeNull();
+          expect(element).toContainElement('slot:not([name]) + .clear-button');
         });
 
         it('should not render the search icon in the prefix slot', () => {
@@ -403,9 +385,7 @@ describe('SearchComponent', () => {
         });
 
         it('should render the clear icon after the input control', () => {
-          expect(
-            getShadowElementBySelector(element, 'slot:not([name]) + .clear')
-          ).not.toBeNull();
+          expect(element).toContainElement('slot:not([name]) + .clear-button');
         });
 
         it('should not render the clear icon in the prefix slot', () => {
@@ -432,9 +412,9 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the clear icon after the input control', () => {
-          expect(
-            getShadowElementBySelector(element, 'slot:not([name]) + .clear')
-          ).toBeNull();
+          expect(element).not.toContainElement(
+            'slot:not([name]) + .clear-button'
+          );
         });
 
         it('should not render the search icon in the prefix slot', () => {
@@ -461,9 +441,9 @@ describe('SearchComponent', () => {
         });
 
         it('should not render the clear icon after the input control', () => {
-          expect(
-            getShadowElementBySelector(element, 'slot:not([name]) + .clear')
-          ).toBeNull();
+          expect(element).not.toContainElement(
+            'slot:not([name]) + .clear-button'
+          );
         });
 
         it('should not render the clear icon in the prefix slot', () => {
@@ -489,11 +469,9 @@ describe('SearchComponent', () => {
         });
 
         it('should use toggle', () => {
-          expect(
-            element.shadowRoot
-              ?.querySelector('.clear')
-              ?.getAttribute('appearance')
-          ).toBe('TOGGLE');
+          expect(element).toContainElement(
+            '.clear-button[appearance="toggle"]'
+          );
         });
       });
 
@@ -512,17 +490,13 @@ describe('SearchComponent', () => {
         });
 
         it('should add the appearance on the clear icon', () => {
-          expect(
-            element.shadowRoot
-              ?.querySelector('.clear')
-              ?.getAttribute('appearance')
-          ).toBe('HOVER');
+          expect(element).toContainElement('.clear-button[appearance="hover"]');
         });
       });
     });
 
     const clearIcon = (): HTMLElement | null | undefined =>
-      getShadowElementBySelector(element, '.clear');
+      getShadowElementBySelector(element, '.clear-button');
 
     describe('when the input is empty', () => {
       beforeEach(async () => {
@@ -626,6 +600,22 @@ describe('SearchComponent', () => {
           expect(element.hasAttribute('has-value')).toBe(true);
         });
       });
+    });
+  });
+
+  describe('trigger', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search label="some label"></oryx-search>`
+      );
+
+      element.renderRoot
+        .querySelector('[name="trigger"')
+        ?.dispatchEvent(new MouseEvent('click'));
+    });
+
+    it('should set "open" attribute on the host', () => {
+      expect(element.hasAttribute('open')).toBe(true);
     });
   });
 });
