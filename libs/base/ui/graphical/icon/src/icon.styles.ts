@@ -10,7 +10,7 @@ export const styles = css`
     --_margin: 0px;
 
     display: flex;
-    height: var(--oryx-icon-size, var(--oryx-icon-size-xlarge, 32px));
+    height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
     justify-content: center;
     color: var(--oryx-icon-color, inherit);
