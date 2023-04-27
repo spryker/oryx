@@ -3,7 +3,7 @@ import { StaticComponent } from '@spryker-oryx/experience';
 export const HomePage: StaticComponent = {
   type: 'Page',
   meta: {
-    title: 'New Home Page',
+    title: 'Home Page',
     route: '/',
     description: 'Home Page Description',
     follow: false,
