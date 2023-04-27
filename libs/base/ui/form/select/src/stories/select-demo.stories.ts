@@ -1,16 +1,17 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
+import {
+  ClearIconAppearance,
+  SearchAttributes,
+  SearchEvent,
+  SearchIconPosition,
+} from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
-import {
-  ClearIconAppearance,
-  SearchAttributes,
-  SearchEvent,
-} from '../../../../search/searchbox';
 import {
   FilterStrategyType,
   TypeaheadOptions,
@@ -151,7 +152,11 @@ SelectDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIconPosition: {
-    options: ['prefix', 'suffix', 'none'],
+    options: [
+      SearchIconPosition.Prefix,
+      SearchIconPosition.Suffix,
+      SearchIconPosition.None,
+    ],
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
@@ -172,7 +177,6 @@ SelectDemo.argTypes = {
     control: { type: 'boolean' },
     table: { category: 'Layout' },
   },
-
   selected: {
     control: { type: 'select' },
     table: { category: 'Select only' },

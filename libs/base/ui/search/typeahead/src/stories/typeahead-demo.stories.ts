@@ -1,7 +1,13 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
-import { SearchAttributes, SearchEvent } from '@spryker-oryx/ui/searchbox';
+import {
+  ClearIconAppearance,
+  ClearIconPosition,
+  SearchAttributes,
+  SearchEvent,
+  SearchIconPosition,
+} from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -85,19 +91,28 @@ TypeaheadDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIconPosition: {
-    options: ['prefix', 'suffix', 'none'],
+    options: [
+      SearchIconPosition.Prefix,
+      SearchIconPosition.Suffix,
+      SearchIconPosition.None,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   clearIconPosition: {
-    options: ['after', 'suffix', 'none'],
+    options: [
+      ClearIconPosition.After,
+      ClearIconPosition.Suffix,
+      ClearIconPosition.None,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   clearIconAppearance: {
-    options: ['hover', 'toggle', 'show'],
+    options: [
+      ClearIconAppearance.Hover,
+      ClearIconAppearance.Toggle,
+      ClearIconAppearance.Show,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   prefixFill: {
     control: { type: 'boolean' },

@@ -34,7 +34,7 @@ const Template: Story<Props> = ({ ...options }: Props): TemplateResult => {
         clearIconAppearance=${options.clearIconAppearance}
         ?prefixFill=${options.prefixFill}
         ?suffixFill=${options.suffixFill}
-        ?not-floated=${options.notFloated}
+        ?xs-floated=${options.xsFloated}
       >
         <input
           placeholder="Search..."
@@ -60,7 +60,7 @@ SearchboxDemo.args = {
   suffixFill: false,
   disabled: false,
   readonly: false,
-  notFloated: false,
+  xsFloated: false,
 };
 
 SearchboxDemo.argTypes = {
@@ -80,15 +80,27 @@ SearchboxDemo.argTypes = {
     control: { type: 'select' },
   },
   searchIconPosition: {
-    options: ['prefix', 'suffix', 'none'],
+    options: [
+      SearchIconPosition.Prefix,
+      SearchIconPosition.Suffix,
+      SearchIconPosition.None,
+    ],
     control: { type: 'select' },
   },
   clearIconPosition: {
-    options: ['after', 'suffix', 'none'],
+    options: [
+      ClearIconPosition.After,
+      ClearIconPosition.Suffix,
+      ClearIconPosition.None,
+    ],
     control: { type: 'select' },
   },
   clearIconAppearance: {
-    options: ['hover', 'toggle', 'show'],
+    options: [
+      ClearIconAppearance.Hover,
+      ClearIconAppearance.Toggle,
+      ClearIconAppearance.Show,
+    ],
     control: { type: 'select' },
   },
   prefixFill: {
