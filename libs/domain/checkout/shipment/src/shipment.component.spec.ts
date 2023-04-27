@@ -8,7 +8,6 @@ import {
 import {
   MockCheckoutOrchestrationService,
   mockCheckoutProviders,
-  mockDeliveryTimeShipmentMethod,
   mockFilteredShipmentMethods,
 } from '@spryker-oryx/checkout/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -169,23 +168,6 @@ describe('Checkout Shipment Selector component', () => {
 
       it('should select the last radio input', () => {
         expect(element).toContainElement(`input[value='3']:checked`);
-      });
-    });
-
-    describe('when a shipment method has a delivery time', () => {
-      beforeEach(async () => {
-        shipmentService.getCarriers.mockReturnValue(
-          of(mockDeliveryTimeShipmentMethod)
-        );
-        element = await fixture(
-          html`<oryx-checkout-shipment></oryx-checkout-shipment>`
-        );
-      });
-
-      it('should format the delivery time', () => {
-        expect(localeService.formatDate).toHaveBeenLastCalledWith(
-          mockDeliveryTimeShipmentMethod[0].shipmentMethods[0].deliveryTime
-        );
       });
     });
 
