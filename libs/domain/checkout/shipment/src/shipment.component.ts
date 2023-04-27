@@ -7,9 +7,7 @@ import {
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { LocaleService } from '@spryker-oryx/i18n';
 import {
-  asyncValue,
   hydratable,
   i18n,
   signal,
@@ -29,7 +27,6 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
   static styles = styles;
 
   protected shipmentService = resolve(CheckoutShipmentService);
-  protected localeService = resolve(LocaleService);
 
   protected carriers = signal(this.shipmentService.getCarriers());
   protected selected = signal(this.shipmentService.getSelected());
@@ -69,16 +66,11 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
           <span>${method.name}</span>
           <oryx-price .value=${method.price}></oryx-price>
         </div>
-        ${when(
-          method.deliveryTime,
-          () =>
-            html`${asyncValue(
-              this.localeService.formatDate(method.deliveryTime!),
-              (date) => html`<small slot="subtext">
-                ${i18n('checkout.delivered-at-<date>', { date })}
-              </small>`
-            )}`
-        )}
+        <oryx-date
+          slot="subtext"
+          .stamp=${method.deliveryTime}
+          .i18nToken=${'checkout.delivered-at-<date>'}
+        ></oryx-date>
       </oryx-radio>
     </oryx-tile>`;
   }

@@ -1,9 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs';
+import { PickingListMixin } from '../../mixins';
 import { styles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {

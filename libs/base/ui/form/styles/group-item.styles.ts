@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { HeadingTag, headingUtil } from '../../structure/heading/src';
 
 export const groupItemStyles = css`
   :host {
@@ -16,13 +17,12 @@ export const groupItemStyles = css`
   }
 
   slot[name='subtext'] {
+    ${headingUtil(HeadingTag.Caption)};
+
     display: block;
     grid-column: 2 / span 1;
-  }
-
-  slot[name='subtext']::slotted(small) {
-    font-weight: 600;
     color: var(--oryx-color-neutral-300);
+    margin-block-start: 4px;
   }
 
   oryx-error-message {

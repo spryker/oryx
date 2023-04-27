@@ -48,11 +48,11 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
           @change=${this.onChange}
         />
         ${method.name}
-        <small slot="subtext">
+        <span slot="subtext">
           ${i18n('checkout.payment.select-<method>', {
             method: method.name,
           })}
-        </small>
+        </span>
       </oryx-radio>
     </oryx-tile>`;
   }
