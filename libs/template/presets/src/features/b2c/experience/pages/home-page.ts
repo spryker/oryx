@@ -6,9 +6,6 @@ export const HomePage: StaticComponent = {
     title: 'Home Page',
     route: '/',
     description: 'Home Page Description',
-    follow: false,
-    index: true,
-    'og:meta': 'our description',
   },
   components: [
     {
