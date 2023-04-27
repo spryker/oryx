@@ -1,6 +1,5 @@
 import {
   CheckoutMixin,
-  CheckoutOrchestrationService,
   CheckoutShipmentService,
   CheckoutStepType,
   CheckoutTrigger,
@@ -11,7 +10,6 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   asyncValue,
-  effect,
   hydratable,
   i18n,
   signal,
@@ -31,23 +29,16 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
   static styles = styles;
 
   protected shipmentService = resolve(CheckoutShipmentService);
-  protected orchestrationService = resolve(CheckoutOrchestrationService);
   protected localeService = resolve(LocaleService);
 
   protected carriers = signal(this.shipmentService.getCarriers());
-  protected selected = signal(this.shipmentService.getSelectedShipmentMethod());
+  protected selected = signal(this.shipmentService.getSelected());
 
   // TODO: consider moving to effect whenever component life cycle is supported
   @subscribe()
   protected triggerValidation = this.orchestrationService
     .getTrigger(CheckoutStepType.Shipping)
     .pipe(tap((trigger) => this.report(trigger)));
-
-  protected eff = effect(() => {
-    if (!this.selected() && this.carriers()?.length) {
-      this.select(Number(this.carriers()?.[0]?.shipmentMethods?.[0].id));
-    }
-  });
 
   protected override render(): TemplateResult | void {
     const carriers = this.carriers();
@@ -58,23 +49,21 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
       ${carriers.map(
         (carrier) => html`
           ${when(carriers.length > 1, () => html`<p>${carrier.name}</p>`)}
-          ${carrier.shipmentMethods.map((method, i) =>
-            this.renderMethod(method)
-          )}
+          ${carrier.shipmentMethods.map((method) => this.renderMethod(method))}
         `
       )}`;
   }
 
   protected renderMethod(method: ShipmentMethod): TemplateResult {
-    const isSelected = Number(method.id) === this.selected();
-    return html`<oryx-tile ?selected="${isSelected}">
+    const isSelected = this.isSelected(Number(method.id));
+    return html`<oryx-tile ?selected=${isSelected}>
       <oryx-radio>
         <input
           name="shipment-method"
           type="radio"
-          value="${method.id}"
-          ?checked="${isSelected}"
-          @change="${this.onChange}"
+          value=${method.id}
+          ?checked=${isSelected}
+          @change=${this.onChange}
         />
         <div>
           <span>${method.name}</span>
@@ -94,6 +83,13 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
     </oryx-tile>`;
   }
 
+  // TODO: consider fallback strategies: none, first, cheapest, fastest
+  protected isSelected(methodId: number): boolean {
+    return this.selected()
+      ? this.selected() === methodId
+      : methodId === this.carriers()?.[0]?.shipmentMethods?.[0]?.id;
+  }
+
   protected report(action: CheckoutTrigger): void {
     if (action === CheckoutTrigger.Check) {
       this.orchestrationService.report(
@@ -105,12 +101,8 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
 
   protected onChange(e: Event): void {
     const id = (e.target as HTMLInputElement).value;
-    if (id) this.select(Number(id));
-  }
-
-  protected select(methodId?: number): void {
-    if (methodId && methodId !== this.selected()) {
-      this.shipmentService.setShipmentMethod(methodId);
+    if (id && Number(id) !== this.selected()) {
+      this.shipmentService.setShipmentMethod(Number(id));
     }
   }
 

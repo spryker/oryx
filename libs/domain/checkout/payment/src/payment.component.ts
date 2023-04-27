@@ -1,96 +1,51 @@
 import {
-  CheckoutDataService,
-  CheckoutOrchestrationService,
+  CheckoutMixin,
   CheckoutPaymentService,
   CheckoutStepType,
   CheckoutTrigger,
   PaymentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { ComponentMixin } from '@spryker-oryx/experience';
-import {
-  asyncValue,
-  hydratable,
-  i18n,
-  subscribe,
-} from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
+import { hydratable, i18n, signal, subscribe } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { tap } from 'rxjs';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
-export class CheckoutPaymentComponent extends ComponentMixin() {
+export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
   static styles = styles;
 
-  protected service = resolve(CheckoutPaymentService);
-  protected orchestrationService = resolve(CheckoutOrchestrationService);
-  protected dataService = resolve(CheckoutDataService);
+  protected paymentService = resolve(CheckoutPaymentService);
 
-  protected methods$ = this.service.getMethods();
-  protected currentMethod$ = new BehaviorSubject<string | null>(null);
-  protected selectedPaymentMethod$ = this.dataService
-    .getPayment()
-    .pipe(map((method) => method?.id));
+  protected methods = signal(this.paymentService.getMethods());
+  protected selected = signal(this.paymentService.getSelected());
 
   // TODO: consider moving to effect whenever component life cycle is supported
   @subscribe()
   protected triggerValidation = this.orchestrationService
     .getTrigger(CheckoutStepType.Payment)
-    .pipe(tap((trigger) => this.submit(trigger)));
+    .pipe(tap((trigger) => this.validate(trigger)));
 
-  submit(action: CheckoutTrigger): void {
-    const selected =
-      this.renderRoot.querySelector<HTMLInputElement>('input[checked]');
+  protected override render(): TemplateResult | void {
+    const methods = this.methods();
 
-    if (selected) {
-      // TODO: avoid subscribing
-      this.service.setPaymentMethod(selected.value).subscribe();
-    }
+    if (!methods?.length) return this.renderEmpty();
 
-    if (action === CheckoutTrigger.Check) {
-      this.orchestrationService.report(CheckoutStepType.Payment, !!selected);
-    }
+    return html`<h3>${i18n('checkout.steps.payment')}</h3>
+      ${methods.map((method) => this.renderMethod(method))}`;
   }
 
-  protected override render(): TemplateResult {
-    return html` ${asyncValue(
-      combineLatest([
-        this.methods$,
-        this.selectedPaymentMethod$,
-        this.currentMethod$,
-      ]),
-      ([methods, selectedPaymentMethod, currentMethod]) =>
-        methods?.length
-          ? html` <h3>${i18n('checkout.steps.payment')}</h3>
-              ${methods.map((method, i) =>
-                this.renderMethod(
-                  method,
-                  currentMethod
-                    ? currentMethod === method.id
-                    : !selectedPaymentMethod
-                    ? i === 0
-                    : selectedPaymentMethod === method.id
-                )
-              )}`
-          : this.renderEmpty()
-    )}`;
-  }
+  protected renderMethod(method: PaymentMethod): TemplateResult {
+    const selected = this.isSelected(method.id);
 
-  protected renderMethod(
-    method: PaymentMethod,
-    selected: boolean
-  ): TemplateResult {
-    return html`<oryx-tile ?selected="${selected}">
+    return html`<oryx-tile ?selected=${selected}>
       <oryx-radio>
         <input
-          name="payment-method"
+          name="shipment-method"
           type="radio"
-          ?checked="${selected}"
-          .value="${method.id}"
-          @change="${() => {
-            this.currentMethod$.next(method.id);
-            // this.orchestrationService.report(CheckoutStepType.Payment, true);
-          }}"
+          value=${method.id}
+          ?checked=${selected}
+          @change=${this.onChange}
         />
         ${method.name}
         <small slot="subtext">
@@ -100,6 +55,27 @@ export class CheckoutPaymentComponent extends ComponentMixin() {
         </small>
       </oryx-radio>
     </oryx-tile>`;
+  }
+
+  // TODO: consider fallback strategies: none, first, cheapest
+  protected isSelected(methodId: string): boolean {
+    return this.selected()
+      ? this.selected() === methodId
+      : methodId === this.methods()?.[0]?.id;
+  }
+
+  protected validate(action: CheckoutTrigger): void {
+    const selected = this.renderRoot.querySelector('input[checked]');
+    if (action === CheckoutTrigger.Check) {
+      this.orchestrationService.report(CheckoutStepType.Payment, !!selected);
+    }
+  }
+
+  protected onChange(e: Event): void {
+    const id = (e.target as HTMLInputElement).value;
+    if (id && id !== this.selected()) {
+      this.paymentService.setPaymentMethod(id).subscribe();
+    }
   }
 
   protected renderEmpty(): TemplateResult {

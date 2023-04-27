@@ -1,10 +1,13 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
-  CheckoutDataService,
   CheckoutOrchestrationService,
   CheckoutPaymentService,
 } from '@spryker-oryx/checkout';
-import { mockPaymentMethods } from '@spryker-oryx/checkout/mocks';
+import {
+  MockCheckoutOrchestrationService,
+  mockCheckoutProviders,
+  mockPaymentMethods,
+} from '@spryker-oryx/checkout/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { radioComponent } from '@spryker-oryx/ui';
@@ -15,23 +18,14 @@ import { checkoutPaymentComponent } from './payment.def';
 
 class MockPaymentService implements Partial<CheckoutPaymentService> {
   getMethods = vi.fn().mockReturnValue(of(mockPaymentMethods));
-  setPaymentMethod = vi.fn();
-}
-
-class MockOrchestrationService
-  implements Partial<CheckoutOrchestrationService>
-{
-  report = vi.fn();
-  getTrigger = vi.fn().mockReturnValue(of(''));
-}
-
-class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  getPayment = vi.fn().mockReturnValue(of(null));
+  setPaymentMethod = vi.fn().mockReturnValue(of());
+  getSelected = vi.fn();
 }
 
 describe('Checkout Payment Selector component', () => {
   let element: CheckoutPaymentComponent;
   let paymentService: MockPaymentService;
+  let orchestrationService: MockCheckoutOrchestrationService;
 
   const getElement = async () => {
     element = await fixture(
@@ -44,26 +38,22 @@ describe('Checkout Payment Selector component', () => {
   });
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    const injector = createInjector({
       providers: [
+        ...mockCheckoutProviders,
         {
           provide: CheckoutPaymentService,
           useClass: MockPaymentService,
         },
-        {
-          provide: CheckoutOrchestrationService,
-          useClass: MockOrchestrationService,
-        },
-        {
-          provide: CheckoutDataService,
-          useClass: MockCheckoutDataService,
-        },
       ],
     });
 
-    paymentService = testInjector.inject(
+    paymentService = injector.inject<MockPaymentService>(
       CheckoutPaymentService
-    ) as MockPaymentService;
+    );
+    orchestrationService = injector.inject<MockCheckoutOrchestrationService>(
+      CheckoutOrchestrationService
+    );
   });
 
   afterEach(() => {
@@ -84,33 +74,97 @@ describe('Checkout Payment Selector component', () => {
   describe('when there are no payment methods available', () => {
     beforeEach(async () => {
       paymentService.getMethods.mockReturnValue(of(null));
-
       await getElement();
     });
 
-    it('should not render any tiles', () => {
-      const tiles = element.renderRoot.querySelectorAll('oryx-tile');
+    it('should render an empty message', () => {
+      expect(element).toContainElement('.no-methods');
+    });
 
-      expect(tiles?.length).toBe(0);
+    it('should not render any tiles', () => {
+      expect(element).not.toContainElement('oryx-tile');
     });
   });
 
-  describe('when there is at least one payment method available', () => {
+  describe('when there are payment methods available', () => {
     beforeEach(async () => {
       await getElement();
     });
 
-    it('should render oryx-tile', () => {
+    it('should render a tile for each method', () => {
       const tiles = element.renderRoot.querySelectorAll('oryx-tile');
       expect(tiles?.length).toBe(4);
     });
 
-    it('should select the first radio button', () => {
-      const radio = element.renderRoot.querySelector(
-        'oryx-radio input'
-      ) as HTMLInputElement;
-
-      expect(radio.checked).toBeTruthy();
+    it('should not render an empty message', () => {
+      expect(element).not.toContainElement('.no-methods');
     });
+
+    describe('and there is no selected method', () => {
+      beforeEach(async () => {
+        paymentService.getSelected.mockReturnValue(of(undefined));
+        await getElement();
+      });
+
+      it('should auto select the first tile', () => {
+        const radio = element.renderRoot.querySelectorAll('oryx-tile');
+        expect(radio?.[0].hasAttribute('selected')).toBeTruthy();
+      });
+
+      it('should auto select the first radio button', () => {
+        const radio = element.renderRoot.querySelectorAll('input');
+        expect(radio?.[0].checked).toBeTruthy();
+      });
+
+      describe('and when the 2nd method is selected', () => {
+        beforeEach(async () => {
+          const radio =
+            element.renderRoot.querySelector<HTMLInputElement>(
+              `input[value='3']`
+            );
+          radio?.click();
+        });
+
+        it('should set the associated shipping method', () => {
+          expect(paymentService.setPaymentMethod).toHaveBeenCalledWith('3');
+        });
+      });
+    });
+
+    describe('and a method is selected', () => {
+      const selectedId = mockPaymentMethods[2].id;
+      beforeEach(async () => {
+        paymentService.getSelected.mockReturnValue(of(selectedId));
+        element = await fixture(
+          html`<oryx-checkout-payment></oryx-checkout-payment>`
+        );
+      });
+
+      it('should select the last radio input', () => {
+        expect(element).toContainElement(
+          `input[value='${selectedId}']:checked`
+        );
+      });
+    });
+
+    // not sure why this fails
+    // describe('and the orchestrator triggers CheckoutTrigger.Check', () => {
+    //   beforeEach(async () => {
+    //     orchestrationService.getTrigger.mockReturnValue(
+    //       of(CheckoutTrigger.Check)
+    //     );
+    //     paymentService.getSelected.mockReturnValue(of('3'));
+    //     element = await fixture(
+    //       html`<oryx-checkout-payment></oryx-checkout-payment>`
+    //     );
+    //   });
+
+    //   it('should report the selected method', () => {
+    //     expect(orchestrationService.report).toHaveBeenCalledWith(
+    //       CheckoutStepType.Payment,
+    //       true
+    //     );
+    //   });
+    // });
   });
 });

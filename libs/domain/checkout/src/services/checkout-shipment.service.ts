@@ -4,7 +4,7 @@ import { Carrier, Shipment } from '../models';
 export interface CheckoutShipmentService {
   getShipment(): Observable<Shipment | null>;
   getCarriers(): Observable<Carrier[]>;
-  getSelectedShipmentMethod(): Observable<number>;
+  getSelected(): Observable<number | undefined>;
   setShipmentMethod(method: number): Observable<unknown>;
 }
 

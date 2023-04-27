@@ -16,6 +16,7 @@ export const compositionStyles = css`
 
   h2 {
     ${headingUtil(HeadingTag.H5)};
+
     display: flex;
     align-items: center;
     margin-block-end: 12px;

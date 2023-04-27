@@ -62,7 +62,7 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
     return this.getShipment().pipe(map((shipment) => shipment?.carriers ?? []));
   }
 
-  getSelectedShipmentMethod(): Observable<number> {
+  getSelected(): Observable<number> {
     return this.getShipment().pipe(
       map((shipment) =>
         shipment?.selectedShipmentMethod?.id

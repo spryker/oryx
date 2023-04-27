@@ -42,6 +42,10 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
     return this.methods$;
   }
 
+  getSelected(): Observable<string | undefined> {
+    return this.dataService.getPayment().pipe(map((payment) => payment?.id));
+  }
+
   setPaymentMethod(id: string): Observable<unknown> {
     return subscribeReplay(
       this.getMethods().pipe(

@@ -22,7 +22,7 @@ import { checkoutShipmentComponent } from './shipment.def';
 
 class MockShipmentService implements Partial<CheckoutShipmentService> {
   getCarriers = vi.fn().mockReturnValue(of(null));
-  getSelectedShipmentMethod = vi.fn().mockReturnValue(of(0));
+  getSelected = vi.fn().mockReturnValue(of(0));
   setShipmentMethod = vi.fn().mockReturnValue(of());
 }
 
@@ -95,13 +95,16 @@ describe('Checkout Shipment Selector component', () => {
       );
     });
 
+    it('should render an empty message', () => {
+      expect(element).toContainElement('.no-methods');
+    });
+
     it('should not render any tiles', () => {
-      const tiles = element.renderRoot.querySelectorAll('oryx-tile');
-      expect(tiles?.length).toBe(0);
+      expect(element).not.toContainElement('oryx-tile');
     });
   });
 
-  describe('when there is at least one shipment method available', () => {
+  describe('when there are shipment methods available', () => {
     beforeEach(async () => {
       shipmentService.getCarriers.mockReturnValue(
         of(mockFilteredShipmentMethods)
@@ -116,9 +119,26 @@ describe('Checkout Shipment Selector component', () => {
       expect(tiles?.length).toBe(4);
     });
 
-    describe('and there is no method selected', () => {
-      it('should auto select the first method', () => {
-        expect(shipmentService.setShipmentMethod).toHaveBeenCalledWith(1);
+    it('should not render an empty message', () => {
+      expect(element).not.toContainElement('.no-methods');
+    });
+
+    describe('and there is no selected method', () => {
+      beforeEach(async () => {
+        shipmentService.getSelected.mockReturnValue(of(undefined));
+        element = await fixture(
+          html`<oryx-checkout-shipment></oryx-checkout-shipment>`
+        );
+      });
+
+      it('should auto select the first tile', () => {
+        const radio = element.renderRoot.querySelectorAll('oryx-tile');
+        expect(radio?.[0].hasAttribute('selected')).toBeTruthy();
+      });
+
+      it('should auto select the first radio button', () => {
+        const radio = element.renderRoot.querySelectorAll('input');
+        expect(radio?.[0].checked).toBeTruthy();
       });
 
       describe('and when the 2nd method is selected', () => {
@@ -136,12 +156,12 @@ describe('Checkout Shipment Selector component', () => {
       });
     });
 
-    describe('and a shipping method is selected', () => {
+    describe('and a method is selected', () => {
       beforeEach(async () => {
         shipmentService.getCarriers.mockReturnValue(
           of(mockFilteredShipmentMethods)
         );
-        shipmentService.getSelectedShipmentMethod.mockReturnValue(of(3));
+        shipmentService.getSelected.mockReturnValue(of(3));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
@@ -174,7 +194,7 @@ describe('Checkout Shipment Selector component', () => {
         orchestrationService.getTrigger.mockReturnValue(
           of(CheckoutTrigger.Check)
         );
-        shipmentService.getSelectedShipmentMethod.mockReturnValue(of(3));
+        shipmentService.getSelected.mockReturnValue(of(3));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );

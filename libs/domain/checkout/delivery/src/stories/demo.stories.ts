@@ -23,6 +23,7 @@ interface Props {
 }
 
 @customElement('fake-orchestrator')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class FakeOrchestrator extends ComponentMixin<Props>() {
   @subscribe()
   protected options$ = new ContentController(this)

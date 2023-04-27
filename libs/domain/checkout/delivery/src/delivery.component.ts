@@ -27,7 +27,7 @@ export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
   @subscribe()
   protected triggerValidation = this.orchestrationService
     .getTrigger(CheckoutStepType.Delivery)
-    .pipe(tap((trigger) => this.submit(trigger)));
+    .pipe(tap((trigger) => this.validate(trigger)));
 
   protected addresses = signal(resolve(AddressService).getAddresses());
 
@@ -47,15 +47,15 @@ export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
     `;
   }
 
-  protected submit(action?: CheckoutTrigger): void {
-    let valid = true;
+  protected validate(action?: CheckoutTrigger): void {
+    let isValid = true;
     this.forms.forEach((el) => {
-      if (valid && !el.submit?.(true)) {
-        valid = false;
+      if (isValid && !el.submit?.(true)) {
+        isValid = false;
       }
     });
     if (action === CheckoutTrigger.Check) {
-      this.orchestrationService.report(CheckoutStepType.Delivery, valid);
+      this.orchestrationService.report(CheckoutStepType.Delivery, isValid);
     }
   }
 

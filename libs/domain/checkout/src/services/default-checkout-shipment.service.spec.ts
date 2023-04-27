@@ -60,14 +60,10 @@ describe('DefaultCheckoutService', () => {
     });
 
     service = testInjector.inject(CheckoutShipmentService);
-    cart = testInjector.inject(CartService) as unknown as MockCartService;
-    adapter = testInjector.inject(
-      CheckoutAdapter
-    ) as unknown as MockCheckoutAdapter;
-    dataService = testInjector.inject(
-      CheckoutDataService
-    ) as unknown as MockCheckoutDataService;
-
+    cart = testInjector.inject<MockCartService>(CartService);
+    adapter = testInjector.inject<MockCheckoutAdapter>(CheckoutAdapter);
+    dataService =
+      testInjector.inject<MockCheckoutDataService>(CheckoutDataService);
     cart.getCart.mockReturnValue(of({ id: mockCartId }));
   });
 
@@ -118,22 +114,9 @@ describe('DefaultCheckoutService', () => {
     });
   });
 
-  describe('when calling getSelectedShipmentMethod', () => {
+  describe('when calling getSelected', () => {
     it('should return an observable', () => {
-      expect(service.getSelectedShipmentMethod()).toBeInstanceOf(Observable);
-    });
-
-    it('should get selected shipment method id for current cart', () => {
-      service.getSelectedShipmentMethod().subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith(2);
-    });
-
-    it('should not return selected shipment method if user id or cart id is missing', () => {
-      adapter.get.mockReturnValue(of({}));
-
-      service.getSelectedShipmentMethod().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(0);
+      expect(service.getSelected()).toBeInstanceOf(Observable);
     });
 
     describe('when shipment method is stored in session storage', () => {
@@ -142,7 +125,7 @@ describe('DefaultCheckoutService', () => {
       });
 
       it('should return shipment method from storage', () => {
-        service.getSelectedShipmentMethod().subscribe(callback);
+        service.getSelected().subscribe(callback);
         expect(callback).toHaveBeenCalledWith(4);
       });
     });

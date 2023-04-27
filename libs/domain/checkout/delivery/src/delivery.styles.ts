@@ -9,6 +9,7 @@ export const styles = css`
 
   h3 {
     ${headingUtil(HeadingTag.H5)};
+
     margin-block-end: 12px;
   }
 
