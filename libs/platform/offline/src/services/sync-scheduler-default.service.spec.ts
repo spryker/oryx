@@ -94,7 +94,9 @@ describe('SyncSchedulerDefaultService', () => {
 
   describe('when schedule is called', () => {
     const callback = vi.fn();
+    const date = new Date();
     beforeEach(() => {
+      vi.setSystemTime(date);
       service
         .schedule({
           action: 'mock',
@@ -114,7 +116,18 @@ describe('SyncSchedulerDefaultService', () => {
 
     it('should call store', () => {
       expect(mockTable.get).toHaveBeenCalledWith(123);
-      expect(mockTable.add).toHaveBeenCalled();
+      expect(mockTable.add).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'mock',
+          payload: '',
+          id: undefined,
+          prevSyncIds: [],
+          status: SyncStatus.Queued,
+          retries: 0,
+          scheduledAt: date,
+          errors: [],
+        })
+      );
     });
 
     it('should call service worker sync', async () => {

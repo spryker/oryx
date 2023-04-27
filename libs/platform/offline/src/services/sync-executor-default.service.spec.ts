@@ -10,6 +10,10 @@ import { SyncExecutorDefaultService } from './sync-executor-default.service';
 import { SyncExecutorService } from './sync-executor.service';
 import { SyncSchedulerService } from './sync-scheduler.service';
 
+const mockError = String(
+  new Error('SyncExecutorDefaultService: Could not complete Sync(123)!')
+);
+
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));
 }
@@ -135,11 +139,75 @@ describe('SyncExecutorDefaultService', () => {
         });
 
         it('should throw error', () => {
+          expect(mockTable.update).toHaveBeenLastCalledWith(
+            mockSync.id,
+            expect.objectContaining({
+              status: SyncStatus.Queued,
+              retries: 0,
+              errors: [mockError],
+            })
+          );
           expect(callback).toHaveBeenCalledWith(
             new Error(
               'SyncExecutorDefaultService: Could not update failed Sync(123)!'
             )
           );
+        });
+
+        describe('and store fails to update multiple times', () => {
+          beforeEach(() => {
+            syncScheduler.getPending.mockReturnValue(
+              of([
+                {
+                  ...mockSync,
+                  retries: 1,
+                  errors: [mockError],
+                },
+              ])
+            );
+            service.processPendingSyncs().subscribe();
+          });
+          it('should increment retries', () => {
+            expect(mockTable.update).toHaveBeenCalledWith(
+              mockSync.id,
+              expect.objectContaining({
+                retries: 2,
+                status: SyncStatus.Completed,
+              })
+            );
+
+            expect(mockTable.update).toHaveBeenLastCalledWith(
+              mockSync.id,
+              expect.objectContaining({
+                status: SyncStatus.Queued,
+                errors: [mockError, mockError],
+              })
+            );
+          });
+        });
+
+        describe('and retry limit is reached', () => {
+          beforeEach(() => {
+            syncScheduler.getPending.mockReturnValue(
+              of([
+                {
+                  ...mockSync,
+                  retries: 3,
+                  errors: [mockError, mockError, mockError],
+                },
+              ])
+            );
+            service.processPendingSyncs().subscribe();
+          });
+          it('should set status to failed', () => {
+            expect(mockTable.update).toHaveBeenLastCalledWith(
+              mockSync.id,
+              expect.objectContaining({
+                retries: 3,
+                status: SyncStatus.Failed,
+              })
+            );
+          });
         });
       });
     });

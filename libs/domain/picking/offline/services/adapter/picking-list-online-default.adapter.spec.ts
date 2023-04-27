@@ -2,6 +2,7 @@ import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import {
+  ItemsFilters,
   PickingHttpService,
   PickingListDefaultAdapter,
   PickingListStatus,
@@ -30,7 +31,7 @@ const mockPickingListDataResponse = {
       attributes: {
         id: 'mock',
         uuid: 'mock',
-        status: '',
+        status: 'mock',
         pickingListItems: [
           {
             id: 'mock',
@@ -53,8 +54,9 @@ const mockPickingListDataResponse = {
               },
             ],
             orderItem: { uuid: 'mock' },
-            salesShipments: [{ requestedDeliveryDate: '' }],
+            salesShipments: [{ requestedDeliveryDate: 123 }],
             salesOrders: [{ cartNote: 'mock' }],
+            quantity: 1,
           },
         ],
         createdAt: '',
@@ -127,7 +129,25 @@ describe('PickingListOnlineAdapter', () => {
     it('should parse picking lists', async () => {
       await nextTick(7);
 
-      expect(callback).toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith([
+        expect.objectContaining({
+          items: [
+            {
+              id: 'mock',
+              orderItem: { uuid: 'mock' },
+              type: 'picking-list-items',
+              status: ItemsFilters.NotPicked,
+              productId: 'mock',
+              quantity: 1,
+            },
+          ],
+          itemsCount: 1,
+          requestedDeliveryDate: new Date(123),
+          orderReferences: ['mock'],
+          localStatus: 'mock',
+          productSkus: ['mock'],
+        }),
+      ]);
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
       expect(mockTable.bulkGet).toHaveBeenCalledWith(['mock']);
     });

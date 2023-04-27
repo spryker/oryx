@@ -9,6 +9,7 @@ import {
 import {
   PickingListEntity,
   PickingProductEntity,
+  PickingSyncAction,
 } from '@spryker-oryx/picking/offline';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
@@ -135,7 +136,11 @@ describe('PickingListOfflineAdapter', () => {
     });
 
     it('should call DB transaction', () => {
-      expect(mockDb.transaction).toHaveBeenCalled();
+      expect(mockDb.transaction).toHaveBeenCalledWith(
+        'readonly',
+        [mockTable, mockTable],
+        expect.anything()
+      );
     });
 
     describe('and qualifier has an id', () => {
@@ -242,7 +247,11 @@ describe('PickingListOfflineAdapter', () => {
     });
 
     it('should call DB transaction', () => {
-      expect(mockDb.transaction).toHaveBeenCalled();
+      expect(mockDb.transaction).toHaveBeenCalledWith(
+        'readwrite',
+        [mockTable, mockTable],
+        expect.anything()
+      );
     });
 
     it('should call online adapter startPicking', () => {
@@ -279,7 +288,11 @@ describe('PickingListOfflineAdapter', () => {
     });
 
     it('should call DB transaction', () => {
-      expect(mockDb.transaction).toHaveBeenCalled();
+      expect(mockDb.transaction).toHaveBeenCalledWith(
+        'readwrite',
+        [mockTable, mockTable],
+        expect.anything()
+      );
     });
 
     it('should call store', () => {
@@ -310,7 +323,11 @@ describe('PickingListOfflineAdapter', () => {
     });
 
     it('should call DB transaction', () => {
-      expect(mockDb.transaction).toHaveBeenCalled();
+      expect(mockDb.transaction).toHaveBeenCalledWith(
+        'readwrite',
+        [mockTable, mockTable],
+        expect.anything()
+      );
     });
 
     it('should call store', () => {
@@ -322,7 +339,10 @@ describe('PickingListOfflineAdapter', () => {
 
     it('should call SyncSchedulerService schedule', async () => {
       await nextTick(3);
-      expect(syncScheduler.schedule).toHaveBeenCalled();
+      expect(syncScheduler.schedule).toHaveBeenCalledWith({
+        action: PickingSyncAction.FinishPicking,
+        payload: mockContent,
+      });
     });
   });
 });

@@ -52,6 +52,12 @@ describe('SyncActionRegistryDefaultService', () => {
 
         expect(callback).toHaveBeenCalled();
       });
+
+      it('should call handler handleSync', () => {
+        service.handleSync(mockSync).subscribe(callback);
+
+        expect(mockSync.handleSync).toHaveBeenCalledWith(mockSync);
+      });
     });
   });
 });
