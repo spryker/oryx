@@ -109,7 +109,7 @@ export class SearchboxController implements ReactiveController {
       <oryx-icon
         type=${icon}
         class="back-button"
-        @click=${(): void => this.host.removeAttribute('open')}
+        @click=${(): void => this.onBack()}
       ></oryx-icon>
     `;
   }
@@ -184,6 +184,12 @@ export class SearchboxController implements ReactiveController {
 
   protected onTriggerClick(): void {
     this.host.toggleAttribute('open');
+    this.control.focus();
+  }
+
+  protected onBack(): void {
+    this.host.removeAttribute('open');
+    this.control.value = '';
   }
 
   constructor(protected host: SearchAttributes & LitElement) {
