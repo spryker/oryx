@@ -34,6 +34,7 @@ export class PickingListsHeaderComponent extends LitElement {
       </oryx-search>
 
       <oryx-site-navigation-item
+        uid="user-profile"
         .options=${{
           icon: 'profile',
           triggerType: 'icon',
