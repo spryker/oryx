@@ -1,5 +1,4 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import '@spryker-oryx/ui/popover';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
   ClearIconAppearance,

@@ -138,7 +138,7 @@ export class ComponentsLoader {
   }
 
   /**
-   * Extends component implementation before defining.
+   * Adds callback which will be resolved together with component
    */
   setResolver(
     resolver: Record<string, (def: ComponentDef) => Promise<unknown>>

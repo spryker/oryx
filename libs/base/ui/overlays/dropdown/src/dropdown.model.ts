@@ -1,9 +1,10 @@
+import { Size } from '@spryker-oryx/utilities';
+
 export enum Position {
   START = 'start',
   CENTER = 'center',
   END = 'end',
 }
-import { Size } from '@spryker-oryx/utilities';
 
 export interface DropdownProperties {
   /**
