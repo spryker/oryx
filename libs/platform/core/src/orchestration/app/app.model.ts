@@ -10,7 +10,10 @@ declare global {
 
 // TODO: move out to the experience package
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppFeature {}
+export interface AppFeature {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
 
 export interface App {
   findPlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T | undefined;

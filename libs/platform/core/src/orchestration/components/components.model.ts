@@ -11,6 +11,8 @@ export interface ComponentDef {
   readonly impl: ComponentDefImpl;
   readonly options?: FeatureOptions[keyof FeatureOptions];
   readonly schema?: LazyLoadable<Type<unknown> | Record<string, any>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly [key: string]: any;
 }
 
 export type ComponentDefFn = () => ComponentDef;
