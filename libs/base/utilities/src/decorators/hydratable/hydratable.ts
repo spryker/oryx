@@ -146,7 +146,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
         return;
       }
 
-      effect((effect) => {
+      if (!this.hasSsr || this[SIGNAL_EFFECT]) return;
+
+      this[SIGNAL_EFFECT] = effect((effect) => {
         const hasResolving = resolvingSignals();
         super.render();
         if (hasResolving()) {
