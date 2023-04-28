@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getThemeIcons } from '@spryker-oryx/ui';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
   ClearIconAppearance,
@@ -124,7 +124,7 @@ SelectDemo.parameters = {
 
 SelectDemo.args = {
   maxHeight: '300px',
-  clearIcon: IconTypes.Remove,
+  clearIcon: 'remove',
   clearIconAppearance: ClearIconAppearance.Hover,
   prefixFill: false,
   suffixFill: false,
@@ -146,7 +146,7 @@ SelectDemo.argTypes = {
     table: { category: 'Filtering' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },

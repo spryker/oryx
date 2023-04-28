@@ -1,5 +1,4 @@
-import { AppRef, ThemePlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { getThemeIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -7,10 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { IconButtonProperties } from '../icon-button.model';
 
-const icons = Object.keys(
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
-);
+const icons = getThemeIcons();
 
 export default {
   title: `${storybookPrefix}/Actions/Icon Button`,
