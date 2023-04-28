@@ -1,6 +1,5 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import { Size } from '@spryker-oryx/ui';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

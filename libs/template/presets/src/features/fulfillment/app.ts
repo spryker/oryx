@@ -3,7 +3,8 @@ import {
   BapiAuthFeature,
 } from '@spryker-oryx/application';
 import { cartFeature } from '@spryker-oryx/cart';
-import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
+import { Resources } from '@spryker-oryx/experience';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';

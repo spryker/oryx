@@ -1,6 +1,6 @@
+import { ComponentDef } from '@spryker-oryx/core';
 import { Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
-import { ComponentDef } from '../components';
 import { ThemePlugin, ThemePluginName } from './theme';
 import {
   Theme,

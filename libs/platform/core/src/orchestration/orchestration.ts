@@ -1,5 +1,5 @@
-import { AppBuilderWithModules, ModularAppBuilder } from './app';
+import { AppBuilder, SimpleAppBuilder } from './app';
 
-export function appBuilder(): AppBuilderWithModules {
-  return new ModularAppBuilder();
+export function appBuilder(): AppBuilder {
+  return new SimpleAppBuilder();
 }

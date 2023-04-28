@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { lgScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const formControlBaseStyles = css`
@@ -143,9 +142,6 @@ const largeScreen = css`
   }
 `;
 
-export const formControlScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: lgScreen,
-    css: largeScreen,
-  },
-];
+export const formControlScreenStyles = screenCss({
+  lg: largeScreen,
+});

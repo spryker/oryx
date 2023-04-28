@@ -1,7 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { Size } from '@spryker-oryx/ui';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { spinnerComponent } from './component';
 import { SpinnerComponent } from './spinner.component';

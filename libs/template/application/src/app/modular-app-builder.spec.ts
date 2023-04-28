@@ -1,7 +1,10 @@
-import { FeatureOptions } from '../../services/feature-options';
-import { ComponentsInfo, ComponentsPlugin } from '../components';
-import { InjectionPlugin } from '../injection';
-import { Theme, ThemePlugin } from '../theme';
+import {
+  ComponentsInfo,
+  ComponentsPlugin,
+  FeatureOptions,
+  InjectionPlugin,
+} from '@spryker-oryx/core';
+import { Theme, ThemePlugin } from '@spryker-oryx/experience';
 import { ModularAppBuilder } from './modular-app-builder';
 
 const mockApply = vi.fn();
@@ -145,7 +148,7 @@ describe('ModularAppBuilder', () => {
   });
 
   describe('withOptions', () => {
-    const mockOptions: FeatureOptions = {
+    const mockOptions = {
       global: {
         test: 'test',
       },
@@ -155,7 +158,7 @@ describe('ModularAppBuilder', () => {
       b: {
         b: 'b',
       },
-    };
+    } as unknown as FeatureOptions;
 
     it('should return instance of itself', () => {
       expect(modularAppBuilder.withOptions(mockOptions)).toBe(

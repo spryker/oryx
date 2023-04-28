@@ -1,6 +1,6 @@
 import { AppRef, ThemePlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';

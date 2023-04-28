@@ -1,21 +1,14 @@
 import { LazyLoadable } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/di';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
-import { ThemeData, ThemeStylesheets } from '../theme';
 
 export type ComponentInfo = ComponentDef | ComponentDefFn;
 
 export type ComponentsInfo = (ComponentInfo | ComponentInfo[])[];
 
-export interface ComponentTheme {
-  theme?: string;
-  rules: LazyLoadable<ThemeData | ThemeStylesheets>;
-}
-
 export interface ComponentDef {
   readonly name: string;
   readonly impl: ComponentDefImpl;
-  readonly stylesheets?: ComponentTheme[];
   readonly options?: FeatureOptions[keyof FeatureOptions];
   readonly schema?: LazyLoadable<Type<unknown> | Record<string, any>>;
 }
@@ -71,6 +64,12 @@ export function componentDef(def: ComponentDef) {
 
 export interface ObservableShadow {
   whenShadowAttached(): Promise<ShadowRoot>;
+}
+
+export interface ComponentMap {
+  componentClass?: ComponentType;
+  extendedClass: ObservableType;
+  [key: string]: unknown | undefined;
 }
 
 export interface ObservableShadowElement

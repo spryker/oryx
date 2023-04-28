@@ -1,4 +1,3 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import { screenStyles as inputScreenStyles } from '@spryker-oryx/ui/input';
 import { css } from 'lit';
 
@@ -33,4 +32,4 @@ export const baseStyles = css`
   }
 `;
 
-export const screenStyles: ThemeStylesWithMedia[] = [...inputScreenStyles];
+export const screenStyles = [...inputScreenStyles];

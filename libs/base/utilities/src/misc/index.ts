@@ -8,6 +8,7 @@ export * from './get-static-prop';
 export * from './intersect-arrays';
 export * from './query.util';
 export * from './random-string';
+export * from './screen-css';
 export * from './subscribe-replay';
 export * from './throttle';
 export * from './time';

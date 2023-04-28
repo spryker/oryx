@@ -1,5 +1,5 @@
-import { AlertType, Size } from '@spryker-oryx/ui';
-import { i18n } from '@spryker-oryx/utilities';
+import { AlertType } from '@spryker-oryx/ui';
+import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';

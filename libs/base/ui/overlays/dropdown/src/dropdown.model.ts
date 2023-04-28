@@ -3,7 +3,7 @@ export enum Position {
   CENTER = 'center',
   END = 'end',
 }
-import { Size } from '../../../src/utilities';
+import { Size } from '@spryker-oryx/utilities';
 
 export interface DropdownProperties {
   /**

@@ -1,3 +1,4 @@
+import { AppRef } from '@spryker-oryx/core';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import {
@@ -7,7 +8,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { AppRef, Graphic, ResourcePlugin } from '../orchestration';
+import { Graphic, ResourcePlugin } from '../plugins';
 
 export class DefaultResourceInjectable implements ResourceInjectable {
   getUrl(token: string): DirectiveResult | undefined {
