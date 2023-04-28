@@ -153,7 +153,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
         super.render();
         if (hasResolving()) {
           this[hydrationRender] = false;
+        } else {
+          this[hydrationRender] = true;
           effect.stop();
+          this[SIGNAL_EFFECT] = undefined;
         }
       });
     }
@@ -163,7 +166,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       const states = this[asyncStates];
 
-      if (this.hasSsr && !this[hydrationRender]) {
+      if (this.hasSsr && !this[hydrationRender] && !this[SIGNAL_EFFECT]) {
         setTimeout(() => {
           this[hydrationRender] = true;
         }, 0);
