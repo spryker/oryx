@@ -152,8 +152,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
         if (hasResolving()) {
           this[hydrationRender] = false;
           effect.stop();
-        } else {
-          this[hydrationRender] = true;
         }
       });
     }
