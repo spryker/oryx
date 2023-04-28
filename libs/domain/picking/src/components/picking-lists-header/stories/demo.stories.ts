@@ -1,6 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
+import { MockDateDecorator } from '@spryker-oryx/ui';
 
 export default {
   title: `${storybookPrefix}/Picking List Header`,
@@ -9,7 +10,8 @@ export default {
     chromatic: {
       disableSnapshot: true,
     },
-  }
+  },
+  decorators: [MockDateDecorator(new Date("March 20, 2020 20:00:00"))],
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

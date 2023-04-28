@@ -9,6 +9,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
+import { when } from 'lit-html/directives/when.js';
 
 export class PickingListsComponent extends LitElement {
   static styles = styles;
@@ -29,19 +30,24 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderPickingLists(): TemplateResult {
-    if (!this.pickingLists?.length) {
-      return this.renderEmptyLists();
-    }
-
-    return html`${repeat(
-      this.pickingLists!,
-      (pl) => pl.id,
-      (pl) =>
-        html`<oryx-picking-list-item
-          .pickingListId=${pl.id}
-          @oryx.show-note=${this.openCustomerNoteModal}
-        ></oryx-picking-list-item>`
-    )}`;
+    return html`
+      <oryx-picking-lists-header></oryx-picking-lists-header>
+    
+      ${when(
+        !this.pickingLists?.length,
+        () => this.renderEmptyLists(),
+        () => html`<section>
+        ${repeat(
+          this.pickingLists!,
+          (pl) => pl.id,
+          (pl) =>
+            html`<oryx-picking-list-item
+              .pickingListId=${pl.id}
+              @oryx.show-note=${this.openCustomerNoteModal}
+            ></oryx-picking-list-item>`
+        )}</section>`
+      )}
+    `
   }
 
   protected renderCustomerNote(): TemplateResult {

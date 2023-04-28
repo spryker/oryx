@@ -1,8 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { tap } from 'rxjs';
 import { styles } from './picking-lists-header.styles';
 import { LocaleService } from '@spryker-oryx/i18n';
 
