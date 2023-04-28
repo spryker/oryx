@@ -29,17 +29,17 @@ const mockPickingListDataResponse = {
   data: [
     {
       attributes: {
-        id: 'mock',
-        uuid: 'mock',
-        status: 'mock',
+        id: 'mock-id',
+        uuid: 'mock-uuid',
+        status: 'mock-status',
         pickingListItems: [
           {
-            id: 'mock',
+            id: 'mock-item-id',
             concreteProducts: [
               {
-                id: 'mock',
-                sku: 'mock',
-                name: 'mock',
+                id: 'mock-product-id',
+                sku: 'mock-sku',
+                name: 'mock-name',
                 concreteProductImageSets: [
                   {
                     imageSets: [
@@ -53,9 +53,9 @@ const mockPickingListDataResponse = {
                 ],
               },
             ],
-            orderItem: { uuid: 'mock' },
+            orderItem: { uuid: 'mock-order-uuid' },
             salesShipments: [{ requestedDeliveryDate: 123 }],
-            salesOrders: [{ cartNote: 'mock' }],
+            salesOrders: [{ cartNote: 'mock-note' }],
             quantity: 1,
           },
         ],
@@ -133,23 +133,23 @@ describe('PickingListOnlineAdapter', () => {
         expect.objectContaining({
           items: [
             {
-              id: 'mock',
-              orderItem: { uuid: 'mock' },
+              id: 'mock-item-id',
+              orderItem: { uuid: 'mock-order-uuid' },
               type: 'picking-list-items',
               status: ItemsFilters.NotPicked,
-              productId: 'mock',
+              productId: 'mock-product-id',
               quantity: 1,
             },
           ],
           itemsCount: 1,
           requestedDeliveryDate: new Date(123),
-          orderReferences: ['mock'],
-          localStatus: 'mock',
-          productSkus: ['mock'],
+          orderReferences: ['mock-order-uuid'],
+          localStatus: 'mock-status',
+          productSkus: ['mock-sku'],
         }),
       ]);
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
-      expect(mockTable.bulkGet).toHaveBeenCalledWith(['mock']);
+      expect(mockTable.bulkGet).toHaveBeenCalledWith(['mock-id']);
     });
 
     it('should call super', () => {

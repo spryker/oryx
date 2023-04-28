@@ -139,7 +139,7 @@ describe('PickingListOfflineAdapter', () => {
       expect(mockDb.transaction).toHaveBeenCalledWith(
         'readonly',
         [mockTable, mockTable],
-        expect.anything()
+        expect.any(Function)
       );
     });
 
@@ -250,7 +250,7 @@ describe('PickingListOfflineAdapter', () => {
       expect(mockDb.transaction).toHaveBeenCalledWith(
         'readwrite',
         [mockTable, mockTable],
-        expect.anything()
+        expect.any(Function)
       );
     });
 
@@ -291,7 +291,7 @@ describe('PickingListOfflineAdapter', () => {
       expect(mockDb.transaction).toHaveBeenCalledWith(
         'readwrite',
         [mockTable, mockTable],
-        expect.anything()
+        expect.any(Function)
       );
     });
 
@@ -326,7 +326,7 @@ describe('PickingListOfflineAdapter', () => {
       expect(mockDb.transaction).toHaveBeenCalledWith(
         'readwrite',
         [mockTable, mockTable],
-        expect.anything()
+        expect.any(Function)
       );
     });
 
