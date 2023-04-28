@@ -178,7 +178,8 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
 
     this.scheduleSyncTimer = setTimeout(async () => {
       const swRegistration = await this.serviceWorker.ready;
-      const sync = swRegistration.sync;
+      //ts does not have this type because it's still experimental
+      const sync = (swRegistration as any).sync;
 
       if (!sync) {
         throw new Error(
