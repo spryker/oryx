@@ -43,7 +43,7 @@ SelectAndClear.play = async (obj: {
   ) as SelectComponent;
   const input = component.querySelector('input') as HTMLInputElement;
   const clearIcon = component.shadowRoot?.querySelector(
-    'oryx-icon.clear'
+    'oryx-icon.clear-button'
   ) as HTMLInputElement;
 
   userEvent.click(input);
