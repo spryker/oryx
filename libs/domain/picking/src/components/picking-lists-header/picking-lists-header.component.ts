@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './picking-lists-header.styles';
-import { LocaleService } from '@spryker-oryx/i18n';
 
 export class PickingListsHeaderComponent extends LitElement {
   static styles = styles;
@@ -10,7 +10,7 @@ export class PickingListsHeaderComponent extends LitElement {
   protected localeService = resolve(LocaleService);
 
   @asyncState()
-  protected date = valueType(this.localeService.formatDate(Date.now()))
+  protected date = valueType(this.localeService.formatDate(Date.now()));
 
   protected onSearch(e: KeyboardEvent): void {
     const value = (e.target as HTMLInputElement).value;
@@ -20,14 +20,11 @@ export class PickingListsHeaderComponent extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <oryx-heading>
-        <h4>${i18n('picking.header.orders-<date>', {date: this.date})}</h4>
+        <h4>${i18n('picking.header.orders-<date>', { date: this.date })}</h4>
       </oryx-heading>
 
-      <oryx-search 
-        backIcon="backArrow"
-        xs-floated
-      >
-        <input 
+      <oryx-search backIcon="backArrow" xs-floated>
+        <input
           .placeholder=${i18n('picking.header.order-ID')}
           @input=${this.onSearch}
         />
@@ -38,7 +35,7 @@ export class PickingListsHeaderComponent extends LitElement {
         .options=${{
           icon: 'profile',
           triggerType: 'icon',
-          contentBehavior: 'modal'
+          contentBehavior: 'modal',
         }}
       ></oryx-site-navigation-item>
     `;

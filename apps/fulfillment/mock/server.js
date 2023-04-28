@@ -88,7 +88,7 @@ exports.createMockServer = function createMockServer() {
     res.send({
       type: 'Component',
       id: uid,
-      ...component
+      ...component,
     });
   });
 

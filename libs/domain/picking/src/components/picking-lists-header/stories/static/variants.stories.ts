@@ -1,17 +1,17 @@
+import { MockDateDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, LitElement, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { MockDateDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
 
 export default {
   title: `${storybookPrefix}/Picking List Header/Static`,
-  parameters: { 
+  parameters: {
     layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },
   },
-  decorators: [MockDateDecorator(new Date("March 20, 2020 20:00:00"))],
+  decorators: [MockDateDecorator(new Date('March 20, 2020 20:00:00'))],
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -31,6 +31,9 @@ Variants.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   await customElements.whenDefined('oryx-picking-lists-header');
-  const searchOpened = obj.canvasElement.querySelector<LitElement>('#search-opened');
-  searchOpened?.renderRoot.querySelector('oryx-search')?.toggleAttribute('open', true);
+  const searchOpened =
+    obj.canvasElement.querySelector<LitElement>('#search-opened');
+  searchOpened?.renderRoot
+    .querySelector('oryx-search')
+    ?.toggleAttribute('open', true);
 };

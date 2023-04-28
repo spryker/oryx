@@ -1,20 +1,22 @@
 import { appBuilder, injectEnv } from '@spryker-oryx/core';
+import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
 } from '@spryker-oryx/presets';
-import { fallbackEnv } from './fallback-env';
 import { siteFeature } from '@spryker-oryx/site';
-import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
+import { fallbackEnv } from './fallback-env';
 
 appBuilder()
   .withEnvironment({ ...fallbackEnv, ...(import.meta.env as AppEnvironment) })
   .withFeature(experienceFeature)
   .withFeature({
-    providers: [{
-      provide: ContentBackendUrl,
-      useFactory: () => injectEnv('ORYX_FULFILLMENT_BACKEND_URL', ''),
-    }]
+    providers: [
+      {
+        provide: ContentBackendUrl,
+        useFactory: () => injectEnv('ORYX_FULFILLMENT_BACKEND_URL', ''),
+      },
+    ],
   })
   .withFeature(siteFeature)
   .withTheme(fulfillmentTheme)
