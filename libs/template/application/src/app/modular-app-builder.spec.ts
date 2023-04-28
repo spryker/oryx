@@ -9,20 +9,25 @@ import { ModularAppBuilder } from './modular-app-builder';
 
 const mockApply = vi.fn();
 
-vi.mock('../components', () => ({
-  ComponentsPlugin: vi.fn().mockReturnValue({
-    apply: () => mockApply(),
-  }),
-}));
+vi.mock('@spryker-oryx/core', async () => {
+  const actual = (await vi.importActual('@spryker-oryx/core')) as Record<
+    string,
+    unknown
+  >;
 
-vi.mock('../theme', () => ({
+  return {
+    ...actual,
+    ComponentsPlugin: vi.fn().mockReturnValue({
+      apply: () => mockApply(),
+    }),
+    InjectionPlugin: vi.fn().mockReturnValue({
+      apply: () => mockApply(),
+    }),
+  };
+});
+
+vi.mock('@spryker-oryx/experience', () => ({
   ThemePlugin: vi.fn().mockReturnValue({
-    apply: () => mockApply(),
-  }),
-}));
-
-vi.mock('../injection', () => ({
-  InjectionPlugin: vi.fn().mockReturnValue({
     apply: () => mockApply(),
   }),
 }));

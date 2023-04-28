@@ -4,11 +4,11 @@ import {
   AppRef,
   ComponentsPlugin,
   FeatureOptionsService,
-  ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { optionsKey } from '../../../decorators';
+import { ResourcePlugin } from '../../../plugins';
 import { postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
