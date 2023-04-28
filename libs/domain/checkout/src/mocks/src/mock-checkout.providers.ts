@@ -1,5 +1,4 @@
 import { AuthService } from '@spryker-oryx/auth';
-import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
   CheckoutOrchestrationService,
@@ -22,10 +21,6 @@ export class MockCheckoutDataService implements Partial<CheckoutDataService> {
 
   getContactDetails = vi.fn().mockReturnValue(of({}));
   getAddressDetails = vi.fn().mockReturnValue(of({}));
-}
-
-export class MockCartService implements Partial<CartService> {
-  isEmpty = vi.fn().mockReturnValue(of(false));
 }
 
 export class MockCheckoutOrchestrationService
@@ -79,9 +74,5 @@ export const mockCheckoutProviders: Provider[] = [
   {
     provide: CheckoutService,
     useClass: MockCheckoutService,
-  },
-  {
-    provide: CartService,
-    useClass: MockCartService,
   },
 ];

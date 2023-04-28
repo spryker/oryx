@@ -38,7 +38,6 @@ describe('Checkout Guest', () => {
       testInjector.inject<MockCheckoutDataService>(CheckoutDataService);
     authService = testInjector.inject<MockAuthService>(AuthService);
     linkService = testInjector.inject(SemanticLinkService);
-    // linkService.get = vi.fn().mockReturnValue(of(mockLink));
   });
 
   afterEach(() => {

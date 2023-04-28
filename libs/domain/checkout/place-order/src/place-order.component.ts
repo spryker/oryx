@@ -1,13 +1,16 @@
+import { CartService } from '@spryker-oryx/cart';
 import { CheckoutMixin } from '@spryker-oryx/checkout';
+import { resolve } from '@spryker-oryx/di';
 import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
 @hydratable('window:load')
 export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
   protected isBusy = signal(false);
+  protected hasEmptyCart = signal(resolve(CartService).isEmpty());
 
   protected override render(): TemplateResult | void {
-    if (this.isEmpty()) return;
+    if (this.hasEmptyCart()) return;
 
     return html`<oryx-button
       ?inert=${this.isBusy()}

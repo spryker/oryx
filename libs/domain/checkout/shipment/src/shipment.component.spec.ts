@@ -12,7 +12,6 @@ import {
 } from '@spryker-oryx/checkout/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/i18n';
 import { radioComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -25,15 +24,10 @@ class MockShipmentService implements Partial<CheckoutShipmentService> {
   setShipmentMethod = vi.fn().mockReturnValue(of());
 }
 
-class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of('mockdate'));
-}
-
 describe('Checkout Shipment Selector component', () => {
   let element: CheckoutShipmentComponent;
   let shipmentService: MockShipmentService;
   let orchestrationService: MockCheckoutOrchestrationService;
-  let localeService: MockLocaleService;
 
   beforeAll(async () => {
     await useComponent([checkoutShipmentComponent, radioComponent]);
@@ -47,17 +41,12 @@ describe('Checkout Shipment Selector component', () => {
           provide: CheckoutShipmentService,
           useClass: MockShipmentService,
         },
-        {
-          provide: LocaleService,
-          useClass: MockLocaleService,
-        },
       ],
     });
 
     shipmentService = injector.inject<MockShipmentService>(
       CheckoutShipmentService
     );
-    localeService = injector.inject<MockLocaleService>(LocaleService);
     orchestrationService = injector.inject<MockCheckoutOrchestrationService>(
       CheckoutOrchestrationService
     );

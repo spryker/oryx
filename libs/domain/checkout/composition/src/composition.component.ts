@@ -1,8 +1,9 @@
+import { CartService } from '@spryker-oryx/cart';
 import { CheckoutMixin } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { CheckoutCompositionComponentOptions } from './composition.model';
 import { compositionStyles } from './composition.styles';
@@ -16,6 +17,7 @@ export class CheckoutCompositionComponent extends CheckoutMixin(
 ) {
   static styles = [compositionStyles];
 
+  protected hasEmptyCart = signal(resolve(CartService).isEmpty());
   protected requiresRedirect = computed(
     () =>
       this.$options().checkoutAuthPage &&
@@ -32,7 +34,7 @@ export class CheckoutCompositionComponent extends CheckoutMixin(
   }
 
   protected override render(): TemplateResult | void {
-    if (this.isEmpty() || this.requiresRedirect()) return;
+    if (this.hasEmptyCart() || this.requiresRedirect()) return;
 
     return html`
       <experience-composition .uid=${this.uid}></experience-composition>
