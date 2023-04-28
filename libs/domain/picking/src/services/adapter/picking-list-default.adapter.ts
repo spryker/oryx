@@ -188,6 +188,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       cartNote: cardNote,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
+      orderReferences: data.orderReferences,
     };
 
     return pickingList;
@@ -206,6 +207,7 @@ export interface PickingListResponseData extends ResourceObject {
   pickingListItems: PickingListResponseItem[];
   createdAt: string;
   updatedAt: string;
+  orderReferences: string[];
 }
 
 interface PickingListResponseItem extends ResourceObject {

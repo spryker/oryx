@@ -19,6 +19,7 @@ export class PickingListsComponent extends LitElement {
 
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
+    searchOrderReference: '66',
   });
 
   @asyncState()
@@ -54,13 +55,9 @@ export class PickingListsComponent extends LitElement {
       >
         <oryx-heading slot="heading">
           <h2>${i18n('picking.customer-note.heading')}</h2>
-        </oryx-heading/>
+        </oryx-heading>
         ${this.customerNote}
-        <oryx-button
-          slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Md}
-        >
+        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
             ${i18n('picking.customer-note.close')}
