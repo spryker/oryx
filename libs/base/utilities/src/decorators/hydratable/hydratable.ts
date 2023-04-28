@@ -85,7 +85,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (this.hasSsr) {
         this[DEFER_HYDRATION] = true;
-        this[hydrationRender] = false;
+        // this[hydrationRender] = false;
       }
     }
 
@@ -152,13 +152,21 @@ function hydratableClass<T extends Type<HTMLElement>>(
         const hasResolving = resolvingSignals();
         super.render();
         if (hasResolving()) {
+          console.log('has resolving', this.tagName);
           this[hydrationRender] = false;
         } else {
-          this[hydrationRender] = true;
           effect.stop();
-          this[SIGNAL_EFFECT] = undefined;
+          if (this[SIGNAL_EFFECT]) {
+            this[hydrationRender] = true;
+            this[SIGNAL_EFFECT] = undefined;
+          }
         }
       });
+
+      if (!this[SIGNAL_EFFECT]!.isRunning()) {
+        // first effect run did not detect any resolving signals
+        this[SIGNAL_EFFECT] = undefined;
+      }
     }
 
     render(): TemplateResult {

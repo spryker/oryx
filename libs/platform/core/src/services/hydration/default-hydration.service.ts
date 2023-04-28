@@ -6,7 +6,6 @@ import {
   HYDRATE_ON_DEMAND,
   rootInjectable,
 } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
 import { Subscription } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { ComponentsPlugin } from '../../orchestration/components';
@@ -80,9 +79,6 @@ export class DefaultHydrationService implements HydrationService {
         });
       }
     });
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.hydrateOnDemand(document.querySelector<LitElement>(this.root)!);
   }
 
   async hydrateOnDemand(
@@ -95,7 +91,7 @@ export class DefaultHydrationService implements HydrationService {
 
     if (!customElements.get(element.localName)) {
       await this.componentsPlugin?.loadComponent(element.localName);
-      customElements.upgrade(element);
+      await customElements.whenDefined(element.localName);
     }
 
     (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);

@@ -249,4 +249,8 @@ export class Effect {
   stop(): void {
     this.consumer.stop();
   }
+
+  isRunning(): boolean {
+    return this.consumer.isConnected;
+  }
 }
