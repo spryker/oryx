@@ -1,5 +1,24 @@
 #!/usr/bin/env node
 
-import { cliApp } from '@spryker-oryx/cli';
+import { CliPlugin, cliProviders } from '@spryker-oryx/cli';
+import {
+  appBuilder,
+  coreFeature,
+  FeatureOptions,
+  InjectionPlugin,
+} from '@spryker-oryx/core';
 
-cliApp.withOptions({ cli: { args: process.argv.slice(2) } }).create();
+// TODO: fix it
+appBuilder()
+  .with(
+    new InjectionPlugin([
+      ...cliProviders,
+      ...(coreFeature.providers ?? []),
+      {
+        provide: FeatureOptions,
+        useValue: { cli: { args: process.argv.slice(2) } },
+      },
+    ])
+  )
+  .with([new CliPlugin(), ...(coreFeature.plugins ?? [])])
+  .create();
