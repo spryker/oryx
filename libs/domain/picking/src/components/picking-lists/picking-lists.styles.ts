@@ -9,7 +9,7 @@ export const styles = css`
 
   oryx-picking-lists-header {
     position: sticky;
-    top: 0;
+    inset-block-start: 0;
   }
 
   .no-items-fallback {
