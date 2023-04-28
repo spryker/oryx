@@ -43,6 +43,7 @@ const mockContent = { items: [] };
 class MockCollection implements Partial<Collection> {
   toArray = vi.fn().mockReturnValue([]);
   equals = vi.fn().mockReturnValue(this);
+  and = vi.fn().mockReturnValue(this);
   startsWithAnyOf = vi.fn().mockReturnValue(this);
   distinct = vi.fn().mockReturnValue(this);
   offset = vi.fn().mockReturnValue(this);
@@ -181,10 +182,16 @@ describe('PickingListOfflineAdapter', () => {
 
     describe('and qualifier has order references', () => {
       it('should filter store', () => {
-        adapter.get({ orderReferences: [] }).subscribe();
+        adapter
+          .get({
+            status: PickingListStatus.ReadyForPicking,
+            orderReferences: ['66gd-11'],
+            searchOrderReference: '66gd',
+          })
+          .subscribe();
 
-        expect(mockTable.where).toHaveBeenCalledWith('orderReferences');
-        expect(mockCollection.startsWithAnyOf).toHaveBeenCalledWith([]);
+        expect(mockTable.where).toHaveBeenCalledWith('localStatus');
+        expect(mockCollection.and).toHaveBeenCalled();
         expect(mockCollection.distinct).toHaveBeenCalled();
       });
     });
