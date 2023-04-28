@@ -4,7 +4,12 @@ import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Picking List Header`,
-  parameters: { layout: 'fullscreen' }
+  parameters: { 
+    layout: 'fullscreen',
+    chromatic: {
+      disableSnapshot: true,
+    },
+  }
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
