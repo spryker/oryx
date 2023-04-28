@@ -1,9 +1,9 @@
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  SearchAttributes,
   SearchboxController,
   SearchIconPosition,
-  SearchOptions,
 } from '@spryker-oryx/ui/searchbox';
 import {
   FilterStrategyType,
@@ -21,7 +21,7 @@ import { baseStyles } from './styles';
 @hydratable(['mouseover', 'focus'])
 export class SelectComponent
   extends LitElement
-  implements ErrorOptions, SearchOptions, TypeaheadOptions
+  implements ErrorOptions, SearchAttributes, TypeaheadOptions
 {
   static styles = baseStyles;
 
@@ -38,11 +38,11 @@ export class SelectComponent
   @property() suffixIcon?: string = 'dropdown';
   @property({ type: Boolean }) suffixFill?: boolean;
   @property() searchIcon?: string;
-  @property() searchIconPosition?: SearchIconPosition = SearchIconPosition.NONE;
+  @property() searchIconPosition?: SearchIconPosition = SearchIconPosition.None;
   @property() clearIcon?: string;
   @property() clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance =
-    ClearIconAppearance.HOVER;
+    ClearIconAppearance.Hover;
 
   /**
    * Sets the value of the select element and dispatches
@@ -80,8 +80,8 @@ export class SelectComponent
 
   protected updated(): void {
     this.clearIconPosition = this.allowEmptyValue
-      ? ClearIconPosition.SUFFIX
-      : ClearIconPosition.NONE;
+      ? ClearIconPosition.Suffix
+      : ClearIconPosition.None;
   }
 
   protected renderPrefix(): TemplateResult {
