@@ -95,6 +95,6 @@ export class DefaultPageMetaService implements PageMetaService {
     }
 
     const name = this.getTagName(definition.name);
-    return document.head.querySelector(`${name}${attrs}`);
+    return document?.head?.querySelector?.(`${name}${attrs}`);
   }
 }
