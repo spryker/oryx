@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LazyLoadable } from '@spryker-oryx/core/utilities';
 import { Type } from '@spryker-oryx/di';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
@@ -11,7 +12,6 @@ export interface ComponentDef {
   readonly impl: ComponentDefImpl;
   readonly options?: FeatureOptions[keyof FeatureOptions];
   readonly schema?: LazyLoadable<Type<unknown> | Record<string, any>>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly [key: string]: any;
 }
 

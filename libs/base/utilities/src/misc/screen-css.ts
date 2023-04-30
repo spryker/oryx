@@ -6,7 +6,7 @@ import {
 } from '../model';
 
 export const screenCss = (
-  params: Record<string, CssStyles> | Record<Breakpoint, CssStyles>
+  params: Partial<Record<Breakpoint & string, CssStyles>>
 ): CssStylesWithMedia[] => {
   return Object.entries(params).map(([bp, css]) => ({
     media: {

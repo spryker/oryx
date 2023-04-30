@@ -6,13 +6,13 @@ import { resolve } from '@spryker-oryx/di';
 
 export const getThemeIcons = (): string[] =>
   Object.keys(
-    (resolve(AppRef).findPlugin('oryx.experience$theme') as any).getIcons()
+    (resolve(AppRef).findPlugin('oryx.experience-theme') as any).getIcons()
   );
 
 export const getThemeGraphics = (): string[] =>
   Object.keys(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     (
-      resolve(AppRef).findPlugin('oryx.experience$resource') as any
+      resolve(AppRef).findPlugin('oryx.experience-resource') as any
     ).getResources()!.graphics!
   );
