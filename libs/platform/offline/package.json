@@ -10,6 +10,12 @@
   ],
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
+  "exports": {
+    "./mocks": {
+      "types": "./src/mocks/index.d.ts",
+      "default": "./src/mocks/index.js"
+    }
+  },
   "dependencies": {
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/di": "latest",

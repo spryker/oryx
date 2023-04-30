@@ -82,6 +82,9 @@
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
       "@spryker-oryx/offline": ["libs/platform/offline/src/index.ts"],
+      "@spryker-oryx/offline/mocks": [
+        "libs/platform/offline/src/mocks/index.ts"
+      ],
       "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
       "@spryker-oryx/order/confirmation-banner": [
         "libs/domain/order/confirmation-banner/index.ts"
