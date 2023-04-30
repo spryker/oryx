@@ -1,4 +1,5 @@
 import { getThemeIcons } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -50,9 +51,9 @@ export const SearchboxDemo = Template.bind({});
 
 SearchboxDemo.args = {
   value: '',
-  searchIcon: 'search',
-  clearIcon: 'remove',
-  backIcon: 'back',
+  searchIcon: IconTypes.Search,
+  clearIcon: IconTypes.Remove,
+  backIcon: IconTypes.Back,
   searchIconPosition: SearchIconPosition.Prefix,
   clearIconPosition: ClearIconPosition.After,
   clearIconAppearance: ClearIconAppearance.Show,

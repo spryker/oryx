@@ -1,5 +1,6 @@
 import { Size } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
+import { IconTypes } from './icon.types';
 
 export interface IconProperties {
   /**
@@ -68,6 +69,4 @@ export interface Icon extends IconProperties {
   source?: TemplateResult;
 }
 
-// TODO: uncomment when define proper place for IconTypes
-// export type Icons = typeof IconTypes;
-export type Icons = string;
+export type Icons = IconTypes;

@@ -1,4 +1,5 @@
 import { getThemeIcons } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -49,7 +50,7 @@ SpinnerDemo.argTypes = {
 
 SpinnerDemo.args = {
   color: 'green',
-  icon: 'loader',
+  icon: IconTypes.Loader,
   size: Size.Md,
   rotation: SpinnerRotation.ClockWise,
 };
