@@ -1,10 +1,21 @@
-import { appBuilder, coreFeature, InjectionPlugin } from '@spryker-oryx/core';
+import {
+  AppBuilder,
+  appBuilder,
+  FeatureOptions,
+  InjectionPlugin,
+} from '@spryker-oryx/core';
 import { CliPlugin } from './plugin';
 import { cliProviders } from './providers';
 
-// TODO: Move modular app?
-export const cliApp = appBuilder()
-  .with(
-    new InjectionPlugin([...cliProviders, ...(coreFeature.providers ?? [])])
-  )
-  .with([new CliPlugin(), ...(coreFeature.plugins ?? [])]);
+export const cliApp = (cliOptions: Record<string, unknown>): AppBuilder =>
+  appBuilder()
+    .with(
+      new InjectionPlugin([
+        ...cliProviders,
+        {
+          provide: FeatureOptions,
+          useValue: cliOptions,
+        },
+      ])
+    )
+    .with(new CliPlugin());
