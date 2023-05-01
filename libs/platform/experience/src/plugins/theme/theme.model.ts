@@ -6,6 +6,7 @@ import {
   CssStylesWithMedia,
 } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
+import { Color } from '../../color/color.model';
 
 declare module '@spryker-oryx/core' {
   interface ComponentMap {
@@ -41,35 +42,6 @@ export interface ThemeData {
 export interface ThemeToken {
   [key: string]: ThemeToken | string;
 }
-
-export const enum ColorTone {
-  Canvas,
-  Background,
-  BackgroundSubtle,
-  ElementBackground,
-  ElementHover,
-  ElementActive,
-  Separator,
-  Border,
-  BorderHover,
-  Solid,
-  SolidHOver,
-  LowContrast,
-  HighContrast,
-}
-
-export const enum TempColorMode {
-  Light = 'light',
-  Dark = 'dark',
-}
-
-export type Color = {
-  [mode in TempColorMode]?: {
-    [tone in ColorTone]?: string;
-  };
-};
-
-export type ColorPalette = Record<string, Color>;
 
 /** @deprecated */
 export type ThemeColors = {
