@@ -1,5 +1,13 @@
+import {
+  App,
+  AppPlugin,
+  ComponentDef,
+  ComponentMap,
+  ComponentsPlugin,
+} from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
+  Breakpoints,
   deferHydrationAttribute,
   hydratableAttribute,
   iconInjectable,
@@ -7,18 +15,17 @@ import {
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
 import { DefaultIconInjectable } from '../../injectables';
-import { App, AppPlugin } from '../app';
-import { ComponentDef, ComponentsPlugin } from '../components';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
-  ThemeBreakpoints,
   ThemeData,
   ThemeIcons,
+  ThemeStrategies,
+  ThemeStylesCollection,
   ThemeStylesheets,
 } from './theme.model';
 
-export const ThemePluginName = 'core$theme';
+export const ThemePluginName = 'oryx.experience-theme';
 
 /**
  * Resolves components styles from theme options.
@@ -43,12 +50,18 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     return this.icons;
   }
 
-  getBreakpoints(): ThemeBreakpoints {
-    return this.breakpoints as ThemeBreakpoints;
+  getBreakpoints(): Breakpoints {
+    return this.breakpoints as Breakpoints;
   }
 
   getIcon(icon: string): string | Promise<string> {
     return resolveLazyLoadable(this.icons[icon]);
+  }
+
+  beforeApply(app: App): void {
+    const components = app.findPlugin(ComponentsPlugin);
+    components?.setResolver({ themes: this.resolve.bind(this) });
+    components?.extendComponent(this.applyThemes.bind(this));
   }
 
   async apply(app: App): Promise<void> {
@@ -126,6 +139,57 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
     if (Object.keys(this.icons).length) {
       iconInjectable.inject(new DefaultIconInjectable());
+    }
+  }
+
+  protected applyThemes(mapper: ComponentMap): void {
+    const { extendedClass, themes } = mapper;
+    const componentClass = Object.getPrototypeOf(extendedClass);
+
+    if (!themes) {
+      return;
+    }
+
+    const base = componentClass.styles ?? [];
+    const bases = Array.isArray(base) ? base : [base];
+    const isThemeData = (
+      theme: ThemeData | ThemeStylesheets
+    ): theme is ThemeData => !!(theme as ThemeData).styles;
+    const stylesheet = themes
+      .filter((theme) => !isThemeData(theme))
+      .flat() as ThemeStylesCollection[];
+
+    let innerTheme = [...bases, ...this.normalizeStyles(stylesheet)];
+
+    for (const theme of themes) {
+      if (!isThemeData(theme)) {
+        continue;
+      }
+
+      const { styles, strategy } = theme;
+
+      if (strategy === ThemeStrategies.ReplaceAll) {
+        innerTheme = this.normalizeStyles(styles);
+
+        continue;
+      }
+
+      if (strategy === ThemeStrategies.Replace) {
+        innerTheme = [...bases, ...this.normalizeStyles(styles)];
+
+        continue;
+      }
+
+      innerTheme = [...innerTheme, ...this.normalizeStyles(styles)];
+    }
+
+    componentClass.styles = innerTheme;
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (componentClass.hasOwnProperty('finalized')) {
+      componentClass.elementStyles = componentClass.finalizeStyles?.(
+        componentClass.styles
+      );
     }
   }
 }

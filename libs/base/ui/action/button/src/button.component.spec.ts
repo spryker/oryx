@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { Size } from '../../../src/utilities';
+import { Size } from '@spryker-oryx/utilities';
 import { ButtonComponent } from './button.component';
 import { buttonComponent } from './button.def';
 import { ButtonType } from './button.model';

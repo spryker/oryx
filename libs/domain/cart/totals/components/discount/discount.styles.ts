@@ -1,4 +1,4 @@
-import { ThemeStylesheets } from '@spryker-oryx/core';
+import { ThemeStylesheets } from '@spryker-oryx/experience';
 import { css } from 'lit';
 
 const cartTotalsDiscountRules = css`

@@ -1,4 +1,4 @@
-import { ThemeIcons } from '@spryker-oryx/core';
+import { ThemeIcons } from '@spryker-oryx/experience';
 import { IconTypes } from '../icon.model';
 
 export const storefrontIcons: ThemeIcons = {

@@ -1,4 +1,4 @@
-import { appBuilder } from '@spryker-oryx/core';
+import { appBuilder } from '@spryker-oryx/application';
 import { b2cFeatures } from '@spryker-oryx/presets';
 import { storefrontTheme } from '@spryker-oryx/themes';
 

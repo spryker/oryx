@@ -1,6 +1,7 @@
-import { App, AppRef, Theme, ThemePlugin } from '@spryker-oryx/core';
+import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
+import { Theme, ThemePlugin } from '../../../plugins';
 import { BreakpointService } from './breakpoint.service';
 import { DefaultBreakpointService } from './default-breakpoint.service';
 

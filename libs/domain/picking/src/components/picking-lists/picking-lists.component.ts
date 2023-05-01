@@ -1,8 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

@@ -1,9 +1,8 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import {
   baseStyles as inputBaseStyles,
   screenStyles as inputScreenStyles,
 } from '@spryker-oryx/ui/input';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = [
@@ -80,10 +79,9 @@ const smallScreen = css`
   }
 `;
 
-export const screenStyles: ThemeStylesWithMedia[] = [
+export const screenStyles = [
   ...inputScreenStyles,
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
+  ...screenCss({
+    sm: smallScreen,
+  }),
 ];

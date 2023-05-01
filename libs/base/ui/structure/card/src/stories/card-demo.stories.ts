@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getThemeIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -58,7 +58,7 @@ CardDemo.argTypes = {
     control: { type: 'text' },
   },
   icon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
   },
   footer: {

@@ -1,10 +1,10 @@
+import { AppPlugin } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { resourceInjectable } from '@spryker-oryx/utilities';
 import { DefaultResourceInjectable } from '../../injectables';
-import { AppPlugin } from '../app';
 import { Graphic, GraphicValue, Resources } from './resources.model';
 
-export const ResourcePluginName = 'core$resource';
+export const ResourcePluginName = 'oryx.experience-resource';
 
 /**
  * Resolves resources from orchestrator options.

@@ -3,7 +3,6 @@ import {
   AppRef,
   ComponentsPlugin,
   FeatureOptionsService,
-  ResourcePlugin,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
@@ -13,6 +12,7 @@ import {
 import { from, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { ContentComponentSchema } from '../../../models';
+import { ResourcePlugin } from '../../../plugins';
 import { ExperienceStaticData, StaticComponent } from '../static-data';
 import { catchMessage, postMessage } from '../utilities';
 import { MessageType } from './data-client.model';

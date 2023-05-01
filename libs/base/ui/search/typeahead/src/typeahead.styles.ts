@@ -1,4 +1,3 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import { POPOVER_HEIGHT } from '@spryker-oryx/ui/popover';
 import {
   baseStyles as searchboxBaseStyles,
@@ -76,4 +75,4 @@ export const baseStyles = [
   `,
 ];
 
-export const screenStyles: ThemeStylesWithMedia[] = [...searchboxScreenStyles];
+export const screenStyles = [...searchboxScreenStyles];

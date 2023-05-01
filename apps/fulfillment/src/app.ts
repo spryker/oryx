@@ -1,4 +1,4 @@
-import { appBuilder } from '@spryker-oryx/core';
+import { appBuilder } from '@spryker-oryx/application';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,

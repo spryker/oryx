@@ -1,7 +1,6 @@
-import { ThemeBreakpoints } from '@spryker-oryx/core';
-import { Size } from '@spryker-oryx/utilities';
+import { Breakpoints, Size } from '@spryker-oryx/utilities';
 
-export const defaultBreakpoints: ThemeBreakpoints = {
+export const defaultBreakpoints: Breakpoints = {
   [Size.Sm]: {
     min: 0,
     max: 767,
