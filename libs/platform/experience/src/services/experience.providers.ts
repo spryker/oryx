@@ -1,15 +1,15 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
-  BreakpointService,
-  DefaultBreakpointService,
   DefaultExperienceDataClientService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
+  DefaultScreenService,
   ExperienceDataClientService,
   ExperienceService,
   LayoutBuilder,
   PreviewExperienceService,
+  ScreenService,
 } from './experience';
 import { ContentBackendUrl } from './experience-tokens';
 import {
@@ -34,8 +34,8 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceService,
   },
   {
-    provide: BreakpointService,
-    useClass: DefaultBreakpointService,
+    provide: ScreenService,
+    useClass: DefaultScreenService,
   },
   {
     provide: LayoutBuilder,

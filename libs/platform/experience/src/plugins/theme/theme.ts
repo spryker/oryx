@@ -25,7 +25,7 @@ import {
   ThemeStylesheets,
 } from './theme.model';
 
-export const ThemePluginName = 'oryx.experience-theme';
+export const ThemePluginName = 'oryx.experienceTheme';
 
 /**
  * Resolves components styles from theme options.

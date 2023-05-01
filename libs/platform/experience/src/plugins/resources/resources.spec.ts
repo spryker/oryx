@@ -1,6 +1,6 @@
 import { isPromise } from '@spryker-oryx/utilities';
-import { ResourcePlugin, ResourcePluginName } from './resources';
 import { Resources } from './resources.model';
+import { ResourcePlugin, ResourcePluginName } from './resources.plugin';
 
 const mockSource = './source';
 

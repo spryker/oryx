@@ -2,16 +2,16 @@ import { AppRef } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
 import { ThemePlugin } from '../../../plugins';
-import { BreakpointService } from './breakpoint.service';
+import { ScreenService } from './screen.service';
 
-export class DefaultBreakpointService implements BreakpointService {
+export class DefaultScreenService implements ScreenService {
   protected themePlugin?: ThemePlugin;
 
   constructor(protected app = inject(AppRef)) {
     this.themePlugin = this.app.findPlugin(ThemePlugin);
   }
 
-  getMediaQuery(
+  getScreenMedia(
     include: Breakpoint | Breakpoint[],
     exclude: Breakpoint | Breakpoint[] = []
   ): string | void {

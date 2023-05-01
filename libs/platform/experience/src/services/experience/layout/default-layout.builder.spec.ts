@@ -3,9 +3,9 @@ import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
 import { LayoutAlign, StyleProperties } from '../../../models';
 import { Theme, ThemePlugin } from '../../../plugins';
-import { BreakpointService } from './breakpoint.service';
-import { DefaultBreakpointService } from './default-breakpoint.service';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+import { DefaultScreenService } from './default-screen.service';
+import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
   name: 'name',
@@ -85,8 +85,8 @@ describe('DefaultLayoutBuilder', () => {
         useClass: DefaultLayoutBuilder,
       },
       {
-        provide: BreakpointService,
-        useClass: DefaultBreakpointService,
+        provide: ScreenService,
+        useClass: DefaultScreenService,
       },
     ]);
 

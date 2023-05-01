@@ -38,6 +38,40 @@ export interface ThemeData {
   strategy?: ThemeStrategies;
 }
 
+export interface ThemeToken {
+  [key: string]: ThemeToken | string;
+}
+
+export const enum ColorTone {
+  Canvas,
+  Background,
+  BackgroundSubtle,
+  ElementBackground,
+  ElementHover,
+  ElementActive,
+  Separator,
+  Border,
+  BorderHover,
+  Solid,
+  SolidHOver,
+  LowContrast,
+  HighContrast,
+}
+
+export const enum TempColorMode {
+  Light = 'light',
+  Dark = 'dark',
+}
+
+export type Color = {
+  [mode in TempColorMode]?: {
+    [tone in ColorTone]?: string;
+  };
+};
+
+export type ColorPalette = Record<string, Color>;
+
+/** @deprecated */
 export type ThemeColors = {
   100?: string;
   200?: string;
@@ -46,11 +80,7 @@ export type ThemeColors = {
   500?: string;
 };
 
-export interface ThemeToken {
-  [key: string]: ThemeToken | string;
-}
-
-export type ColorDesignTokens = Record<string, string | ThemeColors>;
+export type ColorDesignTokens = Record<string, string | ThemeColors | Color>;
 
 export type DesignToken = ThemeToken & {
   media?: CssMediaQueries;
