@@ -2,6 +2,7 @@ import { Color } from '../../color.model';
 
 export const lime: Color = {
   light: {
+    0: 'hsl(0, 0%, 100%)',
     1: 'hsl(85, 50.0%, 98.7%)',
     2: 'hsl(85, 66.7%, 96.5%)',
     3: 'hsl(85, 76.0%, 92.3%)',
@@ -16,6 +17,7 @@ export const lime: Color = {
     12: 'hsl(78, 70.0%, 11.5%)',
   },
   dark: {
+    0: 'hsl(0, 0%, 0%)',
     1: 'hsl(75, 55.0%, 6.0%)',
     2: 'hsl(74, 56.8%, 7.3%)',
     3: 'hsl(78, 50.2%, 9.9%)',
