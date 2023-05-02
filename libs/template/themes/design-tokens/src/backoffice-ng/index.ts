@@ -1,4 +1,4 @@
-import { DesignToken } from '@spryker-oryx/core';
+import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { darkColor } from './color-dark.tokens';
 import { color } from './color.tokens';

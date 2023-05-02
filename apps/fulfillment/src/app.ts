@@ -1,5 +1,6 @@
-import { appBuilder, injectEnv } from '@spryker-oryx/core';
+import { injectEnv } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
+import { appBuilder } from '@spryker-oryx/application';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
@@ -19,7 +20,6 @@ appBuilder()
     ],
   })
   .withFeature(siteFeature)
-  .withTheme(fulfillmentTheme)
   .withFeature(
     offlineFulfillmentFeatures({
       picking: {
@@ -27,6 +27,7 @@ appBuilder()
       },
     })
   )
+  .withTheme(fulfillmentTheme)
   .create()
   .then(() => console.debug('Fulfillment App started!'))
   .catch(console.error);

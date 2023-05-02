@@ -1,5 +1,4 @@
-import { ColorMode } from '@spryker-oryx/core';
-import { i18n, rootInjectable } from '@spryker-oryx/utilities';
+import { ColorMode, i18n, rootInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { styles } from './color-mode-selector.styles';

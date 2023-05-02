@@ -1,8 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { Size } from '../../../src/utilities';
 import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
 

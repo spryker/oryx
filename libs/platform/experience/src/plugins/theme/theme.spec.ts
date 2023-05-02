@@ -1,13 +1,8 @@
-import { Size } from '@spryker-oryx/utilities';
+import { ComponentDef } from '@spryker-oryx/core';
+import { DefaultMedia, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
-import { ComponentDef } from '../components';
 import { ThemePlugin, ThemePluginName } from './theme';
-import {
-  Theme,
-  ThemeData,
-  ThemeDefaultMedia,
-  ThemeStrategies,
-} from './theme.model';
+import { Theme, ThemeData, ThemeStrategies } from './theme.model';
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
@@ -278,13 +273,13 @@ describe('ThemePlugin', () => {
         const result = plugin.normalizeStyles([
           {
             media: {
-              [ThemeDefaultMedia.Screen]: Size.Sm,
+              [DefaultMedia.Screen]: Size.Sm,
             },
             css: 'a',
           },
           {
             media: {
-              [ThemeDefaultMedia.Screen]: Size.Lg,
+              [DefaultMedia.Screen]: Size.Lg,
             },
             css: [css`k`, css`l`],
           },

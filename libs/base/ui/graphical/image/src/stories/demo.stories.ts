@@ -1,5 +1,4 @@
-import { AppRef, ResourcePlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { getThemeGraphics } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -8,10 +7,7 @@ export default {
   title: `${storybookPrefix}/Graphical/Image`,
 } as Meta;
 
-const graphics = Object.keys(
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  resolve(AppRef).findPlugin(ResourcePlugin)!.getResources()!.graphics!
-);
+const graphics = getThemeGraphics();
 
 const Template: Story = (props): TemplateResult => {
   return html`

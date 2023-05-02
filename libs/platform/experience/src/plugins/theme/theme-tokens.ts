@@ -1,18 +1,20 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { getPropByPath } from '@spryker-oryx/utilities';
-import { CSSResult, unsafeCSS } from 'lit';
 import {
   Breakpoint,
+  Breakpoints,
   ColorMode,
+  CssMediaQueries,
+  CssStyles,
+  CssStylesWithMedia,
+  DefaultMedia,
+  getPropByPath,
+} from '@spryker-oryx/utilities';
+import { CSSResult, unsafeCSS } from 'lit';
+import {
   DesignToken,
   Theme,
-  ThemeBreakpoints,
   ThemeData,
-  ThemeDefaultMedia,
-  ThemeMediaQueries,
-  ThemeStyles,
   ThemeStylesCollection,
-  ThemeStylesWithMedia,
   ThemeToken,
 } from './theme.model';
 
@@ -28,18 +30,18 @@ interface DesignTokenMapper {
 export class ThemeTokens {
   protected cssVarPrefix = '--oryx';
   protected mediaMapper = {
-    [ThemeDefaultMedia.Mode]: {
+    [DefaultMedia.Mode]: {
       dark: 'prefers-color-scheme: dark',
       light: 'prefers-color-scheme: light',
     },
-    [ThemeDefaultMedia.Screen]: {
+    [DefaultMedia.Screen]: {
       min: 'min-width',
       max: 'max-width',
     },
   };
-  protected breakpoints: ThemeBreakpoints = {};
+  protected breakpoints: Breakpoints = {};
 
-  normalizeStyles(styles: ThemeStyles | ThemeStylesCollection[]): CSSResult[] {
+  normalizeStyles(styles: CssStyles | ThemeStylesCollection[]): CSSResult[] {
     if (this.isThemeCollection(styles)) {
       return this.getStylesFromCollection(styles);
     }
@@ -57,7 +59,7 @@ export class ThemeTokens {
    */
   generateMedia(value: string): string {
     const path = value.split('.');
-    const isScreen = path[0] === ThemeDefaultMedia.Screen || path.length === 1;
+    const isScreen = path[0] === DefaultMedia.Screen || path.length === 1;
     const mediaRule = getPropByPath(this.mediaMapper, value);
 
     if (isScreen) {
@@ -86,7 +88,7 @@ export class ThemeTokens {
             !exclude.includes(bp) || (include.length && include.includes(bp))
         )
       : include;
-    const mediaRule = getPropByPath(this.mediaMapper, ThemeDefaultMedia.Screen);
+    const mediaRule = getPropByPath(this.mediaMapper, DefaultMedia.Screen);
     const steps = [];
 
     let expression = '';
@@ -142,7 +144,7 @@ export class ThemeTokens {
         continue;
       }
 
-      const isMode = media.includes(ThemeDefaultMedia.Mode);
+      const isMode = media.includes(DefaultMedia.Mode);
       let start = '';
       let end = '}';
 
@@ -200,7 +202,7 @@ export class ThemeTokens {
 
       if (!tokens.media && tokens.color) {
         tokensList.push({
-          media: { [ThemeDefaultMedia.Mode]: 'light' },
+          media: { [DefaultMedia.Mode]: 'light' },
           color: tokens.color,
         });
         delete tokens.color;
@@ -208,7 +210,7 @@ export class ThemeTokens {
 
       if (tokens.media) {
         for (const key in tokens.media) {
-          tokenMedia = `${key}.${tokens.media[key as keyof ThemeMediaQueries]}`;
+          tokenMedia = `${key}.${tokens.media[key as keyof CssMediaQueries]}`;
         }
         delete tokens.media;
       }
@@ -252,7 +254,7 @@ export class ThemeTokens {
     styles: ThemeStylesCollection[]
   ): CSSResult[] {
     this.sortByBreakpoints(styles);
-    const stringifiedStyles = (styles: ThemeStyles): string =>
+    const stringifiedStyles = (styles: CssStyles): string =>
       this.normalizeStyles(styles).reduce(
         (acc, style) => `${acc} ${style.toString()}`,
         ''
@@ -270,7 +272,7 @@ export class ThemeTokens {
       let media = '';
 
       for (const key in style.media) {
-        media = `${key}.${style.media[key as keyof ThemeMediaQueries]}`;
+        media = `${key}.${style.media[key as keyof CssMediaQueries]}`;
       }
 
       stylesStream += ` ${this.generateMedia(media)} {${stringifiedStyles(
@@ -288,21 +290,19 @@ export class ThemeTokens {
 
     styles.sort(
       (a, b) =>
-        order.indexOf(
-          (a as { media?: ThemeMediaQueries }).media?.screen ?? ''
-        ) -
-        order.indexOf((b as { media?: ThemeMediaQueries }).media?.screen ?? '')
+        order.indexOf((a as { media?: CssMediaQueries }).media?.screen ?? '') -
+        order.indexOf((b as { media?: CssMediaQueries }).media?.screen ?? '')
     );
   }
 
   protected isMediaStyles(
-    styles: ThemeStylesWithMedia | CSSResult | string
-  ): styles is ThemeStylesWithMedia {
+    styles: CssStylesWithMedia | CSSResult | string
+  ): styles is CssStylesWithMedia {
     return !(styles instanceof CSSResult) && typeof styles !== 'string';
   }
 
   protected isThemeCollection(
-    styles: ThemeStyles | ThemeStylesCollection[]
+    styles: CssStyles | ThemeStylesCollection[]
   ): styles is ThemeStylesCollection[] {
     return Array.isArray(styles) && styles.some(this.isMediaStyles);
   }

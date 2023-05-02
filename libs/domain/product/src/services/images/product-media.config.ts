@@ -1,4 +1,4 @@
-import { Size } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { MediaContext, ProductMediaContainerSize } from '../../models';
 
 /**

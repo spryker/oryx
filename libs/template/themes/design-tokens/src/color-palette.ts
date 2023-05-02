@@ -1,4 +1,4 @@
-import { ThemeColors } from '@spryker-oryx/core';
+import { ThemeColors } from '@spryker-oryx/experience';
 
 export const reverse = (color: string | ThemeColors): ThemeColors | string => {
   if (typeof color === 'string') {

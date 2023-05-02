@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
@@ -64,9 +63,6 @@ const smallScreen = css`
   }
 `;
 
-export const cartEntryScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
-];
+export const cartEntryScreenStyles = screenCss({
+  sm: smallScreen,
+});

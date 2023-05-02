@@ -1,4 +1,5 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -68,15 +69,15 @@ SearchboxDemo.argTypes = {
     control: { type: 'text' },
   },
   searchIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
   },
   backIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
   },
   searchIconPosition: {
