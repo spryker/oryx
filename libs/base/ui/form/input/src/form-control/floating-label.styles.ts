@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const floatingLabelStyles = (attribute = true) => {
@@ -76,6 +75,4 @@ const smScreenRules = floatingLabelStyles(false);
 
 export const floatingLabelBaseStyles = floatingLabelStyles();
 
-export const floatingLabelStylesheets: ThemeStylesWithMedia[] = [
-  { media: smScreen, css: smScreenRules },
-];
+export const floatingLabelStylesheets = screenCss({ sm: smScreenRules });
