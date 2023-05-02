@@ -1,6 +1,5 @@
-import { ThemeColors } from '@spryker-oryx/experience';
-
-export const reverse = (color: string | ThemeColors): ThemeColors | string => {
+// TODO: drop all when old tokens will be replaced
+export const reverse = (color: string | any): any | string => {
   if (typeof color === 'string') {
     return color;
   } else

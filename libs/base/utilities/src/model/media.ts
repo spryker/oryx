@@ -34,14 +34,19 @@ export interface Breakpoints {
 
 export type Breakpoint = keyof Breakpoints;
 
-export interface CssMediaQueries {
-  [DefaultMedia.Mode]?: 'dark' | 'light';
-  [DefaultMedia.Screen]?: Breakpoint | string;
+export enum ColorId {
+  Light = 'light',
+  Dark = 'dark',
 }
 
 export enum ColorMode {
   Light = 'mode-light',
   Dark = 'mode-dark',
+}
+
+export interface CssMediaQueries {
+  [DefaultMedia.Mode]?: ColorId | string;
+  [DefaultMedia.Screen]?: Breakpoint | string;
 }
 
 export interface CssStylesWithMedia {

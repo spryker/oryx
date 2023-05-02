@@ -10,10 +10,11 @@ import {
   getPropByPath,
 } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
+import { Color } from '../../color';
 import {
   DesignToken,
   Theme,
-  ThemeData,
+  ThemeStyles,
   ThemeStylesCollection,
   ThemeToken,
 } from './theme.model';
@@ -131,11 +132,12 @@ export class ThemeTokens {
   protected async getStylesFromTokens(
     themes: Theme[],
     root = ':host'
-  ): Promise<ThemeData> {
+  ): Promise<ThemeStyles> {
     const modeSelector = (notAttr: string) =>
       root === ':host' ? `${root}(:not([${notAttr}]))` : root;
     const tokens = await this.parseTokens(themes);
     let styles = '';
+    console.log(tokens);
 
     for (const media in tokens) {
       const tokensList = tokens[media];
@@ -201,10 +203,32 @@ export class ThemeTokens {
       let tokenMedia = DesignTokenGlobal.Global as string;
 
       if (!tokens.media && tokens.color) {
+        // TODO: delete when all colors will be replaced
         tokensList.push({
           media: { [DefaultMedia.Mode]: 'light' },
           color: tokens.color,
         });
+        //
+
+        for (const [key, color] of Object.entries(tokens.color)) {
+          // TODO: delete when all colors will be replaced
+          const isDeprecated = typeof color === 'string' || color['300'];
+
+          if (isDeprecated) {
+            continue;
+          }
+
+          for (const [tone, value] of Object.entries(color as Color)) {
+            tokensList.push({
+              media: { [DefaultMedia.Mode]: tone },
+              color: { [key]: value },
+            });
+          }
+
+          // TODO: delete when all colors will be replaced
+          delete tokens.color[key];
+        }
+
         delete tokens.color;
       }
 

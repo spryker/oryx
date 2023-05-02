@@ -1,3 +1,5 @@
+import { ColorId } from '@spryker-oryx/utilities';
+
 export const enum ColorTone {
   Canvas,
   Background,
@@ -14,13 +16,8 @@ export const enum ColorTone {
   HighContrast,
 }
 
-export const enum TempColorMode {
-  Light = 'light',
-  Dark = 'dark',
-}
-
 export type Color = {
-  [mode in TempColorMode]?: {
+  [mode in ColorId]?: {
     [tone in ColorTone]?: string;
   };
 };

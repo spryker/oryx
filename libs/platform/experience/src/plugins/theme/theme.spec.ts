@@ -2,7 +2,7 @@ import { ComponentDef } from '@spryker-oryx/core';
 import { DefaultMedia, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';
-import { Theme, ThemeData, ThemeStrategies } from './theme.model';
+import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
@@ -87,14 +87,14 @@ describe('ThemePlugin', () => {
         stylesheets: [
           {
             theme: 'b',
-            rules: (): Promise<ThemeData> =>
+            rules: (): Promise<ThemeStyles> =>
               Promise.resolve({
                 styles: stylesMocker('b'),
               }),
           },
           {
             theme: 'b',
-            rules: (): Promise<ThemeData> =>
+            rules: (): Promise<ThemeStyles> =>
               Promise.resolve({
                 styles: stylesMocker('bB'),
                 strategy: ThemeStrategies.ReplaceAll,

@@ -18,9 +18,9 @@ import { DefaultIconInjectable } from '../../injectables';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
-  ThemeData,
   ThemeIcons,
   ThemeStrategies,
+  ThemeStyles,
   ThemeStylesCollection,
   ThemeStylesheets,
 } from './theme.model';
@@ -78,7 +78,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   async resolve(
     componentDef: ComponentDef
-  ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
+  ): Promise<(ThemeStyles | ThemeStylesheets)[] | null> {
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
 
@@ -152,17 +152,17 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
     const base = componentClass.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
-    const isThemeData = (
-      theme: ThemeData | ThemeStylesheets
-    ): theme is ThemeData => !!(theme as ThemeData).styles;
+    const isThemeStyles = (
+      theme: ThemeStyles | ThemeStylesheets
+    ): theme is ThemeStyles => !!(theme as ThemeStyles).styles;
     const stylesheet = themes
-      .filter((theme) => !isThemeData(theme))
+      .filter((theme) => !isThemeStyles(theme))
       .flat() as ThemeStylesCollection[];
 
     let innerTheme = [...bases, ...this.normalizeStyles(stylesheet)];
 
     for (const theme of themes) {
-      if (!isThemeData(theme)) {
+      if (!isThemeStyles(theme)) {
         continue;
       }
 
