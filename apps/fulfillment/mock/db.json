@@ -769,7 +769,7 @@
         "type": "picking-list-items",
         "id": "80839794-a5dc-58e7-b95f-55667543258f",
         "attributes": {
-          "quantity": 1,
+          "quantity": 3,
           "numberOfPicked": 0,
           "numberOfNotPicked": 0,
           "orderItem": {
@@ -920,13 +920,13 @@
         "type": "picking-list-items",
         "id": "0d760b3e-1fba-53a8-88cc-5ff924ad9a54",
         "attributes": {
-          "quantity": 1,
+          "quantity": 4,
           "numberOfPicked": 0,
           "numberOfNotPicked": 0,
           "orderItem": {
             "uuid": "9f3bec71-f8dd-55d0-825f-84e7392d2e41",
             "sku": "086_30521602",
-            "quantity": 1,
+            "quantity": 4,
             "name": "Samsung Gear S2",
             "amountSalesUnit": null,
             "amount": null
