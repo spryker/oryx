@@ -20,14 +20,14 @@ describe('LoginPageComponent', () => {
   });
 
   it('should render auth login', () => {
-    expect(element.renderRoot.querySelector('oryx-auth-login')).not.toBeNull();
+    expect(element).toContainElement('oryx-auth-login');
   });
 
   it('should render logo', () => {
-    expect(element.renderRoot.querySelector('oryx-image')).not.toBeNull();
+    expect(element).toContainElement('oryx-image');
   });
 
   it('should render welcome message', () => {
-    expect(element.renderRoot.querySelector('oryx-heading')).not.toBeNull();
+    expect(element).toContainElement('oryx-heading');
   });
 });

@@ -5,7 +5,7 @@ export const styles = css`
   form {
     display: flex;
     flex-direction: column;
-    gap: var(--login-gap, 18px);
+    gap: var(--gap, 18px);
   }
 
   .options {
