@@ -20,9 +20,11 @@ describe('Partial picking a picklist', () => {
 
   it('should check partial picking', () => {
     // Setting initial number of products in each tab
-    pickingPage.notPickedProductsNumber.as('initialNotPickedProductsNumber');
-    pickingPage.pickedProductsNumber.as('initialPickedProductsNumber');
-    pickingPage.notFoundProductsNumber.as('initialNotFoundProductsNumber');
+    pickingPage
+      .getNotPickedProductsNumber()
+      .as('initialNotPickedProductsNumber');
+    pickingPage.getPickedProductsNumber().as('initialPickedProductsNumber');
+    pickingPage.getNotFoundProductsNumber().as('initialNotFoundProductsNumber');
 
     // For the first item, select only part of the quantity.
     pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
@@ -41,20 +43,23 @@ describe('Partial picking a picklist', () => {
     // Verify that the picking item is moved to the "Picked" tab with the entered quantity, and the "Not found" tab with the not entered quantity.
     // Not Picked tab list should have x-1 products
     cy.get('@initialNotPickedProductsNumber').then((initCount) => {
-      pickingPage.notPickedProductsNumber.should(
-        'be.eq',
-        Number(initCount) - 1
-      );
+      pickingPage
+        .getNotPickedProductsNumber()
+        .should('be.eq', Number(initCount) - 1);
     });
 
     // Picked tab list should have x+1 products
     cy.get('@initialPickedProductsNumber').then((initCount) => {
-      pickingPage.pickedProductsNumber.should('be.eq', Number(initCount) + 1);
+      pickingPage
+        .getPickedProductsNumber()
+        .should('be.eq', Number(initCount) + 1);
     });
 
     // Not Found tab list should have x+1 products
     cy.get('@initialNotFoundProductsNumber').then((initCount) => {
-      pickingPage.notFoundProductsNumber.should('be.eq', Number(initCount) + 1);
+      pickingPage
+        .getNotFoundProductsNumber()
+        .should('be.eq', Number(initCount) + 1);
     });
 
     // Pick the rest of the products

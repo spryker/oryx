@@ -16,15 +16,12 @@ export class PickingPage extends AbstractFAPage {
   getPickedTab = () => this.pickingFragment.getTabsList().eq(1);
   getNotFoundTab = () => this.pickingFragment.getTabsList().eq(2);
 
-  get notPickedProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.getNotPickedTab()));
-  }
-  get pickedProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.getPickedTab()));
-  }
-  get notFoundProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.getNotFoundTab()));
-  }
+  getNotPickedProductsNumber = () =>
+    cy.wrap(this.getProductsNumber(this.getNotPickedTab()));
+  getPickedProductsNumber = () =>
+    cy.wrap(this.getProductsNumber(this.getPickedTab()));
+  getNotFoundProductsNumber = () =>
+    cy.wrap(this.getProductsNumber(this.getNotFoundTab()));
 
   getProductsNumber(tab) {
     return new Promise((resolve) => {
