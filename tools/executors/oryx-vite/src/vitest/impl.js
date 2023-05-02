@@ -39,6 +39,7 @@ async function vitestExecutor(options, context) {
             '**/*.def.ts',
             '**/*.model.ts',
             '**/mocks/**/*',
+            '**/mixins/*',
             '**/constants.ts',
         ]);
         // Don't remove this log, it is used in Unit Tests coverage reports analysis
