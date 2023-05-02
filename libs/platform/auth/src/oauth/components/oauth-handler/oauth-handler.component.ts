@@ -4,9 +4,12 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { OauthService } from '../../oauth.service';
+import { styles } from './oauth-handler.styles';
 
 export class OauthHandlerComponent extends LitElement {
   @property() providerId?: string;
+
+  static styles = styles;
 
   constructor(
     protected oauthService = resolve(OauthService),
@@ -26,8 +29,11 @@ export class OauthHandlerComponent extends LitElement {
   }
 
   protected render(): unknown {
-    return html`<p><oryx-spinner></oryx-spinner></p>
-      <p style="text-align: center;">${i18n('oauth.logging-you-in')}</p>`;
+    return html`
+      <oryx-image resource="logo"></oryx-image>
+      <oryx-heading><h3>${i18n('oauth.logging-you-in')}</h3></oryx-heading>
+      <oryx-spinner></oryx-spinner>
+    `;
   }
 }
 

@@ -1,6 +1,6 @@
+import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Size } from '../../../src/utilities/model';
 import { IconButtonProperties } from './icon-button.model';
 import { iconButtonStyles } from './icon-button.styles';
 

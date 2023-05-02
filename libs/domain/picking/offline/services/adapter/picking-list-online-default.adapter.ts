@@ -10,7 +10,8 @@ import {
   PickingProduct,
 } from '@spryker-oryx/picking';
 import { isDefined } from '@spryker-oryx/utilities';
-import { Deserializer } from 'jsonapi-serializer';
+// Add full import because of issue with naming exports from cjs.
+import * as jsonapi from 'jsonapi-serializer';
 import { firstValueFrom, Observable } from 'rxjs';
 import {
   PickingListEntity,
@@ -26,7 +27,7 @@ export class PickingListOnlineDefaultAdapter
 {
   constructor(
     pickingHttpSerivce = inject(PickingHttpService),
-    deserializer = new Deserializer({
+    deserializer = new jsonapi.Deserializer({
       keyForAttribute: 'camelCase',
     }),
     protected indexedDbService = inject(IndexedDbService)

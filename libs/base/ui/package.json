@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@spryker-oryx/core": "latest",
-    "@spryker-oryx/themes": "latest",
     "@spryker-oryx/utilities": "latest"
   },
   "peerDependencies": {

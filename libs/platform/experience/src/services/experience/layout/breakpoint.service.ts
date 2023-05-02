@@ -1,9 +1,9 @@
-import { Breakpoint, ThemeBreakpoints } from '@spryker-oryx/core';
+import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
 
 export const BreakpointService = 'oryx.BreakpointService';
 
 export interface BreakpointService {
-  getBreakpoints(): ThemeBreakpoints;
+  getBreakpoints(): Breakpoints;
   getMediaQuery(
     include: Breakpoint | Breakpoint[],
     exclude?: Breakpoint | Breakpoint[]

@@ -1,6 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { Size } from '@spryker-oryx/ui';
 import { Address, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
@@ -10,6 +9,7 @@ import {
   asyncState,
   hydratable,
   i18n,
+  Size,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';

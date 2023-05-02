@@ -1,21 +1,23 @@
-import { Provider } from '@spryker-oryx/di';
-import { FeatureOptions } from '../../services/feature-options';
 import {
+  App,
+  AppEnvironment,
+  AppFeature,
   ComponentsInfo,
   ComponentsOptions,
   ComponentsPlugin,
-} from '../components';
-import { InjectionPlugin } from '../injection';
-import { ResourcePlugin, Resources } from '../resources';
-import { Theme, ThemePlugin } from '../theme';
-import { SimpleAppBuilder } from './app-builder';
-import { AppEnvironment } from './app-env';
+  FeatureOptions,
+  InjectionPlugin,
+  SimpleAppBuilder,
+} from '@spryker-oryx/core';
+import { Provider } from '@spryker-oryx/di';
 import {
-  App,
-  AppBuilderWithModules,
-  AppFeature,
-  ModularAppBuilderOptions,
-} from './app.model';
+  ResourcePlugin,
+  Resources,
+  Theme,
+  ThemePlugin,
+} from '@spryker-oryx/experience';
+import { AppBuilderWithModules, ModularAppBuilderOptions } from './app.model';
+
 /**
  * Creates application with additional modular methods.
  */

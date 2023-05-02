@@ -1,4 +1,4 @@
-import { ResourceGraphic } from '@spryker-oryx/core';
+import { ResourceGraphic } from '@spryker-oryx/experience';
 import { fulfillmentResourceGraphics } from './fulfillment';
 
 export const resourceGraphics: ResourceGraphic = {

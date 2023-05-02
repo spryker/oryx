@@ -106,9 +106,9 @@ describe('SelectComponent', () => {
 
       expectOptions(
         'dropdown',
-        SearchIconPosition.NONE,
-        ClearIconPosition.SUFFIX,
-        ClearIconAppearance.HOVER
+        SearchIconPosition.None,
+        ClearIconPosition.Suffix,
+        ClearIconAppearance.Hover
       );
     });
 
@@ -125,9 +125,9 @@ describe('SelectComponent', () => {
 
       expectOptions(
         'dropdown',
-        SearchIconPosition.NONE,
-        ClearIconPosition.SUFFIX,
-        ClearIconAppearance.HOVER
+        SearchIconPosition.None,
+        ClearIconPosition.Suffix,
+        ClearIconAppearance.Hover
       );
     });
 
@@ -149,9 +149,9 @@ describe('SelectComponent', () => {
 
       expectOptions(
         'dropdown',
-        SearchIconPosition.NONE,
-        ClearIconPosition.SUFFIX,
-        ClearIconAppearance.HOVER
+        SearchIconPosition.None,
+        ClearIconPosition.Suffix,
+        ClearIconAppearance.Hover
       );
     });
 
@@ -170,9 +170,9 @@ describe('SelectComponent', () => {
 
       expectOptions(
         'dropdown',
-        SearchIconPosition.NONE,
-        ClearIconPosition.SUFFIX,
-        ClearIconAppearance.HOVER
+        SearchIconPosition.None,
+        ClearIconPosition.Suffix,
+        ClearIconAppearance.Hover
       );
     });
 
@@ -189,9 +189,9 @@ describe('SelectComponent', () => {
 
       expectOptions(
         'dropdown',
-        SearchIconPosition.NONE,
-        ClearIconPosition.NONE,
-        ClearIconAppearance.HOVER
+        SearchIconPosition.None,
+        ClearIconPosition.None,
+        ClearIconAppearance.Hover
       );
     });
   });

@@ -1,16 +1,17 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
-import '@spryker-oryx/ui/popover';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
+import {
+  ClearIconAppearance,
+  SearchAttributes,
+  SearchEvent,
+  SearchIconPosition,
+} from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { AffixOptions } from '../../../../form/input';
-import {
-  ClearIconAppearance,
-  SearchEvent,
-  SearchOptions,
-} from '../../../../search/searchbox';
 import {
   FilterStrategyType,
   TypeaheadOptions,
@@ -21,7 +22,7 @@ export default {
   title: `${storybookPrefix}/Form/Select`,
 } as Meta;
 
-interface Props extends TypeaheadOptions, SearchOptions, AffixOptions {
+interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
   searchIcon?: string;
   maxHeight?: string;
   dataSet?: 'branches' | 'states';
@@ -125,7 +126,7 @@ SelectDemo.parameters = {
 SelectDemo.args = {
   maxHeight: '300px',
   clearIcon: IconTypes.Remove,
-  clearIconAppearance: ClearIconAppearance.HOVER,
+  clearIconAppearance: ClearIconAppearance.Hover,
   prefixFill: false,
   suffixFill: false,
   floatLabel: false,
@@ -146,20 +147,24 @@ SelectDemo.argTypes = {
     table: { category: 'Filtering' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   searchIconPosition: {
-    options: ['PREFIX', 'SUFFIX', 'NONE'],
+    options: [
+      SearchIconPosition.Prefix,
+      SearchIconPosition.Suffix,
+      SearchIconPosition.None,
+    ],
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   clearIconAppearance: {
     options: [
-      ClearIconAppearance.HOVER,
-      ClearIconAppearance.TOGGLE,
-      ClearIconAppearance.SHOW,
+      ClearIconAppearance.Hover,
+      ClearIconAppearance.Toggle,
+      ClearIconAppearance.Show,
     ],
     control: { type: 'select' },
     table: { category: 'Layout' },
@@ -172,7 +177,6 @@ SelectDemo.argTypes = {
     control: { type: 'boolean' },
     table: { category: 'Layout' },
   },
-
   selected: {
     control: { type: 'select' },
     table: { category: 'Select only' },

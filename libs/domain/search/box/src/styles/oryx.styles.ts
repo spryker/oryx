@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const searchboxStyles = css`
@@ -71,6 +70,6 @@ const smallScreen = css`
   }
 `;
 
-export const searchboxScreenStyles: ThemeStylesWithMedia[] = [
-  { media: smScreen, css: smallScreen },
-];
+export const searchboxScreenStyles = screenCss({
+  sm: smallScreen,
+});

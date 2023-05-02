@@ -69,7 +69,7 @@ describe('ComponentsPlugin', () => {
       const plugin = new ComponentsPlugin([createComponentDef(Tags.Root)], {
         root: createComponentDef(Tags.Root),
       });
-      await expect(plugin.apply(mockApp)).rejects.toThrow();
+      await expect(plugin.apply()).rejects.toThrow();
     });
 
     it('should define custom root component', async () => {
@@ -80,7 +80,7 @@ describe('ComponentsPlugin', () => {
         root: createComponentDef(Tags.Root),
       });
       expect(element).not.toBeInstanceOf(components[Tags.Root]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       await nextFrame();
       expect(element).toBeInstanceOf(components[Tags.Root]);
     });
@@ -98,7 +98,7 @@ describe('ComponentsPlugin', () => {
       const componentInShadowDom = element.renderRoot.querySelector(Tags.A);
 
       expect(componentInShadowDom).not.toBeInstanceOf(components[Tags.A]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       await nextFrame();
       expect(componentInShadowDom).toBeInstanceOf(components[Tags.A]);
     });
@@ -119,7 +119,7 @@ describe('ComponentsPlugin', () => {
         selector: Tags.B,
       });
       expect(componentInLightDom).not.toBeInstanceOf(components[Tags.B]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       await nextFrame();
       expect(componentInLightDom).toBeInstanceOf(components[Tags.B]);
     });
@@ -135,7 +135,7 @@ describe('ComponentsPlugin', () => {
         }
       );
       expect(element).not.toBeInstanceOf(components[Tags.Preload]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       expect(element).toBeInstanceOf(components[Tags.Preload]);
     });
 
@@ -151,7 +151,7 @@ describe('ComponentsPlugin', () => {
         }
       );
       expect(element).not.toBeInstanceOf(components[Tags.GlobalPreload]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       expect(element).toBeInstanceOf(components[Tags.GlobalPreload]);
     });
   });
@@ -171,7 +171,7 @@ describe('ComponentsPlugin', () => {
         selector: Tags.C,
       });
       expect(component).not.toBeInstanceOf(components[Tags.C]);
-      await plugin.apply(mockApp);
+      await plugin.apply();
       await nextFrame();
       expect(component).toBeInstanceOf(components[Tags.C]);
     });
@@ -185,7 +185,7 @@ describe('ComponentsPlugin', () => {
       const plugin = new ComponentsPlugin([createComponentDef(Tags.D)], {
         root: createComponentDef(Tags.D),
       });
-      await plugin.apply(mockApp);
+      await plugin.apply();
       expect(element).not.toBeInstanceOf(components[Tags.D]);
       await plugin.loadComponent(Tags.D);
       await nextFrame();

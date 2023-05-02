@@ -1,7 +1,6 @@
-import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import { asyncValue, hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { CANCEL_EVENT, CONFIRM_EVENT } from './address-remove.model';
 import { styles } from './address-remove.styles';

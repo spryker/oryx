@@ -1,12 +1,13 @@
 import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { getControl } from '../../../form/utilities';
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  SearchAttributes,
   SearchEvent,
   SearchIconPosition,
-  SearchOptions,
 } from './searchbox.model';
 
 export class SearchboxController implements ReactiveController {
@@ -30,7 +31,7 @@ export class SearchboxController implements ReactiveController {
 
   renderSuffix(): TemplateResult {
     const { clearIconPosition } = this.host;
-    if (!clearIconPosition || clearIconPosition === ClearIconPosition.AFTER) {
+    if (!clearIconPosition || clearIconPosition === ClearIconPosition.After) {
       return html`${this.clearButton}${this.affixController.renderSuffix(
         this.suffixContent
       )}`;
@@ -39,19 +40,32 @@ export class SearchboxController implements ReactiveController {
     }
   }
 
+  renderTrigger(): TemplateResult {
+    return html`
+      <slot name="trigger" @click=${() => this.onTriggerClick()}>
+        <oryx-icon-button>
+          <button title="search">
+            <slot name="trigger-icon"
+              ><oryx-icon type="search"></oryx-icon
+            ></slot>
+          </button>
+        </oryx-icon-button>
+      </slot>
+    `;
+  }
+
   /**
-   * Renders the prefix content for the search control.
+   * Renders the prefix content for the search control and back navigation.
    *
    * Adds the search button at the start of the search control when the
    * `options.searchIconPosition` is set to 'PREFIX'.
    */
-  get prefixContent(): TemplateResult | undefined {
-    let content: TemplateResult | undefined;
+  get prefixContent(): TemplateResult {
     const { searchIconPosition: pos } = this.host;
-    if (!pos || pos === SearchIconPosition.PREFIX) {
-      content = this.searchButton;
-    }
-    return content;
+    return html`${this.backButton}${when(
+      !pos || pos === SearchIconPosition.Prefix,
+      () => html`${this.searchButton}`
+    )}`;
   }
 
   /**
@@ -66,10 +80,10 @@ export class SearchboxController implements ReactiveController {
       this.host;
 
     const clearContent =
-      clearPos === ClearIconPosition.SUFFIX ? this.clearButton : undefined;
+      clearPos === ClearIconPosition.Suffix ? this.clearButton : undefined;
 
     const searchContent =
-      searchPos === SearchIconPosition.SUFFIX ? this.searchButton : undefined;
+      searchPos === SearchIconPosition.Suffix ? this.searchButton : undefined;
 
     if (!clearContent && !searchContent) {
       return;
@@ -80,14 +94,24 @@ export class SearchboxController implements ReactiveController {
 
   protected get searchButton(): TemplateResult {
     const { searchIcon: icon = 'search' } = this.host;
-    const search = html`
+    return html`
       <oryx-icon
         type=${icon}
-        class="search"
+        class="search-button"
         @click=${(): void => this.search()}
       ></oryx-icon>
     `;
-    return html`${search}`;
+  }
+
+  protected get backButton(): TemplateResult {
+    const { backIcon: icon = 'back' } = this.host;
+    return html`
+      <oryx-icon
+        type=${icon}
+        class="back-button"
+        @click=${(): void => this.host.removeAttribute('open')}
+      ></oryx-icon>
+    `;
   }
 
   get clearButton(): TemplateResult {
@@ -95,8 +119,8 @@ export class SearchboxController implements ReactiveController {
     return html`
       <oryx-icon
         type=${icon}
-        class="clear"
-        appearance=${clearIconAppearance ?? ClearIconAppearance.TOGGLE}
+        class="clear-button"
+        appearance=${clearIconAppearance ?? ClearIconAppearance.Toggle}
         @mousedown=${(e: Event): void => this.muteEvents(e)}
         @click=${(ev: Event): void => this.clear(ev)}
       ></oryx-icon>
@@ -158,7 +182,11 @@ export class SearchboxController implements ReactiveController {
     this.host.toggleAttribute('has-value', this.control.value !== '');
   }
 
-  constructor(protected host: SearchOptions & LitElement) {
+  protected onTriggerClick(): void {
+    this.host.toggleAttribute('open');
+  }
+
+  constructor(protected host: SearchAttributes & LitElement) {
     this.host.addController(this);
     this.affixController = new AffixController(host);
 
