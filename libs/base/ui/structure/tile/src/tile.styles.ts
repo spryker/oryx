@@ -6,7 +6,7 @@ export const tileStyles = css`
     outline: none;
     border: var(--oryx-border-thin) solid var(--oryx-color-canvas-500);
     box-sizing: border-box;
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     border-radius: var(
       --oryx-tile-border-radius,
       var(--oryx-border-radius-small)
@@ -25,7 +25,7 @@ export const tileStyles = css`
 
   ::slotted(*:hover:not(:active)) {
     border-color: var(--oryx-color-neutral-200);
-    box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation);
   }
 
   ::slotted(*:focus-visible) {
@@ -37,11 +37,11 @@ export const tileStyles = css`
     border-width: 2px;
     padding: calc(var(--oryx-tile-padding, 20px) - 1px);
     border: var(--oryx-border-thick) solid var(--oryx-color-primary-300);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
   :host([selected]) ::slotted(*:hover) {
-    box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation);
   }
 
   :host([selected]) ::slotted(*:focus-visible) {

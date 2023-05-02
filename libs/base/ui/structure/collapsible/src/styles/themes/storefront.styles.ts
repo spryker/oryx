@@ -31,7 +31,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:hover) {
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
   :host(${blockSelector}:active) {

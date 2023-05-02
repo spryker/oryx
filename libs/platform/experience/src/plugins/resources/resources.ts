@@ -4,7 +4,7 @@ import { resourceInjectable } from '@spryker-oryx/utilities';
 import { DefaultResourceInjectable } from '../../injectables';
 import { Graphic, GraphicValue, Resources } from './resources.model';
 
-export const ResourcePluginName = 'oryx.experience-resource';
+export const ResourcePluginName = 'oryx.experienceResource';
 
 /**
  * Resolves resources from orchestrator options.
