@@ -19,7 +19,7 @@ export class PickingListsComponent extends LitElement {
 
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
-    searchOrderReference: '66',
+    searchOrderReference: '',
   });
 
   @asyncState()
