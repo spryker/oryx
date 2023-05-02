@@ -137,7 +137,6 @@ export class ThemeTokens {
       root === ':host' ? `${root}(:not([${notAttr}]))` : root;
     const tokens = await this.parseTokens(themes);
     let styles = '';
-    console.log(tokens);
 
     for (const media in tokens) {
       const tokensList = tokens[media];
