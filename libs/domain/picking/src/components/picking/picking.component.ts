@@ -37,7 +37,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   @subscribe()
   protected itemsSubscription$ = this.pickingList$.pipe(
-    take(1),
     tap((list) => {
       this.items = list?.items;
     })
