@@ -1,5 +1,5 @@
 import { appBuilder } from '@spryker-oryx/application';
-import { injectEnv } from '@spryker-oryx/core';
+import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
 import {
   fulfillmentTheme,
@@ -10,7 +10,16 @@ import { fallbackEnv } from './fallback-env';
 
 appBuilder()
   .withEnvironment({ ...fallbackEnv, ...(import.meta.env as AppEnvironment) })
-  .withFeature(experienceFeature)
+  .withFeature({
+    // due to PageMetaResolver is conflicting with current router solution
+    // need to exclude it from the services list for FA
+    // TODO: drop filtering after EB integration
+    providers: experienceFeature.providers?.filter(
+      (feature) =>
+        ![PageMetaResolver, ContentBackendUrl].includes(feature.provide)
+    ),
+    components: experienceFeature.components,
+  })
   .withFeature({
     providers: [
       {
