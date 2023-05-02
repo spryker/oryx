@@ -39,20 +39,20 @@ export const color: ColorDesignTokens = {
 
   primary: {
     light: {
-      ...colorPalette.colors.green.light,
-      100: `var(--oryx-color-spryker-1)`,
-      200: `var(--oryx-color-spryker-7)`,
-      300: `var(--oryx-color-spryker-9)`,
-      400: `var(--oryx-color-spryker-11)`,
-      500: `var(--oryx-color-spryker-12)`,
+      ...colorPalette.colors.spryker.light,
+      100: `var(--oryx-color-primary-1)`,
+      200: `var(--oryx-color-primary-7)`,
+      300: `var(--oryx-color-primary-9)`,
+      400: `var(--oryx-color-primary-11)`,
+      500: `var(--oryx-color-primary-12)`,
     },
     dark: {
-      ...colorPalette.colors.green.dark,
-      100: `var(--oryx-color-spryker-12)`,
-      200: `var(--oryx-color-spryker-11)`,
-      300: `var(--oryx-color-spryker-9)`,
-      400: `var(--oryx-color-spryker-7)`,
-      500: `var(--oryx-color-spryker-1)`,
+      ...colorPalette.colors.spryker.dark,
+      100: `var(--oryx-color-primary-12)`,
+      200: `var(--oryx-color-primary-11)`,
+      300: `var(--oryx-color-primary-9)`,
+      400: `var(--oryx-color-primary-7)`,
+      500: `var(--oryx-color-primary-1)`,
     },
   },
   secondary: {
@@ -95,20 +95,20 @@ export const color: ColorDesignTokens = {
 
   success: {
     light: {
-      ...colorPalette.colors.green.light,
-      100: `var(--oryx-color-spryker-1)`,
-      200: `var(--oryx-color-spryker-7)`,
-      300: `var(--oryx-color-spryker-9)`,
-      400: `var(--oryx-color-spryker-11)`,
-      500: `var(--oryx-color-spryker-12)`,
+      ...colorPalette.colors.spryker.light,
+      100: `var(--oryx-color-success-1)`,
+      200: `var(--oryx-color-success-7)`,
+      300: `var(--oryx-color-success-9)`,
+      400: `var(--oryx-color-success-11)`,
+      500: `var(--oryx-color-success-12)`,
     },
     dark: {
-      ...colorPalette.colors.green.dark,
-      100: `var(--oryx-color-spryker-12)`,
-      200: `var(--oryx-color-spryker-11)`,
-      300: `var(--oryx-color-spryker-9)`,
-      400: `var(--oryx-color-spryker-7)`,
-      500: `var(--oryx-color-spryker-1)`,
+      ...colorPalette.colors.spryker.dark,
+      100: `var(--oryx-color-success-12)`,
+      200: `var(--oryx-color-success-11)`,
+      300: `var(--oryx-color-success-9)`,
+      400: `var(--oryx-color-success-7)`,
+      500: `var(--oryx-color-success-1)`,
     },
   },
   warning: {
@@ -166,7 +166,6 @@ export const color: ColorDesignTokens = {
     },
   },
 
-  spryker: colorPalette.colors.spryker,
   overlay: colorPalette.overlays.black,
 
   ink: `var(--oryx-color-neutral-12)`,
