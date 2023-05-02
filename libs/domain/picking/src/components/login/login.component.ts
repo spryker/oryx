@@ -13,6 +13,7 @@ export class LoginPageComponent extends LitElement {
         </h3></oryx-heading
       >
       <oryx-auth-login
+        ${/* using stringify for this option until actual EB integration  */ ''}
         options="${JSON.stringify({ enableRememberMe: false })}"
       ></oryx-auth-login>`;
   }

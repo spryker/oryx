@@ -22,6 +22,6 @@ export const styles = css`
   }
 
   oryx-button {
-    margin: var(--button-margin, 0);
+    margin: var(--_login-button-margin, 0);
   }
 `;
