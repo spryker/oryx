@@ -56,7 +56,7 @@ export class DefaultExperienceDataClientService
     })
   );
   protected graphics$ = of(
-    this.appRef.requirePlugin(ResourcePlugin)?.getResources()
+    this.appRef.requirePlugin(ResourcePlugin).getResources()
   ).pipe(
     tap((resources) => {
       postMessage({
