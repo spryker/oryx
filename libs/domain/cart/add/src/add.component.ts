@@ -22,6 +22,7 @@ export class CartAddComponent extends ProductMixin(
 
   @state() protected confirmed = false;
   @state() protected isInvalid = false;
+  @state() protected loading = false;
 
   protected cartService = resolve(CartService);
 
@@ -46,7 +47,7 @@ export class CartAddComponent extends ProductMixin(
     return html` <oryx-button
       size=${Size.Sm}
       type=${ButtonType.Primary}
-      ?loading=${this.$isBusy()}
+      ?loading=${this.$isBusy() && this.loading}
       ?outline=${this.$options().outlined}
       ?confirmed=${this.confirmed}
     >
@@ -97,10 +98,15 @@ export class CartAddComponent extends ProductMixin(
       )?.value ??
       this.min();
 
+    this.loading = true;
     this.cartService.addEntry({ sku, quantity }).subscribe({
       next: () => {
         this.confirmed = true;
+        this.loading = false;
         setTimeout(() => (this.confirmed = false), 800);
+      },
+      error: () => {
+        this.loading = false;
       },
     });
   }

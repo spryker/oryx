@@ -59,6 +59,7 @@ export class CartEntryComponent
   @property({ type: Boolean }) readonly?: boolean;
 
   @state() protected requiresRemovalConfirmation?: boolean;
+  @state() protected loading = false;
 
   protected pricingService = resolve(PricingService);
   protected context = new ContextController(this);
@@ -120,7 +121,7 @@ export class CartEntryComponent
         <oryx-icon-button
           size=${Size.Md}
           @click=${this.removeEntry}
-          ?disabled=${this.$isBusy()}
+          ?disabled=${this.$isBusy() && this.loading}
         >
           <button aria-label="remove">
             <oryx-icon type="trash"></oryx-icon>
@@ -145,7 +146,7 @@ export class CartEntryComponent
           .decreaseIcon=${this.decreaseIcon()}
           submitOnChange
           @submit=${this.onSubmit}
-          ?disabled=${this.$isBusy()}
+          ?disabled=${this.$isBusy() && this.loading}
         ></oryx-cart-quantity-input>`;
 
     return html`
@@ -210,13 +211,19 @@ export class CartEntryComponent
   }
 
   protected updateEntry(quantity: number): void {
+    this.loading = true;
+
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
         if (this.$options().notifyOnUpdate) {
           this.notify('cart.cart-entry-updated', this.sku);
         }
+        this.loading = false;
       },
-      error: () => this.revert(),
+      error: () => {
+        this.revert();
+        this.loading = false;
+      },
     });
   }
 
@@ -226,13 +233,19 @@ export class CartEntryComponent
       return;
     }
 
+    this.loading = true;
+
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
         if (this.$options().notifyOnRemove) {
           this.notify('cart.confirm-removed', this.sku);
         }
+        this.loading = false;
       },
-      error: () => this.revert(),
+      error: () => {
+        this.revert();
+        this.loading = false;
+      },
     });
   }
 
