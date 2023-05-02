@@ -1,24 +1,20 @@
 import { ColorId } from '@spryker-oryx/utilities';
 
-export const enum ColorTone {
-  Canvas,
-  Background,
-  BackgroundSubtle,
-  ElementBackground,
-  ElementHover,
-  ElementActive,
-  Separator,
-  Border,
-  BorderHover,
-  Solid,
-  SolidHOver,
-  LowContrast,
-  HighContrast,
-}
-
 export type Color = {
   [mode in ColorId]?: {
-    [tone in ColorTone]?: string;
+    0?: string;
+    1?: string;
+    2?: string;
+    3?: string;
+    4?: string;
+    5?: string;
+    6?: string;
+    7?: string;
+    8?: string;
+    9?: string;
+    10?: string;
+    11?: string;
+    12?: string;
   };
 };
 
