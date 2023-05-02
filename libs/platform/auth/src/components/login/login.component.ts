@@ -79,13 +79,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   );
 
   protected override render(): TemplateResult {
-    return html`<oryx-card>
-      <h1 slot="heading">${this.heading ?? i18n('user.login')}</h1>
-
-      ${when(
+    return html` ${when(
         this.hasError,
         () => html`
-          <oryx-notification type="error">
+          <oryx-notification type="error" scheme="dark">
             ${i18n('user.login.not-valid')}
           </oryx-notification>
         `
@@ -123,11 +120,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size=${Size.Sm}>
+        <oryx-button size=${Size.Sm} ?loading=${this.isLoading}>
           <button ?disabled=${this.isLoading}>${i18n('user.login')}</button>
         </oryx-button>
-      </form>
-    </oryx-card>`;
+      </form>`;
   }
 
   protected renderLoginOptions(): TemplateResult | void {

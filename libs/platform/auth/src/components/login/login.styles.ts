@@ -5,7 +5,7 @@ export const styles = css`
   form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: var(--login-gap, 18px);
   }
 
   .options {
@@ -19,5 +19,9 @@ export const styles = css`
 
   h1 {
     ${headingUtil(HeadingTag.H5)};
+  }
+
+  oryx-button {
+    margin: var(--button-margin, 0);
   }
 `;
