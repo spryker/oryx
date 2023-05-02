@@ -11,8 +11,8 @@ import {
 } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
-import { experienceCompositionComponent } from './composition.def';
-import { ExperienceCompositionComponent } from './experience-composition.component';
+import { experiencePreviewCompositionComponent } from './composition.def';
+import { ExperienceCompositionPreviewComponent } from './experience-composition-preview.component';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },
@@ -30,6 +30,7 @@ class MockExperienceService implements Partial<ExperienceService> {
     });
   getOptions = (): Observable<any> => of({});
   getContent = (): Observable<any> => of({});
+  getInteractionData = (): Observable<any> => of({});
 }
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
@@ -59,10 +60,10 @@ class MockComponentsRegistryService
 }
 
 describe('Experience Composition', () => {
-  let element: ExperienceCompositionComponent;
+  let element: ExperienceCompositionPreviewComponent;
 
   beforeAll(async () => {
-    await useComponent(experienceCompositionComponent);
+    await useComponent(experiencePreviewCompositionComponent);
   });
 
   beforeEach(async () => {
@@ -97,7 +98,7 @@ describe('Experience Composition', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(ExperienceCompositionComponent);
+    expect(element).toBeInstanceOf(ExperienceCompositionPreviewComponent);
   });
 
   it('should render oryx-content-banner', () => {
