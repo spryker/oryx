@@ -21,7 +21,7 @@ const mockTheme: Theme = {
 };
 
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
+  requirePlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
 describe('DefaultScreenService', () => {

@@ -202,18 +202,21 @@ export class ThemeTokens {
       let tokenMedia = DesignTokenGlobal.Global as string;
 
       if (!tokens.media && tokens.color) {
-        // TODO: delete when all colors will be replaced
-        tokensList.push({
-          media: { [DefaultMedia.Mode]: 'light' },
-          color: tokens.color,
-        });
-        //
-
         for (const [key, color] of Object.entries(tokens.color)) {
           // TODO: delete when all colors will be replaced
-          const isDeprecated = typeof color === 'string' || color['300'];
+          const isDeprecated = typeof color === 'string';
 
           if (isDeprecated) {
+            tokensList.push(
+              {
+                media: { [DefaultMedia.Mode]: 'light' },
+                color: { [key]: color },
+              },
+              {
+                media: { [DefaultMedia.Mode]: 'dark' },
+                color: { [key]: color },
+              }
+            );
             continue;
           }
 
@@ -223,9 +226,6 @@ export class ThemeTokens {
               color: { [key]: value },
             });
           }
-
-          // TODO: delete when all colors will be replaced
-          delete tokens.color[key];
         }
 
         delete tokens.color;

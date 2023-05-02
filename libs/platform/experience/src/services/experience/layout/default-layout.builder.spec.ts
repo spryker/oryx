@@ -23,7 +23,7 @@ const mockTheme: Theme = {
 };
 
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
+  requirePlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
 describe('DefaultLayoutBuilder', () => {
@@ -49,26 +49,6 @@ describe('DefaultLayoutBuilder', () => {
     describe(`when the ${key} is not configured`, () => {
       beforeEach(() => populate({}));
       it('should not generate the rule', () => {
-        expect(styles).toBeUndefined();
-      });
-    });
-  };
-
-  const expectStyleRuleWithUnit = (
-    key: string,
-    value: string,
-    expectedRule: string
-  ): void => {
-    describe(`when the ${key} with a value without a unit is provided`, () => {
-      beforeEach(() => populate({ [key]: value }));
-      it('should add px', () => {
-        expect(styles).toContain(`${expectedRule}:${value}px`);
-      });
-    });
-
-    describe(`when an empty string value is provided`, () => {
-      beforeEach(() => populate({ [key]: '' }));
-      it('should not create the rule', () => {
         expect(styles).toBeUndefined();
       });
     });
