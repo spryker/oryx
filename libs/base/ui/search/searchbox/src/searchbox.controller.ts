@@ -5,6 +5,8 @@ import { getControl } from '../../../form/utilities';
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  CLOSE_EVENT,
+  OPEN_EVENT,
   SearchAttributes,
   SearchEvent,
   SearchIconPosition,
@@ -183,13 +185,28 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected onTriggerClick(): void {
-    this.host.toggleAttribute('open');
-    this.control.focus();
+    const isOpened = this.host.hasAttribute('open');
+    this.host.toggleAttribute('open', !isOpened);
+
+    if (isOpened) {
+      this.control.value = '';
+    } else {
+      this.control.focus();
+    }
+
+    this.dispatchToggleEvent(isOpened ? CLOSE_EVENT : OPEN_EVENT);
   }
 
   protected onBack(): void {
     this.host.removeAttribute('open');
     this.control.value = '';
+    this.dispatchToggleEvent(CLOSE_EVENT);
+  }
+
+  protected dispatchToggleEvent(eventName: string): void {
+    this.host.dispatchEvent(
+      new CustomEvent(eventName, { bubbles: true, composed: true })
+    );
   }
 
   constructor(protected host: SearchAttributes & LitElement) {

@@ -23,7 +23,12 @@ export class PickingListsHeaderComponent extends LitElement {
         <h4>${i18n('picking.header.orders-<date>', { date: this.date })}</h4>
       </oryx-heading>
 
-      <oryx-search backIcon="backArrow" xs-floated>
+      <oryx-search
+        backIcon="backArrow"
+        xs-floated
+        @oryx.open=${() => console.log('open')}
+        @oryx.close=${() => console.log('close')}
+      >
         <input
           .placeholder=${i18n('picking.header.order-ID')}
           @input=${this.onSearch}

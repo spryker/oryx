@@ -604,18 +604,93 @@ describe('SearchComponent', () => {
   });
 
   describe('trigger', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search label="some label"></oryx-search>`
-      );
+    describe('when trigger is clicked', () => {
+      const openCallback = vi.fn();
+      const closeCallback = vi.fn();
 
-      element.renderRoot
-        .querySelector('[name="trigger"')
-        ?.dispatchEvent(new MouseEvent('click'));
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search
+            label="some label"
+            @oryx.open=${openCallback}
+            @oryx.close=${closeCallback}
+            ><input id="input"
+          /></oryx-search>`
+        );
+
+        element.renderRoot
+          .querySelector('[name="trigger"')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should set "open" attribute on the host', () => {
+        expect(element.hasAttribute('open')).toBe(true);
+      });
+
+      it('should focus the input', () => {
+        const input = element.querySelector('#input');
+        expect(input?.matches(':focus')).toBe(true);
+      });
+
+      it('should dispatches open event', () => {
+        expect(openCallback).toHaveBeenCalled();
+      });
+
+      describe('and trigger is clicked again', () => {
+        beforeEach(async () => {
+          element.querySelector<HTMLInputElement>('#input')!.value = 'test';
+
+          element.renderRoot
+            .querySelector('[name="trigger"')
+            ?.dispatchEvent(new MouseEvent('click'));
+        });
+
+        it('should remove "open" attribute from the host', () => {
+          expect(element.hasAttribute('open')).toBe(false);
+        });
+
+        it('should clear input`s value', () => {
+          const input = element.querySelector<HTMLInputElement>('#input');
+          expect(input?.value).toBe('');
+        });
+
+        it('should dispatches close event', () => {
+          expect(closeCallback).toHaveBeenCalled();
+        });
+      });
     });
+  });
 
-    it('should set "open" attribute on the host', () => {
-      expect(element.hasAttribute('open')).toBe(true);
+  describe('back button', () => {
+    describe('when button is clicked', () => {
+      const callback = vi.fn();
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search open label="some label" @oryx.close=${callback}
+            ><input id="input"
+          /></oryx-search>`
+        );
+
+        element.querySelector<HTMLInputElement>('#input')!.value = 'test';
+
+        element.renderRoot
+          .querySelector('.back-button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should remove "open" attribute from the host', () => {
+        expect(element.hasAttribute('open')).toBe(false);
+      });
+
+      it('should clear input`s value', () => {
+        const input = element.querySelector<HTMLInputElement>('#input');
+        expect(input?.value).toBe('');
+      });
+
+      it('should dispatches close event', () => {
+        expect(callback).toHaveBeenCalled();
+      });
     });
   });
 });

@@ -33,3 +33,6 @@ export const enum ClearIconAppearance {
   Toggle = 'toggle',
   Show = 'show',
 }
+
+export const OPEN_EVENT = 'oryx.open';
+export const CLOSE_EVENT = 'oryx.close';

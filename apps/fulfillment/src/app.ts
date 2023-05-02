@@ -1,6 +1,6 @@
+import { appBuilder } from '@spryker-oryx/application';
 import { injectEnv } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
-import { appBuilder } from '@spryker-oryx/application';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
