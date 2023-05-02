@@ -7,7 +7,6 @@ import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydratable, i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { DirectiveResult } from 'lit/directive.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, EMPTY, map, of, Subject, switchMap, tap } from 'rxjs';
@@ -25,7 +24,6 @@ import { styles } from './login.styles';
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   static styles = styles;
 
-  @property() heading?: DirectiveResult | string;
   @property() isLoading?: boolean;
   @property() hasError?: boolean;
   @property() emailName = 'email';
