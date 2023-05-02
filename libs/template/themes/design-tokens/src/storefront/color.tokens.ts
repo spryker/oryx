@@ -1,4 +1,4 @@
-import { ColorDesignTokens } from '@spryker-oryx/core';
+import { ColorDesignTokens } from '@spryker-oryx/experience';
 import { colorPalette } from '../color-palette';
 
 export const color: ColorDesignTokens = {

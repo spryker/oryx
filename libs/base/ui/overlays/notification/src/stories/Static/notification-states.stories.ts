@@ -1,4 +1,5 @@
-import { AlertType, Size } from '@spryker-oryx/ui';
+import { AlertType } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';

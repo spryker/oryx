@@ -1,9 +1,10 @@
+import { AppRef } from '@spryker-oryx/core';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import { asyncValue, IconInjectable, isPromise } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { AppRef, ThemePlugin } from '../orchestration';
+import { ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
   render(type: string): TemplateResult | undefined {

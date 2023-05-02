@@ -1,6 +1,6 @@
 import { MockAuthService } from '@spryker-oryx/auth/mocks';
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';

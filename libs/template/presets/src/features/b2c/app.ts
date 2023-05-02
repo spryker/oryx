@@ -6,12 +6,13 @@ import {
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';
-import { AppFeature, coreFeature, Resources } from '@spryker-oryx/core';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
   experienceFeature,
   experiencePreviewFeature,
   experienceRoutesFeature,
+  Resources,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';

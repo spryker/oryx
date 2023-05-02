@@ -1,4 +1,4 @@
-import { ResourceGraphic } from '@spryker-oryx/core';
+import { ResourceGraphic } from '@spryker-oryx/experience';
 
 export const fulfillmentResourceGraphics: ResourceGraphic = {
   'image-placeholder': {

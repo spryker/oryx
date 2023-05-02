@@ -1,4 +1,4 @@
-import { Breakpoint } from '@spryker-oryx/core';
+import { Breakpoint } from '@spryker-oryx/utilities';
 import { LayoutAttributes } from '../../layout/src';
 
 export interface CompositionProperties {

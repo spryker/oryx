@@ -1,10 +1,7 @@
-import {
-  AppRef,
-  Breakpoint,
-  ThemeBreakpoints,
-  ThemePlugin,
-} from '@spryker-oryx/core';
+import { AppRef } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
+import { ThemePlugin } from '../../../plugins';
 import { BreakpointService } from './breakpoint.service';
 
 export class DefaultBreakpointService implements BreakpointService {
@@ -30,7 +27,7 @@ export class DefaultBreakpointService implements BreakpointService {
     return Object.keys(this.getBreakpoints())[0] as Breakpoint;
   }
 
-  getBreakpoints(): ThemeBreakpoints {
+  getBreakpoints(): Breakpoints {
     return this.themePlugin?.getBreakpoints() ?? {};
   }
 }

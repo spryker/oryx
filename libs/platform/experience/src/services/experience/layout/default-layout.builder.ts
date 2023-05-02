@@ -1,5 +1,5 @@
-import { Breakpoint, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { Breakpoint, CssStyles } from '@spryker-oryx/utilities';
 import {
   CompositionProperties,
   StyleProperties,
@@ -9,15 +9,11 @@ import { Component } from '../models';
 import { BreakpointService } from './breakpoint.service';
 import { LayoutBuilder } from './layout.builder';
 
-type BreakpointStyles = {
-  [B in Breakpoint]?: ThemeStyles;
-};
-
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(protected breakpointService = inject(BreakpointService)) {}
 
   collectStyles(components: Component[]): string {
-    const perBreakpoint: BreakpointStyles = {};
+    const perBreakpoint: Partial<Record<Breakpoint, CssStyles>> = {};
 
     const add = (
       id: string,

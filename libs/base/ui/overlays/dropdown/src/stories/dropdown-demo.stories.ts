@@ -1,9 +1,9 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../src/utilities';
 import { Position } from '../dropdown.model';
 import { renderCustomContent, renderOptions } from './utils';
 
@@ -18,7 +18,7 @@ interface Props {
   position: Position;
   verticalAlign: boolean;
   customContent: boolean;
-  icon: typeof IconTypes;
+  icon: string;
   customTrigger: boolean;
   triggerIconSize: Size;
 }
@@ -100,7 +100,7 @@ DropdownDemo.argTypes = {
     table: { category: 'Slots' },
   },
   icon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Slots' },
   },

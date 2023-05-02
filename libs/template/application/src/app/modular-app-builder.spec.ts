@@ -1,25 +1,33 @@
-import { FeatureOptions } from '../../services/feature-options';
-import { ComponentsInfo, ComponentsPlugin } from '../components';
-import { InjectionPlugin } from '../injection';
-import { Theme, ThemePlugin } from '../theme';
+import {
+  ComponentsInfo,
+  ComponentsPlugin,
+  FeatureOptions,
+  InjectionPlugin,
+} from '@spryker-oryx/core';
+import { Theme, ThemePlugin } from '@spryker-oryx/experience';
 import { ModularAppBuilder } from './modular-app-builder';
 
 const mockApply = vi.fn();
 
-vi.mock('../components', () => ({
-  ComponentsPlugin: vi.fn().mockReturnValue({
-    apply: () => mockApply(),
-  }),
-}));
+vi.mock('@spryker-oryx/core', async () => {
+  const actual = (await vi.importActual('@spryker-oryx/core')) as Record<
+    string,
+    unknown
+  >;
 
-vi.mock('../theme', () => ({
+  return {
+    ...actual,
+    ComponentsPlugin: vi.fn().mockReturnValue({
+      apply: () => mockApply(),
+    }),
+    InjectionPlugin: vi.fn().mockReturnValue({
+      apply: () => mockApply(),
+    }),
+  };
+});
+
+vi.mock('@spryker-oryx/experience', () => ({
   ThemePlugin: vi.fn().mockReturnValue({
-    apply: () => mockApply(),
-  }),
-}));
-
-vi.mock('../injection', () => ({
-  InjectionPlugin: vi.fn().mockReturnValue({
     apply: () => mockApply(),
   }),
 }));
@@ -145,7 +153,7 @@ describe('ModularAppBuilder', () => {
   });
 
   describe('withOptions', () => {
-    const mockOptions: FeatureOptions = {
+    const mockOptions = {
       global: {
         test: 'test',
       },
@@ -155,7 +163,7 @@ describe('ModularAppBuilder', () => {
       b: {
         b: 'b',
       },
-    };
+    } as unknown as FeatureOptions;
 
     it('should return instance of itself', () => {
       expect(modularAppBuilder.withOptions(mockOptions)).toBe(

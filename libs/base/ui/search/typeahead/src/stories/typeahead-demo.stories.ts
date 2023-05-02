@@ -1,4 +1,4 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { branches, getThemeIcons, states } from '@spryker-oryx/ui';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import {
@@ -12,7 +12,6 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { branches, states } from '../../../../src/utilities';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 export default {
@@ -81,12 +80,12 @@ TypeaheadDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },

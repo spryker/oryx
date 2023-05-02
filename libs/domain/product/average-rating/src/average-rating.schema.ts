@@ -1,6 +1,6 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { Size } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { ProductAverageRatingComponent } from './average-rating.component';
 
 export const productAverageRatingSchema: ContentComponentSchema<ProductAverageRatingComponent> =
