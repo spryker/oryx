@@ -1,7 +1,8 @@
+import { ColorDesignTokens } from '@spryker-oryx/experience';
 import { colorPalette, reverse } from '../color-palette';
 import { color } from './color.tokens';
 
-export const darkColor = {
+export const darkColor: ColorDesignTokens = {
   ink: '#fff',
 
   canvas: {
