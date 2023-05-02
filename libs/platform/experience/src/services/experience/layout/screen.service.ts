@@ -7,7 +7,7 @@ export interface ScreenService {
   getScreenMedia(
     include: Breakpoint | Breakpoint[],
     exclude?: Breakpoint | Breakpoint[]
-  ): string | void;
+  ): string | void | null;
   getSmallest(): Breakpoint | void;
 }
 

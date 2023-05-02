@@ -19,8 +19,8 @@ const mockComponentPlugin = {
 };
 
 const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockComponentPlugin),
-  requirePlugin: vi.fn(),
+  findPlugin: vi.fn(),
+  requirePlugin: vi.fn().mockReturnValue(mockComponentPlugin),
   registerPlugin: vi.fn(),
   whenReady: vi.fn(),
   markReady: vi.fn(),
@@ -215,7 +215,7 @@ describe('ThemePlugin', () => {
         mockComponentPlugin.getRoot.mockReturnValue('a');
 
         const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
-        mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
         const themeData = await plugin.resolve({
           name: 'a',
           stylesheets: [
@@ -243,7 +243,7 @@ describe('ThemePlugin', () => {
         mockComponentPlugin.getOptions.mockReturnValue({
           root: 'root',
         });
-        mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
         await plugin.apply(mockApp);
         const styles = document.body
           .querySelector('style')

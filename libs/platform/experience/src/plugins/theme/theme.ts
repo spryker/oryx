@@ -51,7 +51,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   getBreakpoints(): Breakpoints {
-    return this.breakpoints as Breakpoints;
+    return this.breakpoints;
   }
 
   getIcon(icon: string): string | Promise<string> {
@@ -59,14 +59,13 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   beforeApply(app: App): void {
-    const components = app.findPlugin(ComponentsPlugin);
-    components?.setResolver({ themes: this.resolve.bind(this) });
-    components?.extendComponent(this.applyThemes.bind(this));
+    const components = app.requirePlugin(ComponentsPlugin);
+    components.setResolver({ themes: this.resolve.bind(this) });
+    components.extendComponent(this.applyThemes.bind(this));
   }
 
   async apply(app: App): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const components = app.findPlugin(ComponentsPlugin)!;
+    const components = app.requirePlugin(ComponentsPlugin);
 
     if (typeof components.getOptions().root === 'string' && document.body) {
       const styles = document.createElement('style');
