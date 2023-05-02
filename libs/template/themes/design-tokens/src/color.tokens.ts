@@ -57,7 +57,7 @@ export const color: ColorDesignTokens = {
   },
   secondary: {
     light: {
-      ...colorPalette.brightColors.amber.light,
+      ...colorPalette.colors.amber.light,
       100: `var(--oryx-color-secondary-2)`,
       200: `var(--oryx-color-secondary-6)`,
       300: `var(--oryx-color-secondary-9)`,
@@ -65,7 +65,7 @@ export const color: ColorDesignTokens = {
       500: `var(--oryx-color-secondary-11)`,
     },
     dark: {
-      ...colorPalette.brightColors.amber.dark,
+      ...colorPalette.colors.amber.dark,
       100: `var(--oryx-color-secondary-11)`,
       200: `var(--oryx-color-secondary-10)`,
       300: `var(--oryx-color-secondary-9)`,
@@ -113,7 +113,7 @@ export const color: ColorDesignTokens = {
   },
   warning: {
     light: {
-      ...colorPalette.brightColors.amber.light,
+      ...colorPalette.colors.amber.light,
       100: `var(--oryx-color-warning-2)`,
       200: `var(--oryx-color-warning-6)`,
       300: `var(--oryx-color-warning-9)`,
@@ -121,7 +121,7 @@ export const color: ColorDesignTokens = {
       500: `var(--oryx-color-warning-11)`,
     },
     dark: {
-      ...colorPalette.brightColors.amber.dark,
+      ...colorPalette.colors.amber.dark,
       100: `var(--oryx-color-warning-11)`,
       200: `var(--oryx-color-warning-10)`,
       300: `var(--oryx-color-warning-9)`,
