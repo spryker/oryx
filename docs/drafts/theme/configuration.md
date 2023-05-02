@@ -24,7 +24,8 @@ const theme: Theme = {
     'oryx-component-a': {
       styles: '',
     },
-    'oryx-component-b': () => import('path/to/component.styles').then((c) => c.styles),
+    'oryx-component-b': () =>
+      import('path/to/component.styles').then((c) => c.styles),
   },
 };
 ```
