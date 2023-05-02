@@ -16,7 +16,7 @@ export const styles = css`
   oryx-heading {
     align-self: center;
     margin-block: 50px;
-    margin-top: 30px;
+    margin-block-start: 30px;
   }
 
   h3 {
