@@ -172,6 +172,6 @@ export const color: ColorDesignTokens = {
   ink: `var(--oryx-color-neutral-12)`,
   focus: `var(--oryx-color-spryker-9)`,
   placeholder: `var(--oryx-color-neutral-11)`,
-  'elevation-color': `var(--oryx-color-overlay-2)`,
-  'elevation-color-2': `var(--oryx-color-overlay-2)`,
+  elevation: `var(--oryx-color-overlay-7)`,
+  'elevation-2': `var(--oryx-color-overlay-3)`,
 };
