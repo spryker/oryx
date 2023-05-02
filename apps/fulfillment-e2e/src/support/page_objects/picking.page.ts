@@ -12,24 +12,18 @@ export class PickingPage extends AbstractFAPage {
 
   url = `/picking-list/picking/${this.id}`;
 
-  get notPickedTab() {
-    return this.pickingFragment.getTabsList().eq(0);
-  }
-  get pickedTab() {
-    return this.pickingFragment.getTabsList().eq(1);
-  }
-  get notFoundTab() {
-    return this.pickingFragment.getTabsList().eq(2);
-  }
+  getNotPickedTab = () => this.pickingFragment.getTabsList().eq(0);
+  getPickedTab = () => this.pickingFragment.getTabsList().eq(1);
+  getNotFoundTab = () => this.pickingFragment.getTabsList().eq(2);
 
   get notPickedProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.notPickedTab));
+    return cy.wrap(this.getProductsNumber(this.getNotPickedTab()));
   }
   get pickedProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.pickedTab));
+    return cy.wrap(this.getProductsNumber(this.getPickedTab()));
   }
   get notFoundProductsNumber() {
-    return cy.wrap(this.getProductsNumber(this.notFoundTab));
+    return cy.wrap(this.getProductsNumber(this.getNotFoundTab()));
   }
 
   getProductsNumber(tab) {

@@ -25,7 +25,7 @@ describe('Partial picking a picklist', () => {
     pickingPage.notFoundProductsNumber.as('initialNotFoundProductsNumber');
 
     // For the first item, select only part of the quantity.
-    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
+    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
       pickingPage.pickProduct(pickingProductFragment.getProducts().eq(0), 1);
     });
 
@@ -58,7 +58,7 @@ describe('Partial picking a picklist', () => {
     });
 
     // Pick the rest of the products
-    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
+    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
       pickingProductFragment.getProducts().each((product) => {
         cy.wrap(product).within(() => {
           pickingProductFragment.pickAllProductItems();
@@ -74,9 +74,9 @@ describe('Partial picking a picklist', () => {
 
     // Verify that the “Finish picking” button appears
     const tabs = [
-      pickingPage.notPickedTab,
-      pickingPage.pickedTab,
-      pickingPage.notFoundTab,
+      pickingPage.getNotPickedTab(),
+      pickingPage.getPickedTab(),
+      pickingPage.getNotFoundTab(),
     ];
 
     tabs.forEach((tab) => {
@@ -86,7 +86,7 @@ describe('Partial picking a picklist', () => {
     });
 
     // Tap the “Finish picking” button
-    pickingPage.insideTabContent(pickingPage.notPickedTab, () => {
+    pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
       pickingFragment.getFinishPickingButton().click();
     });
 
