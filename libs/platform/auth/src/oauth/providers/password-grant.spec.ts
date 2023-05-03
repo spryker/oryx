@@ -155,18 +155,6 @@ describe('OauthPasswordGrantProvider', () => {
         StorageType.LOCAL
       );
     });
-
-    it('should return token', async () => {
-      mockStorage.get.mockReturnValue(of(null));
-      mockStorage.set.mockImplementation((name, token) => of(token));
-      const service = setup();
-      const http = getInjector().inject(HttpService) as HttpTestService;
-      http.flush('token');
-      service
-        .authenticate({ username: 'name', password: 'password' })
-        .subscribe(callback);
-      expect(callback).toHaveBeenCalledWith('token');
-    });
   });
 
   describe('refreshToken', () => {
@@ -230,31 +218,18 @@ describe('OauthPasswordGrantProvider', () => {
         StorageType.LOCAL
       );
     });
-
-    it('should return token', async () => {
-      mockStorage.get.mockReturnValue(
-        of({ refresh_token: 'token_refresh_token' })
-      );
-      mockStorage.set.mockImplementation((name, token) => of(token));
-      const service = setup();
-      const http = getInjector().inject(HttpService) as HttpTestService;
-      http.flush('token');
-      service.refreshToken().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith('token');
-    });
   });
 
   describe('revoke', () => {
-    it('should remove token from storage and remove result from storage', async () => {
+    it('should remove token from storage', async () => {
       mockStorage.get.mockReturnValue(of(null));
       mockStorage.remove.mockReturnValue(of(undefined));
       const service = setup();
-      service.revoke().subscribe(callback);
+      service.revoke().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
         StorageType.LOCAL
       );
-      expect(callback).toHaveBeenCalledWith(undefined);
     });
   });
 

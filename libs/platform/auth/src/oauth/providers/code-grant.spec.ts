@@ -3,6 +3,7 @@ import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { catchError, of } from 'rxjs';
 import {
+  OauthCodeGrantPKCEMethod,
   OauthCodeGrantProvider,
   OauthCodeGrantProviderConfig,
 } from './code-grant';
@@ -17,7 +18,8 @@ const mockOauth = {
 
 vi.mock('oauth4webapi', () => ({
   generateRandomCodeVerifier: () => mockOauth.generateRandomCodeVerifier(),
-  calculatePKCECodeChallenge: () => mockOauth.calculatePKCECodeChallenge(),
+  calculatePKCECodeChallenge: (data: unknown) =>
+    mockOauth.calculatePKCECodeChallenge(data),
   parseWwwAuthenticateChallenges: () =>
     mockOauth.parseWwwAuthenticateChallenges(),
   processAuthorizationCodeOAuth2Response: () =>
@@ -34,7 +36,7 @@ const mockStorage = {
 
 const mockConfig: OauthCodeGrantProviderConfig = {
   grantType: 'authorization_code',
-  authUrl: 'authUrl',
+  authUrl: 'https://mock-url.com',
   redirectUrl: 'redirectUrl',
   tokenUrl: 'tokenUrl',
   id: 'id',
@@ -61,6 +63,10 @@ describe('OauthPasswordGrantProvider', () => {
     return testInjector.inject(OauthCodeGrantProvider);
   };
 
+  beforeEach(() => {
+    vi.stubGlobal('location', { assign: vi.fn() });
+  });
+
   afterEach(() => {
     vi.resetAllMocks();
     destroyInjector();
@@ -82,10 +88,31 @@ describe('OauthPasswordGrantProvider', () => {
 
     it('should generate PKCE if pkceMethod is OauthCodeGrantPKCEMethod.S256', async () => {
       mockStorage.get.mockReturnValue(of({ state: 'non-authenticated' }));
-      const service = setup();
+      mockStorage.set.mockReturnValue(of(null));
+      mockOauth.generateRandomCodeVerifier.mockReturnValue('verifier');
+      const service = setup({
+        ...mockConfig,
+        pkceMethod: OauthCodeGrantPKCEMethod.S256,
+      });
       service.authenticate().subscribe();
       await nextFrame();
       expect(mockOauth.generateRandomCodeVerifier).toHaveBeenCalled();
+      expect(mockOauth.calculatePKCECodeChallenge).toHaveBeenCalledWith(
+        'verifier'
+      );
+    });
+
+    it('should generate PKCE if pkceMethod is OauthCodeGrantPKCEMethod.Plain', async () => {
+      mockStorage.get.mockReturnValue(of({ state: 'non-authenticated' }));
+      mockStorage.set.mockReturnValue(of(null));
+      const service = setup({
+        ...mockConfig,
+        pkceMethod: OauthCodeGrantPKCEMethod.Plain,
+      });
+      service.authenticate().subscribe();
+      await nextFrame();
+      expect(mockOauth.generateRandomCodeVerifier).toHaveBeenCalled();
+      expect(mockOauth.calculatePKCECodeChallenge).not.toHaveBeenCalled();
     });
   });
 
