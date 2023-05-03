@@ -11,10 +11,12 @@ export const styles = css`
 
   oryx-heading {
     text-transform: uppercase;
+    white-space: nowrap;
     flex-grow: 1;
   }
 
   oryx-search {
-    --floating-paddings: 32px;
+    --floating-padding-start: 16px;
+    --floating-width: calc(var(--oryx-layout-container-width) - 32px);
   }
 `;
