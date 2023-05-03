@@ -42,6 +42,7 @@ const mockSync = {
     items: [],
     itemsCount: 0,
     orderReferences: [],
+    orderReference: 'mockOrderReference',
     productSkus: [],
     requestedDeliveryDate: new Date(),
     localStatus: PickingListStatus.ReadyForPicking,
