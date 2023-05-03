@@ -162,7 +162,7 @@ export class DefaultCheckoutService<T extends Checkout>
       attributes.billingAddress = attributes.shippingAddress;
     }
     if (
-      !attributes.customer.salutation &&
+      !attributes.customer?.salutation &&
       attributes.shippingAddress?.salutation
     ) {
       attributes.customer.salutation = attributes.shippingAddress?.salutation;

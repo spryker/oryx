@@ -1,4 +1,3 @@
-import { AuthService } from '@spryker-oryx/auth';
 import {
   CheckoutPaymentService,
   CheckoutProcessState,
@@ -13,21 +12,13 @@ import { vi } from 'vitest';
 import { MockPaymentService } from './mock-payment.service';
 import { MockShipmentService } from './mock-shipment.service';
 
-export class MockCheckoutOrchestrationService
-  implements Partial<CheckoutService>
-{
+export class MockCheckoutService implements Partial<CheckoutService> {
+  register = vi.fn();
   getProcessState = vi
     .fn()
     .mockReturnValue(of(CheckoutProcessState.Initializing));
 
   placeOrder = vi.fn().mockReturnValue(of());
-
-  getTrigger = vi.fn().mockReturnValue(of());
-  report = vi.fn();
-}
-
-export class MockAuthService implements Partial<AuthService> {
-  isAuthenticated = vi.fn().mockReturnValue(of(false));
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -39,10 +30,6 @@ class MockSemanticLinkService implements Partial<SemanticLinkService> {
 }
 
 export const mockCheckoutProviders: Provider[] = [
-  {
-    provide: AuthService,
-    useClass: MockAuthService,
-  },
   {
     provide: RouterService,
     useClass: MockRouterService,
@@ -60,7 +47,7 @@ export const mockCheckoutProviders: Provider[] = [
     useClass: MockPaymentService,
   },
   {
-    provide: CheckoutOrchestrationService,
-    useClass: MockCheckoutOrchestrationService,
+    provide: CheckoutService,
+    useClass: MockCheckoutService,
   },
 ];

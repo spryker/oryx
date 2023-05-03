@@ -2,42 +2,53 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { User, UserService } from '@spryker-oryx/user';
 import { html } from 'lit';
-import { of } from 'rxjs';
-import {
-  MockAuthService,
-  MockCheckoutDataService,
-  mockCheckoutProviders,
-} from '../src/mocks/src';
-import { CheckoutDataService } from '../src/services';
+import { Observable, of, take } from 'rxjs';
+import { CheckoutGuestComponent } from '../guest';
+import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
+import { CheckoutService } from '../src/services';
 import { CheckoutAuthComponent } from './auth.component';
-import { checkoutGuestComponent } from './auth.def';
+import { checkoutAuthComponent } from './auth.def';
 
-const mockLink = '/semanticLink';
+class MockUserService implements Partial<UserService> {
+  getUser = vi.fn();
+}
 
-describe('Checkout Guest', () => {
+class MockAuthService implements Partial<AuthService> {
+  isAuthenticated = vi.fn();
+}
+
+describe('CheckoutAuthComponent', () => {
   let element: CheckoutAuthComponent;
-  let routerService: RouterService;
-  let linkService: SemanticLinkService;
-  let checkoutDataService: MockCheckoutDataService;
   let authService: MockAuthService;
+  let checkoutService: MockCheckoutService;
+  let userService: MockUserService;
+  let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
-    await useComponent(checkoutGuestComponent);
+    await useComponent(checkoutAuthComponent);
   });
 
   beforeEach(() => {
     const testInjector = createInjector({
-      providers: [...mockCheckoutProviders],
+      providers: [
+        ...mockCheckoutProviders,
+        {
+          provide: AuthService,
+          useClass: MockAuthService,
+        },
+        {
+          provide: UserService,
+          useClass: MockUserService,
+        },
+      ],
     });
 
-    routerService = testInjector.inject(RouterService);
-    checkoutDataService =
-      testInjector.inject<MockCheckoutDataService>(CheckoutDataService);
     authService = testInjector.inject<MockAuthService>(AuthService);
-    linkService = testInjector.inject(SemanticLinkService);
+    userService = testInjector.inject<MockUserService>(UserService);
+    checkoutService = testInjector.inject<MockCheckoutService>(CheckoutService);
+    checkoutService.register.mockImplementation((param, fn) => (callback = fn));
   });
 
   afterEach(() => {
@@ -45,63 +56,78 @@ describe('Checkout Guest', () => {
     vi.clearAllMocks();
   });
 
-  it('passes the a11y audit', async () => {
-    element = await fixture(html`<oryx-checkout-guest></oryx-checkout-guest>`);
-    await expect(element).shadowDom.to.be.accessible();
-  });
-
-  describe('when the isGuestCheckout() emits true', () => {
+  describe('when the component is created', () => {
     beforeEach(async () => {
-      checkoutDataService.isGuestCheckout.mockReturnValue(of(true));
-      linkService.get = vi.fn().mockReturnValue(of(mockLink));
-      element = await fixture(
-        html`<oryx-checkout-guest></oryx-checkout-guest>`
+      element = await fixture(html`<oryx-checkout-auth></oryx-checkout-auth>`);
+    });
+
+    it('should be an instance of ', () => {
+      expect(element).toBeInstanceOf(CheckoutAuthComponent);
+    });
+
+    it('should pass the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
+
+    it('should register the step at the checkout service', () => {
+      expect(checkoutService.register).toHaveBeenCalledWith(
+        'customer',
+        expect.anything(),
+        1
       );
-    });
-
-    it('should redirect to the checkout page', () => {
-      expect(routerService.navigate).toHaveBeenCalledWith(mockLink);
-    });
-  });
-
-  describe('when the isGuestCheckout() emits false', () => {
-    beforeEach(async () => {
-      checkoutDataService.isGuestCheckout = vi.fn().mockReturnValue(of(false));
-      element = await fixture(
-        html`<oryx-checkout-guest></oryx-checkout-guest>`
-      );
-    });
-
-    it('should redirect to the checkout login page', () => {
-      expect(routerService.navigate).not.toHaveBeenCalled();
     });
   });
 
   describe('when the user is authenticated', () => {
     beforeEach(async () => {
       authService.isAuthenticated.mockReturnValue(of(true));
-      linkService.get = vi.fn().mockReturnValue(of(mockLink));
-      element = await fixture(
-        html`<oryx-checkout-guest></oryx-checkout-guest>`
-      );
+      userService.getUser.mockReturnValue(of({ email: 'foo@bar.com' } as User));
+      element = await fixture(html`<oryx-checkout-auth></oryx-checkout-auth>`);
     });
 
-    it('should redirect to the checkout page', () => {
-      expect(routerService.navigate).toHaveBeenCalledWith(mockLink);
+    it('should not render the guest component', () => {
+      expect(element).not.toContainElement('oryx-checkout-guest');
+    });
+
+    describe('and when the collect callback is called', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-checkout-auth></oryx-checkout-auth>`
+        );
+        callback().pipe(take(1)).subscribe();
+      });
+      it('should collect the data', () => {
+        expect(userService.getUser).toHaveBeenCalled();
+      });
     });
   });
 
-  describe('when the link is clicked', () => {
+  describe('when the user is not authenticated', () => {
     beforeEach(async () => {
-      checkoutDataService.isGuestCheckout = vi.fn().mockReturnValue(of(false));
-      element = await fixture(
-        html`<oryx-checkout-guest></oryx-checkout-guest>`
-      );
-      element.shadowRoot?.querySelector('a')?.click();
+      authService.isAuthenticated.mockReturnValue(of(false));
+      userService.getUser.mockReturnValue(of(null));
+      element = await fixture(html`<oryx-checkout-auth></oryx-checkout-auth>`);
     });
 
-    it('should set guest checkout to true', () => {
-      expect(checkoutDataService.setGuestCheckout).toHaveBeenCalledWith(true);
+    it('should render the guest component', () => {
+      expect(element).toContainElement('oryx-checkout-guest');
+    });
+
+    describe('and the collect callback is called', () => {
+      let guestComponent: CheckoutGuestComponent;
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-checkout-auth></oryx-checkout-auth>`
+        );
+        guestComponent = element.shadowRoot?.querySelector(
+          'oryx-checkout-guest'
+        ) as CheckoutGuestComponent;
+        guestComponent.collectData = vi.fn();
+        callback().pipe(take(1)).subscribe();
+      });
+      it('should collect the data', () => {
+        expect(guestComponent.collectData).toHaveBeenCalled();
+      });
     });
   });
 });

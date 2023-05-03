@@ -2,6 +2,7 @@ import {
   Carrier,
   CheckoutShipmentService,
   Shipment,
+  ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { map, Observable, of } from 'rxjs';
 import {
@@ -62,13 +63,9 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
     return this.getShipment().pipe(map((shipment) => shipment?.carriers ?? []));
   }
 
-  selected(): Observable<number> {
+  selected(): Observable<ShipmentMethod | null> {
     return this.getShipment().pipe(
-      map((shipment) =>
-        shipment?.selectedShipmentMethod?.id
-          ? Number(shipment.selectedShipmentMethod.id)
-          : 0
-      )
+      map((shipment) => shipment?.selectedShipmentMethod ?? null)
     );
   }
 

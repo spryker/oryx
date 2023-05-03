@@ -32,14 +32,14 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
   protected subject = new BehaviorSubject<string | null>(null);
 
   protected methods$ = this.cartService.getCart().pipe(
-    switchMap((cart) =>
-      !cart
+    switchMap((cart) => {
+      return !cart?.products?.length
         ? of(null)
         : this.adapter.get({
             cartId: cart.id,
             include: [ApiCheckoutModel.Includes.PaymentMethods],
-          })
-    ),
+          });
+    }),
     // in some cases, (when cart is not yet created or thresholds are not met), we get 422 error from the backend
     catchError(() => of(null)),
     map((data) => data?.paymentMethods ?? null),
@@ -50,11 +50,8 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
     return this.methods$;
   }
 
-  // selected(): Observable<PaymentMethod | null> {
-  //   return this.subject;
-  // }
-
   select(key: string): Observable<unknown> {
+    // this.subject.next(key);
     return subscribeReplay(this.store(key));
   }
 
@@ -66,42 +63,15 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
           if (key) this.subject.next(key);
         }),
         switchMap(() => this.subject),
-        switchMap((key) =>
-          this.getMethods().pipe(
+        switchMap((key) => {
+          return this.getMethods().pipe(
             map(
               (methods) => methods?.find((method) => method.id === key) ?? null
             )
-          )
-        )
+          );
+        })
       );
   }
-
-  // select(id: string): Observable<unknown> {
-  //   return subscribeReplay(
-  //     this.getMethods().pipe(
-  //       take(1),
-  //       map((methods) => methods?.find((method) => method.id === id)),
-  //       // switchMap((method) =>
-  //       //   method
-  //       //     ? this.store(method)
-  //       //     : throwError(() => new Error('Payment method not found'))
-  //       // )
-  //       switchMap((method) => this.store(method))
-  //     )
-  //   );
-  // }
-
-  // protected store(details?: PaymentMethod): Observable<void> {
-  //   if (details) {
-  //     this.subject.next(details);
-  //     return this.storage.set(
-  //       paymentCheckoutStorageKey,
-  //       details,
-  //       StorageType.SESSION
-  //     );
-  //   }
-  //   return of();
-  // }
 
   protected store(key: string): Observable<void> {
     this.subject.next(key);

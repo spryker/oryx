@@ -39,11 +39,9 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     ApiCheckoutModel.Includes.ShipmentMethods,
   ];
 
-  getCarriers(): Observable<Carrier[]> {
+  getCarriers(): Observable<Carrier[] | null> {
     return this.getShipment().pipe(
-      map((shipment) => {
-        return shipment?.carriers ?? [];
-      })
+      map((shipment) => shipment?.carriers ?? null)
     );
   }
 
@@ -51,7 +49,6 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     return subscribeReplay(this.store(key));
   }
 
-  //
   selected(): Observable<ShipmentMethod | null> {
     return this.storage
       .get<string>(shipmentCheckoutStorageKey, StorageType.SESSION)
@@ -60,26 +57,17 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
           if (key) this.subject.next(key);
         }),
         switchMap(() => this.subject),
-        switchMap(
-          (key) =>
-            this.getCarriers().pipe(
-              map(
-                (carriers) =>
-                  carriers
-                    .find((carrier) =>
-                      carrier.shipmentMethods.find(
-                        (method) => method.id === key
-                      )
-                    )
-                    ?.shipmentMethods.find((method) => method.id === key) ??
-                  null
-              )
+        switchMap((key) =>
+          this.getCarriers().pipe(
+            map(
+              (carriers) =>
+                carriers
+                  ?.find((carrier) =>
+                    carrier.shipmentMethods.find((method) => method.id === key)
+                  )
+                  ?.shipmentMethods.find((method) => method.id === key) ?? null
             )
-          // this.getMethods().pipe(
-          //   map(
-          //     (methods) => methods?.find((method) => method.id === key) ?? null
-          //   )
-          // )
+          )
         )
       );
   }
@@ -87,17 +75,16 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
   // TODO: consider using checkout data api here.
   protected shipments$ = this.cartService.getCart().pipe(
     switchMap((cart) => {
-      if (!cart) {
-        return of({} as CheckoutData);
-      }
-      return this.adapter.get({
-        cartId: cart.id,
-        include: this.includeShipments,
-      });
+      return !cart?.products?.length
+        ? of(null)
+        : this.adapter.get({
+            cartId: cart.id,
+            include: [ApiCheckoutModel.Includes.ShipmentMethods],
+          });
     }),
     // in some cases, when cart is not yet created, we get 422 error from the backend
     catchError(() => of({} as CheckoutData)),
-    map((data) => data.shipments?.[0] ?? null),
+    map((data) => data?.shipments?.[0] ?? null),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 

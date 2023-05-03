@@ -133,7 +133,7 @@ describe('DefaultCheckoutService', () => {
       cartId,
       include: [ApiCheckoutModel.Includes.Shipments],
       attributes: {
-        shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
+        shipments: [{ ...mockShipmentAttributes, idShipmentMethod: '1' }],
       },
     };
 
@@ -142,7 +142,7 @@ describe('DefaultCheckoutService', () => {
         type: 'checkout-data',
         attributes: {
           cartId,
-          shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
+          shipments: [{ ...mockShipmentAttributes, idShipmentMethod: '1' }],
         },
       },
     };

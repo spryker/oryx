@@ -1,19 +1,25 @@
-import { CartService } from '@spryker-oryx/cart';
+import { Cart, CartService } from '@spryker-oryx/cart';
 import {
-  mockFilteredShipmentMethods,
   mockNormalizedCheckoutData,
   mockNormalizedUpdatedCheckoutData,
 } from '@spryker-oryx/checkout/mocks';
+import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, of, take } from 'rxjs';
+import { Carrier, shipmentCheckoutStorageKey } from '../../models';
 import { CheckoutAdapter } from '../adapter';
 import { CheckoutShipmentService } from './checkout-shipment.service';
 import { DefaultCheckoutShipmentService } from './default-checkout-shipment.service';
 
-const mockCartId = 'mockcartid';
+const mockEmptyCart = { id: 'mock-cart-id', products: [] } as unknown as Cart;
+const mockCartWithEntries = {
+  id: 'mock-cart-id',
+  products: [{ sku: '123' }],
+} as Cart;
 
+const cart = new BehaviorSubject<Cart | null>(null);
 class MockCartService implements Partial<CartService> {
-  getCart = vi.fn().mockReturnValue(of({ id: mockCartId }));
+  getCart = vi.fn().mockReturnValue(cart);
 }
 
 class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
@@ -21,15 +27,19 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
   update = vi.fn().mockReturnValue(of(mockNormalizedUpdatedCheckoutData));
 }
 
-describe('DefaultCheckoutService', () => {
+class MockStorageService implements Partial<StorageService> {
+  get = vi.fn().mockReturnValue(of({}));
+  set = vi.fn().mockReturnValue(of(undefined));
+}
+
+describe('DefaultCheckoutShipmentService', () => {
   let service: CheckoutShipmentService;
-  let cart: MockCartService;
   let adapter: MockCheckoutAdapter;
-  // let shipment$: Observable<Shipment | null>;
-  const callback = vi.fn();
-  // const shipmentsCallback = vi.fn();
+  let cartService: MockCartService;
+  let storageService: MockStorageService;
+
   beforeEach(() => {
-    const testInjector = createInjector({
+    const injector = createInjector({
       providers: [
         {
           provide: CartService,
@@ -43,16 +53,21 @@ describe('DefaultCheckoutService', () => {
           provide: CheckoutShipmentService,
           useClass: DefaultCheckoutShipmentService,
         },
+        {
+          provide: StorageService,
+          useClass: MockStorageService,
+        },
       ],
     });
 
-    service = testInjector.inject(CheckoutShipmentService);
-    cart = testInjector.inject<MockCartService>(CartService);
-    adapter = testInjector.inject<MockCheckoutAdapter>(CheckoutAdapter);
-    cart.getCart.mockReturnValue(of({ id: mockCartId }));
+    adapter = injector.inject<MockCheckoutAdapter>(CheckoutAdapter);
+    cartService = injector.inject<MockCartService>(CartService);
+    storageService = injector.inject<MockStorageService>(StorageService);
+    service = injector.inject(CheckoutShipmentService);
   });
 
   afterEach(() => {
+    cart.next(null);
     vi.clearAllMocks();
     destroyInjector();
   });
@@ -61,72 +76,112 @@ describe('DefaultCheckoutService', () => {
     expect(service).toBeInstanceOf(DefaultCheckoutShipmentService);
   });
 
-  // describe('getShipment', () => {
-  //   it('should return an observable', () => {
-  //     expect(service.getShipment()).toBeInstanceOf(Observable);
-  //   });
-
-  //   it('should get shipments for current cart', () => {
-  //     service.getShipment().subscribe(callback);
-
-  //     expect(callback).toHaveBeenCalledWith(mockNormalizedShipmentAttributes);
-  //   });
-
-  //   it('should not return shipments if user id or cart id is missing', () => {
-  //     adapter.get.mockReturnValue(of({}));
-
-  //     service.getShipment().subscribe(callback);
-  //     expect(callback).toHaveBeenCalledWith(null);
-  //   });
-  // });
-
-  describe('when calling getCarriers', () => {
-    it('should return an observable', () => {
-      expect(service.getCarriers()).toBeInstanceOf(Observable);
+  describe('when the cart is null', () => {
+    beforeEach(() => {
+      cartService.getCart.mockReturnValue(of(null));
+      service.getCarriers().pipe(take(1)).subscribe();
     });
 
-    it('should get carriers for current cart', () => {
-      service.getCarriers().subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith(mockFilteredShipmentMethods);
-    });
-
-    it('should not return carriers if user id or cart id is missing', () => {
-      adapter.get.mockReturnValue(of({}));
-
-      service.getCarriers().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith([]);
+    it('should not load any methods', () => {
+      expect(adapter.get).not.toHaveBeenCalled();
     });
   });
 
-  // describe('when calling getSelected', () => {
-  //   it('should return an observable', () => {
-  //     expect(service.selected()).toBeInstanceOf(Observable);
-  //   });
+  describe('when there are no items in the cart', () => {
+    beforeEach(() => {
+      cart.next(mockEmptyCart);
+      service.getCarriers().pipe(take(1)).subscribe();
+    });
 
-  //   describe('when shipment method is stored in session storage', () => {
-  //     beforeEach(() => {
-  //       dataService.getShipment.mockReturnValue(of({ idShipmentMethod: 4 }));
-  //     });
+    it('should not load any methods', () => {
+      expect(adapter.get).not.toHaveBeenCalled();
+    });
+  });
 
-  //     it('should return shipment method from storage', () => {
-  //       service.selected().subscribe(callback);
-  //       expect(callback).toHaveBeenCalledWith(4);
-  //     });
-  //   });
-  // });
+  describe('when there are items in the cart', () => {
+    beforeEach(() => {
+      cart.next(mockCartWithEntries);
+      service.getCarriers().pipe(take(1)).subscribe();
+    });
 
-  // describe('setShipmentMethod', () => {
-  //   it('should return an observable', () => {
-  //     expect(service.select(1)).toBeInstanceOf(Observable);
-  //   });
+    it('should load methods', () => {
+      expect(adapter.get).toHaveBeenCalled();
+    });
 
-  //   it('should call CheckoutDataService setShipmentDetails', () => {
-  //     service.select(1).subscribe();
+    describe('and there are no methods available', () => {
+      let result: unknown;
+      beforeEach(() => {
+        cart.next(mockCartWithEntries);
+        adapter.get.mockReturnValue({});
+        service
+          .getCarriers()
+          .pipe(take(1))
+          .subscribe((r) => (result = r));
+      });
 
-  //     expect(dataService.setShipment).toHaveBeenCalledWith(
-  //       expect.objectContaining({ idShipmentMethod: 1 })
-  //     );
-  //   });
-  // });
+      it('should not load any methods', () => {
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('and there are carriers available', () => {
+      let result: Carrier[] | null;
+      beforeEach(() => {
+        cart.next(mockCartWithEntries);
+        service
+          .getCarriers()
+          .pipe(take(1))
+          .subscribe((r) => (result = r));
+      });
+
+      it('should load the carriers', () => {
+        expect(result).toBe(mockNormalizedCheckoutData.shipments[0].carriers);
+      });
+    });
+  });
+
+  describe('when select() is called', () => {
+    const mockMethod =
+      mockNormalizedCheckoutData.shipments[0].carriers[0].shipmentMethods[0];
+    beforeEach(() => {
+      service.select(mockMethod.id);
+    });
+
+    it('should store the method', () => {
+      expect(storageService.set).toHaveBeenCalledWith(
+        shipmentCheckoutStorageKey,
+        mockMethod.id,
+        StorageType.SESSION
+      );
+    });
+
+    describe('and selected() is called', () => {
+      let result: unknown;
+      beforeEach(async () => {
+        cart.next(mockCartWithEntries);
+        storageService.get.mockReturnValue(of(mockMethod.id));
+        service
+          .selected()
+          .pipe(take(1))
+          .subscribe((r) => (result = r));
+      });
+
+      it('should return the selected method', () => {
+        expect(result).toBe(mockMethod);
+      });
+    });
+  });
+
+  describe('when selected() is called', () => {
+    beforeEach(() => {
+      service.selected().pipe(take(1)).subscribe();
+    });
+
+    it('should store the method', () => {
+      expect(storageService.get).toHaveBeenCalledWith(
+        shipmentCheckoutStorageKey,
+        StorageType.SESSION
+      );
+    });
+  });
 });
