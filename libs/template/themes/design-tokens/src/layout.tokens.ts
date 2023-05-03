@@ -1,4 +1,4 @@
-import { ThemeToken } from '@spryker-oryx/core';
+import { ThemeToken } from '@spryker-oryx/experience';
 
 export const layoutTokens: ThemeToken = {
   container: { width: '1340px', bleed: '50px' },
