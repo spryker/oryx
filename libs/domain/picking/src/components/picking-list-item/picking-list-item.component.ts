@@ -58,8 +58,7 @@ export class PickingListItemComponent
           () =>
             html`
               <h3 slot="heading">
-                ${this.pickingList?.requestedDeliveryDate &&
-                asyncValue(
+                ${asyncValue(
                   this.localeService.formatTime(
                     this.pickingList.requestedDeliveryDate
                   )

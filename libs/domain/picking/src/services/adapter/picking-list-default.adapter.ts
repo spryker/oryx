@@ -193,11 +193,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       cartNote: cardNote,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
-      ...(requestedDeliveryDate
-        ? {
-            requestedDeliveryDate: new Date(requestedDeliveryDate),
-          }
-        : {}),
+      requestedDeliveryDate: new Date(requestedDeliveryDate),
     };
 
     return pickingList;
