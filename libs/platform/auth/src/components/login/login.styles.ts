@@ -24,4 +24,8 @@ export const styles = css`
   oryx-button {
     margin: var(--_login-button-margin, 0);
   }
+
+  oryx-notification {
+    margin-block-end: 20px;
+  }
 `;
