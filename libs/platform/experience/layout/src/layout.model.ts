@@ -15,6 +15,11 @@ export interface LayoutAttributes extends ScreenLayoutProperties {
    * should be used (eg `layoutSm`).
    */
   layout?: CompositionLayout;
+  layoutXs?: CompositionLayout;
+  layoutSm?: CompositionLayout;
+  layoutMd?: CompositionLayout;
+  layoutLg?: CompositionLayout;
+  layoutXl?: CompositionLayout;
 
   /**
    * Components are bound inside the page bleed by default. The page bleed is
@@ -25,6 +30,11 @@ export interface LayoutAttributes extends ScreenLayoutProperties {
    * styling and content outside the container.
    */
   bleed?: boolean;
+  bleedXs?: boolean;
+  bleedSm?: boolean;
+  bleedMd?: boolean;
+  bleedLg?: boolean;
+  bleedXl?: boolean;
 
   /**
    * Indicates that the composition will stick on the screen at a certain position. The position
@@ -32,6 +42,11 @@ export interface LayoutAttributes extends ScreenLayoutProperties {
    * the top can be configured to be 100%.
    */
   sticky?: boolean;
+  stickyXs?: boolean;
+  stickySm?: boolean;
+  stickyMd?: boolean;
+  stickyLg?: boolean;
+  stickyXl?: boolean;
 
   orientation?: CompositionLayoutOrientation;
 }
