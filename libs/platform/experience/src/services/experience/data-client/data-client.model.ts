@@ -1,6 +1,6 @@
-import { ResourceGraphic } from '@spryker-oryx/core';
 import { ModeEvent } from '@spryker-oryx/ui/color-mode-selector';
 import { ContentComponentSchema } from '../../../models';
+import { ResourceGraphic } from '../../../plugins';
 import { StaticComponent } from '../static-data';
 
 export const enum MessageType {

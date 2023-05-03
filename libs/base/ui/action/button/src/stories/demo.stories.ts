@@ -1,8 +1,8 @@
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../src/utilities';
 import { ButtonComponentAttributes, ButtonType } from '../button.model';
 
 export default {

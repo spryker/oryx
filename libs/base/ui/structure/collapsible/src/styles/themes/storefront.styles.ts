@@ -1,4 +1,3 @@
-import { ThemeData } from '@spryker-oryx/core';
 import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
@@ -32,7 +31,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:hover) {
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
   :host(${blockSelector}:active) {
@@ -43,7 +42,7 @@ const blockAppearance = css`
     padding-block: 16px 13px;
   }
 
-  /* 
+  /*
     We isolate this style for both inline/block since "storybook-addon-pseudo-states"
     doesn't support us otherwise.
   */
@@ -66,6 +65,6 @@ const blockAppearance = css`
   }
 `;
 
-export const collapsibleStorefrontUI: ThemeData = {
+export const collapsibleStorefrontUI = {
   styles: [inlineAppearance, blockAppearance],
 };

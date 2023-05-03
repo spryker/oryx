@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const buttonStyles = css`
@@ -53,7 +52,7 @@ export const buttonStyles = css`
   }
 
   ::slotted(:hover:not(:active)) {
-    box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation);
   }
 
   ::slotted(*:active) {
@@ -249,9 +248,6 @@ const smallScreen = css`
   }
 `;
 
-export const buttonScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
-];
+export const buttonScreenStyles = screenCss({
+  sm: smallScreen,
+});

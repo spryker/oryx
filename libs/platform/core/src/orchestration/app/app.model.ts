@@ -1,7 +1,4 @@
-import { InjectorOptions, Provider, Type } from '@spryker-oryx/di';
-import { ComponentsInfo, ComponentsOptions } from '../components';
-import { Resources } from '../resources';
-import { Theme } from '../theme';
+import { Type } from '@spryker-oryx/di';
 
 export const AppRef = 'oryx.AppRef';
 
@@ -11,18 +8,11 @@ declare global {
   }
 }
 
-export interface ModularAppBuilderOptions {
-  injector?: Omit<InjectorOptions, 'providers'>;
-  components?: Partial<ComponentsOptions>;
-}
-
+// TODO: move out to the experience package
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppFeature {
-  providers?: Provider[];
-  components?: ComponentsInfo;
-  options?: ModularAppBuilderOptions;
-  plugins?: AppPlugin[];
-  resources?: Resources;
-  defaultOptions?: FeatureOptions;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface App {
@@ -40,18 +30,6 @@ export interface AppBuilder<T = ''> {
 }
 
 export type Builder<T> = T extends string ? AppBuilder : T;
-
-export interface AppBuilderWithModules
-  extends AppBuilder<AppBuilderWithModules> {
-  withComponents(components: ComponentsInfo): AppBuilderWithModules;
-  withProviders(providers: Provider[]): AppBuilderWithModules;
-  withFeature(feature: AppFeature | AppFeature[]): AppBuilderWithModules;
-  withAppOptions(options: ModularAppBuilderOptions): AppBuilderWithModules;
-  withTheme(theme: Theme | Theme[]): AppBuilderWithModules;
-  withEnvironment(env: AppEnvironment): AppBuilderWithModules;
-  withResources(resources: Resources): AppBuilderWithModules;
-  withOptions(options: FeatureOptions): AppBuilderWithModules;
-}
 
 export interface AppPlugin {
   getName(): string;

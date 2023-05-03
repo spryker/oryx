@@ -36,7 +36,7 @@ const mockComponentsPlugin = {
 };
 
 const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockComponentsPlugin),
+  requirePlugin: vi.fn().mockReturnValue(mockComponentsPlugin),
 };
 
 const mockAInitializer = vi.fn().mockReturnValue(of(null));

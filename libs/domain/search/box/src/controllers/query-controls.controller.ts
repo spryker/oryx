@@ -1,5 +1,4 @@
-import { Size } from '@spryker-oryx/ui';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, Size } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 

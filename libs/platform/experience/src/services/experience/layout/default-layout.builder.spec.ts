@@ -1,10 +1,11 @@
-import { App, AppRef, Theme, ThemePlugin } from '@spryker-oryx/core';
+import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
 import { LayoutAlign, StyleProperties } from '../../../models';
-import { BreakpointService } from './breakpoint.service';
-import { DefaultBreakpointService } from './default-breakpoint.service';
+import { Theme, ThemePlugin } from '../../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+import { DefaultScreenService } from './default-screen.service';
+import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
   name: 'name',
@@ -22,7 +23,7 @@ const mockTheme: Theme = {
 };
 
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
+  requirePlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
 describe('DefaultLayoutBuilder', () => {
@@ -53,26 +54,6 @@ describe('DefaultLayoutBuilder', () => {
     });
   };
 
-  const expectStyleRuleWithUnit = (
-    key: string,
-    value: string,
-    expectedRule: string
-  ): void => {
-    describe(`when the ${key} with a value without a unit is provided`, () => {
-      beforeEach(() => populate({ [key]: value }));
-      it('should add px', () => {
-        expect(styles).toContain(`${expectedRule}:${value}px`);
-      });
-    });
-
-    describe(`when an empty string value is provided`, () => {
-      beforeEach(() => populate({ [key]: '' }));
-      it('should not create the rule', () => {
-        expect(styles).toBeUndefined();
-      });
-    });
-  };
-
   beforeEach(() => {
     const testInjector = new Injector([
       {
@@ -84,8 +65,8 @@ describe('DefaultLayoutBuilder', () => {
         useClass: DefaultLayoutBuilder,
       },
       {
-        provide: BreakpointService,
-        useClass: DefaultBreakpointService,
+        provide: ScreenService,
+        useClass: DefaultScreenService,
       },
     ]);
 

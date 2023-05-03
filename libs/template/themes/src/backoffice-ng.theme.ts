@@ -1,4 +1,4 @@
-import { Theme } from '@spryker-oryx/core';
+import { Theme } from '@spryker-oryx/experience';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 import { backofficeNgIcons } from '@spryker-oryx/themes/icons';
 

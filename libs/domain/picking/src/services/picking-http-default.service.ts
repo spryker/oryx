@@ -25,7 +25,13 @@ export class PickingHttpDefaultService implements PickingHttpService {
 
   get<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
     url = this.createFullUrl(url);
-    return this.httpService.get(url, options);
+    return this.httpService.get(url, {
+      ...options,
+      headers: {
+        ...options?.headers,
+        'Content-Type': 'application/vnd.api+json',
+      },
+    });
   }
 
   delete<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {

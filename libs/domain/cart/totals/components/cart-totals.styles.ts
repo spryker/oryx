@@ -1,6 +1,6 @@
-import { ThemeStylesheets } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
+import { ThemeStylesheets } from '@spryker-oryx/experience';
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const cartTotalRules = css`
@@ -31,5 +31,7 @@ const smallScreenRules = css`
 
 export const cartTotalsStyles: ThemeStylesheets = [
   cartTotalRules,
-  { media: smScreen, css: smallScreenRules },
+  ...screenCss({
+    sm: smallScreenRules,
+  }),
 ];

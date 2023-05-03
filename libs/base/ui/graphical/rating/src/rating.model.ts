@@ -1,4 +1,4 @@
-import { Size } from '../../../src/utilities';
+import { Size } from '@spryker-oryx/utilities';
 
 export interface RatingProperties {
   /**

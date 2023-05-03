@@ -1,23 +1,19 @@
-import { Breakpoint, ThemeStyles } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { Breakpoint, CssStyles } from '@spryker-oryx/utilities';
 import {
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../../models';
 import { Component } from '../models';
-import { BreakpointService } from './breakpoint.service';
 import { LayoutBuilder } from './layout.builder';
-
-type BreakpointStyles = {
-  [B in Breakpoint]?: ThemeStyles;
-};
+import { ScreenService } from './screen.service';
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
-  constructor(protected breakpointService = inject(BreakpointService)) {}
+  constructor(protected breakpointService = inject(ScreenService)) {}
 
   collectStyles(components: Component[]): string {
-    const perBreakpoint: BreakpointStyles = {};
+    const perBreakpoint: Partial<Record<Breakpoint, CssStyles>> = {};
 
     const add = (
       id: string,
@@ -46,7 +42,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     return Object.keys(perBreakpoint)
       .map((key) => {
-        const query = this.breakpointService.getMediaQuery(key as Breakpoint);
+        const query = this.breakpointService.getScreenMedia(key as Breakpoint);
         const stylesForBreakpoint = perBreakpoint[key as Breakpoint];
         if (query) {
           return `${query}{${stylesForBreakpoint}}\n`;

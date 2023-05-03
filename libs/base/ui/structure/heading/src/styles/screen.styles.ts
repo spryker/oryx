@@ -1,5 +1,4 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { lgScreen, mdScreen, smScreen } from '@spryker-oryx/themes/breakpoints';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
@@ -221,17 +220,8 @@ const largeScreen = css`
   }
 `;
 
-export const headlineScreenStyles: ThemeStylesWithMedia[] = [
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
-  {
-    media: mdScreen,
-    css: mediumScreen,
-  },
-  {
-    media: lgScreen,
-    css: largeScreen,
-  },
-];
+export const headlineScreenStyles = screenCss({
+  sm: smallScreen,
+  md: mediumScreen,
+  lg: largeScreen,
+});

@@ -45,6 +45,16 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     return this.template;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(definition: ElementDefinition): void {
+    //
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  remove(definitions: ElementDefinition | ElementDefinition[]): void {
+    //
+  }
+
   protected setAttributes(attrs: ElementAttributes): string {
     return Object.entries(attrs).reduce(
       (acc, [key, value]) => `${acc} ${key}="${value}"`,
