@@ -50,7 +50,7 @@ export class PickingListEntity implements PickingListOffline {
   @indexedDbIndex({ multiEntry: true })
   declare productSkus: string[];
   @indexedDbIndex()
-  declare requestedDeliveryDate?: Date;
+  declare requestedDeliveryDate: Date;
   @indexedDbIndex()
   declare localStatus: PickingListStatus;
 
