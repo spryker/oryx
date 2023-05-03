@@ -36,8 +36,7 @@ export const renderApp = async (
 
   globalThis.location = route;
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const injector = orchestrator.findPlugin(InjectionPlugin)!.getInjector();
+  const injector = orchestrator.requirePlugin(InjectionPlugin).getInjector();
   const routerService = injector.inject(RouterService);
   const awaiter = injector.inject(SSRAwaiterService);
   const meta = injector.inject(PageMetaService) as ServerPageMetaService;

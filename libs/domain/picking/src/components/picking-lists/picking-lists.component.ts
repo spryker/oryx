@@ -59,7 +59,7 @@ export class PickingListsComponent extends LitElement {
         @oryx.close=${this.closeCustomerNoteModal}
       >
         <oryx-heading slot="heading">
-          <h2>${i18n('picking.customer-note.heading')}</h2>
+          <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
         </oryx-heading/>
         ${this.customerNote}
         <oryx-button
@@ -69,7 +69,7 @@ export class PickingListsComponent extends LitElement {
         >
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
-            ${i18n('picking.customer-note.close')}
+            ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>
       </oryx-modal>
@@ -80,7 +80,7 @@ export class PickingListsComponent extends LitElement {
     return html`
       <div class="no-items-fallback">
         <oryx-heading as="h4">
-          ${i18n('picking.no-results-found')}
+          ${i18n('picking-lists.no-results-found')}
         </oryx-heading>
         <oryx-image resource="no-orders"></oryx-image>
       </div>
