@@ -4,12 +4,12 @@ import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { Suggestion, SuggestionService } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { Size } from '@spryker-oryx/ui';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import {
   asyncState,
   hydratable,
+  Size,
   subscribe,
   valueType,
 } from '@spryker-oryx/utilities';
@@ -246,7 +246,7 @@ export class SearchBoxComponent
       <form @submit=${this.onSubmit}>
         <oryx-typeahead
           @oryx.typeahead=${this.onTypeahead}
-          .clearIconPosition=${ClearIconPosition.NONE}
+          .clearIconPosition=${ClearIconPosition.None}
         >
           <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
           <input

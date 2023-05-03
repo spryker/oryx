@@ -7,9 +7,9 @@ import {
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  SearchAttributes,
   SearchboxController,
   SearchIconPosition,
-  SearchOptions,
 } from '@spryker-oryx/ui/searchbox';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -26,7 +26,7 @@ export class TypeaheadComponent
     AffixOptions,
     ErrorOptions,
     FormControlOptions,
-    SearchOptions
+    SearchAttributes
 {
   static styles = baseStyles;
 

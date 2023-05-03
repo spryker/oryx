@@ -1,9 +1,9 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, svg, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-
-import { Icon, icon } from '../../index';
+import { icon } from '../../icon.factory';
+import { Icon } from '../../icon.model';
+import { IconTypes } from '../../icon.types';
 
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 

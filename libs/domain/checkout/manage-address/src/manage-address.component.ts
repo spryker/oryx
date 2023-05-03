@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/ui';
 import { Address, AddressService } from '@spryker-oryx/user';
 import { AddressBookState } from '@spryker-oryx/user/address-book';
 import {
   asyncState,
   hydratable,
   i18n,
+  Size,
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';

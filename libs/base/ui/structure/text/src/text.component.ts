@@ -1,6 +1,5 @@
 import { prehydrate } from '@spryker-oryx/core';
-import { Size } from '@spryker-oryx/ui';
-import { hydratable, ssrShim, throttle } from '@spryker-oryx/utilities';
+import { hydratable, Size, ssrShim, throttle } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';

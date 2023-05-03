@@ -1,8 +1,6 @@
-import { DesignToken } from '@spryker-oryx/core';
+import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
-import { darkColor } from './color-dark.tokens';
-import { color } from './color.tokens';
-import { darkTokens } from './other-dark';
+import { color } from '../color.tokens';
 import { tokens } from './other.tokens';
 import {
   typographyMediumAndLargerTokens,
@@ -19,13 +17,6 @@ export const backofficeTokens: DesignToken[] = [
     ...tokens,
     ...typographyTokens,
     ...layoutTokens,
-  },
-  {
-    media: {
-      mode: 'dark',
-    },
-    color: darkColor,
-    ...darkTokens,
   },
   {
     media: {

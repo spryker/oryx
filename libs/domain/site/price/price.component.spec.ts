@@ -19,10 +19,6 @@ class MockCurrencyService implements Partial<CurrencyService> {
   get = vi.fn().mockReturnValue(of('EUR'));
 }
 
-class mockPricingService {
-  format = vi.fn().mockReturnValue(of());
-}
-
 describe('PriceComponent', () => {
   let element: PriceComponent;
   let localeService: MockLocaleService;

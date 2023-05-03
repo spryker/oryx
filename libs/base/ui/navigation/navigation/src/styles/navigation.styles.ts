@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const navigationStyles = css`
   :host {
     background-color: var(--oryx-color-canvas-100);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -39,7 +39,7 @@ export const navigationStyles = css`
     background-color: var(--oryx-color-canvas-100);
     padding: 0;
     color: var(--oryx-color-neutral-300);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -29,7 +29,7 @@ export const notificationStyles = css`
   }
 
   :host([floating]) {
-    box-shadow: var(--oryx-elevation-3) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation);
   }
 
   slot:not([name]) {

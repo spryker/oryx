@@ -7,7 +7,7 @@ import {
   PricingService,
   SemanticLinkType,
 } from '@spryker-oryx/site';
-import { AlertType, Size } from '@spryker-oryx/ui';
+import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
@@ -15,6 +15,7 @@ import {
   hydratable,
   i18n,
   signalProperty,
+  Size,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';

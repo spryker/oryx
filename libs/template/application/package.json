@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/application",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "@lit-labs/router": "^0.1.1",
-    "@lit-labs/ssr": "^2.2.3",
+    "@lit-labs/ssr": "^3.0.1",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

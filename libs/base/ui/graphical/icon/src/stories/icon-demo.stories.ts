@@ -1,17 +1,14 @@
-import { AppRef, ThemePlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { Size } from '../../../../src/utilities';
+
 import { IconProperties } from '../icon.model';
 
 export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
 
-const icons = Object.keys(
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
-);
+const icons = getThemeIcons();
 
 interface Props extends IconProperties {
   color: string;

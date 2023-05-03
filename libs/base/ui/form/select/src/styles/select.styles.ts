@@ -1,4 +1,3 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
 import {
   baseStyles as typeaheadBaseStyles,
   screenStyles as typeaheadScreenStyles,
@@ -58,4 +57,4 @@ export const baseStyles = [
   selectFloatingLabelStyles,
 ];
 
-export const screenStyles: ThemeStylesWithMedia[] = [...typeaheadScreenStyles];
+export const screenStyles = [...typeaheadScreenStyles];

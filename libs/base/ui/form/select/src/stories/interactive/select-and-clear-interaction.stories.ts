@@ -42,13 +42,14 @@ SelectAndClear.play = async (obj: {
     'oryx-select'
   ) as SelectComponent;
   const input = component.querySelector('input') as HTMLInputElement;
-  const clearIcon = component.shadowRoot?.querySelector(
-    'oryx-icon.clear'
-  ) as HTMLInputElement;
 
   userEvent.click(input);
   await keyboard('[ArrowDown]', 3);
   await keyboard('[Enter]');
+
+  const clearIcon = component.shadowRoot?.querySelector(
+    'oryx-icon.clear-button'
+  ) as HTMLInputElement;
 
   userEvent.hover(clearIcon);
   await new Promise((resolve) => setTimeout(resolve, 500));

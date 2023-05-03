@@ -5,11 +5,11 @@ import {
   StyleRuleSet,
 } from '../../../models';
 import { Component } from '../models';
-import { BreakpointService } from './breakpoint.service';
 import { LayoutBuilder } from './layout.builder';
+import { ScreenService } from './screen.service';
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
-  constructor(protected breakpointService = inject(BreakpointService)) {}
+  constructor(protected screenService = inject(ScreenService)) {}
 
   collectStyles(components: Component[]): string {
     return components
@@ -32,7 +32,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
           if (styles) {
             const breakpoint = rule.breakpoint;
             if (breakpoint) {
-              const query = this.breakpointService.getMediaQuery(breakpoint);
+              const query = this.screenService.getScreenMedia(breakpoint);
               return `${query}{:host([uid="${id}"]), [uid="${id}"] {${styles}}}\n`;
             }
             return `:host([uid="${id}"]),[uid="${id}"] {${styles}}\n`;
@@ -76,8 +76,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }
 
     const add = (className: string, required = false): void => {
-      const breakpoint =
-        ruleSet.breakpoint ?? this.breakpointService.getSmallest();
+      const breakpoint = ruleSet.breakpoint ?? this.screenService.getSmallest();
       if (required) classes.push(`${breakpoint}-${className}`);
     };
 

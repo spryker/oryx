@@ -8,7 +8,7 @@ export const navigationStyles = css`
     height: 100%;
     width: 250px;
     background-color: var(--oryx-color-canvas-100);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     transition: all var(--oryx-transition-time);
   }
 

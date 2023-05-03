@@ -10,8 +10,8 @@ import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
-import { Size } from '@spryker-oryx/ui';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
+import { Size } from '@spryker-oryx/utilities';
 
 import { html } from 'lit';
 import { ProductMediaComponent } from './media.component';

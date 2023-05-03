@@ -1,8 +1,7 @@
+import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
 import { subscribe } from '@spryker-oryx/utilities';
 import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
-import { Component, PreviewExperienceService } from '../../src/services';
-
-import { previewStyles } from './experience-composition-preview.style';
+import { previewStyles } from './experience-composition-preview.styles';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';

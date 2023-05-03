@@ -1,6 +1,6 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { Size } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
-import { Size } from '../../../src/utilities';
+import { IconTypes } from './icon.types';
 
 export interface IconProperties {
   /**
@@ -68,7 +68,5 @@ export interface Icon extends IconProperties {
    */
   source?: TemplateResult;
 }
-// Fallback for sprites generation
-export const Icon = '';
 
-export type Icons = typeof IconTypes;
+export type Icons = IconTypes;

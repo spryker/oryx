@@ -1,19 +1,24 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { branches, getThemeIcons, states } from '@spryker-oryx/ui';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
-import { SearchEvent, SearchOptions } from '@spryker-oryx/ui/searchbox';
+import {
+  ClearIconAppearance,
+  ClearIconPosition,
+  SearchAttributes,
+  SearchEvent,
+  SearchIconPosition,
+} from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { branches, states } from '../../../../src/utilities';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
 } as Meta;
 
-interface Props extends TypeaheadOptions, SearchOptions, AffixOptions {
+interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
   searchIcon?: string;
   maxHeight?: string;
   dataSet?: 'branches' | 'states';
@@ -75,29 +80,38 @@ TypeaheadDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   searchIconPosition: {
-    options: ['PREFIX', 'SUFFIX', 'NONE'],
+    options: [
+      SearchIconPosition.Prefix,
+      SearchIconPosition.Suffix,
+      SearchIconPosition.None,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   clearIconPosition: {
-    options: ['AFTER', 'SUFFIX', 'NONE'],
+    options: [
+      ClearIconPosition.After,
+      ClearIconPosition.Suffix,
+      ClearIconPosition.None,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   clearIconAppearance: {
-    options: ['HOVER', 'TOGGLE', 'SHOW'],
+    options: [
+      ClearIconAppearance.Hover,
+      ClearIconAppearance.Toggle,
+      ClearIconAppearance.Show,
+    ],
     control: { type: 'select' },
-    table: { category: 'Layout' },
   },
   prefixFill: {
     control: { type: 'boolean' },

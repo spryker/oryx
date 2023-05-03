@@ -1,4 +1,4 @@
-import { ThemeToken } from '@spryker-oryx/core';
+import { ThemeToken } from '@spryker-oryx/experience';
 
 export const typographyTokens: ThemeToken = {
   typography: {
@@ -18,7 +18,8 @@ export const typographySmallTokens: ThemeToken = {
     h4: { size: '1em', line: '1.5714285714em', weight: '600' },
     h5: { size: '1em', line: '1.5714285714em', weight: '700' },
     h6: { size: '0.8571428571em', line: '1.3333333333em', weight: '600' },
-    subtitle: { size: '1em', line: '1.5714285714em', weight: '600' },
+    subtitle: { size: '1rem', line: '1.5714285714', weight: '500' },
+    caption: { size: '0.8571428571', line: '1.33', weight: '600' },
   },
 };
 
@@ -30,6 +31,7 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     h4: { size: '1.2857142857em', line: '1.4444444444em', weight: '600' },
     h5: { size: '1.1428571429em', line: '1.375em', weight: '600' },
     h6: { size: '1.1428571429em', line: '1.375em', weight: '500' },
-    subtitle: { size: '1em', line: '1.5714285714em', weight: '500' },
+    subtitle: { size: '1rem', line: '1.5714285714', weight: '500' },
+    caption: { size: '0.8571428571', line: '1.33', weight: '600' },
   },
 };

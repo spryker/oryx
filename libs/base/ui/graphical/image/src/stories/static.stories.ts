@@ -1,5 +1,4 @@
-import { AppRef, ResourcePlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { getThemeGraphics } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -8,12 +7,9 @@ export default {
   title: `${storybookPrefix}/Graphical/Image`,
 } as Meta;
 
-const resources =
-  resolve(AppRef).findPlugin(ResourcePlugin)?.getResources() ?? {};
-
 const Template: Story = (): TemplateResult => {
-  const { graphics } = resources;
-  const graphic = Object.keys(graphics ?? {})?.[0];
+  const graphics = getThemeGraphics();
+  const graphic = graphics[0];
   const images = [
     'https://d2s0ynfc62ej12.cloudfront.net/b2c/29889537_4485.jpg',
     'https://d2s0ynfc62ej12.cloudfront.net/b2c/30521602_2938.jpg',
@@ -69,7 +65,7 @@ const Template: Story = (): TemplateResult => {
       <div>
         <h2>By resource</h2>
 
-        ${Object.keys(graphics ?? []).map(
+        ${graphics.map(
           (type) =>
             html`
               <div class="image">

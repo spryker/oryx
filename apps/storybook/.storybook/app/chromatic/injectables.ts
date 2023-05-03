@@ -1,10 +1,10 @@
+import { AppRef } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import {
-  AppRef,
   DefaultResourceInjectable,
   Graphic,
   ResourcePlugin,
-} from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+} from '@spryker-oryx/experience';
 import { IconInjectable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';

@@ -1,17 +1,17 @@
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
-  BreakpointService,
   ComponentsRegistryService,
   ContentBackendUrl,
-  DefaultBreakpointService,
   DefaultComponentsRegistryService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
   DefaultLayoutService,
+  DefaultScreenService,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
+  ScreenService,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { MockRouterService } from './mock-router.service';
@@ -30,8 +30,8 @@ export const mockExperienceProviders: Provider[] = [
     useClass: DefaultExperienceService,
   },
   {
-    provide: BreakpointService,
-    useClass: DefaultBreakpointService,
+    provide: ScreenService,
+    useClass: DefaultScreenService,
   },
   {
     provide: LayoutService,
