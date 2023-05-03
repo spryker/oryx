@@ -2,25 +2,24 @@ import { AppRef } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
 import { ThemePlugin } from '../../../plugins';
-import { BreakpointService } from './breakpoint.service';
+import { ScreenService } from './screen.service';
 
-export class DefaultBreakpointService implements BreakpointService {
-  protected themePlugin?: ThemePlugin;
+export class DefaultScreenService implements ScreenService {
+  protected themePlugin: ThemePlugin;
 
   constructor(protected app = inject(AppRef)) {
-    this.themePlugin = this.app.findPlugin(ThemePlugin);
+    this.themePlugin = this.app.requirePlugin(ThemePlugin);
   }
 
-  getMediaQuery(
+  getScreenMedia(
     include: Breakpoint | Breakpoint[],
     exclude: Breakpoint | Breakpoint[] = []
-  ): string | void {
+  ): string | void | null {
     if (include === this.getSmallest()) {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.themePlugin!.generateScreenMedia(include, exclude)!;
+    return this.themePlugin.generateScreenMedia(include, exclude);
   }
 
   getSmallest(): Breakpoint | void {
@@ -28,6 +27,6 @@ export class DefaultBreakpointService implements BreakpointService {
   }
 
   getBreakpoints(): Breakpoints {
-    return this.themePlugin?.getBreakpoints() ?? {};
+    return this.themePlugin.getBreakpoints();
   }
 }

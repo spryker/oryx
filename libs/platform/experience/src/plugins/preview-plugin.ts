@@ -1,12 +1,13 @@
+/* c8 ignore start */
 import { AppPlugin, AppPluginBeforeApply } from '@spryker-oryx/core';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { isServer } from 'lit';
 
-export const PreviewPluginName = 'oryx.experience$preview';
+export const previewPluginName = 'oryx.experiencePreview';
 
 export class PreviewPlugin implements AppPlugin, AppPluginBeforeApply {
   getName(): string {
-    return PreviewPluginName;
+    return previewPluginName;
   }
 
   apply(): void {

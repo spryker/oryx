@@ -54,7 +54,7 @@ export const styles = css`
   }
 
   :host(:hover) {
-    box-shadow: 0 4px 12px var(--oryx-elevation-color-2);
+    box-shadow: 0 4px 12px var(--oryx-color-elevation-2);
   }
 
   :host(:focus-visible) {

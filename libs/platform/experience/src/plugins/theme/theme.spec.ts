@@ -2,7 +2,7 @@ import { ComponentDef } from '@spryker-oryx/core';
 import { DefaultMedia, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';
-import { Theme, ThemeData, ThemeStrategies } from './theme.model';
+import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
 
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
@@ -19,8 +19,8 @@ const mockComponentPlugin = {
 };
 
 const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockComponentPlugin),
-  requirePlugin: vi.fn(),
+  findPlugin: vi.fn(),
+  requirePlugin: vi.fn().mockReturnValue(mockComponentPlugin),
   registerPlugin: vi.fn(),
   whenReady: vi.fn(),
   markReady: vi.fn(),
@@ -87,14 +87,14 @@ describe('ThemePlugin', () => {
         stylesheets: [
           {
             theme: 'b',
-            rules: (): Promise<ThemeData> =>
+            rules: (): Promise<ThemeStyles> =>
               Promise.resolve({
                 styles: stylesMocker('b'),
               }),
           },
           {
             theme: 'b',
-            rules: (): Promise<ThemeData> =>
+            rules: (): Promise<ThemeStyles> =>
               Promise.resolve({
                 styles: stylesMocker('bB'),
                 strategy: ThemeStrategies.ReplaceAll,
@@ -215,7 +215,7 @@ describe('ThemePlugin', () => {
         mockComponentPlugin.getRoot.mockReturnValue('a');
 
         const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
-        mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
         const themeData = await plugin.resolve({
           name: 'a',
           stylesheets: [
@@ -243,7 +243,7 @@ describe('ThemePlugin', () => {
         mockComponentPlugin.getOptions.mockReturnValue({
           root: 'root',
         });
-        mockApp.findPlugin.mockReturnValueOnce(mockComponentPlugin);
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
         await plugin.apply(mockApp);
         const styles = document.body
           .querySelector('style')
