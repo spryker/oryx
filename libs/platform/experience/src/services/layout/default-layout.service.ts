@@ -1,12 +1,11 @@
-import { Breakpoint, ThemeBreakpoints } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
-  BreakpointService,
   CompositionLayout,
   LayoutStyles,
   ResponsiveLayoutInfo,
+  ScreenService,
 } from '@spryker-oryx/experience';
-import { Size } from '@spryker-oryx/ui';
+import { Breakpoint, Size } from '@spryker-oryx/utilities';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
 
@@ -14,7 +13,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { LayoutService } from './layout.service';
 
 export class DefaultLayoutService implements LayoutService {
-  constructor(protected breakpointService = inject(BreakpointService)) {}
+  constructor(protected screenService = inject(ScreenService)) {}
 
   getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
     const observables: Observable<string>[] = [];
@@ -119,7 +118,7 @@ export class DefaultLayoutService implements LayoutService {
   ): string {
     let result = '';
     if (style.styles) {
-      const query = this.breakpointService.getMediaQuery(included, excluded);
+      const query = this.screenService.getScreenMedia(included, excluded);
       if (query) {
         result += `${query} {${style?.styles}}\n`;
       } else {
@@ -129,9 +128,7 @@ export class DefaultLayoutService implements LayoutService {
 
     [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
       if (style[size]) {
-        const query = this.breakpointService.getMediaQuery(
-          size as unknown as keyof ThemeBreakpoints
-        );
+        const query = this.screenService.getScreenMedia(size as Breakpoint);
         if (query) {
           result += `${query} {${style[size]}}\n`;
         } else {

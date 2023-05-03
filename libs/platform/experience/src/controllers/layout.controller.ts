@@ -1,5 +1,5 @@
-import { ThemeBreakpoints } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import { Breakpoint } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { LayoutAttributes } from '../../layout/src';
 import { StyleRuleSet } from '../models';
@@ -57,7 +57,7 @@ export class LayoutController {
     rules: StyleRuleSet[],
     attr: string,
     value: string | boolean
-  ): (keyof ThemeBreakpoints)[] {
+  ): Breakpoint[] {
     return rules
       ?.filter(
         (rule) =>
@@ -65,7 +65,7 @@ export class LayoutController {
           rule[attr as keyof LayoutAttributes] !== undefined &&
           rule[attr as keyof LayoutAttributes] !== value
       )
-      .map((rule) => rule.breakpoint as keyof ThemeBreakpoints);
+      .map((rule) => rule.breakpoint as Breakpoint);
   }
 
   protected addToInfo(
@@ -78,10 +78,10 @@ export class LayoutController {
       if (!infos[attr].included) {
         infos[attr].included = [];
       }
-      infos[attr].included?.push(size.toLowerCase() as keyof ThemeBreakpoints);
+      infos[attr].included?.push(size.toLowerCase() as Breakpoint);
     } else {
       infos[attr] = {
-        included: [size.toLowerCase() as keyof ThemeBreakpoints],
+        included: [size.toLowerCase() as Breakpoint],
       };
     }
   }
