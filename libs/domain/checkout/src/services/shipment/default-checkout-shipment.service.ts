@@ -77,10 +77,15 @@ export class DefaultCheckoutShipmentService implements CheckoutShipmentService {
     switchMap((cart) => {
       return !cart?.products?.length
         ? of(null)
-        : this.adapter.get({
-            cartId: cart.id,
-            include: [ApiCheckoutModel.Includes.ShipmentMethods],
-          });
+        : this.adapter
+            .get({
+              cartId: cart.id,
+              include: [
+                ApiCheckoutModel.Includes.Shipments,
+                ApiCheckoutModel.Includes.ShipmentMethods,
+              ],
+            })
+            .pipe(tap(console.log));
     }),
     // in some cases, when cart is not yet created, we get 422 error from the backend
     catchError(() => of({} as CheckoutData)),
