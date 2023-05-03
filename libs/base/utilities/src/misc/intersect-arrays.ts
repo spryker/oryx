@@ -19,17 +19,32 @@ export function intersectArrays<T>(
     arrays = [arr1OrIdentityFn, ...arrays];
   }
 
-  const intersectingMap = new Map<unknown, T>();
+  const intersectionArray: T[] = [];
+  const [firstArray, ...restArrays] = arrays;
 
-  for (const array of arrays) {
-    for (const item of array) {
-      const id = identityFn(item);
+  firstArray.filter((value) => {
+    const firstItemId = identityFn(value);
+    let itemNotFound = false;
+    restArrays.map((array) => {
+      let intersectedItem = false;
 
-      if (!intersectingMap.has(id)) {
-        intersectingMap.set(id, item);
+      array.map((item) => {
+        const anotherItemId = identityFn(item);
+
+        if (firstItemId === anotherItemId) {
+          intersectedItem = firstItemId === anotherItemId;
+        }
+      });
+
+      if (!intersectedItem) {
+        itemNotFound = true;
       }
-    }
-  }
+    });
 
-  return Array.from(intersectingMap.values());
+    if (!itemNotFound) {
+      intersectionArray.push(value);
+    }
+  });
+
+  return intersectionArray;
 }

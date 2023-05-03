@@ -49,30 +49,22 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
 
               const andCollections: Collection<PickingListSerialized>[] = [];
 
+              if (
+                qualifier.searchOrderReference &&
+                qualifier.searchOrderReference.length >= 2
+              ) {
+                andCollections.push(
+                  pickingListStore
+                    .where('orderReferences')
+                    .startsWithAnyOf(qualifier.searchOrderReference)
+                    .distinct()
+                );
+              }
+
               if (qualifier.status) {
-                if (
-                  qualifier.searchOrderReference &&
-                  qualifier.searchOrderReference.length >= 2
-                ) {
-                  const searchValue = qualifier.searchOrderReference;
-                  andCollections.push(
-                    pickingListStore
-                      .where('localStatus')
-                      .equals(qualifier.status)
-                      .and((record: PickingListSerialized) =>
-                        record.orderReferences.some((ref) =>
-                          ref.startsWith(searchValue)
-                        )
-                      )
-                      .distinct()
-                  );
-                } else {
-                  andCollections.push(
-                    pickingListStore
-                      .where('localStatus')
-                      .equals(qualifier.status)
-                  );
-                }
+                andCollections.push(
+                  pickingListStore.where('localStatus').equals(qualifier.status)
+                );
               }
 
               if (andCollections.length === 0) {
@@ -258,7 +250,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
 
         if (!productData) {
           throw new Error(
-            `PickingListOfflineAdapter: Foreing key` +
+            `PickingListOfflineAdapter: Foreign key` +
               ` ${PickingProductEntity.name}(${productId})` +
               ` cannot be found when resolving ${PickingListEntity.name}!`
           );
