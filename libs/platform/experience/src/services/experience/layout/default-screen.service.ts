@@ -15,10 +15,6 @@ export class DefaultScreenService implements ScreenService {
     include: Breakpoint | Breakpoint[],
     exclude: Breakpoint | Breakpoint[] = []
   ): string | void | null {
-    if (include === this.getSmallest()) {
-      return;
-    }
-
     return this.themePlugin.generateScreenMedia(include, exclude);
   }
 
