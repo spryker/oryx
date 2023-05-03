@@ -76,7 +76,9 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
   protected collectData(): Observable<PaymentMethod[] | null> {
     return this.paymentService.selected().pipe(
       tap((selected) => {
-        // if (!selected) // TODO: how to show invalidation here?
+        if (!selected) {
+          // TODO: how to show invalidation here?
+        }
       }),
       map((p) => (p ? [p] : null))
     );

@@ -194,7 +194,7 @@ describe('CheckoutPaymentComponent', () => {
       beforeEach(async () => {
         callback()
           .pipe(take(1))
-          .subscribe((r: any) => (result = r));
+          .subscribe((r) => ((result as unknown) = r));
       });
 
       it('should collect the method(s)', () => {
