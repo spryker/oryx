@@ -27,9 +27,11 @@ export interface ScreenSize {
 }
 
 export interface Breakpoints {
+  [Size.Xs]?: ScreenSize;
   [Size.Sm]?: ScreenSize;
   [Size.Md]?: ScreenSize;
   [Size.Lg]?: ScreenSize;
+  [Size.Xl]?: ScreenSize;
 }
 
 export type Breakpoint = keyof Breakpoints;

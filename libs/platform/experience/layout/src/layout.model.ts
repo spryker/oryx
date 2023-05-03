@@ -1,9 +1,10 @@
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
-} from '../../src/models';
+} from '@spryker-oryx/experience';
+import { Breakpoint } from '@spryker-oryx/utilities';
 
-export interface LayoutAttributes {
+export interface LayoutAttributes extends ScreenLayoutProperties {
   /**
    * Layout type that is used all screen sizes.
    *
@@ -14,11 +15,6 @@ export interface LayoutAttributes {
    * should be used (eg `layoutSm`).
    */
   layout?: CompositionLayout;
-  layoutXs?: CompositionLayout;
-  layoutSm?: CompositionLayout;
-  layoutMd?: CompositionLayout;
-  layoutLg?: CompositionLayout;
-  layoutXl?: CompositionLayout;
 
   /**
    * Components are bound inside the page bleed by default. The page bleed is
@@ -29,11 +25,6 @@ export interface LayoutAttributes {
    * styling and content outside the container.
    */
   bleed?: boolean;
-  bleedXs?: boolean;
-  bleedSm?: boolean;
-  bleedMd?: boolean;
-  bleedLg?: boolean;
-  bleedXl?: boolean;
 
   /**
    * Indicates that the composition will stick on the screen at a certain position. The position
@@ -41,11 +32,19 @@ export interface LayoutAttributes {
    * the top can be configured to be 100%.
    */
   sticky?: boolean;
-  stickyXs?: boolean;
-  stickySm?: boolean;
-  stickyMd?: boolean;
-  stickyLg?: boolean;
-  stickyXl?: boolean;
 
   orientation?: CompositionLayoutOrientation;
 }
+
+export interface ScreenLayout {
+  layout?: CompositionLayout;
+  bleed?: boolean;
+  sticky?: boolean;
+}
+
+type ScreenLayoutProperties = {
+  /**
+   * Indicates layout\bleed\sticky properties per breakpoint size
+   */
+  [breakpoint in Breakpoint]?: ScreenLayout;
+};

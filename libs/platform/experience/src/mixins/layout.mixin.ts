@@ -5,7 +5,10 @@ import {
   LayoutService,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
-import { LayoutAttributes } from '@spryker-oryx/experience/layout';
+import {
+  LayoutAttributes,
+  ScreenLayout,
+} from '@spryker-oryx/experience/layout';
 import {
   computed,
   ConnectableSignal,
@@ -21,6 +24,13 @@ import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
   layout?: CompositionLayout;
+  bleed?: boolean;
+  sticky?: boolean;
+  xs?: ScreenLayout;
+  sm?: ScreenLayout;
+  md?: ScreenLayout;
+  lg?: ScreenLayout;
+  xl?: ScreenLayout;
   protected layoutStyles: ConnectableSignal<string | undefined>;
 }
 
@@ -31,20 +41,27 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   @ssrShim('style')
   class LayoutMixinClass extends ContentMixin(superClass) {
     @signalProperty() layout?: CompositionLayout;
+    @signalProperty({ type: Boolean }) bleed?: boolean;
+    @signalProperty({ type: Boolean }) sticky?: boolean;
+
+    @signalProperty({ type: Object }) xs?: ScreenLayout;
+    @signalProperty({ type: Object }) sm?: ScreenLayout;
+    @signalProperty({ type: Object }) md?: ScreenLayout;
+    @signalProperty({ type: Object }) lg?: ScreenLayout;
+    @signalProperty({ type: Object }) xl?: ScreenLayout;
+
     @signalProperty() layoutXs?: CompositionLayout;
     @signalProperty() layoutSm?: CompositionLayout;
     @signalProperty() layoutMd?: CompositionLayout;
     @signalProperty() layoutLg?: CompositionLayout;
     @signalProperty() layoutXl?: CompositionLayout;
 
-    @signalProperty({ type: Boolean }) bleed?: boolean;
     @signalProperty({ type: Boolean }) bleedXs?: boolean;
     @signalProperty({ type: Boolean }) bleedSm?: boolean;
     @signalProperty({ type: Boolean }) bleedMd?: boolean;
     @signalProperty({ type: Boolean }) bleedLg?: boolean;
     @signalProperty({ type: Boolean }) bleedXl?: boolean;
 
-    @signalProperty({ type: Boolean }) sticky?: boolean;
     @signalProperty({ type: Boolean }) stickyXs?: boolean;
     @signalProperty({ type: Boolean }) stickySm?: boolean;
     @signalProperty({ type: Boolean }) stickyMd?: boolean;
