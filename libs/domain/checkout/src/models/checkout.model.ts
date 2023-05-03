@@ -1,4 +1,19 @@
 import { OrderData } from '@spryker-oryx/order';
+import { Observable } from 'rxjs';
+
+export const enum CheckoutProcessState {
+  Initializing = 'initializing',
+  NotAvailable = 'n/a',
+  Ready = 'ready',
+  Busy = 'busy',
+}
+
+export interface CheckoutStep<T = unknown> {
+  /**
+   * TODO: instructions
+   */
+  collect(): Observable<T | null>;
+}
 
 export interface CheckoutData {
   addresses?: unknown[];
@@ -9,7 +24,7 @@ export interface CheckoutData {
   shipments?: Shipment[];
   carriers?: Carrier[];
   shipment?: {
-    idShipmentMethod: number;
+    idShipmentMethod: string;
   };
 }
 
@@ -20,7 +35,7 @@ export interface Checkout {
   shippingAddress?: Address;
   shipments?: Shipment[];
   shipment?: {
-    idShipmentMethod: number;
+    idShipmentMethod: string;
   };
   payments?: PaymentMethod[];
 }
@@ -42,12 +57,12 @@ export interface PaymentMethod {
 }
 
 export interface ShipmentMethod {
+  id: string;
   deliveryTime: number | null;
   carrierName: string;
   currencyIsoCode: string;
   name: string;
   price: number;
-  id: number | string;
 }
 
 export interface Address {
@@ -71,7 +86,7 @@ export interface Shipment {
   items?: string[];
   requestedDeliveryDate?: string | null;
   selectedShipmentMethod?: ShipmentMethod;
-  idShipmentMethod?: number;
+  idShipmentMethod?: string;
   shippingAddress?: Address;
   carriers?: Carrier[];
   id?: string;
@@ -81,19 +96,19 @@ export interface ContactDetails {
   firstName?: string;
   lastName?: string;
   email: string;
-  salutation?: string;
+  salutation: string;
 }
 
 export interface CheckoutResponse {
   orderReference: string;
   redirectUrl?: string;
-  isExternalRedirect?: string;
+  isExternalRedirect?: boolean;
   orders?: OrderData[];
 }
 
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
-export const shipmentCheckoutStorageKey = 'shipmentCheckout.storageKey';
-export const paymentCheckoutStorageKey = 'paymentCheckout.storageKey';
+export const shipmentCheckoutStorageKey = 'oryx.checkout.shipment';
+export const paymentCheckoutStorageKey = 'oryx.checkout.payment';
 export const contactCheckoutStorageKey = 'contactCheckout.storageKey';
 export const addressCheckoutStorageKey = 'addressCheckout.storageKey';
 
@@ -103,5 +118,5 @@ export const defaultSelectedShipmentMethod = {
   currencyIsoCode: '',
   name: '',
   price: 0,
-  id: 0,
+  id: '0',
 };

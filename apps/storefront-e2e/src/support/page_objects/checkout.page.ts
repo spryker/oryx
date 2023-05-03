@@ -6,7 +6,7 @@ import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {
   url = '/checkout';
-  anonymousUrl = '/checkout-login';
+  anonymousUrl = '/checkout';
 
   waitForLoadedSPA(): void {
     this.getCartTotals.getTotalPrice().should('be.visible');

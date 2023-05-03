@@ -1,75 +1,50 @@
-import {
-  Address,
-  CheckoutDataService,
-  CheckoutForm,
-} from '@spryker-oryx/checkout';
+import { Address } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
 import { AddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { query } from 'lit/decorators.js';
+import { Observable, of } from 'rxjs';
 
-export class CheckoutAddressComponent
-  extends ContentMixin(LitElement)
-  implements CheckoutForm
-{
-  protected checkoutDataService = resolve(CheckoutDataService);
+@signalAware()
+export class CheckoutAddressComponent extends ContentMixin(LitElement) {
   protected addressService = resolve(AddressService);
 
-  protected selectedAddress: Address | null = null;
+  protected selected: Address | null = null;
+  protected addresses = signal(this.addressService.getAddresses());
 
-  protected addresses$ = this.addressService.getAddresses();
+  @query('oryx-address-form')
+  protected addressComponent?: AddressFormComponent;
 
-  protected formRef = createRef<AddressFormComponent>();
-
-  protected getFormElement(): HTMLFormElement | null | undefined {
-    return this.formRef.value?.getForm();
-  }
-
-  submit(report = false): boolean {
-    const form = this.getFormElement();
-
-    if (!form?.checkValidity() && !this.selectedAddress) {
-      if (report) {
-        form?.reportValidity();
-      }
-
-      this.checkoutDataService.setAddress(null);
-
-      return false;
+  collect(): Observable<Address | null> {
+    const form = this.addressComponent?.getForm();
+    if (!form?.checkValidity() && !this.selected) {
+      form?.reportValidity();
+      return of(null);
     }
-
-    const data = form
-      ? Object.fromEntries(new FormData(form).entries())
-      : this.selectedAddress;
-
-    this.checkoutDataService.setAddress(data as unknown as Address);
-
-    return true;
+    return of(
+      form
+        ? (Object.fromEntries(
+            new FormData(form).entries()
+          ) as unknown as Address)
+        : (this.selected as Address | null)
+    );
   }
 
-  protected handleAddressFromList(e: CustomEvent): void {
-    this.selectedAddress = e.detail.address;
+  protected override render(): TemplateResult | void {
+    if (!this.addresses()?.length)
+      return html` <oryx-address-form></oryx-address-form> `;
+
+    return html` <oryx-address-list
+      .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
+      @oryx.select=${this.onSelect}
+    ></oryx-address-list>`;
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.addresses$, (addresses) => {
-      if (!addresses?.length) {
-        return html`
-          <oryx-address-form ${ref(this.formRef)}></oryx-address-form>
-        `;
-      }
-
-      return html`
-        <oryx-address-list
-          .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
-          @oryx.select=${(e: CustomEvent): void =>
-            this.handleAddressFromList(e)}
-        ></oryx-address-list>
-      `;
-    })}`;
+  protected onSelect(e: CustomEvent): void {
+    this.selected = e.detail.address;
   }
 }

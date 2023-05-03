@@ -1,14 +1,12 @@
 import {
   CheckoutMixin,
   CheckoutPaymentService,
-  CheckoutStepType,
-  CheckoutTrigger,
   PaymentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { hydratable, i18n, signal, subscribe } from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
@@ -16,15 +14,13 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
   static styles = styles;
 
   protected paymentService = resolve(CheckoutPaymentService);
-
   protected methods = signal(this.paymentService.getMethods());
-  protected selected = signal(this.paymentService.getSelected());
+  protected selected = signal(this.paymentService.selected());
 
-  // TODO: consider moving to effect whenever component life cycle is supported
-  @subscribe()
-  protected triggerValidation = this.orchestrationService
-    .getTrigger(CheckoutStepType.Payment)
-    .pipe(tap((trigger) => this.validate(trigger)));
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.checkoutService.register('payments', () => this.collect());
+  }
 
   protected override render(): TemplateResult | void {
     const methods = this.methods();
@@ -37,7 +33,6 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
 
   protected renderMethod(method: PaymentMethod): TemplateResult {
     const selected = this.isSelected(method.id);
-
     return html`<oryx-tile ?selected=${selected}>
       <oryx-radio>
         <input
@@ -57,30 +52,39 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
     </oryx-tile>`;
   }
 
-  // TODO: consider fallback strategies: none, first, cheapest
-  protected isSelected(methodId: string): boolean {
-    return this.selected()
-      ? this.selected() === methodId
-      : methodId === this.methods()?.[0]?.id;
-  }
-
-  protected validate(action: CheckoutTrigger): void {
-    const selected = this.renderRoot.querySelector('input[checked]');
-    if (action === CheckoutTrigger.Check) {
-      this.orchestrationService.report(CheckoutStepType.Payment, !!selected);
-    }
-  }
-
-  protected onChange(e: Event): void {
-    const id = (e.target as HTMLInputElement).value;
-    if (id && id !== this.selected()) {
-      this.paymentService.setPaymentMethod(id).subscribe();
-    }
-  }
-
   protected renderEmpty(): TemplateResult {
     return html`<p class="no-methods">
       ${i18n('checkout.payment.no-methods-available')}
     </p>`;
+  }
+
+  protected isSelected(methodId: string): boolean {
+    if (!this.selected()) {
+      this.autoSelect(methodId);
+    }
+    return this.selected()?.id === methodId;
+  }
+
+  // TODO: consider fallback strategies: none, first, cheapest, fastest
+  protected autoSelect(methodId: string): void {
+    if (methodId === this.methods()?.[0]?.id) {
+      this.paymentService.select(methodId);
+    }
+  }
+
+  protected collect(): Observable<PaymentMethod[] | null> {
+    return this.paymentService.selected().pipe(
+      tap((selected) => {
+        // if (!selected) // TODO: how to show invalidation here?
+      }),
+      map((p) => (p ? [p] : null))
+    );
+  }
+
+  protected onChange(e: Event): void {
+    const id = (e.target as HTMLInputElement).value;
+    if (id && id !== this.selected()?.id) {
+      this.paymentService.select(id);
+    }
   }
 }

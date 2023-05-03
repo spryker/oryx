@@ -48,7 +48,7 @@ export class MockPaymentService implements Partial<CheckoutPaymentService> {
     }
   }
 
-  setPaymentMethod(): Observable<void> {
+  select(): Observable<void> {
     return of(undefined);
   }
 }

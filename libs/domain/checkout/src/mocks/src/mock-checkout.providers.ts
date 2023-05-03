@@ -1,8 +1,7 @@
 import { AuthService } from '@spryker-oryx/auth';
 import {
-  CheckoutDataService,
-  CheckoutOrchestrationService,
   CheckoutPaymentService,
+  CheckoutProcessState,
   CheckoutService,
   CheckoutShipmentService,
 } from '@spryker-oryx/checkout';
@@ -11,21 +10,18 @@ import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { MockCheckoutService } from './mock-checkout.service';
 import { MockPaymentService } from './mock-payment.service';
 import { MockShipmentService } from './mock-shipment.service';
 
-export class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  isGuestCheckout = vi.fn().mockReturnValue(of(false));
-  setGuestCheckout = vi.fn();
-
-  getContactDetails = vi.fn().mockReturnValue(of({}));
-  getAddressDetails = vi.fn().mockReturnValue(of({}));
-}
-
 export class MockCheckoutOrchestrationService
-  implements Partial<CheckoutOrchestrationService>
+  implements Partial<CheckoutService>
 {
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
+
+  placeOrder = vi.fn().mockReturnValue(of());
+
   getTrigger = vi.fn().mockReturnValue(of());
   report = vi.fn();
 }
@@ -64,15 +60,7 @@ export const mockCheckoutProviders: Provider[] = [
     useClass: MockPaymentService,
   },
   {
-    provide: CheckoutDataService,
-    useClass: MockCheckoutDataService,
-  },
-  {
     provide: CheckoutOrchestrationService,
     useClass: MockCheckoutOrchestrationService,
-  },
-  {
-    provide: CheckoutService,
-    useClass: MockCheckoutService,
   },
 ];

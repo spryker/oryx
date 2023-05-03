@@ -1,11 +1,13 @@
 import { Observable } from 'rxjs';
-import { Carrier, Shipment } from '../models';
+import { Carrier, ShipmentMethod } from '../../models';
 
 export interface CheckoutShipmentService {
-  getShipment(): Observable<Shipment | null>;
+  /**
+   * Exposes the list of shipments by carrier.
+   */
   getCarriers(): Observable<Carrier[]>;
-  getSelected(): Observable<number | undefined>;
-  setShipmentMethod(method: number): Observable<unknown>;
+  select(method: string): void;
+  selected(): Observable<ShipmentMethod | null>;
 }
 
 export const CheckoutShipmentService = 'oryx.CheckoutShipmentService';

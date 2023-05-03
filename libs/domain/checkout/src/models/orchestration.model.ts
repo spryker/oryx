@@ -15,14 +15,14 @@ export enum CheckoutStepType {
   Payment = 'payment',
 }
 
-export interface CheckoutStep {
-  id: CheckoutStepType;
-  label?: string;
-}
+// export interface CheckoutStep {
+//   id: CheckoutStepType;
+//   label?: string;
+// }
 
 export type ValidityReport = {
   id: CheckoutStepType;
   validity: Validity | undefined;
 };
 
-export type CheckoutConfiguration = CheckoutStep[];
+// export type CheckoutConfiguration = CheckoutStep[];

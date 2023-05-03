@@ -1,22 +1,14 @@
 import {
   CheckoutMixin,
   CheckoutShipmentService,
-  CheckoutStepType,
-  CheckoutTrigger,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import {
-  hydratable,
-  i18n,
-  signal,
-  signalAware,
-  subscribe,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { styles } from './shipment.styles';
 
 @signalAware()
@@ -29,13 +21,12 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
   protected shipmentService = resolve(CheckoutShipmentService);
 
   protected carriers = signal(this.shipmentService.getCarriers());
-  protected selected = signal(this.shipmentService.getSelected());
+  protected selected = signal(this.shipmentService.selected());
 
-  // TODO: consider moving to effect whenever component life cycle is supported
-  @subscribe()
-  protected triggerValidation = this.orchestrationService
-    .getTrigger(CheckoutStepType.Shipping)
-    .pipe(tap((trigger) => this.report(trigger)));
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.checkoutService.register('shipment', () => this.collectData());
+  }
 
   protected override render(): TemplateResult | void {
     const carriers = this.carriers();
@@ -52,11 +43,11 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
   }
 
   protected renderMethod(method: ShipmentMethod): TemplateResult {
-    const isSelected = this.isSelected(Number(method.id));
+    const isSelected = this.isSelected(method.id);
     return html`<oryx-tile ?selected=${isSelected}>
       <oryx-radio>
         <input
-          name="shipment-method"
+          name="shipment"
           type="radio"
           value=${method.id}
           ?checked=${isSelected}
@@ -75,27 +66,38 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
     </oryx-tile>`;
   }
 
-  // TODO: consider fallback strategies: none, first, cheapest, fastest
-  protected isSelected(methodId: number): boolean {
-    return this.selected()
-      ? this.selected() === methodId
-      : methodId === this.carriers()?.[0]?.shipmentMethods?.[0]?.id;
+  protected isSelected(methodId: string): boolean {
+    if (!this.selected()) {
+      this.autoSelect(methodId);
+    }
+    return this.selected()?.id === methodId;
   }
 
-  protected report(action: CheckoutTrigger): void {
-    if (action === CheckoutTrigger.Check) {
-      this.orchestrationService.report(
-        CheckoutStepType.Shipping,
-        !!this.selected()
-      );
+  // TODO: consider fallback strategies: none, first, cheapest, fastest
+  protected autoSelect(methodId: string): void {
+    if (methodId === this.carriers()?.[0]?.shipmentMethods?.[0]?.id) {
+      this.shipmentService.select(methodId);
     }
   }
 
   protected onChange(e: Event): void {
     const id = (e.target as HTMLInputElement).value;
-    if (id && Number(id) !== this.selected()) {
-      this.shipmentService.setShipmentMethod(Number(id));
+    if (id && id !== this.selected()?.id) {
+      this.shipmentService.select(id);
     }
+  }
+
+  protected collectData(): Observable<{
+    idShipmentMethod: string;
+  } | null> {
+    return this.shipmentService.selected().pipe(
+      tap((selected) => {
+        if (!selected) {
+          // TODO: how to show invalidation here?
+        }
+      }),
+      map((shipment) => (shipment ? { idShipmentMethod: shipment.id } : null))
+    );
   }
 
   protected renderEmpty(): TemplateResult {

@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { PaymentMethod } from '../models';
+import { PaymentMethod } from '../../models';
 
 export interface CheckoutPaymentService {
   getMethods(): Observable<PaymentMethod[] | null>;
-  setPaymentMethod(id: string): Observable<unknown>;
-  getSelected(): Observable<string | undefined>;
+  select(id: string): Observable<unknown>;
+  selected(): Observable<PaymentMethod | null>;
 }
 
 export const CheckoutPaymentService = 'oryx.CheckoutPaymentService';

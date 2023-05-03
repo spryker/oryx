@@ -1,132 +1,172 @@
 import { CartService } from '@spryker-oryx/cart';
-import { inject, resolve } from '@spryker-oryx/di';
-import { OrderService } from '@spryker-oryx/order';
-import { RouterService } from '@spryker-oryx/router';
+import { inject } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
-  combineLatest,
-  concat,
-  filter,
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  finalize,
   map,
   Observable,
   of,
-  shareReplay,
   switchMap,
-  take,
   tap,
 } from 'rxjs';
-import {
-  Checkout,
-  CheckoutResponse,
-  ContactDetails,
-  Validity,
-} from '../models';
+import { Checkout, CheckoutProcessState, CheckoutResponse } from '../models';
 import { CheckoutAdapter } from './adapter';
-import { CheckoutDataService } from './checkout-data.service';
-import { CheckoutOrchestrationService } from './checkout-orchestration.service';
 import { CheckoutService } from './checkout.service';
 
-export class DefaultCheckoutService implements CheckoutService {
+// consider moving out steps, register and collect to CheckoutOrchestratorService
+// we'd keep register here as a proxy to "hide" the orchestrator from the components
+export class DefaultCheckoutService<T extends Checkout>
+  implements CheckoutService<T>
+{
+  protected state = new BehaviorSubject(CheckoutProcessState.Initializing);
+
+  protected steps: Array<{
+    id: keyof T;
+    collectDataCallback: () => Observable<T[keyof T]>;
+    order?: number;
+  }> = [];
+
   constructor(
-    protected orchestrationService = inject(CheckoutOrchestrationService),
-    protected dataService = inject(CheckoutDataService),
-    protected adapter = inject(CheckoutAdapter),
     protected cartService = inject(CartService),
-    protected semanticLink = inject(SemanticLinkService),
-    protected router = resolve(RouterService),
-    protected orderService = resolve(OrderService)
+    protected adapter = inject(CheckoutAdapter),
+    protected linkService = inject(SemanticLinkService)
   ) {}
 
-  protected canCheckout$ = this.orchestrationService.getValidity().pipe(
-    map((validity) =>
-      validity.every(({ validity }) => validity === Validity.Valid)
-    ),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  register<K extends keyof T>(
+    id: K,
+    collectDataCallback: () => Observable<T[K]>,
+    sort?: number
+  ): void {
+    const step = this.steps.find((step) => step.id === id);
+    if (step) {
+      if (collectDataCallback !== undefined)
+        step.collectDataCallback = collectDataCallback;
+      if (sort !== undefined) step.order = sort;
+    } else {
+      this.steps.push({
+        id,
+        collectDataCallback: collectDataCallback,
+        order: sort,
+      });
+    }
+    this.steps.sort(
+      (a, b) =>
+        (a.order ?? Number.MAX_SAFE_INTEGER) -
+        (b.order ?? Number.MAX_SAFE_INTEGER)
+    );
+  }
 
-  canCheckout(): Observable<boolean> {
-    return this.canCheckout$;
+  /**
+   * @override when there are not items in cart, the state will always become
+   * `CheckoutProcessState.NotAvailable`.
+   */
+  getProcessState(): Observable<CheckoutProcessState> {
+    return this.cartService
+      .isEmpty()
+      .pipe(
+        switchMap((isEmpty) =>
+          this.state.pipe(
+            map((state) =>
+              isEmpty ? CheckoutProcessState.NotAvailable : state
+            )
+          )
+        )
+      );
   }
 
   placeOrder(): Observable<CheckoutResponse> {
+    this.state.next(CheckoutProcessState.Busy);
     return subscribeReplay(
-      this.orchestrationService.submit().pipe(
-        map((validity) =>
-          validity.every(({ validity }) => validity === Validity.Valid)
-        ),
-        switchMap((canCheckout) =>
-          canCheckout ? this.preparePayload() : of()
-        ),
-        switchMap((payload) =>
-          this.adapter.placeOrder({ attributes: payload })
-        ),
+      this.collect().pipe(
+        catchError((error) => {
+          this.state.next(CheckoutProcessState.Ready);
+          return EMPTY;
+        }),
+        switchMap((data: Checkout) => {
+          const attributes = this.amendCheckoutData(data);
+          return this.adapter.placeOrder({ attributes }).pipe(
+            finalize(() => {
+              this.state.next(CheckoutProcessState.Ready);
+              return EMPTY;
+            })
+          );
+        }),
+        switchMap(this.resolveRedirect),
         tap((response) => this.postCheckout(response))
       )
     );
   }
 
-  protected getCustomer(): Observable<ContactDetails | null> {
-    return concat(
-      this.dataService.getCustomer().pipe(take(1), filter(Boolean)),
-      // TODO: Workaround for the case when customer is not set in the data service
-      // Proper implementation should get customer data from the UserService.
-      of({
-        email: 'temporary-email@temporary-workaround.com',
-      })
-    ).pipe(take(1));
-  }
-
-  protected preparePayload(): Observable<Checkout> {
-    return combineLatest([
-      this.cartService.getCart().pipe(map((cart) => cart?.id)),
-      this.getCustomer(),
-      this.dataService.getAddress(),
-      this.dataService.getShipment(),
-      this.dataService.getPayment(),
-    ]).pipe(
-      take(1),
-      map(([cartId, customer, billingAddress, shipment, payment]) => {
-        const payload: Checkout = {
-          cartId: cartId!,
-          customer: {
-            ...customer!,
-            salutation:
-              customer?.salutation ?? billingAddress!.salutation ?? '',
-          },
-          billingAddress: {
-            ...billingAddress!,
-          },
-        };
-
-        if (shipment?.idShipmentMethod) {
-          payload.shipment = { idShipmentMethod: shipment.idShipmentMethod };
-          payload.shippingAddress = { ...billingAddress! };
-        }
-
-        if (payment) {
-          payload.payments = [payment];
-        }
-
-        return payload;
-      })
-    );
-  }
-
-  protected postCheckout(response: CheckoutResponse): Observable<unknown> {
-    if (response.orders) {
-      this.orderService.storeLastOrder(response.orders[0]);
+  protected collect(): Observable<T> {
+    if (this.steps.length === 0) {
+      throw new Error('No steps registered');
     }
 
-    this.cartService.reload();
-    this.dataService.reset();
+    const collectStep = (
+      index: number,
+      collectedData: Partial<T>
+    ): Observable<T> => {
+      const { id, collectDataCallback: callback } = this.steps[index];
+      return callback().pipe(
+        switchMap((value) => {
+          if (value === null) {
+            throw new Error(`No data collected for step '${String(id)}'`);
+          }
+          collectedData[id] = value;
+          if (index === this.steps.length - 1) return of(collectedData as T);
+          return collectStep(index + 1, collectedData);
+        })
+      );
+    };
 
-    return subscribeReplay(
-      this.semanticLink
-        .get({ type: SemanticLinkType.Order, id: response.orderReference })
-        .pipe(
-          tap((url: string | undefined) => url && this.router.navigate(url))
-        )
-    );
+    return collectStep(0, {});
+  }
+
+  protected resolveRedirect(
+    response: CheckoutResponse
+  ): Observable<CheckoutResponse> {
+    return response.redirectUrl
+      ? of(response)
+      : this.linkService
+          .get({
+            type: SemanticLinkType.Order,
+            id: response.orderReference,
+          })
+          .pipe(map((redirectUrl) => ({ ...response, redirectUrl })));
+  }
+
+  /**
+   * Clears the cart, stores the order in memory.
+   */
+  protected postCheckout(response: CheckoutResponse): void {
+    this.cartService.reload();
+    if (response.orders) {
+      console.log('TODO: store last order', response.orders[0]);
+      // this.orderService.storeLastOrder(response.orders[0]);
+    }
+  }
+
+  /**
+   * Temporary solution
+   */
+  protected amendCheckoutData(data: Checkout): Checkout {
+    const attributes = {
+      ...data,
+    };
+    if (attributes.shippingAddress) {
+      // temporarily till we add billingAddress component
+      attributes.billingAddress = attributes.shippingAddress;
+    }
+    if (
+      !attributes.customer.salutation &&
+      attributes.shippingAddress?.salutation
+    ) {
+      attributes.customer.salutation = attributes.shippingAddress?.salutation;
+    }
+    return attributes;
   }
 }

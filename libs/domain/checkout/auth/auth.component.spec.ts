@@ -12,13 +12,13 @@ import {
   mockCheckoutProviders,
 } from '../src/mocks/src';
 import { CheckoutDataService } from '../src/services';
-import { CheckoutGuestComponent } from './guest.component';
-import { checkoutGuestComponent } from './guest.def';
+import { CheckoutAuthComponent } from './auth.component';
+import { checkoutGuestComponent } from './auth.def';
 
 const mockLink = '/semanticLink';
 
 describe('Checkout Guest', () => {
-  let element: CheckoutGuestComponent;
+  let element: CheckoutAuthComponent;
   let routerService: RouterService;
   let linkService: SemanticLinkService;
   let checkoutDataService: MockCheckoutDataService;

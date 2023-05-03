@@ -2,9 +2,8 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
-  h1,
-  p.have-an-account {
-    ${headingUtil(HeadingTag.H5)};
+  h1 {
+    ${headingUtil(HeadingTag.H3)};
   }
 
   p.have-an-account {

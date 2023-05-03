@@ -1,47 +1,33 @@
-import {
-  CheckoutDataService,
-  CheckoutForm,
-  ContactDetails,
-} from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ContactFormComponent } from '@spryker-oryx/user/contact-form';
 import { html, LitElement, TemplateResult } from 'lit';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { query } from 'lit/decorators.js';
 
-export class CheckoutContactComponent
-  extends ContentMixin(LitElement)
-  implements CheckoutForm
-{
-  protected checkoutDataService = resolve(CheckoutDataService);
+export class CheckoutContactComponent extends ContentMixin(LitElement) {
+  @query('user-contact-form ')
+  protected contactComponent!: ContactFormComponent;
 
-  protected formRef = createRef<ContactFormComponent>();
+  // submit(report = false): boolean {
+  //   // const form = this.contactComponent;
 
-  protected getFormElement(): HTMLFormElement | null | undefined {
-    return this.formRef.value?.getForm();
-  }
+  //   // if (!form?.checkValidity()) {
+  //   //   if (report) {
+  //   //     form?.reportValidity();
+  //   //   }
 
-  submit(report = false): boolean {
-    const form = this.getFormElement();
+  //   //   this.checkoutDataService.setCustomer(null);
 
-    if (!form?.checkValidity()) {
-      if (report) {
-        form?.reportValidity();
-      }
+  //   //   return false;
+  //   // }
 
-      this.checkoutDataService.setCustomer(null);
+  //   // const data = Object.fromEntries(new FormData(form).entries());
 
-      return false;
-    }
+  //   // this.checkoutDataService.setCustomer(data as unknown as ContactDetails);
 
-    const data = Object.fromEntries(new FormData(form).entries());
-
-    this.checkoutDataService.setCustomer(data as unknown as ContactDetails);
-
-    return true;
-  }
+  //   return true;
+  // }
 
   protected override render(): TemplateResult {
-    return html` <user-contact-form ${ref(this.formRef)}></user-contact-form> `;
+    return html` <user-contact-form></user-contact-form> `;
   }
 }

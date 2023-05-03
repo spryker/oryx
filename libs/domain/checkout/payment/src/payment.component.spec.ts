@@ -1,8 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import {
-  CheckoutOrchestrationService,
-  CheckoutPaymentService,
-} from '@spryker-oryx/checkout';
+import { CheckoutPaymentService } from '@spryker-oryx/checkout';
 import {
   MockCheckoutOrchestrationService,
   mockCheckoutProviders,
@@ -18,8 +15,8 @@ import { checkoutPaymentComponent } from './payment.def';
 
 class MockPaymentService implements Partial<CheckoutPaymentService> {
   getMethods = vi.fn().mockReturnValue(of(mockPaymentMethods));
-  setPaymentMethod = vi.fn().mockReturnValue(of());
-  getSelected = vi.fn();
+  select = vi.fn().mockReturnValue(of());
+  selected = vi.fn();
 }
 
 describe('Checkout Payment Selector component', () => {
@@ -102,7 +99,7 @@ describe('Checkout Payment Selector component', () => {
 
     describe('and there is no selected method', () => {
       beforeEach(async () => {
-        paymentService.getSelected.mockReturnValue(of(undefined));
+        paymentService.selected.mockReturnValue(of(undefined));
         await getElement();
       });
 
@@ -126,7 +123,7 @@ describe('Checkout Payment Selector component', () => {
         });
 
         it('should set the associated shipping method', () => {
-          expect(paymentService.setPaymentMethod).toHaveBeenCalledWith('3');
+          expect(paymentService.select).toHaveBeenCalledWith('3');
         });
       });
     });
@@ -134,7 +131,7 @@ describe('Checkout Payment Selector component', () => {
     describe('and a method is selected', () => {
       const selectedId = mockPaymentMethods[2].id;
       beforeEach(async () => {
-        paymentService.getSelected.mockReturnValue(of(selectedId));
+        paymentService.selected.mockReturnValue(of(selectedId));
         element = await fixture(
           html`<oryx-checkout-payment></oryx-checkout-payment>`
         );

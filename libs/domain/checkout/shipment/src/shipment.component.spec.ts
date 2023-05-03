@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
-  CheckoutOrchestrationService,
   CheckoutShipmentService,
   CheckoutStepType,
   CheckoutTrigger,
@@ -20,8 +19,8 @@ import { checkoutShipmentComponent } from './shipment.def';
 
 class MockShipmentService implements Partial<CheckoutShipmentService> {
   getCarriers = vi.fn().mockReturnValue(of(null));
-  getSelected = vi.fn().mockReturnValue(of(0));
-  setShipmentMethod = vi.fn().mockReturnValue(of());
+  selected = vi.fn().mockReturnValue(of(0));
+  select = vi.fn().mockReturnValue(of());
 }
 
 describe('Checkout Shipment Selector component', () => {
@@ -113,7 +112,7 @@ describe('Checkout Shipment Selector component', () => {
 
     describe('and there is no selected method', () => {
       beforeEach(async () => {
-        shipmentService.getSelected.mockReturnValue(of(undefined));
+        shipmentService.selected.mockReturnValue(of(undefined));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
@@ -139,7 +138,7 @@ describe('Checkout Shipment Selector component', () => {
         });
 
         it('should set the associated shipping method', () => {
-          expect(shipmentService.setShipmentMethod).toHaveBeenCalledWith(3);
+          expect(shipmentService.select).toHaveBeenCalledWith(3);
         });
       });
     });
@@ -149,7 +148,7 @@ describe('Checkout Shipment Selector component', () => {
         shipmentService.getCarriers.mockReturnValue(
           of(mockFilteredShipmentMethods)
         );
-        shipmentService.getSelected.mockReturnValue(of(3));
+        shipmentService.selected.mockReturnValue(of(3));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
@@ -165,7 +164,7 @@ describe('Checkout Shipment Selector component', () => {
         orchestrationService.getTrigger.mockReturnValue(
           of(CheckoutTrigger.Check)
         );
-        shipmentService.getSelected.mockReturnValue(of(3));
+        shipmentService.selected.mockReturnValue(of(3));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
