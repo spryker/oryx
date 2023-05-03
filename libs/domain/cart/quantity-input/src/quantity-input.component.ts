@@ -63,7 +63,11 @@ export class QuantityInputComponent
           size=${Size.Sm}
         ></oryx-icon>
       </button>
-      <oryx-input ?hasError=${this.hasError} label=${ifDefined(this.label)}>
+      <oryx-input
+        ?hasError=${this.hasError}
+        label=${ifDefined(this.label)}
+        floatDisabled
+      >
         <input
           ${ref(this.inputRef)}
           aria-label=${i18n('cart.quantity')}

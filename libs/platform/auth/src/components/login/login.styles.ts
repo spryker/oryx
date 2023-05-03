@@ -2,6 +2,10 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
+  :host {
+    margin: 30px 18px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
