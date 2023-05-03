@@ -7,6 +7,7 @@ import {
   ContentMixin,
   ExperienceService,
   LayoutBuilder,
+  LayoutMixin,
 } from '@spryker-oryx/experience';
 import {
   hydratable,
@@ -27,7 +28,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { LayoutMixin } from '../../layout';
 
 @hydratable()
 export class ExperienceCompositionComponent extends LayoutMixin(

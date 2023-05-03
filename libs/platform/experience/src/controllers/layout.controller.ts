@@ -6,8 +6,51 @@ import { StyleRuleSet } from '../models';
 import { LayoutBuilder, ResponsiveLayoutInfo } from '../services';
 
 export class LayoutController {
-  //   protected layoutService = resolve(LayoutService);
   protected layoutBuilder = resolve(LayoutBuilder);
+
+  getLayoutInfos(
+    properties: string[],
+    rules: StyleRuleSet[]
+  ): ResponsiveLayoutInfo {
+    const infos: ResponsiveLayoutInfo = {};
+
+    properties.forEach((prop) => {
+      const booleanPropertyType = prop !== 'layout';
+
+      const mainLayout = this.collectMainLayout(rules, prop);
+      const attr = (booleanPropertyType ? prop : mainLayout) as string;
+
+      if (mainLayout) {
+        infos[attr] = {
+          excluded: this.findExcludedScreens(rules, prop, mainLayout as string),
+        };
+      }
+
+      ['Xs', 'Sm', 'Md', 'Lg', 'Xl'].forEach((size) => {
+        const compare = booleanPropertyType ? true : attr;
+        const responsiveLayout =
+          this.host[`${attr}${size}` as keyof LayoutAttributes] === compare ||
+          rules?.find(
+            (r) =>
+              r.breakpoint === size.toLowerCase() &&
+              r[attr as keyof LayoutAttributes] === compare
+          );
+
+        if (responsiveLayout === undefined) {
+          const attr = rules?.find(
+            (r) =>
+              r.breakpoint === size.toLowerCase() &&
+              r[prop as keyof LayoutAttributes]
+          )?.[prop as keyof LayoutAttributes] as string;
+          this.addToInfo(infos, attr, size);
+        } else {
+          this.addToInfo(infos, attr, size);
+        }
+      });
+    });
+
+    return infos;
+  }
 
   /** returns a list of breakpoints that does not have the given value  */
   protected findExcludedScreens(
@@ -52,50 +95,6 @@ export class LayoutController {
       rules?.find(
         (rule) => !rule.breakpoint && rule[prop as keyof StyleRuleSet]
       )?.[prop as keyof StyleRuleSet]) as string;
-  }
-
-  getLayoutInfos(
-    properties: string[],
-    rules: StyleRuleSet[]
-  ): ResponsiveLayoutInfo {
-    const infos: ResponsiveLayoutInfo = {};
-
-    properties.forEach((prop) => {
-      const booleanPropertyType = prop !== 'layout';
-
-      const mainLayout = this.collectMainLayout(rules, prop);
-      const attr = (booleanPropertyType ? prop : mainLayout) as string;
-
-      if (mainLayout) {
-        infos[attr] = {
-          excluded: this.findExcludedScreens(rules, prop, mainLayout as string),
-        };
-      }
-
-      ['Xs', 'Sm', 'Md', 'Lg', 'Xl'].forEach((size) => {
-        const compare = booleanPropertyType ? true : attr;
-        const responsiveLayout =
-          this.host[`${attr}${size}` as keyof LayoutAttributes] === compare ||
-          rules?.find(
-            (r) =>
-              r.breakpoint === size.toLowerCase() &&
-              r[attr as keyof LayoutAttributes] === compare
-          );
-
-        if (responsiveLayout === undefined) {
-          const attr = rules?.find(
-            (r) =>
-              r.breakpoint === size.toLowerCase() &&
-              r[prop as keyof LayoutAttributes]
-          )?.[prop as keyof LayoutAttributes] as string;
-          this.addToInfo(infos, attr, size);
-        } else {
-          this.addToInfo(infos, attr, size);
-        }
-      });
-    });
-
-    return infos;
   }
 
   /**

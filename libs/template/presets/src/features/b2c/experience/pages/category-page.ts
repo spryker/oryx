@@ -15,7 +15,7 @@ export const CategoryPage: StaticComponent = {
         {
           layout: 'split-column',
           splitColumnFactor: 0.25,
-          padding: '30 0',
+          padding: '30px 0 0',
         },
         { breakpoint: 'md', splitColumnFactor: 0.33 },
       ],
@@ -49,7 +49,7 @@ export const CategoryPage: StaticComponent = {
         {
           type: 'oryx-product-list',
           options: {
-            data: { rules: [{ layout: 'grid', gap: '30' }] },
+            data: { rules: [{ layout: 'grid', gap: '30px' }] },
           },
         },
         {

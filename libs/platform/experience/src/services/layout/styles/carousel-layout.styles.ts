@@ -24,11 +24,6 @@ export const styles: LayoutStyles = {
       overflow: hidden auto;
     }
 
-    *,
-    ::slotted(*) {
-      scroll-snap-align: start;
-    }
-
     :host::-webkit-scrollbar {
       display: none;
     }
