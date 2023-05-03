@@ -40,6 +40,7 @@ export class PickingListEntity implements PickingListOffline {
   declare items: PickingListItemOffline[];
   @indexedDbIndex()
   declare cartNote?: string;
+  declare orderReference: string;
   declare createdAt: Date;
   declare updatedAt: Date;
   @indexedDbIndex()
@@ -49,7 +50,7 @@ export class PickingListEntity implements PickingListOffline {
   @indexedDbIndex({ multiEntry: true })
   declare productSkus: string[];
   @indexedDbIndex()
-  declare requestedDeliveryDate: Date;
+  declare requestedDeliveryDate?: Date;
   @indexedDbIndex()
   declare localStatus: PickingListStatus;
 
@@ -73,7 +74,6 @@ export interface PickingListOffline extends PickingList {
   itemsCount: number;
   orderReferences: string[];
   productSkus: string[];
-  requestedDeliveryDate: Date;
   localStatus: PickingListStatus;
 }
 

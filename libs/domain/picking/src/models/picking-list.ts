@@ -2,6 +2,8 @@ import { PickingProduct } from './picking-product';
 
 export interface PickingList {
   id: string;
+  orderReference: string;
+  requestedDeliveryDate?: Date;
   status: PickingListStatus;
   items: PickingListItem[];
   cartNote?: string;
