@@ -1,18 +1,18 @@
 import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
 
-export const BreakpointService = 'oryx.BreakpointService';
+export const ScreenService = 'oryx.ScreenService';
 
-export interface BreakpointService {
+export interface ScreenService {
   getBreakpoints(): Breakpoints;
-  getMediaQuery(
+  getScreenMedia(
     include: Breakpoint | Breakpoint[],
     exclude?: Breakpoint | Breakpoint[]
-  ): string | void;
+  ): string | void | null;
   getSmallest(): Breakpoint | void;
 }
 
 declare global {
   interface InjectionTokensContractMap {
-    [BreakpointService]: BreakpointService;
+    [ScreenService]: ScreenService;
   }
 }

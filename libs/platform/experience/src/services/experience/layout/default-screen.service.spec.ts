@@ -2,8 +2,8 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
 import { Theme, ThemePlugin } from '../../../plugins';
-import { BreakpointService } from './breakpoint.service';
-import { DefaultBreakpointService } from './default-breakpoint.service';
+import { DefaultScreenService } from './default-screen.service';
+import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
   name: 'name',
@@ -21,11 +21,11 @@ const mockTheme: Theme = {
 };
 
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
+  requirePlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
-describe('DefaultBreakpointService', () => {
-  let service: BreakpointService;
+describe('DefaultScreenService', () => {
+  let service: ScreenService;
 
   beforeEach(() => {
     const testInjector = new Injector([
@@ -34,16 +34,16 @@ describe('DefaultBreakpointService', () => {
         useClass: MockApp,
       },
       {
-        provide: BreakpointService,
-        useClass: DefaultBreakpointService,
+        provide: ScreenService,
+        useClass: DefaultScreenService,
       },
     ]);
 
-    service = testInjector.inject(BreakpointService);
+    service = testInjector.inject(ScreenService);
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultBreakpointService);
+    expect(service).toBeInstanceOf(DefaultScreenService);
   });
 
   describe('getSmallest() ', () => {
@@ -52,25 +52,25 @@ describe('DefaultBreakpointService', () => {
     });
   });
 
-  describe('getMediaQuery() ', () => {
+  describe('getScreenMedia() ', () => {
     describe('when breakpoint is the smallest', () => {
       it('should not return a media query', () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const query = service.getMediaQuery(service.getSmallest()!);
+        const query = service.getScreenMedia(service.getSmallest()!);
         expect(query).toBeUndefined();
       });
     });
 
     describe('when breakpoint is Md', () => {
       it('should return a media query with min 768px', () => {
-        const query = service.getMediaQuery(Size.Md);
+        const query = service.getScreenMedia(Size.Md);
         expect(query).toBe('@media (min-width: 768px)');
       });
     });
 
     describe('when breakpoint is Lg', () => {
       it('should return a media query with min 124px', () => {
-        const query = service.getMediaQuery(Size.Lg);
+        const query = service.getScreenMedia(Size.Lg);
         expect(query).toBe('@media (min-width: 1024px)');
       });
     });
