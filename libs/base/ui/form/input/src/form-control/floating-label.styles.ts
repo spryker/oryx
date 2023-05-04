@@ -2,18 +2,19 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const floatingLabelStyles = (attribute = true) => {
-  const floatLabel = unsafeCSS(attribute ? '[floatLabel]' : '');
-  const floatParentheses = unsafeCSS(attribute ? '([floatLabel])' : '');
+  const floatLabel = unsafeCSS(
+    attribute ? '[floatLabel]' : ':not([floatDisabled])'
+  );
   return css`
-    :host${floatParentheses} label {
+    :host(${floatLabel}) label {
       position: relative;
     }
 
-    :host${floatParentheses} slot[name='label']::slotted(*) {
+    :host(${floatLabel}) slot[name='label']::slotted(*) {
       pointer-events: none;
     }
 
-    :host${floatParentheses} slot[name='label'] {
+    :host(${floatLabel}) slot[name='label'] {
       text-transform: none;
       font-weight: 500;
       font-size: 14px;
@@ -37,14 +38,13 @@ const floatingLabelStyles = (attribute = true) => {
       max-width: calc(100% - 54px - var(--float-label-start-gap, 0px));
     }
 
-    :host${floatParentheses},
-      :host${floatParentheses}
-      ::slotted(select:invalid) {
+    :host(${floatLabel}),
+    :host(${floatLabel}) ::slotted(select:invalid) {
       --oryx-color-placeholder: transparent;
     }
 
-    :host${floatParentheses} slot[name='label'],
-    :host${floatParentheses} slot[name='label']::slotted(*) {
+    :host(${floatLabel}) slot[name='label'],
+    :host(${floatLabel}) slot[name='label']::slotted(*) {
       cursor: text;
     }
 
