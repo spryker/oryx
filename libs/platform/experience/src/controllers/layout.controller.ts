@@ -1,11 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
-import { Breakpoint } from '@spryker-oryx/utilities';
+import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { LayoutAttributes } from '../../layout/src';
 import { StyleRuleSet } from '../models';
 import { LayoutBuilder, ResponsiveLayoutInfo } from '../services';
 
 export class LayoutController {
+  constructor(protected host: LitElement & LayoutAttributes) {}
+
   protected layoutBuilder = resolve(LayoutBuilder);
 
   getLayoutInfos(
@@ -13,11 +15,12 @@ export class LayoutController {
     rules: StyleRuleSet[]
   ): ResponsiveLayoutInfo {
     const infos: ResponsiveLayoutInfo = {};
-
+    console.log(properties, 'properties');
     properties.forEach((prop) => {
       const booleanPropertyType = prop !== 'layout';
 
       const mainLayout = this.collectMainLayout(rules, prop);
+      console.log(mainLayout);
       const attr = (booleanPropertyType ? prop : mainLayout) as string;
 
       if (mainLayout) {
@@ -26,8 +29,8 @@ export class LayoutController {
         };
       }
 
-      ['Xs', 'Sm', 'Md', 'Lg', 'Xl'].forEach((size) => {
-        const compare = booleanPropertyType ? true : attr;
+      sizes.forEach((size) => {
+        const compare = booleanPropertyType || attr;
         const responsiveLayout =
           this.host[`${attr}${size}` as keyof LayoutAttributes] === compare ||
           rules?.find(
@@ -35,7 +38,10 @@ export class LayoutController {
               r.breakpoint === size.toLowerCase() &&
               r[attr as keyof LayoutAttributes] === compare
           );
-
+        console.log('______');
+        console.log(attr, size);
+        console.log(this.host[`${attr}${size}` as keyof LayoutAttributes]);
+        console.log(responsiveLayout, compare);
         if (responsiveLayout === undefined) {
           const attr = rules?.find(
             (r) =>
@@ -131,14 +137,8 @@ export class LayoutController {
    */
   protected hasLayout(rules: StyleRuleSet[]): boolean {
     const has = (obj: LayoutAttributes): boolean =>
-      !!obj['layout'] ||
-      !!obj['layoutXs'] ||
-      !!obj['layoutSm'] ||
-      !!obj['layoutMd'] ||
-      !!obj['layoutXl'];
+      !!obj.layout || sizes.some((size) => obj[size]?.layout);
 
     return has(this.host) || !!rules?.find((rule) => has(rule));
   }
-
-  constructor(protected host: LitElement & LayoutAttributes) {}
 }

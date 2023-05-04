@@ -126,7 +126,7 @@ export class DefaultLayoutService implements LayoutService {
       }
     }
 
-    [Size.Sm, Size.Md, Size.Lg].forEach((size) => {
+    [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl].forEach((size) => {
       if (style[size]) {
         const query = this.screenService.getScreenMedia(size as Breakpoint);
         if (query) {

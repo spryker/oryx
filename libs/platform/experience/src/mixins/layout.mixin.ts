@@ -1,4 +1,4 @@
-import { resolve } from '@spryker-oryx/di';
+import { resolve, Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/experience';
 import {
   LayoutAttributes,
-  ScreenLayout,
+  LayoutProperties,
 } from '@spryker-oryx/experience/layout';
 import {
   computed,
@@ -17,8 +17,6 @@ import {
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-
-import { Type } from '@spryker-oryx/di';
 import { map } from 'rxjs';
 import { LayoutController } from '../controllers/layout.controller';
 
@@ -26,12 +24,16 @@ export declare class LayoutMixinInterface {
   layout?: CompositionLayout;
   bleed?: boolean;
   sticky?: boolean;
-  xs?: ScreenLayout;
-  sm?: ScreenLayout;
-  md?: ScreenLayout;
-  lg?: ScreenLayout;
-  xl?: ScreenLayout;
+  xs?: LayoutProperties;
+  sm?: LayoutProperties;
+  md?: LayoutProperties;
+  lg?: LayoutProperties;
+  xl?: LayoutProperties;
   protected layoutStyles: ConnectableSignal<string | undefined>;
+}
+
+interface LayoutContentOptions {
+  rules: StyleRuleSet[];
 }
 
 export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
@@ -39,40 +41,24 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 ): Type<LayoutMixinInterface> & T => {
   @signalAware()
   @ssrShim('style')
-  class LayoutMixinClass extends ContentMixin(superClass) {
+  class LayoutMixinClass extends ContentMixin<LayoutContentOptions>(
+    superClass
+  ) {
     @signalProperty() layout?: CompositionLayout;
     @signalProperty({ type: Boolean }) bleed?: boolean;
     @signalProperty({ type: Boolean }) sticky?: boolean;
 
-    @signalProperty({ type: Object }) xs?: ScreenLayout;
-    @signalProperty({ type: Object }) sm?: ScreenLayout;
-    @signalProperty({ type: Object }) md?: ScreenLayout;
-    @signalProperty({ type: Object }) lg?: ScreenLayout;
-    @signalProperty({ type: Object }) xl?: ScreenLayout;
-
-    @signalProperty() layoutXs?: CompositionLayout;
-    @signalProperty() layoutSm?: CompositionLayout;
-    @signalProperty() layoutMd?: CompositionLayout;
-    @signalProperty() layoutLg?: CompositionLayout;
-    @signalProperty() layoutXl?: CompositionLayout;
-
-    @signalProperty({ type: Boolean }) bleedXs?: boolean;
-    @signalProperty({ type: Boolean }) bleedSm?: boolean;
-    @signalProperty({ type: Boolean }) bleedMd?: boolean;
-    @signalProperty({ type: Boolean }) bleedLg?: boolean;
-    @signalProperty({ type: Boolean }) bleedXl?: boolean;
-
-    @signalProperty({ type: Boolean }) stickyXs?: boolean;
-    @signalProperty({ type: Boolean }) stickySm?: boolean;
-    @signalProperty({ type: Boolean }) stickyMd?: boolean;
-    @signalProperty({ type: Boolean }) stickyLg?: boolean;
-    @signalProperty({ type: Boolean }) stickyXl?: boolean;
+    @signalProperty({ type: Object }) xs?: LayoutProperties;
+    @signalProperty({ type: Object }) sm?: LayoutProperties;
+    @signalProperty({ type: Object }) md?: LayoutProperties;
+    @signalProperty({ type: Object }) lg?: LayoutProperties;
+    @signalProperty({ type: Object }) xl?: LayoutProperties;
 
     protected layoutController = new LayoutController(this);
     protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
-      const rules = (this.$options() as { rules: StyleRuleSet[] }).rules;
+      const { rules } = this.$options();
       const componentStyles = this.layoutController.collectStyles(
         rules,
         this.uid
@@ -81,7 +67,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         ['layout', 'sticky', 'bleed'],
         rules
       );
-
+      console.log(graph, 'graph');
       return this.layoutService
         .getStyles(graph)
         .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));

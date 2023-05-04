@@ -27,10 +27,14 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel" container>
+    <oryx-layout
+      .sm=${{ layout: 'carousel' }}
+      .md=${{ layout: 'list' }}
+      container
+    >
       ${generateLayoutItems(12)}
     </oryx-layout>
-
+    <!--
     <ul>
       <li>Padding can be added using standard CSS</li>
       <li>
@@ -148,7 +152,7 @@ const Template: Story = (): TemplateResult => {
 
     <style>
       ${layoutStaticStyles}
-    </style>
+    </style> -->
   `;
 };
 
