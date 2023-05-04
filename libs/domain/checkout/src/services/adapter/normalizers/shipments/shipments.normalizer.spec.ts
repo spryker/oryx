@@ -83,9 +83,19 @@ const mockNormalizedShipment: Shipment[] = [
   },
 ];
 
-describe('Shipments Normalizer', () => {
-  it('should transform ApiCheckoutModel.ShipmentInclude into CheckoutData', () => {
-    const normalized = shipmentsNormalizer(mockCheckoutData);
-    expect(normalized).toEqual(mockNormalizedShipment);
+describe('shipmentsNormalizer', () => {
+  describe('when no data is provided', () => {
+    it('should return an empty array', () => {
+      expect(
+        shipmentsNormalizer(null as unknown as DeserializedCheckout)
+      ).toEqual([]);
+    });
+  });
+
+  describe('when valid data is provided', () => {
+    it('should transform ApiCheckoutModel.ShipmentInclude into CheckoutData', () => {
+      const normalized = shipmentsNormalizer(mockCheckoutData);
+      expect(normalized).toEqual(mockNormalizedShipment);
+    });
   });
 });
