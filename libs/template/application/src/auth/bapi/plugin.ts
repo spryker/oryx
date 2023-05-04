@@ -34,7 +34,7 @@ export class BapiPlugin implements AppPlugin {
             (currentRoute.startsWith(oauthConfig.loginRoute) ||
               currentRoute.startsWith(redirectUrl.pathname))
           ) {
-            setTimeout(() => resolve(RouterService).navigate('/'), 500);
+            resolve(RouterService).navigate('/');
           }
         })
       )

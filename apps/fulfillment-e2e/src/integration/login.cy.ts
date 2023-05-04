@@ -14,20 +14,24 @@ describe('Login Suite', () => {
       cy.location('pathname').should('to.match', /^\/login/);
 
       loginPage.getWrapper().should('be.visible');
-      loginPage.getWrapper().find('oryx-image[resource="logo"]');
+      loginPage.getLogo().should('be.visible');
       loginPage
-        .getWrapper()
-        .find('oryx-heading')
+        .getTitle()
         .should('be.visible')
         .and('contain.text', 'Welcome please log in to start picking');
       loginPage.loginForm
-        .getWrapper()
-        .find('slot[name="label"]')
+        .getLabelSlot()
         .should('have.css', 'position', 'absolute');
     });
   });
   describe('when logging in', () => {
     it('should login successfully', () => {
+      let isLoadingPage = false;
+
+      cy.on('url:changed', (newurl) => {
+        isLoadingPage = newurl.includes('oauth') ? true : isLoadingPage;
+      });
+
       cy.intercept('POST', '**/token').as('token');
 
       loginPage.visit();
@@ -38,7 +42,10 @@ describe('Login Suite', () => {
 
       cy.wait('@token');
 
+      // TODO - when offline login calls picking-lists before redirect, we can re-enable these
+      /*
       cy.location('pathname').should('match', /^\/oauth/);
+
       oauthHandler.getWrapper().should('be.visible');
       oauthHandler
         .getWrapper()
@@ -46,10 +53,12 @@ describe('Login Suite', () => {
       oauthHandler.getLogo().should('be.visible');
       oauthHandler.getTitle().should('contain.text', 'Logging you in');
       oauthHandler.getSpinner().should('be.visible');
+      */
 
       cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
       cy.wait('@picking-lists');
 
+      cy.then(() => expect(isLoadingPage).to.be.true);
       cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
     });
@@ -72,10 +81,7 @@ describe('Login Suite', () => {
       cy.wait('@authorize');
 
       cy.location('pathname').should('match', /^\/login/);
-      loginPage
-        .getWrapper()
-        .find('oryx-notification[type="error"]')
-        .should('be.visible');
+      loginPage.getErrorNotification().should('be.visible');
     });
   });
 });
