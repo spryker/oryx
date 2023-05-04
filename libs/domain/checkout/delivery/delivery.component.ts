@@ -19,7 +19,11 @@ export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.checkoutService.register('shippingAddress', () => this.collect(), 2);
+    this.checkoutService.register({
+      id: 'shippingAddress',
+      collectDataCallback: () => this.collectData(),
+      order: 2,
+    });
   }
 
   protected override render(): TemplateResult {
@@ -34,7 +38,7 @@ export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
     `;
   }
 
-  protected collect(): Observable<Address | null> {
+  protected collectData(): Observable<Address | null> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return of(this.addressComponent!.collectData());
   }

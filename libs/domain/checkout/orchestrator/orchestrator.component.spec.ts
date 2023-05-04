@@ -1,6 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { CheckoutProcessState, CheckoutService } from '@spryker-oryx/checkout';
+import {
+  CheckoutProcessState,
+  CheckoutService,
+  CheckoutStepCallback,
+} from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
@@ -37,7 +41,10 @@ describe('CheckoutOrchestratorComponent', () => {
 
     cartService = injector.inject<MockCartService>(CartService);
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation((param, fn) => (callback = fn));
+    checkoutService.register.mockImplementation(
+      (param: CheckoutStepCallback<unknown>) =>
+        (callback = param.collectDataCallback)
+    );
   });
 
   afterEach(() => {
@@ -61,10 +68,10 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith(
-        'cartId',
-        expect.anything()
-      );
+      expect(checkoutService.register).toHaveBeenCalledWith({
+        id: 'cartId',
+        collectDataCallback: expect.anything(),
+      } as CheckoutStepCallback<unknown>);
     });
   });
 

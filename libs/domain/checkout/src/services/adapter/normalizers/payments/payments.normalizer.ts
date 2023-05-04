@@ -6,7 +6,7 @@ import { DeserializedCheckout } from '../checkout/model';
 export const PaymentsNormalizer = 'oryx.PaymentsNormalizer*';
 
 export function paymentsNormalizer(
-  data: DeserializedCheckout
+  data?: DeserializedCheckout
 ): PaymentMethod[] {
   if (!data) return [];
 

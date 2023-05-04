@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CheckoutService } from '@spryker-oryx/checkout';
+import { CheckoutService, CheckoutStepCallback } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
@@ -37,7 +37,10 @@ describe('CheckoutDeliveryComponent', () => {
 
     addressService = injector.inject<MockAddressService>(AddressService);
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation((param, fn) => (callback = fn));
+    checkoutService.register.mockImplementation(
+      (param: CheckoutStepCallback<unknown>) =>
+        (callback = param.collectDataCallback)
+    );
   });
 
   afterEach(() => {
@@ -61,11 +64,11 @@ describe('CheckoutDeliveryComponent', () => {
     });
 
     it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith(
-        'shippingAddress',
-        expect.anything(),
-        2
-      );
+      expect(checkoutService.register).toHaveBeenCalledWith({
+        id: 'shippingAddress',
+        collectDataCallback: expect.anything(),
+        order: 2,
+      } as CheckoutStepCallback<unknown>);
     });
   });
 

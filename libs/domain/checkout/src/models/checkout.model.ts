@@ -8,6 +8,12 @@ export const enum CheckoutProcessState {
   Busy = 'busy',
 }
 
+export interface CheckoutStepCallback<T> {
+  id: keyof T;
+  collectDataCallback: () => Observable<T[keyof T]>;
+  order?: number;
+}
+
 export interface CheckoutStep<T = unknown> {
   /**
    * TODO: instructions

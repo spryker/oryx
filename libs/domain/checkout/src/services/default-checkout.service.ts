@@ -14,7 +14,12 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { Checkout, CheckoutProcessState, CheckoutResponse } from '../models';
+import {
+  Checkout,
+  CheckoutProcessState,
+  CheckoutResponse,
+  CheckoutStepCallback,
+} from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutService } from './checkout.service';
 
@@ -25,11 +30,7 @@ export class DefaultCheckoutService<T extends Checkout>
 {
   protected state = new BehaviorSubject(CheckoutProcessState.Initializing);
 
-  protected steps: Array<{
-    id: keyof T;
-    collectDataCallback: () => Observable<T[keyof T]>;
-    order?: number;
-  }> = [];
+  protected steps: Array<CheckoutStepCallback<T>> = [];
 
   constructor(
     protected cartService = inject(CartService),
@@ -38,22 +39,14 @@ export class DefaultCheckoutService<T extends Checkout>
     protected orderService = inject(OrderService)
   ) {}
 
-  register<K extends keyof T>(
-    id: K,
-    collectDataCallback: () => Observable<T[K]>,
-    sort?: number
-  ): void {
-    const step = this.steps.find((step) => step.id === id);
+  register(callback: CheckoutStepCallback<T>): void {
+    const step = this.steps.find((step) => step.id === callback.id);
     if (step) {
-      if (collectDataCallback !== undefined)
-        step.collectDataCallback = collectDataCallback;
-      if (sort !== undefined) step.order = sort;
+      if (callback.collectDataCallback !== undefined)
+        step.collectDataCallback = callback.collectDataCallback;
+      if (callback.order !== undefined) step.order = callback.order;
     } else {
-      this.steps.push({
-        id,
-        collectDataCallback: collectDataCallback,
-        order: sort,
-      });
+      this.steps.push(callback);
     }
     this.steps.sort(
       (a, b) =>
@@ -104,10 +97,14 @@ export class DefaultCheckoutService<T extends Checkout>
   }
 
   protected collect(): Observable<T> {
-    if (this.steps.length === 0) {
+    if (!this.steps.length) {
       throw new Error('No steps registered');
     }
 
+    // Recursively collecting step data, while breaking the iteration when
+    // the previous step did not collect data; with this approach we avoid that
+    // all steps are observed. This is more efficient and provides a better ux
+    // since steps can be fixed one by one.
     const collectStep = (
       index: number,
       collectedData: Partial<T>

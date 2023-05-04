@@ -98,6 +98,11 @@ describe('CheckoutAuthComponent', () => {
       element = await fixture(html`<oryx-checkout-auth></oryx-checkout-auth>`);
     });
 
+    it('should render the heading', () => {
+      const h1 = element.renderRoot.querySelector('h1');
+      expect(h1?.textContent).toBe('Checkout');
+    });
+
     it('should not render the guest component', () => {
       expect(element).not.toContainElement('oryx-checkout-guest');
     });

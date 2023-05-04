@@ -20,7 +20,10 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.checkoutService.register('payments', () => this.collectData(), 3);
+    this.checkoutService.register({
+      id: 'payments',
+      collectDataCallback: () => this.collectData(),
+    });
   }
 
   protected override render(): TemplateResult | void {

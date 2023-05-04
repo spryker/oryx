@@ -3,6 +3,7 @@ import {
   Carrier,
   CheckoutService,
   CheckoutShipmentService,
+  CheckoutStepCallback,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -45,7 +46,10 @@ describe('CheckoutShipmentComponent', () => {
       CheckoutShipmentService
     );
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation((param, fn) => (callback = fn));
+    checkoutService.register.mockImplementation(
+      (param: CheckoutStepCallback<unknown>) =>
+        (callback = param.collectDataCallback)
+    );
   });
 
   afterEach(() => {
@@ -69,10 +73,10 @@ describe('CheckoutShipmentComponent', () => {
     });
 
     it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith(
-        'shipment',
-        expect.anything()
-      );
+      expect(checkoutService.register).toHaveBeenCalledWith({
+        id: 'shipment',
+        collectDataCallback: expect.anything(),
+      } as CheckoutStepCallback<unknown>);
     });
   });
 

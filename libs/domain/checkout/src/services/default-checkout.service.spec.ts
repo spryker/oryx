@@ -55,8 +55,8 @@ describe('DefaultCheckoutService', () => {
 
     beforeEach(() => {
       adapter.placeOrder.mockReturnValue(of({ response: 'mock' }));
-      service.register('foo', foo);
-      service.register('bar', bar);
+      service.register({ id: 'foo', collectDataCallback: foo });
+      service.register({ id: 'bar', collectDataCallback: bar });
     });
 
     describe('and the first step does not provide valid data', () => {

@@ -17,7 +17,10 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.checkoutService.register('cartId', () => this.collectCartId());
+    this.checkoutService.register({
+      id: 'cartId',
+      collectDataCallback: () => this.collectCartId(),
+    });
   }
 
   protected collectCartId(): Observable<string | undefined> {

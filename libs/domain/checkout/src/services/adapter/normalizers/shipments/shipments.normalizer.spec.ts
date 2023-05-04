@@ -86,9 +86,7 @@ const mockNormalizedShipment: Shipment[] = [
 describe('shipmentsNormalizer', () => {
   describe('when no data is provided', () => {
     it('should return an empty array', () => {
-      expect(
-        shipmentsNormalizer(null as unknown as DeserializedCheckout)
-      ).toEqual([]);
+      expect(shipmentsNormalizer()).toEqual([]);
     });
   });
 

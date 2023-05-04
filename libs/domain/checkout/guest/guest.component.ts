@@ -23,16 +23,15 @@ export class CheckoutGuestComponent extends LitElement {
   @query('form')
   protected form?: HTMLFormElement;
 
-  protected override render(): TemplateResult | void {
-    const guestFields: FormFieldDefinition[] = [
-      {
-        id: 'email',
-        type: FormFieldType.Email,
-        required: true,
-        width: 100,
-      },
-    ];
+  protected fields: FormFieldDefinition[] = [
+    {
+      id: 'email',
+      type: FormFieldType.Email,
+      required: true,
+    },
+  ];
 
+  protected override render(): TemplateResult | void {
     return html`
       <h1>${i18n('checkout.checkout-as-guest')}</h1>
       <p class="have-an-account">
@@ -43,7 +42,7 @@ export class CheckoutGuestComponent extends LitElement {
           </a>
         </oryx-link>
       </p>
-      <form>${this.fieldRenderer.buildForm(guestFields)}</form>
+      <form>${this.fieldRenderer.buildForm(this.fields)}</form>
     `;
   }
 

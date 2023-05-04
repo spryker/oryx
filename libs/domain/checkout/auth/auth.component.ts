@@ -44,7 +44,11 @@ export class CheckoutAuthComponent extends CheckoutMixin(
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.checkoutService.register('customer', () => this.collectData(), 1);
+    this.checkoutService.register({
+      id: 'customer',
+      collectDataCallback: () => this.collectData(),
+      order: 1,
+    });
   }
 
   protected override render(): TemplateResult | void {

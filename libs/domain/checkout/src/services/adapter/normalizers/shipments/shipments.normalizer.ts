@@ -5,7 +5,7 @@ import { DeserializedCheckout } from '../checkout/model';
 
 export const ShipmentsNormalizer = 'oryx.ShipmentsNormalizer*';
 
-export function shipmentsNormalizer(data: DeserializedCheckout): Shipment[] {
+export function shipmentsNormalizer(data?: DeserializedCheckout): Shipment[] {
   if (!data) return [];
 
   const shipmentsKey = camelize(ApiCheckoutModel.Includes.Shipments);

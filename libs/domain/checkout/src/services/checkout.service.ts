@@ -1,5 +1,9 @@
 import { Observable } from 'rxjs';
-import { CheckoutProcessState, CheckoutResponse } from '../models';
+import {
+  CheckoutProcessState,
+  CheckoutResponse,
+  CheckoutStepCallback,
+} from '../models';
 
 export interface CheckoutService<T = Record<string, unknown>> {
   /**
@@ -7,11 +11,7 @@ export interface CheckoutService<T = Record<string, unknown>> {
    * The registered steps are _called_ when the order got placed, to validate
    * and collect the checkout data.
    */
-  register<K extends keyof T>(
-    id: K,
-    callback: () => Observable<T[K]>,
-    order?: number
-  ): void;
+  register(callback: CheckoutStepCallback<T>): void;
 
   /**
    * Exposes the state of the checkout process so that the process can be

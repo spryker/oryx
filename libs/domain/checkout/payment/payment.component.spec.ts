@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import {
   CheckoutPaymentService,
   CheckoutService,
+  CheckoutStepCallback,
   PaymentMethod,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -44,7 +45,10 @@ describe('CheckoutPaymentComponent', () => {
       CheckoutPaymentService
     );
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation((param, fn) => (callback = fn));
+    checkoutService.register.mockImplementation(
+      (param: CheckoutStepCallback<unknown>) =>
+        (callback = param.collectDataCallback)
+    );
   });
 
   afterEach(() => {
@@ -68,11 +72,10 @@ describe('CheckoutPaymentComponent', () => {
     });
 
     it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith(
-        'payments',
-        expect.anything(),
-        3
-      );
+      expect(checkoutService.register).toHaveBeenCalledWith({
+        id: 'payments',
+        collectDataCallback: expect.anything(),
+      } as CheckoutStepCallback<unknown>);
     });
   });
 

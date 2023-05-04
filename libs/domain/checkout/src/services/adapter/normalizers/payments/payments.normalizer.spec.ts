@@ -17,9 +17,7 @@ const mockCheckoutData: DeserializedCheckout = {
 describe('paymentsNormalizer', () => {
   describe('when no data is provided', () => {
     it('should return an empty array', () => {
-      expect(
-        paymentsNormalizer(null as unknown as DeserializedCheckout)
-      ).toEqual([]);
+      expect(paymentsNormalizer()).toEqual([]);
     });
   });
 
