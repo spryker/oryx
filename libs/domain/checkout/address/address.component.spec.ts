@@ -81,6 +81,7 @@ describe('CheckoutAddressComponent', () => {
           ) as AddressFormComponent;
           addressForm.getForm = () => form;
         });
+
         it('should return the form data', () => {
           expect(element.collectData()).toEqual({ email: 'foo@bar.com' });
         });
@@ -95,6 +96,7 @@ describe('CheckoutAddressComponent', () => {
           ) as AddressFormComponent;
           addressForm.getForm = () => form;
         });
+
         it('should not return the form data', () => {
           expect(element.collectData()).toEqual(null);
         });

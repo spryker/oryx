@@ -5,12 +5,11 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { map, Observable } from 'rxjs';
-import { CheckoutOrchestratorComponentOptions } from './orchestrator.model';
 import { compositionStyles } from './orchestrator.styles';
 
 @hydratable('window:load')
 export class CheckoutOrchestratorComponent extends CheckoutMixin(
-  ContentMixin<CheckoutOrchestratorComponentOptions>(LitElement)
+  ContentMixin(LitElement)
 ) {
   static styles = [compositionStyles];
 

@@ -21,13 +21,8 @@ export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
   }
 
   protected onClick(): void {
-    this.checkoutService.placeOrder().subscribe({
-      next: (response) => {
-        this.redirect(response.redirectUrl, response.isExternalRedirect);
-      },
-      error: (error) => {
-        throw error;
-      },
+    this.checkoutService.placeOrder().subscribe((response) => {
+      this.redirect(response.redirectUrl, response.isExternalRedirect);
     });
   }
 

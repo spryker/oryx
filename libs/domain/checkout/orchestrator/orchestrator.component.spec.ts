@@ -105,6 +105,7 @@ describe('CheckoutOrchestratorComponent', () => {
       );
       callback().pipe(take(1)).subscribe();
     });
+
     it('should collect the address', () => {
       expect(cartService.getCart).toHaveBeenCalled();
     });

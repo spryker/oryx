@@ -2,14 +2,22 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { User, UserService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
 import { CheckoutGuestComponent } from '../guest';
-import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
+import {
+  mockCheckoutProviders,
+  MockCheckoutService,
+  MockRouterService,
+  MockSemanticLinkService,
+} from '../src/mocks/src';
 import { CheckoutService } from '../src/services';
 import { CheckoutAuthComponent } from './auth.component';
 import { checkoutAuthComponent } from './auth.def';
+import { CheckoutAuthComponentOptions } from './auth.model';
 
 class MockUserService implements Partial<UserService> {
   getUser = vi.fn();
@@ -24,6 +32,8 @@ describe('CheckoutAuthComponent', () => {
   let authService: MockAuthService;
   let checkoutService: MockCheckoutService;
   let userService: MockUserService;
+  let routerService: MockRouterService;
+  let linkService: MockSemanticLinkService;
   let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
@@ -47,6 +57,9 @@ describe('CheckoutAuthComponent', () => {
 
     authService = testInjector.inject<MockAuthService>(AuthService);
     userService = testInjector.inject<MockUserService>(UserService);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    linkService =
+      testInjector.inject<MockSemanticLinkService>(SemanticLinkService);
     checkoutService = testInjector.inject<MockCheckoutService>(CheckoutService);
     checkoutService.register.mockImplementation((param, fn) => (callback = fn));
   });
@@ -96,6 +109,7 @@ describe('CheckoutAuthComponent', () => {
         );
         callback().pipe(take(1)).subscribe();
       });
+
       it('should collect the data', () => {
         expect(userService.getUser).toHaveBeenCalled();
       });
@@ -109,12 +123,58 @@ describe('CheckoutAuthComponent', () => {
       element = await fixture(html`<oryx-checkout-auth></oryx-checkout-auth>`);
     });
 
-    it('should render the guest component', () => {
-      expect(element).toContainElement('oryx-checkout-guest');
+    describe('and guest checkout is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-checkout-auth></oryx-checkout-auth>`
+        );
+      });
+
+      it('should render the guest component', () => {
+        expect(element).toContainElement('oryx-checkout-guest');
+      });
+    });
+
+    describe('and guest checkout is enabled', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-checkout-auth
+            .options=${{
+              enableGuestCheckout: true,
+            } as CheckoutAuthComponentOptions}
+          ></oryx-checkout-auth>`
+        );
+      });
+
+      it('should render the guest component', () => {
+        expect(element).toContainElement('oryx-checkout-guest');
+      });
+    });
+
+    describe('and guest checkout is disabled', () => {
+      beforeEach(async () => {
+        linkService.get.mockReturnValue('/login');
+        element = await fixture(
+          html`<oryx-checkout-auth
+            .options=${{
+              enableGuestCheckout: false,
+            } as CheckoutAuthComponentOptions}
+          ></oryx-checkout-auth>`
+        );
+      });
+
+      it('should not render the guest component', () => {
+        expect(element).not.toContainElement('oryx-checkout-guest');
+      });
+
+      it.only('should redirect to the login page render the guest component', () => {
+        expect(routerService.navigate).toHaveBeenCalledWith('/login');
+      });
     });
 
     describe('and the collect callback is called', () => {
       let guestComponent: CheckoutGuestComponent;
+
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-checkout-auth></oryx-checkout-auth>`
@@ -125,6 +185,7 @@ describe('CheckoutAuthComponent', () => {
         guestComponent.collectData = vi.fn();
         callback().pipe(take(1)).subscribe();
       });
+
       it('should collect the data', () => {
         expect(guestComponent.collectData).toHaveBeenCalled();
       });

@@ -76,6 +76,7 @@ describe('CheckoutDeliveryComponent', () => {
         html`<oryx-checkout-delivery></oryx-checkout-delivery>`
       );
     });
+
     it('should not render oryx-checkout-manage-address', () => {
       expect(element).not.toContainElement('oryx-checkout-manage-address');
     });
@@ -88,6 +89,7 @@ describe('CheckoutDeliveryComponent', () => {
         html`<oryx-checkout-delivery></oryx-checkout-delivery>`
       );
     });
+
     it('should render oryx-checkout-manage-address', () => {
       expect(element).toContainElement('oryx-checkout-manage-address');
     });
@@ -105,6 +107,7 @@ describe('CheckoutDeliveryComponent', () => {
       address.collectData = vi.fn();
       callback().pipe(take(1)).subscribe();
     });
+
     it('should collect the address', () => {
       expect(address.collectData).toHaveBeenCalled();
     });

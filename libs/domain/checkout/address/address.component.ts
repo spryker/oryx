@@ -28,7 +28,7 @@ export class CheckoutAddressComponent extends ContentMixin(LitElement) {
     }
     return form
       ? (Object.fromEntries(new FormData(form).entries()) as unknown as Address)
-      : (this.selected as Address | null);
+      : this.selected;
   }
 
   protected override render(): TemplateResult | void {

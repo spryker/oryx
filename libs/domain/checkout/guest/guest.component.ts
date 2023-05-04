@@ -10,8 +10,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { ContactDetails } from '../src/models';
 
-// TODO: introduce optional guest checkout; if not supported,
-//       redirect to login when there's no identity
 @signalAware()
 @hydratable('window:load')
 export class CheckoutGuestComponent extends LitElement {

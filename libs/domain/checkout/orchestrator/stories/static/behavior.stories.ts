@@ -13,7 +13,6 @@ export default {
 
 const Template: Story<Props> = (props): TemplateResult => {
   toggleBehavior(props.behavior);
-  // resolve(CheckoutDataService).setGuestCheckout(props.behavior === 'guest');
   return html`<oryx-checkout-composition></oryx-checkout-composition>`;
 };
 

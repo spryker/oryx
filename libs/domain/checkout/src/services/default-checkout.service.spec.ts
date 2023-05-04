@@ -4,6 +4,7 @@ import {
   DefaultCheckoutService,
 } from '@spryker-oryx/checkout';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
@@ -14,6 +15,10 @@ class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
 }
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
+}
+
+class MockOrderService implements Partial<OrderService> {
+  storeLastOrder = vi.fn();
 }
 
 describe('DefaultCheckoutService', () => {
@@ -27,6 +32,7 @@ describe('DefaultCheckoutService', () => {
         { provide: CartService, useClass: MockCartService },
         { provide: SemanticLinkService, useClass: MockSemanticLinkService },
         { provide: CheckoutService, useClass: DefaultCheckoutService },
+        { provide: OrderService, useClass: MockOrderService },
       ],
     });
 

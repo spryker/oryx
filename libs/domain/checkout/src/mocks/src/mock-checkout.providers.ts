@@ -21,11 +21,11 @@ export class MockCheckoutService implements Partial<CheckoutService> {
   placeOrder = vi.fn().mockReturnValue(of());
 }
 
-class MockRouterService implements Partial<RouterService> {
+export class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+export class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn();
 }
 
