@@ -1,5 +1,6 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
+import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
@@ -33,7 +34,8 @@ export class DefaultCheckoutService<T extends Checkout>
   constructor(
     protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
-    protected linkService = inject(SemanticLinkService)
+    protected linkService = inject(SemanticLinkService),
+    protected orderService = inject(OrderService)
   ) {}
 
   register<K extends keyof T>(
@@ -145,8 +147,7 @@ export class DefaultCheckoutService<T extends Checkout>
   protected postCheckout(response: CheckoutResponse): void {
     this.cartService.reload();
     if (response.orders) {
-      console.log('TODO: store last order', response.orders[0]);
-      // this.orderService.storeLastOrder(response.orders[0]);
+      this.orderService.storeLastOrder(response.orders[0]);
     }
   }
 

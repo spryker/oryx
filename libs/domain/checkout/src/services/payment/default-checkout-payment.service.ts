@@ -51,7 +51,6 @@ export class DefaultCheckoutPaymentService implements CheckoutPaymentService {
   }
 
   select(key: string): Observable<unknown> {
-    // this.subject.next(key);
     return subscribeReplay(this.store(key));
   }
 
