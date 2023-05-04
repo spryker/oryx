@@ -80,7 +80,7 @@ const smallScreen = css`
 
   :host(:not([floatDisabled])),
   :host(:not([floatDisabled])) ::slotted(select:invalid) {
-    --oryx-color-placeholder: var(--oryx-color-neutralA-11);
+    --oryx-color-placeholder: var(--oryx-color-neutral-400);
   }
 `;
 
