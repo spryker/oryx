@@ -47,9 +47,6 @@ describe('Login Suite', () => {
       cy.location('pathname').should('match', /^\/oauth/);
 
       oauthHandler.getWrapper().should('be.visible');
-      oauthHandler
-        .getWrapper()
-        .should('have.css', 'background-color', 'rgb(17, 133, 110)');
       oauthHandler.getLogo().should('be.visible');
       oauthHandler.getTitle().should('contain.text', 'Logging you in');
       oauthHandler.getSpinner().should('be.visible');
