@@ -29,7 +29,9 @@ describe('ManageAddressComponent', () => {
     element.renderRoot.querySelector('oryx-modal') as ModalComponent;
 
   const getConfirmationModal = (): ModalComponent =>
-    element.renderRoot.querySelector('oryx-modal oryx-modal') as ModalComponent;
+    element.renderRoot.querySelector(
+      'oryx-modal + oryx-modal'
+    ) as ModalComponent;
 
   const getAddressBook = (): AddressBookComponent =>
     element.renderRoot.querySelector(
@@ -73,8 +75,8 @@ describe('ManageAddressComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should pass the header to the modal', async () => {
-    expect(getModal().getAttribute('heading')).toEqual('Addresses');
+  it('should pass the header to the modal', () => {
+    expect(getModal().heading).toBe('Addresses');
   });
 
   describe('when trigger is clicked', () => {
@@ -96,14 +98,12 @@ describe('ManageAddressComponent', () => {
       );
     });
 
-    it('should change the header', () => {
-      expect(getModal().getAttribute('heading')).toBe('Add address');
+    it('should change the heading', () => {
+      expect(getModal().heading).toBe('Add address');
     });
 
     it('should change the state', () => {
-      expect(getAddressBook().getAttribute('active-state')).toBe(
-        AddressBookState.Add
-      );
+      expect(getAddressBook().activeState).toBe(AddressBookState.Add);
     });
 
     describe('and modal is closed', () => {
@@ -114,12 +114,6 @@ describe('ManageAddressComponent', () => {
       it('should close the modal', () => {
         expect(element).not.toContainElement('oryx-modal[open]');
       });
-
-      it('should restore the default state', () => {
-        expect(getAddressBook().getAttribute('active-state')).toBe(
-          AddressBookState.List
-        );
-      });
     });
 
     describe('and modal is navigated back', () => {
@@ -128,9 +122,7 @@ describe('ManageAddressComponent', () => {
       });
 
       it('should restore the default state', () => {
-        expect(getAddressBook().getAttribute('active-state')).toBe(
-          AddressBookState.List
-        );
+        expect(getAddressBook().activeState).toBe(AddressBookState.List);
       });
     });
 
@@ -142,9 +134,7 @@ describe('ManageAddressComponent', () => {
       });
 
       it('should restore the default state', () => {
-        expect(getAddressBook().getAttribute('active-state')).toBe(
-          AddressBookState.List
-        );
+        expect(getAddressBook().activeState).toBe(AddressBookState.List);
       });
     });
 
@@ -156,9 +146,7 @@ describe('ManageAddressComponent', () => {
       });
 
       it('should restore the default state', () => {
-        expect(getAddressBook().getAttribute('active-state')).toBe(
-          AddressBookState.List
-        );
+        expect(getAddressBook().activeState).toBe(AddressBookState.List);
       });
     });
   });
@@ -186,8 +174,8 @@ describe('ManageAddressComponent', () => {
         getAddressRemove().dispatchEvent(new CustomEvent('oryx.cancel'));
       });
 
-      it('should close the confirmation modal', () => {
-        expect(getConfirmationModal().hasAttribute('open')).toBe(false);
+      it('should not render the confirmation modal', () => {
+        expect(getConfirmationModal()).toBeNull();
       });
     });
 
@@ -202,8 +190,8 @@ describe('ManageAddressComponent', () => {
         expect(addressService.deleteAddress).toHaveBeenCalledWith(address);
       });
 
-      it('should close the confirmation modal', () => {
-        expect(getConfirmationModal().hasAttribute('open')).toBe(false);
+      it('should not render the confirmation modal', () => {
+        expect(getConfirmationModal()).toBeNull();
       });
     });
   });

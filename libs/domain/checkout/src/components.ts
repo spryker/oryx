@@ -3,7 +3,7 @@ export * from '../auth/auth.def';
 export * from '../delivery/delivery.def';
 export * from '../guest/guest.def';
 export * from '../link/link.def';
-export * from '../manage-address/src/manage-address.def';
+export * from '../manage-address/manage-address.def';
 export * from '../orchestrator/orchestrator.def';
 export * from '../payment/payment.def';
 export * from '../place-order/place-order.def';
