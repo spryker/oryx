@@ -1,8 +1,8 @@
 import { BehaviorType, toggleBehavior } from '@spryker-oryx/checkout/mocks';
-import { ComponentMixin, ContentController } from '@spryker-oryx/experience';
+import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import { subscribe } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
@@ -24,9 +24,9 @@ interface Props {
 
 @customElement('fake-orchestrator')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class FakeOrchestrator extends ComponentMixin<Props>() {
+class FakeOrchestrator extends ContentMixin<Props>(LitElement) {
   @subscribe()
-  protected options$ = new ContentController(this)
+  protected toggle = new ContentController(this)
     .getOptions()
     .pipe(tap(({ behavior }) => toggleBehavior(behavior)));
 
