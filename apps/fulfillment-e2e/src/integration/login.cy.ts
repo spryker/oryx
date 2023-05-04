@@ -26,12 +26,6 @@ describe('Login Suite', () => {
   });
   describe('when logging in', () => {
     it('should login successfully', () => {
-      let isLoadingPage = false;
-
-      cy.on('url:changed', (newurl) => {
-        isLoadingPage = newurl.includes('oauth') ? true : isLoadingPage;
-      });
-
       cy.intercept('POST', '**/token').as('token');
 
       loginPage.visit();
@@ -42,20 +36,16 @@ describe('Login Suite', () => {
 
       cy.wait('@token');
 
-      // TODO - when offline login calls picking-lists before redirect, we can re-enable these
-      /*
       cy.location('pathname').should('match', /^\/oauth/);
 
       oauthHandler.getWrapper().should('be.visible');
       oauthHandler.getLogo().should('be.visible');
       oauthHandler.getTitle().should('contain.text', 'Logging you in');
       oauthHandler.getSpinner().should('be.visible');
-      */
 
       cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
       cy.wait('@picking-lists');
 
-      cy.then(() => expect(isLoadingPage).to.be.true);
       cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
     });
