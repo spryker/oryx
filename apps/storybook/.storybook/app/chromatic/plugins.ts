@@ -1,10 +1,10 @@
+import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   ResourcePlugin,
   Resources,
   Theme,
   ThemePlugin,
-} from '@spryker-oryx/core';
-import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
+} from '@spryker-oryx/experience';
 import { iconInjectable, resourceInjectable } from '@spryker-oryx/utilities';
 import {
   ChromaticIconInjectable,

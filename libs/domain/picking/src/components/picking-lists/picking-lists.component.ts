@@ -1,9 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { IconTypes } from '@spryker-oryx/themes/icons';
-import { Size } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { PickingListStatus } from '../../models';
@@ -19,7 +19,6 @@ export class PickingListsComponent extends LitElement {
 
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
-    searchOrderReference: '',
   });
 
   @asyncState()
@@ -30,19 +29,25 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderPickingLists(): TemplateResult {
-    if (!this.pickingLists?.length) {
-      return this.renderEmptyLists();
-    }
+    return html`
+      <oryx-picking-lists-header></oryx-picking-lists-header>
 
-    return html`${repeat(
-      this.pickingLists!,
-      (pl) => pl.id,
-      (pl) =>
-        html`<oryx-picking-list-item
-          .pickingListId=${pl.id}
-          @oryx.show-note=${this.openCustomerNoteModal}
-        ></oryx-picking-list-item>`
-    )}`;
+      ${when(
+        !this.pickingLists?.length,
+        () => this.renderEmptyLists(),
+        () => html`<section>
+          ${repeat(
+            this.pickingLists!,
+            (pl) => pl.id,
+            (pl) =>
+              html`<oryx-picking-list-item
+                .pickingListId=${pl.id}
+                @oryx.show-note=${this.openCustomerNoteModal}
+              ></oryx-picking-list-item>`
+          )}
+        </section>`
+      )}
+    `;
   }
 
   protected renderCustomerNote(): TemplateResult {
@@ -54,13 +59,17 @@ export class PickingListsComponent extends LitElement {
         @oryx.close=${this.closeCustomerNoteModal}
       >
         <oryx-heading slot="heading">
-          <h2>${i18n('picking.customer-note.heading')}</h2>
-        </oryx-heading>
+          <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
+        </oryx-heading/>
         ${this.customerNote}
-        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
+        <oryx-button
+          slot="footer"
+          type=${ButtonType.Primary}
+          size=${Size.Md}
+        >
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
-            ${i18n('picking.customer-note.close')}
+            ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>
       </oryx-modal>
@@ -71,7 +80,7 @@ export class PickingListsComponent extends LitElement {
     return html`
       <div class="no-items-fallback">
         <oryx-heading as="h4">
-          ${i18n('picking.no-results-found')}
+          ${i18n('picking-lists.no-results-found')}
         </oryx-heading>
         <oryx-image resource="no-orders"></oryx-image>
       </div>

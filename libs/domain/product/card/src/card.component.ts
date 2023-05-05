@@ -1,9 +1,8 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { Size } from '@spryker-oryx/ui';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { hydratable, ssrShim } from '@spryker-oryx/utilities';
+import { hydratable, Size, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductCardOptions } from './card.model';

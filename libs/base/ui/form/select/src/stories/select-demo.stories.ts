@@ -1,5 +1,5 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
-import '@spryker-oryx/ui/popover';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
   ClearIconAppearance,
@@ -147,7 +147,7 @@ SelectDemo.argTypes = {
     table: { category: 'Filtering' },
   },
   clearIcon: {
-    options: Object.values(IconTypes),
+    options: getThemeIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },

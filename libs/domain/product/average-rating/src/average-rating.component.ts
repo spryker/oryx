@@ -1,7 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { Size } from '@spryker-oryx/ui';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 

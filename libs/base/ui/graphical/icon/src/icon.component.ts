@@ -1,8 +1,7 @@
-import { hydratable, iconInjectable } from '@spryker-oryx/utilities';
+import { hydratable, iconInjectable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, svg, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Size } from '../../../src/utilities';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 

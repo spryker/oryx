@@ -1,9 +1,5 @@
-import {
-  AppFeature,
-  ComponentInfo,
-  ComponentsInfo,
-  ModularAppBuilderOptions,
-} from '@spryker-oryx/core';
+import { ModularAppBuilderOptions } from '@spryker-oryx/application';
+import { AppFeature, ComponentInfo, ComponentsInfo } from '@spryker-oryx/core';
 import { fulfillmentRootComponent } from './components';
 
 export interface FulfillmentRootFeatureConfig {

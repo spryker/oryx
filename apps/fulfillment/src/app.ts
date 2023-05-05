@@ -1,13 +1,34 @@
-import { appBuilder } from '@spryker-oryx/core';
+import { appBuilder } from '@spryker-oryx/application';
+import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
+import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
 } from '@spryker-oryx/presets';
+import { siteFeature } from '@spryker-oryx/site';
 import { fallbackEnv } from './fallback-env';
 
 appBuilder()
   .withEnvironment({ ...fallbackEnv, ...(import.meta.env as AppEnvironment) })
-  .withTheme(fulfillmentTheme)
+  .withFeature({
+    // due to PageMetaResolver is conflicting with current router solution
+    // need to exclude it from the services list for FA
+    // TODO: drop filtering after EB integration
+    providers: experienceFeature.providers?.filter(
+      (feature) =>
+        ![PageMetaResolver, ContentBackendUrl].includes(feature.provide)
+    ),
+    components: experienceFeature.components,
+  })
+  .withFeature({
+    providers: [
+      {
+        provide: ContentBackendUrl,
+        useFactory: () => injectEnv('ORYX_FULFILLMENT_BACKEND_URL', ''),
+      },
+    ],
+  })
+  .withFeature(siteFeature)
   .withFeature(
     offlineFulfillmentFeatures({
       picking: {
@@ -15,6 +36,7 @@ appBuilder()
       },
     })
   )
+  .withTheme(fulfillmentTheme)
   .create()
   .then(() => console.debug('Fulfillment App started!'))
   .catch(console.error);

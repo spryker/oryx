@@ -16,7 +16,7 @@ Theme configuration allows defining:
 
 ### Components
 
-Required property. Uses for connecting styles with component by component name (defined in the component definition). It allows use lazy loaded function of styles which return `ThemeData` or plain `ThemeData`.
+Required property. Uses for connecting styles with component by component name (defined in the component definition). It allows use lazy loaded function of styles which return `ThemeStyles` or plain `ThemeStyles`.
 
 ```ts
 const theme: Theme = {
@@ -30,16 +30,16 @@ const theme: Theme = {
 };
 ```
 
-ThemeData has different variant of styles definition:
+ThemeStyles has different variant of styles definition:
 
 ```ts
-const styles: ThemeData = {
+const styles: ThemeStyles = {
   styles: css`` | [css``, css``] | ``;
 }
 
 /// or by breakpoints
 
-const styles: ThemeData = {
+const styles: ThemeStyles = {
   styles: [
     css``,
     ``,
@@ -66,7 +66,7 @@ It is possible to define strategy for styles which will describe styles merging.
 `ThemeStrategies.ReplaceAll` will replace all previous themes with same component and also replace `base` component styles.
 
 ```ts
-const styles: ThemeData = {
+const styles: ThemeStyles = {
   styles: css`` | [css``, css``] | ``;
   strategy: ThemeStrategies.Replace
 }

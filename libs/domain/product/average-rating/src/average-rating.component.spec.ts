@@ -7,8 +7,8 @@ import {
   mockProductProviders,
   MockProductService,
 } from '@spryker-oryx/product/mocks';
-import { Size } from '@spryker-oryx/ui';
 import { RatingComponent } from '@spryker-oryx/ui/rating';
+import { Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { ProductAverageRatingComponent } from './average-rating.component';

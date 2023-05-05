@@ -11,7 +11,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of, take, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import {
   ItemsFilters,
@@ -37,7 +37,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   @subscribe()
   protected itemsSubscription$ = this.pickingList$.pipe(
-    take(1),
     tap((list) => {
       this.items = list?.items;
     })

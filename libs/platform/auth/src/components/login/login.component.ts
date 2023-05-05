@@ -2,9 +2,8 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
-import { Size } from '@spryker-oryx/ui';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import { hydratable, i18n, subscribe } from '@spryker-oryx/utilities';
+import { hydratable, i18n, Size, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DirectiveResult } from 'lit/directive.js';
@@ -86,7 +85,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         this.hasError,
         () => html`
           <oryx-notification type="error">
-            ${i18n('user.login.not-valid')}
+            ${i18n(
+              'user.login.the-username-or-password-you-entered-is-invalid'
+            )}
           </oryx-notification>
         `
       )}

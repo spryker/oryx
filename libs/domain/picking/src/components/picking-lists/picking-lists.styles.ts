@@ -1,10 +1,15 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
+  section {
     padding: 24px 16px 0;
     display: grid;
     gap: 34px;
+  }
+
+  oryx-picking-lists-header {
+    position: sticky;
+    inset-block-start: 0;
   }
 
   .no-items-fallback {

@@ -1,14 +1,13 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { isDefined } from '@spryker-oryx/utilities';
-import { ThemeData, ThemePlugin, ThemeStylesheets } from '../theme';
 import {
   ComponentDef,
   ComponentImplMeta,
   ComponentInfo,
+  ComponentMap,
   ComponentsOptions,
   ComponentStatic,
   ComponentType,
-  ObservableType,
 } from './components.model';
 import {
   componentExtender,
@@ -16,17 +15,19 @@ import {
   isComponentImplStrategy,
 } from './utilities';
 
-interface ComponentMap {
-  extendedClass: ObservableType;
-  themes?: (ThemeData | ThemeStylesheets)[] | null;
-}
+type ComponentExtender = (mapper: ComponentMap, name: string) => void;
+type ComponentResolvers = Record<
+  string,
+  (componentDef: ComponentDef) => Promise<unknown>
+>;
+
 export class ComponentsLoader {
   protected readonly componentDefMap = new Map<string, ComponentDef>();
   protected readonly implMetaPreload: ComponentImplMeta = {};
   protected readonly componentMap = new Map<string, ComponentMap>();
-
   protected readonly logger = this.options?.logger ?? console;
-  protected theme?: ThemePlugin;
+  protected extenders: ComponentExtender[] = [];
+  protected resolvers: ComponentResolvers = {};
 
   constructor(protected options: ComponentsOptions) {}
 
@@ -121,16 +122,28 @@ export class ComponentsLoader {
       return;
     }
 
-    this.extendComponent(name);
+    for (const extender of this.extenders) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      extender(this.componentMap.get(name)!, name);
+    }
+
     customElements.define(name, extendedClass, this.options.elementOptions);
   }
 
   /**
    * Extends component implementation before defining.
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected extendComponent(name: string): void {
-    //
+  extendComponent(cb: ComponentExtender): void {
+    this.extenders.push(cb);
+  }
+
+  /**
+   * Adds callback which will be resolved together with component
+   */
+  setResolver(
+    resolver: Record<string, (def: ComponentDef) => Promise<unknown>>
+  ): void {
+    this.resolvers = { ...this.resolvers, ...resolver };
   }
 
   /**
@@ -158,10 +171,23 @@ export class ComponentsLoader {
       return this.componentMap.get(def.name)!.extendedClass;
     }
 
-    const [componentClass, themes] = await Promise.all([
+    const resolversEntries = Object.entries(this.resolvers);
+    const resolved = await Promise.all([
       this.loadComponentImpl(def, meta),
-      this.theme?.resolve(def),
+      ...resolversEntries.map(([_, cb]) => cb(def)),
     ]);
+    const { componentClass, ...restResolvers } = resolved.reduce(
+      (acc: ComponentMap, value, index) => {
+        if (index === 0) {
+          acc.componentClass = value as ComponentType;
+        } else {
+          acc[resolversEntries[index - 1][0]] = value;
+        }
+
+        return acc;
+      },
+      {} as ComponentMap
+    ) as ComponentMap;
 
     if (!componentClass) {
       return;
@@ -170,8 +196,8 @@ export class ComponentsLoader {
     const extendedClass = componentExtender(componentClass, def.name);
 
     this.componentMap.set(def.name, {
+      ...restResolvers,
       extendedClass,
-      themes,
     });
 
     return extendedClass;
@@ -185,6 +211,7 @@ export class ComponentsLoader {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async getComponentSchemas(): Promise<Record<string, any>[]> {
     const schemas = await Promise.all(
       [...(this.componentDefMap.values() ?? [])].map((component) =>
@@ -197,7 +224,7 @@ export class ComponentsLoader {
         schemas[index]
           ? [...data, { ...schemas[index], type: component.name }]
           : data,
-      [] as Record<string, any>[]
+      [] as Record<string, unknown>[]
     );
   }
 }

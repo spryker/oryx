@@ -1,9 +1,8 @@
-import { ThemeStylesWithMedia } from '@spryker-oryx/core';
-import { smScreen } from '@spryker-oryx/themes/breakpoints';
 import {
   baseStyles as inputBaseStyles,
   screenStyles as inputScreenStyles,
 } from '@spryker-oryx/ui/input';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = [
@@ -66,9 +65,33 @@ const smallScreen = css`
   :host([xs-floated]) label {
     position: absolute;
     display: none;
-    inset-inline-start: calc(var(--floating-paddings, 20px) / 2);
-    width: calc(100vw - var(--floating-paddings, 20px));
-    transform: translateY(calc(-50% + var(--floating-offset, 16px)));
+    inset-inline-start: var(--floating-padding-start, 10px);
+    inset-inline-end: var(
+      --floating-padding-end,
+      var(--floating-padding-start, 10px)
+    );
+    width: calc(
+      100vw -
+        calc(
+          var(--floating-padding-start, 10px) +
+            calc(
+              var(--floating-padding-end, var(--floating-padding-start, 10px))
+            )
+        )
+    );
+    max-width: var(
+      --floating-width,
+      calc(
+        100vw -
+          calc(
+            var(--floating-padding-start, 10px) +
+              calc(
+                var(--floating-padding-end, var(--floating-padding-start, 10px))
+              )
+          )
+      )
+    );
+    transform: translateY(calc(-50% + var(--floating-vertical-offset, 16px)));
   }
 
   :host([xs-floated]) :is(slot[name='label'], .back-button + .search-button) {
@@ -80,10 +103,9 @@ const smallScreen = css`
   }
 `;
 
-export const screenStyles: ThemeStylesWithMedia[] = [
+export const screenStyles = [
   ...inputScreenStyles,
-  {
-    media: smScreen,
-    css: smallScreen,
-  },
+  ...screenCss({
+    sm: smallScreen,
+  }),
 ];

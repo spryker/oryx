@@ -1,4 +1,3 @@
-import { ThemeData } from '@spryker-oryx/core';
 import { css } from 'lit';
 import { blockSelector } from '../base.styles';
 
@@ -59,6 +58,6 @@ const styles = [
   `,
 ];
 
-export const collapsibleBackofficeUI: ThemeData = {
+export const collapsibleBackofficeUI = {
   styles,
 };

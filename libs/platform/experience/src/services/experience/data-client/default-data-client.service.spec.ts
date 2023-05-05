@@ -4,11 +4,11 @@ import {
   AppRef,
   ComponentsPlugin,
   FeatureOptionsService,
-  ResourcePlugin,
 } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { optionsKey } from '../../../decorators';
+import { ResourcePlugin } from '../../../plugins';
 import { postMessage } from '../utilities';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
@@ -21,7 +21,7 @@ const mockAppFn = {
 };
 
 class MockApp implements Partial<App> {
-  findPlugin = vi.fn().mockReturnValue(mockAppFn);
+  requirePlugin = vi.fn().mockReturnValue(mockAppFn);
   whenReady = vi.fn().mockReturnValue(of(null));
 }
 
@@ -82,7 +82,7 @@ describe('ExperienceDataClientService', () => {
         .initialize()
         .subscribe();
       await nextFrame();
-      expect(app.findPlugin).toHaveBeenCalledWith(ResourcePlugin);
+      expect(app.requirePlugin).toHaveBeenCalledWith(ResourcePlugin);
       expect(mockAppFn.getResources).toHaveBeenCalled();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
@@ -133,7 +133,7 @@ describe('ExperienceDataClientService', () => {
       expect(mockAppFn.getComponentClass).toHaveBeenCalledWith(
         mockComponentType
       );
-      expect(app.findPlugin).toHaveBeenCalledWith(ComponentsPlugin);
+      expect(app.requirePlugin).toHaveBeenCalledWith(ComponentsPlugin);
     });
 
     it('should send `MessageType.Products` post message', async () => {
@@ -203,7 +203,7 @@ describe('ExperienceDataClientService', () => {
         '*'
       );
       expect(mockAppFn.getComponentSchemas).toHaveBeenCalled();
-      expect(app.findPlugin).toHaveBeenCalledWith(ComponentsPlugin);
+      expect(app.requirePlugin).toHaveBeenCalledWith(ComponentsPlugin);
     });
   });
 });
