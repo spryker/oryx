@@ -69,6 +69,9 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(5)}
     </oryx-layout>
 
+    <h2>temp</h2>
+    <oryx-layout layout="grid"> ${generateLayoutItems(12)} </oryx-layout>
+
     ${generateNestedLayout(CompositionLayout.SplitColumn)}
 
     <!-- <h1>Nested layouts</h1>

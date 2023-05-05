@@ -16,19 +16,24 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout container class="page">
       ${generateHeader()}
 
-      <oryx-layout layout="two-column">
+      <oryx-layout
+        layout="split-column"
+        style="--split-column-factor: calc(2/3)"
+      >
         <oryx-layout layout="list">
-          <div style="min-height:400px;">Product images</div>
+          <oryx-layout layout="carousel" style="--oryx-grid-columns:1">
+            ${generateLayoutItems(8, 1, 'image ')}
+          </oryx-layout>
 
           <oryx-layout
             class="thumbs"
             layout="carousel"
-            style="--cols:6;--h:50px;"
+            style="--oryx-grid-item-size: 100px;"
           >
-            ${generateLayoutItems(8)}
+            ${generateLayoutItems(8, 1, 'thumb ')}
           </oryx-layout>
         </oryx-layout>
-        <oryx-layout sticky layout="list" style="top:90px">
+        <oryx-layout sticky layout="list" style="top:120px">
           <div>name</div>
           <div>price</div>
           <div>stock</div>
@@ -36,10 +41,12 @@ const Template: Story = (): TemplateResult => {
       </oryx-layout>
 
       <h3>recommendations (carousel)</h3>
-      <oryx-layout layout="carousel"> ${generateLayoutItems(12)} </oryx-layout>
+      <oryx-layout layout="carousel" bleed>
+        ${generateLayoutItems(12)}
+      </oryx-layout>
 
       <h3>inspiration grid</h3>
-      <oryx-layout layout="grid" style="--cols:5;--h:100px">
+      <oryx-layout layout="grid" bleed style="--cols:5;--h:100px">
         ${generateLayoutItems(10)}
       </oryx-layout>
 

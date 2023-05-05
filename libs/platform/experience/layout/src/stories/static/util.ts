@@ -37,7 +37,7 @@ export const generateNestedLayout = (
     <li>Nested column count is driven by parent span (3rd column, span=2)</li>
   </ul>
 
-  <oryx-layout layout=${layout}>
+  <oryx-layout layout=${layout} style="--split-column-factor:calc(2/3)">
     <oryx-layout layout="grid">
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
@@ -45,7 +45,7 @@ export const generateNestedLayout = (
     <oryx-layout layout="grid" style="--col-span:2">
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
-    ${generateLayoutItems(12, 5)}
+    ${generateLayoutItems(12, 6)}
   </oryx-layout>
 
   <ul>

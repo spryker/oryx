@@ -16,12 +16,12 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout container class="page">
       ${generateHeader()}
 
-      <oryx-layout layout="column">
-        <oryx-layout layout="list" sticky style="top: 100px;--span:3">
+      <oryx-layout layout="split-column" style="--split-column-factor: 0.25">
+        <oryx-layout layout="list" sticky style="top: 100px;">
           ${generateLayoutItems(5, 1, 'Facet')}
         </oryx-layout>
 
-        <oryx-layout layout="list" maxWidth>
+        <oryx-layout layout="list">
           <oryx-layout layout="flex">
             <div style=" margin-inline: auto 0;">sort</div>
           </oryx-layout>

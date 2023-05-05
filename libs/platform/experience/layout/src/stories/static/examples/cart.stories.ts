@@ -13,15 +13,18 @@ const Template: Story = (): TemplateResult => {
   return html`
     <h1>Cart Page</h1>
 
-    <oryx-layout container class="page">
+    <oryx-layout class="page">
       ${generateHeader()}
 
-      <oryx-layout layout="two-column">
+      <oryx-layout
+        layout="split-column"
+        style="--split-column-factor: calc(2/3)"
+      >
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}
         </oryx-layout>
 
-        <oryx-layout sticky layout="list" style="top:90px">
+        <oryx-layout layout="list" sticky style="top:120px">
           <oryx-layout layout="list">
             <div>subtotal</div>
             <div>discounts</div>
