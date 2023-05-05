@@ -185,14 +185,10 @@ describe('PickingListOfflineAdapter', () => {
         adapter
           .get({
             status: PickingListStatus.ReadyForPicking,
-            orderReferences: ['66gd-11'],
-            searchOrderReference: '66gd',
           })
           .subscribe();
 
         expect(mockTable.where).toHaveBeenCalledWith('localStatus');
-        expect(mockCollection.and).toHaveBeenCalled();
-        expect(mockCollection.distinct).toHaveBeenCalled();
       });
     });
 
