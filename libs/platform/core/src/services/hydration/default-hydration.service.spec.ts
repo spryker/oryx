@@ -108,7 +108,7 @@ describe('DefaultHydrationService', () => {
       const mockA = document.querySelector('mock-a') as HydratableLitElement;
       service.initHydrateHooks();
       vi.spyOn(window.customElements, 'get').mockReturnValue(undefined);
-      vi.spyOn(window.customElements, 'upgrade');
+      vi.spyOn(window.customElements, 'whenDefined');
 
       mockA.click();
       await nextFrame();
@@ -116,7 +116,7 @@ describe('DefaultHydrationService', () => {
         mockA.localName
       );
       expect(mockA[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
-      expect(window.customElements.upgrade).toHaveBeenCalledWith(mockA);
+      expect(window.customElements.whenDefined).toHaveBeenCalledWith('mock-a');
     });
   });
 
@@ -127,7 +127,7 @@ describe('DefaultHydrationService', () => {
       await service.hydrateOnDemand(mockA);
       expect(mockA[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
       expect(mockComponentsPlugin.loadComponent).not.toHaveBeenCalled();
-      expect(window.customElements.upgrade).not.toHaveBeenCalled();
+      expect(window.customElements.whenDefined).not.toHaveBeenCalled();
 
       vi.spyOn(window.customElements, 'get').mockReturnValue(undefined);
       await service.hydrateOnDemand(mockA);
@@ -135,7 +135,7 @@ describe('DefaultHydrationService', () => {
         mockA.localName
       );
       expect(mockA[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
-      expect(window.customElements.upgrade).toHaveBeenCalledWith(mockA);
+      expect(window.customElements.whenDefined).toHaveBeenCalledWith('mock-a');
     });
 
     it('should do nothing if component does not have hydratable attribute', async () => {
@@ -144,7 +144,7 @@ describe('DefaultHydrationService', () => {
       await service.hydrateOnDemand(mockB);
       expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
       expect(mockComponentsPlugin.loadComponent).not.toHaveBeenCalled();
-      expect(window.customElements.upgrade).not.toHaveBeenCalled();
+      expect(window.customElements.whenDefined).not.toHaveBeenCalled();
     });
   });
 });
