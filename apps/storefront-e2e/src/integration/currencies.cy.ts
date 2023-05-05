@@ -79,6 +79,8 @@ describe('Currencies suite', () => {
 });
 
 function checkCurrencyOnCartPage(currency: string) {
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(500);
   cartPage.getCartTotals().getSubtotalPrice().should('contain.text', currency);
   cartPage.getCartTotals().getTaxTotalPrice().should('contain.text', currency);
   cartPage.getCartTotals().getTotalPrice().should('contain.text', currency);

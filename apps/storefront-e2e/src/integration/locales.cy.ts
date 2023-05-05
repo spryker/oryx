@@ -83,6 +83,8 @@ describe('Locales suite', () => {
 });
 
 function checkCurrencyUsedOnCartPage(locale: string) {
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(500);
   cartPage.getCartTotals().getSubtotalPrice().checkCurrencyFormatting(locale);
   cartPage.getCartTotals().getTaxTotalPrice().checkCurrencyFormatting(locale);
   cartPage.getCartTotals().getTotalPrice().checkCurrencyFormatting(locale);
