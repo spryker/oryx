@@ -24,7 +24,7 @@ export const gridSystem = css`
 
   *,
   ::slotted(*) {
-    --nested-padding: var(--padding, 0px);
+    --nested-padding: var(--padding);
 
     grid-column: var(--col-pos, auto) / span var(--col-span);
     grid-row: var(--row-pos, auto) / span var(--row-span);
