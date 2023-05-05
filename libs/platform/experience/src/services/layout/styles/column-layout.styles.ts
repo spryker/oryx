@@ -7,7 +7,10 @@ export const styles: LayoutStyles = {
     ${gridSystem}
 
     :host {
-      --oryx-grid-columns: var(--oryx-grid-columns-base);
+      grid-template-columns: repeat(
+        var(--oryx-grid-columns, var(--oryx-grid-columns-base)),
+        1fr
+      );
     }
   `,
 };

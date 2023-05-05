@@ -11,5 +11,6 @@ export const styles = css`
     gap: var(--oryx-grid-gap-row) var(--oryx-grid-gap-column);
     margin-inline: auto;
     width: min(100%, calc(var(--_container-width)));
+    padding: var(--padding);
   }
 `;

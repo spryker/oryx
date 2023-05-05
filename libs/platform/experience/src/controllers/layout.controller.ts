@@ -135,7 +135,8 @@ export class LayoutController {
       !!obj['layoutXs'] ||
       !!obj['layoutSm'] ||
       !!obj['layoutMd'] ||
-      !!obj['layoutXl'];
+      !!obj['layoutXl'] ||
+      !!obj['sticky'];
 
     return has(this.host) || !!rules?.find((rule) => has(rule));
   }
