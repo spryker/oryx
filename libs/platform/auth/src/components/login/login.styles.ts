@@ -2,10 +2,14 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
+  :host {
+    margin: 30px 18px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: var(--gap, 18px);
   }
 
   .options {
@@ -19,5 +23,13 @@ export const styles = css`
 
   h1 {
     ${headingUtil(HeadingTag.H5)};
+  }
+
+  oryx-button {
+    margin: var(--_login-button-margin, 0);
+  }
+
+  oryx-notification {
+    margin-block-end: 20px;
   }
 `;
