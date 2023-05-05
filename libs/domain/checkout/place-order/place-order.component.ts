@@ -22,11 +22,13 @@ export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
 
   protected onClick(): void {
     this.checkoutService.placeOrder().subscribe((response) => {
-      this.redirect(response.redirectUrl, response.isExternalRedirect);
+      if (response.redirectUrl) {
+        this.redirect(response.redirectUrl);
+      }
     });
   }
 
-  protected redirect(url?: string, external = false): void {
+  protected redirect(url: string): void {
     if (url) this.router.navigate(url);
   }
 }

@@ -9,13 +9,19 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
-import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
 
 import { CheckoutOrchestratorComponent } from './orchestrator.component';
 import { checkoutOrchestratorComponent } from './orchestrator.def';
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of({ id: '123' }));
+}
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  register = vi.fn();
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
 }
 
 describe('CheckoutOrchestratorComponent', () => {
@@ -31,7 +37,10 @@ describe('CheckoutOrchestratorComponent', () => {
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
-        ...mockCheckoutProviders,
+        {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
         {
           provide: CartService,
           useClass: MockCartService,

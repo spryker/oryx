@@ -1,43 +1,28 @@
 import {
   CheckoutPaymentService,
-  CheckoutProcessState,
   CheckoutService,
   CheckoutShipmentService,
 } from '@spryker-oryx/checkout';
 import { Provider } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
-import { of } from 'rxjs';
-import { vi } from 'vitest';
 import { MockPaymentService } from './mock-payment.service';
 import { MockShipmentService } from './mock-shipment.service';
 
-export class MockCheckoutService implements Partial<CheckoutService> {
-  register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+import { ExperienceStaticData } from '@spryker-oryx/experience';
+import { MockCheckoutService } from './mock-checkout.service';
 
-  placeOrder = vi.fn().mockReturnValue(of());
-}
-
-export class MockRouterService implements Partial<RouterService> {
-  navigate = vi.fn();
-}
-
-export class MockSemanticLinkService implements Partial<SemanticLinkService> {
-  get = vi.fn();
-}
+export const checkoutOrchestratorStaticData = [
+  {
+    id: 'singlePage',
+    components: [
+      { type: 'oryx-checkout-auth' },
+      { type: 'oryx-checkout-delivery' },
+      { type: 'oryx-checkout-shipment' },
+      { type: 'oryx-checkout-payment' },
+    ],
+  },
+];
 
 export const mockCheckoutProviders: Provider[] = [
-  {
-    provide: RouterService,
-    useClass: MockRouterService,
-  },
-  {
-    provide: SemanticLinkService,
-    useClass: MockSemanticLinkService,
-  },
   {
     provide: CheckoutShipmentService,
     useClass: MockShipmentService,
@@ -49,5 +34,9 @@ export const mockCheckoutProviders: Provider[] = [
   {
     provide: CheckoutService,
     useClass: MockCheckoutService,
+  },
+  {
+    provide: ExperienceStaticData,
+    useValue: checkoutOrchestratorStaticData,
   },
 ];

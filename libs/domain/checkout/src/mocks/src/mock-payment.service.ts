@@ -9,7 +9,7 @@ export enum PaymentProviderType {
   NoProvider = 'no-provider',
 }
 
-export class MockPaymentService implements Partial<CheckoutPaymentService> {
+export class MockPaymentService implements CheckoutPaymentService {
   protected type = PaymentProviderType.Multiple;
 
   changeProviderType(value: PaymentProviderType) {
@@ -49,6 +49,10 @@ export class MockPaymentService implements Partial<CheckoutPaymentService> {
   }
 
   select(): Observable<void> {
-    return of(undefined);
+    return of();
+  }
+
+  selected(): Observable<PaymentMethod | null> {
+    return of(null);
   }
 }

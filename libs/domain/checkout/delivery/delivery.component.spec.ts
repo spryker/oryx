@@ -1,17 +1,27 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CheckoutService, CheckoutStepCallback } from '@spryker-oryx/checkout';
+import {
+  CheckoutProcessState,
+  CheckoutService,
+  CheckoutStepCallback,
+} from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
 import { CheckoutAddressComponent } from '../address/address.component';
-import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of([]));
+}
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  register = vi.fn();
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
 }
 
 describe('CheckoutDeliveryComponent', () => {
@@ -27,7 +37,10 @@ describe('CheckoutDeliveryComponent', () => {
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
-        ...mockCheckoutProviders,
+        {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
         {
           provide: AddressService,
           useClass: MockAddressService,

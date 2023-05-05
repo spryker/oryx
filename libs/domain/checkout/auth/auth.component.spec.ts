@@ -8,12 +8,7 @@ import { User, UserService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
 import { CheckoutGuestComponent } from '../guest';
-import {
-  mockCheckoutProviders,
-  MockCheckoutService,
-  MockRouterService,
-  MockSemanticLinkService,
-} from '../src/mocks/src';
+import { CheckoutProcessState } from '../src/models';
 import { CheckoutService } from '../src/services';
 import { CheckoutAuthComponent } from './auth.component';
 import { checkoutAuthComponent } from './auth.def';
@@ -25,6 +20,21 @@ class MockUserService implements Partial<UserService> {
 
 class MockAuthService implements Partial<AuthService> {
   isAuthenticated = vi.fn();
+}
+
+export class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn();
+}
+
+export class MockRouterService implements Partial<RouterService> {
+  navigate = vi.fn();
+}
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  register = vi.fn();
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
 }
 
 describe('CheckoutAuthComponent', () => {
@@ -43,7 +53,18 @@ describe('CheckoutAuthComponent', () => {
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
-        ...mockCheckoutProviders,
+        {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
         {
           provide: AuthService,
           useClass: MockAuthService,

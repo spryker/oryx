@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
   CheckoutPaymentService,
+  CheckoutProcessState,
   CheckoutService,
   CheckoutStepCallback,
   PaymentMethod,
@@ -9,7 +10,6 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
-import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
 
 import { CheckoutPaymentComponent } from './payment.component';
 import { checkoutPaymentComponent } from './payment.def';
@@ -18,6 +18,13 @@ class MockCheckoutPaymentService implements Partial<CheckoutPaymentService> {
   getMethods = vi.fn().mockReturnValue(of([]));
   selected = vi.fn().mockReturnValue(of(null));
   select = vi.fn();
+}
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  register = vi.fn();
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
 }
 
 describe('CheckoutPaymentComponent', () => {
@@ -33,7 +40,10 @@ describe('CheckoutPaymentComponent', () => {
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
-        ...mockCheckoutProviders,
+        {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
         {
           provide: CheckoutPaymentService,
           useClass: MockCheckoutPaymentService,

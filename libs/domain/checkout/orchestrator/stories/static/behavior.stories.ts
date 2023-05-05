@@ -8,12 +8,12 @@ interface Props {
 }
 
 export default {
-  title: `${storybookPrefix}/Composition/Static`,
+  title: `${storybookPrefix}/Orchestrator/Static`,
 } as unknown as Meta;
 
 const Template: Story<Props> = (props): TemplateResult => {
   toggleBehavior(props.behavior);
-  return html`<oryx-checkout-composition></oryx-checkout-composition>`;
+  return html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`;
 };
 
 export const Guest = Template.bind({});

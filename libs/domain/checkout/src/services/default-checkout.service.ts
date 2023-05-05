@@ -77,7 +77,7 @@ export class DefaultCheckoutService<T extends Checkout>
     this.state.next(CheckoutProcessState.Busy);
     return subscribeReplay(
       this.collect().pipe(
-        catchError((error) => {
+        catchError(() => {
           this.state.next(CheckoutProcessState.Ready);
           return EMPTY;
         }),

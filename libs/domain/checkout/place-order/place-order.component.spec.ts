@@ -1,13 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { CheckoutResponse, CheckoutService } from '@spryker-oryx/checkout';
+import {
+  CheckoutProcessState,
+  CheckoutResponse,
+  CheckoutService,
+} from '@spryker-oryx/checkout';
 import { CheckoutPlaceOrderComponent } from '@spryker-oryx/checkout/place-order';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { mockCheckoutProviders, MockCheckoutService } from '../src/mocks/src';
 import { checkoutPlaceOrderComponent } from './place-order.def';
 
 export class MockCartService implements Partial<CartService> {
@@ -15,6 +18,13 @@ export class MockCartService implements Partial<CartService> {
 }
 export class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
+}
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  getProcessState = vi
+    .fn()
+    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  placeOrder = vi.fn().mockReturnValue(of());
 }
 
 describe('PlaceOrderComponent', () => {
@@ -29,7 +39,10 @@ describe('PlaceOrderComponent', () => {
   beforeEach(() => {
     const injector = createInjector({
       providers: [
-        ...mockCheckoutProviders,
+        {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
         {
           provide: CartService,
           useClass: MockCartService,
