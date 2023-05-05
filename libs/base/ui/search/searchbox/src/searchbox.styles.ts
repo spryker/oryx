@@ -78,8 +78,9 @@ const smallScreen = css`
     display: block;
   }
 
-  :host(oryx-search:not([floatDisabled])),
-  :host(oryx-search:not([floatDisabled])) ::slotted(select:invalid) {
+  :host(oryx-search:not([floatDisabled]):not([label])),
+  :host(oryx-search:not([floatDisabled]):not([label]))
+    ::slotted(select:invalid) {
     --oryx-color-placeholder: var(--oryx-color-neutral-400);
   }
 `;
