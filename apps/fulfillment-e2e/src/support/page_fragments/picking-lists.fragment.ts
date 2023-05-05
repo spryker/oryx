@@ -4,7 +4,7 @@ export class PickingListsFragment {
   getPickingListsItem = () => this.getWrapper().find('oryx-picking-list-item');
 
   getCustomerNoteButton = () =>
-    this.getWrapper().find('oryx-icon-button button');
+    this.getWrapper().find('oryx-icon-button button').first();
 
   getStartPickingButton = () => cy.get('oryx-button button');
 
