@@ -42,7 +42,8 @@ export const styles = css`
     justify-content: flex-end;
   }
 
-  slot:not([name]) {
+  slot[name="heading"],
+  slot[name="footer"] {
     display: flex;
     flex: 1 0;
   }

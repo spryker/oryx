@@ -136,15 +136,16 @@ export class ModalComponent extends LitElement implements ModalProperties {
         ${when(
           this.enableNavigateBack,
           () => html`
-            <oryx-icon-button>
-              <button
-                type="button"
-                aria-label="navigate back"
-                @click=${this.onGoBack}
-              >
-                <oryx-icon type="back"></oryx-icon>
-              </button>
-            </oryx-icon-button>
+            <slot name="navigate-back" @click=${this.onGoBack}>
+              <oryx-icon-button>
+                <button
+                  type="button"
+                  aria-label="navigate back"
+                >
+                  <oryx-icon type="back"></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            </slot>
           `
         )}
         <slot name="heading">

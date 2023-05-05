@@ -1,4 +1,5 @@
 export * from './customer-note/customer-note.def';
+export * from './filter-button/filter-button.def';
 export * from './navigate-back/navigate-back.def';
 export * from './picking-list-item/picking-list-item.def';
 export * from './picking-lists-header/picking-lists-header.def';
