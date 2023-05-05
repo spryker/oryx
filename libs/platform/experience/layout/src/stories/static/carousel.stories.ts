@@ -18,32 +18,31 @@ const Template: Story = (): TemplateResult => {
 
     <ul>
       <li>On large screens (e.g. desktop) the layout uses 4 columns</li>
-      <li>On medium screens (e.g. tablet) the layout uses 2 columns</li>
-      <li>On small screens (e.g. mobile) the layout uses 1 columns</li>
-      <li>All carousel items are calculated to be equally divided</li>
+      <li>On medium screens (e.g. tablet) the layout uses 3 columns</li>
+      <li>On small screens (e.g. mobile) the layout uses 2 columns</li>
+      <li>
+        Carousel items are calculated based on the container size of the page,
+        and are not affected by the real estate of the inner components (margin,
+        border)
+      </li>
       <li>
         The layout gap is applied to have space between the carousel items (10px
         in all the examples on this page)
       </li>
     </ul>
 
-    <oryx-layout layout="carousel" container>
-      ${generateLayoutItems(12)}
-    </oryx-layout>
+    <oryx-layout layout="carousel">${generateLayoutItems(12)}</oryx-layout>
 
     <ul>
       <li>Padding can be added using standard CSS</li>
       <li>
         The scroll start position can be set with a variable (--scroll-start:
-        10px)
+        10px) (TODO: we will automate this going forward in case carousel layout
+        is used)
       </li>
     </ul>
 
-    <oryx-layout
-      layout="carousel"
-      container
-      style="--scroll-start:10px;padding:10px;"
-    >
+    <oryx-layout layout="carousel" style="--scroll-start:10px;--padding:10px;">
       ${generateLayoutItems(12)}
     </oryx-layout>
 
@@ -51,9 +50,6 @@ const Template: Story = (): TemplateResult => {
       <li>Border does not affect the column width (1, border-width: 5px)</li>
       <li>Margin does not affect the column width (2, margin: 10px)</li>
       <li>Padding does not affect the column width (3, padding: 40px)</li>
-      <li>
-        Items are stretched by default, but can be overridden (4, centered)
-      </li>
       <li>Outline does not affect the column width nor the gap</li>
       <li>
         The carousel will hide all overflowed content though (unless a span is
@@ -61,7 +57,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="carousel" container>
+    <oryx-layout layout="carousel">
       <div style="border:5px solid var(--oryx-color-secondary-300">1</div>
       <div style="margin:10px;background:var(--oryx-color-secondary-300">2</div>
       <div style="padding:40px;background:var(--oryx-color-secondary-300">
@@ -72,17 +68,20 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <ul>
-      <li>Custom height can be applied (1)</li>
+      <li>Custom height can be applied (1: 100px, 2:75px)</li>
       <li>
-        Items are aligned at the start by default, but can be overridden (2-4)
+        Items are aligned at the start by default, but can be overridden (2:
+        center, 3: end, 4: stretch)
       </li>
     </ul>
 
-    <oryx-layout layout="carousel" container>
+    <oryx-layout layout="carousel">
       <div style="height:100px;background:var(--oryx-color-secondary-300">
         1
       </div>
-      <div style="align-self:center;background:var(--oryx-color-secondary-300">
+      <div
+        style="height:75px;align-self:center;background:var(--oryx-color-secondary-300"
+      >
         2 (center)
       </div>
       <div style="align-self:end;background:var(--oryx-color-secondary-300">
@@ -95,22 +94,30 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <ul>
-      <li>Columns can be spanned (2, span: 2)</li>
+      <li>Columns can be spanned and keep the column alignment (2, span: 2)</li>
     </ul>
-    <oryx-layout layout="carousel" container>
+    <oryx-layout layout="carousel">
       <div>1</div>
-      <div style="--span:2;background:var(--oryx-color-secondary-300">2</div>
+      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+        2
+      </div>
       ${generateLayoutItems(4, 3)}
     </oryx-layout>
 
     <h3>Custom column count</h3>
     <ul>
-      <li>Column count can be customised</li>
+      <li>
+        Column count can be customised (
+        <pre>--oryx-grid-columns: 6</pre>
+        )
+      </li>
       <li>Column span reflects the new column size</li>
     </ul>
-    <oryx-layout layout="carousel" style="--cols: 6" container>
+    <oryx-layout layout="carousel" style="--oryx-grid-columns: 6;">
       <div>1</div>
-      <div style="--span:2;background:var(--oryx-color-secondary-300">2</div>
+      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+        2
+      </div>
       ${generateLayoutItems(12, 3)}
     </oryx-layout>
 
@@ -118,11 +125,11 @@ const Template: Story = (): TemplateResult => {
 
     <h3>Static item size</h3>
     <ul>
-      <li>Column count (--cols) can be ignored</li>
-      <li>custom size is used instead (--item-size: 100px)</li>
+      <li>Column count (--oryx-grid-columns) can be overridden</li>
+      <li>custom size is used instead (--oryx-grid-item-size: 100px)</li>
       <li>Columns can be spanned</li>
     </ul>
-    <oryx-layout layout="carousel" style="--item-size: 100px" container>
+    <oryx-layout layout="carousel" style="--oryx-grid-item-size: 100px">
       <div>1</div>
       <div style="--span:2;background:var(--oryx-color-secondary-300">2</div>
       ${generateLayoutItems(12, 3)}
@@ -135,7 +142,7 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Columns/row spanning is not a thing in this layout</li>
     </ul>
-    <oryx-layout layout="carousel" style="--cols: initial;" container>
+    <oryx-layout layout="carousel" style="--oryx-grid-columns: initial;">
       <div>1</div>
       <div style="width: 250px;background:var(--oryx-color-secondary-300">
         2 (width: 250px)
