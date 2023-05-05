@@ -1,5 +1,6 @@
 import { inject } from '@spryker-oryx/di';
-import { Deserializer } from 'jsonapi-serializer';
+// Add full import because of issue with naming exports from cjs.
+import * as jsonapi from 'jsonapi-serializer';
 import { map, Observable, of, switchMap } from 'rxjs';
 import {
   ItemsFilters,
@@ -16,7 +17,7 @@ import { PickingListAdapter } from './picking-list.adapter';
 export class PickingListDefaultAdapter implements PickingListAdapter {
   constructor(
     protected pickingHttpService = inject(PickingHttpService),
-    protected deserializer = new Deserializer({
+    protected deserializer = new jsonapi.Deserializer({
       keyForAttribute: 'camelCase',
     })
   ) {}

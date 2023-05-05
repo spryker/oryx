@@ -1,11 +1,3 @@
-export const enum Size {
-  Xs = 'xs',
-  Sm = 'sm',
-  Md = 'md',
-  Lg = 'lg',
-  Xl = 'xl',
-}
-
 export const enum AlertType {
   Info = 'info',
   Success = 'success',

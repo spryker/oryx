@@ -1,6 +1,5 @@
-import { AppRef, ThemePlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/ui';
+import { getThemeIcons } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -40,10 +39,7 @@ const variations = [
 const sizes = [Size.Lg, Size.Md, Size.Sm];
 
 const Template: Story = (): TemplateResult => {
-  const icon = Object.keys(
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    resolve(AppRef).findPlugin(ThemePlugin)!.getIcons()
-  )[0];
+  const icon = getThemeIcons()[0];
 
   return html`
     <section>

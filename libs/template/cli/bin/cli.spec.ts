@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
-const mockCliApp = {
-  withOptions: vi.fn().mockReturnThis(),
+const mockCliBuilder = {
   create: vi.fn(),
 };
+const mockCliApp = vi.fn().mockReturnValue(mockCliBuilder);
 
 vi.mock('@spryker-oryx/cli', () => ({ cliApp: mockCliApp }));
 
@@ -19,9 +19,9 @@ describe('cli.ts', () => {
 
     await import('./cli');
 
-    expect(mockCliApp.withOptions).toHaveBeenCalledWith({
+    expect(mockCliApp).toHaveBeenCalledWith({
       cli: { args: ['cmd', '--arg1', '--arg2'] },
     });
-    expect(mockCliApp.create).toHaveBeenCalled();
+    expect(mockCliBuilder.create).toHaveBeenCalled();
   });
 });

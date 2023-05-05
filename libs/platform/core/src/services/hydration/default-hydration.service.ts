@@ -15,7 +15,7 @@ export class DefaultHydrationService implements HydrationService {
   protected subscription = new Subscription();
 
   constructor(
-    protected componentsPlugin = inject(AppRef).findPlugin(ComponentsPlugin),
+    protected componentsPlugin = inject(AppRef).requirePlugin(ComponentsPlugin),
     protected root = rootInjectable.get(),
     protected injector = inject(INJECTOR)
   ) {
@@ -90,7 +90,7 @@ export class DefaultHydrationService implements HydrationService {
     }
 
     if (!customElements.get(element.localName)) {
-      await this.componentsPlugin?.loadComponent(element.localName);
+      await this.componentsPlugin.loadComponent(element.localName);
       await customElements.whenDefined(element.localName);
     }
 

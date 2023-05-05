@@ -1,4 +1,4 @@
-import { Size } from '@spryker-oryx/ui';
+import { Size } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
@@ -80,7 +80,7 @@ export const toggleIconStyles = css`
   ::slotted(input:hover:not([disabled]))::after {
     background: var(--oryx-color-canvas-200);
     border-color: var(--oryx-color-neutral-200);
-    box-shadow: 0 1px 3px 0 var(--oryx-elevation-color-2);
+    box-shadow: 0 1px 3px 0 var(--oryx-color-elevation-2);
   }
 
   ::slotted(input:active:not([disabled]))::after {

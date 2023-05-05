@@ -1,8 +1,7 @@
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Size } from '../../../src/utilities';
 import { RatingProperties } from './rating.model';
 import {
   ratingBaseStyles,
