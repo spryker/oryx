@@ -18,14 +18,14 @@ import { DefaultIconInjectable } from '../../injectables';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
-  ThemeData,
   ThemeIcons,
   ThemeStrategies,
+  ThemeStyles,
   ThemeStylesCollection,
   ThemeStylesheets,
 } from './theme.model';
 
-export const ThemePluginName = 'oryx.experience-theme';
+export const ThemePluginName = 'oryx.experienceTheme';
 
 /**
  * Resolves components styles from theme options.
@@ -51,7 +51,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   getBreakpoints(): Breakpoints {
-    return this.breakpoints as Breakpoints;
+    return this.breakpoints;
   }
 
   getIcon(icon: string): string | Promise<string> {
@@ -59,14 +59,13 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   beforeApply(app: App): void {
-    const components = app.findPlugin(ComponentsPlugin);
-    components?.setResolver({ themes: this.resolve.bind(this) });
-    components?.extendComponent(this.applyThemes.bind(this));
+    const components = app.requirePlugin(ComponentsPlugin);
+    components.setResolver({ themes: this.resolve.bind(this) });
+    components.extendComponent(this.applyThemes.bind(this));
   }
 
   async apply(app: App): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const components = app.findPlugin(ComponentsPlugin)!;
+    const components = app.requirePlugin(ComponentsPlugin);
 
     if (typeof components.getOptions().root === 'string' && document.body) {
       const styles = document.createElement('style');
@@ -78,7 +77,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   async resolve(
     componentDef: ComponentDef
-  ): Promise<(ThemeData | ThemeStylesheets)[] | null> {
+  ): Promise<(ThemeStyles | ThemeStylesheets)[] | null> {
     const { name, stylesheets = [] } = componentDef;
     const implementations = [];
 
@@ -152,17 +151,17 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
     const base = componentClass.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
-    const isThemeData = (
-      theme: ThemeData | ThemeStylesheets
-    ): theme is ThemeData => !!(theme as ThemeData).styles;
+    const isThemeStyles = (
+      theme: ThemeStyles | ThemeStylesheets
+    ): theme is ThemeStyles => !!(theme as ThemeStyles).styles;
     const stylesheet = themes
-      .filter((theme) => !isThemeData(theme))
+      .filter((theme) => !isThemeStyles(theme))
       .flat() as ThemeStylesCollection[];
 
     let innerTheme = [...bases, ...this.normalizeStyles(stylesheet)];
 
     for (const theme of themes) {
-      if (!isThemeData(theme)) {
+      if (!isThemeStyles(theme)) {
         continue;
       }
 

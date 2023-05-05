@@ -20,7 +20,7 @@ export const drawerStyles = css`
     width: calc(100% - var(--_drawer-panel-size, 0px));
     height: 100%;
     z-index: 0;
-    box-shadow: var(--oryx-elevation-3) var(--oryx-elevation-color-2);
+    box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation-2);
     background: var(--oryx-color-canvas-200);
   }
 
@@ -59,7 +59,7 @@ export const panelStyles = css`
     position: absolute;
     z-index: -1;
     inset: 0;
-    box-shadow: var(--oryx-elevation-3) var(--oryx-elevation-color-2);
+    box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation-2);
   }
 
   :host(:not([position='${unsafeCSS(Position.END)}'])) button,

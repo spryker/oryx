@@ -80,7 +80,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         this.hasError,
         () => html`
           <oryx-notification type="error" scheme="dark">
-            ${i18n('user.login.not-valid')}
+            ${i18n(
+              'user.login.the-username-or-password-you-entered-is-invalid'
+            )}
           </oryx-notification>
         `
       )}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';

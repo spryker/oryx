@@ -6,20 +6,16 @@ import {
   CssStylesWithMedia,
 } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
+import { Color } from '../../color/color.model';
 
 declare module '@spryker-oryx/core' {
   interface ComponentMap {
-    themes?: (ThemeData | ThemeStylesheets)[] | null;
+    themes?: (ThemeStyles | ThemeStylesheets)[] | null;
   }
 
   interface ComponentDef {
     readonly stylesheets?: ComponentTheme[];
   }
-}
-
-export interface ComponentTheme {
-  theme?: string;
-  rules: LazyLoadable<ThemeData | ThemeStylesheets>;
 }
 
 export const enum ThemeStrategies {
@@ -33,34 +29,30 @@ export type ThemeStylesCollection =
 
 export type ThemeStylesheets = CssStyles | ThemeStylesCollection[];
 
-export interface ThemeData {
+export interface ThemeStyles {
   styles: ThemeStylesheets;
   strategy?: ThemeStrategies;
 }
 
-export type ThemeColors = {
-  100?: string;
-  200?: string;
-  300?: string;
-  400?: string;
-  500?: string;
-};
+export interface ComponentTheme {
+  theme?: string;
+  rules: LazyLoadable<ThemeStyles | ThemeStylesheets>;
+}
+
+// TODO: remove any when old tokens will be replaced
+export type ColorDesignTokens = Record<string, Color | any>;
 
 export interface ThemeToken {
   [key: string]: ThemeToken | string;
 }
-
-export type ColorDesignTokens = Record<string, string | ThemeColors>;
 
 export type DesignToken = ThemeToken & {
   media?: CssMediaQueries;
   color?: ColorDesignTokens;
 };
 
-export type ThemeComponents = Record<string, LazyLoadable<ThemeData>>;
 export type ThemeIcons = Record<string, LazyLoadable<string>>;
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
-export type ThemeGlobalStyles = LazyLoadable<(root: string) => string>;
 
 export interface Theme {
   name: string;

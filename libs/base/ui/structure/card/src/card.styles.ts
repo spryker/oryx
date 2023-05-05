@@ -22,7 +22,7 @@ export const styles = css`
   :host(:not([type='secondary'])) {
     --background-color: var(--oryx-color-canvas-100);
 
-    box-shadow: 0 1px 3px var(--oryx-elevation-color);
+    box-shadow: 0 1px 3px var(--oryx-color-elevation);
   }
 
   :host([type='secondary']) {
