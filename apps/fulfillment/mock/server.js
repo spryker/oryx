@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const db = require('./db.json');
 const routes = require('./routes.json');
 const proxyRoutes = require('./proxy-routes.json');
+const components = require('./components.json');
 
 const BASE_PATH = process.env.ORYX_FULFILLMENT_MOCK_BASE_PATH || '/';
 const PROXY_URL = process.env.ORYX_FULFILLMENT_MOCK_PROXY_URL;
@@ -74,6 +75,20 @@ exports.createMockServer = function createMockServer() {
       links: {
         self: `/picking-lists/${id}`,
       },
+    });
+  });
+
+  // TEMPORARY EXPERIENCE COMPOSITION RESOLVER
+  // TODO: remove after EB integration
+  router.get('/components/:uid', (req, res) => {
+    const { uid } = req.params;
+
+    const component = components[uid] ?? {};
+
+    res.send({
+      type: 'Component',
+      id: uid,
+      ...component,
     });
   });
 
