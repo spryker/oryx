@@ -9,6 +9,7 @@ import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
 import {
   combineLatest,
+  distinctUntilChanged,
   map,
   Observable,
   of,
@@ -33,23 +34,27 @@ export class OfflineDataPlugin extends ExecPlugin {
       const routerService = injector.inject(RouterService);
       const oauthConfig = injector.inject(OauthServiceConfig);
 
-      this.subscription = combineLatest([
-        authService.isAuthenticated(),
-        routerService.route(),
-      ])
+      this.subscription = authService
+        .isAuthenticated()
         .pipe(
-          switchMap(([authenticated, currentRoute]) => {
+          distinctUntilChanged(),
+          switchMap((authenticated) => {
             if (authenticated) {
+              return routerService.route();
+            }
+            return of(undefined);
+          }),
+          switchMap((currentRoute) => {
+            if (!currentRoute) {
+              return of(undefined);
+            }
+            const redirectUrl = new URL(
+              oauthConfig.providers[0].redirectUrl as string
+            );
+            if (currentRoute.startsWith(redirectUrl.pathname)) {
               return this.clearDb(injector).pipe(
                 switchMap(() => this.populateDb(injector)),
-                tap(() => {
-                  const redirectUrl = new URL(
-                    oauthConfig.providers[0].redirectUrl as string
-                  );
-                  if (currentRoute.startsWith(redirectUrl.pathname)) {
-                    routerService.navigate('/');
-                  }
-                })
+                tap(() => routerService.navigate('/'))
               );
             }
             return of(undefined);
