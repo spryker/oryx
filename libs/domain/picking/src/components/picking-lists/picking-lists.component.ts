@@ -6,6 +6,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
 import { PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { styles } from './picking-lists.styles';
@@ -17,9 +18,19 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  protected pickingLists$ = this.pickingListService.get({
-    status: PickingListStatus.ReadyForPicking,
-  });
+  protected searchValue$ = new Subject<string>();
+
+  protected pickingLists$ = this.searchValue$.pipe(
+    startWith(''),
+    map((q) => q.trim()),
+    distinctUntilChanged(),
+    switchMap((value) =>
+      this.pickingListService.get({
+        status: PickingListStatus.ReadyForPicking,
+        searchOrderReference: value,
+      })
+    )
+  );
 
   @asyncState()
   protected pickingLists = valueType(this.pickingLists$);
@@ -30,7 +41,9 @@ export class PickingListsComponent extends LitElement {
 
   protected renderPickingLists(): TemplateResult {
     return html`
-      <oryx-picking-lists-header></oryx-picking-lists-header>
+      <oryx-picking-lists-header
+        @oryx.search=${this.searchOrderReference}
+      ></oryx-picking-lists-header>
 
       ${when(
         !this.pickingLists?.length,
@@ -60,13 +73,9 @@ export class PickingListsComponent extends LitElement {
       >
         <oryx-heading slot="heading">
           <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
-        </oryx-heading/>
+        </oryx-heading>
         ${this.customerNote}
-        <oryx-button
-          slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Md}
-        >
+        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
@@ -85,6 +94,10 @@ export class PickingListsComponent extends LitElement {
         <oryx-image resource="no-orders"></oryx-image>
       </div>
     `;
+  }
+
+  protected searchOrderReference(event: CustomEvent): void {
+    this.searchValue$.next(event.detail.search);
   }
 
   protected openCustomerNoteModal(event: CustomEvent): void {
