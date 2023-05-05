@@ -152,7 +152,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
         const hasResolving = resolvingSignals();
         super.render();
         if (hasResolving()) {
-          console.log('has resolving', this.tagName);
           this[hydrationRender] = false;
         } else {
           effect.stop();
