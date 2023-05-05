@@ -78,8 +78,8 @@ const smallScreen = css`
     display: block;
   }
 
-  :host(:not([floatDisabled])),
-  :host(:not([floatDisabled])) ::slotted(select:invalid) {
+  :host(oryx-search:not([floatDisabled])),
+  :host(oryx-search:not([floatDisabled])) ::slotted(select:invalid) {
     --oryx-color-placeholder: var(--oryx-color-neutral-400);
   }
 `;
