@@ -1,7 +1,7 @@
 import { AppRef } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
-import { ThemePlugin } from '../../../plugins';
+import { ThemePlugin } from '../../plugins';
 import { ScreenService } from './screen.service';
 
 export class DefaultScreenService implements ScreenService {

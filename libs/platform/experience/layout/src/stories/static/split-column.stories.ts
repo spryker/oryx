@@ -1,6 +1,5 @@
-import { Story } from '@storybook/web-components';
-
 import { CompositionLayout } from '@spryker-oryx/experience';
+import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../constants';
 import { layoutStaticStyles } from './styles';

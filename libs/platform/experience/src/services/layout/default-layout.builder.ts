@@ -3,8 +3,8 @@ import {
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
-} from '../../../models';
-import { Component } from '../models';
+} from '../../models';
+import { Component } from '../experience';
 import { LayoutBuilder } from './layout.builder';
 import { ScreenService } from './screen.service';
 

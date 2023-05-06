@@ -1,8 +1,8 @@
 import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
-import { LayoutAlign, StyleProperties } from '../../../models';
-import { Theme, ThemePlugin } from '../../../plugins';
+import { LayoutAlign, StyleProperties } from '../../models';
+import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 import { DefaultScreenService } from './default-screen.service';
 import { ScreenService } from './screen.service';

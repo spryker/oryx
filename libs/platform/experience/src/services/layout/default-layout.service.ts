@@ -1,16 +1,12 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
-import {
-  CompositionLayout,
-  LayoutStyles,
-  ResponsiveLayoutInfo,
-  ScreenService,
-} from '@spryker-oryx/experience';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
-
-import { ssrAwaiter } from '@spryker-oryx/core/utilities';
+import { CompositionLayout } from '../../models';
+import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
+import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
   constructor(protected screenService = inject(ScreenService)) {}
