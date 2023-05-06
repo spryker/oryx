@@ -61,9 +61,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       const { rules } = this.$options();
       const props = ['layout', 'sticky', 'bleed'] as (keyof LayoutProperties)[];
       const componentStyles = this.layoutController.collectStyles(
+        props,
         rules,
-        this.uid,
-        props
+        this.uid
       );
       const graph = this.layoutController.getLayoutInfos(props, rules);
 

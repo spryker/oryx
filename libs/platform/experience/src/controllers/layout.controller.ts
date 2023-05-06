@@ -22,29 +22,40 @@ export class LayoutController {
         this.host[prop] ??
         rules.find((rule) => !rule.breakpoint && rule[prop])?.[prop];
       const mainKey = (isLayout ? mainValue : prop) as string;
+      const withMainValue = typeof mainValue !== 'undefined';
 
-      if (mainValue) {
+      if (withMainValue) {
         info[mainKey] = {};
       }
 
       for (const size of sizes) {
         const sizeValue =
           this.host[size]?.[prop] ??
-          rules.find((rule) => rule.breakpoint === size && rule[prop])?.[prop];
+          rules.find(
+            (rule) =>
+              rule.breakpoint === size && typeof rule[prop] !== 'undefined'
+          )?.[prop];
         const sizeKey = (isLayout ? sizeValue : prop) as string;
 
-        if (!sizeValue || !sizeKey) {
+        if (
+          typeof sizeValue === 'undefined' ||
+          !sizeKey ||
+          String(sizeValue) === String(mainValue)
+        ) {
+          continue;
+        }
+
+        if (withMainValue && String(sizeValue) !== String(mainValue)) {
+          info[mainKey].excluded ??= [];
+          info[mainKey].excluded?.push(size);
+        }
+
+        if (withMainValue && sizeKey === mainKey) {
           continue;
         }
 
         info[sizeKey] ??= {};
         const dataSize = info[sizeKey];
-
-        if (mainValue && sizeKey === String(mainValue)) {
-          dataSize.excluded ??= [];
-          dataSize.excluded.push(size);
-          continue;
-        }
 
         dataSize.included ??= [];
         dataSize.included.push(size);
@@ -68,13 +79,13 @@ export class LayoutController {
    * ```
    */
   collectStyles(
-    rules: StyleRuleSet[],
-    uid?: string,
-    excludeProps?: (keyof LayoutProperties)[]
+    byProps: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = [],
+    uid?: string
   ): string {
     let styles = '';
 
-    if (!this.hasLayout(rules, excludeProps)) {
+    if (!this.hasLayout(rules, byProps)) {
       styles += ':host {display: contents;}\n';
     }
 
@@ -92,10 +103,10 @@ export class LayoutController {
    */
   protected hasLayout(
     rules: StyleRuleSet[],
-    excludeProps: (keyof LayoutProperties)[] = []
+    byProps: (keyof LayoutProperties)[] = []
   ): boolean {
     const has = (obj: LayoutAttributes): boolean =>
-      excludeProps.some(
+      byProps.some(
         (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
       );
 

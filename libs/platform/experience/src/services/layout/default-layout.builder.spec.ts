@@ -43,10 +43,6 @@ describe('DefaultLayoutBuilder', () => {
     describe(`when the ${key} is configured`, () => {
       beforeEach(() => populate({ [key]: value }));
       it('should generate the rule', () => {
-        console.log(styles);
-        console.log('___');
-        console.log(expectedRule);
-
         expect(styles).toContain(expectedRule);
       });
     });
