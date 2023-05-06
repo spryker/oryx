@@ -36,7 +36,7 @@ export class ProductDetailsPage extends AbstractSFPage {
 
   getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');
   getDetailsWrapper = () =>
-    this.getWrapper().find('oryx-layout[layout="list"]');
+    this.getWrapper().find('experience-composition:first-child');
   getTitle = () =>
     this.getDetailsWrapper().find('oryx-product-title').find('oryx-heading');
   getRating = () =>
@@ -44,7 +44,10 @@ export class ProductDetailsPage extends AbstractSFPage {
   getSKU = () => this.getDetailsWrapper().find('oryx-product-id').shadow();
   getPrice = () =>
     this.getDetailsWrapper().find('oryx-product-price').find('[part="sales"]');
-  getAddToCartWrapper = () => this.getDetailsWrapper().find('oryx-cart-add');
+  getAddToCartWrapper = () =>
+    this.getWrapper()
+      .find('experience-composition:nth-child(2)')
+      .find('oryx-cart-add');
 
   getQuantityComponent = () => {
     return this.quantityInput

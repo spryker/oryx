@@ -103,7 +103,7 @@ export class ExperienceCompositionComponent extends LayoutMixin(
       component.id,
       this.getLayoutClasses(component)
     );
-    if (this.$options()?.rules?.[0].layout === CompositionLayout.Tabular) {
+    if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
       return html`
         <input
           type="radio"

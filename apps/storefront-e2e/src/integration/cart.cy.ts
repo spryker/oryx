@@ -169,6 +169,7 @@ describe('Cart', () => {
               .getQuantityInput()
               .getInput()
               .type('{selectall}0{enter}');
+            cartPage.getSubmitDeleteBtn().click();
           });
         });
 
@@ -181,6 +182,7 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getRemoveBtn().click();
+            cartPage.getSubmitDeleteBtn().click();
           });
         });
 
