@@ -48,26 +48,26 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Boolean }) bleed?: boolean;
     @signalProperty({ type: Boolean }) sticky?: boolean;
 
-    @signalProperty({ type: Object }) xs?: LayoutProperties;
-    @signalProperty({ type: Object }) sm?: LayoutProperties;
-    @signalProperty({ type: Object }) md?: LayoutProperties;
-    @signalProperty({ type: Object }) lg?: LayoutProperties;
-    @signalProperty({ type: Object }) xl?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
 
     protected layoutController = new LayoutController(this);
     protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
       const { rules } = this.$options();
+      const props = ['layout', 'sticky', 'bleed'] as (keyof LayoutProperties)[];
       const componentStyles = this.layoutController.collectStyles(
         rules,
-        this.uid
+        this.uid,
+        props
       );
-      const graph = this.layoutController.getLayoutInfos(
-        ['layout', 'sticky', 'bleed'],
-        rules
-      );
-      console.log(graph, 'graph');
+
+      const graph = this.layoutController.getLayoutInfos(props, rules);
+
       return this.layoutService
         .getStyles(graph)
         .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));

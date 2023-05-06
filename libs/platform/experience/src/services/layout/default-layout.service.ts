@@ -5,7 +5,7 @@ import {
   ResponsiveLayoutInfo,
   ScreenService,
 } from '@spryker-oryx/experience';
-import { Breakpoint, Size } from '@spryker-oryx/utilities';
+import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { from, merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
 
@@ -126,7 +126,7 @@ export class DefaultLayoutService implements LayoutService {
       }
     }
 
-    [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl].forEach((size) => {
+    sizes.forEach((size) => {
       if (style[size]) {
         const query = this.screenService.getScreenMedia(size as Breakpoint);
         if (query) {

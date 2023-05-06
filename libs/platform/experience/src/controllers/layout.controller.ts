@@ -1,106 +1,57 @@
 import { resolve } from '@spryker-oryx/di';
-import { Breakpoint, sizes } from '@spryker-oryx/utilities';
+import {
+  LayoutAttributes,
+  LayoutProperties,
+} from '@spryker-oryx/experience/layout';
+import { sizes } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { LayoutAttributes } from '../../layout/src';
 import { StyleRuleSet } from '../models';
 import { LayoutBuilder, ResponsiveLayoutInfo } from '../services';
-
 export class LayoutController {
   constructor(protected host: LitElement & LayoutAttributes) {}
 
   protected layoutBuilder = resolve(LayoutBuilder);
 
   getLayoutInfos(
-    properties: string[],
-    rules: StyleRuleSet[]
+    properties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {
-    const infos: ResponsiveLayoutInfo = {};
-    console.log(properties, 'properties');
-    properties.forEach((prop) => {
-      const booleanPropertyType = prop !== 'layout';
+    return properties.reduce((info, prop) => {
+      const isLayout = prop === 'layout';
+      const mainValue =
+        this.host[prop] ??
+        rules.find((rule) => !rule.breakpoint && rule[prop])?.[prop];
+      const mainKey = (isLayout ? mainValue : prop) as string;
 
-      const mainLayout = this.collectMainLayout(rules, prop);
-      console.log(mainLayout);
-      const attr = (booleanPropertyType ? prop : mainLayout) as string;
-
-      if (mainLayout) {
-        infos[attr] = {
-          excluded: this.findExcludedScreens(rules, prop, mainLayout as string),
-        };
+      if (mainValue) {
+        info[mainKey] = {};
       }
 
-      sizes.forEach((size) => {
-        const compare = booleanPropertyType || attr;
-        const responsiveLayout =
-          this.host[`${attr}${size}` as keyof LayoutAttributes] === compare ||
-          rules?.find(
-            (r) =>
-              r.breakpoint === size.toLowerCase() &&
-              r[attr as keyof LayoutAttributes] === compare
-          );
-        console.log('______');
-        console.log(attr, size);
-        console.log(this.host[`${attr}${size}` as keyof LayoutAttributes]);
-        console.log(responsiveLayout, compare);
-        if (responsiveLayout === undefined) {
-          const attr = rules?.find(
-            (r) =>
-              r.breakpoint === size.toLowerCase() &&
-              r[prop as keyof LayoutAttributes]
-          )?.[prop as keyof LayoutAttributes] as string;
-          this.addToInfo(infos, attr, size);
-        } else {
-          this.addToInfo(infos, attr, size);
+      for (const size of sizes) {
+        const sizeValue =
+          this.host[size]?.[prop] ??
+          rules.find((rule) => rule.breakpoint === size && rule[prop])?.[prop];
+        const sizeKey = (isLayout ? sizeValue : prop) as string;
+
+        if (!sizeValue || !sizeKey) {
+          continue;
         }
-      });
-    });
 
-    return infos;
-  }
+        info[sizeKey] ??= {};
+        const dataSize = info[sizeKey];
 
-  /** returns a list of breakpoints that does not have the given value  */
-  protected findExcludedScreens(
-    rules: StyleRuleSet[],
-    attr: string,
-    value: string | boolean
-  ): Breakpoint[] {
-    return rules
-      ?.filter(
-        (rule) =>
-          rule.breakpoint &&
-          rule[attr as keyof LayoutAttributes] !== undefined &&
-          rule[attr as keyof LayoutAttributes] !== value
-      )
-      .map((rule) => rule.breakpoint as Breakpoint);
-  }
+        if (mainValue && sizeKey === String(mainValue)) {
+          dataSize.excluded ??= [];
+          dataSize.excluded.push(size);
+          continue;
+        }
 
-  protected addToInfo(
-    infos: ResponsiveLayoutInfo,
-    attr: string,
-    size: string
-  ): void {
-    if (!attr) return;
-    if (infos[attr]) {
-      if (!infos[attr].included) {
-        infos[attr].included = [];
+        dataSize.included ??= [];
+        dataSize.included.push(size);
       }
-      infos[attr].included?.push(size.toLowerCase() as Breakpoint);
-    } else {
-      infos[attr] = {
-        included: [size.toLowerCase() as Breakpoint],
-      };
-    }
-  }
 
-  /**
-   * Resolves the main layout for the component by evaluating the component property
-   * as well as the style rules provided by the options.
-   */
-  protected collectMainLayout(rules: StyleRuleSet[], prop: string): string {
-    return (this.host[prop as keyof LayoutAttributes] ||
-      rules?.find(
-        (rule) => !rule.breakpoint && rule[prop as keyof StyleRuleSet]
-      )?.[prop as keyof StyleRuleSet]) as string;
+      return info;
+    }, {} as ResponsiveLayoutInfo);
   }
 
   /**
@@ -116,10 +67,14 @@ export class LayoutController {
    * }
    * ```
    */
-  collectStyles(rules: StyleRuleSet[], uid?: string): string {
+  collectStyles(
+    rules: StyleRuleSet[],
+    uid?: string,
+    excludeProps?: (keyof LayoutProperties)[]
+  ): string {
     let styles = '';
 
-    if (!this.hasLayout(rules)) {
+    if (!this.hasLayout(rules, excludeProps)) {
       styles += ':host {display: contents;}\n';
     }
 
@@ -135,10 +90,15 @@ export class LayoutController {
    *
    * Layout can be either applied by using properties or by using options.
    */
-  protected hasLayout(rules: StyleRuleSet[]): boolean {
+  protected hasLayout(
+    rules: StyleRuleSet[],
+    excludeProps: (keyof LayoutProperties)[] = []
+  ): boolean {
     const has = (obj: LayoutAttributes): boolean =>
-      !!obj.layout || sizes.some((size) => obj[size]?.layout);
+      excludeProps.some(
+        (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
+      );
 
-    return has(this.host) || !!rules?.find((rule) => has(rule));
+    return has(this.host) || rules?.some((rule) => has(rule));
   }
 }

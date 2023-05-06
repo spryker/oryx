@@ -126,7 +126,7 @@ export class ThemeTokens {
       expression += step?.max ? `(${mediaRule.max}: ${step?.max}px)` : '';
     }
 
-    return `@media ${expression}`;
+    return expression ? `@media ${expression}` : null;
   }
 
   protected async getStylesFromTokens(
