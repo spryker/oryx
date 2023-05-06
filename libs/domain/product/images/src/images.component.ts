@@ -84,7 +84,7 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="main"
-      .layout=${imageLayout}
+      layout=${imageLayout}
       behavior=${ifDefined(scrollBehavior)}
       style="--oryx-grid-columns: 1;--image-fit:${objectFit};--cols: ${cols}"
     >

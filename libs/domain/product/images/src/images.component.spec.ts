@@ -162,8 +162,9 @@ describe('ProductImagesComponent', () => {
       it('should set up default values for css properties of navigation layout', () => {
         const layout =
           element.renderRoot.querySelector<HTMLElement>('.navigation');
-        expect(layout?.style.getPropertyValue('--item-height')).toBe('80px');
-        expect(layout?.style.getPropertyValue('--item-width')).toBe('80px');
+        expect(layout?.style.getPropertyValue('--oryx-grid-item-size')).toBe(
+          '80px'
+        );
         expect(layout?.style.getPropertyValue('--image-fit')).toBe('contain');
       });
     });
@@ -416,45 +417,7 @@ describe('ProductImagesComponent', () => {
         expect(
           element.renderRoot
             .querySelector<HTMLElement>('.navigation')
-            ?.style.getPropertyValue('--item-height')
-        ).toBe('100px');
-      });
-
-      describe('and navigationWidth is not provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-product-images
-              sku="1"
-              .options=${{ navigationHeight: '100px' }}
-            ></oryx-product-images>`
-          );
-        });
-
-        it('should set --item-width equal height', () => {
-          const nav =
-            element.renderRoot.querySelector<HTMLElement>('.navigation');
-          expect(nav?.style.getPropertyValue('--item-width')).toBe(
-            nav?.style.getPropertyValue('--item-height')
-          );
-        });
-      });
-    });
-
-    describe('when navigationWidth is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-product-images
-            sku="1"
-            .options=${{ navigationWidth: '100px' }}
-          ></oryx-product-images>`
-        );
-      });
-
-      it('should set css property', () => {
-        expect(
-          element.renderRoot
-            .querySelector<HTMLElement>('.navigation')
-            ?.style.getPropertyValue('--item-width')
+            ?.style.getPropertyValue('--oryx-grid-item-size')
         ).toBe('100px');
       });
     });

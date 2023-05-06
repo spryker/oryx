@@ -65,7 +65,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         this.uid,
         props
       );
-
       const graph = this.layoutController.getLayoutInfos(props, rules);
 
       return this.layoutService
