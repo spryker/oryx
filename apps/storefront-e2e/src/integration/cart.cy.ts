@@ -90,6 +90,7 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getQuantityInput().decrease();
+            cartPage.getSubmitDeleteBtn().click();
           });
         });
 
