@@ -10,7 +10,7 @@ export const gridSystem = css`
           (
               var(--_container-width) -
                 (var(--oryx-grid-gap-column) * (var(--oryx-grid-columns) - 1))
-            ) / var(--oryx-grid-columns) - var(--padding, 0px)
+            ) / var(--oryx-grid-columns) - var(--nested-padding, 0px)
         )
       )
     );
@@ -24,6 +24,8 @@ export const gridSystem = css`
 
   *,
   ::slotted(*) {
+    --nested-padding: var(--padding);
+
     grid-column: var(--col-pos, auto) / span var(--col-span);
     grid-row: var(--row-pos, auto) / span var(--row-span);
     max-width: calc(100% - (var(--margin, 0px) * 2));

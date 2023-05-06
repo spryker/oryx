@@ -22,7 +22,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="list" container>
+    <oryx-layout layout="list">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>

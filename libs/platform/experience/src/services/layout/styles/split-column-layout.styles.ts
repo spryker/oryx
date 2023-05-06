@@ -16,6 +16,18 @@ export const styles: LayoutStyles = {
 
       grid-template-columns: var(--_split-col) auto;
     }
+
+    *:nth-child(odd),
+    ::slotted(*:nth-child(odd)) {
+      --oryx-grid-columns-base: var(--_col1);
+    }
+
+    *:nth-child(even),
+    ::slotted(*:nth-child(even)) {
+      --oryx-grid-columns-base: calc(
+        var(--oryx-grid-columns-base) - var(--_col1)
+      );
+    }
   `,
   sm: css`
     :host {

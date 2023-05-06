@@ -24,15 +24,13 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="grid" container>
-      ${generateLayoutItems(12)}
-    </oryx-layout>
+    <oryx-layout layout="grid"> ${generateLayoutItems(12)} </oryx-layout>
 
     <ul>
       <li>Padding can be added by standard css</li>
     </ul>
 
-    <oryx-layout layout="grid" container style="padding:10px;">
+    <oryx-layout layout="grid" style="--padding:10px;">
       ${generateLayoutItems(12)}
     </oryx-layout>
 
@@ -46,7 +44,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="grid" container>
+    <oryx-layout layout="grid">
       <div style="border:5px solid var(--oryx-color-secondary-300">1</div>
       <div style="margin:10px;background:var(--oryx-color-secondary-300">2</div>
       <div style="padding:40px;background:var(--oryx-color-secondary-300">
@@ -62,7 +60,7 @@ const Template: Story = (): TemplateResult => {
       <li>Items are stretched by default, but can be overridden (2-4)</li>
     </ul>
 
-    <oryx-layout layout="grid" container>
+    <oryx-layout layout="grid">
       <div style="height:100px;background:var(--oryx-color-secondary-300">
         1
       </div>
@@ -81,20 +79,26 @@ const Template: Story = (): TemplateResult => {
     <ul>
       <li>Columns can be spanned (2, span: 2)</li>
     </ul>
-    <oryx-layout layout="grid" container>
+    <oryx-layout layout="grid">
       <div>1</div>
-      <div style="--span:2;background:var(--oryx-color-secondary-300">2</div>
+      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+        2
+      </div>
       ${generateLayoutItems(4, 3)}
     </oryx-layout>
 
     <h3>Custom column count</h3>
     <ul>
-      <li>Column count can be customised ( --cols: 6 )</li>
+      <li>
+        Column count can be customised (
+        <pre>--oryx-grid-columns: 6</pre>
+        )
+      </li>
       <li>Column span reflects the new column size</li>
     </ul>
-    <oryx-layout layout="grid" style="--cols: 6" container>
+    <oryx-layout layout="grid" style="--oryx-grid-columns: 6">
       <div>1</div>
-      <div style="--span:2;">2</div>
+      <div style="--col-span:2;">2</div>
       ${generateLayoutItems(12, 3)}
     </oryx-layout>
 
