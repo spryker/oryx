@@ -34,7 +34,7 @@ const Template: Story = (): TemplateResult => {
     >
       ${generateLayoutItems(12)}
     </oryx-layout>
-    <!--
+
     <ul>
       <li>Padding can be added using standard CSS</li>
       <li>
@@ -152,7 +152,7 @@ const Template: Story = (): TemplateResult => {
 
     <style>
       ${layoutStaticStyles}
-    </style> -->
+    </style>
   `;
 };
 
