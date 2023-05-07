@@ -17,6 +17,7 @@ export declare class CheckoutMixinInterface {
    */
   protected isAvailable: ConnectableSignal<boolean>;
   protected isBusy: ConnectableSignal<boolean>;
+  protected isValidating: ConnectableSignal<boolean>;
 }
 
 export const CheckoutMixin = <T extends Type<LitElement>>(
@@ -25,6 +26,13 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
   @signalAware()
   class CheckoutMixinClass extends superClass {
     protected checkoutService = resolve(CheckoutService);
+
+    protected isValidating = signal(
+      this.checkoutService
+        .getProcessState()
+        .pipe(map((state) => state === CheckoutProcessState.Validate)),
+      false
+    );
 
     protected isAvailable = signal(
       this.checkoutService

@@ -14,6 +14,10 @@ export const styles = css`
     ${headingUtil(HeadingTag.H5)}
   }
 
+  form {
+    display: contents;
+  }
+
   .no-methods {
     text-align: center;
     line-height: 22px;

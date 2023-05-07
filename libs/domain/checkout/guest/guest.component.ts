@@ -8,11 +8,11 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
-import { ContactDetails } from '../src/models';
+import { CheckoutForm, ContactDetails } from '../src/models';
 
 @signalAware()
 @hydratable('window:load')
-export class CheckoutGuestComponent extends LitElement {
+export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
   protected fieldRenderer = resolve(FormRenderer);
   protected linkService = resolve(SemanticLinkService);
 
@@ -44,6 +44,13 @@ export class CheckoutGuestComponent extends LitElement {
       </p>
       <form>${this.fieldRenderer.buildForm(this.fields)}</form>
     `;
+  }
+
+  validate(report: boolean): boolean {
+    if (!this.form?.checkValidity() && report) {
+      this.form?.reportValidity();
+    }
+    return !!this.form?.checkValidity();
   }
 
   collectData(): ContactDetails | null {

@@ -1,4 +1,4 @@
-import { Address } from '@spryker-oryx/checkout';
+import { Address, CheckoutForm } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
@@ -9,7 +9,10 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 
 @signalAware()
-export class CheckoutAddressComponent extends ContentMixin(LitElement) {
+export class CheckoutAddressComponent
+  extends ContentMixin(LitElement)
+  implements CheckoutForm
+{
   protected addressService = resolve(AddressService);
 
   protected addresses = signal(this.addressService.getAddresses());
@@ -20,16 +23,24 @@ export class CheckoutAddressComponent extends ContentMixin(LitElement) {
   @query('oryx-address-form')
   protected addressComponent?: AddressFormComponent;
 
-  collectData(): Address | null {
+  validate(report: boolean): boolean {
     const form = this.addressComponent?.getForm();
-    if (!this.selected && !form?.checkValidity()) {
+    if (!form?.checkValidity() && report) {
       form?.reportValidity();
-      return null;
     }
-    return form
-      ? (Object.fromEntries(new FormData(form).entries()) as unknown as Address)
-      : this.selected;
+    return !!form?.checkValidity();
   }
+
+  // collectData(): Address | null {
+  //   const form = this.addressComponent?.getForm();
+  //   if (!this.selected && !form?.checkValidity()) {
+  //     form?.reportValidity();
+  //     return null;
+  //   }
+  //   return form
+  //     ? (Object.fromEntries(new FormData(form).entries()) as unknown as Address)
+  //     : this.selected;
+  // }
 
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)

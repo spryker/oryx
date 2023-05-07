@@ -2,35 +2,13 @@ import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { subscribeReplay } from '@spryker-oryx/utilities';
-import {
-  BehaviorSubject,
-  catchError,
-  EMPTY,
-  finalize,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
-import {
-  Checkout,
-  CheckoutProcessState,
-  CheckoutResponse,
-  CheckoutStepCallback,
-} from '../models';
+import { BehaviorSubject, EMPTY, map, Observable, of, switchMap } from 'rxjs';
+import { CheckoutProcessState, CheckoutResponse } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutService } from './checkout.service';
 
-// consider moving out steps, register and collect to CheckoutOrchestratorService
-// we'd keep register here as a proxy to "hide" the orchestrator from the components
-export class DefaultCheckoutService<T extends Checkout>
-  implements CheckoutService<T>
-{
+export class DefaultCheckoutService implements CheckoutService {
   protected state = new BehaviorSubject(CheckoutProcessState.Initializing);
-
-  protected steps: Array<CheckoutStepCallback<T>> = [];
 
   constructor(
     protected cartService = inject(CartService),
@@ -38,22 +16,6 @@ export class DefaultCheckoutService<T extends Checkout>
     protected linkService = inject(SemanticLinkService),
     protected orderService = inject(OrderService)
   ) {}
-
-  register(callback: CheckoutStepCallback<T>): void {
-    const step = this.steps.find((step) => step.id === callback.id);
-    if (step) {
-      if (callback.collectDataCallback !== undefined)
-        step.collectDataCallback = callback.collectDataCallback;
-      if (callback.order !== undefined) step.order = callback.order;
-    } else {
-      this.steps.push(callback);
-    }
-    this.steps.sort(
-      (a, b) =>
-        (a.order ?? Number.MAX_SAFE_INTEGER) -
-        (b.order ?? Number.MAX_SAFE_INTEGER)
-    );
-  }
 
   /**
    * @override when there are not items in cart, the state will always become
@@ -74,55 +36,11 @@ export class DefaultCheckoutService<T extends Checkout>
   }
 
   placeOrder(): Observable<CheckoutResponse> {
-    this.state.next(CheckoutProcessState.Busy);
-    return subscribeReplay(
-      this.collect().pipe(
-        catchError(() => {
-          this.state.next(CheckoutProcessState.Ready);
-          return EMPTY;
-        }),
-        switchMap((data: Checkout) => {
-          const attributes = this.amendCheckoutData(data);
-          return this.adapter.placeOrder({ attributes }).pipe(
-            finalize(() => {
-              this.state.next(CheckoutProcessState.Ready);
-              return EMPTY;
-            })
-          );
-        }),
-        switchMap(this.resolveRedirect),
-        tap((response) => this.postCheckout(response))
-      )
-    );
-  }
+    this.state.next(CheckoutProcessState.Validate);
 
-  protected collect(): Observable<T> {
-    if (!this.steps.length) {
-      throw new Error('No steps registered');
-    }
-
-    // Recursively collecting step data, while breaking the iteration when
-    // the previous step did not collect data; with this approach we avoid that
-    // all steps are observed. This is more efficient and provides a better ux
-    // since steps can be fixed one by one.
-    const collectStep = (
-      index: number,
-      collectedData: Partial<T>
-    ): Observable<T> => {
-      const { id, collectDataCallback: callback } = this.steps[index];
-      return callback().pipe(
-        switchMap((value) => {
-          if (value === null) {
-            throw new Error(`No data collected for step '${String(id)}'`);
-          }
-          collectedData[id] = value;
-          if (index === this.steps.length - 1) return of(collectedData as T);
-          return collectStep(index + 1, collectedData);
-        })
-      );
-    };
-
-    return collectStep(0, {});
+    // TODO: observe checkout data, then move to ready or done
+    setTimeout(() => this.state.next(CheckoutProcessState.Ready), 500);
+    return EMPTY;
   }
 
   protected resolveRedirect(
@@ -151,20 +69,20 @@ export class DefaultCheckoutService<T extends Checkout>
   /**
    * Temporary solution
    */
-  protected amendCheckoutData(data: Checkout): Checkout {
-    const attributes = {
-      ...data,
-    };
-    if (attributes.shippingAddress) {
-      // temporarily till we add billingAddress component
-      attributes.billingAddress = attributes.shippingAddress;
-    }
-    if (
-      !attributes.customer?.salutation &&
-      attributes.shippingAddress?.salutation
-    ) {
-      attributes.customer.salutation = attributes.shippingAddress?.salutation;
-    }
-    return attributes;
-  }
+  // protected amendCheckoutData(data: Checkout): Checkout {
+  //   const attributes = {
+  //     ...data,
+  //   };
+  //   if (attributes.shippingAddress) {
+  //     // temporarily till we add billingAddress component
+  //     attributes.billingAddress = attributes.shippingAddress;
+  //   }
+  //   if (
+  //     !attributes.customer?.salutation &&
+  //     attributes.shippingAddress?.salutation
+  //   ) {
+  //     attributes.customer.salutation = attributes.shippingAddress?.salutation;
+  //   }
+  //   return attributes;
+  // }
 }

@@ -1,10 +1,7 @@
-import { CartService } from '@spryker-oryx/cart';
-import { CheckoutMixin } from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
+import { CheckoutForm, CheckoutMixin } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { hydratable } from '@spryker-oryx/utilities';
+import { effect, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { map, Observable } from 'rxjs';
 import { compositionStyles } from './orchestrator.styles';
 
 @hydratable('window:load')
@@ -13,19 +10,18 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 ) {
   static styles = [compositionStyles];
 
-  protected cartService = resolve(CartService);
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'cartId',
-      collectDataCallback: () => this.collectCartId(),
-    });
-  }
-
-  protected collectCartId(): Observable<string | undefined> {
-    return this.cartService.getCart().pipe(map((cart) => cart?.id));
-  }
+  protected eff = effect(() => {
+    if (this.isValidating()) {
+      const showReport = true;
+      let isValid: boolean;
+      this.components().forEach((el) => {
+        // TODO: use strategies to validate all steps in one go or not
+        if (el.validate && isValid !== false) {
+          isValid = el.validate(showReport);
+        }
+      });
+    }
+  });
 
   protected override render(): TemplateResult | void {
     if (!this.isAvailable()) return;
@@ -33,5 +29,13 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
     return html`
       <experience-composition .uid=${this.uid}></experience-composition>
     `;
+  }
+
+  protected components(): (CheckoutForm & HTMLElement)[] {
+    return Array.from(
+      this.shadowRoot
+        ?.querySelector('experience-composition')
+        ?.shadowRoot?.querySelectorAll('*:not(style)') ?? []
+    );
   }
 }

@@ -1,5 +1,9 @@
 import { AuthService } from '@spryker-oryx/auth';
-import { CheckoutMixin, ContactDetails } from '@spryker-oryx/checkout';
+import {
+  CheckoutForm,
+  CheckoutMixin,
+  ContactDetails,
+} from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -15,9 +19,10 @@ import { styles } from './auth.styles';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydratable('window:load')
-export class CheckoutAuthComponent extends CheckoutMixin(
-  ContentMixin<CheckoutAuthComponentOptions>(LitElement)
-) {
+export class CheckoutAuthComponent
+  extends CheckoutMixin(ContentMixin<CheckoutAuthComponentOptions>(LitElement))
+  implements CheckoutForm
+{
   static styles = [styles];
 
   protected userService = resolve(UserService);
@@ -42,14 +47,38 @@ export class CheckoutAuthComponent extends CheckoutMixin(
     }
   });
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'customer',
-      collectDataCallback: () => this.collectData(),
-      order: 1,
-    });
+  validate(report: boolean): boolean {
+    return !!this.guest?.validate(report);
   }
+
+  // connectedCallback(): void {
+  //   super.connectedCallback();
+
+  //   this.addEventListener('validate', () => {
+  //     console.log('validate form!');
+  //     this.guest?.collectData();
+  //     // optionally: update form
+  //     // this.form?.reportValidity();
+  //   });
+
+  //   // this.checkoutService.register({
+  //   //   id: 'customer',
+  //   //   collectDataCallback: () => this.collectData(),
+  //   //   order: 1,
+  //   // });
+
+  //   // this.checkoutService.getValidityTrigger('customer').pipe(
+  //   //   // TODO: invoke form validity
+  //   //   map(() => true),
+  //   //   tap((result) => console.log(result))
+  //   // );
+
+  //   // this.checkoutService.onValid('customer').pipe(
+  //   //   // TODO: invoke form validity
+  //   //   map(() => true),
+  //   //   tap((result) => console.log(result))
+  //   // );
+  // }
 
   protected override render(): TemplateResult | void {
     if (this.isAuthenticated()) {
