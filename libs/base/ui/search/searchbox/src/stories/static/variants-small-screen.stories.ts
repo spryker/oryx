@@ -10,7 +10,6 @@ export default {
   title: `${storybookPrefix}/Search/Searchbox/Static`,
   parameters: {
     chromatic: {
-      delay: 3000,
       viewports: [storybookDefaultViewports.mobile.min],
     },
   },
