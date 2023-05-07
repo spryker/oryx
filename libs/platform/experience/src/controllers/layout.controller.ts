@@ -5,14 +5,29 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { sizes } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
+import { Observable } from 'rxjs';
 import { StyleRuleSet } from '../models';
-import { LayoutBuilder, ResponsiveLayoutInfo } from '../services';
+import {
+  LayoutBuilder,
+  LayoutService,
+  ResponsiveLayoutInfo,
+} from '../services';
 export class LayoutController {
   constructor(protected host: LitElement & LayoutAttributes) {}
 
   protected layoutBuilder = resolve(LayoutBuilder);
+  protected layoutService = resolve(LayoutService);
 
-  getLayoutInfos(
+  getStyles(
+    properties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = []
+  ): Observable<string> {
+    const infos = this.getLayoutInfos(properties, rules);
+
+    return this.layoutService.getStyles(infos);
+  }
+
+  protected getLayoutInfos(
     properties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {

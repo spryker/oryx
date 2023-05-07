@@ -1,8 +1,7 @@
-import { resolve, Type } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
-  LayoutService,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -55,7 +54,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
 
     protected layoutController = new LayoutController(this);
-    protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
       const { rules } = this.$options();
@@ -65,10 +63,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         rules,
         this.uid
       );
-      const graph = this.layoutController.getLayoutInfos(props, rules);
 
-      return this.layoutService
-        .getStyles(graph)
+      return this.layoutController
+        .getStyles(['layout', 'sticky', 'bleed'], rules)
         .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));
     });
   }
