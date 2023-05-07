@@ -27,5 +27,10 @@ export const styles: LayoutStyles = {
     :host::-webkit-scrollbar {
       display: none;
     }
+
+    *,
+    ::slotted(*) {
+      scroll-snap-align: start;
+    }
   `,
 };
