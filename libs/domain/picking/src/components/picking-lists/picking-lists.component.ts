@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { PickingListStatus } from '../../models';
