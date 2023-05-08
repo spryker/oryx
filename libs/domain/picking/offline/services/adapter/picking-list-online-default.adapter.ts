@@ -106,7 +106,7 @@ export class PickingListOnlineDefaultAdapter
         0
       );
 
-      const orderReferences = pickingList.items.map(
+      const orderItemUUIDs = pickingList.items.map(
         (item) => item.orderItem.uuid
       );
 
@@ -122,7 +122,7 @@ export class PickingListOnlineDefaultAdapter
         ...pickingList,
         items,
         itemsCount,
-        orderReferences,
+        orderItemUUIDs,
         productSkus,
         localStatus,
       });

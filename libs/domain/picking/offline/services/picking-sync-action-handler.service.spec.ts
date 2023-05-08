@@ -41,7 +41,7 @@ const mockSync = {
     updatedAt: new Date(),
     items: [],
     itemsCount: 0,
-    orderReferences: [],
+    orderItemUUIDs: [],
     orderReference: 'mockOrderReference',
     productSkus: [],
     requestedDeliveryDate: new Date(),

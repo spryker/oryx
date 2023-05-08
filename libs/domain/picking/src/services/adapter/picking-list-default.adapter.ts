@@ -100,7 +100,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     if (
       qualifier?.limit !== undefined ||
       qualifier?.offset !== undefined ||
-      qualifier?.orderReferences !== undefined ||
+      qualifier?.orderItemUUIDs !== undefined ||
       qualifier?.sortBy !== undefined ||
       qualifier?.sortDesc !== undefined
     ) {
