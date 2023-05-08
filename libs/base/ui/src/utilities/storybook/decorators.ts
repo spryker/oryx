@@ -1,4 +1,5 @@
 import { html, TemplateResult } from 'lit';
+import MockDate from 'mockdate';
 
 export const OverlaysDecorator =
   (minWidth = 1024, minHeight = 768) =>
@@ -8,4 +9,14 @@ export const OverlaysDecorator =
         ${storyFn()}
       </div>
     `;
+  };
+
+export const MockDateDecorator =
+  (date?: string | number | Date) =>
+  (storyFn: any, context: any): TemplateResult => {
+    MockDate.reset();
+    if (date) {
+      MockDate.set(date);
+    }
+    return storyFn(context);
   };

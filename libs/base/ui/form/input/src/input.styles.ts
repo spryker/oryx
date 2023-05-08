@@ -2,6 +2,7 @@ import { affixStyles } from './affix';
 import { errorStyles } from './error';
 import {
   floatingLabelBaseStyles,
+  floatingLabelStylesheets,
   formControlBaseStyles,
   formControlScreenStyles,
 } from './form-control';
@@ -13,4 +14,7 @@ export const baseStyles = [
   affixStyles,
 ];
 
-export const screenStyles = [...formControlScreenStyles];
+export const screenStyles = [
+  ...formControlScreenStyles,
+  ...floatingLabelStylesheets,
+];

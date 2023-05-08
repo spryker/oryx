@@ -14,6 +14,7 @@ export const fulfillmentIcons: ThemeIcons = {
     import('./icons/chiller-category').then((s) => s.default),
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
+  [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),
   [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
   [IconTypes.FreezerCategory]: () =>
     import('./icons/freezer-category').then((s) => s.default),
