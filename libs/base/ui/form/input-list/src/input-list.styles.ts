@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -36,3 +37,14 @@ export const styles = css`
     margin-inline-start: 1px;
   }
 `;
+
+export const screenStyles = screenCss({
+  sm: css`
+    legend {
+      margin-block-end: 20px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  `,
+});

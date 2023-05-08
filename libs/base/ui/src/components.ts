@@ -2,7 +2,7 @@ export * from '../action/button/src/button.def';
 export * from '../action/color-mode-selector/src/color-mode-selector.def';
 export * from '../action/icon-button/src/icon-button.def';
 export * from '../action/link/src/link.def';
-export * from '../action/toggle-icon/src/component';
+export * from '../action/toggle-icon/src/toggle-icon.def';
 export * from '../action/toggle/src/component';
 export * from '../form/checkbox/src/component';
 export * from '../form/error-message/src/component';

@@ -119,6 +119,9 @@ export class DefaultFormRenderer implements FormRenderer {
       case FormFieldType.Color: {
         return this.buildColorField(field, value as string);
       }
+      case FormFieldType.RadioList: {
+        return this.buildRadioList(field, value as string);
+      }
     }
 
     return html``;
@@ -311,6 +314,30 @@ export class DefaultFormRenderer implements FormRenderer {
           )}
         </select>
       </oryx-select>
+    `;
+  }
+
+  protected buildRadioList(
+    field: FormFieldDefinition,
+    value?: string
+  ): TemplateResult {
+    return html`
+      <oryx-input-list 
+        heading=${field.label} 
+        direction=${ifDefined(field.attributes?.direction)}
+      >
+        ${field.options?.map((option) => html`
+          <oryx-radio>
+            <input 
+              type="radio"
+              name=${field.id}
+              value=${option.value}
+              ?checked=${option.value === value}
+            />
+            ${option?.text ?? option?.value}
+          </oryx-radio>
+        `)}
+      </oryx-input-list>
     `;
   }
 

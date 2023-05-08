@@ -58,7 +58,7 @@ export const styles = css`
     flex: 1 0;
   }
 
-  oryx-icon-button:first-child button {
+  slot[name="navigation-back"] button {
     padding: 0;
   }
 

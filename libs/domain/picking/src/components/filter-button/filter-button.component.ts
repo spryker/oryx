@@ -1,8 +1,5 @@
-import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { tap } from 'rxjs';
 import { Size } from '@spryker-oryx/utilities';
 import { styles } from './filter-button.styles';
 import { state } from 'lit/decorators.js';
@@ -43,28 +40,11 @@ export class FilterButtonComponent extends LitElement {
         <span>${i18n('picking.filter.sort')}</span>
       </oryx-toggle-icon>
       
-      ${this.renderModal()}  
+      <oryx-picking-filters
+        ?open=${this.showFilters}
+        @oryx.back=${this.onReset}
+        @oryx.close=${this.onClose}
+      ></oryx-picking-filters> 
     `;
-  }
-
-  protected renderModal(): TemplateResult {
-    return html`<oryx-modal
-      ?open=${this.showFilters}
-      enableCloseButtonInHeader
-      enableNavigateBack
-      fullscreen
-      @oryx.back=${this.onReset}
-      @oryx.close=${this.onClose}
-    >
-      <oryx-heading slot="heading">
-        <h4>${i18n('picking.filter.filter-&-Sort')}</h4>
-      </oryx-heading>
-
-      <oryx-link slot="navigate-back">
-        <a href="#">${i18n('picking.filter.reset')}</a>
-      </oryx-link>
-
-      content
-    </oryx-modal>`
   }
 }

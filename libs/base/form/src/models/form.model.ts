@@ -1,9 +1,6 @@
 import { DirectiveResult } from 'lit/directive';
 
-export interface FormFieldAttributes {
-  type: string;
-  [key: string]: string | number;
-}
+export type FormFieldAttributes = Record<string, string | number | boolean>;
 
 export interface FormFieldOption {
   value: string;
@@ -22,6 +19,7 @@ export const enum FormFieldType {
   Boolean = 'boolean',
   Textarea = 'textarea',
   Color = 'color',
+  RadioList = 'radio-list'
 }
 
 export interface FormFieldDefinition<K = string>
@@ -46,7 +44,7 @@ export interface FormFieldDefinition<K = string>
   disabled?: boolean;
 }
 
-export type FormValues = Record<string, string | boolean>;
+export type FormValues = Record<string, string | number | boolean>;
 
 export interface FieldValidationPattern {
   pattern?: string;
