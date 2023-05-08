@@ -67,7 +67,7 @@ export class PickingListItemComponent
             `
         )}
         <span slot="heading" class="identifier"
-          >${this.pickingList.orderReference}</span
+          >${this.pickingList.orderReferences[0]}</span
         >
 
         <div class="total">

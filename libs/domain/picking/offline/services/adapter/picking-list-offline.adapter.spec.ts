@@ -181,9 +181,9 @@ describe('PickingListOfflineAdapter', () => {
 
     describe('and qualifier has order references', () => {
       it('should filter store', () => {
-        adapter.get({ orderItemUUIDs: [] }).subscribe();
+        adapter.get({ orderReferences: [] }).subscribe();
 
-        expect(mockTable.where).toHaveBeenCalledWith('orderItemUUIDs');
+        expect(mockTable.where).toHaveBeenCalledWith('orderReferences');
         expect(mockCollection.startsWithAnyOf).toHaveBeenCalledWith([]);
         expect(mockCollection.distinct).toHaveBeenCalled();
       });

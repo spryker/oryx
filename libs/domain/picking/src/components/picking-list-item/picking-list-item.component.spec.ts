@@ -98,7 +98,7 @@ describe('PickingListItemComponent', () => {
 
     it('should render order reference as id', () => {
       expect(element.renderRoot.querySelector('.identifier')?.textContent).toBe(
-        mockPickingListData[0].orderReference
+        mockPickingListData[0].orderReferences[0]
       );
     });
 

@@ -7,7 +7,7 @@ export interface PickingListQualifier
     PageableQualifier {
   id?: string;
   status?: PickingListStatus;
-  orderItemUUIDs?: string[];
+  orderReferences?: string[];
 }
 
 export enum PickingListQualifierSortBy {

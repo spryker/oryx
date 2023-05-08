@@ -2,7 +2,7 @@ import { PickingProduct } from './picking-product';
 
 export interface PickingList {
   id: string;
-  orderReference: string;
+  orderReferences: string[];
   requestedDeliveryDate: Date;
   status: PickingListStatus;
   items: PickingListItem[];

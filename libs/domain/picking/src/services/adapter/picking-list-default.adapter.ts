@@ -100,7 +100,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     if (
       qualifier?.limit !== undefined ||
       qualifier?.offset !== undefined ||
-      qualifier?.orderItemUUIDs !== undefined ||
+      qualifier?.orderReferences !== undefined ||
       qualifier?.sortBy !== undefined ||
       qualifier?.sortDesc !== undefined
     ) {
@@ -154,8 +154,15 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     products: PickingProduct[]
   ): PickingList {
     const cardNote = data.pickingListItems[0].salesOrders[0].cartNote;
-    const orderReference =
-      data.pickingListItems[0].salesOrders[0].orderReference;
+    const orderReferences = [
+      ...new Set(
+        data.pickingListItems
+          .map((item) =>
+            item.salesOrders.map((salesOrder) => salesOrder.orderReference)
+          )
+          .flat()
+      ),
+    ];
     const requestedDeliveryDate: string =
       data.pickingListItems[0].salesShipments[0].requestedDeliveryDate;
 
@@ -187,7 +194,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
 
     const pickingList: PickingList = {
       id: data.id,
-      orderReference,
+      orderReferences,
       status: data.status as PickingListStatus,
       items: parsedPickingItems,
       cartNote: cardNote,

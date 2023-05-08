@@ -55,11 +55,11 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
                 );
               }
 
-              if (qualifier.orderItemUUIDs) {
+              if (qualifier.orderReferences?.length) {
                 andCollections.push(
                   pickingListStore
-                    .where('orderItemUUIDs')
-                    .startsWithAnyOf(qualifier.orderItemUUIDs)
+                    .where('orderReferences')
+                    .startsWithAnyOf(qualifier.orderReferences)
                     .distinct()
                 );
               }
