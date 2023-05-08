@@ -18,16 +18,18 @@ export class PickingListsHeaderComponent extends LitElement {
       new CustomEvent('oryx.search', {
         detail: {
           search: value,
+          open: true,
         },
       })
     );
   }
 
-  protected onClose(): void {
+  protected onToggleSearch(open: boolean): void {
     this.dispatchEvent(
       new CustomEvent('oryx.search', {
         detail: {
           search: '',
+          open,
         },
       })
     );
@@ -42,7 +44,8 @@ export class PickingListsHeaderComponent extends LitElement {
       <oryx-search
         backIcon="backArrow"
         xs-floated
-        @oryx.close=${(): void => this.onClose()}
+        @oryx.open=${(): void => this.onToggleSearch(true)}
+        @oryx.close=${(): void => this.onToggleSearch(false)}
       >
         <input
           .placeholder=${i18n('picking.header.order-ID')}
