@@ -9,7 +9,6 @@ import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
 import {
   combineLatest,
-  distinctUntilChanged,
   map,
   Observable,
   of,
@@ -37,7 +36,6 @@ export class OfflineDataPlugin extends ExecPlugin {
       this.subscription = authService
         .isAuthenticated()
         .pipe(
-          distinctUntilChanged(),
           switchMap((authenticated) => {
             if (authenticated) {
               return routerService.route();
