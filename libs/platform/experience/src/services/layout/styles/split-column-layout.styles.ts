@@ -23,5 +23,3 @@ export const styles: LayoutStyles = {
     }
   `,
 };
-
-// calc(var(--split-column-start, auto) - var(--oryx-grid-gap-column, 0px))

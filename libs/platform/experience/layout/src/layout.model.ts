@@ -39,6 +39,9 @@ export interface LayoutProperties {
    */
   sticky?: boolean;
 
+  /**
+   * Overlapping elements are rendered in the same grid row/column.
+   */
   overlap?: boolean;
 }
 
