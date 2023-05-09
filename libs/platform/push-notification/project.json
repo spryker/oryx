@@ -17,11 +17,12 @@
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
+        "coverage": {
+          "exclude": [
+            "**/noop-push-service.ts",
+            "**/push-notification.providers.ts",
+            "**/web-push.providers.ts"
+          ]
         }
       }
     },
