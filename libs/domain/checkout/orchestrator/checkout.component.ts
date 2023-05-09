@@ -2,12 +2,10 @@ import { CheckoutForm, CheckoutMixin } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { effect, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { compositionStyles } from './orchestrator.styles';
+import { compositionStyles } from './checkout.styles';
 
 @hydratable('window:load')
-export class CheckoutOrchestratorComponent extends CheckoutMixin(
-  ContentMixin(LitElement)
-) {
+export class CheckoutComponent extends CheckoutMixin(ContentMixin(LitElement)) {
   static styles = [compositionStyles];
 
   protected eff = effect(() => {

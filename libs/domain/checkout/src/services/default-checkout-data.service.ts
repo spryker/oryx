@@ -60,7 +60,7 @@ export class DefaultCheckoutDataService
               keyof Checkout,
               { data: Checkout[keyof Checkout] | null; valid: boolean }
             >();
-            Object.keys(stored).forEach((key) => {
+            Object.keys(stored).forEach(() => {
               const entries = Object.entries(stored);
               for (const [key, value] of entries) {
                 map.set(key as keyof Checkout, {

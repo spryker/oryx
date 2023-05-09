@@ -75,14 +75,12 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
 
   validate(report?: boolean): boolean {
     if (report) {
-      console.log('guest validity?');
       this.form?.reportValidity();
     }
     return !!this.form?.checkValidity();
   }
 
-  protected onChange(ev: Event): void {
-    console.log('onChange guest?');
+  protected onChange(): void {
     this.dataService.set('customer', !!this.form?.checkValidity(), {
       email: this.input()?.value,
     } as ContactDetails);

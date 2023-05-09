@@ -10,8 +10,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
 
-import { CheckoutOrchestratorComponent } from './orchestrator.component';
-import { checkoutOrchestratorComponent } from './orchestrator.def';
+import { CheckoutComponent } from './checkout.component';
+import { checkoutComponent } from './checkout.def';
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of({ id: '123' }));
@@ -23,13 +23,13 @@ export class MockCheckoutService implements Partial<CheckoutService> {
 }
 
 describe('CheckoutOrchestratorComponent', () => {
-  let element: CheckoutOrchestratorComponent;
+  let element: CheckoutComponent;
   let checkoutService: MockCheckoutService;
   let cartService: MockCartService;
   let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
-    await useComponent(checkoutOrchestratorComponent);
+    await useComponent(checkoutComponent);
   });
 
   beforeEach(async () => {
@@ -67,7 +67,7 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     it('should be an instance of ', () => {
-      expect(element).toBeInstanceOf(CheckoutOrchestratorComponent);
+      expect(element).toBeInstanceOf(CheckoutComponent);
     });
 
     it('should pass the a11y audit', async () => {
