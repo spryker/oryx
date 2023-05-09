@@ -24,7 +24,9 @@
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
-        "passWithNoTests": true
+        "coverage": {
+          "exclude": ["**/sync-action-handler.provider.ts"]
+        }
       }
     }
   },
