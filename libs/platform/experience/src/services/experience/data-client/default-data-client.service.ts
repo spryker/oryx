@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   AppRef,
   ComponentsPlugin,
@@ -34,8 +33,8 @@ export class DefaultExperienceDataClientService
     protected suggestionService = inject('oryx.SuggestionService', null),
     protected staticData = inject(ExperienceStaticData, [])
   ) {}
-  protected schemas$ = of(this.appRef.findPlugin(ComponentsPlugin)).pipe(
-    switchMap((componentPlugin) => componentPlugin!.getComponentSchemas()),
+  protected schemas$ = of(this.appRef.requirePlugin(ComponentsPlugin)).pipe(
+    switchMap((componentPlugin) => componentPlugin.getComponentSchemas()),
     tap((schemas) => {
       postMessage({
         type: MessageType.ComponentSchemas,
@@ -45,19 +44,19 @@ export class DefaultExperienceDataClientService
   );
   protected options$ = catchMessage(MessageType.ComponentType).pipe(
     tap((type) => {
-      const componentPlugin = this.appRef.findPlugin(ComponentsPlugin)!;
+      const componentPlugin = this.appRef.requirePlugin(ComponentsPlugin);
 
       postMessage({
         type: MessageType.Options,
         data: {
-          ...componentPlugin!.getComponentClass(type)?.[optionsKey],
+          ...componentPlugin.getComponentClass(type)?.[optionsKey],
           ...this.optionsService.getFeatureOptions(type),
         },
       });
     })
   );
   protected graphics$ = of(
-    this.appRef.findPlugin(ResourcePlugin)?.getResources()
+    this.appRef.requirePlugin(ResourcePlugin).getResources()
   ).pipe(
     tap((resources) => {
       postMessage({

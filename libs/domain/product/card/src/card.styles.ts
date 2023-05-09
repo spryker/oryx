@@ -13,13 +13,13 @@ export const ProductCardStyles = css`
     transition: all var(--oryx-transition-time);
     background-color: var(--oryx-color-canvas-100);
     border: var(--oryx-border-thin) solid var(--oryx-color-canvas-200);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-elevation-color-2);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation-2);
   }
 
   :host(:is(:hover, :focus-within)) {
     --effect: 10;
 
-    box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color-2);
+    box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation-2);
     border-color: var(--oryx-color-canvas-500);
   }
 

@@ -52,7 +52,7 @@ export const buttonStyles = css`
   }
 
   ::slotted(:hover:not(:active)) {
-    box-shadow: var(--oryx-elevation-1) var(--oryx-elevation-color);
+    box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation);
   }
 
   ::slotted(*:active) {

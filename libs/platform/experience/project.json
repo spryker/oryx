@@ -14,7 +14,12 @@
       }
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest"
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "coverage": {
+          "exclude": ["**/color"]
+        }
+      }
     },
     "paths": {
       "executor": "./tools/executors/components-library:paths"

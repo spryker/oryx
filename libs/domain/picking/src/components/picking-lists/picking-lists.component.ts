@@ -3,6 +3,7 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { PickingListStatus } from '../../models';
@@ -28,19 +29,25 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderPickingLists(): TemplateResult {
-    if (!this.pickingLists?.length) {
-      return this.renderEmptyLists();
-    }
+    return html`
+      <oryx-picking-lists-header></oryx-picking-lists-header>
 
-    return html`${repeat(
-      this.pickingLists!,
-      (pl) => pl.id,
-      (pl) =>
-        html`<oryx-picking-list-item
-          .pickingListId=${pl.id}
-          @oryx.show-note=${this.openCustomerNoteModal}
-        ></oryx-picking-list-item>`
-    )}`;
+      ${when(
+        !this.pickingLists?.length,
+        () => this.renderEmptyLists(),
+        () => html`<section>
+          ${repeat(
+            this.pickingLists!,
+            (pl) => pl.id,
+            (pl) =>
+              html`<oryx-picking-list-item
+                .pickingListId=${pl.id}
+                @oryx.show-note=${this.openCustomerNoteModal}
+              ></oryx-picking-list-item>`
+          )}
+        </section>`
+      )}
+    `;
   }
 
   protected renderCustomerNote(): TemplateResult {

@@ -34,6 +34,7 @@ export class SearchboxComponent
   @property() clearIcon?: string;
   @property() clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance;
+  @property() backIcon?: string;
 
   protected formControlController = new FormControlController(this);
   protected searchController = new SearchboxController(this);
