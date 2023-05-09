@@ -10,6 +10,7 @@ import {
   PickingListStatus,
   PickingOrderItem,
   PickingProduct,
+  PickingListError,
 } from '../../models';
 import { PickingHttpService } from '../picking-http.service';
 import { PickingListAdapter } from './picking-list.adapter';
@@ -41,12 +42,25 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     return this.pickingHttpService
       .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
-        map(({ data: updatedPickingListData }) => ({
-          ...pickingList,
-          status: updatedPickingListData.status as PickingListStatus,
-          createdAt: new Date(updatedPickingListData.createdAt),
-          updatedAt: new Date(updatedPickingListData.updatedAt),
-        }))
+        map((response) => {
+          if (response.errors) {
+            for (let i = 0; i < response.errors.length; i++) {
+              const error = response.errors[i];
+              const pickingListError = new Error(
+                error.message
+              ) as PickingListError;
+              pickingListError.status = error.status;
+              pickingListError.code = error.code;
+              throw pickingListError;
+            }
+          }
+          return {
+            ...pickingList,
+            status: response.data.status as PickingListStatus,
+            createdAt: new Date(response.data.createdAt),
+            updatedAt: new Date(response.data.updatedAt),
+          };
+        })
       );
   }
 
@@ -258,6 +272,7 @@ interface LinksObject {
 interface StartPickingListResponse {
   data: PatchPickingListData;
   links: LinksObject;
+  errors?: PickingListError[];
 }
 
 interface FinishPickingListResponse {

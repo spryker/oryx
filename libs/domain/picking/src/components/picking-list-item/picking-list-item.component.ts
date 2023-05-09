@@ -6,7 +6,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncValue, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
+import { of, catchError, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
@@ -33,6 +33,14 @@ export class PickingListItemComponent
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
           );
+        }),
+        catchError((e) => {
+          if (e.status === 409) {
+            this.dispatchEvent(
+              new CustomEvent('oryx.show-picking-in-progress')
+            );
+          }
+          return of(undefined);
         })
       )
       .subscribe();

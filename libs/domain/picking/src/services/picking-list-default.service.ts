@@ -16,8 +16,9 @@ export class PickingListDefaultService implements PickingListService {
   startPicking(pickingList: PickingList): Observable<PickingList | null> {
     this.upcomingPickingListId$.next(pickingList.id);
     return this.adapter.startPicking(pickingList).pipe(
-      catchError(() => {
+      catchError((e) => {
         this.upcomingPickingListId$.next(null);
+        throw e;
         return of(null);
       }),
       tap(() => this.upcomingPickingListId$.next(null))

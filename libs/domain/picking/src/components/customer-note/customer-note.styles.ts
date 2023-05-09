@@ -43,4 +43,8 @@ export const styles = css`
     position: sticky;
     inset-block-end: 30px;
   }
+
+  oryx-modal oryx-heading {
+    margin: 0;
+  }
 `;

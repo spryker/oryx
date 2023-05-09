@@ -17,6 +17,9 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
+  @state()
+  protected pickingInProgress?: boolean;
+
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
   });
@@ -25,7 +28,8 @@ export class PickingListsComponent extends LitElement {
   protected pickingLists = valueType(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()} `;
+    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()}
+    ${this.renderPickingInProgressModal()}`;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -43,6 +47,8 @@ export class PickingListsComponent extends LitElement {
               html`<oryx-picking-list-item
                 .pickingListId=${pl.id}
                 @oryx.show-note=${this.openCustomerNoteModal}
+                @oryx.show-picking-in-progress=${this
+                  .openPickingInProgressModal}
               ></oryx-picking-list-item>`
           )}
         </section>`
@@ -76,6 +82,25 @@ export class PickingListsComponent extends LitElement {
     `;
   }
 
+  protected renderPickingInProgressModal(): TemplateResult {
+    return html`<oryx-modal
+      ?open=${this.pickingInProgress}
+      enableFooter
+      footerButtonFullWidth
+      @oryx.close=${this.closePickingInProgressModal}
+    >
+      <oryx-heading slot="heading">
+        ${i18n('picking.list.picking-in-progress')}
+      </oryx-heading>
+      ${i18n('picking.list.already-in-progress')}
+      <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
+        <button @click=${this.closePickingInProgressModal}>
+          ${i18n('picking.list.back-to-pick-lists')}
+        </button>
+      </oryx-button>
+    </oryx-modal>`;
+  }
+
   protected renderEmptyLists(): TemplateResult {
     return html`
       <div class="no-items-fallback">
@@ -93,5 +118,13 @@ export class PickingListsComponent extends LitElement {
 
   protected closeCustomerNoteModal(): void {
     this.customerNote = undefined;
+  }
+
+  protected openPickingInProgressModal(event: CustomEvent): void {
+    this.pickingInProgress = true;
+  }
+
+  protected closePickingInProgressModal(): void {
+    this.pickingInProgress = false;
   }
 }
