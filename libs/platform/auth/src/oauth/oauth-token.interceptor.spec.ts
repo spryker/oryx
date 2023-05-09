@@ -97,27 +97,29 @@ describe('OauthTokenInterceptor', () => {
       expect(mockOauthService.refreshToken).toHaveBeenCalled();
     });
 
-    it('should call logout if OauthService.refreshToken throw error', async () => {
-      const mockHeadersMethods = {
-        has: vi.fn(),
-        delete: vi.fn(),
-      };
-      const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-      vi.stubGlobal('Headers', mockHeaders);
-      const mockUrl = 'mockUrl';
-      const headers = { param1: 'value1' };
-      const mockOptions = { body: 'value1', method: 'POST', headers };
-      const mockHandle = vi
-        .fn()
-        .mockReturnValueOnce(of({ ok: false, status: 401 }))
-        .mockReturnValue(of({ ok: true }));
-      mockOauthService.refreshToken.mockReturnValue(
-        throwError(() => new Error())
-      );
-      mockOauthService.logout.mockReturnValue(of(null));
-      service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
-      await nextFrame();
-      expect(mockOauthService.logout).toHaveBeenCalled();
+    describe('when OauthService.refreshToken throw error', () => {
+      it('should call logout', async () => {
+        const mockHeadersMethods = {
+          has: vi.fn(),
+          delete: vi.fn(),
+        };
+        const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
+        vi.stubGlobal('Headers', mockHeaders);
+        const mockUrl = 'mockUrl';
+        const headers = { param1: 'value1' };
+        const mockOptions = { body: 'value1', method: 'POST', headers };
+        const mockHandle = vi
+          .fn()
+          .mockReturnValueOnce(of({ ok: false, status: 401 }))
+          .mockReturnValue(of({ ok: true }));
+        mockOauthService.refreshToken.mockReturnValue(
+          throwError(() => new Error())
+        );
+        mockOauthService.logout.mockReturnValue(of(null));
+        service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
+        await nextFrame();
+        expect(mockOauthService.logout).toHaveBeenCalled();
+      });
     });
   });
 });
