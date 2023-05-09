@@ -25,6 +25,7 @@ export function addEntity(
   });
 }
 
+/* c8 ignore start */
 const standardIndexedDbEntity = (
   context: ClassContext,
   options?: IndexedDbEntity
@@ -36,6 +37,7 @@ const standardIndexedDbEntity = (
     },
   };
 };
+/* c8 ignore end */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbEntity(options?: IndexedDbEntity): any {

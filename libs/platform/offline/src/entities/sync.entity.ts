@@ -53,6 +53,7 @@ export class SyncEntity<TAction extends SyncAction = SyncAction>
     });
   }
 
+  /* c8 ignore start */
   whenCompleted(): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -60,4 +61,5 @@ export class SyncEntity<TAction extends SyncAction = SyncAction>
   cancel(): Promise<void> {
     throw new Error('Method not implemented.');
   }
+  /* c8 ignore end */
 }

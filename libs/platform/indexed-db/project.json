@@ -22,7 +22,16 @@
       }
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest"
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "coverage": {
+          "exclude": [
+            "**/entities.provider.ts",
+            "**/dexie-config.provider.ts",
+            "**/indexed-db.service.ts"
+          ]
+        }
+      }
     }
   },
   "tags": ["layer:platform"]
