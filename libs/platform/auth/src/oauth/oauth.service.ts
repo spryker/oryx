@@ -74,6 +74,7 @@ export class OauthService implements AuthService, AuthTokenService {
       this.isAuthenticated().pipe(
         take(1),
         switchMap((isAuthenticated) => {
+          console.log(isAuthenticated);
           if (isAuthenticated) {
             return throwError(
               () => new Error(`OauthService: Already authenticated!`)
@@ -155,8 +156,9 @@ export class OauthService implements AuthService, AuthTokenService {
     const config = this.findProviderConfig(providerId);
 
     if (!config) {
-      throw new Error(
-        `OauthService: Unknown Oauth provider ID '${providerId}'!`
+      return throwError(
+        () =>
+          new Error(`OauthService: Unknown Oauth provider ID '${providerId}'!`)
       );
     }
 
