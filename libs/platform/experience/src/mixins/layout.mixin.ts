@@ -59,22 +59,13 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutStyles = computed(() => {
       const { rules } = this.$options();
-      const props = [
+      const props: (keyof LayoutProperties)[] = [
         'layout',
         'sticky',
         'bleed',
         'overlap',
-      ] as (keyof LayoutProperties)[];
-
-      const componentStyles = this.layoutController.collectStyles(
-        props,
-        rules,
-        this.uid
-      );
-
-      return this.layoutController
-        .getStyles(props, rules)
-        .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));
+      ];
+      return this.layoutController.getStyles(props, rules);
     });
   }
 
