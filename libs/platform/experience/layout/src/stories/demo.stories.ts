@@ -21,14 +21,6 @@ export default {
     paddingBlock: '0',
   },
   argTypes: {
-    // layoutCols: {
-    //   control: { type: 'number' },
-    //   table: { category: 'DesignTokens' },
-    // },
-    // layoutFactor: {
-    //   control: { type: 'number' },
-    //   table: { category: 'DesignTokens' },
-    // },
     layout: {
       options: ['list', 'column', 'split-column', 'carousel', 'grid', 'flex'],
       control: { type: 'select' },

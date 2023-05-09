@@ -125,14 +125,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add(
       {
-        // '--cols': data.columnCount,
         '--split-column-factor': data.splitColumnFactor,
         '--col-pos': data.gridColumn,
         '--row-pos': data.gridRow,
-        // '--span': data.span,
         '--col-span': data.colSpan,
         '--row-span': data.rowSpan,
-        '--rotate': data.rotate, // TODO
+        '--rotate': data.rotate,
         'z-index': data.zIndex,
       },
       { omitUnit: true }
