@@ -74,7 +74,7 @@ describe('AuthTokenInterceptor', () => {
       );
     });
 
-    it('should not add new headers if token is not anon type', () => {
+    it('should not add new headers if token is not bearer type', () => {
       const mockHeaders = vi.fn();
       vi.stubGlobal('Headers', mockHeaders);
       const headers = { param1: 'value1' };
