@@ -23,6 +23,7 @@ export declare class LayoutMixinInterface {
   layout?: CompositionLayout;
   bleed?: boolean;
   sticky?: boolean;
+  overlap?: boolean;
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
@@ -46,6 +47,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty() layout?: CompositionLayout;
     @signalProperty({ type: Boolean }) bleed?: boolean;
     @signalProperty({ type: Boolean }) sticky?: boolean;
+    @signalProperty({ type: Boolean }) overlap?: boolean;
 
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -57,7 +59,13 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutStyles = computed(() => {
       const { rules } = this.$options();
-      const props = ['layout', 'sticky', 'bleed'] as (keyof LayoutProperties)[];
+      const props = [
+        'layout',
+        'sticky',
+        'bleed',
+        'overlap',
+      ] as (keyof LayoutProperties)[];
+
       const componentStyles = this.layoutController.collectStyles(
         props,
         rules,
@@ -65,7 +73,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       );
 
       return this.layoutController
-        .getStyles(['layout', 'sticky', 'bleed'], rules)
+        .getStyles(props, rules)
         .pipe(map((layoutStyles) => `${layoutStyles}\n${componentStyles}`));
     });
   }

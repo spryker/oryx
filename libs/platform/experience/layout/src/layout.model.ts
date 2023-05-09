@@ -38,6 +38,8 @@ export interface LayoutProperties {
    * the top can be configured to be 100%.
    */
   sticky?: boolean;
+
+  overlap?: boolean;
 }
 
 type ScreenLayoutProperties = {

@@ -63,6 +63,13 @@ export class DefaultLayoutService implements LayoutService {
           )
         );
 
+      case 'overlap':
+        return ssrAwaiter(
+          import('./styles/overlap.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
       case CompositionLayout.Column:
         return ssrAwaiter(
           import('./styles/column-layout.styles').then((m) =>
