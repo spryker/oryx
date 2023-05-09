@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
-  CheckoutProcessState,
   CheckoutService,
+  CheckoutState,
   CheckoutStepCallback,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -19,9 +19,7 @@ class MockCartService implements Partial<CartService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutOrchestratorComponent', () => {
@@ -86,9 +84,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is not available', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(
-        of(CheckoutProcessState.NotAvailable)
-      );
+      checkoutService.getState.mockReturnValue(of(CheckoutState.NotAvailable));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
@@ -101,9 +97,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is available', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(
-        of(CheckoutProcessState.Ready)
-      );
+      checkoutService.getState.mockReturnValue(of(CheckoutState.Ready));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );

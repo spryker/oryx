@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
-  CheckoutProcessState,
   CheckoutService,
+  CheckoutState,
   CheckoutStepCallback,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -19,9 +19,7 @@ class MockAddressService implements Partial<AddressService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutDeliveryComponent', () => {

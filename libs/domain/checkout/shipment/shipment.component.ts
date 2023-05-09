@@ -1,13 +1,20 @@
 import {
+  Checkout,
   CheckoutForm,
   CheckoutMixin,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  effect,
+  hydratable,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutDataService } from '../src/services/checkout-data.service';
 import { styles } from './shipment.styles';
@@ -21,12 +28,21 @@ export class CheckoutShipmentComponent
   static styles = styles;
 
   protected dataService = resolve(CheckoutDataService);
-
   protected shipments = signal(this.dataService.get('shipments'));
   protected selected = signal(this.dataService.selected('shipment'));
 
   @query('form')
   protected form?: HTMLFormElement;
+
+  @state()
+  selectedMethod?: Checkout['shipment'] | null;
+
+  protected eff = effect(() => {
+    // we need to set the validity when the data is resolvd from storage
+    if (!this.selectedMethod && this.selected())
+      this.dataService.set('shipment', true);
+    this.selectedMethod = this.selected();
+  });
 
   validate(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
@@ -56,7 +72,6 @@ export class CheckoutShipmentComponent
 
   protected renderMethod(method: ShipmentMethod): TemplateResult {
     const isSelected = this.isSelected(method.id);
-
     return html`<oryx-tile ?selected=${isSelected}>
       <oryx-radio>
         <input
@@ -68,7 +83,7 @@ export class CheckoutShipmentComponent
           @change=${this.onChange}
         />
         <div>
-          <span>${method.name}</span>
+          <span>${method.name} ${isSelected}</span>
           <oryx-price .value=${method.price}></oryx-price>
         </div>
         <oryx-date
@@ -80,31 +95,32 @@ export class CheckoutShipmentComponent
     </oryx-tile>`;
   }
 
+  /**
+   * Evaluates whether the given method id is the seleced method.
+   * If there's no method selected, a method can be auto selected.
+   */
   protected isSelected(methodId: string): boolean {
-    const selected = this.selected();
-    if (!selected) {
-      this.autoSelect(methodId);
-      return true; // stan: I wasn't expected this is needed
-    }
-    return selected?.idShipmentMethod === methodId;
+    if (!this.selectedMethod) this.autoSelect(methodId);
+    return this.selectedMethod?.idShipmentMethod === methodId;
   }
 
   protected onChange(e: Event): void {
-    const id = (e.target as HTMLInputElement).value;
-    this.select(id);
-  }
-
-  protected select(id?: string): void {
-    const data = id ? { idShipmentMethod: id } : null;
-    this.dataService.select('shipment', data, true);
+    this.select((e.target as HTMLInputElement).value);
   }
 
   // TODO: consider fallback strategies: none, first, cheapest, fastest
   protected autoSelect(methodId: string): void {
-    const carriers = this.shipments()?.[0]?.carriers;
-    if (methodId === carriers?.[0]?.shipmentMethods?.[0]?.id) {
+    if (
+      methodId ===
+      this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
+    ) {
       this.select(methodId);
     }
+  }
+
+  protected select(id?: string): void {
+    const data = id ? { idShipmentMethod: id } : null;
+    this.dataService.set('shipment', !!this.form?.checkValidity, data);
   }
 
   protected renderEmpty(): TemplateResult {

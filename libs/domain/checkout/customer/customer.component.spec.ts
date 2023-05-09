@@ -8,11 +8,11 @@ import { User, UserService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { Observable, of, take } from 'rxjs';
 import { CheckoutGuestComponent } from '../guest';
-import { CheckoutProcessState } from '../src/models';
+import { CheckoutState } from '../src/models';
 import { CheckoutService } from '../src/services';
-import { CheckoutAuthComponent } from './auth.component';
-import { checkoutAuthComponent } from './auth.def';
-import { CheckoutAuthComponentOptions } from './auth.model';
+import { CheckoutCustomerComponent } from './customer.component';
+import { checkoutCustomerComponent } from './customer.def';
+import { CheckoutAuthComponentOptions } from './customer.model';
 
 class MockUserService implements Partial<UserService> {
   getUser = vi.fn();
@@ -32,13 +32,11 @@ export class MockRouterService implements Partial<RouterService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutAuthComponent', () => {
-  let element: CheckoutAuthComponent;
+  let element: CheckoutCustomerComponent;
   let authService: MockAuthService;
   let checkoutService: MockCheckoutService;
   let userService: MockUserService;
@@ -47,7 +45,7 @@ describe('CheckoutAuthComponent', () => {
   let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
-    await useComponent(checkoutAuthComponent);
+    await useComponent(checkoutCustomerComponent);
   });
 
   beforeEach(() => {
@@ -96,7 +94,7 @@ describe('CheckoutAuthComponent', () => {
     });
 
     it('should be an instance of ', () => {
-      expect(element).toBeInstanceOf(CheckoutAuthComponent);
+      expect(element).toBeInstanceOf(CheckoutCustomerComponent);
     });
 
     it('should pass the a11y audit', async () => {

@@ -6,7 +6,7 @@ import { AddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 @signalAware()
 export class CheckoutAddressComponent
@@ -16,6 +16,7 @@ export class CheckoutAddressComponent
   protected addressService = resolve(AddressService);
 
   protected addresses = signal(this.addressService.getAddresses());
+  @property({ type: Object }) address?: Address;
 
   @state()
   protected selected: Address | null = null;
@@ -31,17 +32,6 @@ export class CheckoutAddressComponent
     return !!form?.checkValidity();
   }
 
-  // collectData(): Address | null {
-  //   const form = this.addressComponent?.getForm();
-  //   if (!this.selected && !form?.checkValidity()) {
-  //     form?.reportValidity();
-  //     return null;
-  //   }
-  //   return form
-  //     ? (Object.fromEntries(new FormData(form).entries()) as unknown as Address)
-  //     : this.selected;
-  // }
-
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)
       return html`<oryx-address-list
@@ -49,10 +39,19 @@ export class CheckoutAddressComponent
         @oryx.select=${this.onSelect}
       ></oryx-address-list>`;
 
-    return html`<oryx-address-form></oryx-address-form>`;
+    return html`<oryx-address-form
+      .address=${this.address}
+    ></oryx-address-form>`;
   }
 
   protected onSelect(e: CustomEvent): void {
     this.selected = e.detail.address;
+    this.dispatchEvent(
+      new CustomEvent('selectedAddress', {
+        detail: { data: this.selected, valid: true },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }

@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
   Carrier,
-  CheckoutProcessState,
   CheckoutService,
   CheckoutShipmentService,
+  CheckoutState,
   CheckoutStepCallback,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
@@ -23,9 +23,7 @@ class MockCheckoutShipmentService implements Partial<CheckoutShipmentService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutShipmentComponent', () => {

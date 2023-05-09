@@ -1,46 +1,66 @@
-import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { BehaviorSubject, EMPTY, map, Observable, of, switchMap } from 'rxjs';
-import { CheckoutProcessState, CheckoutResponse } from '../models';
+import { subscribeReplay } from '@spryker-oryx/utilities';
+import {
+  BehaviorSubject,
+  EMPTY,
+  finalize,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
+import { Checkout, CheckoutResponse, CheckoutState } from '../models';
 import { CheckoutAdapter } from './adapter';
+import { CheckoutDataService } from './checkout-data.service';
 import { CheckoutService } from './checkout.service';
 
 export class DefaultCheckoutService implements CheckoutService {
-  protected state = new BehaviorSubject(CheckoutProcessState.Initializing);
+  protected state = new BehaviorSubject(CheckoutState.Ready);
+  protected state$ = this.dataService
+    .isReady()
+    .pipe(
+      switchMap((isReady) => (isReady ? this.state : of(CheckoutState.Empty)))
+    );
 
   constructor(
-    protected cartService = inject(CartService),
+    protected dataService = inject(CheckoutDataService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(SemanticLinkService),
     protected orderService = inject(OrderService)
   ) {}
 
-  /**
-   * @override when there are not items in cart, the state will always become
-   * `CheckoutProcessState.NotAvailable`.
-   */
-  getProcessState(): Observable<CheckoutProcessState> {
-    return this.cartService
-      .isEmpty()
-      .pipe(
-        switchMap((isEmpty) =>
-          this.state.pipe(
-            map((state) =>
-              isEmpty ? CheckoutProcessState.NotAvailable : state
-            )
-          )
-        )
-      );
+  getState(): Observable<CheckoutState> {
+    return this.state$;
   }
 
   placeOrder(): Observable<CheckoutResponse> {
-    this.state.next(CheckoutProcessState.Validate);
-
-    // TODO: observe checkout data, then move to ready or done
-    setTimeout(() => this.state.next(CheckoutProcessState.Ready), 500);
-    return EMPTY;
+    this.state.next(CheckoutState.Busy);
+    return subscribeReplay(
+      this.dataService.collect().pipe(
+        take(1),
+        switchMap((data) => {
+          if (data) {
+            return this.adapter
+              .placeOrder({ attributes: data as Checkout })
+              .pipe(
+                switchMap((response) => this.resolveRedirect(response)),
+                tap((response) => {
+                  this.postCheckout(response);
+                  this.dataService.clear();
+                }),
+                finalize(() => this.state.next(CheckoutState.Ready))
+              );
+          } else {
+            this.state.next(CheckoutState.Invalid);
+            return EMPTY;
+          }
+        })
+      )
+    );
   }
 
   protected resolveRedirect(
@@ -57,32 +77,12 @@ export class DefaultCheckoutService implements CheckoutService {
   }
 
   /**
-   * Clears the cart, stores the order in memory.
+   * Stores the order in memory.
+   *
+   * TOOD: consider doing this in a lower layer.
    */
   protected postCheckout(response: CheckoutResponse): void {
-    this.cartService.reload();
-    if (response.orders) {
+    if (response.orders?.length)
       this.orderService.storeLastOrder(response.orders[0]);
-    }
   }
-
-  /**
-   * Temporary solution
-   */
-  // protected amendCheckoutData(data: Checkout): Checkout {
-  //   const attributes = {
-  //     ...data,
-  //   };
-  //   if (attributes.shippingAddress) {
-  //     // temporarily till we add billingAddress component
-  //     attributes.billingAddress = attributes.shippingAddress;
-  //   }
-  //   if (
-  //     !attributes.customer?.salutation &&
-  //     attributes.shippingAddress?.salutation
-  //   ) {
-  //     attributes.customer.salutation = attributes.shippingAddress?.salutation;
-  //   }
-  //   return attributes;
-  // }
 }

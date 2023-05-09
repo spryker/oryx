@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
   CheckoutPaymentService,
-  CheckoutProcessState,
   CheckoutService,
+  CheckoutState,
   CheckoutStepCallback,
   PaymentMethod,
 } from '@spryker-oryx/checkout';
@@ -22,9 +22,7 @@ class MockCheckoutPaymentService implements Partial<CheckoutPaymentService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutPaymentComponent', () => {

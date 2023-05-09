@@ -9,7 +9,7 @@ export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
   protected router = resolve(RouterService);
 
   protected override render(): TemplateResult | void {
-    if (!this.isAvailable()) return;
+    if (this.isEmpty()) return;
 
     return html`<oryx-button
       ?inert=${this.isBusy()}

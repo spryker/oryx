@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
-  CheckoutProcessState,
   CheckoutResponse,
   CheckoutService,
+  CheckoutState,
 } from '@spryker-oryx/checkout';
 import { CheckoutPlaceOrderComponent } from '@spryker-oryx/checkout/place-order';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -21,9 +21,7 @@ export class MockRouterService implements Partial<RouterService> {
 }
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
   placeOrder = vi.fn().mockReturnValue(of());
 }
 

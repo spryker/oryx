@@ -21,15 +21,27 @@ import {
 import { CheckoutAdapter } from './adapter';
 import { CheckoutDataService } from './checkout-data.service';
 
+// TODO: on logout, we should clear the data (could be part of logout -> storage)
 export class DefaultCheckoutDataService
   implements CheckoutDataService<CheckoutData, Checkout>
 {
+  protected subject = new BehaviorSubject<
+    Map<
+      keyof Checkout,
+      { valid: boolean; data: Checkout[keyof Checkout] | null }
+    >
+  >(new Map());
+
   constructor(
     protected adapter = inject(CheckoutAdapter),
     protected cartService = inject(CartService),
     protected storage = inject(StorageService)
   ) {
     this.restore();
+  }
+
+  isReady(): Observable<boolean> {
+    return this.cartService.isEmpty().pipe(map((isEmpty) => isEmpty === false));
   }
 
   /**
@@ -53,7 +65,7 @@ export class DefaultCheckoutDataService
               for (const [key, value] of entries) {
                 map.set(key as keyof Checkout, {
                   data: value as Checkout[keyof Checkout] | null,
-                  valid: true,
+                  valid: false,
                 });
               }
             });
@@ -64,24 +76,11 @@ export class DefaultCheckoutDataService
       .subscribe();
   }
 
-  protected subject = new BehaviorSubject<
-    Map<
-      keyof Checkout,
-      { valid: boolean; data: Checkout[keyof Checkout] | null }
-    >
-  >(new Map());
-
-  // protected collected = new Map<
-  //   keyof Checkout,
-  //   { valid: boolean; data: Checkout[keyof Checkout] | null }
-  // >();
-
-  protected cartId = this.cartService.getCart().pipe(
+  protected cartId = this.cartService.getCart({}).pipe(
     map((cart) => cart?.id),
     tap((cartId) => {
       const data = cartId ?? null;
-      this.select('cartId', data, !!data);
-      // this.collected.set('cartId', { data, valid: !!cartId });
+      this.set('cartId', !!data, data);
     })
   );
 
@@ -105,20 +104,36 @@ export class DefaultCheckoutDataService
   );
 
   get<K extends keyof CheckoutData>(
-    field: K
+    key: K
   ): Observable<CheckoutData[K] | undefined> {
     return this.load$.pipe(
-      map((data) => data?.[field] as CheckoutData[K] | undefined)
+      map((data) => data?.[key] as CheckoutData[K] | undefined)
     );
   }
 
-  select<K extends keyof Checkout>(
+  collect(): Observable<Partial<Checkout> | null> {
+    return this.subject.pipe(
+      map((data) => {
+        let invalid = false;
+        data.forEach((item) => {
+          if (!item.valid) invalid = true;
+        });
+        return invalid ? null : this.populateData(this.merge(data));
+      })
+    );
+  }
+
+  set<K extends keyof Checkout>(
     key: K,
-    data: Checkout[K] | null,
-    valid: boolean
+    valid: boolean,
+    data?: Checkout[K] | null
   ): void {
     const collected = this.subject.value;
-    collected.set(key, { data, valid });
+    const item = collected.get(key);
+    if (item) item.valid = valid;
+    if (item && data !== undefined) item.data = data;
+    if (!item) collected.set(key, { valid, data });
+
     this.subject.next(collected);
     this.storage.set(
       checkoutDataStorageKey,
@@ -127,50 +142,48 @@ export class DefaultCheckoutDataService
     );
   }
 
-  /**
-   * resolves the selected data for the given key from the collected data
-   */
   selected<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null> {
     return this.subject.pipe(
-      map((collected) => collected.get(key)?.data as Checkout[K] | null)
+      map((data) => {
+        if (!data.get(key)) this.set(key, false, null);
+        return data.get(key)?.data as Checkout[K] | null;
+      })
     );
-    // return this.storage
-    //   .get<Checkout>(checkoutDataStorageKey, StorageType.SESSION)
-    //   .pipe(
-    //     tap((stored) => {
-    //       console.log('stored', stored, key);
-    //       if (stored?.[key])
-    //         this.collected.set(key, { data: stored[key], valid: true });
-    //     }),
-    //     switchMap(() =>
-    //       this.subject.pipe(
-    //         map((collected) => collected.get(key)?.data as Checkout[K] | null)
-    //       )
-    //     )
-    //   );
-
-    // const stored = this.storage.get(checkoutDataStorageKey, StorageType.SESSION);
-    // return of((this.collected.get(key)?.data ?? null) as Checkout[K] | null);
   }
 
-  // protected store(): void {
-  //   // collect all data
-  //   console.log(this.merge());
-  //   this.storage.set(checkoutDataStorageKey, this.merge(), StorageType.SESSION);
-  // }
-
   protected merge(
-    collected: Map<
+    data: Map<
       keyof Checkout,
       { valid: boolean; data: Checkout[keyof Checkout] | null }
     >
-  ): Checkout {
-    const result: Checkout = {} as Checkout; // create an empty object of type T
-    collected.forEach((item, key) => {
-      if (item.valid && item.data) {
-        Object.assign(result, { [key]: item.data });
-      }
+  ): Partial<Checkout> {
+    const result: Partial<Checkout> = {};
+    data.forEach((item, key) => {
+      Object.assign(result, { [key]: item.data });
     });
     return result;
+  }
+
+  protected populateData(inp: Partial<Checkout>): Partial<Checkout> {
+    const data = { ...inp };
+    if (data.customer) {
+      if (!data.customer.salutation && data.shippingAddress?.salutation)
+        data.customer.salutation = data.shippingAddress.salutation;
+      if (!data.customer.lastName && data.shippingAddress?.lastName)
+        data.customer.lastName = data.shippingAddress.lastName;
+      if (!data.customer.firstName && data.shippingAddress?.firstName)
+        data.customer.firstName = data.shippingAddress.firstName;
+    }
+    // tmp: copy the billing address from the shipping address for
+    // as long as we have not implemented the component
+    data.billingAddress = data.shippingAddress;
+
+    return data;
+  }
+
+  clear(): void {
+    this.storage.remove(checkoutDataStorageKey, StorageType.SESSION);
+    this.subject.next(new Map());
+    this.cartService.reload();
   }
 }

@@ -11,15 +11,15 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query } from 'lit/decorators.js';
-import { map, Observable } from 'rxjs';
+import { query, state } from 'lit/decorators.js';
 import { CheckoutGuestComponent } from '../guest';
-import { CheckoutAuthComponentOptions } from './auth.model';
-import { styles } from './auth.styles';
+import { CheckoutDataService } from '../src/services/checkout-data.service';
+import { CheckoutAuthComponentOptions } from './customer.model';
+import { styles } from './customer.styles';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydratable('window:load')
-export class CheckoutAuthComponent
+export class CheckoutCustomerComponent
   extends CheckoutMixin(ContentMixin<CheckoutAuthComponentOptions>(LitElement))
   implements CheckoutForm
 {
@@ -36,9 +36,6 @@ export class CheckoutAuthComponent
     this.linkService.get({ type: SemanticLinkType.Login })
   );
 
-  @query('oryx-checkout-guest')
-  protected guest?: CheckoutGuestComponent;
-
   // TODO: we need component cycle integration with effect!
   protected eff = effect(() => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
@@ -47,38 +44,32 @@ export class CheckoutAuthComponent
     }
   });
 
-  validate(report: boolean): boolean {
-    return !!this.guest?.validate(report);
+  protected dataService = resolve(CheckoutDataService);
+  protected customer = signal(this.userService.getUser());
+  protected storeCustomer = effect(() => {
+    const customer = this.customer();
+    if (customer) {
+      const { email, salutation, firstName, lastName } =
+        customer as ContactDetails;
+      this.hasCustomerData = true;
+      this.dataService.set('customer', this.hasCustomerData, {
+        email,
+        salutation,
+        firstName,
+        lastName,
+      });
+    }
+  });
+
+  @state()
+  protected hasCustomerData = false;
+
+  @query('oryx-checkout-guest')
+  protected guest?: CheckoutGuestComponent;
+
+  validate(report?: boolean): boolean {
+    return this.hasCustomerData || !!this.guest?.validate(report);
   }
-
-  // connectedCallback(): void {
-  //   super.connectedCallback();
-
-  //   this.addEventListener('validate', () => {
-  //     console.log('validate form!');
-  //     this.guest?.collectData();
-  //     // optionally: update form
-  //     // this.form?.reportValidity();
-  //   });
-
-  //   // this.checkoutService.register({
-  //   //   id: 'customer',
-  //   //   collectDataCallback: () => this.collectData(),
-  //   //   order: 1,
-  //   // });
-
-  //   // this.checkoutService.getValidityTrigger('customer').pipe(
-  //   //   // TODO: invoke form validity
-  //   //   map(() => true),
-  //   //   tap((result) => console.log(result))
-  //   // );
-
-  //   // this.checkoutService.onValid('customer').pipe(
-  //   //   // TODO: invoke form validity
-  //   //   map(() => true),
-  //   //   tap((result) => console.log(result))
-  //   // );
-  // }
 
   protected override render(): TemplateResult | void {
     if (this.isAuthenticated()) {
@@ -86,13 +77,5 @@ export class CheckoutAuthComponent
     } else if (this.$options().enableGuestCheckout) {
       return html`<oryx-checkout-guest></oryx-checkout-guest>`;
     }
-  }
-
-  protected collectData(): Observable<ContactDetails | null> {
-    return this.userService
-      .getUser()
-      .pipe(
-        map((user) => (user as ContactDetails) ?? this.guest?.collectData())
-      );
   }
 }

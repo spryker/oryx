@@ -1,12 +1,13 @@
 import {
+  Checkout,
   CheckoutForm,
   CheckoutMixin,
   PaymentMethod,
 } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
 import { CheckoutDataService } from '../src/services/checkout-data.service';
 import { styles } from './payment.styles';
 
@@ -18,12 +19,21 @@ export class CheckoutPaymentComponent
   static styles = styles;
 
   protected dataService = resolve(CheckoutDataService);
-
   protected paymentMethods = signal(this.dataService.get('paymentMethods'));
   protected selected = signal(this.dataService.selected('payments'));
 
+  @state()
+  selectedMethod?: Checkout['payments'] | null;
+
   @query('form')
   protected form?: HTMLFormElement;
+
+  protected eff = effect(() => {
+    // we need to set the validity when the data is resolvd from storage
+    if (!this.selectedMethod && this.selected())
+      this.dataService.set('payments', true);
+    this.selectedMethod = this.selected();
+  });
 
   validate(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
@@ -63,11 +73,12 @@ export class CheckoutPaymentComponent
     </oryx-tile>`;
   }
 
+  /**
+   * Evaluates whether the given method id is the seleced method.
+   * If there's no method selected, a method can be auto selected.
+   */
   protected isSelected(methodId: string): boolean {
-    if (!this.selected()) {
-      this.autoSelect(methodId);
-      return true; // stan: I wasn't expected this is needed
-    }
+    if (!this.selectedMethod) this.autoSelect(methodId);
     return this.selected()?.[0]?.id === methodId;
   }
 
@@ -76,17 +87,17 @@ export class CheckoutPaymentComponent
     this.select(id);
   }
 
-  protected select(id?: string): void {
-    const method = this.paymentMethods()?.find((method) => method.id === id);
-    const data = method ? [method] : null;
-    this.dataService.select('payments', data, true);
-  }
-
   // TODO: consider fallback strategies: none, first, cheapest, fastest
   protected autoSelect(methodId: string): void {
     if (methodId === this.paymentMethods()?.[0]?.id) {
       this.select(methodId);
     }
+  }
+
+  protected select(id?: string): void {
+    const method = this.paymentMethods()?.find((method) => method.id === id);
+    const data = method ? [method] : null;
+    this.dataService.set('payments', !!this.form?.checkValidity, data);
   }
 
   protected renderEmpty(): TemplateResult {

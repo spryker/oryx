@@ -1,5 +1,5 @@
 export * from '../address/address.def';
-export * from '../auth/auth.def';
+export * from '../customer/customer.def';
 export * from '../delivery/delivery.def';
 export * from '../guest/guest.def';
 export * from '../link/link.def';

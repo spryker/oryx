@@ -5,10 +5,17 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  effect,
+  hydratable,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query } from 'lit/decorators.js';
-import { CheckoutForm, ContactDetails } from '../src/models';
+import { query, state } from 'lit/decorators.js';
+import { Checkout, CheckoutForm, ContactDetails } from '../src/models';
+import { CheckoutDataService } from '../src/services/checkout-data.service';
 
 @signalAware()
 @hydratable('window:load')
@@ -19,6 +26,24 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
   );
+
+  protected dataService = resolve(CheckoutDataService);
+  protected selected = signal(this.dataService.selected('customer'));
+
+  @state()
+  selectedCustomer?: Checkout['customer'] | null;
+
+  protected eff = effect(() => {
+    // we need to set the validity when the data is resolvd from storage
+    if (!this.selectedCustomer && this.selected()) {
+      setTimeout(() => {
+        const input = this.input();
+        if (input) input.value = this.selectedCustomer?.email ?? '';
+        this.dataService.set('customer', !!this.form?.checkValidity());
+      }, 0);
+    }
+    this.selectedCustomer = this.selected();
+  });
 
   @query('form')
   protected form?: HTMLFormElement;
@@ -42,24 +67,28 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
           </a>
         </oryx-link>
       </p>
-      <form>${this.fieldRenderer.buildForm(this.fields)}</form>
+      <form @change=${this.onChange}>
+        ${this.fieldRenderer.buildForm(this.fields)}
+      </form>
     `;
   }
 
-  validate(report: boolean): boolean {
-    if (!this.form?.checkValidity() && report) {
+  validate(report?: boolean): boolean {
+    if (report) {
+      console.log('guest validity?');
       this.form?.reportValidity();
     }
     return !!this.form?.checkValidity();
   }
 
-  collectData(): ContactDetails | null {
-    if (!this.form?.checkValidity()) {
-      this.form?.reportValidity();
-      return null;
-    }
-    return Object.fromEntries(
-      new FormData(this.form).entries()
-    ) as unknown as ContactDetails;
+  protected onChange(ev: Event): void {
+    console.log('onChange guest?');
+    this.dataService.set('customer', !!this.form?.checkValidity(), {
+      email: this.input()?.value,
+    } as ContactDetails);
+  }
+
+  protected input(): HTMLInputElement | undefined | null {
+    return this.form?.querySelector('input');
   }
 }

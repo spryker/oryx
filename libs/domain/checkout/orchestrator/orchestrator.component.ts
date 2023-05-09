@@ -11,7 +11,7 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
   static styles = [compositionStyles];
 
   protected eff = effect(() => {
-    if (this.isValidating()) {
+    if (this.isInvalid()) {
       const showReport = true;
       let isValid: boolean;
       this.components().forEach((el) => {
@@ -24,7 +24,7 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
   });
 
   protected override render(): TemplateResult | void {
-    if (!this.isAvailable()) return;
+    if (this.isEmpty()) return;
 
     return html`
       <experience-composition .uid=${this.uid}></experience-composition>

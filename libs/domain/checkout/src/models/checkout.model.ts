@@ -1,13 +1,37 @@
 import { OrderData } from '@spryker-oryx/order';
 import { Observable, Subject } from 'rxjs';
 
-export const enum CheckoutProcessState {
-  Initializing = 'initializing',
-  NotAvailable = 'n/a',
+export const enum CheckoutState {
+  Empty = 'empty',
   Ready = 'ready',
-  Validate = 'validate',
   Busy = 'busy',
+  Invalid = 'invalid',
+
+  // Initializing = 'initializing',
+  // NotAvailable = 'n/a',
+
+  // Validate = 'validate',
+  // Busy = 'busy',
 }
+
+// export const enum CheckoutProcess {
+//   /**
+//    * Unavailable since there's no cart to checkout.
+//    */
+//   Unavailable,
+//   /**
+//    * Ready to collect data
+//    */
+//   Ready,
+//   /**
+//    * Triggered to validate the checkout data before placing the .
+//    */
+//   Validate,
+//   /**
+//    * The data is complete, ready to plate the order.
+//    */
+//   Complete,
+// }
 
 export interface CheckoutStepCallback<T> {
   id: keyof T;

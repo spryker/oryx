@@ -27,10 +27,10 @@ export const CheckoutPage: StaticComponent = {
         {
           type: 'oryx-checkout-orchestrator',
           components: [
-            { type: 'oryx-checkout-auth' },
-            { type: 'oryx-checkout-payment' },
+            { type: 'oryx-checkout-customer' },
+            { type: 'oryx-checkout-delivery' },
             { type: 'oryx-checkout-shipment' },
-            // { type: 'oryx-checkout-delivery' },
+            { type: 'oryx-checkout-payment' },
           ],
           options: { data: { rules: [{ layout: 'list' }] } },
         },

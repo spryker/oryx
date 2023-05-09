@@ -1,10 +1,10 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { CheckoutAuthComponent } from './auth.component';
+import { CheckoutCustomerComponent } from './customer.component';
 
-export const checkoutAuthComponentSchema: ContentComponentSchema<CheckoutAuthComponent> =
+export const checkoutCustomerComponentSchema: ContentComponentSchema<CheckoutCustomerComponent> =
   {
-    name: 'Checkout auth',
+    name: 'Checkout customer',
     group: 'Checkout',
     options: {
       enableGuestCheckout: {
