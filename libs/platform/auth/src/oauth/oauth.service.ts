@@ -74,7 +74,6 @@ export class OauthService implements AuthService, AuthTokenService {
       this.isAuthenticated().pipe(
         take(1),
         switchMap((isAuthenticated) => {
-          console.log(isAuthenticated);
           if (isAuthenticated) {
             return throwError(
               () => new Error(`OauthService: Already authenticated!`)
