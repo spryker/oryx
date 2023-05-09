@@ -12,7 +12,7 @@ export const CartPage: StaticComponent = {
       rules: [
         {
           layout: 'split-column',
-          splitColumnFactor: 0.66,
+          splitColumnFactor: 2 / 3,
           padding: '30px 0 0',
         },
         { breakpoint: 'sm', gap: '0' },

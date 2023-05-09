@@ -17,7 +17,7 @@ const Template: Story = (): TemplateResult => {
 
       <oryx-layout
         layout="split-column"
-        style="--split-column-factor: calc(2/3)"
+        style="--split-column-start: calc(200%/3)"
       >
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}

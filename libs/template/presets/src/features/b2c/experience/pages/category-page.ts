@@ -17,7 +17,7 @@ export const CategoryPage: StaticComponent = {
           splitColumnFactor: 0.25,
           padding: '30px 0 0',
         },
-        { breakpoint: 'md', splitColumnFactor: 0.33 },
+        { breakpoint: 'md', splitColumnFactor: 1 / 3 },
       ],
     },
   },

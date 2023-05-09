@@ -15,7 +15,10 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout container class="page">
       ${generateHeader()}
 
-      <oryx-layout layout="split-column" style="--split-column-factor: 0.25">
+      <oryx-layout
+        layout="split-column"
+        style="--split-column-start: 25%;--oryx-grid-gap-column:30px"
+      >
         <oryx-layout layout="list" sticky style="top: 100px;">
           ${generateLayoutItems(5, 1, 'Facet')}
         </oryx-layout>
@@ -25,9 +28,7 @@ const Template: Story = (): TemplateResult => {
             <div style=" margin-inline: auto 0;">sort</div>
           </oryx-layout>
 
-          <oryx-layout layout="grid" style="--cols:3">
-            ${generateLayoutItems(12)}
-          </oryx-layout>
+          <oryx-layout layout="grid"> ${generateLayoutItems(12)} </oryx-layout>
 
           <oryx-layout layout="flex">
             <div style=" margin-inline: auto;">pagination</div>

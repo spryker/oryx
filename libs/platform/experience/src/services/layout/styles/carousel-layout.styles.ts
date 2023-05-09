@@ -11,17 +11,22 @@ export const styles: LayoutStyles = {
     :host {
       --oryx-grid-columns: var(--oryx-grid-columns-carousel);
 
-      overflow: auto hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
-      grid-auto-flow: column;
       grid-auto-columns: var(--_item-size);
+    }
+
+    :host(:not([vertical])) {
+      grid-auto-flow: column;
+      overflow: auto hidden;
       scroll-padding-inline-start: var(--scroll-start, 0);
     }
 
     :host([vertical]) {
+      grid-auto-flow: row;
       overflow: hidden auto;
+      scroll-padding-block-start: var(--scroll-start, 0);
     }
 
     :host::-webkit-scrollbar {
@@ -31,6 +36,7 @@ export const styles: LayoutStyles = {
     *,
     ::slotted(*) {
       scroll-snap-align: start;
+      width: 100%;
     }
   `,
 };

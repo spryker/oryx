@@ -23,7 +23,7 @@ const Template: Story = (): TemplateResult => {
       <li>Split columns change to a single column on small screens</li>
     </ul>
 
-    <h2>Split column 50/50 (default)</h2>
+    <h2>Split column auto (default)</h2>
     <oryx-layout layout="split-column">
       <div>1</div>
       <oryx-layout sticky>
@@ -32,8 +32,17 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(5, 3)}
     </oryx-layout>
 
-    <h2>Split column 0.25</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:0.25">
+    <h2>Split column 50%</h2>
+    <oryx-layout layout="split-column" style="--split-column-factor:50%">
+      <div>1</div>
+      <oryx-layout sticky>
+        <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
+      </oryx-layout>
+      ${generateLayoutItems(5, 3)}
+    </oryx-layout>
+
+    <h2>Split column 25%</h2>
+    <oryx-layout layout="split-column" style="--split-column-factor:25%">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -41,8 +50,11 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(5)}
     </oryx-layout>
 
-    <h2>Split column 0.33</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:calc(1/3)">
+    <h2>Split column 33%</h2>
+    <oryx-layout
+      layout="split-column"
+      style="--split-column-factor:calc(100%/3)"
+    >
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -50,8 +62,11 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(5)}
     </oryx-layout>
 
-    <h2>Split column 0.66</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:calc(2/3)">
+    <h2>Split column 66%</h2>
+    <oryx-layout
+      layout="split-column"
+      style="--split-column-factor:calc(200%/3)"
+    >
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -60,16 +75,13 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 0.75</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:calc(0.75)">
+    <oryx-layout layout="split-column" style="--split-column-factor:75%">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
       </oryx-layout>
       ${generateLayoutItems(5)}
     </oryx-layout>
-
-    <h2>temp</h2>
-    <oryx-layout layout="grid"> ${generateLayoutItems(12)} </oryx-layout>
 
     ${generateNestedLayout(CompositionLayout.SplitColumn)}
 

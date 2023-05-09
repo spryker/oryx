@@ -17,7 +17,6 @@ export const gridSystem = css`
 
     max-width: 100%;
     max-height: 100%;
-    width: min(100%, calc(var(--_container-width)));
     align-items: start;
     align-content: start;
   }

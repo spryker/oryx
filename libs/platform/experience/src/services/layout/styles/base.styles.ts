@@ -10,7 +10,10 @@ export const styles = css`
     display: grid;
     gap: var(--oryx-grid-gap-row) var(--oryx-grid-gap-column);
     margin-inline: auto;
-    width: min(100%, calc(var(--_container-width)));
     padding: var(--padding);
+  }
+
+  :host(:not([vertical])) {
+    width: min(100%, calc(var(--_container-width)));
   }
 `;

@@ -13,7 +13,7 @@ export const OrderPage: StaticComponent = {
     {
       type: 'experience-composition',
       options: {
-        data: { rules: [{ layout: 'split-column', splitColumnFactor: 0.66 }] },
+        data: { rules: [{ layout: 'split-column', splitColumnFactor: 2 / 3 }] },
       },
       components: [
         {

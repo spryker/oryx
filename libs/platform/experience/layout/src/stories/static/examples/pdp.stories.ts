@@ -17,10 +17,13 @@ const Template: Story = (): TemplateResult => {
 
       <oryx-layout
         layout="split-column"
-        style="--split-column-factor: calc(2/3)"
+        style="--split-column-start: calc(200%/3)"
       >
         <oryx-layout layout="list">
-          <oryx-layout layout="carousel" style="--oryx-grid-columns:1">
+          <oryx-layout
+            layout="carousel"
+            style="--oryx-grid-columns:1;--h:200px"
+          >
             ${generateLayoutItems(8, 1, 'image ')}
           </oryx-layout>
 

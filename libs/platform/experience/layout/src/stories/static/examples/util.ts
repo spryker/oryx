@@ -42,18 +42,28 @@ export const pageStyles = html`
     }
 
     oryx-layout {
-      --gap: 10px;
-      background: var(--oryx-color-canvas-500);
+      --oryx-grid-gap-column: 10px;
+      --oryx-grid-gap-row: 10px;
+      box-sizing: border-box;
     }
 
     oryx-layout div {
-      background: var(--oryx-color-primary-100);
+      background: var(--oryx-color-primary-500);
       padding: 10px;
+      outline: solid;
     }
 
-    [layout='carousel'] div,
-    [layout='grid'] div {
-      height: var(--h, 200px);
+    oryx-layout div {
+      height: var(--h);
+    }
+
+    .thumbs {
+      --padding: 10px;
+      --scroll-start: 10px;
+    }
+
+    .thumbs div:hover {
+      background: var(--oryx-color-primary-300);
     }
   </style>
 `;
