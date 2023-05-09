@@ -16,7 +16,6 @@ import {
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { map } from 'rxjs';
 import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
