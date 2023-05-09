@@ -15,10 +15,16 @@ const mockDexieVersions = {
   stores: vi.fn(),
   upgrade: vi.fn(),
 };
+
 const mockDexieMethods = {
   open: vi.fn(),
   on: vi.fn(),
+  close: vi.fn(),
   version: vi.fn(() => mockDexieVersions),
+};
+
+const mockSchemaMetadata = {
+  collect: vi.fn(),
 };
 
 const mockNavigator = {
@@ -28,11 +34,30 @@ const mockNavigator = {
   },
 };
 
+const mockMetadataGroup = [
+  {
+    version: 'a',
+    metadata: [class A {}],
+  },
+  {
+    version: 'b',
+    metadata: [class B {}],
+  },
+];
+
 vi.mock('dexie', () => ({
   Dexie: class {
     open = () => mockDexieMethods.open();
     on = () => mockDexieMethods.on();
     version = () => mockDexieMethods.version();
+    close = () => mockDexieMethods.close();
+  },
+}));
+
+vi.mock('../schema-metadata.ts', () => ({
+  IndexedDbSchemaMetadata: class {
+    static collect = () =>
+      mockSchemaMetadata.collect.mockReturnValue(mockMetadataGroup)();
   },
 }));
 
@@ -40,8 +65,6 @@ describe('DefaultExperienceService', () => {
   let service: DexieIndexedDbService;
 
   beforeEach(() => {
-    vi.stubGlobal('navigator', mockNavigator);
-
     createInjector({
       providers: [
         {
@@ -63,6 +86,7 @@ describe('DefaultExperienceService', () => {
       ],
     });
 
+    vi.stubGlobal('navigator', mockNavigator);
     service = getInjector().inject(DexieIndexedDbService);
   });
 
@@ -87,6 +111,8 @@ describe('DefaultExperienceService', () => {
 
   describe('getDb', () => {
     it('should OryxDexieDb database', () => {
+      mockNavigator.storage.persist.mockReturnValue(true);
+
       service.getDb().subscribe(callback);
       expect(callback).toHaveBeenCalledWith(void 0);
     });
