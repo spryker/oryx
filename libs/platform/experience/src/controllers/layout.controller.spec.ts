@@ -2,6 +2,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutAttributes } from '@spryker-oryx/experience/layout';
 import { Size } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
+import { of } from 'rxjs';
 import { CompositionLayout } from '../models';
 import { LayoutBuilder, LayoutService } from '../services';
 import { LayoutController } from './layout.controller';
@@ -15,7 +16,7 @@ const mockLayoutService = {
 };
 
 describe('DefaultScreenService', () => {
-  const setup = (host: LayoutAttributes) =>
+  const setupControlller = (host: LayoutAttributes) =>
     new LayoutController(host as LitElement & LayoutAttributes);
 
   beforeEach(() => {
@@ -40,127 +41,110 @@ describe('DefaultScreenService', () => {
   });
 
   describe('getLayoutInfos', () => {
-    it('should return proper ResponsiveLayoutInfo from host', () => {
-      const info = setup({
-        layout: CompositionLayout.Grid,
-        bleed: true,
-        xs: { layout: CompositionLayout.Column, sticky: true },
-        lg: { layout: CompositionLayout.Grid },
-        md: { layout: CompositionLayout.Column, bleed: false },
-        xl: { layout: CompositionLayout.Carousel, sticky: true },
-      }).getStyles(['bleed', 'layout', 'sticky']);
+    beforeEach(() => {
+      mockLayoutService.getStyles.mockReturnValue(of());
+    });
 
-      expect(info).toEqual({
-        bleed: { excluded: ['md'] },
-        grid: { excluded: ['xs', 'md', 'xl'] },
-        column: { included: ['xs', 'md'] },
-        carousel: { included: ['xl'] },
-        sticky: { included: ['xs', 'xl'] },
+    describe('when there are layout component properties provided', () => {
+      beforeEach(() => {
+        setupControlller({
+          layout: CompositionLayout.Grid,
+          bleed: true,
+          xs: { layout: CompositionLayout.Column, sticky: true },
+          lg: { layout: CompositionLayout.Grid },
+          md: { layout: CompositionLayout.Column, bleed: false },
+          xl: { layout: CompositionLayout.Carousel, sticky: true },
+        })
+          .getStyles(['bleed', 'layout', 'sticky'])
+          .subscribe();
+      });
+
+      it('should generate the infos', () => {
+        expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
+          bleed: { excluded: ['md'] },
+          grid: { excluded: ['xs', 'md', 'xl'] },
+          column: { included: ['xs', 'md'] },
+          carousel: { included: ['xl'] },
+          sticky: { included: ['xs', 'xl'] },
+        });
       });
     });
 
-    it('should return proper ResponsiveLayoutInfo from rules', () => {
-      const info = setup({}).getStyles(
-        ['bleed', 'layout', 'sticky'],
-        [
-          {
-            layout: CompositionLayout.Grid,
-            bleed: true,
-          },
-          {
-            breakpoint: Size.Xs,
-            layout: CompositionLayout.Column,
-            sticky: true,
-          },
-          {
-            breakpoint: Size.Lg,
-            layout: CompositionLayout.Grid,
-          },
-          {
-            breakpoint: Size.Md,
-            layout: CompositionLayout.Column,
-            bleed: false,
-          },
-          {
-            breakpoint: Size.Xl,
-            layout: CompositionLayout.Carousel,
-            sticky: true,
-          },
-        ]
-      );
+    describe('and there are layout options provided', () => {
+      beforeEach(() => {
+        setupControlller({})
+          .getStyles(
+            ['bleed', 'layout', 'sticky'],
+            [
+              {
+                layout: CompositionLayout.Grid,
+                bleed: true,
+              },
+              {
+                breakpoint: Size.Xs,
+                layout: CompositionLayout.Column,
+                sticky: true,
+              },
+              {
+                breakpoint: Size.Lg,
+                layout: CompositionLayout.Grid,
+              },
+              {
+                breakpoint: Size.Md,
+                layout: CompositionLayout.Column,
+                bleed: false,
+              },
+              {
+                breakpoint: Size.Xl,
+                layout: CompositionLayout.Carousel,
+                sticky: true,
+              },
+            ]
+          )
+          .subscribe();
+      });
 
-      expect(info).toEqual({
-        bleed: { excluded: ['md'] },
-        grid: { excluded: ['xs', 'md', 'xl'] },
-        column: { included: ['xs', 'md'] },
-        carousel: { included: ['xl'] },
-        sticky: { included: ['xs', 'xl'] },
+      it('should generate the infos', () => {
+        expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
+          bleed: { excluded: ['md'] },
+          grid: { excluded: ['xs', 'md', 'xl'] },
+          column: { included: ['xs', 'md'] },
+          carousel: { included: ['xl'] },
+          sticky: { included: ['xs', 'xl'] },
+        });
       });
     });
 
-    it('should return proper ResponsiveLayoutInfo from mixed content', () => {
-      const info = setup({
-        bleed: true,
-        md: { layout: CompositionLayout.Column, bleed: false },
-        xl: { layout: CompositionLayout.Carousel, sticky: true },
-      }).getStyles(
-        ['bleed', 'layout', 'sticky'],
-        [
-          {
-            layout: CompositionLayout.Grid,
-          },
-          {
-            breakpoint: Size.Xs,
-            layout: CompositionLayout.Column,
-            sticky: true,
-          },
-          {
-            breakpoint: Size.Lg,
-            layout: CompositionLayout.Grid,
-          },
-        ]
-      );
-
-      expect(info).toEqual({
-        bleed: { excluded: ['md'] },
-        grid: { excluded: ['xs', 'md', 'xl'] },
-        column: { included: ['xs', 'md'] },
-        carousel: { included: ['xl'] },
-        sticky: { included: ['xs', 'xl'] },
+    describe('and theres a mix of layout component properties and options provided', () => {
+      beforeEach(() => {
+        setupControlller({
+          bleed: true,
+          md: { layout: CompositionLayout.Column, bleed: false },
+          xl: { layout: CompositionLayout.Carousel, sticky: true },
+        })
+          .getStyles(
+            ['bleed', 'layout', 'sticky'],
+            [
+              { layout: CompositionLayout.Grid },
+              {
+                breakpoint: Size.Xs,
+                layout: CompositionLayout.Column,
+                sticky: true,
+              },
+              { breakpoint: Size.Lg, layout: CompositionLayout.Grid },
+            ]
+          )
+          .subscribe();
       });
-    });
 
-    it('should return LayoutService result', () => {
-      mockLayoutService.getStyles.mockReturnValue('LayoutService-result');
-      const info = setup({
-        bleed: true,
-        md: { layout: CompositionLayout.Column, bleed: false },
-        xl: { layout: CompositionLayout.Carousel, sticky: true },
-      }).getStyles(
-        ['bleed', 'layout', 'sticky'],
-        [
-          {
-            layout: CompositionLayout.Grid,
-          },
-          {
-            breakpoint: Size.Xs,
-            layout: CompositionLayout.Column,
-            sticky: true,
-          },
-          {
-            breakpoint: Size.Lg,
-            layout: CompositionLayout.Grid,
-          },
-        ]
-      );
-
-      expect(info).toBe('LayoutService-result');
-      expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
-        bleed: { excluded: ['md'] },
-        grid: { excluded: ['xs', 'md', 'xl'] },
-        column: { included: ['xs', 'md'] },
-        carousel: { included: ['xl'] },
-        sticky: { included: ['xs', 'xl'] },
+      it('should generate the infos', () => {
+        expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
+          bleed: { excluded: ['md'] },
+          grid: { excluded: ['xs', 'md', 'xl'] },
+          column: { included: ['xs', 'md'] },
+          carousel: { included: ['xl'] },
+          sticky: { included: ['xs', 'xl'] },
+        });
       });
     });
   });
@@ -169,7 +153,7 @@ describe('DefaultScreenService', () => {
     describe('when layout exist', () => {
       describe('and uid is not provided', () => {
         it('should return empty string', () => {
-          const styles = setup({
+          const styles = setupControlller({
             layout: CompositionLayout.Grid,
           }).collectStyles(['layout']);
 
@@ -179,7 +163,7 @@ describe('DefaultScreenService', () => {
           expect(styles).toBe('');
 
           expect(
-            setup({
+            setupControlller({
               xs: { bleed: true },
             }).collectStyles(['bleed'])
           ).toBe('');
@@ -189,7 +173,7 @@ describe('DefaultScreenService', () => {
       describe('and uid is provided', () => {
         it('should return result from LayoutBuilder.createStylesFromOptions', () => {
           mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
-          const styles = setup({}).collectStyles(
+          const styles = setupControlller({}).collectStyles(
             ['layout'],
             [{ layout: CompositionLayout.Carousel }],
             'uid'
@@ -209,7 +193,7 @@ describe('DefaultScreenService', () => {
   describe('when layout is not exist', () => {
     describe('and uid is not provided', () => {
       it('should return default styles for hosts', () => {
-        const styles = setup({}).collectStyles(['layout']);
+        const styles = setupControlller({}).collectStyles(['layout']);
 
         expect(
           mockLayoutBuilder.createStylesFromOptions
@@ -221,7 +205,7 @@ describe('DefaultScreenService', () => {
     describe('and uid is provided', () => {
       it('should return combine result from LayoutBuilder.createStylesFromOptions with default styles for host', () => {
         mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
-        const styles = setup({}).collectStyles(
+        const styles = setupControlller({}).collectStyles(
           ['bleed'],
           [{ layout: CompositionLayout.Carousel }],
           'uid'
