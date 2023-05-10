@@ -12,7 +12,7 @@ const Template: Story = (): TemplateResult => {
   return html`
     <h1>Product Detail Page layout</h1>
 
-    <oryx-layout container class="page">
+    <oryx-layout class="page">
       ${generateHeader()}
 
       <oryx-layout

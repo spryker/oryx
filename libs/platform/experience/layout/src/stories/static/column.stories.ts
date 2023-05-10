@@ -33,7 +33,7 @@ const Template: Story = (): TemplateResult => {
       <li>Padding can be added by standard css to the</li>
     </ul>
 
-    <oryx-layout layout="column" style="--padding:10px">
+    <oryx-layout layout="column" .options=${{ rules: [{ padding: '10px' }] }}>
       ${generateLayoutItems(12)}
     </oryx-layout>
 

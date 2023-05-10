@@ -77,18 +77,20 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="carousel">
-      <div style="height:100px;background:var(--oryx-color-secondary-300">
+      <div style="height:100px;background:var(--oryx-color-secondary-300)">
         1
       </div>
       <div
-        style="height:75px;align-self:center;background:var(--oryx-color-secondary-300"
+        style="height:75px;align-self:center;background:var(--oryx-color-secondary-300)"
       >
         2 (center)
       </div>
-      <div style="align-self:end;background:var(--oryx-color-secondary-300">
+      <div style="align-self:end;background:var(--oryx-color-secondary-300)">
         3 (end)
       </div>
-      <div style="align-self:stretch;background:var(--oryx-color-secondary-300">
+      <div
+        style="align-self:stretch;background:var(--oryx-color-secondary-300)"
+      >
         4 (stretch)
       </div>
       ${generateLayoutItems(6, 5)}
@@ -99,7 +101,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="carousel">
       <div>1</div>
-      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+      <div style="--col-span:2;background:var(--oryx-color-secondary-300)">
         2
       </div>
       ${generateLayoutItems(4, 3)}
@@ -116,7 +118,9 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="carousel" .options=${{ rules: [{ columnCount: 6 }] }}>
       <div>1</div>
-      <div style="grid-column:span 2;background:var(--oryx-color-secondary-300">
+      <div
+        style="grid-column:span 2;background:var(--oryx-color-secondary-300)"
+      >
         2
       </div>
       ${generateLayoutItems(12, 3)}
@@ -132,7 +136,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="carousel" style="--oryx-grid-item-size: 100px">
       <div>1</div>
-      <div style="--span:2;background:var(--oryx-color-secondary-300">2</div>
+      <div style="--span:2;background:var(--oryx-color-secondary-300)">2</div>
       ${generateLayoutItems(12, 3)}
     </oryx-layout>
 
@@ -145,7 +149,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="carousel" style="--oryx-grid-columns: initial;">
       <div>1</div>
-      <div style="width: 250px;background:var(--oryx-color-secondary-300">
+      <div style="width: 250px;background:var(--oryx-color-secondary-300)">
         2 (width: 250px)
       </div>
 

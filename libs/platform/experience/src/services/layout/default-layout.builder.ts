@@ -133,7 +133,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
       // nested padding is usedd to calculate the size of nested grid based elements
       add({
-        '--nested-padding': this.findCssValues(data.padding, 'start', 'end'),
+        '--inline-padding': this.findCssValues(data.padding, 'start', 'end'),
       });
     }
 

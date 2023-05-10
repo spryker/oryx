@@ -13,7 +13,7 @@ export const gridSystem = css`
                   var(--column-gap, var(--oryx-grid-gap-column, 0px)) *
                     (var(--oryx-grid-columns) - 1)
                 )
-            ) / var(--oryx-grid-columns) - var(--nested-padding, 0px)
+            ) / var(--oryx-grid-columns) - var(--_np, 0px)
         )
       )
     );
@@ -26,8 +26,13 @@ export const gridSystem = css`
 
   *,
   ::slotted(*) {
+    --_np: var(--inline-padding);
+
     max-width: calc(100% - (var(--margin, 0px) * 2));
     max-height: calc(100% - (var(--margin, 0px) * 2));
     box-sizing: border-box;
   }
 `;
+
+// (948-20-30)/4
+// var(--_container-width) - (var(--column-gap, var(--oryx-grid-gap-column, 0px)) * (var(--oryx-grid-columns) - 1))

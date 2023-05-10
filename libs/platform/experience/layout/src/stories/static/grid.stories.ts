@@ -29,7 +29,7 @@ const Template: Story = (): TemplateResult => {
       <li>Padding can be added by standard css</li>
     </ul>
 
-    <oryx-layout layout="grid" style="--padding:10px;">
+    <oryx-layout layout="grid" .options=${{ rules: [{ padding: '10px' }] }}>
       ${generateLayoutItems(12)}
     </oryx-layout>
 
@@ -45,11 +45,13 @@ const Template: Story = (): TemplateResult => {
 
     <oryx-layout layout="grid">
       <div style="border:5px solid var(--oryx-color-secondary-300">1</div>
-      <div style="margin:10px;background:var(--oryx-color-secondary-300">2</div>
-      <div style="padding:40px;background:var(--oryx-color-secondary-300">
+      <div style="margin:10px;background:var(--oryx-color-secondary-300)">
+        2
+      </div>
+      <div style="padding:40px;background:var(--oryx-color-secondary-300)">
         3
       </div>
-      <div style=" outline:1px solid blue;outline-offset: 5px;">4</div>
+      <div style="outline:1px solid blue;outline-offset: 5px;">4</div>
       ${generateLayoutItems(4, 5)}
     </oryx-layout>
 
@@ -60,16 +62,18 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="grid">
-      <div style="height:100px;background:var(--oryx-color-secondary-300">
+      <div style="height:100px;background:var(--oryx-color-secondary-300)">
         1
       </div>
-      <div style="align-self:center;background:var(--oryx-color-secondary-300">
+      <div style="align-self:center;background:var(--oryx-color-secondary-300)">
         2 (center)
       </div>
-      <div style="align-self:end;background:var(--oryx-color-secondary-300">
+      <div style="align-self:end;background:var(--oryx-color-secondary-300)">
         3 (end)
       </div>
-      <div style="align-self:stretch;background:var(--oryx-color-secondary-300">
+      <div
+        style="align-self:stretch;background:var(--oryx-color-secondary-300)"
+      >
         4 (stretch)
       </div>
       ${generateLayoutItems(6, 5)}
@@ -80,7 +84,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="grid">
       <div>1</div>
-      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+      <div style="--col-span:2;background:var(--oryx-color-secondary-300)">
         2
       </div>
       ${generateLayoutItems(4, 3)}
@@ -97,7 +101,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="grid" .options=${{ rules: [{ columnCount: 6 }] }}>
       <div>1</div>
-      <div style="--col-span:2;">2</div>
+      <div style="grid-column: span 2;">2</div>
       ${generateLayoutItems(12, 3)}
     </oryx-layout>
 
