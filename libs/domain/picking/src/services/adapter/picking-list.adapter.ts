@@ -1,9 +1,5 @@
 import { Observable } from 'rxjs';
-import {
-  PickingList,
-  PickingListError,
-  PickingListQualifier,
-} from '../../models';
+import { PickingList, PickingListQualifier } from '../../models';
 
 export interface PickingListAdapter {
   get(qualifier?: PickingListQualifier): Observable<PickingList[]>;

@@ -5,12 +5,12 @@ import { map, Observable, of, switchMap } from 'rxjs';
 import {
   ItemsFilters,
   PickingList,
+  PickingListError,
   PickingListItem,
   PickingListQualifier,
   PickingListStatus,
   PickingOrderItem,
   PickingProduct,
-  PickingListError,
 } from '../../models';
 import { PickingHttpService } from '../picking-http.service';
 import { PickingListAdapter } from './picking-list.adapter';

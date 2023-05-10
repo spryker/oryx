@@ -4,7 +4,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { of, catchError, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { styles } from './customer-note.styles';
 

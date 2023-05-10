@@ -6,7 +6,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncValue, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { of, catchError, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { styles } from './picking-list-item.styles';
