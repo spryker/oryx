@@ -112,7 +112,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     };
 
     add({ '--oryx-grid-columns': data.columnCount }, { omitUnit: true });
-    add({ '--split-column-start': data.splitColumnFactor }, { omitUnit: true });
+    add(
+      { '--split-column-factor': data.splitColumnFactor },
+      { omitUnit: true }
+    );
 
     if (data.padding) {
       add({ 'scroll-padding': this.findCssValue(data.padding, 'start') });
