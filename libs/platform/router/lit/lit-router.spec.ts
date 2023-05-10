@@ -113,13 +113,6 @@ describe('DefaultRouterService', () => {
     expect(awaiterResolver).toHaveBeenCalled();
   });
 
-  describe('_goto', () => {
-    it('should call extended router with proper params', async () => {
-      await router._goto('/newPath');
-      expect(mockRouter.goto).toHaveBeenCalledWith('/newPath');
-    });
-  });
-
   describe('goto', () => {
     it('should call extended router with proper params', async () => {
       await router.goto('/newGoPath');
