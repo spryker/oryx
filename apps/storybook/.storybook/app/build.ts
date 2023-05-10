@@ -18,7 +18,6 @@ import isChromatic from 'chromatic/isChromatic';
 import {
   chromaticStyledComponents,
   ResourcesChromaticPlugin,
-  ThemeChromaticPlugin,
 } from './chromatic';
 import { resource, theme } from './data';
 import { StorybookPlugin } from './plugin';
@@ -63,10 +62,7 @@ const builder = appBuilder()
 if (isChromatic()) {
   builder
     .withComponents(chromaticStyledComponents)
-    .with([
-      new ThemeChromaticPlugin(themes),
-      new ResourcesChromaticPlugin(resources),
-    ])
+    .with([new ResourcesChromaticPlugin(resources)])
     .create();
 } else {
   builder.withTheme(themes).withResources(resources).create();
