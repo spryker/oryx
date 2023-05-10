@@ -55,8 +55,8 @@ const builder = appBuilder()
   .withFeature(mockSearchFeature)
   .withFeature(mockSiteFeature)
   .withFeature(mockUserFeature)
-  .withFeature(new MockAuthFeature())
   .withFeature(new I18nFeature())
+  .withFeature(new MockAuthFeature())
   .withTheme(themes);
 
 // TODO: Find another way without overriding injectables
