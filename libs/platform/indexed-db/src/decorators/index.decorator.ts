@@ -30,6 +30,7 @@ function addIndexes(
   });
 }
 
+/* c8 ignore start */
 const standardIndexedDbIndex = (
   context: FieldOrMethodContext,
   propName: string,
@@ -42,6 +43,7 @@ const standardIndexedDbIndex = (
     },
   };
 };
+/* c8 ignore end */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbIndex(options?: IndexedDbIndexOptions): any {

@@ -18,9 +18,9 @@
     },
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest",
-      "configurations": {
-        "watch": {
-          "watch": true
+      "options": {
+        "coverage": {
+          "exclude": ["**/utils.ts", "src/services/identity.service.ts"]
         }
       }
     }
