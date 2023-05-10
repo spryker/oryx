@@ -49,6 +49,9 @@ describe('PickingListsComponent', () => {
     const getCustomerNoteModal = (): ModalComponent | null =>
       element.renderRoot.querySelector('oryx-modal');
 
+    const getPickingInProgressModal = (): ModalComponent | null =>
+      element.renderRoot.querySelectorAll('oryx-modal')[1] as ModalComponent;
+
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
@@ -75,6 +78,40 @@ describe('PickingListsComponent', () => {
         new CustomEvent('oryx.show-note', {
           detail: { note: customerNoteText },
         })
+      );
+    });
+
+    it('should open customer note modal', () => {
+      const customerNoteText = 'Customer note';
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-note', () => {
+        const customerNoteModal = getCustomerNoteModal();
+        expect(customerNoteModal?.hasAttribute('open')).toBe(true);
+        expect(customerNoteModal?.textContent).contains(customerNoteText);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-note', {
+          detail: { note: customerNoteText },
+        })
+      );
+    });
+
+    it('should open picking in progress modal', () => {
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-picking-in-progress', () => {
+        const pickingInProgressModal = getPickingInProgressModal();
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(true);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-picking-in-progress')
       );
     });
 
@@ -116,6 +153,39 @@ describe('PickingListsComponent', () => {
       });
     });
 
+    describe('when picking in progress modal is opened', () => {
+      beforeEach(() => {
+        const pickingListCard = element.renderRoot.querySelector(
+          'oryx-picking-list-item'
+        );
+
+        pickingListCard?.dispatchEvent(
+          new CustomEvent('oryx.show-picking-in-progress')
+        );
+      });
+
+      it('should close modal when it emits oryx.close event', () => {
+        element.addEventListener('oryx.show-picking-in-progress', () => {
+          const pickingInProgressModal = getPickingInProgressModal();
+
+          pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
+          expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
+        });
+      });
+
+      it('should close modal when close button is clicked', async () => {
+        const pickingInProgressModal = getPickingInProgressModal();
+
+        const closeButton: HTMLButtonElement | null =
+          pickingInProgressModal?.querySelector('button') ?? null;
+        closeButton?.click();
+
+        await element.updateComplete;
+
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
+      });
+    });
+
     it('should open and close customer note modal', async () => {
       const customerNoteText = 'Customer note';
       const pickingListCard = element.renderRoot.querySelector(
@@ -136,6 +206,24 @@ describe('PickingListsComponent', () => {
         new CustomEvent('oryx.show-note', {
           detail: { note: customerNoteText },
         })
+      );
+    });
+
+    it('should open and close picking in progress modal', async () => {
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-picking-in-progress', () => {
+        const pickingInProgressModal = getPickingInProgressModal();
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(true);
+
+        pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-picking-in-progress')
       );
     });
   });

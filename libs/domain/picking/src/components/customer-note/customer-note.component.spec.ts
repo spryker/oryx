@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import { PickingListError, PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { mockPickingListData } from '../../mocks';
 import { CustomerNoteComponent } from './customer-note.component';
 import { customerNoteComponent } from './customer-note.def';
@@ -83,6 +83,78 @@ describe('CustomerNoteComponent', () => {
       expect(routerService.navigate).toHaveBeenCalledWith(
         expect.stringContaining(mockPickingListData[0].id)
       );
+    });
+
+    describe('and picking is already in progress', () => {
+      beforeEach(async () => {
+        routerService.navigate.mockClear();
+        service.startPicking = vi.fn().mockReturnValue(
+          throwError(() => {
+            const error = new Error('mock') as PickingListError;
+            error.status = 409;
+            return error;
+          })
+        );
+
+        element = await fixture(
+          html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+        );
+
+        element.renderRoot
+          .querySelector('button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should not navigate route', () => {
+        expect(routerService.navigate).not.toHaveBeenCalled();
+      });
+
+      it('should open picking in progress modal', () => {
+        expect(
+          element.renderRoot.querySelector('oryx-modal')?.hasAttribute('open')
+        ).toBe(true);
+      });
+    });
+  });
+
+  describe('when picking in progress modal is opened', () => {
+    beforeEach(async () => {
+      service.startPicking = vi.fn().mockReturnValue(
+        throwError(() => {
+          const error = new Error('mock') as PickingListError;
+          error.status = 409;
+          return error;
+        })
+      );
+
+      element = await fixture(
+        html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+      );
+
+      element.renderRoot
+        .querySelector('button')
+        ?.dispatchEvent(new MouseEvent('click'));
+    });
+
+    it('should close modal when it emits oryx.close event', () => {
+      element.addEventListener('oryx.show-note', () => {
+        const modal = element.renderRoot.querySelector('oryx-modal');
+
+        modal?.dispatchEvent(new CustomEvent('oryx.close'));
+        expect(modal?.hasAttribute('open')).toBe(false);
+      });
+    });
+
+    it('should close modal when close button is clicked', async () => {
+      const modal = element.renderRoot.querySelector('oryx-modal');
+
+      const closeButton: HTMLButtonElement | null =
+        element.renderRoot.querySelector('oryx-modal button');
+      closeButton?.click();
+
+      await element.updateComplete;
+
+      expect(modal?.hasAttribute('open')).toBe(false);
     });
   });
 });

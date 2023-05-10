@@ -9,9 +9,10 @@ import {
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { afterEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
+import { PickingListError } from '../../models';
 import { PickingListItemComponent } from './picking-list-item.component';
 
 class MockRouterService implements Partial<RouterService> {
@@ -174,6 +175,40 @@ describe('PickingListItemComponent', () => {
         expect(routerService.navigate).toHaveBeenCalledWith(
           `/picking-list/picking/${mockPickingListData[1].id}`
         );
+      });
+
+      describe('and picking is already in progress', () => {
+        const event = vi.fn();
+        beforeEach(async () => {
+          routerService.navigate.mockClear();
+          service.startPicking = vi.fn().mockReturnValue(
+            throwError(() => {
+              const error = new Error('mock') as PickingListError;
+              error.status = 409;
+              return error;
+            })
+          );
+
+          element = await fixture(
+            html`<oryx-picking-list-item
+              pickingListId="id"
+            ></oryx-picking-list-item>`
+          );
+
+          element.addEventListener('oryx.show-picking-in-progress', event);
+
+          element.renderRoot
+            .querySelector('oryx-button button')
+            ?.dispatchEvent(new MouseEvent('click'));
+        });
+
+        it('should emit showPickingInProgress event', () => {
+          expect(event).toHaveBeenCalled();
+        });
+
+        it('should not perform redirect', () => {
+          expect(routerService.navigate).not.toHaveBeenCalled();
+        });
       });
     });
   });
