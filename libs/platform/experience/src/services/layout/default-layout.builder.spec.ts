@@ -37,8 +37,6 @@ describe('DefaultLayoutBuilder', () => {
 
   const expectStyleRule = (
     data: StyleProperties,
-    // key: keyof StyleProperties,
-    // value: string | number,
     expectedRule: string
   ): void => {
     const keys = Object.keys(data);
