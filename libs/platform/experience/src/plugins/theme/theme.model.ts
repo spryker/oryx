@@ -51,12 +51,10 @@ export type DesignToken = ThemeToken & {
   color?: ColorDesignTokens;
 };
 
-export type ThemeIcons = Record<string, LazyLoadable<string>>;
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
 
 export interface Theme {
   name: string;
   breakpoints?: Breakpoints;
-  icons?: ThemeIcons;
   designTokens?: ThemeDesignTokens;
 }

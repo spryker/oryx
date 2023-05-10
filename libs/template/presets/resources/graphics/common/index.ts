@@ -1,7 +1,6 @@
 import { ResourceGraphic } from '@spryker-oryx/experience';
-import { fulfillmentResourceGraphics } from './fulfillment';
 
-export const resourceGraphics: ResourceGraphic = {
+export const commonGraphics: ResourceGraphic = {
   logo: {
     source: () => import('./logo').then((m) => m.logo),
   },
@@ -14,5 +13,4 @@ export const resourceGraphics: ResourceGraphic = {
   'order-confirmation-success': {
     source: () => import('./order-confirmation-success').then((m) => m.success),
   },
-  ...fulfillmentResourceGraphics,
 };

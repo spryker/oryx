@@ -17,6 +17,10 @@ import {
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
+import {
+  commonGraphics,
+  storefrontIcons,
+} from '@spryker-oryx/presets/resources';
 import { productFeature } from '@spryker-oryx/product';
 import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature } from '@spryker-oryx/search';
@@ -26,7 +30,6 @@ import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
-import { resourceGraphics } from '../../resources';
 import { StaticExperienceFeature } from './experience';
 
 const isPreview = new URLSearchParams(
@@ -34,9 +37,8 @@ const isPreview = new URLSearchParams(
 ).has('ebPreview');
 
 export const b2cResources: Resources = {
-  graphics: {
-    ...resourceGraphics,
-  },
+  graphics: commonGraphics,
+  icons: storefrontIcons,
 };
 
 export const b2cFeatures: AppFeature[] = [

@@ -3,14 +3,14 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import {
   asyncValue,
+  GraphicInjectable,
   isPromise,
-  ResourceInjectable,
 } from '@spryker-oryx/utilities';
 import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Graphic, ResourcePlugin } from '../plugins';
 
-export class DefaultResourceInjectable implements ResourceInjectable {
+export class DefaultGraphicInjectable implements GraphicInjectable {
   getUrl(token: string): DirectiveResult | undefined {
     return this.getGraphicValue(token, 'url');
   }
