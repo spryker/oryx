@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '@spryker-oryx/themes';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncValue, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';

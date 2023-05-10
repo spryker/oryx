@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { IconButtonProperties } from '../icon-button.model';
 
-const icons = getThemeIcons();
+const icons = getResourceIcons();
 
 export default {
   title: `${storybookPrefix}/Actions/Icon Button`,

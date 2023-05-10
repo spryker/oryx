@@ -4,7 +4,7 @@ import { resolve } from '@spryker-oryx/di';
 
 // Temporary solution until we found something better
 
-export const getThemeIcons = (): string[] =>
+export const getResourceIcons = (): string[] =>
   Object.keys(
     (resolve(AppRef).findPlugin('oryx.experienceTheme') as any).getIcons()
   );

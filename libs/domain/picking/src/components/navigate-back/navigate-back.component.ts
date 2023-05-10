@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '@spryker-oryx/themes';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';

@@ -8,8 +8,9 @@ import { Resources } from '@spryker-oryx/experience';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import {
+  commonGraphics,
+  fulfillmentIcons,
   fulfillmentResourceGraphics,
-  resourceGraphics,
 } from '@spryker-oryx/presets/resources';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
@@ -47,5 +48,6 @@ export interface FulfillmentFeaturesConfig {
 export const fulfillmentTheme = { ...theme };
 
 export const fulfillmentResources: Resources = {
-  graphics: { ...resourceGraphics, ...fulfillmentResourceGraphics },
+  graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
+  icons: fulfillmentIcons,
 };

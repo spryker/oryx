@@ -1,7 +1,7 @@
-import { ThemeIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '../icon.model';
+import { ResourceIcons } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/themes';
 
-export const fulfillmentIcons: ThemeIcons = {
+export const fulfillmentIcons: ResourceIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.AmbientCategory]: () =>
     import('./icons/ambient-category').then((s) => s.default),

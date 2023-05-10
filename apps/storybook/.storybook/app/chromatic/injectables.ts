@@ -1,7 +1,7 @@
 import { AppRef } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
-  DefaultResourceInjectable,
+  DefaultGraphicInjectable,
   Graphic,
   ResourcePlugin,
 } from '@spryker-oryx/experience';
@@ -22,7 +22,7 @@ export class ChromaticIconInjectable implements IconInjectable {
   }
 }
 
-export class ChromaticResourceInjectable extends DefaultResourceInjectable {
+export class ChromaticGraphicInjectable extends DefaultGraphicInjectable {
   protected getGraphicValue(
     token: string,
     key: keyof Graphic

@@ -3,7 +3,7 @@ import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DefaultResourceInjectable } from './default-resource.injectable';
+import { DefaultGraphicInjectable } from './default-graphic.injectable';
 
 @customElement('mock-component')
 class MockComponent extends LitElement {
@@ -13,7 +13,7 @@ class MockComponent extends LitElement {
   @property()
   source?: string;
 
-  protected injectable = new DefaultResourceInjectable();
+  protected injectable = new DefaultGraphicInjectable();
 
   render(): TemplateResult {
     if (this.url) {
@@ -28,15 +28,15 @@ class MockComponent extends LitElement {
   }
 }
 
-export const mockResource = {
+export const mockGraphic = {
   getGraphicValue: vi.fn(),
 };
 
 export const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockResource),
+  findPlugin: vi.fn().mockReturnValue(mockGraphic),
 };
 
-describe('DefaultResourceInjectable', () => {
+describe('DefaultGraphicInjectable', () => {
   let element: MockComponent;
 
   beforeEach(async () => {
@@ -57,22 +57,19 @@ describe('DefaultResourceInjectable', () => {
   });
 
   it('should return url from resource plugin', async () => {
-    mockResource.getGraphicValue.mockReturnValue('url-content');
+    mockGraphic.getGraphicValue.mockReturnValue('url-content');
     element.url = 'urlToken';
     await nextFrame();
-    expect(mockResource.getGraphicValue).toHaveBeenCalledWith(
-      'urlToken',
-      'url'
-    );
+    expect(mockGraphic.getGraphicValue).toHaveBeenCalledWith('urlToken', 'url');
     expect(element.renderRoot.textContent).toContain('url-content');
   });
 
   it('should return source html from resource plugin', async () => {
-    mockResource.getGraphicValue.mockReturnValue('<svg></svg>');
+    mockGraphic.getGraphicValue.mockReturnValue('<svg></svg>');
     element.url = '';
     element.source = 'sourceToken';
     await nextFrame();
-    expect(mockResource.getGraphicValue).toHaveBeenCalledWith(
+    expect(mockGraphic.getGraphicValue).toHaveBeenCalledWith(
       'sourceToken',
       'source'
     );

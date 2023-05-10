@@ -1,7 +1,7 @@
-import { ThemeIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '../icon.model';
+import { ResourceIcons } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/themes';
 
-export const backofficeIcons: ThemeIcons = {
+export const backofficeIcons: ResourceIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.CartAdd]: () => import('./icons/cart-add').then((s) => s.default),
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),

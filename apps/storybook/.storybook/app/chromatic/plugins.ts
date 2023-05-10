@@ -5,10 +5,10 @@ import {
   Theme,
   ThemePlugin,
 } from '@spryker-oryx/experience';
-import { iconInjectable, resourceInjectable } from '@spryker-oryx/utilities';
+import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
 import {
+  ChromaticGraphicInjectable,
   ChromaticIconInjectable,
-  ChromaticResourceInjectable,
 } from './injectables';
 
 export class ThemeChromaticPlugin extends ThemePlugin {
@@ -51,6 +51,6 @@ export class ResourcesChromaticPlugin extends ResourcePlugin {
       });
     }
 
-    resourceInjectable.inject(new ChromaticResourceInjectable());
+    graphicInjectable.inject(new ChromaticGraphicInjectable());
   }
 }
