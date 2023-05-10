@@ -28,6 +28,14 @@ export class FilterButtonComponent extends LitElement {
     this.showFilters = false;
   }
 
+  protected onSubmit(e: CustomEvent): void {
+    const { values } = e.detail;
+
+    console.log(values);
+
+    this.showFilters = false;
+  }
+
   protected override render(): TemplateResult {
     return html`
       <oryx-toggle-icon size=${Size.Md}>
@@ -44,6 +52,7 @@ export class FilterButtonComponent extends LitElement {
         ?open=${this.showFilters}
         @oryx.back=${this.onReset}
         @oryx.close=${this.onClose}
+        @oryx.submit=${this.onSubmit}
       ></oryx-picking-filters> 
     `;
   }

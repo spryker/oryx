@@ -32,6 +32,8 @@ export class PickingListsComponent extends LitElement {
     return html`
       <oryx-picking-lists-header></oryx-picking-lists-header>
 
+      ${this.renderSorting()}
+
       ${when(
         !this.pickingLists?.length,
         () => this.renderEmptyLists(),
@@ -83,6 +85,17 @@ export class PickingListsComponent extends LitElement {
           ${i18n('picking-lists.no-results-found')}
         </oryx-heading>
         <oryx-image resource="no-orders"></oryx-image>
+      </div>
+    `;
+  }
+
+  protected renderSorting(): TemplateResult {
+    return html`
+      <div class="filters">
+        <span>
+          ${i18n('picking.filter.<value>-open-orders', { value: this.pickingLists!.length ?? 0 })}
+        </span>
+        <oryx-picking-filter-button></oryx-picking-filter-button>
       </div>
     `;
   }

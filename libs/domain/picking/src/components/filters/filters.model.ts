@@ -15,36 +15,20 @@ export const fields: FormFieldDefinition[] = [
       attributes: { direction: 'vertical' },
       options: [
         {
-            value: '1',
-            // {
-            //   sortBy: 'requestedDeliveryDate',
-            //   sort: StorageSortDirection.ASC,
-            // }
-            text: 'Earliest Pickup Time',
+            value: 'requestedDeliveryDate.asc',
+            text: 'Earliest pick-up time',
           },
           {
-            value: '2',
-            // {
-            //   sortBy: 'requestedDeliveryDate',
-            //   sort: StorageSortDirection.DESC,
-            // },
-            text: 'Latest Pickup Time',
+            value: 'requestedDeliveryDate.desc',
+            text: 'Latest pick-up time',
           },
           {
-            value: '3',
-            // {
-            //   sortBy: 'itemsCount',
-            //   sort: StorageSortDirection.DESC,
-            // },
-            text: 'Largest Order Size',
+            value: 'itemsCount.desc',
+            text: 'Largest order size',
           },
           {
-            value: '4',
-            // {
-            //   sortBy: 'itemsCount',
-            //   sort: StorageSortDirection.ASC,
-            // },
-            text: 'Smallest Order Size',
+            value: 'itemsCount.asc',
+            text: 'Smallest order size',
           },
       ]
     },
