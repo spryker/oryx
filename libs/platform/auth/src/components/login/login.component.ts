@@ -6,7 +6,6 @@ import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydratable, i18n, Size, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { DirectiveResult } from 'lit/directive.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, EMPTY, map, of, Subject, switchMap, tap } from 'rxjs';
@@ -24,7 +23,6 @@ import { styles } from './login.styles';
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   static styles = styles;
 
-  @property() heading?: DirectiveResult | string;
   @property() isLoading?: boolean;
   @property() hasError?: boolean;
   @property() emailName = 'email';
@@ -78,13 +76,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   );
 
   protected override render(): TemplateResult {
-    return html`<oryx-card>
-      <h1 slot="heading">${this.heading ?? i18n('user.login')}</h1>
-
-      ${when(
+    return html` ${when(
         this.hasError,
         () => html`
-          <oryx-notification type="error">
+          <oryx-notification type="error" scheme="dark">
             ${i18n(
               'user.login.the-username-or-password-you-entered-is-invalid'
             )}
@@ -124,11 +119,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size=${Size.Sm}>
+        <oryx-button size=${Size.Sm} ?loading=${this.isLoading}>
           <button ?disabled=${this.isLoading}>${i18n('user.login')}</button>
         </oryx-button>
-      </form>
-    </oryx-card>`;
+      </form>`;
   }
 
   protected renderLoginOptions(): TemplateResult | void {

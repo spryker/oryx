@@ -101,6 +101,12 @@ const smallScreen = css`
   :host([xs-floated]) :is(.back-button, slot[name='trigger']) {
     display: block;
   }
+
+  :host(oryx-search:not([floatDisabled]):not([label])),
+  :host(oryx-search:not([floatDisabled]):not([label]))
+    ::slotted(select:invalid) {
+    --oryx-color-placeholder: var(--oryx-color-neutral-400);
+  }
 `;
 
 export const screenStyles = [

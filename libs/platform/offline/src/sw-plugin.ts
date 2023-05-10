@@ -8,7 +8,7 @@ declare let self: ServiceWorkerGlobalScope;
 
 export class OfflineServiceWorkerPlugin implements AppPlugin {
   getName(): string {
-    return 'oryx$offline-sw';
+    return 'oryx.offlineSw';
   }
 
   apply(app: App): void | Promise<void> {

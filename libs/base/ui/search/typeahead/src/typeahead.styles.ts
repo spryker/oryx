@@ -3,6 +3,7 @@ import {
   baseStyles as searchboxBaseStyles,
   screenStyles as searchboxScreenStyles,
 } from '@spryker-oryx/ui/searchbox';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 
 export const baseStyles = [
@@ -75,4 +76,13 @@ export const baseStyles = [
   `,
 ];
 
-export const screenStyles = [...searchboxScreenStyles];
+export const screenStyles = [
+  ...searchboxScreenStyles,
+  ...screenCss({
+    sm: css`
+      :host(:not([floatDisabled])) oryx-popover {
+        --oryx-label-height: 4px;
+      }
+    `,
+  }),
+];
