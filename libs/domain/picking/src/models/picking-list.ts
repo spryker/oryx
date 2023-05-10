@@ -22,6 +22,12 @@ export enum PickingListStatus {
   PickingFinished = 'picking-finished',
 }
 
+export enum FallbackType {
+  noResults = 'no-orders',
+  noSearchingResults = 'no-search-results',
+  noValueProvided = 'searching',
+}
+
 export interface PickingListItem {
   quantity: number;
   numberOfPicked: number;
