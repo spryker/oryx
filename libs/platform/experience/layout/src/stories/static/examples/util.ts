@@ -29,37 +29,18 @@ export const pageStyles = html`
       padding-inline: 10px;
       align-items: start;
     }
-    oryx-layout.page > oryx-layout {
-      /* --padding-inline: 10px;
-      padding-block: 10px; */
-      --padding: 10px;
-      --scroll-start: 10px;
-    }
-
-    oryx-layout.page > oryx-layout oryx-layout {
-      /* --padding-inline: 0; */
-      --padding: 0px;
-    }
-
-    oryx-layout {
-      --oryx-grid-gap-column: 10px;
-      --oryx-grid-gap-row: 10px;
-      box-sizing: border-box;
-    }
 
     oryx-layout div {
       background: var(--oryx-color-primary-500);
       padding: 10px;
-      outline: solid;
+      outline: solid 1px;
+      outline-offset: -1px;
+      place-items: center;
+      display: grid;
     }
 
     oryx-layout div {
       height: var(--h);
-    }
-
-    .thumbs {
-      --padding: 10px;
-      --scroll-start: 10px;
     }
 
     .thumbs div:hover {
@@ -67,3 +48,21 @@ export const pageStyles = html`
     }
   </style>
 `;
+
+// oryx-layout.page > oryx-layout {
+//   /* --padding-inline: 10px;
+//   padding-block: 10px;
+//   --padding: 10px;
+//   --scroll-start: 10px;*/
+// }
+
+// oryx-layout.page > oryx-layout oryx-layout {
+//   /* --padding-inline: 0;
+//   --padding: 0px; */
+// }
+// /*
+//     .thumbs {
+//       --padding: 10px;
+//       --scroll-start: 10px;
+//     }
+//     */

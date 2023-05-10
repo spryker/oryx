@@ -27,6 +27,22 @@ export const enum CompositionLayoutOrientation {
 
 export interface StyleProperties {
   sticky?: boolean;
+  bleed?: boolean;
+
+  /**
+   * The column count is based on a calculated count by design tokens, which can be specified
+   * by design tokens. This results in a column system for grid and carousels that uses 4, 2
+   * or 1 columns for large, medium and small screens.
+   *
+   * While the column system can be configured globally by design tokens, the `columnCount` allows
+   * for an individual override per layout.
+   *
+   * It is also worth mentioning that nested layouts will inherit the column size from the parent
+   * layout, by taken the parent item _span_ count, which default to `1`. This results in a
+   * balanced layout, where nested layouts will reflect the parent column setup.
+   */
+  columnCount?: number;
+
   /**
    * The align property is applied to the child items as well as to the layout it self. This
    * allows to align the child items over the layout axis. In most layouts, this means that
@@ -66,31 +82,10 @@ export interface StyleProperties {
    */
   gridColumn?: number;
 
-  /**
-   * The column count is based on a calculated count by design tokens, which can be specified
-   * by design tokens. This results in a column system for grid and carousels that uses 4, 2
-   * or 1 columns for large, medium and small screens.
-   *
-   * While the column system can be configured globally by design tokens, the `columnCount` allows
-   * for an individual override per layout.
-   *
-   * It is also worth mentioning that nested layouts will inherit the column size from the parent
-   * layout, by taken the parent item _span_ count, which default to `1`. This results in a
-   * balanced layout, where nested layouts will reflect the parent column setup.
-   */
-  columnCount?: number;
-
   splitColumnFactor?: number;
 
   /**
-   * Sets the gaps (gutters) between rows and columns. The span is applied to all layouts.
-   *
-   * **NOTE**: the gap is translated in a CSS variable (`--gap`) and used to calculated the column
-   * size for the layout items. When the gap is provided in 2 sizes (eg `20px 10px`), the calculation
-   * fails.
-   *
-   * TODO: separate out the gap in a row and column gap, and control the UX of the layout panel
-   * to hide this complexity to the end user.
+   * Sets the gaps (gutters) between rows and columns. The gap is applied to all layouts.
    */
   gap?: string;
 
@@ -177,4 +172,7 @@ export const enum LayoutAlign {
   Stretch = 'stretch',
   End = 'end',
   Center = 'center',
+  SpaceBetween = 'space-between',
+  SpaceAround = 'space-around',
+  SpaceEvenly = 'space-evenly',
 }

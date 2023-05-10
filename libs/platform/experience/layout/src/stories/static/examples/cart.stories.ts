@@ -17,13 +17,14 @@ const Template: Story = (): TemplateResult => {
 
       <oryx-layout
         layout="split-column"
-        style="--split-column-start: calc(200%/3)"
+        .options=${{ rules: [{ top: 90 }] }}
+        style="--split-column-start: calc(2/3)"
       >
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}
         </oryx-layout>
 
-        <oryx-layout layout="list" sticky style="top:120px">
+        <oryx-layout layout="list" sticky .options=${{ rules: [{ top: 90 }] }}>
           <oryx-layout layout="list">
             <div>subtotal</div>
             <div>discounts</div>

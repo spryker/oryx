@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const layoutStaticStyles = css`
   oryx-layout {
-    --oryx-grid-gap-column: 10px;
+    --column-gap: 10px;
     background: var(--oryx-color-canvas-500);
   }
 

@@ -8,12 +8,17 @@ export const styles = css`
     );
 
     display: grid;
-    gap: var(--oryx-grid-gap-row) var(--oryx-grid-gap-column);
+    column-gap: var(--column-gap, var(--oryx-grid-gap-column));
+    row-gap: var(--row-gap, var(--oryx-grid-gap-row));
     margin-inline: auto;
-    padding: var(--padding);
   }
 
   :host(:not([vertical])) {
     width: min(100%, calc(var(--_container-width)));
+  }
+
+  :host(:not([howdoesthisnotworkwithout])) {
+    align-items: var(--align, start);
+    align-content: var(--align, start);
   }
 `;

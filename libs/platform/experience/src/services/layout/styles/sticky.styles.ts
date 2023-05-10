@@ -6,8 +6,9 @@ export const styles: LayoutStyles = {
     :host,
     ::slotted([class*='sticky']) {
       position: sticky;
-      inset-block-start: var(--top, 0);
-      max-height: calc(var(--height, 100vh) - var(--top, 0px));
+      inset-block-start: 0;
     }
   `,
 };
+
+// max-height: calc(var(--height, 100vh) - var(--top, 0px));

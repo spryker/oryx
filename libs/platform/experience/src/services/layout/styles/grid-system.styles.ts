@@ -9,7 +9,10 @@ export const gridSystem = css`
         calc(
           (
               var(--_container-width) -
-                (var(--oryx-grid-gap-column) * (var(--oryx-grid-columns) - 1))
+                (
+                  var(--column-gap, var(--oryx-grid-gap-column, 0px)) *
+                    (var(--oryx-grid-columns) - 1)
+                )
             ) / var(--oryx-grid-columns) - var(--nested-padding, 0px)
         )
       )
@@ -23,19 +26,8 @@ export const gridSystem = css`
 
   *,
   ::slotted(*) {
-    --nested-padding: var(--padding);
-
-    grid-column: var(--col-pos, auto) / span var(--col-span);
-    grid-row: var(--row-pos, auto) / span var(--row-span);
     max-width: calc(100% - (var(--margin, 0px) * 2));
     max-height: calc(100% - (var(--margin, 0px) * 2));
     box-sizing: border-box;
-  }
-
-  :host,
-  ::slotted(*),
-  * {
-    --col-span: 1;
-    --row-span: 1;
   }
 `;

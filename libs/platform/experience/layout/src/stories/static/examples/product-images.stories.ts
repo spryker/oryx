@@ -134,16 +134,13 @@ const Template: Story = (): TemplateResult => {
     <style>
       .page {
         --image-height: 200px;
+
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-auto-flow: row;
         gap: 10px;
         margin: 10px 0;
       }
-
-      /*  .page > oryx-layout {
-         height: var(--image-height);
-       } */
 
       .main {
         --oryx-grid-columns: 1;
@@ -169,3 +166,7 @@ const Template: Story = (): TemplateResult => {
 };
 
 export const ProductImagesPage = Template.bind({});
+
+// .page > oryx-layout {
+//         height: var(--image-height);
+//       }

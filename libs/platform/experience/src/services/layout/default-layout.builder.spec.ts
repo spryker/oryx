@@ -36,17 +36,24 @@ describe('DefaultLayoutBuilder', () => {
   };
 
   const expectStyleRule = (
-    key: keyof StyleProperties,
-    value: string | number,
+    data: StyleProperties,
+    // key: keyof StyleProperties,
+    // value: string | number,
     expectedRule: string
   ): void => {
-    describe(`when the ${key} is configured`, () => {
-      beforeEach(() => populate({ [key]: value }));
+    const keys = Object.keys(data);
+
+    describe(`when the ${keys.join('')} is configured`, () => {
+      beforeEach(() => {
+        styles = service.getLayoutStyles(data);
+      });
+
       it('should generate the rule', () => {
         expect(styles).toContain(expectedRule);
       });
     });
-    describe(`when the ${key} is not configured`, () => {
+
+    describe(`when the ${keys} is not configured`, () => {
       beforeEach(() => populate({}));
       it('should not generate the rule', () => {
         expect(styles).toBeUndefined();
@@ -78,48 +85,71 @@ describe('DefaultLayoutBuilder', () => {
   });
 
   describe('style properties', () => {
-    // expectStyleRule('columnCount', 9, '--cols: 9');
-    expectStyleRule('gridColumn', 3, '--col-pos: 3');
-    expectStyleRule('gridRow', 5, '--row-pos: 5');
-    expectStyleRule('align', LayoutAlign.Center, 'align-items: center');
-    expectStyleRule('align', LayoutAlign.Start, 'align-items: start');
-    expectStyleRule('align', LayoutAlign.Stretch, 'align-items: stretch');
-    expectStyleRule('align', LayoutAlign.End, 'align-items: end');
-    // expectStyleRule('span', 3, '--span: 3');
-    expectStyleRule('gap', 10, '--oryx-grid-gap-column: 10');
-    expectStyleRule('gap', 10, '--oryx-grid-gap-row: 10');
+    expectStyleRule({ columnCount: 6 }, '--oryx-grid-columns: 6');
+    expectStyleRule({ splitColumnFactor: 0.25 }, '--split-column-start: 0.25');
+
+    expectStyleRule({ gridColumn: 5 }, 'grid-column: 5');
+    expectStyleRule({ colSpan: 2 }, 'grid-column: span 2');
+    expectStyleRule({ gridColumn: 5, colSpan: 2 }, 'grid-column: 5 / span 2');
+
+    expectStyleRule({ gridRow: 5 }, 'grid-row: 5');
+    expectStyleRule({ rowSpan: 2 }, 'grid-row: span 2');
+    expectStyleRule({ gridRow: 5, rowSpan: 2 }, 'grid-row: 5 / span 2');
+
+    expectStyleRule({ align: LayoutAlign.Center }, '--align: center');
+    expectStyleRule({ align: LayoutAlign.Start }, '--align: start');
+    expectStyleRule({ align: LayoutAlign.Stretch }, '--align: stretch');
+    expectStyleRule({ align: LayoutAlign.End }, '--align: end');
+
+    expectStyleRule({ gap: '10' }, '--column-gap: 10');
+    expectStyleRule({ gap: '10%' }, '--column-gap: 10%;--row-gap: 10%');
+    expectStyleRule({ gap: '10 5' }, '--column-gap: 5');
+    expectStyleRule({ gap: '10' }, '--row-gap: 10');
+    expectStyleRule({ gap: '10%' }, '--row-gap: 10%');
+    expectStyleRule({ gap: '10 5' }, '--row-gap: 10');
+    expectStyleRule({ top: '10' }, 'inset-block-start: 10px');
+    expectStyleRule({ top: '10vh' }, 'inset-block-start: 10vh');
+
+    expectStyleRule({ height: '100px' }, 'height: 100px');
+    expectStyleRule({ width: '100px' }, 'width: 100px');
+
     expectStyleRule(
-      'gap',
-      '10%',
-      '--oryx-grid-gap-column: 10%;--oryx-grid-gap-row: 10%'
+      { sticky: true, height: '100px' },
+      'max-height: calc(100px - 0px)'
     );
-    expectStyleRule('gap', '10%', '--oryx-grid-gap-row: 10%');
-    expectStyleRule('gap', '10 5', '--oryx-grid-gap-row: 10');
-    expectStyleRule('gap', '10 5', '--oryx-grid-gap-column: 5');
-    expectStyleRule('top', '10', '--top: 10px');
-    expectStyleRule('top', '10vh', '--top: 10vh');
-    expectStyleRule('width', '100px', 'width: 100px');
-    expectStyleRule('height', '100px', '--height: 100px');
-    expectStyleRule('margin', '10', 'margin: 10px');
-    expectStyleRule('margin', '10%', 'margin: 10%');
-    expectStyleRule('padding', '15', 'padding-block: 15px');
-    expectStyleRule('padding', '15%', 'padding-block: 15%');
-    expectStyleRule('padding', '10px', '--scroll-start: 10px');
-    expectStyleRule('padding', '10px 5px', '--scroll-start: 5px');
-    expectStyleRule('padding', '10px 5px 20px', '--scroll-start: 5px');
-    expectStyleRule('padding', '10px 5px 20px 30px', '--scroll-start: 30px');
-    expectStyleRule('border', '15px solid red', 'border: 15px solid red');
-    expectStyleRule('radius', '15', 'border-radius: 15px');
-    expectStyleRule('background', 'red', 'background: red');
     expectStyleRule(
-      'background',
-      'url("http://lorempixel.com/1920/1080/nature"',
+      { sticky: true, height: '100px', top: '10px' },
+      'max-height: calc(100px - 10px)'
+    );
+    expectStyleRule(
+      { sticky: true, top: '10px' },
+      'max-height: calc(100vh - 10px)'
+    );
+    expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
+
+    expectStyleRule({ margin: '10' }, 'margin: 10px');
+    expectStyleRule({ margin: '10%' }, 'margin: 10%');
+    expectStyleRule({ padding: '15' }, 'padding-block: 15px');
+    expectStyleRule({ padding: '15%' }, 'padding-block: 15%');
+    expectStyleRule({ padding: '10px' }, 'scroll-padding: 10px');
+    expectStyleRule({ padding: '10px 5px' }, 'scroll-padding: 5px');
+    expectStyleRule({ padding: '10px 5px 20px' }, 'scroll-padding: 5px');
+    expectStyleRule({ padding: '10px 5px 20px 30px' }, 'scroll-padding: 30px');
+
+    expectStyleRule({ border: '15px solid red' }, 'border: 15px solid red');
+    expectStyleRule({ radius: '15' }, 'border-radius: 15px');
+
+    expectStyleRule({ background: 'red' }, 'background: red');
+    expectStyleRule(
+      { background: 'url("http://lorempixel.com/1920/1080/nature"' },
       'background: url("http://lorempixel.com/1920/1080/nature"'
     );
-    expectStyleRule('zIndex', 3, 'z-index: 3');
-    expectStyleRule('rotate', 3, '--rotate: 3deg');
-    expectStyleRule('rotate', -2, '--rotate: -2deg');
-    expectStyleRule('overflow', 'auto', 'overflow: auto');
+
+    expectStyleRule({ zIndex: 3 }, 'z-index: 3');
+    expectStyleRule({ rotate: 3 }, 'rotate: 3deg');
+    expectStyleRule({ rotate: -2 }, 'rotate: -2deg');
+
+    expectStyleRule({ overflow: 'auto' }, 'overflow: auto');
   });
 
   describe('classes', () => {

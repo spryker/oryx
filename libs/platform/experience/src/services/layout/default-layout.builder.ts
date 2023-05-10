@@ -57,9 +57,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
-    if (data?.style) {
-      styles += data.style;
-    }
+    if (data?.style) styles += data.style;
     return styles === '' ? undefined : styles;
   }
 
@@ -69,9 +67,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
    */
   protected getClasses(ruleSet?: StyleRuleSet): string[] {
     const classes: string[] = [];
-    if (!ruleSet) {
-      return classes;
-    }
+    if (!ruleSet) return classes;
 
     const add = (className: string, required = false): void => {
       const breakpoint = ruleSet.breakpoint ?? this.screenService.getSmallest();
@@ -87,9 +83,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   protected getProperties(data?: StyleProperties): string[] {
     const rules: string[] = [];
 
-    if (!data) {
-      return rules;
-    }
+    if (!data) return rules;
 
     const addUnit = (value: string | number | undefined, unit?: string) => {
       return `${value}${unit ?? 'px'}`;
@@ -97,7 +91,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     const add = (
       rulesObj: { [key: string]: string | number | undefined },
-      options?: { omitUnit?: boolean; addEmpty?: boolean; unit?: string }
+      options?: { unit?: string; omitUnit?: boolean }
     ) => {
       Object.entries(rulesObj).forEach(([rule, value]) => {
         if (!value) return;
@@ -105,39 +99,81 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         if (!isNaN(Number(value))) {
           if (!options?.omitUnit) {
             value = addUnit(value, options?.unit);
-          } else if (value === 0 && options?.addEmpty) {
-            value = '';
           } else {
             value = String(value);
           }
         }
 
         // do not add empty values unless explicitly asked
-        if (!value && !options?.addEmpty) {
-          return;
-        }
+        if (!value) return;
 
         rules.push(`${rule}: ${value}`);
       });
     };
 
+    add({ '--oryx-grid-columns': data.columnCount }, { omitUnit: true });
+    add({ '--split-column-start': data.splitColumnFactor }, { omitUnit: true });
+
+    if (data.padding) {
+      add({ 'scroll-padding': this.findCssValue(data.padding, 'start') });
+      add({
+        'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
+      });
+      if (!data.bleed) {
+        // consider moving to bleed layout plugin
+        // avoid adding padding for layouts that bleed into the side
+        // as this can harm the calculated width
+        add({
+          'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
+        });
+      }
+
+      // nested padding is usedd to calculate the size of nested grid based elements
+      add({
+        '--nested-padding': this.findCssValues(data.padding, 'start', 'end'),
+      });
+    }
+
+    add({ rotate: data.rotate }, { unit: 'deg' });
+    add({ 'z-index': data.zIndex }, { omitUnit: true });
+
+    // col/row position and span
+    if (data.gridColumn && data.colSpan) {
+      add({ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` });
+    } else {
+      if (data.gridColumn)
+        add({ 'grid-column': data.gridColumn }, { omitUnit: true });
+      if (data.colSpan) add({ 'grid-column': `span ${data.colSpan}` });
+    }
+    if (data.gridRow && data.rowSpan) {
+      add({ 'grid-row': `${data.gridRow} / span ${data.rowSpan}` });
+    } else {
+      if (data.gridRow) add({ 'grid-row': data.gridRow }, { omitUnit: true });
+      if (data.rowSpan) add({ 'grid-row': `span ${data.rowSpan}` });
+    }
+
+    // column/row gap
+    const gaps = data.gap?.toString().split(' ');
+    add({ '--column-gap': gaps?.[1] ?? gaps?.[0] });
+    add({ '--row-gap': gaps?.[0] });
+
+    // consider moving to split-column layout plugin
     add(
-      {
-        '--split-column-factor': data.splitColumnFactor,
-        '--col-pos': data.gridColumn,
-        '--row-pos': data.gridRow,
-        '--col-span': data.colSpan,
-        '--row-span': data.rowSpan,
-        '--rotate': data.rotate,
-        'z-index': data.zIndex,
-      },
+      { '--split-column-factor': data.splitColumnFactor },
       { omitUnit: true }
     );
 
+    // consider moving to sticky layout plugin
+    if (data.sticky) {
+      add({
+        'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
+      });
+    }
+
     add({
-      'align-items': data.align,
-      '--top': data.top, // only used for sticky
-      '--height': data.height, // only used for sticky
+      '--align': data.align,
+      'inset-block-start': data.top,
+      height: data.height,
       width: data.width,
       margin: data.margin,
       border: data.border,
@@ -145,27 +181,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       background: data.background,
       overflow: data?.overflow,
     });
-
-    const gaps = data.gap?.toString().split(' ');
-    add(
-      { '--oryx-grid-gap-column': gaps?.[1] ?? gaps?.[0] },
-      { omitUnit: true }
-    );
-    add({ '--oryx-grid-gap-row': gaps?.[0] }, { omitUnit: true });
-    add({ '--rotate': data.rotate }, { unit: 'deg' }); // TODO + duplicate
-
-    if (data.padding) {
-      add({
-        'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
-        '--scroll-start': this.findCssValue(data.padding, 'start'),
-      });
-
-      if (!(data as any).layout) {
-        add({
-          'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
-        });
-      }
-    }
 
     return rules;
   }

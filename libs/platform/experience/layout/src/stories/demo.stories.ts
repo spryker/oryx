@@ -1,155 +1,113 @@
-import { StyleRuleSet } from '@spryker-oryx/experience';
+import {
+  CompositionLayout,
+  CompositionProperties,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../constants';
 
+const demoTable = { category: 'Demo' };
+const nestedDemoTable = { category: '(sub) layout' };
 export default {
   title: `${storybookPrefix}/Layout`,
   args: {
+    mainLayout: 'grid',
     layout: 'grid',
-    gap: '5px',
-    demoItemCount: 12,
-    customItem: 2,
-    customItemCount: 4,
-    customLayout: 'grid',
     background: 'deeppink',
-    sticky: false,
-    bleed: false,
-    marginInline: '0',
-    marginBlock: '0',
-    paddingInline: '0',
-    paddingBlock: '0',
+    gridColumn: 1,
+    gridRow: 1,
+    colSpan: 1,
+    rowSpan: 1,
+    padding: '0',
   },
   argTypes: {
+    mainLayout: {
+      options: ['list', 'column', 'split-column', 'carousel', 'grid', 'flex'],
+      control: { type: 'select' },
+      table: demoTable,
+    },
     layout: {
       options: ['list', 'column', 'split-column', 'carousel', 'grid', 'flex'],
       control: { type: 'select' },
     },
-    splitColumnFactor: {
+    background: {
+      control: { type: 'color' },
+      table: nestedDemoTable,
+    },
+    gridColumn: {
       control: { type: 'number' },
-      table: { category: 'DesignTokens' },
-    },
-    gap: {
-      control: { type: 'text' },
-      table: { category: 'Styling' },
-    },
-    align: {
-      options: ['start', 'stretch', 'end', 'center'],
-      control: { type: 'select' },
-      table: { category: 'Styling' },
-    },
-    // demo
-    demoItemCount: {
-      control: { type: 'number', max: 24 },
-      table: { category: 'Demo' },
-    },
-    customItem: {
-      control: { type: 'number' },
-      table: { category: 'Demo' },
-    },
-    customItemCount: {
-      control: { type: 'number' },
-      table: { category: 'Demo' },
-    },
-    customLayout: {
-      options: ['list', 'carousel', 'grid', 'column', 'flex'],
-      control: { type: 'select' },
-      table: { category: 'Demo' },
+      table: nestedDemoTable,
     },
     colSpan: {
       control: { type: 'number' },
-      table: { category: 'Demo' },
+      table: nestedDemoTable,
     },
-    background: {
-      control: { type: 'color' },
-      table: { category: 'Demo' },
+    gridRow: {
+      control: { type: 'number' },
+      table: nestedDemoTable,
     },
-
+    rowSpan: {
+      control: { type: 'number' },
+      table: nestedDemoTable,
+    },
+    padding: {
+      control: { type: 'text' },
+      table: nestedDemoTable,
+    },
+    gap: {
+      control: { type: 'text' },
+      table: nestedDemoTable,
+    },
+    align: {
+      options: [
+        'start',
+        'stretch',
+        'end',
+        'center',
+        'space-between',
+        'space-around',
+        'space-evenly',
+      ],
+      control: { type: 'select' },
+      table: nestedDemoTable,
+    },
+    rotate: {
+      control: { type: 'number' },
+      table: nestedDemoTable,
+    },
     sticky: {
       control: { type: 'boolean' },
-      table: { category: 'Customize' },
-    },
-    bleed: {
-      control: { type: 'boolean' },
-      table: { category: 'Customize' },
-    },
-
-    paddingInline: {
-      control: { type: 'text' },
-      table: { category: 'Customize' },
-    },
-    paddingBlock: {
-      control: { type: 'text' },
-      table: { category: 'Customize' },
-    },
-
-    marginInline: {
-      control: { type: 'text' },
-      table: { category: 'Customize' },
-    },
-    marginBlock: {
-      control: { type: 'text' },
-      table: { category: 'Customize' },
+      table: nestedDemoTable,
     },
   },
 } as Meta;
 
 interface DemoProps {
-  layoutCols?: number;
-  layoutFactor?: number;
-  demoItemCount: number;
-  customItem: number;
-  customItemCount: number;
-  customLayout?: string;
-  color?: string;
+  mainLayout?: CompositionLayout;
 }
 
 const Template: Story<DemoProps & StyleRuleSet> = (
   props: DemoProps & StyleRuleSet
 ): TemplateResult => {
-  // if (Number(props.gap)) {
-  //   props.gap += 'px';
-  // }
-
-  // if (props.colSpan !== undefined && props.colSpan < 1) {
-  //   props.colSpan = 1;
-  // }
-
-  const addStyle = (prop: string, value?: number | string): string => {
-    return value ? `${prop}: ${value};` : '';
+  const innerOptions: CompositionProperties = {
+    rules: [props],
   };
-
-  let mainStyle = '';
-  const gaps = props.gap?.split(' ');
-  mainStyle += addStyle('--oryx-grid-gap-column', gaps?.[1] ?? gaps?.[0]);
-  mainStyle += addStyle('--oryx-grid-gap-row', gaps?.[0]);
-  mainStyle += addStyle('align-items', props.align);
-
-  let style = '';
-
-  style += addStyle('background', props.background);
-
-  style += addStyle('--col-span', props.colSpan);
-  style += addStyle('--row-span', props.rowSpan);
-  style += addStyle('--split-column-factor', props.splitColumnFactor);
-
   return html`
-    <oryx-layout .layout=${props.layout} style=${mainStyle}>
-      ${Array.from({ length: props.demoItemCount }, (_, i) => {
+    <oryx-layout .layout=${props.mainLayout} class="outer">
+      ${Array.from({ length: 12 }, (_, i) => {
         const item = (id: number, postfix?: string) =>
           html`<div id="item-${id}">${id}${postfix}</div>`;
-        if (i === props.customItem - 1) {
+        if (i === 0) {
           return html`
             <oryx-layout
-              id="item-${i + 1}"
-              .layout=${props.customLayout}
-              style=${style}
+              uid="item-${i + 1}"
+              .layout=${props.layout}
               ?sticky=${props.sticky}
               ?bleed=${props.bleed}
+              .options=${innerOptions}
             >
-              ${Array.from({ length: props.customItemCount }, (_, j) =>
-                item(j + 1, ` (n)`)
-              )}
+              ${Array.from({ length: 8 }, (_, j) => item(j + 1, ` (n)`))}
             </oryx-layout>
           `;
         } else {
@@ -158,7 +116,14 @@ const Template: Story<DemoProps & StyleRuleSet> = (
       })}
     </oryx-layout>
 
-    <style></style>
+    <style>
+      oryx-layout > * {
+        outline: solid 1px;
+      }
+      oryx-layout.outer > * {
+        height: 200px;
+      }
+    </style>
   `;
 };
 

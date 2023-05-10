@@ -20,13 +20,11 @@ export const styles: LayoutStyles = {
     :host(:not([vertical])) {
       grid-auto-flow: column;
       overflow: auto hidden;
-      scroll-padding-inline-start: var(--scroll-start, 0);
     }
 
     :host([vertical]) {
       grid-auto-flow: row;
       overflow: hidden auto;
-      scroll-padding-block-start: var(--scroll-start, 0);
     }
 
     :host::-webkit-scrollbar {
@@ -36,7 +34,8 @@ export const styles: LayoutStyles = {
     *,
     ::slotted(*) {
       scroll-snap-align: start;
-      width: 100%;
     }
   `,
 };
+
+// width: 100%; on slotted causes issues

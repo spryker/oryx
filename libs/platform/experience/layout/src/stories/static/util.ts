@@ -23,6 +23,12 @@ export const generateNestedLayout = (
 ): TemplateResult => html`
   <h1>Nested layout</h1>
 
+  <ul>
+      <li>
+        Nested layout does not support margin, but similar effect is given by a padding.
+      </li>
+  </ul>
+
   <h2>Nested grid</h2>
 
   <ul>
@@ -42,7 +48,7 @@ export const generateNestedLayout = (
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     <div>2</div>
-    <oryx-layout layout="grid" style="--col-span:2">
+    <oryx-layout layout="grid" .options=${{ rules: [{ colSpan: 2 }] }}>
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     ${generateLayoutItems(12, 6)}
@@ -63,7 +69,16 @@ export const generateNestedLayout = (
     <div style="height: 300px">1 (height: 300px)</div>
     <oryx-layout
       layout="grid"
-      style="--col-span:2;align-self: center;background:var(--oryx-color-canvas-100);--padding: 10px"
+      .options=${{
+        rules: [
+          {
+            colSpan: 2,
+            align: 'center',
+            background: 'var(--oryx-color-canvas-100)',
+            padding: '10px',
+          },
+        ],
+      }}
     >
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
@@ -82,7 +97,7 @@ export const generateNestedLayout = (
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     <div>2</div>
-    <oryx-layout layout="carousel" style="--col-span:2">
+    <oryx-layout layout="carousel" .options=${{ rules: [{ colSpan: 2 }] }}>
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
     ${generateLayoutItems(12, 5)}
@@ -92,11 +107,22 @@ export const generateNestedLayout = (
     <li>Nested carousels support the same features as a nested grid</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="align-items: center">
+  <oryx-layout layout=${layout} .options=${{
+  rules: [{ align: 'center' }],
+}}
+>
     <div style="height:150px">1</div>
     <oryx-layout
       layout="carousel"
-      style="--col-span:2;align-self: center;background:var(--oryx-color-canvas-100);--padding: 10px;--scroll-start: 10px;"
+      .options=${{
+        rules: [
+          {
+            colSpan: 2,
+            background: 'var(--oryx-color-canvas-100)',
+            padding: '10px',
+          },
+        ],
+      }}
     >
       ${generateLayoutItems(6, 1, 'N', true)}
     </oryx-layout>
@@ -109,7 +135,7 @@ export const generateNestedLayout = (
     <li>Nested columns support the same features as a nested grid</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="align-items: center">
+  <oryx-layout layout=${layout} .options=${{ rules: [{ align: 'center' }] }}>
     <div>1</div>
     <oryx-layout layout="column">
       ${generateLayoutItems(5, 1, 'N', true)}
@@ -124,7 +150,7 @@ export const generateNestedLayout = (
 
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="column" style="--col-span:2">
+      <oryx-layout layout="column" .options=${{ rules: [{ colSpan: 2 }] }} >
         ${generateLayoutItems(13, 1, 'N', true)}
       </oryx-layout>
       ${generateLayoutItems(9, 4)}
@@ -148,7 +174,7 @@ export const generateNestedLayout = (
     </ul>
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="flex" style="--col-span:2">
+      <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
         <div style="background:var(--oryx-color-secondary-300)">
           N1 - lengthy content
         </div>
@@ -166,7 +192,7 @@ export const generateNestedLayout = (
 
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="list" style="--col-span:2">
+      <oryx-layout layout="list" .options=${{ rules: [{ colSpan: 2 }] }}>
         ${generateLayoutItems(3, 1, 'N', true)}
       </oryx-layout>
       ${generateLayoutItems(10, 5)}
@@ -180,7 +206,7 @@ export const generateNestedLayout = (
 
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="text" style="--col-span:2">
+      <oryx-layout layout="text" .options=${{ rules: [{ colSpan: 2 }] }}>
         <h3>Lorem ipsum</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.

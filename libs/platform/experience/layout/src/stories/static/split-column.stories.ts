@@ -33,7 +33,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 50%</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:50%">
+    <oryx-layout layout="split-column" style="--split-column-factor:0.5">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -42,7 +42,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 25%</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:25%">
+    <oryx-layout layout="split-column" style="--split-column-factor:0.25">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -51,10 +51,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 33%</h2>
-    <oryx-layout
-      layout="split-column"
-      style="--split-column-factor:calc(100%/3)"
-    >
+    <oryx-layout layout="split-column" style="--split-column-factor1/3">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -63,10 +60,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 66%</h2>
-    <oryx-layout
-      layout="split-column"
-      style="--split-column-factor:calc(200%/3)"
-    >
+    <oryx-layout layout="split-column" style="--split-column-factor:calc(2/3)">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>
@@ -75,7 +69,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Split column 0.75</h2>
-    <oryx-layout layout="split-column" style="--split-column-factor:75%">
+    <oryx-layout layout="split-column" style="--split-column-factor:0.75">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>

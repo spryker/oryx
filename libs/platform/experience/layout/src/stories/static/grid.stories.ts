@@ -95,7 +95,7 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Column span reflects the new column size</li>
     </ul>
-    <oryx-layout layout="grid" style="--oryx-grid-columns: 6">
+    <oryx-layout layout="grid" .options=${{ rules: [{ columnCount: 6 }] }}>
       <div>1</div>
       <div style="--col-span:2;">2</div>
       ${generateLayoutItems(12, 3)}
