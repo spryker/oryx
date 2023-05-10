@@ -16,32 +16,30 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       .map((component) =>
         component.options?.data
           ? this.createStylesFromOptions(
-              component.id,
-              component.options.data.rules
+              component.options.data.rules,
+              component.id
             )
           : ''
       )
       .join('');
   }
 
-  createStylesFromOptions(id: string, rules?: StyleRuleSet[]): string {
-    return (
-      rules
-        ?.map((rule) => {
-          const styles = this.getLayoutStyles(rule);
-          if (styles) {
-            const breakpoint = rule.breakpoint;
-            if (breakpoint) {
-              const query = this.screenService.getScreenMedia(breakpoint);
-              return `${query}{:host([uid="${id}"]), [uid="${id}"] {${styles}}}\n`;
-            }
-            return `:host([uid="${id}"]),[uid="${id}"] {${styles}}\n`;
-          } else {
-            return '';
+  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
+    if (!rules?.length) return '';
+    const uidSelector = id ? `:host([uid="${id}"]), [uid="${id}"]` : ':host';
+    return rules
+      .map((rule) => {
+        const styles = this.getLayoutStyles(rule);
+        if (styles) {
+          const breakpoint = rule.breakpoint;
+          if (breakpoint) {
+            const mediaQuery = this.screenService.getScreenMedia(breakpoint);
+            return `${mediaQuery}{ ${uidSelector} {${styles}}}\n`;
           }
-        })
-        .join('') ?? ''
-    );
+          return `${uidSelector} {${styles}}\n`;
+        } else return '';
+      })
+      .join('');
   }
 
   getLayoutClasses(data?: CompositionProperties): string | undefined {

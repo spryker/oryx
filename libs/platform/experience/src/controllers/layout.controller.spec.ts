@@ -151,72 +151,31 @@ describe('DefaultScreenService', () => {
 
   describe('collectStyles', () => {
     describe('when layout exist', () => {
-      describe('and uid is not provided', () => {
-        it('should return empty string', () => {
-          const styles = setupControlller({
-            layout: CompositionLayout.Grid,
-          }).collectStyles(['layout']);
-
-          expect(
-            mockLayoutBuilder.createStylesFromOptions
-          ).not.toHaveBeenCalled();
-          expect(styles).toBe('');
-
-          expect(
-            setupControlller({
-              xs: { bleed: true },
-            }).collectStyles(['bleed'])
-          ).toBe('');
-        });
-      });
-
-      describe('and uid is provided', () => {
-        it('should return result from LayoutBuilder.createStylesFromOptions', () => {
-          mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
-          const styles = setupControlller({}).collectStyles(
-            ['layout'],
-            [{ layout: CompositionLayout.Carousel }],
-            'uid'
-          );
-
-          expect(
-            mockLayoutBuilder.createStylesFromOptions
-          ).toHaveBeenCalledWith('uid', [
-            { layout: CompositionLayout.Carousel },
-          ]);
-          expect(styles).toBe('result');
-        });
-      });
-    });
-  });
-
-  describe('when layout is not exist', () => {
-    describe('and uid is not provided', () => {
-      it('should return default styles for hosts', () => {
-        const styles = setupControlller({}).collectStyles(['layout']);
-
-        expect(
-          mockLayoutBuilder.createStylesFromOptions
-        ).not.toHaveBeenCalled();
-        expect(styles).toBe(':host {display: contents;}\n');
-      });
-    });
-
-    describe('and uid is provided', () => {
-      it('should return combine result from LayoutBuilder.createStylesFromOptions with default styles for host', () => {
+      it('should return result from LayoutBuilder.createStylesFromOptions', () => {
         mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
         const styles = setupControlller({}).collectStyles(
-          ['bleed'],
+          ['layout'],
           [{ layout: CompositionLayout.Carousel }],
           'uid'
         );
 
         expect(mockLayoutBuilder.createStylesFromOptions).toHaveBeenCalledWith(
-          'uid',
-          [{ layout: CompositionLayout.Carousel }]
+          [{ layout: CompositionLayout.Carousel }],
+          'uid'
         );
-        expect(styles).toBe(':host {display: contents;}\nresult');
+        expect(styles).toBe('result');
       });
+    });
+  });
+
+  describe('when layout is not exist', () => {
+    beforeEach(() => {
+      mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
+    });
+
+    it('should return default styles for hosts', () => {
+      const styles = setupControlller({}).collectStyles(['layout']);
+      expect(styles).toBe(':host {display: contents;}\nresult');
     });
   });
 });

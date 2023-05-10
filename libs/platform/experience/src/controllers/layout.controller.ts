@@ -114,9 +114,7 @@ export class LayoutController {
       styles += ':host {display: contents;}\n';
     }
 
-    if (uid) {
-      styles += this.layoutBuilder.createStylesFromOptions(uid, rules);
-    }
+    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
 
     return styles;
   }

@@ -29,7 +29,7 @@ export interface LayoutBuilder {
    */
   collectStyles(components: Component[]): string;
 
-  createStylesFromOptions(id: string, rules?: StyleRuleSet[]): string;
+  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
 
   /**
    * Generates an class list that is driven by layout properties on the
