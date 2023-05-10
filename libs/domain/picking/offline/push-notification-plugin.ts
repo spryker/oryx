@@ -24,9 +24,9 @@ export class PushNotificationPlugin extends ExecPlugin {
               console.log('Push notifications subscribed');
             });
           } else {
-            // this.pushNotificationService.unsubscribe().subscribe(() => {
-            //   console.log('Unsubscribed from push notifications');
-            // });
+            pushNotificationService.unsubscribe().subscribe(() => {
+              console.log('Unsubscribed from push notifications');
+            });
           }
         });
     });

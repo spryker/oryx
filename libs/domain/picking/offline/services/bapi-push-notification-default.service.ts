@@ -2,7 +2,7 @@ import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BapiPushNotificationService } from '@spryker-oryx/picking/offline';
 import { PushService } from '@spryker-oryx/push-notification';
-import { filter, map, Observable, switchMap } from 'rxjs';
+import {filter, map, Observable, switchMap, tap} from 'rxjs';
 import { BapiPushNotificationAdapter } from './adapter/bapi-push-notification.adapter';
 
 export class BapiPushNotificationDefaultService
@@ -27,6 +27,12 @@ export class BapiPushNotificationDefaultService
         this.bapiPushNotificationAdapter.sendSubscription(subscription)
       ),
       switchMap(() => this.storageService.set(this.subscriptionFlagKey, true))
+    );
+  }
+
+  unsubscribe(): Observable<boolean> {
+    return this.pushService.unsubscribe().pipe(
+      tap(() => this.storageService.remove(this.subscriptionFlagKey))
     );
   }
 }
