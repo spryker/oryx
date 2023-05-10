@@ -1,5 +1,5 @@
 import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '@spryker-oryx/themes';
+import { IconTypes } from '@spryker-oryx/themes/icons';
 
 export const backofficeNgIcons: ResourceIcons = {
   [IconTypes.BackArrow]: () =>
