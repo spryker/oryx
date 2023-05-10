@@ -7,15 +7,19 @@ export const LoginPage: StaticComponent = {
     route: '/login',
     description: 'Login Page Description',
   },
+  options: {
+    data: {
+      rules: [{ layout: 'flex', padding: '30px 0 0' }],
+    },
+  },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-auth-login',
       options: {
         data: {
-          rules: [{ container: true, margin: '30px 0' }],
+          rules: [{ width: '50%', margin: 'auto' }],
         },
       },
-      components: [{ type: 'oryx-auth-login' }],
     },
   ],
 };

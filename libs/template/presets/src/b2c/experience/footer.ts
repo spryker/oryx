@@ -27,14 +27,13 @@ export const FooterTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              container: true,
-              maxWidth: true,
-              sticky: true,
+              layout: 'flex',
+              align: 'center',
               top: '100%',
               background: 'var(--oryx-color-canvas-200)',
-              padding: '30px 0',
-              layout: 'flex',
-              margin: '30px 0 0',
+              padding: '30 0',
+              bleed: true,
+              sticky: true,
             },
           ],
         },

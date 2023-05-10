@@ -9,7 +9,14 @@ export const CartPage: StaticComponent = {
   },
   options: {
     data: {
-      rules: [{ layout: 'two-column', container: 'true', padding: '30px 0 0' }],
+      rules: [
+        {
+          layout: 'split-column',
+          splitColumnFactor: 2 / 3,
+          padding: '30px 0 0',
+        },
+        { breakpoint: 'sm', gap: '0' },
+      ],
     },
   },
   components: [
@@ -34,11 +41,10 @@ export const CartPage: StaticComponent = {
         data: {
           rules: [
             {
-              sticky: true,
-              top: '108px',
-              maxWidth: true,
               layout: 'list',
               gap: '20px',
+              sticky: true,
+              top: '108px',
             },
           ],
         },

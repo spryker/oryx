@@ -9,81 +9,54 @@ export const CategoryPage: StaticComponent = {
     index: true,
     description: 'Category Page Description',
   },
+  options: {
+    data: {
+      rules: [
+        {
+          layout: 'split-column',
+          splitColumnFactor: 0.25,
+          padding: '30px 0 0',
+        },
+        { breakpoint: 'md', splitColumnFactor: 1 / 3 },
+      ],
+    },
+  },
   components: [
     {
+      type: 'search-facet-navigation',
+      options: {
+        data: {
+          rules: [{ sticky: true, top: '108' }],
+        },
+      },
+    },
+    {
       type: 'experience-composition',
+      options: {
+        data: { rules: [{ layout: 'list', gap: '20px' }] },
+      },
       components: [
         {
-          type: 'search-facet-navigation',
-          options: {
-            data: {
-              rules: [
-                {
-                  height: 'calc(100vh - 78px)',
-                  sticky: true,
-                  top: '78px',
-                  span: '3',
-                  margin: '30px 0',
-                },
-              ],
+          type: 'experience-composition',
+          options: { data: { rules: [{ layout: 'flex' }] } },
+          components: [
+            {
+              type: 'search-product-sort',
+              options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
             },
+          ],
+        },
+        {
+          type: 'oryx-product-list',
+          options: {
+            data: { rules: [{ layout: 'grid', gap: '30px' }] },
           },
         },
         {
-          type: 'experience-composition',
-          components: [
-            {
-              type: 'experience-composition',
-              components: [
-                {
-                  type: 'search-product-sort',
-                  options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
-                },
-              ],
-              options: {
-                data: { rules: [{ layout: 'flex', maxWidth: true }] },
-              },
-            },
-            {
-              id: 'category-list',
-              type: 'oryx-product-list',
-              options: {
-                data: {
-                  rules: [
-                    {
-                      layout: 'grid',
-                      columnCount: '3',
-                      span: '3',
-                      gap: '30',
-                      maxWidth: false,
-                    },
-                  ],
-                },
-              },
-            },
-            {
-              type: 'experience-composition',
-              components: [{ type: 'oryx-search-pagination' }],
-              options: { data: { rules: [{ margin: '0 auto' }] } },
-            },
-          ],
-          options: {
-            data: {
-              rules: [
-                {
-                  maxWidth: true,
-                  layout: 'flex',
-                  padding: '30px 0',
-                  gap: '20',
-                },
-              ],
-            },
-          },
+          type: 'oryx-search-pagination',
+          options: { data: { rules: [{ margin: '0 auto 20px' }] } },
         },
       ],
-      options: {
-        data: { rules: [{ container: true, layout: 'column', gap: '30' }] },
-      },
     },
   ],
 };

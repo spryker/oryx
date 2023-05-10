@@ -12,10 +12,13 @@ export const CheckoutPage: StaticComponent = {
     data: {
       rules: [
         {
-          layout: 'two-column',
-          container: 'true',
-          gap: '30px',
+          layout: 'split-column',
+          splitColumnFactor: 2 / 3,
           padding: '30px 0 0',
+        },
+        {
+          breakpoint: 'sm',
+          gap: '0',
         },
       ],
     },
@@ -40,11 +43,9 @@ export const CheckoutPage: StaticComponent = {
         data: {
           rules: [
             {
-              align: 'stretch',
-              maxWidth: true,
-              sticky: true,
               layout: 'list',
               gap: '20px',
+              sticky: true,
               top: '108px',
             },
           ],

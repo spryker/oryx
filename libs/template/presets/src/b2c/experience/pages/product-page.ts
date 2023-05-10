@@ -7,14 +7,25 @@ export const ProductPage: StaticComponent = {
     route: '/product/:sku',
     description: 'Default Product Page Description',
   },
+
   components: [
     {
       type: 'experience-composition',
-      options: { data: { rules: [{ container: true, layout: 'two-column' }] } },
+      options: {
+        data: {
+          rules: [
+            {
+              layout: 'split-column',
+              splitColumnFactor: 2 / 3,
+              padding: '30px 0 0',
+            },
+          ],
+        },
+      },
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ padding: '30px 0' }] } },
+          options: { data: { rules: [{ layout: 'list' }] } },
           components: [
             {
               type: 'oryx-product-labels',
@@ -31,12 +42,9 @@ export const ProductPage: StaticComponent = {
             data: {
               rules: [
                 {
-                  sticky: true,
-                  top: '110px',
-                  maxWidth: true,
                   layout: 'list',
-                  gap: '10px',
-                  padding: '30px 0',
+                  top: '108',
+                  sticky: true,
                 },
               ],
             },
@@ -57,20 +65,20 @@ export const ProductPage: StaticComponent = {
         },
       ],
     },
+
     {
       type: 'oryx-product-list',
       options: {
         data: {
+          category: '10',
+          sort: 'rating',
           rules: [
             {
               layout: 'carousel',
-              container: true,
-              gap: '20',
-              padding: '20 0 0',
+              padding: '20 0',
+              colSpan: '2',
             },
           ],
-          category: '10',
-          sort: 'rating',
         },
       },
     },

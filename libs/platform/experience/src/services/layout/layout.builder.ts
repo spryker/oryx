@@ -1,8 +1,9 @@
 import {
-  Component,
   CompositionProperties,
   StyleProperties,
-} from '@spryker-oryx/experience';
+  StyleRuleSet,
+} from '../../models';
+import { Component } from '../experience';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
 
@@ -27,6 +28,8 @@ export interface LayoutBuilder {
    * The concatenated styles can be used inside a `<style>` tag.
    */
   collectStyles(components: Component[]): string;
+
+  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
 
   /**
    * Generates an class list that is driven by layout properties on the

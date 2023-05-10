@@ -12,13 +12,16 @@ export const OrderPage: StaticComponent = {
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'experience-composition',
-      components: [{ type: 'oryx-order-summary' }],
-      options: { data: { rules: [{ container: true }] } },
-    },
-    {
-      type: 'experience-composition',
-      options: { data: { rules: [{ container: true, layout: 'two-column' }] } },
+      options: {
+        data: { rules: [{ layout: 'split-column', splitColumnFactor: 2 / 3 }] },
+      },
       components: [
+        {
+          type: 'oryx-order-summary',
+          options: {
+            data: { rules: [{ colSpan: 2 }] },
+          },
+        },
         { type: 'oryx-order-entries' },
         {
           type: 'oryx-cart-totals',
