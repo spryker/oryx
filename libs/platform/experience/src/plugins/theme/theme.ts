@@ -10,7 +10,6 @@ import {
   Breakpoints,
   deferHydrationAttribute,
   hydratableAttribute,
-  iconInjectable,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
@@ -28,8 +27,6 @@ export const ThemePluginName = 'oryx.experienceTheme';
 /**
  * Resolves components styles from theme options.
  * Adds design tokens and global styles to the root component of into body inside style tag.
- * Changes rendering of {@link iconInjectable} for custom core implementation.
- * Resolves icons from theme options.
  * Resolves breakpoints for all themes.
  */
 export class ThemePlugin extends ThemeTokens implements AppPlugin {

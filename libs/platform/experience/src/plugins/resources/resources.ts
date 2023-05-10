@@ -17,6 +17,8 @@ export const ResourcePluginName = 'oryx.experienceResource';
 /**
  * Resolves resources from orchestrator options.
  * Changes {@link graphicInjectable} into {@link DefaultGraphicInjectable} implementation.
+ * Changes rendering of {@link iconInjectable} for custom core implementation.
+ * Resolves icons from resource options.
  */
 export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
@@ -51,8 +53,14 @@ export class ResourcePlugin implements AppPlugin {
     return this.resources.icons ?? {};
   }
 
-  getIcon(icon: string): string | Promise<string> {
-    return resolveLazyLoadable(this.resources.icons?.[icon] ?? '');
+  getIcon(name: string): string | Promise<string> | void {
+    const icon = this.resources.icons?.[name];
+
+    if (!icon) {
+      return;
+    }
+
+    return resolveLazyLoadable(icon);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
