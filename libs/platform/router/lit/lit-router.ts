@@ -39,16 +39,6 @@ export class LitRouter extends Router {
       .subscribe();
   }
 
-  async _goto(pathname: string): Promise<void> {
-    this.urlSearchParams = Object.fromEntries(
-      new URLSearchParams(
-        decodeURIComponent(globalThis.location?.search)
-      ).entries()
-    );
-
-    await super.goto(pathname);
-  }
-
   override async goto(pathname: string): Promise<void> {
     await this._goto(pathname);
     this.routerService.go(pathname, {
@@ -58,5 +48,15 @@ export class LitRouter extends Router {
 
   override outlet(): TemplateResult {
     return html`<outlet>${super.outlet()}</outlet>`;
+  }
+
+  protected async _goto(pathname: string): Promise<void> {
+    this.urlSearchParams = Object.fromEntries(
+      new URLSearchParams(
+        decodeURIComponent(globalThis.location?.search)
+      ).entries()
+    );
+
+    await super.goto(pathname);
   }
 }
