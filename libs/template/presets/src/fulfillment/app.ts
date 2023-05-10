@@ -7,11 +7,14 @@ import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
+import {
+  fulfillmentResourceGraphics,
+  resourceGraphics,
+} from '@spryker-oryx/presets/resources';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
 import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
-import { fulfillmentResourceGraphics, resourceGraphics } from '../../resources';
 import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
