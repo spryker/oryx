@@ -17,7 +17,12 @@
       }
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest"
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "options": {
+        "coverage": {
+          "exclude": ["**/lit-routes-registry.ts", "**/router-hydration.ts"]
+        }
+      }
     }
   },
   "tags": ["layer:platform"]
