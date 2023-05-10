@@ -56,7 +56,8 @@ const builder = appBuilder()
   .withFeature(mockSiteFeature)
   .withFeature(mockUserFeature)
   .withFeature(new MockAuthFeature())
-  .withFeature(new I18nFeature());
+  .withFeature(new I18nFeature())
+  .withTheme(themes);
 
 // TODO: Find another way without overriding injectables
 if (isChromatic()) {
@@ -65,5 +66,5 @@ if (isChromatic()) {
     .with([new ResourcesChromaticPlugin(resources)])
     .create();
 } else {
-  builder.withTheme(themes).withResources(resources).create();
+  builder.withResources(resources).create();
 }
