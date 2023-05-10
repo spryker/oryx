@@ -104,7 +104,11 @@ describe('DefaultRouterService', () => {
     service.go('/?secondParam=two');
     checkQueryParams({ secondParam: 'two' });
 
-    service.go('/?thirdParam=three');
+    service.go('/route', {
+      queryParams: {
+        thirdParam: 'three',
+      },
+    });
     checkQueryParams({ thirdParam: 'three' });
 
     service.go('/?firstQuery=one&secondQuery=two');
@@ -165,6 +169,62 @@ describe('DefaultRouterService', () => {
     service.acceptParams(mock);
     service.currentParams().subscribe((param) => {
       expect(param).toBe(mock);
+    });
+  });
+
+  it('should get previousRoute from storage', () => {
+    service.previousRoute();
+    expect(storageService.get).toHaveBeenCalledWith(
+      'previousPage',
+      StorageType.SESSION
+    );
+  });
+
+  it('should navigate to new route', () => {
+    service.navigate('/newRoute');
+    service.route().subscribe((route) => {
+      expect(route).toBe('/newRoute');
+    });
+  });
+
+  it('should return proper pathId for nested route', () => {
+    service.navigate('/id/id2/id3');
+    expect(service.getPathId('id2')).toBe('id3');
+  });
+
+  it('should return undefined for uncorrected pathId', () => {
+    service.navigate('/id/id2/id3');
+    expect(service.getPathId('mock')).toBe(undefined);
+  });
+
+  it('should return proper url', () => {
+    service.go('/route?firstQuery=one&secondQuery=two');
+    service
+      .getUrl('/route?multiQuery=one,two', {
+        queryParamsHandling: 'merge',
+        queryParams: { newQuery: 'new' },
+        ignoreQueryParams: ['secondQuery'],
+      })
+      .subscribe((url) => {
+        expect(url).toBe('/route?firstQuery=one&newQuery=new');
+      });
+  });
+
+  it('should override queries for url', () => {
+    service.go('/route?firstQuery=one&secondQuery=two');
+    service
+      .getUrl('/route?multiQuery=one,two', {
+        queryParams: { newQuery: 'new', more: ['a', 'b'] },
+      })
+      .subscribe((url) => {
+        expect(url).toBe('/route?newQuery=new&more=a,b');
+      });
+  });
+
+  it('should return base url without queries', () => {
+    service.go('/route?firstQuery=one&secondQuery=two');
+    service.getUrl('/route?multiQuery=one,two', {}).subscribe((url) => {
+      expect(url).toBe('/route');
     });
   });
 });
