@@ -12,13 +12,12 @@ const Template: Story = (): TemplateResult => {
   return html`
     <h1>Cart Page</h1>
 
-    <oryx-layout class="page">
+    <oryx-layout class="page" .options=${{ rules: [{ padding: '30px 0' }] }}>
       ${generateHeader()}
 
       <oryx-layout
         layout="split-column"
-        .options=${{ rules: [{ top: 90 }] }}
-        style="--split-column-start: calc(2/3)"
+        .options=${{ rules: [{ top: 90, splitColumnFactor: 2 / 3 }] }}
       >
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}

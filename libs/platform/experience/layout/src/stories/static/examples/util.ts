@@ -2,7 +2,11 @@ import { html, TemplateResult } from 'lit';
 
 export const generateHeader = (): TemplateResult => {
   return html`
-    <oryx-layout layout="flex" bleed>
+    <oryx-layout
+      layout="flex"
+      bleed
+      .options=${{ rules: [{ background: 'var(--oryx-color-canvas-500)' }] }}
+    >
       <div>link</div>
       <div>link</div>
       <div style="margin-inline-start:auto;">lang</div>
@@ -13,7 +17,15 @@ export const generateHeader = (): TemplateResult => {
       layout="flex"
       bleed
       sticky
-      style="z-index:2;align-items: center"
+      .options=${{
+        rules: [
+          {
+            background: 'var(--oryx-color-canvas-500)',
+            align: 'center',
+            zIndex: 2,
+          },
+        ],
+      }}
     >
       <div style="height:70px;width: 120px">logo</div>
       <div style="margin:auto;width: 400px;">search</div>
@@ -25,13 +37,8 @@ export const generateHeader = (): TemplateResult => {
 
 export const pageStyles = html`
   <style>
-    .page {
-      padding-inline: 10px;
-      align-items: start;
-    }
-
     oryx-layout div {
-      background: var(--oryx-color-primary-500);
+      background: var(--oryx-color-primary-100);
       padding: 10px;
       outline: solid 1px;
       outline-offset: -1px;
