@@ -26,7 +26,6 @@ describe('signalProperty', () => {
     const results: any[] = [];
 
     const ef = effect(() => {
-      console.log('eeffe', testElement.value);
       results.push(testElement.value);
     });
 
