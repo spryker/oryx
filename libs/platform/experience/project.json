@@ -27,7 +27,7 @@
       "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
         "coverage": {
-          "exclude": ["**/color"]
+          "exclude": ["**/color", "**/preview-plugin.ts"]
         }
       }
     },
