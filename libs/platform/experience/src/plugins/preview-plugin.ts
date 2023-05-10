@@ -1,4 +1,3 @@
-/* c8 ignore start */
 import { AppPlugin, AppPluginBeforeApply } from '@spryker-oryx/core';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { isServer } from 'lit';

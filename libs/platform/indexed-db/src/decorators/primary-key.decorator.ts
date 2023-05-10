@@ -25,6 +25,7 @@ function addPrimaryKey(
   });
 }
 
+/* c8 ignore start */
 const standardIndexedDbPrimaryKey = (
   context: FieldOrMethodContext,
   propName: string,
@@ -37,6 +38,7 @@ const standardIndexedDbPrimaryKey = (
     },
   };
 };
+/* c8 ignore end */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbPrimaryKey(options?: IndexedDbPrimaryKeyOptions): any {
