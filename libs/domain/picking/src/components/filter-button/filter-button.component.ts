@@ -4,11 +4,8 @@ import { i18n, Size, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { tap } from 'rxjs';
-import { styles } from './filter-button.styles';
 
 export class FilterButtonComponent extends LitElement {
-  static styles = styles;
-
   @query('oryx-picking-filters') protected filters?: HTMLElement;
   @query('input') protected input?: HTMLInputElement;
 
