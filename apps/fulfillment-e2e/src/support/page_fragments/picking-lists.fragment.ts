@@ -5,15 +5,10 @@ export class PickingListsFragment {
     this.getPickingListsItems().find('oryx-icon-button button');
   getStartPickingButtons = () =>
     this.getPickingListsItems().find('oryx-button button');
-  getIdentifier = () =>
-    this.getCustomerNoteButtons()
-      .parents('oryx-picking-list-item')
-      .within(() => {
-        return cy
-          .get('.identifier')
-          .invoke('text')
-          .then((identifierText) => {
-            cy.wrap(identifierText).as('identifier');
-          });
-      });
+  getPickingListItemId = (eq: number) =>
+    this.getPickingListsItems()
+      .eq(eq)
+      .find('.identifier')
+      .should('be.visible')
+      .invoke('text');
 }
