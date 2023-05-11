@@ -90,12 +90,12 @@ const Template: Story = (): TemplateResult => {
     <ul>
       <li>
         Column count can be customised (
-        <pre>--oryx-grid-columns: 6</pre>
+        <pre>--oryx-column-grid: 6</pre>
         )
       </li>
       <li>Column span reflects the new column size</li>
     </ul>
-    <oryx-layout layout="column" style="--oryx-grid-columns: 6">
+    <oryx-layout layout="column" style="--oryx-column-grid: 6">
       <div>1</div>
       <div style="--span:2;">2</div>
       ${generateLayoutItems(12, 3)}

@@ -111,7 +111,7 @@ const Template: Story = (): TemplateResult => {
     <ul>
       <li>
         Column count can be customised (
-        <pre>--oryx-grid-columns: 6</pre>
+        <pre>--oryx-column-grid: 6</pre>
         )
       </li>
       <li>Column span reflects the new column size</li>
@@ -130,7 +130,7 @@ const Template: Story = (): TemplateResult => {
 
     <h3>Static item size</h3>
     <ul>
-      <li>Column count (--oryx-grid-columns) can be overridden</li>
+      <li>Column count (--oryx-column-grid) can be overridden</li>
       <li>custom size is used instead (--oryx-grid-item-size: 100px)</li>
       <li>Columns can be spanned</li>
     </ul>
@@ -147,7 +147,7 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Columns/row spanning is not a thing in this layout</li>
     </ul>
-    <oryx-layout layout="carousel" style="--oryx-grid-columns: initial;">
+    <oryx-layout layout="carousel" style="--oryx-grid-item-size: auto;">
       <div>1</div>
       <div style="width: 250px;background:var(--oryx-color-secondary-300)">
         2 (width: 250px)

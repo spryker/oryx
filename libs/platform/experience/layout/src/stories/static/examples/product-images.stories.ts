@@ -143,7 +143,7 @@ const Template: Story = (): TemplateResult => {
       }
 
       .main {
-        --oryx-grid-columns: 1;
+        --oryx-column-grid: 1;
         --h: 200px;
 
         width: 100%;

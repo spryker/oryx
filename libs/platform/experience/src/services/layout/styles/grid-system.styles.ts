@@ -10,10 +10,10 @@ export const gridSystem = css`
           (
               var(--_container-width) -
                 (
-                  var(--column-gap, var(--oryx-gap-column, 0px)) *
-                    (var(--oryx-grid-columns, var(--oryx-column-base)) - 1)
+                  var(--column-gap, var(--oryx-column-gap, 0px)) *
+                    (var(--oryx-column-count, var(--oryx-column-base)) - 1)
                 )
-            ) / var(--oryx-grid-columns, var(--oryx-column-base)) -
+            ) / var(--oryx-column-count, var(--oryx-column-base)) -
             var(--_np, 0px)
         )
       )

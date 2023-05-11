@@ -2,12 +2,13 @@ import { ThemeToken } from '@spryker-oryx/experience';
 
 export const layoutTokens: ThemeToken = {
   container: { width: '1340px', bleed: '50px' },
-  gap: { column: '20px', row: '10px' },
   column: {
     base: '12',
+    gap: '20px',
     grid: '4',
     split: { equal: '6', aside: '3', main: '8' },
   },
+  row: { gap: '10px' },
 };
 
 export const layoutMdTokens: ThemeToken = {

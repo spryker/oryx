@@ -85,8 +85,6 @@ export interface StyleProperties {
    */
   gridColumn?: number;
 
-  splitColumnFactor?: number;
-
   /**
    * Sets the gaps (gutters) between rows and columns. The gap is applied to all layouts.
    */

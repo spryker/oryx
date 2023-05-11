@@ -5,7 +5,7 @@ export const styles: LayoutStyles = {
   styles: css`
     :host {
       display: block;
-      column-count: var(--oryx-grid-columns, 2);
+      column-count: var(--oryx-column-grid, 2);
     }
 
     :first-child,

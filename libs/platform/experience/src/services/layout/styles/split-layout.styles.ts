@@ -14,7 +14,7 @@ export const splitLayout = (type: 'equal' | 'main' | 'aside'): LayoutStyles => {
         grid-template-columns:
           calc(
             var(--split) * var(--_item-size) + (var(--split) - 1) *
-              var(--column-gap, var(--oryx-gap-column, 0px))
+              var(--column-gap, var(--oryx-column-gap, 0px))
           )
           auto;
       }
