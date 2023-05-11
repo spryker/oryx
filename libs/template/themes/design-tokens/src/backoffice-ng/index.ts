@@ -8,7 +8,7 @@ import {
   typographyTokens,
 } from '../backoffice/typography.tokens';
 import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const backofficeNgTokens: DesignToken[] = [
   {
@@ -19,10 +19,11 @@ export const backofficeNgTokens: DesignToken[] = [
       typographyTokens.typography,
       typographySmallTokens.typography
     ),
+    ...layoutTokens,
     layout: {
       container: {
         width: '390px',
-        padding: '10px',
+        bleed: '10px',
       },
     },
   },

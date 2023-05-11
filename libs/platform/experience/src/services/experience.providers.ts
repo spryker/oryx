@@ -3,15 +3,19 @@ import { Provider } from '@spryker-oryx/di';
 import {
   DefaultExperienceDataClientService,
   DefaultExperienceService,
-  DefaultLayoutBuilder,
-  DefaultScreenService,
   ExperienceDataClientService,
   ExperienceService,
-  LayoutBuilder,
   PreviewExperienceService,
-  ScreenService,
 } from './experience';
 import { ContentBackendUrl } from './experience-tokens';
+import {
+  DefaultLayoutBuilder,
+  DefaultLayoutService,
+  DefaultScreenService,
+  LayoutBuilder,
+  LayoutService,
+  ScreenService,
+} from './layout';
 import {
   ComponentsRegistryService,
   DefaultComponentsRegistryService,
@@ -40,6 +44,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: LayoutBuilder,
     useClass: DefaultLayoutBuilder,
+  },
+  {
+    provide: LayoutService,
+    useClass: DefaultLayoutService,
   },
   {
     provide: ComponentsRegistryService,

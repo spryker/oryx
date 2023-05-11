@@ -7,7 +7,7 @@ const customerNoteFragment = new CustomerNoteModalFragment();
 describe('When the user opens customer note', () => {
   beforeEach(() => {
     cy.login();
-    pickingListsFragment.getCustomerNoteButton().eq(0).click();
+    pickingListsFragment.getCustomerNoteButtons().eq(0).click();
   });
 
   describe('and user clicks on close button', () => {

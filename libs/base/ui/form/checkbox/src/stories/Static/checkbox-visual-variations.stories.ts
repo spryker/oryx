@@ -3,11 +3,11 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
+import { RadioVariantOptions } from '../../../../radio/src/stories/states.stories';
 import {
   CategoryX as RadioCategoryX,
-  RadioVariantOptions,
-} from '../../../../radio/src/stories/states.stories';
-import { generateGroupItemVariants } from '../../../../utilities';
+  generateGroupItemVariants,
+} from '../../../../utilities';
 
 export default {
   title: `${storybookPrefix}/Form/Checkbox/Static`,
