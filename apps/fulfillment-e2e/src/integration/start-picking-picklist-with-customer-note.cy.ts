@@ -10,21 +10,14 @@ describe('Start picking a picklist with customer note', () => {
     cy.clearIndexedDB();
     cy.login();
 
-    pickingListsFragment.getIdentifier();
-
-    pickingListsFragment
-      .getCustomerNoteButton()
-      .parents('oryx-picking-list-item')
-      .within(() => pickingListsFragment.getStartPickingButton().click());
+    pickingListsFragment.getPickingListItemId(0).as('identifier');
+    pickingListsFragment.getStartPickingButtons().eq(0).click();
   });
 
   it('check Customer Note page', () => {
     // should navigate to customer note page
-    cy.get('@identifier').then((identifierText) => {
-      cy.location('pathname').should(
-        'be.eq',
-        `/customer-note-info/${identifierText}`
-      );
+    cy.get('@identifier').then((id) => {
+      cy.location('pathname').should('be.eq', `/customer-note-info/${id}`);
     });
 
     // should display customer note
