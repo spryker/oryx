@@ -5,3 +5,5 @@ export const enum Size {
   Lg = 'lg',
   Xl = 'xl',
 }
+
+export const sizes = [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl];

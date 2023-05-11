@@ -2,16 +2,33 @@ import { html, TemplateResult } from 'lit';
 
 export const generateHeader = (): TemplateResult => {
   return html`
-    <oryx-layout layout="flex">
+    <oryx-layout
+      layout="flex"
+      bleed
+      .options=${{ rules: [{ background: 'var(--oryx-color-canvas-500)' }] }}
+    >
       <div>link</div>
       <div>link</div>
       <div style="margin-inline-start:auto;">lang</div>
       <div>currency</div>
     </oryx-layout>
 
-    <oryx-layout layout="flex" sticky style="z-index:2;--align-items: center">
+    <oryx-layout
+      layout="flex"
+      bleed
+      sticky
+      .options=${{
+        rules: [
+          {
+            background: 'var(--oryx-color-canvas-500)',
+            align: 'center',
+            zIndex: 2,
+          },
+        ],
+      }}
+    >
       <div style="height:70px;width: 120px">logo</div>
-      <div maxWidth>search</div>
+      <div style="margin:auto;width: 400px;">search</div>
       <div style="height:70px">profile</div>
       <div style="height:70px">cart</div>
     </oryx-layout>
@@ -20,32 +37,39 @@ export const generateHeader = (): TemplateResult => {
 
 export const pageStyles = html`
   <style>
-    .page {
-      padding-inline: 10px;
-      align-items: start;
-    }
-    oryx-layout.page > oryx-layout {
-      --padding-inline: 10px;
-      padding-block: 10px;
-    }
-
-    oryx-layout.page > oryx-layout oryx-layout {
-      --padding-inline: 0;
-    }
-
-    oryx-layout {
-      --gap: 10px;
-      background: var(--oryx-color-canvas-500);
-    }
-
     oryx-layout div {
       background: var(--oryx-color-primary-100);
       padding: 10px;
+      outline: solid 1px;
+      outline-offset: -1px;
+      place-items: center;
+      display: grid;
     }
 
-    [layout='carousel'] div,
-    [layout='grid'] div {
-      height: var(--h, 200px);
+    oryx-layout div {
+      height: var(--h);
+    }
+
+    .thumbs div:hover {
+      background: var(--oryx-color-primary-300);
     }
   </style>
 `;
+
+// oryx-layout.page > oryx-layout {
+//   /* --padding-inline: 10px;
+//   padding-block: 10px;
+//   --padding: 10px;
+//   --scroll-start: 10px;*/
+// }
+
+// oryx-layout.page > oryx-layout oryx-layout {
+//   /* --padding-inline: 0;
+//   --padding: 0px; */
+// }
+// /*
+//     .thumbs {
+//       --padding: 10px;
+//       --scroll-start: 10px;
+//     }
+//     */

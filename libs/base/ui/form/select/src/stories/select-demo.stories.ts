@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
@@ -147,7 +147,7 @@ SelectDemo.argTypes = {
     table: { category: 'Filtering' },
   },
   clearIcon: {
-    options: getThemeIcons(),
+    options: getResourceIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },

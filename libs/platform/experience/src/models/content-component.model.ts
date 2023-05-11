@@ -1,5 +1,5 @@
 export interface ContentComponentProperties<
-  OptionsType,
+  OptionsType = unknown,
   ContentType = unknown
 > {
   /**
