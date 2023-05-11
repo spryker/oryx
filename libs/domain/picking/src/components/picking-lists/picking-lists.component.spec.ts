@@ -11,7 +11,9 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
+import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { PickingListsComponent } from './picking-lists.component';
+
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
 }
@@ -21,7 +23,10 @@ describe('PickingListsComponent', () => {
   let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent(pickingListsComponent);
+    await useComponent([
+      pickingListsComponent,
+      pickingInProgressModalComponent,
+    ]);
   });
 
   beforeEach(async () => {
@@ -50,7 +55,9 @@ describe('PickingListsComponent', () => {
       element.renderRoot.querySelector('oryx-modal');
 
     const getPickingInProgressModal = (): ModalComponent | null =>
-      element.renderRoot.querySelectorAll('oryx-modal')[1] as ModalComponent;
+      element.renderRoot.querySelector(
+        'oryx-picking-in-progress-modal oryx-modal'
+      );
 
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
@@ -150,39 +157,6 @@ describe('PickingListsComponent', () => {
         await element.updateComplete;
 
         expect(customerNoteModal?.hasAttribute('open')).toBe(false);
-      });
-    });
-
-    describe('when picking in progress modal is opened', () => {
-      beforeEach(() => {
-        const pickingListCard = element.renderRoot.querySelector(
-          'oryx-picking-list-item'
-        );
-
-        pickingListCard?.dispatchEvent(
-          new CustomEvent('oryx.show-picking-in-progress')
-        );
-      });
-
-      it('should close modal when it emits oryx.close event', () => {
-        element.addEventListener('oryx.show-picking-in-progress', () => {
-          const pickingInProgressModal = getPickingInProgressModal();
-
-          pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
-          expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
-        });
-      });
-
-      it('should close modal when close button is clicked', async () => {
-        const pickingInProgressModal = getPickingInProgressModal();
-
-        const closeButton: HTMLButtonElement | null =
-          pickingInProgressModal?.querySelector('button') ?? null;
-        closeButton?.click();
-
-        await element.updateComplete;
-
-        expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
       });
     });
 

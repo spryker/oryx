@@ -44,15 +44,13 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       .pipe(
         map((response) => {
           if (response.errors) {
-            for (let i = 0; i < response.errors.length; i++) {
-              const error = response.errors[i];
-              const pickingListError = new Error(
-                error.message
-              ) as PickingListError;
-              pickingListError.status = error.status;
-              pickingListError.code = error.code;
-              throw pickingListError;
-            }
+            const error = response.errors[0];
+            const pickingListError = new Error(
+              error.message
+            ) as PickingListError;
+            pickingListError.status = error.status;
+            pickingListError.code = error.code;
+            throw pickingListError;
           }
           return {
             ...pickingList,

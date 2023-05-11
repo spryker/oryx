@@ -3,11 +3,13 @@ import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
 import { state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
 import { PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
+import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { styles } from './picking-lists.styles';
 
 export class PickingListsComponent extends LitElement {
@@ -17,8 +19,7 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  @state()
-  protected pickingInProgress?: boolean;
+  protected pickingInProgressModal = createRef();
 
   protected pickingLists$ = this.pickingListService.get({
     status: PickingListStatus.ReadyForPicking,
@@ -29,7 +30,9 @@ export class PickingListsComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()} ${this.renderCustomerNote()}
-    ${this.renderPickingInProgressModal()}`;
+      <oryx-picking-in-progress-modal
+        ${ref(this.pickingInProgressModal)}
+      ></oryx-picking-in-progress-modal>`;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -82,25 +85,6 @@ export class PickingListsComponent extends LitElement {
     `;
   }
 
-  protected renderPickingInProgressModal(): TemplateResult {
-    return html`<oryx-modal
-      ?open=${this.pickingInProgress}
-      enableFooter
-      footerButtonFullWidth
-      @oryx.close=${this.closePickingInProgressModal}
-    >
-      <oryx-heading slot="heading">
-        ${i18n('picking.list.picking-in-progress')}
-      </oryx-heading>
-      ${i18n('picking.list.already-in-progress')}
-      <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
-        <button @click=${this.closePickingInProgressModal}>
-          ${i18n('picking.list.back-to-pick-lists')}
-        </button>
-      </oryx-button>
-    </oryx-modal>`;
-  }
-
   protected renderEmptyLists(): TemplateResult {
     return html`
       <div class="no-items-fallback">
@@ -121,10 +105,8 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected openPickingInProgressModal(event: CustomEvent): void {
-    this.pickingInProgress = true;
-  }
-
-  protected closePickingInProgressModal(): void {
-    this.pickingInProgress = false;
+    (
+      this.pickingInProgressModal.value as PickingInProgressModalComponent
+    )?.open();
   }
 }
