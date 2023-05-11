@@ -7,7 +7,7 @@ export const styles: LayoutStyles = {
     ${gridSystem}
 
     :host {
-      --oryx-grid-columns: var(--oryx-grid-columns-grid);
+      --oryx-grid-columns: var(--oryx-column-grid);
     }
 
     :host(:not([vertical])) {
