@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
