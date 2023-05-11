@@ -13,9 +13,9 @@ describe('Start picking a picklist with customer note', () => {
     pickingListsFragment.getIdentifier();
 
     pickingListsFragment
-      .getCustomerNoteButton()
+      .getCustomerNoteButtons()
       .parents('oryx-picking-list-item')
-      .within(() => pickingListsFragment.getStartPickingButton().click());
+      .within(() => pickingListsFragment.getStartPickingButtons().click());
   });
 
   it('check Customer Note page', () => {
