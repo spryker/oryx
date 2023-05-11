@@ -129,7 +129,14 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
       xfwd: true,
       logLevel: 'debug',
       selfHandleResponse: true,
-      onProxyReq: fixRequestBody,
+      onProxyReq: (proxyReq, req, res) => {
+        if (req.url === '/push-notification-subscriptions') {
+          proxyReq.setHeader('Content-Type', 'application/vnd.api+json');
+          proxyReq.setHeader('Accept-Language', 'en');
+        }
+
+        fixRequestBody(proxyReq, req, res)
+      },
       onProxyRes: responseInterceptor(
         async (responseBuffer, proxyRes, req, res) => {
           if (req.url !== '/token') {
