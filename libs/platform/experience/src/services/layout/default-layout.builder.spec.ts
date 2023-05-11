@@ -83,8 +83,7 @@ describe('DefaultLayoutBuilder', () => {
   });
 
   describe('style properties', () => {
-    expectStyleRule({ columnCount: 6 }, '--oryx-grid-columns: 6');
-    expectStyleRule({ splitColumnFactor: 0.25 }, '--split-column-factor: 0.25');
+    expectStyleRule({ columnCount: 6 }, '--oryx-column-count: 6');
 
     expectStyleRule({ gridColumn: 5 }, 'grid-column: 5');
     expectStyleRule({ colSpan: 2 }, 'grid-column: span 2');

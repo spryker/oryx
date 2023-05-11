@@ -111,11 +111,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       });
     };
 
-    add({ '--oryx-grid-columns': data.columnCount }, { omitUnit: true });
-    add(
-      { '--split-column-factor': data.splitColumnFactor },
-      { omitUnit: true }
-    );
+    add({ '--oryx-column-count': data.columnCount }, { omitUnit: true });
 
     if (data.padding) {
       add({ 'scroll-padding': this.findCssValue(data.padding, 'start') });
@@ -159,12 +155,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     const gaps = data.gap?.toString().split(' ');
     add({ '--column-gap': gaps?.[1] ?? gaps?.[0] });
     add({ '--row-gap': gaps?.[0] });
-
-    // consider moving to split-column layout plugin
-    add(
-      { '--split-column-factor': data.splitColumnFactor },
-      { omitUnit: true }
-    );
 
     // consider moving to sticky layout plugin
     if (data.sticky) {

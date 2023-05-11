@@ -15,14 +15,11 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout class="page">
       ${generateHeader()}
 
-      <oryx-layout
-        layout="split-column"
-        style="--split-column-start: calc(200%/3)"
-      >
+      <oryx-layout layout="split-main">
         <oryx-layout layout="list">
           <oryx-layout
             layout="carousel"
-            style="--oryx-grid-columns:1;--h:200px"
+            style="--oryx-column-count:1;--h:200px"
           >
             ${generateLayoutItems(8, 1, 'image ')}
           </oryx-layout>

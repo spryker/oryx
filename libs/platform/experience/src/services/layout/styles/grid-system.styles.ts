@@ -10,10 +10,11 @@ export const gridSystem = css`
           (
               var(--_container-width) -
                 (
-                  var(--column-gap, var(--oryx-grid-gap-column, 0px)) *
-                    (var(--oryx-grid-columns) - 1)
+                  var(--column-gap, var(--oryx-column-gap, 0px)) *
+                    (var(--oryx-column-count, var(--oryx-column-base)) - 1)
                 )
-            ) / var(--oryx-grid-columns) - var(--_np, 0px)
+            ) / var(--oryx-column-count, var(--oryx-column-base)) -
+            var(--_np, 0px)
         )
       )
     );
@@ -33,6 +34,3 @@ export const gridSystem = css`
     box-sizing: border-box;
   }
 `;
-
-// (948-20-30)/4
-// var(--_container-width) - (var(--column-gap, var(--oryx-grid-gap-column, 0px)) * (var(--oryx-grid-columns) - 1))
