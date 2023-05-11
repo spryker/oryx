@@ -8,7 +8,7 @@ export const styles: LayoutStyles = {
 
     :host {
       grid-template-columns: repeat(
-        var(--oryx-column-grid, var(--oryx-column-base)),
+        var(--oryx-column-count, var(--oryx-column-base)),
         1fr
       );
     }
