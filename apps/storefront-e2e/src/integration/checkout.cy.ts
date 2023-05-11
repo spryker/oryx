@@ -95,9 +95,8 @@ describe('Checkout suite', () => {
       cartPage.checkout();
 
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
-      checkoutPage.getCheckoutAsGuestBtn().click();
 
-      checkoutPage.contactForm.fillContactForm();
+      checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.addressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 

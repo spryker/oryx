@@ -1,7 +1,7 @@
 import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
 import { CheckoutAddressFormFragment } from '../page_fragments/checkout/checkout-address-form.fragment';
 import { CheckoutAddressModalFragment } from '../page_fragments/checkout/checkout-address-modal.fragment';
-import { CheckoutContactFragment } from '../page_fragments/checkout/checkout-contact.fragment';
+import { CheckoutAsGuestFormFragment } from '../page_fragments/checkout/checkout-as-guest-form.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {
@@ -16,9 +16,7 @@ export class CheckoutPage extends AbstractSFPage {
     this.waitForLoadedSPA();
   }
 
-  getCheckoutAsGuestBtn = () => cy.get('oryx-checkout-guest').find('a');
-
-  contactForm = new CheckoutContactFragment();
+  checkoutAsGuestForm = new CheckoutAsGuestFormFragment();
   addressForm = new CheckoutAddressFormFragment();
   addressList = new CheckoutAddressModalFragment('oryx-checkout-address');
   addressChangeModal = new CheckoutAddressModalFragment('oryx-modal');
