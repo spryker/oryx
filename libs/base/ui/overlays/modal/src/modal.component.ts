@@ -138,10 +138,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <slot name="navigate-back" @click=${this.onGoBack}>
               <oryx-icon-button>
-                <button
-                  type="button"
-                  aria-label="navigate back"
-                >
+                <button type="button" aria-label="navigate back">
                   <oryx-icon type="back"></oryx-icon>
                 </button>
               </oryx-icon-button>
@@ -158,11 +155,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           this.enableCloseButtonInHeader,
           () => html`
             <oryx-icon-button size=${Size.Sm}>
-              <button 
-                part="close"
-                value="cancel"
-                aria-label="close modal"
-              >
+              <button part="close" value="cancel" aria-label="close modal">
                 <oryx-icon type="close"></oryx-icon>
               </button>
             </oryx-icon-button>

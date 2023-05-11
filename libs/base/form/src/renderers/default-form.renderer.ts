@@ -322,21 +322,23 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string
   ): TemplateResult {
     return html`
-      <oryx-input-list 
-        heading=${field.label} 
+      <oryx-input-list
+        heading=${field.label}
         direction=${ifDefined(field.attributes?.direction)}
       >
-        ${field.options?.map((option) => html`
-          <oryx-radio>
-            <input 
-              type="radio"
-              name=${field.id}
-              value=${option.value}
-              ?checked=${option.value === value}
-            />
-            ${option?.text ?? option?.value}
-          </oryx-radio>
-        `)}
+        ${field.options?.map(
+          (option) => html`
+            <oryx-radio>
+              <input
+                type="radio"
+                name=${field.id}
+                value=${option.value}
+                ?checked=${option.value === value}
+              />
+              ${option?.text ?? option?.value}
+            </oryx-radio>
+          `
+        )}
       </oryx-input-list>
     `;
   }

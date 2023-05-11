@@ -11,5 +11,6 @@ export interface PickingListQualifier
 }
 
 export enum PickingListQualifierSortBy {
-  deliveryDate = 'deliveryDate',
+  RequestedDeliveryDate = 'requestedDeliveryDate',
+  ItemsCount = 'itemsCount',
 }

@@ -1,35 +1,69 @@
-import { i18n } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './filters.styles';
-import { property, query } from 'lit/decorators.js';
-import { fields, SUBMIT_EVENT } from './filters.model';
 import { resolve } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
+import {
+  PickingListQualifierSortBy,
+  PickingListService,
+} from '@spryker-oryx/picking';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { of, switchMap } from 'rxjs';
+import { fields } from './filters.model';
+import { styles } from './filters.styles';
 
 export class FiltersComponent extends LitElement {
   static styles = styles;
 
-  protected fieldRenderer = resolve(FormRenderer);
-
-  @property({type: Boolean}) open = false;
+  @property({ type: Boolean, reflect: true }) open = false;
 
   @query('form')
   protected form?: HTMLFormElement;
 
+  protected defaultValue = 'requestedDeliveryDate.desc';
+  protected fieldRenderer = resolve(FormRenderer);
+  protected pickingListService = resolve(PickingListService);
+
+  @asyncState()
+  protected selectedSortingValue = valueType(
+    this.pickingListService.getSortingQualifier().pipe(
+      switchMap((quantifier) => {
+        if (!quantifier) {
+          return of(this.defaultValue);
+        }
+
+        return of(
+          `${quantifier.sortBy}.${quantifier.sortDesc ? 'desc' : 'asc'}`
+        );
+      })
+    )
+  );
+
   protected onSubmit(e: Event): void {
     e.preventDefault();
 
-    const values = Object.fromEntries(
+    const { sortBy: _sortBy } = Object.fromEntries(
       new FormData(e.target as HTMLFormElement).entries()
     );
+    const [sortBy, sort] = (_sortBy as string).split('.');
 
-    this.dispatchEvent(
-      new CustomEvent(SUBMIT_EVENT, {
-        composed: true,
-        bubbles: true,
-        detail: { values },
-      })
-    );
+    this.pickingListService.setSortingQualifier({
+      sortBy: sortBy as PickingListQualifierSortBy,
+      sortDesc: sort !== 'asc',
+    });
+
+    this.open = false;
+  }
+
+  protected onReset(): void {
+    this.pickingListService.setSortingQualifier(null);
+
+    this.open = false;
+    this.form?.reset();
+  }
+
+  protected onClose(): void {
+    this.open = false;
+    this.form?.reset();
   }
 
   protected onApply(): void {
@@ -50,6 +84,8 @@ export class FiltersComponent extends LitElement {
         enableNavigateBack
         enableFooter
         fullscreen
+        @oryx.back=${this.onReset}
+        @oryx.close=${this.onClose}
       >
         <oryx-heading slot="heading" as-sm="h2">
           <h4>${i18n('picking.filter.filter-&-sort')}</h4>
@@ -60,11 +96,15 @@ export class FiltersComponent extends LitElement {
         </oryx-button>
 
         <form @submit=${this.onSubmit}>
-          ${this.fieldRenderer.buildForm(fields, {sortBy: '1'})}
+          ${this.fieldRenderer.buildForm(fields, {
+            sortBy: this.selectedSortingValue ?? this.defaultValue,
+          })}
         </form>
 
         <oryx-button slot="footer">
-          <button @click=${() => this.onApply()}>${i18n('picking.filter.apply')}</button>
+          <button @click=${() => this.onApply()}>
+            ${i18n('picking.filter.apply')}
+          </button>
         </oryx-button>
       </oryx-modal>
     `;

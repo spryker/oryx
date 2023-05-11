@@ -7,9 +7,7 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`
-    <oryx-picking-filter-button></oryx-picking-filter-button>
-  `;
+  return html` <oryx-picking-filter-button></oryx-picking-filter-button> `;
 };
 
 export const Demo = Template.bind({});

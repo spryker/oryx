@@ -42,8 +42,8 @@ export const styles = css`
     justify-content: flex-end;
   }
 
-  slot[name="heading"],
-  slot[name="footer"] {
+  slot[name='heading'],
+  slot[name='footer'] {
     display: flex;
     flex: 1 0;
   }
@@ -58,7 +58,7 @@ export const styles = css`
     flex: 1 0;
   }
 
-  slot[name="navigation-back"] button {
+  slot[name='navigation-back'] button {
     padding: 0;
   }
 

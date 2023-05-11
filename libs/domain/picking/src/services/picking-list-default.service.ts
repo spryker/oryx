@@ -1,16 +1,56 @@
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { PickingList, PickingListQualifier } from '../models';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import {
+  PickingList,
+  PickingListQualifier,
+  PickingListQualifierSortBy,
+  SortableQualifier,
+} from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
 
 export class PickingListDefaultService implements PickingListService {
   protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
 
-  constructor(protected adapter = inject(PickingListAdapter)) {}
+  constructor(
+    protected adapter = inject(PickingListAdapter),
+    protected defaultSortingQualifier = {
+      sortBy: PickingListQualifierSortBy.RequestedDeliveryDate,
+      sortDesc: false,
+    }
+  ) {}
+
+  protected sortingQualifier$ =
+    new BehaviorSubject<SortableQualifier<PickingListQualifierSortBy> | null>(
+      null
+    );
+
+  getSortingQualifier(): Observable<SortableQualifier<PickingListQualifierSortBy> | null> {
+    return this.sortingQualifier$;
+  }
+
+  setSortingQualifier(
+    qualifier: SortableQualifier<PickingListQualifierSortBy>
+  ): void {
+    this.sortingQualifier$.next(qualifier);
+  }
 
   get(qualifier: PickingListQualifier): Observable<PickingList[]> {
-    return this.adapter.get(qualifier);
+    return this.sortingQualifier$.pipe(
+      switchMap((sortingQualifier) =>
+        this.adapter.get({
+          ...qualifier,
+          ...(sortingQualifier || this.defaultSortingQualifier),
+        })
+      )
+    );
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {

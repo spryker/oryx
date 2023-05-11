@@ -1,5 +1,10 @@
 import { Observable } from 'rxjs';
-import { PickingList, PickingListQualifier } from '../models';
+import {
+  PickingList,
+  PickingListQualifier,
+  PickingListQualifierSortBy,
+  SortableQualifier,
+} from '../models';
 
 export interface PickingListService {
   get(qualifier: PickingListQualifier): Observable<PickingList[]>;
@@ -7,6 +12,10 @@ export interface PickingListService {
   getUpcomingPickingListId(): Observable<string | null>;
   updatePickingItems(pickingList: PickingList): Observable<PickingList>;
   finishPicking(pickingList: PickingList): Observable<PickingList>;
+  getSortingQualifier(): Observable<SortableQualifier<PickingListQualifierSortBy> | null>;
+  setSortingQualifier(
+    qualifier: SortableQualifier<PickingListQualifierSortBy> | null
+  ): void;
 }
 
 export const PickingListService = 'oryx.PickingListService';

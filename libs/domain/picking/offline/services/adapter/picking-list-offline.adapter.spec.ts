@@ -216,11 +216,11 @@ describe('PickingListOfflineAdapter', () => {
     describe('and qualifier has sortBy', () => {
       it('should filter store', () => {
         adapter
-          .get({ sortBy: PickingListQualifierSortBy.deliveryDate })
+          .get({ sortBy: PickingListQualifierSortBy.RequestedDeliveryDate })
           .subscribe();
 
         expect(mockCollection.sortBy).toHaveBeenCalledWith(
-          PickingListQualifierSortBy.deliveryDate
+          PickingListQualifierSortBy.RequestedDeliveryDate
         );
       });
     });

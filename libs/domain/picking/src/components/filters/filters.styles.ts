@@ -15,7 +15,7 @@ export const styles = css`
     max-height: 26px;
   }
 
-  [slot="footer"] {
+  [slot='footer'] {
     flex-grow: 1;
   }
 `;

@@ -246,7 +246,7 @@ const smallScreen = css`
     font-weight: 600;
   }
 
-  :host(:not([type="text"])) {
+  :host(:not([type='text'])) {
     font-size: 1.143em;
   }
 `;
