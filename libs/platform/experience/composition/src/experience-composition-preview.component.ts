@@ -1,15 +1,13 @@
-import { asyncState, subscribe, valueType } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import { subscribe } from '@spryker-oryx/utilities';
 import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
-import { Component, PreviewExperienceService } from '../../src/services';
-import { compositionStyles } from './composition.styles';
 import { previewStyles } from './experience-composition-preview.styles';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class ExperienceCompositionPreviewComponent extends ExperienceCompositionComponent {
-  static override styles = [compositionStyles, previewStyles];
+  static override styles = [previewStyles];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService
@@ -105,20 +103,8 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       return component;
     }),
     tap((component) => {
-      this.layoutUid = component?.id;
+      this.uid = component?.id;
     }),
     map((component: Component) => component?.components ?? [])
   );
-
-  @asyncState()
-  protected components = valueType(this.components$);
-
-  protected override render(): TemplateResult {
-    if (!this.components) return html`Loading...`;
-
-    return html`
-      <slot></slot>
-      ${this.renderComponents(this.components)}
-    `;
-  }
 }

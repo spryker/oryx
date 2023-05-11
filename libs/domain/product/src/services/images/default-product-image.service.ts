@@ -1,5 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, sizes } from '@spryker-oryx/utilities';
 import {
   ImageSource,
   MediaContext,
@@ -16,9 +16,6 @@ declare global {
 
 import { ProductImageService } from './product-image.service';
 import { ProductMediaConfig } from './product-media.config';
-
-// we do not know how to sort these...
-const sizes = [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl];
 
 export class DefaultProductImageService implements ProductImageService {
   constructor(protected mediaConfig = inject(ProductMediaConfig)) {}
