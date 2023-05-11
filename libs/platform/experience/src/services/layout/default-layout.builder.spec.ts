@@ -98,6 +98,11 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ align: LayoutAlign.Stretch }, '--align: stretch');
     expectStyleRule({ align: LayoutAlign.End }, '--align: end');
 
+    expectStyleRule({ justify: LayoutAlign.Center }, '--justify: center');
+    expectStyleRule({ justify: LayoutAlign.Start }, '--justify: start');
+    expectStyleRule({ justify: LayoutAlign.Stretch }, '--justify: stretch');
+    expectStyleRule({ justify: LayoutAlign.End }, '--justify: end');
+
     expectStyleRule({ gap: '10' }, '--column-gap: 10');
     expectStyleRule({ gap: '10%' }, '--column-gap: 10%;--row-gap: 10%');
     expectStyleRule({ gap: '10 5' }, '--column-gap: 5');

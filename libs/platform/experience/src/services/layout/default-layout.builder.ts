@@ -76,6 +76,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add('bleed', ruleSet.bleed);
     add('sticky', ruleSet.sticky);
+    add('vertical', ruleSet.vertical);
 
     return classes;
   }
@@ -165,6 +166,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add({
       '--align': data.align,
+      '--justify': data.justify,
       'inset-block-start': data.top,
       height: data.height,
       width: data.width,
