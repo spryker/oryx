@@ -131,38 +131,6 @@ describe('ThemePlugin', () => {
     });
   });
 
-  describe('when icons has been set', () => {
-    const mockAIconTheme: Theme = {
-      ...mockATheme,
-      icons: {
-        a: 'a',
-      },
-    };
-    const mockBIconTheme: Theme = {
-      ...mockBTheme,
-      icons: {
-        b: (): Promise<string> => Promise.resolve('b'),
-      },
-    };
-    const plugin = new ThemePlugin([mockAIconTheme, mockBIconTheme]);
-
-    beforeEach(() => {
-      plugin.apply(mockApp);
-    });
-
-    describe('getIcon', () => {
-      it('should resolve icon by name', async () => {
-        await plugin.apply(mockApp);
-        const iconA = await plugin.getIcon('a');
-        expect(iconA).toBe('a');
-        const iconB = await plugin.getIcon('b');
-        expect(iconB).toBe('b');
-        const iconC = await plugin.getIcon('c');
-        expect(iconC).toBeUndefined();
-      });
-    });
-  });
-
   describe('when design tokens have been set', () => {
     const mockATokensTheme: Theme = {
       designTokens: [

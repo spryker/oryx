@@ -1,4 +1,4 @@
-import { hydratable, resourceInjectable } from '@spryker-oryx/utilities';
+import { graphicInjectable, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -12,7 +12,7 @@ export class ImageComponent
 {
   static styles = styles;
 
-  constructor(protected graphicResolver = resourceInjectable.get()) {
+  constructor(protected graphicResolver = graphicInjectable.get()) {
     super();
   }
 

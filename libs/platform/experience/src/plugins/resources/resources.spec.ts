@@ -13,6 +13,10 @@ const mockResources: Resources = {
       source: () => Promise.resolve(mockSource),
     },
   },
+  icons: {
+    a: 'a',
+    b: (): Promise<string> => Promise.resolve('b'),
+  },
 };
 
 describe('ResourcePlugin', () => {
@@ -50,6 +54,23 @@ describe('ResourcePlugin', () => {
 
     it('should return undefined if token is not exist', () => {
       expect(plugin.getGraphicValue('c', 'source')).toBeUndefined();
+    });
+  });
+
+  describe('when getIcon has been called', () => {
+    it('should resolve icon by name', async () => {
+      const iconA = await plugin.getIcon('a');
+      expect(iconA).toBe('a');
+      const iconB = await plugin.getIcon('b');
+      expect(iconB).toBe('b');
+      const iconC = await plugin.getIcon('c');
+      expect(iconC).toBeUndefined();
+    });
+  });
+
+  describe('when getIcons has been called', () => {
+    it('should return the list of provided icons', () => {
+      expect(plugin.getIcons()).toBe(mockResources.icons);
     });
   });
 });

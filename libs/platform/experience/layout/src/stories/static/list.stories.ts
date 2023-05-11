@@ -1,6 +1,5 @@
+import { CompositionLayout } from '@spryker-oryx/experience';
 import { Story } from '@storybook/web-components';
-import { CompositionLayout } from '../../../../src/models';
-
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../constants';
 import { layoutStaticStyles } from './styles';
@@ -22,7 +21,7 @@ const Template: Story = (): TemplateResult => {
       </li>
     </ul>
 
-    <oryx-layout layout="list" container>
+    <oryx-layout layout="list">
       <div>1</div>
       <oryx-layout sticky>
         <div style="background:var(--oryx-color-secondary-300)">2 (sticky)</div>

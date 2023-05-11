@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, StyleRuleSet } from '@spryker-oryx/experience';
+import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,
@@ -7,15 +7,13 @@ import {
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
-import { baseStyles } from './list.styles';
 
 @hydratable()
-export class ProductListComponent extends ContentMixin<ProductListOptions>(
-  LitElement
+export class ProductListComponent extends LayoutMixin(
+  ContentMixin<ProductListOptions>(LitElement)
 ) {
-  static styles = [baseStyles];
-
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
 
@@ -27,19 +25,12 @@ export class ProductListComponent extends ContentMixin<ProductListOptions>(
   });
 
   protected override render(): TemplateResult {
-    const hasLayout = !!(this.$options() as any as { rules: StyleRuleSet[] })
-      ?.rules?.[0]?.layout;
-    return hasLayout
-      ? html`
-          <oryx-layout .uid=${this.uid}>${this.renderProducts()}</oryx-layout>
-        `
-      : this.renderProducts();
-  }
-
-  protected renderProducts(): TemplateResult {
-    return html`${this.list()?.products?.map(
-      (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
-    )}`;
+    return html`
+      ${this.list()?.products?.map(
+        (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
+      )}
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+    `;
   }
 
   protected searchParams = computed(() => {

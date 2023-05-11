@@ -13,7 +13,10 @@ export const styles = css`
     border: none;
     background: transparent;
     min-width: var(--oryx-modal-min-width, 330px);
-    max-width: calc(var(--oryx-layout-container-width, 100%) - 60px);
+    max-width: min(
+      calc(100vw - (var(--oryx-container-bleed, 0px) * 2)),
+      calc(var(--oryx-container-width, 100vw))
+    );
   }
 
   oryx-card {
