@@ -138,10 +138,13 @@ export const buttonStyles = css`
 
   :host([type='text']) {
     --_margin: 4px 2px;
-    --oryx-icon-color: var(--oryx-color-neutral-300);
     --_color-text: var(--oryx-color-ink);
     --_color-accent: transparent;
     --_color-active: var(--oryx-color-canvas-100);
+  }
+
+  :host([type='text']:not([confirmed])) {
+    --oryx-icon-color: var(--oryx-color-neutral-300);
   }
 
   :host([type='text']) ::slotted(*:hover) {
@@ -214,7 +217,7 @@ export const buttonStyles = css`
     }
   }
 
-  :host([type='critical']:not([confirmed])) {
+  :host([type='critical']:not([confirmed])) oryx-icon {
     --oryx-icon-color: var(--oryx-color-error-300);
   }
 

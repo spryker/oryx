@@ -4,3 +4,4 @@ export * from './olive';
 export * from './sage';
 export * from './sand';
 export * from './slate';
+export * from './spryker';

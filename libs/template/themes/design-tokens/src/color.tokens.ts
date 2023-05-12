@@ -1,9 +1,9 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
 
 export const color: ColorDesignTokens = {
-  neutralA: colorPalette.grays.gray,
+  neutralA: colorPalette.grays.spryker,
   primaryA: colorPalette.colors.spryker,
-  secondaryA: colorPalette.colors.yellow,
+  secondaryA: colorPalette.colors.orange,
 
   highlightA: colorPalette.colors.red,
   successA: colorPalette.colors.spryker,
@@ -11,6 +11,23 @@ export const color: ColorDesignTokens = {
   errorA: colorPalette.colors.red,
   infoA: colorPalette.colors.blue,
   overlay: colorPalette.overlays.black,
+
+  canvas: {
+    light: {
+      100: `var(--oryx-color-neutralA-1)`,
+      200: `var(--oryx-color-neutralA-3)`,
+      300: `var(--oryx-color-neutralA-4)`,
+      400: `var(--oryx-color-neutralA-6)`,
+      500: `var(--oryx-color-neutralA-7)`,
+    },
+    dark: {
+      100: `var(--oryx-color-neutralA-1)`,
+      200: `var(--oryx-color-neutralA-3)`,
+      300: `var(--oryx-color-neutralA-4)`,
+      400: `var(--oryx-color-neutralA-6)`,
+      500: `var(--oryx-color-neutralA-7)`,
+    },
+  },
 
   neutral: {
     light: {
@@ -26,22 +43,6 @@ export const color: ColorDesignTokens = {
       300: `var(--oryx-color-neutralA-10)`,
       400: `var(--oryx-color-neutralA-11)`,
       500: `var(--oryx-color-neutralA-12)`,
-    },
-  },
-  canvas: {
-    light: {
-      100: `var(--oryx-color-neutralA-1)`,
-      200: `var(--oryx-color-neutralA-3)`,
-      300: `var(--oryx-color-neutralA-5)`,
-      400: `var(--oryx-color-neutralA-6)`,
-      500: `var(--oryx-color-neutralA-7)`,
-    },
-    dark: {
-      100: `var(--oryx-color-neutralA-1)`,
-      200: `var(--oryx-color-neutralA-3)`,
-      300: `var(--oryx-color-neutralA-5)`,
-      400: `var(--oryx-color-neutralA-6)`,
-      500: `var(--oryx-color-neutralA-7)`,
     },
   },
   primary: {
