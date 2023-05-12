@@ -67,12 +67,16 @@ export class PickingListItemComponent
             html`
               <h3 slot="heading">
                 ${asyncValue(
-                  this.localeService.formatTime(this.pickingList.createdAt)
+                  this.localeService.formatTime(
+                    this.pickingList.requestedDeliveryDate
+                  )
                 )}
               </h3>
             `
         )}
-        <span slot="heading" class="identifier">${this.pickingList.id}</span>
+        <span slot="heading" class="identifier"
+          >${this.pickingList.orderReferences[0]}</span
+        >
 
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>

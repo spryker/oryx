@@ -5,6 +5,6 @@ export * as columnLayout from './column-layout.styles';
 export * as freeLayout from './flex-layout.styles';
 export * as gridLayout from './grid-layout.styles';
 export * as gridSystemLayout from './grid-system.styles';
-export * as splitColumnLayout from './split-column-layout.styles';
+export * as splitColumnLayout from './split-layout.styles';
 export * as stickyLayout from './sticky.styles';
 export * as textLayout from './text-layout.styles';

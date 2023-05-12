@@ -12,7 +12,9 @@ export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
 export enum CompositionLayout {
   List = 'list',
   Column = 'column',
-  SplitColumn = 'split-column',
+  Split = 'split',
+  SplitAside = 'split-aside',
+  SplitMain = 'split-main',
   Carousel = 'carousel',
   Grid = 'grid',
   Flex = 'flex',
@@ -28,6 +30,7 @@ export const enum CompositionLayoutOrientation {
 export interface StyleProperties {
   sticky?: boolean;
   bleed?: boolean;
+  overlap?: boolean;
 
   /**
    * The column count is based on a calculated count by design tokens, which can be specified
@@ -81,8 +84,6 @@ export interface StyleProperties {
    * the 3rd column.
    */
   gridColumn?: number;
-
-  splitColumnFactor?: number;
 
   /**
    * Sets the gaps (gutters) between rows and columns. The gap is applied to all layouts.
