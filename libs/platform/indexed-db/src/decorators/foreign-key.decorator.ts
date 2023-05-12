@@ -27,6 +27,7 @@ function addForeignKeys(
   });
 }
 
+/* c8 ignore start */
 const standardIndexedDbForeignKey = (
   context: FieldOrMethodContext,
   propName: string,
@@ -39,6 +40,7 @@ const standardIndexedDbForeignKey = (
     },
   };
 };
+/* c8 ignore end */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function indexedDbForeignKey(options: IndexedDbForeignKeyOptions): any {

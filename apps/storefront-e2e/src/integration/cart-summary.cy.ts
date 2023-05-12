@@ -72,6 +72,7 @@ describe('Cart summary suite', () => {
 
         cartPage.getCartEntries().then((entries) => {
           entries[0].getQuantityInput().decrease();
+          cartPage.getSubmitDeleteBtn().click();
 
           cartPage.header.getCartCount().should('not.exist');
         });
@@ -85,6 +86,7 @@ describe('Cart summary suite', () => {
 
         cartPage.getCartEntries().then((entries) => {
           entries[0].remove();
+          cartPage.getSubmitDeleteBtn().click();
 
           cartPage.header.getCartCount().should('not.exist');
         });

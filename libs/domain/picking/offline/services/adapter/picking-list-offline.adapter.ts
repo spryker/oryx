@@ -55,7 +55,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
                 );
               }
 
-              if (qualifier.orderReferences) {
+              if (qualifier.orderReferences?.length) {
                 andCollections.push(
                   pickingListStore
                     .where('orderReferences')

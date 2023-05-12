@@ -10,6 +10,6 @@ describe('Picking Lists', () => {
 
   it('should display picking lists', () => {
     pickingListsFragment.getWrapper().should('be.visible');
-    pickingListsFragment.getPickingListsItem().should('be.visible');
+    pickingListsFragment.getPickingListsItems().should('be.visible');
   });
 });

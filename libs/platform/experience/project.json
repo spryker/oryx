@@ -13,11 +13,21 @@
         "lintFilePatterns": ["libs/platform/experience/**/*.ts"]
       }
     },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/platform/experience/**/*.css",
+          "libs/platform/experience/**/*.styles.ts"
+        ]
+      }
+    },
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest",
       "options": {
         "coverage": {
-          "exclude": ["**/color"]
+          "exclude": ["**/color", "**/preview-plugin.ts"]
         }
       }
     },

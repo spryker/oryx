@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
@@ -36,7 +36,7 @@ SpinnerDemo.argTypes = {
     control: { type: 'select' },
   },
   icon: {
-    options: getThemeIcons(),
+    options: getResourceIcons(),
     control: { type: 'select' },
   },
   rotation: {

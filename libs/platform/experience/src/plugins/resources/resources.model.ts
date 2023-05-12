@@ -13,7 +13,9 @@ export type GraphicValue =
   | undefined;
 
 export type ResourceGraphic = Record<string, Graphic>;
+export type ResourceIcons = Record<string, LazyLoadable<string>>;
 
 export interface Resources {
   graphics?: ResourceGraphic;
+  icons?: ResourceIcons;
 }
