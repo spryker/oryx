@@ -48,9 +48,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       ruleSets.push(...this.getClasses(rule));
     });
 
-    if (ruleSets.length === 0) {
-      return;
-    }
+    if (ruleSets.length === 0) return;
 
     return ruleSets.join(' ');
   }
@@ -70,13 +68,16 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     if (!ruleSet) return classes;
 
     const add = (className: string, required = false): void => {
-      const breakpoint = ruleSet.breakpoint ?? this.screenService.getSmallest();
-      if (required) classes.push(`${breakpoint}-${className}`);
+      if (!required) return;
+      const breakpoint = ruleSet.breakpoint;
+      classes.push(breakpoint ? `${breakpoint}-${className}` : className);
     };
 
     add('bleed', ruleSet.bleed);
     add('sticky', ruleSet.sticky);
     add('vertical', ruleSet.vertical);
+    add('overlap', ruleSet.overlap);
+    add('divider', ruleSet.divider);
 
     return classes;
   }
