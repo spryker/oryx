@@ -5,7 +5,7 @@ export const buttonStyles = css`
   :host {
     --oryx-icon-size: 13.3px;
     /* stylelint-disable-next-line */
-    --_color-text: var(--oryx-color-primaryA-0);
+    --_color-text: var(--oryx-color-primaryA-0, white);
     --_color-accent: var(--oryx-color-primary-300);
     --_color-active: var(--oryx-color-primary-400);
 
