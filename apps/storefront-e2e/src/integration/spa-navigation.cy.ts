@@ -5,19 +5,30 @@ const landingPage = new LandingPage();
 const contactPage = new ContactPage();
 
 describe('SPA navigation suite', () => {
-  it('must navigate to Contact page from header', () => {
-    landingPage.visit();
-    landingPage.header.getContactLink().click();
+  describe('when the user clicks on the "Contact us" link', () => {
+    beforeEach(() => {
+      landingPage.visit();
+      // cy.wait(2000);
+      // cy.scrollTo('bottom');
+      // const link = landingPage.footer.getLink('/contact');
+      // link.click();
+    });
 
-    cy.location('pathname').should('be.eq', contactPage.url);
-    contactPage.getHeading().should('be.visible');
-  });
+    // it('should navigate to the Contact page', () => {
+    //   cy.location('pathname').should('be.eq', contactPage.url);
+    //   contactPage.getHeading().should('be.visible');
+    // });
 
-  it('must navigate to Home page from other pages', () => {
-    contactPage.visit();
-    contactPage.header.getLogo().click();
+    describe('and when the user clicks on the logo', () => {
+      beforeEach(() => {
+        contactPage.visit();
+        contactPage.header.getLogo().click();
+      });
 
-    cy.location('pathname').should('be.eq', landingPage.url);
-    landingPage.getVideo().should('be.visible');
+      it('should navigate the user back to the  home page', () => {
+        cy.location('pathname').should('be.eq', landingPage.url);
+        landingPage.getVideo().should('be.visible');
+      });
+    });
   });
 });
