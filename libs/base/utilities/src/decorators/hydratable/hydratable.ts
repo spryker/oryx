@@ -4,18 +4,14 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
+import { isServer, LitElement, noChange, render, TemplateResult } from 'lit';
 import { Effect, effect } from '../../signals';
-import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
-const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
-export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
-export const hydrationRender = Symbol('hydrationRender');
-const SIGNAL_META = Symbol('signalMeta');
+const SIGNAL_EFFECT = Symbol('signalEffect');
 
 interface PatchableLitElement extends LitElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
@@ -63,119 +59,79 @@ function hydratableClass<T extends Type<HTMLElement>>(
   mode?: string | string[]
 ): any {
   return class extends (target as any) {
-    static properties = {
-      [hydrationRender]: { type: Boolean, state: true },
-    };
-
-    [DEFER_HYDRATION] = false;
-    private [hydrationRender] = true;
-    private hasSsr?: boolean;
-    private [HYDRATION_CALLS] = 0;
-
-    private [SIGNAL_META]!: {
-      effectRuns: number;
-      renderRuns: number;
-      effect?: Effect;
-    };
+    [DEFER_HYDRATION]?: number;
+    private [SIGNAL_EFFECT]?: Effect;
 
     constructor(...args: any[]) {
       super(...args);
 
-      this.hasSsr = !isServer && !!this.shadowRoot;
-
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
-
-        this[SIGNAL_META] = {
-          effectRuns: 0,
-          renderRuns: 0,
-        };
-      }
-
-      if (this.hasSsr) {
-        this[DEFER_HYDRATION] = true;
-        this[hydrationRender] = false;
+      } else if (this.shadowRoot) {
+        this[DEFER_HYDRATION] = 1;
       }
     }
 
     willUpdate(_changedProperties: PropertyValues): void {
       super.willUpdate(_changedProperties);
       if (isServer) {
-        this[SIGNAL_META].effect = effect(() => {
-          this[SIGNAL_META].effectRuns++;
-          this.render();
+        // we trigger SSR awaiter on the server, to resolve all asynchronous logic before rendering
+        this[SIGNAL_EFFECT] = effect(() => {
+          super.render();
         });
       }
     }
 
     connectedCallback() {
-      if (this[DEFER_HYDRATION]) {
-        return;
-      }
+      if (this[DEFER_HYDRATION]) return;
       super.connectedCallback();
     }
 
     update(changedProperties: PropertyValues) {
-      if (this[DEFER_HYDRATION]) {
-        return;
-      }
+      if (this[DEFER_HYDRATION]) return;
+
+      // special case for hydration
       if (this._$needsHydration) {
-        this[HYDRATING] = true;
+        try {
+          super.update(changedProperties);
+        } catch (e) {
+          // catch hydration error and recover by clearing and re-rendering
+          // may become obsolete in future versions of lit
+          this.renderRoot.innerHTML =
+            this.renderRoot.innerHTML.split('<!--lit-part ')[0];
+          render(this.render(), this.renderRoot, this.renderOptions);
+        }
+      } else {
+        super.update(changedProperties);
       }
-      super.update(changedProperties);
-      this[HYDRATING] = false;
     }
 
-    [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
-      if (skipMissMatch) {
-        this[hydrationRender] = false;
-      }
+    [HYDRATE_ON_DEMAND]() {
+      if (this[DEFER_HYDRATION] !== 1) return;
+      this[DEFER_HYDRATION] = 2; // hydrating
 
-      const prototype = Array(this[HYDRATION_CALLS])
-        .fill(null)
-        .reduce(Object.getPrototypeOf, this);
+      // this[SIGNAL_EFFECT] = effect(() => {
+      //   super.render();
+      // });
 
-      if (prototype[HYDRATE_ON_DEMAND]) {
-        this[HYDRATION_CALLS]++;
-        prototype[HYDRATE_ON_DEMAND].call(this);
-        this[HYDRATION_CALLS]--;
-      }
-
-      if (this.renderRoot) {
-        return;
-      }
-
-      this[DEFER_HYDRATION] = false;
+      delete this[DEFER_HYDRATION];
+      super.connectedCallback();
       this.removeAttribute(deferHydrationAttribute);
-      prototype.connectedCallback.call(this);
+      // setTimeout(() => {
+      //   delete this[DEFER_HYDRATION];
+      //   // we have to call connectedCallback manually, as lit hydration will only call LitElement part
+      //   super.connectedCallback();
+      //   this.removeAttribute(deferHydrationAttribute);
+      // }, 0);
     }
 
     render(): TemplateResult {
-      if (isServer) {
-        this[SIGNAL_META].renderRuns++;
-        if (this[SIGNAL_META].renderRuns > this[SIGNAL_META].effectRuns) {
-          this[SIGNAL_META].effect?.stop();
-        }
+      if (this[SIGNAL_EFFECT]) {
+        this[SIGNAL_EFFECT]!.stop();
+        delete this[SIGNAL_EFFECT];
       }
 
-      const states = this[asyncStates];
-
-      if (this.hasSsr && !this[hydrationRender]) {
-        setTimeout(() => {
-          this[hydrationRender] = true;
-        }, 0);
-      }
-
-      if (this.hasSsr && states) {
-        return html`${whenState(
-          Object.values(states).every(Boolean) && this[hydrationRender],
-          () => super.render()
-        )}`;
-      }
-
-      return this.hasSsr || isServer
-        ? html`${whenState(this[hydrationRender], () => super.render())}`
-        : super.render();
+      return super.render();
     }
   };
 }
