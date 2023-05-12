@@ -4,12 +4,14 @@ import { css } from 'lit';
 export const buttonStyles = css`
   :host {
     --oryx-icon-size: 13.3px;
-    --_color-text: var(--oryx-color-canvas-100);
+    /* stylelint-disable-next-line */
+    --_color-text: var(--oryx-color-primaryA-0);
     --_color-accent: var(--oryx-color-primary-300);
     --_color-active: var(--oryx-color-primary-400);
 
     display: flex;
-    align-items: baseline;
+    place-content: center;
+    place-items: center;
     transition: var(--oryx-transition-time);
   }
 
@@ -65,7 +67,9 @@ export const buttonStyles = css`
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
 
-  :host([outline]) {
+  :host([outline]),
+  :host([confirmed]),
+  :host([loading]) {
     --oryx-icon-color: var(--oryx-color-primary-300);
     --_color-text: var(--oryx-color-primary-300);
     --_color-accent: var(--oryx-color-primary-300);
@@ -81,7 +85,7 @@ export const buttonStyles = css`
     background-color: var(--_color-active);
   }
 
-  :host([outline][type='critical']) {
+  :host([outline][type='critical']:not([confirmed])) {
     --oryx-icon-color: var(--oryx-color-error-300);
     --_color-text: var(--oryx-color-error-300);
     --_color-accent: var(--oryx-color-error-300);
@@ -192,12 +196,26 @@ export const buttonStyles = css`
     background-size: 16px;
   }
 
-  :host([loading]) ::slotted(*)::before {
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2317b497"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
+  :host(:not([loading]):not([confirmed])) oryx-icon {
+    display: none;
   }
 
-  :host([confirmed]) ::slotted(*)::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2317b497'%3E%3Cpath d='M20.4357 8.37056L10.6396 18.4215C10.2624 18.8065 9.77177 19 9.27917 19C8.78657 19 8.29398 18.8065 7.91876 18.4215L3.56427 13.9538C2.81191 13.1838 2.81191 11.9341 3.56427 11.1622C4.31664 10.3902 5.53274 10.3902 6.2851 11.1622L9.27917 14.2341L17.7149 5.57895C18.4673 4.80702 19.6834 4.80702 20.4357 5.57895C21.1881 6.35089 21.1881 7.59863 20.4357 8.37056Z'/%3E%3C/svg%3E");
+  oryx-icon {
+    position: absolute;
+  }
+
+  :host([loading]) oryx-icon {
+    animation: spin 2s infinite linear;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+
+  :host([type='critical']:not([confirmed])) {
+    --oryx-icon-color: var(--oryx-color-error-300);
   }
 
   :host([loading][type='text']) ::slotted(*) {
@@ -226,12 +244,8 @@ export const buttonStyles = css`
     border-color: var(--oryx-color-neutral-200);
   }
 
-  :host([type='critical'][loading]) ::slotted(*)::before {
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"%3E%3Cg%3E%3Cellipse opacity="0.7" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 11.925 4.87503)" /%3E%3Cellipse rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 20.1242 10.9278)" /%3E%3Cellipse opacity="0.4" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 5.87224 13.0723)" /%3E%3Cellipse opacity="0.3" rx="3.48584" ry="3.4859" transform="matrix(0.80444 0.594034 -0.593986 0.804475 14.0695 19.125)" /%3E%3CanimateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="3s" repeatCount="indefinite" /%3E%3C/g%3E%3C/svg%3E');
-  }
-
   :host([type='critical'][loading]) ::slotted(*) {
-    background-color: var(--oryx-color-pink-light);
+    background-color: var(--oryx-color-error-100);
     border-color: #f9d3ce;
   }
 
