@@ -94,6 +94,4 @@ export interface PickingListItemSerialized
 
 export type MappedQualifier = PickingListQualifierSortBy;
 
-export type QualifiersMapping = {
-  [key in MappedQualifier]: keyof PickingListOffline;
-};
+export type QualifiersMapping = Record<MappedQualifier, keyof PickingListOffline>

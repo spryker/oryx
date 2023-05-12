@@ -279,7 +279,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
   }
 
   protected mapQualifier(qualifier: MappedQualifier): keyof PickingListOffline {
-    return this.qualifiersMapping[qualifier] ?? qualifier;
+    return this.qualifiersMapping[qualifier];
   }
 }
 
