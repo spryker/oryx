@@ -323,7 +323,7 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-input-list
-        heading=${field.label}
+        heading=${ifDefined(field.label)}
         direction=${ifDefined(field.attributes?.direction)}
       >
         ${field.options?.map(
@@ -335,7 +335,7 @@ export class DefaultFormRenderer implements FormRenderer {
                 value=${option.value}
                 ?checked=${option.value === value}
               />
-              ${option?.text ?? option?.value}
+              ${option.text ?? option.value}
             </oryx-radio>
           `
         )}

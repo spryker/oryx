@@ -12,9 +12,9 @@ export const styles = css`
     display: none;
     margin-block-end: 8px;
     color: var(--oryx-color-ink);
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
+    font-weight: var(--oryx-typography-subtitle-small-weight);
+    font-size: var(--oryx-typography-subtitle-small-size);
+    line-height: var(--oryx-typography-subtitle-small-line);
     text-transform: uppercase;
   }
 
@@ -42,9 +42,9 @@ export const screenStyles = screenCss({
   sm: css`
     legend {
       margin-block-end: 20px;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 22px;
+      font-weight: var(--oryx-typography-subtitle-weight);
+      font-size: var(--oryx-typography-subtitle-size);
+      line-height: var(--oryx-typography-subtitle-line);
     }
   `,
 });

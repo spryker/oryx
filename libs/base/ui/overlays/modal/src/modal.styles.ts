@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -70,3 +71,15 @@ export const styles = css`
     width: 100%;
   }
 `;
+
+export const screenStyles = screenCss({
+  sm: css`
+    oryx-icon-button:last-child button {
+      --oryx-icon-size: var(--oryx-icon-size-large);
+
+      padding: 6px;
+      max-height: 38px;
+      margin-block: -7px;
+    }
+  `,
+});

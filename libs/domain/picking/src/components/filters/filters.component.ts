@@ -1,42 +1,39 @@
 import { resolve } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import {
+  defaultSortingQualifier,
   PickingListQualifierSortBy,
   PickingListService,
+  SortableQualifier,
 } from '@spryker-oryx/picking';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { of, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 import { fields } from './filters.model';
-import { styles } from './filters.styles';
+import { filtersComponentStyles } from './filters.styles';
 
 export class FiltersComponent extends LitElement {
-  static styles = styles;
+  static styles = filtersComponentStyles;
 
   @property({ type: Boolean, reflect: true }) open = false;
 
   @query('form')
   protected form?: HTMLFormElement;
 
-  protected defaultValue = 'requestedDeliveryDate.desc';
+  protected defaultValue = 'deliveryDate.desc';
   protected fieldRenderer = resolve(FormRenderer);
   protected pickingListService = resolve(PickingListService);
 
-  @asyncState()
-  protected selectedSortingValue = valueType(
-    this.pickingListService.getSortingQualifier().pipe(
-      switchMap((quantifier) => {
-        if (!quantifier) {
-          return of(this.defaultValue);
-        }
-
-        return of(
-          `${quantifier.sortBy}.${quantifier.sortDesc ? 'desc' : 'asc'}`
-        );
-      })
-    )
+  protected $selectedSortingValue = signal(
+    this.pickingListService.getSortingQualifier().pipe(map(this.formatValue))
   );
+
+  protected formatValue(
+    quantifier: SortableQualifier<PickingListQualifierSortBy>
+  ): string {
+    return `${quantifier.sortBy}.${quantifier.sortDesc ? 'desc' : 'asc'}`;
+  }
 
   protected onSubmit(e: Event): void {
     e.preventDefault();
@@ -55,7 +52,7 @@ export class FiltersComponent extends LitElement {
   }
 
   protected onReset(): void {
-    this.pickingListService.setSortingQualifier(null);
+    this.pickingListService.setSortingQualifier(defaultSortingQualifier);
 
     this.open = false;
     this.form?.reset();
@@ -97,7 +94,7 @@ export class FiltersComponent extends LitElement {
 
         <form @submit=${this.onSubmit}>
           ${this.fieldRenderer.buildForm(fields, {
-            sortBy: this.selectedSortingValue ?? this.defaultValue,
+            sortBy: this.$selectedSortingValue() ?? this.defaultValue,
           })}
         </form>
 

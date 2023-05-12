@@ -9,24 +9,24 @@ export const fields: FormFieldDefinition[] = [
   {
     id: 'sortBy',
     type: FormFieldType.RadioList,
-    label: i18n('picking.filter.sort-by') as string,
+    label: i18n('picking.filter.sort-by'),
     attributes: { direction: 'vertical' },
     options: [
       {
-        value: 'requestedDeliveryDate.desc',
-        text: 'Earliest pick-up time',
+        value: 'deliveryDate.desc',
+        text: i18n('picking.filter.earliest-pickup-time'),
       },
       {
-        value: 'requestedDeliveryDate.asc',
-        text: 'Latest pick-up time',
+        value: 'deliveryDate.asc',
+        text: i18n('picking.filter.latest-pickup-time'),
       },
       {
-        value: 'itemsCount.asc',
-        text: 'Largest order size',
+        value: 'orderSize.asc',
+        text: i18n('picking.filter.largest-order-size'),
       },
       {
-        value: 'itemsCount.desc',
-        text: 'Smallest order size',
+        value: 'orderSize.desc',
+        text: i18n('picking.filter.smallest-order-size'),
       },
     ],
   },

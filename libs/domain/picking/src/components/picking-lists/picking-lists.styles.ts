@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const pickingListsComponentStyles = css`
   :host {
     display: flex;
     flex-direction: column;

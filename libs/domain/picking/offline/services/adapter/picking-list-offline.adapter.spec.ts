@@ -214,13 +214,13 @@ describe('PickingListOfflineAdapter', () => {
     });
 
     describe('and qualifier has sortBy', () => {
-      it('should filter store', () => {
+      it('should map the qualifier and filter store', () => {
         adapter
-          .get({ sortBy: PickingListQualifierSortBy.RequestedDeliveryDate })
+          .get({ sortBy: PickingListQualifierSortBy.DeliveryDate })
           .subscribe();
 
         expect(mockCollection.sortBy).toHaveBeenCalledWith(
-          PickingListQualifierSortBy.RequestedDeliveryDate
+          'requestedDeliveryDate'
         );
       });
     });

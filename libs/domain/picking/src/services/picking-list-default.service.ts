@@ -8,6 +8,7 @@ import {
   tap,
 } from 'rxjs';
 import {
+  defaultSortingQualifier,
   PickingList,
   PickingListQualifier,
   PickingListQualifierSortBy,
@@ -19,20 +20,15 @@ import { PickingListService } from './picking-list.service';
 export class PickingListDefaultService implements PickingListService {
   protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
 
-  constructor(
-    protected adapter = inject(PickingListAdapter),
-    protected defaultSortingQualifier = {
-      sortBy: PickingListQualifierSortBy.RequestedDeliveryDate,
-      sortDesc: false,
-    }
-  ) {}
+  constructor(protected adapter = inject(PickingListAdapter)) {}
 
-  protected sortingQualifier$ =
-    new BehaviorSubject<SortableQualifier<PickingListQualifierSortBy> | null>(
-      null
-    );
+  protected sortingQualifier$ = new BehaviorSubject<
+    SortableQualifier<PickingListQualifierSortBy>
+  >(defaultSortingQualifier);
 
-  getSortingQualifier(): Observable<SortableQualifier<PickingListQualifierSortBy> | null> {
+  getSortingQualifier(): Observable<
+    SortableQualifier<PickingListQualifierSortBy>
+  > {
     return this.sortingQualifier$;
   }
 
@@ -46,8 +42,8 @@ export class PickingListDefaultService implements PickingListService {
     return this.sortingQualifier$.pipe(
       switchMap((sortingQualifier) =>
         this.adapter.get({
+          ...sortingQualifier,
           ...qualifier,
-          ...(sortingQualifier || this.defaultSortingQualifier),
         })
       )
     );
