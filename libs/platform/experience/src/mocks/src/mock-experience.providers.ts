@@ -6,9 +6,11 @@ import {
   DefaultComponentsRegistryService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
+  DefaultLayoutService,
   DefaultScreenService,
   ExperienceService,
   LayoutBuilder,
+  LayoutService,
   ScreenService,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -30,6 +32,10 @@ export const mockExperienceProviders: Provider[] = [
   {
     provide: ScreenService,
     useClass: DefaultScreenService,
+  },
+  {
+    provide: LayoutService,
+    useClass: DefaultLayoutService,
   },
   {
     provide: LayoutBuilder,

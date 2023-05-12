@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -39,7 +39,7 @@ const variations = [
 const sizes = [Size.Lg, Size.Md, Size.Sm];
 
 const Template: Story = (): TemplateResult => {
-  const icon = getThemeIcons()[0];
+  const icon = getResourceIcons()[0];
 
   return html`
     <section>

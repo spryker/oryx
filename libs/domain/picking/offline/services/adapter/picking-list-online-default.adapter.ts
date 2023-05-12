@@ -6,8 +6,6 @@ import {
   PickingList,
   PickingListDefaultAdapter,
   PickingListQualifier,
-  PickingListResponseData,
-  PickingProduct,
 } from '@spryker-oryx/picking';
 import { isDefined } from '@spryker-oryx/utilities';
 // Add full import because of issue with naming exports from cjs.
@@ -58,9 +56,7 @@ export class PickingListOnlineDefaultAdapter
   protected override async parsePickingLists(
     response: GetPickingListResponse
   ): Promise<PickingListEntity[]> {
-    const basePickingLists = (await super.parsePickingLists(
-      response
-    )) as PickingListExtra[];
+    const basePickingLists = await super.parsePickingLists(response);
     const pickingListStore = await firstValueFrom(
       this.indexedDbService.getStore(PickingListEntity)
     );
@@ -71,22 +67,8 @@ export class PickingListOnlineDefaultAdapter
     return this.pickingListsToEntity(basePickingLists, existingPickingLists);
   }
 
-  protected override parsePickingList(
-    data: PickingListResponseData,
-    products: PickingProduct[]
-  ): PickingListExtra {
-    const pickingList = super.parsePickingList(data, products);
-
-    return {
-      ...pickingList,
-      requestedDeliveryDate: new Date(
-        data.pickingListItems[0].salesShipments[0].requestedDeliveryDate
-      ),
-    };
-  }
-
   protected pickingListsToEntity(
-    pickingLists: PickingListExtra[],
+    pickingLists: PickingList[],
     existingPickingLists: PickingListSerialized[]
   ): PickingListEntity[] {
     return pickingLists.map((pickingList) => {
@@ -106,10 +88,6 @@ export class PickingListOnlineDefaultAdapter
         0
       );
 
-      const orderReferences = pickingList.items.map(
-        (item) => item.orderItem.uuid
-      );
-
       const productSkus = pickingList.items.map((item) => item.product.sku);
 
       const items: PickingListItemOffline[] = pickingList.items.map((item) => ({
@@ -122,14 +100,9 @@ export class PickingListOnlineDefaultAdapter
         ...pickingList,
         items,
         itemsCount,
-        orderReferences,
         productSkus,
         localStatus,
       });
     });
   }
-}
-
-export interface PickingListExtra extends PickingList {
-  requestedDeliveryDate: Date;
 }

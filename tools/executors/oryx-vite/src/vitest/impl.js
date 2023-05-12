@@ -41,6 +41,7 @@ async function vitestExecutor(options, context) {
             '**/mocks/**/*',
             '**/mixins/*',
             '**/constants.ts',
+            '**/feature.ts',
         ]);
         // Don't remove this log, it is used in Unit Tests coverage reports analysis
         // We should be able to see which files are included in the analysis to not miss something

@@ -10,15 +10,12 @@ import {
   Breakpoints,
   deferHydrationAttribute,
   hydratableAttribute,
-  iconInjectable,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
-import { DefaultIconInjectable } from '../../injectables';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
-  ThemeIcons,
   ThemeStrategies,
   ThemeStyles,
   ThemeStylesCollection,
@@ -30,13 +27,9 @@ export const ThemePluginName = 'oryx.experienceTheme';
 /**
  * Resolves components styles from theme options.
  * Adds design tokens and global styles to the root component of into body inside style tag.
- * Changes rendering of {@link iconInjectable} for custom core implementation.
- * Resolves icons from theme options.
  * Resolves breakpoints for all themes.
  */
 export class ThemePlugin extends ThemeTokens implements AppPlugin {
-  protected icons: ThemeIcons = {};
-
   constructor(protected themes: Theme[] = []) {
     super();
     this.propertiesCollector(themes);
@@ -46,16 +39,8 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     return ThemePluginName;
   }
 
-  getIcons(): ThemeIcons {
-    return this.icons;
-  }
-
   getBreakpoints(): Breakpoints {
     return this.breakpoints;
-  }
-
-  getIcon(icon: string): string | Promise<string> {
-    return resolveLazyLoadable(this.icons[icon]);
   }
 
   beforeApply(app: App): void {
@@ -120,7 +105,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   protected propertiesCollector(themes: Theme[]): void {
-    for (const { breakpoints, icons } of themes) {
+    for (const { breakpoints } of themes) {
       const sortableBP = Object.fromEntries(
         Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
       );
@@ -129,15 +114,6 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
         ...this.breakpoints,
         ...sortableBP,
       };
-
-      this.icons = {
-        ...this.icons,
-        ...icons,
-      };
-    }
-
-    if (Object.keys(this.icons).length) {
-      iconInjectable.inject(new DefaultIconInjectable());
     }
   }
 

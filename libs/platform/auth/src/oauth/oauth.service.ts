@@ -155,8 +155,9 @@ export class OauthService implements AuthService, AuthTokenService {
     const config = this.findProviderConfig(providerId);
 
     if (!config) {
-      throw new Error(
-        `OauthService: Unknown Oauth provider ID '${providerId}'!`
+      return throwError(
+        () =>
+          new Error(`OauthService: Unknown Oauth provider ID '${providerId}'!`)
       );
     }
 

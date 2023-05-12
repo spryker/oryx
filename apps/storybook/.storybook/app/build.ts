@@ -18,7 +18,6 @@ import isChromatic from 'chromatic/isChromatic';
 import {
   chromaticStyledComponents,
   ResourcesChromaticPlugin,
-  ThemeChromaticPlugin,
 } from './chromatic';
 import { resource, theme } from './data';
 import { StorybookPlugin } from './plugin';
@@ -56,18 +55,16 @@ const builder = appBuilder()
   .withFeature(mockSearchFeature)
   .withFeature(mockSiteFeature)
   .withFeature(mockUserFeature)
+  .withFeature(new I18nFeature())
   .withFeature(new MockAuthFeature())
-  .withFeature(new I18nFeature());
+  .withTheme(themes);
 
 // TODO: Find another way without overriding injectables
 if (isChromatic()) {
   builder
     .withComponents(chromaticStyledComponents)
-    .with([
-      new ThemeChromaticPlugin(themes),
-      new ResourcesChromaticPlugin(resources),
-    ])
+    .with([new ResourcesChromaticPlugin(resources)])
     .create();
 } else {
-  builder.withTheme(themes).withResources(resources).create();
+  builder.withResources(resources).create();
 }

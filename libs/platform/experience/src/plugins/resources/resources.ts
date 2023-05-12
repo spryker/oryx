@@ -1,18 +1,34 @@
 import { AppPlugin } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { resourceInjectable } from '@spryker-oryx/utilities';
-import { DefaultResourceInjectable } from '../../injectables';
-import { Graphic, GraphicValue, Resources } from './resources.model';
+import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
+import {
+  DefaultGraphicInjectable,
+  DefaultIconInjectable,
+} from '../../injectables';
+import {
+  Graphic,
+  GraphicValue,
+  ResourceIcons,
+  Resources,
+} from './resources.model';
 
 export const ResourcePluginName = 'oryx.experienceResource';
 
 /**
  * Resolves resources from orchestrator options.
- * Changes {@link resourceInjectable} into {@link DefaultResourceInjectable} implementation.
+ * Changes {@link graphicInjectable} into {@link DefaultGraphicInjectable} implementation.
+ * Changes rendering of {@link iconInjectable} for custom core implementation.
+ * Resolves icons from resource options.
  */
 export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
-    resourceInjectable.inject(new DefaultResourceInjectable());
+    if (Object.keys(resources.graphics ?? {}).length) {
+      graphicInjectable.inject(new DefaultGraphicInjectable());
+    }
+
+    if (Object.keys(resources.icons ?? {}).length) {
+      iconInjectable.inject(new DefaultIconInjectable());
+    }
   }
 
   getName(): string {
@@ -31,6 +47,20 @@ export class ResourcePlugin implements AppPlugin {
     }
 
     return resolveLazyLoadable(value);
+  }
+
+  getIcons(): ResourceIcons {
+    return this.resources.icons ?? {};
+  }
+
+  getIcon(name: string): string | Promise<string> | void {
+    const icon = this.resources.icons?.[name];
+
+    if (!icon) {
+      return;
+    }
+
+    return resolveLazyLoadable(icon);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

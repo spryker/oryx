@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,
@@ -21,6 +22,14 @@ class MockProductListPageService implements Partial<ProductListPageService> {
   get = vi.fn();
 }
 
+class MockLayoutService implements Partial<LayoutService> {
+  getStyles = vi.fn().mockReturnValue(of(null));
+}
+
+class MockLayoutBuilder implements Partial<LayoutBuilder> {
+  createStylesFromOptions = vi.fn();
+}
+
 describe('ProductListComponent', () => {
   let element: ProductListComponent;
   let mockProductListService: MockProductListService;
@@ -34,6 +43,14 @@ describe('ProductListComponent', () => {
     const testInjector = createInjector({
       providers: [
         ...mockProductProviders,
+        {
+          provide: LayoutService,
+          useClass: MockLayoutService,
+        },
+        {
+          provide: LayoutBuilder,
+          useClass: MockLayoutBuilder,
+        },
         {
           provide: ProductListService,
           useClass: MockProductListService,
@@ -161,36 +178,6 @@ describe('ProductListComponent', () => {
 
     it('should not render product cards', () => {
       expect(element).not.toContainElement('oryx-product-card');
-    });
-  });
-
-  describe('layout', () => {
-    describe('when a layout has been provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-product-list
-            .options=${{ rules: [{ layout: 'foo-bar' }] }}
-          ></oryx-product-list>`
-        );
-      });
-
-      it('should wrap the list in the oryx-layout', () => {
-        expect(element).toContainElement('oryx-layout');
-      });
-    });
-
-    describe('when a layout has not been provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-product-list
-            .options=${{ rules: [{}] }}
-          ></oryx-product-list>`
-        );
-      });
-
-      it('should wrap the list in the oryx-layout', () => {
-        expect(element).not.toContainElement('oryx-layout');
-      });
     });
   });
 
