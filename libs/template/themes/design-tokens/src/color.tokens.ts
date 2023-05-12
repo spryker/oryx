@@ -1,7 +1,7 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
 
 export const color: ColorDesignTokens = {
-  neutralA: colorPalette.grays.sprykerGray,
+  neutralA: colorPalette.grays.sprykerSfGray,
   primaryA: colorPalette.colors.spryker,
   secondaryA: colorPalette.colors.amber,
 
@@ -24,15 +24,15 @@ export const color: ColorDesignTokens = {
       100: `var(--oryx-color-neutralA-1)`,
       200: `var(--oryx-color-neutralA-3)`,
       300: `var(--oryx-color-neutralA-4)`,
-      400: `var(--oryx-color-neutralA-6)`,
-      500: `var(--oryx-color-neutralA-7)`,
+      400: `var(--oryx-color-neutralA-5)`,
+      500: `var(--oryx-color-neutralA-6)`,
     },
   },
 
   neutral: {
     light: {
-      100: `var(--oryx-color-neutralA-8)`,
-      200: `var(--oryx-color-neutralA-9)`,
+      100: `var(--oryx-color-neutralA-7)`,
+      200: `var(--oryx-color-neutralA-8)`,
       300: `var(--oryx-color-neutralA-10)`,
       400: `var(--oryx-color-neutralA-11)`,
       500: `var(--oryx-color-neutralA-12)`,
