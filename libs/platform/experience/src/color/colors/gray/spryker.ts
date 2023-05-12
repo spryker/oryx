@@ -1,7 +1,7 @@
 import { Color } from '../../color.model';
 import { gray } from './gray';
 
-export const spryker: Color = {
+export const sprykerGray: Color = {
   light: {
     0: '#FFFFFF',
     1: '#FFFFFF',
