@@ -72,9 +72,7 @@ export class PickingListEntity implements PickingListOffline {
 export interface PickingListOffline extends PickingList {
   items: PickingListItemOffline[];
   itemsCount: number;
-  orderReferences: string[];
   productSkus: string[];
-  requestedDeliveryDate: Date;
   localStatus: PickingListStatus;
 }
 

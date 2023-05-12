@@ -18,7 +18,6 @@ import { PickingListOnlineAdapter } from './picking-list-online.adapter';
 const mockPickingListEntity = new PickingListEntity({
   ...mockPickingListData[0],
   itemsCount: 1,
-  orderReferences: [],
   productSkus: [],
   requestedDeliveryDate: new Date(),
   localStatus: PickingListStatus.ReadyForPicking,
@@ -55,7 +54,9 @@ const mockPickingListDataResponse = {
             ],
             orderItem: { uuid: 'mock-order-uuid' },
             salesShipments: [{ requestedDeliveryDate: 123 }],
-            salesOrders: [{ cartNote: 'mock-note' }],
+            salesOrders: [
+              { cartNote: 'mock-note', orderReference: 'mockOrderReference' },
+            ],
             quantity: 1,
           },
         ],
@@ -142,8 +143,8 @@ describe('PickingListOnlineAdapter', () => {
             },
           ],
           itemsCount: 1,
+          orderReferences: ['mockOrderReference'],
           requestedDeliveryDate: new Date(123),
-          orderReferences: ['mock-order-uuid'],
           localStatus: 'mock-status',
           productSkus: ['mock-sku'],
         }),
