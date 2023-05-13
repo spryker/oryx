@@ -18,14 +18,14 @@ export const color: ColorDesignTokens = {
       200: `var(--oryx-color-neutralA-3)`,
       300: `var(--oryx-color-neutralA-4)`,
       400: `var(--oryx-color-neutralA-5)`,
-      500: `blue`,
+      500: `var(--oryx-color-neutralA-6)`,
     },
     dark: {
       100: `var(--oryx-color-neutralA-1)`,
       200: `var(--oryx-color-neutralA-3)`,
       300: `var(--oryx-color-neutralA-4)`,
       400: `var(--oryx-color-neutralA-5)`,
-      500: `blue`,
+      500: `var(--oryx-color-neutralA-6)`,
     },
   },
 
