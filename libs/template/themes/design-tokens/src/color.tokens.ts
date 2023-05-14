@@ -40,7 +40,7 @@ export const color: ColorDesignTokens = {
     dark: {
       100: `var(--oryx-color-neutralA-8)`,
       200: `var(--oryx-color-neutralA-9)`,
-      300: `var(--oryx-color-neutralA-10)`,
+      300: `var(--oryx-color-neutralA-9)`,
       400: `var(--oryx-color-neutralA-11)`,
       500: `var(--oryx-color-neutralA-12)`,
     },
