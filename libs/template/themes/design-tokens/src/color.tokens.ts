@@ -33,7 +33,7 @@ export const color: ColorDesignTokens = {
     light: {
       100: `var(--oryx-color-neutralA-7)`,
       200: `var(--oryx-color-neutralA-8)`,
-      300: `var(--oryx-color-neutralA-10)`,
+      300: `var(--oryx-color-neutralA-9)`,
       400: `var(--oryx-color-neutralA-11)`,
       500: `var(--oryx-color-neutralA-12)`,
     },
