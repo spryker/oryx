@@ -189,6 +189,10 @@ export const buttonStyles = css`
     user-select: none;
   }
 
+  :host([confirmed]) ::slotted(*) {
+    border-color: var(--oryx-color-primary-300);
+  }
+
   :host(:is([loading], [confirmed])) ::slotted(*)::before {
     content: '';
     position: absolute;
