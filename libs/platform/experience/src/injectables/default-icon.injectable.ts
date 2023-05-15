@@ -15,7 +15,6 @@ export class DefaultIconInjectable implements IconInjectable {
   render(type: string): TemplateResult | undefined {
     const app = resolve(AppRef);
     const mappers = app.findPlugin(ThemePlugin)?.getIcons();
-    const resourcePlugin = app.findPlugin(ResourcePlugin);
     const source = mappers?.resource.mapping?.[type]
       ? mappers.resource
       : mappers?.resources?.find((resource) => resource.types.includes(type))
@@ -31,7 +30,7 @@ export class DefaultIconInjectable implements IconInjectable {
         <span class="${source.id}">${unsafeHTML(mapper)}</span> `;
     }
 
-    const icon = resourcePlugin?.getIcon(type);
+    const icon = app.findPlugin(ResourcePlugin)?.getIcon(type);
 
     if (icon === undefined) {
       return;
