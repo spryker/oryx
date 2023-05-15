@@ -8,6 +8,7 @@ export class LoginFragment {
   getPasswordInput = () => this.getWrapper().find('[name="password"]');
   getLoginButton = () => this.getWrapper().contains('button', 'Login');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
+  getLabelSlot = () => this.getWrapper().find('slot[name="label"]');
 
   login = (user: TestUserData) => {
     this.getEmailInput().focus();

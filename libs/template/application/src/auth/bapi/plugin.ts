@@ -31,8 +31,7 @@ export class BapiPlugin implements AppPlugin {
           }
           if (
             authenticated &&
-            (currentRoute.startsWith(oauthConfig.loginRoute) ||
-              currentRoute.startsWith(redirectUrl.pathname))
+            currentRoute.startsWith(oauthConfig.loginRoute)
           ) {
             resolve(RouterService).navigate('/');
           }
