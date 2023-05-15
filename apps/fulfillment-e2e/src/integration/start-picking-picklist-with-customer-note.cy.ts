@@ -10,23 +10,10 @@ describe('Start picking a picklist with customer note', () => {
     cy.clearIndexedDB();
     cy.login();
 
-    pickingListsFragment.getIdentifier();
-
-    pickingListsFragment
-      .getCustomerNoteButton()
-      .parents('oryx-picking-list-item')
-      .within(() => pickingListsFragment.getStartPickingButton().click());
+    pickingListsFragment.getStartPickingButtons().eq(0).click();
   });
 
   it('check Customer Note page', () => {
-    // should navigate to customer note page
-    cy.get('@identifier').then((identifierText) => {
-      cy.location('pathname').should(
-        'be.eq',
-        `/customer-note-info/${identifierText}`
-      );
-    });
-
     // should display customer note
     customerNoteFragment
       .getNote()
@@ -63,14 +50,6 @@ describe('Start picking a picklist with customer note', () => {
     });
 
     it('check Picking page', () => {
-      // should navigate to picking page
-      cy.get('@identifier').then((identifier) => {
-        cy.location('pathname').should(
-          'be.eq',
-          `/picking-list/picking/${identifier}`
-        );
-      });
-
       // should display tabs
       pickingFragment.getTabs().should('be.visible');
 

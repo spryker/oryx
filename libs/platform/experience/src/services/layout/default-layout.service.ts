@@ -98,9 +98,23 @@ export class DefaultLayoutService implements LayoutService {
           )
         );
 
-      case CompositionLayout.SplitColumn:
+      case CompositionLayout.Split:
         return ssrAwaiter(
-          import('./styles/split-column-layout.styles').then((m) =>
+          import('./styles/split-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.SplitMain:
+        return ssrAwaiter(
+          import('./styles/split-main.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.SplitAside:
+        return ssrAwaiter(
+          import('./styles/split-aside.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );

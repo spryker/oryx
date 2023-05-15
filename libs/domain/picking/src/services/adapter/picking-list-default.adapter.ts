@@ -154,6 +154,17 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     products: PickingProduct[]
   ): PickingList {
     const cardNote = data.pickingListItems[0].salesOrders[0].cartNote;
+    const orderReferences = [
+      ...new Set(
+        data.pickingListItems
+          .map((item) =>
+            item.salesOrders.map((salesOrder) => salesOrder.orderReference)
+          )
+          .flat()
+      ),
+    ];
+    const requestedDeliveryDate: string =
+      data.pickingListItems[0].salesShipments[0].requestedDeliveryDate;
 
     const parsedPickingItems: PickingListItem[] = data.pickingListItems.map(
       (item) => {
@@ -183,11 +194,13 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
 
     const pickingList: PickingList = {
       id: data.id,
+      orderReferences,
       status: data.status as PickingListStatus,
       items: parsedPickingItems,
       cartNote: cardNote,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
+      requestedDeliveryDate: new Date(requestedDeliveryDate),
     };
 
     return pickingList;

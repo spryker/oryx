@@ -9,7 +9,7 @@ export const styles: LayoutStyles = {
     ${gridSystem}
 
     :host {
-      --oryx-grid-columns: var(--oryx-grid-columns-carousel);
+      --oryx-column-count: var(--oryx-column-grid);
 
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;

@@ -17,6 +17,12 @@ export class ButtonComponent
   @property({ type: Boolean, reflect: true }) outline?: boolean;
 
   protected override render(): TemplateResult {
-    return html`<slot ?inert=${this.loading}></slot>`;
+    return html`<slot ?inert=${this.loading}></slot> ${this.renderLoader()}`;
+  }
+
+  protected renderLoader(): TemplateResult | void {
+    if (!this.loading && !this.confirmed) return;
+    const icon = this.loading ? 'loader' : 'mark';
+    return html` <oryx-icon .type=${icon} .size=${Size.Lg}></oryx-icon> `;
   }
 }

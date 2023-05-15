@@ -18,7 +18,9 @@ const layout = {
   [CompositionLayout.Grid]: './styles/grid-layout.styles',
   [CompositionLayout.Carousel]: './styles/carousel-layout.styles',
   [CompositionLayout.Flex]: './styles/flex-layout.styles',
-  [CompositionLayout.SplitColumn]: './styles/split-column-layout.styles',
+  [CompositionLayout.Split]: './styles/split-layout.styles',
+  [CompositionLayout.SplitMain]: './styles/split-main.styles',
+  [CompositionLayout.SplitAside]: './styles/split-aside.styles',
   [CompositionLayout.Text]: './styles/text-layout.styles',
 };
 
