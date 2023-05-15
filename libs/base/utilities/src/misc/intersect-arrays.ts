@@ -26,15 +26,9 @@ export function intersectArrays<T>(
     const firstItemId = identityFn(value);
     let itemNotFound = false;
     restArrays.every((array) => {
-      let intersectedItem = false;
-
-      array.some((item) => {
-        const anotherItemId = identityFn(item);
-
-        if (firstItemId === anotherItemId) {
-          intersectedItem = firstItemId === anotherItemId;
-        }
-      });
+      const intersectedItem = array.some(
+        (item) => firstItemId === identityFn(item)
+      );
 
       if (!intersectedItem) {
         itemNotFound = true;
