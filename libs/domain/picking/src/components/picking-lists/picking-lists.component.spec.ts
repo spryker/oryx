@@ -156,4 +156,67 @@ describe('PickingListsComponent', () => {
       ).toBe(i18n('picking.no-results-found'));
     });
   });
+
+  describe('when start searching', () => {
+    beforeEach(async () => {
+      const pickingListHeader = element.renderRoot.querySelector(
+        'oryx-picking-lists-header'
+      );
+
+      pickingListHeader?.dispatchEvent(
+        new CustomEvent('oryx.search', {
+          detail: { search: '', open: true },
+        })
+      );
+    });
+
+    it('should render a fallback', () => {
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback')
+      ).not.toBeNull();
+
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback oryx-heading')
+          ?.textContent
+      ).toContain(i18n('picking-lists.search-by-order-ID'));
+
+      expect(
+        element.renderRoot
+          .querySelector('.no-items-fallback oryx-image')
+          ?.getAttribute('resource')
+      ).toBe('searching');
+    });
+  });
+
+  describe('when there is no results while searching', () => {
+    beforeEach(async () => {
+      service.get = vi.fn().mockReturnValue(of([]));
+      const pickingListHeader = element.renderRoot.querySelector(
+        'oryx-picking-lists-header'
+      );
+
+      pickingListHeader?.dispatchEvent(
+        new CustomEvent('oryx.search', {
+          detail: { search: 'ddd', open: true },
+        })
+      );
+    });
+
+    it('should render a fallback', () => {
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback')
+      ).not.toBeNull();
+
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback oryx-heading')
+          ?.textContent
+      ).toContain(i18n('picking-lists.no-picking-results'));
+
+      expect(
+        element.renderRoot
+          .querySelector('.no-items-fallback oryx-image')
+          ?.getAttribute('resource')
+      ).toBe('no-search-results');
+    });
+  });
 });
