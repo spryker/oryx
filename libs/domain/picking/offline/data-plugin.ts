@@ -33,23 +33,20 @@ export class OfflineDataPlugin extends ExecPlugin {
       const routerService = injector.inject(RouterService);
       const oauthConfig = injector.inject(OauthServiceConfig);
 
-      this.subscription = authService
-        .isAuthenticated()
+      this.subscription = routerService
+        .route()
         .pipe(
-          switchMap((authenticated) => {
-            if (authenticated) {
-              return routerService.route();
-            }
-            return of(undefined);
-          }),
           switchMap((currentRoute) => {
-            if (!currentRoute) {
-              return of(undefined);
-            }
             const redirectUrl = new URL(
               oauthConfig.providers[0].redirectUrl as string
             );
             if (currentRoute.startsWith(redirectUrl.pathname)) {
+              return authService.isAuthenticated();
+            }
+            return of(undefined);
+          }),
+          switchMap((authenticated) => {
+            if (authenticated) {
               return this.clearDb(injector).pipe(
                 switchMap(() => this.populateDb(injector)),
                 tap(() => routerService.navigate('/'))
