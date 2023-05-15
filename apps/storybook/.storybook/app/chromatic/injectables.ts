@@ -21,12 +21,12 @@ export class ChromaticIconInjectable implements IconInjectable {
 }
 
 export class ChromaticGraphicInjectable extends DefaultGraphicInjectable {
-  protected getGraphicValue(
+  protected getGraphic(
     token: string,
     key: keyof Graphic
   ): DirectiveResult | undefined {
     const resourcesPlugin = resolve(AppRef).requirePlugin(ResourcePlugin);
-    const value = resourcesPlugin.getGraphicValue(token, key);
+    const value = resourcesPlugin.getGraphic(token, key);
     const render = (v: string): DirectiveResult | string =>
       key === 'source' ? unsafeHTML(v) : v;
 

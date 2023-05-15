@@ -33,27 +33,25 @@ describe('ResourcePlugin', () => {
     });
   });
 
-  describe('when getResources has been called', () => {
-    it('should return the list of resources', () => {
-      expect(plugin.getResources()).toEqual(mockResources);
+  describe('when getGraphics has been called', () => {
+    it('should return the list of graphics', () => {
+      expect(plugin.getGraphics()).toEqual(mockResources.graphics);
     });
   });
 
   describe('when getGraphicValue has been called', () => {
     it('should return value', () => {
-      expect(plugin.getGraphicValue('a', 'url')).toBe(
-        mockResources.graphics?.a.url
-      );
+      expect(plugin.getGraphic('a', 'url')).toBe(mockResources.graphics?.a.url);
     });
 
     it('should return promise with value', async () => {
-      const sourcePromise = plugin.getGraphicValue('b', 'source');
+      const sourcePromise = plugin.getGraphic('b', 'source');
       expect(isPromise(sourcePromise)).toBe(true);
       expect(await sourcePromise).toBe(mockSource);
     });
 
     it('should return undefined if token is not exist', () => {
-      expect(plugin.getGraphicValue('c', 'source')).toBeUndefined();
+      expect(plugin.getGraphic('c', 'source')).toBeUndefined();
     });
   });
 

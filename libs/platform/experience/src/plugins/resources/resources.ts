@@ -8,6 +8,7 @@ import {
 import {
   Graphic,
   GraphicValue,
+  ResourceGraphic,
   ResourceIcons,
   Resources,
 } from './resources.model';
@@ -35,11 +36,11 @@ export class ResourcePlugin implements AppPlugin {
     return ResourcePluginName;
   }
 
-  getResources(): Resources | undefined {
-    return this.resources;
+  getGraphics(): ResourceGraphic | undefined {
+    return this.resources.graphics;
   }
 
-  getGraphicValue(token: string, key: keyof Graphic): GraphicValue {
+  getGraphic(token: string, key: keyof Graphic): GraphicValue {
     const value = this.resources?.graphics?.[token]?.[key];
 
     if (!value) {
@@ -61,6 +62,10 @@ export class ResourcePlugin implements AppPlugin {
     }
 
     return resolveLazyLoadable(icon);
+  }
+
+  getFont(id: string): string | undefined {
+    return this.resources.fonts?.[id];
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
