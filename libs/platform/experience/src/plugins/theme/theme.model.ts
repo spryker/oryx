@@ -51,10 +51,33 @@ export type DesignToken = ThemeToken & {
   color?: ColorDesignTokens;
 };
 
+export interface IconData {
+  tag?: string;
+  text?: string;
+  class?: string;
+}
+
+export interface IconMapper {
+  // Uses as default tag class also
+  id: string;
+  styles: string;
+  mapping: Record<string, string>;
+}
+
+export interface IconSource {
+  resource: IconMapper;
+  types: string[];
+}
+
+export interface ThemeIcons {
+  resource: IconMapper;
+  resources?: IconSource[];
+}
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
 
 export interface Theme {
   name: string;
   breakpoints?: Breakpoints;
   designTokens?: ThemeDesignTokens;
+  icons?: ThemeIcons;
 }

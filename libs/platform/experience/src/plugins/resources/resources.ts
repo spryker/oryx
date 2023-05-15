@@ -1,7 +1,12 @@
 import { AppPlugin } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
 import {
+  fontInjectable,
+  graphicInjectable,
+  iconInjectable,
+} from '@spryker-oryx/utilities';
+import {
+  DefaultFontInjectable,
   DefaultGraphicInjectable,
   DefaultIconInjectable,
 } from '../../injectables';
@@ -29,6 +34,10 @@ export class ResourcePlugin implements AppPlugin {
 
     if (Object.keys(resources.icons ?? {}).length) {
       iconInjectable.inject(new DefaultIconInjectable());
+    }
+
+    if (Object.keys(resources.fonts ?? {}).length) {
+      fontInjectable.inject(new DefaultFontInjectable());
     }
   }
 
