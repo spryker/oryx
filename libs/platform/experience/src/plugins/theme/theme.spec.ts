@@ -1,5 +1,5 @@
 import { ComponentDef } from '@spryker-oryx/core';
-import { DefaultMedia, Size } from '@spryker-oryx/utilities';
+import { DefaultMedia, rootInjectable, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';
 import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
@@ -7,15 +7,32 @@ import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
   name: 'b',
+  icons: {
+    resource: { id: 'a', styles: 'a', mapping: { a: 'a' } },
+    resources: [
+      {
+        resource: { id: 'b', styles: 'b', mapping: { a: 'b' } },
+        types: ['a', 'b'],
+      },
+    ],
+  },
 };
 
 const mockBTheme: Theme = {
   name: 'a',
+  icons: {
+    resource: { id: 'c', styles: 'c', mapping: { a: 'c' } },
+    resources: [
+      {
+        resource: { id: 'd', styles: 'd', mapping: { a: 'd' } },
+        types: ['a', 'b'],
+      },
+    ],
+  },
 };
 
 const mockComponentPlugin = {
   getOptions: vi.fn().mockReturnValue({}),
-  getRoot: vi.fn(),
 };
 
 const mockApp = {
@@ -136,13 +153,15 @@ describe('ThemePlugin', () => {
       designTokens: [
         {
           color: {
-            red: 'red',
             blue: {
-              100: '1',
-              200: '2',
-              300: '3',
-              400: '4',
-              500: '5',
+              light: {
+                100: '1',
+                200: '2',
+              },
+              dark: {
+                100: '2',
+                200: '1',
+              },
             },
           },
         },
@@ -173,16 +192,31 @@ describe('ThemePlugin', () => {
       ],
       ...mockBTheme,
     };
-    // TODO: fix `Could not parse CSS stylesheet` error
-    const expectedStyles = (selector = ':host'): string =>
-      ` ${selector} {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; } @layer mode.dark { [mode-dark],${selector}(:not([mode-light])) {--oryx-color-red: red1;}} @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; } @layer mode.light { [mode-light],${selector}(:not([mode-dark])) {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;}}`;
-    const plugin = new ThemePlugin([mockATokensTheme, mockBTokensTheme]);
+    const plugin = new ThemePlugin([
+      { ...mockATokensTheme },
+      { ...mockBTokensTheme },
+    ]);
 
     describe('resolve', () => {
       it('should resolve theme with parsed design token and global styles', async () => {
-        mockComponentPlugin.getRoot.mockReturnValue('a');
-
-        const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
+        rootInjectable.inject('a');
+        const expectedHostStyles = `
+          :host {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;}
+          @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; }
+          @layer mode.dark { [mode-dark],:host(:not([mode-light])) {--oryx-color-red: red1;--oryx-color-blue-100: 2;--oryx-color-blue-200: 1;}}
+          @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; }
+          @layer mode.light { [mode-light],:host(:not([mode-dark])) {--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;}}
+        `
+          .replace(/(\r\n|\n|\r)/gm, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        const expected = [
+          {
+            styles: ` ${expectedHostStyles}`,
+          },
+          { styles: ['a'] },
+          { styles: ['aA'] },
+        ];
         mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
         const themeData = await plugin.resolve({
           name: 'a',
@@ -201,13 +235,22 @@ describe('ThemePlugin', () => {
             },
           ],
         } as ComponentDef);
-
-        expect(themeData).toEqual(expect.arrayContaining(expected));
+        expect(themeData).toEqual(expected);
       });
     });
 
     describe('apply', () => {
       it('should add parsed design tokens to the document.body if components plugin root options is string', async () => {
+        const expected = `
+          :root {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;}
+          @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; }
+          @layer mode.dark { [mode-dark],:root {--oryx-color-red: red1;--oryx-color-blue-100: 2;--oryx-color-blue-200: 1;}}
+          @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; }
+          @layer mode.light { [mode-light],:root {--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;}}
+        `
+          .replace(/(\r\n|\n|\r)/gm, '')
+          .replace(/\s+/g, ' ')
+          .trim();
         mockComponentPlugin.getOptions.mockReturnValue({
           root: 'root',
         });
@@ -216,7 +259,7 @@ describe('ThemePlugin', () => {
         const styles = document.body
           .querySelector('style')
           ?.textContent?.trim();
-        expect(styles).toContain(':root');
+        expect(styles).toBe(expected);
       });
     });
   });
@@ -368,6 +411,19 @@ describe('ThemePlugin', () => {
     it('should return null if both parameters are empty arrays', () => {
       const a = plugin.generateScreenMedia([], []);
       expect(a).toBeNull();
+    });
+  });
+
+  describe('getIcons', () => {
+    it('should return proper icons list', () => {
+      const icons = plugin.getIcons();
+      expect(icons).toEqual({
+        resource: mockBTheme.icons?.resource,
+        resources: [
+          ...(mockBTheme.icons?.resources ?? []),
+          ...(mockATheme.icons?.resources ?? []),
+        ],
+      });
     });
   });
 });

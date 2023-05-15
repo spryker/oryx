@@ -1,10 +1,9 @@
 import { isPromise } from '@spryker-oryx/utilities';
 import { ResourcePlugin, ResourcePluginName } from './resources';
-import { Resources } from './resources.model';
 
 const mockSource = './source';
 
-const mockResources: Resources = {
+const mockResources = {
   graphics: {
     a: {
       url: './url/a',
@@ -16,6 +15,9 @@ const mockResources: Resources = {
   icons: {
     a: 'a',
     b: (): Promise<string> => Promise.resolve('b'),
+  },
+  fonts: {
+    a: 'A',
   },
 };
 
@@ -69,6 +71,12 @@ describe('ResourcePlugin', () => {
   describe('when getIcons has been called', () => {
     it('should return the list of provided icons', () => {
       expect(plugin.getIcons()).toBe(mockResources.icons);
+    });
+  });
+
+  describe('when getFont has been called', () => {
+    it('should return the font of provided fonts', () => {
+      expect(plugin.getFont('a')).toBe(mockResources.fonts.a);
     });
   });
 });

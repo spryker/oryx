@@ -16,35 +16,35 @@ export class DefaultIconInjectable implements IconInjectable {
     const app = resolve(AppRef);
     const mappers = app.findPlugin(ThemePlugin)?.getIcons();
     const resourcePlugin = app.findPlugin(ResourcePlugin);
-    const source = mappers?.resource.mapping[type]
+    const source = mappers?.resource.mapping?.[type]
       ? mappers.resource
       : mappers?.resources?.find((resource) => resource.types.includes(type))
           ?.resource;
     const mapper = source?.mapping[type];
 
-    if (!mapper) {
-      const icon = resourcePlugin?.getIcon(type);
+    if (mapper) {
+      fontInjectable.get()?.setFont(source.id);
 
-      if (icon === undefined) {
-        return;
-      }
-
-      const icon$ = ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon));
-
-      return html`
-        ${asyncValue(icon$, (res) =>
-          res
-            ? html`${unsafeHTML(`<svg viewBox="0 0 24 24">${res}</svg>`)}`
-            : html``
-        )}
-      `;
+      return html`<style>
+          .${source.id} {${source.styles}}
+        </style>
+        <span class="${source.id}">${unsafeHTML(mapper)}</span> `;
     }
 
-    fontInjectable.get()?.setFont(source.id);
+    const icon = resourcePlugin?.getIcon(type);
 
-    return html`<style>
-        .${source.id} {${source.styles}}
-      </style>
-      ${unsafeHTML(`<span class="${source.id}">${mapper}</span>`)} `;
+    if (icon === undefined) {
+      return;
+    }
+
+    const icon$ = ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon));
+
+    return html`
+      ${asyncValue(icon$, (res) =>
+        res
+          ? html`${unsafeHTML(`<svg viewBox="0 0 24 24">${res}</svg>`)}`
+          : html``
+      )}
+    `;
   }
 }

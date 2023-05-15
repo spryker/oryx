@@ -28,6 +28,8 @@ interface DesignTokenMapper {
   [key: string]: Record<string, string> | undefined;
 }
 
+type TokensArr = [string, string | ThemeToken, string?][];
+
 export class ThemeTokens {
   protected cssVarPrefix = '--oryx';
   protected mediaMapper = {
@@ -198,7 +200,8 @@ export class ThemeTokens {
       tokensList.push(...designTokens);
     }
 
-    for (const tokens of tokensList) {
+    for (const tokensObj of tokensList) {
+      const tokens = { ...tokensObj };
       let tokenMedia = DesignTokenGlobal.Global as string;
 
       if (!tokens.media && tokens.color) {
@@ -242,8 +245,7 @@ export class ThemeTokens {
         ...designTokensMapper[tokenMedia],
       };
 
-      const tokensArr: [string, string | ThemeToken, string?][] =
-        Object.entries(tokens);
+      const tokensArr = Object.entries(tokens) as TokensArr;
 
       for (let i = 0; i < tokensArr.length; i++) {
         const [key, token, parentKey] = tokensArr[i];
