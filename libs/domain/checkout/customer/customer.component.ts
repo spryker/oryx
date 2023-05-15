@@ -13,7 +13,7 @@ import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutGuestComponent } from '../guest';
-import { CheckoutDataService } from '../src/services/checkout-data.service';
+import { CheckoutDataService } from '../src/services/data/checkout-data.service';
 import { CheckoutAuthComponentOptions } from './customer.model';
 import { styles } from './customer.styles';
 

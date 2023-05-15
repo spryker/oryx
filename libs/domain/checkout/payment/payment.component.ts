@@ -24,7 +24,7 @@ export class CheckoutPaymentComponent
   protected form?: HTMLFormElement;
 
   protected eff = effect(() => {
-    // we set the validity when the data is resolvd from storage...
+    // we set the validity when the data is resolved from storage...
     if (this.selected()) this.checkoutStateService.set('payments', true);
   });
 

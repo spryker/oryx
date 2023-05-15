@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Checkout } from '../models';
+import { Checkout } from '../../models';
 
 export interface CheckoutStateService {
   set<K extends keyof Checkout>(

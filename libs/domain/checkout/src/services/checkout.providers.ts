@@ -14,12 +14,10 @@ import {
   checkoutDataSerializer,
   checkoutSerializer,
 } from './adapter/serializers';
-import { CheckoutDataService } from './checkout-data.service';
-import { CheckoutStateService } from './checkout-state.service';
 import { CheckoutService } from './checkout.service';
-import { DefaultCheckoutDataService } from './default-checkout-data.service';
-import { DefaultCheckoutStateService } from './default-checkout-state.service';
+import { CheckoutDataService, DefaultCheckoutDataService } from './data';
 import { DefaultCheckoutService } from './default-checkout.service';
+import { CheckoutStateService, DefaultCheckoutStateService } from './state';
 
 export const checkoutProviders = [
   {

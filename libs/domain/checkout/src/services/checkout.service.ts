@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CheckoutData, CheckoutResponse, CheckoutState } from '../models';
+import { CheckoutResponse, CheckoutState } from '../models';
 
 export interface CheckoutService {
   /**
@@ -9,8 +9,8 @@ export interface CheckoutService {
   getProcessState(): Observable<CheckoutState>;
 
   /**
-   * Reads the checkout data from the checkoutDataService and, when valid,
-   * places the order. The response data contains the redirect URL that shoudl
+   * Reads the checkout data from the checkoutStateService and, when valid,
+   * places the order. The response data contains the redirect URL that should
    * be used to bring the user to the next page which is typically the payment
    * landing page or the order confirmation or failure page.
    */

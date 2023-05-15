@@ -1,9 +1,8 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Checkout, checkoutDataStorageKey } from '../models';
+import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
+import { Checkout, checkoutDataStorageKey } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
-import { take, tap } from 'rxjs';
 
 export class DefaultCheckoutStateService implements CheckoutStateService {
   protected subject = new BehaviorSubject<

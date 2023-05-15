@@ -16,9 +16,9 @@ import {
 } from 'rxjs';
 import { Checkout, CheckoutResponse, CheckoutState } from '../models';
 import { CheckoutAdapter } from './adapter';
-import { CheckoutDataService } from './checkout-data.service';
-import { CheckoutStateService } from './checkout-state.service';
 import { CheckoutService } from './checkout.service';
+import { CheckoutDataService } from './data';
+import { CheckoutStateService } from './state';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId = this.cartService.getCart({}).pipe(

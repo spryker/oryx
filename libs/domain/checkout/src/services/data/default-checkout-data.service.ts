@@ -1,8 +1,8 @@
 import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { catchError, map, Observable, of, shareReplay, switchMap } from 'rxjs';
-import { ApiCheckoutModel, Checkout, CheckoutData } from '../models';
-import { CheckoutAdapter } from './adapter';
+import { ApiCheckoutModel, CheckoutData } from '../../models';
+import { CheckoutAdapter } from '../adapter';
 import { CheckoutDataService } from './checkout-data.service';
 
 // TODO: on logout, we should clear the data (could be part of logout -> storage)

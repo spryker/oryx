@@ -15,7 +15,7 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { CheckoutDataService } from '../src/services/checkout-data.service';
+import { CheckoutDataService } from '../src/';
 import { styles } from './shipment.styles';
 
 @signalAware()
@@ -34,7 +34,7 @@ export class CheckoutShipmentComponent
   protected form?: HTMLFormElement;
 
   protected eff = effect(() => {
-    // we set the validity when the data is resolvd from storage...
+    // we set the validity when the data is resolved from storage...
     if (this.selected()) this.checkoutStateService.set('shipment', true);
   });
 

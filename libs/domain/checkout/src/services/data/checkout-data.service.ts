@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Checkout, CheckoutData } from '../models';
+import { CheckoutData } from '../../models';
 
 export interface CheckoutDataService {
   /**
