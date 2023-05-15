@@ -45,7 +45,7 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   setHtmlAttributes(attrs: ElementAttributes): void {
-    this.setAttributes(attrs, document.documentElement);
+    this.setAttributes(attrs, globalThis.document.documentElement);
   }
 
   protected getTagName(name: string): string {
