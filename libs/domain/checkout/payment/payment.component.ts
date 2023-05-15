@@ -20,13 +20,13 @@ export class CheckoutPaymentComponent
   );
   protected selected = signal(this.checkoutStateService.get('payments'));
 
-  @query('form')
-  protected form?: HTMLFormElement;
-
   protected eff = effect(() => {
     // we set the validity when the data is resolved from storage...
     if (this.selected()) this.checkoutStateService.set('payments', true);
   });
+
+  @query('form')
+  protected form?: HTMLFormElement;
 
   report(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {

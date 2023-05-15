@@ -3,7 +3,6 @@ import {
   CheckoutMixin,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import {
   effect,
@@ -15,7 +14,6 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { CheckoutDataService } from '../src/';
 import { styles } from './shipment.styles';
 
 @signalAware()
@@ -26,17 +24,16 @@ export class CheckoutShipmentComponent
 {
   static styles = styles;
 
-  protected dataService = resolve(CheckoutDataService);
   protected shipments = signal(this.checkoutDataService.get('shipments'));
   protected selected = signal(this.checkoutStateService.get('shipment'));
-
-  @query('form')
-  protected form?: HTMLFormElement;
 
   protected eff = effect(() => {
     // we set the validity when the data is resolved from storage...
     if (this.selected()) this.checkoutStateService.set('shipment', true);
   });
+
+  @query('form')
+  protected form?: HTMLFormElement;
 
   report(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
