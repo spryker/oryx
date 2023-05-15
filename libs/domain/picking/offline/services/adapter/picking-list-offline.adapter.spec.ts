@@ -43,7 +43,7 @@ const mockContent = { items: [] };
 class MockCollection implements Partial<Collection> {
   toArray = vi.fn().mockReturnValue([]);
   equals = vi.fn().mockReturnValue(this);
-  startsWithAnyOf = vi.fn().mockReturnValue(this);
+  startsWithAnyOfIgnoreCase = vi.fn().mockReturnValue(this);
   distinct = vi.fn().mockReturnValue(this);
   offset = vi.fn().mockReturnValue(this);
   limit = vi.fn().mockReturnValue(this);
@@ -184,7 +184,7 @@ describe('PickingListOfflineAdapter', () => {
         adapter.get({ searchOrderReference: 'mockOrderReference' }).subscribe();
 
         expect(mockTable.where).toHaveBeenCalledWith('orderReferences');
-        expect(mockCollection.startsWithAnyOf).toHaveBeenCalledWith(
+        expect(mockCollection.startsWithAnyOfIgnoreCase).toHaveBeenCalledWith(
           'mockOrderReference'
         );
         expect(mockCollection.distinct).toHaveBeenCalled();
