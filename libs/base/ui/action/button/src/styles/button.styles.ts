@@ -190,7 +190,7 @@ export const buttonStyles = css`
   }
 
   :host([confirmed]) ::slotted(*) {
-    border-color: var(--oryx-color-primary-300);
+    border-color: var(--oryx-color-primary-200);
   }
 
   :host(:is([loading], [confirmed])) ::slotted(*)::before {
