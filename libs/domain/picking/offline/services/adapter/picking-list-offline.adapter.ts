@@ -56,7 +56,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
                 andCollections.push(
                   pickingListStore
                     .where('orderReferences')
-                    .startsWithAnyOf(qualifier.searchOrderReference)
+                    .startsWithAnyOfIgnoreCase(qualifier.searchOrderReference)
                     .distinct()
                 );
               }

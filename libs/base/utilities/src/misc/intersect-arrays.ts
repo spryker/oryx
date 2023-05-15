@@ -25,10 +25,10 @@ export function intersectArrays<T>(
   firstArray.filter((value) => {
     const firstItemId = identityFn(value);
     let itemNotFound = false;
-    restArrays.map((array) => {
+    restArrays.every((array) => {
       let intersectedItem = false;
 
-      array.map((item) => {
+      array.some((item) => {
         const anotherItemId = identityFn(item);
 
         if (firstItemId === anotherItemId) {
