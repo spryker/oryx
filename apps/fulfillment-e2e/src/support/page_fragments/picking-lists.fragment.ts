@@ -1,3 +1,5 @@
+import { PickingInProgressModalFragment } from './picking-in-progress-modal.fragment';
+
 export class PickingListsFragment {
   getWrapper = () => cy.get('oryx-picking-lists');
   getPickingListsItems = () => this.getWrapper().find('oryx-picking-list-item');
@@ -11,4 +13,5 @@ export class PickingListsFragment {
       .find('.identifier')
       .should('be.visible')
       .invoke('text');
+  pickingInProgressModal = new PickingInProgressModalFragment();
 }

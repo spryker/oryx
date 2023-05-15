@@ -73,4 +73,52 @@ describe('Start picking a picklist with customer note', () => {
       pickingFragment.getProducts().should('have.length.at.least', 1);
     });
   });
+
+  describe('and picking is already in progress', () => {
+    beforeEach(() => {
+      cy.intercept('PATCH', '**/picking-lists/*', {
+        statusCode: 409,
+        body: {
+          errors: [
+            {
+              message: 'Picklist is already being picked by another user.',
+              status: 409,
+              code: '5310',
+            },
+          ],
+        },
+      }).as('picking-in-progress');
+
+      customerNoteFragment.getProceedToPickingButton().should('be.visible');
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(300);
+      customerNoteFragment.getProceedToPickingButton().click();
+    });
+
+    it('should stay on the same page', () => {
+      cy.location('pathname').should('to.match', /^\/customer-note-info/);
+    });
+
+    it('should show modal', () => {
+      customerNoteFragment.pickingInProgressModal
+        .getModal()
+        .should('have.attr', 'open');
+    });
+
+    it('should render picking in progress text', () => {
+      customerNoteFragment.pickingInProgressModal
+        .getModal()
+        .should('contain.text', 'Already in progress');
+    });
+
+    describe('and picking in progress modal is closed', () => {
+      beforeEach(() => {
+        customerNoteFragment.pickingInProgressModal.getCloseButton().click();
+      });
+
+      it('should redirect to picking list page', () => {
+        cy.location('pathname').should('be.equal', '/');
+      });
+    });
+  });
 });
