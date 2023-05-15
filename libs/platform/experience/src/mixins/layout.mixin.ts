@@ -69,7 +69,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         'bleed',
         'overlap',
         'divider',
-        'vertical',
       ];
       return this.layoutController.getStyles(props, rules);
     });
