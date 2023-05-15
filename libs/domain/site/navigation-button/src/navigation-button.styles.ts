@@ -84,7 +84,7 @@ export const styles = css`
     border-radius: 2px;
     text-align: center;
     background: var(--oryx-color-secondary-300);
-    color: var(--oryx-color-neutral-500);
+    color: var(--oryx-color-secondaryA-0, white);
     inset-block-start: 6px;
     inset-inline-end: 8px;
     white-space: nowrap;
