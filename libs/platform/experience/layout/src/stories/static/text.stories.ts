@@ -1,9 +1,9 @@
+import { CompositionLayout } from '@spryker-oryx/experience';
 import { Story } from '@storybook/web-components';
-
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../constants';
 import { layoutStaticStyles } from './styles';
-import { generateLayoutItems } from './util';
+import { generateLayoutItems, generateNestedLayout } from './util';
 
 export default {
   title: `${storybookPrefix}/Layout/Static`,
@@ -14,25 +14,18 @@ const Template: Story = (): TemplateResult => {
     <h1>Text layout</h1>
 
     <h2>5 items</h2>
-    <oryx-layout layout="text" container>
-      ${generateLayoutItems(5)}
-    </oryx-layout>
+    <oryx-layout layout="text"> ${generateLayoutItems(5)} </oryx-layout>
 
     <h2>6 items</h2>
-    <oryx-layout layout="text" container>
-      ${generateLayoutItems(6)}
-    </oryx-layout>
+    <oryx-layout layout="text"> ${generateLayoutItems(6)} </oryx-layout>
 
     <h2>7 items</h2>
-    <oryx-layout layout="text" container>
-      ${generateLayoutItems(7)}
-    </oryx-layout>
+    <oryx-layout layout="text"> ${generateLayoutItems(7)} </oryx-layout>
 
     <h2>2 cols</h2>
     <oryx-layout
       layout="text"
-      container
-      style="--cols:2;padding:50px;--gap:20px;"
+      .options=${{ rules: [{ padding: '50px', gap: '20px' }] }}
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -70,8 +63,7 @@ const Template: Story = (): TemplateResult => {
     <h2>3 cols</h2>
     <oryx-layout
       layout="text"
-      container
-      style="--cols:3;padding:50px;--gap:40px;"
+      .options=${{ rules: [{ padding: '50px', gap: '40px', columnCount: 3 }] }}
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -105,6 +97,8 @@ const Template: Story = (): TemplateResult => {
         cognoscimus.
       </p>
     </oryx-layout>
+
+    ${generateNestedLayout(CompositionLayout.Text)}
 
     <style>
       ${layoutStaticStyles} p {

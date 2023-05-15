@@ -72,10 +72,10 @@ export class ThemeTokens {
   }
 
   generateScreenMedia(
-    include: string | string[],
+    include: string | string[] = [],
     exclude: string | string[] = []
   ): string | null {
-    if (!include.length && !exclude.length) {
+    if (!include?.length && !exclude.length) {
       return null;
     }
 
@@ -126,7 +126,7 @@ export class ThemeTokens {
       expression += step?.max ? `(${mediaRule.max}: ${step?.max}px)` : '';
     }
 
-    return `@media ${expression}`;
+    return expression ? `@media ${expression}` : null;
   }
 
   protected async getStylesFromTokens(

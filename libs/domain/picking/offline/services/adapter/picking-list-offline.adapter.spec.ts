@@ -182,13 +182,13 @@ describe('PickingListOfflineAdapter', () => {
 
     describe('and qualifier has order references', () => {
       it('should filter store', () => {
-        adapter
-          .get({
-            status: PickingListStatus.ReadyForPicking,
-          })
-          .subscribe();
+        adapter.get({ orderReferences: ['mockOrderReference'] }).subscribe();
 
-        expect(mockTable.where).toHaveBeenCalledWith('localStatus');
+        expect(mockTable.where).toHaveBeenCalledWith('orderReferences');
+        expect(mockCollection.startsWithAnyOf).toHaveBeenCalledWith([
+          'mockOrderReference',
+        ]);
+        expect(mockCollection.distinct).toHaveBeenCalled();
       });
     });
 

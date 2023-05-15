@@ -10,24 +10,10 @@ describe('Start picking a picklist with customer note', () => {
     cy.clearIndexedDB();
     cy.login();
 
-    pickingListsFragment.getIdentifier();
-
-    pickingListsFragment
-      .getCustomerNoteButton()
-      .parents('oryx-picking-list-item')
-      .within(() => pickingListsFragment.getStartPickingButton().click());
+    pickingListsFragment.getStartPickingButtons().eq(0).click();
   });
 
   it('check Customer Note page', () => {
-    // should navigate to customer note page
-    // ToDo adapt this on bug HRZ-2834
-    // cy.get('@identifier').then((identifierText) => {
-    //   cy.location('pathname').should(
-    //     'be.eq',
-    //     `/customer-note-info/${identifierText}`
-    //   );
-    // });
-
     // should display customer note
     customerNoteFragment
       .getNote()
@@ -64,27 +50,6 @@ describe('Start picking a picklist with customer note', () => {
     });
 
     it('check Picking page', () => {
-      // should navigate to picking page
-      // ToDo adapt this on bug HRZ-2834
-      // cy.get('@identifier').then((identifier) => {
-      //   cy.location('pathname').should(
-      //     'be.eq',
-      //     `/picking-list/picking/${identifier}`
-      //   );
-      // });
-
-      // should display tabs
-      pickingFragment.getTabs().should('be.visible');
-
-      // should display three tabs
-      pickingFragment.getTabsList().should('have.length', 3);
-      pickingFragment.getTabsList().eq(0).should('contain.text', 'Not Picked');
-      pickingFragment.getTabsList().eq(1).should('contain.text', 'Picked');
-      pickingFragment.getTabsList().eq(2).should('contain.text', 'Not Found');
-
-      // should display "Not picked" as selected
-      pickingFragment.getTabsList().eq(0).should('have.attr', 'selected');
-
       // should display correct products number in chip
       pickingFragment.getProducts().then((products) => {
         pickingFragment

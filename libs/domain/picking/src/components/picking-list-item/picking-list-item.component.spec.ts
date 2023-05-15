@@ -86,7 +86,7 @@ describe('PickingListItemComponent', () => {
 
     it('should perform time formatting', () => {
       expect(localeService.formatTime).toHaveBeenCalledWith(
-        mockPickingListData[0].createdAt
+        mockPickingListData[0].requestedDeliveryDate
       );
     });
 
@@ -96,10 +96,10 @@ describe('PickingListItemComponent', () => {
       );
     });
 
-    it('should render id', () => {
-      expect(
-        element.renderRoot.querySelector('.identifier')?.textContent?.trim()
-      ).toBe(mockPickingListData[0].orderReferences[0]);
+    it('should render order reference as id', () => {
+      expect(element.renderRoot.querySelector('.identifier')?.textContent).toBe(
+        mockPickingListData[0].orderReferences[0]
+      );
     });
 
     it('should render items number', () => {

@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -8,7 +8,7 @@ import { IconProperties } from '../icon.model';
 
 export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
 
-const icons = getThemeIcons();
+const icons = getResourceIcons();
 
 interface Props extends IconProperties {
   color: string;

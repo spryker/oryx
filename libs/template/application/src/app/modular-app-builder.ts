@@ -93,6 +93,10 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
         ...(this.resources?.graphics ?? {}),
         ...(resources.graphics ?? {}),
       },
+      icons: {
+        ...(this.resources?.icons ?? {}),
+        ...(resources.icons ?? {}),
+      },
     };
     return this;
   }

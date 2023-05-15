@@ -41,6 +41,7 @@ import { cartEntryStyles } from './styles';
   enableItemImage: true,
   enableItemId: true,
   enableItemPrice: true,
+  confirmBeforeRemove: true,
 } as CartEntryOptions)
 @hydratable()
 export class CartEntryComponent

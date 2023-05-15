@@ -10,8 +10,9 @@ export const mockPickingListData: PickingList[] = [
     status: PickingListStatus.ReadyForPicking,
     createdAt: new Date('2023-03-01'),
     updatedAt: new Date('2023-03-01'),
+    requestedDeliveryDate: new Date(),
+    orderReferences: ['mockOrderReference'],
     cartNote: 'Mock cart note',
-    orderReferences: ['6634a290-dfa4-52c7-90e0-30d5f9702fbe'],
     items: [
       {
         numberOfNotPicked: 1,
@@ -41,7 +42,8 @@ export const mockPickingListData: PickingList[] = [
     status: PickingListStatus.PickingStarted,
     createdAt: new Date('2023-03-01'),
     updatedAt: new Date('2023-03-01'),
-    orderReferences: [],
+    requestedDeliveryDate: new Date(),
+    orderReferences: ['mockOrderReference'],
     items: [
       {
         numberOfNotPicked: 1,
