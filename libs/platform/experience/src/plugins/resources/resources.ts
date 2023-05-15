@@ -41,7 +41,7 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getGraphic(token: string, key: keyof Graphic): GraphicValue {
-    const value = this.resources?.graphics?.[token]?.[key];
+    const value = this.getGraphics()?.[token]?.[key];
 
     if (!value) {
       return;
@@ -55,7 +55,7 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getIcon(name: string): string | Promise<string> | void {
-    const icon = this.resources.icons?.[name];
+    const icon = this.getIcons()[name];
 
     if (!icon) {
       return;
