@@ -53,7 +53,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: 'var(--oryx-color-primary-500)',
+              background: 'hsl(0, 0%, 9.0%)',
               padding: '10px 0',
               gap: '10px',
               align: 'center',

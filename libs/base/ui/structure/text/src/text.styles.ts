@@ -6,6 +6,7 @@ export const textStyles = css`
 
     display: flex;
     flex-direction: column;
+    padding-block: 20px;
   }
 
   ::slotted(p) {

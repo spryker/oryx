@@ -2,7 +2,7 @@ import { Color } from '../../color.model';
 
 export const amber: Color = {
   light: {
-    0: 'hsl(0, 0%, 100%)',
+    0: 'hsl(0, 0%, 0%)',
     1: 'hsl(39, 70.0%, 99.0%)',
     2: 'hsl(40, 100%, 96.5%)',
     3: 'hsl(44, 100%, 91.7%)',
