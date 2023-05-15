@@ -549,10 +549,14 @@ describe('DefaultFormRenderer', () => {
     describe('when a list of radio fields is built', () => {
       const field = {
         type: FormFieldType.RadioList,
-        options: [{ value: 'a', text: 'text a' }, { value: 'b', text: 'text b' }, { value: 'c', text: 'text c' }],
+        options: [
+          { value: 'a', text: 'text a' },
+          { value: 'b', text: 'text b' },
+          { value: 'c', text: 'text c' },
+        ],
         label: 'test',
-        attributes: { direction: 'test' }
-      }
+        attributes: { direction: 'test' },
+      };
 
       beforeEach(async () => {
         await setup(field, 'b');
@@ -561,7 +565,8 @@ describe('DefaultFormRenderer', () => {
       expectComponentTag('oryx-input-list');
 
       it('should have a checked input', () => {
-        const checked = element.querySelector<HTMLInputElement>('input[checked]');
+        const checked =
+          element.querySelector<HTMLInputElement>('input[checked]');
         expect(checked?.value).toBe('b');
       });
 
@@ -570,7 +575,9 @@ describe('DefaultFormRenderer', () => {
       });
 
       it('should set the direction', () => {
-        expect(element.getAttribute('direction')).toBe(field.attributes.direction);
+        expect(element.getAttribute('direction')).toBe(
+          field.attributes.direction
+        );
       });
 
       it('should render inputs labels', () => {
@@ -582,8 +589,8 @@ describe('DefaultFormRenderer', () => {
         const field = {
           type: FormFieldType.RadioList,
           options: [{ value: 'a' }, { value: 'b' }, { value: 'c' }],
-        }
-  
+        };
+
         beforeEach(async () => {
           await setup(field, 'b');
         });
