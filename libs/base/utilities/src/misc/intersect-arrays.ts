@@ -19,25 +19,13 @@ export function intersectArrays<T>(
     arrays = [arr1OrIdentityFn, ...arrays];
   }
 
-  const intersectionArray: T[] = [];
   const [firstArray, ...restArrays] = arrays;
 
-  firstArray.filter((value) => {
+  const intersectionArray = firstArray.filter((value) => {
     const firstItemId = identityFn(value);
-    let itemNotFound = false;
-    restArrays.every((array) => {
-      const intersectedItem = array.some(
-        (item) => firstItemId === identityFn(item)
-      );
-
-      if (!intersectedItem) {
-        itemNotFound = true;
-      }
-    });
-
-    if (!itemNotFound) {
-      intersectionArray.push(value);
-    }
+    return restArrays.every((array) =>
+      array.some((item) => firstItemId === identityFn(item))
+    );
   });
 
   return intersectionArray;
