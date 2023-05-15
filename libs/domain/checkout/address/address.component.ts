@@ -13,24 +13,16 @@ export class CheckoutAddressComponent
   extends ContentMixin(LitElement)
   implements CheckoutForm
 {
-  protected addressService = resolve(AddressService);
-
-  protected addresses = signal(this.addressService.getAddresses());
   @property({ type: Object }) address?: Address;
+
+  protected addressService = resolve(AddressService);
+  protected addresses = signal(this.addressService.getAddresses());
 
   @state()
   protected selected: Address | null = null;
 
   @query('oryx-address-form')
   protected addressComponent?: AddressFormComponent;
-
-  report(report: boolean): boolean {
-    const form = this.addressComponent?.getForm();
-    if (!form?.checkValidity() && report) {
-      form?.reportValidity();
-    }
-    return !!form?.checkValidity();
-  }
 
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)
@@ -53,5 +45,13 @@ export class CheckoutAddressComponent
         composed: true,
       })
     );
+  }
+
+  report(report: boolean): boolean {
+    const form = this.addressComponent?.getForm();
+    if (!form?.checkValidity() && report) {
+      form?.reportValidity();
+    }
+    return !!form?.checkValidity();
   }
 }

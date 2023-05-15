@@ -41,7 +41,6 @@ export class CheckoutDeliveryComponent
   }
 
   protected onChangeAddress(e: CustomEvent): void {
-    console.log('on change address');
     this.checkoutStateService.set(
       'shippingAddress',
       e.detail.valid,

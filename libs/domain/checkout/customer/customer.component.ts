@@ -13,7 +13,6 @@ import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutGuestComponent } from '../guest';
-import { CheckoutDataService } from '../src/services/data/checkout-data.service';
 import { CheckoutAuthComponentOptions } from './customer.model';
 import { styles } from './customer.styles';
 
@@ -27,11 +26,11 @@ export class CheckoutCustomerComponent
 
   protected userService = resolve(UserService);
   protected authService = resolve(AuthService);
-
-  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
-
   protected linkService = resolve(SemanticLinkService);
   protected routerService = resolve(RouterService);
+
+  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
+  protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
   );
@@ -44,8 +43,6 @@ export class CheckoutCustomerComponent
     }
   });
 
-  protected dataService = resolve(CheckoutDataService);
-  protected customer = signal(this.userService.getUser());
   protected storeCustomer = effect(() => {
     const customer = this.customer();
     if (customer) {
@@ -67,15 +64,15 @@ export class CheckoutCustomerComponent
   @query('oryx-checkout-guest')
   protected guest?: CheckoutGuestComponent;
 
-  report(report?: boolean): boolean {
-    return this.hasCustomerData || !!this.guest?.report(report);
-  }
-
   protected override render(): TemplateResult | void {
     if (this.isAuthenticated()) {
       return html`<h1>${i18n('checkout.checkout')}</h1>`;
     } else if (this.$options().enableGuestCheckout) {
       return html`<oryx-checkout-guest></oryx-checkout-guest>`;
     }
+  }
+
+  report(report?: boolean): boolean {
+    return this.hasCustomerData || !!this.guest?.report(report);
   }
 }
