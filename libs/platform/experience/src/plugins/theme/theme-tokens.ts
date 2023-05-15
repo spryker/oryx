@@ -60,7 +60,7 @@ export class ThemeTokens {
    * Interpolates value from {@link mediaMapper} by value path.
    * Value path should be separated by a dot. (e.g. `mode.dark` => `@media (prefers-color-scheme: dark)`)
    */
-  generateMedia(value: string): string {
+  protected generateMedia(value: string): string {
     const path = value.split('.');
     const isScreen = path[0] === DefaultMedia.Screen || path.length === 1;
     const mediaRule = getPropByPath(this.mediaMapper, value);

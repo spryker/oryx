@@ -117,27 +117,25 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   protected propertiesCollector(themes: Theme[]): void {
     for (const { breakpoints, icons } of themes) {
-      const sortableBP = Object.fromEntries(
-        Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
-      );
-
-      this.breakpoints = {
-        ...this.breakpoints,
-        ...sortableBP,
-      };
-
-      if (!icons) {
-        continue;
+      if (breakpoints) {
+        this.breakpoints = Object.fromEntries(
+          Object.entries({
+            ...this.breakpoints,
+            ...breakpoints,
+          }).sort(([, a], [, b]) => (a.min ?? 0) - (b.min ?? 0))
+        );
       }
 
-      // Overrides main resource of the main theme and unshifts types for the additional resources
-      this.icons = {
-        resource: icons.resource,
-        resources: [
-          ...(icons.resources ?? []),
-          ...(this.icons.resources ?? []),
-        ],
-      };
+      if (icons) {
+        // Overrides main resource of the main theme and unshifts types for the additional resources
+        this.icons = {
+          resource: icons.resource,
+          resources: [
+            ...(icons.resources ?? []),
+            ...(this.icons.resources ?? []),
+          ],
+        };
+      }
     }
   }
 
