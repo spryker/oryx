@@ -126,12 +126,12 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     render(): TemplateResult {
+      const result = super.render();
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
       }
-
-      return super.render();
+      return result;
     }
   };
 }
