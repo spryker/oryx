@@ -4,7 +4,7 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement, noChange, render, TemplateResult } from 'lit';
+import { isServer, LitElement, render, TemplateResult } from 'lit';
 import { Effect, effect } from '../../signals';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
@@ -13,18 +13,9 @@ export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
 const SIGNAL_EFFECT = Symbol('signalEffect');
 
-interface PatchableLitElement extends LitElement {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
-  new (...args: any[]): PatchableLitElement;
-  _$needsHydration?: boolean;
-}
-
 export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
-
-const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
-  condition ? trueCase() : noChange;
 
 export const hydratable =
   (prop?: string | string[]) =>
@@ -48,7 +39,7 @@ const standardCustomElement = (
   return {
     kind,
     elements,
-    finisher(clazz: Constructor<PatchableLitElement>) {
+    finisher(clazz: Constructor<HydratableLitElement>) {
       return hydratableClass(clazz, prop);
     },
   };
@@ -59,6 +50,13 @@ function hydratableClass<T extends Type<HTMLElement>>(
   mode?: string | string[]
 ): any {
   return class extends (target as any) {
+    /**
+     * Internal flag determining hydration state:
+     * 3 - not yet hydrated (hydration deferred)
+     * 2 - pre-hydrating (waiting for data required for hydration)
+     * 1 - hydrating (lit hydration in progress)
+     * 0 - hydrated (hydration complete)
+     */
     [DEFER_HYDRATION]?: number;
     private [SIGNAL_EFFECT]?: Effect;
 
@@ -68,7 +66,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
       } else if (this.shadowRoot) {
-        this[DEFER_HYDRATION] = 1;
+        this[DEFER_HYDRATION] = 3;
       }
     }
 
@@ -88,10 +86,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     update(changedProperties: PropertyValues) {
-      if (this[DEFER_HYDRATION]) return;
+      if (this[DEFER_HYDRATION] && this[DEFER_HYDRATION] > 1) return;
 
       // special case for hydration
-      if (this._$needsHydration) {
+      if (this[DEFER_HYDRATION] === 1) {
+        delete this[DEFER_HYDRATION];
         try {
           super.update(changedProperties);
         } catch (e) {
@@ -107,18 +106,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     [HYDRATE_ON_DEMAND]() {
-      if (this[DEFER_HYDRATION] !== 1) return;
-      this[DEFER_HYDRATION] = 2; // hydrating
+      if (this[DEFER_HYDRATION] !== 3) return;
+      this[DEFER_HYDRATION] = 2; // pre-hydrating
 
       // this[SIGNAL_EFFECT] = effect(() => {
       //   super.render();
       // });
 
-      delete this[DEFER_HYDRATION];
+      this[DEFER_HYDRATION] = 1; // hydrating
       super.connectedCallback();
       this.removeAttribute(deferHydrationAttribute);
       // setTimeout(() => {
-      //   delete this[DEFER_HYDRATION];
+      //   this[DEFER_HYDRATION] = 1; // hydrating
       //   // we have to call connectedCallback manually, as lit hydration will only call LitElement part
       //   super.connectedCallback();
       //   this.removeAttribute(deferHydrationAttribute);
