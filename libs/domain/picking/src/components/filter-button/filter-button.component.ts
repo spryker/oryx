@@ -5,11 +5,12 @@ import {
   PickingListService,
   SortableQualifier,
 } from '@spryker-oryx/picking';
-import { effect, i18n, signal, Size } from '@spryker-oryx/utilities';
+import { i18n, signal, signalAware, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
+@signalAware()
 export class FilterButtonComponent extends LitElement {
   @query('oryx-picking-filters') protected filters?: HTMLElement;
   @query('input') protected input?: HTMLInputElement;
@@ -17,14 +18,15 @@ export class FilterButtonComponent extends LitElement {
   protected $selectedFilters = signal(
     resolve(PickingListService)
       .getSortingQualifier()
-      .pipe(map(this.hasSelectedFilter))
+      .pipe(
+        map(this.hasSelectedFilter),
+        tap((hasSelected) => {
+          if (this.input) {
+            this.input.checked = hasSelected;
+          }
+        })
+      )
   );
-  protected selectedFiltersEffect = effect(() => {
-    const checked = !!this.$selectedFilters();
-    if (this.input) {
-      this.input.checked = checked;
-    }
-  });
 
   protected override render(): TemplateResult {
     return html`
@@ -32,6 +34,7 @@ export class FilterButtonComponent extends LitElement {
         <input
           type="checkbox"
           placeholder=${i18n('picking.filter.toggle-filters')}
+          ?checked=${this.$selectedFilters()}
           @click=${(e: Event) => this.onClick(e)}
         />
         <oryx-icon type="filter"></oryx-icon>
