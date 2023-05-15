@@ -50,6 +50,18 @@ describe('Start picking a picklist with customer note', () => {
     });
 
     it('check Picking page', () => {
+      // should display tabs
+      pickingFragment.getTabs().should('be.visible');
+
+      // should display three tabs
+      pickingFragment.getTabsList().should('have.length', 3);
+      pickingFragment.getTabsList().eq(0).should('contain.text', 'Not Picked');
+      pickingFragment.getTabsList().eq(1).should('contain.text', 'Picked');
+      pickingFragment.getTabsList().eq(2).should('contain.text', 'Not Found');
+
+      // should display "Not picked" as selected
+      pickingFragment.getTabsList().eq(0).should('have.attr', 'selected');
+
       // should display correct products number in chip
       pickingFragment.getProducts().then((products) => {
         pickingFragment

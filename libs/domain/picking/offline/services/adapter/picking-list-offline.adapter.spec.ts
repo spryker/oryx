@@ -43,7 +43,6 @@ const mockContent = { items: [] };
 class MockCollection implements Partial<Collection> {
   toArray = vi.fn().mockReturnValue([]);
   equals = vi.fn().mockReturnValue(this);
-  and = vi.fn().mockReturnValue(this);
   startsWithAnyOf = vi.fn().mockReturnValue(this);
   distinct = vi.fn().mockReturnValue(this);
   offset = vi.fn().mockReturnValue(this);

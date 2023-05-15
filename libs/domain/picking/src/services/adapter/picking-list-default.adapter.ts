@@ -219,7 +219,6 @@ export interface PickingListResponseData extends ResourceObject {
   pickingListItems: PickingListResponseItem[];
   createdAt: string;
   updatedAt: string;
-  orderReferences: string[];
 }
 
 interface PickingListResponseItem extends ResourceObject {
