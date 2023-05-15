@@ -49,18 +49,21 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
 
               const andCollections: Collection<PickingListSerialized>[] = [];
 
-              if (qualifier.status) {
-                andCollections.push(
-                  pickingListStore.where('localStatus').equals(qualifier.status)
-                );
-              }
-
-              if (qualifier.orderReferences?.length) {
+              if (
+                qualifier.searchOrderReference &&
+                qualifier.searchOrderReference.length >= 2
+              ) {
                 andCollections.push(
                   pickingListStore
                     .where('orderReferences')
-                    .startsWithAnyOf(qualifier.orderReferences)
+                    .startsWithAnyOfIgnoreCase(qualifier.searchOrderReference)
                     .distinct()
+                );
+              }
+
+              if (qualifier.status) {
+                andCollections.push(
+                  pickingListStore.where('localStatus').equals(qualifier.status)
                 );
               }
 
@@ -247,7 +250,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
 
         if (!productData) {
           throw new Error(
-            `PickingListOfflineAdapter: Foreing key` +
+            `PickingListOfflineAdapter: Foreign key` +
               ` ${PickingProductEntity.name}(${productId})` +
               ` cannot be found when resolving ${PickingListEntity.name}!`
           );
