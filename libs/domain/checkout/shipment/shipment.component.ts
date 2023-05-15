@@ -1,5 +1,4 @@
 import {
-  Checkout,
   CheckoutForm,
   CheckoutMixin,
   ShipmentMethod,
@@ -14,7 +13,7 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query, state } from 'lit/decorators.js';
+import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutDataService } from '../src/services/checkout-data.service';
 import { styles } from './shipment.styles';
@@ -28,23 +27,18 @@ export class CheckoutShipmentComponent
   static styles = styles;
 
   protected dataService = resolve(CheckoutDataService);
-  protected shipments = signal(this.dataService.get('shipments'));
-  protected selected = signal(this.dataService.selected('shipment'));
+  protected shipments = signal(this.checkoutDataService.get('shipments'));
+  protected selected = signal(this.checkoutStateService.get('shipment'));
 
   @query('form')
   protected form?: HTMLFormElement;
 
-  @state()
-  selectedMethod?: Checkout['shipment'] | null;
-
   protected eff = effect(() => {
-    // we need to set the validity when the data is resolvd from storage
-    if (!this.selectedMethod && this.selected())
-      this.dataService.set('shipment', true);
-    this.selectedMethod = this.selected();
+    // we set the validity when the data is resolvd from storage...
+    if (this.selected()) this.checkoutStateService.set('shipment', true);
   });
 
-  validate(report: boolean): boolean {
+  report(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
       this.form?.reportValidity();
     }
@@ -100,15 +94,14 @@ export class CheckoutShipmentComponent
    * If there's no method selected, a method can be auto selected.
    */
   protected isSelected(methodId: string): boolean {
-    if (!this.selectedMethod) this.autoSelect(methodId);
-    return this.selectedMethod?.idShipmentMethod === methodId;
+    if (!this.selected()) this.autoSelect(methodId);
+    return this.selected()?.idShipmentMethod === methodId;
   }
 
   protected onChange(e: Event): void {
     this.select((e.target as HTMLInputElement).value);
   }
 
-  // TODO: consider fallback strategies: none, first, cheapest, fastest
   protected autoSelect(methodId: string): void {
     if (
       methodId ===
@@ -120,7 +113,7 @@ export class CheckoutShipmentComponent
 
   protected select(id?: string): void {
     const data = id ? { idShipmentMethod: id } : null;
-    this.dataService.set('shipment', !!this.form?.checkValidity, data);
+    this.checkoutStateService.set('shipment', !!this.form?.checkValidity, data);
   }
 
   protected renderEmpty(): TemplateResult {

@@ -14,8 +14,8 @@ export class CheckoutComponent extends CheckoutMixin(ContentMixin(LitElement)) {
       let isValid: boolean;
       this.components().forEach((el) => {
         // TODO: use strategies to validate all steps in one go or not
-        if (el.validate && isValid !== false) {
-          isValid = el.validate(showReport);
+        if (el.report && isValid !== false) {
+          isValid = el.report(showReport);
         }
       });
     }

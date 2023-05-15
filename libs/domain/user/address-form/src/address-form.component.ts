@@ -70,7 +70,6 @@ export class AddressFormComponent
         if (input && input.value !== (value as any)[key]) {
           input.value = (value as any)[key];
           hasChanged = true;
-          console.log('has changed', key);
         }
         if (hasChanged) this.store();
       });
@@ -218,6 +217,7 @@ export class AddressFormComponent
   protected formX?: HTMLFormElement;
 
   protected onChange(ev: Event): void {
+    console.log('on change -> store');
     // collect data and dispatch it
     this.store();
   }

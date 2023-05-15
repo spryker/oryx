@@ -14,8 +14,8 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { Checkout, CheckoutForm, ContactDetails } from '../src/models';
-import { CheckoutDataService } from '../src/services/checkout-data.service';
+import { Checkout, CheckoutForm } from '../src/models';
+import { CheckoutStateService } from '../src/services';
 
 @signalAware()
 @hydratable('window:load')
@@ -27,8 +27,8 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
     this.linkService.get({ type: SemanticLinkType.Login })
   );
 
-  protected dataService = resolve(CheckoutDataService);
-  protected selected = signal(this.dataService.selected('customer'));
+  protected checkoutStateService = resolve(CheckoutStateService);
+  protected selected = signal(this.checkoutStateService.get('customer'));
 
   @state()
   selectedCustomer?: Checkout['customer'] | null;
@@ -39,7 +39,7 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
       setTimeout(() => {
         const input = this.input();
         if (input) input.value = this.selectedCustomer?.email ?? '';
-        this.dataService.set('customer', !!this.form?.checkValidity());
+        this.checkoutStateService.set('customer', !!this.form?.checkValidity());
       }, 0);
     }
     this.selectedCustomer = this.selected();
@@ -73,7 +73,7 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
     `;
   }
 
-  validate(report?: boolean): boolean {
+  report(report?: boolean): boolean {
     if (report) {
       this.form?.reportValidity();
     }
@@ -81,9 +81,9 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
   }
 
   protected onChange(): void {
-    this.dataService.set('customer', !!this.form?.checkValidity(), {
+    this.checkoutStateService.set('customer', !!this.form?.checkValidity(), {
       email: this.input()?.value,
-    } as ContactDetails);
+    });
   }
 
   protected input(): HTMLInputElement | undefined | null {

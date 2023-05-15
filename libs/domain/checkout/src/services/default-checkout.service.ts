@@ -1,3 +1,4 @@
+import { CartService } from '@spryker-oryx/cart';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -16,46 +17,55 @@ import {
 import { Checkout, CheckoutResponse, CheckoutState } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutDataService } from './checkout-data.service';
+import { CheckoutStateService } from './checkout-state.service';
 import { CheckoutService } from './checkout.service';
 
 export class DefaultCheckoutService implements CheckoutService {
-  protected state = new BehaviorSubject(CheckoutState.Ready);
-  protected state$ = this.dataService
-    .isReady()
+  protected cartId = this.cartService.getCart({}).pipe(
+    map((cart) => cart?.id),
+    tap((cartId) => {
+      const data = cartId ?? null;
+      this.stateService.set('cartId', !!data, data);
+    })
+  );
+
+  protected process = new BehaviorSubject(CheckoutState.Ready);
+  protected process$ = this.cartId
+    .pipe(map((cartId) => !!cartId))
     .pipe(
-      switchMap((isReady) => (isReady ? this.state : of(CheckoutState.Empty)))
+      switchMap((hasCart) => (hasCart ? this.process : of(CheckoutState.Empty)))
     );
 
   constructor(
     protected dataService = inject(CheckoutDataService),
+    protected stateService = inject(CheckoutStateService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(SemanticLinkService),
-    protected orderService = inject(OrderService)
+    protected orderService = inject(OrderService),
+    protected cartService = inject(CartService)
   ) {}
 
-  getState(): Observable<CheckoutState> {
-    return this.state$;
+  getProcessState(): Observable<CheckoutState> {
+    return this.process$;
   }
 
   placeOrder(): Observable<CheckoutResponse> {
-    this.state.next(CheckoutState.Busy);
+    this.process.next(CheckoutState.Busy);
     return subscribeReplay(
-      this.dataService.collect().pipe(
+      this.stateService.getAll().pipe(
         take(1),
         switchMap((data) => {
+          console.log('place order', data);
           if (data) {
             return this.adapter
               .placeOrder({ attributes: data as Checkout })
               .pipe(
                 switchMap((response) => this.resolveRedirect(response)),
-                tap((response) => {
-                  this.postCheckout(response);
-                  this.dataService.clear();
-                }),
-                finalize(() => this.state.next(CheckoutState.Ready))
+                tap((response) => this.postCheckout(response)),
+                finalize(() => this.process.next(CheckoutState.Ready))
               );
           } else {
-            this.state.next(CheckoutState.Invalid);
+            this.process.next(CheckoutState.Invalid);
             return EMPTY;
           }
         })
@@ -82,6 +92,8 @@ export class DefaultCheckoutService implements CheckoutService {
    * TOOD: consider doing this in a lower layer.
    */
   protected postCheckout(response: CheckoutResponse): void {
+    this.stateService.clear();
+    this.cartService.reload();
     if (response.orders?.length)
       this.orderService.storeLastOrder(response.orders[0]);
   }

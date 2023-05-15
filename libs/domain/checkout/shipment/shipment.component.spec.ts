@@ -23,7 +23,7 @@ class MockCheckoutShipmentService implements Partial<CheckoutShipmentService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
+  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutShipmentComponent', () => {

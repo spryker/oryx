@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
-import { CheckoutResponse, CheckoutState } from '../models';
+import { CheckoutData, CheckoutResponse, CheckoutState } from '../models';
 
 export interface CheckoutService {
   /**
    * Exposes the state of the checkout process so that the process can be
    * controlled in a consistent manner.
    */
-  getState(): Observable<CheckoutState>;
+  getProcessState(): Observable<CheckoutState>;
 
   /**
    * Reads the checkout data from the checkoutDataService and, when valid,

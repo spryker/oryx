@@ -24,7 +24,7 @@ export class CheckoutAddressComponent
   @query('oryx-address-form')
   protected addressComponent?: AddressFormComponent;
 
-  validate(report: boolean): boolean {
+  report(report: boolean): boolean {
     const form = this.addressComponent?.getForm();
     if (!form?.checkValidity() && report) {
       form?.reportValidity();

@@ -7,10 +7,16 @@ import {
 import { LitElement } from 'lit';
 import { map } from 'rxjs';
 import { CheckoutState } from '../models';
-import { CheckoutService } from '../services';
+import {
+  CheckoutDataService,
+  CheckoutService,
+  CheckoutStateService,
+} from '../services';
 
 export declare class CheckoutMixinInterface {
   protected checkoutService: CheckoutService;
+  protected checkoutDataService: CheckoutDataService;
+  protected checkoutStateService: CheckoutStateService;
 
   /**
    * Indicates that the checkout is ready for collecting checkout data.
@@ -26,24 +32,26 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
   @signalAware()
   class CheckoutMixinClass extends superClass {
     protected checkoutService = resolve(CheckoutService);
+    protected checkoutDataService = resolve(CheckoutDataService);
+    protected checkoutStateService = resolve(CheckoutStateService);
 
     protected isEmpty = signal(
       this.checkoutService
-        .getState()
+        .getProcessState()
         .pipe(map((state) => state === CheckoutState.Empty)),
       false
     );
 
     protected isBusy = signal(
       this.checkoutService
-        .getState()
+        .getProcessState()
         .pipe(map((state) => state === CheckoutState.Busy)),
       false
     );
 
     protected isInvalid = signal(
       this.checkoutService
-        .getState()
+        .getProcessState()
         .pipe(map((state) => state === CheckoutState.Invalid)),
       false
     );

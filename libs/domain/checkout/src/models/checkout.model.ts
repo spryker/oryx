@@ -6,32 +6,7 @@ export const enum CheckoutState {
   Ready = 'ready',
   Busy = 'busy',
   Invalid = 'invalid',
-
-  // Initializing = 'initializing',
-  // NotAvailable = 'n/a',
-
-  // Validate = 'validate',
-  // Busy = 'busy',
 }
-
-// export const enum CheckoutProcess {
-//   /**
-//    * Unavailable since there's no cart to checkout.
-//    */
-//   Unavailable,
-//   /**
-//    * Ready to collect data
-//    */
-//   Ready,
-//   /**
-//    * Triggered to validate the checkout data before placing the .
-//    */
-//   Validate,
-//   /**
-//    * The data is complete, ready to plate the order.
-//    */
-//   Complete,
-// }
 
 export interface CheckoutStepCallback<T> {
   id: keyof T;
@@ -54,7 +29,7 @@ export interface CheckoutForm {
    * Validates the checkout form (typically a checkout step) and reports
    * the form validity, when requested.
    */
-  validate(report: boolean): boolean;
+  report(report: boolean): boolean;
 }
 
 export interface CheckoutData {

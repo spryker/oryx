@@ -52,7 +52,7 @@ export class CheckoutCustomerComponent
       const { email, salutation, firstName, lastName } =
         customer as ContactDetails;
       this.hasCustomerData = true;
-      this.dataService.set('customer', this.hasCustomerData, {
+      this.checkoutStateService.set('customer', this.hasCustomerData, {
         email,
         salutation,
         firstName,
@@ -67,8 +67,8 @@ export class CheckoutCustomerComponent
   @query('oryx-checkout-guest')
   protected guest?: CheckoutGuestComponent;
 
-  validate(report?: boolean): boolean {
-    return this.hasCustomerData || !!this.guest?.validate(report);
+  report(report?: boolean): boolean {
+    return this.hasCustomerData || !!this.guest?.report(report);
   }
 
   protected override render(): TemplateResult | void {

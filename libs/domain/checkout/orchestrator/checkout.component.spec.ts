@@ -19,7 +19,7 @@ class MockCartService implements Partial<CartService> {
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   register = vi.fn();
-  getState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
+  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
 }
 
 describe('CheckoutOrchestratorComponent', () => {
@@ -84,7 +84,9 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is not available', () => {
     beforeEach(async () => {
-      checkoutService.getState.mockReturnValue(of(CheckoutState.NotAvailable));
+      checkoutService.getProcessState.mockReturnValue(
+        of(CheckoutState.NotAvailable)
+      );
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
@@ -97,7 +99,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is available', () => {
     beforeEach(async () => {
-      checkoutService.getState.mockReturnValue(of(CheckoutState.Ready));
+      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Ready));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
