@@ -128,17 +128,16 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected renderSorting(): TemplateResult {
-    return html`
-      <div class="filters">
-        <span>
-          ${i18n('picking.filter.<value>-open-orders', {
-            value: this.pickingLists?.length ?? 0,
-          })}
-        </span>
-        <oryx-picking-filter-button></oryx-picking-filter-button>
-      </div>`
+    return html` <div class="filters">
+      <span>
+        ${i18n('picking.filter.<value>-open-orders', {
+          value: this.pickingLists?.length ?? 0,
+        })}
+      </span>
+      <oryx-picking-filter-button></oryx-picking-filter-button>
+    </div>`;
   }
-  
+
   protected renderSearchFallback(): TemplateResult {
     const fallbackTitle = this.getFallbackTitle(FallbackType.noValueProvided);
 
