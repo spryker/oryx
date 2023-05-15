@@ -9,7 +9,6 @@ export interface PickingList {
   cartNote?: string;
   createdAt: Date;
   updatedAt: Date;
-  orderReferences: string[];
 }
 
 export enum ItemsFilters {
