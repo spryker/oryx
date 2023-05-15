@@ -14,7 +14,25 @@ export class PickingListsHeaderComponent extends LitElement {
 
   protected onSearch(e: KeyboardEvent): void {
     const value = (e.target as HTMLInputElement).value;
-    console.log(value);
+    this.dispatchEvent(
+      new CustomEvent('oryx.search', {
+        detail: {
+          search: value,
+          open: true,
+        },
+      })
+    );
+  }
+
+  protected onToggleSearch(open: boolean): void {
+    this.dispatchEvent(
+      new CustomEvent('oryx.search', {
+        detail: {
+          search: '',
+          open,
+        },
+      })
+    );
   }
 
   protected override render(): TemplateResult {
@@ -26,8 +44,8 @@ export class PickingListsHeaderComponent extends LitElement {
       <oryx-search
         backIcon="backArrow"
         xs-floated
-        @oryx.open=${() => console.log('open')}
-        @oryx.close=${() => console.log('close')}
+        @oryx.open=${(): void => this.onToggleSearch(true)}
+        @oryx.close=${(): void => this.onToggleSearch(false)}
       >
         <input
           .placeholder=${i18n('picking.header.order-ID')}
