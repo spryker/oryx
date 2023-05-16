@@ -87,6 +87,7 @@ export class CartEntryComponent
 
     return html`
       <oryx-content-link
+        class="image"
         .options=${{
           type: SemanticLinkType.Product,
           id: this.sku,
