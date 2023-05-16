@@ -8,7 +8,8 @@ import { BapiPushNotificationAdapter } from './adapter/bapi-push-notification.ad
 export class BapiPushNotificationDefaultService
   implements BapiPushNotificationService
 {
-  private readonly subscriptionFlagKey = 'oryx.push-notification-subscription';
+  protected readonly subscriptionFlagKey =
+    'oryx.push-notification-subscription';
 
   constructor(
     private pushService: PushService = inject(PushService),
@@ -24,7 +25,7 @@ export class BapiPushNotificationDefaultService
       switchMap(() => this.pushService.subscribe()),
       switchMap((subscription) =>
         this.bapiPushNotificationAdapter.sendSubscription(subscription).pipe(
-          // catch error when subscription is already
+          // catch error when subscription already exists
           catchError((error: any) => {
             if (
               error.body.errors[0].status === 400 &&
@@ -32,6 +33,8 @@ export class BapiPushNotificationDefaultService
             ) {
               return of(undefined);
             }
+
+            this.unsubscribe();
             throw error;
           })
         )

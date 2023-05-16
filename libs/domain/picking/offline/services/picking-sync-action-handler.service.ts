@@ -79,7 +79,7 @@ export class PickingSyncActionHandlerService
       });
     }
 
-    //asked Philine to add 'ids'
+    //asked BE team to add 'ids'
     return this.onlineAdapter.get().pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
