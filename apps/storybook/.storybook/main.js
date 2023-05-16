@@ -8,7 +8,7 @@ module.exports = {
   addons: [
     ...rootMain.addons,
     'storybook-addon-rtl',
-    './oryx-theme-addon/register.js',
+    './oryx-addon/register.js',
     {
       name: '@storybook/addon-docs',
       options: {

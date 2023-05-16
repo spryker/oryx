@@ -16,7 +16,6 @@ const Template: Story<unknown> = (): TemplateResult => {
       { name: 'Active', lightDom: 'pseudo-active' },
       { name: 'Focus', lightDom: 'pseudo-focus pseudo-focus-visible' },
       { name: 'Disabled', lightDom: 'pseudo-disabled' },
-      { name: 'Loading' },
       { name: 'Confirmed' },
     ],
     ButtonType.Text

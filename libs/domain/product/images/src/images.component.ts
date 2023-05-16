@@ -73,8 +73,8 @@ export class ProductImagesComponent extends ProductMixin(
   protected renderMainLayout(media: ProductMedia[]): TemplateResult | void {
     const {
       imageLayout = defaultImagesOptions.imageLayout,
-      imageObjectFit: objectFit,
-      imagesColumns: cols,
+      imageObjectFit: objectFit = defaultImagesOptions.imageObjectFit,
+      imagesColumns: cols = defaultImagesOptions.imageColumns,
       scrollBehavior,
     } = this.$options();
 
@@ -85,9 +85,8 @@ export class ProductImagesComponent extends ProductMixin(
     return html`<oryx-layout
       class="main"
       layout=${imageLayout}
-      style="--image-fit:${objectFit || defaultImagesOptions.imageObjectFit};
-      --cols: ${cols || defaultImagesOptions.imageColumns}"
       behavior=${ifDefined(scrollBehavior)}
+      style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >
       ${media.map(
         (_, i) => html`
@@ -112,25 +111,24 @@ export class ProductImagesComponent extends ProductMixin(
       navigationDisplay: display,
       navigationLayout: layout,
       navigationPosition: position,
-      navigationHeight: height,
+      navigationHeight: height = defaultImagesOptions.navigationHeight,
       navigationWidth: width,
-      navigationObjectFit: objectFit,
+      navigationObjectFit: objectFit = defaultImagesOptions.navigationObjectFit,
     } = this.$options();
 
     if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
       return;
     }
 
+    const isVertical =
+      position === NavigationPosition.Start ||
+      position === NavigationPosition.End;
+
     return html`<oryx-layout
       class="navigation"
       layout=${layout || NavigationLayout.Carousel}
-      ?vertical=${position === NavigationPosition.Start ||
-      position === NavigationPosition.End}
-      style="--item-height:${height ||
-      defaultImagesOptions.navigationHeight};--item-width:${width ||
-      height ||
-      defaultImagesOptions.navigationHeight}; --image-fit:${objectFit ||
-      defaultImagesOptions.navigationObjectFit};"
+      ?vertical=${isVertical}
+      style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
     >
       ${media.map(
         (_, i) => html`

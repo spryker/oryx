@@ -109,22 +109,6 @@ describe('AuthLoginComponent', () => {
     });
   });
 
-  describe('when heading is provided', () => {
-    const heading = 'test';
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-auth-login .heading=${heading}></oryx-auth-login>`
-      );
-    });
-
-    it('should pass the property to the header', () => {
-      expect(
-        (element?.shadowRoot?.querySelector('h1') as HTMLElement).textContent
-      ).toContain(heading);
-    });
-  });
-
   describe('when password visibility strategy is set to HOVER', () => {
     beforeEach(async () => {
       element = await fixture(

@@ -103,7 +103,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (isServer) {
         this[SIGNAL_META].effect = effect(() => {
           this[SIGNAL_META].effectRuns++;
-          this.render();
+          super.render();
         });
       }
     }

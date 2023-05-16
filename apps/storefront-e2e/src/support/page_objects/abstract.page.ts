@@ -1,3 +1,4 @@
+import { FooterFragment } from '../page_fragments/footer.fragment';
 import { HeaderFragment } from '../page_fragments/header.fragment';
 import { SearchFragment } from '../page_fragments/search.fragment';
 
@@ -16,6 +17,7 @@ export abstract class AbstractSFPage {
   }
 
   header = new HeaderFragment();
+  footer = new FooterFragment();
   search = new SearchFragment();
 
   /**

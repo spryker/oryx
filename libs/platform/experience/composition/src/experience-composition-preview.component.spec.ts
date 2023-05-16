@@ -8,6 +8,7 @@ import {
   ComponentsRegistryService,
   ExperienceService,
   LayoutBuilder,
+  LayoutService,
 } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -34,17 +35,14 @@ class MockExperienceService implements Partial<ExperienceService> {
 }
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
-  getLayoutClasses = (): string => '';
-  getLayoutStyles = (): string => '';
-  collectStyles = (): string => '';
+  getLayoutClasses = vi.fn();
+  getLayoutStyles = vi.fn();
+  collectStyles = vi.fn();
+  createStylesFromOptions = vi.fn();
 }
 
 class MockSSRAwaiter {
-  getAwaiter(key: string): any {
-    return () => {
-      //do nothing
-    };
-  }
+  getAwaiter = vi.fn();
 }
 
 class MockComponentsRegistryService
@@ -59,6 +57,10 @@ class MockComponentsRegistryService
   }
 }
 
+class MockLayoutService implements Partial<LayoutService> {
+  getStyles = vi.fn().mockReturnValue(of(null));
+}
+
 describe('Experience Composition', () => {
   let element: ExperienceCompositionPreviewComponent;
 
@@ -69,6 +71,10 @@ describe('Experience Composition', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
+        {
+          provide: LayoutService,
+          useClass: MockLayoutService,
+        },
         {
           provide: ExperienceService,
           useClass: MockExperienceService,

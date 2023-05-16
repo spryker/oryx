@@ -41,6 +41,7 @@ import { cartEntryStyles } from './styles';
   enableItemImage: true,
   enableItemId: true,
   enableItemPrice: true,
+  confirmBeforeRemove: true,
 } as CartEntryOptions)
 @hydratable()
 export class CartEntryComponent
@@ -86,6 +87,7 @@ export class CartEntryComponent
 
     return html`
       <oryx-content-link
+        class="image"
         .options=${{
           type: SemanticLinkType.Product,
           id: this.sku,

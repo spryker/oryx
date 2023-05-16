@@ -2,6 +2,8 @@ import { PickingProduct } from './picking-product';
 
 export interface PickingList {
   id: string;
+  orderReferences: string[];
+  requestedDeliveryDate: Date;
   status: PickingListStatus;
   items: PickingListItem[];
   cartNote?: string;
@@ -19,6 +21,12 @@ export enum PickingListStatus {
   ReadyForPicking = 'ready-for-picking',
   PickingStarted = 'picking-started',
   PickingFinished = 'picking-finished',
+}
+
+export enum FallbackType {
+  noResults = 'no-orders',
+  noSearchingResults = 'no-search-results',
+  noValueProvided = 'searching',
 }
 
 export interface PickingListItem {

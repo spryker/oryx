@@ -11,22 +11,20 @@ declare global {
   }
 }
 
+const defaultUser = { email: 'admin@spryker.com', password: 'change123' };
 const loginPage = new LoginPage();
 
-Cypress.Commands.add(
-  'login',
-  (user = { email: 'admin@spryker.com', password: 'change123' }) => {
-    cy.intercept('POST', '**/token').as('token');
+Cypress.Commands.add('login', (user = defaultUser) => {
+  cy.intercept('POST', '**/token').as('token');
 
-    loginPage.visit();
-    loginPage.loginForm.login(user);
+  loginPage.visit();
+  loginPage.loginForm.login(user);
 
-    cy.wait('@token');
+  cy.wait('@token');
 
-    cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
-    cy.wait('@picking-lists');
-  }
-);
+  cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
+  cy.wait('@picking-lists');
+});
 
 Cypress.Commands.add('clearIndexedDB', () => {
   cy.window().then((win) => {

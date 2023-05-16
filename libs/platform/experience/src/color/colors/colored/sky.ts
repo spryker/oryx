@@ -2,7 +2,7 @@ import { Color } from '../../color.model';
 
 export const sky: Color = {
   light: {
-    0: 'hsl(0, 0%, 100%)',
+    0: 'hsl(0, 0%, 0%)',
     1: 'hsl(193, 100%, 98.8%)',
     2: 'hsl(193, 100%, 97.3%)',
     3: 'hsl(193, 99%, 94.7%)',
