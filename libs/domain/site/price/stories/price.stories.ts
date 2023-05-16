@@ -19,10 +19,10 @@ export default {
 const Template: Story<PriceComponentAttributes> = (
   props: PriceComponentAttributes
 ): TemplateResult => {
-  return html`<oryx-price
+  return html`<oryx-site-price
     .value=${props.value}
     .currency=${props.currency}
-  ></oryx-price>`;
+  ></oryx-site-price>`;
 };
 
 export const Demo = Template.bind({});
