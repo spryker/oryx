@@ -4,7 +4,7 @@ import { AlertType } from '@spryker-oryx/ui';
 import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Notification Center/Static`,
