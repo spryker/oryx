@@ -14,10 +14,10 @@ export const styles = css`
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
     font-size: var(--oryx-icon-size, 24px);
-    font-family: var(--icon-font, 'Material Symbols Outlined');
-    font-variation-settings: 'FILL' var(--icon-fill, 0),
-      'wght' var(--icon-weight, 500), 'GRAD' var(--icon-grad, 0),
-      'opsz' var(--icon-optical, 48);
+    font-family: var(--oryx-icon-font, 'Material Symbols Outlined');
+    font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
+      'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
+      'opsz' var(--oryx-icon-optical, 48);
     -webkit-font-smoothing: antialiased;
   }
 

@@ -10,7 +10,7 @@ export const materialIcons: IconMapper = {
 export const fontAwesomeIcons: IconMapper = {
   id: 'fa',
   styles: `
-    --icon-font: 'Font Awesome 6 Free';
+    --oryx-icon-font: 'Font Awesome 6 Free';
   `,
   mapping: {
     // [IconTypes.User]: '&#xf007;',
