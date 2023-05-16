@@ -25,6 +25,8 @@ export function isServer() {
   return false;
 }
 
+export function render() {}
+
 export const noChange = Symbol('noChange-stub');
 
 export const CSSResult = null;

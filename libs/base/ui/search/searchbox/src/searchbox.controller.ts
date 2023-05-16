@@ -1,6 +1,6 @@
 import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
-import { when } from 'lit-html/directives/when.js';
+import { when } from 'lit/directives/when.js';
 import { getControl } from '../../../form/utilities';
 import {
   ClearIconAppearance,
