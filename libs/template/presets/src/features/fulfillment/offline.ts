@@ -60,5 +60,6 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new IndexedDbFeature(config?.indexedDb),
     new OfflineServiceWorkerFeature(),
     new OfflinePickingFeature(),
+    new OfflineServiceWorkerFeature(),
   ];
 }

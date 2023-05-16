@@ -1,6 +1,5 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
-import { first } from 'rxjs';
 import { BapiPushNotificationService } from './services';
 
 export class PushNotificationPlugin extends ExecPlugin {
@@ -13,12 +12,10 @@ export class PushNotificationPlugin extends ExecPlugin {
         BapiPushNotificationService
       );
 
-      console.log('PushNotificationPlugin');
       authService
         .isAuthenticated()
-        .pipe(first())
+        .pipe()
         .subscribe((isAuthenticated) => {
-          console.log('isAuthenticated', isAuthenticated);
           if (isAuthenticated) {
             pushNotificationService.initSubscription().subscribe(() => {
               console.log('Push notifications subscribed');

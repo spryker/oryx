@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 export interface BapiPushNotificationAdapter {
-  sendSubscription(subscription: PushSubscriptionJSON): Observable<void>;
+  sendSubscription(subscription: unknown): Observable<void>;
 }
 
 export const BapiPushNotificationAdapter = 'oryx.BapiPushNotificationAdapter';

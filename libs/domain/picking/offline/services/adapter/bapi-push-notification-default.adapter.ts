@@ -15,11 +15,11 @@ export class BapiPushNotificationDefaultAdapter
           providerName: 'web-push-php',
           group: {
             name: 'warehouse',
-            identifier: '834b3731-02d4-5d6f-9a61-d63ae5e70517',
+            identifier: 'e84b3cb8-a94a-5a7e-9adb-cc5353f7a73f',
           },
           payload: subscription,
-        }
-      }
+        },
+      },
     });
   }
 }

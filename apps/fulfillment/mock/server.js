@@ -135,7 +135,7 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
           proxyReq.setHeader('Accept-Language', 'en');
         }
 
-        fixRequestBody(proxyReq, req, res)
+        fixRequestBody(proxyReq, req, res);
       },
       onProxyRes: responseInterceptor(
         async (responseBuffer, proxyRes, req, res) => {

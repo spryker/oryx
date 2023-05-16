@@ -2,13 +2,13 @@ import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BapiPushNotificationService } from '@spryker-oryx/picking/offline';
 import { PushService } from '@spryker-oryx/push-notification';
-import {filter, map, Observable, switchMap, tap} from 'rxjs';
+import { catchError, filter, Observable, of, switchMap } from 'rxjs';
 import { BapiPushNotificationAdapter } from './adapter/bapi-push-notification.adapter';
 
 export class BapiPushNotificationDefaultService
   implements BapiPushNotificationService
 {
-  private readonly subscriptionFlagKey = 'pushSubscriptionFlag';
+  private readonly subscriptionFlagKey = 'oryx.push-notification-subscription';
 
   constructor(
     private pushService: PushService = inject(PushService),
@@ -22,17 +22,29 @@ export class BapiPushNotificationDefaultService
     return this.storageService.get<boolean>(this.subscriptionFlagKey).pipe(
       filter((isSubscribed) => !isSubscribed),
       switchMap(() => this.pushService.subscribe()),
-      map((subscription) => subscription as PushSubscriptionJSON),
-      switchMap((subscription: PushSubscriptionJSON) =>
-        this.bapiPushNotificationAdapter.sendSubscription(subscription)
+      switchMap((subscription) =>
+        this.bapiPushNotificationAdapter.sendSubscription(subscription).pipe(
+          // catch error when subscription is already
+          catchError((error: any) => {
+            if (
+              error.body.errors[0].status === 400 &&
+              error.body.errors[0].code === 5003
+            ) {
+              return of(undefined);
+            }
+            throw error;
+          })
+        )
       ),
       switchMap(() => this.storageService.set(this.subscriptionFlagKey, true))
     );
   }
 
-  unsubscribe(): Observable<boolean> {
-    return this.pushService.unsubscribe().pipe(
-      tap(() => this.storageService.remove(this.subscriptionFlagKey))
-    );
+  unsubscribe(): Observable<void> {
+    return this.pushService
+      .unsubscribe()
+      .pipe(
+        switchMap(() => this.storageService.remove(this.subscriptionFlagKey))
+      );
   }
 }
