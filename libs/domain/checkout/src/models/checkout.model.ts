@@ -24,12 +24,12 @@ export interface CheckoutTrigger<T> {
  * Contract that helps you write checkout form components that work
  * with the overall checkout experience.
  */
-export interface CheckoutForm {
+export interface isValid {
   /**
    * Validates the checkout form (typically a checkout step) and reports
    * the form validity, when requested.
    */
-  report(report: boolean): boolean;
+  isValid(report: boolean): boolean;
 }
 
 export interface CheckoutData {

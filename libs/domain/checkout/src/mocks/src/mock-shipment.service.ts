@@ -1,9 +1,4 @@
-import {
-  Carrier,
-  CheckoutShipmentService,
-  Shipment,
-  ShipmentMethod,
-} from '@spryker-oryx/checkout';
+import { Carrier, Shipment, ShipmentMethod } from '@spryker-oryx/checkout';
 import { map, Observable, of } from 'rxjs';
 import {
   mockFilteredShipmentMethods,
@@ -17,7 +12,7 @@ export enum ShipmentProviderType {
   NoProvider = 'no-provider',
 }
 
-export class MockShipmentService implements CheckoutShipmentService {
+export class MockShipmentService {
   protected type = ShipmentProviderType.Multiple;
   static mockShipment: Shipment = {
     items: [],

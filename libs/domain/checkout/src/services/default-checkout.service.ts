@@ -24,12 +24,13 @@ export class DefaultCheckoutService implements CheckoutService {
   protected cartId = this.cartService.getCart({}).pipe(
     map((cart) => cart?.id),
     tap((cartId) => {
-      const data = cartId ?? null;
-      this.stateService.set('cartId', !!data, data);
+      const value = cartId ?? null;
+      this.stateService.set('cartId', { valid: !!value, value });
     })
   );
 
   protected process = new BehaviorSubject(CheckoutState.Ready);
+
   protected process$ = this.cartId
     .pipe(map((cartId) => !!cartId))
     .pipe(
@@ -39,10 +40,10 @@ export class DefaultCheckoutService implements CheckoutService {
   constructor(
     protected dataService = inject(CheckoutDataService),
     protected stateService = inject(CheckoutStateService),
+    protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(SemanticLinkService),
-    protected orderService = inject(OrderService),
-    protected cartService = inject(CartService)
+    protected orderService = inject(OrderService)
   ) {}
 
   getProcessState(): Observable<CheckoutState> {
@@ -55,13 +56,16 @@ export class DefaultCheckoutService implements CheckoutService {
       this.stateService.getAll().pipe(
         take(1),
         switchMap((data) => {
-          console.log('place order', data);
           if (data) {
             return this.adapter
               .placeOrder({ attributes: data as Checkout })
               .pipe(
-                switchMap((response) => this.resolveRedirect(response)),
-                tap((response) => this.postCheckout(response)),
+                switchMap((response) =>
+                  this.resolveRedirect(response).pipe(
+                    tap((response) => this.postCheckout(response))
+                  )
+                ),
+
                 finalize(() => this.process.next(CheckoutState.Ready))
               );
           } else {

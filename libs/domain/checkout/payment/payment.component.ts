@@ -1,8 +1,4 @@
-import {
-  CheckoutForm,
-  CheckoutMixin,
-  PaymentMethod,
-} from '@spryker-oryx/checkout';
+import { CheckoutMixin, isValid, PaymentMethod } from '@spryker-oryx/checkout';
 import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -11,7 +7,7 @@ import { styles } from './payment.styles';
 @hydratable('window:load')
 export class CheckoutPaymentComponent
   extends CheckoutMixin(LitElement)
-  implements CheckoutForm
+  implements isValid
 {
   static styles = styles;
 
@@ -22,13 +18,14 @@ export class CheckoutPaymentComponent
 
   protected eff = effect(() => {
     // we set the validity when the data is resolved from storage...
-    if (this.selected()) this.checkoutStateService.set('payments', true);
+    if (this.selected())
+      this.checkoutStateService.set('payments', { valid: true });
   });
 
   @query('form')
   protected form?: HTMLFormElement;
 
-  report(report: boolean): boolean {
+  isValid(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
       this.form?.reportValidity();
     }
@@ -88,8 +85,11 @@ export class CheckoutPaymentComponent
 
   protected select(id?: string): void {
     const method = this.paymentMethods()?.find((method) => method.id === id);
-    const data = method ? [method] : null;
-    this.checkoutStateService.set('payments', !!this.form?.checkValidity, data);
+    const value = method ? [method] : null;
+    this.checkoutStateService.set('payments', {
+      valid: !!this.form?.checkValidity,
+      value,
+    });
   }
 
   protected renderEmpty(): TemplateResult {

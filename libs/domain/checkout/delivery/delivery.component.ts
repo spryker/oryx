@@ -1,4 +1,4 @@
-import { CheckoutForm, CheckoutMixin } from '@spryker-oryx/checkout';
+import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
@@ -11,7 +11,7 @@ import { styles } from './delivery.styles';
 @hydratable()
 export class CheckoutDeliveryComponent
   extends CheckoutMixin(LitElement)
-  implements CheckoutForm
+  implements isValid
 {
   static styles = [styles];
 
@@ -36,15 +36,14 @@ export class CheckoutDeliveryComponent
     `;
   }
 
-  report(report: boolean): boolean {
-    return !!this.addressComponent?.report(report);
+  isValid(report: boolean): boolean {
+    return !!this.addressComponent?.isValid(report);
   }
 
   protected onChangeAddress(e: CustomEvent): void {
-    this.checkoutStateService.set(
-      'shippingAddress',
-      e.detail.valid,
-      e.detail.data
-    );
+    this.checkoutStateService.set('shippingAddress', {
+      valid: e.detail.valid,
+      value: e.detail.data,
+    });
   }
 }

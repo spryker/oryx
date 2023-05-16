@@ -1,4 +1,4 @@
-import { CheckoutForm, CheckoutMixin } from '@spryker-oryx/checkout';
+import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { effect, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -9,16 +9,7 @@ export class CheckoutComponent extends CheckoutMixin(ContentMixin(LitElement)) {
   static styles = [compositionStyles];
 
   protected eff = effect(() => {
-    if (this.isInvalid()) {
-      const showReport = true;
-      let isValid: boolean;
-      this.components().forEach((el) => {
-        // TODO: use strategies to validate all steps in one go or not
-        if (el.report && isValid !== false) {
-          isValid = el.report(showReport);
-        }
-      });
-    }
+    if (this.isInvalid()) this.report();
   });
 
   protected override render(): TemplateResult | void {
@@ -29,7 +20,15 @@ export class CheckoutComponent extends CheckoutMixin(ContentMixin(LitElement)) {
     `;
   }
 
-  protected components(): (CheckoutForm & HTMLElement)[] {
+  protected report(): void {
+    const showReport = true;
+    let isValid: boolean;
+    this.components().forEach((el) => {
+      if (el.isValid && isValid !== false) isValid = el.isValid(showReport);
+    });
+  }
+
+  protected components(): (isValid & HTMLElement)[] {
     return Array.from(
       this.shadowRoot
         ?.querySelector('experience-composition')

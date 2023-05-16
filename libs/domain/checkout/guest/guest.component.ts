@@ -13,13 +13,13 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query, state } from 'lit/decorators.js';
-import { Checkout, CheckoutForm } from '../src/models';
+import { query } from 'lit/decorators.js';
+import { isValid } from '../src/models';
 import { CheckoutStateService } from '../src/services';
 
 @signalAware()
 @hydratable('window:load')
-export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
+export class CheckoutGuestComponent extends LitElement implements isValid {
   protected fieldRenderer = resolve(FormRenderer);
   protected linkService = resolve(SemanticLinkService);
 
@@ -30,19 +30,16 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
   protected checkoutStateService = resolve(CheckoutStateService);
   protected selected = signal(this.checkoutStateService.get('customer'));
 
-  @state()
-  selectedCustomer?: Checkout['customer'] | null;
-
   protected eff = effect(() => {
-    // we need to set the validity when the data is resolvd from storage
-    if (!this.selectedCustomer && this.selected()) {
+    if (this.selected()) {
       setTimeout(() => {
         const input = this.input();
-        if (input) input.value = this.selectedCustomer?.email ?? '';
-        this.checkoutStateService.set('customer', !!this.form?.checkValidity());
+        if (input) input.value = this.selected()?.email ?? '';
+        this.checkoutStateService.set('customer', {
+          valid: !!this.form?.checkValidity(),
+        });
       }, 0);
     }
-    this.selectedCustomer = this.selected();
   });
 
   @query('form')
@@ -73,7 +70,7 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
     `;
   }
 
-  report(report?: boolean): boolean {
+  isValid(report?: boolean): boolean {
     if (report) {
       this.form?.reportValidity();
     }
@@ -81,8 +78,9 @@ export class CheckoutGuestComponent extends LitElement implements CheckoutForm {
   }
 
   protected onChange(): void {
-    this.checkoutStateService.set('customer', !!this.form?.checkValidity(), {
-      email: this.input()?.value,
+    this.checkoutStateService.set('customer', {
+      valid: !!this.form?.checkValidity(),
+      value: { email: this.input()?.value },
     });
   }
 

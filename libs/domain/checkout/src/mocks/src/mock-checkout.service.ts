@@ -6,9 +6,7 @@ import {
 } from '@spryker-oryx/checkout';
 import { Observable, of } from 'rxjs';
 
-export class MockCheckoutService<T extends Checkout>
-  implements CheckoutService<T>
-{
+export class MockCheckoutService {
   getProcessState(): Observable<CheckoutState> {
     return of(CheckoutState.Ready);
   }

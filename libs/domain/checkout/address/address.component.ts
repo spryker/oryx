@@ -1,4 +1,4 @@
-import { Address, CheckoutForm } from '@spryker-oryx/checkout';
+import { Address, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
@@ -11,7 +11,7 @@ import { property, query, state } from 'lit/decorators.js';
 @signalAware()
 export class CheckoutAddressComponent
   extends ContentMixin(LitElement)
-  implements CheckoutForm
+  implements isValid
 {
   @property({ type: Object }) address?: Address;
 
@@ -47,11 +47,11 @@ export class CheckoutAddressComponent
     );
   }
 
-  report(report: boolean): boolean {
+  isValid(report: boolean): boolean {
     const form = this.addressComponent?.getForm();
     if (!form?.checkValidity() && report) {
       form?.reportValidity();
     }
-    return !!form?.checkValidity();
+    return !!form?.checkValidity() || !!this.selected;
   }
 }

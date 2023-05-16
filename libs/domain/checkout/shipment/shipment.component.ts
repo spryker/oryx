@@ -1,8 +1,4 @@
-import {
-  CheckoutForm,
-  CheckoutMixin,
-  ShipmentMethod,
-} from '@spryker-oryx/checkout';
+import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import {
   effect,
@@ -20,7 +16,7 @@ import { styles } from './shipment.styles';
 @hydratable('window:load')
 export class CheckoutShipmentComponent
   extends CheckoutMixin(ContentMixin(LitElement))
-  implements CheckoutForm
+  implements isValid
 {
   static styles = styles;
 
@@ -29,13 +25,14 @@ export class CheckoutShipmentComponent
 
   protected eff = effect(() => {
     // we set the validity when the data is resolved from storage...
-    if (this.selected()) this.checkoutStateService.set('shipment', true);
+    if (this.selected())
+      this.checkoutStateService.set('shipment', { valid: true });
   });
 
   @query('form')
   protected form?: HTMLFormElement;
 
-  report(report: boolean): boolean {
+  isValid(report: boolean): boolean {
     if (!this.form?.checkValidity() && report) {
       this.form?.reportValidity();
     }
@@ -74,7 +71,7 @@ export class CheckoutShipmentComponent
           @change=${this.onChange}
         />
         <div>
-          <span>${method.name} ${isSelected}</span>
+          <span>${method.name}</span>
           <oryx-price .value=${method.price}></oryx-price>
         </div>
         <oryx-date
@@ -87,7 +84,7 @@ export class CheckoutShipmentComponent
   }
 
   /**
-   * Evaluates whether the given method id is the seleced method.
+   * Evaluates whether the given method id is the selected method.
    * If there's no method selected, a method can be auto selected.
    */
   protected isSelected(methodId: string): boolean {
@@ -109,8 +106,11 @@ export class CheckoutShipmentComponent
   }
 
   protected select(id?: string): void {
-    const data = id ? { idShipmentMethod: id } : null;
-    this.checkoutStateService.set('shipment', !!this.form?.checkValidity, data);
+    const value = id ? { idShipmentMethod: id } : null;
+    this.checkoutStateService.set('shipment', {
+      valid: !!this.form?.checkValidity,
+      value,
+    });
   }
 
   protected renderEmpty(): TemplateResult {

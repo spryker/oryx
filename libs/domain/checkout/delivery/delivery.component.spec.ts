@@ -1,32 +1,40 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
+  CheckoutDataService,
   CheckoutService,
-  CheckoutState,
-  CheckoutStepCallback,
+  CheckoutStateService,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
-import { Observable, of, take } from 'rxjs';
-import { CheckoutAddressComponent } from '../address/address.component';
+import { of } from 'rxjs';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
+
+export class MockCheckoutService implements Partial<CheckoutService> {
+  getProcessState = vi.fn().mockReturnValue(of());
+}
+
+export class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  get = vi.fn();
+}
+
+export class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+  set = vi.fn();
+}
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of([]));
 }
 
-export class MockCheckoutService implements Partial<CheckoutService> {
-  register = vi.fn();
-  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
-}
-
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
   let checkoutService: MockCheckoutService;
+  let checkoutDataService: MockCheckoutDataService;
+  let checkoutStateService: MockCheckoutStateService;
   let addressService: MockAddressService;
-  let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
     await useComponent(checkoutDeliveryComponent);
@@ -40,18 +48,26 @@ describe('CheckoutDeliveryComponent', () => {
           useClass: MockCheckoutService,
         },
         {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
+        {
+          provide: CheckoutStateService,
+          useClass: MockCheckoutStateService,
+        },
+        {
           provide: AddressService,
           useClass: MockAddressService,
         },
       ],
     });
 
-    addressService = injector.inject<MockAddressService>(AddressService);
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation(
-      (param: CheckoutStepCallback<unknown>) =>
-        (callback = param.collectDataCallback)
-    );
+    checkoutDataService =
+      injector.inject<MockCheckoutDataService>(CheckoutDataService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
+    addressService = injector.inject<MockAddressService>(AddressService);
   });
 
   afterEach(() => {
@@ -72,14 +88,6 @@ describe('CheckoutDeliveryComponent', () => {
 
     it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
-    });
-
-    it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith({
-        id: 'shippingAddress',
-        collectDataCallback: expect.anything(),
-        order: 2,
-      } as CheckoutStepCallback<unknown>);
     });
   });
 
@@ -106,24 +114,6 @@ describe('CheckoutDeliveryComponent', () => {
 
     it('should render oryx-checkout-manage-address', () => {
       expect(element).toContainElement('oryx-checkout-manage-address');
-    });
-  });
-
-  describe('when the collect callback is called', () => {
-    let address: CheckoutAddressComponent;
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
-      );
-      address = element.shadowRoot?.querySelector(
-        'oryx-checkout-address'
-      ) as CheckoutAddressComponent;
-      address.collectData = vi.fn();
-      callback().pipe(take(1)).subscribe();
-    });
-
-    it('should collect the address', () => {
-      expect(address.collectData).toHaveBeenCalled();
     });
   });
 });

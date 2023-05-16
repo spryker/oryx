@@ -8,7 +8,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   protected subject = new BehaviorSubject<
     Map<
       keyof Checkout,
-      { valid: boolean; data: Partial<Checkout[keyof Checkout]> | null }
+      { valid?: boolean; value?: Partial<Checkout[keyof Checkout]> | null }
     >
   >(new Map());
 
@@ -18,14 +18,16 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
 
   set<K extends keyof Checkout>(
     key: K,
-    valid: boolean,
-    data?: Partial<Checkout[K]> | null
+    item: {
+      valid?: boolean;
+      value?: Partial<Checkout[K]> | null;
+    }
   ): void {
     const collected = this.subject.value;
-    const item = collected.get(key);
-    if (item) item.valid = valid;
-    if (item && data !== undefined) item.data = data;
-    if (!item) collected.set(key, { valid, data });
+    const existing = collected.get(key);
+    if (existing && item.valid !== undefined) existing.valid = item.valid;
+    if (existing && item.value !== undefined) existing.value = item.value;
+    if (!existing) collected.set(key, item);
     this.subject.next(collected);
     this.storage.set(
       checkoutDataStorageKey,
@@ -37,8 +39,8 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   get<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null> {
     return this.subject.pipe(
       map((data) => {
-        if (!data.get(key)) this.set(key, false, null);
-        return data.get(key)?.data as Checkout[K] | null;
+        if (!data.get(key)) this.set(key, {});
+        return data.get(key)?.value as Checkout[K] | null;
       })
     );
   }
@@ -113,12 +115,12 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   protected merge(
     data: Map<
       keyof Checkout,
-      { valid: boolean; data: Partial<Checkout[keyof Checkout]> | null }
+      { valid?: boolean; value?: Partial<Checkout[keyof Checkout]> | null }
     >
   ): Partial<Checkout> {
     const result: Partial<Checkout> = {};
     data.forEach((item, key) => {
-      Object.assign(result, { [key]: item.data });
+      Object.assign(result, { [key]: item.value });
     });
     return result;
   }

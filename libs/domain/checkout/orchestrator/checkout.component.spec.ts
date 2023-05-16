@@ -1,15 +1,17 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
+  CheckoutDataService,
+  isValid,
   CheckoutService,
   CheckoutState,
-  CheckoutStepCallback,
+  CheckoutStateService,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { html } from 'lit';
-import { Observable, of, take } from 'rxjs';
-
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { BehaviorSubject, of } from 'rxjs';
 import { CheckoutComponent } from './checkout.component';
 import { checkoutComponent } from './checkout.def';
 
@@ -18,15 +20,35 @@ class MockCartService implements Partial<CartService> {
 }
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  register = vi.fn();
-  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Initializing));
+  getProcessState = vi.fn().mockReturnValue(of());
+}
+
+export class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  get = vi.fn();
+}
+
+export class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+  set = vi.fn();
+}
+
+const mockReport = vi.fn();
+@customElement('mock-component')
+class MockComponent extends LitElement implements isValid {
+  isValid = mockReport;
+}
+
+@customElement('experience-composition')
+class MockComposition extends LitElement {
+  render(): TemplateResult {
+    return html`<mock-component></mock-component
+      ><mock-component></mock-component><mock-component></mock-component>`;
+  }
 }
 
 describe('CheckoutOrchestratorComponent', () => {
   let element: CheckoutComponent;
   let checkoutService: MockCheckoutService;
-  let cartService: MockCartService;
-  let callback: () => Observable<unknown>;
 
   beforeAll(async () => {
     await useComponent(checkoutComponent);
@@ -35,23 +57,14 @@ describe('CheckoutOrchestratorComponent', () => {
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
-        {
-          provide: CheckoutService,
-          useClass: MockCheckoutService,
-        },
-        {
-          provide: CartService,
-          useClass: MockCartService,
-        },
+        { provide: CheckoutService, useClass: MockCheckoutService },
+        { provide: CheckoutDataService, useClass: MockCheckoutDataService },
+        { provide: CheckoutStateService, useClass: MockCheckoutStateService },
+        { provide: CartService, useClass: MockCartService },
       ],
     });
 
-    cartService = injector.inject<MockCartService>(CartService);
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation(
-      (param: CheckoutStepCallback<unknown>) =>
-        (callback = param.collectDataCallback)
-    );
   });
 
   afterEach(() => {
@@ -61,9 +74,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the component is created', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
-      );
+      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
     });
 
     it('should be an instance of ', () => {
@@ -73,23 +84,12 @@ describe('CheckoutOrchestratorComponent', () => {
     it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
-
-    it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith({
-        id: 'cartId',
-        collectDataCallback: expect.anything(),
-      } as CheckoutStepCallback<unknown>);
-    });
   });
 
   describe('when the checkout is not available', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(
-        of(CheckoutState.NotAvailable)
-      );
-      element = await fixture(
-        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
-      );
+      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Empty));
+      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
     });
 
     it('should not render the oryx-composition', () => {
@@ -97,12 +97,10 @@ describe('CheckoutOrchestratorComponent', () => {
     });
   });
 
-  describe('when the checkout is available', () => {
+  describe('when the checkout is Ready', () => {
     beforeEach(async () => {
       checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Ready));
-      element = await fixture(
-        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
-      );
+      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
     });
 
     it('should render the oryx-composition', () => {
@@ -110,16 +108,62 @@ describe('CheckoutOrchestratorComponent', () => {
     });
   });
 
-  describe('when the collect callback is called', () => {
+  describe('when the checkout is Busy', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
-      );
-      callback().pipe(take(1)).subscribe();
+      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Busy));
+      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
     });
 
-    it('should collect the address', () => {
-      expect(cartService.getCart).toHaveBeenCalled();
+    it('should render the oryx-composition', () => {
+      expect(element).toContainElement('experience-composition');
+    });
+  });
+
+  describe('when the checkout is ready', () => {
+    describe('and the checkout forms are valid', () => {
+      beforeEach(async () => {
+        mockReport.mockReturnValue(true);
+      });
+
+      const state = new BehaviorSubject(CheckoutState.Ready);
+
+      beforeEach(async () => {
+        checkoutService.getProcessState.mockReturnValue(state);
+        element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      });
+
+      describe('and the state becomes invalid', () => {
+        beforeEach(async () => {
+          state.next(CheckoutState.Invalid);
+        });
+
+        it('should report validity on all the components', () => {
+          expect(mockReport).toHaveBeenCalledTimes(3);
+        });
+      });
+    });
+
+    describe('and the checkout forms are invalid', () => {
+      beforeEach(async () => {
+        mockReport.mockReturnValue(false);
+      });
+
+      const state = new BehaviorSubject(CheckoutState.Ready);
+
+      beforeEach(async () => {
+        checkoutService.getProcessState.mockReturnValue(state);
+        element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      });
+
+      describe('and the state becomes invalid', () => {
+        beforeEach(async () => {
+          state.next(CheckoutState.Invalid);
+        });
+
+        it('should report validity on the first component', () => {
+          expect(mockReport).toHaveBeenCalledTimes(1);
+        });
+      });
     });
   });
 });

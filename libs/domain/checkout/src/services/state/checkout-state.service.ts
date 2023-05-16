@@ -4,8 +4,10 @@ import { Checkout } from '../../models';
 export interface CheckoutStateService {
   set<K extends keyof Checkout>(
     key: K,
-    valid: boolean,
-    data?: Partial<Checkout[K]> | null
+    item: {
+      valid?: boolean;
+      value?: Partial<Checkout[K]> | null;
+    }
   ): void;
 
   get<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null>;

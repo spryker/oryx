@@ -1,9 +1,5 @@
 import { AuthService } from '@spryker-oryx/auth';
-import {
-  CheckoutForm,
-  CheckoutMixin,
-  ContactDetails,
-} from '@spryker-oryx/checkout';
+import { CheckoutMixin, ContactDetails, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -20,7 +16,7 @@ import { styles } from './customer.styles';
 @hydratable('window:load')
 export class CheckoutCustomerComponent
   extends CheckoutMixin(ContentMixin<CheckoutAuthComponentOptions>(LitElement))
-  implements CheckoutForm
+  implements isValid
 {
   static styles = [styles];
 
@@ -49,11 +45,9 @@ export class CheckoutCustomerComponent
       const { email, salutation, firstName, lastName } =
         customer as ContactDetails;
       this.hasCustomerData = true;
-      this.checkoutStateService.set('customer', this.hasCustomerData, {
-        email,
-        salutation,
-        firstName,
-        lastName,
+      this.checkoutStateService.set('customer', {
+        valid: this.hasCustomerData,
+        value: { email, salutation, firstName, lastName },
       });
     }
   });
@@ -72,7 +66,7 @@ export class CheckoutCustomerComponent
     }
   }
 
-  report(report?: boolean): boolean {
-    return this.hasCustomerData || !!this.guest?.report(report);
+  isValid(report?: boolean): boolean {
+    return this.hasCustomerData || !!this.guest?.isValid(report);
   }
 }
