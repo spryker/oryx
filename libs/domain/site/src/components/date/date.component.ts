@@ -9,12 +9,11 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { DateComponentAttributes } from './date.model';
+import { ContentMixin } from "@spryker-oryx/experience";
 
 @hydratable()
 @signalAware()
-export class DateComponent
-  extends LitElement
-  implements DateComponentAttributes
+export class DateComponent extends ContentMixin<DateComponentAttributes>(LitElement)
 {
   protected localeService = resolve(LocaleService);
 

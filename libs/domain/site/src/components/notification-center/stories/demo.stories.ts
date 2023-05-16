@@ -9,7 +9,7 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { SiteNotificationCenterOptions } from '../notification-center.model';
-import { storybookPrefix } from '../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Notification Center`,

@@ -1,7 +1,7 @@
 import { IconTypes } from '@spryker-oryx/themes/icons';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import { NavigationButtonAttributes } from '../navigation-button.model';
 
 export default {

@@ -6,7 +6,7 @@ import {
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { PricingService } from '../src/services';
+import { PricingService } from '../../services';
 import { PriceComponentAttributes } from './price.model';
 
 @hydratable()
