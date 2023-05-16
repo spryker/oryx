@@ -24,9 +24,9 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
-    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin, 0) * 2));
+    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin) * 2));
     aspect-ratio: 1 / 1;
-    margin: var(--_margin, 0);
+    margin: var(--_margin);
     transition: var(--oryx-transition-time);
   }
 
