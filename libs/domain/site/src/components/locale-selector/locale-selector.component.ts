@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
+import { hydratable, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
@@ -17,14 +17,12 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
 
   protected localeService = resolve(LocaleService);
 
-  @asyncState()
-  protected locales = valueType(this.localeService.getAll());
+  protected $locales = signal(this.localeService.getAll());
 
-  @asyncState()
-  protected current = valueType(this.localeService.get());
+  protected $current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
-    if (!this.current || !this.locales?.length || this.locales.length < 2) {
+    if (!this.$current || !this.$locales?.length || this.$locales.length < 2) {
       return;
     }
 
@@ -32,18 +30,18 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
       <oryx-dropdown vertical-align position="start">
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
-            ${this.current}
+            ${this.$current}
             <oryx-icon type="dropdown"></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(
-          this.locales ?? [],
+          this.$locales() ?? [],
           (locale) => locale.code,
           (locale) =>
             html` <oryx-option
               close-popover
               value=${locale.code}
-              ?active=${locale.code === this.current}
+              ?active=${locale.code === this.$current()}
               @click=${() => this.onClick(locale.code)}
             >
               ${this.getLabel(locale.code)}

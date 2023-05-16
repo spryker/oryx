@@ -3,10 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import {
-  asyncState,
-  hydratable,
-  queryFirstFocusable,
-  valueType,
+  hydratable, queryFirstFocusable, signal,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -34,8 +31,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected tokenResolver = resolve(TokenResolver);
 
-  @asyncState()
-  protected label = valueType(
+  protected $label = signal(
     this.options$.pipe(
       switchMap(({ label }) => {
         if (!label) {
@@ -47,8 +43,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     )
   );
 
-  @asyncState()
-  protected badge = valueType(
+  protected $badge = signal(
     this.options$.pipe(
       switchMap(({ badge }) => {
         if (!badge) {
@@ -60,8 +55,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     )
   );
 
-  @asyncState()
-  protected url = valueType(
+  protected $url = signal(
     this.options$.pipe(
       switchMap(({ url }) => {
         if (typeof url !== 'object') {
@@ -133,8 +127,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         @mouseenter=${this.onTriggerHover}
       >
         ${when(
-          this.url,
-          () => html`<a href=${this.url!}>${this.icon}</a>`,
+          this.$url(),
+          () => html`<a href=${this.$url()!}>${this.icon}</a>`,
           () => html`<button>${this.icon}</button>`
         )}
       </oryx-icon-button>
@@ -149,9 +143,9 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         @mouseenter=${this.onTriggerHover}
       >
         ${when(
-          this.url,
-          () => html`<a href=${this.url!}> ${this.icon} ${this.label} </a>`,
-          () => html`<button>${this.icon} ${this.label}</button>`
+          this.$url(),
+          () => html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
+          () => html`<button>${this.icon} ${this.$label()}</button>`
         )}
       </oryx-button>
     `;
@@ -161,10 +155,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-site-navigation-button
         slot="trigger"
-        .url=${this.url}
+        .url=${this.$url()}
         .icon=${this.componentOptions?.icon}
-        .text=${this.label}
-        .badge=${this.badge}
+        .text=${this.$label()}
+        .badge=${this.$badge()}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-site-navigation-button>
