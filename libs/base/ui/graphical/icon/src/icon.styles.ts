@@ -11,6 +11,7 @@ export const styles = css`
 
     display: flex;
     align-items: center;
+    justify-content: center;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
