@@ -1,5 +1,4 @@
 import { IconMapper } from '@spryker-oryx/experience';
-// import { IconTypes } from './icon.model';
 
 export const materialIcons: IconMapper = {
   id: 'material-icons',
