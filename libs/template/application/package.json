@@ -5,9 +5,6 @@
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Basic infrastructure for Oryx applications",
-  "scripts": {
-    "postinstall": "patches/patch.sh"
-  },
   "dependencies": {
     "@spryker-oryx/auth": "latest",
     "@spryker-oryx/core": "latest",
