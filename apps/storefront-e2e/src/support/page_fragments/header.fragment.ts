@@ -42,6 +42,8 @@ export class HeaderFragment {
     this.getLocaleButton().click();
     this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
     cy.wait('@productRequests');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
   };
 
   changeCurrency = (currency: string) => {
