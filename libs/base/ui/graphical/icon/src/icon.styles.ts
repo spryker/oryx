@@ -6,6 +6,8 @@ const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
 
 export const styles = css`
   :host {
+    --_margin: 0;
+
     display: flex;
     align-items: center;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
