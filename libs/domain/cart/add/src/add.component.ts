@@ -1,4 +1,4 @@
-import { CartComponentMixin, CartService, IconTypes } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import {
   QuantityEventDetail,
   QuantityInputComponent,
@@ -7,6 +7,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { computed, hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';

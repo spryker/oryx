@@ -20,5 +20,3 @@ export const backofficeNgFeatures: AppFeature[] = [
     resources: backofficeNgResources,
   },
 ];
-
-// export const backofficeNgTheme = { ...theme };

@@ -22,5 +22,3 @@ export const backofficeFeatures: AppFeature[] = [
     resources: backofficeResources,
   },
 ];
-
-// export const backofficeTheme = { ...theme };

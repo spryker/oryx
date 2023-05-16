@@ -68,5 +68,3 @@ export const b2cFeatures: AppFeature[] = [
   },
   StaticExperienceFeature,
 ];
-
-// export const b2cTheme = { ...storefrontTheme };

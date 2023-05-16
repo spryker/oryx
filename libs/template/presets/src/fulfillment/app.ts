@@ -45,8 +45,6 @@ export interface FulfillmentFeaturesConfig {
   i18n?: I18nFeatureOptions;
 }
 
-// export const fulfillmentTheme = { ...theme };
-
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
   icons: fulfillmentIcons,
