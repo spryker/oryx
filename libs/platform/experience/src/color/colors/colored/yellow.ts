@@ -2,7 +2,7 @@ import { Color } from '../../color.model';
 
 export const yellow: Color = {
   light: {
-    0: 'hsl(0, 0%, 100%)',
+    0: 'hsl(0, 0%, 0%)',
     1: 'hsl(60, 54.0%, 98.5%)',
     2: 'hsl(52, 100%, 95.5%)',
     3: 'hsl(55, 100%, 90.9%)',

@@ -7,7 +7,8 @@ import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { PickingListStatus } from '../../models';
+import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
+import { FallbackType, PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { styles } from './picking-lists.styles';
@@ -17,13 +18,31 @@ export class PickingListsComponent extends LitElement {
   protected pickingListService = resolve(PickingListService);
 
   @state()
+  protected isSearchActive = false;
+
+  @state()
   protected customerNote?: string;
 
   protected pickingInProgressModal = createRef();
 
-  protected pickingLists$ = this.pickingListService.get({
-    status: PickingListStatus.ReadyForPicking,
-  });
+  @state()
+  protected searchValueLength?: number = 0;
+
+  protected searchValue$ = new Subject<string>();
+
+  protected pickingLists$ = this.searchValue$.pipe(
+    startWith(''),
+    map((q) => q.trim()),
+    distinctUntilChanged(),
+    switchMap((value) => {
+      this.searchValueLength = value.length;
+
+      return this.pickingListService.get({
+        status: PickingListStatus.ReadyForPicking,
+        searchOrderReference: value,
+      });
+    })
+  );
 
   @asyncState()
   protected pickingLists = valueType(this.pickingLists$);
@@ -37,24 +56,44 @@ export class PickingListsComponent extends LitElement {
 
   protected renderPickingLists(): TemplateResult {
     return html`
-      <oryx-picking-lists-header></oryx-picking-lists-header>
+      <oryx-picking-lists-header
+        @oryx.search=${this.searchOrderReference}
+      ></oryx-picking-lists-header>
 
       ${when(
         !this.pickingLists?.length,
-        () => this.renderEmptyLists(),
-        () => html`<section>
-          ${repeat(
-            this.pickingLists!,
-            (pl) => pl.id,
-            (pl) =>
-              html`<oryx-picking-list-item
-                .pickingListId=${pl.id}
-                @oryx.show-note=${this.openCustomerNoteModal}
-                @oryx.show-picking-in-progress=${this
-                  .openPickingInProgressModal}
-              ></oryx-picking-list-item>`
+        () => this.renderResultsFallback(),
+        () => html`
+          ${when(
+            this.noValueSearchProvided(),
+            () => this.renderSearchFallback(),
+            () => html`
+              <section>
+                ${when(
+                  this.isSearchActive,
+                  () => html`
+                    <oryx-heading slot="heading">
+                      <h4>
+                        ${i18n('picking-lists.search-results-for-picking')}
+                      </h4>
+                    </oryx-heading>
+                  `
+                )}
+                ${repeat(
+                  this.pickingLists!,
+                  (pl) => pl.id,
+                  (pl) =>
+                    html`<oryx-picking-list-item
+                      .pickingListId=${pl.id}
+                      @oryx.show-note=${this.openCustomerNoteModal}
+                      @oryx.show-picking-in-progress=${this
+                        .openPickingInProgressModal}
+                    ></oryx-picking-list-item>`
+                )}
+              </section>
+            `
           )}
-        </section>`
+        `
       )}
     `;
   }
@@ -69,13 +108,9 @@ export class PickingListsComponent extends LitElement {
       >
         <oryx-heading slot="heading">
           <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
-        </oryx-heading/>
+        </oryx-heading>
         ${this.customerNote}
-        <oryx-button
-          slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Md}
-        >
+        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
             <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
@@ -85,15 +120,36 @@ export class PickingListsComponent extends LitElement {
     `;
   }
 
-  protected renderEmptyLists(): TemplateResult {
+  protected renderResultsFallback(): TemplateResult {
+    const fallbackType = !this.isSearchActive
+      ? FallbackType.noResults
+      : FallbackType.noSearchingResults;
+
+    const fallbackTitle = this.getFallbackTitle(fallbackType);
+
     return html`
       <div class="no-items-fallback">
-        <oryx-heading as="h4">
-          ${i18n('picking-lists.no-results-found')}
-        </oryx-heading>
-        <oryx-image resource="no-orders"></oryx-image>
+        <oryx-heading as="h4"> ${fallbackTitle} </oryx-heading>
+        <oryx-image resource="${fallbackType}"></oryx-image>
       </div>
     `;
+  }
+
+  protected renderSearchFallback(): TemplateResult {
+    const fallbackTitle = this.getFallbackTitle(FallbackType.noValueProvided);
+
+    return html`
+      <div class="no-items-fallback">
+        <oryx-heading as="h4"> ${fallbackTitle} </oryx-heading>
+        <oryx-image resource="${FallbackType.noValueProvided}"></oryx-image>
+      </div>
+    `;
+  }
+
+  protected searchOrderReference(event: CustomEvent): void {
+    this.isSearchActive = event.detail.open;
+
+    this.searchValue$.next(event.detail.search);
   }
 
   protected openCustomerNoteModal(event: CustomEvent): void {
@@ -108,5 +164,22 @@ export class PickingListsComponent extends LitElement {
     (
       this.pickingInProgressModal.value as PickingInProgressModalComponent
     )?.open();
+  }
+
+  private noValueSearchProvided(): boolean {
+    return this.isSearchActive && !(this.searchValueLength! >= 2);
+  }
+
+  private getFallbackTitle(fallbackType: FallbackType) {
+    switch (fallbackType) {
+      case FallbackType.noResults:
+        return i18n('picking-lists.no-results-found');
+      case FallbackType.noSearchingResults:
+        return i18n('picking-lists.no-picking-results');
+      case FallbackType.noValueProvided:
+        return i18n('picking-lists.search-by-order-ID');
+      default:
+        return '';
+    }
   }
 }

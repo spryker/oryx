@@ -2,7 +2,7 @@ import { Color } from '../../color.model';
 
 export const mint: Color = {
   light: {
-    0: 'hsl(0, 0%, 100%)',
+    0: 'hsl(0, 0%, 0%)',
     1: 'hsl(165, 80.0%, 98.8%)',
     2: 'hsl(164, 88.2%, 96.7%)',
     3: 'hsl(164, 76.6%, 93.3%)',
