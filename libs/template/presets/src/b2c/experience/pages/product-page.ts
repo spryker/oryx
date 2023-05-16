@@ -24,7 +24,7 @@ export const ProductPage: StaticComponent = {
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ vertical: true }] } },
+          options: { data: { rules: [{ layout: 'flex', vertical: true }] } },
           components: [
             {
               type: 'oryx-product-labels',
