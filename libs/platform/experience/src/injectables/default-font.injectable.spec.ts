@@ -50,6 +50,7 @@ describe('DefaultFontInjectable', () => {
         attrs: {
           rel: 'stylesheet',
           href: mockFont,
+          async: '',
         },
       });
     });
