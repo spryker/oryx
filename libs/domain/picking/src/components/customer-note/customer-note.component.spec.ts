@@ -3,6 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListError, PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
+import { modalComponent } from '@spryker-oryx/ui/modal';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
 import { mockPickingListData } from '../../mocks';
@@ -29,6 +30,7 @@ describe('CustomerNoteComponent', () => {
     await useComponent([
       customerNoteComponent,
       pickingInProgressModalComponent,
+      modalComponent,
     ]);
   });
 
@@ -110,7 +112,9 @@ describe('CustomerNoteComponent', () => {
       });
 
       it('should not navigate route', () => {
-        expect(routerService.navigate).not.toHaveBeenCalled();
+        expect(routerService.navigate).not.toHaveBeenCalledWith(
+          '/picking-list/picking/withCartNote'
+        );
       });
 
       it('should open picking in progress modal', () => {
@@ -120,6 +124,19 @@ describe('CustomerNoteComponent', () => {
             ?.shadowRoot?.querySelector('oryx-modal')
             ?.hasAttribute('open')
         ).toBe(true);
+      });
+
+      describe('and picking in progress modal is closed', () => {
+        beforeEach(() => {
+          element.renderRoot
+            .querySelector('oryx-picking-in-progress-modal')
+            ?.shadowRoot?.querySelector('button')
+            ?.click();
+        });
+
+        it('should navigate to picking lists', () => {
+          expect(routerService.navigate).toHaveBeenCalledWith('/');
+        });
       });
     });
   });
