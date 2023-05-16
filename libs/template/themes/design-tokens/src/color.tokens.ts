@@ -12,6 +12,11 @@ export const color: ColorDesignTokens = {
   infoA: colorPalette.colors.blue,
   overlay: colorPalette.overlays.black,
 
+  ink: {
+    light: '#121212',
+    dark: '#fff',
+  },
+
   canvas: {
     light: {
       100: `var(--oryx-color-neutralA-1)`,
@@ -157,7 +162,6 @@ export const color: ColorDesignTokens = {
       500: `var(--oryx-color-infoA-12)`,
     },
   },
-  ink: '#121212',
   focus: `var(--oryx-color-primaryA-9)`,
   placeholder: `var(--oryx-color-neutralA-11)`,
   elevation: `var(--oryx-color-overlay-7)`,
