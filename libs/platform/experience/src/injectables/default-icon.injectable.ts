@@ -14,8 +14,7 @@ import { ResourcePlugin, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
   render(type: string): TemplateResult | undefined {
-    const app = resolve(AppRef);
-    const mappers = app.findPlugin(ThemePlugin)?.getIcons();
+    const mappers = resolve(AppRef).findPlugin(ThemePlugin)?.getIcons();
     const source = mappers?.resource.mapping?.[type]
       ? mappers.resource
       : mappers?.resources?.find((resource) => resource.types.includes(type))
@@ -36,7 +35,11 @@ export class DefaultIconInjectable implements IconInjectable {
       `;
     }
 
-    const icon = app.findPlugin(ResourcePlugin)?.getIcon(type);
+    return this.renderResourceIcon(type);
+  }
+
+  protected renderResourceIcon(type: string): TemplateResult | undefined {
+    const icon = resolve(AppRef).findPlugin(ResourcePlugin)?.getIcon(type);
 
     if (icon === undefined) {
       return;
