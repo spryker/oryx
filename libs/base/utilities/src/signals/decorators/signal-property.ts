@@ -28,6 +28,7 @@ function createSignalPropertyDescriptor<T extends LitElement & SignalKeys>(
       } else {
         this[signalKey].set(value);
       }
+      (this as any).requestUpdate(propertyKey);
     },
     enumerable: true,
     configurable: true,
@@ -56,7 +57,6 @@ function standardSignalProperty<T extends LitElement>(
 ) {
   const { elements } = protoOrDescriptor;
   const propertyKey = protoOrDescriptor.key as keyof T;
-
   const descriptor = {
     kind: 'method',
     elements,

@@ -4,15 +4,14 @@ import { resolve } from '@spryker-oryx/di';
 
 // Temporary solution until we found something better
 
-export const getThemeIcons = (): string[] =>
+export const getResourceIcons = (): string[] =>
   Object.keys(
-    (resolve(AppRef).findPlugin('oryx.experienceTheme') as any).getIcons()
+    (resolve(AppRef).requirePlugin('oryx.experienceResource') as any).getIcons()
   );
 
 export const getThemeGraphics = (): string[] =>
   Object.keys(
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     (
-      resolve(AppRef).findPlugin('oryx.experienceResource') as any
-    ).getResources()!.graphics!
+      resolve(AppRef).requirePlugin('oryx.experienceResource') as any
+    ).getResources().graphics
   );

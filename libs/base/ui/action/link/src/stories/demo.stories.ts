@@ -1,4 +1,4 @@
-import { getThemeIcons } from '@spryker-oryx/ui';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -20,7 +20,7 @@ export default {
       control: { type: 'select' },
     },
     icon: {
-      options: getThemeIcons(),
+      options: getResourceIcons(),
       control: { type: 'select' },
     },
     text: {

@@ -4,7 +4,7 @@ export const styles = css`
   section {
     padding: 24px 16px 0;
     display: grid;
-    gap: 34px;
+    gap: 25px;
   }
 
   oryx-picking-lists-header {

@@ -1,3 +1,4 @@
-export * from './features';
-export * from './i18n';
-export * from './resources';
+export * from './b2c';
+export * from './backoffice';
+export * from './backoffice-ng';
+export * from './fulfillment';
