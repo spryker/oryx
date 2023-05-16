@@ -56,8 +56,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.DragSmall]: () =>
     import('./icons/drag-small').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
-  [IconTypes.FastForward]: () =>
-    import('./icons/fast-forward').then((s) => s.default),
   [IconTypes.File]: () => import('./icons/file').then((s) => s.default),
   [IconTypes.Filters]: () => import('./icons/filters').then((s) => s.default),
   [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
@@ -77,8 +75,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Settings]: () => import('./icons/settings').then((s) => s.default),
   [IconTypes.Sort]: () => import('./icons/sort').then((s) => s.default),
   [IconTypes.Star]: () => import('./icons/star').then((s) => s.default),
-  [IconTypes.TextAreaResizable]: () =>
-    import('./icons/text-area-resizable').then((s) => s.default),
   [IconTypes.Top]: () => import('./icons/top').then((s) => s.default),
   [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
   /** Alias to minus */

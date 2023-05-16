@@ -1,9 +1,33 @@
 import { IconMapper } from '@spryker-oryx/experience';
+import { IconTypes } from './icon.model';
 
 export const materialIcons: IconMapper = {
   id: 'material-icons',
   mapping: {
-    // [IconTypes.Cart]: 'shopping_cart_checkout',
+    [IconTypes.List]: 'list',
+    [IconTypes.ArrowsOutward]: 'arrows_outward',
+    [IconTypes.ViewList]: 'view_list',
+    [IconTypes.Composition]: 'shelf_position',
+    [IconTypes.CartAdd]: 'add_shopping_cart',
+    [IconTypes.Cart]: 'shopping_cart',
+    [IconTypes.BulletList]: 'format_list_bulleted_add',
+    [IconTypes.Login]: 'login',
+    [IconTypes.Image]: 'image',
+    [IconTypes.Link]: 'link',
+    [IconTypes.Video]: 'play_circle',
+    [IconTypes.Star]: 'star',
+    [IconTypes.Description]: 'description',
+    [IconTypes.Barcode]: 'barcode',
+    [IconTypes.Images]: 'photo_library',
+    [IconTypes.Label]: 'label',
+    [IconTypes.Media]: 'perm_media',
+    [IconTypes.Price]: 'payments',
+    [IconTypes.Title]: 'title',
+    [IconTypes.Card]: 'crop_portrait',
+    [IconTypes.Input]: 'input',
+    [IconTypes.Filters]: 'tune',
+    [IconTypes.Search]: 'search',
+    [IconTypes.Sort]: 'sort',
   },
 };
 

@@ -17,6 +17,7 @@ export class DefaultFontInjectable implements FontInjectable {
       attrs: {
         rel: 'stylesheet',
         href: font,
+        async: '',
       },
     });
   }

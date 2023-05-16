@@ -22,7 +22,7 @@ export const CategoryPage: StaticComponent = {
   },
   components: [
     {
-      type: 'search-facet-navigation',
+      type: 'oryx-search-facet-navigation',
       options: {
         data: {
           rules: [{ sticky: true, top: '108' }],
@@ -40,7 +40,7 @@ export const CategoryPage: StaticComponent = {
           options: { data: { rules: [{ layout: 'flex' }] } },
           components: [
             {
-              type: 'search-product-sort',
+              type: 'oryx-search-product-sort',
               options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
             },
           ],

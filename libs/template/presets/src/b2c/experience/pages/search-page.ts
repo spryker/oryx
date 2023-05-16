@@ -20,7 +20,7 @@ export const SearchPage: StaticComponent = {
   },
   components: [
     {
-      type: 'search-facet-navigation',
+      type: 'oryx-search-facet-navigation',
       options: {
         data: {
           rules: [{ sticky: true, top: '108' }],
@@ -35,7 +35,7 @@ export const SearchPage: StaticComponent = {
       components: [
         {
           type: 'experience-composition',
-          components: [{ type: 'search-product-sort' }],
+          components: [{ type: 'oryx-search-product-sort' }],
           options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },
         {

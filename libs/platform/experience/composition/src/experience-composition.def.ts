@@ -14,4 +14,8 @@ export const experiencePreviewCompositionComponent = componentDef({
     import('./experience-composition-preview.component').then(
       (m) => m.ExperienceCompositionPreviewComponent
     ),
+  schema: () =>
+    import('./experience-composition.schema').then(
+      (m) => m.experienceCompositionSchema
+    ),
 });
