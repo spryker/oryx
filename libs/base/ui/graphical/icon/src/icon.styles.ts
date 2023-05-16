@@ -14,9 +14,11 @@ export const styles = css`
     aspect-ratio: 1 / 1;
     justify-content: center;
     color: var(--oryx-icon-color, inherit);
+    font-family: var(--icon-font, 'Material Symbols Outlined');
     font-variation-settings: 'FILL' var(--icon-fill, 0),
       'wght' var(--icon-weight, 500), 'GRAD' var(--icon-grad, 0),
       'opsz' var(--icon-optical, 48);
+    font-size: var(--oryx-icon-size, 24px);
     -webkit-font-smoothing: antialiased;
   }
 

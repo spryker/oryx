@@ -9,6 +9,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { when } from 'lit/directives/when.js';
 import { ResourcePlugin, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
@@ -25,9 +26,12 @@ export class DefaultIconInjectable implements IconInjectable {
       fontInjectable.get()?.setFont(source.id);
 
       return html`
-        <style>
-          :host {${source.styles}}
-        </style>
+        ${when(
+          source.styles,
+          () => html`<style>
+            :host {${source.styles}}
+          </style>`
+        )}
         ${unsafeHTML(mapper)}
       `;
     }

@@ -60,7 +60,7 @@ export interface IconData {
 export interface IconMapper {
   // Uses as default tag class also
   id: string;
-  styles: string;
+  styles?: string;
   mapping: Record<string, string>;
 }
 

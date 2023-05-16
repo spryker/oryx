@@ -5,8 +5,6 @@ import { when } from 'lit/directives/when.js';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 
-const DEFAULT_SPRITE = '/assets/icons.svg';
-
 @hydratable()
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
@@ -33,17 +31,20 @@ export class IconComponent extends LitElement implements IconProperties {
 
   render(): TemplateResult {
     return html`
-      <slot>
-        ${when(this.type, () =>
-          this.renderer
-            ? this.renderer
-            : svg`
-                <svg viewBox="0 0 24 24">
-                  <use href="${this.spriteUrl}" />
-                </svg>
-              `
-        )}
-      </slot>
+      ${when(
+        this.renderer,
+        () => this.renderer,
+        () =>
+          when(
+            this.spriteUrl,
+            () => svg`
+              <svg viewBox="0 0 24 24">
+                <use href="${this.spriteUrl}" />
+              </svg>
+            `,
+            () => html`<slot></slot>`
+          )
+      )}
     `;
   }
 
@@ -57,7 +58,11 @@ export class IconComponent extends LitElement implements IconProperties {
    *
    * Defaults to use '/assets/icons.svg'.
    */
-  protected get spriteUrl(): string {
-    return `${this.sprite ?? DEFAULT_SPRITE}#${this.type}`;
+  protected get spriteUrl(): string | undefined {
+    if (!this.sprite) {
+      return;
+    }
+
+    return `${this.sprite}#${this.type}`;
   }
 }

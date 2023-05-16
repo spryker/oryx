@@ -90,7 +90,6 @@ describe('DefaultIconInjectable', () => {
     it('should return icon font from additional resource', async () => {
       const mockResource = {
         id: 'iconB',
-        styles: `font: b`,
         mapping: {
           aIcon: 'aIconContent',
           bIcon: 'bIconContent',
@@ -111,13 +110,11 @@ describe('DefaultIconInjectable', () => {
       });
       element.icon = 'bIcon';
       await nextFrame();
-      const iconStyles = element.renderRoot.querySelector(`style`)?.textContent;
       expect(mockFontInjectable.setFont).toHaveBeenCalledWith(mockResource.id);
-      expect(element).toContainElement('style');
+      expect(element).not.toContainElement('style');
       expect(element.renderRoot.textContent).toContain(
         mockResource.mapping.bIcon
       );
-      expect(iconStyles).toContain(`:host {${mockResource.styles}}`);
     });
   });
 
