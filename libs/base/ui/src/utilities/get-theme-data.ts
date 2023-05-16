@@ -13,5 +13,5 @@ export const getThemeGraphics = (): string[] =>
   Object.keys(
     (
       resolve(AppRef).requirePlugin('oryx.experienceResource') as any
-    ).getResources().graphics
+    ).getGraphics()
   );

@@ -1,5 +1,5 @@
 import { ComponentDef } from '@spryker-oryx/core';
-import { DefaultMedia, Size } from '@spryker-oryx/utilities';
+import { DefaultMedia, rootInjectable, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';
 import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
@@ -7,15 +7,75 @@ import { Theme, ThemeStrategies, ThemeStyles } from './theme.model';
 const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
   name: 'b',
+  icons: {
+    resource: { id: 'a', styles: 'a', mapping: { a: 'a' } },
+    resources: [
+      {
+        resource: { id: 'b', styles: 'b', mapping: { a: 'b' } },
+        types: ['a', 'b'],
+      },
+    ],
+  },
 };
 
 const mockBTheme: Theme = {
   name: 'a',
+  icons: {
+    resource: { id: 'c', styles: 'c', mapping: { a: 'c' } },
+    resources: [
+      {
+        resource: { id: 'd', styles: 'd', mapping: { a: 'd' } },
+        types: ['a', 'b'],
+      },
+    ],
+  },
 };
+
+const mockATokensTheme = {
+  designTokens: [
+    {
+      color: {
+        blue: {
+          light: {
+            100: '1',
+            200: '2',
+          },
+          dark: {
+            100: '2',
+            200: '1',
+          },
+        },
+      },
+    },
+    {
+      media: {
+        mode: 'dark',
+      },
+      color: {
+        red: 'red1',
+      },
+    },
+  ],
+} as unknown as Theme;
+
+const mockBTokensTheme = {
+  designTokens: [
+    {
+      long: {
+        nested: {
+          property: {
+            key: 'value',
+          },
+        },
+        key: 'value',
+      },
+      'one-line': 'value',
+    },
+  ],
+} as unknown as Theme;
 
 const mockComponentPlugin = {
   getOptions: vi.fn().mockReturnValue({}),
-  getRoot: vi.fn(),
 };
 
 const mockApp = {
@@ -104,6 +164,84 @@ describe('ThemePlugin', () => {
       } as ComponentDef);
       expect(themeData).toEqual(expected);
     });
+
+    describe('when design tokens have been set', () => {
+      const plugin = new ThemePlugin([
+        { ...mockATheme, ...mockATokensTheme },
+        { ...mockBTheme, ...mockBTokensTheme },
+      ]);
+
+      it('should resolve theme with parsed design token and global styles', async () => {
+        rootInjectable.inject('a');
+        const expectedHostStyles = `
+          :host {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;}
+          @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; }
+          @layer mode.dark { [mode-dark],:host(:not([mode-light])) {--oryx-color-red: red1;--oryx-color-blue-100: 2;--oryx-color-blue-200: 1;}}
+          @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; }
+          @layer mode.light { [mode-light],:host(:not([mode-dark])) {--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;}}
+        `
+          .replace(/(\r\n|\n|\r)/gm, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        const expected = [
+          {
+            styles: ` ${expectedHostStyles}`,
+          },
+          { styles: ['a'] },
+          { styles: ['aA'] },
+        ];
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
+        const themeData = await plugin.resolve({
+          name: 'a',
+          stylesheets: [
+            {
+              theme: 'a',
+              rules: {
+                styles: stylesMocker('a'),
+              },
+            },
+            {
+              theme: 'a',
+              rules: {
+                styles: stylesMocker('aA'),
+              },
+            },
+          ],
+        } as ComponentDef);
+        expect(themeData).toEqual(expected);
+      });
+    });
+  });
+
+  describe('apply', () => {
+    describe('when design tokens have been set', () => {
+      const plugin = new ThemePlugin([
+        { ...mockATheme, ...mockATokensTheme },
+        { ...mockBTheme, ...mockBTokensTheme },
+      ]);
+
+      it('should add parsed design tokens to the document.body if components plugin root options is string', async () => {
+        const expected = `
+          :root {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;}
+          @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; }
+          @layer mode.dark { [mode-dark],:root {--oryx-color-red: red1;--oryx-color-blue-100: 2;--oryx-color-blue-200: 1;}}
+          @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; }
+          @layer mode.light { [mode-light],:root {--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;}}
+        `
+          .replace(/(\r\n|\n|\r)/gm, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        mockComponentPlugin.getOptions.mockReturnValue({
+          root: 'root',
+        });
+        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
+        await plugin.apply(mockApp);
+        const styles = document.body
+          .querySelector('style')
+          ?.textContent?.trim();
+        expect(styles).toBe(expected);
+      });
+    });
   });
 
   describe('normalizeStyles', () => {
@@ -129,114 +267,22 @@ describe('ThemePlugin', () => {
       expect(result[1]).toBeInstanceOf(CSSResult);
       expect(result[1].toString()).toBe('a');
     });
-  });
 
-  describe('when design tokens have been set', () => {
-    const mockATokensTheme: Theme = {
-      designTokens: [
-        {
-          color: {
-            red: 'red',
-            blue: {
-              100: '1',
-              200: '2',
-              300: '3',
-              400: '4',
-              500: '5',
-            },
+    describe('when breakpoints has been set', () => {
+      const mockABreakpointsTheme: Theme = {
+        breakpoints: {
+          [Size.Lg]: {
+            min: 600,
+          },
+          [Size.Sm]: {
+            min: 200,
+            max: 400,
           },
         },
-        {
-          media: {
-            mode: 'dark',
-          },
-          color: {
-            red: 'red1',
-          },
-        },
-      ],
-      ...mockATheme,
-    };
-    const mockBTokensTheme: Theme = {
-      designTokens: [
-        {
-          long: {
-            nested: {
-              property: {
-                key: 'value',
-              },
-            },
-            key: 'value',
-          },
-          'one-line': 'value',
-        },
-      ],
-      ...mockBTheme,
-    };
-    // TODO: fix `Could not parse CSS stylesheet` error
-    const expectedStyles = (selector = ':host'): string =>
-      ` ${selector} {--oryx-one-line: value;--oryx-long-key: value;--oryx-long-nested-property-key: value;} @media (prefers-color-scheme: dark) { @layer mode.light, mode.dark; } @layer mode.dark { [mode-dark],${selector}(:not([mode-light])) {--oryx-color-red: red1;}} @media (prefers-color-scheme: light) { @layer mode.dark, mode.light; } @layer mode.light { [mode-light],${selector}(:not([mode-dark])) {--oryx-color-red: red;--oryx-color-blue-100: 1;--oryx-color-blue-200: 2;--oryx-color-blue-300: 3;--oryx-color-blue-400: 4;--oryx-color-blue-500: 5;}}`;
-    const plugin = new ThemePlugin([mockATokensTheme, mockBTokensTheme]);
+        ...mockATheme,
+      };
+      const plugin = new ThemePlugin([mockABreakpointsTheme]);
 
-    describe('resolve', () => {
-      it('should resolve theme with parsed design token and global styles', async () => {
-        mockComponentPlugin.getRoot.mockReturnValue('a');
-
-        const expected = [{ styles: ['a'] }, { styles: ['aA'] }];
-        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
-        const themeData = await plugin.resolve({
-          name: 'a',
-          stylesheets: [
-            {
-              theme: 'a',
-              rules: {
-                styles: stylesMocker('a'),
-              },
-            },
-            {
-              theme: 'a',
-              rules: {
-                styles: stylesMocker('aA'),
-              },
-            },
-          ],
-        } as ComponentDef);
-
-        expect(themeData).toEqual(expect.arrayContaining(expected));
-      });
-    });
-
-    describe('apply', () => {
-      it('should add parsed design tokens to the document.body if components plugin root options is string', async () => {
-        mockComponentPlugin.getOptions.mockReturnValue({
-          root: 'root',
-        });
-        mockApp.requirePlugin.mockReturnValueOnce(mockComponentPlugin);
-        await plugin.apply(mockApp);
-        const styles = document.body
-          .querySelector('style')
-          ?.textContent?.trim();
-        expect(styles).toContain(':root');
-      });
-    });
-  });
-
-  describe('when breakpoints has been set', () => {
-    const mockABreakpointsTheme: Theme = {
-      breakpoints: {
-        [Size.Lg]: {
-          min: 600,
-        },
-        [Size.Sm]: {
-          min: 200,
-          max: 400,
-        },
-      },
-      ...mockATheme,
-    };
-    const plugin = new ThemePlugin([mockABreakpointsTheme]);
-
-    describe('normalizeStyles', () => {
       it('should return array of CSSResult instances with styles with breakpoints', () => {
         const result = plugin.normalizeStyles([
           {
@@ -368,6 +414,59 @@ describe('ThemePlugin', () => {
     it('should return null if both parameters are empty arrays', () => {
       const a = plugin.generateScreenMedia([], []);
       expect(a).toBeNull();
+    });
+  });
+
+  describe('getIcons', () => {
+    it('should return proper icons list', () => {
+      const icons = plugin.getIcons();
+      expect(icons).toEqual({
+        resource: mockBTheme.icons?.resource,
+        resources: [
+          ...(mockBTheme.icons?.resources ?? []),
+          ...(mockATheme.icons?.resources ?? []),
+        ],
+      });
+    });
+  });
+
+  describe('getBreakpoints', () => {
+    const mockABreakpointsTheme: Theme = {
+      breakpoints: {
+        [Size.Lg]: {
+          min: 600,
+        },
+        [Size.Sm]: {
+          min: 200,
+          max: 400,
+        },
+      },
+      ...mockATheme,
+    };
+    const mockBBreakpointsTheme: Theme = {
+      breakpoints: {
+        [Size.Sm]: {
+          min: 250,
+          max: 350,
+        },
+        [Size.Xs]: {
+          max: 200,
+        },
+      },
+      ...mockBTheme,
+    };
+    const plugin = new ThemePlugin([
+      mockABreakpointsTheme,
+      mockBBreakpointsTheme,
+    ]);
+
+    it('should return sorted breakpoints list', () => {
+      const breakpoints = plugin.getBreakpoints();
+      expect(breakpoints).toStrictEqual({
+        xs: { max: 200 },
+        sm: { min: 250, max: 350 },
+        lg: { min: 600 },
+      });
     });
   });
 });

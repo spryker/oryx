@@ -1,13 +1,19 @@
 import { AppPlugin } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
 import {
+  fontInjectable,
+  graphicInjectable,
+  iconInjectable,
+} from '@spryker-oryx/utilities';
+import {
+  DefaultFontInjectable,
   DefaultGraphicInjectable,
   DefaultIconInjectable,
 } from '../../injectables';
 import {
   Graphic,
   GraphicValue,
+  ResourceGraphic,
   ResourceIcons,
   Resources,
 } from './resources.model';
@@ -29,18 +35,22 @@ export class ResourcePlugin implements AppPlugin {
     if (Object.keys(resources.icons ?? {}).length) {
       iconInjectable.inject(new DefaultIconInjectable());
     }
+
+    if (Object.keys(resources.fonts ?? {}).length) {
+      fontInjectable.inject(new DefaultFontInjectable());
+    }
   }
 
   getName(): string {
     return ResourcePluginName;
   }
 
-  getResources(): Resources | undefined {
-    return this.resources;
+  getGraphics(): ResourceGraphic | undefined {
+    return this.resources.graphics;
   }
 
-  getGraphicValue(token: string, key: keyof Graphic): GraphicValue {
-    const value = this.resources?.graphics?.[token]?.[key];
+  getGraphic(token: string, key: keyof Graphic): GraphicValue {
+    const value = this.getGraphics()?.[token]?.[key];
 
     if (!value) {
       return;
@@ -54,13 +64,17 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getIcon(name: string): string | Promise<string> | void {
-    const icon = this.resources.icons?.[name];
+    const icon = this.getIcons()[name];
 
     if (!icon) {
       return;
     }
 
     return resolveLazyLoadable(icon);
+  }
+
+  getFont(id: string): string | undefined {
+    return this.resources.fonts?.[id];
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
